@@ -2,7 +2,7 @@
 /**
  * Events Calendar Search plugin for Joomla 1.5.x
  *
- * @version     $Id: eventsearch.php 969 2008-02-16 11:24:45Z geraint $
+ * @version     $Id$
  * @package     Events
  * @subpackage  Mambot Events Calendar
  * @copyright   Copyright (C) 2006-2007 JEvents Project Group

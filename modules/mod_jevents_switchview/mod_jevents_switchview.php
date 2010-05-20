@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id: mod_events_switchview.php 1117 2008-07-06 17:20:59Z tstahl $
+ * @version     $Id$
  * @package     JEvents
  * @subpackage  Module JEvents Switch View
  * @copyright   Copyright (C) 2006-2008 JEvents Project Group

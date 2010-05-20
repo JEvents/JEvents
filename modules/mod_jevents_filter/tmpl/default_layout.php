@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id: mod_jevents_filter.php 1057 2008-04-21 18:06:33Z geraint $
+ * @version     $Id$
  * @package     JEvents
  * @subpackage  Module JEvents Filter
  * @copyright   Copyright (C) 2008 GWE Systems Ltd

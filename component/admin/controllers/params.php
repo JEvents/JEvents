@@ -4,7 +4,7 @@
  *
  * This file based on Joomla config component Copyright (C) 2005 - 2008 Open Source Matters.
  *
- * @version     $Id: params.php 1399 2009-03-30 08:31:52Z geraint $
+ * @version     $Id$
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html

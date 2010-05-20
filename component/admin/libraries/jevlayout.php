@@ -4,7 +4,7 @@
  *
  * Installer adapter for jevents layouts
  * 
- * @version     $Id: jevlayout.php 1413 2009-04-13 09:17:08Z geraint $
+ * @version     $Id$
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
