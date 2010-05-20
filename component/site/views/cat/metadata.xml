@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="JEvents List By Category">
+		<message><![CDATA[JEvents List By Category]]></message>
+		<options var="task" >
+			<option value='cat.listevents' name="JEvents List By Category" msg="List View of JEvents organised by category" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>JEvents List By Category</description>
+		<params>
+		</params>
+	</state>
+</metadata>

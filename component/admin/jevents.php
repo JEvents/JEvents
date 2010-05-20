@@ -1,0 +1,115 @@
+<?php
+/**
+ * JEvents Component for Joomla 1.5.x
+ *
+ * @version     $Id: jevents.php 1684 2010-01-27 04:52:25Z geraint $
+ * @package     JEvents
+ * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        http://www.jevents.net
+ */
+
+
+defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+
+if (version_compare(phpversion(), '5.0.0', '<')===true) {
+	echo  '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">'.JText::_("JEV_INVALID_PHP1").'</h3></div>'.JText::_("JEV_INVALID_PHP2").'</div>';
+	return;
+}
+
+// remove metadata.xml if its there.
+jimport('joomla.filesystem.file');
+if (JFile::exists(JPATH_COMPONENT_SITE.DS."metadata.xml")){
+	JFile::delete(JPATH_COMPONENT_SITE.DS."metadata.xml");
+}
+
+//error_reporting(E_ALL);
+
+jimport('joomla.filesystem.path');
+
+global $option;
+define("JEV_COM_COMPONENT",$option);
+define("JEV_COMPONENT",str_replace("com_","",$option));
+
+include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.JEV_COMPONENT.".defines.php");
+
+$registry	=& JRegistry::getInstance("jevents");
+// See http://www.php.net/manual/en/timezones.php
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
+	$timezone= date_default_timezone_get();
+	date_default_timezone_set($params->get("icaltimezonelive",""));
+	$registry->setValue("jevents.timezone",$timezone);
+}
+
+// Must also load frontend language files
+$lang =& JFactory::getLanguage();
+$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+
+// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
+$db =& JFactory::getDBO();
+$query = 'SELECT template'
+. ' FROM #__templates_menu'
+. ' WHERE client_id = 0 AND menuid=0'
+. ' ORDER BY menuid DESC'
+. ' LIMIT 1'
+;
+$db->setQuery($query);
+$template = $db->loadResult();
+$lang->load(JEV_COM_COMPONENT, JPATH_SITE.DS."templates".DS.$template);
+
+// disable Zend php4 compatability mode
+@ini_set("zend.ze1_compatibility_mode","Off");
+
+// Split tasl into command and task
+$cmd = JRequest::getCmd('task', 'cpanel.show');
+
+if (strpos($cmd, '.') != false) {
+	// We have a defined controller/task pair -- lets split them out
+	list($controllerName, $task) = explode('.', $cmd);
+
+	// Define the controller name and path
+	$controllerName	= strtolower($controllerName);
+	$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+	$controllerName = "Admin".$controllerName;
+
+	// If the controller file path exists, include it ... else lets die with a 500 error
+	if (file_exists($controllerPath)) {
+		require_once($controllerPath);
+	} else {
+		JError::raiseError(500, 'Invalid Controller');
+	}
+} else {
+	// Base controller, just set the task
+	$controllerName = null;
+	$task = $cmd;
+}
+
+// Make the task available later
+JRequest::setVar("jevtask",$cmd);
+JRequest::setVar("jevcmd",$cmd);
+
+JPluginHelper::importPlugin("jevents");
+
+// Make this a config option - should not normally be needed
+//$db = JFactory::getDBO();
+//$db->setQuery( "SET SQL_BIG_SELECTS=1");
+//$db->query();
+
+// Set the name for the controller and instantiate it
+$controllerClass = ucfirst($controllerName).'Controller';
+if (class_exists($controllerClass)) {
+	$controller = new $controllerClass();
+} else {
+	JError::raiseError(500, 'Invalid Controller Class - '.$controllerClass );
+}
+
+// record what is running - used by the filters
+$registry	=& JRegistry::getInstance("jevents");
+$registry->setValue("jevents.activeprocess","administrator");
+
+// Perform the Request task
+$controller->execute($task);
+
+// Redirect if set by the controller
+$controller->redirect();

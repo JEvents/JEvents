@@ -1,0 +1,58 @@
+<?php
+/**
+ * JEvents Component for Joomla 1.5.x
+ *
+ * @version     $Id: mod.defines.php 1400 2009-03-30 08:45:17Z geraint $
+ * @package     JEvents
+ * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        http://www.jevents.net
+ */
+
+defined('_JEXEC') or die( 'No Direct Access' );
+
+if (!defined("JEV_COM_COMPONENT")){
+	define("JEV_COM_COMPONENT","com_jevents");
+	define("JEV_COMPONENT",str_replace("com_","",JEV_COM_COMPONENT));
+}
+
+if (!defined("JEV_LIBS")){
+	define("JEV_ADMINPATH",JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/");
+	define("JEV_PATH",JPATH_SITE."/components/".JEV_COM_COMPONENT."/");
+	define("JEV_VIEWS",JEV_PATH."/views");
+	define("JEV_LIBS",JEV_PATH."/libraries");
+	define("JEV_ABSTRACTEMPLATES",JEV_VIEWS."/abstract/tmpl/");
+}
+	JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
+	JLoader::register('JevRegistry',JEV_PATH."/libraries/registry.php");
+
+
+	JLoader::register('JEVConfig',JEV_ADMINPATH."/libraries/config.php");
+	
+	JLoader::register('JEVAccess',JEV_PATH."/libraries/access.php");
+	JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
+
+	// TODO replace with JDate
+	JLoader::register('JEventDate',JEV_PATH."/libraries/jeventdate.php");
+	JLoader::register('JEventsHTML',JEV_PATH."/libraries/jeventshtml.php");
+
+	JLoader::register('JEventsVersion',JEV_ADMINPATH."/libraries/version.php");
+	
+	JLoader::register('catLegend',JEV_PATH."/libraries/catLegend.php");
+	
+	JLoader::register('JEventsDBModel',JEV_PATH."/libraries/dbmodel.php");
+	JLoader::register('JEventsDataModel',JEV_PATH."/libraries/datamodel.php");
+
+	JLoader::register('jEventCal',JEV_PATH."/libraries/jeventcal.php");
+	JLoader::register('jIcal',JEV_PATH."/libraries/jical.php");
+	JLoader::register('jIcalEventDB',JEV_PATH."/libraries/jicaleventdb.php");
+	JLoader::register('jIcalEventRepeat',JEV_PATH."/libraries/jicaleventrepeat.php");
+	
+	JLoader::register('JEventsAbstractView',JEV_ADMINPATH."/views/abstract/abstract.php");
+	
+	JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
+	
+	// TODO retire this sometime?
+	JLoader::register('JEV_CommonFunctions',JEV_PATH."/libraries/commonfunctions.php");
+
+

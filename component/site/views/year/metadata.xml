@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="JEvents List By Year">
+		<message><![CDATA[JEvents List By Year]]></message>
+		<options var="task" >
+			<option value='year.listevents' name="JEvents List By Year" msg="List View of JEvents organised by Year" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>JEvents List By Year</description>
+		<params>
+			<param name="head" type="textarea" default="" rows="2" cols="50" label="JEV LIST HEAD" description="JEV LIST HEAD DESC" />
+			<param name="row" type="textarea" default="" rows="10" cols="50" label="JEV LIST ROW" description="JEV LIST ROW DESC" />
+			<param name="foot" type="textarea" default="" rows="2" cols="50" label="JEV LIST FOOR" description="JEV LIST FOOT DESC" />
+		</params>
+	</state>
+</metadata>

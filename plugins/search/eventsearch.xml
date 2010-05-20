@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="search" method="upgrade">
+    <name>Search - JEvents</name>
+	<creationDate>April 2010</creationDate>
+	<author>JEvents Project Group</author>
+	<copyright>(C) 2006-2010 JEvents Project Group</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl>www.jevents.net</authorUrl>
+	<version>1.5.5</version>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <description>Events Search is a plugin to allow searching events of the Events component.</description>
+    <files>
+        <filename plugin="eventsearch">eventsearch.php</filename>
+    </files>
+	<params addpath="/administrator/components/com_jevents/elements/">
+		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
+		<param name="date_format" type="text" size="50" default="%Y-%m-%d" label="Date Format" description="Format for date in return"/>
+		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
+	</params>
+</install>

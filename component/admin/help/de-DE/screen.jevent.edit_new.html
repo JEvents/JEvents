@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="de_DE"
+      xml:lang="de_DE">
+<head>
+    <title>JEvents - Termine und Veranstaltungen leicht gemacht</title>
+
+    <link href="help.css"
+          rel="stylesheet"
+          type="text/css"
+          media="all" />
+    <meta name="copyright"
+          content="(C) 2006 www.mgfi.info All rights reserved." />
+
+    <meta name="license"
+          content="http://www.gnu.org/copyleft/gpl.html GNU/GPL" />
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=iso-8859-1" />
+</head>
+
+<body>
+    <h1>JEvents - Termine und Veranstaltungen leicht gemacht</h1>
+
+	<p class="close">
+    	<a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+    	<br />
+    	<a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+    	<br />
+    	<a href="http://developer.joomla.org/sf/projects/jevents" target="_blank" title="JEvents">Aktuellste Version hier</a>
+    </p>
+
+	<p>Termine (Neu &amp; Bearbeiten) in 6 Hauptbereiche (Tabs) gegliedert:</p>
+		<ol>
+		    <li><a href="#Allgemein" title="Allgemein">Allgemein</a></li>
+            <li><a href="#Bilder" title="Bilder">Bilder</a></li>
+            <li><a href="#Kalender" title="Kalender">Kalender</a></li>
+            <li><a href="#Extra" title="Extra">Extra</a></li>
+            <li><a href="#Hilfe" title="Hilfe">Hilfe</a></li>
+            <li><a href="#&Uuml;ber" title="&Uuml;ber">&Uuml;ber</a></li>
+		</ol>
+
+    <ul>
+        <li><a href="Allgemein" id="Allgemein"></a>Allgemein</li>
+        Hier werden die allgemeinen Termineinstellungen vorgenommen.<br />
+        <strong>Thema</strong>: Der Titel/Name des Termins / der Veranstaltung<br />
+        <strong>Kategorie</strong>: In welcher Kategorie soll der Termin aufscheinen
+        <p class="warning"><span class="warningHeader">Hinweis:</span>
+            Die Kategorie muss vorher angelegt worden sein
+        </p>
+        <strong>Berechtigt/Zugriffsstufe</strong>: Wer darf diesen Termin sehen (lt. CMS-Berechtigungsstufen)<br />
+        <strong>Aktivit&auml;t</strong>: Textfeld zur Beschreibung des Termins / der Veranstaltung
+        <p class="warning"><span class="warningHeader">Hinweis:</span>
+            Diese Beschreibung ist erforderlich - das Feld muss ausgef&uuml;llt werden
+        </p>
+
+        <p class="close">
+        	<a href="#helptop" title="Seitenanfang">Seitenanfang</a>
+        	<br />
+    		<a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+            <br />
+            <a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+        </p>
+        
+		<li><a href="Bilder" id="Bilder"></a>Bilder</li>
+        Sollen Bilder in den Terminen enthalten sein, erfolgt hier die Festlegung und Bearbeitung.<br />
+        
+        <strong>Bilderverzeichnis</strong>: Alle vorhandenen Bilderverzeichnisse zur Auswahl<br />
+        <strong>Verf&uuml;gbare Bilder</strong>: Alle m&ouml;glichen, anwendbaren Bilder
+        <strong>Bereits in Verwendung</strong>: Bilder welche bereits im Termin angezeigt werden
+        <strong>Gew&auml;hltes Bild bearbeiten</strong>: Bildereigenschaften werden hier festgelegt
+        <p class="warning"><span class="warningHeader">Hinweis:</span>
+            Mit den Buttons k&ouml;nnen die Bilder hinzugef&uuml;gt, entfernt sowie die Reihenfolge vestimmt werden
+        </p>
+        
+        <p class="close">
+        	<a href="#helptop" title="Seitenanfang">Seitenanfang</a>
+        	<br />
+    		<a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+            <br />
+            <a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+        </p>
+        
+        <li><a href="Kalender" id="Kalender"></a>Kalender</li>
+		Hier werden alle generellen Einstellungen zum Termin vorgenommen<br />   
+        <strong>Farbe</strong>: Es kann entweder die Kategoriefarbe (wenn vorhanden) verwendet werden, oder<br />
+        aber eine eigene, nur f&uuml;r diesen Termin g&uuml;ltige<br />
+        Zum &Uuml;bernehmen der Kategoriefarbe das Feld <em>Kategoriefarbe verwenden</em> ankreuzen, ansonsten
+        auf den Button <em>Farbe bestimmen</em> oder den Farbwert direkt eingeben.
+        <p class="warning"><span class="warningHeader">Hinweis:</span>
+            Wurde das Feld <em>Kategoriefarbe verwenden</em> angekreuzt, kann der Button nicht angeklickt werden!<br />
+            Die gew&auml;hlte Farbe wird automatisch angezeigt
+        </p>
+        <strong>Erster Tag</strong>: Das Datum und die Uhrzeit des Beginns dieses Termins
+        <strong>Letzter Tag</strong>: Das Datum und die Uhrzeit des Endes dieses Termins
+        <p class="warning"><span class="warningHeader">Hinweis:</span>
+            Je nach gew&auml;hlter Anzeigeform des Datums und der Uhrzeit kann bei der Uhrzeit zus&auml;tzlich<br />
+            nach Vor- und Nachmittag (am / pm) gew&auml;hlt werden
+        </p>
+        <strong>Wiederholungstyp</strong>: Soll der Termin wiederholt werden, oder geht er &uuml;ber mehrere <br />
+        Tage, wochen oder Monate, werden hier alle dazu relevante Einstellungen vorgenommen<br />
+        Je nach gew&auml;hltem Feld werden weitere Optionen anklickbar
+        
+        <p class="close">
+        	<a href="#helptop" title="Seitenanfang">Seitenanfang</a>
+        	<br />
+    		<a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+            <br />
+            <a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+        </p>
+        
+        <li><a href="Extra" id="Extra"></a>Extra</li>
+		F&uuml;r den Termin weitere Kontaktinfos angegeben werden.<br />   
+        <strong>Ort</strong>: Wo findet dieser Termin statt<br />
+        <strong>Kontakt</strong>: Kann eine Emailadresse, Telefonnummer o.a. sein<br />
+        <strong>Zusatzinformationen</strong>: Eventuell weitere Angaben zum Termin<br />
+        <strong>Terminstatus</strong>: Informationen zum Termin auf einen Blick
+        
+        <p class="close">
+        	<a href="#helptop" title="Seitenanfang">Seitenanfang</a>
+        	<br />
+    		<a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+            <br />
+            <a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+        </p>
+        
+        <li><a href="Hilfe" id="Hilfe"></a>Hilfe</li>
+        Zus&auml;tzlich zu dieser Hilfe eine weitere, genauere Angabe zu allen m&ouml;glichen Eingaben
+        <li><a href="&Uuml;ber" id="&Uuml;ber"></a>&Uuml;ber</li>
+        Angaben zur Version, den Entwicklern, Lizenz, usw.
+    </ul>
+
+
+    	<div class="docinfo">Doc.Info: v.1.0 - 2006.07.30</div>
+    	<div class="close">
+            <a href="#" onclick="window.print()" title="Drucken">Drucken</a>
+            <br />
+            <a href="#" onclick="window.close()" title="Fenster Schliessen">Fenster Schliessen</a>
+            <br />
+            <a href="http://developer.joomla.org/sf/projects/jevents" target="_blank" title"JEvents">Aktuellste Version hier</a>
+    	</div>
+
+</body>
+</html>

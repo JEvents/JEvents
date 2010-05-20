@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="JEvents Search">
+		<message><![CDATA[JEvents Search]]></message>
+		<options var="task" >
+			<option value='search.form' name="JEvents Search" msg="Search JEvents" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>Search JEvents</description>
+		<params>
+		</params>
+	</state>
+</metadata>

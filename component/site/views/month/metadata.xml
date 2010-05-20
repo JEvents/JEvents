@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="Monthly Calendar">
+		<message><![CDATA[Monthly View]]></message>
+		<options var="task" >
+			<option value='month.calendar' name="Monthly Calendar" msg="Tabular calendar view by month" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>Monthly Calendar Layout</description>
+		<params addpath="/administrator/components/com_jevents/elements/" >
+		</params>
+	</state>
+</metadata>

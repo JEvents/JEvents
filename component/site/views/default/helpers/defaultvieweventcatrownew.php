@@ -1,0 +1,21 @@
+<?php 
+defined('_JEXEC') or die('Restricted access');
+
+function DefaultViewEventCatRowNew($view,$row,$args="") {
+	// I choost not to use $row->fgcolor()
+	$fgcolor="inherit";
+
+	$router = JRouter::getInstance("site");
+	$vars = $router->getVars();
+	$vars["catids"]=$row->catid();
+
+	$eventlink = "index.php?";
+	foreach ($vars as $key=>$val) {
+		$eventlink.= $key."=".$val."&";
+	}
+	$eventlink = substr($eventlink,0,strlen($eventlink)-1);
+	$eventlink = JRoute::_($eventlink);
+		?>
+		<a class="ev_link_cat" href="<?php echo $eventlink; ?>"  style="color:<?php echo $fgcolor;?>;" title="<?php echo JEventsHTML::special($row->catname());?>"><?php echo $row->catname();?></a>
+		<?php
+}

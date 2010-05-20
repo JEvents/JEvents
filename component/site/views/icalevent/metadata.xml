@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="JEvents - Create Event">
+		<message><![CDATA[JEvents - Create Event]]></message>
+		<options var="task" >
+			<option value='icalevent.edit' name="Create new JEvent" msg="Create new JEvents event" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>Create New Event</description>
+		<params>
+		</params>
+	</state>
+</metadata>

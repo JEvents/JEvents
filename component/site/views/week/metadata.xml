@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="JEvents List By Week">
+		<message><![CDATA[JEvents List By Week]]></message>
+		<options var="task" >
+			<option value='week.listevents' name="JEvents List By Week" msg="List View of JEvents organised by Week" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>JEvents List By Week</description>
+		<params>
+		</params>
+	</state>
+</metadata>

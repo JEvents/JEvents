@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<!--
+
+   HTML 4.01 Transitional
+
+   Document type as defined on http://www.w3.org/TR/html401/
+
+-->
+  <title>Mod Events Calendar Documentation</title>
+  <link href="../../css/admin.css" type="text/css" rel="stylesheet">
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+<body style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;">
+<p class="sectionname" style="text-align: center;">Events Calendar
+Module Help</p>
+<script language="JavaScript"><!--
+
+    if (window.print)
+
+        document.write('<FORM><INPUT TYPE="BUTTON" VALUE="Print" onClick="window.print()"><INPUT TYPE="BUTTON" VALUE="Close" onClick="window.close()"><\/FORM>');
+
+	else
+
+        document.write('<FORM><INPUT TYPE="BUTTON" VALUE="Close" onClick="window.close()"><\/FORM>');
+
+
+
+//--></script>
+<p>This module is designed to display the current month with clickable
+events and possibly the last and next month. A set of optional
+parameters can be specified
+to alter the behavior of this module via the administration module
+management parameters window.
+Although this module is not packaged with the events component, it is
+available for download at <a href="http://mosforge.net">mosforge.net</a>:
+<a href="http://mosforge.net/frs/?group_id=89">mod_events_cal</a>. It
+will need to be installed separately and made visible (ie. published)
+thru the mambo admin interface similarly to any other module.</p>
+<p>Note also that the following documentation refers to the module
+parameters being used in
+the module parameter list thru the mambo module backend interface. This
+is the default usage and takes priority over any parameters which may
+be specified within the events component configuration interface here.</p>
+<p class="contentheading">Output Format:</p>
+<p>The module outputs the events within an html table representing the
+current month. The previous (last) and next month can be configured to
+be shown always or depending on published events and further restricted
+by a day limit when it should be shown.</p>
+Module Parameters:
+<p>This module will support the use of the following optional
+customization parameters thru the
+Mambo admin module management interface. <br>
+</p>
+<p class="contentheading">Parameters Definitions:</p>
+<table width="80%" align="center" border="1" cellpadding="5"
+ cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="vertical-align: text-top;"><b>displayLastMonth<br>
+      </b></td>
+      <td>= none or 0 (default) : never display a Last Month's calendar.<br>
+      <br>
+= always : always display a Last Month's calendar.<br>
+      <br>
+= always,r : display a Last Month's calendar. Stop displaying Last
+Month's calendar if this month's current day of month is at least r.<br>
+      <br>
+= events : display a Last Month's calendar only if there were scheduled
+events in that month.<br>
+      <br>
+= events,r : display Last Month's calendar only if there were events
+scheduled for that month. Stop displaying Last Month's calendar if this
+month's current day of month is at least r.
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: text-top;"><b>displayNextMonth<br>
+      </b></td>
+      <td>= none or 0 (default) : never display a Next Month's calendar.<br>
+      <br>
+= always : always display a Next Month's calendar<br>
+      <br>
+= always,r : display a Next Month's calendar. Start displaying Next
+Month's calendar if this month's current day of month is within r days
+of the first day of Next month.<br>
+      <br>
+= events : display a Next Month's calendar (with current month) only if
+there are future scheduled events in that month.<br>
+      <br>
+= events,r : display Next Month's calendar only if there are events
+scheduled for that month.Start displaying Next Month's calendar if this
+month's current day of month is within r days of the first day of Next
+month.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<p class="contentheading">Examples:</p>
+<p><b>Ex. 1.</b></p>
+<p><span style="color: blue;">displayLastMonth=always,7<br>
+displayNextMonth=always,7<br>
+</span><br>
+These parameters will show the previous month's calendar always (even
+if there was no event) until the 7th day of the current month. It will
+show the next months' calendar if there are only 7 days left in the
+current month.</p>
+<p><b>Ex. 2.</b></p>
+<p><span style="color: blue;">displayNextMonth=events,14<br>
+</span><br>
+This parameter will
+show the next months' calendar if there are only 14 days left in the
+current month.</p>
+</body>
+</html>

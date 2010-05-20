@@ -1,0 +1,131 @@
+/*********************
+* Calendar module style
+**********************/
+.mod_events_monthyear
+{
+    border-style:solid;
+    border-color:#000000;
+    border-width:1px 1px 0px 1px;
+    height:21px ! important;
+    line-height:21px;
+    color:rgb(240,240,240);
+   	background-color:rgb(130,130,130);
+    font-weight:bold;
+    text-align:center !important;
+    width:140px!important;
+    cursor:pointer;
+}
+.mod_events_monthyear td
+{
+	text-align:center!important;
+}
+.mod_events_monthyear a.mod_events_link {
+	color:rgb(240,240,240);
+	text-decoration:none;
+    font-weight:bold!important;
+}
+
+.mod_events_table
+{
+    border-style:solid;
+    border-color:#000000;
+    border-width:1px 1px 1px 1px;
+    width:140px!important;
+	text-align: center;
+	font-family: Arial;
+	font-size: 12px;
+	font-style: normal;
+	text-decoration: none;
+	margin-bottom: 0.25em;
+}
+.mod_events_td_dayname
+{
+    border-bottom: 1px solid #000000;
+    height:15px ! important;
+    line-height:15px;
+    color:rgb(240,240,240);
+   	background-color:rgb(130,130,130);
+    font-weight:bold;
+    text-align:center !important;
+}
+.mod_events_td_dayname .sunday
+{
+	color:red;
+}
+.mod_events_td_dayname .saturday
+{
+}
+a.mod_events_daylink:link
+{
+	color: Black;
+	text-decoration: none;
+}
+a.mod_events_daylink:visited
+{
+	color: black;
+	text-decoration: none;
+}
+a.mod_events_daylink:hover
+{
+	color: yellow;
+	text-decoration: none;
+}
+
+.mod_events_td_dayoutofmonth
+{
+	color: Gray;
+  	background-color:#cccccc;
+    padding:1px !important;
+  	width:18px!important;
+}
+
+.mod_events_td_daywithevents
+{
+    background-color: #dcd9c8;
+    padding:0px !important;
+  	width:18px!important;
+   border: 1px solid #888888;
+}
+.mod_events_td_daynoevents
+{
+    padding:1px !important;
+  	width:18px!important;
+}
+
+.mod_events_td_todaynoevents
+{
+    padding:0px !important;
+    border:solid 1px red;
+  	width:18px!important;
+}
+
+.mod_events_td_todaywithevents
+{
+    padding:0px !important;
+    border:solid 1px red;
+  	width:18px!important;
+}
+
+a.mod_events_link
+{
+    font-weight:normal;
+    text-align:center !important;
+	text-decoration: none;
+}
+a.mod_events_link:link
+{
+    color:white;
+}
+a.mod_events_link:hover
+{
+	color:yellow;
+}
+
+
+td.mod_events_latest_first, td.mod_events_latest 
+{
+	background-color:#ffffff;
+	border-style:solid;
+	border-width:0px 0px 1px 8px;
+	padding:0px 0px 2px 2px;
+}

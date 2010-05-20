@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="Manage JEvents">
+		<message><![CDATA[Manage JEvents]]></message>
+		<options var="task" >
+			<option value='admin.listevents' name="Manage JEvents" msg="Manage JEvents in a list" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>Manage JEvents Layout</description>
+		<params>
+		</params>
+	</state>
+</metadata>

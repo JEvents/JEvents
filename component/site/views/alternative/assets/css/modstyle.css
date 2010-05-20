@@ -1,0 +1,121 @@
+/*********************
+* Calendar module style
+**********************/
+.mod_events_table
+{
+	border: 1px solid #222222;
+    width:140px!important;
+	text-align: center;
+	font-family: Arial;
+	font-size: 12px;
+	font-style: normal;
+	text-decoration: none;
+	margin-bottom: 0.25em;
+}
+.mod_events_td_title
+{
+	font-weight: bold;
+	color: #000000;
+	text-decoration: underline;
+}
+.mod_events_td_dayname
+{
+	font-weight: bold;
+	color: Black;
+}
+.mod_events_td_dayname .sunday
+{
+	color:red;
+}
+.mod_events_td_dayname .saturday
+{
+}
+
+.mod_events_td_dayoutofmonth
+{
+	font-weight: bold;
+	color: Gray;
+	background-color: #FFE4C4;
+}
+.mod_events_td_todaynoevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #FFA07A;
+}
+.mod_events_td_todaywithevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #B0C4DE;
+}
+.mod_events_td_daynoevents
+{
+	line-height: normal;
+	font-weight: normal;
+	color: Black;
+}
+.mod_events_td_daywithevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #B0C4DE;
+}
+a.mod_events_daylink:link
+{
+	color: Black;
+	text-decoration: none;
+}
+a.mod_events_daylink:visited
+{
+	color: blue;
+	text-decoration: none;
+}
+a.mod_events_daylink:hover
+{
+	color: Silver;
+	text-decoration: none;
+}
+.mod_events_td_link
+{
+	background-color: Background;
+}
+a.mod_events_link:link
+{
+	color: Black;
+}
+a.mod_events_link:visited
+{
+	color: Navy;
+}
+a.mod_events_link:hover
+{
+	color: Silver;
+}
+.mod_events_monthyear
+{
+	border: 1px solid #222222;
+	margin-top: 0.25em;
+    width:140px!important;
+    cursor:pointer;
+	height: 18px;
+}
+.mod_events_monthyear td
+{
+	text-align:center!important;
+}
+.mod_events_monthyear a.mod_events_link, .mod_events_monthyear a.mod_events_link:visited, .mod_events_monthyear a.mod_events_link:visited
+{
+	font-weight: bold;
+	color: Black;
+	background-color: inherit;
+	text-decoration: none;
+}
+
+td.mod_events_latest_first, td.mod_events_latest 
+{
+	background-color:#ffffff;
+	border-style:solid;
+	border-width:0px 0px 1px 8px;
+	padding:0px 0px 2px 2px;
+}

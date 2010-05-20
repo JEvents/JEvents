@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0" method="upgrade">
+    <name>JEvents Legend</name>
+	<creationDate>May 2010</creationDate>
+	<author>GWE Systems Ltd</author>
+	<copyright>(C) 2009-2010 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>	  
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
+	<authorEmail></authorEmail>
+	<authorUrl>http://www.jevents.net</authorUrl>
+	<version>1.5.5 b1769</version>
+    <description>Shows legend for JEvents categories</description>
+    <files>
+      	<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>
+ 	  	<filename>helper.php</filename>
+		<folder>tmpl</folder>
+    </files>
+	<params addpath="/administrator/components/com_jevents/elements/">
+       <param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+       <option value="0">No</option>
+       <option value="1">Yes</option>
+    </param>
+	<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+    <param name="show_admin" type="radio" default="0" label="Show Admin Panel" description="Show admin panel i.e. 'add event' and 'my events' in this module">
+    	<option value="0">No</option>
+    	<option value="1">Yes</option>
+    </param>
+	<param name="modlegend_inccss" type="radio" default="1" label="Include Events CSS" description="Tells the module if the module Events CSS should be included or not.">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</param>	
+	<param name="nonjeventsdisable" type="radio" default="1" label="Disable on non-JEvents Pages" description="Hide the module when displayed on non-JEvents pages">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</param>	
+  <!--    <param name="cache" type="jevboolean" default="0" label="Indent Subcats" description="Should sub categories be indented" />//-->
+  
+	<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
+  
+		<param name="catid0" type="category" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
+		<param name="catid1" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid2" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid3" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid4" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid5" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid6" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid7" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid8" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid9" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+		<param name="catid10" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
+	
+    </params>
+  </install>

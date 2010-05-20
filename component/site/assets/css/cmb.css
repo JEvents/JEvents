@@ -1,0 +1,33 @@
+.icon-48-staff{
+	background: url(../images/Managers.png);
+}
+
+.icon-48-editstaff{
+	background: url(../images/Managers.png);
+}
+
+.icon-48-detailstaff{
+	background: url(../images/Managers.png);
+}
+
+div.list-footer {
+	text-align:center;
+}
+
+table.callmeback {
+	margin:0px;
+	width:580px;
+}
+
+table.callmeback td { 
+	width:480px;
+	vertical-align:top;
+	
+}
+table.callmeback td.label { 
+	width:180px;
+	
+}
+table.callmeback td input, table.callmeback td textarea { 
+	width:390px;
+}

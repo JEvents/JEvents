@@ -1,0 +1,202 @@
+/*********************
+* Calendar module style
+**********************/
+.mod_events_table
+{
+	border: 1px solid #222222;
+	text-align: center;
+	font-family: Arial;
+	font-size: 12px;
+	font-style: normal;
+	text-decoration: none;
+	margin: 0px auto 0.25em auto;	
+    width:140px!important;
+}
+.mod_events_td_title
+{
+	font-weight: bold;
+	color: #000000;
+	text-decoration: underline;
+}
+.mod_events_td_dayname
+{
+	font-weight: bold;
+	color: Black;
+}
+.mod_events_td_dayname .sunday
+{
+	color:red;
+}
+.mod_events_td_dayname .saturday
+{
+}
+
+.mod_events_td_dayoutofmonth
+{
+	font-weight: bold;
+	color: Gray;
+	background-color: #FFE4C4;
+}
+.mod_events_td_todaynoevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #FFA07A;
+}
+.mod_events_td_todaywithevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #B0C4DE;
+}
+.mod_events_td_daynoevents
+{
+	line-height: normal;
+	font-weight: normal;
+	color: Black;
+}
+.mod_events_td_daywithevents
+{
+	font-weight: normal;
+	color: Black;
+	background-color: #B0C4DE;
+}
+a.mod_events_daylink:link
+{
+	color: Black;
+	text-decoration: none;
+}
+a.mod_events_daylink:visited
+{
+	color: blue;
+	text-decoration: none;
+}
+a.mod_events_daylink:hover
+{
+	color: Silver;
+	text-decoration: none;
+}
+.mod_events_td_link
+{
+	background-color: Background;
+}
+a.mod_events_link:link
+{
+	color: Black;
+}
+a.mod_events_link:visited
+{
+	color: Navy;
+}
+a.mod_events_link:hover
+{
+	color: Silver;
+}
+.mod_events_monthyear
+{
+	border: 1px solid #222222;
+	margin: 0.25em auto 0px auto;
+	text-align:center;
+    width:140px!important;
+    cursor:pointer;
+	height: 24px;
+	background-image: url( "../images/evback.jpg" );
+}
+.mod_events_monthyear td
+{
+	text-align:center!important;
+	vertical-align:middle;
+	
+}
+.mod_events_monthyear a.mod_events_link, .mod_events_monthyear a.mod_events_link:visited, .mod_events_monthyear a.mod_events_link:visited
+{
+	font-weight: bold;
+	color: Black;
+	background-color: inherit;
+	text-decoration: none;
+}
+
+
+
+/*
+	css template addons for module Latest Events
+
+	Note that these classes can be used to customize the look of the latest events
+	module if desired beyond inherited properties from the mambo template being used.
+	If you don't want to override some of the template properties such as maybe a
+	standard uniform way to display links consistently, then you should comment out
+	the link style directives below or make suitable modifications.
+
+	Classes:
+
+	mod_events_latest_first	- the table cell that contains the first event listed
+	mod_events_latest	- the table cell that contains an event besides the first
+
+	mod_events_latest_date	- the html span that contains the date for the event on the
+				  first line of the table cell.
+
+	mod_events_latest_content - the html span that contains the event title.
+
+	mod_events_latest_content a:{link|visited|hover}  - controls the formatting
+		of the event title links if enabled thru the module parameters. See the
+		Readme.txt file to get info on parameters.
+
+	mod_events_latest_callink - the html div that contains the link to the full calendar component.
+
+*/
+table.mod_events_latest_table {
+}
+
+.mod_events_latest {
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-top: solid 1px red;
+	height: 30px;
+	}
+
+.mod_events_latest_first {
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	height: 30px;
+	}
+
+.mod_events_latest_date {
+	font-size: 9px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:gray;
+	}
+
+
+.mod_events_latest_content a:link {
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:gray;
+	}
+
+.mod_events_latest_content a:visited {
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:gray;
+	}
+
+.mod_events_latest_content a:hover {
+	font-size: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color:#c0c0c0;
+	}
+
+div.mod_events_latest_callink {
+	margin-top: 8px;
+}
+div.mod_events_latest_callink a {
+	background: #E0E0E0;
+}
+
+.mod_events_latest_rsslink a {
+	text-decoration:none;
+	line-height:24px;
+}
+.mod_events_latest_rsslink img {
+	border:0px;
+	margin-right:10px;
+}

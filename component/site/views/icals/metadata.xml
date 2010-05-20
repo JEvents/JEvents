@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="ICal Export">
+		<message><![CDATA[ICal Export]]></message>
+		<options var="task" >
+			<option value='icals.ical' name="ICal Export" msg="Configurable Export in Ical Format" />
+		</options>
+	</view>
+	<state>
+		<name>ICal Export</name>
+		<description>ICal Export Layout</description>
+		<params addpath="/administrator/components/com_jevents/elements/" >
+			<param name='icalcache' type='text' default="1440" label="JEV ICALCACHE" description="JEV ICALCACHE DESC" />
+		</params>
+	</state>
+</metadata>

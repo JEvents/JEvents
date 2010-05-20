@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="Date Range">
+		<message><![CDATA[Monthly View]]></message>
+		<options var="task" >
+			<option value='range.listevents' name="Events in a date range" msg="List of events in a particular date range" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>Date Range List of Events</description>
+		<params  addpath="/administrator/components/com_jevents/elements/">
+			<param name="relative" type="radio" default="abs" label="Relative/Absolute Date Range" description="Should date range be relative to today of absolute dates.  You can also specify dates using the php function strtotime">
+				<option value="abs">Absolute</option>
+				<option value="rel">Relative</option>
+				<option value="strtotime">strtotime</option>
+			</param>
+			<param name="@spacer" type="jevinfo" default="Absolute Date Range"   label="" description="" />	
+			<param name='absstart' type='jevdate' default="" label="Absolute start date" description="" />
+			<param name='absend' type='jevdate' default="" label="Absolute end date" description="" />
+			
+			<param name="@spacer" type="jevinfo" default="Relative Date Range"   label="" description="" />	
+			<param name='relstart' type='text' default="-1w" label="Start relative to today" description="JEV_RELSTART_DESC" />
+			<param name='relend' type='text' default="+1m" label="End relative to today" description="JEV_RELEND_DESC" />		
+
+			<param name="@spacer" type="jevinfo" default="Strtotime Date Range"   label="" description="" />	
+			<param name='strstart' type='text' default="yesterday" label="strtotime start date" description="" />
+			<param name='strend' type='text' default="tomorrow" label="strtotime end date" description="" />
+
+			<param name="@spacer" type="spacer" default=""   label="" description="" />	
+		</params>
+	</state>
+</metadata>

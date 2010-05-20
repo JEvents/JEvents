@@ -1,0 +1,113 @@
+#extcal_minical .extcal_navbar {
+	background-image: url(../images/bg1.gif);
+	background-repeat: repeat-x;
+	border-bottom: 1px solid #B4B4B6;
+}
+#extcal_minical .extcal_tiny_add_event_link {
+	font-family: Verdana;
+	font-size: 9px;
+	font-weight: normal;
+	color:#575767;
+	text-decoration: none;
+}
+#extcal_minical TABLE.extcal_weekdays {
+	background-image: url(../images/bg1.gif);
+	background-repeat: repeat-x;
+	border-top: 1px solid #FFFFFF;
+	width:135px;
+	border-collapse:collapse;
+	border-spacing:0px;
+	border-width:0px;
+	text-align:center;
+}
+#extcal_minical TD.extcal_weekdays {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: normal;
+	color: #333333;
+	text-decoration: none;
+	padding-top: 4px;
+	vertical-align:top;
+	height:24px;
+	text-align:center;
+}
+#extcal_minical .extcal_small {
+	font-family: Verdana;
+	font-size: 9px;
+	color:#575767;
+	text-decoration: none;
+}
+#extcal_minical .extcal_small:link,#extcal_minical .extcal_small:visited {
+	text-decoration: none;
+}
+#extcal_minical .extcal_small:hover {
+	text-decoration: underline;
+}
+
+#extcal_minical .extcal_daycell,#extcal_minical .extcal_todaycell,
+#extcal_minical .extcal_sundaycell,#extcal_minical .extcal_othermonth {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: bold;
+	font-style: normal;
+	text-decoration: none;
+	color:#555555;
+	background-repeat: no-repeat;
+	background-position: center center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+#extcal_minical .extcal_todaycell {
+	color:#99AAAA;
+	background-image: url(../images/rect.gif);
+}
+
+#extcal_minical .extcal_sundaycell {
+	color:#99AAAA;
+}
+
+#extcal_minical .extcal_othermonth {
+	color:#99AAAA;
+}
+
+#extcal_minical .extcal_daylink, #extcal_minical .extcal_sundaylink,
+#extcal_minical .extcal_busylink  {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: bold;
+	font-style: normal;
+	text-decoration: none;
+}
+
+#extcal_minical .extcal_daylink:link,#extcal_minical .extcal_daylink:visited {
+	color:#555555;
+}
+
+#extcal_minical .extcal_busylink:link,#extcal_minical .extcal_busylink:visited { 
+	color:#2266EE;
+	text-decoration: none; 
+}
+
+#extcal_minical .extcal_sundaylink:link,#extcal_minical .extcal_sundaylink:visited {
+	color:#99AAAA;
+}
+
+#extcal_minical .extcal_month_label {
+	font-family: Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 10px;
+	font-weight: bold;
+	color: #565666;
+}
+#extcal_minical .extcal_picture 
+#extcal_minical .extcal_weekcell {
+  margin: 0px;
+  padding: 0px;
+  text-align:center;
+}
+
+.mod_events_link {
+	cursor:pointer;
+}

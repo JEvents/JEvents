@@ -1,0 +1,650 @@
+/***********************
+* Overall layout control
+************************/
+
+table#jevents_body{
+    width:100%;
+}
+
+/*********************
+* Calendar style
+**********************/
+.cal_table {
+   border: 1px solid #000000;
+   border-collapse:collapse;
+}
+#cal_title {
+	margin:0.5em auto;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+	text-align:center;
+}
+.cal_td_daysnames {
+    border-bottom: 1px solid #000000;
+    height:25px ! important;
+    line-height:25px;
+    color:rgb(240,240,240);
+   	background-color:rgb(130,130,130);
+    font-weight:bold;
+    text-align:center !important;
+}
+.cal_daysnames {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+.cal_td_daysoutofmonth {
+  background-color:#cccccc;
+	border: 1px solid #eeeeee;
+}
+.cal_daysoutofmonth {
+    font-family:  Arial;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+.cal_td_today {
+    background-color:rgb(220,220,220);
+    border:solid 2px red;
+    padding:0px !important;
+}
+.cal_td_daysnoevents {
+    background-color: #ece9d8;
+    padding:0px !important;
+   border: 1px solid #aaaaaa;    
+}
+.cal_td_dayshasevents {
+    background-color: #ece9d8;
+    padding:0px !important;
+   border: 1px solid #aaaaaa;    
+}
+a.cal_daylink:link {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+a.cal_daylink:visited{
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+a.cal_daylink:hover{
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: Red;
+    text-decoration: none;
+}
+a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
+    font-size:10px;
+    font-weight: bold;
+    font-family: Verdana;
+    text-decoration: none;
+    color:inherit!important;
+    display:block;
+    margin-bottom:1px;
+}
+
+.cal_td_weeklink {
+   	background-color:rgb(130,130,130);
+	vertical-align:middle!important;
+	border:black 1px solid;
+}
+.cal_td_weeklink a {
+    font-size:10px;
+    font-weight: bold;
+    font-family: Verdana;
+    text-decoration: none;
+    color:rgb(240,240,240)!important;
+}
+div.eventstyle {
+	padding:0px;
+	border-style:solid;	
+}
+
+/***************************
+* Detail View 
+***************************/
+.ev_prevrepeat {
+	line-height:20px;
+	float:left;
+	margin-right:30px;
+}
+.ev_prevrepeat a {
+   	background-repeat: no-repeat; 
+   	background-position: center left;
+	padding-left:20px;
+}
+.ev_prevrepeat a.blue {
+    background-image: url("../images/g_blue.gif");
+}
+.ev_prevrepeat a.gray {
+    background-image: url("../images/g_gray.gif");
+}
+.ev_prevrepeat a.green {
+    background-image: url("../images/g_green.gif");
+}
+.ev_prevrepeat a.orange {
+    background-image: url("../images/g_orange.gif");
+}
+.ev_prevrepeat a.red {
+    background-image: url("../images/g_red.gif");
+}
+.ev_prevrepeat a.yellow {
+    background-image: url("../images/g_yellow.gif");
+}
+.ev_nextrepeat {
+	line-height:20px;
+	float:left;
+	margin-left:0px;
+}
+.ev_nextrepeat a {
+   	background-repeat: no-repeat; 
+   	background-position: center right;
+	padding-right:20px;
+}
+.ev_nextrepeat a.blue {
+    background-image: url("../images/d_blue.gif");
+}
+.ev_nextrepeat a.gray {
+    background-image: url("../images/d_gray.gif");
+}
+.ev_nextrepeat a.green {
+    background-image: url("../images/d_green.gif");
+}
+.ev_nextrepeat a.orange {
+    background-image: url("../images/d_orange.gif");
+}
+.ev_nextrepeat a.red {
+    background-image: url("../images/d_red.gif");
+}
+.ev_nextrepeat a.yellow {
+    background-image: url("../images/d_yellow.gif");
+}
+/***************************
+* List style
+**************************/
+ul.ev_ul {
+	list-style:none;
+	padding:0px;
+	margin:5px;
+}
+ul.ev_ul li.ev_td_li {
+  	border-style:solid;
+  	border-width:0 0 0 5px;
+  	margin-bottom:1px;
+  	padding-left:2px;
+  	background-image:none
+}
+a.ev_link_cat:link {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_cat:visited  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_cat:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Black;
+}
+a.ev_link_row:link {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_row:visited  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_row:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Black;
+}
+a.ev_link_unpublished {
+    color:red;
+    text-decoration:none;
+}
+a.ev_link_weekday:link {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_weekday:visited  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
+}
+a.ev_link_weekday:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Black;
+}
+.ev_fieldset {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    /* color: black; */
+}
+.ev_table {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.ev_table td {
+    padding:5px;
+}
+.ev_td_right {
+	/*background-color: #FFDEAD;*/
+    border-top: 1px solid #000000;
+}
+.ev_td_left {
+    border-right: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: black;
+    text-align : left;
+    vertical-align: top;
+    margin-right:1em;
+}
+.ev_td_today {
+    background-color: #E9B4A1;
+    border-right: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: black;
+}
+
+/**********************
+* Form style
+**********************/
+ /* Styles for dhtml tabbed-pages */
+.ontab {
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    background-color: ThreedShadow;
+    border-left: outset 1px #ff9900;
+    border-right: outset 1px #808080;
+    border-top: outset 1px #ff9900;
+    border-bottom: solid 1px #d5d5d5;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    /* color: #FFFFFF; */
+}
+.offtab {
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #EEEEEE;
+	border-left: outset 1px #E0E0E0;
+	border-right: outset 1px #E0E0E0;
+	border-top: outset 1px #E0E0E0;
+	border-bottom: solid 1px #d5d5d5;
+	text-align: center;
+	cursor: pointer;
+	font-weight: normal;
+}
+.tabpadding {
+	border-bottom: solid 0px #777777;
+}
+.tabheading {
+	background-color: #ffae00;
+	border-left: solid 1px #777777;
+	border-right: solid 1px #777777;
+	/* color: #FFFFFF; */
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	text-align: left;
+}
+.tabcontent {
+    /* background-color: ThreedFace; */
+    border-top: solid 1px #777777;
+    border-left: solid 1px #777777;
+    border-right: solid 1px #777777;
+    border-bottom: solid 1px #777777;
+    /* color: #FFFFFF; */
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 16pt;
+    text-align: left;
+}
+.pagetext {
+	visibility: hidden;
+   display: none;
+	position: relative;
+	top: 0;
+}
+.frm_td_bydays {
+    background-color: #FFF8DC;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_byweeks {
+    background-color: #FFF0F5;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_bymonth {
+    background-color: #FDF5E6;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_byyear {
+    background-color: #F0F8FF;
+    font-size: 12px;
+    color: black;
+}
+/* Calendar navigaton area */
+div.ev_navigation {
+}
+div.ev_navigation table{
+	margin:0px auto;
+	text-align:center;
+}
+
+/* Calendar admin panel */
+div.ev_adminpanel {
+}
+/**********************
+* Nav bar style
+**********************/
+a.nav_bar_link:link {
+    font-size: 10px;
+    font-family: Verdana;
+    color: Green;
+}
+a.nav_bar_link:visited  {
+    font-size:10px;
+    font-family: Verdana;
+    color: Teal;
+}
+a.nav_bar_link:hover  {
+    font-size:10px;
+    font-family: Verdana;
+    color: Lime;
+}
+.nav_bar_cell  {
+    background-color: #ECECEC;
+}
+
+/****************************
+* Iconic calendar navigation
+****************************/
+
+td.iconic_td {
+   width:60px!important;
+   margin:0px;
+   padding:0px;
+}
+div.nav_bar_cal{
+   margin:0px;
+   padding:0px;
+   width:50px;
+}
+div.nav_bar_cal img, div.nav_bar_cal a{
+   height:31px;
+   width:50px;
+   border:0;
+}
+tr.icon_labels{
+ font-size:8pt;
+ margin:0px;
+ padding:0px;
+}
+div#ev_icon_yearly {
+     background-image: url("../images/cal5x.jpg");
+     background-repeat: no-repeat;
+}
+div#ev_icon_monthly {
+     background-image: url("../images/cal1x.jpg");
+     background-repeat: no-repeat;
+}
+div#ev_icon_weekly{
+     background-image: url("../images/cal2x.jpg");
+     background-repeat: no-repeat;
+}
+div#ev_icon_daily{
+     background-image: url("../images/cal3x.jpg");
+     background-repeat: no-repeat;
+}
+div#ev_icon_search{
+     background-image: url("../images/cal8x.jpg");
+     background-repeat: no-repeat;
+}
+div#ev_icon_jumpto{
+     background-image: url("../images/cal9x.jpg");
+     background-repeat: no-repeat;
+}
+
+/* weekly view specifics */
+table#weekview {
+  border:solid 1px black;
+  border-bottom:0px;
+}
+td#weekview_left{
+ border-right:solid 1px black;
+}
+td#weekview_right .ev_td_left, td#weekview_left .ev_td_right{
+	font-size:10px;
+  background-color:#e0e0e0;
+}
+td#weekview_right a {
+	font-size:10px;
+}
+td#weekview_right .ev_td_left {
+	border-right:0px;
+}
+td#weekview_right .ev_td_today{
+	border:solid 2px red;
+}
+td#weekview_left, td#weekview_right {
+  border-bottom:1px solid black;
+}
+table#weekview .ev_td_right {
+  border:0px;
+  border-top:1px solid black;
+}
+td#weekview_left .ev_td_left  {
+	text-align:center;
+	vertical-align:middle;
+}
+td#weekview_left .ev_td_left  {
+  border:0px;
+  border-top:1px solid black;
+  border-right:1px solid black;
+}
+
+td#weekview_left .odd ,td#weekview_right .odd {
+  background-color:#e0e0e0;
+}
+
+td#weekview_left .even, td#weekview_right .even  {
+/*  background-color:inherit!important;  */
+    background-color: #ece9d8;
+}
+
+table#weekview .ev_link_weekday{
+	color:inherit;
+}
+
+table#weekview .cal_td_daysnames {
+	border-bottom:0px!important;
+}
+
+div.jev_pagination {
+	width:100%;
+	text-align:center;
+}
+
+
+/* Event Legend Module Styling */
+.moduletable div.event_legend_container {
+	border:0px;
+	color:black;
+	padding:0px;
+	font-size:0.9em;
+}
+ul.event_legend_list{
+	list-style:none !important;
+	padding:0px;
+	margin:5px;
+}
+ul.event_legend_list li {
+	list-style:none !important;
+	border:solid black 1px;
+	background-image:none !important;
+	padding-left:0px;
+}
+div.event_legend_name {
+	font-size:1em;
+	padding:3px;
+	font-weight:bold;
+}
+div.event_legend_name a{
+	display:block;
+	text-decoration:none;
+   	background-color:inherit;
+   	color:black;
+}
+	
+div.event_legend_desc {
+	background-color:white;
+	color:black;
+	padding:3px 3px 3px 10px;
+	
+}
+
+/* Component Legend Styling
+   float div to get table like view 
+   border-color is set to category color by code */
+#jevents_body .event_legend_container {
+	background-color:rgb(230,230,230);
+	border: none;
+}
+#jevents_body  div.event_legend_item {
+	float:left;
+	border-left-width:0px;
+	border-left-style:solid;
+	padding-left:4px;
+	margin-top:5px;
+	margin-left:0px;
+	margin-bottom:4px;
+	/*width:80px;*/
+	min-width:80px;
+	white-space:nowrap;
+	overflow:hidden;
+}
+#jevents_body div.event_legend_name {
+	border-left-width:8px;
+	border-left-style:solid;
+	padding: 0px 0px 0px 4px;
+}
+#jevents_body div.event_legend_desc {
+	border-left-width:8px;
+	border-left-style:solid;
+	padding: 0px 0px 0px 4px;
+	display:none;
+}
+/* end component legend */
+
+div.jev_adminfilter {
+	text-align:center;
+	font-weight:bold;
+	margin:5px auto 10px auto; 
+}
+
+a.addjevent {
+	width:16px;
+	height:16px;
+	margin-right:2px;
+	float:right;
+    background-image: url("../images/add.png");
+   	background-repeat: no-repeat; 
+   	background-position: top left;
+   	visibility:hidden;
+}
+a.addjevent img {
+border-width:0px!important;
+}
+td.showjevadd a.addjevent {
+   	visibility:visible;
+}
+
+/***************************************
+* Mootools ToolTips for JEvents Calendar
+****************************************/
+.jevtip-tip {
+   float: left;
+   background: #ffc;
+   border: 1px solid #D4D5AA;
+   padding: 0px;
+   max-width: 200px;
+}
+ 
+.jevtip-text {
+   padding: 0;
+   margin: 0;
+   font-size: 0.8em;
+}
+ 
+div.jevtt_title{
+   font-weight: bold;
+   font-size: 1.2em;
+	padding:2px;
+	width:196px;
+}
+div.jevtt_text{
+	padding:2px;
+	width:196px;
+}
+
+/* Print version */
+@media print {
+   table.contentpaneopen {
+   		background-image:none!important;
+       background-color:white!important;
+   }
+	div.ev_navigation {
+		display:none;
+	}
+	div.ev_adminpanel {
+		display:none;
+	}
+	.ev_noprint {
+		display:none;
+	}
+}
