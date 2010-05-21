@@ -146,15 +146,47 @@ function submitbutton(pressbutton) {
 		alert( "<?php echo JText::_("Invalid dates - please correct" );?>");
 	}
 	else {
-		// sets the date for the page after save
-		resetYMD();
-		submitform(pressbutton);
+		<?php 
+		// Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
+		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );	
+		if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
+			$checkURL = JURI::root()."components/com_jevents/libraries/checkconflict.php";
+			global $mainframe;
+		?>
+		checkConflict('<?php echo $checkURL;?>',pressbutton, '<?php echo JUtility::getToken();?>', '<?php echo $mainframe->isAdmin()?'administrator':'site';?>', <?php echo $this->repeatId;?> );
+		<?php 
+		}
+		else {
+		?>
+		submit2(pressbutton);
+		<?php 
+		}
+		?>
 	}
 }
 
+function submit2(pressbutton){
+	// sets the date for the page after save
+	resetYMD();
+	submitform(pressbutton);	
+}
+
 </script>
+<?php
+
+if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
+	?>
+	<div id='jevoverlapwarning'">
+		<div><?php echo JText::_("JEV OVERLAPPING EVENTS WARNING");?></div>
+		<div id="jevoverlaps"></div>
+	</div>
+	<?php
+}
+?>
 <div class="adminform" align="left">
 <?php
+
+
 // if we enter date/time before description then force single pane editing.
 if ($cfg->get('timebeforedescription', 0)) {
 	$cfg->set('com_single_pane_edit', 1);

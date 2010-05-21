@@ -53,11 +53,11 @@ class AdminCpanelController extends JController {
 			//return;
 		}
 
-		$sql = "SHOW COLUMNS FROM `#__jevents_exception`";
+		$sql = "SHOW COLUMNS FROM `#__jevents_categories`";
 		$db->setQuery( $sql );
 
 		$cols = $db->loadObjectList('Field');
-		if (!isset($cols['oldstartrepeat']) ){
+		if (!isset($cols['overlaps']) ){
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=config.dbsetup",false),JText::_("Database Table Setup Was Required"));
 			$this->redirect();
 			//return;

@@ -16,6 +16,7 @@ textarea#extra_info {
 	width:100%;
 	padding:0px!important;
 	margin:0px;
+	height:auto!important;
 }
 
 div#jevents fieldset {
@@ -71,9 +72,20 @@ td.r2, span.r2 {
 	padding-right:5px;
 }
 
+div#jevoverlapwarning {
+	border:solid 1px red;
+	padding:5px;
+	display:none;
+}
+div#jevoverlapwarning h4 {
+	font-weight:bold;
+	margin:5px 0px;
+}
+
 /* Can be yused to hide apply button */
 /*
 td#toolbar-apply {
 	display:none;
 }
 */
+

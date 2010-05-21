@@ -94,6 +94,12 @@ include_once(JEV_LIBS."/colorMap.php");
                     <?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->cat->published );?>
                     </td>
                  </tr>
+                <tr>
+                	<td valign="top" align="left"><?php echo JText::_('JEV_BLOCK_OVERLAPS'); ?></td>
+                    <td colspan="3">
+                    <?php echo JHTML::_('select.booleanlist',  'overlaps', 'class="inputbox"', $this->cat->_catextra->overlaps );?>
+                    </td>
+                 </tr>
                  <tr>
                  	<td valign="top" align="left">
                     <?php echo JText::_('JEV_DESCRIPTION'); ?>

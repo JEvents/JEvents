@@ -51,7 +51,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	{
 
 		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script('editical.js?v=1.5.4','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JHTML::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Edit ICS'));

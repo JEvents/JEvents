@@ -13,7 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class SaveIcalEvent {
 
-	function save($array, &$queryModel, $rrule){
+	// we can use dry run to create the event data without saving it!
+	function save($array, &$queryModel, $rrule, $dryrun = false){
 
 		$cfg = & JEVConfig::getInstance();
 		$db	=& JFactory::getDBO();
@@ -22,7 +23,7 @@ class SaveIcalEvent {
 		// Allow plugins to check data validity
 		$dispatcher     =& JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule));
+		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 
 		// TODO do error and hack checks here
 		$ev_id = intval(JArrayHelper::getValue( $array,  "evid",0));
@@ -74,7 +75,7 @@ class SaveIcalEvent {
 		if (isset($array["noendtime"]) && $array["noendtime"]){
 			$publishend		= $data["publish_down"] . ' 23:59:59';
 		}
-		
+
 		$data["DTEND"]		= strtotime( $publishend );
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 		list ($h,$m,$s) = explode(":",$end_time . ':00');
@@ -92,7 +93,7 @@ class SaveIcalEvent {
 		$data["X-COLOR"]	= JArrayHelper::getValue( $array,  "color","");
 
 		$data["LOCKEVENT"]	= JArrayHelper::getValue( $array,  "lockevent","0");
-		
+
 		// Add any custom fields into $data array
 		foreach ($array as $key=>$value) {
 			if (strpos($key,"custom_")===0){
@@ -151,28 +152,37 @@ class SaveIcalEvent {
 		$db =& JFactory::getDBO();
 		$success = true;
 		echo "class = ".get_class($vevent);
-		if (!$vevent->store()){
-			echo $db->getErrorMsg()."<br/>";
-			$success = false;
-			JError::raiseWarning(101,JText::_("Could not save event "));
+		if (!$dryrun){
+			if (!$vevent->store()){
+				echo $db->getErrorMsg()."<br/>";
+				$success = false;
+				JError::raiseWarning(101,JText::_("Could not save event "));
+			}
 		}
-
+		else {
+			// need a value for eventid to pretend we have saved the event so we can get the repetitions
+			$vevent->rrule->eventid = $vevent->ev_id;
+		}
+		
 		// Only update the repetitions if the event edit says the reptitions will have changed or a new event
 		if ($newevent || JRequest::getInt("updaterepeats",1)){
 			$repetitions = $vevent->getRepetitions(true);
-			if (!$vevent->storeRepetitions()){
-				echo $db->getErrorMsg()."<br/>";
-				$success = false;
-				JError::raiseWarning(101,JText::_("Could not save repetitions"));
+			if (!$dryrun){
+				if (!$vevent->storeRepetitions()){
+					echo $db->getErrorMsg()."<br/>";
+					$success = false;
+					JError::raiseWarning(101,JText::_("Could not save repetitions"));
+				}
 			}
 		}
-		
-		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent));
-		
+
+		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
+
+		if ($dryrun) return $vevent;
 
 		global $mainframe;
 		// If not authorised to publish in the frontend then notify the administrator
-		if ($success && $notifyAdmin && !$mainframe->isAdmin()){
+		if (!$dryrun && $success && $notifyAdmin && !$mainframe->isAdmin()){
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
@@ -213,76 +223,76 @@ class SaveIcalEvent {
 			return $vevent;
 		}
 		return $success;
+}
+
+function generateRRule($array){
+	//static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
+	static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
+
+	$interval 	= JArrayHelper::getValue( $array,  "rinterval",1);
+
+	$freq = JArrayHelper::getValue( $array,  "freq","NONE");
+	if ($freq!="NONE") {
+		$rrule = array();
+		$rrule["FREQ"]	= $freq;
+		$countuntil		= JArrayHelper::getValue( $array,  "countuntil","count");
+		if ($countuntil=="count" ){
+			$count 			= intval(JArrayHelper::getValue( $array,  "count",1));
+			if ($count<=0) $count=1;
+			$rrule["COUNT"] = $count;
+		}
+		else {
+			$publish_down	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
+			$until			= JArrayHelper::getValue( $array,  "until",$publish_down);
+			$rrule["UNTIL"] = strtotime($until." 00:00:00");
+		}
+		$rrule["INTERVAL"] = $interval;
 	}
 
-	function generateRRule($array){
-		//static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
-		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
+	$whichby			= JArrayHelper::getValue( $array,  "whichby","bd");
 
-		$interval 	= JArrayHelper::getValue( $array,  "rinterval",1);
-
-		$freq = JArrayHelper::getValue( $array,  "freq","NONE");
-		if ($freq!="NONE") {
-			$rrule = array();
-			$rrule["FREQ"]	= $freq;
-			$countuntil		= JArrayHelper::getValue( $array,  "countuntil","count");
-			if ($countuntil=="count" ){
-				$count 			= intval(JArrayHelper::getValue( $array,  "count",1));
-				if ($count<=0) $count=1;
-				$rrule["COUNT"] = $count;
-			}
-			else {
-				$publish_down	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
-				$until			= JArrayHelper::getValue( $array,  "until",$publish_down);
-				$rrule["UNTIL"] = strtotime($until." 00:00:00");
-			}
-			$rrule["INTERVAL"] = $interval;
-		}
-
-		$whichby			= JArrayHelper::getValue( $array,  "whichby","bd");
-
-		switch ($whichby){
-			case "byd":
-				$byd_direction		= JArrayHelper::getValue( $array,  "byd_direction","off")=="off"?"+":"-";
-				$byyearday 			= JArrayHelper::getValue( $array,  "byyearday","");
-				$rrule["BYYEARDAY"] = $byd_direction.$byyearday;
-				break;
-			case "bm":
-				$bm_direction		= JArrayHelper::getValue( $array,  "bm_direction","off")=="off"?"+":"-";
-				$bymonth			= JArrayHelper::getValue( $array,  "bymonth","");
-				$rrule["BYMONTH"] 	= $bymonth;
-				break;
-			case "bwn":
-				$bwn_direction		= JArrayHelper::getValue( $array,  "bwn_direction","off")=="off"?"+":"-";
-				$byweekno			= JArrayHelper::getValue( $array,  "byweekno","");
-				$rrule["BYWEEKNO"] 	= $bwn_direction.$byweekno;
-				break;
-			case "bmd":
-				$bmd_direction		= JArrayHelper::getValue( $array,  "bmd_direction","off")=="off"?"+":"-";
-				$bymonthday			= JArrayHelper::getValue( $array,  "bymonthday","");
-				$rrule["BYMONTHDAY"]= $bmd_direction.$bymonthday;
-				break;
-			case "bd":
-				$bd_direction		= JArrayHelper::getValue( $array,  "bd_direction","off")=="off"?"+":"-";
-				$weekdays			= JArrayHelper::getValue( $array,  "weekdays",array());
-				$weeknums			= JArrayHelper::getValue( $array,  "weeknums",array());
-				$byday		= "";
-				if (count($weeknums)==0){
-					// special case for weekly repeats which don't specify eeek of a month
-					foreach ($weekdays as $wd) {
-						if (strlen($byday)>0) $byday.=",";
-						$byday .= $weekdayReverseMap[$wd];
-					}
+	switch ($whichby){
+		case "byd":
+			$byd_direction		= JArrayHelper::getValue( $array,  "byd_direction","off")=="off"?"+":"-";
+			$byyearday 			= JArrayHelper::getValue( $array,  "byyearday","");
+			$rrule["BYYEARDAY"] = $byd_direction.$byyearday;
+			break;
+		case "bm":
+			$bm_direction		= JArrayHelper::getValue( $array,  "bm_direction","off")=="off"?"+":"-";
+			$bymonth			= JArrayHelper::getValue( $array,  "bymonth","");
+			$rrule["BYMONTH"] 	= $bymonth;
+			break;
+		case "bwn":
+			$bwn_direction		= JArrayHelper::getValue( $array,  "bwn_direction","off")=="off"?"+":"-";
+			$byweekno			= JArrayHelper::getValue( $array,  "byweekno","");
+			$rrule["BYWEEKNO"] 	= $bwn_direction.$byweekno;
+			break;
+		case "bmd":
+			$bmd_direction		= JArrayHelper::getValue( $array,  "bmd_direction","off")=="off"?"+":"-";
+			$bymonthday			= JArrayHelper::getValue( $array,  "bymonthday","");
+			$rrule["BYMONTHDAY"]= $bmd_direction.$bymonthday;
+			break;
+		case "bd":
+			$bd_direction		= JArrayHelper::getValue( $array,  "bd_direction","off")=="off"?"+":"-";
+			$weekdays			= JArrayHelper::getValue( $array,  "weekdays",array());
+			$weeknums			= JArrayHelper::getValue( $array,  "weeknums",array());
+			$byday		= "";
+			if (count($weeknums)==0){
+				// special case for weekly repeats which don't specify eeek of a month
+				foreach ($weekdays as $wd) {
+					if (strlen($byday)>0) $byday.=",";
+					$byday .= $weekdayReverseMap[$wd];
 				}
-				foreach ($weeknums as $week){
-					foreach ($weekdays as $wd) {
-						if (strlen($byday)>0) $byday.=",";
-						$byday .= $bd_direction.$week.$weekdayReverseMap[$wd];
-					}
+			}
+			foreach ($weeknums as $week){
+				foreach ($weekdays as $wd) {
+					if (strlen($byday)>0) $byday.=",";
+					$byday .= $bd_direction.$week.$weekdayReverseMap[$wd];
 				}
-				$rrule["BYDAY"] = $byday;
-				break;
-		}
-		return $rrule;
+			}
+			$rrule["BYDAY"] = $byday;
+			break;
 	}
+	return $rrule;
+}
 }

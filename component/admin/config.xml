@@ -194,6 +194,9 @@
 		<param name="showpriority" type="jevboolean" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" />
 		<param name="multiday" type="jevboolean" default="1" menu="hide" label="JEV DEFAULT MULTIDAY" description="JEV DEFAULT MULTIDAY DESC" />
 				
+		<param name="checkclashes" type="jevboolean" default="0" menu="hide" label="JEV CHECK CLASHES" description="JEV CHECK CLASHES TIP" />
+		<param name="noclashes" type="jevboolean" default="0" menu="hide" label="JEV ENSURE NO CLASHES" description="JEV ENSURE NO CLASHES TIP" />
+
 		<param name="defaultstarttime" type="text" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME" description="JEV_DEFAULT_STARTTIME_TIP"/>
 		<param name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		
 	</params>

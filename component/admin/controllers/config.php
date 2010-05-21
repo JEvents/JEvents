@@ -54,7 +54,7 @@ class AdminConfigController extends JController {
 		}
 		$uptodate = false;
 		foreach ($cols as $col) {
-			if ($col->Field=="newid"){
+			if ($col->Field=="migrated"){
 				$uptodate = true;
 				break;
 			}
@@ -570,6 +570,7 @@ SQL;
 CREATE TABLE IF NOT EXISTS #__jevents_categories (
 	id int(12) NOT NULL default 0 PRIMARY KEY,
 	color VARCHAR(8) NOT NULL default '',
+	overlaps tinyint(3) NOT NULL default 0,
 	admin int(12) NOT NULL default 0
 ) TYPE=MyISAM $charset;
 SQL;
@@ -582,6 +583,11 @@ SQL;
 		$db->setQuery( $sql );
 		@$db->query();
 
+		$sql = "ALTER TABLE `#__jevents_categories` add column overlaps tinyint(3) NOT NULL default 0";
+		$db->setQuery( $sql );
+		@$db->query();
+
+		
 		// Add one category by default if none exist already
 		$sql = "SELECT count(id) from #__jevents_categories";
 		$db->setQuery($sql);
@@ -628,6 +634,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	modified_by int(11) unsigned NOT NULL default '0',
 	refreshed datetime  NOT NULL default '0000-00-00 00:00:00',
 	autorefresh tinyint(3) NOT NULL default 0,
+	overlaps tinyint(3) NOT NULL default 0,
 		
 	PRIMARY KEY  (ics_id),
 	INDEX stateidx (state)
@@ -637,6 +644,10 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
+
+		$sql = "ALTER TABLE `#__jevents_icsfile` ADD overlaps tinyint(3) NOT NULL default 0";
+		$db->setQuery( $sql );
+		@$db->query();
 
 		$sql = "alter table #__jevents_icsfile add index stateidx (`state`)";
 		$db->setQuery( $sql );

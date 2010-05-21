@@ -48,7 +48,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->addScriptDeclaration($editStrings);
 		
 		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script('editical.js?v=1.5.2','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JHTML::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 		JHTML::script('view_detail.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Repeat'));

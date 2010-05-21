@@ -37,6 +37,8 @@ class JEventsCategory extends JTableCategory {
 		$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
 		unset($this->admin);
 
+		$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
+		
 		// Fill in the gaps
 		$this->name=$this->title;
 		$this->section=$section_name;
@@ -148,6 +150,7 @@ class CatExtra extends JTable {
 	var $id 			= null;
 	var $color			= null;
 	var $admin		    = null;
+	var $overlaps	    = null;
 
 	/**
 	 * consturcotr
@@ -161,7 +164,7 @@ class CatExtra extends JTable {
 	}
 
 	function store(){
-		$this->_db->setQuery( "REPLACE #__jevents_categories SET id='$this->id', color='$this->color', admin='$this->admin'" );
+		$this->_db->setQuery( "REPLACE #__jevents_categories SET id='$this->id', color='$this->color', admin='$this->admin', overlaps='$this->overlaps'" );
 		$this->_db->query();
 	}
 
