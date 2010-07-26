@@ -17,7 +17,7 @@ PHP vCal class v0.1
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // borrow encoding stuff from bitfolge.vcard
-global $mainframe;
+
 include_once(JPATH_ROOT."/includes/vcard.class.php");
 
 class vEvent// extends JObject

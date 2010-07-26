@@ -40,7 +40,7 @@ $lang =& JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 
 // Load Site specific language overrides
-$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.$mainframe->getTemplate());
+$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.JFactory::getApplication()->getTemplate());
 
 // disable Zend php4 compatability mode
 @ini_set("zend.ze1_compatibility_mode","Off");
@@ -105,13 +105,13 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 	$rssLink = JUri::root().$rssLink;
 	//$rssLink = JRoute::_($rssLink);
 	$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - RSS 2.0 Feed" />'. "\n";
-	$mainframe->addCustomHeadTag( $rss );
+	JFactory::getApplication()->addCustomHeadTag( $rss );
 
 	$rssLink =  'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=atom&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;
 	$rssLink = JUri::root().$rssLink;
 	//$rssLink = JRoute::_($rssLink);
 	$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - Atom Feed" />'. "\n";
-	$mainframe->addCustomHeadTag( $rss );
+	JFactory::getApplication()->addCustomHeadTag( $rss );
 }
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method

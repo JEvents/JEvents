@@ -30,7 +30,7 @@ class CrawlerController extends JController   {
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
-		global $mainframe;
+		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = $params->getValue("com_calEventListRowsPpg",15);
 

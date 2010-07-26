@@ -7,7 +7,7 @@ class AlternativeViewNavTableBarIconic {
 	
 	function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid ){
 		global $catidsOut;
-		global $mainframe;
+		
 		if (JRequest::getInt( 'pop', 0 )) return;
 		
 		$cat		= "";

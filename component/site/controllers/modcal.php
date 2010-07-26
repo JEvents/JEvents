@@ -89,7 +89,7 @@ class ModCalController extends JController   {
 		. "\n FROM #__modules AS m"
 		. "\n WHERE m.published = 1"
 		. "\n AND m.id = ". $modid
-		. "\n AND m.access <= ". (int) $user->aid
+		. "\n AND m.access <= ". (int) JEVHelper::getAid($user)
 		. "\n AND m.client_id != 1";
 		$db	=& JFactory::getDBO();
 		$db->setQuery( $query );
@@ -140,7 +140,7 @@ class ModCalController extends JController   {
 
 		$this->modid = $modid;
 
-		global $mainframe;
+		
 		$user =& JFactory::getUser();
 
 		$cfg = & JEVConfig::getInstance();
@@ -152,7 +152,7 @@ class ModCalController extends JController   {
 		$jevents_config		= & JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
-		$this->aid			= $user->aid;
+		$this->aid			= JEVHelper::getAid($user);
 		$tmplang			=& JFactory::getLanguage();
 
 		// get params exclusive to module

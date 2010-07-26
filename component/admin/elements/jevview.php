@@ -12,8 +12,6 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
-include_once(dirname(__FILE__)."/../jevents.defines.php");
-
 class JElementJevview extends JElement
 {
 	/**
@@ -30,7 +28,7 @@ class JElementJevview extends JElement
 		// Must load admin language files
 		$lang =& JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
-		
+
 		$views = array();
 		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
@@ -40,3 +38,5 @@ class JElementJevview extends JElement
 
 	}
 }
+
+

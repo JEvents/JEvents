@@ -240,7 +240,7 @@ class jevFilter
 	var $visible = false;
 
 	function jevFilter($tablename, $filterfield, $isString=false){
-		global $mainframe;
+		
 
 		$registry	=& JRegistry::getInstance("jevents");
 		$this->indexedvisiblefilters = $registry->getValue("indexedvisiblefilters",array());
@@ -258,9 +258,9 @@ class jevFilter
 			for ($v=0;$v<$this->valueNum;$v++){
 				$this->filter_values[$v] = $this->filterNullValues[$v] ;
 			}
-			$this->filter_value = $mainframe->setUserState( $this->filterType.'_fv_ses', $this->filterNullValue );
+			$this->filter_value = JFactory::getApplication()->setUserState( $this->filterType.'_fv_ses', $this->filterNullValue );
 			for ($v=0;$v<$this->valueNum;$v++){
-				$this->filter_values[$v] = $mainframe->setUserState( $this->filterType.'_fvs_ses'.$v,$this->filterNullValues[$v] );
+				$this->filter_values[$v] = JFactory::getApplication()->setUserState( $this->filterType.'_fvs_ses'.$v,$this->filterNullValues[$v] );
 			}
 		}
 		// if not logged in and using cache then do not use session data
@@ -272,9 +272,9 @@ class jevFilter
 			}
 		}
 		else {
-			$this->filter_value = $mainframe->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );
+			$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );
 			for ($v=0;$v<$this->valueNum;$v++){
-				$this->filter_values[$v] = $mainframe->getUserStateFromRequest( $this->filterType.'_fvs_ses'.$v, $this->filterType.'_fvs'.$v,$this->filterNullValues[$v] );
+				$this->filter_values[$v] = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fvs_ses'.$v, $this->filterType.'_fvs'.$v,$this->filterNullValues[$v] );
 			}
 		}
 		/*
@@ -302,9 +302,9 @@ $this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->
 
 	// simple utility function
 	function _getFilterValue($filterType, $filterNullValue ){
-		global $mainframe;
-		if ($mainframe->isAdmin()){
-			$filterValue = $mainframe->getUserStateFromRequest( $filterType.'_fv_ses', $filterType.'_fv', $filterNullValue );
+		
+		if (JFactory::getApplication()->isAdmin()){
+			$filterValue = JFactory::getApplication()->getUserStateFromRequest( $filterType.'_fv_ses', $filterType.'_fv', $filterNullValue );
 		}
 		else {
 			$filterValue = JRequest::getInt($filterType.'_fv', $filterNullValue );

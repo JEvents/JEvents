@@ -31,11 +31,11 @@ class jevJustmineFilter extends jevFilter
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
 		$this->filterType = "justmine";
-		$this->filterLabel = JText::_("Show Only My Events?");
+		$this->filterLabel = JText::_("Show Only My Events");
 
 		// this is a special filter - we always want memory here since only used in frontend management
-		global $mainframe;
-		$this->filter_value = $mainframe->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
+		
+		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
 		JRequest::setVar($this->filterType.'_fv',$this->filter_value);
 		
 		parent::jevFilter($tablename, "state", $isstring);

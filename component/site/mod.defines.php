@@ -29,7 +29,6 @@ if (!defined("JEV_LIBS")){
 
 	JLoader::register('JEVConfig',JEV_ADMINPATH."/libraries/config.php");
 	
-	JLoader::register('JEVAccess',JEV_PATH."/libraries/access.php");
 	JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
 
 	// TODO replace with JDate

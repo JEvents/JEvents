@@ -27,7 +27,12 @@ if (JFile::exists(JPATH_COMPONENT_SITE.DS."metadata.xml")){
 
 jimport('joomla.filesystem.path');
 
-global $option;
+// Get Joomla version.
+$version = new JVersion();
+$jver = explode( '.', $version->getShortVersion() );
+
+//version_compare(JVERSION,'1.5.0',">=")
+if (!isset($option)) global $option; // 1.6 mod
 define("JEV_COM_COMPONENT",$option);
 define("JEV_COMPONENT",str_replace("com_","",$option));
 

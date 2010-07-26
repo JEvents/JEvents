@@ -29,7 +29,7 @@ JHTML::_('behavior.tooltip');
 // get configuration object
 $cfg = & JEVConfig::getInstance();
 ?>
-<form action="index2.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm">
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		<tr>
 			<td width="100%">

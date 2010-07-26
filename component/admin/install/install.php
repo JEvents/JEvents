@@ -17,5 +17,5 @@ if (!$this->parent->copyManifest()) {
 }
 
 // Redirect to JEvents CPanel
-global $mainframe;
-$mainframe->redirect(JURI::root()."administrator/index.php?option=com_jevents");
+
+JFactory::getApplication()->redirect(JURI::root()."administrator/index.php?option=com_jevents");

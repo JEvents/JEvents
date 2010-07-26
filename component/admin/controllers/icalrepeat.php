@@ -57,9 +57,9 @@ class AdminIcalrepeatController extends JController {
 			$id=$evid;
 		}
 
-		global $mainframe;
-		$limit		= intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
-		$limitstart = intval( $mainframe->getUserStateFromRequest( "view{".JEV_COM_COMPONENT."}limitstart", 'limitstart', 0 ));
+		
+		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
+		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "view{".JEV_COM_COMPONENT."}limitstart", 'limitstart', 0 ));
 
 		$query = "SELECT count( DISTINCT rpt.rp_id)"
 		. "\n FROM #__jevents_vevent as ev"
@@ -217,8 +217,8 @@ class AdminIcalrepeatController extends JController {
 		}
 
 		// for Admin interface only
-		global $mainframe;
-		$this->view->assign('with_unpublished_cat',$mainframe->isAdmin());
+		
+		$this->view->assign('with_unpublished_cat',JFactory::getApplication()->isAdmin());
 
 		$this->view->display();
 
@@ -229,9 +229,9 @@ class AdminIcalrepeatController extends JController {
 		$msg = "";
 		$rpt = $this->doSave($msg);
 		
-		global $mainframe,$Itemid;
+		global ,$Itemid;
 		$msg = JText::_("Event Saved", true);
-		if ($mainframe->isAdmin()){
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]='.$rpt->eventid,"ICal rpt and new details saved");
 		}
 		else {
@@ -257,9 +257,9 @@ class AdminIcalrepeatController extends JController {
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		global $mainframe,$Itemid;
+		global ,$Itemid;
 		$msg = JText::_("Event Saved", true);
-		if ($mainframe->isAdmin()){
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.edit&evid=".$rpt->rp_id."&Itemid=".JEVHelper::getItemid(),$msg);
 		}
 		else {
@@ -489,8 +489,8 @@ class AdminIcalrepeatController extends JController {
 		// now delete exising current and future repeats - this resets the rrule for the truncated event
 		$this->_deleteFuture();
 
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]='.$rpt->eventid,"ICal rpt and new details saved");
 		}
 		else {
@@ -573,8 +573,8 @@ class AdminIcalrepeatController extends JController {
 			$db->setQuery( $query);
 			$db->query();
 		}
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalrepeat.list&cid[]=".$data->eventid, "ICal Repeat deleted" );
 		}
 		else {
@@ -596,8 +596,8 @@ class AdminIcalrepeatController extends JController {
 
 		$this->_deleteFuture();
 
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalrepeat.list&cid[]=".$repeatdata->eventid, "ICal Repeats deleted" );
 		}
 		else {

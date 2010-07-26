@@ -1,5 +1,5 @@
 /** header icons **/
-div.header.icon-48-jevents {
+div.icon-48-jevents {
 	background-image: url(../images/logo.gif);
 	padding-left:265px!important;
 	line-height:48px;
@@ -89,3 +89,26 @@ td#toolbar-apply {
 }
 */
 
+
+/* Joomla 1.6 */
+.jevconfig .current{
+	width:inherit;
+}
+
+.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select {
+	margin-bottom:inherit;
+	float:none;
+}
+.jevconfig .current label {
+	float:none;
+	display:inline;
+}
+.jevconfig .current td.paramlist_key, .jevconfig .current td.paramlist_value {
+	border-bottom:1px solid #ddd;
+	padding:4px 5px 4px 0px;
+}
+.jevconfig .current td.paramlist_key {
+	color:#666;
+	text-align:right;
+	font-weight:bold;
+}

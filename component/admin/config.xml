@@ -3,8 +3,8 @@
 	<params addpath="/administrator/components/com_jevents/elements/" >
 
 		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
 			<option value="-1">HIDE ALTOGETHER</option>
 			<option value="2">ICONS WITHOUT NAVIGATION</option>
 		</param>
@@ -40,8 +40,8 @@
 		<param name="extras15" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 
 		<param name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
 		</param>		
 		
 		<param name="@spacer" type="jevinfo"  default="Advanced Settings" label="" description="" />	
@@ -59,8 +59,8 @@
 		</param>		
 		<param name="com_calUseStdTime" type="jevboolean" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		<param name="com_blockRobots" type="radio" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
 			<option value="2">JEV_CONDITIONAL</option>
 			<option value="3">JEV_ALLOW_DETAIL_INDEXING</option>
 		</param>
@@ -86,8 +86,8 @@
 			<option value="menu">JEV_HEADLINE_MENU</option>
 		</param>
 		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
 			<option value="-1">HIDE ALTOGETHER</option>
 			<option value="2">ICONS WITHOUT NAVIGATION</option>
 		</param>
@@ -136,12 +136,12 @@
 	
 	<params  group="Permissions">	
 		<param name="jevadmin" type="jevuser" default="62"  menu="hide" label="Admin User" description="JEvents Administrator = must be at least Publisher User Level" />
+		<param name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label="Creator User Level" description="User Level required to be event creator" />
+		<param name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label="Editor User Level" description="User Level required to be event editor" />
+		<param name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label="Publisher User Level" description="User Level required to be publish and mangage events" />
+
 		<param name="authorisedonly" type="jevboolean" default="0" menu="hide" label="Enable User Authorisation" description="If yes then only authorised users can create events etc. otherwise any user of the following levels can undertake these tasks."/>
-		
-		<param name="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label="Creator User Level" description="User Level required to be event creator" />
-		<param name="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label="Editor User Level" description="User Level required to be event editor" />
-		<param name="jevpublish_level" type="jevusergroup" default="21" menu="hide" label="Publisher User Level" description="User Level required to be publish and mangage events" />
-		<param name="jevpublishown" type="jevboolean" default="0" menu="hide" label="CAN PUBLISH OWN?" description="JEVPUBLISH OWN TIP" />
+		<param name="jevpublishown" type="jevboolean" default="0" menu="hide" label="CAN PUBLISH OWN" description="JEVPUBLISH OWN TIP" />
 	</params>
 		
 	<params  group="JEV Ical Calendar">	
@@ -250,8 +250,8 @@
 			<option value="0">ALL</option>
 		</param>
 		<param name="showyearpast" type="radio" default="1" menu="hide" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
 		</param>		
 
 		<param name="@spacer" type="jevinfo" default="Settings related to Yearly view"  menu="hide" label="" description="" />	
@@ -330,6 +330,21 @@
 		<param name="modlatest_contentplugins" type="jevboolean" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" />
 
 	</params>
-	
-	
+
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			component="com_jevents"
+			section="component" />
+	</fieldset>
+
 </config>

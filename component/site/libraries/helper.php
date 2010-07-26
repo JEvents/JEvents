@@ -30,10 +30,9 @@ class JEVHelper {
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
 
-		global $mainframe, $option;
+		global  $option;
 		$cfg 		= & JEVConfig::getInstance();
-		$lang 		=& JFactory::getLanguage();
-		$langname	= $lang->getBackwardLang();
+		$lang 		= & JFactory::getLanguage();
 
 		static $isloaded = array();
 
@@ -59,7 +58,7 @@ class JEVHelper {
 			case 'front':
 				// load new style language
 				// if loading from another component or is admin then force the load of the site language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || $mainframe->isAdmin()) {
+				if ($option != JEV_COM_COMPONENT || JFactory::getApplication()->isAdmin()) {
 					// force load of installed language pack
 					$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 				}
@@ -68,14 +67,14 @@ class JEVHelper {
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
 
 				// Load Site specific language overrides
-				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.$mainframe->getTemplate());
+				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.JFactory::getApplication()->getTemplate());
 				
 				break;
 
 			case 'admin':
 				// load new style language
 				// if loading from another component or is frontend then force the load of the admin language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || !$mainframe->isAdmin()) {
+				if ($option != JEV_COM_COMPONENT || !JFactory::getApplication()->isAdmin()) {
 					// force load of installed language pack
 					$lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 				}
@@ -432,22 +431,22 @@ class JEVHelper {
 	 * @static
 	 */
 	function loadOverlib() {
-		global  $mainframe;
+		
 		$cfg	= & JEVConfig::getInstance();
 
 		// check if this function is already loaded
-		if ( !$mainframe->get( 'loadOverlib' ) ) {
-			if( $cfg->get("com_enableToolTip",1) || $mainframe->isAdmin()) {
+		if ( !JFactory::getApplication()->get( 'loadOverlib' ) ) {
+			if( $cfg->get("com_enableToolTip",1) || JFactory::getApplication()->isAdmin()) {
 				$document=& JFactory::getDocument();
 				$document->addScript(JURI::root() . 'includes/js/overlib_mini.js');
 				$document->addScript(JURI::root() . 'includes/js/overlib_hideform_mini.js');
 				// change state so it isnt loaded a second time
-				$mainframe->set( 'loadOverlib', true );
+				JFactory::getApplication()->set( 'loadOverlib', true );
 
-				if( $cfg->get("com_calTTShadow",1) && !$mainframe->isAdmin()) {
+				if( $cfg->get("com_calTTShadow",1) && !JFactory::getApplication()->isAdmin()) {
 					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_shadow.js');
 				}
-				if (!$mainframe->isAdmin()) {
+				if (!JFactory::getApplication()->isAdmin()) {
 					// Override Joomla class definitions for overlib decoration - only affects logged in users
 					$ol_script	=  "  /* <![CDATA[ */\n";
 					$ol_script	.= "  // inserted by JEvents\n";
@@ -499,7 +498,7 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if ($user->aid>=$jevitem->access){
+						if (JEVHelper::getAid($user)>=$jevitem->access){
 							$jevitemid = $jevitem->id;
 
 							if ($forcecheck){								
@@ -553,7 +552,7 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if ($user->aid>=$jevitem->access  && strpos($active->link, "admin.listevents")>0){
+						if (JEVHelper::getAid($user)>=$jevitem->access  && strpos($active->link, "admin.listevents")>0){
 							$jevitemid = $jevitem->id;
 							return $jevitemid;
 						}
@@ -613,6 +612,7 @@ class JEVHelper {
 		return $datenow;
 	}
 
+	/*
 	function & getJEV_Access(){
 		static $instance;
 		if (!isset($instance)){
@@ -620,6 +620,7 @@ class JEVHelper {
 		}
 		return $instance;
 	}
+	*/
 
 	/**
 	 * Test to see if user can add events from the front end
@@ -645,7 +646,7 @@ class JEVHelper {
 				if (!$authorisedonly){
 					$creatorlevel = $params->get("jevcreator_level",20);
 					$juser =& JFactory::getUser();
-					if ($juser->gid>=$creatorlevel){
+					if (JEVHelper::getGid($user)>=$creatorlevel){
 						$isEventCreator = true;
 					}
 				}
@@ -674,7 +675,7 @@ class JEVHelper {
 				if (!$authorisedonly){
 					$publishlevel = $params->get("jeveditor_level",20);
 					$juser =& JFactory::getUser();
-					if ($juser->gid>=$publishlevel){
+					if (JEVHelper::getGid($user)>=$publishlevel){
 						$isEventEditor = true;
 					}
 				}
@@ -685,7 +686,7 @@ class JEVHelper {
 			$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$editorLevel= $params->get("jeveditor_level",20);
 			$juser =& JFactory::getUser();
-			if ($juser->gid>=$editorLevel){
+			if (JEVHelper::getGid($user)>=$editorLevel){
 			$isEventEditor = true;
 			}
 			}
@@ -739,7 +740,7 @@ class JEVHelper {
 				if (!$authorisedonly){
 					$publishlevel = $params->get("jevpublish_level",20);
 					$juser =& JFactory::getUser();
-					if ($juser->gid>=$publishlevel){
+					if (JEVHelper::getGid($user)>=$publishlevel){
 						$isEventPublisher[$type] = true;
 					}
 				}
@@ -747,7 +748,7 @@ class JEVHelper {
 				/*
 				$publishlevel = $params->get("jevpublish_level",20);
 				$juser =& JFactory::getUser();
-				if ($juser->gid>=$publishlevel){
+				if (JEVHelper::getGid($user)>=$publishlevel){
 				$isEventPublisher[$type] = true;
 				}
 				else {
@@ -876,7 +877,7 @@ class JEVHelper {
 				if (!$authorisedonly){
 					$publishlevel = $params->get("jevpublish_level",20);
 					$juser =& JFactory::getUser();
-					if ($juser->gid>=$publishlevel){
+					if (JEVHelper::getGid($user)>=$publishlevel){
 						$isEventDeletor[$type] = true;
 					}
 				}
@@ -885,7 +886,7 @@ class JEVHelper {
 				$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$publishlevel = $params->get("jevpublish_level",20);
 				$juser =& JFactory::getUser();
-				if ($juser->gid>=$publishlevel){
+				if (JEVHelper::getGid($user)>=$publishlevel){
 				$isEventDeletor[$type] = true;
 				}
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -1005,8 +1006,8 @@ class JEVHelper {
 			. "\n LEFT JOIN #__contact_details AS cd ON cd.user_id = ju.id "
 			. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 			. "\n WHERE block ='0'"
-			. "\n AND cd.access <= " . $user->aid
-			. "\n AND cat.access <= " . $user->aid
+			. "\n AND cd.access <= " . JEVHelper::getAid($user)
+			. "\n AND cat.access <= " . JEVHelper::getAid($user)
 			. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
@@ -1081,19 +1082,19 @@ class JEVHelper {
 				$user->disableAll();
 				$juser = JFactory::getUser();
 				$user->user_id = $juser->id;
-				if ($juser->gid>=$creator_level){
+				if (JEVHelper::getGid($user)>=$creator_level){
 				$user->creator_level=true;
 				$user->enabled=true;
 				}
-				if ($juser->gid>=$jeveditor_level){
+				if (JEVHelper::getGid($user)>=$jeveditor_level){
 				$user->jeveditor_level=true;
 				$user->enabled=true;
 				}
-				if ($juser->gid>=$jevpublish_level){
+				if (JEVHelper::getGid($user)>=$jevpublish_level){
 				$user->$jevpublish_level=true;
 				$user->enabled=true;
 				}
-				if ($juser->gid>=$jevpublishown){
+				if (JEVHelper::getGid($user)>=$jevpublishown){
 				$user->jevpublishown=true;
 				$user->enabled=true;
 				}
@@ -1108,14 +1109,14 @@ class JEVHelper {
 
 	function componentStylesheet($view, $filename='events_css.css'){
 
-		global $mainframe;
+		
 		if (!isset($view->jevlayout) ){
 			if (method_exists($view,"getViewName")) $view->jevlayout = $view->getViewName();
 			else if (method_exists($view,"getTheme")) $view->jevlayout = $view->getTheme();
 		}
 
-		if (file_exists(JPATH_BASE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$view->jevlayout.DS."assets".DS."css".DS.$filename)){
-			JHTML::stylesheet($filename , 'templates/'.$mainframe->getTemplate().'/html/'.JEV_COM_COMPONENT.'/'.$view->jevlayout."/assets/css/" );
+		if (file_exists(JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$view->jevlayout.DS."assets".DS."css".DS.$filename)){
+			JHTML::stylesheet($filename , 'templates/'.JFactory::getApplication()->getTemplate().'/html/'.JEV_COM_COMPONENT.'/'.$view->jevlayout."/assets/css/" );
 		}
 		else {
 			JHTML::stylesheet($filename, 'components/'.JEV_COM_COMPONENT."/views/".$view->jevlayout."/assets/css/" );
@@ -1123,5 +1124,58 @@ class JEVHelper {
 	}
 
 
+	/**
+	 * 
+	 * Joomla 1.6 compatability functions
+	 * 
+	 */
+	
+	static  public function getGid($user = null){
+		if (is_null($user)) {
+			$user = JFactory::getUser();	
+		}
+		if (JVersion::isCompatible("1.6.0"))  {
+			return 24;
+		}
+		else {
+			return $user->gid;
+		}
+	}
+
+	static  public function getAid($user = null){
+		if (is_null($user)) {
+			$user = JFactory::getUser();	
+		}
+		if (JVersion::isCompatible("1.6.0"))  {
+			return 24;
+		}
+		else {
+			return $user->aid;
+		}
+	}
+
+
+	static  public function getUserType($user = null){
+		if (is_null($user)) {
+			$user = JFactory::getUser();	
+		}
+		if (JVersion::isCompatible("1.6.0"))  {
+			return "Super Administrator";
+		}
+		else {
+			return $user->usertype;
+		}
+	}
+
+	static public function stylesheet($file,$path){
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( $path.$file);
+		else JHTML::stylesheet( $file, $path);
+		
+	}
+	
+	static public function setupJoomla160(){
+	}
 }
+
 

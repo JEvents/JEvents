@@ -37,7 +37,6 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('JEventsDBModel',JEV_PATH."libraries/dbmodel.php");
 	JLoader::register('JEventsDataModel',JEV_PATH."libraries/datamodel.php");
 	
-	JLoader::register('JEVAccess',JEV_PATH."libraries/access.php");
 	JLoader::register('JEVHelper',JEV_PATH."libraries/helper.php");
 	
 	JLoader::register('JEventsAbstractView',JEV_VIEWS."/abstract/abstract.php");

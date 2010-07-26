@@ -18,7 +18,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 
 		$cfg = & JEVConfig::getInstance();
 		// pass $data by reference in order to update countdisplay
-		global $mainframe;
+		
 		$Itemid = JEVHelper::getItemid();
 		$compname = JEV_COM_COMPONENT;
 

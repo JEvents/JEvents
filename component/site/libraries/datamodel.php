@@ -31,8 +31,8 @@ class JEventsDataModel {
 		$cfg = & JEVConfig::getInstance();
 		
 		$user = JFactory::getUser();
-		$this->gid = intval( $user->gid);
-		$this->aid = intval( $user->aid);
+		$this->gid = JEVHelper::getGid($user);
+		$this->aid = intval( JEVHelper::getAid($user));
 
 		if (is_null($dbmodel)){
 			$this->queryModel =new JEventsDBModel($this);
@@ -52,7 +52,7 @@ class JEventsDataModel {
 	function setupComponentCatids(){
 		// if no catids from GET or POST default to the menu values
 		// Note that module links must pass a non default value
-		global $mainframe;
+		
 		$Itemid = JEVHelper::getItemid();
 		$this->myItemid = $Itemid;
 
@@ -135,7 +135,7 @@ class JEventsDataModel {
 	 * @return array - calendar data array
 	 */
 	function getCalendarData( $year, $month, $day , $short=false, $veryshort = false){
-		global $mainframe;
+		
 
 		$data = array();
 		$data['year']=$year;
@@ -381,7 +381,7 @@ class JEventsDataModel {
 
 	function getYearData($year, $limit, $limitstart )
 	{
-		global $mainframe;
+		
 
 		$data = array();
 		$data ["year"]=$year;
@@ -427,7 +427,7 @@ class JEventsDataModel {
 			}
 		}
 
-		//global $mainframe;
+		//
 		//include_once(JPATH_BASE."/components/".JEV_COM_COMPONENT."/libraries/iCalImport.php");
 		//iCalHelper::getHolidayDataForYear($data, "USHolidays.ics");
 
@@ -436,7 +436,7 @@ class JEventsDataModel {
 
 	function getRangeData($start,$end, $limit, $limitstart )
 	{
-		global $mainframe;
+		
 
 		$data = array();
 
@@ -480,7 +480,7 @@ class JEventsDataModel {
 	 */
 	function getWeekData($year, $month, $day, $detailedDay=false) {
 
-		global $mainframe;
+		
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
 
@@ -613,7 +613,7 @@ class JEventsDataModel {
 	}
 
 	function getDayData($year, $month, $day) {
-		global $mainframe;
+		
 
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
@@ -633,7 +633,7 @@ class JEventsDataModel {
 	function getEventData( $rpid, $jevtype, $year, $month, $day, $uid="" ) {
 		$data = array();
 
-		global  $mainframe;
+		
 		$pop = intval(JRequest::getVar( 'pop', 0 ));
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
@@ -714,16 +714,16 @@ class JEventsDataModel {
 			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
 			$row->extra_info($tmprow->text);
 
-			$mask = $mainframe->getCfg( 'hideAuthor' ) ? MASK_HIDEAUTHOR : 0;
-			$mask |= $mainframe->getCfg( 'hideCreateDate' ) ? MASK_HIDECREATEDATE : 0;
-			$mask |= $mainframe->getCfg( 'hideModifyDate' ) ? MASK_HIDEMODIFYDATE : 0;
+			$mask = JFactory::getApplication()->getCfg( 'hideAuthor' ) ? MASK_HIDEAUTHOR : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'hideCreateDate' ) ? MASK_HIDECREATEDATE : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'hideModifyDate' ) ? MASK_HIDEMODIFYDATE : 0;
 
-			$mask |= $mainframe->getCfg( 'hidePdf' ) ? MASK_HIDEPDF : 0;
-			$mask |= $mainframe->getCfg( 'hidePrint' ) ? MASK_HIDEPRINT : 0;
-			$mask |= $mainframe->getCfg( 'hideEmail' ) ? MASK_HIDEEMAIL : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'hidePdf' ) ? MASK_HIDEPDF : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'hidePrint' ) ? MASK_HIDEPRINT : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'hideEmail' ) ? MASK_HIDEEMAIL : 0;
 
-			//$mask |= $mainframe->getCfg( 'vote' ) ? MASK_VOTES : 0;
-			$mask |= $mainframe->getCfg( 'vote' ) ? (MASK_VOTES|MASK_VOTEFORM) : 0;
+			//$mask |= JFactory::getApplication()->getCfg( 'vote' ) ? MASK_VOTES : 0;
+			$mask |= JFactory::getApplication()->getCfg( 'vote' ) ? (MASK_VOTES|MASK_VOTEFORM) : 0;
 			$mask |= $pop ? MASK_POPUP | MASK_IMAGES | MASK_BACKTOLIST : 0;
 
 			// Do main mambot processing here
@@ -755,13 +755,13 @@ class JEventsDataModel {
 				. "\n WHERE rpt.rp_id = '$rpid'";
 				$db->setQuery($query);
 				$row = $db->loadObject();
-				if ($row && $row->access>$user->aid){
+				if ($row && $row->access>JEVHelper::getAid($user)){
 					$uri = JURI::getInstance();
 					$link = $uri->toString();
 					$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
 					$link = JRoute::_($link);
-					global $mainframe;
-					$mainframe->redirect($link,JText::_('JEV LOGIN TO VIEW EVENT'));
+					
+					JFactory::getApplication()->redirect($link,JText::_('JEV LOGIN TO VIEW EVENT'));
 					return null;
 				}
 			}
@@ -811,8 +811,8 @@ class JEventsDataModel {
 		}
 		else {
 			// Override multiple categories using the filter instead
-			global $mainframe;
-			$tempcat =$mainframe->getUserStateFromRequest( 'category_fv_ses', 'category_fv', 0);
+			
+			$tempcat =JFactory::getApplication()->getUserStateFromRequest( 'category_fv_ses', 'category_fv', 0);
 			if ($tempcat>0){
 				$catids = array();
 				$catids[] = $tempcat;
@@ -840,7 +840,7 @@ class JEventsDataModel {
 			$db	=& JFactory::getDBO();
 			$user =& JFactory::getUser();
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
-			' WHERE c.access<='.$db->Quote($user->aid) .
+			' WHERE c.access<='.$db->Quote(JEVHelper::getAid($user)) .
 			' AND c.section = '.$db->Quote(JEV_COM_COMPONENT).
 			' AND c.id = '.$db->Quote($catids[0]);
 			$db->setQuery($catsql);
@@ -874,9 +874,9 @@ class JEventsDataModel {
 	{
 		$data = array();
 
-		global  $mainframe;
+		
 		$user =& JFactory::getUser();
-		$aid = intval( $user->aid );
+		$aid = intval( JEVHelper::getAid($user) );
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
 
@@ -949,12 +949,12 @@ class JEventsDataModel {
 
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user =& JFactory::getUser();
-		$aid = intval( $user->aid );
+		$aid = intval( JEVHelper::getAid($user) );
 		$Itemid = JEVHelper::getItemid();
 		$user =& JFactory::getUser();
 
 		$db	=& JFactory::getDBO();
-		global $mainframe;
+		
 
 		$cfg = & JEVConfig::getInstance();
 

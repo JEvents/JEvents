@@ -28,7 +28,9 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	{
 		jimport('joomla.html.pane');
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Control Panel'));
@@ -36,11 +38,17 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		// Set toolbar items for the page
 		//JToolBarHelper::preferences('com_jevents', '580', '750');
 		JToolBarHelper::title( JText::_('JEvents') .' :: '. JText::_( 'Control Panel' ), 'jevents' );
+		/*
+		$user= JFactory::getUser();
+		if ($user->authorise('core.admin','com_jevents.admin')) {
+			JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
+		}
+		*/
 
 		$this->_hideSubmenu();
 		
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		}
 		//JToolBarHelper::help( 'screen.cpanel', true);

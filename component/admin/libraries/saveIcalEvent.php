@@ -101,7 +101,7 @@ class SaveIcalEvent {
 			}
 		}
 
-		global $mainframe;
+		
 		$vevent = iCalEvent::iCalEventFromData($data);
 
 		$vevent->catid = JArrayHelper::getValue( $array,  "catid",0);
@@ -125,7 +125,7 @@ class SaveIcalEvent {
 		// Always unpublish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents",0);
-		if (!$mainframe->isAdmin()){
+		if (!JFactory::getApplication()->isAdmin()){
 			if ($frontendPublish && $ev_id==0){
 				$vevent->state = 1;
 			}else if (!$frontendPublish){
@@ -180,9 +180,9 @@ class SaveIcalEvent {
 
 		if ($dryrun) return $vevent;
 
-		global $mainframe;
+		
 		// If not authorised to publish in the frontend then notify the administrator
-		if (!$dryrun && $success && $notifyAdmin && !$mainframe->isAdmin()){
+		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);

@@ -48,9 +48,9 @@ class jevCategoryFilter extends jevFilter
 		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") return "";
 		/*
 		$sectionname = JEV_COM_COMPONENT;
-		global $mainframe;
+		
 		$db =& JFactory::getDBO();
-		$q_published = $mainframe->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
+		$q_published = JFactory::getApplication()->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
 		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
 		$query = "SELECT c.id"
 			. "\n FROM #__categories AS c"
@@ -85,6 +85,16 @@ class jevCategoryFilter extends jevFilter
 
 
 		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
+
+		$script = "function reset".$this->filterType."_fvs(){\$ES('option',\$('".$this->filterType."_fvs')).each(function(item){item.selected=false;})};\n";
+		$script .= "JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});\n";
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($script);
+		
+		$script = "function reset".$this->filterType."_fvs(){\$ES('option',\$('".$this->filterType."_fvs')).each(function(item){item.selected=false;})};\n";
+		$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($script);
 		
 		return $filterList;
 

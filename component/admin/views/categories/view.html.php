@@ -22,7 +22,19 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		$this->state		= $this->get('State');
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseError(500, implode("\n", $errors));
+			return false;
+		}
+
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Categories'));
@@ -32,19 +44,22 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 	
 		JToolBarHelper::publishList('categories.publish');
 		JToolBarHelper::unpublishList('categories.unpublish');
-		JToolBarHelper::addNew('categories.edit');
+		JToolBarHelper::addNew('categories.add');
 		JToolBarHelper::editList('categories.edit');
-		JToolBarHelper::deleteList("delete category?",'categories.delete');
+		JToolBarHelper::deleteList("delete category",'categories.delete');
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
 		//JToolBarHelper::help( 'screen.categories', true);
 
 		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
-		
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
-				
+						
 		JHTML::_('behavior.tooltip');
+
+		// Preprocess the list of items to find ordering divisions.
+		foreach ($this->items as &$item) {
+			$this->ordering[$item->parent_id][] = $item->id;
+		}
+			
 	}	
 
 
@@ -52,7 +67,9 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 	{
 		JRequest::setVar( 'hidemainmenu', 1 );
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Categories'));
@@ -67,7 +84,6 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
 		
 		JHTML::_('behavior.tooltip');
 	}	

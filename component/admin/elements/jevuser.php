@@ -37,7 +37,7 @@ class JElementJevuser extends JElement
 
 		//jimport("joomla.html.html.list");
 		$params = JComponentHelper::getParams("com_jevents");
-		
+
 		if (strpos($name,"jevadmin")===0){
 			$gid = $params->get('jevpublish_level',24);
 		}
@@ -50,15 +50,26 @@ class JElementJevuser extends JElement
 		else {
 			$gid = $params->get('jevcreator_level',19);
 		}
-		
+
 		$db =& JFactory::getDBO();
 
-		$query = 'SELECT id AS value, name AS text'
-		. ' FROM #__users'
-		. ' WHERE block = 0'
-		. ' AND gid >= '.$gid
-		. ' ORDER BY gid desc, name'
-		;
+		// TODO - do this properly for Joomla 1.6
+		if (JVersion::isCompatible("1.6.0"))  {
+			$query = 'SELECT id AS value, name AS text'
+			. ' FROM #__users'
+			. ' WHERE block = 0'
+			//. ' AND gid >= '.$gid
+			. ' ORDER BY name asc'
+			;
+		}
+		else {
+			$query = 'SELECT id AS value, name AS text'
+			. ' FROM #__users'
+			. ' WHERE block = 0'
+			. ' AND gid >= '.$gid
+			. ' ORDER BY gid desc, name'
+			;			
+		}
 		$db->setQuery( $query );
 		$users[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select User' ) .' -' );
 		$users = array_merge( $users, $db->loadObjectList() );

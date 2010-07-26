@@ -34,7 +34,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND ev.ev_id = '$agid'"
-		. "\n AND ev.access <= ".$user->gid;
+		. "\n AND ev.access <= ".JEVHelper::getGid($user);
 
 		$db->setQuery( $query );
 
@@ -58,7 +58,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND rpt.rp_id = '$rp_id'"
-		. "\n AND ev.access <= ".$user->gid;
+		. "\n AND ev.access <= ".JEVHelper::getGid($user);;
 
 		$db->setQuery( $query );
 
@@ -85,10 +85,10 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		/*
 		. "\n WHERE ical.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND ical.icaltype = '2'"
-		. "\n AND ical.access <= ".$user->gid;
+		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
 		*/
 		. "\n WHERE ical.icaltype = '2'"
-		. "\n AND ical.access <= ".$user->gid;
+		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
 
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onSelectIcals', array( &$query) );		
@@ -110,7 +110,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n AND ical.ics_id = $icsid"
 		*/
 		. "\n WHERE ical.ics_id = $icsid"
-		. "\n AND ical.access <= ".$user->gid;
+		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
 
 		$db->setQuery( $query );
 		$row = $db->loadObject();

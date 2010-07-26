@@ -16,7 +16,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
 
-class AdminParamsController extends JController 
+class AdminParamsController extends JController
 {
 	/**
 	 * Custom Constructor
@@ -38,21 +38,39 @@ class AdminParamsController extends JController
 		//JRequest::setVar('tmpl', 'component'); //force the component template
 		$component = JEV_COM_COMPONENT;
 
-		$model = $this->getModel('params' );
-		$table =& JTable::getInstance('component');
-
-		if (!$table->loadByOption( $component ))
-		{
-			JError::raiseWarning( 500, 'Not a valid component' );
-			return false;
-		}
-
 		// get the view
 		$this->view = & $this->getView("params","html");
 
-		// Set the layout
-		$this->view->setLayout('edit');
-		
+		$model = $this->getModel('params' );
+		if (JVersion::isCompatible("1.6.0")) {
+			$table =& JTable::getInstance('extension');
+			//if (!$table->loadByOption( $component ))
+			if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+			{
+				JError::raiseWarning( 500, 'Not a valid component' );
+				return false;
+			}
+			// Backwards compatatbility
+			$table->id = $table->extension_id;
+			$table->option = $table->element;
+
+			// Set the layout
+			$this->view->setLayout('edit16');
+
+		}
+		else {
+			$table =& JTable::getInstance('component');
+			if (!$table->loadByOption( $component ))
+			{
+				JError::raiseWarning( 500, 'Not a valid component' );
+				return false;
+			}
+
+			// Set the layout
+			$this->view->setLayout('edit');
+
+		}
+
 		$this->view->assignRef('component', $table);
 		$this->view->setModel( $model, true );
 		$this->view->display();
@@ -68,11 +86,23 @@ class AdminParamsController extends JController
 
 		$component = JEV_COM_COMPONENT;
 
-		$table =& JTable::getInstance('component');
-		if (!$table->loadByOption( $component ))
-		{
-			JError::raiseWarning( 500, 'Not a valid component' );
-			return false;
+		$model = $this->getModel('params' );
+		if (JVersion::isCompatible("1.6.0")) {
+			$table =& JTable::getInstance('extension');
+			//if (!$table->loadByOption( $component ))
+			if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+			{
+				JError::raiseWarning( 500, 'Not a valid component' );
+				return false;
+			}
+		}
+		else {
+			$table =& JTable::getInstance('component');
+			if (!$table->loadByOption( $component ))
+			{
+				JError::raiseWarning( 500, 'Not a valid component' );
+				return false;
+			}
 		}
 
 		$post = JRequest::get( 'post' );
@@ -89,6 +119,54 @@ class AdminParamsController extends JController
 		if (!$table->store()) {
 			JError::raiseWarning( 500, $table->getError() );
 			return false;
+		}
+
+		// Now save the form permissions data
+		if (JVersion::isCompatible("1.6.0")) {
+
+			$data	= JRequest::getVar('jform', array(), 'post', 'array');			
+			$option	= JEV_COM_COMPONENT;
+			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+			$id		= $comp->id;
+			
+			// Validate the posted data.
+			JForm::addFormPath(JPATH_COMPONENT);
+			JForm::addFieldPath(JPATH_COMPONENT.'/elements');
+					
+			$form	= $model->getForm();
+			$return = $model->validate($form, $data);
+
+			// Check for validation errors.
+			if ($return === false) {
+				// Get the validation messages.
+				$errors	= $model->getErrors();
+
+				$app = JFactory::getApplication();
+				// Push up to three validation messages out to the user.
+				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
+					if (JError::isError($errors[$i])) {
+						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					} else {
+						$app->enqueueMessage($errors[$i], 'notice');
+					}
+				}
+
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $data);
+
+				// Redirect back to the edit screen.
+				$this->setRedirect(JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=params.edit', false));
+				return false;
+			}
+
+			// Attempt to save the configuration.
+			$data	= array(
+			'params'	=> $return,
+			'id'		=> $id,
+			'option'	=> $option
+			);
+			$return = $model->saveRules($data);
+
 		}
 
 		$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_("Config saved") );

@@ -22,7 +22,9 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('ICals'));
@@ -50,8 +52,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JHTML::script('editical.js?v=1.6.0','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Edit ICS'));

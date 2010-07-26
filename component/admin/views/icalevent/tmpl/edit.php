@@ -13,14 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 if (defined("EDITING_JEVENT")) return;
 define("EDITING_JEVENT",1);
 
-global $task,$catid, $mainframe;
+global $task,$catid;
 $db	=& JFactory::getDBO();
 $editor =& JFactory::getEditor();
 
 // clean any existing cache files
 $cache =& JFactory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
-$action = $mainframe->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
+$action = JFactory::getApplication()->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 
 // load any custom fields
 $dispatcher	=& JDispatcher::getInstance();
@@ -151,9 +151,9 @@ function submitbutton(pressbutton) {
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );	
 		if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
 			$checkURL = JURI::root()."components/com_jevents/libraries/checkconflict.php";
-			global $mainframe;
+			
 		?>
-		checkConflict('<?php echo $checkURL;?>',pressbutton, '<?php echo JUtility::getToken();?>', '<?php echo $mainframe->isAdmin()?'administrator':'site';?>', <?php echo $this->repeatId;?> );
+		checkConflict('<?php echo $checkURL;?>',pressbutton, '<?php echo JUtility::getToken();?>', '<?php echo JFactory::getApplication()->isAdmin()?'administrator':'site';?>', <?php echo $this->repeatId;?> );
 		<?php 
 		}
 		else {
@@ -311,7 +311,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 		</tr>
 		<?php
 
-		if ( ($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (! $mainframe->isAdmin())){
+		if ( ($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (! JFactory::getApplication()->isAdmin())){
 			$hideColour=true;
 		}
 		else if ( $cfg->get('com_calForceCatColorEventForm', 0) == 2) {

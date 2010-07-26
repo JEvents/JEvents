@@ -11,7 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-global   $option;
+$option = JEV_COM_COMPONENT;
 $user =& JFactory::getUser();
 $db =& JFactory::getDBO();
 
@@ -31,19 +31,19 @@ $url = JRoute::_("index.php?option=".$option);
       <th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->users); ?>);" /></th>
       <th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JText::_('Name');?></th>
       <th width="20%" align="left" nowrap="nowrap"><?php echo JText::_('Username');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Enabled?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Create?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Max Events?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Publish Own?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Delete Own?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Edit All?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Publish All?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Delete All?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Upload Images?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Upload Files?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Create Own Extras?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Create Global Extras?');?></th>
-      <th align="center" nowrap="nowrap"><?php echo JText::_('Max Extras?');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Enabled');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Create');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Max Events');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Publish Own');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Delete Own');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Edit All');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Publish All');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Delete All');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Upload Images');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Upload Files');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Create Own Extras');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Create Global Extras');?></th>
+      <th align="center" nowrap="nowrap"><?php echo JText::_('Max Extras');?></th>
    </tr>
 	</thead>
 	<tfoot>

@@ -83,7 +83,7 @@ class AdminCpanelController extends JController {
 		// get the view
 		$this->view = & $this->getView("cpanel","html");
 
-		$sql = 'SHOW TABLES LIKE "'.$db->_table_prefix.'events"';
+		$sql = 'SHOW TABLES LIKE "'.$db->getPrefix().'events"';
 		$db->setQuery( $sql );
 		$tables = $db->loadObjectList();
 		if (count($tables)>0){

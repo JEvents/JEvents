@@ -23,8 +23,6 @@ class JEventsCategory extends JTableCategory {
 	// security check
 	function bind( $array ) {
 		$cfg = & JEVConfig::getInstance();
-		// TODO fix this when migrated data
-		$section_name  = "com_jevents";
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
 		if (!isset($this->_catextra)){
@@ -38,13 +36,17 @@ class JEventsCategory extends JTableCategory {
 		unset($this->admin);
 
 		$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
-		
+
 		// Fill in the gaps
 		$this->name=$this->title;
-		$this->section=$section_name;
+
+		if (JVersion::isCompatible("1.6.0"))  {
+			$this->extension="com_jevents";
+		}
+		else {
+			$this->section="com_jevents";
+		}
 		$this->image_position="left";
-
-
 
 		return true;
 	}
@@ -81,11 +83,11 @@ class JEventsCategory extends JTableCategory {
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$adminuser = new  JUser($params->get("jevadmin",62));
 		}
-		
+
 		if (isset($this->_catextra)){
 			if ($this->_catextra->admin>0){
 				$catuser = new JUser();
-				 $catuser->load($this->_catextra->admin);
+				$catuser->load($this->_catextra->admin);
 				return $catuser->username;
 			}
 		}
@@ -98,11 +100,11 @@ class JEventsCategory extends JTableCategory {
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$adminuser = new  JUser($params->get("jevadmin",62));
 		}
-		
+
 		if (isset($this->_catextra)){
 			if ($this->_catextra->admin>0){
 				$catuser = new JUser();
-				 $catuser->load($this->_catextra->admin);
+				$catuser->load($this->_catextra->admin);
 				return $catuser;
 			}
 		}
@@ -110,7 +112,7 @@ class JEventsCategory extends JTableCategory {
 	}
 
 	function getAdminId(){
-	
+
 		if (isset($this->_catextra)){
 			return $this->_catextra->admin;
 		}
@@ -118,17 +120,29 @@ class JEventsCategory extends JTableCategory {
 	}
 
 	public static function categoriesTree() {
-	
+
 		$db = & JFactory::getDBO();
-		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE section = '".JEV_COM_COMPONENT."'";
-				
-		$query.=" ORDER BY parent, ordering";
+		if (JVersion::isCompatible("1.6.0"))  {
+			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."'";
+			$query.=" ORDER BY parent, lft";
+		}
+		else {
+			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE section = '".JEV_COM_COMPONENT."'";
+			$query.=" ORDER BY parent, ordering";
+		}
+
 		$db->setQuery($query);
 		$mitems = $db->loadObjectList();
 		echo $db->getErrorMsg();
 		$children = array ();
 		if ($mitems) {
 			foreach ($mitems as $v) {
+				if (JVersion::isCompatible("1.6.0"))  {
+					if ($v->parent==1){
+						$v->parent=$v->parent_id=0;
+					}
+					$v->level -= 1;
+				}
 				$pt = $v->parent;
 				$list = @$children[$pt]?$children[$pt]: array ();
 				array_push($list, $v);
@@ -138,12 +152,16 @@ class JEventsCategory extends JTableCategory {
 		$list = JHTML::_('menu.treerecurse', 0, '', array (), $children, 9999, 0, 0);
 		$mitems = array ();
 		foreach ($list as $item) {
-			$mitems[] = JHTML::_('select.option', $item->id, '&nbsp;&nbsp;&nbsp;'.$item->treename);
+			if (JVersion::isCompatible("1.6.0"))  {
+				$item->treename = str_replace("&#160;","  ",$item->treename);
+				$mitems[] = JHTML::_('select.option', $item->id, $item->treename);
+			}
+			else $mitems[] = JHTML::_('select.option', $item->id, $item->treename);
 		}
 		return $mitems;
 	}
 
-	
+
 }
 
 class CatExtra extends JTable {

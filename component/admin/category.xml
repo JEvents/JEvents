@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!-- $Id: category.xml 16306 2010-04-21 18:47:28Z louis $ -->
+	<!-- This is a demo. Delete for beta -->
+<form >
+	<fields
+		name="params">
+		<fieldset
+			name="basic" 
+			addfieldpath="/administrator/components/com_jevents/elements" 
+			>
+			<field
+				name="catcolour"
+				type="jevcolourpicker"
+				label="JEV_COLOR_PICKER"
+				description="JEV CHOOSE CATEGORY COLOUR"
+				/>
+			</fieldset>
+	</fields>
+</form>

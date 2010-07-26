@@ -120,7 +120,8 @@ function makeChoice(evt) {
 	bc=parts[1];
 	
 	cp = document.getElementById('colorpreview');
-	window.parent.document.getElementById(id).style.visibility = "hidden";
+	var j16 = getQueryVariable("j16");
+	if (j16!=1) window.parent.document.getElementById(id).style.visibility = "hidden";
 	//alert("background color is '#"+bc+"' text will be "+brightness);
 	window.parent.document.getElementById("pick1064797275field").value="#"+bc;
 	window.parent.document.getElementById("pick1064797275").style.backgroundColor="#"+bc;
@@ -135,7 +136,8 @@ function makeChoice(evt) {
 }
 function cancelColors(){
 	id = getQueryVariable("id");
-	window.parent.document.getElementById(id).style.visibility = "hidden";
+	var j16 = getQueryVariable("j16");
+	if (j16!=1) window.parent.document.getElementById(id).style.visibility = "hidden";
 }
 function showColors(){
 	document.getElementById("newColorPicker").style.display="block";
@@ -252,5 +254,10 @@ else window.onload=setcolors;
         </tr>
     </table>
 </div>
+
+<script language="JavaScript" type="text/javascript">
+	var j16 = getQueryVariable("j16");
+	if (j16==1) window.document.getElementById('cancel').style.visibility = "hidden";
+</script>
 </body>
 </html>

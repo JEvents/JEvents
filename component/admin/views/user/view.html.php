@@ -25,15 +25,14 @@ class AdminUserViewUser extends JEventsAbstractView
 	 */
 	function overview($tpl = null)
 	{
-		global $mainframe;
-		
+
 		$document =& JFactory::getDocument();
 		// this already includes administrator
 		$livesite = JURI::base();
 		$document->addStyleSheet($livesite.'components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
 
 		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Users'));
-				
+
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'Users' ), 'jevents' );
 		JToolBarHelper::addNew("user.edit");
@@ -50,7 +49,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$pagination = & $this->get( 'Pagination' );
 		$users	= &$this->get('users');
-		
+
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('users', $users);
 
@@ -59,34 +58,52 @@ class AdminUserViewUser extends JEventsAbstractView
 
 	function edit($tpl = null)
 	{
-		global $mainframe;
-		
+
 		$document =& JFactory::getDocument();
 		// this already includes administrator
 		$livesite = JURI::base();
 		$document->addStyleSheet($livesite.'components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		if (JVersion::isCompatible("1.6.0")){
+			JEVHelper::stylesheet('eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/');
+		}
 
 		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Edit User'));
-				
+
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'Edit User' ), 'jevents' );
-		
+
 		JToolBarHelper::save("user.save");
 		JToolBarHelper::cancel("user.overview");
 
 		//JToolBarHelper::help( 'edit.user', true);
 
 		$option				= JRequest::getCmd('option', JEV_COM_COMPONENT);
-		
+
 		$db=& JFactory::getDBO();
-		
+
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$minaccess = $params->getValue("jevcreator_level",19);
-		
-		// get users AUTHORS and above
-		$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-		$db->setQuery( $sql );
-		$users = $db->loadObjectList();
+		if (JVersion::isCompatible("1.6.0")) {
+			$rules = JAccess::getAssetRules("com_jevents", true);
+			$creatorgroups = $rules->getData();
+			$creatorgroups = $creatorgroups["core.create"]->getData();
+			$users = array(0);
+			foreach ($creatorgroups as $creatorgroup){
+				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+			}
+			$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+			$db->setQuery( $sql );
+			$users = $db->loadObjectList();
+
+		}
+		else {
+			$minaccess = $params->getValue("jevcreator_level",19);
+			// get users AUTHORS and above
+			$sql = "SELECT * FROM #__users where gid>=".$minaccess;
+			$db->setQuery( $sql );
+			$users = $db->loadObjectList();
+
+		}
+
 
 		$userOptions[] = JHTML::_('select.option', '-1','Select User' );
 		foreach( $users as $user )
@@ -95,9 +112,9 @@ class AdminUserViewUser extends JEventsAbstractView
 		}
 		$jevuser	= &$this->get('user');
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'user_id', 'class="inputbox" size="1" ', 'value', 'text', $jevuser->user_id);
-		
+
 		JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
-		
+
 		$categories = JEventsCategory::categoriesTree();
 		$lists['categories'] = JHTML::_('select.genericlist', $categories, 'categories[]', 'multiple="multiple" size="15"', 'value', 'text',explode("|",$jevuser->categories));
 
@@ -106,14 +123,14 @@ class AdminUserViewUser extends JEventsAbstractView
 		$db->setQuery( $sql );
 		$calendars = $db->loadObjectList();
 		$lists['calendars'] = JHTML::_('select.genericlist', $calendars, 'calendars[]', 'multiple="multiple" size="15"', 'value', 'text',explode("|",$jevuser->calendars));
-		
+
 		$this->assignRef('lists',$lists);
-		
+
 		$this->assignRef("users",$userlist);
 		$this->assignRef('jevuser', $jevuser);
 
 		JHTML::_('behavior.tooltip');
 	}
 
-	
+
 }

@@ -108,13 +108,13 @@ function ProcessRequest(&$requestObject, $returnData){
 
 	ini_set("display_errors",0);
 
-	global $mainframe, $option;
+	global  $option;
 	$client = "site";
 	if (isset($requestObject->client) && in_array($requestObject->client,array("site","administrator"))){
 		$client = $requestObject->client;
 	}
 	$mainframe = JFactory::getApplication($client);
-	$mainframe->initialise();
+	JFactory::getApplication()->initialise();
 	$option = "com_jevents";
 	// Not sure why this is needed but it is if (use use $mainframe =& JFactory::getApplication($client); )!!!
 	//$GLOBALS['mainframe']=$mainframe;
@@ -140,7 +140,7 @@ function ProcessRequest(&$requestObject, $returnData){
 		$db=JFactory::getDBO();
 		$db->setQuery("SELECT * FROM #__jevents_vevent where ev_id=".intval($requestObject->formdata->evid));
 		$event = $db->loadObject();
-		if (!$event || ($event->created_by!=$user->id && $user->usertype!="Super Administrator")){
+		if (!$event || ($event->created_by!=$user->id && JEVHelper::getUserType($user)!="Super Administrator")){
 			throwerror("There was an error");
 		}
 	}

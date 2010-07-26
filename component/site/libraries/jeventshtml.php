@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// TODO replace with JDate 
+// TODO replace with JDate
 
 class JEventsHTML{
 
@@ -52,12 +52,12 @@ class JEventsHTML{
 	}
 
 	function buildReccurDaySelect( $reccurday, $tag_name, $args ) {
-		
+
 		// get array
 		$day_name = JEVHelper::getWeekdayLetter(null, 1);
 		$day_name[0] = '<span class="sunday">' .   $day_name[0] . '</span>';
 		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
-	
+
 		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />' );
 
 		for( $a=0; $a<7; $a++ ){
@@ -175,20 +175,23 @@ class JEventsHTML{
 	 * @param int $catidtop				Top level category ancestor
 	 */
 	function buildCategorySelect( $catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false){
-		
+
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
-		
-		$catsql = 'SELECT c.id, c.published, c.title as ctitle,p.title as ptitle, gp.title as gptitle, ggp.title as ggptitle, c.ordering ' .
-				// for Joomfish onlu
-				' , p.id as pid, gp.id as gpid, ggp.id as ggpid '.
-				' FROM #__categories AS c' .
-				' LEFT JOIN #__categories AS p ON p.id=c.parent_id' .
-				' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' .
-				' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
-				//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
-				' WHERE c.access<='.$db->Quote($user->aid) .
-				' AND c.section = '.$db->Quote($sectionname);
+
+		$catsql = 'SELECT c.id, c.published, c.title as ctitle,p.title as ptitle, gp.title as gptitle, ggp.title as ggptitle ' .
+		(JVersion::isCompatible("1.6.0")?", c.lft as ordering ":", c.ordering as ordering").
+		// for Joomfish onlu
+		' , p.id as pid, gp.id as gpid, ggp.id as ggpid '.
+		' FROM #__categories AS c' .
+		' LEFT JOIN #__categories AS p ON p.id=c.parent_id' .
+		' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' .
+		' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
+		//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
+		' WHERE c.access<='.$db->Quote(JEVHelper::getAid($user)) ;
+		if (JVersion::isCompatible("1.6.0"))  $catsql .= ' AND c.extension = '.$db->Quote($sectionname);
+		else $catsql .= ' AND c.section = '.$db->Quote($sectionname);
+
 		if ($with_unpublished) {
 			$catsql .= ' AND c.published >= 0';
 		} else {
@@ -198,13 +201,18 @@ class JEventsHTML{
 		if (is_string($catidList) && strlen(trim($catidList)) ) {
 			$catsql .=' AND c.id IN (' . trim($catidList) . ')';
 		}
-		$catsql .=" ORDER BY c.ordering";
-		
+		if (JVersion::isCompatible("1.6.0"))  $catsql .=" ORDER BY c.lft";
+		else  $catsql .=" ORDER BY c.ordering";
+
 		$db->setQuery($catsql);
 		//echo $db->_sql;
 		$rows = $db->loadObjectList('id');
-		
+
 		foreach ($rows as $key=>$option) {
+			if (JVersion::isCompatible("1.6.0") && $option->pid==1){
+				$option->pid=0;
+				$option->ptitle=null;
+			}
 			$title = $option->ctitle;
 			if (!is_null($option->ptitle)){
 				// this doesn't; work in Joomfish
@@ -238,18 +246,18 @@ class JEventsHTML{
 			}
 			/*
 			if (!is_null($option->gggptitle)){
-				$title = $option->gggptitle."=>".$title;
+			$title = $option->gggptitle."=>".$title;
 			}
 			*/
 			$rows[$key]->name = $title;
 		}
 		JArrayHelper::sortObjects($rows,"ordering");
-		
+
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 		//$categories[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_CATEG'), 'id', 'name' );
 		$categories[] = JHTML::_('select.option', '0', $t_first_entry, 'id', 'name' );
-		
-		
+
+
 		if ($with_unpublished) {
 			for ($i=0;$i<count($rows);$i++) {
 				if ($rows[$i]->published == 0) $rows[$i]->name = $rows[$i]->name . '('. JText::_('JEV_NOT_PUBLISHED') . ')';
@@ -268,7 +276,7 @@ class JEventsHTML{
 		$day_name = JEVHelper::getWeekdayLetter(null, 1);
 		$day_name[0] = '<span class="sunday">' .   $day_name[0] . '</span>';
 		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
-		
+
 		$tosend = '';
 
 		if( $reccurweekdays === '' ){
@@ -532,7 +540,7 @@ class JEventsHTML{
 		if( $format_type == 3 ){
 			return JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_".$type),$datestp);
 		}
-		
+
 		switch( $type ){
 			case '0':
 				if( $format_type == 0 ){
@@ -673,17 +681,17 @@ class JEventsHTML{
 
 			case 'start':
 				$html = "\n" . '<script type="text/javascript">' . "\n"
-						. "/* <![CDATA[ */\n"
-						. "// inserted by JEvents\n";
+				. "/* <![CDATA[ */\n"
+				. "// inserted by JEvents\n";
 				break;
 			case 'end':
 				$html = "\n".'/* ]]> */'."\n"
-						. '</script>'."\n";
+				. '</script>'."\n";
 				break;
 			default;
-				$html = '<!-- wrong javascript tag parameter-->'."\n";
+			$html = '<!-- wrong javascript tag parameter-->'."\n";
 		}
 		return $html;
 	}
-	
+
 }

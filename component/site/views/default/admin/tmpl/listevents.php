@@ -5,7 +5,7 @@ $this->_header();
 $this->_showNavTableBar();
 
 $user = & JFactory::getUser();
-if (!( strtolower( $user->usertype ) == '')) {
+if (!( strtolower( JEVHelper::getUserType($user) ) == '')) {
 	echo $this->loadTemplate("body");
 }
 

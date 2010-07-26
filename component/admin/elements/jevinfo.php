@@ -72,8 +72,6 @@ class JElementJevinfo extends JElement
 	*/
 	function help ( $help='help text', $caption='') {
 
-		global $mainframe;
-
 		$compath = JURI::root() . 'administrator/components/'.JEV_COM_COMPONENT;
 		$imgpath = $compath . '/assets/images';
 

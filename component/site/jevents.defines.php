@@ -31,7 +31,6 @@ JLoader::register('JevRegistry',JEV_PATH."/libraries/registry.php");
 
 JLoader::register('SaveIcalEvent',JEV_ADMINLIBS."saveIcalEvent.php");
 
-JLoader::register('JEVAccess',JEV_PATH."/libraries/access.php");
 JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
 
 // TODO replace with JDate

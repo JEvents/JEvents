@@ -30,7 +30,7 @@ class JEventsDBModel {
 
 	function accessibleCategoryList($aid=null, $catids=null, $catidList=null) {
 
-		global $mainframe;
+		
 
 		$db	=& JFactory::getDBO();
 		if (is_null($aid)) {
@@ -65,7 +65,7 @@ class JEventsDBModel {
 				$where = ' AND (c.id IN (' . $catidList .') OR p.id IN (' . $catidList .')  OR gp.id IN (' . $catidList .') OR ggp.id IN (' . $catidList .'))';
 			}
 
-			$q_published = $mainframe->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.id"
 			. "\n FROM #__categories AS c"
 			. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
@@ -87,7 +87,7 @@ class JEventsDBModel {
 	}
 
 	function getCategoryInfo($catids=null,$aid=null){
-		global $mainframe;
+		
 		$db	=& JFactory::getDBO();
 		if (is_null($aid)) {
 			$aid = $this->datamodel->aid;
@@ -116,7 +116,7 @@ class JEventsDBModel {
 				$where = ' AND c.id IN (' . $catidList .') ';
 			}
 
-			$q_published = $mainframe->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
 			. "\n FROM #__categories AS c"
 			. "\n WHERE c.access <= $aid"
@@ -135,7 +135,7 @@ class JEventsDBModel {
 	}
 
 	function getChildCategories($catids=null,$levels=1,$aid=null){
-		global $mainframe;
+		
 		$db	=& JFactory::getDBO();
 		if (is_null($aid)) {
 			$aid = $this->datamodel->aid;
@@ -166,7 +166,7 @@ class JEventsDBModel {
 			// TODO check if this should also check abncestry based on $levels
 			$where .= ' AND p.id IS NOT NULL ';
 
-			$q_published = $mainframe->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
 			. "\n FROM #__categories AS c"
 			. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
@@ -280,8 +280,8 @@ class JEventsDBModel {
 		. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access <= ".JEVHelper::getAid($user)
+		. "  AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
 		// published state is now handled by filter
 		//. "\n AND ev.state=1"
 		. ($needsgroup?"\n GROUP BY rpt.rp_id":"")
@@ -382,8 +382,8 @@ class JEventsDBModel {
 		*/
 
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access <= ".JEVHelper::getAid($user)
+		. "  AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
 		// published state is now handled by filter
 		//. "\n AND ev.state=1"
 		. ($needsgroup?"\n GROUP BY rpt.rp_id":"")
@@ -404,7 +404,7 @@ class JEventsDBModel {
 		$db	=& JFactory::getDBO();
 		$db->setQuery( $query );
 		$user = JFactory::getUser();
-		if ($user->usertype=="Super Administrator"){
+		if (JEVHelper::getUserType($user)=="Super Administrator"){
 			//echo $db->_sql;
 			//echo $db->explain();
 		}
@@ -415,7 +415,7 @@ class JEventsDBModel {
 		}
 
 		$icalrows = $db->loadObjectList();
-		if ($user->usertype=="Super Administrator"){
+		if (JEVHelper::getUserType($user)=="Super Administrator"){
 			echo $db->getErrorMsg();
 		}
 		$icalcount = count($icalrows);
@@ -545,8 +545,8 @@ class JEventsDBModel {
 		. "\n OR (rpt.startrepeat <= '$startdate' AND rpt.endrepeat >= '$enddate'))"
 		*/
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access <= ".JEVHelper::getAid($user)
+		. "  AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
 		// published state is not handled by filter
 		//. "\n AND ev.state=1"
 		;
@@ -640,8 +640,8 @@ class JEventsDBModel {
 		. "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) "
 
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access <= ".JEVHelper::getAid($user)
+		. "  AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
 		;
 		if (!$showrepeats){
 			$query .="\n GROUP BY ev.ev_id";
@@ -699,7 +699,7 @@ class JEventsDBModel {
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. $extrajoin
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
-			. "\n AND ev.access <= ".$user->aid
+			. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. $extrawhere
 			. "\n AND rpt.rp_id = '$rpid'";
 			$query .="\n GROUP BY rpt.rp_id";
@@ -765,7 +765,7 @@ class JEventsDBModel {
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. $extrajoin
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
-			. "\n AND ev.access <= ".$user->aid
+			. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. $extrawhere
 			. "\n AND ev.ev_id = '$evid'"
 			. "\n GROUP BY rpt.rp_id"
@@ -863,7 +863,7 @@ class JEventsDBModel {
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. $extrawhere
 		. $where
-		//. "\n AND ev.access <= ".$user->aid
+		//. "\n AND ev.access <= ".JEVHelper::getAid($user)
 		. "\n AND icsf.state=1"
 		. "\n GROUP BY ev.ev_id"
 		. "\n ORDER BY dtstart ASC"
@@ -933,7 +933,7 @@ class JEventsDBModel {
 			. $extrawhere
 			. $where
 			. "\n  AND icsf.state=1"
-			//. "\n AND ev.access <= ".$user->aid
+			//. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n GROUP BY rpt.rp_id"
 			. "\n ORDER BY rpt.startrepeat"
 			. "\n $limit";
@@ -962,7 +962,7 @@ class JEventsDBModel {
 			. $extrawhere
 			. $where
 			. "\n  AND icsf.state=1"
-			//. "\n AND ev.access <= ".$user->aid
+			//. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n GROUP BY rpt.rp_id"
 			. "\n ORDER BY rpt.startrepeat"
 			;
@@ -979,7 +979,7 @@ class JEventsDBModel {
 			. $extrawhere
 			. "\n AND icsf.state=1"
 			. $where
-			//. "\n AND ev.access <= ".$user->aid
+			//. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n GROUP BY rpt.rp_id"
 			. "\n ORDER BY rpt.startrepeat"
 			. "\n $limit";
@@ -1003,7 +1003,7 @@ class JEventsDBModel {
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 			. $where
-			//. "\n AND ev.access <= ".$user->aid
+			//. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n AND icsf.state=1"
 			. "\n GROUP BY rpt.rp_id"
 			. "\n ORDER BY rpt.startrepeat"
@@ -1198,7 +1198,7 @@ class JEventsDBModel {
 			. $extrawhere
 			//. "\n AND ev.state=1"
 			. "\n  AND icsf.state=1"
-			. "\n AND ev.access <= ".$user->aid
+			. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n GROUP BY rpt.rp_id"
 			. $order
 			. $limit;
@@ -1214,7 +1214,7 @@ class JEventsDBModel {
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 			. $extrawhere
 			. "\n  AND icsf.state=1"
-			. "\n AND ev.access <= ".$user->aid
+			. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. "\n GROUP BY ev.ev_id"
 			;
 
@@ -1242,7 +1242,7 @@ class JEventsDBModel {
 			. $extrawhere
 			//. "\n AND ev.state=1"
 			. "\n  AND icsf.state=1"
-			. "\n AND ev.access <= ".$user->aid
+			. "\n AND ev.access <= ".JEVHelper::getAid($user)
 			. ($needsgroup?"\n GROUP BY rpt.rp_id":"")
 			. $order
 			. $limit;
@@ -1440,8 +1440,8 @@ class JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 		. $extrajoin
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
-		. "\n AND icsf.state=1 AND icsf.access <= ".$user->aid
-		. "\n AND ev.access <= ".$user->aid
+		. "\n AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
+		. "\n AND ev.access <= ".JEVHelper::getAid($user)
 		. "\n AND ";
 		$query .= $searchpart;
 		$query .= $extrawhere;
@@ -1465,8 +1465,8 @@ class JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 		. $extrajoin
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
-		. "\n  AND icsf.state=1 AND icsf.access <= ".$user->aid
-		. "\n AND ev.access <= ".$user->aid;
+		. "\n  AND icsf.state=1 AND icsf.access <= ".JEVHelper::getAid($user)
+		. "\n AND ev.access <= ".JEVHelper::getAid($user);
 		$query .= " AND ";
 		$query .= $searchpart;
 		$query .= $extrawhere;
@@ -1475,7 +1475,7 @@ class JEventsDBModel {
 		$query .= "\n $limitstring";
 
 		$db->setQuery( $query );
-		if ($user->usertype=="Super Administrator"){
+		if (JEVHelper::getUserType($user)=="Super Administrator"){
 			//echo $db->_sql;
 			//echo $db->explain();
 		}

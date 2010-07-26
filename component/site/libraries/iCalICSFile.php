@@ -401,13 +401,13 @@ RAWTEXT;
 				$db->setQuery( $query);
 				$db->query();
 
-				global $mainframe;
-				$mainframe->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
+				
+				JFactory::getApplication()->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
 			}
 		}
 
-		global $mainframe;
-		$mainframe->enqueueMessage(count($this->_icalInfo->vevents) . ' iCal events processed');
+		
+		JFactory::getApplication()->enqueueMessage(count($this->_icalInfo->vevents) . ' iCal events processed');
 	}
 
 	// find if icsFile already imported

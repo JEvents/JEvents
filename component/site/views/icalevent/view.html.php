@@ -102,8 +102,8 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 		echo $barhtml;
-		global $mainframe;
-		$title = $mainframe->get('JComponentTitle');
+		
+		$title = JFactory::getApplication()->get('JComponentTitle');
 		echo $title;
 ?>
 		</div>

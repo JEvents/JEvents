@@ -108,7 +108,7 @@ class TableUser extends JTable
 
 		$total = count($users);
 
-		global $option;
+		$option = JEV_COM_COMPONENT;
 		$app	= &JFactory::getApplication();
 		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );

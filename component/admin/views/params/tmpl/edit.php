@@ -31,37 +31,6 @@ $version = JEventsVersion::getInstance();
 				$strings=array();
 				$tips=array();
 				foreach ($groups as $group=>$count) {
-					/*
-					if ($group == "_default") continue;
-					$temp = $this->params->_xml[ $group]->children();
-					foreach ($temp as $node) {
-					$desc = $node->attributes("label");
-					$tip = $node->attributes("description");
-					if ($desc!="" && in_array($desc,$strings)) {
-							echo "dup desc $desc<br/>";
-					}
-					$strings[] = $desc;
-						if ($tip!="" && in_array($tip,$tips)) {
-							echo "dup tip $desc<br/>";
-					}
-					$tips[] = $tip;
-					}
-					// data check for old config
-					$temp = $this->params->_xml[ $group]->children();
-					foreach ($temp as $node) {
-					$name= $node->attributes("name");
-					if (!array_key_exists($name,$names) && $name!="@spacer") {
-					$cfg = & JEVConfig::getInstance();
-					$oldvalue = $cfg->get($name,-999);
-					if ($oldvalue>-999){
-					if ($oldvalue != $node->attributes('default')){
-					echo "name = $name old =$oldvalue current default =".$node->attributes('default')."<br/>";
-					}
-					}
-					$names[$name]=$node;
-					}
-					}
-					*/
 					if ($group!="_default" && $count>0){
 						echo $tabs->startPanel( JText::_($group), 'config_'.str_replace(" ","_",$group));
 						echo $this->params->render('params',$group);
@@ -85,9 +54,10 @@ $version = JEventsVersion::getInstance();
 			else {
 				echo $this->params->render();
 			}
-
-
-	        ?>
+		?>
+	
+		<div class="clr"></div>
+	        
 		</fieldset>
 
 		<input type="hidden" name="id" value="<?php echo $this->component->id;?>" />

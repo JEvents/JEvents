@@ -54,11 +54,11 @@ class AdminIcalsController extends JController {
 		$option = JEV_COM_COMPONENT;
 		$db	=& JFactory::getDBO();
 
-		global $mainframe;
-		$catid		= intval( $mainframe->getUserStateFromRequest( "catid{$option}", 'catid', 0 ));
-		$limit		= intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
-		$limitstart = intval( $mainframe->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ));
-		$search		= $mainframe->getUserStateFromRequest( "search{$option}", 'search', '' );
+		
+		$catid		= intval( JFactory::getApplication()->getUserStateFromRequest( "catid{$option}", 'catid', 0 ));
+		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
+		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ));
+		$search		= JFactory::getApplication()->getUserStateFromRequest( "search{$option}", 'search', '' );
 		$search		= $db->getEscaped( trim( strtolower( $search ) ) );
 		$where		= array();
 
@@ -145,7 +145,7 @@ class AdminIcalsController extends JController {
 
 	function edit () {
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -173,8 +173,8 @@ class AdminIcalsController extends JController {
 		$this->view->setLayout('edit');
 
 		// for Admin interface only
-		global $mainframe;
-		$this->view->assign('with_unpublished_cat',$mainframe->isAdmin());
+		
+		$this->view->assign('with_unpublished_cat',JFactory::getApplication()->isAdmin());
 
 		$this->view->assign('editItem',$item);
 		$this->view->assign('option',JEV_COM_COMPONENT);
@@ -186,8 +186,8 @@ class AdminIcalsController extends JController {
 	function save(){
 
 		$authorised = false;
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
 		}
 		else {
@@ -211,7 +211,7 @@ class AdminIcalsController extends JController {
 			}
 		}
 		$user =& JFactory::getUser();
-		if (!($authorised || strtolower($user->usertype)=="super administrator" || strtolower($user->usertype)=="administrator")) {
+		if (!($authorised || strtolower(JEVHelper::getUserType($user))=="super administrator" || strtolower(JEVHelper::getUserType($user))=="administrator")) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -226,7 +226,7 @@ class AdminIcalsController extends JController {
 		$db	=& JFactory::getDBO();
 
 		// include ical files
-		global $mainframe;
+		
 
 		if ($icsid>0 || $cid!=0){
 			$icsid = ($icsid>0)?$icsid:$cid;
@@ -329,8 +329,8 @@ class AdminIcalsController extends JController {
 	 */
 	function savedetails(){
 		$authorised = false;
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
 		}
 		else {
@@ -338,7 +338,7 @@ class AdminIcalsController extends JController {
 		}
 
 		$user =& JFactory::getUser();
-		if (!($authorised || strtolower($user->usertype)=="super administrator" || strtolower($user->usertype)=="administrator")){
+		if (!($authorised || strtolower(JEVHelper::getUserType($user))=="super administrator" || strtolower(JEVHelper::getUserType($user))=="administrator")){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -355,7 +355,7 @@ class AdminIcalsController extends JController {
 		$db	=& JFactory::getDBO();
 
 		// include ical files
-		global $mainframe;
+		
 
 		if ($icsid>0 || $cid!=0){
 			$icsid = ($icsid>0)?$icsid:$cid;
@@ -426,7 +426,7 @@ class AdminIcalsController extends JController {
 
 	function toggleICalPublish($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -454,7 +454,7 @@ class AdminIcalsController extends JController {
 
 	function toggleAutorefresh($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -482,7 +482,7 @@ class AdminIcalsController extends JController {
 
 	function toggleDefault($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -515,8 +515,8 @@ class AdminIcalsController extends JController {
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
 			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT') );
-			global $mainframe;
-			$mainframe->redirect( 'index2.php?option=' . $option);
+			
+			JFactory::getApplication()->redirect( 'index.php?option=' . $option);
 			return;
 		}
 		$icsid = 0;
@@ -597,8 +597,8 @@ class AdminIcalsController extends JController {
 		$component_name = "com_jevents";
 
 		$db	=& JFactory::getDBO();
-		$query = "SELECT count(*) as count FROM #__categories"
-		. "\n WHERE section='$component_name'";
+		if (JVersion::isCompatible("1.6.0"))  $query = "SELECT count(*) as count FROM #__categories WHERE extension='$component_name'";
+		else $query = "SELECT count(*) as count FROM #__categories WHERE section='$component_name'";
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
 		if ($count<=0){

@@ -32,7 +32,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		if ($modid<0){
 			$modid = 0;
 		}
-		global  $mainframe;
+		
 		$cfg = & JEVConfig::getInstance();
 
 		$db	=& JFactory::getDBO();
@@ -56,7 +56,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 			. "\n FROM #__modules AS m"
 			. "\n WHERE m.published = 1"
 			. "\n AND m.id = ". $modid
-			. "\n AND m.access <= ". (int) $user->aid
+			. "\n AND m.access <= ". (int) JEVHelper::getAid($user)
 			. "\n AND m.client_id != 1";
 			$db	=& JFactory::getDBO();
 			$db->setQuery( $query );

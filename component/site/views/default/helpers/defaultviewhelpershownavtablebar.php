@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperShowNavTableBar($view){
 	// this, previous and next date handling
-	global $mainframe;
+	
 
 	$cfg = & JEVConfig::getInstance();
 

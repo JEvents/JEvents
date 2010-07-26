@@ -30,6 +30,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CREATOR LAB
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CREATOR",true);?>", "CREATOR");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD HITS",true);?>", "HITS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD DESCRIPTION",true);?>", "DESCRIPTION");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD TRUNCATED DESCRIPTION",true);?>", "TRUNCATED_DESC:20");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD LOCATION_LABEL",true);?>", "LOCATION_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD LOCATION",true);?>", "LOCATION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CONTACT_LABEL",true);?>", "CONTACT_LABEL");

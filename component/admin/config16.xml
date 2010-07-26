@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset addpath="/administrator/components/com_jevents/elements/" >
+
+		<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<option value="-1">HIDE ALTOGETHER</option>
+			<option value="2">ICONS WITHOUT NAVIGATION</option>
+		</field>
+
+		<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
+		<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid5" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid6" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid7" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<field name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		
+		<field name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />	
+		<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras14" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<field name="extras15" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+
+		<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+		</field>		
+		
+		<field name="@spacer" type="jevinfo"  default="Advanced Settings" label="" description="" />	
+		<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+	</fieldset>
+
+	<fieldset name="component" label="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/elements"  >
+		<field name="com_calViewName" type="jevview" default="default" menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+
+		<field name="com_dateformat" type="list" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC">
+			<option value="0">French-English</option>
+			<option value="1">US</option>
+			<option value="2">Continental - German</option>
+			<option value="3">FromLanguage File</option>
+		</field>		
+		<field name="com_calUseStdTime" type="jevboolean" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
+		<field name="com_blockRobots" type="radio" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<option value="2">JEV_CONDITIONAL</option>
+			<option value="3">JEV_ALLOW_DETAIL_INDEXING</option>
+		</field>
+		<field name="robotprior" type="list" default="-1 month" menu="hide" label="JEV_ROBOTS_PRIOR" description="JEV_ROBOTS_PRIOR_TIP">
+			<option value="-1 day">JEV_1_DAY</option>
+			<option value="-1 month">JEV_1_MONTH</option>
+			<option value="-3 months">JEV_3_MONTHS</option>
+			<option value="-1 year">JEV_1_YEAR</option>
+		</field>
+		<field name="robotpost" type="list" default="+1 month" menu="hide" label="JEV_ROBOTS_POST" description="JEV_ROBOTS_POST_TIP">
+			<option value="+1 day">JEV_1_DAY</option>
+			<option value="+1 month">JEV_1_MONTH</option>
+			<option value="+3 months">JEV_3_MONTHS</option>
+			<option value="+1 year">JEV_1_YEAR</option>
+			<option value="+3 years">JEV_3_YEARS</option>
+		</field>
+		
+		<field name="com_cache" type="jevboolean" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
+
+		<field name="com_calHeadline" type="list" default="comp" menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
+			<option value="comp">JEV_HEADLINE_COMP</option>
+			<option value="none">JEV_HEADLINE_NONE</option>
+			<option value="menu">JEV_HEADLINE_MENU</option>
+		</field>
+		<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<option value="-1">HIDE ALTOGETHER</option>
+			<option value="2">ICONS WITHOUT NAVIGATION</option>
+		</field>
+		<field name="com_navbarcolor" type="list" default="green" menu="hide" label="JEV_NAV_BAR_COLOR" description="">
+			<option value="green">JEV_NAV_BAR_GREEN</option>
+			<option value="orange">JEV_NAV_BAR_ORANGE</option>
+			<option value="blue">JEV_NAV_BAR_BLUE</option>
+			<option value="red">JEV_NAV_BAR_RED</option>
+			<option value="gray">JEV_NAV_BAR_GRAY</option>
+			<option value="yellow">JEV_NAV_BAR_YELLOW</option>
+		</field>
+		<field name="com_earliestyear" type="text" default="2000" menu="hide" size="6" label="JEV_EARLIEST_YEAR" description=""/>
+		<field name="com_latestyear" type="text" default="2015" menu="hide" size="6"  label="JEV_LATEST_YEAR" description=""/>
+		<field name="com_starday" type="list" default="0" menu="hide" label="JEV_FIRST_DAY" description="">
+			<option value="0">JEV_SUNDAY_FIRST</option>
+			<option value="1">JEV_MONDAY_FIRST</option>
+		</field>
+		<field name="com_print_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
+		<field name="com_email_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
+		<field name="com_hideshowbycats" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_CATS" description="" />
+		<field name="installlayouts" type="jevboolean" default="0" menu="hide" label="JEV_INSTALL_LAYOUTS" description="JEV_INSTALL_LAYOUTS_TIP" />
+		<field name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
+		<field name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP"/>
+		<field name="showPanelNews" type="jevboolean" default="1" label="JEV News" description="CPANEL_NEWS_HELP" />
+		<field name="hideMigration" type="jevboolean" default="1" label="JEV HIDE MIGRATION" description="" />
+
+		<field name="@spacer" type="jevinfo" default="JEV TIMEZONE INFO 2"  menu="hide" label="" description="" />	
+		<!-- TIMEZONE DATA //-->
+		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
+		<field name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV TIMEZONE 2" description="JEV TIMEZONE 2 DESC"/>
+		
+		<field name="regexsearch" type="list" default="1" label="JEV_SEARCH_TYPE" description="JEV_SEARCH_TYPE_DESC">
+			<option value="0">JEV REGEX</option>
+			<option value="1">JEV FULL TEXT</option>
+		</field>		
+		
+		<field name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC"/>
+		
+		<field name="allowraw" type="jevboolean" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/>
+
+		<!--//
+		<field name="jevkey" type="jevkey" default="" menu="hide" size="40" label="Copyright message key" description="Please use this key code at the JEvents website to obtain a free code that will disable the copyright message" />
+		<field name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label="Copyright unlock code" description="You can obtain this free code from the JEvents Website" />
+		//-->
+	</fieldset>
+	
+	<fieldset name="permissions" label="Permissions">	
+		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label="Admin User" description="JEvents Administrator = must be at least Publisher User Level" />
+		<field name="authorisedonly" type="jevboolean" default="0" menu="hide" label="Enable User Authorisation" description="If yes then only authorised users can create events etc. otherwise any user of the following levels can undertake these tasks."/>
+		
+		<field name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label="Creator User Level" description="User Level required to be event creator" />
+		<field name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label="Editor User Level" description="User Level required to be event editor" />
+		<field name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label="Publisher User Level" description="User Level required to be publish and mangage events" />
+		<field name="jevpublishown" type="jevboolean" default="0" menu="hide" label="CAN PUBLISH OWN" description="JEVPUBLISH OWN TIP" />
+	</fieldset>
+		
+	<fieldset  name='ical' label="JEV Ical Calendar">	
+		<field name="@spacer" type="jevinfo" default="JEV TIMEZONE INFO"  menu="hide" label="" description="" />	
+		<!-- TIMEZONE DATA //-->
+		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
+		<field name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV TIMEZONE" description="JEV TIMEZONE DESC"/>
+		<!-- 
+		<field name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV TIMEZONE" description="JEV TIMEZONE DESC"/>
+		//-->
+		<field name="icalkey" type="text" default="secret phrase" menu="hide" size="50" label="JEV ICAL KEY" description="JEV ICAL KEY DESC"/>
+		<field name="showicalicon" type="jevboolean" default="0" menu="hide" label="JEV SHOW ICAL ICON" description="JEV SHOW ICAL ICON DESC"/>		
+		<field name="disableicalexport" type="jevboolean" default="0" menu="hide" label="JEV DISABLE ICAL EXPORT" description="JEV DISABLE ICAL EXPORT DESC"/>		
+		<field name="outlook2003icalexport" type="jevboolean" default="0" menu="hide" label="JEV ADD SPECIAL EXPORT FOR OUTLOOK 2003" description="JEV ADD SPECIAL EXPORT FOR OUTLOOK 2003 DESC"/>		
+		<field name="icalmultiday" type="jevboolean" default="0" menu="hide" label="JEV_ICAL_MULTIDAY" description="JEV_ICAL_MULTIDAY_TIP" />
+		<field name="icalmultiday24h" type="jevboolean" default="0" menu="hide" label="JEV_MULTIDAY24" description="JEV_MULTIDAY24_TIP" />
+
+		<field name="feimport" type="jevboolean" default="0" menu="hide" label="JEV_FRONTENDIMPORT" description="JEV_FRONTENDIMPORT_TIP" />
+		<field name="allowedit" type="jevboolean" default="0" menu="hide" label="JEV ALLOW ICAL EDIT" description="JEV ALLOW ICAL EDIT DESC"/>		
+
+		<field name="icalformatted" type="jevboolean" default="0" menu="hide" label="JEV ICAL DESCRIPTIONS FORMATTED" description="JEV ICAL DESCRIPTIONS FORMATTED DESC"/>		
+
+	</fieldset>
+
+	<fieldset name='editing' label="Event Editing">
+		<field name="editpopup" type="jevboolean" default="0" menu="hide" label="Frontend edit in popup" description="If yes then frontend editing takes place in modal window."/>
+		<field name="disablerepeats" type="jevboolean" default="0" menu="hide" label="JEV DISABLE REPEATING EVENTS" description="JEV DISABLE REPEATING EVENTS DESC"/>
+		<field name="popupw" type="text" default="800" size="6" menu="hide" label="Popup Window Width" description="Width for modal window."/>
+		<field name="popuph" type="text" default="500" size="6" menu="hide" label="Popup Window Height" description="Height for modal window."/>
+		<field name="defaultcat" type="jevboolean" default="0" menu="hide" label="JEV Use Default Cat" description="JEV Use Default Cat tip" />
+		<field name="forcepopupcalendar" type="jevboolean" default="1" menu="hide" label="JEV FORCE POPUP CAL" description="JEV FORCE POPUP CAL TIP" />
+		<field name="com_calForceCatColorEventForm" type="list" default="2" menu="hide" label="JEV_DEF_EC_HIDE_FORCE" description="JEV_TIP_DEF_EC_HIDE_FORCE">
+			<option value="0">JEV_EVENT_COLS_ALLOWED</option>
+			<option value="1">JEV_EVENT_COLS_BACKED</option>
+			<option value="2">JEV_ALWAYS_CAT_COLOR</option>
+		</field>
+		<!--
+		<field name="com_defColor" type="radio" default="category" menu="hide" label="JEV_DEF_EVENT_COLOR" description="">
+			<option value="none">JEV_DEF_EC_NONE</option>
+			<option value="category">JEV_DEF_EC_CATEGORY</option>
+		</field>
+		//-->
+		<field name="com_single_pane_edit" type="jevboolean" default="0" menu="hide" label="JEV_ONE_TAB_EVENT" description="JEV_ONE_TAB_EVENT_TIP" />
+		<field name="timebeforedescription" type="jevboolean" default="0" menu="hide" label="Show time details before desription?" description="Enter date and time before the event description.  This options forces single pane editing" />
+		<field name="com_show_editor_buttons" type="jevboolean" default="0" menu="hide" label="JEV_SHOW_EDITOR_BUTTONS" description="JEV_SHOW_EDITOR_BUTTONS_TIP" />
+		<field name="com_editor_button_exceptions" type="text" default="pagebreak,readmore" menu="hide" size="26" label="JEV_EDITOR_BUTTON_EXCEPTIONS" description="JEV_EDITOR_BUTTON_EXCEPTIONS_TIP"/>
+		<field name="com_notifyboth" type="jevboolean" default="0" menu="hide" label="JEV_NOTIFY" description="JEV_NOTIFY_TIP" />
+		<field name="com_notifyallevents" type="jevboolean" default="0" menu="hide" label="JEV_NOTIFYALL" description="JEV_NOTIFYALL_TIP" />
+		<field name="com_notifyauthor" type="jevboolean" default="0" menu="hide" label="JEV_NOTIFY_AUTHOR" description="JEV_NOTIFY_AUTHOR_TIP" />
+		<field name="showpriority" type="jevboolean" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" />
+		<field name="multiday" type="jevboolean" default="1" menu="hide" label="JEV DEFAULT MULTIDAY" description="JEV DEFAULT MULTIDAY DESC" />
+				
+		<field name="checkclashes" type="jevboolean" default="0" menu="hide" label="JEV CHECK CLASHES" description="JEV CHECK CLASHES TIP" />
+		<field name="noclashes" type="jevboolean" default="0" menu="hide" label="JEV ENSURE NO CLASHES" description="JEV ENSURE NO CLASHES TIP" />
+
+		<field name="defaultstarttime" type="text" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME" description="JEV_DEFAULT_STARTTIME_TIP"/>
+		<field name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		
+	</fieldset>
+	
+	<fieldset name='detail' label="Event Detail View">
+		<field name="com_byview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_BY" description="" />
+		<field name="com_mailview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" />
+		<field name="com_hitsview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_HITS" description="" />
+		<field name="com_repeatview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_TIME" description="" />
+	</fieldset>
+	
+	<fieldset name='monthly' label="Main Monthly Calendar">
+		<field name="@spacer" type="jevinfo" default="Settings related to Monthly view"  menu="hide" label="" description="" />	
+		<field name="com_calCutTitle" type="text" default="15" menu="hide" size="4" label="JEV_CUT_TITLE" description="JEV_TIP_CUT_TITLE"/>
+		<field name="com_calMaxDisplay" type="text" default="15" menu="hide" size="4" label="JEV_MAX_DISPLAY" description="JEV_TIP_MAX_DISPLAY"/>
+		<field name="com_calDisplayStarttime" type="jevboolean" default="1" menu="hide" label="JEV_DIS_STARTTIME" description="JEV_TIP_DIS_STARTTIME" />
+
+		<field name="@spacer" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" />	
+		<field name="com_enableToolTip" type="jevboolean" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" />			
+		<field name="tooltiptype" type="list" default="joomla" menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" >			
+			<option value="overlib">Overlib</option>
+			<option value="joomla">Joomla</option>
+		</field>
+		<field name="com_calTTBackground" type="jevboolean" default="1" class="jevp_tooltip" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" />			
+		<field name="com_calTTPosX" type="list" default="LEFT" class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX">
+			<option value="LEFT">JEV_LEFT</option>
+			<option value="CENTER">JEV_CENTER</option>
+			<option value="RIGHT">JEV_RIGHT</option>
+		</field>
+         <!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
+		<field name="com_calTTPosY" type="list" default="BELOW"  class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY">
+			<option value="BELOW">JEV_BELOW</option>
+			<option value="ABOVE">JEV_ABOVE</option>
+		</field>
+		<field name="com_calTTShadow" type="jevboolean" default="0" class="jevp_tooltip" menu="hide" label="JEV_TT_SHADOW" description="" />			
+		<field name="com_calTTShadowX" type="jevboolean" default="0" class="jevp_tooltip" menu="hide" label="JEV_TT_SHADOWX" description="" />			
+		<field name="com_calTTShadowY" type="jevboolean" default="0" class="jevp_tooltip" menu="hide" label="JEV_TT_SHADOWY" description="" />					
+	</fieldset>
+	
+	<fieldset name='yearly' label="Year/Category View">
+		<field name="@spacer" type="jevinfo" default="Settings related to Yearly and Category view"  menu="hide" label="" description="" />	
+		<field name="com_calEventListRowsPpg" type="list" default="10" menu="hide" label="JEV_NR_OF_LIST" description="JEV_TIP_NR_OF_LIST">
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="15">15</option>
+			<option value="20">20</option>
+			<option value="25">25</option>
+			<option value="30">30</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+			<option value="0">ALL</option>
+		</field>
+		<field name="showyearpast" type="radio" default="1" menu="hide" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+		</field>		
+
+		<field name="@spacer" type="jevinfo" default="Settings related to Yearly view"  menu="hide" label="" description="" />	
+		<field name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
+		<field name="showyeardate" type="jevboolean" default="0" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" />
+	</fieldset>
+	
+	<fieldset name='rss' label="JEV_TAB_RSS">
+		<field name="@spacer" type="jevinfo" default="JEV_SETT_FOR_RSS"  menu="hide" label="" description="" />	
+		<field name="com_rss_cache" type="jevboolean" default="1" menu="hide" label="JEV_RSS_CACHE" description="" />
+		<field name="com_rss_cache_time" type="text" default="3600" menu="hide" size="6" label="JEV_RSS_CTIME" description=""/>
+		<field name="com_rss_count" type="text" default="5" menu="hide" size="6" label="JEV_RSS_LIMIT" description=""/>
+		<field name="com_rss_live_bookmarks" type="jevboolean" default="1" menu="hide" label="JEV_RSS_LIVE_BOOKMARKS" description="JEV_RSS_LIVE_BOOKMARKS_TIP" />
+		
+		<field name="com_rss_modid" type="rssmod" default="0" menu="hide" label="JEV_RSS_MODID" description="JEV_RSS_MODID_TIP" />
+		<field name="com_rss_title" type="text" default="JEvents Syndication for Joomla" menu="hide" size="50" label="JEV_RSS_TITLE" description=""/>
+		<field name="com_rss_description" type="textarea" default="Powered by JEvents!" menu="hide" rows="5" cols="40" label="JEV_RSS_DESCRIPTION" description=""/>
+		<field name="com_rss_limit_text" type="jevboolean" default="0" menu="hide" label="JEV_RSS_LIMIT_TEXT_LENGTH" description="" />
+		<field name="com_rss_text_length" type="text" default="20" menu="hide" size="3" label="JEV_RSS_TEXT_LIMIT" description=""/>
+		<field name="com_rss_logo" type="text" default="" menu="hide" size="60" label="JEV_RSS_LOGO" description=""/>
+	</fieldset>
+	
+	<fieldset name='calmod' label="JEV_TAB_CAL_MOD">
+		<field name="@spacer" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD"  menu="hide" label="" description="" />	
+		
+		<field name="modcal_DispLastMonth" type="list" default="NO" menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="">
+			<option value="NO">JEV_NO</option>
+			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
+			<option value="ALWAYS">JEV_ALWAYS</option>
+			<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
+		</field>
+		<field name="modcal_DispLastMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY"/>
+		
+		<field name="modcal_DispNextMonth" type="list" default="NO" menu="hide" label="JEV_DISPLAY_NEXT_MONTH" description="">
+			<option value="NO">JEV_NO</option>
+			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
+			<option value="ALWAYS">JEV_ALWAYS</option>
+			<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
+		</field>
+		<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY"/>
+		<field name="modcal_LinkCloaking" type="jevboolean" default="0" menu="hide" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
+	</fieldset>
+
+	<fieldset name='latest' label="JEV_TAB_LATEST_MOD">
+		<field name="@spacer" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_main_help::Module"/>	
+		
+		<field name="modlatest_MaxEvents" type="text" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP"/>
+
+		<field name="modlatest_Mode" type="list" default="0" menu="hide" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</field>		
+		<field name="modlatest_Days" type="text" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP"/>
+		<field name="startnow" type="jevboolean" default="0" label="START NOW" description="START NOW DESC" />		
+		<field name="modlatest_NoRepeat" type="jevboolean" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" />
+		<field name="modlatest_DispLinks" type="jevboolean" default="1" menu="hide" label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP" />
+		<field name="modlatest_DispYear" type="jevboolean" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" />		
+		<field name="modlatest_DisDateStyle" type="jevboolean" default="0" menu="hide" label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP" />
+		<field name="modlatest_DisTitleStyle" type="jevboolean" default="0" menu="hide" label="JEV_LEV_CSS_TITLE_FIELD" description="JEV_LEV_CSS_TITLE_FIELD_TIP"/>
+		<field name="modlatest_LinkToCal" type="radio" default="0" menu="hide" label="JEV_LEV_LINKCAL_FIELD" description="JEV_LEV_LINKCAL_FIELD_TIP">
+			<option value="0">JEV_LEV_NOLINK</option>
+			<option value="1">JEV_LEV_FIRSTLINE</option>
+			<option value="2">JEV_LEV_LASTLINE</option>
+		</field>		
+		<field name="modlatest_LinkCloaking" type="jevboolean" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" />
+		<field name="modlatest_SortReverse" type="jevboolean" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" />
+		<field name="@spacer" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_custformstr_help::Event Fields,mod_events_latest.php::_cal_lang_lev_date_help::date(),mod_events_latest.php::_cal_lang_lev_strftime_help::strftime()"/>	
+		<field name="modlatest_CustFmtStr" type="textarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP"/>
+		<field name="modlatest_RSS" type="jevboolean" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" />			
+		<field name="modlatest_contentplugins" type="jevboolean" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" />
+
+	</fieldset>
+</config>

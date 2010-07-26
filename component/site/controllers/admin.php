@@ -45,9 +45,9 @@ class AdminController extends JController   {
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
-		global $mainframe;
+		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval($mainframe->getUserStateFromRequest( 'jevlistlimit','limit', $params->getValue("com_calEventListRowsPpg",15)));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->getValue("com_calEventListRowsPpg",15)));
 
 		$Itemid	= JEVHelper::getItemid();
 
@@ -56,7 +56,7 @@ class AdminController extends JController   {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$adminuser = $params->get("jevadmin",-1);
 		
-		if( strtolower( $user->usertype ) == 'administrator' || strtolower( $user->usertype ) == 'super administrator' || $user->id==$adminuser) {
+		if( strtolower( JEVHelper::getUserType($user) ) == 'administrator' || strtolower( JEVHelper::getUserType($user) ) == 'super administrator' || $user->id==$adminuser) {
 			$creator_id = 'ADMIN';
 		}else{
 			$creator_id = $user->id;

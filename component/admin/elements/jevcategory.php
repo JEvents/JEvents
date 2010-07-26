@@ -31,29 +31,38 @@ class JElementJevcategory extends JElement
 
 		$db = &JFactory::getDBO();
 
-		$section	= $node->attributes('section');
+		if (JVersion::isCompatible("1.6.0"))  {
+			$extension	= $node->attributes('extension');
+		}
+		else {
+			$section	= $node->attributes('section');
+			if (!isset ($section)) {
+				// alias for section
+				$section = $node->attributes('scope');
+				if (!isset ($section)) {
+					$section = 'content';
+				}
+			}
+		}
 		$class		= $node->attributes('class');
 		if (!$class) {
 			$class = "inputbox";
 		}
 
-		if (!isset ($section)) {
-			// alias for section
-			$section = $node->attributes('scope');
-			if (!isset ($section)) {
-				$section = 'content';
-			}
-		}
-
 		$query = 'SELECT c.id, c.title as ctitle,p.title as ptitle, gp.title as gptitle, ggp.title as ggptitle, ' .
-				' CASE WHEN CHAR_LENGTH(p.title) THEN CONCAT_WS(" => ", p.title, c.title) ELSE c.title END as title'.
-				' FROM #__categories AS c' .
-				' LEFT JOIN #__categories AS p ON p.id=c.parent_id' .
-				' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' .
-				' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
-				//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
-				' WHERE c.published = 1 ' .
-				' AND c.section = '.$db->Quote($section);
+		' CASE WHEN CHAR_LENGTH(p.title) THEN CONCAT_WS(" => ", p.title, c.title) ELSE c.title END as title'.
+		' FROM #__categories AS c' .
+		' LEFT JOIN #__categories AS p ON p.id=c.parent_id' .
+		' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' .
+		' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
+		//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
+		' WHERE c.published = 1 ' ;
+		if (JVersion::isCompatible("1.6.0"))  {
+			$query .= ' AND c.extension = '.$db->Quote($extension);
+		}
+		else {
+			$query .= ' AND c.section = '.$db->Quote($section);
+		}
 
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
@@ -71,7 +80,7 @@ class JElementJevcategory extends JElement
 			}
 			/*
 			if (!is_null($option->gggptitle)){
-				$title = $option->gggptitle."=>".$title;
+			$title = $option->gggptitle."=>".$title;
 			}
 			*/
 			$options[$key]->title = $title;

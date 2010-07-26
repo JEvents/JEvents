@@ -32,7 +32,10 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	$search[]="{{TITLE_LINK}}";$replace[]=ob_get_clean();
 
+	$search[]="{{TRUNCATED_DESC:.*}}";$replace[]=$event->content();
+	//	$search[]="|{{TRUNCATED_DESC:(.*)}}|";$replace[]=$event->content();
 	$search[]="{{DESCRIPTION}}";$replace[]=$event->content();
+
 	$search[]="{{CATEGORY}}";$replace[]=$event->catname();
 
 	$document = JFactory::getDocument();
@@ -215,8 +218,18 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	}
 
 	// non greedy replacement - because of the ?
-	//$template_value = preg_replace_callback('|{{.*?:|', 'cleanLabels', $template->value);
 	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template->value);
+
+	// word counts etc.
+	for ($s=0;$s<count($search);$s++){
+		if (strpos($search[$s],"TRUNCATED_DESC:")>0){
+			global $tempreplace, $tempevent, $tempsearch;
+			$tempreplace = $replace[$s];
+			$tempsearch = $search[$s];
+			$tempevent = $event;
+			$template_value = preg_replace_callback("|$tempsearch|", 'jevSpecialHandling', $template_value);
+		}
+	}
 
 	$template_value =  str_replace($search,$replace,$template_value);
 	echo $template_value;
@@ -226,8 +239,37 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 function cleanLabels($matches){
 	if (count($matches)==1){
 		$parts = explode(":",$matches[0]);
-		if (count($parts)>0) return "{{".$parts[count($parts)-1];
+		if (count($parts)>0) {
+			if (strpos($matches[0],"://")>0){
+				return "{{".$parts[count($parts)-1];
+			}
+			array_shift($parts);
+			return "{{".implode(":",$parts);
+		}
 		return "";
 	}
 	return "";
+}
+
+function jevSpecialHandling($matches){
+	if (count($matches)==1 && strpos($matches[0],":")>0){
+		global $tempreplace, $tempevent, $tempsearch;
+		$parts = explode(":",$matches[0]);
+		if (count($parts)==2){
+			$wordcount = intval(str_replace("}}","",$parts[1]));
+			$value = strip_tags($tempreplace);
+			
+			$value = str_replace("  "," ",$value);
+			$words = explode(" ",$value);
+			if (count($words)>$wordcount) {
+				$words = array_slice($words,0,$wordcount);
+				$words[]=" ...";
+			}
+			return implode(" ",$words);
+		}
+		else {
+			return $matches[0];
+		}
+	}
+	else if (count($matches)==1) return $matches[0];
 }

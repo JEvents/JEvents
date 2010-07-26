@@ -50,8 +50,8 @@ class JEventsDefaultView extends JEventsAbstractView
 		$this->jevlayout="default";	
 		
 		$this->addHelperPath(realpath(dirname(__FILE__)."/../helpers"));
-		global $mainframe;
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		
+		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
 
 		// attach data model
 		$this->datamodel  =  new JEventsDataModel();

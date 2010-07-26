@@ -51,26 +51,23 @@ class AdminCategoriesController extends JController {
 	 */
 	function overview( )
 	{
-		global $mainframe;
-		// TODO fix this when database is updated
-		$section_name  = "com_jevents";
+
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_("Not Authorised must be admin" ));
 			return;
 		}
 
-		$limit		= intval( $mainframe->getUserStateFromRequest( "cat_listlimit", 'limit', 10 ));
-		$limitstart = intval( $mainframe->getUserStateFromRequest( "cat_{$this->component}limitstart", 'limitstart', 0 ));
+		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "cat_listlimit", 'limit', 10 ));
+		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "cat_{$this->component}limitstart", 'limitstart', 0 ));
 
 		// get the filter
-		$parent	= $mainframe->getUserStateFromRequest( 'jev_parent',	'parentid',			-1,	'int' );
-		
+		$parent	= JFactory::getApplication()->getUserStateFromRequest( 'jev_parent',	'parentid',			-1,	'int' );
+
 		// get the total number of records
-		$query = "SELECT count(*) FROM $this->categoryTable"
-		. "\n WHERE section='$section_name'"	;
+		$query = "SELECT count(*) FROM $this->categoryTable WHERE section='com_jevents'"	;
 		if ($parent>=0){
 			$query .= " AND parent_id=".$parent;
 		}
@@ -87,7 +84,7 @@ class AdminCategoriesController extends JController {
 		. "\n LEFT JOIN #__groups AS g ON g.id = c.access"
 		. "\n LEFT JOIN $this->categoryTable as pc ON pc.id = c.parent_id"
 		. "\n LEFT JOIN $this->categoryExtrasTable as e ON e.id = c.id"
-		. "\n WHERE c.section='$section_name' "
+		. "\n WHERE c.section='com_jevents' "
 		. ($parent>=0?" AND c.parent_id=".$parent : "")
 		. "\n ORDER BY ordering ";
 		if ($limit>0){
@@ -96,7 +93,7 @@ class AdminCategoriesController extends JController {
 
 		$db->setQuery($sql);
 		$rows = $db->loadObjectList();
-				
+
 		$cats = array();
 		if ($rows){
 			foreach ($rows as $row) {
@@ -104,15 +101,16 @@ class AdminCategoriesController extends JController {
 				$cat->bind(get_object_vars($row));
 				// extra fields
 				$cat->_groupname = $row->_groupname;
-											
+
 				$cat->_parent = !is_null($row->parentcat)?$row->parentcat:"-";
 				$cats[$cat->id]=$cat;
 			}
 		}
-		
+
 		$sql = "SELECT DISTINCT pc.id AS value, pc.title AS text FROM $this->categoryTable as pc"
 		. "\n LEFT JOIN $this->categoryTable as cc on pc.id=cc.parent_id"
-		. "\n WHERE pc.section='$section_name' AND cc.id IS NOT NULL"
+		. "\n WHERE pc.section='com_jevents' "
+		. "\n AND cc.id IS NOT NULL"
 		. "\n ORDER BY pc.ordering ";
 
 		$db->setQuery($sql);
@@ -148,12 +146,9 @@ class AdminCategoriesController extends JController {
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
-		// TODO fix this when database is updated
-		$section_name = "com_jevents";
-
 		$user =& JFactory::getUser();
 
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -173,7 +168,8 @@ class AdminCategoriesController extends JController {
 		// get categories for parent info
 		$sql = "SELECT c.*, e.color, e.admin  FROM $this->categoryTable as c "
 		."\n LEFT JOIN $this->categoryExtrasTable as e ON c.id=e.id"
-		."\n WHERE section='$section_name' AND c.id<>$cid"
+		."\n WHERE section='com_jevents' "
+		."\n AND c.id<>$cid"
 		."\n ORDER BY ordering"
 		;
 		$db->setQuery($sql);
@@ -190,7 +186,7 @@ class AdminCategoriesController extends JController {
 			foreach ($rows as $row) {
 				$tempcat = new $this->categoryClassname($db,$this->categoryTable);
 				$tempcat->bind(get_object_vars($row));
-								
+
 				$cats[$tempcat->id]=$tempcat;
 
 			}
@@ -214,8 +210,8 @@ class AdminCategoriesController extends JController {
 		$users = array_merge( $users, $db->loadObjectList() );
 
 		$users = JHTML::_('select.genericlist',   $users, 'admin', 'class="inputbox" size="1" ', 'value', 'text', intval( $cat->getAdminId() ) );
-		
-		
+
+
 		// get list of groups
 		$query = "SELECT id AS value, name AS text"
 		. "\n FROM #__groups"
@@ -254,8 +250,8 @@ class AdminCategoriesController extends JController {
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( "Not Authorised must be admin" ));
 			return;
 		}
 
@@ -291,8 +287,8 @@ class AdminCategoriesController extends JController {
 	 */
 	function saveorder(){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin" ));
 			return;
 		}
 		$cid = JRequest::getVar(	'cid',	array(0) );
@@ -322,8 +318,8 @@ class AdminCategoriesController extends JController {
 	 */	
 	function delete(){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
 			return;
 		}
 		$cid = JRequest::getVar(	'cid',	array(0) );
@@ -344,27 +340,27 @@ class AdminCategoriesController extends JController {
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE CREATES ORPHANS") );
-			return;	
+			return;
 		}
-		
+
 		// check this won't create orphan events
 		$query = "SELECT ev_id FROM #__jevents_vevent WHERE catid in ($catids)";
 		$db->setQuery( $query );
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE CREATES ORPHAN EVENTS") );
-			return;	
+			return;
 		}
-		
+
 		// Make sure this is not the default category of the default calendar
 		$query = "SELECT * FROM $this->categoryTable as cat LEFT JOIN #__jevents_icsfile as icsf ON icsf.catid=cat.id WHERE cat.id in ($catids) and icsf.isdefault=1";
 		$db->setQuery( $query );
-		$cals = $db->loadObjectList();		
+		$cals = $db->loadObjectList();
 		if (count($cals)>0){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("CANNOT DELETE DEFAULT CALENDAR CATEGORY") );
-			return;	
+			return;
 		}
-		
+
 		$query = "DELETE FROM $this->categoryExtrasTable WHERE id in ($catids)";
 		$db->setQuery( $query );
 		$db->query();
@@ -373,7 +369,7 @@ class AdminCategoriesController extends JController {
 		$db->setQuery( $query );
 		$db->query();
 
-		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("Category(s) deleted") );
+		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("Categorys deleted") );
 		return;
 	}
 
@@ -392,8 +388,8 @@ class AdminCategoriesController extends JController {
 
 	function toggleCatPublish($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
 			return;
 		}
 
@@ -410,3 +406,4 @@ class AdminCategoriesController extends JController {
 	}
 
 }
+

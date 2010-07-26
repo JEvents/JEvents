@@ -30,8 +30,8 @@ class JEventsExtView extends JEventsDefaultView
 		$this->jevlayout="ext";	
 
 		$this->addHelperPath(dirname(__FILE__)."/../helpers/");
-		global $mainframe;
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		
+		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
 
 	}
 

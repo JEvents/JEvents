@@ -54,23 +54,23 @@ class AdminIcaleventController extends JController {
 		$showUnpublishedICS = true;
 		$showUnpublishedCategories = true;
 
-		global  $mainframe;
+		
 
 		$db	=& JFactory::getDBO();
 
-		$icsFile	= intval( $mainframe->getUserStateFromRequest("icsFile","icsFile", 0 ));
+		$icsFile	= intval( JFactory::getApplication()->getUserStateFromRequest("icsFile","icsFile", 0 ));
 
-		$catid		= intval( $mainframe->getUserStateFromRequest( "catidIcalEvents", 'catid', 0 ));
+		$catid		= intval( JFactory::getApplication()->getUserStateFromRequest( "catidIcalEvents", 'catid', 0 ));
 		$catidtop	= $catid;
 
-		$state		= intval( $mainframe->getUserStateFromRequest( "stateIcalEvents", 'state', 0 ));
+		$state		= intval( JFactory::getApplication()->getUserStateFromRequest( "stateIcalEvents", 'state', 0 ));
 
-		$limit		= intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
-		$limitstart = intval( $mainframe->getUserStateFromRequest( "view{".JEV_COM_COMPONENT."}limitstart", 'limitstart', 0 ));
-		$search		= $mainframe->getUserStateFromRequest( "search{".JEV_COM_COMPONENT."}", 'search', '' );
+		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
+		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "view{".JEV_COM_COMPONENT."}limitstart", 'limitstart', 0 ));
+		$search		= JFactory::getApplication()->getUserStateFromRequest( "search{".JEV_COM_COMPONENT."}", 'search', '' );
 		$search		= $db->getEscaped( trim( strtolower( $search ) ) );
 
-		$created_by	= $mainframe->getUserStateFromRequest( "createdbyIcalEvents", 'created_by', 0 );
+		$created_by	= JFactory::getApplication()->getUserStateFromRequest( "createdbyIcalEvents", 'created_by', 0 );
 
 		// Is this a large dataset ?
 		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
@@ -120,7 +120,7 @@ class AdminIcaleventController extends JController {
 			}
 		}
 
-		$hidepast = intval( $mainframe->getUserStateFromRequest("hidepast","hidepast", 1 ));
+		$hidepast = intval( JFactory::getApplication()->getUserStateFromRequest("hidepast","hidepast", 1 ));
 		if ($hidepast){
 			$datenow =& JFactory::getDate("-1 day");
 			if (!$this->_largeDataSet){
@@ -446,8 +446,8 @@ class AdminIcaleventController extends JController {
 		$this->view->assignRef('dataModel',$this->dataModel);
 
 		// for Admin interface only
-		global $mainframe;
-		$this->view->assign('with_unpublished_cat',$mainframe->isAdmin());
+		
+		$this->view->assign('with_unpublished_cat',JFactory::getApplication()->isAdmin());
 
 		$this->view->display();
 
@@ -458,8 +458,8 @@ class AdminIcaleventController extends JController {
 		$msg="";
 		$event = $this->doSave($msg);
 
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.list',$msg);
 		}
 		else {
@@ -504,8 +504,8 @@ class AdminIcaleventController extends JController {
 		$testevent = $this->queryModel->getEventById( $evid, 1, "icaldb" );
 		$rp_id = $testevent->rp_id();
 
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day&Itemid=$Itemid",$msg);
 		}
 		else {
@@ -531,8 +531,8 @@ class AdminIcaleventController extends JController {
 
 
 	function csvimport () {
-		global $mainframe;
-		if (!$mainframe->isAdmin()){
+		
+		if (!JFactory::getApplication()->isAdmin()){
 			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
 		}
 
@@ -700,8 +700,8 @@ class AdminIcaleventController extends JController {
 		}
 
 
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.list',"IcalEvent  : New published state Saved");
 		}
 		else {
@@ -790,8 +790,8 @@ class AdminIcaleventController extends JController {
 			$res = $dispatcher->trigger( 'onDeleteCustomEvent' , array(&$veventidstring));
 
 		}
-		global $mainframe;
-		if ($mainframe->isAdmin()){
+		
+		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalevent.list", "ICal Event(s) deleted" );
 		}
 		else {

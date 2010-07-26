@@ -34,7 +34,7 @@ class jIcalEventDB extends jEventCal {
 		}
 		// Mysql reserved word workaround
 		$this->_interval = isset($vevent->rinterval)?$vevent->rinterval:0;
-		//global $mainframe;
+		//
 		//include_once(JPATH_SITE."/components/$compname/libraries/iCalImport.php");
 		//$this->vevent = iCalEvent::iCalEventFromDB($array);
 
@@ -654,8 +654,8 @@ class jIcalEventDB extends jEventCal {
 						if (!$repeat2){
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend( $repeat->getUnixEndTime());
-							global $mainframe;
-							$mainframe->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
+							
+							JFactory::getApplication()->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
 						}
 						else {
 							// Calculate the time adjustment (if any) then check against the non-exceptional repeat
@@ -676,8 +676,8 @@ class jIcalEventDB extends jEventCal {
 							}
 							else {
 								// In this scenario we have no idea what the time should be unfortunately
-								global $mainframe;
-								$mainframe->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
+								
+								JFactory::getApplication()->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
 
 								// switch timezone back
 								date_default_timezone_set($timezone);

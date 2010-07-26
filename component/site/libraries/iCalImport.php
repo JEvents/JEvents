@@ -47,7 +47,7 @@ class iCalImport
 		if ($filename!=""){
 			$file = $filename;
 			if (!file_exists($file)) {
-				global $mainframe;
+				
 				$file = JPATH_SITE."/components/$option/".$filename;
 			}
 			if (!file_exists($file)) {

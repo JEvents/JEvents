@@ -25,7 +25,9 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	{
 		//JRequest::setVar( 'hidemainmenu', 1 );
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Configuration'));
@@ -47,7 +49,9 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	{
 		//JRequest::setVar( 'hidemainmenu', 1 );
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('DB Setup'));
@@ -64,7 +68,9 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	function convert($tpl = null)
 	{
 		
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Events Migration'));
@@ -184,7 +190,7 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	*/
 	function help ( $help='help text', $caption='') {
 
-		global $mainframe;
+		
 
 		$compath = JURI::root() . 'administrator/components/'.JEV_COM_COMPONENT;
 		$imgpath = $compath . '/assets/images';

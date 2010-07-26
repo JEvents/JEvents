@@ -15,10 +15,26 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 /**
  * convenience wrapper for config - to ensure backwards compatability
  */
-class JEVConfig extends JParameter
-{
-	function &getInstance($inifile='') {
-		return JComponentHelper::getParams("com_jevents");
+if (JVersion::isCompatible("1.6.0")){
+	class JEVConfig extends JParameter
+	{
+		// 1.6 mod
+		static function &getInstance($inifile='') {
+			$params =& JComponentHelper::getParams("com_jevents");
+			return $params;
+		}
+
+	}
+
+}
+else {
+	class JEVConfig extends JParameter
+	{
+		function &getInstance($inifile='') {
+			$params =& JComponentHelper::getParams("com_jevents");
+			return $params;
+		}
+
 	}
 
 }

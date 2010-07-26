@@ -17,10 +17,10 @@ jimport('joomla.application.component.controller');
 class AdminUserController extends JController   {
 
 	/** @var string		current used task */
-	var $task=null;
+	protected $task=null;
 
 	/** @var array		int or array with the choosen list id */
-	var $cid=null;
+	protected $cid=null;
 
 	function __construct( ){
 		parent::__construct();
@@ -65,7 +65,7 @@ class AdminUserController extends JController   {
 		////JLoader::import( 'models.user',JPATH_COMPONENT_ADMINISTRATOR);
 
 		$siteuser = JFactory::getUser();
-		if ($siteuser->usertype!="Administrator" && $siteuser->usertype!="Super Administrator"){
+		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -86,7 +86,7 @@ class AdminUserController extends JController   {
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$siteuser = JFactory::getUser();
-		if ($siteuser->usertype!="Administrator" && $siteuser->usertype!="Super Administrator"){
+		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -115,7 +115,7 @@ class AdminUserController extends JController   {
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		$siteuser = JFactory::getUser();
-		if ($siteuser->usertype!="Administrator" && $siteuser->usertype!="Super Administrator"){
+		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -237,7 +237,7 @@ class AdminUserController extends JController   {
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$siteuser = JFactory::getUser();
-		if ($siteuser->usertype!="Administrator" && $siteuser->usertype!="Super Administrator"){
+		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		

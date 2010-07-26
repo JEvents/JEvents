@@ -21,9 +21,9 @@ class JEVAccess {
 
 		$this->access = new stdClass();
 		$acl =& JFactory::getACL();
-		$this->access->canEdit	= $acl->acl_check( 'action', 'edit', 'users', $user->usertype, 'content', 'all' );
-		$this->access->canEditOwn = $acl->acl_check( 'action', 'edit', 'users', $user->usertype, 'content', 'own' );
-		$this->access->canPublish = $acl->acl_check( 'action', 'publish', 'users', $user->usertype, 'content', 'all' );
+		$this->access->canEdit	= $acl->acl_check( 'action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'all' );
+		$this->access->canEditOwn = $acl->acl_check( 'action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'own' );
+		$this->access->canPublish = $acl->acl_check( 'action', 'publish', 'users', JEVHelper::getUserType($user), 'content', 'all' );
 	}
 
 	function canEdit(){

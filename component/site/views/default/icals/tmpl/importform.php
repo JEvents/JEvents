@@ -7,8 +7,8 @@ $view =  $this->getViewName();
 $this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 $this->queryModel = new JEventsDBModel($this->dataModel);
 
-global $mainframe;
-$action = $mainframe->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
+
+$action = JFactory::getApplication()->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 
 ?>
 <div style="padding:10px;">

@@ -20,26 +20,49 @@ defined('_JEXEC') or die();
 class AdminParamsViewParams extends JEventsAbstractView
 {
 
+	function edit16()
+	{
+		if (JVersion::isCompatible("1.6.0")){
+			JEVHelper::stylesheet('eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/');
+		}
+		return $this->edit();
+	}
+
 	function edit()
 	{
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JEVHelper::stylesheet('eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Configuration'));
-		
+
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'Configuration' ), 'jevents' );
 
 		JToolBarHelper::save('params.save');
 		JToolBarHelper::cancel('cpanel.cpanel');
-		
-		$model		= &$this->getModel();		
+
+		$model		= $this->getModel();
 		$this->params		= &$model->getParams();
-		
-		$component	= JComponentHelper::getComponent(JRequest::getCmd( 'component' ));
+
+		$component	= JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
 		JHTML::_('behavior.tooltip');
+
+		if (JVersion::isCompatible("1.6.0")) {
+			// Get the actions for the asset.
+			$actions = JAccess::getActions(JEV_COM_COMPONENT, "component");
+
+			jimport('joomla.form.form');
+
+			// Add the search path for the admin component config.xml file.
+			JForm::addFormPath(JPATH_ADMINISTRATOR.'/components/'.JEV_COM_COMPONENT);
+
+			// Get the form.
+			$modelForm = $model->getForm();
+
+			$this->assignRef("form",$modelForm);
+		}
 	}
-	
-	
+
+
 }

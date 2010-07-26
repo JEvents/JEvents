@@ -23,7 +23,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	function __construct($config = null)
 	{
 		parent::__construct($config);
-		global $mainframe;
+		
 
 	}
 
@@ -34,7 +34,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	 */
 	function overview($tpl = null)
 	{
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS') );
@@ -50,7 +52,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$this->_hideSubmenu();
 
-		global $mainframe;
+		
 
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -77,7 +79,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JHTML::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
 		JHTML::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
 
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		JHTML::script( 'editdefaults.js', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/' );
 
 		$document =& JFactory::getDocument();
@@ -93,7 +97,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		global $mainframe;
+		
 
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -124,8 +128,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
-			global $mainframe;
-			$title = $mainframe->get('JComponentTitle');
+			
+			$title = JFactory::getApplication()->get('JComponentTitle');
 			echo $title;
 			?>
 			<div class="clr"></div>

@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	 = & JEVConfig::getInstance();
 
-global $mainframe;
+
 $cfg = & JEVConfig::getInstance();
 $option = JEV_COM_COMPONENT;
 $Itemid = JEVHelper::getItemid();
