@@ -53,6 +53,7 @@ class iCalICSFile extends JTable  {
 	 */
 	function iCalICSFile( &$db ) {
 		parent::__construct( '#__jevents_icsfile', 'ics_id', $db );
+		$this->access = JEVHelper::getBaseAccess();
 	}
 
 	function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
@@ -201,8 +202,10 @@ RAWTEXT;
 
 		static $categories;
 		if (is_null($categories)){
+			if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
+
 			$db	=& JFactory::getDBO();
-			$sql = "SELECT * FROM #__categories where section='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}

@@ -1176,6 +1176,41 @@ class JEVHelper {
 	
 	static public function setupJoomla160(){
 	}
+	
+	static public function getBaseAccess(){
+		if (JVersion::isCompatible("1.6.0")){
+			static $base;
+			if (!isset($base)){
+				// NB this method is no use if you delete the public access level - it assumes that 1 always exists!!!
+				//$levels = JAccess::getAuthorisedViewLevels(0);
+				$levels =  array();
+				if (count($levels)>0){
+					$base  = $levels[0];
+				}
+				else {
+					// Get a database object.
+					$db	= JFactory::getDBO();
+
+					// Set the query for execution.
+					$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
+					$base = $db->loadResult();
+				}
+			}
+			return $base;
+		}
+		else {
+			return 0;
+		}
+
+	}
 }
 
 
+jimport("joomla.application.module.helper");
+
+class JevModuleHelper extends JModuleHelper{
+
+	static public function getVisibleModules(){
+		return self::_load();
+	}
+}

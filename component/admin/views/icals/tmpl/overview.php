@@ -83,24 +83,43 @@ $cfg = & JEVConfig::getInstance();
               	// only offer reload for URL based ICS
               	if ($row->srcURL!=""){
               	?>
-              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icals.reload')"><img src="<?php echo $pathJeventsIMG . "reload.png"; ?>" border="0" alt="reload" /></a>
+              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icals.reload')">
+					<img src="<?php echo $pathJeventsIMG . "reload.png"; ?>" border="0" alt="reload" />
+				</a>
               	<?php
               	}
               	?>
               	
               	</td>
               	<td align="center">
-              	<?php                      	
-              	$img = $row->state?'tick.png':'publish_x.png';
+              	<?php
+				if (JVersion::isCompatible("1.6.0")) {
+					$img =  $row->state?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+				}
+				else {
+					$img = $row->state?'tick.png':'publish_x.png';
+					$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+				}
               	?>
-              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')"><img src="<?php echo $pathIMG . $img; ?>" width="16" height="16" border="0" alt="" /></a>
+              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
+					<?php echo $img;?>
+				</a>
               	</td>
               	<td align="center">
               	<?php                      	
               	if ($row->icaltype==0){
-              	$img = $row->autorefresh?'tick.png':'publish_x.png';
+
+					if (JVersion::isCompatible("1.6.0")) {
+					$img =  $row->autorefresh?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+					}
+					else {
+						$img = $row->autorefresh?'tick.png':'publish_x.png';
+						$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+					}
               	?>
-              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')"><img src="<?php echo $pathIMG . $img; ?>" width="16" height="16" border="0" alt="" /></a>
+              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
+					<?php echo $img;?>
+				</a>
               	<?php 
 	              	if ($row->autorefresh){
 	              		?>
@@ -116,15 +135,24 @@ $cfg = & JEVConfig::getInstance();
               	<td align="center">
               	<?php                      	
               	if ($row->icaltype==2){
-              	$img = $row->isdefault?'tick.png':'publish_x.png';
-              	?>
-              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')"><img src="<?php echo $pathIMG . $img; ?>" width="16" height="16" border="0" alt="" /></a>
-              	<?php 
-              	}
-              	else {
-              		echo " - ";
-              	}
-              	?>
+					if (JVersion::isCompatible("1.6.0")) {
+					$img =  $row->isdefault?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+					}
+					else {
+						$img = $row->isdefault?'tick.png':'publish_x.png';
+						$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+					}
+              	
+					?>
+					<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
+						<?php echo $img;?>
+					</a>
+					<?php
+					}
+					else {
+						echo " - ";
+					}
+					?>
               	</td>
               	<td align="center"><?php echo $row->_groupname;?></td>
             </tr>

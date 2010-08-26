@@ -103,15 +103,28 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 	// do not use JRoute since this creates .rss link which normal sef can't deal with
 	$rssLink = 'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;
 	$rssLink = JUri::root().$rssLink;
-	//$rssLink = JRoute::_($rssLink);
-	$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - RSS 2.0 Feed" />'. "\n";
-	JFactory::getApplication()->addCustomHeadTag( $rss );
+	
+	if (JVersion::isCompatible("1.6.0")){
+		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+	}
+	else {
+		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - RSS 2.0 Feed" />'. "\n";
+		JFactory::getApplication()->addCustomHeadTag( $rss );
+	}
 
 	$rssLink =  'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=atom&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;
 	$rssLink = JUri::root().$rssLink;
 	//$rssLink = JRoute::_($rssLink);
-	$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - Atom Feed" />'. "\n";
-	JFactory::getApplication()->addCustomHeadTag( $rss );
+	if (JVersion::isCompatible("1.6.0")){
+		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+	}
+	else {
+		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - Atom Feed" />'. "\n";
+		JFactory::getApplication()->addCustomHeadTag( $rss );
+	}
+
 }
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method

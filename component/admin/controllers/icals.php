@@ -81,12 +81,22 @@ class AdminIcalsController extends JController {
 			$limitstart = 0;
 		}
 
-		$query = "SELECT icsf.*, g.name AS _groupname"
-		. "\n FROM #__jevents_icsfile as icsf "
-		. "\n LEFT JOIN #__groups AS g ON g.id = icsf.access"
-		. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-		//	. "\n WHERE icsf.catid IN(".$this->accessibleCategoryList().")"
-		;
+		if (JVersion::isCompatible("1.6.0")){
+			$query = "SELECT icsf.*, a.title as _groupname"
+			. "\n FROM #__jevents_icsfile as icsf "
+			. "\n LEFT JOIN #__viewlevels AS a ON a.id = icsf.access"
+			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+			//	. "\n WHERE icsf.catid IN(".$this->accessibleCategoryList().")"
+			;
+		}
+		else {
+			$query = "SELECT icsf.*, g.name AS _groupname"
+			. "\n FROM #__jevents_icsfile as icsf "
+			. "\n LEFT JOIN #__groups AS g ON g.id = icsf.access"
+			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+			//	. "\n WHERE icsf.catid IN(".$this->accessibleCategoryList().")"
+			;
+		}
 		$query .= "\n ORDER BY icsf.isdefault DESC, icsf.label ASC";
 		if ($limit>0){
 			$query .= "\n LIMIT $limitstart, $limit";

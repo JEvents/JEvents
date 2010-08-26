@@ -70,6 +70,9 @@ class ModCalController extends JController   {
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
 
 		include_once(JEV_LIBS."/modfunctions.php");
+		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
+			$this->_basePath = $this->basePath;
+		}
 	}
 
 	function ajax() {

@@ -52,6 +52,7 @@ class iCalEvent extends JTable  {
 	 */
 	function iCalEvent( &$db ) {
 		parent::__construct( '#__jevents_vevent', 'ev_id', $db );
+		$this->access = JEVHelper::getBaseAccess();
 	}
 
 
@@ -89,14 +90,31 @@ class iCalEvent extends JTable  {
 
 		$access = false;
 		if ($user->get('id')>0){
-			// does this logged in have backend access
-			// Get an ACL object
-			$acl =& JFactory::getACL();
-			$grp = $acl->getAroGroup($user->get('id'));
-			// if no valid group (e.g. anon user) then skip this.
-			if (!$grp) return;
+			if (JVersion::isCompatible("1.6.0")) {
+				// can this user delete all events!
+				$rules = JAccess::getAssetRules("com_jevents", true);
+				$deletegroups = $rules->getData();
+				$deletegroups = $deletegroups["core.deleteall"]->getData();
+				$users = array(0);
+				foreach ($deletegroups as $deletegroup){
+					$users = array_merge(JAccess::getUsersByGroup($deletegroup, true), $users);
+				}
+				$db = JFactory::getDbo();
+				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+				$db->setQuery( $sql );
+				$users = $db->loadObjectList();
 
-			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+			}
+			else {
+				// does this logged in have backend access
+				// Get an ACL object
+				$acl =& JFactory::getACL();
+				$grp = $acl->getAroGroup($user->get('id'));
+				// if no valid group (e.g. anon user) then skip this.
+				if (!$grp) return;
+
+				$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+			}
 		}
 
 		if (!(($jevuser && $jevuser->candeleteall) || $access) || $creatorid==0){
@@ -252,7 +270,7 @@ class iCalEvent extends JTable  {
 		$this->processField("lockevent",0);
 
 		// old events access and published state
-		$this->processField("x-access",0, "access");
+		$this->processField("x-access",  JEVHelper::getBaseAccess(), "access");
 		$this->processField("x-state",1, "state");
 		$user =& JFactory::getUser();
 		$this->processField("x-createdby",$user->id, "created_by");

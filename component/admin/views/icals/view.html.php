@@ -76,6 +76,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);
 
+		$db = JFactory::getDbo();
 		if ($params->getValue("authorisedonly",0)){
 			// get authorised users
 			$sql = "SELECT u.* FROM #__jev_users as jev LEFT JOIN #__users as u on u.id=jev.user_id where jev.published=1 and jev.cancreate=1";
@@ -84,13 +85,28 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 			$users = $db->loadObjectList();
 		}
 		else {
-			$minaccess = $params->getValue("jevcreator_level",19);
+			if (JVersion::isCompatible("1.6.0")) {
+				$rules = JAccess::getAssetRules("com_jevents", true);
+				$creatorgroups = $rules->getData();
+				$creatorgroups = $creatorgroups["core.create"]->getData();
+				$users = array(0);
+				foreach ($creatorgroups as $creatorgroup){
+					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				}
+				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+				$db->setQuery( $sql );
+				$users = $db->loadObjectList();
 
-			// get users of required level
-			$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-			$db=& JFactory::getDBO();
-			$db->setQuery( $sql );
-			$users = $db->loadObjectList();
+			}
+			else {
+				$minaccess = $params->getValue("jevcreator_level",19);
+				// get users AUTHORS and above
+				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
+				$db->setQuery( $sql );
+				$users = $db->loadObjectList();
+
+			}
+
 		}
 		$userOptions = array();
 		foreach( $users as $user )
@@ -104,7 +120,12 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		else {
 			$created_by = $jevuser->id;
 		}
-		$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1" ', 'value', 'text', $created_by);
+		if (count($userOptions)>0){
+			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1" ', 'value', 'text', $created_by);
+		}
+		else {
+			$userList = "";
+		}
 		$this->assignRef("users",$userlist);
 
 

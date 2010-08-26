@@ -176,6 +176,18 @@ class JEventsHTML{
 	 */
 	function buildCategorySelect( $catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false){
 
+
+		if (JVersion::isCompatible("1.6.0")){
+			ob_start();
+			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
+			?>
+			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >
+				<option value=""><?php echo $t_first_entry;?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_jevents'), 'value', 'text', $catid);?>
+			</select>
+			<?php
+			return ob_get_clean();
+		}
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -692,6 +704,35 @@ class JEventsHTML{
 			$html = '<!-- wrong javascript tag parameter-->'."\n";
 		}
 		return $html;
+	}
+
+	function buildAccessSelect($access,$attribs='class="inputbox" onchange="this.form.submit()"', $text = "", $fieldname="access"){
+		if (JVersion::isCompatible("1.6.0")){
+			ob_start();
+			?>
+			<select name="<?php echo $fieldname;?>" <?php echo $attribs;?> >
+				<?php
+				if ($text!="") {
+					?>
+				<option value=""><?php echo $text ;?></option>
+					<?php
+				}
+				?>
+				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $access);?>
+			</select>
+			<?php
+			return ob_get_clean();
+		}
+		else {
+			// get list of groups
+			$db	=& JFactory::getDBO();
+			$query = "SELECT id AS value, name AS text"
+			. "\n FROM #__groups"
+			. "\n ORDER BY id"	;
+			$db->setQuery( $query );
+			$groups = $db->loadObjectList();
+			return JHTML::_('select.genericlist', $groups, $fieldname, 'class="inputbox" size="1"',	'value', 'text', $access );
+		}
 	}
 
 }

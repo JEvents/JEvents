@@ -95,11 +95,14 @@ td#toolbar-apply {
 	width:inherit;
 }
 
-.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select {
+.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
+#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select
+{
 	margin-bottom:inherit;
 	float:none;
 }
-.jevconfig .current label {
+.jevconfig .current label,
+#jevents .current label  {
 	float:none;
 	display:inline;
 }

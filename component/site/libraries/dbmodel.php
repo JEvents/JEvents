@@ -29,10 +29,6 @@ class JEventsDBModel {
 	}
 
 	function accessibleCategoryList($aid=null, $catids=null, $catidList=null) {
-
-		
-
-		$db	=& JFactory::getDBO();
 		if (is_null($aid)) {
 			$aid = $this->datamodel->aid;
 		}
@@ -51,37 +47,44 @@ class JEventsDBModel {
 		if (!$instances) {
 			$instances = array();
 		}
-
 		// calculate unique index identifier
 		$index = $aid . '+' . $catidList;
 		// if catidList = 0 then the result is the same as a blank so slight time saving
 		if (is_null($catidList) || $catidList==0) {
 			$index = $aid . '+';
 		}
+
+		$db	=& JFactory::getDBO();
+
 		$where = "";
 
 		if (!array_key_exists($index,$instances)) {
-			if (count($catids)>0 && !is_null($catidList) && $catidList!="0") {
-				$where = ' AND (c.id IN (' . $catidList .') OR p.id IN (' . $catidList .')  OR gp.id IN (' . $catidList .') OR ggp.id IN (' . $catidList .'))';
+			if (JVersion::isCompatible("1.6.0")){
+				jimport("joomla.application.categories");
+				$cats = JCategories::getInstance("com_jevents");
 			}
+			else {
+				if (count($catids)>0 && !is_null($catidList) && $catidList!="0") {
+					$where = ' AND (c.id IN (' . $catidList .') OR p.id IN (' . $catidList .')  OR gp.id IN (' . $catidList .') OR ggp.id IN (' . $catidList .'))';
+				}
 
-			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
-			$query = "SELECT c.id"
-			. "\n FROM #__categories AS c"
-			. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
-			. ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id '
-			. ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id '
-			. "\n WHERE c.access <= $aid"
-			. $q_published
-			. "\n AND c.section = '".$sectionname."'"
-			. "\n " . $where;
-			;
+				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+				$query = "SELECT c.id"
+				. "\n FROM #__categories AS c"
+				. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
+				. ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id '
+				. ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id '
+				. "\n WHERE c.access <= $aid"
+				. $q_published
+				. "\n AND c.section = '".$sectionname."'"
+				. "\n " . $where;
+				;
 
+				$db->setQuery($query);
+				$catlist =  $db->loadResultArray();
 
-			$db->setQuery($query);
-			$catlist =  $db->loadResultArray();
-
-			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
+				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
+			}
 		}
 		return $instances[$index];
 	}

@@ -16,6 +16,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * convenience wrapper for config - to ensure backwards compatability
  */
 if (JVersion::isCompatible("1.6.0")){
+	jimport('joomla.html.parameter');
 	class JEVConfig extends JParameter
 	{
 		// 1.6 mod

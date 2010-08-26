@@ -140,7 +140,7 @@ class AdminIcaleventController extends JController {
 		. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-		. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
+		//. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
 		. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 		. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' );
 		$db->setQuery( $query);
@@ -160,21 +160,39 @@ class AdminIcaleventController extends JController {
 			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
 		}
 
-		$query = "SELECT ev.*, ev.state as evstate, detail.*, g.name AS _groupname ".$anonfields
-		. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
-		. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat")
-		. "\n FROM #__jevents_vevent as ev "
-		. ($this->_largeDataSet?"":"\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
-		. $anonjoin
-		. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
-		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-		. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
-		. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
-		. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-		//. "\n WHERE ev.catid IN(".$this->queryModel->accessibleCategoryList().")"
-		. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
-		;
+		if (JVersion::isCompatible("1.6.0")) 	{
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, a.title as _groupname ".$anonfields
+			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
+			. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat")
+			. "\n FROM #__jevents_vevent as ev "
+			. ($this->_largeDataSet?"":"\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
+			. $anonjoin
+			. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
+			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__viewlevels AS a ON a.id = ev.access"
+			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
+			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+			//. "\n WHERE ev.catid IN(".$this->queryModel->accessibleCategoryList().")"
+			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
+			;
 
+		}
+		else {
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, g.name AS _groupname ".$anonfields
+			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
+			. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat")
+			. "\n FROM #__jevents_vevent as ev "
+			. ($this->_largeDataSet?"":"\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
+			. $anonjoin
+			. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
+			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
+			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
+			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+			//. "\n WHERE ev.catid IN(".$this->queryModel->accessibleCategoryList().")"
+			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
+			;
+		}
 		if ($limit>0){
 			$query .= "\n LIMIT $limitstart, $limit";
 		}
@@ -185,9 +203,16 @@ class AdminIcaleventController extends JController {
 		foreach ($rows as $key=>$val) {
 			// set state variable to the event value not the event detail value
 			$rows[$key]->state = $rows[$key]->evstate;
-			$groupname = $rows[$key]->_groupname;
-			$rows[$key]=new jIcalEventRepeat($rows[$key]);
-			$rows[$key]->_groupname = $groupname;
+			if (JVersion::isCompatible("1.6.0")) 	{
+				$groupname = $rows[$key]->_groupname;
+				$rows[$key]=new jIcalEventRepeat($rows[$key]);
+				$rows[$key]->_groupname = $groupname;
+			}
+			else {
+				$groupname = $rows[$key]->_groupname;
+				$rows[$key]=new jIcalEventRepeat($rows[$key]);
+				$rows[$key]->_groupname = $groupname;
+			}
 		}
 		if( $this->_debug ){
 			echo '[DEBUG]<br />';
@@ -253,7 +278,6 @@ class AdminIcaleventController extends JController {
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination( $total, $limitstart, $limit  );
-
 
 		// Set the layout
 		$this->view->setLayout('overview');
@@ -529,7 +553,6 @@ class AdminIcaleventController extends JController {
 		}
 	}
 
-
 	function csvimport () {
 		
 		if (!JFactory::getApplication()->isAdmin()){
@@ -568,7 +591,6 @@ class AdminIcaleventController extends JController {
 
 		$this->view->display();
 	}
-
 
 	private function doSave(& $msg){
 		if (!JEVHelper::isEventCreator()){
@@ -803,14 +825,13 @@ class AdminIcaleventController extends JController {
 
 	}
 
-
 	function _checkValidCategories(){
 		// TODO switch this after migration
 		$component_name = "com_jevents";
 
 		$db	=& JFactory::getDBO();
-		$query = "SELECT count(*) as count FROM #__categories"
-		. "\n WHERE section='$component_name'";
+		if (JVersion::isCompatible("1.6.0"))  $query = "SELECT count(*) as count FROM #__categories WHERE extension='$component_name'";
+		else $query = "SELECT count(*) as count FROM #__categories WHERE section='$component_name'";
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
 		if ($count<=0){

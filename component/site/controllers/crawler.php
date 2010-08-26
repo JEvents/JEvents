@@ -21,6 +21,9 @@ class CrawlerController extends JController   {
 		$this->registerDefaultTask( 'listevents' );
 
 		JLoader::register('JEventsDefaultView',JEV_VIEWS."/default/abstract/abstract.php");
+		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
+			$this->_basePath = $this->basePath;
+		}
 	}
 
 	function listevents() {

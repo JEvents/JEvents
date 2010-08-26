@@ -82,8 +82,7 @@ class jevFilterProcessing
 			$this->visiblefilters = array();
 
 			// TODO Watch out if this becomes private - it just saves a DB query for the time being
-			jimport("joomla.application.module.helper");
-			$visblemodules = JModuleHelper::_load();
+			$visblemodules = JevModuleHelper::getVisibleModules();
 
 			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
 			//  but we can't do anything about that

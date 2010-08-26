@@ -75,9 +75,23 @@ class JEV_CommonFunctions {
 		if (!isset($cats)){
 			$db	=& JFactory::getDBO();
 
-			$sql = "SELECT c.*, e.color FROM #__jevents_categories AS e LEFT JOIN #__categories as c ON c.id=e.id";
-			$db->setQuery( $sql);
-			$cats = $db->loadObjectList('id');
+			if (JVersion::isCompatible("1.6.0"))  {
+				$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."'";
+				$db->setQuery( $sql);
+				$cats = $db->loadObjectList('id');
+				foreach ($cats as &$cat){
+					$cat->name = $cat->title;
+					$params = new JParameter($cat->params);
+					$cat->color = $params->get("color","");
+				}
+				unset ($cat);
+
+			}
+			else {
+				$sql = "SELECT c.*, e.color FROM #__jevents_categories AS e LEFT JOIN #__categories as c ON c.id=e.id";
+				$db->setQuery( $sql);
+				$cats = $db->loadObjectList('id');
+			}
 		}
 		return $cats;
 	}

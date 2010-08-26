@@ -196,7 +196,7 @@ class JButtonJevconfirm extends JButton
 					alert('$message');
 				}
 				else{
-					hideMainMenu();
+					
 					if($jstestvar==1) {
 						if (confirm('$msg')){
 							submitbutton('$task');
@@ -206,7 +206,7 @@ class JButtonJevconfirm extends JButton
 					submitbutton('$task');
 				}";
 			} else {
-				$cmd = "javascript:hideMainMenu();
+				$cmd = "javascript:
 					if($jstestvar==1) {
 						if (confirm('$msg')){
 							submitbutton('$task');

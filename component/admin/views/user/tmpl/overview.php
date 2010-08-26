@@ -64,19 +64,26 @@ $url = JRoute::_("index.php?option=".$option);
 		<input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->id;?>" onclick="isChecked(this.checked);" />
 	</td>
 	<td>
-		<a href="#edit" onclick="hideMainMenu(); return listItemTask('cb<?php echo $i;?>','user.edit');"><?php echo $row->jname; ?></a>
+		<a href="#edit" onclick=" return listItemTask('cb<?php echo $i;?>','user.edit');"><?php echo $row->jname; ?></a>
 	</td>
 	<td>
 		<?php echo $row->username; ?>
 	</td>
+
 		<?php
-		$img = $row->published?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->published?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->published?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->published>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->published ? 'user.unpublish' : 'user.publish'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
@@ -86,17 +93,23 @@ $url = JRoute::_("index.php?option=".$option);
      <td align="center"><?php echo $href;?></td>
 		
      <?php
-		$img = $row->cancreate?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->cancreate?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->cancreate?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->cancreate>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->cancreate ? 'user.cannotcreate' : 'user.cancreate'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
@@ -104,145 +117,199 @@ $url = JRoute::_("index.php?option=".$option);
      <td align="center"><?php echo $row->eventslimit;?></td>
      
      <?php
-		$img = $row->canpublishown?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->canpublishown?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->canpublishown?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->canpublishown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->canpublishown ? 'user.cannotpublishown' : 'user.canpublishown'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
      
 		<?php
-		$img = $row->candeleteown?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->candeleteown?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->candeleteown?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->candeleteown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->candeleteown ? 'user.cannotdeleteown' : 'user.candeleteown'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
 
      <?php
-		$img = $row->canedit?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->canedit?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->canedit?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->canedit>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->canedit ? 'user.cannotedit' : 'user.canedit'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
 
      <?php
-		$img = $row->canpublishall?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->canpublishall?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->canpublishall?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->canpublishall>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->canpublishall ? 'user.cannotpublishall' : 'user.canpublishall'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
      
      <?php
-		$img = $row->candeleteall?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->candeleteall?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->candeleteall?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->candeleteall>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->candeleteall ? 'user.cannotdeleteall' : 'user.candeleteall'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
      
      <?php
-		$img = $row->canuploadimages?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->canuploadimages?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->stcanuploadimagesate?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->canuploadimages>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->canuploadimages ? 'user.cannotuploadimages' : 'user.canuploadimages'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
 
      <?php
-		$img = $row->canuploadmovies?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->canuploadmovies?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->canuploadmovies?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->canuploadmovies>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->canuploadmovies ? 'user.cannotuploadmovies' : 'user.canuploadmovies'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
 
      <?php
-		$img = $row->cancreateown?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->cancreateown?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->cancreateown?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->cancreateown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->cancreateown ? 'user.cannotcreateown' : 'user.cancreateown'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
 
      <?php
-		$img = $row->cancreateglobal?'administrator/images/tick.png':'administrator/images/publish_x.png';
+		if (JVersion::isCompatible("1.6.0")) {
+			$img =  $row->cancreateglobal?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		}
+		else {
+			$img = $row->cancreateglobal?'tick.png':'publish_x.png';
+			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+		}
 		
 		$href='';
 		if( $row->cancreateglobal>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
 			$href .= 'onclick="return listItemTask(\'cb' .$i. '\',\'' .($row->cancreateglobal ? 'user.cannotcreateglobal' : 'user.cancreateglobal'). '\')">';
-			$href .= '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href .= $img;
 			$href .= '</a>';
 		}
 		else {
-			$href = '<img src="' . JURI::root() .$img. '" width="12" height="12" border="0" alt="" />';
+			$href = $img;
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
