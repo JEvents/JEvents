@@ -72,6 +72,7 @@ class ModCalController extends JController   {
 		include_once(JEV_LIBS."/modfunctions.php");
 		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
 			$this->_basePath = $this->basePath;
+			$this->_task = $this->task;
 		}
 	}
 

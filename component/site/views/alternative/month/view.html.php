@@ -38,7 +38,7 @@ class AlternativeMonth extends JEventsAlternativeView
         $this->popup=false;
         if ($params->get("editpopup",0)){
         	JHTML::_('behavior.modal');
-			JHTML::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
         	$this->popup=true;
         	$this->popupw = $params->get("popupw",800);
         	$this->popuph = $params->get("popuph",600);

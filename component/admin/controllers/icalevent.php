@@ -369,6 +369,7 @@ class AdminIcaleventController extends JController {
 
 		}
 
+		/*
 		$db =& JFactory::getDBO();
 		// get list of groups
 		$query = "SELECT id AS value, name AS text"
@@ -378,8 +379,9 @@ class AdminIcaleventController extends JController {
 		$groups = $db->loadObjectList();
 
 		// build the html select list
-		$glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',
-		'value', 'text', intval( $row->access() ) );
+		$glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',	'value', 'text', intval( $row->access() ) );
+		*/
+		$glist = JEventsHTML::buildAccessSelect( intval( $row->access() ), 'class="inputbox" size="1"');
 
 		// get all the raw native calendars
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();

@@ -47,14 +47,19 @@ class SaveIcalEvent {
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = JRequest::getInt("jev_creatorid",0);
 		if ( $creatorid>0){
-			// Get an ACL object
-			$acl =& JFactory::getACL();
-			$grp = $acl->getAroGroup($user->get('id'));
-			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
-
+			if (JVersion::isCompatible("1.6.0")) {
+				$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+			}
+			else {
+				// Get an ACL object
+				$acl =& JFactory::getACL();
+				$grp = $acl->getAroGroup($user->get('id'));
+				$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+			}
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
 			}
+
 		}
 
 		$ics_id				= JArrayHelper::getValue( $array,  "ics_id",0);

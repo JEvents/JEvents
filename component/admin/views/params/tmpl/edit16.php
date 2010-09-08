@@ -53,7 +53,7 @@ $version = JEventsVersion::getInstance();
 				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 					$config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
 					if (file_exists($config)){
-						$viewparams = new JParameter( $this->params->toString(), $config );
+						$viewparams = new JevParameter( $this->params->toString(), $config );
 						echo $tabs->startPanel( JText::_(ucfirst($viewfile)), 'config_'.str_replace(" ","_",$viewfile));
 						echo $viewparams->render();
 						echo $tabs->endPanel();

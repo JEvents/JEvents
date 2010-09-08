@@ -105,8 +105,8 @@ class jevStartdateFilter extends jevFilter
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
 			$document =& JFactory::getDocument();
-			JHTML::script("calendar11.js","components/".JEV_COM_COMPONENT."/assets/js/",true);
-			JHTML::stylesheet("dashboard.css","components/".JEV_COM_COMPONENT."/assets/css/",true);
+			JEVHelper::script("calendar11.js","components/".JEV_COM_COMPONENT."/assets/js/",true);
+			JEVHelper::stylesheet("dashboard.css","components/".JEV_COM_COMPONENT."/assets/css/",true);
 			$document->addScriptDeclaration('window.addEvent(\'domready\', function() {
 				new NewCalendar({ '.$this->filterType.'_fvs1 :  "Y-m-d"},{
 					direction:0, 

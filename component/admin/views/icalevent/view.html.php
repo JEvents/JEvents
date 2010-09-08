@@ -60,7 +60,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Event'));
 
@@ -125,24 +125,46 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
+		
+		if (JVersion::isCompatible("1.6.0")){
+			$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+		}
+		else {
+			// Get an ACL object
+			$acl =& JFactory::getACL();
+			$grp = $acl->getAroGroup($user->get('id'));
+			// if no valid group (e.g. anon user) then skip this.
+			if (!$grp) return;
 
-		// Get an ACL object
-		$acl =& JFactory::getACL();
-		$grp = $acl->getAroGroup($user->get('id'));
-		// if no valid group (e.g. anon user) then skip this.
-		if (!$grp) return;
+			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+		}
 
-		$access = $acl->is_group_child_of($grp->name, 'Public Backend');
 
+		$db = JFactory::getDBO();
 		if (($jevuser && $jevuser->candeleteall) || $access){
-			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-			$minaccess = $params->getValue("jevcreator_level",19);
-			$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-			$sql .= " ORDER BY name ASC";
-			$db = JFactory::getDBO();
-			$db->setQuery( $sql );
-			$users = $db->loadObjectList();
 
+			if (JVersion::isCompatible("1.6.0")) {
+				$rules = JAccess::getAssetRules("com_jevents", true);
+				$creatorgroups = $rules->getData();
+				$creatorgroups = $creatorgroups["core.create"]->getData();
+				$users = array(0);
+				foreach ($creatorgroups as $creatorgroup){
+					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				}
+				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+				$db->setQuery( $sql );
+				$users = $db->loadObjectList();
+
+			}
+			else {
+				$minaccess = $params->getValue("jevcreator_level",19);
+				// get users AUTHORS and above
+				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
+				$sql .= " ORDER BY name ASC";
+				$db->setQuery( $sql );
+				$users = $db->loadObjectList();
+			}
+			
 			$userOptions[] = JHTML::_('select.option', '-1','Select User' );
 			foreach( $users as $user )
 			{

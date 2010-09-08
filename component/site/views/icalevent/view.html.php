@@ -27,9 +27,9 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		parent::__construct($config);	
 				
 		// TODO find the active admin template
-		JHTML::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
-		JHTML::stylesheet("icon.css",JURI::root()."administrator/templates/khepri/css/");
-		JHTML::stylesheet("general.css",JURI::root()."administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
+		JEVHelper::stylesheet("icon.css",JURI::root()."administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("general.css",JURI::root()."administrator/templates/khepri/css/");
 	}	
 	
 	function edit($tpl = null)
@@ -38,9 +38,9 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
 
-		JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script('editical.js?v=1.5.4','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
-		//JHTML::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JEVHelper::script('editical.js?v=1.5.4','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
 		$document->setTitle(JText::_('Edit ICal Event'));
 		

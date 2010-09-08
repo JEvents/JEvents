@@ -28,6 +28,7 @@ class RangeController extends JController   {
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
 		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
 			$this->_basePath = $this->basePath;
+			$this->_task = $this->task;
 		}
 	}
 

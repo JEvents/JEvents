@@ -60,8 +60,37 @@ class JEventsDBModel {
 
 		if (!array_key_exists($index,$instances)) {
 			if (JVersion::isCompatible("1.6.0")){
-				jimport("joomla.application.categories");
-				$cats = JCategories::getInstance("com_jevents");
+				//jimport("joomla.application.categories");
+				//$cats = JCategories::getInstance("jevents");
+				//$catlist = $cats->get();
+
+				$catids = explode(",",$catidList);
+				$catwhere = array();
+				foreach ($catids as $catid){
+					$catid = intval($catid);
+					if ($catid>0){
+						$catwhere[] =	"(c.lft<=".$catid." AND c.rgt>=".$catid.")";
+					}
+				}
+				if (count($catwhere)>0){
+					$where = "AND (".implode(" OR ",$catwhere).")";
+				}
+
+				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+				$query = "SELECT c.id"
+				. "\n FROM #__categories AS c"
+				. "\n WHERE c.access <= $aid"
+				. $q_published
+				. "\n AND c.extension = '".$sectionname."'"
+				. "\n " . $where;
+				;
+
+				$db->setQuery($query);
+				$catlist =  $db->loadResultArray();
+
+				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
+
+
 			}
 			else {
 				if (count($catids)>0 && !is_null($catidList) && $catidList!="0") {

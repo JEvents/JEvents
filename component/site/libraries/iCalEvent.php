@@ -91,18 +91,7 @@ class iCalEvent extends JTable  {
 		$access = false;
 		if ($user->get('id')>0){
 			if (JVersion::isCompatible("1.6.0")) {
-				// can this user delete all events!
-				$rules = JAccess::getAssetRules("com_jevents", true);
-				$deletegroups = $rules->getData();
-				$deletegroups = $deletegroups["core.deleteall"]->getData();
-				$users = array(0);
-				foreach ($deletegroups as $deletegroup){
-					$users = array_merge(JAccess::getUsersByGroup($deletegroup, true), $users);
-				}
-				$db = JFactory::getDbo();
-				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
+				$access = JAccess::check($user->id, "core.deleteall","com_jevents");
 
 			}
 			else {

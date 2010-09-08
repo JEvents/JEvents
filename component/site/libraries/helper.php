@@ -369,8 +369,8 @@ class JEVHelper {
 		$params =& JComponentHelper::getParams($component);
 		$forcepopupcalendar = $params->get("forcepopupcalendar",1);
 		$offset = $params->get("com_starday",1);
-		JHTML::script("calendar11.js","components/".$component."/assets/js/",true);
-		JHTML::stylesheet("dashboard.css","components/".$component."/assets/css/",true);
+		JEVHelper::script("calendar11.js","components/".$component."/assets/js/",true);
+		JEVHelper::stylesheet("dashboard.css","components/".$component."/assets/css/",true);
 		$script = '
 				var field'.$fieldid.'=false;
 				window.addEvent(\'domready\', function() {
@@ -1116,10 +1116,10 @@ class JEVHelper {
 		}
 
 		if (file_exists(JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$view->jevlayout.DS."assets".DS."css".DS.$filename)){
-			JHTML::stylesheet($filename , 'templates/'.JFactory::getApplication()->getTemplate().'/html/'.JEV_COM_COMPONENT.'/'.$view->jevlayout."/assets/css/" );
+			JEVHelper::stylesheet($filename , 'templates/'.JFactory::getApplication()->getTemplate().'/html/'.JEV_COM_COMPONENT.'/'.$view->jevlayout."/assets/css/" );
 		}
 		else {
-			JHTML::stylesheet($filename, 'components/'.JEV_COM_COMPONENT."/views/".$view->jevlayout."/assets/css/" );
+			JEVHelper::stylesheet($filename, 'components/'.JEV_COM_COMPONENT."/views/".$view->jevlayout."/assets/css/" );
 		}
 	}
 
@@ -1173,7 +1173,20 @@ class JEVHelper {
 		else JHTML::stylesheet( $file, $path);
 		
 	}
-	
+
+	static public function script($file,$path){
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) {
+			$document = JFactory::getDocument();
+			if (strpos($path, '/')!==0 && strpos($path, 'http')!==0){
+				$path = "/".$path;
+			}
+			$document->addScript($path.$file);
+		}
+		else JHTML::script( $file, $path);
+
+	}
+
 	static public function setupJoomla160(){
 	}
 	
@@ -1203,6 +1216,18 @@ class JEVHelper {
 		}
 
 	}
+
+	static public function imagesite($img, $text){
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) {
+			return JHTML::_('image','system/'.$img, $text, NULL, true);
+		}
+		else {
+			return JHTML::_('image.site', $img, '/images/M_images/', NULL, NULL, $txt);
+		}
+
+	}
+
 }
 
 

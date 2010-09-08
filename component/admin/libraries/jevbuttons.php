@@ -48,7 +48,12 @@ class JButtonJev extends JButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		return $this->_parent->_name.'-'.$icon;
+		if (JVersion::isCompatible("1.6.0")) {
+			return $this->_parent->getName().'-'.$icon;
+		}
+		else {
+			return $this->_parent->_name.'-'.$icon;
+		}
 	}
 	
 	/**
@@ -114,7 +119,13 @@ class JButtonJevlink extends JButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		return $this->_parent->_name.'-'.$icon;
+		if (JVersion::isCompatible("1.6.0")) {
+			return $this->_parent->getName().'-'.$icon;
+		}
+		else {
+			return $this->_parent->_name.'-'.$icon;
+		}
+
 	}
 	
 	/**
@@ -173,7 +184,12 @@ class JButtonJevconfirm extends JButton
 	 */
 	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
 	{
-		return $this->_parent->_name.'-'.$name;
+		if (JVersion::isCompatible("1.6.0")) {
+			return $this->_parent->getName().'-'.$name;
+		}
+		else {
+			return $this->_parent->_name.'-'.$name;
+		}
 	}
 
 	/**

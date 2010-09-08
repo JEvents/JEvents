@@ -62,13 +62,13 @@ function DefaultViewHelperHeader($view){
 		if ($pop) { ?>
 			<td width="20" class="buttonheading" align="right">
 			<a href="javascript:void(0);" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
-              	<?php echo JHTML::_('image.site', 'printButton.png', '/images/M_images/', NULL, NULL, JText::_('JEV_CMN_PRINT'));?>
+              	<?php echo JEVHelper::imagesite( 'printButton.png',JText::_('JEV_CMN_PRINT'));?>
 			</a>
 			</td> <?php
 		} else { ?>
 			<td  width="20" class="buttonheading" align="right">
 			<a href="javascript:void(0);" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
-              	<?php echo JHTML::_('image.site', 'printButton.png', '/images/M_images/', NULL, NULL, JText::_('JEV_CMN_PRINT'));?>
+              	<?php echo JEVHelper::imagesite( 'printButton.png',JText::_('JEV_CMN_PRINT'));?>
 			</a>
 			</td> <?php 
 		}
@@ -95,7 +95,7 @@ function DefaultViewHelperHeader($view){
 		?>
 		<td width="20" class="buttonheading" align="right">
 			<a href="javascript:void(0);" onclick="javascript:window.open('<? echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_('Email'); ?>">
-              	<?php echo JHTML::_('image.site', 'emailButton.png', '/images/M_images/', NULL, NULL, JText::_('Email'));?>
+				<?php echo JEVHelper::imagesite( 'emailButton.png',JText::_('Email'));?>
 			</a>
 		</td>
 		<?php

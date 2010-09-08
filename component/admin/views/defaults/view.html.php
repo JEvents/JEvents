@@ -76,13 +76,13 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		include_once(JPATH_ADMINISTRATOR.DS."includes".DS."toolbar.php");
 		// TODO find the active admin template
-		JHTML::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
-		JHTML::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
+		JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JHTML::script( 'editdefaults.js', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/' );
+		else JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JEVHelper::script( 'editdefaults.js', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
