@@ -23,7 +23,12 @@ function DefaultEventManagementDialog($view,$row, $mask){
 
 		$hasrepeat = false;
 
-		$pathIMG = JURI::root() . 'administrator/images';
+		if (JVersion::isCompatible("1.6.0")){
+			$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';
+		}
+		else {
+			$pathIMG = JURI::root() . 'administrator/images';
+		}
 		$editImg = $pathIMG."/edit_f2.png";
 		$editLink = $row->editLink();
 		$editLink = $popup?"javascript:jevEditPopup('".$editLink."',$popupw, $popuph);":$editLink;
@@ -88,35 +93,35 @@ function DefaultEventManagementDialog($view,$row, $mask){
                  <?php
                  if ($publishLink!=""){
                  ?>
-                 <a href="<?php echo $publishLink;?>" id="publish_reccur"  title="<?php echo $publishText;?>" style="text-decoration:none;"><img src="<?php echo $publishImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo $publishText;?></a><br/>
+                 <a href="<?php echo $publishLink;?>" id="publish_reccur"  title="<?php echo $publishText;?>" style="text-decoration:none;"><img src="<?php echo $publishImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo $publishText;?></a><br/>
                  <?php
                  }
                  ?>
                  <?php
                  if ($editRepeatLink!=""){
                  ?>
-                 <a href="<?php echo $editRepeatLink;?>" id="edit_reccur"  title="edit event" style="text-decoration:none;"><img src="<?php echo $editRepeatImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_("Edit Repeat");?></a><br/>
+                 <a href="<?php echo $editRepeatLink;?>" id="edit_reccur"  title="edit event" style="text-decoration:none;"><img src="<?php echo $editRepeatImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_("Edit Repeat");?></a><br/>
                  <?php
                  }
                  if ($editLink!=""){
                  ?>
-            	<a href="<?php echo $editLink;?>" id="edit_event" title="edit event" style="text-decoration:none;"><img src="<?php echo $editImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_("Edit Event");?></a><br/>
-            	<a href="<?php echo $editCopyLink;?>" id="edit_eventcopy" title="edit event" style="text-decoration:none;"><img src="<?php echo $editCopyImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_("Copy and Edit Event");?></a><br/>
+            	<a href="<?php echo $editLink;?>" id="edit_event" title="edit event" style="text-decoration:none;"><img src="<?php echo $editImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_("Edit Event");?></a><br/>
+            	<a href="<?php echo $editCopyLink;?>" id="edit_eventcopy" title="edit event" style="text-decoration:none;"><img src="<?php echo $editCopyImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_("Copy and Edit Event");?></a><br/>
                  <?php
                  }
                  if ($deleteRepeatLink!=""){
                  ?>
-                 <a href="<?php echo $deleteRepeatLink;?>" onclick="return confirm('<?php echo JText::_('Are you sure you want to delete this recurrence');?>')" id="delete_repeat"  title="delete repeat" style="text-decoration:none;"><img src="<?php echo $deleteRepeatImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_("Delete This Repeat");?></a><br/>
+                 <a href="<?php echo $deleteRepeatLink;?>" onclick="return confirm('<?php echo JText::_('Are you sure you want to delete this recurrence');?>')" id="delete_repeat"  title="delete repeat" style="text-decoration:none;"><img src="<?php echo $deleteRepeatImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_("Delete This Repeat");?></a><br/>
                  <?php
                  }
                  if ($deleteLink!=""){
                  ?>
-                 <a href="<?php echo $deleteLink;?>" onclick="return confirm('<?php echo JText::_($hasrepeat?'Are you sure you wish to delete this event and all its repeat':'Are you sure you wish to delete this event');?>')" id="delete_event"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_($hasrepeat?"Delete All Repeats":"Delete Event");?></a><br/>
+                 <a href="<?php echo $deleteLink;?>" onclick="return confirm('<?php echo JText::_($hasrepeat?'Are you sure you wish to delete this event and all its repeat':'Are you sure you wish to delete this event');?>')" id="delete_event"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_($hasrepeat?"Delete All Repeats":"Delete Event");?></a><br/>
             	<?php
                  }
                  if ($deleteFutureLink!=""){
                  ?>
-                 <a href="<?php echo $deleteFutureLink;?>" onclick="return confirm('<?php echo JText::_("Are you sure you with to delete this event and all future repeats")?>')" id="delete_eventfuture"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteFutureImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;" alt="" /><?php echo JText::_("Delete Future Repeats");?></a><br/>
+                 <a href="<?php echo $deleteFutureLink;?>" onclick="return confirm('<?php echo JText::_("Are you sure you with to delete this event and all future repeats")?>')" id="delete_eventfuture"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteFutureImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_("Delete Future Repeats");?></a><br/>
             <?php
 
                  }

@@ -2,6 +2,9 @@
 <metadata>
 	<view title="JEvents List By Week">
 		<message><![CDATA[JEvents List By Week]]></message>
+		<options var="layout" >
+			<option value='listevents' name="JEvents List By Week" msg="List View of JEvents organised by Week" />
+		</options>
 		<options var="task" >
 			<option value='week.listevents' name="JEvents List By Week" msg="List View of JEvents organised by Week" />
 		</options>

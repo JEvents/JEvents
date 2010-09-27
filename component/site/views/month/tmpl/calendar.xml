@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<fieldset addpath="/administrator/components/com_jevents/elements/" name="component" label="JEV_TAB_COMPONENT" >
+
+			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+				<option value="-1">HIDE ALTOGETHER</option>
+				<option value="2">ICONS WITHOUT NAVIGATION</option>
+			</field>
+
+			<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
+			<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid5" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid6" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid7" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+			<field name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+
+			<field name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />
+			<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras14" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras15" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+
+			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+			</field>
+
+			<field name="@spacer" type="jevinfo"  default="Advanced Settings" label="" description="" />
+			<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+		</fieldset>
+	</fields>
+</metadata>

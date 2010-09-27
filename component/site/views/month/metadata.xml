@@ -2,6 +2,9 @@
 <metadata>
 	<view title="Monthly Calendar">
 		<message><![CDATA[Monthly View]]></message>
+		<options var="layout" >
+			<option value='calendar' name="Monthly Calendar" msg="Tabular calendar view by month" />
+		</options>
 		<options var="task" >
 			<option value='month.calendar' name="Monthly Calendar" msg="Tabular calendar view by month" />
 		</options>
@@ -12,4 +15,5 @@
 		<params addpath="/administrator/components/com_jevents/elements/" >
 		</params>
 	</state>
+
 </metadata>

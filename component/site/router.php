@@ -24,12 +24,16 @@ function JEventsBuildRoute(&$query)
 	}
 
 	$task = false;
+	$task = false;
 	if (!isset($query['task'])){
 		if (isset($query["Itemid"])){
 			$menu = & JSite::getMenu();
 			$menuitem = $menu->getItem($query["Itemid"]);
 			if (!is_null($menuitem) && isset($menuitem->query["task"])){
 				$task = $menuitem->query["task"];
+			}
+			else if (!is_null($menuitem) && isset($menuitem->query["layout"]) && isset($menuitem->query["view"]) ){
+				$task = $menuitem->query["view"].".".$menuitem->query["layout"];
 			}
 		}
 		if (!$task){
