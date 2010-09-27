@@ -1,4 +1,5 @@
 <?php
+jimport("joomla.html.parameter.element");
 
 class JElementJevUserGroup extends JElement
 {

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+jimport("joomla.html.parameter.element");
 
 class JElementJevuser extends JElement
 {
