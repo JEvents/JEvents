@@ -61,6 +61,8 @@
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>category.xml</filename>
 			<filename>config.xml</filename>
 			<filename>index.html</filename>
 			<filename>jevents.php</filename>
