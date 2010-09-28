@@ -3,19 +3,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * ---------------------------------------------------------------------------------------------
- * Finalization and Cleanup Section
- * ---------------------------------------------------------------------------------------------
- */
-
-// Lastly, we will copy the manifest file to its appropriate place.
-if (!$this->parent->copyManifest()) {
-	// Install failed, rollback changes
-	$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Could not copy setup file'));
-	return false;
-}
-
-// Redirect to JEvents CPanel
-
-JFactory::getApplication()->redirect(JURI::root()."administrator/index.php?option=com_jevents");
+if (JVersion::isCompatible("1.6.0")) return;
+// Redirect to CPanel
+?>
+<script  type="text/javascript" language="javascript">
+	document.location.replace("<?php echo JURI::root();?>administrator/index.php?option=com_jevents");
+</script>

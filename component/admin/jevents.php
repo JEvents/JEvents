@@ -51,18 +51,19 @@ if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezon
 $lang =& JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
-// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
-$db =& JFactory::getDBO();
-$query = 'SELECT template'
-. ' FROM #__templates_menu'
-. ' WHERE client_id = 0 AND menuid=0'
-. ' ORDER BY menuid DESC'
-. ' LIMIT 1'
-;
-$db->setQuery($query);
-$template = $db->loadResult();
-$lang->load(JEV_COM_COMPONENT, JPATH_SITE.DS."templates".DS.$template);
-
+if (!version_compare(JVERSION,'1.6.0',">=")){
+	// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
+	$db =& JFactory::getDBO();
+	$query = 'SELECT template'
+	. ' FROM #__templates_menu'
+	. ' WHERE client_id = 0 AND menuid=0'
+	. ' ORDER BY menuid DESC'
+	. ' LIMIT 1'
+	;
+	$db->setQuery($query);
+	$template = $db->loadResult();
+	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.DS."templates".DS.$template);
+}
 // disable Zend php4 compatability mode
 @ini_set("zend.ze1_compatibility_mode","Off");
 
