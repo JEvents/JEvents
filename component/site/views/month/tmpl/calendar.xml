@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<!-- Add fields to the parameters object for the layout. -->
-	<fields name="params">
+	<fields name="params" addfieldpath="/administrator/components/com_jevents/models/fields/" >
 
-		<fieldset addpath="/administrator/components/com_jevents/elements/" name="component" label="JEV_TAB_COMPONENT" >
+		<fieldset name="component" label="JEV_TAB_COMPONENT" >
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 				<option value="0">JEV_NO</option>
@@ -12,7 +12,7 @@
 				<option value="2">ICONS WITHOUT NAVIGATION</option>
 			</field>
 
-			<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
+			<field name="catid0" type="jevcategory"  default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
 			<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 			<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 			<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
