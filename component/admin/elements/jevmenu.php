@@ -49,7 +49,12 @@ class JElementJevmenu extends JElement
 		foreach ($menuItems as &$item) {
 		 	
 			if ($item->component =="com_jevents"){
-				$item->name = "*** ".$item->name." ***";
+				if (version_compare(JVERSION, '1.6.0', ">=")){
+					$item->title  = "*** ".$item->title." ***";
+				}
+				else {
+					$item->name = "*** ".$item->name." ***";
+				}
 			}
 			unset($item);
 		 } 

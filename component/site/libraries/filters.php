@@ -87,12 +87,12 @@ class jevFilterProcessing
 			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
 			//  but we can't do anything about that
 			foreach ($visblemodules as $module) {
-				$modparams = (version_compare(JVERSION, '1.6.0', ">=")) ? json_decode($module->params) : new JParameter($module->params);  // RSH 10/4/10 Added version check
+				$modparams =  new JParameter($module->params);
 				if ($module->module == "mod_jevents_filter" ){
-					$filters = (version_compare(JVERSION, '1.6.0', ">=")) ? ((isset($modparams->filters) ? $modparams->filters : '') : $modparams->get("filters","");
+					$filters = $modparams->get("filters","");
 				}
 				else {
-					$filters = (version_compare(JVERSION, '1.6.0', ">=")) ? ((isset($modparams->jevfilters) ? $modparams->jevfilters : '') : $modparams->get("jevfilters","");
+					$filters = $modparams->get("jevfilters","");
 				}
 				if (trim($filters)!=""){
 					$this->visiblefilters = array_merge(explode(",",$filters),$this->visiblefilters);
