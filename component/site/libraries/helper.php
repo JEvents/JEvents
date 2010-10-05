@@ -363,14 +363,16 @@ class JEVHelper {
 	 * 
 	 * @static
 	 */
-	static function loadCalendar11($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart="", $onchange="", $format='Y-m-d') {
+	static function loadCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart="", $onchange="", $format='Y-m-d') {
 		$document =& JFactory::getDocument();
 		$component="com_jevents";
 		$params =& JComponentHelper::getParams($component);
 		$forcepopupcalendar = $params->get("forcepopupcalendar",1);
 		$offset = $params->get("com_starday",1);
-		JEVHelper::script("calendar11.js","components/".$component."/assets/js/",true);
-		JEVHelper::stylesheet("dashboard.css","components/".$component."/assets/css/",true);
+		
+		$calendar = (JVersion::isCompatible("1.6.0")) ? 'calendar12.js' : 'calendar11.js';// RSH 9/28/10 - need to make the calendar a variable to be compatible with both mootools1.1 and 1.2
+		JEVHelper::script($calendar, JURI::root(true) . "/components/".$component."/assets/js/",true);  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		JEVHelper::stylesheet("dashboard.css", "components/".$component."/assets/css/",true); 
 		$script = '
 				var field'.$fieldid.'=false;
 				window.addEvent(\'domready\', function() {

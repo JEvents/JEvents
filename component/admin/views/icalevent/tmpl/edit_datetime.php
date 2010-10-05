@@ -56,7 +56,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
-			JEVHelper::loadCalendar11("publish_up", "publish_up", $this->row->startDate(),$minyear, $maxyear, 'var elem = $("publish_up");checkDates(elem);fixRepeatDates();',"checkDates(this);fixRepeatDates();", 'Y-m-d');
+			JEVHelper::loadCalendar("publish_up", "publish_up", $this->row->startDate(),$minyear, $maxyear, 'var elem = $("publish_up");checkDates(elem);fixRepeatDates();',"checkDates(this);fixRepeatDates();", 'Y-m-d');
 		
 			?>
          </div>
@@ -86,7 +86,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
-			JEVHelper::loadCalendar11("publish_down", "publish_down", $this->row->endDate(),$minyear, $maxyear, 'var elem = $("publish_down");checkDates(elem);',"checkDates(this);", 'Y-m-d');
+			JEVHelper::loadCalendar("publish_down", "publish_down", $this->row->endDate(),$minyear, $maxyear, 'var elem = $("publish_down");checkDates(elem);',"checkDates(this);", 'Y-m-d');
 			
 			?>
          </div>
@@ -153,7 +153,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
-			JEVHelper::loadCalendar11("until", "until", strftime("%Y-%m-%d",$this->row->until()),$minyear, $maxyear, 'updateRepeatWarning();',"checkUntil();updateRepeatWarning();", 'Y-m-d');
+			JEVHelper::loadCalendar("until", "until", strftime("%Y-%m-%d",$this->row->until()),$minyear, $maxyear, 'updateRepeatWarning();',"checkUntil();updateRepeatWarning();", 'Y-m-d');
 			?>
 
    		</fieldset>

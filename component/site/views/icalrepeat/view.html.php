@@ -27,8 +27,8 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		parent::__construct($config);	
 		
 		// TODO find the active admin template
-		JEVHelper::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
-		JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("system.css", JURI::root(true). "/administrator/templates/system/css/");
+		JEVHelper::stylesheet("template.css", JURI::root(true). "/administrator/templates/khepri/css/");
 
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 	}	
@@ -40,11 +40,11 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', JURI::root(true).'/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' ); // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		else JEVHelper::stylesheet( 'eventsadmin.css', JURI::root(true).'/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' ); // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
 
-		JEVHelper::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
-		JEVHelper::script('view_detail.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editical.js?v=1.5.6', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		JEVHelper::script('view_detail.js', JURI::root(true) . '/components/'.JEV_COM_COMPONENT.'/assets/js/');  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
 		
 		$document->setTitle(JText::_('Edit ICal Repeat'));
 		

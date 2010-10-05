@@ -14,7 +14,7 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JPlugin::loadLanguage( 'plg_search_jevents' );
+//JPlugin::loadLanguage( 'plg_search_jevents' );
 
 // setup for all required function and classes
 $file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -29,11 +29,16 @@ if (file_exists($file) ) {
 // Import library dependencies
 jimport('joomla.event.plugin');
 
-$mainframe->registerEvent( 'onSearchAreas', 'plgSearchEventsSearchAreas' );
+// Check for 1.6
+if (!(version_compare(JVERSION, '1.6.0', ">="))) {
+	$mainframe->registerEvent( 'onSearchAreas', 'plgSearchEventsSearchAreas' );
+}
+
 /**
  * @return array An array of search areas
  */
 function &plgSearchEventsSearchAreas() {
+
 	static $areas = array(
 	'events' => 'JEvents'
 	);
@@ -55,15 +60,32 @@ class plgSearchEventsearch extends JPlugin {
 	 * @since 1.5
 	 */
 
-	function plgSearchEventsearch( &$subject )
+	function plgSearchEventsearch( &$subject, $config = array()  ) // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
 	{
-		parent::__construct( $subject );
+		parent::__construct( $subject, $config );  // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
 
 		// load plugin parameters
+		if (!(version_compare(JVERSION, '1.6.0', ">="))) {
 		$this->_plugin = & JPluginHelper::getPlugin( 'search', 'eventsearch' );
 		$this->_params = new JParameter( $this->_plugin->params );
-				
+		}
 	}
+				
+	/**
+	 * @return array An array of search areas
+	 */
+	function onContentSearchAreas()
+	{
+		static $areas = array(
+			'eventsearch' => 'Events'
+			);
+			return $areas;
+	}
+
+	function onContentSearch($text, $phrase='', $ordering='', $areas=null)
+	{
+		return $this->onSearch( $text, $phrase, $ordering , $areas);
+	}	
 
 	/**
 	* Search method
@@ -78,10 +100,10 @@ class plgSearchEventsearch extends JPlugin {
 
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
+		$groups	= (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->authorisedLevels()) : false;
 
-
-		$limit = $this->_params->def( 'search_limit', 50 );
-		$dateformat = $this->_params->def( 'date_format', "%d %B %Y");
+		$limit = (version_compare(JVERSION, '1.6.0', '>=')) ? $this->params->get( 'search_limit', 50 ) : $this->_params->def('search_limit', 50);
+		$dateformat = (version_compare(JVERSION, '1.6.0', ">=")) ? $this->params->get( 'date_format', "%d %B %Y") : $this->_params->def( 'date_format', "%d %B %Y");
 
 		$limit 		= "\n LIMIT $limit";
 
@@ -209,11 +231,11 @@ class plgSearchEventsearch extends JPlugin {
 		. "\n LEFT  JOIN #__jevents_icsfile as icsf ON icsf.ics_id = ev.icsid"
 		. $extrajoin
 		. "\n WHERE ($where_ical)"
-		. "\n AND icsf.state=1"
-		. "\n AND icsf.access <= ".$user->gid
-		. "\n AND ev.state=1"
-		. "\n AND ev.access<=$user->gid"
-		. "\n AND b.access<=$user->gid"
+		. "\n AND icsf.state = 1"
+		. "\n AND icsf.access <= " . ((version_compare(JVERSION, '1.6.0', '>=')) ? $user->aid : $user->gid)
+		. "\n AND ev.state = 1"
+		. "\n AND ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+		. "\n AND b.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 		. "\n AND b.published = '1'"
 		. $extrawhere
 
@@ -241,7 +263,7 @@ class plgSearchEventsearch extends JPlugin {
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-			. "\n WHERE ev.access <= ".$user->aid
+			. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 			. "\n AND rpt.rp_id IN (".implode(",",$ids).")";
 
 			$db->setQuery($query);
@@ -251,7 +273,7 @@ class plgSearchEventsearch extends JPlugin {
 				$item->title .= " (" . $startdate->toFormat($dateformat) . ")";
 				
 				// Now ensure that the URL is the correc SEF URL
-				if (array_key_exists($item->rp_id,$rows)){
+				if (array_key_exists($item->rp_id, $rows)) {
 					$row = $rows[$item->rp_id];
 					$event = new jIcalEventRepeat($row);
 					$myitemid = 0;

@@ -59,8 +59,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JEVHelper::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		else JHTML::stylesheet( 'eventsadmin.css', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JEVHelper::script('editical.js?v=1.5.6', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Event'));
 
@@ -70,12 +70,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$bar = & JToolBar::getInstance('toolbar');
 		if ($this->id>0){
 			if ($this->editCopy){
-				$this->toolbarConfirmButton("icalevent.save",JText::_("save copy warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply",JText::_("save copy warning"),'apply','apply','Apply',false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save copy warning"),'save','save','Save',false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save copy warning"),'apply','apply','Apply',false);
 			}
 			else {
-				$this->toolbarConfirmButton("icalevent.save",JText::_("save icalevent warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply",JText::_("save icalevent warning"),'apply','apply','Apply',false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save icalevent warning"),'save','save','Save',false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save icalevent warning"),'apply','apply','Apply',false);
 			}
 		}
 		else {

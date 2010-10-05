@@ -37,7 +37,7 @@ class JElementJevdate extends JElement
 		$minyear = $params->get("com_earliestyear",1970);
 		$maxyear = $params->get("com_latestyear",2150);
 		ob_start();
-		JEVHelper::loadCalendar11($control_name.'['.$name.']', $control_name.$name, $value,$minyear, $maxyear, '',"", 'Y-m-d');
+		JEVHelper::loadCalendar($control_name.'['.$name.']', $control_name.$name, $value,$minyear, $maxyear, '',"", 'Y-m-d');
 		return ob_get_clean();
 	}
 }

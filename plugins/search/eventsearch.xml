@@ -18,4 +18,31 @@
 		<param name="date_format" type="text" size="50" default="%Y-%m-%d" label="Date Format" description="Format for date in return"/>
 		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
 	</params>
+	
+	<config>
+		<fields name="params">
+		
+			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
+				<field
+					name="search_limit"
+					type="text"
+					default="50"
+					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+					size="50"
+					description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC" />
+				<field
+					name="date_format"
+					type="text"
+					default="%Y-%m-%d"
+					label="Date Format"
+					description="Format for date in return" />					
+				<field
+					name="target_itemid"
+					type="jevmenu"
+					default=""
+					label="Target Menu Item"
+					description="Menu item for target page" />
+			</fieldset>		
+		</fields>
+	</config>	
 </install>

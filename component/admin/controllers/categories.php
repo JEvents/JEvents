@@ -67,7 +67,9 @@ class AdminCategoriesController extends JController {
 		$parent	= JFactory::getApplication()->getUserStateFromRequest( 'jev_parent',	'parentid',			-1,	'int' );
 
 		// get the total number of records
-		$query = "SELECT count(*) FROM $this->categoryTable WHERE section='com_jevents'"	;
+		// RSH 9/28/10 Make column name a variable for J!1.6 compatibility 
+		$column = (JVersion::isCompatible("1.6.0")) ? 'extension' : 'section'; 
+		$query = "SELECT COUNT(*) FROM $this->categoryTable WHERE $column = 'com_jevents'"	;
 		if ($parent>=0){
 			$query .= " AND parent_id=".$parent;
 		}
@@ -116,7 +118,9 @@ class AdminCategoriesController extends JController {
 		$db->setQuery($sql);
 		$categories[] = JHTML::_('select.option', '-1', '- '.JText::_('Select Parent').' -');
 		$categories[] = JHTML::_('select.option', '0', JText::_('No Parent'));
-		$categories = array_merge($categories, $db->loadObjectList());
+		// RSH 9/28/10 Added check for empty categories - don't do array_merge if empty!
+		//$result = $db->loadObjectList();
+		$categories = array_merge($categories, ((is_array($result)) ? $result : array()) ); // RSH 9/28/10
 		$parents = JHTML::_('select.genericlist',  $categories, 'parentid', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', $parent);
 
 		jimport('joomla.html.pagination');

@@ -55,10 +55,13 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 		JHTML::_('behavior.tooltip');
 
 		// Preprocess the list of items to find ordering divisions.
+		// RSH 9/28/10 Added check for empty list - if no items were created.
+		if (count($this->items) > 0)
+		{
 		foreach ($this->items as &$item) {
 			$this->ordering[$item->parent_id][] = $item->id;
 		}
-			
+		}
 	}	
 
 

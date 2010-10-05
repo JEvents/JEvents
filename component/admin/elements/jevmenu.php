@@ -23,7 +23,7 @@ class JElementJevmenu extends JElement
 	*/
 	var	$_name = 'jevmenu';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	function fetchElement($name, $value, &$node, $control_name, $raw=false)  // RSH 10/4/10 - Added raw parameter to return just the elements for J!1.6
 	{
 
 		// Must load admin language files
@@ -62,10 +62,10 @@ class JElementJevmenu extends JElement
 			// first pass - collect children
 			foreach ($menuItems as $v)
 			{
-				$pt 	= $v->parent;
-				$list 	= @$children[$pt] ? $children[$pt] : array();
+				$pt 	= 0; //(version_compare(JVERSION, '1.6.0', ">=")) ? $v->parent_id: $v->parent;  // RSH 10/4/10 in J!1.5 - parent was always 0, this changed in J!.16 to a real parent_id, so force id to 0 for compatibility
+				$list 	= @$children[0] ? $children[0] : array();
 				array_push( $list, $v );
-				$children[$pt] = $list;
+				$children[0] = $list;
 			}
 		}
 
@@ -81,7 +81,7 @@ class JElementJevmenu extends JElement
 
 		foreach ($menuTypes as $type)
 		{
-			$options[]	= JHTML::_('select.option',  $type->menutype, $type->title , 'value', 'text', true );
+			$options[]	= JHTML::_('select.option',  $type->menutype, $type->title , 'value', 'text', true );  // these are disabled! (true)
 			if (isset( $groupedList[$type->menutype] ))
 			{
 				$n = count( $groupedList[$type->menutype] );
@@ -99,14 +99,19 @@ class JElementJevmenu extends JElement
 						}
 					}
 					
-					$disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-					$options[] = JHTML::_('select.option',  $item->id, '&nbsp;&nbsp;&nbsp;' .$item->treename, 'value', 'text', $disable );
+					$disable = false; //strpos($node->attributes('disable'), $item->type) !== false ? true : false;
+					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? utf8_encode(html_entity_decode('&nbsp;&nbsp;&nbsp;' . $item->treename)) : '&nbsp;&nbsp;&nbsp;' . $item->treename;  // RSH 10/4/10 - J!1.6 does a htmlspecialentities and html_entity_decode to screw up the text!  Make sure the correct values are passed for the respective versions
+					$options[] = JHTML::_('select.option',  $item->id, $text , 'value', 'text', $disable );
 
 				}
 			}
 		}
 
+		if ($raw) {
+			return $options;
+		} else {
 		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
+	}
 	}
 	
 	function fetchElementOLD($name, $value, &$node, $control_name)

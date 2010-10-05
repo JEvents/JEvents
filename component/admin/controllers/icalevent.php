@@ -832,12 +832,14 @@ class AdminIcaleventController extends JController {
 		$component_name = "com_jevents";
 
 		$db	=& JFactory::getDBO();
-		if (JVersion::isCompatible("1.6.0"))  $query = "SELECT count(*) as count FROM #__categories WHERE extension='$component_name'";
+		if (JVersion::isCompatible("1.6.0"))  $query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		else $query = "SELECT count(*) as count FROM #__categories WHERE section='$component_name'";
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
 		if ($count<=0){
-			$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=categories.list","You must first create at least one category");
+			// RSH 9/28/10 - Added check for J!1.6 to use different URL for reroute
+			$redirectURL = (JVersion::isCompatible("1.6.0")) ? "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT : "index.php?option=" . JEV_COM_COMPONENT . "&task=categories.list";
+			$this->setRedirect($redirectURL, "You must first create at least one category");
 			$this->redirect();
 		}
 	}

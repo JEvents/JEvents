@@ -27,9 +27,9 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		parent::__construct($config);	
 				
 		// TODO find the active admin template
-		JEVHelper::stylesheet("system.css",JURI::root()."administrator/templates/system/css/");
-		JEVHelper::stylesheet("icon.css",JURI::root()."administrator/templates/khepri/css/");
-		JEVHelper::stylesheet("general.css",JURI::root()."administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("system.css", JURI::root(true) . "/administrator/templates/system/css/");
+		JEVHelper::stylesheet("icon.css", JURI::root(true) . "/administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("general.css", JURI::root(true) . "/administrator/templates/khepri/css/");
 	}	
 	
 	function edit($tpl = null)
@@ -39,10 +39,10 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css',  JURI::root(true) .  '/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin.css', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
-		JEVHelper::script('editical.js?v=1.5.6','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editical.js?v=1.5.6',  JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
 		$document->setTitle(JText::_('Edit ICal Event'));
