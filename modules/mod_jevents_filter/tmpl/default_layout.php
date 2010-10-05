@@ -13,7 +13,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 if (count($filterHTML)>0){
-	JHTML::script("mod_jevents_filter.js","modules/mod_jevents_filter/",true);
+	JEVHelper::script("mod_jevents_filter.js","modules/mod_jevents_filter/",true);
 	?>
 	<form action="<?php echo $form_link;?>" id="jeventspost" name="jeventspost" method="post">
 	<table cellpadding="0" cellspacing="0" border="0">

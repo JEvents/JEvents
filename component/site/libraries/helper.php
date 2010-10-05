@@ -1177,6 +1177,10 @@ class JEVHelper {
 	}
 
 	static public function script($file,$path){
+
+		// Include mootools framework
+		JHtml::_('behavior.mootools', true);
+
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) {
 			$document = JFactory::getDocument();
