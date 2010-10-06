@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="JEvents Search">
-		<message><![CDATA[JEvents Search]]></message>
+	<view title="COM_JEVENTS_SEARCH_DEFAULT_TITLE">
+		<message><![CDATA[COM_JEVENTS_SEARCH_DEFAULT_DESC]]></message>
+		<options var="layout" >
+			<option value='form' name="COM_JEVENTS_SEARCH_DEFAULT_TITLE" msg="COM_JEVENTS_SEARCH_DEFAULT_DESC" />
+		</options>				
 		<options var="task" >
-			<option value='search.form' name="JEvents Search" msg="Search JEvents" />
+			<option value='search.form' name="COM_JEVENTS_SEARCH_DEFAULT_TITLE" msg="COM_JEVENTS_SEARCH_DEFAULT_DESC" />
 		</options>
 	</view>
 	<state>

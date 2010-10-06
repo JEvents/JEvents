@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<metadata>
+
+	<layout title="COM_JEVENTS_DATE_RANGE_DEFAULT_TITLE">
+		<help
+			key = "COM_JEVENTS_DATE_RANGE_HELP"
+		/>
+		<message>
+			<![CDATA[COM_JEVENTS_DATE_RANGE_DEFAULT_DESC]]>
+		</message>
+	</layout>
+	
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params" >
+
+		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+
+			<field name="relative" type="radio" default="abs" label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
+				<option value="abs">COM_JEVENTS_DATE_RANGE_RELATIVE_ABS</option>
+				<option value="rel">COM_JEVENTS_DATE_RANGE_RELATIVE_REL</option>
+				<option value="strtotime">COM_JEVENTS_DATE_RANGE_RELATIVE_STR</option>
+			</field>
+			<field name="@spacer1a" type="jevinfo" default="" label="" description="" />	
+			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description="" />	
+			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL" description="" format="%Y-%m-%d" />
+			<field name="absend" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_END_LABEL" description="" format="%Y-%m-%d" />
+			<field name="@spacer2a" type="jevinfo" default="" label="" description="" />
+			<field name="@spacer2" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_REL_LABEL" label="" description="" />	
+			<field name='relstart' type='text' default="-1w" label="COM_JEVENTS_DATE_RANGE_REL_START_LABEL" description="JEV_RELSTART_DESC" />
+			<field name='relend' type='text' default="+1m" label="COM_JEVENTS_DATE_RANGE_REL_END_LABEL" description="JEV_RELEND_DESC" />		
+			<field name="@spacer3a" type="jevinfo" default="" label="" description="" />
+			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" />	
+			<field name='strstart' type='text' default="yesterday" label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" />
+			<field name='strend' type='text' default="tomorrow" label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" />
+		</fieldset>
+	</fields>
+</metadata>
