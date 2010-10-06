@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="JEV_Crawler">
+	<view title="JEV_CRAWLER">
 		<message><![CDATA[JEV_CRAWLER_VIEW]]></message>
+		<options var="layout" >
+			<option value='listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC" />
+		</options>		
 		<options var="task" >
-			<option value='crawler.listevents' name="JEV_CRAWLER_VIEW" msg="List of events in a particular date range" />
+			<option value='crawler.listevents' name="JEV_CRAWLER_VIEW" msg="COM_JEVENTS_CRAWLER_DEFAULT_DESC" />
 		</options>
 	</view>
 	<state>

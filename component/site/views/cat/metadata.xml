@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="JEvents List By Category">
-		<message><![CDATA[JEvents List By Category]]></message>
+	<view title="COM_JEVENTS_LIST_CATEGORY_DEFAULT_TITLE">
+		<message><![CDATA[COM_JEVENTS_LIST_CATEGORY_DEFAULT_DESC]]></message>
+		<options var="layout" >
+			<option value='listevents' name="COM_JEVENTS_LIST_CATEGORY_DEFAULT_TITLE" msg="COM_JEVENTS_LIST_CATEGORY_DEFAULT_DESC" />
+		</options>				
 		<options var="task" >
-			<option value='cat.listevents' name="JEvents List By Category" msg="List View of JEvents organised by category" />
+			<option value='cat.listevents' name="COM_JEVENTS_LIST_CATEGORY_DEFAULT_TITLE" msg="List View of JEvents organised by category" />
 		</options>
 	</view>
 	<state>

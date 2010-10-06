@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- $Id:$ -->
 <metadata>
-	<!-- Add fields to the parameters object for the layout. -->
-	<fields name="params" addfieldpath="/administrator/components/com_jevents/models/fields/" >
 
-		<fieldset name="component" label="JEV_TAB_COMPONENT" >
+	<layout title="COM_JEVENTS_MANAGE_JEVENTS_DEFAULT_TITLE">
+		<help
+			key = "COM_JEVENTS_MANAGE_JEVENTS_HELP"
+		/>
+		<message>
+			<![CDATA[COM_JEVENTS_MANAGE_JEVENTS_DEFAULT_DESC]]>
+		</message>
+	</layout>
+	
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params" >
+
+		<fieldset name="basic" label="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" >
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 				<option value="0">JEV_NO</option>
@@ -29,7 +40,7 @@
 				<option value="1">JEV_YES</option>
 			</field>
 
-			<field name="@spacer" type="jevinfo"  default="Advanced Settings" label="" description="" />
+			<field name="@spacer" type="jevinfo" default="Advanced Settings" label="" description="" />
 			<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
 		</fieldset>
 	</fields>
