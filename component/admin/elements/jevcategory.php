@@ -23,7 +23,7 @@ class JElementJevcategory extends JElement
 	*/
 	var	$_name = 'Category';
 
-	function fetchElement($name, $value, &$node, $control_name)
+	function fetchElement($name, $value, &$node, $control_name, $raw=false)  // RSH added raw parameter for J1.6 compatiblity
 	{
 
 		// Must load admin language files
@@ -33,7 +33,7 @@ class JElementJevcategory extends JElement
 		$db = &JFactory::getDBO();
 
 		if (JVersion::isCompatible("1.6.0"))  {
-			$extension	= $node->attributes('extension');
+			$extension	= $node->getAttribute('extension');
 		}
 		else {
 			$section	= $node->attributes('section');
@@ -87,8 +87,11 @@ class JElementJevcategory extends JElement
 			$options[$key]->title = $title;
 		}
 		JArrayHelper::sortObjects($options,"title");
-		array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('Select Category').' -', 'id', 'title'));
-
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="'.$class.'"', 'id', 'title', $value, $control_name.$name );
+		if ($raw) {
+			return $options;
+		} else {
+			array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('Select Category').' -', 'id', 'title'));
+			return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="'.$class.'"', 'id', 'title', $value, $control_name.$name );
+		}
 	}
 }

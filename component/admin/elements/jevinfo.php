@@ -35,13 +35,18 @@ class JElementJevinfo extends JElement
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$help = $node->attributes('help');
-		if (!is_null($help)){
+		// RSH 10/5/10 Added this for J!1.6 - $help is now an JXMLElement
+		if ( (!is_null($help)) && (version_compare(JVERSION, '1.6.0', ">=")) ) {
+			$help = $help->getAttribute('key');  // TODO Not sure if this is the correct attribute RSH 10/5/10
+			$help = ( (isset($help)) && ($help.length <= 0)) ? null : $help;
+		}
+		if (!is_null($help)) {
 			$parts = explode(",",$value);
 			$helps = explode(",",$help);
 			foreach ($parts as $key=>$valuepart) {
 				$help = $helps[$key];	
 				list($helpfile,$varname,$part) = explode("::",$help);
-				JEVHelper::loadOverlib();
+				JEVHelper::loadOverlib();  // TODO RSH This library is not in scope!
 				$lang =& JFactory::getLanguage();
 				$langtag  = $lang->getTag();
 				if( file_exists( JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/'.$helpfile )){

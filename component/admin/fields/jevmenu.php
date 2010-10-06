@@ -18,33 +18,14 @@ jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
-/**
- * JEVMenu Field class for the JEvents Component
- *
- * @package		JEvents.fields
- * @subpackage	com_banners
- * @since		1.6
- */
+
 class JFormFieldJEVmenu extends JFormFieldList
 {
-	/**
-	 * The form field type.s
-	 *
-	 * @var		string
-	 * @since	1.6
-	 */
+
 	protected $type = 'JEVmenu';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
-	 */
 	public function getOptions()
 	{
-		// Initialize variables.
-		$options = array();
 
 		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevmenu.php';
 		if (file_exists($file) ) {
@@ -53,6 +34,6 @@ class JFormFieldJEVmenu extends JFormFieldList
 			die ("JEvents Fields jevmenu.php\n<br />This module needs the JEvents component");
 		}		
 
-		return JElementJevmenu::fetchElement($this->name, '', $this, $this->type, true);  // RSH 10/4/10 - Use the original code for J!1.6
+		return JElementJevmenu::fetchElement($this->name, $this->value, $this->element, $this->type, true);  // RSH 10/4/10 - Use the original code for J!1.6
 	}
 }

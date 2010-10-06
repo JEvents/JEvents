@@ -23,7 +23,7 @@ class JElementJevboolean extends JElement
 	*/
 	var	$_name = 'Jevboolean';
 	
-	function fetchElement($name, $value, &$node, $control_name)
+	function fetchElement($name, $value, &$node, $control_name, $raw = false)  // RSH 10/5/10 - Added raw parameter to return just the elements for J!1.6
 	{
 
 		// Must load admin language files
@@ -34,6 +34,10 @@ class JElementJevboolean extends JElement
 		$options[] = JHTML::_('select.option', 0, JText::_("No"));
 		$options[] = JHTML::_('select.option', 1, JText::_("Yes"));
 
-		return JHTML::_('select.radiolist', $options, ''.$control_name.'['.$name.']', '', 'value', 'text', $value, $control_name.$name );
+		if ($raw) {
+			return $options;
+		} else {
+			return JHTML::_('select.radiolist', $options, ''.$control_name.'['.$name.']', '', 'value', 'text', $value, $control_name.$name );
+		}
 	}
 }
