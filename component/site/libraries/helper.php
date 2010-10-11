@@ -440,8 +440,14 @@ class JEVHelper {
 		if ( !JFactory::getApplication()->get( 'loadOverlib' ) ) {
 			if( $cfg->get("com_enableToolTip",1) || JFactory::getApplication()->isAdmin()) {
 				$document=& JFactory::getDocument();
-				$document->addScript(JURI::root() . 'includes/js/overlib_mini.js');
-				$document->addScript(JURI::root() . 'includes/js/overlib_hideform_mini.js');
+				// RSH 10/11/10 - Check location of overlib files - j!1.6 doesn't include them!
+				if (JVersion::isCompatible("1.6.0"))  {
+					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_mini.js');
+					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_hideform_mini.js');			
+				} else {
+					$document->addScript(JURI::root() . 'includes/js/overlib_mini.js');
+					$document->addScript(JURI::root() . 'includes/js/overlib_hideform_mini.js');
+				}
 				// change state so it isnt loaded a second time
 				JFactory::getApplication()->set( 'loadOverlib', true );
 
