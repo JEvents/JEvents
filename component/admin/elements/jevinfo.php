@@ -46,7 +46,7 @@ class JElementJevinfo extends JElement
 			foreach ($parts as $key=>$valuepart) {
 				$help = $helps[$key];	
 				list($helpfile,$varname,$part) = explode("::",$help);
-				JEVHelper::loadOverlib();  // TODO RSH This library is not in scope!
+				JEVHelper::loadOverlib();
 				$lang =& JFactory::getLanguage();
 				$langtag  = $lang->getTag();
 				if( file_exists( JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/'.$helpfile )){
@@ -99,7 +99,8 @@ class JElementJevinfo extends JElement
 			$onclick_cmd = 'return overlib("'.$help.'", ' . $ol_cmds . ', CAPTION, "'.$caption.'")';
 		}
 
-		$str = '<img border="0" style="vertical-align:bottom; cursor:help;" alt="'. JText::_('JEV_HELP') . '"'
+		// RSH 10/11/10 - Added float:none for 1.6 compatiblity - The default template was floating images to the left
+		$str = '<img border="0" style="float: none; vertical-align:bottom; cursor:help;" alt="'. JText::_('JEV_HELP') . '"'
 		. ' title="' . JText::_('JEV_HELP') .'"'
 		. ' src="' . $imgpath . '/help_ques_inact.gif"'
 		. ' onmouseover=\'this.src="' . $imgpath . '/help_ques.gif"\''
