@@ -777,7 +777,6 @@ class JEventsDataModel {
 	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0){
 		$data = array();
 
-		global   $mainframe;
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");

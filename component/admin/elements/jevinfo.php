@@ -37,7 +37,7 @@ class JElementJevinfo extends JElement
 		$help = $node->attributes('help');
 		// RSH 10/5/10 Added this for J!1.6 - $help is now an JXMLElement
 		if ( (!is_null($help)) && (version_compare(JVERSION, '1.6.0', ">=")) ) {
-			$help = $help->data(); 
+			if (is_object($help)) $help =  $help->data();
 			$help = ( (isset($help)) && (strlen($help) <= 0)) ? null : $help;
 		}
 		if (!is_null($help)) {

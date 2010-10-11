@@ -23,6 +23,20 @@ class AdminParamsController extends JController
 	 */
 	function __construct( $default = array())
 	{
+		$user =& JFactory::getUser();
+
+		if (JVersion::isCompatible("1.6.0")) {
+		}
+		else{
+				// Only users who can delete all can do this
+				$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+				if (!$access){
+					$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+					return;
+				}
+		}
+		
+
 		$default['default_task'] = 'edit';
 		parent::__construct( $default );
 
