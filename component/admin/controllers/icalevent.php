@@ -163,7 +163,11 @@ class AdminIcaleventController extends JController {
 		if (JVersion::isCompatible("1.6.0")) 	{
 			$query = "SELECT ev.*, ev.state as evstate, detail.*, a.title as _groupname ".$anonfields
 			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
-			. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat")
+		. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
+		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+		. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+		. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn")
 			. "\n FROM #__jevents_vevent as ev "
 			. ($this->_largeDataSet?"":"\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
 			. $anonjoin

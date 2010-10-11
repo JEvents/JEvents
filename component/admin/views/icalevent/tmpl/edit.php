@@ -146,11 +146,9 @@ function submitbutton(pressbutton) {
 		alert( "<?php echo JText::_("Invalid dates - please correct" );?>");
 	}
 	else {
-		<?php 
 		<?php
 		// in case editor is toggled off - needed for TinyMCE
 		echo $editor->save( 'jevcontent' );
-		?>
 		// Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );	
 		if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
