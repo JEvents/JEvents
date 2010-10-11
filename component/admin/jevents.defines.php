@@ -53,6 +53,7 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('iCalEvent',JEV_PATH."libraries/iCalEvent.php");
 	JLoader::register('iCalEventDetail',JEV_PATH."libraries/iCalEventDetail.php");
 	JLoader::register('iCalICSFile',JEV_PATH."libraries/iCalICSFile.php");
+	JLoader::register('CsvToiCal',JEV_PATH."/libraries/csvToiCal.php");
 	
 	// TODO replace with JDate
 	JLoader::register('JEventDate',JEV_PATH."libraries/jeventdate.php");

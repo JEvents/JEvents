@@ -31,18 +31,18 @@ class DefaultModLegendView {
 		$this->_modid = $modid;
 
 		$this->_params	=& $params;
-		$this->datamodel =& new JEventsdatamodel();
+		$this->datamodel = new JEventsdatamodel();
 		$this->inccss	= $params->get('modlatest_inccss', 1);
 		$this->disable	= $params->get('nonjeventsdisable', 1);
-		
+
 		if ($this->inccss){
 			JEVHelper::componentStylesheet($this);
 			JEVHelper::componentStylesheet($this,"modstyle.css");
-		}		
-		
+		}
+
 		include_once(JEV_LIBS."/modfunctions.php");
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->_params);
-		
+
 		$menu =& JApplication::getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem->component == JEV_COM_COMPONENT){
@@ -51,8 +51,8 @@ class DefaultModLegendView {
 		else {
 			$this->myTask="month.calendar";
 		}
-		
-		
+
+
 	}
 
 	function displayCalendarLegend($style="list"){
@@ -68,9 +68,9 @@ class DefaultModLegendView {
 		$cfg = & JEVConfig::getInstance();
 
 		global $option; // NB $option must be global $option here!!!
-		
+
 		if ($this->disable && $option!=JEV_COM_COMPONENT) return;
-		
+
 		$catidList = "";
 
 		$menu	=& JSite::getMenu();
@@ -93,17 +93,11 @@ class DefaultModLegendView {
 			}
 			$c++;
 		}
-		if ($catidList==""){
-			$this->datamodel	= new JEventsDataModel();
-			// find appropriate Itemid and setup catids for datamodel
-			$this->myItemid = $this->datamodel->setupModuleCatids($this->_params);
 
-			if (count($this->datamodel->catids)>0){
-				$catidList = implode(",",$this->datamodel->catids);
-				$catids = $this->datamodel->catids;
+		if ($catidList=="" && $this->_params->_raw!=""){
+			modJeventsLegendHelper::getAllCats($this->_params,$catids,$catidList);
 			}
-		}
-		
+
 		$separator = $params->get("catseparator","|");
 		$catidsOut = str_replace(",",$separator,$catidList);
 
@@ -111,65 +105,24 @@ class DefaultModLegendView {
 		$catidsIn = JRequest::getVar( 'catids', "NONE" );
 		if ($catidsIn!="NONE") $catidsGP = explode($separator,$catidsIn);
 		else $catidsGP = array();
+		$catidsGPList = implode(",",$catidsGP);
 
-		$sql = "SELECT cat.id, cat.title as name, cat.description, cat.access, evcat.color, cat.parent_id"
-		. "\n FROM #__jevents_categories as evcat"
-		."\n LEFT JOIN #__categories as cat ON evcat.id = cat.id"
-		. "\n WHERE cat.section = '".JEV_COM_COMPONENT."'"
-		. "\n AND cat.access <= $user->aid"
-		. "\n AND cat.published = 1";
-		if (strlen($catidList)>0) $sql .= " AND (cat.id IN ($catidList) OR cat.parent_id IN ($catidList))";
-		$sql .= " ORDER BY cat.parent_id, cat.ordering ASC";
+		// This produces a full tree of categories
+		$allrows = $this->getCategoryHierarchy($catidList, $catidsGPList);
 
-		$db->setQuery($sql);
-		$allrows = $db->loadObjectList();
-
-		$allcats =& new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'),"#d3d3d3",JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
-
+		// This is the full set of top level catids
 		$availableCatsIds="";
 		foreach ($allrows as $row){
 			$availableCatsIds.=(strlen($availableCatsIds)>0?$separator:"").$row->id;
 		}
 
+		$allcats = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'),"#d3d3d3",JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
+		$allcats->activeBranch = true;
+
 		array_push($allrows,$allcats);
 		if (count($allrows)==0) return "";
 		else {
 
-			$newrows = array();
-			foreach ($allrows as $row) {
-				if ($row->parent_id==0) {
-					$newrows[$row->id] = array('row'=>$row, 'kids'=>array());
-				}
-				else if (array_key_exists($row->parent_id, $newrows)){
-					$newrows[$row->parent_id]['kids'][$row->id] = array('row'=>$row, 'kids'=>array());
-				}
-				else {
-					$matched = false;
-					foreach ($newrows as $kid=>$newrow) {
-						if (array_key_exists($row->parent_id, $newrow['kids'])){
-							$newrows[$kid]['kids'][$row->id] = array('row'=>$row, 'kids'=>array());
-							$matched = true;
-							break;
-						}
-					}
-					if (!$matched){
-						$newrows[$row->id] = array('row'=>$row, 'kids'=>array());						
-					}
-
-				}
-			}
-			$allrows = array();
-			foreach ($newrows as $key=>$row) {
-				$allrows[$key] = $row['row'];
-				foreach ($row['kids'] as $kid) {
-					$allrows[$kid['row']->id] = $kid['row'];
-					if (count($kid['kids'])>0){
-						foreach ($kid['kids'] as $grandkey => $grandkid) {
-							$allrows[$grandkey] = $grandkid['row'];
-						}
-					}
-				}
-			}
 
 			if ($Itemid<999999) $itm = "&Itemid=$Itemid";
 			$task 	= JRequest::getVar(	'jevcmd',	$cfg->get('com_startview'));
@@ -189,32 +142,11 @@ class DefaultModLegendView {
 					$content = "<div class=\"event_legend_container\"><ul class=\"event_legend_list\">";
 					foreach ($allrows as $row) {
 
-						// do not show legend for categories exluded via GET/POST
-						// but include parents of these categories and their children
-						$ancestor = false;
-						if (array_key_exists($row->id,$newrows) && count($newrows[$row->id]['kids']>0)){
-							foreach ($newrows[$row->id]['kids'] as $key=>$val) {
-								if (in_array($key,$catidsGP)){
-									$ancestor = true;
-									break;
+						if (isset($row->activeBranch)){
+							$content .= $this->listKids($row, $itm, $tsk, $availableCatsIds);
 								}
-							}
-						}
-						$descendent = in_array($row->parent_id,$catidsGP);
 
-						if (!$ancestor && !$descendent && $row->id>0 && count($catidsGP) && (!in_array($row->id, $catidsGP) && !in_array($row->parent_id, $catidsGP))) continue;
-						$st1="background-color:".$row->color.";color:".JevMapColor($row->color);
-						$cat = $row->id>0?"&catids=$row->id":"&catids=$availableCatsIds";
-						$content .= "<li style='list-style:none;margin-top:5px;'>"
-						."<div class='event_legend_name' style='".$st1."'>"
-						//."$row->name ($row->id)</div>"
-						."<a href='".JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk")."' title='".JEventsHTML::special($row->name)."' style='color:inherit'>"
-						.JEventsHTML::special($row->name)."</a></div>";
-						if (strlen($row->description)>0) {
-							$content .="<div class='event_legend_desc'>$row->description</div>";
 						}
-						$content .="</li>";
-					}
 					$content .= "</ul></div>";
 					break;
 
@@ -223,32 +155,11 @@ class DefaultModLegendView {
 					$content = '<div class="event_legend_container">';
 					foreach ($allrows as $row) {
 
-						// do not show legend for categories exluded via GET/POST
-						// but include parents of these categories and their children
-						$ancestor = false;
-						if (array_key_exists($row->id,$newrows) && count($newrows[$row->id]['kids']>0)){
-							foreach ($newrows[$row->id]['kids'] as $key=>$val) {
-								if (in_array($key,$catidsGP)){
-									$ancestor = true;
-									break;
+						if (isset($row->activeBranch)){
+							$content .= $this->blockKids($row, $itm, $tsk, $availableCatsIds);
 								}
-							}
-						}
-						$descendent = in_array($row->parent_id,$catidsGP);
 
-						if (!$ancestor && !$descendent && $row->id>0 && count($catidsGP) && (!in_array($row->id, $catidsGP) && !in_array($row->parent_id, $catidsGP))) continue;
-
-						$cat = $row->id>0 ? "&catids=$row->id" : "&catids=$availableCatsIds";
-						$content .= '<div class="event_legend_item" style="border-color:'.$row->color.'">';
-						$content .= '<div class="event_legend_name" style="border-color:'.$row->color.'">'
-						. '<a href="'.JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk").'" title="'.JEventsHTML::special($row->name).'">'
-						. JEventsHTML::special($row->name).'</a>';
-						$content .= '</div>'."\n";
-						if (strlen($row->description)>0) {
-							$content .='<div class="event_legend_desc"  style="border-color:'.$row->color.'">'.$row->description.'</div>';
 						}
-						$content .= '</div>'."\n";
-					}
 					// stop floating legend items
 					$content .= '<br style="clear:both" />'."</div>\n";
 			}
@@ -275,5 +186,175 @@ class DefaultModLegendView {
 
 			return $content;
 		}
+	}
+
+	protected function getCategoryHierarchy($catidList, $catidsGPList) {
+
+		$db = JFactory::getDBO();
+		$aid = $this->datamodel->aid;
+		$sectionname = JEV_COM_COMPONENT;
+
+		// Get all the categories
+		$query = "SELECT * FROM #__categories AS c LEFT JOIN #__jevents_categories as j ON j.id=c.id"
+		. "\n WHERE c.access <= $aid"
+		. "\n AND c.published = 1"
+		. "\n AND c.section = '".$sectionname."'"
+		. "\n ORDER BY c.title"
+		;
+		$db->setQuery($query);
+		$catlist =  $db->loadObjectList('id');
+
+		// any plugin based resitrictions
+		$dispatcher	=& JDispatcher::getInstance();
+		// remember NOT to reindex the list
+		$dispatcher->trigger('onGetAccessibleCategories', array (& $catlist, false));
+
+		// Copy the array
+		$clonedCatList = unserialize(serialize($catlist));
+
+		$validcats = array();
+		if (strlen($catidsGPList)>0 ) $validcats = array_merge($validcats,explode(",",$catidsGPList) );
+
+		// convert to a tree
+		$cattree = $this->mapTree($catlist, $validcats);
+
+		// constrain tree by component or module paramaters
+		if (strlen($catidList)>0 ) {
+			$validcats = array();
+			$validcats = array_merge($validcats,explode(",",$catidList) );
+			if (count($validcats)>0) {
+				$cattree2 = $this->mapTree($clonedCatList, $validcats);
+				$combinedCatTree = $this->constrainTree($cattree, $cattree2);
+
+			}
+		}
+
+
+		return $cattree;
+	}
+
+	function constrainTree(&$cattree, &$constrainTree){
+		foreach (array_keys($cattree) as $id){
+			if(array_key_exists($id,$constrainTree))	{
+				if (( isset($constrainTree[$id]->activeBranch)) ||
+				($cattree[$id]->parent_id>0 &&  isset($constrainTree[$cattree[$id]->parent_id]->activeBranch))) {
+					if (isset($cattree[$id]->subcats) && isset($constrainTree[$id]->subcats)){
+						$this->constrainTree($cattree[$id]->subcats, $constrainTree[$id]->subcats);
+					}
+
+				}
+				else {
+					unset($cattree[$id]);
+				}
+			}
+			else {
+				unset($cattree[$id]);
+			}
+		}
+	}
+
+	// build the tree
+	function mapTree($dataset, $validcats) {
+		$tree = array();
+		foreach ($dataset as $id=>&$node) {
+			if (in_array($node->id,$validcats)){
+				$this->markParentsActive($node, $dataset, $validcats);
+			}
+			if (count($validcats)==0 && $node->parent_id ==0 ){
+				$this->markParentsActive($node, $dataset, $validcats);
+			}
+			if ($node->parent_id ==0 ) { // root node
+				$tree[$id] = &$node;
+			} else { // sub node
+				// If this node's parent is not in the dataset because of plugin restrictions perhaps then ignore it
+				if (!array_key_exists($node->parent_id,$dataset)) continue;
+				if (array_key_exists($node->parent_id,$dataset) && !isset($dataset[$node->parent_id]->subcats)) $dataset[$node->parent_id]->subcats = array();
+				$dataset[$node->parent_id]->subcats[$id] = &$node;
+			}
+		}
+
+		return $tree;
+	}
+
+	function markParentsActive(&$node, $dataset, $validcats) {
+		$node->activeBranch = true;
+
+		// if we have selected one node then mark is as active so we can show its children
+		if (count($validcats)==1) {
+			$node->activeNode = true;
+		}
+
+		if ($node->parent_id>0 && array_key_exists($node->parent_id,$dataset)) $this->markParentsActive($dataset[$node->parent_id], $dataset, $validcats);
+	}
+
+	function listKids($row, $itm, $tsk,$availableCatsIds, $activeParent = false, $activeSubCat=0){
+		$catclass="";
+		if ($row->parent_id>0) $catclass = "childcat";
+		if ($row->parent_id>0 && isset($row->activeBranch)) $catclass = "activechildcat";
+		if ($row->parent_id>0 && $activeParent) $catclass = "activechildcat";
+		if ($row->parent_id>0 && $activeSubCat>0 && $row->id!=$activeSubCat  && !isset($row->activeNode))  $catclass = "childcat";
+
+		$st1="background-color:".$row->color.";color:".JevMapColor($row->color);
+		$cat = $row->id>0?"&catids=$row->id":"&catids=$availableCatsIds";
+		$content = "<li style='list-style:none;margin-top:5px;'>"
+		."<div class='event_legend_name' style='".$st1."'>"
+		//."$row->name ($row->id)</div>"
+		."<a href='".JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk")."' title='".JEventsHTML::special($row->name)."' style='color:inherit'>"
+		.JEventsHTML::special($row->name)."</a></div>";
+		if (strlen($row->description)>0) {
+			$content .="<div class='event_legend_desc'>$row->description</div>";
+		}
+		$content .="</li>";
+
+		if (isset($row->activeBranch) && isset($row->subcats)){
+			$activeSubCat = 0;
+			foreach ($row->subcats as $subcatid => $subcat){
+				if (isset($subcat->activeBranch)){
+					$activeSubCat = $subcatid;
+				}
+			}
+			foreach ($row->subcats as $subcatid => $subcat){
+				$content .= $this->listKids($subcat, $itm, $tsk,$availableCatsIds, isset($row->activeNode),$activeSubCat);
+			}
+		}
+
+		return $content;
+
+
+	}
+
+	function blockKids($row, $itm, $tsk, $availableCatsIds, $activeParent = false, $activeSubCat=0){
+
+		$catclass="";
+		if ($row->parent_id>0) $catclass = "childcat";
+		if ($row->parent_id>0 && isset($row->activeBranch)) $catclass = "activechildcat";
+		if ($row->parent_id>0 && $activeParent) $catclass = "activechildcat";
+		if ($row->parent_id>0 && $activeSubCat>0 && $row->id!=$activeSubCat  && !isset($row->activeNode))  $catclass = "childcat";
+
+		$cat = $row->id>0 ? "&catids=$row->id" : "&catids=$availableCatsIds";
+		$content = '<div class="event_legend_item '.$catclass.'" style="border-color:'.$row->color.'">';
+		$content .= '<div class="event_legend_name" style="border-color:'.$row->color.'">'
+		. '<a href="'.JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk").'" title="'.JEventsHTML::special($row->name).'">'
+		. JEventsHTML::special($row->name).'</a>';
+		$content .= '</div>'."\n";
+		if (strlen($row->description)>0) {
+			$content .='<div class="event_legend_desc"  style="border-color:'.$row->color.'">'.$row->description.'</div>';
+		}
+		$content .= '</div>'."\n";
+
+		if (isset($row->activeBranch) && isset($row->subcats)){
+			$activeSubCat = 0;
+			foreach ($row->subcats as $subcatid => $subcat){
+				if (isset($subcat->activeBranch)){
+					$activeSubCat = $subcatid;
+				}
+			}
+			foreach ($row->subcats as $subcatid => $subcat){
+				$content .= $this->blockKids($subcat, $itm, $tsk,$availableCatsIds, isset($row->activeNode), $activeSubCat);
+			}
+		}
+
+		return $content;
+
 	}
 }

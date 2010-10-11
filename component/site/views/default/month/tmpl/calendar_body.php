@@ -46,8 +46,8 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
                     	<?php
                     	break;
                 		case "current":
-                			//$cellclass = $currentDay["today"]?'class="cal_td_today"':(count($currentDay["events"])>0?'class="cal_td_dayshasevents"':'class="cal_td_daysnoevents"');
-                			$cellclass = $currentDay["today"]?'class="cal_td_today"':'class="cal_td_daysnoevents"';
+                			$cellclass = $currentDay["today"]?'class="cal_td_today"':(count($currentDay["events"])>0?'class="cal_td_dayshasevents"':'class="cal_td_daysnoevents"');
+                			//$cellclass = $currentDay["today"]?'class="cal_td_today"':'class="cal_td_daysnoevents"';
 
 						?>
                     <td <?php echo $cellclass;?> width="14%" valign="top" style="height:80px;">

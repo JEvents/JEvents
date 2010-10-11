@@ -136,11 +136,16 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	$catidsOut = str_replace("|", $separator,$catidsOut);
 
 	if ($myItemid == 0){
-		// User has specified a non JEvents menu to catid filters won't work
+		// User has specified a non JEvents menu so catid filters won't work
 		$myItemid = intval($modparams->target_itemid);
 		return $myItemid;
 	}
 	
+	// if we are not inside a real module i.e. in the legend beneath the calendar we just use the Itemid we are currently on
+	if ((!isset($modparams->target_itemid) || $modparams->target_itemid=="") && $activeMenu && $activeMenu->component==JEV_COM_COMPONENT){
+		return $activeMenu->id;
+	}
+
 	// now find an appropriate enclosing set and associated menu item
 	$possibleset = array();
 	foreach ($menuitems as $testparms) {
@@ -154,10 +159,11 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 			$c++;
 		}
 
-		// Now check if its an enclosing set of catids so we use this one if the targetid has now been explicitly set
-		if (count($catids)==0 && !isset($targetid)) {
+		// Now check if its an enclosing set of catids so we use this one if the targetid has not been explicitly set
+		if (count($catids)==0 && !isset($targetid) && !($activeMenu && $activeMenu->component==JEV_COM_COMPONENT)) {
 			$Itemid = JEVHelper::getItemid();
 			$myItemid = intval($testparms->id);
+			return $myItemid;
 			break;
 		}
 		else {

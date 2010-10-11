@@ -4,6 +4,10 @@
 table#jevents_body{
 	width:100%!important;
 }
+.jeventslight{
+	color:#000000;
+}
+
 /*********************
 * Calendar style
 **********************/
@@ -585,7 +589,7 @@ div.jevtt_text{
 @media print {
    @page {
    	   size:landscape;
-   )
+   }
    body.contentpane {
    	   filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3); 
    }

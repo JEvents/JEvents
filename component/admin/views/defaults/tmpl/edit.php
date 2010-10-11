@@ -28,6 +28,10 @@ $this->replaceLabels($this->item->value);
 		function submitbutton(pressbutton) {
 			var form = document.adminForm;
 			<?php echo $editor->getContent( 'value' ); ?>
+			<?php
+			// in case editor is toggled off - needed for TinyMCE
+			echo $editor->save( 'value' );
+			?>
 			submitform(pressbutton);
 		}
 

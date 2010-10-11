@@ -27,10 +27,12 @@ class EventCalendarCell_default {
 
 		// On mouse over date formats
 		$this->start_date	= JEventsHTML::getDateFormat( $this->event->yup(), $this->event->mup(), $this->event->dup(), 0 );
-		$this->start_time = $this->event->startTime()	;
+		//$this->start_time = $this->event->startTime()	;
+		$this->start_time = JEVHelper::getTime($this->event->getUnixStartTime(),$this->event->hup(),$this->event->minup());
 
 		$this->stop_date	= JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn(), 0 );
-		$this->stop_time = $this->event->endTime()	;
+		//$this->stop_time = $this->event->endTime()	;		
+		$this->stop_time  = JEVHelper::getTime($this->event->getUnixEndTime(),$this->event->hdn(),$this->event->mindn());
 	}
 
 	function calendarCell_popup($cellDate){

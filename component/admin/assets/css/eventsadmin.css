@@ -82,6 +82,16 @@ div#jevoverlapwarning h4 {
 	margin:5px 0px;
 }
 
+/* For dark templates */
+div.jeventsdark div#toolbar-box {background-color:transparent!important;}
+div.jeventsdark dl.tabs dt {background-color:transparent!important;}
+div.jeventsdark dl.tabs dt.open {color:#eeeeee;}
+div.jeventsdark table.adminform {background-color:transparent!important;border:none!important;}
+div.jeventsdark td.r2, div.jeventsdark span.r2 {background-color:transparent!important;}
+div.jeventsdark td.r1, div.jeventsdark span.r1 {background-color:#111111!important;}
+div.jeventsdark div#interval_div fieldset{background-color:transparent!important;}
+div.jeventsdark a#colorPickButton {color:#eeeeee!important;}
+
 /* Can be yused to hide apply button */
 /*
 td#toolbar-apply {

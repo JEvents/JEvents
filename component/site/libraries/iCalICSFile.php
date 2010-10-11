@@ -135,10 +135,10 @@ RAWTEXT;
 		return $temp;
 	}
 
-	function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label=""){
+	function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	=& JFactory::getDBO();
 		$temp = new iCalICSFile($db);
-		$temp->_setup($icsid,$catid,$access,$state);
+		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		$temp->srcURL = "";
 		$temp->filename = $file['name'];
 		$temp->icaltype=1;  // i.e. from file

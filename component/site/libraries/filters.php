@@ -22,8 +22,8 @@ class jevFilterProcessing
 	var $filterReset;
 	var $needsgroupby=false;
 
-	static $visiblefilters;
-	static $indexedvisiblefilters;
+	static public $visiblefilters;
+	static public $indexedvisiblefilters;
 
 	function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
 
@@ -70,7 +70,10 @@ class jevFilterProcessing
 	function jevFilterProcessing($item, $filterpath=false){
 
 		$this->filterpath = array();
-		if ($filterpath){
+		if (is_array($filterpath)){
+			$this->filterpath = array_merge($this->filterpath,$filterpath);
+		}
+		else {
 			$this->filterpath[] = $filterpath;
 		}
 
@@ -78,8 +81,8 @@ class jevFilterProcessing
 		$this->filterpath[]=dirname(__FILE__).DS."filters";
 
 		// Find if filter type module is visible and therefore if the filters should have 'memory'
-		if (!isset($this->visiblefilters)){
-			$this->visiblefilters = array();
+		if (!isset(self::$visiblefilters)){
+			self::$visiblefilters = array();
 
 			// TODO Watch out if this becomes private - it just saves a DB query for the time being
 			$visblemodules = JevModuleHelper::getVisibleModules();
@@ -96,18 +99,18 @@ class jevFilterProcessing
 					$filters = $modparams->get("jevfilters","");
 				}
 				if (trim($filters)!=""){
-					$this->visiblefilters = array_merge(explode(",",$filters),$this->visiblefilters);
+					self::$visiblefilters = array_merge(explode(",",$filters),self::$visiblefilters);
 				}
 			}
-			foreach ($this->visiblefilters as &$vf){
+			foreach (self::$visiblefilters as &$vf){
 				$vf = ucfirst(trim($vf));
 			}
 			unset($vf);
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
-			$this->indexedvisiblefilters = array();
+			self::$indexedvisiblefilters = array();
 			$this->filterpath[] = JPATH_SITE."/plugins/jevents/filters";
-			foreach ($this->visiblefilters as $filtername) {
+			foreach (self::$visiblefilters as $filtername) {
 				$filter = "jev".ucfirst($filtername)."Filter";
 				if (!class_exists($filter)){
 					$filterFile = ucfirst($filtername).'.php';
@@ -122,11 +125,11 @@ class jevFilterProcessing
 					}
 				}
 				$thefilter =  new $filter("",$filtername);
-				$this->indexedvisiblefilters[$filtername] = $thefilter->filterType;
+				self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
 			}
 
 			$registry	=& JRegistry::getInstance("jevents");
-			$registry->setValue("indexedvisiblefilters",$this->indexedvisiblefilters);
+			$registry->setValue("indexedvisiblefilters",self::$indexedvisiblefilters);
 		}
 
 		// get filter details
@@ -243,10 +246,10 @@ class jevFilter
 		
 
 		$registry	=& JRegistry::getInstance("jevents");
-		$this->indexedvisiblefilters = $registry->getValue("indexedvisiblefilters",array());
+		$indexedvisiblefilters = $registry->getValue("indexedvisiblefilters",array());
 
 		// This is our best guess as to whether this filter is visible on this page.
-		$this->isVisible(in_array($this->filterType,$this->indexedvisiblefilters));
+		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
 
 		// If using caching should disable session filtering if not logged in
 		$cfg	 = & JEVConfig::getInstance();

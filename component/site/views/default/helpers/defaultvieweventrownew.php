@@ -26,7 +26,7 @@ function DefaultViewEventRowNew($view,$row,$args="") {
 
 
 	$times = "";
-	if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="cat"){
+	if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="cat"  || $jevtask=="range"){
 
 		$start_publish  = $row->getUnixStartDate();
 		$stop_publish  = $row->getUnixEndDate();

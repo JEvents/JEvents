@@ -54,8 +54,9 @@ class jIcalEventDB extends jEventCal {
 		$this->_reccurweekdays = "";
 		$this->_reccurweeks = "";
 		$this->_alldayevent = 0;
-		list($hs,$ms,$ss) = explode(":",strftime( '%H:%M:%S',@$this->dtstart()));
-		list($he,$me,$se) = explode(":",strftime( '%H:%M:%S',@$this->dtend()));
+		// when loaded from the database we have the startrepeat so can use it otherwise we don't
+		list($hs,$ms,$ss) = explode(":",strftime( '%H:%M:%S',isset($this->_startrepeat)?$this->getUnixStartTime():$this->dtstart()));
+		list($he,$me,$se) = explode(":",strftime( '%H:%M:%S',isset($this->_endrepeat)?$this->getUnixEndTime():$this->dtend()));
 		if (($hs+$ms+$ss)==0 && ($he==23 && $me==59 && $se==59)) {
 			$this->_alldayevent = 1;
 		}
@@ -125,6 +126,10 @@ class jIcalEventDB extends jEventCal {
 		return $this->getOrSet(__FUNCTION__,$val);
 	}
 
+	function url($val="") {
+		return $this->getOrSet(__FUNCTION__,$val);
+	}
+	
 	function hasContactInfo() {
 		return !empty( $this->_contact);
 
@@ -136,7 +141,12 @@ class jIcalEventDB extends jEventCal {
 
 
 	function dtstart($val=""){
-		if (strlen($val)==0) return $this->_dtstart;
+		if (strlen($val)==0) {
+			if (!isset($this->_dtstart)){
+				return null;
+			}
+			return $this->_dtstart;
+		}
 		else {
 			$this->_dtstart=$val;
 			$this->_publish_up = strftime( '%Y-%m-%d %H:%M:%S',$this->_dtstart);
@@ -144,7 +154,12 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function dtend($val=""){
-		if (strlen($val)==0) return $this->_dtend;
+		if (strlen($val)==0) {
+			if (!isset($this->_dtend)){
+				return null;
+			}
+			return $this->_dtend;
+		}
 		else {
 			$this->_dtend=$val;
 			$this->_publish_down = strftime( '%Y-%m-%d %H:%M:%S',$this->_dtend);
@@ -494,6 +509,8 @@ class jIcalEventDB extends jEventCal {
 			else if (($this->start_time != $this->stop_time) && !($this->alldayevent())){
 				$sum.= $this->start_date . ',&nbsp;' . $this->start_time
 				. '&nbsp;-&nbsp;' . $this->stop_time . '<br/>';
+			} else if (($this->start_time == $this->stop_time) && !($this->alldayevent())){
+				$sum.= $this->start_date . ',&nbsp;' . $this->start_time. '<br/>';
 			} else {
 				$sum.= $this->start_date . '<br/>';
 			}
@@ -588,6 +605,50 @@ class jIcalEventDB extends jEventCal {
 		return $row;
 	}
 
+	// Gets first repeat for this event from databases before it was tampered as an exception
+	function getOriginalFirstRepeat(){
+
+		// process the new plugins
+		// get extra data and conditionality from plugins
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$extrawhere =array();
+		$extrajoin = array();
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
+		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
+
+		$db =& JFactory::getDBO();
+		$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields"
+		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+		. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+		. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+		. "\n FROM (#__jevents_vevent as ev $extratables)"
+		. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+		// NB use ev detail id here!
+		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = ev.detail_id"
+		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+		. $extrajoin
+		. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
+		. $extrawhere
+		. "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
+
+		$db->setQuery( $query );
+		$rows = $db->loadObjectList();
+
+		$row = null;
+		// iCal agid uses GUID or UUID as identifier
+		if( $rows ){
+			$row = new jIcalEventRepeat($rows[0]);
+			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher->trigger( 'onDisplayCustomFields', array( &$row ));
+		}
+		return $row;
+	}
+	
+	
 	function updateHits(){
 		$db =& JFactory::getDBO();
 

@@ -46,7 +46,7 @@ class iCalImport
 		// resultant data goes here
 		if ($filename!=""){
 			$file = $filename;
-			if (!file_exists($file)) {
+			if (!@file_exists($file)) {
 				
 				$file = JPATH_SITE."/components/$option/".$filename;
 			}
@@ -60,7 +60,7 @@ class iCalImport
 			if (isset($_FILES['upload']) && is_array($_FILES['upload']) ) {
 				$uploadfile = $_FILES['upload'];
 				// MSIE sets a mime-type of application/octet-stream
-				if ($uploadfile['size']!=0 && ($uploadfile['type']=="text/calendar" || $uploadfile['type']=="application/octet-stream" || $uploadfile['type']=="text/html")){
+				if ($uploadfile['size']!=0 && ($uploadfile['type']=="text/calendar" || $uploadfile['type']=="text/csv" || $uploadfile['type']=="application/octet-stream" || $uploadfile['type']=="text/html")){
 					$this->srcURL = $uploadfile['name'];
 					$isFile = true;
 				}
@@ -96,7 +96,7 @@ class iCalImport
 				if ($parsed_url === false) {
 					JError::raiseWarning(0, 'url not parsed: ' . $file);
 				} else {
-					if ($parsed_url['scheme'] == 'http' || $parsed_url['scheme'] == 'https') {
+					if ($parsed_url['scheme'] == 'http' || $parsed_url['scheme'] == 'https' || $parsed_url['scheme'] == 'webcal') {
 						// try socked connection
 						$fsockhost = $parsed_url['host'];
 						$fsockport = 80;
@@ -149,7 +149,19 @@ class iCalImport
 
 		// remove spurious lines before calendar start
 		if (!stristr($this->rawData,'BEGIN:VCALENDAR')) {
+			// check for CSV format
+			$firstLine = substr($this->rawData,0,strpos($this->rawData,"\n")+1);
+			if (stristr($firstLine,'SUMMARY') && stristr($firstLine,'DTSTART')
+				&& stristr($firstLine,'DTEND') && stristr($firstLine,'CATEGORIES')
+				&& stristr($firstLine,'TIMEZONE')) {
+				$timezone= date_default_timezone_get();
+				$csvTrans = new CsvToiCal($file);
+				$this->rawData = $csvTrans->getRawData();
+				date_default_timezone_set($timezone);
+		    } else {
 			JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
+				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
+		}
 		}
 		$begin = strpos($this->rawData,"BEGIN:VCALENDAR",0);
 		$this->rawData = substr($this->rawData,$begin);

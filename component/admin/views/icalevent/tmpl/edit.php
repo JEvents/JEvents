@@ -48,7 +48,7 @@ if ($catid==0 && $this->defaultCat>0){
 }
 
 ?>
-<div id="jevents" >
+<div id="jevents" <?php $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"";?>>
 <form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data'>
 <?php
 
@@ -147,6 +147,10 @@ function submitbutton(pressbutton) {
 	}
 	else {
 		<?php 
+		<?php
+		// in case editor is toggled off - needed for TinyMCE
+		echo $editor->save( 'jevcontent' );
+		?>
 		// Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );	
 		if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
@@ -381,13 +385,13 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
             ?>
             </td>
          </tr>
-         <tr>
+         <tr class="jev_contact">
             <td align="left"><?php echo JText::_('JEV_EVENT_CONTACT'); ?></td>
             <td colspan="3">
             <input class="inputbox" type="text" name="contact_info" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
             </td>
           </tr>
-        <tr>
+        <tr class="jev_extrainfo">
             <td align="left" valign="top"><?php echo JText::_('JEV_EVENT_EXTRA'); ?></td>
             <td colspan="3">
             	<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4" wrap="virtual" ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
@@ -396,7 +400,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
          <?php
          foreach ($customfields as $key=>$val) {
          ?>
-         <tr>
+         <tr class="jevplugin_<?php echo $key;?>">
          	<td valign="top"  width="130" align="left"><?php echo $customfields[$key]["label"]; ?></td>
             <td colspan="3"><?php echo $customfields[$key]["input"]; ?></td>
          </tr>
@@ -428,9 +432,13 @@ $extraTabs = array();
 $dispatcher->trigger( 'onEventEdit' , array(&$extraTabs,&$this->row,&$params), true );
 if (count($extraTabs)>0) {
 	foreach ($extraTabs as $extraTab) {
-		echo $tabs->startPanel( $extraTab['title'], $extraTab['paneid'] );
+		if (!$cfg->get('com_single_pane_edit', 0)) {
+			echo $tabs->startPanel( $extraTab['title'], $extraTab['paneid'] );
+		}
 		echo  $extraTab['content'];
-		echo $tabs->endPanel();
+		if (!$cfg->get('com_single_pane_edit', 0)) {
+			echo $tabs->endPanel();
+		}
 	}
 }
 

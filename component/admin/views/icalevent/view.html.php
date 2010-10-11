@@ -32,7 +32,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'ICal Events' ), 'jevents' );
 
-		JToolBarHelper::custom('icalevent.csvimport','upload.png','upload.png','JEV_ADMIN_CSVIMPORT',false);
+		//JToolBarHelper::custom('icalevent.csvimport','upload.png','upload.png','JEV_ADMIN_CSVIMPORT',false);
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
 		JToolBarHelper::addNew('icalevent.edit');
@@ -80,7 +80,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		else {
 			JToolBarHelper::save('icalevent.save');
-			JToolBarHelper::apply('icalevent.apply');
+			if (JEVHelper::isEventEditor()) JToolBarHelper::apply('icalevent.apply');
 			//$bar->appendButton( 'Apply',  'apply', "Apply",'icalevent.apply', false, false );
 		}
 

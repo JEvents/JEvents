@@ -77,7 +77,7 @@ class jIcalEventRepeat extends jIcalEventDB{
 			$this->_startday = mktime(0,0,0,$this->mup(),$this->dup(),$this->yup());
 			$this->_endday = mktime(0,0,0,$this->mdn(),$this->ddn(),$this->ydn());
 			// if ends on midnight then testing day should ignore the second day since no one wants this event to show
-			if ($this->hdn()+$this->mindn()+$this->sdn() ==0){
+			if ($this->hdn()+$this->mindn()+$this->sdn() ==0 && $this->_startday != $this->_endday  ){
 				$this->_endday -= 86400;
 			}
 		}

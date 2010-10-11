@@ -3,6 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperHeader($view){
 
+	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher->trigger( 'onJEventsHeader', array($view));
+
 	$cfg		= & JEVConfig::getInstance();
 	$version	= & JEventsVersion::getInstance();
 	$jevtype	= JRequest::getVar('jevtype');
@@ -20,7 +23,7 @@ function DefaultViewHelperHeader($view){
 	JEVHelper::checkRobotsMetaTag();
 
 ?>
-<table class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_header">
+<table class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?> <?php echo $params->get("darktemplate",0)?"jeventsdark":"jeventslight";?>" id="jevents_header">
 	<tr>
 	<td class="contentheading" width="100%">
 	<?php 
@@ -105,7 +108,7 @@ function DefaultViewHelperHeader($view){
 	?>
 	</tr>
 </table>
-<table class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_body">
+<table class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  echo $params->get("darktemplate",0)?" jeventsdark":"jeventslight"; ?>" id="jevents_body">
 	<tr>
 	<td width="100%">
 <?php

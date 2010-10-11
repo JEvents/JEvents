@@ -5,12 +5,14 @@
 table#jevents_body{
     width:100%;
 }
+.jeventslight{
+	color:#000000;
+}
 
 /* EXT CALENDAR STYLE*/
 #jevents_body td,#jevents_body tr,#jevents_body p, #jevents_body div {
 	font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
-	color: #000000;
 }
 
 #jevents_body select {

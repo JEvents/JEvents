@@ -31,6 +31,7 @@ function JEventsBuildRoute(&$query)
 			$menuitem = $menu->getItem($query["Itemid"]);
 			if (!is_null($menuitem) && isset($menuitem->query["task"])){
 				$task = $menuitem->query["task"];
+				return $segments;
 			}
 			else if (!is_null($menuitem) && isset($menuitem->query["layout"]) && isset($menuitem->query["view"]) ){
 				$task = $menuitem->query["view"].".".$menuitem->query["layout"];

@@ -5,6 +5,9 @@
 table#jevents_body{
     width:100%;
 }
+.jeventslight{
+	color:#000000;
+}
 
 /*********************
 * Calendar style

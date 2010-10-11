@@ -207,6 +207,11 @@ class iCalEventDetail extends JTable  {
 		if ($this->dtend==0 && $this->duration>0){
 			$this->dtend=$this->dtstart+$this->duration;
 		}
+		else if ($this->dtend==0){
+			// if no dtend or duration (e.g. from imported iCal) - set no end time
+			$this->noendtime = 1;
+			$this->dtend = iCalImport::unixTime($this->dtstartraw);
+		}
 
 		// Process any custom fields
 		$this->processCustom();

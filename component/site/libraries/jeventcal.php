@@ -648,6 +648,19 @@ class jEventCal {
 	function canUserEdit(){
 		$is_event_creator = JEVHelper::isEventCreator();
 		$user =& JFactory::getUser();
+		
+		// are we authorised to do anything with this category or calendar
+		$jevuser =& JEVHelper::getAuthorisedUser();
+		if ($this->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
+			$allowedcals = explode("|",$jevuser->calendars);
+			if (!in_array($this->_icsid,$allowedcals)) return false;
+		}
+		
+		if ($this->_catid>0 && $jevuser && $jevuser->categories!="" && $jevuser->categories!="all"){
+			$allowedcats = explode("|",$jevuser->categories);
+			if (!in_array($this->_catid,$allowedcats)) return false;
+		}
+		
 		// if can create events and this was created by this user then can edit (not valid for anon users)
 		if ($is_event_creator && $this->isEditable() &&  $this->created_by() == $user->id && $user->id>0){
 			return true;

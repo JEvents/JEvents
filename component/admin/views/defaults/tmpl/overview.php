@@ -10,7 +10,7 @@ $pathIMG = JURI::root().'/administrator/images/';
 	<thead>
 		<tr>
 			<th width="20" nowrap="nowrap">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->cats ); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 			</th>
 			<th width="5">
 				<?php echo JText::_( 'NUM' ); ?>

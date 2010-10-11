@@ -28,7 +28,7 @@ function submitbutton() {
 	else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
 		alert ( '<?php echo JText::_('JEV SELECT CATEGORY',true) ; ?>' );
 	}
-	else if (form.ics_id.value == "0"){
+	else if (form.icsid.value == "0"){
 		alert( "<?php echo JText::_('JEV MISSING ICAL SELECTION' ,true); ?>" );
 	}
 	else {
@@ -58,8 +58,9 @@ function submitbutton() {
 			}
 			</script>
 	        <strong><?php  echo JText::_("Select Ical (from raw icals)"); ?></strong><br/>
-			<?php     echo $this->clist; ?><br/><br/>
-	  <?php  }	?>
+			<?php  
+	    }	
+	   echo $this->clist; ?><br/><br/>	    
 	  <strong><?php  echo JText::_('SELECT CATEGORY'); ?></strong><br/>
     <?php    echo JEventsHTML::buildCategorySelect(0, '', $this->dataModel->accessibleCategoryList(), false, true,0,'catid',JEV_COM_COMPONENT, $this->excats); ?><br/><br/>
     

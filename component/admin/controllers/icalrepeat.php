@@ -580,7 +580,7 @@ class AdminIcalrepeatController extends JController {
 		else {
 			global $Itemid;
 			list($year,$month,$day) = JEVHelper::getYMD();
-			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"),"ICal Repeat deleted");
+			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"ICal Repeat deleted");
 		}
 	}
 

@@ -32,7 +32,11 @@ foreach ($categories AS $c) {
 
 echo "<h3>".JText::_('JEV_REP_YEAR')."</h3>\n";
 //consturc years array, easy to add own kind of selection
-$year = array(date('Y'),date('Y')+1);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$year = array();
+for ($y=$params->get("com_earliestyear",date('Y'));$y<=$params->get("com_latestyear",date('Y'));$y++){
+	if (!in_array($y,$year)) $year[]=$y;
+}
 
 foreach ($year AS $y) {
 	$yt="<input name=\"years[]\" type=\"checkbox\" value=\"".$y."\"";

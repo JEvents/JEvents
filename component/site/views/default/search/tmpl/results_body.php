@@ -58,6 +58,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 			echo '<b>' . $this->keyword . '</b>';
 			$this->keyword = '';
 		}
+		echo "</td>\n";
 	}
 ?>
 	</tr>
@@ -73,7 +74,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 				<input type="hidden" name="Itemid" value="<?php echo $this->Itemid;?>" />
 				<input type="hidden" name="task" value="search.results" />
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
-				<input type="hidden" name="popup" value="<?php echo JRequest::getInt("pop",0);?>" />
+				<input type="hidden" name="pop" value="<?php echo JRequest::getInt("pop",0);?>" />
 				<?php if (JRequest::getString("tmpl","")=="component"){
 					echo '<input type="hidden" name="tmpl" value="component" />';
 				} ?>

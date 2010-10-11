@@ -58,6 +58,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 			echo '<b>' . $this->keyword . '</b>';
 			$this->keyword = '';
 		}
+		echo "</td>\n";
 	}
 ?>
 	</tr>

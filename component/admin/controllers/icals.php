@@ -245,6 +245,11 @@ class AdminIcalsController extends JController {
 			$currentICS = $db->loadObjectList();
 			if (count($currentICS)>0){
 				$currentICS= $currentICS[0];
+				if ($currentICS->autorefresh){
+					$authorised = true;
+					$autorefresh=1;
+			}
+				
 			}
 			else {
 				$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Invalid Ical Details");

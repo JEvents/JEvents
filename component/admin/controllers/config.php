@@ -549,6 +549,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_exception (
 	exception_type int(2) NOT NULL default 0,
 	startrepeat datetime  NOT NULL default '0000-00-00 00:00:00',
 	oldstartrepeat datetime  NOT NULL default '0000-00-00 00:00:00',
+	tempfield datetime  NOT NULL default '0000-00-00 00:00:00',
 	PRIMARY KEY  (ex_id),
 	KEY (eventid),
 	KEY (rp_id)
@@ -566,6 +567,10 @@ SQL;
 		$db->setQuery( $sql );
 		@$db->query();
 
+		$sql = "ALTER TABLE `#__jevents_exception` add column tempfield datetime  NOT NULL default '0000-00-00 00:00:00'";
+		$db->setQuery( $sql );
+		@$db->query();
+		
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_categories (
 	id int(12) NOT NULL default 0 PRIMARY KEY,

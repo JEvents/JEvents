@@ -54,16 +54,16 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		if ($this->id>0){
 			if ($this->editCopy){
 				$this->toolbarConfirmButton("icalevent.save",JText::_("save copy warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply",JText::_("save copy warning"),'apply','apply','Apply',false);
+				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save copy warning"),'apply','apply','Apply',false);
 			}
 			else {
 				$this->toolbarConfirmButton("icalevent.save",JText::_("save icalevent warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply",JText::_("save icalevent warning"),'apply','apply','Apply',false);
+				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save icalevent warning"),'apply','apply','Apply',false);
 			}
 		}
 		else {
 			$this->toolbarButton("icalevent.save",'save','save','Save',false);
-			$this->toolbarButton("icalevent.apply",'apply','apply','Apply',false);
+			if (JEVHelper::isEventEditor()) $this->toolbarButton("icalevent.apply",'apply','apply','Apply',false);
 		}		
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -97,7 +97,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 	function _adminStart(){
 		
 ?>
-	<div style="clear:both">
+	<div style="clear:both"  <?php global $mainframe;$params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!$mainframe->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"jeventslight";?>>
 		<div id="toolbar-box" >
 <?php
 		$bar = & JToolBar::getInstance('toolbar');

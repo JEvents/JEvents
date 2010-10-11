@@ -55,8 +55,10 @@ class JEV_CommonFunctions {
 			$handler = opendir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/");
 			while ($file = readdir($handler)) {
 				if ($file != '.' && $file != '..' && $file != '.svn' ){
-					if (is_dir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file) &&
-					file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/month"))
+					if (is_dir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file) && (
+					file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/month") ||
+					file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/config.xml")
+					))
 					$jEventsViews[] = $file;
 				}
 
@@ -366,21 +368,26 @@ class JEV_CommonFunctions {
 		$adminEmail	= $adminuser->email;
 		$config = new JConfig();
 		$sitename =  $config->sitename;
-		
+
 		$subject	= JText::sprintf('JEV_NOTIFY_AUTHOR_SUBJECT', $sitename);
 
 		$Itemid = JEVHelper::getItemid();
 		// reload the event to get the reptition ids
 		$evid = intval($event->ev_id());
-		
+
 		$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$queryModel = new JEventsDBModel($dataModel);
 
 		$testevent = $queryModel->getEventById( $evid, 1, "icaldb" );
+		
+		// attach anonymous creator etc.
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+
 		$rp_id = $testevent->rp_id();
 
 		list($year,$month,$day) = JEVHelper::getYMD();
-		
+
 		$uri  =& JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 
@@ -388,12 +395,24 @@ class JEV_CommonFunctions {
 
 		$content  = sprintf( JText::_('JEV_NOTIFY_AUTHOR_Message'), $detaillink, $sitename );
 
-		$author = JFactory::getUser($event->created_by);
-		
+		$authorname = "";
+		$authoremail = "";
+		if ($event->created_by()>0){
+			$author = JFactory::getUser($event->created_by());
+			if (!$author) return;
+			$authorname = $author->name;
+			$authoremail = $author->email;
+		}
+		else if (isset($event->authoremail) && $event->authoremail!=""){
+			$authorname = $event->authorname;
+			$authoremail = $event->authoremail;	
+		}
+		if ($authoremail == "") return;
+
 		// mail function
 		$mail =& JFactory::getMailer();
 		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
-		$mail->addRecipient($author->email);
+		$mail->addRecipient($authoremail);
 
 		$mail->setSubject($subject);
 		$mail->setBody($content);

@@ -14,4 +14,7 @@ JevViewCopyright(); ?>
 	</tr>
 </table>
 <?php
+	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher->trigger( 'onJEventsFooter');
+
 }

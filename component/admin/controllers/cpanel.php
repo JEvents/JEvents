@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -8,51 +9,48 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
-defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controller');
 
 class AdminCpanelController extends JController {
-	/**
-	 * Controler for the Control Panel
-	 * @param array		configuration
-	 */
-	function __construct($config = array())
-	{
-		parent::__construct($config);
-		$this->registerTask( 'show',  'cpanel' );
-		$this->registerDefaultTask("cpanel");
-	}
 
-	function cpanel( )
-	{
-		// check DB
-		// check the latest column addition or change
-		// do this in a way that supports mysql 4
-		$db =& JFactory::getDBO();
+    /**
+     * Controler for the Control Panel
+     * @param array		configuration
+     */
+    function __construct($config = array()) {
+        parent::__construct($config);
+        $this->registerTask('show', 'cpanel');
+        $this->registerDefaultTask("cpanel");
+    }
 
-		$sql = "SHOW COLUMNS FROM `#__jev_defaults`";
-		$db->setQuery( $sql );
-		$cols = $db->loadObjectList();
-		if (is_null($cols) ){
-			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=config.dbsetup",false),JText::_("Database Table Setup Was Required"));
-			$this->redirect();
-			//return;
-		}
-		$uptodate = false;
-		foreach ($cols as $col) {
-			if ($col->Field=="params"){
-				$uptodate = true;
-				break;
-			}
-		}
-		if (!$uptodate){
-			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=config.dbsetup",false),JText::_("Database Table Update Was Required"));
-			$this->redirect();
-			//return;
-		}
+    function cpanel() {
+        // check DB
+        // check the latest column addition or change
+        // do this in a way that supports mysql 4
+        $db = & JFactory::getDBO();
 
+        $sql = "SHOW COLUMNS FROM `#__jev_defaults`";
+        $db->setQuery($sql);
+        $cols = $db->loadObjectList();
+        if (is_null($cols)) {
+            $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Setup Was Required"));
+            $this->redirect();
+            //return;
+        }
+        $uptodate = false;
+        foreach ($cols as $col) {
+            if ($col->Field == "params") {
+                $uptodate = true;
+                break;
+            }
+        }
+        if (!$uptodate) {
+            $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Update Was Required"));
+            $this->redirect();
+            //return;
+        }
 		$sql = "SHOW COLUMNS FROM `#__jevents_categories`";
 		$db->setQuery( $sql );
 
@@ -62,27 +60,43 @@ class AdminCpanelController extends JController {
 			$this->redirect();
 			//return;
 		}
+        $sql = "SHOW COLUMNS FROM `#__jevents_exception`";
+        $db->setQuery($sql);
 
-		// are config values setup correctyl
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$jevadmin = $params->getValue("jevadmin",-1);
-		if ($jevadmin==-1){
-			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=params.edit",false),JText::_("Please check configuration and save"));
-			$this->redirect();
-		}
+        $cols = $db->loadObjectList('Field');
+        if (!isset($cols['tempfield'])) {
+            $session = JFactory::getSession();
+            $session->set('fixexceptions', 1);
+            $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Setup Was Required"));
+            $this->redirect();
+            //return;
+        } else {
+            $session = JFactory::getSession();
+            if ($session->get("fixexceptions", 0) == 1) {
+                $session->set('fixexceptions', 0);
+                $this->fixExceptions();
+            }
+        }
 
-		// Make sure jevlayout is copied and up to date
-		if ($params->getValue("installlayouts",0)){
-			if (!file_exists(JPATH_SITE."/libraries/joomla/installer/adapters/jevlayout.php") ||
-			md5_file(JEV_ADMINLIBS."jevlayout.php") != md5_file(JPATH_SITE."/libraries/joomla/installer/adapters/jevlayout.php")){
-				jimport('joomla.filesystem.file');
-				JFile::copy(JEV_ADMINLIBS."jevlayout.php",JPATH_SITE."/libraries/joomla/installer/adapters/jevlayout.php");
-			}
-		}
+        // are config values setup correctyl
+        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+        $jevadmin = $params->getValue("jevadmin", -1);
+        if ($jevadmin == -1) {
+            $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_("Please check configuration and save"));
+            $this->redirect();
+        }
 
-		// get the view
-		$this->view = & $this->getView("cpanel","html");
+        // Make sure jevlayout is copied and up to date
+        if ($params->getValue("installlayouts", 0)) {
+            if (!file_exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
+                    md5_file(JEV_ADMINLIBS . "jevlayout.php") != md5_file(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php")) {
+                jimport('joomla.filesystem.file');
+                JFile::copy(JEV_ADMINLIBS . "jevlayout.php", JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php");
+            }
+        }
 
+        // get the view
+        $this->view = & $this->getView("cpanel", "html");
 		$sql = 'SHOW TABLES LIKE "'.$db->getPrefix().'events"';
 		$db->setQuery( $sql );
 		$tables = $db->loadObjectList();
@@ -94,159 +108,204 @@ class AdminCpanelController extends JController {
 		}
 
 
-		// get all the raw native calendars
-		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
-		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
-		if (is_null($nativeCals) || count($nativeCals)==0){
-			$this->view->assign("warning",JText::_("Calendars not setup properly"));
-		}
 
-		// Set the layout
-		$this->view->setLayout('cpanel');
-		$this->view->assign('title'   , JText::_("Control Panel"));
+        // get all the raw native calendars
+        $this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
+        $nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
+        if (is_null($nativeCals) || count($nativeCals) == 0) {
+            $this->view->assign("warning", JText::_("Calendars not setup properly"));
+        }
 
-		$this->view->display();
-	}
+        // Set the layout
+        $this->view->setLayout('cpanel');
+        $this->view->assign('title', JText::_("Control Panel"));
 
-	function fixExceptions(){
+        $this->view->display();
+    }
 
-		$db = JFactory::getDBO();
-		$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 AND (oldstartrepeat='0000-00-00 00:00:00' OR  oldstartrepeat is null) ORDER BY eventid ASC, startrepeat asc");
-		$rows = $db->loadObjectList("rp_id");
-		echo $db->getErrorMsg();
+    function fixExceptions() {
 
-		$eventexceptions = array();
-		foreach ($rows as $row){
-			if (!array_key_exists($row->eventid,$eventexceptions)){
-				$eventexceptions[$row->eventid]=array();
-			}
-			$eventexceptions[$row->eventid][$row->rp_id]=$row;
-		}
+        $db = JFactory::getDBO();
+        $db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 AND (oldstartrepeat='0000-00-00 00:00:00' OR  oldstartrepeat is null) ORDER BY eventid ASC, startrepeat asc");
+        //$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 ORDER BY eventid ASC, startrepeat asc");
+        $rows = $db->loadObjectList("rp_id");
+        echo $db->getErrorMsg();
 
-		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
+        $eventexceptions = array();
+        foreach ($rows as $row) {
+            if (!array_key_exists($row->eventid, $eventexceptions)) {
+                $eventexceptions[$row->eventid] = array();
+            }
+            $eventexceptions[$row->eventid][$row->rp_id] = $row;
+        }
 
-		foreach ($eventexceptions as $eventid => $exceptions){
+        $this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 
-			$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=0 and eventid=$eventid ORDER BY eventid ASC, startrepeat asc");
-			$deletedexceptions = $db->loadObjectList("rp_id");
+        foreach ($eventexceptions as $eventid => $exceptions) {
 
-			$vevent = $this->dataModel->queryModel->getVEventById( $eventid);
-			// skip any orphans
-			if (!$vevent) {
-				// double check it doesn't exist then remove it
-				$db->setQuery("SELECT ev.* FROM #__jevents_vevent as ev WHERE ev.ev_id = '$eventid'");
-				$row = $db->loadObject();
+            //echo "<hr/>processing event $eventid<br/>";
+            $db->setQuery("SELECT * FROM #__jevents_exception where exception_type=0 and eventid=$eventid ORDER BY eventid ASC, startrepeat asc");
+            $deletedexceptions = $db->loadObjectList("rp_id");
 
-				continue;
-			}
-			$event = new jIcalEventDB($vevent);
-			if (!$event){
-				// we have a problem
-				continue;
-			}
+            $vevent = $this->dataModel->queryModel->getVEventById($eventid);
+            // skip any orphans
+            if (!$vevent) {
+                // double check it doesn't exist then remove it
+                $db->setQuery("SELECT ev.* FROM #__jevents_vevent as ev WHERE ev.ev_id = '$eventid'");
+                $row = $db->loadObject();
 
-			$array= get_object_vars($vevent);
-			foreach ($array as $k=>$v){
-				$array[strtoupper($k)]=$v;
-			}
-			$icalevent = iCalEvent::iCalEventFromDB($array);
+                continue;
+            }
+            $event = new jIcalEventDB($vevent);
+            if (!$event) {
+                // we have a problem
+                continue;
+            }
 
-			// fix the rrule data
-			$icalevent->rrule->eventid =  $eventid;
-			if ($icalevent->rrule->until == 0 ) $icalevent->rrule->until ="";
+            $array = get_object_vars($vevent);
+            foreach ($array as $k => $v) {
+                $array[strtoupper($k)] = $v;
+            }
+            $icalevent = iCalEvent::iCalEventFromDB($array);
 
-			$generatedrepetitions = $icalevent->getRepetitions(true);
+            // fix the rrule data
+            $icalevent->rrule->eventid = $eventid;
+            if ($icalevent->rrule->until == 0)
+                $icalevent->rrule->until = "";
 
-			// get the current repeats (will not include deleted ones)
-			$db->setQuery("Select rpt.* from #__jevents_repetition as rpt where rpt.eventid = $eventid order by rpt.rp_id asc");
-			$currentreprows = $db->loadObjectList("rp_id");
-			$rpids = array_merge(array_keys($currentreprows),array_keys($deletedexceptions));
-			sort($rpids);
-			
-			$currentrepetitions = array();
-			$rindex = 0;
-			foreach ($rpids as $rid){
-				if (!array_key_exists($rid,$currentreprows)) {
-					$rindex+=1;
-					continue;
-				}
-				else $currentrepetitions[$rindex]=$currentreprows[$rid];
-				$rindex+=1;
-			}
-			
-			if (count($currentrepetitions)>0){
-				if (count($generatedrepetitions)>0){
+            ob_start();
+            $generatedrepetitions = $icalevent->getRepetitions(true);
+            ob_get_clean();
 
-					// The repetitions should be in the same sequence
-					$countcurrent = count($currentrepetitions);
-					$countgenerated = count($generatedrepetitions);
-					foreach ($currentrepetitions as $c=>$current){
-						foreach ($generatedrepetitions as $g=>$generated){
-							if ($current->startrepeat == $generated->startrepeat) {
-								// now set the oldstartrepeat field if this is an exception
-								if (array_key_exists($current->rp_id, $exceptions)){
-									$db->setQuery("Update #__jevents_exception set oldstartrepeat=".$db->Quote($current->startrepeat). " WHERE rp_id=".$current->rp_id);
-									$db->query();
-									unset($eventexceptions[$eventid][$current->rp_id]);
-									unset($exceptions[$current->rp_id]);
-								}
-								unset( $currentrepetitions[$c]);
-								unset( $generatedrepetitions[$g]);
-							}
-						}
-					}
+            // Now put in the pseudo repeat ids
+            $icalevent = $this->dataModel->queryModel->getEventById($eventid, 1, 'icaldb');
+            $firstrepeat = $icalevent->getOriginalFirstRepeat();
+            for ($r = 0; $r < count($generatedrepetitions); $r++) {
+                $generatedrepetitions[$r]->pseudo_rp_id = $firstrepeat->rp_id() + $r;
+            }
 
-					// We have now dealt with the exceptions with matching dates (the easy ones!)
+            // get the current repeats (will not include deleted ones)
+            $db->setQuery("Select rpt.* from #__jevents_repetition as rpt where rpt.eventid = $eventid order by rpt.rp_id asc");
+            $currentreprows = $db->loadObjectList("rp_id");
+            $rpids = array_merge(array_keys($currentreprows), array_keys($deletedexceptions));
+            sort($rpids);
 
-					// we have no more exceptions to look through so continue
-					if (count($generatedrepetitions)==0) continue;
+            $currentrepetitions = array();
+            $rindex = 0;
+            foreach ($rpids as $rid) {
+                if (!array_key_exists($rid, $currentreprows)) {
+                    $rindex+=1;
+                    continue;
+                }
+                else
+                    $currentrepetitions[$rindex] = $currentreprows[$rid];
+                $rindex+=1;
+            }
 
-					// This won't deal with scenario where a repeat has been moved and then deleted!
-					if (count($deletedexceptions)>0){
-						foreach ($deletedexceptions as $delrpid => $delex){
-							foreach ($generatedrepetitions as $g=>$generated){	
-								if ($generated->startrepeat == $delex->startrepeat){
-									unset( $generatedrepetitions[$g]);
-									unset( $deletedexceptions[$delrpid]);
-								}
-							}
-						}
-					}
-					
-					if (count($deletedexceptions)==0 && count($generatedrepetitions)==count($currentrepetitions)){
-						$countcurrent = count($currentrepetitions);
-						$gplus = 0;
-						foreach ($currentrepetitions as $c=>$current){
-							if (!array_key_exists($c,$generatedrepetitions)){
-								$x=1;
-							}
-							if (array_key_exists($current->rp_id, $exceptions)){
-								$generated =  $generatedrepetitions[$c];
-								$db->setQuery("Update #__jevents_exception set oldstartrepeat=".$db->Quote($generated->startrepeat). " WHERE rp_id=".$current->rp_id);
-								$db->query();
-								unset($eventexceptions[$eventid][$current->rp_id]);
-								unset($exceptions[$current->rp_id]);
-							}
-							unset( $currentrepetitions[$c]);
-							unset( $generatedrepetitions[$c]);
-						}
+            if (count($currentrepetitions) > 0) {
+                if (count($generatedrepetitions) > 0) {
 
-					}
-					
-					foreach ($exceptions as $rpid=>$exception){
-						$matched = false;
-						foreach ($generatedrepetitions as $generatedrepetition){
-							if ($generatedrepetition->startrepeat == $exception->startrepeat){
+                    // The repetitions should be in the same sequence
+                    $countcurrent = count($currentrepetitions);
+                    $countgenerated = count($generatedrepetitions);
+                    foreach ($currentrepetitions as $c => $current) {
+                        foreach ($generatedrepetitions as $g => $generated) {
+                            if ($current->startrepeat == $generated->startrepeat) {
+                                // now set the oldstartrepeat field if this is an exception
+                                //echo "matched $current->startrepeat rpid=" . $current->rp_id . " pseudo rp_id= " . $generated->pseudo_rp_id . "<br/>";
+                                if (array_key_exists($current->rp_id, $exceptions)) {
+                                    $db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($current->startrepeat) . " WHERE rp_id=" . $current->rp_id);
+                                    $db->query();
+                                    unset($eventexceptions[$eventid][$current->rp_id]);
+                                    unset($exceptions[$current->rp_id]);
+                                }
+                                unset($currentrepetitions[$c]);
+                                unset($generatedrepetitions[$g]);
+                            }
+                        }
+                    }
 
-							}
-						}
-					}
-				}
-				else {
-					echo "no repeats?<br/>";
-				}
-			}
-		}
-		exit();
-	}
+                    // We have now dealt with the exceptions with matching dates (the easy ones!)
+                    // we have no more exceptions to look through so continue
+                    if (count($generatedrepetitions) == 0)
+                        continue;
+
+                    // This won't deal with scenario where a repeat has been moved and then deleted!
+                    if (count($deletedexceptions) > 0) {
+                        foreach ($deletedexceptions as $delrpid => $delex) {
+                            foreach ($generatedrepetitions as $g => $generated) {
+                                if ($generated->startrepeat == $delex->startrepeat) {
+                                    unset($generatedrepetitions[$g]);
+                                    unset($deletedexceptions[$delrpid]);
+                                }
+                            }
+                        }
+                    }
+
+                    // now match them by pseudo rp_id
+                    if (count($currentrepetitions) > 0) {
+                        //echo "Still more to process<br/>";
+                        foreach ($currentrepetitions as $c => $current) {
+                            foreach ($generatedrepetitions as $g => $generated) {
+                                if ($current->rp_id == $generated->pseudo_rp_id) {
+                                    //echo "matched $current->startrepeat rpid=" . $current->rp_id . " pseudo rp_id= " . $generated->pseudo_rp_id . "<br/>";
+                                    if (array_key_exists($current->rp_id, $exceptions)) {
+                                        $db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($current->startrepeat) . " WHERE rp_id=" . $current->rp_id);
+                                        $db->query();
+                                        unset($eventexceptions[$eventid][$current->rp_id]);
+                                        unset($exceptions[$current->rp_id]);
+                                    }
+                                    unset($currentrepetitions[$c]);
+                                    unset($generatedrepetitions[$g]);
+                                }
+                            }
+                        }
+                    }
+
+                    if (count($deletedexceptions) == 0 && count($generatedrepetitions) == count($currentrepetitions)) {
+                        $countcurrent = count($currentrepetitions);
+                        $gplus = 0;
+                        foreach ($currentrepetitions as $c => $current) {
+                            if (!array_key_exists($c, $generatedrepetitions)) {
+                                $x = 1;
+                            }
+                            if (array_key_exists($current->rp_id, $exceptions)) {
+                                $generated = $generatedrepetitions[$c];
+                                $db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($generated->startrepeat) . " WHERE rp_id=" . $current->rp_id);
+                                $db->query();
+                                unset($eventexceptions[$eventid][$current->rp_id]);
+                                unset($exceptions[$current->rp_id]);
+                            }
+                            unset($currentrepetitions[$c]);
+                            unset($generatedrepetitions[$c]);
+                        }
+                    }
+
+                    foreach ($exceptions as $rpid => $exception) {
+                        $matched = false;
+                        foreach ($generatedrepetitions as $generatedrepetition) {
+                            if ($generatedrepetition->startrepeat == $exception->startrepeat) {
+                                
+                            }
+                        }
+                    }
+
+                    foreach ($currentrepetitions as $rep) {
+
+                        if (array_key_exists($rep->rp_id, $exceptions)) {
+
+                             $db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($rep->startrepeat) . " WHERE rp_id=" . $rep->rp_id);
+                             $db->query();
+                            //echo $rep->startrepeat . " " . $rep->rp_id . "<Br/>";
+                        }
+                    }
+                } else {
+                    echo "no repeats?<br/>";
+                }
+            }
+        }
+        echo "all done";
+        return;
+    }
+
 }

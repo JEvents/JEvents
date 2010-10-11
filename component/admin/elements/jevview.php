@@ -35,6 +35,9 @@ class JElementJevview extends JElement
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
 		sort( $views );
+		if ($node->attributes('menu')!='hide'){
+			array_unshift($views , JHTML::_('select.option', '', JText::_("USE GLOBAL")));
+		}
 		return JHTML::_('select.genericlist',  $views, ''.$control_name.'['.$name.']', '', 'value', 'text', $value, $control_name.$name );
 
 	}

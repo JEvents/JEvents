@@ -57,6 +57,7 @@ function saveCategoryOrder( n ) {
 
 		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV FIELD CATEGORY'); ?></th>
 	</tr>
 
     <?php
@@ -85,6 +86,7 @@ function saveCategoryOrder( n ) {
           	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $cat->published ? 'categories.unpublish' : 'categories.publish'; ?>')"><img src="<?php echo $pathIMG . $img; ?>" width="12" height="12" border="0" alt="" /></a>
           	</td>
           	<td align="center"><?php echo $cat->_groupname;?></td>
+          	<td align="center"><?php echo $cat->id;?></td>
         </tr>
         <?php
         $i++;
@@ -92,7 +94,7 @@ function saveCategoryOrder( n ) {
     } ?>
     <tfoot>
         <tr>
-    	  <td align="center" colspan="8">
+    	  <td align="center" colspan="9">
 			<?php echo $this->pageNav->getListFooter(); ?>
 		  </td>
 		</tr>

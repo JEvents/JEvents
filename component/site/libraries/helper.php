@@ -473,6 +473,7 @@ class JEVHelper {
 	 * @return integer - menu item id
 	 */
 	function getItemid($forcecheck = false){
+		if (JFactory::getApplication()->isAdmin()) return 0;
 		static $jevitemid;
 		if (!isset($jevitemid)){
 			$jevitemid = 0;
@@ -486,6 +487,8 @@ class JEVHelper {
 				}
 			}
 			global $Itemid, $option;
+			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
+			if ($Itemid==0) $Itemid=JRequest::getInt("amp;Itemid",0);
 			if ($option == JEV_COM_COMPONENT && $Itemid>0){
 				$jevitemid = $Itemid;
 				return $jevitemid;
@@ -715,6 +718,19 @@ class JEVHelper {
 			$user =& JFactory::getUser();
 		}
 
+		// are we authorised to do anything with this category or calendar
+		$jevuser =& JEVHelper::getAuthorisedUser();
+		if ($row->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
+			$allowedcals = explode("|",$jevuser->calendars);
+			if (!in_array($row->_icsid,$allowedcals)) return false;
+		}
+		
+		if ($row->_catid>0 && $jevuser && $jevuser->categories!="" && $jevuser->categories!="all"){
+			$allowedcats = explode("|",$jevuser->categories);
+			if (!in_array($row->_catid,$allowedcats)) return false;
+		}
+		
+
 		if( JEVHelper::isEventEditor() ){
 			return true;
 		}
@@ -836,6 +852,18 @@ class JEVHelper {
 			$user =& JFactory::getUser();
 		}
 
+		// are we authorised to do anything with this category or calendar
+		$jevuser =& JEVHelper::getAuthorisedUser();
+		if ($row->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
+			$allowedcals = explode("|",$jevuser->calendars);
+			if (!in_array($row->_icsid,$allowedcals)) return false;
+		}
+		
+		if ($row->_catid>0 && $jevuser && $jevuser->categories!="" && $jevuser->categories!="all"){
+			$allowedcats = explode("|",$jevuser->categories);
+			if (!in_array($row->_catid,$allowedcats)) return false;
+		}		
+
 		// can publish all?
 		if( JEVHelper::isEventPublisher(true) ){
 			return true;
@@ -925,6 +953,18 @@ class JEVHelper {
 			$user =& JFactory::getUser();
 		}
 
+		// are we authorised to do anything with this category or calendar
+		$jevuser =& JEVHelper::getAuthorisedUser();
+		if ($row->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
+			$allowedcals = explode("|",$jevuser->calendars);
+			if (!in_array($row->_icsid,$allowedcals)) return false;
+		}
+		
+		if ($row->_catid>0 && $jevuser && $jevuser->categories!="" && $jevuser->categories!="all"){
+			$allowedcats = explode("|",$jevuser->categories);
+			if (!in_array($row->_catid,$allowedcats)) return false;
+		}
+		
 		// can publish all?
 		if( JEVHelper::isEventDeletor(true) ){
 			return true;
@@ -1149,7 +1189,8 @@ class JEVHelper {
 			$user = JFactory::getUser();	
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			return 24;
+			$groups	= implode(',', $user->authorisedLevels());
+			return $groups;
 		}
 		else {
 			return $user->aid;

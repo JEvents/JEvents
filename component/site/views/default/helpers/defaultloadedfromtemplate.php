@@ -15,11 +15,12 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	// now replace the fields
 	$search = array();
 	$replace = array();
+	$blank = array();
 
 	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	// Built in fields
-	$search[]="{{TITLE}}";$replace[]=$event->title();
+	$search[]="{{TITLE}}";$replace[]=$event->title();$blank[]="";
 
 	// Title link
 	global $Itemid;
@@ -30,13 +31,17 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()) ;?>"><?php echo $event->title() ;?></a>
 	<?php
 
-	$search[]="{{TITLE_LINK}}";$replace[]=ob_get_clean();
+	$search[]="{{TITLE_LINK}}";$replace[]=ob_get_clean();$blank[]="";
 
-	$search[]="{{TRUNCATED_DESC:.*}}";$replace[]=$event->content();
+	$search[]="{{URL}}";$replace[]=$event->url();$blank[]="";
+
+	$search[]="{{TRUNCATED_DESC:.*}}";$replace[]=$event->content();$blank[]="";
 	//	$search[]="|{{TRUNCATED_DESC:(.*)}}|";$replace[]=$event->content();
-	$search[]="{{DESCRIPTION}}";$replace[]=$event->content();
+	$search[]="{{DESCRIPTION}}";$replace[]=$event->content();$blank[]="";
 
-	$search[]="{{CATEGORY}}";$replace[]=$event->catname();
+	$search[]="{{MANAGEMENT}}";ob_start();$view->_viewNavAdminPanel();$replace[]=ob_get_clean();$blank[]="";
+
+	$search[]="{{CATEGORY}}";$replace[]=$event->catname();$blank[]="";
 
 	$document = JFactory::getDocument();
 	$document->addStyleDeclaration("div.jevdialogs {position:relative;margin-top:35px;text-align:left;}\n div.jevdialogs img{float:none!important;margin:0px}");
@@ -51,18 +56,24 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		</a>
         <div class="jevdialogs">
         <?php
+        $search[]="{{ICALDIALOG}}";
+        ob_start();
         $view->eventIcalDialog($event, $mask);
+        $dialog = ob_get_clean();
+        $replace[]=$dialog;$blank[]="";
+        echo $dialog;
         ?>
         </div>
 		
 		<?php
-		$search[]="{{ICALBUTTON}}";$replace[]=ob_get_clean();
+		$search[]="{{ICALBUTTON}}";$replace[]=ob_get_clean();$blank[]="";
 	}
 	else {
-		$search[]="{{ICALBUTTON}}";$replace[]="";
+		$search[]="{{ICALBUTTON}}";$replace[]="";$blank[]="";
+		$search[]="{{ICALDIALOG}}";$replace[]="";$blank[]="";
 	}
 
-	if( $event->canUserEdit() && !( $mask & MASK_POPUP )) {
+	if( (JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event)|| JEVHelper::canDeleteEvent($event))  && !( $mask & MASK_POPUP )) {		
 		JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 
 		ob_start();
@@ -72,19 +83,39 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
         </a>
         <div class="jevdialogs">
         <?php
+        $search[]="{{EDITDIALOG}}";
+        ob_start();
         $view->eventManagementDialog($event, $mask);
+        $dialog = ob_get_clean();
+        $replace[]=$dialog;$blank[]="";
+        echo $dialog;
         ?>
         </div>
         
         <?php
-        $search[]="{{EDITBUTTON}}";;$replace[]=ob_get_clean();
+        $search[]="{{EDITBUTTON}}";$replace[]=ob_get_clean();$blank[]="";
 	}
 	else {
-		$search[]="{{EDITBUTTON}}";$replace[]="";
+		$search[]="{{EDITBUTTON}}";$replace[]="";$blank[]="";
+		$search[]="{{EDITDIALOG}}";$replace[]="";$blank[]="";
 	}
 
+	$created = JFactory::getDate($event->created());
+	$search[]="{{CREATED}}";$replace[]=$created->toFormat(JText::_("DATE_FORMAT_CREATED"));$blank[]="";
+	
 	if ($template_name=="icalevent.detail_body"){
-		$search[]="{{REPEATSUMMARY}}";$replace[]=$event->repeatSummary();
+		$search[]="{{REPEATSUMMARY}}";$replace[]=$event->repeatSummary();$blank[]="";
+/*
+		$row = $event;
+		$start_date	= JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
+		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
+		$stop_date	= JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn(), 0 );
+		$stop_time	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
+		$search[]="{{STARTDATE}}";$replace[]=$start_date;$blank[]="";
+		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
+		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
+		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
+*/
 	}
 	else {
 		// these would slow things down if not needed in the list
@@ -110,7 +141,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 			$row = $event;
 			$times = "";
-			if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="cat"){
+			if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="cat"  || $jevtask=="range"){
 
 				$start_publish  = $row->getUnixStartDate();
 				$stop_publish  = $row->getUnixEndDate();
@@ -162,7 +193,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 					$times = $starttime. '&nbsp;-&nbsp;' . $endtime . '&nbsp;';
 				}
 			}
-			$search[]="{{REPEATSUMMARY}}";$replace[]=$times;
+			$search[]="{{REPEATSUMMARY}}";$replace[]=$times;$blank[]="";
 		}
 	}
 
@@ -171,32 +202,32 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$doprevnext = (strpos($template->value,":PREVIOUSNEXT}}")!==false);
 	}
 	if ($doprevnext){
-		$search[]="{{PREVIOUSNEXT}}";$replace[]=$event->previousnextLinks();
+		$search[]="{{PREVIOUSNEXT}}";$replace[]=$event->previousnextLinks();$blank[]="";
 	}
-	$search[]="{{CREATOR_LABEL}}";$replace[]=JText::_('JEV_BY');
-	$search[]="{{CREATOR}}";$replace[]=$event->contactlink();
+	$search[]="{{CREATOR_LABEL}}";$replace[]=JText::_('JEV_BY');$blank[]="";
+	$search[]="{{CREATOR}}";$replace[]=$event->contactlink();$blank[]="";
 
-	$search[]="{{HITS}}";$replace[]=JText::_('JEV_EVENT_HITS') . ' : ' . $event->hits();
+	$search[]="{{HITS}}";$replace[]=JText::_('JEV_EVENT_HITS') . ' : ' . $event->hits();$blank[]="";
 
 	if ($event->hasLocation()){
-		$search[]="{{LOCATION_LABEL}}";$replace[]=JText::_('JEV_EVENT_ADRESSE')."&nbsp;";
-		$search[]="{{LOCATION}}";$replace[]=$event->location();
+		$search[]="{{LOCATION_LABEL}}";$replace[]=JText::_('JEV_EVENT_ADRESSE')."&nbsp;";$blank[]="";
+		$search[]="{{LOCATION}}";$replace[]=$event->location();$blank[]="";
 	}
 	else {
-		$search[]="{{LOCATION_LABEL}}";$replace[]="";
-		$search[]="{{LOCATION}}";$replace[]="";
+		$search[]="{{LOCATION_LABEL}}";$replace[]="";$blank[]="";
+		$search[]="{{LOCATION}}";$replace[]="";$blank[]="";
 	}
 
 	if ($event->hasContactInfo()){
-		$search[]="{{CONTACT_LABEL}}";$replace[]=JText::_('JEV_EVENT_CONTACT')."&nbsp;";
-		$search[]="{{CONTACT}}";$replace[]=$event->contact_info();
+		$search[]="{{CONTACT_LABEL}}";$replace[]=JText::_('JEV_EVENT_CONTACT')."&nbsp;";$blank[]="";
+		$search[]="{{CONTACT}}";$replace[]=$event->contact_info();$blank[]="";
 	}
 	else {
-		$search[]="{{CONTACT_LABEL}}";$replace[]="";
-		$search[]="{{CONTACT}}";$replace[]="";
+		$search[]="{{CONTACT_LABEL}}";$replace[]="";$blank[]="";
+		$search[]="{{CONTACT}}";$replace[]="";$blank[]="";
 	}
 
-	$search[]="{{EXTRAINFO}}";$replace[]=$event->extra_info();
+	$search[]="{{EXTRAINFO}}";$replace[]=$event->extra_info();$blank[]="";
 
 	// Now do the plugins
 	// get list of enabled plugins
@@ -204,21 +235,41 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$layout = $template_name=="icalevent.list_row"?"list":"detail";
 
 	$jevplugins = JPluginHelper::getPlugin("jevents");
-	foreach ($jevplugins as $jevplugin){
-		$classname = "plgJevents".ucfirst($jevplugin->name);
-		if (is_callable(array($classname,"substitutefield"))){
-			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),$layout);
-			if (isset($fieldNameArray["values"])) {
-				foreach ($fieldNameArray["values"] as $fieldname) {
-					$search[]="{{".$fieldname."}}";
-					$replace[]=call_user_func(array($classname,"substitutefield"),$event,$fieldname);
+
+		foreach ($jevplugins as $jevplugin){
+			$classname = "plgJevents".ucfirst($jevplugin->name);
+			if (is_callable(array($classname,"substitutefield"))){
+				$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),$layout);
+				if (isset($fieldNameArray["values"])) {
+					foreach ($fieldNameArray["values"] as $fieldname) {
+						$search[]="{{".$fieldname."}}";
+						// is the event detail hidden - if so then hide any custom fields too!
+						if (!isset($event->_privateevent) || $event->_privateevent!=3){
+							$replace[]=call_user_func(array($classname,"substitutefield"),$event,$fieldname);
+							if (is_callable(array($classname,"blankfield"))){
+								$blank[]=call_user_func(array($classname,"blankfield"),$event,$fieldname);
+							}
+							else {
+								$blank[]="";
+							}
+						}
+						else {
+							$blank[]="";
+							$replace[]="";
+						}
+
+					}
 				}
 			}
 		}
-	}
 
+	
+	$template_value = $template->value;
+	// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+	$template_value = str_replace("\r",'',$template_value);
+	$template_value = str_replace("\n",'',$template_value);
 	// non greedy replacement - because of the ?
-	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template->value);
+	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 
 	// word counts etc.
 	for ($s=0;$s<count($search);$s++){
@@ -231,6 +282,15 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		}
 	}
 
+	for ($s=0;$s<count($search);$s++){
+			global $tempreplace, $tempevent, $tempsearch, $tempblank;
+			$tempreplace = $replace[$s];
+			$tempblank = $blank[$s];
+			$tempsearch = str_replace("}}","#",$search[$s]);
+			$tempevent = $event;
+			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);		
+	}
+	
 	$template_value =  str_replace($search,$replace,$template_value);
 	echo $template_value;
 	return true;
@@ -272,4 +332,21 @@ function jevSpecialHandling($matches){
 		}
 	}
 	else if (count($matches)==1) return $matches[0];
+}
+
+function jevSpecialHandling2($matches){
+	if (count($matches)==2 && strpos($matches[0],"#")>0){
+		global $tempreplace, $tempevent, $tempsearch, $tempblank;
+		$parts = explode("#",$matches[1]);
+		if ($tempreplace==$tempblank){
+			if (count($parts)==2){
+				return $parts[1];
+			}
+			else return "";
+		}
+		else if (count($parts)>=1){
+			return sprintf($parts[0],$tempreplace);
+		}
+	}
+	else return "";
 }

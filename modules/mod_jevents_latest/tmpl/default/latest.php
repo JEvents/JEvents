@@ -174,7 +174,7 @@ class DefaultModLatestView
 		$this->now_Y		= date('Y', $this->now);
 		$this->now_w		= date('w', $this->now);
 		$t_datenowSQL =  $t_datenow->toMysql();
-		
+
 		// derive the event date range we want based on current date and
 		// form the db query.
 
@@ -220,10 +220,11 @@ class DefaultModLatestView
 		$reg =& JFactory::getConfig();
 		$reg->setValue("jev.modparams",$this->modparams);
 		if ($this->dispMode==5){
-			$rows = $this->datamodel->queryModel->recentIcalEvents( $periodStart, $periodEnd);
+			$this->sortReverse = true;
+			$rows = $this->datamodel->queryModel->recentIcalEvents( $periodStart, $periodEnd, $this->modparams->get("modlatest_MaxEvents",10), $this->modparams->get("modlatest_NoRepeat",0));
 		}
 		else {
-			$rows = $this->datamodel->queryModel->listIcalEvents( $periodStart, $periodEnd);
+			$rows = $this->datamodel->queryModel->listLatestIcalEvents( $periodStart, $periodEnd, $this->modparams->get("modlatest_MaxEvents",10), $this->modparams->get("modlatest_NoRepeat",0));
 		}
 		$reg->setValue("jev.modparams",false);
 
@@ -242,19 +243,20 @@ class DefaultModLatestView
 		if(count($rows)){
 
 			// sort combined array by date
-			usort($rows,array(get_class($this), "_sortEventsByDate"));
+			if ($this->dispMode==5) usort($rows,array(get_class($this), "_sortEventsByCreationDate"));
+			else usort($rows,array(get_class($this), "_sortEventsByDate"));
 
 			while($date <= $lastDate){
 				// get the events for this $date
 				$eventsThisDay = array();
 				foreach ($rows as $row) {
-		
+
 					if ($this->dispMode==2 && $this->startNow){
 						if ($row->_endrepeat < $t_datenowSQL) continue;
 					}
 
-			
-					if ($row->checkRepeatDay($date))  {
+
+					if (($this->dispMode==5 && $this->checkCreateDay($date, $row)) || ($this->dispMode!=5 && $row->checkRepeatDay($date)))  {
 						if ($this->norepeat){
 							// make sure this event has not already been used!
 							$eventAlreadyAdded = false;
@@ -266,7 +268,9 @@ class DefaultModLatestView
 										break;
 									}
 								}
-								if ($eventAlreadyAdded) break;
+								if ($eventAlreadyAdded) {
+									break;
+							}
 							}
 							if (!$eventAlreadyAdded) {
 								$row->moddate = $date;
@@ -278,6 +282,10 @@ class DefaultModLatestView
 							$eventsThisDay[]=  clone $row;
 						}
 					}
+					if ($events+count($eventsThisDay)>=$this->maxEvents) {
+						break;
+				}
+
 				}
 				if(count($eventsThisDay)) {
 					// dmcd May 7/04  bug fix to not exceed maxEvents
@@ -289,7 +297,9 @@ class DefaultModLatestView
 					$this->eventsByRelDay[$i] = $eventsThisDay;
 					$events += count($this->eventsByRelDay[$i]);
 				}
-				if($events >= $this->maxEvents) break;
+				if($events >= $this->maxEvents) {
+					break;
+				}
 				$date = strtotime("+1 day",$date);
 				$i++;
 			}
@@ -308,7 +318,7 @@ class DefaultModLatestView
 					// get the events for this $date
 					$eventsThisDay = array();
 					foreach ($rows as $row) {
-						if ($row->checkRepeatDay($date))  {
+						if (($this->dispMode==5 && $this->checkCreateDay($date, $row)) || ($this->dispMode!=5 && $row->checkRepeatDay($date)))  {
 							if ($this->norepeat){
 								// make sure this event has not already been used!
 								$eventAlreadyAdded = false;
@@ -320,7 +330,21 @@ class DefaultModLatestView
 											break;
 										}
 									}
-									if ($eventAlreadyAdded) break;
+									if ($eventAlreadyAdded) {
+										break;
+								}
+								}
+								if ($this->dispMode==5 && !$eventAlreadyAdded){
+									foreach ($eventsThisDay as $evt) {
+										// could test on devent detail but would need another config option
+										if ($row->ev_id() == $evt->ev_id()){
+											$eventAlreadyAdded = true;
+											break;
+										}
+									}
+									if ($eventAlreadyAdded) {
+										break;
+									}
 								}
 								if (!$eventAlreadyAdded) {
 									$row->moddate = $date;
@@ -332,6 +356,9 @@ class DefaultModLatestView
 								$eventsThisDay[]= clone $row;
 							}
 						}
+						if ($events+count($eventsThisDay)>=$this->maxEvents) {
+							break;
+					}
 					}
 					if(count($eventsThisDay)) {
 						//sort by time on this day
@@ -339,7 +366,9 @@ class DefaultModLatestView
 						$this->eventsByRelDay[$i] = $eventsThisDay;
 						$events += count($this->eventsByRelDay[$i]);
 					}
-					if($events >= $this->maxEvents) break;
+					if($events >= $this->maxEvents) {
+						break;
+					}
 					$date = strtotime("-1 day",$date);
 					$i--;
 				}
@@ -363,11 +392,23 @@ class DefaultModLatestView
 
 	}
 
+	function checkCreateDay($date,$row){
+		return (strftime("%Y-%m-%d",$date) == substr($row->created(),0,10));
+	}
+
 	function _sortEventsByDate(&$a, &$b)
 	{
 		$adate = $a->publish_up();
 		$bdate = $b->publish_up();
 		return strcmp( $adate, $bdate );
+	}
+
+	function _sortEventsByCreationDate(&$a, &$b)
+	{
+		$adate = $a->created();
+		$bdate = $b->created();
+		// reverse created date
+		return -strcmp( $adate, $bdate );
 	}
 
 	function _sortEventsByTime (&$a, &$b) {
@@ -410,7 +451,7 @@ class DefaultModLatestView
 		'content',				'eventDetailLink',		'createdByAlias',	'color',
 		'createdByUserName',	'createdByUserEmail',	'createdByUserEmailLink',
 		'eventDate',			'endDate',				'startDate',		'title',	'category',
-		'contact',				'addressInfo',			'location',			'extraInfo', 
+		'contact',				'addressInfo',			'location',			'extraInfo',
 		'countdown'
 		);
 		$keywords_or = implode('|', $keywords);
@@ -520,9 +561,11 @@ class DefaultModLatestView
 
 						if (isset($condtoken['cond'])) {
 							if ( $condtoken['cond'] == 'a'  && !$dayEvent->alldayevent()) continue;
-							if ( $condtoken['cond'] == '!a' &&  $dayEvent->alldayevent()) continue;
-							
-							// TODO add support for !n (no end) and !e (noend or allday)
+							else if ( $condtoken['cond'] == '!a' &&  $dayEvent->alldayevent()) continue;
+							else if ( $condtoken['cond'] == 'e'  && !($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
+							else if ( $condtoken['cond'] == '!e' &&  ($dayEvent->noendtime() || $dayEvent->alldayevent())) continue;
+							else if ( $condtoken['cond'] == '!m' &&  $dayEvent->getUnixStartDate()!=$dayEvent->getUnixEndDate() ) continue;
+							else if ( $condtoken['cond'] == 'm' &&  $dayEvent->getUnixStartDate()==$dayEvent->getUnixEndDate() ) continue;
 						}
 						foreach($condtoken['data'] as $token) {
 							unset($match);
@@ -666,7 +709,7 @@ class DefaultModLatestView
 										$mins = sprintf("%02d",$mins);
 										$fieldval = str_ireplace("%m",$mins,$fieldval);
 									}
-									
+
 									$content .= $fieldval;
 									break;
 

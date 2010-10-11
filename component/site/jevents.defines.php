@@ -51,6 +51,7 @@ JLoader::register('iCalRRule',JEV_PATH."/libraries/iCalRRule.php");
 JLoader::register('iCalEvent',JEV_PATH."/libraries/iCalEvent.php");
 JLoader::register('iCalEventDetail',JEV_PATH."/libraries/iCalEventDetail.php");
 JLoader::register('iCalICSFile',JEV_PATH."/libraries/iCalICSFile.php");
+JLoader::register('CsvToiCal',JEV_PATH."/libraries/csvToiCal.php");
 
 JLoader::register('jEventCal',JEV_PATH."/libraries/jeventcal.php");
 JLoader::register('jIcal',JEV_PATH."/libraries/jical.php");
