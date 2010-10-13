@@ -1,8 +1,8 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Locations Component for Joomla 1.5.x
  *
- * @version     $Id: jevmenu.php 1196 2010-09-27 08:26:32Z geraintedwards $
+ * @version     $Id$
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,11 +46,11 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 		// Initialize variables.
 		$options = array();
 
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevboolean.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevboolean.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {
-			die ("JEvents Fields\n<br />This module needs the JEvents component");
+			die ("JEvents Locations Fields\n<br />This module needs the JEvents Locations component");
 		}		
 
 		return JElementJevboolean::fetchElement($this->name, $this->value, $this->element, $this->type, true);  // RSH 10/5/10 - Use the original code for J!1.6

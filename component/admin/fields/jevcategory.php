@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Locations Component for Joomla 1.5.x
  *
  * @version     $Id: jevcategory.php 1196 2010-09-27 08:26:32Z geraintedwards $
  * @package     JEvents
@@ -28,11 +28,11 @@ class JFormFieldJEvCategory extends JFormFieldList
 
 	public function getOptions()
 	{
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevcategory.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevcategory.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {
-			die ("JEvents Fields\n<br />This module needs the JEvents component");
+			die ("JEvents Locations Fields\n<br />This module needs the JEvents Locations component");
 		}		
 
 		$results = JElementJevcategory::fetchElement($this->name, $this->value, $this->element, $this->type, true);  // RSH 10/4/10 - Use the original code for J!1.6
