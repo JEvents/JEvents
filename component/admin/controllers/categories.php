@@ -30,6 +30,7 @@ class AdminCategoriesController extends JController {
 	{
 		parent::__construct($config);
 		$this->registerTask( 'list',  'overview' );
+		$this->registerTask( 'add',  'edit' );
 		$this->registerDefaultTask("overview");
 
 		$this->component = 	JEV_COM_COMPONENT;
