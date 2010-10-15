@@ -40,11 +40,11 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', JURI::root(true).'/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' ); // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
-		else JEVHelper::stylesheet( 'eventsadmin.css', JURI::root(true).'/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' ); // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css','administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin.css','administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
-		JEVHelper::script('editical.js?v=1.5.6', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
-		JEVHelper::script('view_detail.js', JURI::root(true) . '/components/'.JEV_COM_COMPONENT.'/assets/js/');  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		JEVHelper::script('editical.js?v=1.5.6',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  
+		JEVHelper::script('view_detail.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
 		$document->setTitle(JText::_('Edit ICal Repeat'));
 		

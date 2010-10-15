@@ -108,8 +108,8 @@ class jevStartdateFilter extends jevFilter
 			
 			$calendar = (JVersion::isCompatible("1.6.0")) ? 'calendar12.js' : 'calendar11.js';// RSH 9/28/10 - need to make the calendar a variable to be compatible with both mootools1.1 and 1.2
 		
-			JEVHelper::script($calendar, JURI::root(true) . "/components/".JEV_COM_COMPONENT."/assets/js/",true);  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost 
-			JEVHelper::stylesheet("dashboard.css", JURI::root(true) . "/components/".JEV_COM_COMPONENT."/assets/css/",true);  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+			JEVHelper::script($calendar, "components/".JEV_COM_COMPONENT."/assets/js/",true); 
+			JEVHelper::stylesheet("dashboard.css",  "components/".JEV_COM_COMPONENT."/assets/css/",true);  
 			$document->addScriptDeclaration('window.addEvent(\'domready\', function() {
 				new NewCalendar({ '.$this->filterType.'_fvs1 :  "Y-m-d"},{
 					direction:0, 

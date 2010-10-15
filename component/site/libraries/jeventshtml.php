@@ -183,7 +183,7 @@ class JEventsHTML{
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >
 				<option value=""><?php echo $t_first_entry;?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_jevents'), 'value', 'text', $catid);?>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', $sectionname), 'value', 'text', $catid);?>
 			</select>
 			<?php
 			return ob_get_clean();

@@ -371,7 +371,7 @@ class JEVHelper {
 		$offset = $params->get("com_starday",1);
 		
 		$calendar = (JVersion::isCompatible("1.6.0")) ? 'calendar12.js' : 'calendar11.js';// RSH 9/28/10 - need to make the calendar a variable to be compatible with both mootools1.1 and 1.2
-		JEVHelper::script($calendar, JURI::root(true) . "/components/".$component."/assets/js/",true);  // RSH added 'JURI::root(true)' to call so it doesn't try to go to document root which will fail on localhost
+		JEVHelper::script($calendar,  "components/".$component."/assets/js/",true); 
 		JEVHelper::stylesheet("dashboard.css", "components/".$component."/assets/css/",true); 
 		$script = '
 				var field'.$fieldid.'=false;
@@ -1230,11 +1230,14 @@ class JEVHelper {
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) {
+			JHTML::script( $file, $path);
+			/*
 			$document = JFactory::getDocument();
 			if (strpos($path, '/')!==0 && strpos($path, 'http')!==0){
 				$path = "/".$path;
 			}
 			$document->addScript($path.$file);
+			 */
 		}
 		else JHTML::script( $file, $path);
 
