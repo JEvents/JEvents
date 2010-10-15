@@ -58,9 +58,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JEVHelper::script('editical.js?v=1.5.6', JURI::root(true) . '/administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		JEVHelper::script('editical.js?v=1.5.6',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Event'));
 
@@ -157,6 +156,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 			}
 			else {
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minaccess = $params->getValue("jevcreator_level",19);
 				// get users AUTHORS and above
 				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
