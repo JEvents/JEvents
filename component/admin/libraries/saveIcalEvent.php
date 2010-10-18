@@ -166,6 +166,9 @@ class SaveIcalEvent {
 		}
 		else {
 			// need a value for eventid to pretend we have saved the event so we can get the repetitions
+			if (!isset($vevent->ev_id)){
+				$vevent->ev_id = 0;
+			}
 			$vevent->rrule->eventid = $vevent->ev_id;
 		}
 		

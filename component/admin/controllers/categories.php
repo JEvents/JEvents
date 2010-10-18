@@ -115,12 +115,12 @@ class AdminCategoriesController extends JController {
 		. "\n WHERE pc.section='com_jevents' "
 		. "\n AND cc.id IS NOT NULL"
 		. "\n ORDER BY pc.ordering ";
-
 		$db->setQuery($sql);
+		$result = $db->loadObjectList();
+
 		$categories[] = JHTML::_('select.option', '-1', '- '.JText::_('Select Parent').' -');
 		$categories[] = JHTML::_('select.option', '0', JText::_('No Parent'));
 		// RSH 9/28/10 Added check for empty categories - don't do array_merge if empty!
-		//$result = $db->loadObjectList();
 		$categories = array_merge($categories, ((is_array($result)) ? $result : array()) ); // RSH 9/28/10
 		$parents = JHTML::_('select.genericlist',  $categories, 'parentid', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', $parent);
 

@@ -25,7 +25,11 @@ class AdminParamsController extends JController
 	{
 		$user =& JFactory::getUser();
 
-		if (JVersion::isCompatible("1.6.0")) {
+		if (!JVersion::isCompatible("1.6.0")) {
+			if (strtolower($user->usertype)!="super administrator" && strtolower($user->usertype)!="administrator"){
+				$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", "Not Authorised - must be admin" );
+				return;
+			}
 		}
 		else{
 				// Only users who can delete all can do this
