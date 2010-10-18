@@ -1279,7 +1279,7 @@ class JEVHelper {
 			return JHTML::_('image','system/'.$img, $text, NULL, true);
 		}
 		else {
-			return JHTML::_('image.site', $img, '/images/M_images/', NULL, NULL, $txt);
+			return JHTML::_('image.site', $img, '/images/M_images/', NULL, NULL, $text);
 		}
 
 	}

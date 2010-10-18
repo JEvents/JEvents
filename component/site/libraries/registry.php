@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JevRegistry extends JRegistry {
 		
-	static function &getInstance($id, $namespace = 'default')
+	function &getInstance($id, $namespace = 'default')
 	{
 		static $instances;
 
