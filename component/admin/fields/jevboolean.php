@@ -46,7 +46,7 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 		// Initialize variables.
 		$options = array();
 
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevboolean.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevboolean.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {

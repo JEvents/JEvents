@@ -28,7 +28,7 @@ class JFormFieldJEvCategory extends JFormFieldList
 
 	public function getOptions()
 	{
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevcategory.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevcategory.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {

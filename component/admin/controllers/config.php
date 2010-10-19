@@ -32,9 +32,8 @@ class AdminConfigController extends JController {
 	 *
 	 */
 	function convert(){
-		$user =& JFactory::getUser();
 
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( "Not Authorised must be admin" ));
 			return;
 		}
@@ -277,7 +276,7 @@ class AdminConfigController extends JController {
 		return;
 		$user =& JFactory::getUser();
 
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator"){
+		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}

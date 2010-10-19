@@ -155,7 +155,7 @@ class AdminIcalsController extends JController {
 
 	function edit () {
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -220,8 +220,8 @@ class AdminIcalsController extends JController {
 				}
 			}
 		}
-		$user =& JFactory::getUser();
-		if (!($authorised || strtolower(JEVHelper::getUserType($user))=="super administrator" || strtolower(JEVHelper::getUserType($user))=="administrator")) {
+		$user =& JFactory::getUser();				
+		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -353,7 +353,7 @@ class AdminIcalsController extends JController {
 		}
 
 		$user =& JFactory::getUser();
-		if (!($authorised || strtolower(JEVHelper::getUserType($user))=="super administrator" || strtolower(JEVHelper::getUserType($user))=="administrator")){
+		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -441,7 +441,7 @@ class AdminIcalsController extends JController {
 
 	function toggleICalPublish($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -469,7 +469,7 @@ class AdminIcalsController extends JController {
 
 	function toggleAutorefresh($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -497,7 +497,7 @@ class AdminIcalsController extends JController {
 
 	function toggleDefault($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
 			return;
 		}

@@ -64,8 +64,7 @@ class AdminUserController extends JController   {
 
 		////JLoader::import( 'models.user',JPATH_COMPONENT_ADMINISTRATOR);
 
-		$siteuser = JFactory::getUser();
-		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
+		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -85,8 +84,7 @@ class AdminUserController extends JController   {
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$siteuser = JFactory::getUser();
-		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
+		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -114,8 +112,7 @@ class AdminUserController extends JController   {
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
-		$siteuser = JFactory::getUser();
-		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
+		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		
@@ -236,8 +233,7 @@ class AdminUserController extends JController   {
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$siteuser = JFactory::getUser();
-		if (JEVHelper::getUserType($siteuser)!="Administrator" && JEVHelper::getUserType($siteuser)!="Super Administrator"){
+		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
 			$this->setRedirect($link, $msg);		

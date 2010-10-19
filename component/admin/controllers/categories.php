@@ -55,8 +55,7 @@ class AdminCategoriesController extends JController {
 
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
-
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_("Not Authorised must be admin" ));
 			return;
 		}
@@ -152,8 +151,7 @@ class AdminCategoriesController extends JController {
 		JArrayHelper::toInteger($cid);
 
 		$user =& JFactory::getUser();
-
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", "Not Authorised - must be super admin" );
 			return;
 		}
@@ -250,12 +248,12 @@ class AdminCategoriesController extends JController {
 	 */
 	function save(){
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
 
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		$user =& JFactory::getUser();
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( "Not Authorised must be admin" ));
 			return;
 		}
@@ -292,7 +290,7 @@ class AdminCategoriesController extends JController {
 	 */
 	function saveorder(){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin" ));
 			return;
 		}
@@ -323,7 +321,7 @@ class AdminCategoriesController extends JController {
 	 */	
 	function delete(){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
 			return;
 		}
@@ -393,7 +391,7 @@ class AdminCategoriesController extends JController {
 
 	function toggleCatPublish($cid,$newstate){
 		$user =& JFactory::getUser();
-		if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
 			return;
 		}

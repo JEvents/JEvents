@@ -44,7 +44,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	public function getInput()
 	{
 
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevinfo.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevinfo.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {

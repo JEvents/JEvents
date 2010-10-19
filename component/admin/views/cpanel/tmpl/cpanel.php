@@ -45,13 +45,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				}
 				$this->_quickiconButton( $link, "jevents_categories_sml.png", JText::_('JEV_INSTAL_CATS')  ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");
 
-				$link = "index.php?option=".JEV_COM_COMPONENT."&task=user.list";
-				$this->_quickiconButton( $link, "jevents_user_sml.png", JText::_('JEV_MANAGE_USERS') ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");
+				if (JEVHelper::isAdminUser()) {
+					$link = "index.php?option=".JEV_COM_COMPONENT."&task=user.list";
+					$this->_quickiconButton( $link, "jevents_user_sml.png", JText::_('JEV_MANAGE_USERS') ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");
 
-				//$link = "index.php?option=".JEV_COM_COMPONENT."&task=config.edit";
-				// new version
-				$link = "index.php?option=".JEV_COM_COMPONENT."&task=params.edit";
-				$this->_quickiconButton( $link, "jevents_config_sml.png", JText::_('JEV_INSTAL_CONFIG') ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");
+					// new version
+					$link = "index.php?option=".JEV_COM_COMPONENT."&task=params.edit";
+					$this->_quickiconButton( $link, "jevents_config_sml.png", JText::_('JEV_INSTAL_CONFIG') ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");
+				}
 
 				$link = "index.php?option=".JEV_COM_COMPONENT."&task=defaults.list";
 				$this->_quickiconButton( $link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS') ,"/administrator/components/".JEV_COM_COMPONENT."/assets/images/");

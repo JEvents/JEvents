@@ -26,8 +26,17 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 	public function getOptions()
 	{
+		// Trap to stop the config from being editing from the categories page
+		if (JRequest::getString("option") =="com_config"){
+			?>
+			<script type="text/javascript">
+				window.parent.SqueezeBox.close();
+			</script>
+			<?php
+			exit();
+		}
 
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevlocations/elements/jevmenu.php';
+		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevmenu.php';
 		if (file_exists($file) ) {
 			include_once($file);
 		} else {

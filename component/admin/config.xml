@@ -349,25 +349,22 @@
 			filter="rules"
 			component="com_jevents"
 			section="component" />
+<!--
+		<field
+			name="rules"
+			type="rules"
+			id="category_rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			component="com_jevents"
+			section="category" />
+//-->
 	</fieldset>
 	
 		<fields name="params">
 		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
-				<field
-					name="search_limit"
-					type="text"
-					default="50"
-					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
-					size="50"
-					description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC" />
-				<field
-					name="date_format"
-					type="text"
-					default="%Y-%m-%d"
-					label="Date Format"
-					description="Format for date in return" />					
-				<field
 					name="target_itemid"
 					type="jevmenu"
 					default=""
