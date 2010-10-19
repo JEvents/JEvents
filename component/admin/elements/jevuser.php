@@ -39,43 +39,63 @@ class JElementJevuser extends JElement
 		//jimport("joomla.html.html.list");
 		$params = JComponentHelper::getParams("com_jevents");
 
-		if (strpos($name,"jevadmin")===0){
-			$gid = $params->get('jevpublish_level',24);
-		}
-		else if (strpos($name,"jeveditor")===0){
-			$gid = $params->get('jeveditor_level',20);
-		}
-		else if (strpos($name,"jevpublisher")===0){
-			$gid = $params->get('jevpublish_level',21);
-		}
-		else {
-			$gid = $params->get('jevcreator_level',19);
-		}
-
 		$db =& JFactory::getDBO();
 
 		// TODO - do this properly for Joomla 1.6
 		if (JVersion::isCompatible("1.6.0"))  {
-			$query = 'SELECT id AS value, name AS text'
-			. ' FROM #__users'
-			. ' WHERE block = 0'
-			//. ' AND gid >= '.$gid
-			. ' ORDER BY name asc'
-			;
+
+			$rules = JAccess::getAssetRules("com_jevents", true);
+			$creatorgroups = $rules->getData();
+			if (strpos($name,"jevadmin")===0){
+				$action = "core.admin";
+			}
+			else if (strpos($name,"jeveditor")===0){
+				$action = "core.edit";
+			}
+			else if (strpos($name,"jevpublisher")===0){
+				$action = "core.publish";
+			}
+			else {
+				$action = "core.create";
+			}
+			$creatorgroups = $creatorgroups[$action]->getData();
+			$users = array(0);
+			foreach ($creatorgroups as $creatorgroup => $permission){
+				if ($permission==1){
+					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				}
+			}
+			$sql = "SELECT id AS value, name AS text FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+			$db->setQuery( $sql );
+			$users = $db->loadObjectList();
+
 		}
 		else {
-			$query = 'SELECT id AS value, name AS text'
+			if (strpos($name,"jevadmin")===0){
+				$gid = $params->get('jevpublish_level',24);
+			}
+			else if (strpos($name,"jeveditor")===0){
+				$gid = $params->get('jeveditor_level',20);
+			}
+			else if (strpos($name,"jevpublisher")===0){
+				$gid = $params->get('jevpublish_level',21);
+			}
+			else {
+				$gid = $params->get('jevcreator_level',19);
+			}
+			$sql = 'SELECT id AS value, name AS text'
 			. ' FROM #__users'
 			. ' WHERE block = 0'
 			. ' AND gid >= '.$gid
 			. ' ORDER BY gid desc, name'
-			;			
+			;
+			$db->setQuery( $sql );
+			$users = $db->loadObjectList();
 		}
-		$db->setQuery( $query );
-		$users[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select User' ) .' -' );
-		$users = array_merge( $users, $db->loadObjectList() );
+		$users2[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select User' ) .' -' );
+		$users2 = array_merge( $users2, $users );
 
-		$users = JHTML::_('select.genericlist',   $users, $control_name.'['.$name.']', 'class="'.$class.'" size="1" ', 'value', 'text', $value );
+		$users = JHTML::_('select.genericlist',   $users2, $control_name.'['.$name.']', 'class="'.$class.'" size="1" ', 'value', 'text', $value );
 
 		return $users;
 	}

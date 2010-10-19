@@ -24,7 +24,6 @@ class JEventsAdminDBModel extends JEventsDBModel {
  * @return stdClass details of vevent selected
  */
 	function getVEventById( $agid) {
-		global  $gid;
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		// force state value to event state!
@@ -34,8 +33,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND ev.ev_id = '$agid'"
-		. "\n AND ev.access <= ".JEVHelper::getGid($user);
-
+		. "\n AND ev.access <= ".$user->aid;
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();
@@ -44,7 +42,6 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	}
 
 	function getVEventRepeatById( $rp_id) {
-		global  $gid;
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
@@ -58,7 +55,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND rpt.rp_id = '$rp_id'"
-		. "\n AND ev.access <= ".JEVHelper::getGid($user);;
+		. "\n AND ev.access <= ".$user->aid;;
 
 		$db->setQuery( $query );
 
@@ -77,18 +74,12 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	// TODO add more access control e.g. canpublish caneditown etc.
 
 	function getNativeIcalendars() {
-		global  $gid;
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
-		/*
-		. "\n WHERE ical.catid IN(".$this->accessibleCategoryList().")"
-		. "\n AND ical.icaltype = '2'"
-		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
-		*/
 		. "\n WHERE ical.icaltype = '2'"
-		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
+		. "\n AND ical.access <= ".$user->aid;
 
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onSelectIcals', array( &$query) );		
@@ -100,7 +91,6 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	}
 
 	function getIcalByIcsid($icsid) {
-		global  $gid;
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		$query = "SELECT *"
@@ -110,7 +100,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n AND ical.ics_id = $icsid"
 		*/
 		. "\n WHERE ical.ics_id = $icsid"
-		. "\n AND ical.access <= ".JEVHelper::getGid($user);;
+		. "\n AND ical.access <= ".$user->aid;
 
 		$db->setQuery( $query );
 		$row = $db->loadObject();

@@ -8,11 +8,4 @@
 		<action name="core.publish" title="JEV_JACTION_PUBLISH" description="JEV_JACTION_PUBLISH_DESC" />
 		<action name="core.deleteall" title="JEV_JACTION_DELETE_ALL" description="JEV_JACTION_DELETE_ALL_DESC" />
 	</section>
-	<section name="category">
-		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
-		<action name="core.create" title="JEV_JACTION_CREATE" description="JEV_JACTION_CREATE_DESC" />
-		<action name="core.edit" title="JEV_JACTION_EDIT" description="JEV_JACTION_EDIT_DESC" />
-		<action name="core.publish" title="JEV_JACTION_PUBLISH" description="JEV_JACTION_PUBLISH_DESC" />
-		<action name="core.deleteall" title="JEV_JACTION_DELETE_ALL" description="JEV_JACTION_DELETE_ALL_DESC" />
-	</section>
 </access>
