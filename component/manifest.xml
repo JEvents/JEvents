@@ -45,7 +45,6 @@
     
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB.com_jevents.ini</language>
-		<language tag="de-DE">de-DE.com_jevents.ini</language>
    	</languages>
 	<media />
 
@@ -74,7 +73,7 @@
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB.com_jevents.ini</language>
 			<language tag="en-GB">en-GB.com_jevents.menu.ini</language>
-			<language tag="de-DE">de-DE.com_jevents.ini</language>
+			<language tag="en-GB">en-GB.com_jevents.sys.ini</language>
     	</languages>
  	</administration>
 
