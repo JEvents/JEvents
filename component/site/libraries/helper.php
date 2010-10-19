@@ -623,16 +623,6 @@ class JEVHelper {
 		return $datenow;
 	}
 
-	/*
-	function & getJEV_Access(){
-		static $instance;
-		if (!isset($instance)){
-			$instance = new JEVAccess();
-		}
-		return $instance;
-	}
-	*/
-
 	/**
 	 * Test to see if user can add events from the front end
 	 *
@@ -655,10 +645,15 @@ class JEVHelper {
 				$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
-					$creatorlevel = $params->get("jevcreator_level",20);
-					$juser =& JFactory::getUser();
-					if (JEVHelper::getGid($user)>=$creatorlevel){
-						$isEventCreator = true;
+					if (JVersion::isCompatible("1.6.0"))  {
+						$isEventCreator = JAccess::check($user->id, "core.create","com_jevents");
+					}
+					else {
+						$creatorlevel = $params->get("jevcreator_level",20);
+						$juser =& JFactory::getUser();
+						if (JEVHelper::getGid($user)>=$creatorlevel){
+							$isEventCreator = true;
+						}
 					}
 				}
 			}
@@ -684,10 +679,15 @@ class JEVHelper {
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
-					$publishlevel = $params->get("jeveditor_level",20);
-					$juser =& JFactory::getUser();
-					if (JEVHelper::getGid($user)>=$publishlevel){
-						$isEventEditor = true;
+					if (JVersion::isCompatible("1.6.0"))  {
+						$isEventEditor = JAccess::check($user->id, "core.edi","com_jevents");
+					}
+					else {
+						$publishlevel = $params->get("jeveditor_level",20);
+						$juser =& JFactory::getUser();
+						if (JEVHelper::getGid($user)>=$publishlevel){
+							$isEventEditor = true;
+						}
 					}
 				}
 			}
@@ -762,29 +762,18 @@ class JEVHelper {
 				$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
-					$publishlevel = $params->get("jevpublish_level",20);
-					$juser =& JFactory::getUser();
-					if (JEVHelper::getGid($user)>=$publishlevel){
-						$isEventPublisher[$type] = true;
+					if (JVersion::isCompatible("1.6.0"))  {
+						$isEventPublisher[$type]  = JAccess::check($user->id, "core.publish","com_jevents");
+					}
+					else {
+						$publishlevel = $params->get("jevpublish_level",20);
+						$juser =& JFactory::getUser();
+						if (JEVHelper::getGid($user)>=$publishlevel){
+							$isEventPublisher[$type] = true;
+						}
 					}
 				}
 
-				/*
-				$publishlevel = $params->get("jevpublish_level",20);
-				$juser =& JFactory::getUser();
-				if (JEVHelper::getGid($user)>=$publishlevel){
-				$isEventPublisher[$type] = true;
-				}
-				else {
-				// if can't publish because of level then check if can publish own but this test only applied if not strict
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly",1);
-				$publishown = $params->get("jevpublishown",0);
-				if (!$strict && !$authorisedonly && $publishown){
-				$isEventPublisher[$type] = true;
-				}
-				}
-				*/
 			}
 			else if ($user->canpublishall){
 				$isEventPublisher[$type] = true;
@@ -918,21 +907,6 @@ class JEVHelper {
 					}
 				}
 
-				/*
-				$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$publishlevel = $params->get("jevpublish_level",20);
-				$juser =& JFactory::getUser();
-				if (JEVHelper::getGid($user)>=$publishlevel){
-				$isEventDeletor[$type] = true;
-				}
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly",1);
-				$publishown = $params->get("jevpublishown",0);
-				if (!$strict && !$authorisedonly && $publishown){
-				$isEventDeletor[$type]= true;
-				}
-				*/
-
 			}
 			else if ($user->candeleteall ){
 				$isEventDeletor[$type] = true;
@@ -999,6 +973,7 @@ class JEVHelper {
 	 * @param string attrib	Requested attribute of the user object
 	 * @return mixed row	Attribute or row object
 	 */
+	/*
 	function getUser($id, $attrib='Object') {
 
 		$db	=& JFactory::getDBO();
@@ -1026,7 +1001,8 @@ class JEVHelper {
 			return null;
 		}
 	}
-
+	 */
+	
 	/**
 	 * Returns contact details or user details as fall back
 	 *
@@ -1122,37 +1098,28 @@ class JEVHelper {
 				}
 			}
 			else {
-				/*
-				$creator_level = $params->get("jevcreator_level",20);
-				$jeveditor_level= $params->get("jeveditor_level",20);
-				$jevpublish_level= $params->get("jevpublish_level",20);
-				$jevpublishown = $params->get("jevpublishown",20);
-				$user->disableAll();
-				$juser = JFactory::getUser();
-				$user->user_id = $juser->id;
-				if (JEVHelper::getGid($user)>=$creator_level){
-				$user->creator_level=true;
-				$user->enabled=true;
-				}
-				if (JEVHelper::getGid($user)>=$jeveditor_level){
-				$user->jeveditor_level=true;
-				$user->enabled=true;
-				}
-				if (JEVHelper::getGid($user)>=$jevpublish_level){
-				$user->$jevpublish_level=true;
-				$user->enabled=true;
-				}
-				if (JEVHelper::getGid($user)>=$jevpublishown){
-				$user->jevpublishown=true;
-				$user->enabled=true;
-				}
-				$userarray[$id] = $user;
-				*/
 				$userarray[$id] = null;
 			}
 
 		}
 		return $userarray[$id];
+	}
+
+	static  public function isAdminUser($user = null){
+		if (is_null($user)) {
+			$user = JFactory::getUser();
+		}
+		if (JVersion::isCompatible("1.6.0"))  {
+			$access = JAccess::check($user->id, "core.admin","com_jevents");
+
+			return $access;
+		}
+		else {
+			if (strtolower(JEVHelper::getUserType($user))!="super administrator" && strtolower(JEVHelper::getUserType($user))!="administrator"){
+				return false;
+			}
+			return true;
+		}
 	}
 
 	function componentStylesheet($view, $filename='events_css.css'){
@@ -1183,7 +1150,7 @@ class JEVHelper {
 			$user = JFactory::getUser();	
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			return 24;
+			return 0;
 		}
 		else {
 			return $user->gid;

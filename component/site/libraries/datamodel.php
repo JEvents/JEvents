@@ -19,7 +19,6 @@ class JEventsDataModel {
 	var $catids = null;
 	var $catidList = null;
 
-	var $gid = null;
 	var $aid = null;
 
 	// flag to track if we should who all categories
@@ -31,7 +30,6 @@ class JEventsDataModel {
 		$cfg = & JEVConfig::getInstance();
 		
 		$user = JFactory::getUser();
-		$this->gid = JEVHelper::getGid($user);
 		$this->aid = intval( JEVHelper::getAid($user));
 
 		if (is_null($dbmodel)){

@@ -125,9 +125,6 @@ class ICalsController extends AdminIcalsController
 			// ensure "user" can access non-public categories etc.
 			$this->dataModel->aid = $puser->aid;
 
-			//Don'y need to set the usertype based on the ACL group name
-			// $puser->set('usertype', $grp->name);
-
 			$registry = & JRegistry::getInstance("jevents");
 			$registry->setValue("jevents.icaluser", $puser);
 		} else if ($k != "NONE") {

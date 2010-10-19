@@ -53,7 +53,7 @@ function DefaultViewHelperViewNavAdminPanel($view){
 	                        <?php
                         }
 
-                        if(( strtolower( JEVHelper::getUserType($user) ) != '' )) {
+                        if(( $user->id>0) {
                         	$datamodel	=new JEventsDataModel();
                         	// find appropriate Itemid and setup catids for datamodel
                         	$myItemid = JEVHelper::getItemid();

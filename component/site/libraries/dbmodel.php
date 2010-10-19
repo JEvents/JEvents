@@ -645,7 +645,7 @@ class JEventsDBModel {
 		$db	=& JFactory::getDBO();
 		$db->setQuery( $query );
 		$user = JFactory::getUser();
-		if (JEVHelper::getUserType($user)=="Super Administrator"){
+		if (JEVHelper::isAdminUser($user)){
 		//	echo $db->getQuery();
 			//echo $db->explain();
 		}
@@ -656,7 +656,7 @@ class JEventsDBModel {
 		}
 
 		$icalrows = $db->loadObjectList();
-		if (JEVHelper::getUserType($user)=="Super Administrator"){
+		if (JEVHelper::isAdminUser($user)){
 			echo $db->getErrorMsg();
 		}
 		$icalcount = count($icalrows);
@@ -1735,7 +1735,7 @@ class JEventsDBModel {
 		$query .= "\n $limitstring";
 
 		$db->setQuery( $query );
-		if (JEVHelper::getUserType($user)=="Super Administrator"){
+		if (JEVHelper::isAdminUser($user)){
 			//echo $db->_sql;
 			//echo $db->explain();
 		}

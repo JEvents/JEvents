@@ -140,7 +140,7 @@ function ProcessRequest(&$requestObject, $returnData){
 		$db=JFactory::getDBO();
 		$db->setQuery("SELECT * FROM #__jevents_vevent where ev_id=".intval($requestObject->formdata->evid));
 		$event = $db->loadObject();
-		if (!$event || ($event->created_by!=$user->id && JEVHelper::getUserType($user)!="Super Administrator")){
+		if (!$event || ($event->created_by!=$user->id && !JEVHelper::isAdminUser($user) )){
 			throwerror("There was an error");
 		}
 	}
