@@ -966,42 +966,6 @@ class JEVHelper {
 		return false;
 	}
 
-	/**
-	 * Serves requested user object or attributes
-	 *
-	 * @param int id		key of user
-	 * @param string attrib	Requested attribute of the user object
-	 * @return mixed row	Attribute or row object
-	 */
-	/*
-	function getUser($id, $attrib='Object') {
-
-		$db	=& JFactory::getDBO();
-
-		static $rows = array();
-
-		if ($id <= 0) {
-			return null;
-		}
-
-		if (!isset($rows[$id])) {
-			$rows[$id] = null;
-			$query = "SELECT id, name, username, usertype, sendEmail, email FROM #__users"
-			. "\n WHERE block ='0'"
-			. "\n AND id = " . $id;
-			$db->setQuery($query);
-			$rows[$id]=$db->loadObject();
-		}
-
-		if ($attrib == 'Object') {
-			return $rows[$id];
-		} elseif (isset($rows[$id]->$attrib)) {
-			return $rows[$id]->$attrib;
-		} else {
-			return null;
-		}
-	}
-	 */
 	
 	/**
 	 * Returns contact details or user details as fall back
