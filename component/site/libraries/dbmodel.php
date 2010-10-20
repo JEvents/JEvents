@@ -642,13 +642,15 @@ class JEventsDBModel {
 	}
 
 	function _cachedlistIcalEvents($query, $langtag,$count=false){
-		$db	=& JFactory::getDBO();
-		$db->setQuery( $query );
 		$user = JFactory::getUser();
+		$db	=& JFactory::getDBO();
+		JEVHelper::isAdminUser($user);
+		$db->setQuery( $query );
 		if (JEVHelper::isAdminUser($user)){
-		//	echo $db->getQuery();
-			//echo $db->explain();
+			//echo $db->getQuery();
+		   //echo $db->explain();
 		}
+
 		//echo $db->_sql;
 		if ($count){
 			$db->query();

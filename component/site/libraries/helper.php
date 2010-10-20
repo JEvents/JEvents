@@ -509,7 +509,7 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if (JEVHelper::getAid($user)>=$jevitem->access){
+						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user)) : JEVHelper::getAid($user)>=$jevitem->access){
 							$jevitemid = $jevitem->id;
 
 							if ($forcecheck){								
@@ -563,9 +563,11 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if (JEVHelper::getAid($user)>=$jevitem->access  && strpos($active->link, "admin.listevents")>0){
-							$jevitemid = $jevitem->id;
-							return $jevitemid;
+						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user)) : JEVHelper::getAid($user)>=$jevitem->access){
+							if (strpos($active->link, "admin.listevents")>0){
+								$jevitemid = $jevitem->id;
+								return $jevitemid;
+							}
 						}
 					}
 				}
@@ -1130,7 +1132,7 @@ class JEVHelper {
 			return $groups;
 		}
 		else {
-			return $user->aid;
+			return intval($user->aid);
 		}
 	}
 

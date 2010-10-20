@@ -30,7 +30,7 @@ class JEventsDataModel {
 		$cfg = & JEVConfig::getInstance();
 		
 		$user = JFactory::getUser();
-		$this->aid = intval( JEVHelper::getAid($user));
+		$this->aid = JEVHelper::getAid($user);
 
 		if (is_null($dbmodel)){
 			$this->queryModel =new JEventsDBModel($this);
@@ -873,7 +873,7 @@ class JEventsDataModel {
 
 		
 		$user =& JFactory::getUser();
-		$aid = intval( JEVHelper::getAid($user) );
+		$aid =  JEVHelper::getAid($user) ;
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
 
@@ -946,7 +946,7 @@ class JEventsDataModel {
 
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user =& JFactory::getUser();
-		$aid = intval( JEVHelper::getAid($user) );
+		$aid = JEVHelper::getAid($user) ;
 		$Itemid = JEVHelper::getItemid();
 		$user =& JFactory::getUser();
 

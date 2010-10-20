@@ -56,7 +56,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 			. "\n FROM #__modules AS m"
 			. "\n WHERE m.published = 1"
 			. "\n AND m.id = ". $modid
-			. "\n AND m.access <= ". (int) JEVHelper::getAid($user)
+			. "\n AND m.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' .  JEVHelper::getAid($user) . ')' : ' <=  ' .  JEVHelper::getAid($user))
 			. "\n AND m.client_id != 1";
 			$db	=& JFactory::getDBO();
 			$db->setQuery( $query );
