@@ -23,7 +23,7 @@ $url = JRoute::_("index.php?option=".$option);
 ?>
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
 	<div id="jevuser">
-	    <form action="<?php echo $url;?>" method="post" name="adminForm">
+	    <form action="<?php echo $url;?>" method="post" name="adminForm"  id="adminForm">
 	<br/>
   <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
 	<thead>

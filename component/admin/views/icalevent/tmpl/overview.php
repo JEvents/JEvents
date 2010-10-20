@@ -21,7 +21,7 @@ $this->_largeDataSet = $cfg->get('largeDataSet', 0 );
 
 $pathIMG = JURI::root() . 'administrator/images/'; ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table cellpadding="4" cellspacing="0" border="0" >
 		<tr>
 			<?php if (!$this->_largeDataSet) { ?>

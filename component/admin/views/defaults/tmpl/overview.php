@@ -4,7 +4,7 @@
 $pathIMG = JURI::root().'/administrator/images/';
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post"  name="adminForm" id="adminForm">
 <div id="editcell">
 	<table class="adminlist">
 	<thead>

@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 $version = JEventsVersion::getInstance();
 
 ?>
-	<form action="index.php" method="post" name="adminForm" autocomplete="off">
+	<form action="index.php" method="post" name="adminForm" autocomplete="off" id="adminForm">
 
 		<fieldset class='jevconfig'>
 			<legend>

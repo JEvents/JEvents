@@ -14,7 +14,7 @@ JHTML::_('behavior.tooltip');
 $pathIMG = JURI::root().'/administrator/images/';
 ?>
 <div id="jevents">
-<form action="index.php" method="post" name="adminForm" >
+<form action="index.php" method="post" name="adminForm"  id="adminForm">
 <table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform">
 <tr><td>
 <script>			

@@ -19,7 +19,7 @@ JHTML::_('behavior.tooltip');
 $pathIMG = JURI::Root() . 'administrator/images/';
 $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/"; ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table cellpadding="4" cellspacing="0" border="0" width="100%">
 		<tr>
 			<td width="100%">

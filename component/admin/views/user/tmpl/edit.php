@@ -32,7 +32,7 @@ function submitbutton(pressbutton) {
 }
 </script>
 
-<form action="<?php echo $index;?>" method="post" name="adminForm">
+<form action="<?php echo $index;?>" method="post" name="adminForm" id="adminForm">
     <input type="hidden" name="cid" value="<?php echo $this->jevuser->id;?>" />
 	<table border="0" cellpadding="2" cellspacing="2" class="adminform" >
 		<tr>

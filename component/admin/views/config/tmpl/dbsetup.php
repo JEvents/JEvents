@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');?> 
 <div id="jevents">
-<form action="index.php" method="post" name="adminForm" >
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 <h3><?php echo JText::_("Database now setup");?></h3>
 <input type="submit" value="<?php echo "continue";?>" />
 <input type="hidden" name="boxchecked" value="0" />

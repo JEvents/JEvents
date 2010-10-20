@@ -19,7 +19,7 @@ $this->replaceLabels($this->item->value);
 ?>		
 <div id="jevents">
 <form action="index.php" method="post" name="adminForm" >
-<table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform">
+<table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform" >
 <tr>
 <td>
 		<input type="hidden" name="name" value="<?php echo $this->item->name;?>">

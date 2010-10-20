@@ -21,7 +21,7 @@ $cache->clean(JEV_COM_COMPONENT);
 $action = JFactory::getApplication()->isAdmin()?"index.php":"index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 ?>
 <div id="jevents">
-<form action="<?php echo $action;?>" method="post" name="adminForm"  accept-charset="UTF-8" enctype="multipart/form-data" >
+<form action="<?php echo $action;?>" method="post" name="adminForm"  accept-charset="UTF-8" enctype="multipart/form-data"  id="adminForm">
 <table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform">
 <tr><td>
 <?php

@@ -680,7 +680,12 @@ SQL;
 		$ics = $db->loadResult();
 
 		if(!$ics || is_null($ics) || $ics==0 ){
-			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,0,$catid,1)";
+			if (JVersion::isCompatible("1.6.0"))  {
+				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
+			}
+			else {
+				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,0,$catid,1)";
+			}
 			$db->setQuery($sql);
 			$db->query();
 			echo $db->getErrorMsg();

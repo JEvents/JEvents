@@ -49,7 +49,7 @@ if ($catid==0 && $this->defaultCat>0){
 
 ?>
 <div id="jevents" <?php $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"";?>>
-<form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data'>
+<form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm">
 <?php
 
 // get configuration object
