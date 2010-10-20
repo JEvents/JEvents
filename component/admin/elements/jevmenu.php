@@ -116,7 +116,7 @@ class JElementJevmenu extends JElement
 			return $options;
 		} else {
 		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
-	}
+		}
 	}
 	
 	function fetchElementOLD($name, $value, &$node, $control_name)
