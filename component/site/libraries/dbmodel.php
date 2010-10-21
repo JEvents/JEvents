@@ -302,8 +302,9 @@ class JEventsDBModel {
 		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 		. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. " \n AND icsf.state=1"
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
 		// published state is now handled by filter
 		. "\n GROUP BY ev.ev_id";
 
@@ -340,8 +341,9 @@ class JEventsDBModel {
 		. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. "  AND icsf.state=1 "
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
 		. "  AND ev.ev_id IN (".$ids.")"
 		// published state is now handled by filter
 		//. "\n AND ev.state=1"
@@ -405,27 +407,6 @@ class JEventsDBModel {
 		$t_datenow = JEVHelper::getNow();
 		$t_datenowSQL =  $t_datenow->toMysql();		
 		
-		/*
-		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
-		. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-		. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-		. $extrajoin
-		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
-		// New equivalent but simpler test
-		. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-		// We only show events on their first day if they are not to be shown on multiple days so also add this condition
-		. "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)"		
-		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
-		// published state is now handled by filter
-		. "\n GROUP BY ev.ev_id";
-
-		// This limit will always be enough
-		$query .= " LIMIT ".$limit;
-		*/
 		
 		// Find the ones after now
 		$query = "SELECT DISTINCT rpt.eventid FROM #__jevents_repetition as rpt"
@@ -440,8 +421,9 @@ class JEventsDBModel {
 		// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 		. "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)"		
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. "  AND icsf.state=1 "
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
 		// published state is now handled by filter
 		. "\n AND rpt.startrepeat=(SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')"
 		//. "\n GROUP BY rpt.eventid"
@@ -470,8 +452,9 @@ class JEventsDBModel {
 		// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 		. "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)"		
 		. $extrawhere
-		. "\n AND ev.access <= ".$user->aid
-		. "  AND icsf.state=1 AND icsf.access <= ".$user->aid
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. "  AND icsf.state=1 "
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
 		// published state is now handled by filter
 		. "\n AND rpt.startrepeat=(SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate')"
  		. "\n GROUP BY rpt.eventid "

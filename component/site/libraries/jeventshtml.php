@@ -200,7 +200,7 @@ class JEventsHTML{
 		' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' .
 		' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
 		//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
-		' WHERE c.access<='.$db->Quote(JEVHelper::getAid($user)) ;
+		 "WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 		if (JVersion::isCompatible("1.6.0"))  $catsql .= ' AND c.extension = '.$db->Quote($sectionname);
 		else $catsql .= ' AND c.section = '.$db->Quote($sectionname);
 

@@ -996,8 +996,8 @@ class JEVHelper {
 			. "\n LEFT JOIN #__contact_details AS cd ON cd.user_id = ju.id "
 			. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 			. "\n WHERE block ='0'"
-			. "\n AND cd.access <= " . JEVHelper::getAid($user)
-			. "\n AND cat.access <= " . JEVHelper::getAid($user)
+			. "\n AND cd.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+			. "\n AND cat.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
 			. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
