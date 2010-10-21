@@ -1163,7 +1163,7 @@ class JEVHelper {
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) {
-			JHTML::script( $file, $path);
+			JHTML::script(  $path.$file);
 			/*
 			$document = JFactory::getDocument();
 			if (strpos($path, '/')!==0 && strpos($path, 'http')!==0){
