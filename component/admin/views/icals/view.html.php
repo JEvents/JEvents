@@ -55,7 +55,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JEVHelper::script('editical.js?v=1.6.0','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editical.js','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('Edit ICS'));

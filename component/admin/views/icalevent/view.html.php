@@ -59,7 +59,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JEVHelper::script('editical.js?v=1.5.6',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Event'));
 
