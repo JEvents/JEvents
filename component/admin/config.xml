@@ -366,6 +366,7 @@
 		<fields name="params">
 		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
+					<field 
 					name="target_itemid"
 					type="jevmenu"
 					default=""
