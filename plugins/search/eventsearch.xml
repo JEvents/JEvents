@@ -27,15 +27,15 @@
 					name="search_limit"
 					type="text"
 					default="50"
-					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
 					size="50"
 					description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC" />
 				<field
 					name="date_format"
 					type="text"
 					default="%Y-%m-%d"
-					label="Date Format"
-					description="Format for date in return" />					
+					label="JGLOBAL_DATE_FORMAT_LABEL"
+					description="JGLOBAL_DATE_FORMAT_DESC" />					
 				<field
 					name="target_itemid"
 					type="jevmenu"
