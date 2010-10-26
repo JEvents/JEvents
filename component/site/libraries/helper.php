@@ -1077,7 +1077,6 @@ class JEVHelper {
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
 			$access = JAccess::check($user->id, "core.admin","com_jevents");
-
 			return $access;
 		}
 		else {
@@ -1142,7 +1141,10 @@ class JEVHelper {
 			$user = JFactory::getUser();	
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			return "Super Administrator";
+			$groups = $user->groups;  // RSH 10/17/10 - Get groups, sort them, get the last one, return the value
+			asort($groups); 
+			$last_group = end($groups);
+			return ($last_group == 'Super Users') ? "Super Administrator" : $last_group;
 		}
 		else {
 			return $user->usertype;

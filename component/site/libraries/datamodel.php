@@ -847,7 +847,7 @@ class JEventsDataModel {
 				$catdesc = $catdata->description;
 			}
 			else {
-				$catname = JText::_('JEV_EVENT_ALLCAT');
+				$catname = JText::_('COM_JEVLOCATIONS_ALL_CATEGORIES');
 			}
 		}
 		$data['catname']=$catname;
