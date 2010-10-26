@@ -30,7 +30,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// restrict this list to those accessible by the user
 	if (!is_null($menuitems)){
 		foreach ($menuitems as $index=>$menuitem) {
-			if (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($menuitem->access,JEVHelper::getAid($user)) : JEVHelper::getAid($user)<$menuitem->access){
+			if (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($menuitem->access,JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user)<$menuitem->access){
 				unset($menuitems[$index]);
 			}
 			// also drop admin functions

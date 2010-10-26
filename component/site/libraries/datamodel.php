@@ -837,7 +837,7 @@ class JEventsDataModel {
 			$db	=& JFactory::getDBO();
 			$user =& JFactory::getUser();
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
-			' WHERE c.access<='.$db->Quote(JEVHelper::getAid($user)) .
+			' WHERE c.access<='.$db->Quote(JEVHelper::getAid($user, 'max')) .
 			' AND c.section = '.$db->Quote(JEV_COM_COMPONENT).
 			' AND c.id = '.$db->Quote($catids[0]);
 			$db->setQuery($catsql);
@@ -873,7 +873,7 @@ class JEventsDataModel {
 
 		
 		$user =& JFactory::getUser();
-		$aid =  JEVHelper::getAid($user) ;
+		$aid =  JEVHelper::getAid($user, 'max');   // RSH modified getAid to handle different return types 10/26/10
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
 
@@ -946,7 +946,7 @@ class JEventsDataModel {
 
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user =& JFactory::getUser();
-		$aid = JEVHelper::getAid($user) ;
+		$aid = JEVHelper::getAid($user, 'max');   // RSH modified getAid to handle different return types 10/26/10
 		$Itemid = JEVHelper::getItemid();
 		$user =& JFactory::getUser();
 

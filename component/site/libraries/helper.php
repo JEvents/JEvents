@@ -509,7 +509,7 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user)) : JEVHelper::getAid($user)>=$jevitem->access){
+						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user)>=$jevitem->access){
 							$jevitemid = $jevitem->id;
 
 							if ($forcecheck){								
@@ -563,7 +563,7 @@ class JEVHelper {
 				if (count($jevitems)>0){
 					$user =& JFactory::getUser();
 					foreach ($jevitems as $jevitem) {
-						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user)) : JEVHelper::getAid($user)>=$jevitem->access){
+						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access,JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user)>=$jevitem->access){
 							if (strpos($active->link, "admin.listevents")>0){
 								$jevitemid = $jevitem->id;
 								return $jevitemid;
@@ -1122,13 +1122,22 @@ class JEVHelper {
 		}
 	}
 
-	static  public function getAid($user = null){
+	static  public function getAid($user = null, $type = 'string'){
 		if (is_null($user)) {
 			$user = JFactory::getUser();	
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			$groups	= implode(',', $user->authorisedLevels());
-			return $groups;
+			$levels = $user->authorisedLevels();
+			if ($type == 'string') {
+				return implode(',', $levels);
+			} elseif ($type == 'array') {
+				return $levels;
+			} elseif ($type = 'max')  {
+				return max($levels);
+			} else {
+				// not sure!
+				return false;//  ??
+			}
 		}
 		else {
 			return intval($user->aid);
