@@ -88,7 +88,8 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 			if (JVersion::isCompatible("1.6.0")) {
 				$rules = JAccess::getAssetRules("com_jevents", true);
 				$creatorgroups = $rules->getData();
-				$creatorgroups = $creatorgroups["core.create"]->getData();
+				// need to merge the arrays because of stupid way Joomla checks super user permissions
+				$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
 				$users = array(0);
 				foreach ($creatorgroups as $creatorgroup => $permission){
 					if ($permission==1){

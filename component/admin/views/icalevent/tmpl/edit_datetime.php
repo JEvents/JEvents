@@ -31,7 +31,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 
 ?>
    <div style="clear:both;">
-    <fieldset class="jev_sed"><legend><?php echo JText::_("Start, End, Duration");?></legend>
+    <fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration");?></legend>
     <span>
 		<span ><?php echo JText::_('JEV_EVENT_ALLDAY');?></span>
 		<span><input type="checkbox" id='allDayEvent' name='allDayEvent' <?php echo $this->row->alldayevent()?"checked='checked'":"";?> onclick="toggleAllDayEvent();" />

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -8,7 +9,6 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
@@ -19,67 +19,76 @@ defined('_JEXEC') or die();
  */
 class AdminIcaleventViewIcalevent extends JEventsAbstractView
 {
+
 	function overview($tpl = null)
 	{
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		if (JVersion::isCompatible("1.6.0"))
+			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin.css');
+		else
+			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
-		$document =& JFactory::getDocument();
+		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('ICal Events'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'ICal Events' ), 'jevents' );
+		JToolBarHelper::title(JText::_('ICal Events'), 'jevents');
 
 		//JToolBarHelper::custom('icalevent.csvimport','upload.png','upload.png','JEV_ADMIN_CSVIMPORT',false);
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
 		JToolBarHelper::addNew('icalevent.edit');
 		JToolBarHelper::editList('icalevent.edit');
-		JToolBarHelper::custom('icalevent.editcopy','copy.png','copy.png','JEV_ADMIN_COPYEDIT');
-		JToolBarHelper::deleteList('Delete Event and all repeats?','icalevent.delete');
+		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
+		JToolBarHelper::deleteList('Delete Event and all repeats?', 'icalevent.delete');
 		JToolBarHelper::spacer();
-		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
+		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false);
 		//JToolBarHelper::help( 'screen.ical', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);
 
 		JHTML::_('behavior.tooltip');
+
 	}
 
 	function edit($tpl = null)
 	{
-		$document =& JFactory::getDocument();
-		include(JEV_LIBS."editStrings.php");
+		$document = & JFactory::getDocument();
+		include(JEV_LIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+		JEVHelper::script('editical.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		$document->setTitle(JText::_('Edit ICal Event'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit ICal Event' ), 'jevents' );
+		JToolBarHelper::title(JText::_('Edit ICal Event'), 'jevents');
 
 		$bar = & JToolBar::getInstance('toolbar');
-		if ($this->id>0){
-			if ($this->editCopy){
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save copy warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save copy warning"),'apply','apply','Apply',false);
+		if ($this->id > 0)
+		{
+			if ($this->editCopy)
+			{
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save copy warning"), 'save', 'save', 'Save', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save copy warning"), 'apply', 'apply', 'Apply', false);
 			}
-			else {
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save icalevent warning"),'save','save','Save',false);
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save icalevent warning"),'apply','apply','Apply',false);
+			else
+			{
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save icalevent warning"), 'save', 'save', 'Save', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save icalevent warning"), 'apply', 'apply', 'Apply', false);
 			}
 		}
-		else {
+		else
+		{
 			JToolBarHelper::save('icalevent.save');
-			if (JEVHelper::isEventEditor()) JToolBarHelper::apply('icalevent.apply');
+			if (JEVHelper::isEventEditor())
+				JToolBarHelper::apply('icalevent.apply');
 			//$bar->appendButton( 'Apply',  'apply', "Apply",'icalevent.apply', false, false );
 		}
 
@@ -94,98 +103,142 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JHTML::_('behavior.tooltip');
 
 		$this->setCreatorLookup();
+
 	}
 
 	function csvimport($tpl = null)
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		if (JVersion::isCompatible("1.6.0"))
+			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin.css');
+		else
+			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
-		$document =& JFactory::getDocument();
+		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('CSV Import'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'CSV Import' ), 'jevents' );
+		JToolBarHelper::title(JText::_('CSV Import'), 'jevents');
 
 		JToolBarHelper::cancel('icalevent.list');
 
 		$this->_hideSubmenu();
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);
 
 		JHTML::_('behavior.tooltip');
+
 	}
 
-	protected function setCreatorLookup(){
+	protected function setCreatorLookup()
+	{
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
-		$jevuser	= JEVHelper::getAuthorisedUser();
+		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
-		
-		if (JVersion::isCompatible("1.6.0")){
-			$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		}
-		else {
+		else
+		{
 			// Get an ACL object
-			$acl =& JFactory::getACL();
+			$acl = & JFactory::getACL();
 			$grp = $acl->getAroGroup($user->get('id'));
 			// if no valid group (e.g. anon user) then skip this.
-			if (!$grp) return;
+			if (!$grp)
+				return;
 
 			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
 		}
 
 
 		$db = JFactory::getDBO();
-		if (($jevuser && $jevuser->candeleteall) || $access){
+		if (($jevuser && $jevuser->candeleteall) || $access)
+		{
 
-			if (JVersion::isCompatible("1.6.0")) {
-				$rules = JAccess::getAssetRules("com_jevents", true);
-				$creatorgroups = $rules->getData();
-				$creatorgroups = $creatorgroups["core.create"]->getData();
-				$users = array(0);
-				foreach ($creatorgroups as $creatorgroup => $permission){
-					if ($permission==1){
-						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
-					}
-				}
-				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
-
-			}
-			else {
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$minaccess = $params->getValue("jevcreator_level",19);
-				// get users AUTHORS and above
-				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-				$sql .= " ORDER BY name ASC";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
-			}
-			
-			$userOptions[] = JHTML::_('select.option', '-1','Select User' );
-			foreach( $users as $user )
+			if (JVersion::isCompatible("1.6.0"))
 			{
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name );
+				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				// if authorised only then load from database
+				if ($authorisedonly)
+				{
+					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
+					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+					$sql .= " WHERE tl.cancreate=1";
+					$sql .= " ORDER BY ju.name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
+				else
+				{
+					$rules = JAccess::getAssetRules("com_jevents", true);
+					$creatorgroups = $rules->getData();
+					$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+					$users = array(0);
+					foreach ($creatorgroups as $creatorgroup => $permission)
+					{
+						if ($permission == 1)
+						{
+							$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+						}
+					}
+					$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
 			}
-			$creator = $this->row->created_by()>0?$this->row->created_by():(isset($jevuser)?$jevuser->user_id:0);
+			else
+			{
+				$db = JFactory::getDBO();
+
+				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				// if authorised only then load from database
+				if ($authorisedonly)
+				{
+					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
+					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+					$sql .= " WHERE tl.cancreate=1";
+					$sql .= " ORDER BY ju.name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
+				else
+				{
+					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$minaccess = $params->getValue("jevcreator_level", 19);
+					$sql = "SELECT * FROM #__users where gid>=" . $minaccess;
+					$sql .= " ORDER BY name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
+			}
+
+			$userOptions[] = JHTML::_('select.option', '-1', 'Select User');
+			foreach ($users as $user)
+			{
+				$userOptions[] = JHTML::_('select.option', $user->id, $user->name);
+			}
+			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
 			$userlist = JHTML::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
 
-			$this->assignRef("users",$userlist);
+			$this->assignRef("users", $userlist);
 		}
 
 	}
 
-	function toolbarConfirmButton($task = '',  $msg='',  $icon = '', $iconOver = '', $alt = '', $listSelect = true){
-		include_once(JEV_ADMINPATH."libraries/jevbuttons.php");
+	function toolbarConfirmButton($task = '', $msg='', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
+	{
+		include_once(JEV_ADMINPATH . "libraries/jevbuttons.php");
 		$bar = & JToolBar::getInstance('toolbar');
 
 		// Add a standard button
-		$bar->appendButton( 'Jevconfirm', $msg, $icon, $alt, $task, $listSelect ,false,"document.adminForm.updaterepeats.value" );
+		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
 
 	}
 
