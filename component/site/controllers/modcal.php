@@ -156,7 +156,7 @@ class ModCalController extends JController   {
 		$jevents_config		= & JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
-		$this->aid			= JEVHelper::getAid($user, 'max');   // RSH modified getAid to handle different return types 10/26/10
+		$this->aid			= JEVHelper::getAid($user, 'string');   // RSH modified getAid to handle different return types 10/26/10
 		$tmplang			=& JFactory::getLanguage();
 
 		// get params exclusive to module
