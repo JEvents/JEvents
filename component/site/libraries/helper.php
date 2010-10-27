@@ -648,7 +648,8 @@ class JEVHelper {
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
-						$isEventCreator = JAccess::check($user->id, "core.create","com_jevents");
+						$juser =& JFactory::getUser();
+						$isEventCreator = JAccess::check($juser->id, "core.create","com_jevents");
 					}
 					else {
 						$creatorlevel = $params->get("jevcreator_level",20);

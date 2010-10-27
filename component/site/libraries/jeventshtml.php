@@ -58,7 +58,7 @@ class JEventsHTML{
 		$day_name[0] = '<span class="sunday">' .   $day_name[0] . '</span>';
 		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
 
-		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('COM_JEVLOCATIONS_BY_DAY_NUMBER') . '<br />' );
+		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />' );
 
 		for( $a=0; $a<7; $a++ ){
 			$name_of_day	= '&nbsp;' . $day_name[$a]; //getDayName($a);
@@ -121,16 +121,16 @@ class JEventsHTML{
 
 		$cfg = & JEVConfig::getInstance();
 
-		$viewlist[] = JHTML::_('select.option', 'day.listevents', 		JText::_('COM_JEVLOCATIONS_VIEW_BY_DAY') );
-		$viewlist[] = JHTML::_('select.option', 'week.listevents', 	JText::_('COM_JEVLOCATIONS_VIEW_BY_WEEK') );
-		$viewlist[] = JHTML::_('select.option', 'month.calendar', 	JText::_('COM_JEVLOCATIONS_VIEW_BY_MONTH') );
-		$viewlist[] = JHTML::_('select.option', 'year.listevents', 	JText::_('COM_JEVLOCATIONS_VIEW_BY_YEAR') );
+		$viewlist[] = JHTML::_('select.option', 'day.listevents', 		JText::_('JEV_VIEWBYDAY') );
+		$viewlist[] = JHTML::_('select.option', 'week.listevents', 	JText::_('JEV_VIEWBYWEEK') );
+		$viewlist[] = JHTML::_('select.option', 'month.calendar', 	JText::_('JEV_VIEWBYMONTH') );
+		$viewlist[] = JHTML::_('select.option', 'year.listevents', 	JText::_('JEV_VIEWBYYEAR') );
 
 		if ($cfg->get('com_hideshowbycats', 0) == '0') {
-			$viewlist[] = JHTML::_('select.option', 'cat.listevents', JText::_('COM_JEVLOCATIONS_VIEW_BY_CATEGORY') );
+			$viewlist[] = JHTML::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT') );
 		}
 
-		$viewlist[] = JHTML::_('select.option', 'search.form', 	JText::_('COM_JEVLOCATIONS_SEARCH_TITLE') );
+		$viewlist[] = JHTML::_('select.option', 'search.form', 	JText::_('JEV_SEARCH_TITLE') );
 
 		$tosend = JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype );
 		echo $tosend;
@@ -179,7 +179,7 @@ class JEventsHTML{
 
 		if (JVersion::isCompatible("1.6.0")){
 			ob_start();
-			$t_first_entry = ($require_sel) ? JText::_('COM_JEVLOCATIONS_EVENT_CHOOSE_CATEGORY') : JText::_('COM_JEVLOCATIONS_ALL_CATEGORIES');
+			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >
 				<option value=""><?php echo $t_first_entry;?></option>
@@ -265,14 +265,14 @@ class JEventsHTML{
 		}
 		JArrayHelper::sortObjects($rows,"ordering");
 
-		$t_first_entry = ($require_sel) ? JText::_('COM_JEVLOCATIONS_EVENT_CHOOSE_CATEGORY') : JText::_('COM_JEVLOCATIONS_ALL_CATEGORIES');
-		//$categories[] = JHTML::_('select.option', '0', JText::_('COM_JEVLOCATIONS_EVENT_CHOOSE_CATEGORY'), 'id', 'name' );
+		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
+		//$categories[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_CATEG'), 'id', 'name' );
 		$categories[] = JHTML::_('select.option', '0', $t_first_entry, 'id', 'name' );
 
 
 		if ($with_unpublished) {
 			for ($i=0;$i<count($rows);$i++) {
-				if ($rows[$i]->published == 0) $rows[$i]->name = $rows[$i]->name . '('. JText::_('COM_JEVLOCATIONS_NOT_PUBLISHED') . ')';
+				if ($rows[$i]->published == 0) $rows[$i]->name = $rows[$i]->name . '('. JText::_('JEV_NOT_PUBLISHED') . ')';
 			}
 		}
 
@@ -317,11 +317,11 @@ class JEventsHTML{
 
 	function buildWeeksCheck( $reccurweeks, $args , $name="reccurweeks"){
 		$week_name = array( '',
-		JText::_('COM_JEVLOCATIONS_REPEAT_WEEK') . ' 1 ',
-		JText::_('COM_JEVLOCATIONS_REPEAT_WEEK') . ' 2 ',
-		JText::_('COM_JEVLOCATIONS_REPEAT_WEEK') . ' 3 ',
-		JText::_('COM_JEVLOCATIONS_REPEAT_WEEK') . ' 4 ',
-		JText::_('COM_JEVLOCATIONS_REPEAT_WEEK') . ' 5 '
+		JText::_('JEV_REP_WEEK') . ' 1 ',
+		JText::_('JEV_REP_WEEK') . ' 2 ',
+		JText::_('JEV_REP_WEEK') . ' 3 ',
+		JText::_('JEV_REP_WEEK') . ' 4 ',
+		JText::_('JEV_REP_WEEK') . ' 5 '
 		);
 		$tosend		= '';
 		$checked	= '';
@@ -383,11 +383,11 @@ class JEventsHTML{
 				if( $userdet ){
 					if( isset($userdet->slug) && $userdet->slug  &&  $agenda_viewmail == '1' ){
 						$contactlink = JRoute::_('index.php?option=com_contact&view=contact&id='.$userdet->slug.'&catid='.$userdet->catslug);
-						$contactlink = '<a href="' . $contactlink. '" title="' . JText::_('COM_JEVLOCATIONS_EMAIL_TO_AUTHOR') . '">'. $userdet->contactname . '</a>';
+						$contactlink = '<a href="' . $contactlink. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'. $userdet->contactname . '</a>';
 					}
 					else if(  $userdet->email && $agenda_viewmail == '1' ){
 						//$contactlink = '<a href="mailto:' . $userdet->email
-						//. '" title="' . JText::_('COM_JEVLOCATIONS_EMAIL_TO_AUTHOR') . '">'
+						//. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'
 						//. $userdet->username . '</a>';
 						$contactlink = JHTML::_('email.cloak',$userdet->email, 1, $userdet->username, 0);
 					}else{
@@ -550,7 +550,7 @@ class JEventsHTML{
 
 		// if date format is from langauge file then do this first
 		if( $format_type == 3 ){
-			return JEV_CommonFunctions::jev_strftime(JText::_("COM_JEVLOCATIONS_DATE_FORMAT" . '_' . $type),$datestp);
+			return JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_".$type),$datestp);
 		}
 
 		switch( $type ){
