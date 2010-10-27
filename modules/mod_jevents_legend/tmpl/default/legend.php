@@ -46,7 +46,7 @@ class DefaultModLegendView {
 		$menu =& JApplication::getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem->component == JEV_COM_COMPONENT){
-			$this->myTask=$menuItem->query["task"] ;
+			$this->myTask=isset($menuItem->query["task"])?$menuItem->query["task"]:($menuItem->query["view"].".".$menuItem->query["layout"]) ;
 		}
 		else {
 			$this->myTask="month.calendar";
