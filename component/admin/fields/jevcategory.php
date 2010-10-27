@@ -1,6 +1,7 @@
 <?php
+
 /**
- * JEvents Locations Component for Joomla 1.5.x
+ * JEvents Component for Joomla 1.5.x
  *
  * @version     $Id$
  * @package     JEvents
@@ -8,47 +9,84 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die();
 
-
-defined('JPATH_BASE') or die;
-
-jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
 
-/**
- * JevCategory Field class for the JEvents Component
- *
- */
-class JFormFieldJEvCategory extends JFormFieldList
+class JFormFieldJevcategory extends JFormFieldList
 {
 
-	protected $type = 'JEvCategory';
+	protected $type = 'Jevcategory';
 
-	public function getOptions()
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return	array	The field option objects.
+	 * @since	1.6
+	 */
+	protected function getOptions()
 	{
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevcategory.php';
-		if (file_exists($file) ) {
-			include_once($file);
-		} else {
-			die ("JEvents Locations Fields\n<br />This module needs the JEvents Locations component");
-		}		
+		// Initialize variables.
+		$session = JFactory::getSession();
+		$options = array();
 
-		$results = JElementJevcategory::fetchElement($this->name, $this->value, $this->element, $this->type, true);  // RSH 10/4/10 - Use the original code for J!1.6
-		
-		$options = array(); //new stdClass();
-		$i = 0;
-		foreach ($results AS $result)
+		// Initialize some field attributes.
+		$extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) $this->element['scope'];
+		$published = (string) $this->element['published'];
+
+		// Load the category options for a given extension.
+		if (!empty($extension))
 		{
-			$options[$i] = new stdClass; //
-			$options[$i]->value = $result->id;
-			$options[$i]->text = $result->ctitle;
-			$i++;
+
+			// Filter over published state or not depending upon if it is present.
+			if ($published)
+			{
+				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+			}
+			else
+			{
+				$options = JHtml::_('category.options', $extension);
+			}
+
+			// Verify permissions.  If the action attribute is set, then we scan the options.
+			if ($action = (string) $this->element['action'])
+			{
+
+				// Get the current user object.
+				$user = JFactory::getUser();
+
+				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
+				// eg JAccess::preload('core.create', 'com_content.category')
+				foreach ($options as $i => $option)
+				{
+					// Unset the option if the user isn't authorised for it.
+					if (!$user->authorise($action, $extension . '.category.' . $option->value))
+					{
+						unset($options[$i]);
+					}
+				}
+			}
+
+			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_('Select Category') . ' -'));
 		}
-		
-		array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_('Select Category') . ' -'));
-		
+		else
+		{
+			JError::raiseWarning(500, JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'));
+		}
+
+		// if no value exists, try to load a selected filter category from the list view
+		if (!$this->value && ($this->form instanceof JForm))
+		{
+			$context = $this->form->getName();
+			$this->value = $session->get($context . '.filter.category_id', $this->value);
+		}
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
 		return $options;
+
 	}
+
 }
