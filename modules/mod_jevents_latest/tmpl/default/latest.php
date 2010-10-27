@@ -829,7 +829,7 @@ class DefaultModLatestView
 		$menu =& JApplication::getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT){
-			$task=$menuItem->query["task"] ;
+			$task=isset($menuItem->query["task"])?$menuItem->query["task"]:($menuItem->query["view"].".".$menuItem->query["layout"]) ;
 		}
 		else {
 			$task="month.calendar";

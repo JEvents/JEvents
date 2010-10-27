@@ -67,7 +67,7 @@
 		</param>
 		<param name="modlatest_CustFmtStr" type="textarea" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
 		<param name="modlatest_MaxEvents" type="text" size="3" default="10" label="Maximum Events to Display" description="Maximum number of events to display in the module(max 150)" />
-		<param name="modlatest_Mode" type="radio" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
+		<param name="modlatest_Mode" type="list" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
 			<option value="0">0</option>
 			<option value="1">1</option>
 			<option value="2">2</option>
@@ -128,4 +128,122 @@
 		<param name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>    	
 		<!--<param name="target_itemid" type="text" default="" label="Target Menu Itemid" description="Menu itemid for target page" />//-->
 	</params>
+
+		<config>
+		<fields name="params">
+			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="@spacer" type="jevinfo" default="JEV PARAMS"   label="" description="" />
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="catid0" type="jevcategory" default="0"   scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
+				<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid5" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid6" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid7" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+				<field name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />
+				<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="ignorecatfilter" type="radio" default="0" label="Lock category filters" description="Module will always show events from the categories selected above even if the page view is filtered by category selection">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="ignorefiltermodule" type="radio" default="0" label="Ignore Jevents Filter Module" description="Module will ignore any filter values set in Jevents Filter Module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
+				<field name="modlatest_inccss" type="radio" default="1" label="Include Events Latest CSS" description="Tells the module if the module Events Latest CSS should be included or not.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="modlatest_useLocalParam" type="radio" default="0" label="Use Settings" description="Use settings defined global in Component or defined here">
+					<option value="0">Use Component Settings</option>
+					<option value="1">Use Settings Below</option>
+				</field>
+				<field name="modlatest_CustFmtStr" type="textarea" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
+				<field name="modlatest_MaxEvents" type="text" size="3" default="10" label="Maximum Events to Display" description="Maximum number of events to display in the module(max 150)" />
+				<field name="modlatest_Mode" type="list" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+				<field name="modlatest_Days" type="text" default="30" size="2" label="Display Events the of the next ? days(modes 2 or 3 only)" description="range of days relative to current day to display events for mode 2 or 3." />
+				<field name="startnow" type="radio" default="0" label="START NOW" description="START NOW DESC">
+					<option value="0">No</option>`
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_NoRepeat" type="radio" default="0" label="Display a Repeating Event Once" description="display any event which has a repeat type only once in the latest events output.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_DispLinks" type="radio" default="1" label="Display Events As Links" description="display event titles as links to the view_detail com_jevents task which will display details of the event">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_DispYear" type="radio" default="0" label="Display the Year in the Events Date (default format only)" description="Display the Year in the Events Date (default format only)" >
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_DisDateStyle" type="radio" default="0" label="Disable default CSS Date Field Style" description="do not apply the default mod_events_latest_date css class to the date field">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_DisTitleStyle" type="radio" default="0" label="Disable default CSS Title Field Style" description="do not apply the default mod_events_latest_content  css class to the title field">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_LinkToCal" type="radio" default="0" label="Display link to the Calendar Component" description="Generates a link to the Calendar Component. Current category restrictions are passed as parameters">
+					<option value="0">No</option>
+					<option value="1">First line</option>
+					<option value="2">Last line</option>
+				</field>
+				<field name="modlatest_LinkCloaking" type="radio" default="0" label="Hide Links" description="If set to YES, links are set dynamically by the javascript &lt;b&gt;onclick&lt;/b&gt; event. This prevents search enginges to follow the links">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_SortReverse" type="radio" default="0" label="Sort Reverse" description="If set to YES, Events are sorted reverse order(newest first)">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_RSS" type="radio" default="0" label="Display RSS link" description="Generate a link to subscribe a RSS feed">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_rss_title" type="textarea" cols="50" rows="1"
+					default=""
+					label="RSS Title"
+					description="RSS Title. Default is set by the components RSS setting" />
+				<field name="modlatest_rss_description" type="textarea" cols="50" rows="2"
+					default=""
+					label="RSS description"
+					description="RSS description. Default is set by the components RSS setting" />
+				<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>
+
+			</fieldset>
+		</fields>
+		</config>
 </install>

@@ -31,13 +31,12 @@ class modJeventsLatestHelper
 	}
 
 	function getViewClass($theme, $module, $layout, $params=false){
-		global $mainframe;
 
 		// If we have a specified over ride then use it here
 		if ($params && strlen($params->get("layout",""))>0){
 			$speciallayout = strtolower($params->get("layout",""));
 			// Build the template and base path for the layout
-			$tPath = JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.$module.DS.$theme.DS.$speciallayout.'.php';
+			$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$theme.DS.$speciallayout.'.php';
 
 			// If the template has a layout override use it
 			if (file_exists($tPath)) {
@@ -49,7 +48,7 @@ class modJeventsLatestHelper
 			}
 		}
 		// Build the template and base path for the layout
-		$tPath = JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
+		$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
 		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
 
 		// If the template has a layout override use it
