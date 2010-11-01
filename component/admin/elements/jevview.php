@@ -31,6 +31,8 @@ class JElementJevview extends JElement
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$views = array();
+		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
+
 		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
