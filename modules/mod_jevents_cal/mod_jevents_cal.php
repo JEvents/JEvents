@@ -25,8 +25,24 @@ $registry->setValue("jevents.activeprocess","mod_jevents_cal");
 $registry->setValue("jevents.moduleid", $module->id);
 $registry->setValue("jevents.moduleparams", $params);
 
+// See http://www.php.net/manual/en/timezones.php
+$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$tz=$compparams->get("icaltimezonelive","");
+if ($tz!="" && is_callable("date_default_timezone_set")){
+	$timezone= date_default_timezone_get();
+	//echo "timezone is ".$timezone."<br/>";
+	date_default_timezone_set($tz);
+	$registry->setValue("jevents.timezone",$timezone);
+}
+
+
 $theme = JEV_CommonFunctions::getJEventsViewName();
 require_once(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.DS."calendar"));
 $viewclass = ucfirst($theme)."ModCalView";
 $modview = new $viewclass($params, $module->id);
 echo $modview->getCal();
+
+// Must reset the timezone back!!
+if ($tz && is_callable("date_default_timezone_set")){
+	date_default_timezone_set($timezone);
+}
