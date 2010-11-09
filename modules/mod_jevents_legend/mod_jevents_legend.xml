@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
     <name>JEvents Legend</name>
-	<creationDate>August 2010</creationDate>
+	<creationDate>October 2010</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2010 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>	  
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>1.5.5 b1844</version>
+	<version>1.5.5 b1880</version>
     <description>Shows legend for JEvents categories</description>
     <files>
       	<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>
@@ -48,5 +48,13 @@
 		<param name="catid9" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
 		<param name="catid10" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />	
 	
+
+	<param name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</param>
+
     </params>
+
+
   </install>

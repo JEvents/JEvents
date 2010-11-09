@@ -26,7 +26,7 @@ class DefaultModLegendView {
 		return "default";
 	}
 
-	function DefaultModLegendView(&$params=null, $modid){
+	function __construct(&$params=null, $modid){
 
 		$this->_modid = $modid;
 
@@ -52,6 +52,13 @@ class DefaultModLegendView {
 			$this->myTask="month.calendar";
 		}
 
+		static $css;
+
+		if (!isset($css) && $params->get("hideinactivekids",1)){
+			$document = JFactory::getDocument();
+			$document->addStyleDeclaration(".childcat {display:none:}");
+			$css = 1;
+	}
 
 	}
 
@@ -195,14 +202,14 @@ class DefaultModLegendView {
 		$sectionname = JEV_COM_COMPONENT;
 
 		// Get all the categories
-		$query = "SELECT * FROM #__categories AS c LEFT JOIN #__jevents_categories as j ON j.id=c.id"
+		$query = "SELECT c.id as cid, j.id as jid, c.*, j.* FROM #__categories AS c LEFT JOIN #__jevents_categories as j ON j.id=c.id"
 		. "\n WHERE c.access <= $aid"
 		. "\n AND c.published = 1"
 		. "\n AND c.section = '".$sectionname."'"
 		. "\n ORDER BY c.title"
 		;
 		$db->setQuery($query);
-		$catlist =  $db->loadObjectList('id');
+		$catlist =  $db->loadObjectList('cid');
 
 		// any plugin based resitrictions
 		$dispatcher	=& JDispatcher::getInstance();
