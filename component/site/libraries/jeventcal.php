@@ -116,6 +116,7 @@ class jEventCal {
 	function color_bar() { return $this->_color_bar; }
 	function catid() { return $this->_catid; }
 	function created_by() { return $this->_created_by; }
+	function created_by_alias() { return $this->_created_by_alias; }
 	function created() { return $this->_created; }
 	
 	function formattedCreationDate() { return $this->_created; }

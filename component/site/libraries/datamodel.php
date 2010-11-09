@@ -418,7 +418,7 @@ class JEventsDataModel {
 			$data["months"][$month]["rows"] = array();
 			for( $r = 0; $r < $num_events; $r++ ) {
 				$row =& $rows[$r];
-				if ($month == $row->mup() && $row->yup()==$year){
+				if (($month == $row->mup() && $row->yup()==$year) || ($month==1 && $row->yup()<$year)){
 					$count = count($data["months"][$month]["rows"]);
 					$data["months"][$month]["rows"][$count] = $row;
 				}

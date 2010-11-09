@@ -6,6 +6,11 @@
 		<options var="layout" >
 			<option value='calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE" msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC" />
 		</options>
+		<!--
+		<options var="layout" >
+			<option value='calendar' name="Monthly Calendar" msg="Tabular calendar view by month" />
+		</options>
+		//-->
 		<options var="task" >
 			<option value='month.calendar' name="COM_JEVENTS_MONTH_VIEW_DEFAULT_TITLE" msg="COM_JEVENTS_MONTH_VIEW_DEFAULT_DESC" />
 		</options>

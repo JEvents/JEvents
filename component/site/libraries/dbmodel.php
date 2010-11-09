@@ -645,11 +645,19 @@ class JEventsDBModel {
 			echo $db->getErrorMsg();
 		}
 		$icalcount = count($icalrows);
+		$valid = true;
 		for( $i = 0; $i < $icalcount ; $i++ ){
+			// only convert rows when necessary
+			if ($i==0 && count(get_object_vars($icalrows[$i]))<5) {
+				$valid = false;
+				break;
+			}
 			// convert rows to jIcalEvents
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 
+		if (!$valid) return $icalrows;
+		
 		$dispatcher =& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFieldsMultiRow', array( &$icalrows ));
 
@@ -792,7 +800,7 @@ class JEventsDBModel {
 
 		$cache=& JFactory::getCache(JEV_COM_COMPONENT);
 
-		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag );
+		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag, $count );
 
 		$dispatcher =& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFieldsMultiRowUncached', array( &$rows ));
@@ -891,7 +899,7 @@ class JEventsDBModel {
 
 		$cache=& JFactory::getCache(JEV_COM_COMPONENT);
 		
-		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag );
+		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag, $count );
 
 		$dispatcher =& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFieldsMultiRowUncached', array( &$rows ));
@@ -1669,12 +1677,12 @@ class JEventsDBModel {
 			// replace the ### placeholder with the keyword
 			$extraor = str_replace("###",$keyword,$extraor);
 
-			$searchpart =( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' $extraor)\n" :
-		" (MATCH (det.summary, det.description) AGAINST ('$keyword' IN BOOLEAN MODE) $extraor)\n";
+			$searchpart =( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' OR det.extra_info RLIKE '$keyword' $extraor)\n" :
+			" (MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE) $extraor)\n";
 		}
 		else {
-			$searchpart =( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword')\n" :
-		"MATCH (det.summary, det.description) AGAINST ('$keyword' IN BOOLEAN MODE)\n";
+			$searchpart =( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword'  OR det.extra_info RLIKE '$keyword')\n" :
+			"MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE)\n";
 		}
 
 		// Now Search Icals

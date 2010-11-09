@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewDatecellAddEvent($view, $year, $month, $day){
-    if ($view->is_event_creator){
+	if (JEVHelper::isEventCreator()){
     	$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
     	. '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day. '&Itemid=' . $view->Itemid, true);
     	 $eventlinkadd = $view->popup?"javascript:jevEditPopup('".$editLink."',$view->popupw, $view->popuph);":$editLink;

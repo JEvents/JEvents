@@ -90,8 +90,11 @@ function DefaultViewHelperHeader($view){
 		. $view->datamodel->getCatidsOutLink()
 		;
 		$link =JRoute::_($link);
-		if (strpos($link,"/")===0) $link = substr($link,1);
-		$link = JURI::root().$link;
+		//if (strpos($link,"/")===0) $link = substr($link,1);
+		$uri	        =& JURI::getInstance(JURI::base());
+		$root = $uri->toString( array('scheme', 'host', 'port') );
+
+		$link = $root.$link;
 
 		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link ));
 

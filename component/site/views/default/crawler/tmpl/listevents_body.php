@@ -15,7 +15,7 @@ if( $num_events > 0 ){
 		?>
 		<a class="ev_link_row" href="<?php echo $rowlink; ?>"  title="<?php echo JEventsHTML::special($row->title()) ;?>"><?php echo $row->title() ;?></a>
 		<br/>
-		<?
+		<?php
 	}
 }
 // Create the pagination object

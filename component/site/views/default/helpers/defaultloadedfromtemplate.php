@@ -28,10 +28,15 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$rowlink = JRoute::_($rowlink.$view->datamodel->getCatidsOutLink());
 	ob_start();
 	?>
-	<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()) ;?>"><?php echo $event->title() ;?></a>
+	<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()) ;?>">
 	<?php
+	$linkstart = ob_get_clean();
 
-	$search[]="{{TITLE_LINK}}";$replace[]=ob_get_clean();$blank[]="";
+	$search[]="{{LINKSTART}}";$replace[]=$linkstart;$blank[]="";
+	$search[]="{{LINKEND}}";$replace[]="</a>";$blank[]="";
+
+	$fulllink = $linkstart . $event->title() .'</a>';
+	$search[]="{{TITLE_LINK}}";$replace[]=$fulllink;$blank[]="";
 
 	$search[]="{{URL}}";$replace[]=$event->url();$blank[]="";
 
@@ -105,7 +110,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	
 	if ($template_name=="icalevent.detail_body"){
 		$search[]="{{REPEATSUMMARY}}";$replace[]=$event->repeatSummary();$blank[]="";
-/*
+		
 		$row = $event;
 		$start_date	= JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
 		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
@@ -115,7 +120,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
 		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
 		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
-*/
+
 	}
 	else {
 		// these would slow things down if not needed in the list
@@ -124,6 +129,16 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 			$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
 		}
 		if ($dorepeatsummary){
+
+		$row = $event;
+		$start_date	= JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
+		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
+		$stop_date	= JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn(), 0 );
+		$stop_time	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
+		$search[]="{{STARTDATE}}";$replace[]=$start_date;$blank[]="";
+		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
+		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
+		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
 
 			// I would this in case we do a full repeat summary
 			/*
@@ -292,6 +307,10 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	}
 	
 	$template_value =  str_replace($search,$replace,$template_value);
+
+	// non greedy replacement - because of the ?
+	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
+
 	echo $template_value;
 	return true;
 }
@@ -309,6 +328,13 @@ function cleanLabels($matches){
 		return "";
 	}
 	return "";
+}
+
+function cleanUnpublished($matches){
+	if (count($matches)==1){
+		return "";
+	}
+	return $matches;
 }
 
 function jevSpecialHandling($matches){

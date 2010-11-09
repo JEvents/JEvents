@@ -32,7 +32,7 @@ class ExtViewNavTableBarIconic {
     			<tr>
     		<!-- BEGIN add_event -->
     		<!--//
-    				<?php if ($view->is_event_creator){ 
+    				<?php if (JEVHelper::isEventCreator()){
     					list($year,$month,$day) = JEVHelper::getYMD();       
     					$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day. '&Itemid=' . $view->Itemid, true);
             			$eventlinkadd = $view->popup?"javascript:jevEditPopup('".$editLink."',$view->popupw, $view->popuph);":$editLink;

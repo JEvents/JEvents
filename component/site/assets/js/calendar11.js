@@ -115,7 +115,7 @@ var NewCalendar = new Class({
 			cal.el.addClass(this.classes.calendar);
 
 			// create cal button
-			cal.button.addClass(this.classes.calendar).addEvent('click', function(cal) { this.toggle(cal); }.pass(cal, this)).injectAfter(cal.el);
+			cal.button.addClass(this.classes.calendar).addEvent('click', function(cal) { this.toggle(cal);return false; }.pass(cal, this)).injectAfter(cal.el);
 
 			// read in default value
 			cal.val = this.read(cal);
