@@ -107,3 +107,6 @@ echo $modview->displayLatestEvents();
 if ($tz && is_callable("date_default_timezone_set")){
 	date_default_timezone_set($timezone);
 }
+
+$dispatcher	=& JDispatcher::getInstance();
+$dispatcher->trigger( 'onJEventsLatestFooter');

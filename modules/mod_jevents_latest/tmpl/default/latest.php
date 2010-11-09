@@ -197,6 +197,18 @@ class DefaultModLatestView
 				break;
 
 			case 2:
+				if ($this->startNow){
+					$beginDate =  $t_datenowSQL;
+					// end of today + $days
+					$endDate = date('Y-m-d', mktime(0,0,0,$this->now_m,$this->now_d + $this->rangeDays, $this->now_Y))." 23:59:59";
+				}
+				else {
+					// begin of today - $days
+					$beginDate = date('Y-m-d', mktime(0,0,0,$this->now_m,$this->now_d , $this->now_Y))." 00:00:00";
+					// end of today + $days
+					$endDate = date('Y-m-d', mktime(0,0,0,$this->now_m,$this->now_d + $this->rangeDays, $this->now_Y))." 23:59:59";
+				}
+				break;
 			case 3:
 			case 5:
 				// begin of today - $days
@@ -214,8 +226,8 @@ class DefaultModLatestView
 				break;
 		}
 
-		$periodStart=substr($beginDate,0,10);
-		$periodEnd=substr($endDate,0,10);
+		$periodStart=$beginDate;//substr($beginDate,0,10);
+		$periodEnd=$endDate;//substr($endDate,0,10);
 
 		$reg =& JFactory::getConfig();
 		$reg->setValue("jev.modparams",$this->modparams);
@@ -837,3 +849,6 @@ class DefaultModLatestView
 		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=".JEV_COM_COMPONENT .  "&Itemid=". $this->myItemid ."&task=".$task. $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
 	}
 } // end of class
+
+
+
