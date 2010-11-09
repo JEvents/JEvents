@@ -126,7 +126,13 @@ class AdminUserModelUser extends JModel
 		// fix the calendars and categories fields
 		if ($data['calendars']=='select') $data['calendars']=array();
 		if ($data['categories']=='select') $data['categories']=array();
-		return $user->save($data);
+		$success =  $user->save($data);
+		if ($success){
+			JPluginHelper::importPlugin("jevents");
+			$dispatcher	=& JDispatcher::getInstance();
+			$set = $dispatcher->trigger('afterSaveUser', array ($user));
+	}
+		return $success;
 	}
 	
 	function gettotal(){

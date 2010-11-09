@@ -53,6 +53,7 @@ foreach ($jevplugins as $jevplugin){
 			$lang = JFactory::getLanguage();
 			$lang->load("plg_jevents_".$jevplugin->name,JPATH_ADMINISTRATOR);
 			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"));
+			if (!isset($fieldNameArray['labels'])) continue;
 			?>
 			optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , '<?php echo $fieldNameArray["group"];?>');
 			<?php

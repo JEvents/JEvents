@@ -84,23 +84,30 @@ class TableUser extends JTable
 	}
 
 	function getUsers($ids=array()){
-		$where = "";
+
+		$where = array();
+		$join = array();
 		if (is_array($ids)){
 			if (count($ids)>0){
 				JArrayHelper::toInteger($ids);
 				$idstring = implode(",",$ids);
-				$where = "WHERE tl.id in ($idstring)";
+				$where[] = " tl.id in ($idstring)";
 			}
 		}
 		else {
 			$idsstring = intval($ids);
-			$where = "WHERE tl.id in ($idstring)";
+			$where[] = "tl.id in ($idstring)";
 		}
+
+		JPluginHelper::importPlugin("jevents");
+		$dispatcher	=& JDispatcher::getInstance();
+		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
 		$db =& JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-		$sql .= $where;
+		$sql .= count($join)>0?implode(" ",$join):"";
+		$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
 
 		$db->setQuery( $sql	);
 		$users = $db->loadObjectList('id');
@@ -120,7 +127,8 @@ class TableUser extends JTable
 
 			$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 			$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-			$sql .= $where;
+			$sql .= count($join)>0?implode(" ",$join):"";
+			$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
 			$sql .= " LIMIT $limitstart, $limit";
 
 			$db->setQuery( $sql	);
@@ -138,9 +146,18 @@ class TableUser extends JTable
 	}
 
 	function getUserCount() {
+
+		JPluginHelper::importPlugin("jevents");
+		$dispatcher	=& JDispatcher::getInstance();
+		$where = array();
+		$join = array();
+		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+
 		$db =& JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+		$sql .= count($join)>0?implode(" ",$join):"";
+		$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
 
 		$db->setQuery( $sql	);
 		$users = $db->loadObjectList('id');
@@ -158,10 +175,20 @@ class TableUser extends JTable
 		else {
 			$userids = intval($userid);
 		}
+
+		JPluginHelper::importPlugin("jevents");
+		$dispatcher	=& JDispatcher::getInstance();
+		$where = array();
+		$join = array();
+		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+
 		$db =& JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+		$sql .= count($join)>0?implode(" ",$join):"";
 		$sql .= " WHERE ju.id IN ( ".$userids." )";
+		$sql .= count($where)>0?" AND ".implode(" AND ",$where):"";
+
 		$db->setQuery( $sql	);
 		$users = $db->loadObjectList($index);
 		echo $db->getErrorMsg();
@@ -239,10 +266,10 @@ class TableUser extends JTable
 		$this->eventslimit = 0;
 		$this->extraslimit = 0;
 	}
-	
+
 	function bind($array, $ignore = '') {
 		$success = parent::bind($array, $ignore);
-		
+
 		if (key_exists('categories', $array)) {
 			if($array['categories']=='all' || $array['categories']=='none') $this->categories = $array['categories'];
 			else if (is_array($array['categories'])){
