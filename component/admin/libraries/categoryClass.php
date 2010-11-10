@@ -94,6 +94,13 @@ class JEventsCategory extends JTableCategory {
 			if ($this->_catextra->admin>0){
 				$catuser = new JUser();
 				$catuser->load($this->_catextra->admin);
+				// fix deleted admin users
+				if ($catuser->username == ""){
+					$db = JFactory::getDBO();
+					$db->setQuery("UPDATE #__jevents_categories SET admin=0 WHERE admin=".$this->_catextra->admin);
+					$db->query();
+					return "";
+				}
 				return $catuser->username;
 			}
 		}
