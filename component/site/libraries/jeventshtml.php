@@ -220,6 +220,9 @@ class JEventsHTML{
 		//echo $db->_sql;
 		$rows = $db->loadObjectList('id');
 
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onGetCategoryData', array (& $rows));
+
 		foreach ($rows as $key=>$option) {
 			if (JVersion::isCompatible("1.6.0") && $option->pid==1){
 				$option->pid=0;

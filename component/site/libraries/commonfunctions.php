@@ -94,6 +94,10 @@ class JEV_CommonFunctions {
 				$db->setQuery( $sql);
 				$cats = $db->loadObjectList('id');
 			}
+
+			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher->trigger('onGetCategoryData', array (& $cats));
+
 		}
 		return $cats;
 	}
