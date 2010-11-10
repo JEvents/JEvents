@@ -14,6 +14,7 @@ defined('_JEXEC') or die();
 $option = JEV_COM_COMPONENT;
 $user =& JFactory::getUser();
 $db =& JFactory::getDBO();
+$pathIMG = JURI::root() . 'administrator/images/';
 
 if( isset( $this->message) &&  $this->message != null ) {?>
 <div class="message"><?php echo $this->message;?></div>
@@ -78,7 +79,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->published?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->published>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -91,7 +92,7 @@ $url = JRoute::_("index.php?option=".$option);
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
-		
+
      <?php
 		if (JVersion::isCompatible("1.6.0")) {
 			$img =  $row->cancreate?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
@@ -100,7 +101,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->cancreate?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->cancreate>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -113,9 +114,9 @@ $url = JRoute::_("index.php?option=".$option);
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
-     
+
      <td align="center"><?php echo $row->eventslimit;?></td>
-     
+
      <?php
 		if (JVersion::isCompatible("1.6.0")) {
 			$img =  $row->canpublishown?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
@@ -124,7 +125,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->canpublishown?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->canpublishown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -137,7 +138,7 @@ $url = JRoute::_("index.php?option=".$option);
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
-     
+
 		<?php
 		if (JVersion::isCompatible("1.6.0")) {
 			$img =  $row->candeleteown?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
@@ -146,7 +147,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->candeleteown?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->candeleteown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -168,7 +169,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->canedit?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->canedit>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -190,7 +191,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->canpublishall?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->canpublishall>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -203,7 +204,7 @@ $url = JRoute::_("index.php?option=".$option);
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
-     
+
      <?php
 		if (JVersion::isCompatible("1.6.0")) {
 			$img =  $row->candeleteall?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
@@ -212,7 +213,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->candeleteall?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->candeleteall>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -225,16 +226,16 @@ $url = JRoute::_("index.php?option=".$option);
 		}
 		?>
      <td align="center"><?php echo $href;?></td>
-     
+
      <?php
 		if (JVersion::isCompatible("1.6.0")) {
 			$img =  $row->canuploadimages?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
 		}
 		else {
-			$img = $row->stcanuploadimagesate?'tick.png':'publish_x.png';
+			$img = $row->canuploadimages?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->canuploadimages>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -256,7 +257,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->canuploadmovies?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->canuploadmovies>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -278,7 +279,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->cancreateown?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->cancreateown>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -300,7 +301,7 @@ $url = JRoute::_("index.php?option=".$option);
 			$img = $row->cancreateglobal?'tick.png':'publish_x.png';
 			$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
 		}
-		
+
 		$href='';
 		if( $row->cancreateglobal>=0 ) {
 			$href = '<a href="javascript: void(0);" ';
@@ -324,7 +325,7 @@ $url = JRoute::_("index.php?option=".$option);
 		<?php  } ?>
 	</tbody>
 	</table>
-    <?php echo JHTML::_( 'form.token' ); 
+    <?php echo JHTML::_( 'form.token' );
 ?>
 <input type="hidden" name="hidemainmenu" value="" />
 <input type="hidden" name="boxchecked" value="0" />

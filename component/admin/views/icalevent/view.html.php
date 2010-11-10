@@ -155,32 +155,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
 		}
 
-		if (($jevuser && $jevuser->candeleteall) || $access){
-			$db = JFactory::getDBO();
 
-			$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly",0);
-			// if authorised only then load from database
-			if ($authorisedonly){
-				$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
-				$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-				$sql .= " WHERE tl.cancreate=1";
-				$sql .= " ORDER BY ju.name ASC";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
+		$db = JFactory::getDBO();
+		if (($jevuser && $jevuser->candeleteall) || $access)
+		{
 
-			}
-			else {
-				$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-				$minaccess = $params->getValue("jevcreator_level",19);
-				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-				$sql .= " ORDER BY name ASC";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
-			}
-
-			$userOptions[] = JHTML::_('select.option', '-1','Select User' );
-			foreach( $users as $user )
+			if (JVersion::isCompatible("1.6.0"))
 			{
 				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$authorisedonly = $params->get("authorisedonly", 0);

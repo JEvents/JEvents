@@ -62,12 +62,18 @@ class JEventsCategory extends JTableCategory {
 	}
 
 	function store(){
-		parent::store();
+		$success = parent::store();
 		if (isset($this->_catextra)){
 			$this->_catextra->id = $this->id;
 			$this->_catextra->store();
 		}
-		return true;
+
+		if ($success){
+			JPluginHelper::importPlugin("jevents");
+			$dispatcher	=& JDispatcher::getInstance();
+			$set = $dispatcher->trigger('afterSaveCategory', array ($this));
+		}
+		return $success;
 	}
 
 	function getColor(){

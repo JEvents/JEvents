@@ -134,6 +134,9 @@ class AdminIcaleventController extends JController {
 			$where[] = "\n ev.state=0";
 		}
 
+		// keep this incase we use filters in category lists
+		$where[] = "\n ev.catid IN(".$this->queryModel->accessibleCategoryList().")";
+
 		// get the total number of records
 		$query = "SELECT count(distinct rpt.eventid)"
 		. "\n FROM #__jevents_vevent AS ev "
@@ -176,7 +179,6 @@ class AdminIcaleventController extends JController {
 			. "\n LEFT JOIN #__viewlevels AS a ON a.id = ev.access"
 			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			//. "\n WHERE ev.catid IN(".$this->queryModel->accessibleCategoryList().")"
 			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
 			;
 
@@ -197,7 +199,6 @@ class AdminIcaleventController extends JController {
 			. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
 			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			//. "\n WHERE ev.catid IN(".$this->queryModel->accessibleCategoryList().")"
 			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
 			;
 		}
