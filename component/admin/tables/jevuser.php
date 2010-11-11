@@ -289,3 +289,8 @@ class TableUser extends JTable
 	}
 
 }
+
+class JEVUser extends TableUser
+{
+	// RSH Kludge to get the JEVuser plugin to work correctly!  J!.1.6 expects the class name to be the same as the file name!
+}
