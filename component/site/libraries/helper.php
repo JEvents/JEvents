@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+jimport('joomla.access.access');
+
 /**
  * Helper class with common functions for the component and modules
  *
@@ -1116,7 +1118,7 @@ class JEVHelper {
 			$user = JFactory::getUser();	
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			return 0;
+			return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
 		}
 		else {
 			return $user->gid;
@@ -1129,6 +1131,7 @@ class JEVHelper {
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
 			$levels = $user->authorisedLevels();
+
 			if ($type == 'string') {
 				return implode(',', $levels);
 			} elseif ($type == 'array') {
