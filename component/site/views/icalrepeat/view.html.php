@@ -27,8 +27,8 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		parent::__construct($config);	
 		
 		// TODO find the active admin template
-		JEVHelper::stylesheet("system.css", JURI::root(true). "/administrator/templates/system/css/");
-		JEVHelper::stylesheet("template.css", JURI::root(true). "/administrator/templates/khepri/css/");
+		JEVHelper::stylesheet("system.css", JURI::root(true). "administrator/templates/system/css/");
+		JEVHelper::stylesheet("template.css", JURI::root(true). "administrator/templates/khepri/css/");
 
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 	}	
