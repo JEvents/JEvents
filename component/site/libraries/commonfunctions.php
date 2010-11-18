@@ -99,6 +99,10 @@ class JEV_CommonFunctions {
 			$dispatcher->trigger('onGetCategoryData', array (& $cats));
 
 		}
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats));
+
+
 		return $cats;
 	}
 
