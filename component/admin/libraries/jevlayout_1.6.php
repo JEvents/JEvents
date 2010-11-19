@@ -80,7 +80,7 @@ class JInstallerJevlayout extends JAdapterInstance
 		// Find modules to copy
 		foreach ($element->children() as $child)
 		{
-			if (is_a($child, 'JSimpleXMLElement')) {
+			if ($child) {
 				$modulename = $child->name();
 
 				$this->parent->setPath('extension_root', $basePath.'/modules/'.$modulename."/tmpl");
@@ -91,7 +91,7 @@ class JInstallerJevlayout extends JAdapterInstance
 				}
 
 				// Copy all necessary files
-				$modelement =& $element->getElementByPath($modulename);
+				$modelement =& $element->$modulename;
 				if ($this->parent->parseFiles($modelement, -1) === false) {
 					// Install failed, roll back changes
 					$this->parent->abort();
