@@ -366,8 +366,8 @@ class JEventsDataModel {
 			$day = $data["dates"][$w*7]["d"];
 			$month = $data["dates"][$w*7]["month"];
 			$year = $data["dates"][$w*7]["year"];
-			// get week number from second weekday to avoid confusion with week start sunday
-			$week = intval(JEV_CommonFunctions::jev_strftime("%V",$date+86400));
+			// get week number from second weekday to avoid confusion with week start sunday + 1 day + 3 hours to avoid DST change problems
+			$week = intval(JEV_CommonFunctions::jev_strftime("%V",$date+97200));
 			$link = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=week.listevents&year='
 			. $year . '&month=' . $month . '&day=' . $day .$cat. '&Itemid=' . $this->myItemid );
 			$data["weeks"][$week]=$link;
