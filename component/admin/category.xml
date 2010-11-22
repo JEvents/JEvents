@@ -6,13 +6,20 @@
 		name="params">
 		<fieldset
 			name="basic" 
-			addfieldpath="/administrator/components/com_jevents/elements" 
+			addfieldpath="/administrator/components/com_jevents/fields"
 			>
 			<field
 				name="catcolour"
 				type="jevcolourpicker"
 				label="JEV_COLOR_PICKER"
 				description="JEV CHOOSE CATEGORY COLOUR"
+				/>
+			<field
+				name="overlaps"
+				type="jevboolean"
+				default="0"
+				label="JEV_BLOCK_OVERLAPS"
+				description="JEV_BLOCK_OVERLAPS"
 				/>
 			</fieldset>
 	</fields>

@@ -729,12 +729,12 @@ function updateRepeatWarning(){
 
 /* Check for booking conflicts */
 
-Element.extend({
+Element.implement ({
 	formToJson: function(){
 		var json = {};
-		this.getFormElements().each(function(el){
+		this.getElements('input, textarea, select').each(function(el){
 			var name = el.name;
-			var value = el.getValue();
+			var value = el.get('value');
 			if (value === false || !name || el.disabled) return;
 			if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
 				if (!json[name]) json[name] = [];				
@@ -747,7 +747,7 @@ Element.extend({
 	
 });
 
-function checkConflict(url, pressbutton, jsontoken, client, repeatid){
+function checkConflict(url, pressbutton, jsontoken, client, repeatid){	
 	var requestObject = new Object();
 	requestObject.error = false;
 	requestObject.client = client;
@@ -755,10 +755,10 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 	requestObject.pressbutton = pressbutton;
 	requestObject.repeatid = repeatid;
 	requestObject.formdata = $(document.adminForm).formToJson();
-	
-	var jSonRequest = new Json.Remote(url, {
-		method:'get',
-		onComplete: function(json){
+
+	var jSonRequest = new Request.JSON({
+		'url':url,
+		onSuccess: function(json, responsetext){
 			if (json.error){
 				try {
 					eval(json.error);
@@ -786,9 +786,9 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 				}
 			}
 		},
-		onFailure: function(){
-			alert('Something went wrong...')
+		onFailure: function(x){
+			alert('Something went wrong...'+x)
 		}
-	}).send(requestObject);
+	}).get({'json':JSON.encode(requestObject)});
 
 }
