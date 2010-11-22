@@ -84,7 +84,8 @@ class JEV_CommonFunctions {
 				foreach ($cats as &$cat){
 					$cat->name = $cat->title;
 					$params = new JParameter($cat->params);
-					$cat->color = $params->get("color","");
+					$cat->color = $params->get("catcolour","");
+					$cat->overlaps = $params->get("overlaps",0);
 				}
 				unset ($cat);
 

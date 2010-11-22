@@ -100,12 +100,12 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 					?>
                     <td class="<?php echo $style;?>" width="14%" align="center" height="50" valign="top">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
-						<tr>
+						<tr class="caldaydigits">
 						<td class="caldaydigits">&nbsp;
 						<strong><a href="<?php echo $currentDay["link"]; ?>" title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a></strong>
 						
 						</td>
-						<td>
+						<td >
                        <?php   $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]);?>
 						</td>
 						</tr>

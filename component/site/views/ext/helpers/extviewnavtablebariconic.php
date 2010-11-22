@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 class ExtViewNavTableBarIconic {
@@ -25,7 +25,7 @@ class ExtViewNavTableBarIconic {
 
 		$link = 'index.php?option=' . $option . '&task=' . $task . $cat . '&Itemid=' . $Itemid. '&';
     	?>
-    	<table bgcolor="#ffffff" border="0" cellpadding="10" cellspacing="0" width="100%">
+    	<table class="ev_navigation" bgcolor="#ffffff" border="0" cellpadding="10" cellspacing="0" width="100%" >
     	<tr>
     		<td class="tableh1" align="center">
     		<table border="0" cellpadding="0" cellspacing="0">

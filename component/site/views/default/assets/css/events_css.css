@@ -3,6 +3,14 @@
 */
 table#jevents_body{
 	width:100%!important;
+	border:none;
+}
+table#jevents_header{
+	width:100%!important;
+	border:none;
+}
+table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
+	border:none;
 }
 .jeventslight{
 	color:#000000;

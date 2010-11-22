@@ -5,6 +5,15 @@
 table#jevents_body{
     width:100%;
 }
+table#jevents_header{
+	width:100%!important;
+	border:none;
+}
+table#jevents_header td, table#jevents_header tr, .ev_navigation tr, .ev_navigation td{
+	border:none;
+}
+
+
 .jeventslight{
 	color:#000000;
 }
@@ -310,6 +319,9 @@ table#jevents_body{
 	border-bottom: 1px solid #CED2D6;
 }
 
+#jevents_body .tableh1 td , #jevents_body .tableh1 tr , tr.caldaydigits, tr.caldaydigits td{
+	border:none;
+}
 #jevents_body .tableh2   {
 	background-image:  url(../images/tile_sub.gif);
 	background-color: #708088 ;

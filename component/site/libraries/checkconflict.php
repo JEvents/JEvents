@@ -53,9 +53,14 @@ else {
 				$requestData= stripslashes($requestData);
 			}
 
-			$requestObject = json_decode($requestData, 0);
-			if (!$requestObject){
-				$requestObject = json_decode(utf8_encode($requestData), 0);
+			if (is_array($requestData)){
+				$requestObject = $requestData;
+			}
+			else {
+				$requestObject = json_decode($requestData, 0);
+				if (!$requestObject){
+					$requestObject = json_decode(utf8_encode($requestData), 0);
+				}
 			}
 		}
 		catch (Exception $e) {
