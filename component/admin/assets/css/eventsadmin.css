@@ -162,3 +162,80 @@ table.toolbar a:hover {
 	text-decoration: none;
 	color: #0B55C4;
 }
+
+/* Stuff normally in admin template */
+textarea#extra_info {
+	width:100%;
+	padding:0px!important;
+	margin:0px;
+	height:auto!important;
+}
+
+div#jevents fieldset {
+	border:solid 1px #cccccc;
+	margin-bottom:5px;
+	display:block;
+	padding:5px 0px;
+	background:none;
+}
+div#jevents fieldset {
+	margin:5px;
+	padding:5px;
+}
+div#jevents fieldset legend {
+	padding:0px 10px;
+	color:#146295;
+	font-weight:bold;
+	font-size:1.1em;
+}
+div#jevents table#jevadminform {
+	font-size:1em;
+	margin:0px 5px 5px 5px;
+}
+div#jevents table#jevadminform td {
+	padding:3px;
+}
+div#jevents table#jevadminform table td {
+	padding:0px;
+}
+
+div#jevents fieldset table {
+	margin:0px;
+}
+
+div#jevents dl.tabs {
+float:left;
+margin:10px 0 -1px;
+z-index:50;
+}
+div#jevents dl.tabs dt {
+background:none repeat scroll 0 0 #F0F0F0;
+border-left:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;
+border-top:1px solid #CCCCCC;
+color:#666666;
+float:left;
+margin-left:3px;
+padding:4px 10px;
+}
+div#jevents dl.tabs dt.open {
+background:none repeat scroll 0 0 #F9F9F9;
+border-bottom:1px solid #F9F9F9;
+color:#000000;
+z-index:100;
+}
+div#jevents div.current {
+border:1px solid #CCCCCC;
+clear:both;
+padding:10px;
+}
+div#jevents div.current dd {
+margin:0;
+padding:0;
+}
+
+
+.icon-32-save 			{ background-image: url(../images/icon-32-save.png); }
+.icon-32-edit 			{ background-image: url(../images/icon-32-edit.png); }
+.icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
+.icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
