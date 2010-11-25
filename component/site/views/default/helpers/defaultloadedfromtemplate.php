@@ -48,6 +48,19 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	$search[]="{{CATEGORY}}";$replace[]=$event->catname();$blank[]="";
 
+	$router = JRouter::getInstance("site");
+	$vars = $router->getVars();
+	$vars["catids"]=$event->catid();
+	$eventlink = "index.php?";
+	foreach ($vars as $key=>$val) {
+		$eventlink.= $key."=".$val."&";
+	}
+	$eventlink = substr($eventlink,0,strlen($eventlink)-1);
+	$eventlink = JRoute::_($eventlink);
+	$catlink ='<a class="ev_link_cat" href="'.$eventlink.'"  title="'. JEventsHTML::special($event->catname()).'">'. $event->catname().'</a>';
+	$search[]="{{CATEGORYLNK}}";$replace[]=$catlink;$blank[]="";
+
+
 	$document = JFactory::getDocument();
 	$document->addStyleDeclaration("div.jevdialogs {position:relative;margin-top:35px;text-align:left;}\n div.jevdialogs img{float:none!important;margin:0px}");
 
