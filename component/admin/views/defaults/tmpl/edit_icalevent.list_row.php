@@ -37,6 +37,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CONTACT_LAB
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD EXTRAINFO",true);?>", "EXTRAINFO");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CATEGORY",true);?>", "CATEGORY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CATEGORY LINK",true);?>", "CATEGORYLNK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV FIELD CREATIONDATE",true);?>", "CREATED");
 
 <?php
