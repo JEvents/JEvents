@@ -27,9 +27,9 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		parent::__construct($config);	
 				
 		// TODO find the active admin template
-		JEVHelper::stylesheet("system.css", "administrator/templates/system/css/");
-		JEVHelper::stylesheet("icon.css",  "administrator/templates/khepri/css/");
-		JEVHelper::stylesheet("general.css", "administrator/templates/khepri/css/");
+		//JEVHelper::stylesheet("system.css", "administrator/templates/system/css/");
+		//JEVHelper::stylesheet("icon.css",  "administrator/templates/khepri/css/");
+		//JEVHelper::stylesheet("general.css", "administrator/templates/khepri/css/");
 	}	
 	
 	function edit($tpl = null)
