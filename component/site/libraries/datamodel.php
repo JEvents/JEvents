@@ -939,7 +939,7 @@ class JEventsDataModel {
 		return $data;
 	}
 
-	function getDataForAdmin( $creator_id, $limit, $limitstart, $showrepeats = false ){
+	function getDataForAdmin( $creator_id, $limit, $limitstart, $showrepeats = false, $orderby="" ){
 
 		$data= array();
 
@@ -968,8 +968,8 @@ class JEventsDataModel {
 		$data ["limitstart"]=$limitstart;
 
 		// Note that these are the vevents not the repeats
-		if (!$showrepeats) $rows = $this->queryModel->listIcalEventsByCreator ($creator_id, $limitstart, $limit);
-		else $rows = $this->queryModel->listIcalEventRepeatsByCreator ($creator_id, $limitstart, $limit);
+		if (!$showrepeats) $rows = $this->queryModel->listIcalEventsByCreator ($creator_id, $limitstart, $limit, $orderby);
+		else $rows = $this->queryModel->listIcalEventRepeatsByCreator ($creator_id, $limitstart, $limit, $orderby);
 
 		$adminView = true;
 		$num_events = count( $rows );

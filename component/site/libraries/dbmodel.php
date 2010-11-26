@@ -1046,7 +1046,7 @@ class JEventsDBModel {
 		}
 	}
 
-	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit ){
+	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit , $orderby=""){
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -1112,7 +1112,7 @@ class JEventsDBModel {
 		//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 		. "\n AND icsf.state=1"
 		. "\n GROUP BY ev.ev_id"
-		. "\n ORDER BY dtstart ASC"
+		. "\n ORDER BY ".($orderby=!""?$orderby:"dtstart ASC")
 		. "\n $limit";
 
 		$db->setQuery( $query );
@@ -1127,7 +1127,7 @@ class JEventsDBModel {
 		return $icalrows;
 	}
 
-	function listIcalEventRepeatsByCreator ( $creator_id, $limitstart, $limit ){
+	function listIcalEventRepeatsByCreator ( $creator_id, $limitstart, $limit  , $orderby=""){
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -1174,6 +1174,7 @@ class JEventsDBModel {
 			. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. $extrajoin
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 			. $extrawhere
@@ -1181,7 +1182,7 @@ class JEventsDBModel {
 			. "\n  AND icsf.state=1"
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY rpt.startrepeat"
+			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
 			. "\n $limit";
 			;
 
@@ -1210,7 +1211,7 @@ class JEventsDBModel {
 			. "\n  AND icsf.state=1"
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY rpt.startrepeat"
+			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
 			;
 		}
 		else {
@@ -1220,6 +1221,7 @@ class JEventsDBModel {
 			. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. $extrajoin
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 			. $extrawhere
@@ -1227,7 +1229,7 @@ class JEventsDBModel {
 			. $where
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY rpt.startrepeat"
+			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
 			. "\n $limit";
 			;
 
@@ -1252,7 +1254,7 @@ class JEventsDBModel {
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n AND icsf.state=1"
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY rpt.startrepeat"
+			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
 			;
 
 		}

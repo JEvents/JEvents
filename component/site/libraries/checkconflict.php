@@ -122,7 +122,8 @@ function ProcessRequest(&$requestObject, $returnData){
 	JFactory::getApplication()->initialise();
 	$option = "com_jevents";
 	// Not sure why this is needed but it is if (use use $mainframe =& JFactory::getApplication($client); )!!!
-	//$GLOBALS['mainframe']=$mainframe;
+	// needed for Joomla 1.5 plugins
+	$GLOBALS['mainframe']=$mainframe;
 
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	if (!$params->get("checkclashes",0) && !$params->get("noclashes",0))  return $returnData;
@@ -192,6 +193,10 @@ function ProcessRequest(&$requestObject, $returnData){
 		return "Error";
 	}
 
+	// make sure buffers are flushed
+	ob_end_flush();
+    ob_flush();
+	
 	return $returnData;
 
 }
