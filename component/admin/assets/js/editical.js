@@ -759,6 +759,12 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 	var jSonRequest = new Request.JSON({
 		'url':url,
 		onSuccess: function(json, responsetext){
+			if (!json){
+				alert('could not check conflicts');
+				$('jevoverlapwarning').style.display='none';
+				submit2(pressbutton);
+				return;
+			}
 			if (json.error){
 				try {
 					eval(json.error);
