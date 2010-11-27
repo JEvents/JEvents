@@ -77,7 +77,11 @@ else {
 		else {
 
 			try {
+				@ob_start();
 				$data = ProcessRequest($requestObject, $data);
+				// Must suppress any error messages
+				@ob_end_clean();
+
 			}
 			catch (Exception $e){
 				throwerror("There was an exception ".$e->getMessage());
@@ -192,16 +196,10 @@ function ProcessRequest(&$requestObject, $returnData){
 		$returnData->allclear=0;
 		return "Error";
 	}
-
-	// make sure buffers are flushed
-	ob_end_flush();
-    ob_flush();
 	
 	return $returnData;
 
 }
-
-
 
 function throwerror ($msg){
 	$data = new stdClass();
@@ -379,7 +377,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid) {
 			$x = 1;
 			$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
-			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<=".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>=".$db->Quote($repeat->startrepeat);
+			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts)>0){
@@ -393,7 +391,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid) {
 			$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 			$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
-			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<=".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>=".$db->Quote($repeat->startrepeat);
+			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 			//$sql .= " AND (evt.catid=".$testevent->catid()." OR evt.icsid=".$testevent->icsid().") GROUP BY rpt.rp_id";
 			$sql .= " AND (evt.catid=".$testevent->catid().") GROUP BY rpt.rp_id";
 			$db->setQuery($sql);
@@ -415,7 +413,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid) {
 	if ($params->get("noclashes",0)) {
 		$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
-		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<=".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>=".$db->Quote($repeat->startrepeat);
+		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 
 		$db->setQuery($sql);
 		$conflicts = $db->loadObjectList();
@@ -427,7 +425,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid) {
 		$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 		$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
-		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<=".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>=".$db->Quote($repeat->startrepeat);
+		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 		//$sql .= " AND (evt.catid=".$repeat->event->catid()." OR evt.icsid=".$repeat->event->icsid().") GROUP BY rpt.rp_id";
 		$sql .= " AND (evt.catid=".$repeat->event->catid().") GROUP BY rpt.rp_id";
 		$db->setQuery($sql);
