@@ -738,7 +738,13 @@ Element.implement ({
 			if (value === false || !name || el.disabled) return;
 			if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
 				if (!json[name]) json[name] = [];				
-				if (el.checked==true) json[name].push(value);	
+				if (el.checked==true) json[name].push(value);
+			}
+			else if (el.type=='checkbox'){
+				//alert(el+" "+el.name+ " "+el.checked+ " "+value);
+				if (el.checked==true) {
+					json[name] = value;
+				}
 			}
 			else json[name] = value;
 		});
