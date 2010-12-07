@@ -235,7 +235,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$search[]="{{CREATOR_LABEL}}";$replace[]=JText::_('JEV_BY');$blank[]="";
 	$search[]="{{CREATOR}}";$replace[]=$event->contactlink();$blank[]="";
 
-	$search[]="{{HITS}}";$replace[]=JText::_('JEV_EVENT_HITS') . ' : ' . $event->hits();$blank[]="";
+	$search[]="{{HITS}}";$replace[]="<span class='hitslabel'>".JText::_('JEV_EVENT_HITS') . '</span> : ' . $event->hits();$blank[]="";
 
 	if ($event->hasLocation()){
 		$search[]="{{LOCATION_LABEL}}";$replace[]=JText::_('JEV_EVENT_ADRESSE')."&nbsp;";$blank[]="";

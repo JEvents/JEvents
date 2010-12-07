@@ -129,6 +129,10 @@ function ProcessRequest(&$requestObject, $returnData){
 	// needed for Joomla 1.5 plugins
 	$GLOBALS['mainframe']=$mainframe;
 
+	$lang 		=& JFactory::getLanguage();
+	$lang->load("com_jevents", JPATH_SITE);
+	$lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	if (!$params->get("checkclashes",0) && !$params->get("noclashes",0))  return $returnData;
 
@@ -160,7 +164,7 @@ function ProcessRequest(&$requestObject, $returnData){
 		$testrepeat = simulateSaveRepeat($requestObject);
 
 		// now we have out event and its repetitions we now check to see for overlapping events
-		$overlaps = checkRepeatOverlaps($testrepeat, $returnData, intval($requestObject->formdata->evid));
+		$overlaps = checkRepeatOverlaps($testrepeat, $returnData, intval($requestObject->formdata->evid),$requestObject);
 
 
 	}
@@ -168,9 +172,10 @@ function ProcessRequest(&$requestObject, $returnData){
 		$testevent = simulateSaveEvent($requestObject);
 
 		// now we have out event and its repetitions we now check to see for overlapping events
-		$overlaps = checkEventOverlaps($testevent, $returnData, intval($requestObject->formdata->evid));
+		$overlaps = checkEventOverlaps($testevent, $returnData, intval($requestObject->formdata->evid),$requestObject );
 
 	}
+
 
 	if (count($overlaps)>0) {
 		$returnData->allclear=0;
@@ -185,6 +190,13 @@ function ProcessRequest(&$requestObject, $returnData){
 
 			list($y, $m, $d, $h, $m, $d) = sscanf($olp->startrepeat, "%d-%d-%d %d:%d:%d");
 
+			$tstring = JText::_("JEV_OVERLAP_MESSAGE");
+			$overlap->conflictMessage = sprintf($tstring ,
+					$olp->summary,
+					JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"),strtotime($olp->startrepeat)),
+					JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"),strtotime($olp->endrepeat)),
+					$olp->conflictCause);
+			$overlap->conflictMessage = addslashes($overlap->conflictMessage);
 			$overlap->url = JURI::root()."index.php?option=com_jevents&task=icalrepeat.detail&evid=".$olp->rp_id."&year=$y&month=$m&day=$d";
 			$overlap->url = str_replace("components/com_jevents/libraries/","",$overlap->url);
 			$returnData->overlaps[] = $overlap;
@@ -368,26 +380,30 @@ function valueIfExists($array, $key,$default){
 	return $array[$key];
 }
 
-function checkEventOverlaps($testevent, & $returnData, $eventid) {
+function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject) {
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	$db = JFactory::getDBO();
 	$overlaps = array();
 	if ($params->get("noclashes",0)) {
 		foreach ($testevent->repetitions as $repeat){
-			$x = 1;
+			
 			$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts)>0){
+				foreach ($conflicts  as &$conflict){
+					$conflict->conflictCause = JText::_("JEV_GENERAL_OVERLAP");
+				}
+				unset ($conflict);
 				$overlaps = array_merge($overlaps, $conflicts);
 			}
 		}
 	}
 	else if ($params->get("checkclashes",0)) {
 		foreach ($testevent->repetitions as $repeat){
-			$x = 1;
+			
 			$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 			$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
@@ -397,16 +413,23 @@ function checkEventOverlaps($testevent, & $returnData, $eventid) {
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts)>0){
+				foreach ($conflicts  as &$conflict){
+					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $testevent->getCategoryName());
+				}
+				unset ($conflict);
 				$overlaps = array_merge($overlaps, $conflicts);
 			}
 		}
 	}
 
+	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher->trigger( 'onCheckEventOverlaps', array( &$testevent, &$overlaps, $eventid, $requestObject ));
+
 	return $overlaps;
 
 }
 
-function checkRepeatOverlaps($repeat, & $returnData, $eventid) {
+function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	$db = JFactory::getDBO();
 	$overlaps = array();
@@ -418,6 +441,10 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid) {
 		$db->setQuery($sql);
 		$conflicts = $db->loadObjectList();
 		if ($conflicts && count($conflicts)>0){
+			foreach ($conflicts  as &$conflict){
+				$conflict->conflictCause = JText::_("JEV_GENERAL_OVERLAP");
+			}
+			unset ($conflict);
 			$overlaps = array_merge($overlaps, $conflicts);
 		}
 	}
@@ -431,9 +458,17 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid) {
 		$db->setQuery($sql);
 		$conflicts = $db->loadObjectList();
 		if ($conflicts && count($conflicts)>0){
+			foreach ($conflicts  as &$conflict){
+				$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $testevent->getCategoryName());
+			}
+			unset ($conflict);
 			$overlaps = array_merge($overlaps, $conflicts);
 		}
 	}
+
+	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher->trigger( 'onCheckRepeatOverlaps', array( &$repeat, &$overlaps, $eventid ,$requestObject));
+
 	return $overlaps;
 
 }

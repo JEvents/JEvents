@@ -131,6 +131,13 @@ function jevSetupAddLink(){
 		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
 		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
 	}
+	var tds = $$("td.cal_td_dayshasevents");
+	for (var i=0; i<tds.length; i++)
+	{
+		element = tds[i];
+		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
+		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
+	}
 	var tds = $$("td.jev_daynoevents");
 	for (var i=0; i<tds.length; i++)
 	{
