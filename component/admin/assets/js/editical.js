@@ -740,7 +740,7 @@ Element.implement ({
 				if (!json[name]) json[name] = [];				
 				if (el.checked==true) json[name].push(value);
 			}
-			else if (el.type=='checkbox'){
+			else if (el.type=='radio' || el.type=='checkbox'){
 				//alert(el+" "+el.name+ " "+el.checked+ " "+value);
 				if (el.checked==true) {
 					json[name] = value;
@@ -791,7 +791,8 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 					$A(json.overlaps).each (function(overlap){
 						var elem = new Element ("a", {'href':overlap.url, 'target':'_blank'});
 						elem.inject(container,'bottom');
-						elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
+						//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
+						elem.appendText (overlap.conflictMessage);
 						var br = new Element ("br");
 						br.inject(container,'bottom');
 					});

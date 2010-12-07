@@ -341,6 +341,11 @@ class AdminIcaleventController extends JController {
 				// this version gives us a repeat not an event so
 				//$row = $this->queryModel->getEventById($id, true, "icaldb");
 				$vevent = $this->dataModel->queryModel->getVEventById( $id);
+				if (!$vevent){
+					global $Itemid;
+					JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid",false), JText::_("JEV SORRY UPDATED"));
+				}
+
 				$row = new jIcalEventDB($vevent);
 
 				$row->fixDtstart();
