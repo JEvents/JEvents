@@ -737,7 +737,7 @@ Element.implement ({
 			var value = el.get('value');
 			if (value === false || !name || el.disabled) return;
 			if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
-				if (!json[name]) json[name] = [];				
+				if (!json[name]) json[name] = [];
 				if (el.checked==true) json[name].push(value);
 			}
 			else if (el.type=='radio' || el.type=='checkbox'){
@@ -750,10 +750,10 @@ Element.implement ({
 		});
 		return json;
 	}
-	
+
 });
 
-function checkConflict(url, pressbutton, jsontoken, client, repeatid){	
+function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect){
 	var requestObject = new Object();
 	requestObject.error = false;
 	requestObject.client = client;
@@ -762,14 +762,18 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 	requestObject.repeatid = repeatid;
 	requestObject.formdata = $(document.adminForm).formToJson();
 
+	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;;
+	requestObject.redirect = doRedirect;
+	var hasConflicts = false;
+
 	var jSonRequest = new Request.JSON({
 		'url':url,
 		onSuccess: function(json, responsetext){
 			if (!json){
 				alert('could not check conflicts');
 				$('jevoverlapwarning').style.display='none';
-				submit2(pressbutton);
-				return;
+				if (doRedirect) submit2(pressbutton);
+				else hasConflicts = true;
 			}
 			if (json.error){
 				try {
@@ -782,9 +786,10 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 			else {
 				if (json.allclear){
 					$('jevoverlapwarning').style.display='none';
-					submit2(pressbutton);
+					if (doRedirect) submit2(pressbutton);
+					else hasConflicts = false;
 				}
-				else {					
+				else {
 					$('jevoverlapwarning').style.display='block';
 					var container = $('jevoverlaps');
 					container.innerHTML="";
@@ -796,12 +801,14 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid){
 						var br = new Element ("br");
 						br.inject(container,'bottom');
 					});
+					hasConflicts = true;
 				}
 			}
 		},
 		onFailure: function(x){
-			alert('Something went wrong...'+x)
+			alert('Something went wrong...'+x);
+			hasConflicts = true;
 		}
 	}).get({'json':JSON.encode(requestObject)});
-
+	return hasConflicts;
 }
