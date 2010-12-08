@@ -728,9 +728,10 @@ class JEventsHTML{
 		}
 		else {
 			// get list of groups
-			$db	=& JFactory::getDBO();
+			$user = JFactory::getUser();
 			$query = "SELECT id AS value, name AS text"
 			. "\n FROM #__groups"
+			. "\n WHERE id <= ".$user->aid
 			. "\n ORDER BY id"	;
 			$db->setQuery( $query );
 			$groups = $db->loadObjectList();
