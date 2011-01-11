@@ -174,8 +174,8 @@ class JEventsHTML{
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
 	 */
-	function buildCategorySelect( $catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false, $order="ordering"){
-
+	function buildCategorySelect( $catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false, $order="ordering")
+	{
 
 		if (JVersion::isCompatible("1.6.0")){
 			ob_start();
@@ -266,7 +266,7 @@ class JEventsHTML{
 			*/
 			$rows[$key]->name = $title;
 		}
-		JArrayHelper::sortObjects($rows,$order);
+		JArrayHelper::sortObjects($rows, $order);
 
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 		//$categories[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_CATEG'), 'id', 'name' );

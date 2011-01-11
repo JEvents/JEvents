@@ -764,6 +764,11 @@ class JEventsDataModel {
 				}
 			}
 
+			// See if a plugin can find our missing event - maybe on another menu item
+			JPluginHelper::importPlugin('jevents');
+			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher->trigger('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
+
 			return null;
 		}
 	}

@@ -44,6 +44,7 @@ class iCalEventDetail extends JTable  {
 	var $color = null;
 	var $multiday=null;
 	var $noendtime=null;
+	var $modified=null;
 
 	var $_customFields =  null;
 
@@ -72,6 +73,9 @@ class iCalEventDetail extends JTable  {
 	 * @param unknown_type $updateNulls
 	 */
 	function store($updateNulls=false ) {
+		$date =& JFactory::getDate();
+		$this->modified = $date->toMySQL();
+
 		if (parent::store($updateNulls)){
 			// I also need to store custom data
 			$dispatcher	=& JDispatcher::getInstance();

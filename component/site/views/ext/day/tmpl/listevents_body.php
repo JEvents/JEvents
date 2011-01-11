@@ -45,8 +45,10 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 			</td>
 		</tr>
 <?php
+$hasevents = false;
 // Timeless Events First
 if (count($data['hours']['timeless']['events'])>0){
+	$hasevents = true;
 	$start_time = JText::_("Timeless");
 
 	echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
@@ -66,6 +68,7 @@ if (count($data['hours']['timeless']['events'])>0){
 
 for ($h=0;$h<24;$h++){
 	if (count($data['hours'][$h]['events'])>0){
+		$hasevents = true;
 		$start_time = JEVHelper::getTime($data['hours'][$h]['hour_start']);
 
 		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
@@ -84,6 +87,13 @@ for ($h=0;$h<24;$h++){
 	}
 }
 
+if (!$hasevents) {
+		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
+		echo "<li class='ev_td_li' >\n";
+		echo JText::_('JEV_NO_EVENTS') ;
+		echo "</li>\n";
+		echo "</ul></td></tr>\n";
+}
 
 
 ?>

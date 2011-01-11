@@ -14,6 +14,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 include_once("csvLine.php");
 
+if (!function_exists('str_getcsv')) {
+	function str_getcsv($input, $delimiter=',', $enclosure='"', $escape=null, $eol=null) {
+  $temp=fopen("php://memory", "rw");
+  fwrite($temp, $input);
+  fseek($temp, 0);
+  $r=fgetcsv($temp, 4096, $delimiter, $enclosure);
+  fclose($temp);
+  return $r;
+}
+}
 /**
  * Class used for CSV transformation to iCal format
  */
@@ -41,7 +51,7 @@ class CsvToiCal {
         $this->columnSeparator = $columnSeparator;
 
         $this->parseFileHeader();
-        
+
         if(!$this->detectHeadersValidity()) {
             JError::raiseWarning(0, 'Not valid CSV file uploaded - mandatory
                                     cols CATEGORIES, SUMMARY, DTSTART, DTEND and
@@ -99,8 +109,7 @@ class CsvToiCal {
      * @return parsed data line or false if error
      */
     private function parseCsvLine($line) {
-        $line = str_replace('"','',$line); // replace " holdings; TODO: fix if escaped " inside
-        $data = explode($this->columnSeparator, $line);
+		$data = str_getcsv($line);
         // different count of data cols than header cols, bad CSV
         if(count($data) != $this->colsNum && count($data) != 1) { // == 1 probably last empty line
         // different number of cols than in header, file is not in correct format

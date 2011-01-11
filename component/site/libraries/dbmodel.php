@@ -804,14 +804,16 @@ class JEventsDBModel {
 
 		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag, $count );
 
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger( 'onDisplayCustomFieldsMultiRowUncached', array( &$rows ));
+		if (!$count){
+			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher->trigger( 'onDisplayCustomFieldsMultiRowUncached', array( &$rows ));
+		}
 
 		return $rows;
 	}
 
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function listIcalEventsByRange( $startdate, $enddate, $limitstart, $limit, $showrepeats = true,     $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="", $count=false) {
+	function listIcalEventsByRange( $startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="", $count=false) {
 		list($year, $month, $day) = explode('-', $startdate);
 		list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
@@ -1048,7 +1050,7 @@ class JEventsDBModel {
 		}
 	}
 
-	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit , $orderby=""){
+	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit, $orderby=''){
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -1082,22 +1084,22 @@ class JEventsDBModel {
 			$where = " AND ev.created_by = '$creator_id' ";
 		}
 
-		// State is manged by plugin
-		/*
-		$state = "\n AND ev.state=1";
-		if ($frontendPublish){
-		$state = "";
-		}
-		*/
-
+		// process the new plugins
+		// get extra data and conditionality from plugins
 		$extrawhere =array();
 		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$needsgroup = false;
+
 		$filters = jevFilterProcessing::getInstance(array("published","justmine","category","startdate","search"));
 		$filters->setWhereJoin($extrawhere,$extrajoin);
-		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
-		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
-		$query = "SELECT ev.*, rr.*, det.*, ev.state as published, count(rpt.rp_id) as rptcount"
+		$needsgroup = false;
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
+		$query = "SELECT ev.*, rr.*, det.*, ev.state as published, count(rpt.rp_id) as rptcount $extrafields"
 		. "\n , YEAR(dtstart) as yup, MONTH(dtstart ) as mup, DAYOFMONTH(dtstart ) as dup"
 		. "\n , YEAR(dtend  ) as ydn, MONTH(dtend   ) as mdn, DAYOFMONTH(dtend   ) as ddn"
 		. "\n , HOUR(dtstart) as hup, MINUTE(dtstart) as minup, SECOND(dtstart   ) as sup"
@@ -1162,12 +1164,20 @@ class JEventsDBModel {
 
 		$frontendPublish = JEVHelper::isEventPublisher();
 
+		// process the new plugins
+		// get extra data and conditionality from plugins
 		$extrawhere =array();
 		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$needsgroup = false;
+
 		$filters = jevFilterProcessing::getInstance(array("published","justmine","category","startdate","search"));
 		$filters->setWhereJoin($extrawhere,$extrajoin);
-		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
-		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
+
+		$needsgroup = false;
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		if( $frontendPublish ){
 			// TODO fine a single query way of doing this !!!
@@ -1251,10 +1261,12 @@ class JEventsDBModel {
 			. "\n AND rpt.rp_id IN($rplist)"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. $extrajoin
 			. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
 			. $where
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n AND icsf.state=1"
+			. $extrawhere
 			. "\n GROUP BY rpt.rp_id"
 			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
 			;

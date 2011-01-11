@@ -390,6 +390,7 @@ class JEV_CommonFunctions {
 		$testevent = $queryModel->getEventById( $evid, 1, "icaldb" );
 		
 		// attach anonymous creator etc.
+		JPluginHelper::importPlugin('jevents');
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
 
@@ -398,9 +399,15 @@ class JEV_CommonFunctions {
 		list($year,$month,$day) = JEVHelper::getYMD();
 
 		$uri  =& JURI::getInstance(JURI::base());
-		$root = $uri->toString( array('scheme', 'host', 'port') );
-
-		$detaillink = '<a href="' . $root . JRoute::_( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id='.$evid.'&rp_id='.$rp_id. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day" ) . '">' . $event->title() . '</a>' . "\n";
+		if (JFactory::getApplication()->isAdmin()){
+			$root = $uri->toString( array('scheme', 'host', 'port', 'path') );
+			$root = str_replace("/administrator","",$root);
+			$detaillink = '<a href="' . $root . 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id='.$evid.'&rp_id='.$rp_id. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day"  . '">' . $event->title() . '</a>' . "\n";
+		}
+		else {
+				$root = $uri->toString( array('scheme', 'host', 'port') );
+				$detaillink = '<a href="' . $root . JRoute::_( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id='.$evid.'&rp_id='.$rp_id. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day" ) . '">' . $event->title() . '</a>' . "\n";
+		}
 
 		$content  = sprintf( JText::_('JEV_NOTIFY_AUTHOR_Message'), $detaillink, $sitename );
 

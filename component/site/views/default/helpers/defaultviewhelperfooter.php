@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultViewHelperFooter($view){
 if (JRequest::getInt('pop', 0)) { ?>
 	<div class="ev_noprint"><p align="center">
-	<a href="javascript:if (window,parent) parent.SqueezeBox.close(); else self.close();" title="<?php echo JText::_('JEV_CLOSE');?>"><?php echo JText::_('JEV_CLOSE');?></a>
+	<a href="#close" onclick="if (window.parent==window){self.close();} else try {window.parent.SqueezeBox.close(); return false;} catch(e) {seld.close();return false;}" title="<?php echo JText::_('JEV_CLOSE');?>"><?php echo JText::_('JEV_CLOSE');?></a>
 	</p></div>
 <?php
 }

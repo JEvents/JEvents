@@ -22,8 +22,13 @@ function DefaultViewHelperHeader($view){
 	// stop crawler and set meta tag
 	JEVHelper::checkRobotsMetaTag();
 
-?>
-<table class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?> <?php echo $params->get("darktemplate",0)?"jeventsdark":"jeventslight";?>" id="jevents_header">
+ if ($params->get('show_page_title', 1) ){?>
+	<div class="componentheading<?php echo $view->escape($params->get('pageclass_sfx')); ?>">
+		<?php echo $view->escape($params->get('page_title')); ?>
+	</div>
+<?php } ?>
+
+<table class="contentpaneopen jeventpage <?php echo $params->get( 'pageclass_sfx' ); ?> <?php echo $params->get("darktemplate",0)?"jeventsdark":"jeventslight";?>" id="jevents_header">
 	<tr>
 	<td class="contentheading" width="100%">
 	<?php 
