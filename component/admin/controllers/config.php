@@ -422,6 +422,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	created varchar(30) NOT NULL default "",
 	sequence int(11) NOT NULL default 1,
 	state tinyint(3) NOT NULL default 1,
+	modified datetime  NOT NULL default '0000-00-00 00:00:00',
 
 	multiday tinyint(3) NOT NULL default 1,
 	hits int(11) NOT NULL default 0,
@@ -436,6 +437,10 @@ SQL;
 		echo $db->getErrorMsg();
 
 		$sql = "ALTER TABLE `#__jevents_vevdetail` MODIFY COLUMN url text NOT NULL default ''";
+		$db->setQuery( $sql );
+		@$db->query();
+
+		$sql = "ALTER TABLE `#__jevents_vevdetail` ADD modified datetime  NOT NULL default '0000-00-00 00:00:00' ";
 		$db->setQuery( $sql );
 		@$db->query();
 
@@ -755,27 +760,46 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jev_defaults (
+	id int( 11 ) unsigned NOT NULL AUTO_INCREMENT ,
 	title varchar(100) NOT NULL default "",
 	name varchar(50) NOT NULL default "",
 	subject text NOT NULL default "",
 	value text NOT NULL default "",
 	state tinyint(3) NOT NULL default 1,
 	params text NOT NULL default "",
-	PRIMARY KEY  (name),
+	PRIMARY KEY  (id),
 	INDEX (name)
-) TYPE=MyISAM $charset;	
+) TYPE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-		
+
 		$sql = "ALTER TABLE `#__jev_defaults` ADD params text NOT NULL default ''";
 		$db->setQuery( $sql );
 		@$db->query();
-		
+
+		$sql = "SHOW COLUMNS FROM `#__jev_defaults`";
+		$db->setQuery( $sql );
+		$cols = @$db->loadObjectList();
+		foreach ($cols as $col){
+			if ($col->Field=='name' && $col->Key=='PRI'){
+				$sql = "ALTER TABLE `#__jev_defaults` DROP PRIMARY KEY";
+				$db->setQuery( $sql );
+				@$db->query();
+			}
+		}
+
+		$sql = "ALTER TABLE `#__jev_defaults` ADD id int( 11 ) unsigned NOT NULL AUTO_INCREMENT , add key (id) ";
+		$db->setQuery( $sql );
+		@$db->query();
+
+		$sql = "ALTER TABLE `#__jev_defaults` ADD PRIMARY KEY id  (id)";
+		$db->setQuery( $sql );
+		@$db->query();
+
 		// get the view
 		$this->view = & $this->getView("config","html");
 

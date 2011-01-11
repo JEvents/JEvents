@@ -17,16 +17,16 @@ if( $cfg->get('com_calUseStdTime') == 0 ) {
 }
 else $clock24=false;
 if ($this->editCopy || $this->repeatId==0) {
-	$repeatStyle="";
+	$repeatStyle=" class='jeveditrepeats' ";
 }
 else {
-	$repeatStyle="style='display:none;'";
+	$repeatStyle="style='display:none;' class='jeveditrepeats' ";
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled
 $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
-	$repeatStyle="style='display:none;'";	
+	$repeatStyle="style='display:none;' class='jeveditrepeats' ";
 }
 
 ?>

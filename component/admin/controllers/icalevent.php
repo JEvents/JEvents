@@ -343,7 +343,7 @@ class AdminIcaleventController extends JController {
 				$vevent = $this->dataModel->queryModel->getVEventById( $id);
 				if (!$vevent){
 					global $Itemid;
-					JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid",false), JText::_("JEV SORRY UPDATED"));
+					JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid",false), JText::_("JEV_SORRY_UPDATED"));
 				}
 
 				$row = new jIcalEventDB($vevent);
@@ -630,7 +630,7 @@ class AdminIcaleventController extends JController {
 		// ensure authorised
 		if (isset($array["evid"]) &&  $array["evid"]>0){
 			$event = $this->queryModel->getEventById( intval($array["evid"]), 1, "icaldb" );
-			if (!JEVHelper::canEditEvent($event)){
+			if (!$event || !JEVHelper::canEditEvent($event)){
 				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
 			}
 		}
@@ -737,7 +737,11 @@ class AdminIcaleventController extends JController {
 
 		}
 
-
+		// I also need to trigger any onpublish event triggers
+		$dispatcher	=& JDispatcher::getInstance();
+		// just incase we don't have jevents plugins registered yet
+		JPluginHelper::importPlugin("jevents");
+		$res = $dispatcher->trigger( 'onPublishEvent' , array($cid, $newstate));
 		
 		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.list',"IcalEvent  : New published state Saved");

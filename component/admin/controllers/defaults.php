@@ -31,7 +31,7 @@ class AdminDefaultsController extends JController {
 		$defaults =$db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body'])){
 			$db->setQuery("INSERT INTO  #__jev_defaults set name='icalevent.detail_body',
-						title=".$db->Quote(JText::_("JEV EVENT DETAIL PAGE")).",
+						title=".$db->Quote(JText::_("JEV_EVENT_DETAIL_PAGE")).",
 						subject='',
 						value='',
 						state=0");
@@ -40,7 +40,7 @@ class AdminDefaultsController extends JController {
 		
 		if (!isset($defaults['icalevent.list_row'])){
 			$db->setQuery("INSERT INTO  #__jev_defaults set name='icalevent.list_row',
-						title=".$db->Quote(JText::_("JEV EVENT LIST ROW")).",
+						title=".$db->Quote(JText::_("JEV_EVENT_LIST_ROW")).",
 						subject='',
 						value='',
 						state=0");

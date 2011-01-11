@@ -77,15 +77,15 @@ echo JEventsHTML::buildScriptTag('end');
 ?>
 <table style="width:90%">
 	<tr>
-    	<td style="font-weight:bold">        <?php echo JText::_("Unique Identifier");?>        </td>
+    	<td style="font-weight:bold">        <?php echo JText::_("Unique_Identifier");?>        </td>
         <td><input class="inputbox" type="text" name="icsLabel" id="icsLabel" value="<?php echo $label;?>" size="80" />        </td>
 	</tr>
 	<tr>
-    	<td style="font-weight:bold">        <?php echo JText::_("JEV CALENDAR OWNER");?></td>
+    	<td style="font-weight:bold">        <?php echo JText::_("JEV_CALENDAR_OWNER");?></td>
         <td><?php echo $this->users;?>        </td>
 	</tr>
 	<tr>
-    	<td style="font-weight:bold" >        <?php echo JText::_("Select Default Category");?></td>
+    	<td style="font-weight:bold" >        <?php echo JText::_("Select_Default_Category");?></td>
         <td><?php echo JEventsHTML::buildCategorySelect($catid ,"", null, $this->with_unpublished_cat, true,0,'catid'); ?>        </td>
 	</tr>
 	<tr>
@@ -103,7 +103,7 @@ echo JEventsHTML::buildScriptTag('end');
 	}
 	?>
 	<tr>
-    	<td style="font-weight:bold"><?php echo JText::_('JEV IGNORE EMBEDDED CATEGORIES'); ?></td>
+    	<td style="font-weight:bold"><?php echo JText::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></td>
 		<td>
 		<input id="ignoreembedcat0" type="radio" value="0" name="ignoreembedcat" <?php echo $checked0;?>/>
 		<label for="ignoreembedcat0"><?php echo JText::_('No'); ?></label>

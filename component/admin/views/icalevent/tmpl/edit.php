@@ -137,13 +137,13 @@ function submitbutton(pressbutton) {
 		alert ( "<?php echo html_entity_decode( JText::_('JEV_E_WARNTITLE') ); ?>" );
 	}
 	else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
-		alert ( '<?php echo JText::_('JEV SELECT CATEGORY',true) ; ?>' );
+		alert ( '<?php echo JText::_('JEV_SELECT_CATEGORY',true) ; ?>' );
 	}
 	else if (form.ics_id.value == "0"){
-		alert( "<?php echo html_entity_decode( 'MISSING ICAL SELECTION' ); ?>" );
+		alert( "<?php echo html_entity_decode( 'MISSING_ICAL_SELECTION' , true); ?>" );
 	}
 	else if (form.valid_dates.value =="0"){
-		alert( "<?php echo JText::_("Invalid dates - please correct" );?>");
+		alert( "<?php echo JText::_("JEV_INVALID_DATES", true );?>");
 	}
 	else {
 		<?php
@@ -206,12 +206,12 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
     	$thisCal = $this->dataModel->queryModel->getIcalByIcsid( $this->row->icsid());
     	if (isset($thisCal) && $thisCal->icaltype==0){
     		// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-    		echo JText::_("JEV IMPORT WARNING");
+    		echo JText::_("JEV_IMPORT_WARNING");
     		$native=false;
     	}
     	else if(isset($thisCal) && $thisCal->icaltype==1){
     		// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-    		echo JText::_("JEV IMPORT WARNING2");
+    		echo JText::_("JEV_IMPORT_WARNING2");
     		$native=false;
     	}
     }
@@ -282,8 +282,8 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 		<?php
 		if (isset($this->offerlock) && $this->offerlock==1){
 			echo "<tr>\n";
-	    	echo "<td>".JText::_("JEV LOCK EVENT")."</td>";
-	    	echo "<td colspan='3'><label>".JText::_("JEV YES")."<input type=\"radio\" name=\"lockevent\" value=\"1\" ".($this->row->lockevent()?"checked=\"checked\"":"")." /></label><label>".JText::_("JEV NO")."<input type=\"radio\" name=\"lockevent\" value=\"0\" ".(!$this->row->lockevent()?"checked=\"checked\"":"")." /></label></td>";
+	    	echo "<td>".JText::_("JEV_LOCK_EVENT")."</td>";
+	    	echo "<td colspan='3'><label>".JText::_("JEV_YES")."<input type=\"radio\" name=\"lockevent\" value=\"1\" ".($this->row->lockevent()?"checked=\"checked\"":"")." /></label><label>".JText::_("JEV_NO")."<input type=\"radio\" name=\"lockevent\" value=\"0\" ".(!$this->row->lockevent()?"checked=\"checked\"":"")." /></label></td>";
 			echo "</tr>\n";
 		}
 		?>

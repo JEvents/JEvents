@@ -117,6 +117,9 @@ class SaveIcalEvent {
 			$vevent->catid = $db->loadResult();
 		}
 		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",0));
+		if (!JVersion::isCompatible("1.6.0")) {
+			$vevent->access = $vevent->access > $user->aid?$user->aid:$vevent->access;
+		}
 		$vevent->state =  intval(JArrayHelper::getValue( $array,  "state",0));
 		// Shouldn't really do this like this
 		$vevent->_detail->priority =  intval(JArrayHelper::getValue( $array,  "priority",0));

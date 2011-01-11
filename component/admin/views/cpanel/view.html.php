@@ -88,7 +88,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$items = array_slice($rssDoc->get_items(), 0, 3);
 			$numItems = count($items);
             if($numItems == 0) {
-            	$output .= '<tr><th>' .JText::_('JEV No news'). '</th></tr>';
+            	$output .= '<tr><th>' .JText::_('JEV_No_news'). '</th></tr>';
             } else {
 	           	$k = 0;
                 for( $j = 0; $j < $numItems; $j++ ) {

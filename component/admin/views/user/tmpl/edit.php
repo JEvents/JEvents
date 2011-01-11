@@ -141,30 +141,30 @@ function submitbutton(pressbutton) {
 		<tr>
 			<td width="50%">
 				<fieldset class="adminform">
-					<legend><?php echo JText::_( 'JEV APPLICABLE CATEGORIES' ); ?></legend>
+					<legend><?php echo JText::_( 'JEV_APPLICABLE_jevEGORIES' ); ?></legend>
 					<table class="admintable" cellspacing="1">
 					  <tr>
-					    <td valign="top" class="key"><?php echo JText::_( 'JEV Categories' ); ?>: </td>
+					    <td valign="top" class="key"><?php echo JText::_( 'JEV_Categories' ); ?>: </td>
 					    <td><?php if ($this->jevuser->categories == 'all' || $this->jevuser->categories == '') { ?>
 					      <label for="categories-all">
 					        <input id="categories-all" type="radio" name="categories" value="all" onclick="allselections('categories');" checked="checked" />
-					        <?php echo JText::_( 'JEV All' ); ?></label>
+					        <?php echo JText::_( 'JEV_All' ); ?></label>
 					      <label for="categories-select">
 					        <input id="categories-select" type="radio" name="categories" value="select" onclick="enableselections('categories');" />
-					        <?php echo JText::_( 'JEV Select From List' ); ?></label>
+					        <?php echo JText::_( 'JEV_Select_From_List' ); ?></label>
 					      <?php } 
 					      else { ?>
 					      <label for="categories-all">
 					        <input id="categories-all" type="radio" name="categories" value="all" onclick="allselections('categories');" />
-					        <?php echo JText::_( 'JEV All' ); ?></label>
+					        <?php echo JText::_( 'JEV_All' ); ?></label>
 					      <label for="categories-select">
 					        <input id="categories-select" type="radio" name="categories" value="select" onclick="enableselections('categories');" checked="checked" />
-					        <?php echo JText::_( 'JEV Select From List' ); ?></label>
+					        <?php echo JText::_( 'JEV_Select_From_List' ); ?></label>
 					      <?php } ?></td>
 					  </tr>
 					  <tr>
 					    <td class="paramlist_key" width="40%"><span class="editlinktip">
-					      <label for="categories" id="categories-lbl"><?php echo JText::_('JEV Categories selection');?></label>
+					      <label for="categories" id="categories-lbl"><?php echo JText::_('JEV_Categories_selection');?></label>
 					      </span></td>
 					    <td><?php echo $this->lists['categories'];?></td>
 					  </tr>
@@ -177,30 +177,30 @@ function submitbutton(pressbutton) {
 			<td width="50%">
 		
 				<fieldset class="adminform">
-					<legend><?php echo JText::_( 'JEV APPLICABLE CALENDARS' ); ?></legend>
+					<legend><?php echo JText::_( 'JEV_APPLICABLE_CALENDARS' ); ?></legend>
 					<table class="admintable" cellspacing="1">
 					  <tr>
-					    <td valign="top" class="key"><?php echo JText::_( 'JEV Calendars' ); ?>: </td>
+					    <td valign="top" class="key"><?php echo JText::_( 'JEV_Calendars' ); ?>: </td>
 					    <td><?php if ($this->jevuser->calendars == 'all' || $this->jevuser->calendars == '') { ?>
 					      <label for="calendars-all">
 					        <input id="calendars-all" type="radio" name="calendars" value="all" onclick="allselections('calendars');" checked="checked" />
-					        <?php echo JText::_( 'JEV All' ); ?></label>
+					        <?php echo JText::_( 'JEV_All' ); ?></label>
 					      <label for="calendars-select">
 					        <input id="calendars-select" type="radio" name="calendars" value="select" onclick="enableselections('calendars');" />
-					        <?php echo JText::_( 'JEV Select From List' ); ?></label>
+					        <?php echo JText::_( 'JEV_Select_From_List' ); ?></label>
 					      <?php } 
 					      else { ?>
 					      <label for="calendars-all">
 					        <input id="calendars-all" type="radio" name="calendars" value="all" onclick="allselections('calendars');" />
-					        <?php echo JText::_( 'JEV All' ); ?></label>
+					        <?php echo JText::_( 'JEV_All' ); ?></label>
 					      <label for="calendars-select">
 					        <input id="calendars-select" type="radio" name="calendars" value="select" onclick="enableselections('calendars');" checked="checked" />
-					        <?php echo JText::_( 'JEV Select From List' ); ?></label>
+					        <?php echo JText::_( 'JEV_Select_From_List' ); ?></label>
 					      <?php } ?></td>
 					  </tr>
 					  <tr>
 					    <td class="paramlist_key" width="40%"><span class="editlinktip">
-					      <label for="calendars" id="calendars-lbl"><?php echo JText::_('JEV Calendars selection');?></label>
+					      <label for="calendars" id="calendars-lbl"><?php echo JText::_('JEV_Calendars_selection');?></label>
 					      </span></td>
 					    <td><?php echo $this->lists['calendars'];?></td>
 					  </tr>

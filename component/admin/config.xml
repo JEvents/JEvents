@@ -155,9 +155,9 @@
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
 		<param name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE" description="_TIMEZONE_DESC"/>
 		<!-- 
-		<param name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV TIMEZONE" description="JEV TIMEZONE DESC"/>
+		<param name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
 		//-->
-		<param name="icalkey" type="text" default="secret phrase" menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV _CAL_KEY_DESC"/>
+		<param name="icalkey" type="text" default="secret phrase" menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_CAL_KEY_DESC"/>
 		<param name="showicalicon" type="jevboolean" default="0" menu="hide" label="JEV_SHOW_ICAL_ICON" description="JEV_SHOW_ICAL_ICON_DESC"/>
 		<param name="disableicalexport" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_ICAL_EXPORT" description="JEV_DISABLE_ICAL_EXPORT_DESC"/>
 		<param name="outlook2003icalexport" type="jevboolean" default="0" menu="hide" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>

@@ -57,7 +57,7 @@ function saveCategoryOrder( n ) {
 
 		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
-		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV FIELD CATEGORY'); ?></th>
+		<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_FIELD_CATEGORY'); ?></th>
 	</tr>
 
     <?php

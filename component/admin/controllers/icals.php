@@ -63,7 +63,7 @@ class AdminIcalsController extends JController {
 		$where		= array();
 
 		if( $search ){
-			$where[] = "LOWER(a.summary) LIKE '%$search%'";
+			$where[] = "LOWER(icsf.label) LIKE '%$search%'";
 		}
 		if ($catid>0){
 			$where[] ="catid = $catid";

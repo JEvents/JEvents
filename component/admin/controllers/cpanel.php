@@ -31,26 +31,15 @@ class AdminCpanelController extends JController {
         // do this in a way that supports mysql 4
         $db = & JFactory::getDBO();
 
-        $sql = "SHOW COLUMNS FROM `#__jev_defaults`";
+        $sql = "SHOW COLUMNS FROM `#__jevents_vevdetail`";
         $db->setQuery($sql);
-        $cols = $db->loadObjectList();
-        if (is_null($cols)) {
+        $cols = $db->loadObjectList('Field');
+        if (is_null($cols) || !isset($cols['modified'])) {
             $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Setup Was Required"));
             $this->redirect();
             //return;
         }
-        $uptodate = false;
-        foreach ($cols as $col) {
-            if ($col->Field == "params") {
-                $uptodate = true;
-                break;
-            }
-        }
-        if (!$uptodate) {
-            $this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Update Was Required"));
-            $this->redirect();
-            //return;
-        }
+
 		$sql = "SHOW COLUMNS FROM `#__jevents_categories`";
 		$db->setQuery( $sql );
 
