@@ -53,7 +53,7 @@ class JElementJevuser extends JElement
 				$action = "core.edit";
 			}
 			else if (strpos($name,"jevpublisher")===0){
-				$action = "core.publish";
+				$action = "core.edit.state";
 			}
 			else {
 				$action = "core.create";

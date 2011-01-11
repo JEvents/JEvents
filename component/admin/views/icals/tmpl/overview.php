@@ -56,6 +56,7 @@ $cfg = & JEVConfig::getInstance();
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_ID'); ?></th>
 		</tr>
 
         <?php
@@ -155,12 +156,13 @@ $cfg = & JEVConfig::getInstance();
 					?>
               	</td>
               	<td align="center"><?php echo $row->_groupname;?></td>
+              	<td align="center"><?php echo $row->ics_id; ?></td>
             </tr>
             <?php
             $k = 1 - $k;
         } ?>
     	<tr>
-    		<th align="center" colspan="9"><?php echo $this->pageNav->getListFooter(); ?></th>
+    		<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
     	</tr>
     </table>
     <input type="hidden" name="option" value="<?php echo $this->option;?>" />

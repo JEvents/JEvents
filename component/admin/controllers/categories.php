@@ -195,7 +195,7 @@ class AdminCategoriesController extends JController {
 			}
 		}
 		// reset orphans to no parents
-		if (!array_key_exists($cat->parent_id,$cats)) $cat->parent_id=0;
+		if (!array_key_exists($cat->parent_id,$cats)) $cat->parent_id=version_compare(JVERSION, '1.6.0', '>=') ?1:0;
 		$plist = JHTML::_('select.genericlist', $cats, 'parent_id', 'class="inputbox" size="1"',"id","title",$cat->parent_id);
 
 		// authorised user to select admin
