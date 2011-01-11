@@ -56,7 +56,8 @@ class ICalEventController extends AdminIcaleventController   {
 			$datamodel = new JEventsDataModel("JEventsAdminDBModel");
 			$vevent = $datamodel->queryModel->getVEventById( $evid);
 			$event = new jIcalEventDB($vevent);
-			$repeat = $event->getFirstRepeat();
+			//$repeat = $event->getFirstRepeat();
+			$repeat = $event->getNextRepeat();
 			if ($repeat){
 				$evid=$repeat->rp_id();
 			}			

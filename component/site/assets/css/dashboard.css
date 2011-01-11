@@ -27,11 +27,11 @@ div.dashboard {
 	padding: 0 12px;
 	text-align: center;
 	width: 147px;
-}	
+}
 div.dashboard * {
 	margin: 0;
 	padding: 0;
-}	
+}
 div.dashboard div {
 	background: none !important;
 	cursor: move;
@@ -40,7 +40,7 @@ div.dashboard div {
 	padding-top: 10px;
 	position: relative;
 	width: 147px;
-}	
+}
 
 div.dashboard caption {
 	color: #CF0;
@@ -62,10 +62,13 @@ div.dashboard caption a {
 div.dashboard caption.dualnav span.year, div.dashboard caption.dualnav span.month {
 	padding-left:12px;
 	padding-right:12px;
+	width:30px;
+	display:block;
+	float:left;
 }
 div.dashboard caption.dualnav a {
 	top:1px;
-}	
+}
 div.dashboard caption a.prev {
 	background-image: url(../images/dashboard-prev.gif);
 	left: 1px;
@@ -78,12 +81,13 @@ div.dashboard caption a:hover {
 	background-position: 0 11px;
 }
 div.dashboard caption span {
-	height: 25px;
+	height: 18px;
 	position: relative;
 	text-align: center;
 }
 div.dashboard caption span.month {
 	padding-right: 8px;
+	width:68px!important;
 }
 div.dashboard caption span.month:after {
 	content: ',';

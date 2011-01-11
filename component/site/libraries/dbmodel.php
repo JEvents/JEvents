@@ -60,16 +60,19 @@ class JEventsDBModel {
 
 		if (!array_key_exists($index,$instances)) {
 			if (JVersion::isCompatible("1.6.0")){
-				//jimport("joomla.application.categories");
-				//$cats = JCategories::getInstance("jevents");
-				//$catlist = $cats->get();
+				static $allcats;
+				if (!isset($allcats)){
+					jimport("joomla.application.categories");
+					$allcats = JCategories::getInstance("jevents");
+				}
 
 				$catids = explode(",",$catidList);
 				$catwhere = array();
 				foreach ($catids as $catid){
 					$catid = intval($catid);
 					if ($catid>0){
-						$catwhere[] =	"(c.lft<=".$catid." AND c.rgt>=".$catid.")";
+						$cat = $allcats->get($catid);
+						$catwhere[] =	"c.lft<=".$cat->rgt." AND c.rgt>=".$cat->lft;
 					}
 				}
 				if (count($catwhere)>0){
@@ -113,11 +116,10 @@ class JEventsDBModel {
 				$catlist =  $db->loadResultArray();
 
 				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
-
-			$dispatcher	=& JDispatcher::getInstance();
-			$dispatcher->trigger('onGetAccessibleCategories', array (& $instances[$index]));
 			
 			}
+			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher->trigger('onGetAccessibleCategories', array (& $instances[$index]));
 		}
 		return $instances[$index];
 	}
@@ -809,7 +811,7 @@ class JEventsDBModel {
 	}
 
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function listIcalEventsByRange( $startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order="rpt.startrepeat ASC ", $filters = false, $extrafields="", $extratables="", $count=false) {
+	function listIcalEventsByRange( $startdate, $enddate, $limitstart, $limit, $showrepeats = true,     $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="", $count=false) {
 		list($year, $month, $day) = explode('-', $startdate);
 		list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
@@ -1378,7 +1380,7 @@ class JEventsDBModel {
 	}
 
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function listIcalEventsByCat ($catids, $showrepeats = false, $total=0, $limitstart=0, $limit=0, $order=" ORDER BY rpt.startrepeat asc", $filters = false, $extrafields="", $extratables="") {
+	function listIcalEventsByCat ($catids, $showrepeats = false, $total=0, $limitstart=0, $limit=0,     $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="") {
 		$db	=& JFactory::getDBO();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!

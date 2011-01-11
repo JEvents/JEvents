@@ -685,7 +685,8 @@ class JEVHelper {
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
-						$isEventEditor = JAccess::check($user->id, "core.edi","com_jevents");
+						$juser =& JFactory::getUser();
+						$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
 					}
 					else {
 						$publishlevel = $params->get("jeveditor_level",20);
@@ -768,7 +769,8 @@ class JEVHelper {
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
-						$isEventPublisher[$type]  = JAccess::check($user->id, "core.publish","com_jevents");
+						$juser =& JFactory::getUser();
+						$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
 					}
 					else {
 						$publishlevel = $params->get("jevpublish_level",20);

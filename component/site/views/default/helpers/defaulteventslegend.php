@@ -8,6 +8,8 @@ function DefaultEventsLegend($view){
 	$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend");
 	if (!file_exists($modpath)) return;
 
+	// load the helper class
+	require_once (JPATH_SITE.'/modules/mod_jevents_legend/helper.php');
 	require_once($modpath);
 
 	$viewclass = ucfirst($theme)."ModLegendView";
