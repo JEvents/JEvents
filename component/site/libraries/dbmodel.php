@@ -1050,7 +1050,7 @@ class JEventsDBModel {
 		}
 	}
 
-	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit, $orderby=''){
+	function listIcalEventsByCreator ( $creator_id, $limitstart, $limit, $orderby='dtstart ASC'){
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -1098,6 +1098,9 @@ class JEventsDBModel {
 		$needsgroup = false;
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
+		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
+		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
 		$query = "SELECT ev.*, rr.*, det.*, ev.state as published, count(rpt.rp_id) as rptcount $extrafields"
 		. "\n , YEAR(dtstart) as yup, MONTH(dtstart ) as mup, DAYOFMONTH(dtstart ) as dup"
@@ -1116,10 +1119,11 @@ class JEventsDBModel {
 		//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 		. "\n AND icsf.state=1"
 		. "\n GROUP BY ev.ev_id"
-		. "\n ORDER BY ".($orderby=!""?$orderby:"dtstart ASC")
+		. "\n ORDER BY ".($orderby!=""?$orderby:"dtstart ASC")
 		. "\n $limit";
 
 		$db->setQuery( $query );
+		
 		//echo $db->explain();
 		$icalrows = $db->loadObjectList();
 		echo $db->getErrorMsg();
@@ -1131,7 +1135,7 @@ class JEventsDBModel {
 		return $icalrows;
 	}
 
-	function listIcalEventRepeatsByCreator ( $creator_id, $limitstart, $limit  , $orderby=""){
+	function listIcalEventRepeatsByCreator ( $creator_id, $limitstart, $limit  , $orderby="rpt.startrepeat"){
 		$user =& JFactory::getUser();
 		$db	=& JFactory::getDBO();
 
@@ -1179,6 +1183,9 @@ class JEventsDBModel {
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
+		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
+		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
+
 		if( $frontendPublish ){
 			// TODO fine a single query way of doing this !!!
 			$query = "SELECT rp_id"
@@ -1194,7 +1201,7 @@ class JEventsDBModel {
 			. "\n  AND icsf.state=1"
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
+			. "\n ORDER BY ".($orderby!=""?$orderby:"rpt.startrepeat ASC")
 			. "\n $limit";
 			;
 
@@ -1223,7 +1230,7 @@ class JEventsDBModel {
 			. "\n  AND icsf.state=1"
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
+			. "\n ORDER BY ".($orderby!=""?$orderby:"rpt.startrepeat ASC")
 			;
 		}
 		else {
@@ -1241,7 +1248,7 @@ class JEventsDBModel {
 			. $where
 			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
+			. "\n ORDER BY ".($orderby!=""?$orderby:"rpt.startrepeat ASC")
 			. "\n $limit";
 			;
 
@@ -1268,7 +1275,7 @@ class JEventsDBModel {
 			. "\n AND icsf.state=1"
 			. $extrawhere
 			. "\n GROUP BY rpt.rp_id"
-			. "\n ORDER BY ".($orderby=!""?$orderby:"rpt.startrepeat ASC")
+			. "\n ORDER BY ".($orderby!=""?$orderby:"rpt.startrepeat ASC")
 			;
 
 		}

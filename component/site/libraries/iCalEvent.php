@@ -91,8 +91,8 @@ class iCalEvent extends JTable  {
 		$access = false;
 		if ($user->get('id')>0){
 			if (JVersion::isCompatible("1.6.0")) {
-				$access = JAccess::check($user->id, "core.deleteall","com_jevents");
-
+				//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+				$access = $user->authorise('core.deleteall', 'com_jevents');
 			}
 			else {
 				// does this logged in have backend access

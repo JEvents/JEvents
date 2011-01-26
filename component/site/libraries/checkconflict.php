@@ -137,7 +137,11 @@ function ProcessRequest(&$requestObject, $returnData){
 	if (!$params->get("checkclashes",0) && !$params->get("noclashes",0))  return $returnData;
 
 	if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
-		date_default_timezone_set($params->get("icaltimezonelive",""));
+		$timezone= date_default_timezone_get();
+		$tz = $params->get("icaltimezonelive","");
+		date_default_timezone_set($tz);
+		$registry	=& JRegistry::getInstance("jevents");
+		$registry->setValue("jevents.timezone",$timezone);
 	}
 
 	$token = JUtility::getToken();

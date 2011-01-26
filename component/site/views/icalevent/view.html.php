@@ -53,12 +53,12 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		$bar = & JToolBar::getInstance('toolbar');
 		if ($this->id>0){
 			if ($this->editCopy){
-				$this->toolbarConfirmButton("icalevent.save",JText::_("save copy warning"),'save','save','Save',false);
-				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save copy warning"),'apply','apply','Apply',false);
+				$this->toolbarConfirmButton("icalevent.save",JText::_("save_copy_warning"),'save','save','Save',false);
+				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save_copy_warning"),'apply','apply','Apply',false);
 			}
 			else {
-				$this->toolbarConfirmButton("icalevent.save",JText::_("save icalevent warning"),'save','save','Save',false);
-				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save icalevent warning"),'apply','apply','Apply',false);
+				$this->toolbarConfirmButton("icalevent.save",JText::_("save_icalevent_warning"),'save','save','Save',false);
+				if (JEVHelper::isEventEditor()) $this->toolbarConfirmButton("icalevent.apply",JText::_("save_icalevent_warning"),'apply','apply','Apply',false);
 			}
 		}
 		else {

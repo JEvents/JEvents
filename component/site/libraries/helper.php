@@ -650,8 +650,9 @@ class JEVHelper {
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
-						$juser =& JFactory::getUser();
-						$isEventCreator = JAccess::check($juser->id, "core.create","com_jevents");
+						$juser = JFactory::getUser();
+						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
+						//$isEventCreator = JAccess::check($juser->id, "core.create","com_jevents");
 					}
 					else {
 						$creatorlevel = $params->get("jevcreator_level",20);
@@ -686,7 +687,8 @@ class JEVHelper {
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
 						$juser =& JFactory::getUser();
-						$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
+						//$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
+						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
 					}
 					else {
 						$publishlevel = $params->get("jeveditor_level",20);
@@ -770,7 +772,8 @@ class JEVHelper {
 				if (!$authorisedonly){
 					if (JVersion::isCompatible("1.6.0"))  {
 						$juser =& JFactory::getUser();
-						$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
+						//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
+						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
 					}
 					else {
 						$publishlevel = $params->get("jevpublish_level",20);
@@ -1081,7 +1084,8 @@ class JEVHelper {
 			$user = JFactory::getUser();
 		}
 		if (JVersion::isCompatible("1.6.0"))  {
-			$access = JAccess::check($user->id, "core.admin","com_jevents");
+			//$access = JAccess::check($user->id, "core.admin","com_jevents");
+			$access = $user->authorise('core.admin', 'com_jevents');
 			return $access;
 		}
 		else {
