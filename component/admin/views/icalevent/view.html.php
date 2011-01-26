@@ -75,13 +75,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			if ($this->editCopy)
 			{
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save copy warning"), 'save', 'save', 'Save', false);
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save copy warning"), 'apply', 'apply', 'Apply', false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'Save', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'Apply', false);
 			}
 			else
 			{
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save icalevent warning"), 'save', 'save', 'Save', false);
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save icalevent warning"), 'apply', 'apply', 'Apply', false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'Apply', false);
 			}
 		}
 		else
@@ -141,7 +141,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+			//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+			$access = $user->authorise('core.admin', 'com_jevents');
 		}
 		else
 		{

@@ -48,7 +48,8 @@ class SaveIcalEvent {
 		$creatorid = JRequest::getInt("jev_creatorid",0);
 		if ( $creatorid>0){
 			if (JVersion::isCompatible("1.6.0")) {
-				$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+				//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+				$access = $user->authorise('core.admin', 'com_jevents');
 			}
 			else {
 				// Get an ACL object

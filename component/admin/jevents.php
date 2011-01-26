@@ -39,6 +39,15 @@ define("JEV_COMPONENT",str_replace("com_","",$option));
 include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.JEV_COMPONENT.".defines.php");
 
 $registry	=& JRegistry::getInstance("jevents");
+/*
+ * frontend only!
+// In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
+if (JVersion::isCompatible("1.6.0")){
+	$newparams	= JFactory::getApplication()->getParams();
+	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
+	$component->params =& $newparams;
+}
+*/
 // See http://www.php.net/manual/en/timezones.php
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
