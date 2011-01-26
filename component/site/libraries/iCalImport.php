@@ -252,6 +252,10 @@ class iCalImport
 		// Populate vevent class - should do this first trawl through !!
 		if (array_key_exists("VEVENT",$this->cal)) {
 			foreach ($this->cal["VEVENT"] as $vevent){
+				// trap for badly constructed all day events
+				if (isset($vevent["DTSTARTRAW"]) && isset($vevent["DTENDRAW"]) && $vevent["DTENDRAW"] ==  $vevent["DTSTARTRAW"]){
+					$vevent["DTEND"] += 86400;
+				}
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}
 		}

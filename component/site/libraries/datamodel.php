@@ -752,8 +752,8 @@ class JEventsDataModel {
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n WHERE rpt.rp_id = '$rpid'";
 				$db->setQuery($query);
-				$row = $db->loadObject();
-				if ($row && $row->access>JEVHelper::getAid($user)){
+				$row2 = $db->loadObject();
+				if ($row2 && $row2->access>JEVHelper::getAid($user)){
 					$uri = JURI::getInstance();
 					$link = $uri->toString();
 					$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
