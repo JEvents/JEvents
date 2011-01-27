@@ -20,7 +20,7 @@ class modJeventsLatestHelper
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
 			include_once($file);
-			include_once(JEV_LIBS."/modfunctions.php");
+			include_once(JPATH_SITE . "/components/com_jevents/libraries/modfunctions.php");
 
 		} else {
 			die ("JEvents Calendar\n<br />This module needs the JEvents component");
@@ -52,15 +52,25 @@ class modJeventsLatestHelper
 		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
 
 		// If the template has a layout override use it
-		if (file_exists($tPath)) {
+		if (JFile::exists($tPath)) {
 			require_once($tPath);
 			$viewclass = "Override".ucfirst($theme)."ModLatestView";
 			if (class_exists($viewclass)){
 				return $viewclass;
 			}
 		}
-		require_once($bPath);
-		$viewclass = ucfirst($theme)."ModLatestView";
-		return $viewclass;
+		else if (JFile::exists($bPath)) {
+			require_once($bPath);
+			$viewclass = ucfirst($theme)."ModLatestView";
+			return $viewclass;
+		}
+		else {
+			echo "<strong>".JText::sprintf("JEV PLEASE REINSTALL %s LAYOUT",$theme)."</strong>";
+			$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.'default'.DS.'latest.php';
+			require_once($bPath);
+			$viewclass = "DefaultModLatestView";
+			return $viewclass;
+
+		}
 	}
 }

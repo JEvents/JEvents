@@ -520,8 +520,6 @@ class DefaultModLatestView
 		$compname = JEV_COM_COMPONENT;
 
 		global $mainframe;
-		$dispatcher	=& JDispatcher::getInstance();
-		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
 
@@ -542,8 +540,6 @@ class DefaultModLatestView
 			// component handler will fetch its own id from the db menu table
 			// anyways as far as I understand it.
 
-			$task_events = 'icalrepeat.detail';
-
 			$this->processFormatString();
 
 			foreach($this->eventsByRelDay as $relDay => $daysEvents){
@@ -552,18 +548,6 @@ class DefaultModLatestView
 
 				// get all of the events for this day
 				foreach($daysEvents as $dayEvent){
-					// get the title and start time
-					$startDate	= strtotime($dayEvent->publish_up());
-					if ($relDay>0){
-						$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." +$relDay days");
-					}
-					else {
-						$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." $relDay days");
-					}
-					$endDate	= strtotime($dayEvent->publish_down());
-
-					list($st_year, $st_month, $st_day) = explode('-', strftime('%Y-%m-%d', $startDate));
-					list($ev_year, $ev_month, $ev_day) = explode('-', strftime('%Y-%m-%d', $startDate));
 
 					if($firstTime) $content .= '<tr><td class="mod_events_latest_first">';
 					else $content .= '<tr><td class="mod_events_latest">';
@@ -582,6 +566,7 @@ class DefaultModLatestView
 						foreach($condtoken['data'] as $token) {
 							unset($match);
 							unset($dateParm);
+							$dateParm="";
 							$match='';
 							if (is_array($token)) {
 								$match = $token['keyword'];
@@ -595,215 +580,7 @@ class DefaultModLatestView
 								continue;
 							}
 
-
-							switch ($match){
-
-								case 'endDate':
-								case 'startDate':
-								case 'eventDate':
-									// Note we need to examine the date specifiers used to determine if language translation will be
-									// necessary.  Do this later when script is debugged.
-
-									if(!$this->disableDateStyle) $content .= '<span class="mod_events_latest_date">';
-
-									if (!$dayEvent->alldayevent() && $match=="endDate" && ($dayEvent->noendtime() || $dayEvent->getUnixStartTime()==$dayEvent->getUnixEndTime())){
-										$time_fmt = "";
-									}
-									else if (!isset($dateParm) || $dateParm == ''){
-										if ($this->com_calUseStdTime) {
-											$time_fmt = $dayEvent->alldayevent() ? '' : ' @%l:%M%p';
-										} else {
-											$time_fmt = $dayEvent->alldayevent() ? '' : ' @%H:%M';
-										}
-										$dateFormat = $this->displayYear ? '%a %b %d, %Y'.$time_fmt : '%a %b %d'.$time_fmt;
-										$jmatch = new JDate($$match);
-										$content .= $jmatch->toFormat($dateFormat);
-										//$content .= JEV_CommonFunctions::jev_strftime($dateFormat, $$match);
-									} else {
-										// if a '%' sign detected in date format string, we assume strftime() is to be used,
-										if(preg_match("/\%/", $dateParm)) {
-											$jmatch = new JDate($$match);
-											$content .= $jmatch->toFormat($dateParm);
-										}
-										// otherwise the date() function is assumed.
-										else $content .= date($dateParm, $$match);
-									}
-
-									if(!$this->disableDateStyle) $content .= "</span>";
-									break;
-
-								case 'title':
-
-									if (!$this->disableTitleStyle) $content .= '<span class="mod_events_latest_content">';
-									if ($this->displayLinks) {
-
-										$link = $dayEvent->viewDetailLink($ev_year,$ev_month,$ev_day,false,$this->myItemid);
-										$link = JRoute::_($link.$this->datamodel->getCatidsOutLink());
-
-										$content .= $this->_htmlLinkCloaking($link,JEventsHTML::special($dayEvent->title()));
-										/*
-										"index.php?option=".$compname
-										. "&task="  . $task_events
-										. "&agid="  . $dayEvent->id()
-										. "&year="  . date("Y", $eventDate)
-										. "&month=" . date("m", $eventDate)
-										. "&day=" 	. date("d", $eventDate)
-										. "&Itemid=". $this->myItemid . $this->catout, $dayEvent->title());
-										*/
-									} else {
-										$content .= JEventsHTML::special($dayEvent->title());
-									}
-									if (!$this->disableTitleStyle) $content .= '</span>';
-									break;
-
-								case 'category':
-									$catobj   = $dayEvent->getCategoryName();
-									$content .= JEventsHTML::special($catobj);
-									break;
-
-								case 'contact':
-									// Also want to cloak contact details so
-									$this->modparams->set("image",1);
-									$dayEvent->text = $dayEvent->contact_info();
-									$dispatcher->trigger( 'onPrepareContent', array( &$dayEvent, &$this->modparams, 0 ), true );
-									$dayEvent->contact_info($dayEvent->text);
-									$content .= $dayEvent->contact_info();
-									break;
-
-								case 'content':  // Added by Kaz McCoy 1-10-2004
-								$this->modparams->set("image",1);
-								$dayEvent->data->text = $dayEvent->content();
-								$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
-								$dayEvent->content($dayEvent->data->text);
-								//$content .= substr($dayEvent->content, 0, 150);
-								$content .= $dayEvent->content();
-								break;
-
-								case 'addressInfo':
-								case 'location':
-									$this->modparams->set("image",0);
-									$dayEvent->data->text = $dayEvent->location();
-									$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
-									$dayEvent->location($dayEvent->data->text);
-									$content .= $dayEvent->location();
-									break;
-
-								case 'extraInfo':
-									$this->modparams->set("image",0);
-									$dayEvent->data->text = $dayEvent->extra_info();
-									$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
-									$dayEvent->extra_info($dayEvent->data->text);
-									$content .= $dayEvent->extra_info();
-									break;
-
-								case 'countdown':
-									$timedelta = $dayEvent->getUnixStartTime() - mktime() ;
-									$fieldval = $dateParm;
-									$shownsign = false;
-									if (stripos($fieldval,"%d")!==false){
-										$days = intval($timedelta /(60*60*24));
-										$timedelta -= $days*60*60*24;
-										$fieldval = str_ireplace("%d",$days,$fieldval);
-										$shownsign = true;
-									}
-									if (stripos($fieldval,"%h")!==false){
-										$hours = intval($timedelta /(60*60));
-										$timedelta -= $hours*60*60;
-										if ($shownsign) $hours = abs($hours);
-										$hours = sprintf("%02d",$hours);
-										$fieldval = str_ireplace("%h",$hours,$fieldval);
-										$shownsign = true;
-									}
-									if (stripos($fieldval,"%m")!==false){
-										$mins = intval($timedelta /60);
-										$timedelta -= $hours*60;
-										if ($mins) $mins = abs($mins);
-										$mins = sprintf("%02d",$mins);
-										$fieldval = str_ireplace("%m",$mins,$fieldval);
-									}
-
-									$content .= $fieldval;
-									break;
-
-								case 'createdByAlias':
-									$content .= $dayEvent->created_by_alias();
-									break;
-
-								case 'createdByUserName':
-									$catobj   = JEVHelper::getUser($dayEvent->created_by());
-									$content .= isset($catobj->username)?$catobj->username:"";
-									break;
-
-								case 'createdByUserEmail':
-									// Note that users email address will NOT be available if they don't want to receive email
-									$catobj   = JEVHelper::getUser($dayEvent->created_by());
-									$content .= $catobj->sendEmail ? $catobj->email : '';
-									break;
-
-								case 'createdByUserEmailLink':
-									// Note that users email address will NOT be available if they don't want to receive email
-									$content .= JRoute::_("index.php?option="
-									. $compname
-									. "&task=".$task_events
-									. "&agid=".$dayEvent->id()
-									. "&year=".$st_year
-									. "&month=".$st_month
-									. "&day=".$st_day
-									. "&Itemid=".$this->myItemid . $this->catout);
-									break;
-
-								case 'color':
-									$content .= $dayEvent->bgcolor();
-									break;
-
-								case 'eventDetailLink':
-									$link = $dayEvent->viewDetailLink($st_year,$st_month,$st_day,false,$this->myItemid);
-									$link = JRoute::_($link.$this->datamodel->getCatidsOutLink());
-									$content .= $link;
-
-									/*
-									$content .= JRoute::_("index.php?option="
-									. $compname
-									. "&task=".$task_events
-									. "&agid=".$dayEvent->id()
-									. "&year=".$st_year
-									. "&month=".$st_month
-									. "&day=".$st_day
-									. "&Itemid=".$this->myItemid . $this->catout);
-									*/
-									break;
-
-								default:
-									try {
-										if (strpos($match,'${')!==false){
-											$parts = explode('${',$match);
-											$tempstr = "";
-											foreach ($parts as $part){
-												if (strpos($part,"}")!==false){
-
-													$subparts = explode("}",$part);
-													//$part = str_replace("}","",$part);
-													$subpart = "_".$subparts[0];
-													if (isset($dayEvent->$subpart)){
-														$temp =  $dayEvent->$subpart;
-														$tempstr .= $temp;
-													}
-													$tempstr .= $subparts[1];
-												}
-												else {
-													$tempstr .= $part;
-												}
-											}
-											$content .= $tempstr;
-										}
-										else if ($match) $content .= $match;
-
-									}
-									catch (Exception $e){
-										if ($match) $content .= $match;
-									}
-									break;
-							} // end of switch
+							$this->processMatch($content, $match, $dayEvent, $dateParm, $relDay);
 						} // end of foreach
 					} // end of foreach
 					$content .= "</td></tr>\n";
@@ -836,6 +613,239 @@ class DefaultModLatestView
 		}
 		return $content;
 	} // end of function
+
+	protected function processMatch(&$content, $match, $dayEvent, $dateParm, $relDay)
+	{
+			$datenow	= JEVHelper::getNow();
+			$dispatcher	=& JDispatcher::getInstance();
+
+			// get the title and start time
+			$startDate	= strtotime($dayEvent->publish_up());
+			if ($relDay>0){
+				$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." +$relDay days");
+			}
+			else {
+				$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." $relDay days");
+			}
+			$endDate	= strtotime($dayEvent->publish_down());
+
+			list($st_year, $st_month, $st_day) = explode('-', strftime('%Y-%m-%d', $startDate));
+			list($ev_year, $ev_month, $ev_day) = explode('-', strftime('%Y-%m-%d', $startDate));
+
+			$task_events = 'icalrepeat.detail';
+			switch ($match){
+
+				case 'endDate':
+				case 'startDate':
+				case 'eventDate':
+					// Note we need to examine the date specifiers used to determine if language translation will be
+					// necessary.  Do this later when script is debugged.
+
+					if(!$this->disableDateStyle) $content .= '<span class="mod_events_latest_date">';
+
+					if (!$dayEvent->alldayevent() && $match=="endDate" && ($dayEvent->noendtime() || $dayEvent->getUnixStartTime()==$dayEvent->getUnixEndTime())){
+						$time_fmt = "";
+					}
+					else if (!isset($dateParm) || $dateParm == ''){
+						if ($this->com_calUseStdTime) {
+							$time_fmt = $dayEvent->alldayevent() ? '' : ' @%l:%M%p';
+						} else {
+							$time_fmt = $dayEvent->alldayevent() ? '' : ' @%H:%M';
+						}
+						$dateFormat = $this->displayYear ? '%a %b %d, %Y'.$time_fmt : '%a %b %d'.$time_fmt;
+						$jmatch = new JDate($$match);
+						$content .= $jmatch->toFormat($dateFormat);
+						//$content .= JEV_CommonFunctions::jev_strftime($dateFormat, $$match);
+					} else {
+						// if a '%' sign detected in date format string, we assume strftime() is to be used,
+						if(preg_match("/\%/", $dateParm)) {
+							$jmatch = new JDate($$match);
+							$content .= $jmatch->toFormat($dateParm);
+						}
+						// otherwise the date() function is assumed.
+						else $content .= date($dateParm, $$match);
+					}
+
+					if(!$this->disableDateStyle) $content .= "</span>";
+					break;
+
+				case 'title':
+
+					if (!$this->disableTitleStyle) $content .= '<span class="mod_events_latest_content">';
+					if ($this->displayLinks) {
+
+						$link = $dayEvent->viewDetailLink($ev_year,$ev_month,$ev_day,false,$this->myItemid);
+						$link = JRoute::_($link.$this->datamodel->getCatidsOutLink());
+
+						$content .= $this->_htmlLinkCloaking($link,JEventsHTML::special($dayEvent->title()));
+						/*
+						"index.php?option=".$compname
+						. "&task="  . $task_events
+						. "&agid="  . $dayEvent->id()
+						. "&year="  . date("Y", $eventDate)
+						. "&month=" . date("m", $eventDate)
+						. "&day=" 	. date("d", $eventDate)
+						. "&Itemid=". $this->myItemid . $this->catout, $dayEvent->title());
+						*/
+					} else {
+						$content .= JEventsHTML::special($dayEvent->title());
+					}
+					if (!$this->disableTitleStyle) $content .= '</span>';
+					break;
+
+				case 'category':
+					$catobj   = $dayEvent->getCategoryName();
+					$content .= JEventsHTML::special($catobj);
+					break;
+
+				case 'contact':
+					// Also want to cloak contact details so
+					$this->modparams->set("image",1);
+					$dayEvent->text = $dayEvent->contact_info();
+					$dispatcher->trigger( 'onPrepareContent', array( &$dayEvent, &$this->modparams, 0 ), true );
+					$dayEvent->contact_info($dayEvent->text);
+					$content .= $dayEvent->contact_info();
+					break;
+
+				case 'content':  // Added by Kaz McCoy 1-10-2004
+				$this->modparams->set("image",1);
+				$dayEvent->data->text = $dayEvent->content();
+				$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
+				$dayEvent->content($dayEvent->data->text);
+				//$content .= substr($dayEvent->content, 0, 150);
+				$content .= $dayEvent->content();
+				break;
+
+				case 'addressInfo':
+				case 'location':
+					$this->modparams->set("image",0);
+					$dayEvent->data->text = $dayEvent->location();
+					$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
+					$dayEvent->location($dayEvent->data->text);
+					$content .= $dayEvent->location();
+					break;
+
+				case 'extraInfo':
+					$this->modparams->set("image",0);
+					$dayEvent->data->text = $dayEvent->extra_info();
+					$results = $dispatcher->trigger( 'onPrepareContent', array( &$dayEvent->data, &$this->modparams, 0 ), true );
+					$dayEvent->extra_info($dayEvent->data->text);
+					$content .= $dayEvent->extra_info();
+					break;
+
+				case 'countdown':
+					$timedelta = $dayEvent->getUnixStartTime() - mktime() ;
+					$fieldval = $dateParm;
+					$shownsign = false;
+					if (stripos($fieldval,"%d")!==false){
+						$days = intval($timedelta /(60*60*24));
+						$timedelta -= $days*60*60*24;
+						$fieldval = str_ireplace("%d",$days,$fieldval);
+						$shownsign = true;
+					}
+					if (stripos($fieldval,"%h")!==false){
+						$hours = intval($timedelta /(60*60));
+						$timedelta -= $hours*60*60;
+						if ($shownsign) $hours = abs($hours);
+						$hours = sprintf("%02d",$hours);
+						$fieldval = str_ireplace("%h",$hours,$fieldval);
+						$shownsign = true;
+					}
+					if (stripos($fieldval,"%m")!==false){
+						$mins = intval($timedelta /60);
+						$timedelta -= $hours*60;
+						if ($mins) $mins = abs($mins);
+						$mins = sprintf("%02d",$mins);
+						$fieldval = str_ireplace("%m",$mins,$fieldval);
+					}
+
+					$content .= $fieldval;
+					break;
+
+				case 'createdByAlias':
+					$content .= $dayEvent->created_by_alias();
+					break;
+
+				case 'createdByUserName':
+					$catobj   = JEVHelper::getUser($dayEvent->created_by());
+					$content .= isset($catobj->username)?$catobj->username:"";
+					break;
+
+				case 'createdByUserEmail':
+					// Note that users email address will NOT be available if they don't want to receive email
+					$catobj   = JEVHelper::getUser($dayEvent->created_by());
+					$content .= $catobj->sendEmail ? $catobj->email : '';
+					break;
+
+				case 'createdByUserEmailLink':
+					// Note that users email address will NOT be available if they don't want to receive email
+					$content .= JRoute::_("index.php?option="
+					. $compname
+					. "&task=".$task_events
+					. "&agid=".$dayEvent->id()
+					. "&year=".$st_year
+					. "&month=".$st_month
+					. "&day=".$st_day
+					. "&Itemid=".$this->myItemid . $this->catout);
+					break;
+
+				case 'color':
+					$content .= $dayEvent->bgcolor();
+					break;
+
+				case 'eventDetailLink':
+					$link = $dayEvent->viewDetailLink($st_year,$st_month,$st_day,false,$this->myItemid);
+					$link = JRoute::_($link.$this->datamodel->getCatidsOutLink());
+					$content .= $link;
+
+					/*
+					$content .= JRoute::_("index.php?option="
+					. $compname
+					. "&task=".$task_events
+					. "&agid=".$dayEvent->id()
+					. "&year=".$st_year
+					. "&month=".$st_month
+					. "&day=".$st_day
+					. "&Itemid=".$this->myItemid . $this->catout);
+					*/
+					break;
+
+				default:
+					try {
+						if (strpos($match,'${')!==false){
+							$parts = explode('${',$match);
+							$tempstr = "";
+							foreach ($parts as $part){
+								if (strpos($part,"}")!==false){
+
+									$subparts = explode("}",$part);
+									//$part = str_replace("}","",$part);
+									$subpart = "_".$subparts[0];
+									if (isset($dayEvent->$subpart)){
+										$temp =  $dayEvent->$subpart;
+										$tempstr .= $temp;
+									}
+									else if (isset($dayEvent->customfields[$subparts[0]]['value'])){
+										$temp =  $dayEvent->customfields[$subparts[0]]['value'];
+										$tempstr .= $temp;
+									}
+									$tempstr .= $subparts[1];
+								}
+								else {
+									$tempstr .= $part;
+								}
+							}
+							$content .= $tempstr;
+						}
+						else if ($match) $content .= $match;
+
+					}
+					catch (Exception $e){
+						if ($match) $content .= $match;
+					}
+					break;
+			} // end of switch
+	}
 
 	protected function getCalendarLink(){
 		$menu =& JApplication::getMenu('site');
