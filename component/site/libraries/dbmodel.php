@@ -1184,6 +1184,10 @@ class JEventsDBModel {
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
+		$needsgroup = false;
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
 		if( $frontendPublish ){
 			// TODO fine a single query way of doing this !!!
 			$query = "SELECT rp_id"
