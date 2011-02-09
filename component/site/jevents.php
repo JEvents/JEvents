@@ -12,7 +12,29 @@
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
 jimport('joomla.filesystem.path');
+/*
+// JDate test
+jimport("joomla.utilities.date");
+$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
+$date->add(new DateInterval('P1D'));
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
+$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('UTC'));
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
+$date->add(new DateInterval('P1D'));
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
 
+$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
+$date->modify("+1 day");
+echo $date->format("Y-m-d H:i:s")."<br/>";
+echo "<hr/>";
+*/
 // For development performance testing only
 /*
 $db	=& JFactory::getDBO();
@@ -112,8 +134,10 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 	$rssLink = JUri::root().$rssLink;
 	
 	if (JVersion::isCompatible("1.6.0")){
-		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+		if (method_exists(JFactory::getDocument(),"addHeadLink")){
+			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+		}
 	}
 	else {
 		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - RSS 2.0 Feed" />'. "\n";
@@ -124,8 +148,10 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 	$rssLink = JUri::root().$rssLink;
 	//$rssLink = JRoute::_($rssLink);
 	if (JVersion::isCompatible("1.6.0")){
-		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+		if (method_exists(JFactory::getDocument(),"addHeadLink")){
+			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+			JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
+		}
 	}
 	else {
 		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - Atom Feed" />'. "\n";

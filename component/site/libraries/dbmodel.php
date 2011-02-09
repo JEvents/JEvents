@@ -1447,6 +1447,10 @@ class JEventsDBModel {
 			$limit = "";
 		}
 
+		if ($order !="" && strpos($order, 'ORDER BY')===false) {
+			$order = " ORDER BY ".$order;
+		}
+
 		$user =& JFactory::getUser();
 		if ($showrepeats){
 			$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields"

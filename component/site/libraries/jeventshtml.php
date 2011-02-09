@@ -180,10 +180,21 @@ class JEventsHTML{
 		if (JVersion::isCompatible("1.6.0")){
 			ob_start();
 			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
+			$options = JHtml::_('category.options', $sectionname);
+			if ($catidList!=null){
+				$cats = explode(',',$catidList);
+				$count = count($options);
+				for ($o=0;$o<$count;$o++){
+					if (!in_array($options[$o]->value, $cats)){
+						unset($options[$o]);
+					}
+				}
+				$options = array_values($options);
+			}
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >
 				<option value=""><?php echo $t_first_entry;?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', $sectionname), 'value', 'text', $catid);?>
+				<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid);?>
 			</select>
 			<?php
 			return ob_get_clean();
