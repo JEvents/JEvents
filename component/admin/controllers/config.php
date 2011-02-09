@@ -361,7 +361,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	PRIMARY KEY  (ev_id),
 	INDEX (icsid),
 	INDEX stateidx (state)
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 		
 	PRIMARY KEY  (evdet_id), 
 	FULLTEXT searchIdx (summary,description)
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -485,7 +485,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	wkst  varchar(50) NOT NULL default "",
 	PRIMARY KEY  (rr_id),
 	INDEX (eventid)
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -512,7 +512,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 	INDEX `startend` ( `startrepeat`,`endrepeat` ),
 	INDEX `endrepeat` (  `endrepeat` )
 	
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -557,7 +557,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_exception (
 	PRIMARY KEY  (ex_id),
 	KEY (eventid),
 	KEY (rp_id)
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -581,7 +581,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_categories (
 	color VARCHAR(8) NOT NULL default '',
 	overlaps tinyint(3) NOT NULL default 0,
 	admin int(12) NOT NULL default 0
-) TYPE=MyISAM $charset;
+) ENGINE=MyISAM $charset;
 SQL;
 
 		$db->setQuery($sql);
@@ -648,7 +648,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	PRIMARY KEY  (ics_id),
 	INDEX stateidx (state)
 	
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -754,7 +754,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_repbyday (
 	catid int(11) NOT NULL default 1,
 	INDEX (rptday),
 	INDEX `daycat` ( `rptday` , `catid` )	
-) TYPE=MyISAM $charset;	
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
@@ -771,7 +771,7 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	params text NOT NULL default "",
 	PRIMARY KEY  (id),
 	INDEX (name)
-) TYPE=MyISAM $charset;
+) ENGINE=MyISAM $charset;
 SQL;
 		$db->setQuery($sql);
 		$db->query();
