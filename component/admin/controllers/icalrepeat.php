@@ -495,7 +495,7 @@ class AdminIcalrepeatController extends JController {
 		}
 		else {
 			list($year,$month,$day) = JEVHelper::getYMD();
-			$rettask = JRequest::getString("rettask","month.calendar");
+			$rettask = JRequest::getString("rettask","day.listevents");
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT ."&task=$rettask&evid=".$rpt->rp_id."&Itemid=".JEVHelper::getItemid()."&year=$year&month=$month&day=$day","ICal rpt updated");
 		}
 

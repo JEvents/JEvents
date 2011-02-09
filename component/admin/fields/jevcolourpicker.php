@@ -50,10 +50,10 @@ class JFormFieldJevcolourpicker extends JFormField
 		// Get the label text from the XML element, defaulting to the element name.
 		$text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
 
-		$html[]  = '<label id="pick1064797275" for="'.$this->id.'" class="hasTip"  '
+		$html[]  = '<label id="pick1064797275" for="'.$this->id.'" class="hasTip"  style="color:'.JevMapColor($this->value).';background-color:'.$this->value.';"		'
 		.' title="'.htmlspecialchars(trim(JText::_($text), ':').'::'
 		.	JText::_($this->description), ENT_COMPAT, 'UTF-8').'" >' ;
-		$html[]  = '<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById(\'fred\').style.display=\'block\';"  style="color:'.JevMapColor($this->value).';background-color:'.$this->value.';font-weight:bold;padding:3px;">'. JText::_('JEV_COLOR_PICKER').'</a>';
+		$html[]  = '<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  style="color:inherit;background-color:inherit;display:block;font-weight:bold;padding:3px;">'. JText::_('JEV_COLOR_PICKER').'</a>';
 		$html[]  = '</label>';
 		return implode($html);
 

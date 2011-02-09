@@ -12,7 +12,7 @@
 				name="catcolour"
 				type="jevcolourpicker"
 				label="JEV_COLOR_PICKER"
-				description="JEV CHOOSE CATEGORY COLOUR"
+				description="JEV_CHOOSE_CATEGORY_COLOUR"
 				/>
 			<field
 				name="overlaps"

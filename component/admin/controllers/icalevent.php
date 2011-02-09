@@ -749,7 +749,7 @@ class AdminIcaleventController extends JController {
 		else {
 			global $Itemid;
 			list($year,$month,$day) = JEVHelper::getYMD();
-			$rettask = JRequest::getString("rettask","month.calendar");
+			$rettask = JRequest::getString("rettask","day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
 			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
@@ -839,7 +839,7 @@ class AdminIcaleventController extends JController {
 		else {
 			global $Itemid;
 			list($year,$month,$day) = JEVHelper::getYMD();
-			$rettask = JRequest::getString("rettask","month.calendar");
+			$rettask = JRequest::getString("rettask","day.listevents");
 			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false),"IcalEvent Deleted");
 		}
 
