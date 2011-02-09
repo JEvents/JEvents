@@ -842,8 +842,6 @@ class JEventsDBModel {
 		// get extra data and conditionality from plugins
 		$extrawhere =array();
 		$extrajoin = array();
-		$extrafields = "";  // must have comma prefix
-		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
 		if (!$filters){
