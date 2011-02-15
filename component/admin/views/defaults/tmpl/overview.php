@@ -48,13 +48,20 @@ $pathIMG = JURI::root().'/administrator/images/';
 				</span>
 			</td>
 			<td>
-				<?php echo $this->escape($row->name); ?></a>
+				<?php echo $this->escape($row->name); ?>
 			</td>
           	<td align="center">
-          	<?php                      	
-          	$img = $row->state?'publish_g.png':'publish_r.png';
+          	<?php
+			if (JVersion::isCompatible("1.6.0")) {
+				$img =  $row->state?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+			}
+			else {
+	          	$img = $row->state?'publish_g.png':'publish_r.png';
+				$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
+			}
+
           	?>
-          	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><img src="<?php echo $pathIMG . $img; ?>" width="12" height="12" border="0" alt="" /></a>
+          	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo  $img; ?></a>
           	</td>
 		</tr>
 		<?php
