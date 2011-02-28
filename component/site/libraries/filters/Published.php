@@ -31,7 +31,7 @@ class jevPublishedFilter extends jevFilter
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
 		$this->filterType = "published";
-		$this->filterLabel = JText::_("Show Unpublished Events");
+		$this->filterLabel = JText::_("Show_Unpublished_Events");
 		
 		// this is a special filter - we always want memory here since only used in frontend management
 		

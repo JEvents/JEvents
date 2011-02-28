@@ -620,7 +620,8 @@ class JEVHelper {
 		static $datenow = null;
 
 		if (!isset($datenow)) {
-			$config	=& JFactory::getConfig();
+			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$tz=$compparams->get("icaltimezonelive","");
 			// Now in the set timezone!
 			$datenow =& JFactory::getDate("+0 seconds");
 		}

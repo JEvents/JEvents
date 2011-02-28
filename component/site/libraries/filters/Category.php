@@ -81,7 +81,7 @@ class jevCategoryFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		$filterList=array();
-		$filterList["title"]=JText::_("Select Category");
+		$filterList["title"]=JText::_("Select_Category");
 
 
 		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		

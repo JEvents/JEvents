@@ -33,7 +33,7 @@ class jIcalEventRepeat extends jIcalEventDB{
 		if (strlen($val)==0) return $this->getUnixStartTime();
 		else {
 			$this->_dtstart=$val;
-			$this->_unixstartime=$val;
+			$this->_unixstarttime=$val;
 			$this->_publish_up = strftime( '%Y-%m-%d %H:%M:%S',$this->getUnixStartTime());
 		}
 	}

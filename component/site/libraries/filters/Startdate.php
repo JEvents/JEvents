@@ -95,7 +95,7 @@ class jevStartdateFilter extends jevFilter
 
 		$options = array();
 		$options[] = JHTML::_('select.option', '0',JText::_('When') );
-		$options[] = JHTML::_('select.option', '1',JText::_('On or after') );
+		$options[] = JHTML::_('select.option', '1',JText::_('On_or_after') );
 		$options[] = JHTML::_('select.option', '-1',JText::_('Before') );
 		$filterList["html"] .= JHTML::_('select.genericlist', $options, $this->filterType.'_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0] );
 

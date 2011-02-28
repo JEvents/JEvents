@@ -211,7 +211,7 @@ class jEventCal {
 	}
 
 	function getUnixStartTime() {
-		if (!isset($this->_unixstartime)){
+		if (!isset($this->_unixstarttime)){
 			$this->_unixstarttime=mktime( $this->hup(),$this->minup(), $this->sup(), $this->mup(), $this->dup(), $this->yup() );
 		}
 		return $this->_unixstarttime;

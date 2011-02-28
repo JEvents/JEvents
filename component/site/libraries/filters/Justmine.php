@@ -31,7 +31,7 @@ class jevJustmineFilter extends jevFilter
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
 		$this->filterType = "justmine";
-		$this->filterLabel = JText::_("Show Only My Events");
+		$this->filterLabel = JText::_("Show_Only_My_Events");
 
 		// this is a special filter - we always want memory here since only used in frontend management
 		
