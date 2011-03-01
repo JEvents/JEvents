@@ -127,7 +127,7 @@ if (class_exists($controllerClass)) {
 // create live bookmark if requested
 $cfg = & JEVConfig::getInstance();
 if ($cfg->get('com_rss_live_bookmarks')) {
-	global $Itemid;
+	$Itemid = JRequest::getInt('Itemid', 0);
 	$rssmodid = $cfg->get('com_rss_modid', 0);
 	// do not use JRoute since this creates .rss link which normal sef can't deal with
 	$rssLink = 'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;

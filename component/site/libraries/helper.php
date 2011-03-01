@@ -1017,7 +1017,7 @@ class JEVHelper {
 				JError::setErrorHandling(2,"ignore");
 				$rows[$id] = JFactory::getUser($id);
 				foreach ($handlers as $handler) {
-					JError::setErrorHandling(2,$handler);
+					if (!is_array($handler)) JError::setErrorHandling(2,$handler);
 				}
 				if ($rows[$id]){
 					$error = JError::getError(true);
