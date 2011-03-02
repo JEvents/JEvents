@@ -72,9 +72,9 @@ class AdminCpanelController extends JController {
 			// RSH Fix to allow the installation to work with J!1.6 11/19/10 - Adapater is now a subclass of JAdapterInstance!
 			$jevlayout_file = (JVersion::isCompatible("1.6.0")) ? 'jevlayout_1.6.php': 'jevlayout.php';
 			
-			if (!file_exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
+			jimport('joomla.filesystem.file');
+			if (!JFile::exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
 					md5_file(JEV_ADMINLIBS . $jevlayout_file) != md5_file(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php")) {
-				jimport('joomla.filesystem.file');
 				JFile::copy(JEV_ADMINLIBS . $jevlayout_file, JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php");
 			}			
         }
