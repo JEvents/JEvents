@@ -911,13 +911,19 @@ class JEVHelper {
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$authorisedonly = $params->get("authorisedonly",0);
 				if (!$authorisedonly){
-					$publishlevel = $params->get("jevpublish_level",20);
-					$juser =& JFactory::getUser();
-					if (JEVHelper::getGid($user)>=$publishlevel){
-						$isEventDeletor[$type] = true;
+
+					if (JVersion::isCompatible("1.6.0"))  {
+						$juser =& JFactory::getUser();
+						$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
+					}
+					else {
+						$publishlevel = $params->get("jevpublish_level",20);
+						$juser =& JFactory::getUser();
+						if (JEVHelper::getGid($user)>=$publishlevel){
+							$isEventDeletor[$type] = true;
+						}
 					}
 				}
-
 			}
 			else if ($user->candeleteall ){
 				$isEventDeletor[$type] = true;

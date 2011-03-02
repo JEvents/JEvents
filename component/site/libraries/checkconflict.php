@@ -133,6 +133,8 @@ function ProcessRequest(&$requestObject, $returnData){
 	$lang->load("com_jevents", JPATH_SITE);
 	$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
+	include_once(JPATH_SITE."/components/com_jevents/jevents.defines.php");
+
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	if (!$params->get("checkclashes",0) && !$params->get("noclashes",0))  return $returnData;
 
@@ -234,7 +236,6 @@ function throwerror ($msg){
 
 
 function simulateSaveEvent($requestObject){
-	include_once(JPATH_SITE."/components/com_jevents/jevents.defines.php");
 
 	if (!JEVHelper::isEventCreator()){
 		throwerror(JText::_("ALERTNOTAUTH") );
