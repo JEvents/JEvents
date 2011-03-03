@@ -58,7 +58,6 @@ class DefaultModCalView
 
 		$this->_modid = $modid;
 
-		global $mainframe;
 		$user =& JFactory::getUser();
 
 		$cfg = & JEVConfig::getInstance();
@@ -406,7 +405,6 @@ class DefaultModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		global   $mainframe;
 		$user =& JFactory::getUser();
 
 		$db	=& JFactory::getDBO();
@@ -463,7 +461,6 @@ class DefaultModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		global   $mainframe;
 		$user =& JFactory::getUser();
 
 		$db	=& JFactory::getDBO();
