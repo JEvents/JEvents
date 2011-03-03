@@ -610,13 +610,13 @@ class JEVHelper {
 	}
 
 	/**
-	 * Get JDate object of current time
+	 * Get JevDate object of current time
 	 *
-	 * @return object JDate
+	 * @return object JevDate
 	 */
 	function getNow() {
 
-		/* JDate object of current time */
+		/* JevDate object of current time */
 		static $datenow = null;
 
 		if (!isset($datenow)) {

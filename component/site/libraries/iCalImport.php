@@ -436,9 +436,9 @@ class iCalImport
 					// server offset SERVER
 					date_default_timezone_set($timezone);
 					$serveroffset2 = (strtotime(strftime('%Y%m%dT%H%M%S',$t))-strtotime(strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
-					$t = new JDate($ical_date,($serveroffset1-$serveroffset2) );
+					$t = new JevDate($ical_date,($serveroffset1-$serveroffset2) );
 
-					//$t = new JDate($ical_date );
+					//$t = new JevDate($ical_date );
 
 					date_default_timezone_set($timezone);
 
@@ -452,7 +452,7 @@ class iCalImport
 					$serveroffset = (strtotime(strftime('%Y%m%dT%H%M%S',$t))-strtotime(strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
 					$serveroffset += $dst;
 
-					$t = new JDate($ical_date , -($serveroffset+$offset));
+					$t = new JevDate($ical_date , -($serveroffset+$offset));
 				}
 				/*
 				echo "<h3>SET TIMEZONE</h3>";
@@ -468,7 +468,7 @@ class iCalImport
 				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
-				$t = new JDate($tempIcal);
+				$t = new JevDate($tempIcal);
 				echo $t->toMySQL()."<br><br/>";
 
 
@@ -481,7 +481,7 @@ class iCalImport
 				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
-				$t = new JDate($tempIcal );
+				$t = new JevDate($tempIcal );
 				echo $t->toMySQL()."<br><br/>";
 
 				$tempIcal  = "20091103T163000Z";
@@ -493,14 +493,14 @@ class iCalImport
 				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
-				$t = new JDate($tempIcal);
+				$t = new JevDate($tempIcal);
 				echo $t->toMySQL()."<br>";
 				*/
 
 			}
 			else {
 				// really should use the timezone of the inputted date
-				$t = new JDate($ical_date);
+				$t = new JevDate($ical_date);
 			}
 			//$result = $t->toMySQL();
 			$result = $t->toUnix();

@@ -13,22 +13,22 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.filesystem.path');
 /*
-// JDate test
+// JevDate test
 jimport("joomla.utilities.date");
-$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
+$date = new JevDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
 echo $date->format("Y-m-d H:i:s")."<br/>";
 echo "<hr/>";
 $date->add(new DateInterval('P1D'));
 echo $date->format("Y-m-d H:i:s")."<br/>";
 echo "<hr/>";
-$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('UTC'));
+$date = new JevDate("1.30pm 12 March 2011", new DateTimeZone('UTC'));
 echo $date->format("Y-m-d H:i:s")."<br/>";
 echo "<hr/>";
 $date->add(new DateInterval('P1D'));
 echo $date->format("Y-m-d H:i:s")."<br/>";
 echo "<hr/>";
 
-$date = new JDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
+$date = new JevDate("1.30pm 12 March 2011", new DateTimeZone('America/New_York'));
 echo $date->format("Y-m-d H:i:s")."<br/>";
 echo "<hr/>";
 $date->modify("+1 day");

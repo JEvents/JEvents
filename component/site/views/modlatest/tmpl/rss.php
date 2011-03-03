@@ -84,17 +84,17 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		$item =new JFeedItem();
 		// item info
 		if ($row->alldayevent()) {
-			$temptime = new JDate($eventDate);
+			$temptime = new JevDate($eventDate);
 			$item->set('title', $temptime->toFormat(JText::_('JEV_RSS_DATE')) ." : " .$item_title);
 		} else {
-			$temptime = new JDate($eventDate);
+			$temptime = new JevDate($eventDate);
 			$item->set('title', $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) ." : " .$item_title);
 		}
 		$item->set('link', $item_link);
 		$item->set('description', $item_description);
 		$item->set('category', $item_type);
 		
-		$eventcreated = new JDate($row->created());
+		$eventcreated = new JevDate($row->created());
 		$item->set('date', $eventcreated->toUnix(true));
 
 		// add item info to RSS document

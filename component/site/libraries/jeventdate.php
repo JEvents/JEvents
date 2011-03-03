@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// TODO replace with JDate 
+// TODO replace with JevDate
 
 class JEventDate {
 	var $year	= null;

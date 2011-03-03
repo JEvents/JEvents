@@ -33,7 +33,7 @@ class DefaultCrawler extends JEventsDefaultView
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
 			list($startyear,$startmonth,$startday)=explode("-",$startdate);
 		}
@@ -49,7 +49,7 @@ class DefaultCrawler extends JEventsDefaultView
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");
 			list($endyear,$endmonth,$endday)=explode("-",$enddate);
 		}

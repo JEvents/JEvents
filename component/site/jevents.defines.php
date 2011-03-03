@@ -35,6 +35,7 @@ JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
 
 // TODO replace with JDate
 JLoader::register('JEventDate',JEV_PATH."/libraries/jeventdate.php");
+JLoader::register('JevDate',JEV_PATH."/libraries/jevdate.php");
 JLoader::register('JEventsHTML',JEV_PATH."/libraries/jeventshtml.php");
 
 JLoader::register('JEventsVersion',JEV_ADMINPATH."/libraries/version.php");

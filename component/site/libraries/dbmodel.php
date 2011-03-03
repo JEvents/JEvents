@@ -711,7 +711,7 @@ class JEventsDBModel {
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function listIcalEventsByYear( $year, $limitstart, $limit, $showrepeats = true, $order="", $filters = false, $extrafields="", $extratables="", $count=false) {
 		list($xyear,$month,$day) = JEVHelper::getYMD();
-		$thisyear = new JDate("+0 seconds");
+		$thisyear = new JevDate("+0 seconds");
 		list($thisyear,$thismonth,$thisday) = explode("-",$thisyear->toFormat("%Y-%m-%d"));
 		if (!$this->cfg->getValue("showyearpast",1) && $year<$thisyear){
 			return array();

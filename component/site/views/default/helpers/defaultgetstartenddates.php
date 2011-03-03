@@ -15,7 +15,7 @@ function Defaultgetstartenddates($view){
 		}
 		else if ($params->get("relative","rel")=="strtotime"){
 			$value = $params->get("strstart","");
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
 		}
 		else {
@@ -25,7 +25,7 @@ function Defaultgetstartenddates($view){
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
 		}
 	}
@@ -35,7 +35,7 @@ function Defaultgetstartenddates($view){
 		}
 		else if ($params->get("relative","rel")=="strtotime"){
 			$value = $params->get("strend","");
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");
 		}
 		else {
@@ -45,7 +45,7 @@ function Defaultgetstartenddates($view){
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = new JDate($value);
+			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");
 		}
 	}
