@@ -26,7 +26,6 @@ class AlternativeModLegendView extends DefaultModLegendView{
 	function displayCalendarLegend($style="list"){
 
 		// since this is meant to be a comprehensive legend look for catids from menu first:
-		global $mainframe;
 		$cfg = & JEVConfig::getInstance();
 		$Itemid = $this->myItemid;
 		$user =& JFactory::getUser();
@@ -35,7 +34,7 @@ class AlternativeModLegendView extends DefaultModLegendView{
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
 		$cfg = & JEVConfig::getInstance();
 
-		global $option; // NB $option must be global $option here!!!
+		$option = JRequest::getCmd('option');
 		if ($this->disable && $option!=JEV_COM_COMPONENT) return;
 
 		$catidList = "";

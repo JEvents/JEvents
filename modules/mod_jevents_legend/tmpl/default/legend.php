@@ -71,10 +71,9 @@ class DefaultModLegendView
 	{
 
 		// since this is meant to be a comprehensive legend look for catids from menu first:
-		global $mainframe;
 		$cfg = & JEVConfig::getInstance();
 		$Itemid = isset($this->myItemid) ? $this->myItemid : JEVHelper::getItemid();
-		;
+		
 		$user = & JFactory::getUser();
 
 		$db = & JFactory::getDBO();
