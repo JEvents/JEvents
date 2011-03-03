@@ -56,15 +56,6 @@ class ExtModLatestView extends DefaultModLatestView
 
 				// get all of the events for this day
 				foreach($daysEvents as $dayEvent){
-					// get the title and start time
-					$startDate	= strtotime($dayEvent->publish_up());
-					if ($relDay>0){
-						$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." +$relDay days");
-					}
-					else {
-						$eventDate	= strtotime($datenow->toFormat('%Y-%m-%d ').strftime('%H:%M', $startDate)." $relDay days");
-					}
-					$endDate	= strtotime($dayEvent->publish_down());
 
 					if($firstTime) $content .= '<tr><td class="mod_events_latest_first">';
 					else $content .= '<tr><td class="mod_events_latest">';

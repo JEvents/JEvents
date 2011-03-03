@@ -653,13 +653,13 @@ class DefaultModLatestView
 							$time_fmt = $dayEvent->alldayevent() ? '' : ' @%H:%M';
 						}
 						$dateFormat = $this->displayYear ? '%a %b %d, %Y'.$time_fmt : '%a %b %d'.$time_fmt;
-						$jmatch = new JDate($$match);
+						$jmatch = new JevDate($$match);
 						$content .= $jmatch->toFormat($dateFormat);
 						//$content .= JEV_CommonFunctions::jev_strftime($dateFormat, $$match);
 					} else {
 						// if a '%' sign detected in date format string, we assume strftime() is to be used,
 						if(preg_match("/\%/", $dateParm)) {
-							$jmatch = new JDate($$match);
+							$jmatch = new JevDate($$match);
 							$content .= $jmatch->toFormat($dateParm);
 						}
 						// otherwise the date() function is assumed.
