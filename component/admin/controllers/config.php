@@ -818,13 +818,13 @@ SQL;
 		$rpts = $db->loadObjectList();
 		jimport("joomla.utilities.date");
 		foreach ($rpts as $rpt) {
-			$startday = new JDate(substr($rpt->startrepeat,0,10));
-			$endday = new JDate(substr($rpt->endrepeat,0,10));
+			$startday = new JevDate(substr($rpt->startrepeat,0,10));
+			$endday = new JevDate(substr($rpt->endrepeat,0,10));
 			while ($endday->toUnix()>=$startday->toUnix()){
 				$db->setQuery("replace into jos_jevents_repbyday (rptday,rp_id,catid) values('".$startday->toFormat(('%Y-%m-%d'))."',".$rpt->rp_id.",".$rpt->catid.")");
 				$db->query();
 
-				$startday = new JDate($startday->toUnix()+86400);
+				$startday = new JevDate($startday->toUnix()+86400);
 			}
 
 		}

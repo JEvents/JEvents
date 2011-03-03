@@ -57,6 +57,7 @@ if (!defined("JEV_LIBS")){
 	
 	// TODO replace with JDate
 	JLoader::register('JEventDate',JEV_PATH."libraries/jeventdate.php");
+	JLoader::register('JevDate',JEV_PATH."/libraries/jevdate.php");
 	JLoader::register('JEventsHTML',JEV_PATH."libraries/jeventshtml.php");
 
 	// TODO retire this sometime? - check usage by session registration code first
