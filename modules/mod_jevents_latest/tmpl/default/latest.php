@@ -56,8 +56,6 @@ class DefaultModLatestView
 		$this->_modid = $modid;
 		$this->modparams	= & $params;
 
-		global  $mainframe;
-
 		$jevents_config		= & JEVConfig::getInstance();
 
 		$this->datamodel	= new JEventsDataModel();
@@ -163,7 +161,6 @@ class DefaultModLatestView
 			$this->maxEvents = $limit;
 		}
 
-		global $mainframe;
 		$db	=& JFactory::getDBO();
 
 		$t_datenow = JEVHelper::getNow();
@@ -518,8 +515,6 @@ class DefaultModLatestView
 
 		$cfg = & JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
-
-		global $mainframe;
 
 		$this->getLatestEventsData();
 

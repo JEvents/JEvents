@@ -21,7 +21,6 @@ class AlternativeModLatestView extends DefaultModLatestView
 		$cfg = & JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 		
-		global $mainframe;
 		$dispatcher	=& JDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 

@@ -25,7 +25,6 @@ class ExtModLatestView extends DefaultModLatestView
 
 		$viewpath = "components/".JEV_COM_COMPONENT."/views/".$viewname."/assets/css/";
 		
-		global $mainframe;
 		$dispatcher	=& JDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 
