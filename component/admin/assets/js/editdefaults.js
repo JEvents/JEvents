@@ -1,6 +1,6 @@
 var $F = function(element) {
 	element2 = $(element);
-	return element2.getValue();
+	return element2.get('value');
 }
 
 defaultsEditorPlugin = {
