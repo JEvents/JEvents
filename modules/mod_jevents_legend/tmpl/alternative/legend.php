@@ -62,7 +62,7 @@ class AlternativeModLegendView extends DefaultModLegendView{
 			$c++;
 		}
 
-		if ($catidList=="" && $this->_params->_raw!=""){
+		if ($catidList=="" && ((JVersion::isCompatible("1.6.0") && $this->_params->toString()!="{}") || (!JVersion::isCompatible("1.6.0") &&  $this->_params->_raw!=""))){
 			modJeventsLegendHelper::getAllCats($this->_params,$catids,$catidList);
 			}
 		
