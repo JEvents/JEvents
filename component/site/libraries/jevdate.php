@@ -32,7 +32,6 @@ if (JVersion::isCompatible("1.6.0"))
 			// Must get this each time otherwise modules can't set their own timezone
 			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$tz=$compparams->get("icaltimezonelive","");
-			echo "JEvDate Timezone is $tz<br/>";
 			if ($tz!=""){
 				self::$stz = new DateTimeZone($tz);
 			}
