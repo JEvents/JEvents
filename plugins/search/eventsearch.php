@@ -269,7 +269,7 @@ class plgSearchEventsearch extends JPlugin {
 			$db->setQuery($query);
 			$rows = $db->loadObjectList("rp_id");
 			foreach ($list_ical as $index=>$item) {
-				$startdate = new JDate(strtotime($item->startrepeat));
+				$startdate = new JevDate(strtotime($item->startrepeat));
 				$item->title .= " (" . $startdate->toFormat($dateformat) . ")";
 				
 				// Now ensure that the URL is the correc SEF URL
