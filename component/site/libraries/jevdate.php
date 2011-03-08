@@ -120,6 +120,36 @@ if (JVersion::isCompatible("1.6.0"))
 
 		}
 
+			/**
+	 * Return the {@link JDate} object
+	 *
+	 * @param mixed $time     The initial time for the JDate object
+	 * @param mixed $tzOffset The timezone offset.
+	 *
+	 * @return JDate object
+	 * @since 1.5
+	 */
+	public static function getDate($time = 'now', $tzOffset = null)
+	{
+			jimport('joomla.utilities.date');
+			static $instances;
+			static $classname;
+			static $mainLocale;
+
+			if (!isset($instances))
+			{
+				$instances = array();
+			}
+
+			$classname = 'JevDate';
+			$key = $time . '-' . $tzOffset;
+
+			//		if (!isset($instances[$classname][$key])) {
+			$tmp = new $classname($time, $tzOffset);
+			return $tmp;
+
+		}
+
 	}
 
 }
@@ -127,5 +157,8 @@ else
 {
 	class JevDate extends JDate
 	{
+		public function getDate($time = 'now', $tzOffset = null) {
+			return JFactory::getDate($time,$tzOffset);
+		}
 	}
 }

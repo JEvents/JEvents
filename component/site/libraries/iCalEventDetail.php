@@ -73,7 +73,7 @@ class iCalEventDetail extends JTable  {
 	 * @param unknown_type $updateNulls
 	 */
 	function store($updateNulls=false ) {
-		$date =& JFactory::getDate();
+		$date =& JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
 		if (parent::store($updateNulls)){

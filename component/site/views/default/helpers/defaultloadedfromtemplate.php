@@ -118,7 +118,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$search[]="{{EDITDIALOG}}";$replace[]="";$blank[]="";
 	}
 
-	$created = JFactory::getDate($event->created());
+	$created = JevDate::getDate($event->created());
 	$search[]="{{CREATED}}";$replace[]=$created->toFormat(JText::_("DATE_FORMAT_CREATED"));$blank[]="";
 	
 	if ($template_name=="icalevent.detail_body"){

@@ -65,7 +65,7 @@ class iCalEvent extends JTable  {
 		$user =& JFactory::getUser();
 
 		if ($this->ev_id==0){
-			$date =& JFactory::getDate();
+			$date =& JevDate::getDate();
 			$this->created = $date->toMySQL();
 		}
 

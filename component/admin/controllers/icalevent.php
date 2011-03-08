@@ -122,7 +122,7 @@ class AdminIcaleventController extends JController {
 
 		$hidepast = intval( JFactory::getApplication()->getUserStateFromRequest("hidepast","hidepast", 1 ));
 		if ($hidepast){
-			$datenow =& JFactory::getDate("-1 day");
+			$datenow =& JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet){
 				$where[] = "\n rpt.endrepeat>'".$datenow->toMysql()."'";
 			}

@@ -1653,7 +1653,7 @@ class JEventsDBModel {
 		$where = "";
 		$having = "";
 		if (!JRequest::getInt('showpast',0)){
-			$datenow =& JFactory::getDate("-12 hours");
+			$datenow =& JevDate::getDate("-12 hours");
 			$having = " AND rpt.endrepeat>'".$datenow->toMysql()."'";
 		}
 
