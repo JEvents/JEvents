@@ -30,7 +30,15 @@ if (JVersion::isCompatible("1.6.0"))
 				//self::$stz = new DateTimeZone(@date_default_timezone_get());
 			}
 			// Must get this each time otherwise modules can't set their own timezone
-			self::$stz = new DateTimeZone(@date_default_timezone_get());
+			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$tz=$compparams->get("icaltimezonelive","");
+			echo "JEvDate Timezone is $tz<br/>";
+			if ($tz!=""){
+				self::$stz = new DateTimeZone($tz);
+			}
+			else {
+				self::$stz = new DateTimeZone(@date_default_timezone_get());
+			}
 
 			// If the time zone object is not set, attempt to build it.
 			if (!($tz instanceof DateTimeZone))
