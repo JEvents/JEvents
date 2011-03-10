@@ -413,7 +413,6 @@ class jevTitleFilter extends jevFilter
 	}
 
 	function _createfilterHTML(){
-		global $database;
 
 		if (!$this->filterField) return "";
 

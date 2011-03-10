@@ -23,7 +23,6 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$search[]="{{TITLE}}";$replace[]=$event->title();$blank[]="";
 
 	// Title link
-	global $Itemid;
 	$rowlink = $event->viewDetailLink($event->yup(),$event->mup(),$event->dup(),false);
 	$rowlink = JRoute::_($rowlink.$view->datamodel->getCatidsOutLink());
 	ob_start();

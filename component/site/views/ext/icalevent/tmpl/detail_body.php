@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 $cfg	= & JEVConfig::getInstance();
 
 if( 0 == $this->evid) {
-	global  $Itemid;
+	$Itemid = JRequest::getInt("Itemid");
 	JFactory::getApplication()->redirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid",false));
 	return;
 }

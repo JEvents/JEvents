@@ -32,7 +32,7 @@ class JEVHelper {
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
 
-		global  $option;
+		$option = JRequest::getCmd("option");
 		$cfg 		= & JEVConfig::getInstance();
 		$lang 		= & JFactory::getLanguage();
 
@@ -487,14 +487,15 @@ class JEVHelper {
 			$jevitemid = 0;
 			$menu	=& JSite::getMenu();
 			$active = $menu->getActive();
+			$Itemid = JRequest::getInt("Itemid");
 			if (is_null($active)){
 				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
-				global $Itemid;
+				$Itemid = JRequest::getInt("Itemid");
 				if ($Itemid>0 && $jevitemid!=$Itemid){
 					$active = $menu->getItem($Itemid);
 				}
 			}
-			global $Itemid, $option;
+			$option = JRequest::getCmd("option");
 			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 			if ($Itemid==0) $Itemid=JRequest::getInt("amp;Itemid",0);
 			if ($option == JEV_COM_COMPONENT && $Itemid>0){
@@ -620,6 +621,7 @@ class JEVHelper {
 		static $datenow = null;
 
 		if (!isset($datenow)) {
+			include_once(JPATH_SITE."/components/com_jevents/jevents.defines.php");
 			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$tz=$compparams->get("icaltimezonelive","");
 			// Now in the set timezone!
@@ -665,7 +667,21 @@ class JEVHelper {
 				}
 			}
 			else if ($user->cancreate){
-				$isEventCreator = true;
+				// Check maxevent count
+				if ($user->eventslimit>0){
+					$db = JFactory::getDBO();
+					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=".$user->user_id);
+					$eventcount = intval($db->loadResult());
+					if ($eventcount<$user->eventslimit){
+						$isEventCreator = true;
+					}
+					else {
+						$isEventCreator = false;
+					}
+				}
+				else {
+					$isEventCreator = true;
+				}
 			}
 
 			$dispatcher	=& JDispatcher::getInstance();

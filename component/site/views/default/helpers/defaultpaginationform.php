@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultPaginationForm($total, $limitstart, $limit){
 	jimport('joomla.html.pagination');
 	$pageNav = new JPagination($total, $limitstart, $limit);
-	global $Itemid;
+	$Itemid = JRequest::getInt("Itemid");
 	$task = JRequest::getVar("jevtask");
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task");
 	?>

@@ -28,18 +28,6 @@ $data->error = 0;
 $data->result = "ERROR";
 $data->user = "";
 
-// Enforce referrer
-if (!array_key_exists("HTTP_REFERER",$_SERVER) ){
-	throwerror("There was an error");
-}
-
-$live_site = $_SERVER['HTTP_HOST'];
-$ref_parts = parse_url($_SERVER["HTTP_REFERER"]);
-
-if (!isset($ref_parts["host"]) || $ref_parts["host"] != $live_site ){
-	throwerror("There was an error - missing host in referrer");
-}
-
 // Get JSON data
 if (!array_key_exists("json",$_REQUEST)){
 	throwerror("There was an error - no request data");
@@ -137,6 +125,20 @@ function ProcessRequest(&$requestObject, $returnData){
 
 	$params =& JComponentHelper::getParams( "com_jevents" );
 	if (!$params->get("checkclashes",0) && !$params->get("noclashes",0))  return $returnData;
+
+	// Enforce referrer
+	if (!$params->get("skipreferrer",0)){
+		if (!array_key_exists("HTTP_REFERER",$_SERVER) ){
+			throwerror("There was an error");
+		}
+
+		$live_site = $_SERVER['HTTP_HOST'];
+		$ref_parts = parse_url($_SERVER["HTTP_REFERER"]);
+
+		if (!isset($ref_parts["host"]) || $ref_parts["host"] != $live_site ){
+			throwerror("There was an error - missing host in referrer");
+		}
+	}
 
 	if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
 		$timezone= date_default_timezone_get();
@@ -395,6 +397,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
+			$sql .= " LIMIT 100";
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts)>0){
@@ -415,6 +418,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			$sql .= " WHERE rpt.eventid<>".intval($eventid)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 			//$sql .= " AND (evt.catid=".$testevent->catid()." OR evt.icsid=".$testevent->icsid().") GROUP BY rpt.rp_id";
 			$sql .= " AND (evt.catid=".$testevent->catid().") GROUP BY rpt.rp_id";
+			$sql .= " LIMIT 100";
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts)>0){
@@ -442,6 +446,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 		$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
+		$sql .= " LIMIT 100";
 
 		$db->setQuery($sql);
 		$conflicts = $db->loadObjectList();
@@ -460,6 +465,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 		$sql .= " WHERE rpt.rp_id<>".intval($repeat->rp_id)." AND rpt.startrepeat<".$db->Quote($repeat->endrepeat)." AND rpt.endrepeat>".$db->Quote($repeat->startrepeat);
 		//$sql .= " AND (evt.catid=".$repeat->event->catid()." OR evt.icsid=".$repeat->event->icsid().") GROUP BY rpt.rp_id";
 		$sql .= " AND (evt.catid=".$repeat->event->catid().") GROUP BY rpt.rp_id";
+		$sql .= " LIMIT 100";
 		$db->setQuery($sql);
 		$conflicts = $db->loadObjectList();
 		if ($conflicts && count($conflicts)>0){
