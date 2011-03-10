@@ -51,8 +51,7 @@ class modJeventsLatestHelper
 		$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
 		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
 
-		jimport('joomla.filesystem.path');
-
+		jimport('joomla.filesystem.file');
 		// If the template has a layout override use it
 		if (JFile::exists($tPath)) {
 			require_once($tPath);
