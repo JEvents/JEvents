@@ -141,7 +141,7 @@ function submitbutton(pressbutton) {
 		<tr>
 			<td width="50%">
 				<fieldset class="adminform">
-					<legend><?php echo JText::_( 'JEV_APPLICABLE_jevEGORIES' ); ?></legend>
+					<legend><?php echo JText::_( 'JEV_APPLICABLE_CATEGORIES' ); ?></legend>
 					<table class="admintable" cellspacing="1">
 					  <tr>
 					    <td valign="top" class="key"><?php echo JText::_( 'JEV_Categories' ); ?>: </td>

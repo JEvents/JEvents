@@ -229,7 +229,7 @@ class AdminIcalrepeatController extends JController {
 		$msg = "";
 		$rpt = $this->doSave($msg);
 		
-		global $Itemid;
+		$Itemid = JRequest::getInt("Itemid");
 		$msg = JText::_("Event Saved", true);
 		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]='.$rpt->eventid,"ICal rpt and new details saved");
@@ -257,7 +257,7 @@ class AdminIcalrepeatController extends JController {
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		global $Itemid;
+		$Itemid = JRequest::getInt("Itemid");
 		$msg = JText::_("Event Saved", true);
 		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.edit&evid=".$rpt->rp_id."&Itemid=".JEVHelper::getItemid(),$msg);
@@ -578,7 +578,7 @@ class AdminIcalrepeatController extends JController {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalrepeat.list&cid[]=".$data->eventid, "ICal Repeat deleted" );
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"ICal Repeat deleted");
 		}
@@ -601,7 +601,7 @@ class AdminIcalrepeatController extends JController {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalrepeat.list&cid[]=".$repeatdata->eventid, "ICal Repeats deleted" );
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"),"Ical Repeats Deleted");
 		}

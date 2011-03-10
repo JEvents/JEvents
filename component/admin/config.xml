@@ -201,6 +201,7 @@
 				
 		<param name="checkclashes" type="jevboolean" default="0" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" />
 		<param name="noclashes" type="jevboolean" default="0" menu="hide" label="JEV_ENSURE_NO_CLASHES" description="JEV_ENSURE_NO_CLASHES_TIP" />
+		<param name="skipreferrer" type="jevboolean" default="0" menu="hide" label="JEV_SKIP_REFERRER_CHECK" description="JEV_SKIP_REFERRER_CHECK_DESC"/>
 
 		<param name="defaultstarttime" type="text" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME" description="JEV_DEFAULT_STARTTIME_TIP"/>
 		<param name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		

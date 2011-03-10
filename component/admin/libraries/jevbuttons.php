@@ -141,7 +141,7 @@ class JButtonJevlink extends JButton
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		global $Itemid;
+		$Itemid = JRequest::getInt("Itemid");
 		$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=$task&Itemid=$Itemid");
 
 		return $link;

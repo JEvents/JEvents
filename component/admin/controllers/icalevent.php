@@ -342,7 +342,7 @@ class AdminIcaleventController extends JController {
 				//$row = $this->queryModel->getEventById($id, true, "icaldb");
 				$vevent = $this->dataModel->queryModel->getVEventById( $id);
 				if (!$vevent){
-					global $Itemid;
+					$Itemid = JRequest::getInt("Itemid");
 					JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid",false), JText::_("JEV_SORRY_UPDATED"));
 				}
 
@@ -503,7 +503,7 @@ class AdminIcaleventController extends JController {
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.list',$msg);
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -549,7 +549,7 @@ class AdminIcaleventController extends JController {
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day&Itemid=$Itemid",$msg);
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -747,7 +747,7 @@ class AdminIcaleventController extends JController {
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.list',"IcalEvent  : New published state Saved");
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 			$rettask = JRequest::getString("rettask","day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
@@ -837,7 +837,7 @@ class AdminIcaleventController extends JController {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icalevent.list", "ICal Event(s) deleted" );
 		}
 		else {
-			global $Itemid;
+			$Itemid = JRequest::getInt("Itemid");
 			list($year,$month,$day) = JEVHelper::getYMD();
 			$rettask = JRequest::getString("rettask","day.listevents");
 			$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false),"IcalEvent Deleted");
