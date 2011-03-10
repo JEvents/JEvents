@@ -135,7 +135,7 @@ function ProcessRequest(&$requestObject, $returnData){
 		$live_site = $_SERVER['HTTP_HOST'];
 		$ref_parts = parse_url($_SERVER["HTTP_REFERER"]);
 
-		if (!isset($ref_parts["host"]) || $ref_parts["host"] != $live_site ){
+		if (!isset($ref_parts["host"]) || ($ref_parts["host"] .(isset($ref_parts["port"]) ? ':' . $ref_parts["port"] : '')) != $live_site ){
 			throwerror("There was an error - missing host in referrer");
 		}
 	}
