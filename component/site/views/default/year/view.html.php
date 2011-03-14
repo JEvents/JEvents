@@ -35,10 +35,10 @@ class DefaultYear extends JEventsDefaultView
 	}
 	function getAdjacentYear($year,$month,$day, $direction=1)
 	{
-		$d1 = mktime(0,0,0,$month,$day,$year+1);
-		$day = strftime("%d",$d1);
-		$year = strftime("%Y",$d1);
-		$month = strftime("%m",$d1);
+		$d1 = JevDate::mktime(0,0,0,$month,$day,$year+1);
+		$day = JevDate::strftime("%d",$d1);
+		$year = JevDate::strftime("%Y",$d1);
+		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";

@@ -84,7 +84,7 @@ class JEventsHTML{
 	}
 
 	function buildDaySelect( $year, $month, $day, $args ){
-		$nbdays = date( 'd', mktime( 0, 0, 0, ( $month + 1 ), 0, $year ));
+		$nbdays = date( 'd', JevDate::mktime( 0, 0, 0, ( $month + 1 ), 0, $year ));
 
 		for( $a=1; $a<=$nbdays; $a++ ) { //32
 			$dys = $a;
@@ -502,7 +502,7 @@ class JEventsHTML{
 				default:
 					$event_id = rand( 1, 50 );
 					// BAR COLOR GENERATION
-					//$start_publish = mktime (0, 0, 0, date("m"),date("d"),date("Y"));
+					//$start_publish = JevDate::mktime (0, 0, 0, date("m"),date("d"),date("Y"));
 
 					//$colorgenerate = intval(($start_publish/$event_id));
 					//$bg1color = substr($colorgenerate, 5, 1);
@@ -560,7 +560,7 @@ class JEventsHTML{
 			$cfg = & JEVConfig::getInstance();
 			$format_type	= $cfg->get('com_dateformat');
 		}
-		$datestp		= ( mktime( 0, 0, 0, $month, $day, $year ));
+		$datestp		= ( JevDate::mktime( 0, 0, 0, $month, $day, $year ));
 
 		// if date format is from langauge file then do this first
 		if( $format_type == 3 ){
@@ -576,7 +576,7 @@ class JEventsHTML{
 					return JEV_CommonFunctions::jev_strftime("%A, %B %d, %Y",$datestp);
 					// Us style : Monday, July 03, 2003
 				}else{
-					//return strftime("%A, %e. %B %Y",$datestp);
+					//return JevDate::strftime("%A, %e. %B %Y",$datestp);
 					// %e not supported by windows
 					return sprintf(JEV_CommonFunctions::jev_strftime("%A, %%s. %B %Y",$datestp), intval(JEV_CommonFunctions::jev_strftime('%d', $datestp)));
 					// De style : Montag, 3. Juli 2003

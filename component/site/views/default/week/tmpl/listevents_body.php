@@ -23,7 +23,7 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 for( $d = 0; $d < 7; $d++ ){
 
 	$day_link = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">'
-	. JEV_CommonFunctions::jev_strftime("%A", mktime(3,0,0,$data['days'][$d]['week_month'], $data['days'][$d]['week_day'], $data['days'][$d]['week_year']))."<br/>"
+	. JEV_CommonFunctions::jev_strftime("%A", JevDate::mktime(3,0,0,$data['days'][$d]['week_month'], $data['days'][$d]['week_day'], $data['days'][$d]['week_year']))."<br/>"
 	. JEventsHTML::getDateFormat( $data['days'][$d]['week_year'], $data['days'][$d]['week_month'], $data['days'][$d]['week_day'], 2 ).'</a>'."\n";
 
 	if( $data['days'][$d]['today'])	$bg = 'class="ev_td_today"';

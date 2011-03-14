@@ -34,7 +34,7 @@ class jIcalEventRepeat extends jIcalEventDB{
 		else {
 			$this->_dtstart=$val;
 			$this->_unixstarttime=$val;
-			$this->_publish_up = strftime( '%Y-%m-%d %H:%M:%S',$this->getUnixStartTime());
+			$this->_publish_up = JevDate::strftime( '%Y-%m-%d %H:%M:%S',$this->getUnixStartTime());
 		}
 	}
 
@@ -43,7 +43,7 @@ class jIcalEventRepeat extends jIcalEventDB{
 		else {
 			$this->_dtend=$val;
 			$this->_unixendtime=$val;
-			$this->_publish_down = strftime( '%Y-%m-%d %H:%M:%S',$this->getUnixEndTime());
+			$this->_publish_down = JevDate::strftime( '%Y-%m-%d %H:%M:%S',$this->getUnixEndTime());
 		}
 	}
 */
@@ -72,19 +72,25 @@ class jIcalEventRepeat extends jIcalEventDB{
 		return $this->eventDaysMonth[$cellDate];
 	}
 
-	function eventOnDate($testDate){
+	function eventOnDate($testDate, $multidayTreatment = 0){
 		if (!isset($this->_startday)){
-			$this->_startday = mktime(0,0,0,$this->mup(),$this->dup(),$this->yup());
-			$this->_endday = mktime(0,0,0,$this->mdn(),$this->ddn(),$this->ydn());
+			$this->_startday = JevDate::mktime(0,0,0,$this->mup(),$this->dup(),$this->yup());
+			$this->_endday = JevDate::mktime(0,0,0,$this->mdn(),$this->ddn(),$this->ydn());
 			// if ends on midnight then testing day should ignore the second day since no one wants this event to show
 			if ($this->hdn()+$this->mindn()+$this->sdn() ==0 && $this->_startday != $this->_endday  ){
 				$this->_endday -= 86400;
 			}
 		}
 		if ($this->_startday<=$testDate && $this->_endday>=$testDate){
-			// don't show multiday suppressed events after the first day if multiday is not true
-			if (!$this->_multiday && $testDate>=($this->_startday+86400)){
+			// if only show on first day
+			if ($multidayTreatment==2 && $testDate>=($this->_startday+86400)){
 				return false;
+			}
+			// don't show multiday suppressed events after the first day if multiday is not true
+			if ($multidayTreatment==0){
+				if (!$this->_multiday && $testDate>=($this->_startday+86400)){
+					return false;
+				}
 			}
 			return true;
 		}
@@ -205,9 +211,9 @@ class jIcalEventRepeat extends jIcalEventDB{
 		return false;
 	}
 
-	function checkRepeatDay($this_currentdate){
+	function checkRepeatDay($this_currentdate, $multidayTreatment = 0){
 		//if ($this->vevent->eventOnDate($this_currentdate)) return true;
-		if ($this->eventOnDate($this_currentdate)) return true;
+		if ($this->eventOnDate($this_currentdate, $multidayTreatment)) return true;
 		return false;
 	}
 

@@ -142,10 +142,10 @@ class JEV_CommonFunctions {
 			return $eventDays;
 		}
 
-		$monthStartDate = mktime( 0,0,0, $month, 1, $year );
+		$monthStartDate = JevDate::mktime( 0,0,0, $month, 1, $year );
 		$daysInMonth = intval(date("t",$monthStartDate ));
-		$monthEndDate = mktime( 0,0,0, $month, $daysInMonth , $year );
-		$monthEndSecond = mktime( 23,59,59, $month, $daysInMonth , $year );
+		$monthEndDate = JevDate::mktime( 0,0,0, $month, $daysInMonth , $year );
+		$monthEndSecond = JevDate::mktime( 23,59,59, $month, $daysInMonth , $year );
 
 		return mosEventRepeatArrayPeriod($row, $monthStartDate, $monthEndDate, $monthEndSecond );
 	}
@@ -158,9 +158,9 @@ class JEV_CommonFunctions {
 			return $eventDays;
 		}
 
-		$dayStartDate = mktime( 0,0,0, $month, $day, $year );
-		$dayEndDate = mktime( 0,0,0, $month, $day , $year );
-		$dayEndSecond = mktime( 23,59,59, $month, $day , $year );
+		$dayStartDate = JevDate::mktime( 0,0,0, $month, $day, $year );
+		$dayEndDate = JevDate::mktime( 0,0,0, $month, $day , $year );
+		$dayEndSecond = JevDate::mktime( 23,59,59, $month, $day , $year );
 
 		// This routine will find all the event dates for the month - could make more efficient later?
 		return mosEventRepeatArrayPeriod($row, $dayStartDate, $dayEndDate, $dayEndSecond );
@@ -178,20 +178,20 @@ class JEV_CommonFunctions {
 		list($dayEnd, $monthEnd, $yearEnd) = explode(":",(date("d:m:Y",$weekEnd)));
 
 		if ($monthStart == $monthEnd) {
-			$weekEndSecond = mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
+			$weekEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
 			return mosEventRepeatArrayPeriod($row, $weekStart, $weekEnd, $weekEndSecond );
 		}
 		else {
 
 			// do end of first month to start
 			$daysInMonth = intval(date("t",$weekStart ));
-			$monthEndDate = mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
-			$monthEndSecond = mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
+			$monthEndDate = JevDate::mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
+			$monthEndSecond = JevDate::mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
 			$part1 = mosEventRepeatArrayPeriod($row, $weekStart, $monthEndDate, $monthEndSecond );
 
 			// then do start of second month
-			$part2Start = mktime( 0,0,0, $monthEnd, 1, $yearEnd );
-			$weekEndSecond = mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
+			$part2Start = JevDate::mktime( 0,0,0, $monthEnd, 1, $yearEnd );
+			$weekEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
 			$part2 = mosEventRepeatArrayPeriod($row, $part2Start, $weekEnd, $weekEndSecond );
 
 			/*
@@ -200,16 +200,16 @@ class JEV_CommonFunctions {
 
 			// do end of first month to start
 			$daysInMonth = intval(date("t",$weekStart ));
-			$tempStart = mktime( 0,0,0, $monthStart, 1 , $yearStart);
-			$monthEndDate = mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
-			$monthEndSecond = mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
+			$tempStart = JevDate::mktime( 0,0,0, $monthStart, 1 , $yearStart);
+			$monthEndDate = JevDate::mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
+			$monthEndSecond = JevDate::mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
 			$part1 = mosEventRepeatArrayPeriod($row, $tempStart, $monthEndDate, $monthEndSecond );
 
 			// then do start of second month
-			$part2Start = mktime( 0,0,0, $monthEnd, 1, $yearEnd );
+			$part2Start = JevDate::mktime( 0,0,0, $monthEnd, 1, $yearEnd );
 			$daysInMonth2 = intval(date("t",$weekEnd ));
-			$part2End = mktime( 0,0,0, $monthEnd, $daysInMonth2, $yearEnd );
-			$part2EndSecond = mktime( 23,59,59, $monthEnd, $daysInMonth2, $yearEnd );
+			$part2End = JevDate::mktime( 0,0,0, $monthEnd, $daysInMonth2, $yearEnd );
+			$part2EndSecond = JevDate::mktime( 23,59,59, $monthEnd, $daysInMonth2, $yearEnd );
 			$part2 = mosEventRepeatArrayPeriod($row, $part2Start, $part2End, $part2EndSecond);
 			*/
 			foreach ($part2 as $key=>$val){
@@ -232,7 +232,7 @@ class JEV_CommonFunctions {
 		list($dayEnd, $monthEnd, $yearEnd) = explode(":",(date("d:m:Y",$flexEnd)));
 
 		if ($monthStart == $monthEnd && $yearStart==$yearEnd) {
-			$flexEndSecond = mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
+			$flexEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
 			return mosEventRepeatArrayPeriod($row, $flexStart, $flexEnd, $flexEndSecond );
 		}
 		else {
@@ -243,10 +243,10 @@ class JEV_CommonFunctions {
 				$endMonth = 12;
 				if ($y==$yearEnd) $endMonth = $monthEnd;
 				for ($m=$startMonth;$m<=$endMonth;$m++){
-					$dateStart = mktime(0,0,0,$m,1,$y);
+					$dateStart = JevDate::mktime(0,0,0,$m,1,$y);
 					$daysInMonth = intval(date("t",$dateStart ));
-					$dateEnd = mktime(0,0,0,$m,$daysInMonth,$y);
-					$dateEndSecond = mktime(23,59,59,$m,$daysInMonth,$y);
+					$dateEnd = JevDate::mktime(0,0,0,$m,$daysInMonth,$y);
+					$dateEndSecond = JevDate::mktime(23,59,59,$m,$daysInMonth,$y);
 					$part = mosEventRepeatArrayPeriod($row, $dateStart, $dateEnd, $dateEndSecond);
 
 					foreach ($part as $key=>$val){
@@ -307,7 +307,7 @@ class JEV_CommonFunctions {
 
 
 	/**
- * Support all strftime() parameter for Window systems
+ * Support all JevDate::strftime() parameter for Window systems
  *
  * @param string $format
  * @param int $timestamp
@@ -333,7 +333,7 @@ class JEV_CommonFunctions {
 			}
 			return JEV_CompatWin::win_strftime($format, $timestamp);
 		} else {
-			return strftime($format, $timestamp);
+			return JevDate::strftime($format, $timestamp);
 		}
 
 	}

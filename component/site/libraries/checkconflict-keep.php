@@ -327,7 +327,7 @@ function simulateSaveRepeat($requestObject){
 	}
 	else $start_time			=valueIfExists($array,  "start_time","08:00");
 	$publishstart		= $data["publish_up"] . ' ' . $start_time . ':00';
-	$data["DTSTART"]	= strtotime( $publishstart );
+	$data["DTSTART"]	= JevDate::strtotime( $publishstart );
 
 	if ($data["allDayEvent"]=="on"){
 		$end_time="23:59";
@@ -338,12 +338,12 @@ function simulateSaveRepeat($requestObject){
 		$publishend		= $data["publish_down"] . ' ' . $end_time . ':00';
 	}
 
-	$data["DTEND"]		= strtotime( $publishend );
+	$data["DTEND"]		= JevDate::strtotime( $publishend );
 	// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 	list ($h,$m,$s) = explode(":",$end_time . ':00');
 	if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>$data["DTSTART"]) {
-		$publishend = strftime('%Y-%m-%d 23:59:59',($data["DTEND"]-86400));
-		$data["DTEND"]		= strtotime( $publishend );
+		$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]-86400));
+		$data["DTEND"]		= JevDate::strtotime( $publishend );
 	}
 
 	$data["X-COLOR"]	= valueIfExists($array,   "color","");
@@ -358,8 +358,8 @@ function simulateSaveRepeat($requestObject){
 	// populate rpt with data
 	$start = $data["DTSTART"];
 	$end = $data["DTEND"];
-	$rpt->startrepeat = strftime('%Y-%m-%d %H:%M:%S',$start);
-	$rpt->endrepeat = strftime('%Y-%m-%d %H:%M:%S',$end);
+	$rpt->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$start);
+	$rpt->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$end);
 
 	$rpt->duplicatecheck = md5($rpt->eventid . $start );
 	$rpt->rp_id = $rp_id;

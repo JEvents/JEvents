@@ -23,7 +23,7 @@ class JEventDate {
 	var $dim	= null;
 
 	function JEventDate( $datetime='' ) {
-		$time = strtotime($datetime);
+		$time = JevDate::strtotime($datetime);
 		if ($datetime!="" && $time!==false){
 			$this->date = $time;
 			$parts = explode(":",date("Y:m:j:G:i:s:t",$this->date));
@@ -52,7 +52,7 @@ class JEventDate {
 	}
 
 	function setDate( $year=0, $month=0, $day=0 ) {
-		$this->date = mktime(0,0,0,$month,$day,$year);
+		$this->date = JevDate::mktime(0,0,0,$month,$day,$year);
 		$parts = explode(":",date("Y:m:j:G:i:s:t",$this->date));
 
 		$this->year   = intval($parts[0]);
@@ -119,7 +119,7 @@ class JEventDate {
 			}
 		}
 		;
-		return intval(date("t",mktime(0,0,0,$month,1,$year)));
+		return intval(date("t",JevDate::mktime(0,0,0,$month,1,$year)));
 	}
 
 	/**
@@ -128,8 +128,8 @@ class JEventDate {
     */
 	function addMonths( $n=0 ) {
 		// correct for months where number of days is shorter than source month)
-		$dim = intval(date("t",mktime(0,0,0,$this->month+$n,1,$this->year)));
-		$this->date = mktime($this->hour,$this->minute,$this->second,$this->month+$n,min($this->day,$dim),$this->year);
+		$dim = intval(date("t",JevDate::mktime(0,0,0,$this->month+$n,1,$this->year)));
+		$this->date = JevDate::mktime($this->hour,$this->minute,$this->second,$this->month+$n,min($this->day,$dim),$this->year);
 		$parts = explode(":",date("Y:m:j:G:i:s:t",$this->date));
 
 		$this->year   = intval($parts[0]);
@@ -140,7 +140,7 @@ class JEventDate {
 	}
 
 	function addDays( $n=0 ) {
-		$this->date = mktime($this->hour,$this->minute,$this->second,$this->month,$this->day+$n,$this->year);
+		$this->date = JevDate::mktime($this->hour,$this->minute,$this->second,$this->month,$this->day+$n,$this->year);
 		$parts = explode(":",date("Y:m:j:G:i:s:t",$this->date));
 
 		$this->year   = intval($parts[0]);

@@ -94,7 +94,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 
                 		case "current":
                 			//Current month
-                			$dayOfWeek = strftime("%w",$currentDay["cellDate"]);
+                			$dayOfWeek = JevDate::strftime("%w",$currentDay["cellDate"]);
                 			$style=($dayOfWeek==0)?"sundayemptyclr":"weekdayclr";
                 			if ($currentDay['today']) $style="todayclr"
 					?>

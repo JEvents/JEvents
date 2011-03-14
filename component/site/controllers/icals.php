@@ -295,7 +295,7 @@ class ICalsController extends AdminIcalsController
 					// in case the first repeat has been changed
 					if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
 					{
-						$start = strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
+						$start = JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
 					}
 
 					// Change timezone to UTC
@@ -319,10 +319,10 @@ class ICalsController extends AdminIcalsController
 						$endformat = "%Y%m%dT%H%M%SZ";
 					}
 
-					$start = strftime($startformat, $start);
-					$end = strftime($endformat, $end);
+					$start = JevDate::strftime($startformat, $start);
+					$end = JevDate::strftime($endformat, $end);
 
-					$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+					$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 
 					// Change back
 					date_default_timezone_set($current_timezone);
@@ -349,14 +349,14 @@ class ICalsController extends AdminIcalsController
 						$endformat = "%Y%m%dT%H%M%S";
 					}
 
-					$start = strftime($startformat, $start);
-					$end = strftime($endformat, $end);
-					$stamptime = strftime("%Y%m%dT%H%M%S", time());
+					$start = JevDate::strftime($startformat, $start);
+					$end = JevDate::strftime($endformat, $end);
+					$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 
 					// in case the first repeat is changed
 					if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
 					{
-						$start = strftime($startformat, strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
+						$start = JevDate::strftime($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
 				}
 				}
 
@@ -376,7 +376,7 @@ class ICalsController extends AdminIcalsController
 					echo 'FREQ=' . $a->_freq;
 					if ($a->_until != "" && $a->_until != 0)
 					{
-						echo ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+						echo ';UNTIL=' . JevDate::strftime("%Y%m%dT235959Z", $a->_until);
 					}
 					else if ($a->_count != "")
 					{
@@ -432,7 +432,7 @@ class ICalsController extends AdminIcalsController
 					{
 						if ($exception->exception_type == 0)
 						{
-							$exceptiondate = strtotime($exception->startrepeat);
+							$exceptiondate = JevDate::strtotime($exception->startrepeat);
 				
 							// No doing true timezones!
 							if ($tzid=="" && is_callable("date_default_timezone_set"))
@@ -442,14 +442,14 @@ class ICalsController extends AdminIcalsController
 								$current_timezone = date_default_timezone_get();
 								date_default_timezone_set("UTC");
 
-								$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
 
 								// Change back
 								date_default_timezone_set($current_timezone);
 							}
 							else
 							{
-								$deletes[] = strftime("%Y%m%dT%H%M%S", $exceptiondate);
+								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
 							}
 						}
 						else
@@ -496,7 +496,7 @@ class ICalsController extends AdminIcalsController
 								echo "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); echo "\n";
 
 							$exception = $changedexceptions[$rpid];
-							$originalstart = strtotime($exception->oldstartrepeat);
+							$originalstart = JevDate::strtotime($exception->oldstartrepeat);
 								$chstart = $a->getUnixStartTime();
 							$chend = $a->getUnixEndTime();
 
@@ -508,19 +508,19 @@ class ICalsController extends AdminIcalsController
 								$current_timezone = date_default_timezone_get();
 								date_default_timezone_set("UTC");
 
-								$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
-								$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-								$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
-								$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
+								$chstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $chstart);
+								$chend = JevDate::strftime("%Y%m%dT%H%M%SZ", $chend);
+								$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+								$originalstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $originalstart);
 								// Change back
 								date_default_timezone_set($current_timezone);
 							}
 							else
 							{
-								$chstart = strftime("%Y%m%dT%H%M%S", $chstart);
-								$chend = strftime("%Y%m%dT%H%M%S", $chend);
-								$stamptime = strftime("%Y%m%dT%H%M%S", time());
-								$originalstart = strftime("%Y%m%dT%H%M%S", $originalstart);
+								$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
+								$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
+								$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+								$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 							}
 							echo "DTSTAMP$tzid:" . $stamptime . "\n";
 							echo "DTSTART$tzid:" . $chstart . "\n";
@@ -837,7 +837,7 @@ class ICalsController extends AdminIcalsController
 				// in case the first repeat has been changed
 				if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
 				{
-					$start = strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
+					$start = JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
 			}
 				// Change timezone to UTC
 				$current_timezone = date_default_timezone_get();
@@ -861,10 +861,10 @@ class ICalsController extends AdminIcalsController
 					$endformat = "%Y%m%dT%H%M%SZ";
 			}
 
-				$start = strftime($startformat, $start);
-				$end = strftime($endformat, $end);
+				$start = JevDate::strftime($startformat, $start);
+				$end = JevDate::strftime($endformat, $end);
 
-				$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 
 				// Change back
 				date_default_timezone_set($current_timezone);
@@ -888,16 +888,16 @@ class ICalsController extends AdminIcalsController
 					$endformat = "%Y%m%dT%H%M%S";
 				}
 
-				$start = strftime($startformat, $a->getUnixStartTime());
-				$end = strftime($endformat, $a->getUnixEndTime());
+				$start = JevDate::strftime($startformat, $a->getUnixStartTime());
+				$end = JevDate::strftime($endformat, $a->getUnixEndTime());
 
 				// in case the first repeat is changed
 				if (array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
 				{
-					$start = strftime($startformat, strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
+					$start = JevDate::strftime($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
 				}
 
-				$stamptime = strftime("%Y%m%dT%H%M%S", time());
+				$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 				}
 
 			echo "DTSTAMP$tzid:" . $stamptime . "\n";
@@ -912,7 +912,7 @@ class ICalsController extends AdminIcalsController
 				echo 'FREQ=' . $a->_freq;
 				if ($a->_until != "" && $a->_until != 0)
 				{
-					echo ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+					echo ';UNTIL=' . JevDate::strftime("%Y%m%dT235959Z", $a->_until);
 				}
 				else if ($a->_count != "")
 				{
@@ -969,7 +969,7 @@ class ICalsController extends AdminIcalsController
 					{
 						if ($exception->exception_type == 0)
 						{
-							$exceptiondate = strtotime($exception->startrepeat);
+							$exceptiondate = JevDate::strtotime($exception->startrepeat);
 							// No doing true timezones!
 							if ($tzid=="" && is_callable("date_default_timezone_set"))
 							{
@@ -977,14 +977,14 @@ class ICalsController extends AdminIcalsController
 								$current_timezone = date_default_timezone_get();
 								date_default_timezone_set("UTC");
 
-								$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
 
 								// Change back
 								date_default_timezone_set($current_timezone);
 							}
 							else
 							{
-								$deletes[] = strftime("%Y%m%dT%H%M%S", $exceptiondate);
+								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
 							}
 						}
 						else
@@ -1029,7 +1029,7 @@ class ICalsController extends AdminIcalsController
 								echo "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); echo "\n";
 
 							$exception = $changedexceptions[$rpid];
-							$originalstart = strtotime($exception->oldstartrepeat);
+							$originalstart = JevDate::strtotime($exception->oldstartrepeat);
 							$chstart = $a->getUnixStartTime();
 							$chend = $a->getUnixEndTime();
 
@@ -1041,19 +1041,19 @@ class ICalsController extends AdminIcalsController
 								$current_timezone = date_default_timezone_get();
 								date_default_timezone_set("UTC");
 
-								$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
-								$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-								$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
-								$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
+								$chstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $chstart);
+								$chend = JevDate::strftime("%Y%m%dT%H%M%SZ", $chend);
+								$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+								$originalstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $originalstart);
 								// Change back
 								date_default_timezone_set($current_timezone);
 							}
 							else
 							{
-								$chstart = strftime("%Y%m%dT%H%M%S", $chstart);
-								$chend = strftime("%Y%m%dT%H%M%S", $chend);
-								$stamptime = strftime("%Y%m%dT%H%M%S", time());
-								$originalstart = strftime("%Y%m%dT%H%M%S", $originalstart);
+								$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
+								$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
+								$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+								$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 							}
 							echo "DTSTAMP$tzid:" . $stamptime . "\n";
 							echo "DTSTART$tzid:" . $chstart . "\n";
@@ -1214,7 +1214,7 @@ class ICalsController extends AdminIcalsController
 					$transitions = $timezone->getTransitions();
 				}
 				$tzindex = 0;
-				while (strtotime($transitions[$tzindex]['time']) < $firststart)
+				while (JevDate::strtotime($transitions[$tzindex]['time']) < $firststart)
 				{
 					$tzindex++;
 				}
@@ -1229,13 +1229,13 @@ class ICalsController extends AdminIcalsController
 						$transition = $transitions[$t];
 						if ($transition['isdst'] == 0)
 						{
-							if (strftime("%Y", $transition['ts']) > $lastyear)
+							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;
 							echo "BEGIN:STANDARD\n";
-							echo "DTSTART:" . strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
+							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
 							if ($t < count($transitions) - 1)
 							{
-								echo "RDATE:" . strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
+								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
 							}
 							// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 							$prev = $t;
@@ -1261,13 +1261,13 @@ class ICalsController extends AdminIcalsController
 						$transition = $transitions[$t];
 						if ($transition['isdst'] == 1)
 						{
-							if (strftime("%Y", $transition['ts']) > $lastyear)
+							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;
 							echo "BEGIN:DAYLIGHT\n";
-							echo "DTSTART:" . strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
+							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
 							if ($t < count($transitions) - 1)
 							{
-								echo "RDATE:" . strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
+								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
 							}
 							// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 							$prev = $t;

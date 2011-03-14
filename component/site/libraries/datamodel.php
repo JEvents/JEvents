@@ -200,8 +200,8 @@ class JEventsDataModel {
 
 		$data["dates"]=array();
 		//Start days
-		$start = (( date( 'w', mktime( 0, 0, 0, $month, 1, $year )) - $startday + 7 ) % 7 );
-		$base = date( 't', mktime( 0, 0, 0, $month, 0, $year ));
+		$start = (( date( 'w', JevDate::mktime( 0, 0, 0, $month, 1, $year )) - $startday + 7 ) % 7 );
+		$base = date( 't', JevDate::mktime( 0, 0, 0, $month, 0, $year ));
 		$dayCount=0;
 		$priorMonth = $month-1;
 		$priorYear = $year;
@@ -232,7 +232,7 @@ class JEventsDataModel {
 				$data["dates"][$dayCount]["events"]=array();
 			}
 
-			$cellDate		= mktime (0, 0, 0, $priorMonth, $d, $priorYear);
+			$cellDate		= JevDate::mktime (0, 0, 0, $priorMonth, $d, $priorYear);
 			$data["dates"][$dayCount]['cellDate']=$cellDate;
 
 			$data["dates"][$dayCount]["today"]=false;
@@ -246,7 +246,7 @@ class JEventsDataModel {
 		sort($data["dates"]);
 
 		//Current month
-		$end = date( 't', mktime( 0, 0, 0,( $month + 1 ), 0, $year ));
+		$end = date( 't', JevDate::mktime( 0, 0, 0,( $month + 1 ), 0, $year ));
 		for( $d = 1; $d <= $end; $d++ ){
 			$data["dates"][$dayCount]=array();
 			// utility field used to keep track of events displayed in a day!
@@ -263,9 +263,9 @@ class JEventsDataModel {
 			}
 			$t_datenow = JEVHelper::getNow();
 			$now_adjusted = $t_datenow->toUnix(true);
-			if( $month == strftime( '%m', $now_adjusted)
-			&& $year == strftime( '%Y', $now_adjusted)
-			&& $d == strftime( '%d', $now_adjusted)) {
+			if( $month == JevDate::strftime( '%m', $now_adjusted)
+			&& $year == JevDate::strftime( '%Y', $now_adjusted)
+			&& $d == JevDate::strftime( '%d', $now_adjusted)) {
 				$data["dates"][$dayCount]["today"]=true;
 			}else{
 				$data["dates"][$dayCount]["today"]=false;
@@ -284,7 +284,7 @@ class JEventsDataModel {
 			. $year . '&month=' . $month . '&day=' . $do .$cat. '&Itemid=' . $this->myItemid );
 			$data["dates"][$dayCount]["link"]=$link;
 
-			$cellDate		= mktime (0, 0, 0, $month, $d, $year);
+			$cellDate		= JevDate::mktime (0, 0, 0, $month, $d, $year);
 			$data["dates"][$dayCount]['cellDate']=$cellDate;
 			//$data["dates"][$dayCount]['events'] = array();
 
@@ -314,7 +314,7 @@ class JEventsDataModel {
 			$dayCount++;
 		}
 
-		$days 	= ( 7 - date( 'w', mktime( 0, 0, 0, $month + 1, 1, $year )) + $startday ) %7;
+		$days 	= ( 7 - date( 'w', JevDate::mktime( 0, 0, 0, $month + 1, 1, $year )) + $startday ) %7;
 		$d		= 1;
 
 		$followMonth = $month+1;
@@ -347,7 +347,7 @@ class JEventsDataModel {
 				$data["dates"][$dayCount]["events"]=array();
 			}
 
-			$cellDate		= mktime (0, 0, 0, $followMonth, $d, $followYear);
+			$cellDate		= JevDate::mktime (0, 0, 0, $followMonth, $d, $followYear);
 			$data["dates"][$dayCount]['cellDate']=$cellDate;
 
 			$data["dates"][$dayCount]["today"]=false;
@@ -492,22 +492,22 @@ class JEventsDataModel {
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
 		$data = array();
-		$indate = mktime( 0, 0, 0, $month, $day, $year) ;
+		$indate = JevDate::mktime( 0, 0, 0, $month, $day, $year) ;
 		$startday 	= $cfg->get('com_starday', 0);
 		$numday		= (( date( 'w', $indate) - $startday + 7) %7 );
 
-		$week_start = mktime( 0, 0, 0, $month, ( $day - $numday ), $year );
-		$week_end = mktime( 0, 0, 0, $month, ( $day - $numday )+6, $year ); // + 6 for inclusinve week
+		$week_start = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday ), $year );
+		$week_end = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday )+6, $year ); // + 6 for inclusinve week
 
-		$rows = $this->queryModel->listEventsByWeekNEW(strftime("%Y-%m-%d",$week_start),strftime("%Y-%m-%d",$week_end));
+		$rows = $this->queryModel->listEventsByWeekNEW(JevDate::strftime("%Y-%m-%d",$week_start),JevDate::strftime("%Y-%m-%d",$week_end));
 
 		$icalrows = $this->queryModel->listIcalEventsByWeek( $week_start, $week_end);
 
 		$rows = array_merge($icalrows,$rows);
 		$rowcount = count( $rows );
 
-		$data['startdate']	= JEventsHTML::getDateFormat( strftime("%Y",$week_start), strftime("%m",$week_start), strftime("%d",$week_start), 1 );
-		$data['enddate']	= JEventsHTML::getDateFormat( strftime("%Y",$week_end), strftime("%m",$week_end), strftime("%d",$week_end), 1 );
+		$data['startdate']	= JEventsHTML::getDateFormat( JevDate::strftime("%Y",$week_start), JevDate::strftime("%m",$week_start), JevDate::strftime("%d",$week_start), 1 );
+		$data['enddate']	= JEventsHTML::getDateFormat( JevDate::strftime("%Y",$week_end), JevDate::strftime("%m",$week_end), JevDate::strftime("%d",$week_end), 1 );
 
 		$data['days'] = array();
 
@@ -515,18 +515,18 @@ class JEventsDataModel {
 			$data['days'][$d] = array();
 			$data['days'][$d]['rows'] = array();
 
-			$this_currentdate = mktime( 0, 0, 0, $month, ( $day - $numday + $d ), $year );
+			$this_currentdate = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday + $d ), $year );
 
-			$data['days'][$d]['week_day'] = strftime("%d",$this_currentdate);
-			$data['days'][$d]['week_month'] = strftime("%m",$this_currentdate);
-			$data['days'][$d]['week_year'] = strftime("%Y",$this_currentdate);
+			$data['days'][$d]['week_day'] = JevDate::strftime("%d",$this_currentdate);
+			$data['days'][$d]['week_month'] = JevDate::strftime("%m",$this_currentdate);
+			$data['days'][$d]['week_year'] = JevDate::strftime("%Y",$this_currentdate);
 
 			// This is really view specific - remove it later
 			$data['days'][$d]['link']= JRoute::_( 'index.php?option='.JEV_COM_COMPONENT.'&task=day.listevents&year='.$data['days'][$d]['week_year'].'&month='.$data['days'][$d]['week_month'].'&day='.$data['days'][$d]['week_day'].'&Itemid='.$Itemid . $cat);
 
 			$t_datenow = JEVHelper::getNow();
 			$now_adjusted = $t_datenow->toUnix(true);
-			if( strftime('%Y-%m-%d',$this_currentdate) == strftime('%Y-%m-%d', $now_adjusted ))
+			if( JevDate::strftime('%Y-%m-%d',$this_currentdate) == JevDate::strftime('%Y-%m-%d', $now_adjusted ))
 			{
 				$data['days'][$d]['today']=true;
 				$data['days']['today']=$d;
@@ -617,8 +617,8 @@ class JEventsDataModel {
 
 		$data = array();
 
-		$target_date = mktime(0,0,0,$month,$day,$year);
-		$rows	= $this->queryModel->listEventsByDateNEW( strftime("%Y-%m-%d",$target_date ));
+		$target_date = JevDate::mktime(0,0,0,$month,$day,$year);
+		$rows	= $this->queryModel->listEventsByDateNEW( JevDate::strftime("%Y-%m-%d",$target_date ));
 		$icalrows = $this->queryModel->listIcalEventsByDay($target_date);
 
 		$rows = array_merge($icalrows,$rows);
@@ -926,9 +926,9 @@ class JEventsDataModel {
 
 				$t_datenow = JEVHelper::getNow();
 				$now_adjusted = $t_datenow->toUnix(true);
-				if( $row->mup() == strftime( '%m', $now_adjusted)	&&
-				$row->yup() == strftime( '%Y', $now_adjusted )&&
-				$row->dup() == strftime( '%d', $now_adjusted))
+				if( $row->mup() == JevDate::strftime( '%m', $now_adjusted)	&&
+				$row->yup() == JevDate::strftime( '%Y', $now_adjusted )&&
+				$row->dup() == JevDate::strftime( '%d', $now_adjusted))
 				{
 					$row->today=true;
 				}
@@ -1000,12 +1000,12 @@ class JEventsDataModel {
 	{
 		$cfg = & JEVConfig::getInstance();
 		$monthResult = array();
-		$d1 = mktime(0,0,0,intval($data['month'])+$direction,1,$data['year']);
+		$d1 = JevDate::mktime(0,0,0,intval($data['month'])+$direction,1,$data['year']);
 		$monthResult['day1'] = $d1;
 		$monthResult['lastday'] = date("t",$d1);
-		$year = strftime("%Y",$d1);
+		$year = JevDate::strftime("%Y",$d1);
 		$monthResult['year'] = $year;
-		$month = strftime("%m",$d1);
+		$month = JevDate::strftime("%m",$d1);
 		$monthResult['month'] = $month;
 		$monthResult['name'] = JEVHelper::getMonthName($month);
 		$task = JRequest::getString('jevtask');
@@ -1029,10 +1029,10 @@ class JEventsDataModel {
 
 	function getAdjacentWeek($year,$month,$day, $direction=1)
 	{
-		$d1 = mktime(0,0,0,$month,$day+$direction*7,$year);
-		$day = strftime("%d",$d1);
-		$year = strftime("%Y",$d1);
-		$month = strftime("%m",$d1);
+		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction*7,$year);
+		$day = JevDate::strftime("%d",$d1);
+		$year = JevDate::strftime("%Y",$d1);
+		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
@@ -1051,10 +1051,10 @@ class JEventsDataModel {
 	}
 	function getAdjacentDay($year,$month,$day, $direction=1)
 	{
-		$d1 = mktime(0,0,0,$month,$day+$direction,$year);
-		$day = strftime("%d",$d1);
-		$year = strftime("%Y",$d1);
-		$month = strftime("%m",$d1);
+		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction,$year);
+		$day = JevDate::strftime("%d",$d1);
+		$year = JevDate::strftime("%Y",$d1);
+		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";

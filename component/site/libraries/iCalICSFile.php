@@ -73,7 +73,7 @@ class iCalICSFile extends JTable  {
 		$temp->_setup($icsid,$catid,$access,$state);
 		$temp->filename="_from_scratch_";
 		$temp->icaltype=2;
-		$temp->label = empty($label) ? 'Scratch-'.md5(mktime()) : $label;
+		$temp->label = empty($label) ? 'Scratch-'.md5(JevDate::mktime()) : $label;
 		$temp->srcURL ="";
 
 		$rawText = <<<RAWTEXT

@@ -14,7 +14,7 @@ if (JVersion::isCompatible("1.6.0"))
 		/**
 		 * Constructor.
 		 *
-		 * @param	string	String in a format accepted by strtotime(), defaults to "now".
+		 * @param	string	String in a format accepted by JevDate::strtotime(), defaults to "now".
 		 * @param	mixed	Time zone to be used for the date.
 		 * @return	void
 		 * @since	1.5
@@ -80,14 +80,14 @@ if (JVersion::isCompatible("1.6.0"))
 		 *
 		 * @deprecated	Deprecated since 1.6, use JDate::format() instead.
 		 *
-		 * @param	string	The date format specification string (see {@link PHP_MANUAL#strftime})
+		 * @param	string	The date format specification string (see {@link PHP_MANUAL#JevDate::strftime})
 		 * @param	boolean	True to return the date string in the local time zone, false to return it in GMT.
 		 * @return	string	The date as a formatted string.
 		 * @since	1.5
 		 */
 		public function toFormat($format = '%Y-%m-%d %H:%M:%S', $local = false)
 		{
-			// Set time zone to GMT as strftime formats according locale setting.
+			// Set time zone to GMT as JevDate::strftime formats according locale setting.
 			date_default_timezone_set('GMT');
 
 			// Generate the timestamp.
@@ -118,7 +118,7 @@ if (JVersion::isCompatible("1.6.0"))
 			}
 
 			// Generate the formatted string.
-			$date = strftime($format, $time);
+			$date = JevDate::strftime($format, $time);
 
 			// reset the timezone !!
 			date_default_timezone_set(self::$stz->getName());
@@ -157,6 +157,63 @@ if (JVersion::isCompatible("1.6.0"))
 
 		}
 
+
+		public static function strtotime($time, $now=null){
+			static $date;
+			if (!isset($date)){
+				$date = new JevDate();
+			}
+			// reset the timezone !!
+			date_default_timezone_set($date::$stz->getName());
+			return strtotime($time, $now);
+		}
+
+		public static function mktime(){
+			static $date;
+			if (!isset($date)){
+				$date = new JevDate();
+			}
+			// reset the timezone !!
+			date_default_timezone_set($date::$stz->getName());
+			$arg = func_get_args();
+
+			$name ="mktime";
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
+
+		public static function strftime(){
+			static $date;
+			if (!isset($date)){
+				$date = new JevDate();
+			}
+			// reset the timezone !!
+			date_default_timezone_set($date::$stz->getName());
+			$arg = func_get_args();
+
+			$name ="strftime";
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
+
+		public function __call($name, $arguments){
+			static $date;
+			if (!isset($date)){
+				$date = new JevDate();
+			}
+			// reset the timezone !!
+			date_default_timezone_set($date::$stz->getName());
+			$args = array_unshift($arguments,$this);
+
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
+		
+
+		
 	}
 
 }
@@ -167,5 +224,15 @@ else
 		public function getDate($time = 'now', $tzOffset = null) {
 			return JFactory::getDate($time,$tzOffset);
 		}
+
+
+		public function __call($name, $arguments){
+			$args = array_unshift($arguments,$this);
+
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
+
 	}
 }

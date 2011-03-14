@@ -249,7 +249,7 @@ class JEVHelper {
 		// if date format is from langauge file then do this first
 		if( $format_type == 3 ){
 			if ($h>=0 && $m>=0){
-				$time = mktime($h,$m);
+				$time = JevDate::mktime($h,$m);
 				return JEV_CommonFunctions::jev_strftime(JText::_("TIME_FORMAT"),$time);
 			}
 			else {
@@ -262,14 +262,14 @@ class JEVHelper {
 				return sprintf( '%02d:%02d', $h,$m);
 			}
 			else {
-				return strftime("%H:%M",$date);
+				return JevDate::strftime("%H:%M",$date);
 			}
 		}
 		else if (JUtility::isWinOS()){
-			return strftime("%#I:%M%p",$date);
+			return JevDate::strftime("%#I:%M%p",$date);
 		}
 		else {
-			return strtolower(strftime("%I:%M%p",$date));
+			return strtolower(JevDate::strftime("%I:%M%p",$date));
 		}
 	}
 
@@ -332,13 +332,13 @@ class JEVHelper {
 				return;
 			}
 			list($cyear, $cmonth, $cday) = JEVHelper::getYMD();
-			$cdate = mktime(0,0,0,$cmonth, $cday, $cyear);
-			$prior = strtotime($cfg->get('robotprior', "-1 day"));
+			$cdate = JevDate::mktime(0,0,0,$cmonth, $cday, $cyear);
+			$prior = JevDate::strtotime($cfg->get('robotprior', "-1 day"));
 			if ($cdate<$prior){
 				$document->setMetaData( $name, $content );
 				return;
 			}
-			$post =  strtotime($cfg->get('robotpost', "-1 day"));
+			$post =  JevDate::strtotime($cfg->get('robotpost', "-1 day"));
 			if ($cdate>$post){
 				$document->setMetaData( $name, $content );
 				return;

@@ -28,7 +28,7 @@ echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
 
     		$event_day_month_year 	= $row->dup() . $row->mup() . $row->yup();
     		// Ensure we reflect multiday setting
-    		if (!$row->eventOnDate(mktime(0,0,0,$row->mup(),$row->dup(),$row->yup()))) continue;
+    		if (!$row->eventOnDate(JevDate::mktime(0,0,0,$row->mup(),$row->dup(),$row->yup()))) continue;
 
     		if(( $event_day_month_year <> $chdate ) && $chdate <> '' ){
     			echo '</ul></td></tr>' . "\n";

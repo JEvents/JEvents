@@ -64,9 +64,9 @@ function JEventsBuildRoute(&$query)
 				$t_datenow = JEVHelper::getNow();
 
 				// if no date in the query then use TODAY not the calendar date
-				$nowyear	= strftime( '%Y', $t_datenow->toUnix(true));
-				$nowmonth	= strftime( '%m', $t_datenow->toUnix(true));
-				$nowday	= strftime( '%d', $t_datenow->toUnix(true));
+				$nowyear	= JevDate::strftime( '%Y', $t_datenow->toUnix(true));
+				$nowmonth	= JevDate::strftime( '%m', $t_datenow->toUnix(true));
+				$nowday	= JevDate::strftime( '%d', $t_datenow->toUnix(true));
 				/*
 				$year	= intval( JRequest::getVar( 'year',	 $nowyear ));
 				$month	= intval( JRequest::getVar( 'month', $nowmonth ));

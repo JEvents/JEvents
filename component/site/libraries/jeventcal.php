@@ -66,7 +66,7 @@ class jEventCal {
 
 	function startDate(){
 		if (!isset($this->_startdate)){
-			$this->_startdate=strftime("%Y-%m-%d",$this->getUnixStartDate());
+			$this->_startdate=JevDate::strftime("%Y-%m-%d",$this->getUnixStartDate());
 		}
 		return $this->_startdate;
 		//return $this->_publish_up;
@@ -74,7 +74,7 @@ class jEventCal {
 
 	function endDate(){
 		if (!isset($this->_enddate)){
-			$this->_enddate=strftime("%Y-%m-%d",$this->getUnixEndDate());
+			$this->_enddate=JevDate::strftime("%Y-%m-%d",$this->getUnixEndDate());
 		}
 		return $this->_enddate;
 		//return $this->_publish_down;
@@ -198,28 +198,28 @@ class jEventCal {
 
 	function getUnixStartDate() {
 		if (!isset($this->_unixstartdate)){
-			$this->_unixstartdate=mktime( 0, 0, 0, $this->mup(), $this->dup(), $this->yup() );
+			$this->_unixstartdate=JevDate::mktime( 0, 0, 0, $this->mup(), $this->dup(), $this->yup() );
 		}
 		return $this->_unixstartdate;
 	}
 
 	function getUnixEndDate() {
 		if (!isset($this->_unixenddate)){
-			$this->_unixenddate=mktime( 0, 0, 0, $this->mdn(), $this->ddn(), $this->ydn() );
+			$this->_unixenddate=JevDate::mktime( 0, 0, 0, $this->mdn(), $this->ddn(), $this->ydn() );
 		}
 		return $this->_unixenddate;
 	}
 
 	function getUnixStartTime() {
 		if (!isset($this->_unixstarttime)){
-			$this->_unixstarttime=mktime( $this->hup(),$this->minup(), $this->sup(), $this->mup(), $this->dup(), $this->yup() );
+			$this->_unixstarttime=JevDate::mktime( $this->hup(),$this->minup(), $this->sup(), $this->mup(), $this->dup(), $this->yup() );
 		}
 		return $this->_unixstarttime;
 	}
 
 	function getUnixEndTime() {
 		if (!isset($this->_unixendtime)){
-			$this->_unixendtime=mktime( $this->hdn(),$this->mindn(), $this->sdn(), $this->mdn(), $this->ddn(), $this->ydn() );
+			$this->_unixendtime=JevDate::mktime( $this->hdn(),$this->mindn(), $this->sdn(), $this->mdn(), $this->ddn(), $this->ydn() );
 		}
 		return $this->_unixendtime;
 	}
@@ -320,10 +320,10 @@ class jEventCal {
 				return false;
 			}
 
-			$monthStartDate = mktime( 0,0,0, $month, 1, $year );
+			$monthStartDate = JevDate::mktime( 0,0,0, $month, 1, $year );
 			$daysInMonth = intval(date("t",$monthStartDate ));
-			$monthEndDate = mktime( 0,0,0, $month, $daysInMonth , $year );
-			$monthEndSecond = mktime( 23,59,59, $month, $daysInMonth , $year );
+			$monthEndDate = JevDate::mktime( 0,0,0, $month, $daysInMonth , $year );
+			$monthEndSecond = JevDate::mktime( 23,59,59, $month, $daysInMonth , $year );
 
 			$this->eventDaysMonth =  $this->getRepeatArray($monthStartDate, $monthEndDate, $monthEndSecond);
 		}
@@ -341,8 +341,8 @@ class jEventCal {
 				return false;
 			}
 
-			list($y,$m,$d) = explode(":",strftime("%Y:%m:%d",$week_end));
-			$weekEndSecond = mktime( 23,59,59, $m, $d , $y);
+			list($y,$m,$d) = explode(":",JevDate::strftime("%Y:%m:%d",$week_end));
+			$weekEndSecond = JevDate::mktime( 23,59,59, $m, $d , $y);
 
 			$this->eventDaysWeek =  $this->getRepeatArray($week_start, $week_end, $weekEndSecond);
 		}
@@ -351,8 +351,8 @@ class jEventCal {
 
 	function checkRepeatDay($this_currentdate){
 
-		list($y,$m,$d) = explode(":",strftime("%Y:%m:%d",$this_currentdate));
-		$dayEndSecond = mktime( 23,59,59, $m, $d , $y);
+		list($y,$m,$d) = explode(":",JevDate::strftime("%Y:%m:%d",$this_currentdate));
+		$dayEndSecond = JevDate::mktime( 23,59,59, $m, $d , $y);
 
 		$this->eventDaysDay =  $this->getRepeatArray($this_currentdate, $this_currentdate, $dayEndSecond);
 		return (array_key_exists($this_currentdate,$this->eventDaysDay));
@@ -365,8 +365,8 @@ class jEventCal {
 		return false;
 		}
 
-		list($y,$m,$d) = explode(":",strftime("%Y:%m:%d",$this_currentdate));
-		$dayEndSecond = mktime( 23,59,59, $m, $d , $y);
+		list($y,$m,$d) = explode(":",JevDate::strftime("%Y:%m:%d",$this_currentdate));
+		$dayEndSecond = JevDate::mktime( 23,59,59, $m, $d , $y);
 
 		$this->eventDaysDay =  $this->getRepeatArray($this_currentdate, $this_currentdate, $dayEndSecond);
 		}
@@ -381,8 +381,8 @@ class jEventCal {
 		$eventDays = array();
 
 		// double check the SQL has given us valid events
-		$event_start_date = mktime( 0,0,0,  $this->_mup, $this->_dup, $this->_yup );
-		$event_end_date = mktime( 0,0,0,  $this->_mdn, $this->_ddn, $this->_ydn );
+		$event_start_date = JevDate::mktime( 0,0,0,  $this->_mup, $this->_dup, $this->_yup );
+		$event_end_date = JevDate::mktime( 0,0,0,  $this->_mdn, $this->_ddn, $this->_ydn );
 		if ($event_end_date<$startPeriod || $event_start_date>$periodEndSecond) return  $eventDays;
 
 		$daysInMonth = intval(date("t",$startPeriod ));
@@ -422,7 +422,7 @@ class jEventCal {
 				else $lastDay = intval(date("j",$event_end_date));
 
 				for ($d=$firstDay;$d<=$lastDay;$d++) {
-					$eventDate = mktime( 0,0,0, $month , $d, $year);
+					$eventDate = JevDate::mktime( 0,0,0, $month , $d, $year);
 					// treat midnight as a special case - we don't mark following day as having the event
 					if ($d==$lastDay && $endsMidnight) continue;
 					$eventDays[$eventDate]=true;
@@ -471,13 +471,13 @@ class jEventCal {
 			for ($i=0;$i<$countdays;$i++){
 				// This is first, second week etc of the months
 				if (count($repeatweeks)>0){
-					$daynum_of_first_in_month = intval(date( 'w', mktime( 0, 0, 0, $month, 1, $year )));
+					$daynum_of_first_in_month = intval(date( 'w', JevDate::mktime( 0, 0, 0, $month, 1, $year )));
 					$adjustment = 1 + (7+$reccurweekdays[$i]-$daynum_of_first_in_month)%7;
 					// Now find repeat weeks for the month
 					foreach ($repeatweeks as $weeknum) {
 						// first $reccurweekdays[$i] in the month is therefore
 						$next_recurweekday = ($adjustment + ($weeknum-1)*7);
-						$nextDate = mktime( 0, 0, 0, $month, $next_recurweekday, $year );
+						$nextDate = JevDate::mktime( 0, 0, 0, $month, $next_recurweekday, $year );
 						if ($nextDate>=$event_start_date && $nextDate<=$event_end_date)	$eventDays[$nextDate]=true;
 					}
 				}
@@ -493,7 +493,7 @@ class jEventCal {
 
 					$adjustedStartDay = $event_start_day + (7+$true_start_day_of_week_for_sequence - $weekday_of_startdate)%7;
 
-					$sequence_start_date = mktime( 0, 0, 0, $event_start_month, $adjustedStartDay, $event_start_year);
+					$sequence_start_date = JevDate::mktime( 0, 0, 0, $event_start_month, $adjustedStartDay, $event_start_year);
 					//echo "event start data : ".date("d:m:Y",$event_start_date)."<br/>";
 					//echo "adj sequence_start_date: ".date("d:m:Y",$sequence_start_date)."<br/>";
 					//echo "month start data : ".date("d:m:Y",$startPeriod)."<br/>";
@@ -506,7 +506,7 @@ class jEventCal {
 						$deltadays = round($delta/86400,0);
 
 						for ($weeks=0;$weeks<6;$weeks++){
-							$nextDate = mktime(0,0,0,$month, $periodStartDay + $deltadays+ (14*$weeks), $year);
+							$nextDate = JevDate::mktime(0,0,0,$month, $periodStartDay + $deltadays+ (14*$weeks), $year);
 							if ($nextDate<=$endPeriod) {
 								if ($nextDate>=$event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 							}
@@ -524,7 +524,7 @@ class jEventCal {
 						$deltadays = round($delta/86400,0);
 
 						for ($weeks=0;$weeks<6;$weeks++){
-							$nextDate = mktime(0,0,0,$month, $periodStartDay + $deltadays+ (21*$weeks), $year);
+							$nextDate = JevDate::mktime(0,0,0,$month, $periodStartDay + $deltadays+ (21*$weeks), $year);
 							if ($nextDate<=$endPeriod) {
 								if ($nextDate>=$event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 							}
@@ -543,17 +543,17 @@ class jEventCal {
 			if( $this->_reccurday ==-1 ) { //by day number
 
 				list($event_start_day, $event_start_month, $event_start_year) = explode(":",date("d:m:Y",$event_start_date));
-				$nextDate = mktime(0,0,0,$month, $event_start_day, $year);
+				$nextDate = JevDate::mktime(0,0,0,$month, $event_start_day, $year);
 				if ($nextDate >= $event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 			}
 			else { //by day name following the day number
 
 				list($event_start_day, $event_start_month, $event_start_year) = explode(":",date("d:m:Y",$event_start_date));
-				$equiv_day_of_month = mktime( 0, 0, 0, $month, $event_start_day, $year);
+				$equiv_day_of_month = JevDate::mktime( 0, 0, 0, $month, $event_start_day, $year);
 				$weekday_of_equivalent = date( 'w', $equiv_day_of_month);
 				$temp = $event_start_day + (7+$this->_reccurday - $weekday_of_equivalent)%7;
 
-				$nextDate = mktime( 0, 0, 0, $month, $temp, $year);
+				$nextDate = JevDate::mktime( 0, 0, 0, $month, $temp, $year);
 				if ($nextDate >= $event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 			}
 			return $eventDays;
@@ -562,7 +562,7 @@ class jEventCal {
 			case 4: // By month - end of the month
 			// get month end
 			list($lastday, $month, $year) = explode(":",date("t:m:Y",$endPeriod));
-			$monthEnd = mktime(0,0,0,$month,$lastday,$year);
+			$monthEnd = JevDate::mktime(0,0,0,$month,$lastday,$year);
 			if ($monthEnd >= $event_start_date && $monthEnd<=$event_end_date) $eventDays[$monthEnd]=true;
 			return $eventDays;
 
@@ -573,17 +573,17 @@ class jEventCal {
 			if ($month == $event_start_month){
 				if( $this->_reccurday ==-1 ) { //by day number
 
-					$nextDate = mktime(0,0,0,$month, $event_start_day, $year);
+					$nextDate = JevDate::mktime(0,0,0,$month, $event_start_day, $year);
 					if ($nextDate >= $event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 				}
 				else { //by day name following the day number
 
 					list($event_start_day, $event_start_month, $event_start_year) = explode(":",date("d:m:Y",$event_start_date));
-					$equiv_day_of_month = mktime( 0, 0, 0, $month, $event_start_day, $year);
+					$equiv_day_of_month = JevDate::mktime( 0, 0, 0, $month, $event_start_day, $year);
 					$weekday_of_equivalent = date( 'w', $equiv_day_of_month);
 					$temp = $event_start_day + (7+$this->_reccurday - $weekday_of_equivalent)%7;
 
-					$nextDate = mktime( 0, 0, 0, $month, $temp, $year);
+					$nextDate = JevDate::mktime( 0, 0, 0, $month, $temp, $year);
 					if ($nextDate >= $event_start_date && $nextDate<=$event_end_date) $eventDays[$nextDate]=true;
 				}
 			}
@@ -719,7 +719,7 @@ class jEventCal {
 				echo $timeString;
 
 				if (intval($this->reccurday())<0){
-					$event_start_date = strtotime($this->startDate()) ;
+					$event_start_date = JevDate::strtotime($this->startDate()) ;
 					$reccurday = intval(date( 'w',$event_start_date));
 				}
 				else $reccurday =$this->reccurday();

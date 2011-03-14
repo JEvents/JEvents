@@ -46,7 +46,7 @@ class jIcalEventDB extends jEventCal {
 			$this->_publish_up = $this->_startrepeat;
 		}
 		else {
-			$this->_publish_up = strftime( '%Y-%m-%d %H:%M:%S',@$this->dtstart());
+			$this->_publish_up = JevDate::strftime( '%Y-%m-%d %H:%M:%S',@$this->dtstart());
 		}
 
 		$this->_reccurtype = 0;
@@ -55,17 +55,17 @@ class jIcalEventDB extends jEventCal {
 		$this->_reccurweeks = "";
 		$this->_alldayevent = 0;
 		// when loaded from the database we have the startrepeat so can use it otherwise we don't
-		list($hs,$ms,$ss) = explode(":",strftime( '%H:%M:%S',isset($this->_startrepeat)?$this->getUnixStartTime():$this->dtstart()));
-		list($he,$me,$se) = explode(":",strftime( '%H:%M:%S',isset($this->_endrepeat)?$this->getUnixEndTime():$this->dtend()));
+		list($hs,$ms,$ss) = explode(":",JevDate::strftime( '%H:%M:%S',isset($this->_startrepeat)?$this->getUnixStartTime():$this->dtstart()));
+		list($he,$me,$se) = explode(":",JevDate::strftime( '%H:%M:%S',isset($this->_endrepeat)?$this->getUnixEndTime():$this->dtend()));
 		if (($hs+$ms+$ss)==0 && ($he==23 && $me==59 && $se==59)) {
 			$this->_alldayevent = 1;
 		}
 		// catch legacy events with mixed database structure
 		else if (($hs+$ms+$ss)==0 && ($he+$me+$se)==0) {
 			if (isset($this->_endrepeat)){
-				$temp = strtotime($this->_endrepeat);
+				$temp = JevDate::strtotime($this->_endrepeat);
 				if ($temp==$this->dtend()){
-					$this->_endrepeat=strftime( '%Y-%m-%d %H:%M:%S',$temp-1);
+					$this->_endrepeat=JevDate::strftime( '%Y-%m-%d %H:%M:%S',$temp-1);
 				}
 				$this->dtend($this->dtend()-1);
 			}
@@ -85,7 +85,7 @@ class jIcalEventDB extends jEventCal {
 			$this->_publish_down = $this->_endrepeat;
 		}
 		else {
-			$this->_publish_down = strftime( '%Y-%m-%d %H:%M:%S',@$this->dtend());
+			$this->_publish_down = JevDate::strftime( '%Y-%m-%d %H:%M:%S',@$this->dtend());
 		}
 
 		$user =& JFactory::getUser();
@@ -149,7 +149,7 @@ class jIcalEventDB extends jEventCal {
 		}
 		else {
 			$this->_dtstart=$val;
-			$this->_publish_up = strftime( '%Y-%m-%d %H:%M:%S',$this->_dtstart);
+			$this->_publish_up = JevDate::strftime( '%Y-%m-%d %H:%M:%S',$this->_dtstart);
 		}
 	}
 
@@ -162,7 +162,7 @@ class jIcalEventDB extends jEventCal {
 		}
 		else {
 			$this->_dtend=$val;
-			$this->_publish_down = strftime( '%Y-%m-%d %H:%M:%S',$this->_dtend);
+			$this->_publish_down = JevDate::strftime( '%Y-%m-%d %H:%M:%S',$this->_dtend);
 		}
 	}
 
@@ -215,7 +215,7 @@ class jIcalEventDB extends jEventCal {
 
 	function starttime24(){
 		$cfg	 = & JEVConfig::getInstance();
-		return strftime("%H:%M",$this->dtstart());
+		return JevDate::strftime("%H:%M",$this->dtstart());
 	}
 
 	function starttime($val=""){
@@ -225,13 +225,13 @@ class jIcalEventDB extends jEventCal {
 			return JEVHelper::getTime($this->dtstart());
 		}
 		else {
-			$this->dtstart(strtotime($val,$this->dtstart()));
+			$this->dtstart(JevDate::strtotime($val,$this->dtstart()));
 		}
 	}
 
 	function endtime24(){
 		$cfg	 = & JEVConfig::getInstance();
-		return strftime("%H:%M",$this->dtend());
+		return JevDate::strftime("%H:%M",$this->dtend());
 	}
 
 
@@ -242,7 +242,7 @@ class jIcalEventDB extends jEventCal {
 			return JEVHelper::getTime($this->dtend());
 		}
 		else {
-			$this->dtend(strtotime($val,$this->dtend()));
+			$this->dtend(JevDate::strtotime($val,$this->dtend()));
 		}
 	}
 
@@ -271,7 +271,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function startYearDay() {
-		return strftime("%j",$this->dtstart());
+		return JevDate::strftime("%j",$this->dtstart());
 	}
 
 	function byweekno($raw=false){
@@ -308,7 +308,7 @@ class jIcalEventDB extends jEventCal {
 
 		$cfg = & JEVConfig::getInstance();
 		$fmt = ($cfg->get("com_starday")==0)?"%U":"%W";
-		return strftime($fmt,$this->dtstart());
+		return JevDate::strftime($fmt,$this->dtstart());
 	}
 
 	function startWeekOfMonth() {
@@ -329,7 +329,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function startMonthDay() {
-		return intval(strftime("%d",$this->dtstart()));
+		return intval(JevDate::strftime("%d",$this->dtstart()));
 	}
 
 	function bymonth($raw=false){
@@ -339,7 +339,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function startMonth() {
-		return intval(strftime("%m",$this->dtstart()));
+		return intval(JevDate::strftime("%m",$this->dtstart()));
 	}
 
 
@@ -409,7 +409,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function startWeekDay() {
-		return intval(strftime("%w",$this->dtstart()));
+		return intval(JevDate::strftime("%w",$this->dtstart()));
 	}
 
 	function isEditable(){
@@ -555,7 +555,7 @@ class jIcalEventDB extends jEventCal {
 				$reccur = sprintf($reccur,$this->_interval);
 			}
 			if ($this->_count==99999){
-				list ($y,$m,$d) = explode(":",strftime("%Y:%m:%d",$this->until()));
+				list ($y,$m,$d) = explode(":",JevDate::strftime("%Y:%m:%d",$this->until()));
 				$extra = JText::_('JEV_UNTIL')."&nbsp;".JEventsHTML::getDateFormat($y,$m,$d,1);
 			}
 			else {
@@ -803,18 +803,18 @@ class jIcalEventDB extends jEventCal {
 							// Calculate the time adjustment (if any) then check against the non-exceptional repeat
 							// Convert dtstart using system timezone to date
 							date_default_timezone_set($jtimezone);
-							$truestarttime = strftime("%H:%M:%S",$this->dtstart());
+							$truestarttime = JevDate::strftime("%H:%M:%S",$this->dtstart());
 							// if the system timezone version of dtstart is the same time as the first non-exceptional repeat
 							// then we are safe to use this adjustment mechanism to dtstart.  We use the real "date" and convert
 							// back into unix time using the  Jevents timezone
-							if ($truestarttime == strftime("%H:%M:%S",mktime($repeat2->hup(),$repeat2->minup(),$repeat2->sup(), 0, 0, 0))){
-								$truedtstart = strftime("%Y-%m-%d %H:%M:%S",$this->dtstart());
-								$truedtend = strftime("%Y-%m-%d %H:%M:%S",$this->dtend());
+							if ($truestarttime == JevDate::strftime("%H:%M:%S",JevDate::mktime($repeat2->hup(),$repeat2->minup(),$repeat2->sup(), 0, 0, 0))){
+								$truedtstart = JevDate::strftime("%Y-%m-%d %H:%M:%S",$this->dtstart());
+								$truedtend = JevDate::strftime("%Y-%m-%d %H:%M:%S",$this->dtend());
 
 								// switch timezone back to Jevents timezone
 								date_default_timezone_set($timezone);
-								$this->dtstart(strtotime($truedtstart));
-								$this->dtend(strtotime($truedtend));
+								$this->dtstart(JevDate::strtotime($truedtstart));
+								$this->dtend(JevDate::strtotime($truedtend));
 							}
 							else {
 								// In this scenario we have no idea what the time should be unfortunately

@@ -418,7 +418,7 @@ class iCalImport
 
 		}
 		if (!is_numeric($ical_date)){
-			$t = strtotime($ical_date);
+			$t = JevDate::strtotime($ical_date);
 
 			if (JString::strpos($ical_date,"Z")>0){
 				if (is_callable("date_default_timezone_set")){
@@ -431,11 +431,11 @@ class iCalImport
 					}
 
 					// server offset PARAMS
-					$serveroffset1 = (strtotime(strftime('%Y%m%dT%H%M%S',$t))-strtotime(strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
+					$serveroffset1 = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$t))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
 
 					// server offset SERVER
 					date_default_timezone_set($timezone);
-					$serveroffset2 = (strtotime(strftime('%Y%m%dT%H%M%S',$t))-strtotime(strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
+					$serveroffset2 = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$t))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
 					$t = new JevDate($ical_date,($serveroffset1-$serveroffset2) );
 
 					//$t = new JevDate($ical_date );
@@ -446,10 +446,10 @@ class iCalImport
 				}
 				else {
 					// Summer Time adjustment
-					list($y,$m,$d,$h,$min,$s) = explode(":", strftime('%Y:%m:%d:%H:%M:%S',$t));
-					$dst = (mktime($h,$min,$s,$m,$d,$y,0)-mktime($h,$min,$s,$m,$d,$y,-1))/3600;
+					list($y,$m,$d,$h,$min,$s) = explode(":", JevDate::strftime('%Y:%m:%d:%H:%M:%S',$t));
+					$dst = (JevDate::mktime($h,$min,$s,$m,$d,$y,0)-JevDate::mktime($h,$min,$s,$m,$d,$y,-1))/3600;
 					// server offset including DST
-					$serveroffset = (strtotime(strftime('%Y%m%dT%H%M%S',$t))-strtotime(strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
+					$serveroffset = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$t))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$t)))/3600;
 					$serveroffset += $dst;
 
 					$t = new JevDate($ical_date , -($serveroffset+$offset));
@@ -461,11 +461,11 @@ class iCalImport
 
 				$tempIcal  = "20091020T163000Z";
 				echo $tempIcal."<br/>";
-				$temp = strtotime($tempIcal);
-				list($y,$m,$d,$h,$min,$s) = explode(":", strftime('%Y:%m:%d:%H:%M:%S',$temp));
+				$temp = JevDate::strtotime($tempIcal);
+				list($y,$m,$d,$h,$min,$s) = explode(":", JevDate::strftime('%Y:%m:%d:%H:%M:%S',$temp));
 				echo "$y,$m,$d,$h,$min,$s<br/>";
-				$dst = (mktime($h,$min,$s,$m,$d,$y,0)-mktime($h,$min,$s,$m,$d,$y,-1))/3600;
-				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
+				$dst = (JevDate::mktime($h,$min,$s,$m,$d,$y,0)-JevDate::mktime($h,$min,$s,$m,$d,$y,-1))/3600;
+				$so = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$temp))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
 				$t = new JevDate($tempIcal);
@@ -474,11 +474,11 @@ class iCalImport
 
 				$tempIcal  = "20091029T163000Z";
 				echo $tempIcal."<br/>";
-				$temp = strtotime($tempIcal);
-				list($y,$m,$d,$h,$min,$s) = explode(":", strftime('%Y:%m:%d:%H:%M:%S',$temp));
+				$temp = JevDate::strtotime($tempIcal);
+				list($y,$m,$d,$h,$min,$s) = explode(":", JevDate::strftime('%Y:%m:%d:%H:%M:%S',$temp));
 				echo "$y,$m,$d,$h,$min,$s<br/>";
-				$dst = (mktime($h,$min,$s,$m,$d,$y,0)-mktime($h,$min,$s,$m,$d,$y,-1))/3600;
-				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
+				$dst = (JevDate::mktime($h,$min,$s,$m,$d,$y,0)-JevDate::mktime($h,$min,$s,$m,$d,$y,-1))/3600;
+				$so = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$temp))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
 				$t = new JevDate($tempIcal );
@@ -486,11 +486,11 @@ class iCalImport
 
 				$tempIcal  = "20091103T163000Z";
 				echo $tempIcal."<br/>";
-				$temp = strtotime($tempIcal);
-				list($y,$m,$d,$h,$min,$s) = explode(":", strftime('%Y:%m:%d:%H:%M:%S',$temp));
+				$temp = JevDate::strtotime($tempIcal);
+				list($y,$m,$d,$h,$min,$s) = explode(":", JevDate::strftime('%Y:%m:%d:%H:%M:%S',$temp));
 				echo "$y,$m,$d,$h,$min,$s<br/>";
-				$dst = (mktime($h,$min,$s,$m,$d,$y,0)-mktime($h,$min,$s,$m,$d,$y,-1))/3600;
-				$so = (strtotime(strftime('%Y%m%dT%H%M%S',$temp))-strtotime(strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
+				$dst = (JevDate::mktime($h,$min,$s,$m,$d,$y,0)-JevDate::mktime($h,$min,$s,$m,$d,$y,-1))/3600;
+				$so = (JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%S',$temp))-JevDate::strtotime(JevDate::strftime('%Y%m%dT%H%M%SZ',$temp)))/3600;
 				echo " dst=".$dst." serverforoffset=".$so."<br/>";
 				$so += $dst;
 				$t = new JevDate($tempIcal);
@@ -527,14 +527,14 @@ class iCalImport
 		// Trap unix dated beofre 1970
 		$y = max($y,1970);
 		if ($isUTC) {
-			$t = gmmktime($h,$min,$s,$m,$d,$y) + 3600 * $offset;
-			$result = strtotime(gmdate('Y-m-d H:i:s', $t));
+			$t = gmJevDate::mktime($h,$min,$s,$m,$d,$y) + 3600 * $offset;
+			$result = JevDate::strtotime(gmdate('Y-m-d H:i:s', $t));
 		} else {
-			$result = mktime($h,$min,$s,$m,$d,$y);
+			$result = JevDate::mktime($h,$min,$s,$m,$d,$y);
 		}
 
 		// double check!!
-		//list($y1,$m1,$d1,$h1,$min1,$s1)=explode(":",strftime('%Y:%m:%d:%H:%M:%S',$result));
+		//list($y1,$m1,$d1,$h1,$min1,$s1)=explode(":",JevDate::strftime('%Y:%m:%d:%H:%M:%S',$result));
 		return  $result;
 	}
 

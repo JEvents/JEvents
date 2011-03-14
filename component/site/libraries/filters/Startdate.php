@@ -45,7 +45,7 @@ class jevStartdateFilter extends jevFilter
 			$this->filter_values = array();
 			$this->filter_values[0]=1;
 			// default scenario is only events starting after 2 weeeks ago			
-			$fulldate = date( 'Y-m-d H:i:s',strtotime("-2 weeks"));
+			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("-2 weeks"));
 			$this->filter_values[1]=substr($fulldate,0,10);
 			$this->filter_values[2]=1;
 			return  $this->dmap.".startrepeat>='$fulldate'";
@@ -55,19 +55,19 @@ class jevStartdateFilter extends jevFilter
 			$this->_date = $this->filter_values[1];
 		}
 		else if ($this->filter_values[0]==-1 && $this->filter_values[1]==""){
-			$fulldate = date( 'Y-m-d H:i:s',strtotime("+2 weeks"));
+			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("+2 weeks"));
 			$this->filter_values[1]=substr($fulldate,0,10);
 			$this->_date = $this->filter_values[1];
 		}
 		else if ($this->filter_values[0]==1 && $this->filter_values[1]==""){
-			$fulldate = date( 'Y-m-d H:i:s',strtotime("-2 weeks"));
+			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("-2 weeks"));
 			$this->filter_values[1]=substr($fulldate,0,10);
 			$this->_date = $this->filter_values[1];
 		}
 		$filter="";
 
 		if ($this->_date!="" && $this->_onorbefore!=0){
-			$date = strtotime($this->_date);
+			$date = JevDate::strtotime($this->_date);
 			$fulldate = date( 'Y-m-d H:i:s',$date);
 			if ($this->_onorbefore>0){
 				$date = $this->dmap.".startrepeat>='$fulldate'";

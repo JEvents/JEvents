@@ -63,7 +63,7 @@ class iCalRRule extends JTable  {
 				$temp->processField2("until","");
 			}
 			else {
-				$temp->processField2("until",mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
+				$temp->processField2("until",JevDate::mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
 			}
 		}
 		$temp->processField2("untilraw","");
@@ -114,7 +114,7 @@ class iCalRRule extends JTable  {
 			}
 			else {
 				$cfg = & JEVConfig::getInstance();
-				$temp->processField("until",mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
+				$temp->processField("until",JevDate::mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
 			}
 		}
 		$temp->processField("untilraw","");
@@ -147,15 +147,15 @@ class iCalRRule extends JTable  {
 		$repeat = new iCalRepetition($db);
 		$repeat->eventid = $this->eventid;
 		// TODO CHECK THIS logic
-		$repeat->startrepeat = strftime('%Y-%m-%d %H:%M:%S',$start);
+		$repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$start);
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
-		list ($h,$m,$s) = explode(":",strftime("%H:%M:%S",$end));
+		list ($h,$m,$s) = explode(":",JevDate::strftime("%H:%M:%S",$end));
 		if (($h+$m+$s)==0) {
-			//			$repeat->endrepeat = strftime('%Y-%m-%d 23:59:59',($end-86400));
-			$repeat->endrepeat = strftime('%Y-%m-%d 23:59:59',$end);
+			//			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',($end-86400));
+			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',$end);
 		}
 		else {
-			$repeat->endrepeat = strftime('%Y-%m-%d %H:%M:%S',$end);
+			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$end);
 		}
 
 		$repeat->duplicatecheck = md5($repeat->eventid . $start );
@@ -163,7 +163,7 @@ class iCalRRule extends JTable  {
 		// Double check its not in the list of exception dates
 		foreach ($this->_exdate as $exdate) {
 			// compare based on YYYYMMDD since exceptions are(normally) whole day, "EXDATE;VALUE=DATE"
-			if (strftime('%Y%m%d', $exdate) == strftime('%Y%m%d', $start))	{
+			if (JevDate::strftime('%Y%m%d', $exdate) == JevDate::strftime('%Y%m%d', $start))	{
 				// return 0;
 				// exceptions count
 				return 1;
@@ -176,8 +176,8 @@ class iCalRRule extends JTable  {
 	function _afterUntil($testDate){
 		if (strlen($this->until)==0) return false;
 		if (!isset($this->_untilMidnight)) {
-			list ($d,$m,$y) = explode(":",strftime("%d:%m:%Y",$this->until));
-			$this->_untilMidnight = mktime(23,59,59,$m,$d,$y);
+			list ($d,$m,$y) = explode(":",JevDate::strftime("%d:%m:%Y",$this->until));
+			$this->_untilMidnight = JevDate::mktime(23,59,59,$m,$d,$y);
 		}
 		if (strlen($this->until)>0 && $testDate>intval($this->_untilMidnight)) {
 			return true;
@@ -201,15 +201,15 @@ class iCalRRule extends JTable  {
 		static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
 
-		list ($currentMonth,$currentYear) = explode(":",strftime("%m:%Y",$currentMonthStart));
-		list ($startMonth,$startYear) = explode(":",strftime("%m:%Y",$dtstart));
+		list ($currentMonth,$currentYear) = explode(":",JevDate::strftime("%m:%Y",$currentMonthStart));
+		list ($startMonth,$startYear) = explode(":",JevDate::strftime("%m:%Y",$dtstart));
 		if ($startMonth==$currentMonth && $startYear==$currentYear){
 			$startdate = $dtstart;
 		}
 		else {
 			$startdate = $currentMonthStart;
 		}
-		$startWD = strftime("%w",$startdate);
+		$startWD = JevDate::strftime("%w",$startdate);
 
 		$sorteddays = array();
 		// start from week -6 and go forward (overkill I know)
@@ -274,13 +274,13 @@ class iCalRRule extends JTable  {
 			$this->_makeRepeat($dtstart,$dtend);
 			return $this->_repetitions;
 		}
-		//list ($h,$min,$s,$d,$m,$y) = explode(":",strftime("%H:%M:%S:%d:%m:%Y",$end));
+		//list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$end));
 
 		list ($startHour,$startMin,$startSecond,$startDay,$startMonth,$startYear,$startWD)
-		= explode(":",strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtstart));
+		= explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtstart));
 		//echo "$startHour,$startMin,$startSecond,$startDay,$startMonth,$startYear,$startWD,$dtstart<br/>";
-		$dtstartMidnight = mktime(0,0,0,$startMonth,$startDay,$startYear);
-		list ($endDay,$endMonth,$endYear,$endWD) = explode(":",strftime("%d:%m:%Y:%w",$dtend));
+		$dtstartMidnight = JevDate::mktime(0,0,0,$startMonth,$startDay,$startYear);
+		list ($endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$dtend));
 		$duration = $dtend-$dtstart;
 		static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
@@ -310,10 +310,10 @@ class iCalRRule extends JTable  {
 					$start = $dtstart;
 					$end = $dtend;
 					$countRepeats = 0;
-					$currentYearStart = mktime(0,0,0,1,1,$startYear);
+					$currentYearStart = JevDate::mktime(0,0,0,1,1,$startYear);
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($currentYearStart)) {
-						$currentYear = strftime("%Y",$currentYearStart);
+						$currentYear = JevDate::strftime("%Y",$currentYearStart);
 						$currentYearDays = date("L",$currentYearStart)?366:365;
 						foreach ($days as $day) {
 							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return  $this->_repetitions;
@@ -327,12 +327,12 @@ class iCalRRule extends JTable  {
 							// do not go over year end
 							if ($daynumber>$currentYearDays) continue;
 							if ($plusminus=="+"){
-								$targetStart = mktime($startHour,$startMin,$startSecond,12,31,$currentYear-1);
-								$targetStart = strtotime("+$daynumber days",$targetStart);
+								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,12,31,$currentYear-1);
+								$targetStart = JevDate::strtotime("+$daynumber days",$targetStart);
 							}
 							else {
-								$targetStart = mktime($startHour,$startMin,$startSecond,1,1,$currentYear+1);
-								$targetStart = strtotime("-$daynumber days",$targetStart);
+								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,1,1,$currentYear+1);
+								$targetStart = JevDate::strtotime("-$daynumber days",$targetStart);
 							}
 							$targetEnd = $targetStart+$duration;
 							if ($countRepeats >= $this->count) {
@@ -341,7 +341,7 @@ class iCalRRule extends JTable  {
 							if ($targetStart>=$dtstartMidnight && !$this->_afterUntil($targetStart)){
 								// double check for byday constraints
 								if ($this->byday!=""){
-									if (!in_array(strftime("%w",$targetStart),$weekdays)){
+									if (!in_array(JevDate::strftime("%w",$targetStart),$weekdays)){
 										continue;
 									}
 								}
@@ -350,7 +350,7 @@ class iCalRRule extends JTable  {
 						}
 						// now ago to the start of next year
 						if ($currentYear+$this->rinterval>2036) return  $this->_repetitions;
-						$currentYearStart = mktime(0,0,0,1,1,$currentYear+$this->rinterval);
+						$currentYearStart = JevDate::mktime(0,0,0,1,1,$currentYear+$this->rinterval);
 					}
 
 				}
@@ -366,10 +366,10 @@ class iCalRRule extends JTable  {
 					$end = $dtend;
 					$countRepeats = 0;
 
-					$currentMonthStart = mktime(0,0,0,$startMonth,1,$startYear);
+					$currentMonthStart = JevDate::mktime(0,0,0,$startMonth,1,$startYear);
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($currentMonthStart)) {
-						list ($currentMonth,$currentYear) = explode(":",strftime("%m:%Y",$currentMonthStart));
+						list ($currentMonth,$currentYear) = explode(":",JevDate::strftime("%m:%Y",$currentMonthStart));
 						$currentMonthDays = date("t",$currentMonthStart);
 						foreach ($days as $day) {
 							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return  $this->_repetitions;
@@ -380,7 +380,7 @@ class iCalRRule extends JTable  {
 							// do not go over month end
 							if ($day>$currentMonthDays) continue;
 
-							$targetStart = mktime($startHour,$startMin,$startSecond,$currentMonth,$day,$currentYear);
+							$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$day,$currentYear);
 							$targetEnd = $targetStart+$duration;
 							if ($countRepeats >= $this->count) {
 								return  $this->_repetitions;
@@ -388,7 +388,7 @@ class iCalRRule extends JTable  {
 							if ($targetStart>=$dtstartMidnight && !$this->_afterUntil($targetStart)){
 								// double check for byday constraints
 								if ($this->byday!=""){
-									if (!in_array(strftime("%w",$targetStart),$weekdays)){
+									if (!in_array(JevDate::strftime("%w",$targetStart),$weekdays)){
 										continue;
 									}
 								}
@@ -397,7 +397,7 @@ class iCalRRule extends JTable  {
 						}
 						// now ago to the start of next month
 						if ($currentYear+$this->rinterval>2036) return  $this->_repetitions;
-						$currentMonthStart = mktime(0,0,0,$currentMonth,1,$currentYear+$this->rinterval);
+						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth,1,$currentYear+$this->rinterval);
 					}
 
 				}
@@ -409,11 +409,11 @@ class iCalRRule extends JTable  {
 					while ($countRepeats < $this->count && !$this->_afterUntil($start)) {
 						$countRepeats+=$this->_makeRepeat($start,$end);
 
-						$currentYear = strftime("%Y",$start);
-						list ($h,$min,$s,$d,$m,$y) = explode(":",strftime("%H:%M:%S:%d:%m:%Y",$start));
+						$currentYear = JevDate::strftime("%Y",$start);
+						list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
 						if (($currentYear+$this->rinterval)>=2037) break;
-						$start = strtotime("+".$this->rinterval." years",$start);
-						$end = strtotime("+".$this->rinterval." years",$end);
+						$start = JevDate::strtotime("+".$this->rinterval." years",$start);
+						$end = JevDate::strtotime("+".$this->rinterval." years",$end);
 					}
 				}
 				else {
@@ -424,7 +424,7 @@ class iCalRRule extends JTable  {
 
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($start)) {
-						$currentMonth = strftime("%m",$start);
+						$currentMonth = JevDate::strftime("%m",$start);
 						foreach ($days as $day) {
 							if ($countRepeats >= $this->count || $this->_afterUntil($start)) {
 								return  $this->_repetitions;
@@ -444,18 +444,18 @@ class iCalRRule extends JTable  {
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus=="-") {
 									//echo "count back $weeknumber weeks on $dayname<br/>";
-									list ($startDay,$startMonth,$startYear,$startWD) = explode(":",strftime("%d:%m:%Y:%w",$start));
+									list ($startDay,$startMonth,$startYear,$startWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$start));
 									$startLast = date("t",$start);
-									$monthEnd = mktime(0,0,0,$startMonth,$startLast,$startYear);
-									$meWD = strftime("%w",$monthEnd );
+									$monthEnd = JevDate::mktime(0,0,0,$startMonth,$startLast,$startYear);
+									$meWD = JevDate::strftime("%w",$monthEnd );
 									$adjustment = $startLast - (7+$meWD-$weekdayMap[$dayname])%7;
 
 									$targetstartDay = $adjustment - ($weeknumber-1)*7;
 									$targetendDay = $targetstartDay + $endDay-$startDay;
-									list ($h,$min,$s,$d,$m,$y) = explode(":",strftime("%H:%M:%S:%d:%m:%Y",$start));
+									list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
 
-									$testStart = mktime($h,$min,$s,$m,$targetstartDay,$y);
-									if ($currentMonth==strftime("%m",$testStart)){
+									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
+									if ($currentMonth==JevDate::strftime("%m",$testStart)){
 										$targetStart = $testStart;
 										$targetEnd = $targetStart + $duration;
 										if ($countRepeats >= $this->count) {
@@ -468,17 +468,17 @@ class iCalRRule extends JTable  {
 								}
 								else {
 									//echo "count forward $weeknumber weeks on $dayname<br/>";
-									list ($startDay,$startMonth,$startYear,$startWD) = explode(":",strftime("%d:%m:%Y:%w",$start));
-									$monthStart = mktime(0,0,0,$startMonth,1,$startYear);
-									$msWD = strftime("%w",$monthStart );
+									list ($startDay,$startMonth,$startYear,$startWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$start));
+									$monthStart = JevDate::mktime(0,0,0,$startMonth,1,$startYear);
+									$msWD = JevDate::strftime("%w",$monthStart );
 									$adjustment = 1 + (7+$weekdayMap[$dayname]-$msWD)%7;
 
 									$targetstartDay = $adjustment+($weeknumber-1)*7;
 									$targetendDay = $targetstartDay + $endDay-$startDay;
-									list ($h,$min,$s,$d,$m,$y) = explode(":",strftime("%H:%M:%S:%d:%m:%Y",$start));
+									list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
 
-									$testStart = mktime($h,$min,$s,$m,$targetstartDay,$y);
-									if ($currentMonth==strftime("%m",$testStart)){
+									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
+									if ($currentMonth==JevDate::strftime("%m",$testStart)){
 										$targetStart = $testStart;
 										$targetEnd = $targetStart + $duration;
 										if ($countRepeats >= $this->count) {
@@ -494,9 +494,9 @@ class iCalRRule extends JTable  {
 						// now ago to the start of the next month
 						$start = $targetStart;
 						$end = $targetEnd;
-						list ($h,$min,$s,$d,$m,$y) = explode(":",strftime("%H:%M:%S:%d:%m:%Y",$start));
+						list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
 						if (($y+$this->rinterval+$m/12)>2036) return  $this->_repetitions;
-						$start = mktime($h,$min,$s,$m,1,$y+$this->rinterval);
+						$start = JevDate::mktime($h,$min,$s,$m,1,$y+$this->rinterval);
 						$end = $start + $duration;
 					}
 
@@ -523,12 +523,12 @@ class iCalRRule extends JTable  {
 					$start = $dtstart;
 					$end = $dtend;
 					$countRepeats = 0;
-					$currentMonthStart = mktime(0,0,0,$startMonth,1,$startYear);
+					$currentMonthStart = JevDate::mktime(0,0,0,$startMonth,1,$startYear);
 
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($currentMonthStart)) {
 						echo $countRepeats ." ".$this->count." ".$currentMonthStart."<br/>";
-						list ($currentMonth,$currentYear) = explode(":",strftime("%m:%Y",$currentMonthStart));
+						list ($currentMonth,$currentYear) = explode(":",JevDate::strftime("%m:%Y",$currentMonthStart));
 						$currentMonthDays = date("t",$currentMonthStart);
 						foreach ($days as $day) {
 							if ($countRepeats >= $this->count || $this->_afterUntil($start)) return  $this->_repetitions;
@@ -550,7 +550,7 @@ class iCalRRule extends JTable  {
 									if ($daynumber>$currentMonthDays) continue;
 
 									echo "I need to check negative bymonth days <br/>";
-									$targetStart = mktime($startHour,$startMin,$startSecond,$currentMonth,$currentMonthDays+1-$daynumber,$currentYear);
+									$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$currentMonthDays+1-$daynumber,$currentYear);
 									$targetEnd = $targetStart+$duration;
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
@@ -564,7 +564,7 @@ class iCalRRule extends JTable  {
 									// must not go over end month etc.
 									if ($daynumber>$currentMonthDays) continue;
 									echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
-									$targetStart = mktime($startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear);
+									$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear);
 									$targetEnd = $targetStart+$duration;
 									echo "$targetStart $targetEnd $dtstartMidnight<br/>";
 									if ($countRepeats >= $this->count) {
@@ -573,7 +573,7 @@ class iCalRRule extends JTable  {
 									if ($targetStart>=$dtstartMidnight && !$this->_afterUntil($targetStart)){
 										// double check for byday constraints
 										if ($this->byday!=""){
-											if (!in_array(strftime("%w",$targetStart),$weekdays)){
+											if (!in_array(JevDate::strftime("%w",$targetStart),$weekdays)){
 												continue;
 											}
 										}
@@ -585,7 +585,7 @@ class iCalRRule extends JTable  {
 						}
 						// now ago to the start of next month
 						if (($currentYear+($currentMonth+$this->rinterval)/12)>2036) return  $this->_repetitions;
-						$currentMonthStart = mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
+						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
 					}
 
 				}
@@ -598,11 +598,11 @@ class iCalRRule extends JTable  {
 					$start = $dtstart;
 					$end = $dtend;
 					$countRepeats = 0;
-					$currentMonthStart = mktime(0,0,0,$startMonth,1,$startYear);
+					$currentMonthStart = JevDate::mktime(0,0,0,$startMonth,1,$startYear);
 
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($currentMonthStart)) {
-						list ($currentMonth,$currentYear,$currentMonthStartWD) = explode(":",strftime("%m:%Y:%w",$currentMonthStart));
+						list ($currentMonth,$currentYear,$currentMonthStartWD) = explode(":",JevDate::strftime("%m:%Y:%w",$currentMonthStart));
 						$currentMonthDays = date("t",$currentMonthStart);
 						$this->sortByDays($days,$currentMonthStart,$dtstart);
 
@@ -640,9 +640,9 @@ class iCalRRule extends JTable  {
 									$targetstartDay = $adjustment+($weeknumber-1)*7;
 
 								}
-								$targetStart = mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
+								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
-								if ($currentMonth==strftime("%m",$targetStart)){
+								if ($currentMonth==JevDate::strftime("%m",$targetStart)){
 									$targetEnd = $targetStart + $duration;
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
@@ -656,7 +656,7 @@ class iCalRRule extends JTable  {
 						}
 						// now go to the start of next month
 						if (($currentYear+($currentMonth+$this->rinterval)/12)>2036) return  $this->_repetitions;
-						$currentMonthStart = mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
+						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
 					}
 				}
 				return  $this->_repetitions;
@@ -667,13 +667,13 @@ class iCalRRule extends JTable  {
 				$start = $dtstart;
 				$end = $dtend;
 				$countRepeats = 0;
-				$currentWeekDay = strftime("%w",$start);
+				$currentWeekDay = JevDate::strftime("%w",$start);
 				// Go to the zero day of the first week (even if this is in the past)
 				// this will be the base from which we count the weeks and weekdays
-				$currentWeekStart = strtotime("-$currentWeekDay days",$start);
+				$currentWeekStart = JevDate::strtotime("-$currentWeekDay days",$start);
 
 				while  ($countRepeats < $this->count  && !$this->_afterUntil($currentWeekStart)) {
-					list ($currentDay,$currentMonth,$currentYear) = explode(":",strftime("%d:%m:%Y",$currentWeekStart));
+					list ($currentDay,$currentMonth,$currentYear) = explode(":",JevDate::strftime("%d:%m:%Y",$currentWeekStart));
 
 					foreach ($days as $day) {
 						if ($countRepeats >= $this->count || $this->_afterUntil($start)) {
@@ -701,7 +701,7 @@ class iCalRRule extends JTable  {
 								$targetstartDay = $currentDay+$weekdayMap[$dayname];
 							}
 
-							$targetStart = mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
+							$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
 							$targetEnd = $targetStart + $duration;
 							if ($countRepeats >= $this->count) {
@@ -716,7 +716,7 @@ class iCalRRule extends JTable  {
 
 					// now go to the start of next week
 					if ($currentYear+($currentMonth/12)>2036) return  $this->_repetitions;
-					$currentWeekStart = strtotime("+".($this->rinterval)." weeks",$currentWeekStart);
+					$currentWeekStart = JevDate::strtotime("+".($this->rinterval)." weeks",$currentWeekStart);
 
 				}
 				return $this->_repetitions;
@@ -726,12 +726,12 @@ class iCalRRule extends JTable  {
 				$end = $dtend;
 				$countRepeats = 0;
 
-				$startYear = strftime("%Y",$start);
+				$startYear = JevDate::strftime("%Y",$start);
 				while ($startYear<2027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
 					$countRepeats+=$this->_makeRepeat($start,$end);
-					$start = strtotime("+".$this->rinterval." days",$start);
-					$end = strtotime("+".$this->rinterval." days",$end);
-					$startYear = strftime("%Y",$start);
+					$start = JevDate::strtotime("+".$this->rinterval." days",$start);
+					$end = JevDate::strtotime("+".$this->rinterval." days",$end);
+					$startYear = JevDate::strftime("%Y",$start);
 				}
 				return $this->_repetitions;
 				break;

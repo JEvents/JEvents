@@ -13,7 +13,7 @@ function Defaultgetstartenddates($view){
 			$startdate = $params->get("absstart","");
 			list($startyear,$startmonth,$startday)=explode("-",$startdate);
 		}
-		else if ($params->get("relative","rel")=="strtotime"){
+		else if ($params->get("relative","rel")=="JevDate::strtotime"){
 			$value = $params->get("strstart","");
 			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
@@ -33,7 +33,7 @@ function Defaultgetstartenddates($view){
 		if ($params->get("relative","rel")=="abs"){
 			$enddate = $params->get("absend","");
 		}
-		else if ($params->get("relative","rel")=="strtotime"){
+		else if ($params->get("relative","rel")=="JevDate::strtotime"){
 			$value = $params->get("strend","");
 			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");

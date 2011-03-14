@@ -35,7 +35,7 @@ class JEV_CompatWin {
 			array('JEV_CompatWin', '_cb_strftime'),
 			$format);
 
-		return strftime($format, $timestamp);
+		return JevDate::strftime($format, $timestamp);
 
 	}
 
@@ -55,8 +55,8 @@ class JEV_CompatWin {
 			case '%C': return sprintf("%02d", date("Y", $ts) / 100); break;
 			case '%D': return '%m/%d/%y'; break;
 			case '%e': return sprintf("%' 2d", date("j", $ts)); break;
-			case '%g': return strftime('%y', JEV_CompatWin::_getThursdayOfWeek($ts)); break;
-			case '%G': return strftime('%Y', JEV_CompatWin::_getThursdayOfWeek($ts)); break;
+			case '%g': return JevDate::strftime('%y', JEV_CompatWin::_getThursdayOfWeek($ts)); break;
+			case '%G': return JevDate::strftime('%Y', JEV_CompatWin::_getThursdayOfWeek($ts)); break;
 			case '%h': return '%b'; break;
 			case '%n': return "\n"; break;
 			case '%r': return '%I:%M:%S %p'; break;
@@ -78,12 +78,12 @@ class JEV_CompatWin {
 	 */
 	function _getThursdayOfWeek($date) {
 
-		$dayofweek = strftime('%w', $date);
+		$dayofweek = JevDate::strftime('%w', $date);
 		if ($dayofweek == 0) $dayofweek =7;
 		if ($dayofweek < 4) {
-			return strtotime('next thursday', $date);
+			return JevDate::strtotime('next thursday', $date);
 		} elseif ($dayofweek > 4) {
-			return strtotime('last thursday', $date);
+			return JevDate::strtotime('last thursday', $date);
 		} else {
 			return $date;
 		}
@@ -99,9 +99,9 @@ class JEV_CompatWin {
 	function _getWeekNumberISO8601($date) {
 
 		$thursday	= JEV_CompatWin::_getThursdayOfWeek($date);
-		$thursday_Y	= strftime('%Y', $thursday);
-		$first_th	= JEV_CompatWin::_getThursdayOfWeek(strtotime($thursday_Y.'-01-04'));
-		return ((strftime('%j', $thursday) - strftime('%j', $first_th)) / 7 + 1);
+		$thursday_Y	= JevDate::strftime('%Y', $thursday);
+		$first_th	= JEV_CompatWin::_getThursdayOfWeek(JevDate::strtotime($thursday_Y.'-01-04'));
+		return ((JevDate::strftime('%j', $thursday) - JevDate::strftime('%j', $first_th)) / 7 + 1);
 
 	}
 }

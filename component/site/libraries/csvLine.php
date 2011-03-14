@@ -113,7 +113,7 @@ class CsvLine {
 
     public function setDtstamp($dtstamp) {
 		if (trim($dtstamp)=="") return;
-        $this->dtstamp = strtotime($dtstamp);
+        $this->dtstamp = JevDate::strtotime($dtstamp);
     }
 
 
@@ -122,7 +122,7 @@ class CsvLine {
     }
 
     public function setDtend($dtend) {
-        $this->dtend = strtotime($dtend);
+        $this->dtend = JevDate::strtotime($dtend);
     }
 
     public function getUid() {
@@ -190,7 +190,7 @@ class CsvLine {
      * @return converted datetime in iCal format
      */
     private function datetimeToUtcIcsFormat($datetime) {
-		$datetime = strtotime($datetime);
+		$datetime = JevDate::strtotime($datetime);
         return gmdate("Ymd", $datetime)."T".gmdate("His", $datetime)."Z";
     }
 }

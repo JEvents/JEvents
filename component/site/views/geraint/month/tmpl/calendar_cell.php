@@ -26,8 +26,8 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 		// BAR COLOR GENERATION
 		$bgeventcolor = JEV_CommonFunctions::setColor($event);
 
-		$start_publish  = mktime( 0, 0, 0, $event->mup(), $event->dup(), $event->yup() );
-		$stop_publish   = mktime( 0, 0, 0, $event->mdn(), $event->ddn(), $event->ydn() );
+		$start_publish  = JevDate::mktime( 0, 0, 0, $event->mup(), $event->dup(), $event->yup() );
+		$stop_publish   = JevDate::mktime( 0, 0, 0, $event->mdn(), $event->ddn(), $event->ydn() );
 
 		$title          = $event->title();
 
@@ -40,7 +40,7 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 
 		// On mouse over date formats
 		// Note that the date formats for the events can be easily changed by modifying the sprintf formatting
-		// string below.  These are used for the default overlay window.  As well, the strftime() function could
+		// string below.  These are used for the default overlay window.  As well, the JevDate::strftime() function could
 		// also be used instead to provide more powerful date formatting which supports locales if php function
 		// set_locale() is being used.
 

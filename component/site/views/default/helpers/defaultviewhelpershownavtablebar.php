@@ -11,7 +11,7 @@ function DefaultViewHelperShowNavTableBar($view){
 	if($cfg->get('com_calUseIconic', 1) == -1) return "";
 	
 	$t_datenow = JEVHelper::getNow();
-	$datetime = strftime( '%Y-%m-%d %H:%M:%S', $t_datenow->toUnix(true));
+	$datetime = JevDate::strftime( '%Y-%m-%d %H:%M:%S', $t_datenow->toUnix(true));
 	preg_match( "#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $datetime, $regs );
 
 	$this_date = new JEventDate();

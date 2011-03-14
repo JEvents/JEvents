@@ -321,8 +321,8 @@ else $this->_detail = false;
 			$db	=& JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
-			$repeat->startrepeat = strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
-			$repeat->endrepeat = strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
+			$repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
+			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
 			$repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
 			$this->_repetitions[] = $repeat;
 			return $this->_repetitions;
@@ -383,7 +383,7 @@ else $this->_detail = false;
 		}
 
 		// clumsy - add in the new version with the correct times (does not deal with modified descriptions and sequence)
-		$start= strftime('%Y-%m-%d %H:%M:%S',$newDetail->dtstart);
+		$start= JevDate::strftime('%Y-%m-%d %H:%M:%S',$newDetail->dtstart);
 		if ($newDetail->dtend!=0){
 			$end = $newDetail->dtend;
 		}
@@ -391,12 +391,12 @@ else $this->_detail = false;
 			$end = $start + $newDetail->duration;
 		}
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
-		list ($h,$m,$s) = explode(":",strftime("%H:%M:%S",$end));
+		list ($h,$m,$s) = explode(":",JevDate::strftime("%H:%M:%S",$end));
 		if (($h+$m+$s)==0) {
-			$end = strftime('%Y-%m-%d 23:59:59',($end-86400));
+			$end = JevDate::strftime('%Y-%m-%d 23:59:59',($end-86400));
 		}
 		else {
-			$end = strftime('%Y-%m-%d %H:%M:%S',$end);
+			$end = JevDate::strftime('%Y-%m-%d %H:%M:%S',$end);
 		}
 
 		$duplicatecheck = md5($eventid . $start );
@@ -502,8 +502,8 @@ else $this->_detail = false;
 
 	function eventOnDate($testDate){
 		if (!isset($this->_start)){
-			$this->_start = mktime(0,0,0,$this->mup,$this->dup,$this->yup);
-			$this->_end = mktime(0,0,0,$this->mup,$this->dup,$this->yup);
+			$this->_start = JevDate::mktime(0,0,0,$this->mup,$this->dup,$this->yup);
+			$this->_end = JevDate::mktime(0,0,0,$this->mup,$this->dup,$this->yup);
 		}
 		if (!isset($this->rrule)){
 			if ($this->_start<=$testDate && $this->_end>=$testDate){
@@ -523,8 +523,8 @@ else $this->_detail = false;
 
 	function eventInPeriod($startDate,$endDate){
 		if (!isset($this->_start)){
-			$this->_start = mktime(0,0,0,$this->mup,$this->dup,$this->yup);
-			$this->_end = mktime(0,0,0,$this->mdn,$this->ddn,$this->ydn);
+			$this->_start = JevDate::mktime(0,0,0,$this->mup,$this->dup,$this->yup);
+			$this->_end = JevDate::mktime(0,0,0,$this->mdn,$this->ddn,$this->ydn);
 		}
 		if (!isset($this->rrule)){
 			if ($this->_start<=$endDate && $this->_end>=$startDate){
