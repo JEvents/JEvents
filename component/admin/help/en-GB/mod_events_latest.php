@@ -69,8 +69,8 @@ classes which you can create in the template's css file.<br /><br />
 \${extraInfo},  \${createdByAlias}, \${createdByUserName}, \${createdByUserEmail}, \${createdByUserEmailLink},
 \${eventDetailLink}, \${color}<br /><br /> The  \${startDate}, \${eventDate} and \${endDate} are special event
 fields which can support further customization of the date and time display by allowing a user to specify
-exactly how to display the date with identical format control codes to the PHP 'date()' or 'strftime()
-functions. If a '%' sign is detected in the format string, strftime() is assumed to be used (<b>supports locale
+exactly how to display the date with identical format control codes to the PHP 'date()' or 'JevDate::strftime()
+functions. If a '%' sign is detected in the format string, JevDate::strftime() is assumed to be used (<b>supports locale
 international dates</b>).<br /><br /> 
 An example of a specified date and time format used: \${startDate('D, M jS, Y, @g:ia')}<br />
 This will display the date and time as: 'Fri, Oct 23rd, 2003, @7:30pm'<br /><br />
@@ -128,9 +128,9 @@ $_cal_lang_lev_date_help = <<<END
 </div>
 END;
 
-$_cal_lang_lev_strftime_help = <<<END
+$_cal_lang_lev_JevDate::strftime_help = <<<END
 <div style="width:450px;">
-<p><b><u>php strftime() function format specifiers(formats according your system locale setting):</u></b></p>
+<p><b><u>php JevDate::strftime() function format specifiers(formats according your system locale setting):</u></b></p>
 <table cellpadding="0" cellspacing="0" style="table-layout:auto;vertical-align:text-top;font-size:xx-small">
 <colgroup>
 	<col style="width: 30px;vertical-align:text-top;">

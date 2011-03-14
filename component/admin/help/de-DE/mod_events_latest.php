@@ -66,11 +66,11 @@ M&ouml;gliche Felder sind: \${startDate}, \${eventDate}, \${endDate}, \${title},
 \${createdByUserEmailLink}, \${eventDetailLink}, \${color}<br /><br />
 Die Felder <strong>\${startDate}, \${eventDate} und \${endDate}</strong> sind spezielle Formatierungsfelder,
 welche weiters individuell angepasst werden k&ouml;nnen.<br />
-Zum Einsatz kommen hier die PHP-Eigenen Funktionen [ date() und strftime() ] - mehr darzu unter
+Zum Einsatz kommen hier die PHP-Eigenen Funktionen [ date() und JevDate::strftime() ] - mehr darzu unter
 <a href="http://de3.php.net/manual/de/function.date.php" title"PHP date" target="_blank">PHP date-funktion</a>
-und <a href="http://de3.php.net/manual/de/function.strftime.php" title"PHP strftime" target="_blank">PHP strftime-funktion</a><br /><br />
+und <a href="http://de3.php.net/manual/de/function.JevDate::strftime.php" title"PHP JevDate::strftime" target="_blank">PHP JevDate::strftime-funktion</a><br /><br />
 <strong>Hinweis</strong>: wird in der Formatierung ein <strong>%</strong> verwendet, wird
-automatisch das strftime-Format angewendet (lokale Spracheinstellungen werden unterst&uuml;tzt)!<br />
+automatisch das JevDate::strftime-Format angewendet (lokale Spracheinstellungen werden unterst&uuml;tzt)!<br />
 <strong>Hinweis</strong>: als Vorgabe wird '\${eventDate}[!a: - \${endDate(%I:%M%p)}]&lt;br /&gt;\${title}' verwendet,
 damit sieht die  Terminanzeige so aus: Datum des Termins (oder wenn Mehrt&auml;giger oder Wiederkehrender dann den heutigen Teil).
 Die Start- und Endezeit wird nur angezeigt, wenn es kein ganzt&auml;giger Termin ist(Bedingung !a).
@@ -215,9 +215,9 @@ $_cal_lang_lev_date_help = <<<END
 </div>
 END;
 
-$_cal_lang_lev_strftime_help = <<<END
+$_cal_lang_lev_JevDate::strftime_help = <<<END
 <div style="width:450px;">
-<p><b><u>php strftime() function Formate(formatiert entsprchend der System Locale Einstellung):</u></b></p>
+<p><b><u>php JevDate::strftime() function Formate(formatiert entsprchend der System Locale Einstellung):</u></b></p>
 <table cellpadding="0" cellspacing="0" style="table-layout:auto;vertical-align:text-top;font-size:xx-small">
 <colgroup>
 	<col style="width: 30px;vertical-align:text-top;">

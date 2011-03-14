@@ -70,7 +70,7 @@ class SaveIcalEvent {
 		}
 		else $start_time			= JArrayHelper::getValue( $array,  "start_time","08:00");
 		$publishstart		= $data["publish_up"] . ' ' . $start_time . ':00';
-		$data["DTSTART"]	= strtotime( $publishstart );
+		$data["DTSTART"]	= JevDate::strtotime( $publishstart );
 
 		if ($data["allDayEvent"]=="on"){
 			$end_time="00:00";
@@ -82,14 +82,14 @@ class SaveIcalEvent {
 			$publishend		= $data["publish_down"] . ' 23:59:59';
 		}
 
-		$data["DTEND"]		= strtotime( $publishend );
+		$data["DTEND"]		= JevDate::strtotime( $publishend );
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 		list ($h,$m,$s) = explode(":",$end_time . ':00');
 		if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>$data["DTSTART"]) {
 			//if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>=$data["DTSTART"]) {
-			//$publishend = strftime('%Y-%m-%d 23:59:59',($data["DTEND"]-86400));
-			$publishend = strftime('%Y-%m-%d 23:59:59',($data["DTEND"]));
-			$data["DTEND"]		= strtotime( $publishend );
+			//$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]-86400));
+			$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]));
+			$data["DTEND"]		= JevDate::strtotime( $publishend );
 		}
 
 		$data["RRULE"]	= $rrule;
@@ -187,9 +187,7 @@ class SaveIcalEvent {
 				}
 			}
 		}
-
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
-
 		if ($dryrun) return $vevent;
 
 		
@@ -256,7 +254,7 @@ function generateRRule($array){
 		else {
 			$publish_down	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
 			$until			= JArrayHelper::getValue( $array,  "until",$publish_down);
-			$rrule["UNTIL"] = strtotime($until." 00:00:00");
+			$rrule["UNTIL"] = JevDate::strtotime($until." 00:00:00");
 		}
 		$rrule["INTERVAL"] = $interval;
 	}

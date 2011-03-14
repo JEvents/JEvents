@@ -148,12 +148,12 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
    		<fieldset style="background-color:#dddddd"><legend><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_("Repeat Until"); ?></legend>
 			<?php
 			/*
-			 echo JHTML::calendar(strftime("%Y-%m-%d",$this->row->until()), 'until', 'until', '%Y-%m-%d',	array('size'=>'12','maxlength'=>'10'));
+			 echo JHTML::calendar(JevDate::strftime("%Y-%m-%d",$this->row->until()), 'until', 'until', '%Y-%m-%d',	array('size'=>'12','maxlength'=>'10'));
 			 */
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
-			JEVHelper::loadCalendar("until", "until", strftime("%Y-%m-%d",$this->row->until()),$minyear, $maxyear, 'updateRepeatWarning();',"checkUntil();updateRepeatWarning();", 'Y-m-d');
+			JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d",$this->row->until()),$minyear, $maxyear, 'updateRepeatWarning();',"checkUntil();updateRepeatWarning();", 'Y-m-d');
 			?>
 
    		</fieldset>
