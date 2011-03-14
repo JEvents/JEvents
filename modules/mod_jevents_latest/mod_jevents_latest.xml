@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>2.0.0 Beta8</version>
+	<version>2.0.0 Beta9</version>
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
@@ -68,21 +68,32 @@
 		<param name="modlatest_CustFmtStr" type="textarea" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
 		<param name="modlatest_MaxEvents" type="text" size="3" default="10" label="Maximum Events to Display" description="Maximum number of events to display in the module(max 150)" />
 		<param name="modlatest_Mode" type="list" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
+					<option value="0">0 (Current/Following Week Events)</option>
+					<option value="1">1 (Current/Following Week Events  - including past)</option>
+					<option value="2">2 (Nearest events)</option>
+					<option value="3">3 (Nearest events - including past events)</option>
+					<option value="4">4 (Nearest events for current month)</option>
+					<option value="5">5 (Most recently created events)</option>
+					<option value="6">6 (Most popular events)</option>
 		</param>
-		<param name="modlatest_Days" type="text" default="30" size="2" label="Display Events the of the next ? days(modes 2 or 3 only)" description="range of days relative to current day to display events for mode 2 or 3." />
-		<param name="startnow" type="radio" default="0" label="START NOW" description="START NOW DESC">
+		<param name="modlatest_Days" type="text" default="30" size="2" label="Display Events the of the next ? days(modes 2, 3, 5 and 6 only)" description="range of days relative to current day to display events for mode 2 or 3." />
+		<param name="startnow" type="radio" default="0" label="Start Now" description="Start measuring time from now and not from midnight">
 			<option value="0">No</option>`
 			<option value="1">Yes</option>
+		</param>
+		<param name="pastonly" type="list" default="0" label="Past Events Only" description="Only inlclude events in the past">
+			<option value="0">All Events</option>`
+			<option value="1">Past Events Only</option>
+			<option value="2">Future Events Only</option>
 		</param>
 		<param name="modlatest_NoRepeat" type="radio" default="0" label="Display a Repeating Event Once" description="display any event which has a repeat type only once in the latest events output.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
+		</param>
+		<param name="modlatest_multiday" type="list" default="0" label="Multiday Event Display" description="How should mulitday events be treated">
+			<option value="0">Use setting from the event itself</option>
+			<option value="1">Display on all days</option>
+			<option value="2">Display on first day only</option>
 		</param>
 		<param name="modlatest_DispLinks" type="radio" default="1" label="Display Events As Links" description="display event titles as links to the view_detail com_jevents task which will display details of the event">
 			<option value="0">No</option>
@@ -184,21 +195,33 @@
 				<field name="modlatest_CustFmtStr" type="textarea" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
 				<field name="modlatest_MaxEvents" type="text" size="3" default="10" label="Maximum Events to Display" description="Maximum number of events to display in the module(max 150)" />
 				<field name="modlatest_Mode" type="list" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
-					<option value="0">0</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
+					<option value="0">0 (Current/Following Week Events)</option>
+					<option value="1">1 (Current/Following Week Events  - including past)</option>
+					<option value="2">2 (Nearest events)</option>
+					<option value="3">3 (Nearest events - including past events)</option>
+					<option value="4">4 (Nearest events for current month)</option>
+					<option value="5">5 (Most recently created events)</option>
+					<option value="6">6 (Most popular events)</option>
 				</field>
-				<field name="modlatest_Days" type="text" default="30" size="2" label="Display Events the of the next ? days(modes 2 or 3 only)" description="range of days relative to current day to display events for mode 2 or 3." />
-				<field name="startnow" type="radio" default="0" label="START NOW" description="START NOW DESC">
+				<field name="modlatest_Days" type="text" default="30" size="2" label="Display Events the of the next ? days(modes 2, 3, 5 and 6 only)" description="range of days relative to current day to display events for mode 2 or 3." />
+				<field name="startnow" type="radio" default="0" label="Start Now" description="Start measuring time from now and not from midnight">
 					<option value="0">No</option>`
 					<option value="1">Yes</option>
+				</field>
+				<field name="pastonly" type="list" default="0" label="Past Events Only" description="Only inlclude events in the past">
+					<option value="0">All Events</option>`
+					<option value="1">Past Events Only</option>
+					<option value="2">Future Events Only</option>
 				</field>
 				<field name="modlatest_NoRepeat" type="radio" default="0" label="Display a Repeating Event Once" description="display any event which has a repeat type only once in the latest events output.">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
+				</field>
+				<field name="modlatest_multiday" type="list" default="0" label="Multiday Event Display" description="How should mulitday events be treated">
+					<option value="0">Use setting from the event itself</option>
+					<option value="1">Display on all days</option>
+					<option value="2">Display on first day only</option>
+					<option value="3">Display once</option>
 				</field>
 				<field name="modlatest_DispLinks" type="radio" default="1" label="Display Events As Links" description="display event titles as links to the view_detail com_jevents task which will display details of the event">
 					<option value="0">No</option>
@@ -241,7 +264,7 @@
 					default=""
 					label="RSS description"
 					description="RSS description. Default is set by the components RSS setting" />
-				<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>
+				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
 
 			</fieldset>
 		</fields>
