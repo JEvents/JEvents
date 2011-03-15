@@ -207,7 +207,7 @@ if (JVersion::isCompatible("1.6.0"))
 				$date = new JevDate();
 			}
 			// reset the timezone !!
-			date_default_timezone_set($date::$stz->getName());
+			date_default_timezone_set($date->mytz->getName());
 			$args = array_unshift($arguments,$this);
 
 			if (is_callable($name)){
