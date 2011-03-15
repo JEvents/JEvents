@@ -86,7 +86,7 @@ class jevCategoryFilter extends jevFilter
 
 		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
 		
-		$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fvs')).each(function(item){item.selected=false;})};\n";
+		$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=false;})};\n";
 		$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);

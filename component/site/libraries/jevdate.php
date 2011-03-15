@@ -11,6 +11,8 @@ if (JVersion::isCompatible("1.6.0"))
 	class JevDate extends JDate
 	{
 
+		public $mytz;
+
 		/**
 		 * Constructor.
 		 *
@@ -38,6 +40,7 @@ if (JVersion::isCompatible("1.6.0"))
 			else {
 				self::$stz = new DateTimeZone(@date_default_timezone_get());
 			}
+			$this->mytz = self::$stz;
 
 			// If the time zone object is not set, attempt to build it.
 			if (!($tz instanceof DateTimeZone))
@@ -164,7 +167,7 @@ if (JVersion::isCompatible("1.6.0"))
 				$date = new JevDate();
 			}
 			// reset the timezone !!
-			date_default_timezone_set($date::$stz->getName());
+			date_default_timezone_set($date->mytz->getName());
 			return strtotime($time, $now);
 		}
 
@@ -174,7 +177,7 @@ if (JVersion::isCompatible("1.6.0"))
 				$date = new JevDate();
 			}
 			// reset the timezone !!
-			date_default_timezone_set($date::$stz->getName());
+			date_default_timezone_set($date->mytz->getName());
 			$arg = func_get_args();
 
 			$name ="mktime";
@@ -189,7 +192,7 @@ if (JVersion::isCompatible("1.6.0"))
 				$date = new JevDate();
 			}
 			// reset the timezone !!
-			date_default_timezone_set($date::$stz->getName());
+			date_default_timezone_set($date->mytz->getName());
 			$arg = func_get_args();
 
 			$name ="strftime";
