@@ -212,8 +212,6 @@ if (JVersion::isCompatible("1.6.0"))
 			}
 		}
 		
-
-		
 	}
 
 }
@@ -225,6 +223,25 @@ else
 			return JFactory::getDate($time,$tzOffset);
 		}
 
+		public static function strtotime($time, $now=null){
+			return strtotime($time, $now);
+		}
+
+		public static function mktime(){
+			$arg = func_get_args();
+
+			$name ="mktime";
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
+
+		public static function strftime(){
+			$name ="strftime";
+			if (is_callable($name)){
+				return call_user_func_array($name,$arg);
+			}
+		}
 
 		public function __call($name, $arguments){
 			$args = array_unshift($arguments,$this);
