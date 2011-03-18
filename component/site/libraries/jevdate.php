@@ -241,6 +241,7 @@ else
 
 		public static function strftime(){
 			$name ="strftime";
+			$arg = func_get_args();
 			if (is_callable($name)){
 				return call_user_func_array($name,$arg);
 			}
