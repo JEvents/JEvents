@@ -190,6 +190,21 @@ class JEventsHTML{
 					}
 				}
 				$options = array_values($options);
+
+				// Thanks to ssobada
+				 $user =JFactory::getUser();
+				 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
+				 $authorisedonly = $params->get("authorisedonly", 0);
+				 $cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
+				 if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
+					$count = count($options);
+					for ($o=0;$o<$count;$o++){
+					   if (!in_array($options[$o]->value, $cats)){
+						  unset($options[$o]);
+					   }
+					}
+					$options = array_values($options);
+				 }
 			}
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >

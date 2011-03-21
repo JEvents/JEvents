@@ -140,7 +140,7 @@ function ProcessRequest(&$requestObject, $returnData){
 		}
 	}
 
-	if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
+	if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 		$timezone= date_default_timezone_get();
 		$tz = $params->get("icaltimezonelive","");
 		date_default_timezone_set($tz);
