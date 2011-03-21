@@ -215,7 +215,7 @@ $_cal_lang_lev_date_help = <<<END
 </div>
 END;
 
-$_cal_lang_lev_JevDate::strftime_help = <<<END
+$_cal_lang_lev_strftime_help = <<<END
 <div style="width:450px;">
 <p><b><u>php JevDate::strftime() function Formate(formatiert entsprchend der System Locale Einstellung):</u></b></p>
 <table cellpadding="0" cellspacing="0" style="table-layout:auto;vertical-align:text-top;font-size:xx-small">

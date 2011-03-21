@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!-- $Id: category.xml 16306 2010-04-21 18:47:28Z louis $ -->
-	<!-- This is a demo. Delete for beta -->
 <form >
 	<fields
 		name="params">
@@ -21,6 +19,7 @@
 				label="JEV_BLOCK_OVERLAPS"
 				description="JEV_BLOCK_OVERLAPS"
 				/>
+
 			</fieldset>
 	</fields>
 </form>

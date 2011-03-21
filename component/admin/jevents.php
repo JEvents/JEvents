@@ -50,10 +50,20 @@ if (JVersion::isCompatible("1.6.0")){
 */
 // See http://www.php.net/manual/en/timezones.php
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set")){
+if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 	$timezone= date_default_timezone_get();
 	date_default_timezone_set($params->get("icaltimezonelive",""));
 	$registry->setValue("jevents.timezone",$timezone);
+}
+
+// Thanks to ssobada
+if (JVersion::isCompatible("1.6.0")){
+   $authorisedonly = $params->get("authorisedonly", 0);
+   $user      = JFactory::getUser();
+   //Stop if user is not authorised to access JEevents CPanel
+   if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
+	  return;
+   }
 }
 
 // Must also load frontend language files

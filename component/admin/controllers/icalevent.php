@@ -91,8 +91,31 @@ class AdminIcaleventController extends JController {
 			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
 		}
 
-		if( $catid > 0 ){
-			$where[] = "ev.catid='$catid'";
+		if (JVersion::isCompatible("1.6.0")) {
+			$user =& JFactory::getUser();
+			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 0);
+			$cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
+			if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
+				if( $cats > 0 && $catid < 1){
+				   for($i=0;$i<count($cats);$i++){
+					  $whereCats[$i] = "ev.catid='$cats[$i]'";
+				   }
+				   $where[] = '('.implode(" OR ", $whereCats).')';
+				} else if( $cats > 0 && $catid > 0 && in_array($catid, $cats)){
+					  $where[] = "ev.catid='$catid'";
+				}   else {
+				   $where[] = "ev.catid=''";
+				}
+			} else {
+				if( $catid > 0 ){
+				   $where[] = "ev.catid='$catid'";
+				}
+			}
+		} else {
+			if( $catid > 0 ){
+				$where[] = "ev.catid='$catid'";
+			 }
 		}
 
 		if ($created_by==="") {
@@ -624,6 +647,10 @@ class AdminIcaleventController extends JController {
 		if ($params->get("allowraw",0)){
 			$array['jevcontent'] = JRequest::getString("jevcontent","","POST",JREQUEST_ALLOWRAW);
 		}
+
+         if (!JEVHelper::canCreateEvent($array)){
+            JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+         }
 
 		$rrule = SaveIcalEvent::generateRRule($array);
 

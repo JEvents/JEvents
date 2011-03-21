@@ -3,10 +3,11 @@ tr.jevcreator_level, tr.jevpublish_level, tr.jeveditor_level {
 }
 fieldset.adminform label {
 	display:inline;
-	float:none;
+	float:none!important;
+	margin-left:2px!important;
 }
 fieldset.adminform input, fieldset.adminform textarea, fieldset.adminform select, fieldset.adminform img, fieldset.adminform button {
-	float:none;
+	float:none!important;
 	margin-right:5px;
 }
 
