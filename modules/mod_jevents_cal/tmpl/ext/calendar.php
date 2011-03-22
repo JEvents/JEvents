@@ -30,7 +30,7 @@ class ExtModCalView extends DefaultModCalView
 		if (!$basedate) $basedate=$time;
 		$base_year = date("Y",$basedate);
 		$base_month = date("m",$basedate);
-		$basefirst_of_month   = mktime(0,0,0,$base_month, 1, $base_year);
+		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
 
 		$requestYear = JRequest::getInt("year",0);
 		$requestMonth = JRequest::getInt("month",0);
@@ -38,16 +38,16 @@ class ExtModCalView extends DefaultModCalView
 		if ($requestMonth && $requestYear && JRequest::getString("task","")!="modcal.ajax"){
 			$requestDay = JRequest::getInt("day",1);
 
-			$requestTime = mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
-			if ($time-$basedate > 100000) $requestTime = strtotime("+1 month",$requestTime);
-			else if ($time-$basedate < -100000) $requestTime = strtotime("-1 month",$requestTime);
+			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
+			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
+			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
 
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
 			$base_year = $requestYear;
 			$base_month = $requestMonth;
-			$basefirst_of_month   = mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
+			$basefirst_of_month   = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 		}
 		else {
 			$cal_year=date("Y",$time);
@@ -75,7 +75,7 @@ class ExtModCalView extends DefaultModCalView
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$to_day     = date("Y-m-d", $this->timeWithOffset);
-		$today = mktime(0,0,0,$cal_month, $cal_day, $cal_year);
+		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
 
 		$cal_prev_month 	= $cal_month - 1;
 		$cal_next_month 	= $cal_month + 1;
@@ -193,7 +193,7 @@ START;
 						break;
 					case "current":
 
-						$dayOfWeek=strftime("%w",$currentDay["cellDate"]);
+						$dayOfWeek=JevDate::strftime("%w",$currentDay["cellDate"]);
 
 						$class = ($currentDay["today"]) ? "extcal_todaycell" : "extcal_daycell";
 						$linkclass = "extcal_daylink";

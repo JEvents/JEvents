@@ -219,8 +219,8 @@ class DefaultModCalView
 	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
 		$cfg = & JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
-		$adjDate = strtotime($adj,$cal_today);
-		list($year,$month) = explode(":",strftime("%Y:%m",$adjDate));
+		$adjDate = JevDate::strtotime($adj,$cal_today);
+		list($year,$month) = explode(":",JevDate::strftime("%Y:%m",$adjDate));
 		$link = JRoute::_($this->linkpref.$action."&day=1&month=$month&year=$year".$this->cat);
 
 		$content ="";
@@ -248,7 +248,7 @@ class DefaultModCalView
 		if (!$basedate) $basedate=$time;
 		$base_year = date("Y",$basedate);
 		$base_month = date("m",$basedate);
-		$basefirst_of_month   = mktime(0,0,0,$base_month, 1, $base_year);
+		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
 
 		$requestYear = JRequest::getInt("year",0);
 		$requestMonth = JRequest::getInt("month",0);
@@ -256,16 +256,16 @@ class DefaultModCalView
 		if ($requestMonth && $requestYear && JRequest::getString("task","")!="modcal.ajax"){
 			$requestDay = JRequest::getInt("day",1);
 
-			$requestTime = mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
-			if ($time-$basedate > 100000) $requestTime = strtotime("+1 month",$requestTime);
-			else if ($time-$basedate < -100000) $requestTime = strtotime("-1 month",$requestTime);
+			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
+			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
+			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
 	
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
 			$base_year = $requestYear;
 			$base_month = $requestMonth;
-			$basefirst_of_month   = mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
+			$basefirst_of_month   = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 		}
 		else {
 			$cal_year=date("Y",$time);
@@ -278,9 +278,9 @@ class DefaultModCalView
 		$reg->setValue("jev.modparams",false);
 
 		$month_name = JEVHelper::getMonthName($cal_month);
-		$first_of_month = mktime(0,0,0,$cal_month, 1, $cal_year);
-		//$today = mktime(0,0,0,$cal_month, $cal_day, $cal_year);
-		$today = strtotime(date('Y-m-d', $this->timeWithOffset));
+		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
+		//$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
+		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
 
 		$content    = '';
 		
@@ -431,7 +431,7 @@ class DefaultModCalView
 		$thisDayOfMonth = date("j", $this->timeWithOffset);
 		$daysLeftInMonth = date("t", $this->timeWithOffset) - date("j", $this->timeWithOffset) + 1;
 		// calculate month offset from first of month
-		$first_of_current_month = strtotime(date('Y-m-01',$this->timeWithOffset));
+		$first_of_current_month = JevDate::strtotime(date('Y-m-01',$this->timeWithOffset));
 
 		$mod ="";
 		if (isset($this->_modid) && $this->_modid>0){
@@ -440,14 +440,14 @@ class DefaultModCalView
 		}
 		
 		if($this->disp_lastMonth && (!$this->disp_lastMonthDays || $thisDayOfMonth <= $this->disp_lastMonthDays))
-		$content .= $this->_displayCalendarMod(strtotime("-1 month", $first_of_current_month),
+		$content .= $this->_displayCalendarMod(JevDate::strtotime("-1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_LAST_MONTH'),	$day_name, $this->disp_lastMonth == 2, $this->timeWithOffset);
 
 		$content .= $this->_displayCalendarMod($this->timeWithOffset,
 		$this->com_starday, JText::_('JEV_THIS_MONTH'),$day_name, false, $this->timeWithOffset);
 
 		if($this->disp_nextMonth && (!$this->disp_nextMonthDays || $daysLeftInMonth <= $this->disp_nextMonthDays))
-		$content .= $this->_displayCalendarMod(strtotime("+1 month", $first_of_current_month),
+		$content .= $this->_displayCalendarMod(JevDate::strtotime("+1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_NEXT_MONTH'),$day_name, $this->disp_nextMonth == 2, $this->timeWithOffset);
 		
 		$content .= '</div>';
@@ -485,28 +485,28 @@ class DefaultModCalView
 		}
 
 		
-		$temptime = mktime(12,0,0,$month,15,$year);
+		$temptime = JevDate::mktime(12,0,0,$month,15,$year);
 
 		//$content .= $this->_displayCalendarMod($temptime,$this->com_starday, JText::_('JEV_THIS_MONTH'),$day_name, false);
 
 		$thisDayOfMonth = date("j", $temptime);
 		$daysLeftInMonth = date("t", $temptime) - date("j",$temptime) + 1;
 		// calculate month offset from first of month
-		$first_of_current_month = strtotime(date('Y-m-01',$temptime));
+		$first_of_current_month = JevDate::strtotime(date('Y-m-01',$temptime));
 
 		$base_year = date("Y",$temptime);
 		$base_month = date("m",$temptime);
-		$basefirst_of_month   = mktime(0,0,0,$base_month, 1, $base_year);
+		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
 		
 		if($this->disp_lastMonth && (!$this->disp_lastMonthDays || $thisDayOfMonth <= $this->disp_lastMonthDays))
-		$content .= $this->_displayCalendarMod(strtotime("-1 month", $first_of_current_month),
+		$content .= $this->_displayCalendarMod(JevDate::strtotime("-1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_LAST_MONTH'),	$day_name, $this->disp_lastMonth == 2,  $first_of_current_month);
 
 		$content .= $this->_displayCalendarMod($temptime,
 		$this->com_starday, JText::_('JEV_THIS_MONTH'),$day_name, false,  $first_of_current_month);
 
 		if($this->disp_nextMonth && (!$this->disp_nextMonthDays || $daysLeftInMonth <= $this->disp_nextMonthDays))
-		$content .= $this->_displayCalendarMod(strtotime("+1 month", $first_of_current_month),
+		$content .= $this->_displayCalendarMod(JevDate::strtotime("+1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_NEXT_MONTH'),$day_name, $this->disp_nextMonth == 2,  $first_of_current_month);
 		
 		
