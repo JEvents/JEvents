@@ -5,6 +5,7 @@
  * @version     $Id$
  * @package     Events
  * @subpackage  Mambot Events Calendar
+ * @copyright   Copyright (C) 2008-2011 GWE Systems Ltd
  * @copyright   Copyright (C) 2006-2007 JEvents Project Group
  * @copyright   Copyright (C) 2000 - 2003 Eric Lamette, Dave McDonnell
  * @licence     http://www.gnu.org/copyleft/gpl.html
@@ -23,7 +24,7 @@ if (file_exists($file) ) {
 	include_once(JEV_LIBS."/modfunctions.php");
 
 } else {
-	die ("JEvents Calendar\n<br />This module needs the JEvents component");
+	die ("JEvents Calendar\n<br />This plugin needs the JEvents component");
 }
 
 // Import library dependencies
@@ -37,12 +38,17 @@ if (!(version_compare(JVERSION, '1.6.0', ">="))) {
 /**
  * @return array An array of search areas
  */
-function &plgSearchEventsSearchAreas() {
-
-	static $areas = array(
-	'events' => 'JEvents'
-	);
-	return $areas;
+function plgSearchEventsSearchAreas() {
+	if (version_compare(JVERSION, '1.6.0', ">=")) {
+		return array(
+			'eventsearch' => 'Events'
+		);
+	}
+	else {
+		return  array(
+		'events' => 'JEvents'
+		);
+	}
 }
 
 
@@ -76,10 +82,16 @@ class plgSearchEventsearch extends JPlugin {
 	 */
 	function onContentSearchAreas()
 	{
-		static $areas = array(
-			'eventsearch' => 'Events'
+		if (version_compare(JVERSION, '1.6.0', ">=")) {
+			return array(
+				'eventsearch' => 'Events'
 			);
-			return $areas;
+		}
+		else {
+			return  array(
+			'events' => 'JEvents'
+			);
+		}
 	}
 
 	function onContentSearch($text, $phrase='', $ordering='', $areas=null)
@@ -113,6 +125,7 @@ class plgSearchEventsearch extends JPlugin {
 		}
 
 		if (is_array( $areas )) {
+			$test =array_keys( plgSearchEventsSearchAreas() ) ;
 			if (!array_intersect( $areas, array_keys( plgSearchEventsSearchAreas() ) )) {
 				return array();
 			}
@@ -218,7 +231,7 @@ class plgSearchEventsearch extends JPlugin {
 		}
 		$display = 'CONCAT('. implode(", ' ', ", $display2) . ')';
 		$query = "SELECT det.summary as title,"
-		. "\n det.created as created,"
+		. "\n ev.created as created,"
 		. "\n $display as text,"
 		. "\n CONCAT('$eventstitle','/',det.summary) AS section,"
 		. "\n CONCAT('index.php?option=com_jevents&task=icalrepeat.detail&evid=',min(rpt.rp_id)) AS href,"
@@ -232,7 +245,7 @@ class plgSearchEventsearch extends JPlugin {
 		. $extrajoin
 		. "\n WHERE ($where_ical)"
 		. "\n AND icsf.state = 1"
-		. "\n AND icsf.access <= " . ((version_compare(JVERSION, '1.6.0', '>=')) ? $user->aid : $user->gid)
+		. "\n AND icsf.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 		. "\n AND ev.state = 1"
 		. "\n AND ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 		. "\n AND b.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
@@ -269,7 +282,7 @@ class plgSearchEventsearch extends JPlugin {
 			$db->setQuery($query);
 			$rows = $db->loadObjectList("rp_id");
 			foreach ($list_ical as $index=>$item) {
-				$startdate = new JevDate(strtotime($item->startrepeat));
+				$startdate = new JDate(strtotime($item->startrepeat));
 				$item->title .= " (" . $startdate->toFormat($dateformat) . ")";
 				
 				// Now ensure that the URL is the correc SEF URL
