@@ -41,6 +41,28 @@
 				<option value="1">JEV_YES</option>
 			</field>
 
+			<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras14" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+			<field name="extras15" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+
+			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+			</field>
+
 			<field name="@spacer" type="jevinfo" default="Advanced Settings" label="" description="" />
 			<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
 		</fieldset>

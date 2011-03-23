@@ -14,9 +14,11 @@
 		<name>JEvents</name>
 		<description>JEvents List By Year</description>
 		<params>
+			<!--
 			<param name="head" type="textarea" default="" rows="2" cols="50" label="COM_JEVENTS_LIST_HEAD" description="COM_JEVENTS_LIST_HEAD_DESC" />
 			<param name="row" type="textarea" default="" rows="10" cols="50" label="COM_JEVENTS_LIST_ROW" description="COM_JEVENTS_LIST_ROW_DESC" />
 			<param name="foot" type="textarea" default="" rows="2" cols="50" label="COM_JEVENTS_LIST_FOOT" description="COM_JEVENTS_LIST_FOOT_DESC" />
+			//-->
 		</params>
 	</state>
 </metadata>
