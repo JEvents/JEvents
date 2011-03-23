@@ -50,7 +50,16 @@ include_once(JPATH_COMPONENT.DS."jevents.defines.php");
 $registry	=& JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
 if (JVersion::isCompatible("1.6.0")){
-	$newparams	= JFactory::getApplication()->getParams();
+	$newparams	= JFactory::getApplication('site')->getParams();
+	// Because the application sets a default page title,
+	// we need to get it from the menu item itself
+	$menu = JFactory::getApplication()->getMenu()->getActive();
+	if ($menu) {
+		$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
+	}
+	else {
+		$newparams>def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+	}
 	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
 	$component->params =& $newparams;
 }

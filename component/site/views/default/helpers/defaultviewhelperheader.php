@@ -3,6 +3,10 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperHeader($view){
 
+	if (JVersion::isCompatible("1.6.0")){
+		return $view->_header16();
+	}
+
 	$dispatcher	=& JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
