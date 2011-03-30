@@ -44,7 +44,7 @@ class JElementJevmenu extends JElement
 		$db->setQuery( $query );
 		$menuTypes = $db->loadObjectList();
 
-		$menu =& JApplication::getMenu('site', $options);
+		$menu =& JApplication::getMenu('site');
 		$menuItems = $menu->getMenu();		
 		foreach ($menuItems as &$item) {
 		 	
@@ -105,7 +105,9 @@ class JElementJevmenu extends JElement
 					}
 					
 					$disable = false; //strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? utf8_encode(html_entity_decode('&nbsp;&nbsp;&nbsp;' . $item->treename)) : '&nbsp;&nbsp;&nbsp;' . $item->treename;  // RSH 10/4/10 - J!1.6 does a htmlspecialentities and html_entity_decode to screw up the text!  Make sure the correct values are passed for the respective versions
+					// RSH 10/4/10 - J!1.6 does a htmlspecialentities and html_entity_decode to screw up the text!  Make sure the correct values are passed for the respective versions
+					//$text = (version_compare(JVERSION, '1.6.0', ">=")) ? utf8_encode(html_entity_decode('&nbsp;&nbsp;&nbsp;' . $item->treename)) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
+					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' .html_entity_decode( $item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
 					$options[] = JHTML::_('select.option',  $item->id, $text , 'value', 'text', $disable );
 
 				}

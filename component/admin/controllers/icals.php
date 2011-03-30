@@ -298,7 +298,7 @@ class AdminIcalsController extends JController {
 			$catid = JRequest::getInt('catid',0);
 			$ignoreembedcat = JRequest::getInt('ignoreembedcat',0);
 			// Should come from the form or existing item
-			$access = 0;
+			$access = JRequest::getInt('access',0);
 			$state = 1;
 			$uploadURL = JRequest::getVar('uploadURL','' );
 			$icsLabel = JRequest::getVar('icsLabel','' );
@@ -553,7 +553,7 @@ class AdminIcalsController extends JController {
 		$db->setQuery( $query );
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_("DELETE CREATES ORPHAN EVENTS") );
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_("DELETE_CREATES_ORPHAN_EVENTS") );
 			return;
 		}
 

@@ -535,11 +535,17 @@ class AdminIcaleventController extends JController {
 				if (!headers_sent()){
 					header('Content-Type:text/html;charset=utf-8');
 				}
+				if ($event && $event->state() ){
+					$link =  $event->viewDetailLink($year,$month,$day,$sef,$itemid);
+				}
+				else {
+					$link =  JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false);
+				}
 				?>
-				<script type="text/javascript">				
+				<script type="text/javascript">
 				window.parent.SqueezeBox.close();
 				window.parent.alert("<?php echo $msg;?>");
-				window.parent.location="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false);?>";
+				window.parent.location="<?php echo $link;?>";
 				</script>
 				<?php
 				exit();

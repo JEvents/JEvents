@@ -342,7 +342,7 @@ class AdminCategoriesController extends JController {
 		$db->setQuery( $query );
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE CREATES ORPHANS") );
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE_CREATES_ORPHANS") );
 			return;
 		}
 
@@ -351,7 +351,7 @@ class AdminCategoriesController extends JController {
 		$db->setQuery( $query );
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE CREATES ORPHAN EVENTS") );
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("DELETE_CREATES_ORPHAN_EVENTS") );
 			return;
 		}
 

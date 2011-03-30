@@ -119,7 +119,7 @@ echo JEventsHTML::buildScriptTag('end');
 	echo $tabs->startPane( 'icals' );
 
 	if ($id==0 || $icaltype==2){
-		echo $tabs->startPanel( JText::_("FROM SCRATCH"), 'icalsnative' );
+		echo $tabs->startPanel( JText::_("FROM_SCRATCH"), 'icalsnative' );
 		if (!isset($this->editItem->isdefault) || $this->editItem->isdefault==0){
 			$checked0=' checked="checked"';
 			$checked1='';
@@ -135,7 +135,7 @@ echo JEventsHTML::buildScriptTag('end');
 	<input id="isdefault1" type="radio" value="1" name="isdefault" <?php echo $checked1;?>/>
 	<label for="isdefault1"><?php echo JText::_('Yes'); ?></label><br/><br/>
 	<?php if ($id==0){ ?>
-	<button name="newical"  title="Create New" onclick="submitbutton('icals.new');return false;"><?php echo JText::_("CREATE FROM SCRATCH");?></button>
+	<button name="newical"  title="Create New" onclick="submitbutton('icals.new');return false;"><?php echo JText::_("CREATE_FROM_SCRATCH");?></button>
 	<?php
 	}
 	echo $tabs->endPanel();

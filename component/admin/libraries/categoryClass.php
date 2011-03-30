@@ -1,4 +1,4 @@
-<?php
+cat<?php
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -23,51 +23,67 @@ class JEventsCategory extends JTableCategory {
 	// security check
 	function bind( $array ) {
 		$cfg = & JEVConfig::getInstance();
-		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
-		parent::bind($array);
-		if (!isset($this->_catextra)){
-			$this->_catextra = new CatExtra($this->_db);
-		}
-		$this->_catextra->color = array_key_exists("color",$array)?$array['color']:"#000000";
-		if(!preg_match("/^#[0-9a-f]+$/i", $this->_catextra->color)) $this->_catextra->color= "#000000";
-		unset($this->color);
-
-		$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
-		unset($this->admin);
-
-		$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
-
-		// Fill in the gaps
-		$this->name=$this->title;
-
+		
 		if (JVersion::isCompatible("1.6.0"))  {
-			$this->extension="com_jevents";
+
+			$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
+			$array['extension']= "com_jevents";
+			$array['parent_id']= 1;
+			$array['language']= "*";
+			$array['access'] = JRequest::getInt("access");
+			$array['alias'] = JApplication::stringURLSafe($array['title']);
+			$array['path'] = $array['alias'] ;
+			
+			$this->setLocation($array['parent_id'], 'last-child');
+
+			parent::bind($array);
+
 		}
 		else {
+			$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
+			parent::bind($array);
+
+			if (!isset($this->_catextra)){
+				$this->_catextra = new CatExtra($this->_db);
+			}
+			$this->_catextra->color = array_key_exists("color",$array)?$array['color']:"#000000";
+			if(!preg_match("/^#[0-9a-f]+$/i", $this->_catextra->color)) $this->_catextra->color= "#000000";
+			unset($this->color);
+
+			$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
+			unset($this->admin);
+
+			$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
+
+			// Fill in the gaps
+			$this->name=$this->title;
 			$this->section="com_jevents";
+			$this->image_position="left";
 		}
-		$this->image_position="left";
 
 		return true;
 	}
 
 	function load($oid=null){
 		parent::load($oid);
-		if (!isset($this->_catextra)){
-			$this->_catextra = new CatExtra($this->_db);
-		}
-		if ($this->id>0){
-			$this->_catextra->load($this->id);
+		if (!JVersion::isCompatible("1.6.0"))  {
+			if (!isset($this->_catextra)){
+				$this->_catextra = new CatExtra($this->_db);
+			}
+			if ($this->id>0){
+				$this->_catextra->load($this->id);
+			}
 		}
 	}
 
 	function store(){
 		$success = parent::store();
-		if (isset($this->_catextra)){
-			$this->_catextra->id = $this->id;
-			$this->_catextra->store();
+		if (! JVersion::isCompatible("1.6.0"))  {
+			if (isset($this->_catextra)){
+				$this->_catextra->id = $this->id;
+				$this->_catextra->store();
+			}
 		}
-
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
 			$dispatcher	=& JDispatcher::getInstance();
