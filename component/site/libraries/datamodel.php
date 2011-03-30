@@ -777,7 +777,7 @@ class JEventsDataModel {
 		return $this->queryModel->accessibleCategoryList($aid, $catids, $catidList);
 	}
 
-	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0){
+	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
 		$data = array();
 
 		$Itemid = JEVHelper::getItemid();
@@ -800,7 +800,7 @@ class JEventsDataModel {
 		$data['limitstart']=$limitstart;
 
 		$rows 	  = $this->queryModel->listEventsByCat( $catids, $limitstart, $limit );
-		$icalrows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$total, $limitstart, $limit );
+		$icalrows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$total, $limitstart, $limit , $order);
 
 		$rows = array_merge($icalrows,$rows);
 		$num_events = count( $rows );

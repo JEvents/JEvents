@@ -463,6 +463,9 @@ var NewCalendar = new Class({
 		// 1. header and navigation
 		this.calendar.empty(); // init div
 
+		// read in default value
+		cal.val = this.read(cal);
+
 		this.calendar.className = this.classes.calendar + ' ' + this.options.months[cal.month].toLowerCase();
 
 		var div = new Element('div').injectInside(this.calendar); // a wrapper div to help correct browser css problems with the caption element

@@ -1785,9 +1785,9 @@ class JEventsDBModel
 			$limit = "";
 		}
 
-		if ($order != "" && strpos($order, 'ORDER BY') === false)
+		if ($order != "" )
 		{
-			$order = " ORDER BY " . $order;
+			$order = (strpos($order, 'ORDER BY') === false?" ORDER BY ":" ") . $order;
 		}
 
 		$user = & JFactory::getUser();

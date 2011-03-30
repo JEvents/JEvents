@@ -31,6 +31,7 @@
 			<param name='strstart' type='text' default="yesterday" label="strtotime start date" description="" />
 			<param name='strend' type='text' default="tomorrow" label="strtotime end date" description="" />
 
+			<param name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
 			<param name="@spacer" type="spacer" default=""   label="" description="" />	
 		</params>
 	</state>
