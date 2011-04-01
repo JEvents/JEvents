@@ -523,7 +523,7 @@ class AdminIcalsController extends JController {
 		// include ical files
 		$catid = intval(JRequest::getVar('catid',0));
 		// Should come from the form or existing item
-		$access = 0;
+		$access = JRequest::getInt('access',0);
 		$state = 1;
 		$icsLabel = JRequest::getVar('icsLabel','');
 
