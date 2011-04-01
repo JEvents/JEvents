@@ -460,9 +460,6 @@ var NewCalendar = new Class({
 		// 1. header and navigation
 		this.calendar.empty(); // init div
 
-		// read in default value
-		cal.val = this.read(cal);
-
 		this.calendar.className = this.classes.calendar + ' ' + this.options.months[cal.month].toLowerCase();
 
 		var div = new Element('div').injectInside(this.calendar); // a wrapper div to help correct browser css problems with the caption element
@@ -894,6 +891,9 @@ var NewCalendar = new Class({
 			if (window.ie6) {
 				this.iframe.setStyles({ height: this.calendar.coord.height + 'px', left: x + 'px', top: y + 'px', width: this.calendar.coord.width + 'px' });
 			}
+
+			// read in default value
+			cal.val = this.read(cal);
 
 			this.display(cal);
 

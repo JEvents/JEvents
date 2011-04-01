@@ -48,6 +48,7 @@ div.dashboard caption {
 	padding-top: 4px;
 	text-align: center;
 	width: 100%;
+	min-height:17px;
 }
 div.dashboard caption a {
 	cursor: pointer;
