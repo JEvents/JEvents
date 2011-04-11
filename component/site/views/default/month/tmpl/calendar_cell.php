@@ -418,7 +418,7 @@ class EventCalendarCell_default {
 		//$tooltip	= addslashes(htmlspecialchars($tooltip));
 		$tooltip	= htmlspecialchars($tooltip,ENT_QUOTES);
 
-		$tip = '<span class="editlinktip hasjevtip" title="'.$tooltip.'" >'.$link.'</span>';
+		$tip = '<span class="editlinktip hasjevtip" title="'.$tooltip.'" rel=" ">'.$link.'</span>';
 
 		return $tip;
 	}

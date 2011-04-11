@@ -41,7 +41,7 @@ class ICalEventController extends AdminIcaleventController   {
 			$link = $uri->toString();
 			$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
 			$link = JRoute::_($link);
-			$this->setRedirect($link,JText::_('JEV LOGIN TO VIEW EVENT'));
+			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			return;
 		}
 				

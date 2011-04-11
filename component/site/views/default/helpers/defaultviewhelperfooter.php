@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 function DefaultViewHelperFooter($view){
 if (JVersion::isCompatible("1.6.0")){
-	$view->_footer16();
+	return $view->_footer16();
 }
 if (JRequest::getInt('pop', 0)) { ?>
 	<div class="ev_noprint"><p align="center">

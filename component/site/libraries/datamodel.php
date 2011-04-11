@@ -759,7 +759,7 @@ class JEventsDataModel {
 					$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
 					$link = JRoute::_($link);
 					
-					JFactory::getApplication()->redirect($link,JText::_('JEV LOGIN TO VIEW EVENT'));
+					JFactory::getApplication()->redirect($link,JText::_('JEV_LOGIN_TO_VIEWEVENT'));
 					return null;
 				}
 			}

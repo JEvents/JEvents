@@ -134,6 +134,9 @@ class JEventsDBModel
 			}
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategories', array(& $instances[$index]));
+			if (count ( $instances[$index]) == 0){
+				 $instances[$index] = array(-1);
+			}
 		}
 		return $instances[$index];
 
@@ -1220,6 +1223,7 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
@@ -1295,6 +1299,7 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))

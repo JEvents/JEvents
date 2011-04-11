@@ -106,13 +106,13 @@ class ICalsController extends AdminIcalsController
 		if ($pk != "NONE")
 		{
 			if (!$userid)
-				JError::raiseError(403, "JEV ERROR");
+				JError::raiseError(403, "JEV_ERROR");
 			$privatecalendar = true;
 			$puser = JUser::getInstance($userid);
 			$key = md5($icalkey . $cats . $years . $puser->password . $puser->username . $puser->id);
 
 			if ($key != $pk)
-				JError::raiseError(403, "JEV ERROR");
+				JError::raiseError(403, "JEV_ERROR");
 
 			// Get an ACL object
 			$acl = & JFactory::getACL();
@@ -139,22 +139,39 @@ class ICalsController extends AdminIcalsController
 		{
 			$key = md5($icalkey . $cats . $years);
 			if ($key != $k)
-				JError::raiseError(403, "JEV ERROR");
+				JError::raiseError(403, "JEV_ERROR");
 		}
 		else
 		{
-			JError::raiseError(403, "JEV ERROR");
+			JError::raiseError(403, "JEV_ERROR");
 		}
 
 		// Fix the cats
 		$cats = explode(',', $cats);
 		// hardening!
 		JEVHelper::forceIntegerArray($cats, false);
-		JRequest::setVar("catids", implode("|", $cats));
+		if ($cats!=array(0)){
+			JRequest::setVar("catids", implode("|", $cats));
+		}
+		else {
+			JRequest::setVar("catids", '');
+		}
 
 		//Parsing variables from URL
 		//Year
-		if ($years != "NONE")
+		// All years
+		if ($years == 0)
+		{
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$years = array();
+			for ($y = $params->get("com_earliestyear", date('Y')); $y <= $params->get("com_latestyear", date('Y')); $y++)
+			{
+				if (!in_array($y, $years))
+					$years[] = $y;
+			}
+			JArrayHelper::toInteger($years);
+		}
+		else if ($years != "NONE")
 		{
 			$years = explode(",", JRequest::getVar('years'));
 			if (!is_array($years) || count($years) == 0)
@@ -754,7 +771,7 @@ class ICalsController extends AdminIcalsController
 ?>
 		<script type="text/javascript">
 		window.parent.SqueezeBox.close();
-			window.alert("<?php echo JText::sprintf("JEV EVENTS IMPORTED", $count); ?>");
+			window.alert("<?php echo JText::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
 		//window.parent.location.reload();
 		</script>
 <?php

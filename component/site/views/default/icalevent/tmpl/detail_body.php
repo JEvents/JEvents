@@ -11,7 +11,7 @@ if( 0 == $this->evid) {
 
 if (is_null($this->data)){
 	
-	JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$this->Itemid",false), JText::_("JEV SORRY UPDATED"));
+	JFactory::getApplication()->redirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$this->Itemid",false), JText::_("JEV_SORRY_UPDATED"));
 }
 
 if( array_key_exists('row',$this->data) ){

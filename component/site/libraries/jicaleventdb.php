@@ -797,7 +797,7 @@ class jIcalEventDB extends jEventCal {
 							$this->dtstart($repeat->getUnixStartTime());
 							$this->dtend( $repeat->getUnixEndTime());
 							
-							JFactory::getApplication()->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
+							JFactory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 						}
 						else {
 							// Calculate the time adjustment (if any) then check against the non-exceptional repeat
@@ -819,7 +819,7 @@ class jIcalEventDB extends jEventCal {
 							else {
 								// In this scenario we have no idea what the time should be unfortunately
 								
-								JFactory::getApplication()->enqueueMessage(JText::_('JEV PLEASE CHECK START AND END TIMES FOR THIS EVENT'));
+								JFactory::getApplication()->enqueueMessage(JText::_('JEV_PLEASE_CHECK_START_AND_END_TIMES_FOR_THIS_EVENT'));
 
 								// switch timezone back
 								date_default_timezone_set($timezone);
