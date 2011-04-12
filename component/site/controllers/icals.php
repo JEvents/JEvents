@@ -114,24 +114,26 @@ class ICalsController extends AdminIcalsController
 			if ($key != $pk)
 				JError::raiseError(403, "JEV_ERROR");
 
-			// Get an ACL object
-			$acl = & JFactory::getACL();
+			if (!JVersion::isCompatible("1.6.0")) {
+				// Get an ACL object
+				$acl = & JFactory::getACL();
 
-			// Get the user group from the ACL
-			$grp = $acl->getAroGroup($puser->get('id'));
+				// Get the user group from the ACL
+				$grp = $acl->getAroGroup($puser->get('id'));
 
-			//Mark the user as logged in
-			$puser->set('guest', 0);
-			$puser->set('aid', 1);
+				//Mark the user as logged in
+				$puser->set('guest', 0);
+				$puser->set('aid', 1);
 
-			// Fudge Authors, Editors, Publishers and Super Administrators into the special access group
-			if ($acl->is_group_child_of($grp->name, 'Registered') || $acl->is_group_child_of($grp->name, 'Public Backend'))    {
-				$puser->set('aid', 2);
+				// Fudge Authors, Editors, Publishers and Super Administrators into the special access group
+				if ($acl->is_group_child_of($grp->name, 'Registered') || $acl->is_group_child_of($grp->name, 'Public Backend'))    {
+					$puser->set('aid', 2);
+				}
+
+				// ensure "user" can access non-public categories etc.
+				$this->dataModel->aid = $puser->aid;
 			}
-
-			// ensure "user" can access non-public categories etc.
-			$this->dataModel->aid = $puser->aid;
-
+			
 			$registry = & JRegistry::getInstance("jevents");
 			$registry->setValue("jevents.icaluser", $puser);
 		}
