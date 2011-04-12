@@ -39,7 +39,7 @@ class DefaultsModelDefaults extends JModel
 		{
 			// Manually add the form data which is not stored in the database in the same way
 			$db = JFactory::getDBO();
-			$db->setQuery("SELECT count (*) FROM #__jev_defaults");
+			$db->setQuery("SELECT count(*) FROM #__jev_defaults");
 			$this->_total = $db->loadResult();
 
 		}

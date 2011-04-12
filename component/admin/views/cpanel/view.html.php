@@ -79,7 +79,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$output = JText::_('Error: Feed not retrieved');
 		} else {	
 			// channel header and link
-			$title 	= $rssDoc->get_title();
+			$title 	= str_replace(" ","_",$rssDoc->get_title());
 			$link	= $rssDoc->get_link();
 			
 			$output = '<table class="adminlist">';

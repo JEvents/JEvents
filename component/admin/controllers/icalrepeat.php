@@ -460,7 +460,7 @@ class AdminIcalrepeatController extends JController {
 		}
 		else {
 			// count prior matching repetition
-			$query = "SELECT count (startrepeat) FROM #__jevents_repetition WHERE eventid=".$repeatdata->eventid . " AND startrepeat<'".$repeatdata->startrepeat;
+			$query = "SELECT count(startrepeat) FROM #__jevents_repetition WHERE eventid=".$repeatdata->eventid . " AND startrepeat<'".$repeatdata->startrepeat;
 			$db->setQuery( $query);
 			$countrepeat = $db->loadResult();
 			$this->rrule->count -= $countrepeat ;

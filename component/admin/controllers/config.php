@@ -605,7 +605,12 @@ SQL;
 		if($count==0){
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title"=>JText::_("Default"), "published"=>1, "color"=>"#CCCCFF"));
+			if (JVersion::isCompatible("1.6.0"))  {
+				$cat->bind(array("title"=>JText::_("Default"), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+			}
+			else {
+				$cat->bind(array("title"=>JText::_("Default"), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
+			}
 			$cat->store();
 			$catid=$cat->id;
 		}
