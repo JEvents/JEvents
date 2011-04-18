@@ -291,8 +291,8 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
             <?php
             if ($this->repeatId==0) {
         	?>
-        	<td valign="top" align="left"><?php echo JText::_('JEV_EVENT_CATEGORY'); ?></td>
-            <td style="width:200px" >
+        	<td valign="top" align="left" class="jevcategory"><?php echo JText::_('JEV_EVENT_CATEGORY'); ?></td>
+            <td style="width:200px"  class="jevcategory">
             <?php 
             echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true,0,'catid',JEV_COM_COMPONENT, $this->excats);
             ?>
