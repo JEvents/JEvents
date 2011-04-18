@@ -46,6 +46,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$search[]="{{MANAGEMENT}}";ob_start();$view->_viewNavAdminPanel();$replace[]=ob_get_clean();$blank[]="";
 
 	$search[]="{{CATEGORY}}";$replace[]=$event->catname();$blank[]="";
+	$search[]="{{COLOUR}}";$replace[]=$event->bgcolor();$blank[]="";
 
 	$router = JRouter::getInstance("site");
 	$vars = $router->getVars();

@@ -863,8 +863,9 @@ class JEventsDataModel {
 		if( $num_events > 0 ){
 			for( $r = 0; $r < $num_events; $r++ ){
 				$row =& $rows[$r];
-
-				$row->catname($catname); // for completeness of dataset
+				if ($row->catname()==""){
+					$row->catname($catname); // for completeness of dataset
+				}
 			}
 		}
 		$data['rows']=$rows;
