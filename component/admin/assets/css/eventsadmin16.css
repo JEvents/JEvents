@@ -12,6 +12,7 @@ fieldset.adminform input, fieldset.adminform textarea, fieldset.adminform select
 }
 
 div#jevents div.current{max-width: none!important;}
+.jeventslight div#jevents div.current {background-color:#fff;}
 div#jevents tr, div#jevents td {border-width:0px;}
 
 div#jevents table.adminform {
