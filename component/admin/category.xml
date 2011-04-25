@@ -19,6 +19,12 @@
 				label="JEV_BLOCK_OVERLAPS"
 				description="JEV_BLOCK_OVERLAPS"
 				/>
+			<field
+				name="admin"
+				type="jevuser"
+				label="JEV_CATEGORY_ADMIN"
+				description="JEV_CHOOSE_CATEGORY_ADMIN"
+				/>
 
 			</fieldset>
 	</fields>

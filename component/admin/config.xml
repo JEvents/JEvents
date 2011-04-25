@@ -13,47 +13,47 @@
 			<option value="2">ICONS WITHOUT NAVIGATION</option>
 		</param>
 		
-		<param name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
-		<param name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid5" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid6" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid7" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		<param name="catid0" type="jevcategory" default="0" scope="com_jevents" label="SPECIFIED_CATEGORY" description='SHOWS_EVENTS_ONLY_FROM_THE_SELECTED_CATEGORY'  />
+		<param name="catid1" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid2" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid3" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid4" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid5" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid6" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid7" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid8" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid9" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid10" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
 		
-		<param name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />	
-		<param name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras14" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras15" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<param name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" />	
+		<param name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+		<param name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 
 		<param name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
 		</param>		
 		
-		<param name="@spacer" type="jevinfo"  default="Advanced Settings" label="" description="" />	
-		<param name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+		<param name="@spacer" type="jevinfo"  default='ADVANCED_SETTINGS'  label="" description="" />	
+		<param name="layout" type="text" default="" label='OVERRIDE_LAYOUT'  description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
 	</params>
 
 	<params  group="JEV_TAB_COMPONENT">
-		<param name="com_calViewName" type="jevview" default="geraint" menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+		<param name="com_calViewName" type="jevview" default='GERAINT'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 		<param name="darktemplate" type="jevboolean" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 		
 		<param name="com_dateformat" type="list" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC">
@@ -85,7 +85,7 @@
 		
 		<param name="com_cache" type="jevboolean" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
 
-		<param name="com_calHeadline" type="list" default="comp" menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
+		<param name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
 			<option value="comp">JEV_HEADLINE_COMP</option>
 			<option value="none">JEV_HEADLINE_NONE</option>
 			<option value="menu">JEV_HEADLINE_MENU</option>
@@ -96,7 +96,7 @@
 			<option value="-1">HIDE ALTOGETHER</option>
 			<option value="2">ICONS WITHOUT NAVIGATION</option>
 		</param>
-		<param name="com_navbarcolor" type="list" default="green" menu="hide" label="JEV_NAV_BAR_COLOR" description="">
+		<param name="com_navbarcolor" type="list" default='GREEN'  menu="hide" label="JEV_NAV_BAR_COLOR" description="">
 			<option value="green">JEV_NAV_BAR_GREEN</option>
 			<option value="orange">JEV_NAV_BAR_ORANGE</option>
 			<option value="blue">JEV_NAV_BAR_BLUE</option>
@@ -134,22 +134,22 @@
 		<param name="allowraw" type="jevboolean" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/>
 
 		<!--//
-		<param name="jevkey" type="jevkey" default="" menu="hide" size="40" label="Copyright message key" description="Please use this key code at the JEvents website to obtain a free code that will disable the copyright message" />
-		<param name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label="Copyright unlock code" description="You can obtain this free code from the JEvents Website" />
+		<param name="jevkey" type="jevkey" default="" menu="hide" size="40" label='COPYRIGHT_MESSAGE_KEY'  description='PLEASE_USE_THIS_KEY_CODE_AT_THE_JEVENTS_WEBSITE_TO_OBTAIN_A_FREE_CODE_THAT_WILL_DISABLE_THE_COPYRIGHT_MESSAGE'  />
+		<param name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label='COPYRIGHT_UNLOCK_CODE'  description='YOU_CAN_OBTAIN_THIS_FREE_CODE_FROM_THE_JEVENTS_WEBSITE'  />
 		//-->
 	</params>
 	
-	<params  group="Permissions">	
-		<param name="jevadmin" type="jevuser" default="62"  menu="hide" label="Admin User" description="JEvents Administrator = must be at least Publisher User Level" />
-		<param name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label="Creator User Level" description="User Level required to be event creator" />
-		<param name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label="Editor User Level" description="User Level required to be event editor" />
-		<param name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label="Publisher User Level" description="User Level required to be publish and mangage events" />
+	<params  group="JEV_PERMISSIONS">	
+		<param name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description="JEvents Administrator = must be at least Publisher User Level" />
+		<param name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label='CREATOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_CREATOR'  />
+		<param name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label='EDITOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_EDITOR'  />
+		<param name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label='PUBLISHER_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_PUBLISH_AND_MANGAGE_EVENTS'  />
 
-		<param name="authorisedonly" type="jevboolean" default="0" menu="hide" label="Enable User Authorisation" description="If yes then only authorised users can create events etc. otherwise any user of the following levels can undertake these tasks."/>
+		<param name="authorisedonly" type="jevboolean" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description="If yes then only authorised users can create events etc. otherwise any user of the following levels can undertake these tasks."/>
 		<param name="jevpublishown" type="jevboolean" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" />
 	</params>
 		
-	<params  group="JEV_Ical_Calendar">
+	<params  group="JEV_ICAL_CALENDAR">
 		<param name="@spacer" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" />
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
@@ -157,7 +157,7 @@
 		<!-- 
 		<param name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
 		//-->
-		<param name="icalkey" type="text" default="secret phrase" menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_CAL_KEY_DESC"/>
+		<param name="icalkey" type="text" default='SECRET_PHRASE'  menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_CAL_KEY_DESC"/>
 		<param name="showicalicon" type="jevboolean" default="0" menu="hide" label="JEV_SHOW_ICAL_ICON" description="JEV_SHOW_ICAL_ICON_DESC"/>
 		<param name="disableicalexport" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_ICAL_EXPORT" description="JEV_DISABLE_ICAL_EXPORT_DESC"/>
 		<param name="outlook2003icalexport" type="jevboolean" default="0" menu="hide" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
@@ -171,11 +171,11 @@
 
 	</params>
 
-	<params group="Event Editing">
-		<param name="editpopup" type="jevboolean" default="0" menu="hide" label="Frontend edit in popup" description="If yes then frontend editing takes place in modal window."/>
+	<params group="JEV_EVENT_EDITING">
+		<param name="editpopup" type="jevboolean" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description="If yes then frontend editing takes place in modal window."/>
 		<param name="disablerepeats" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC"/>
-		<param name="popupw" type="text" default="800" size="6" menu="hide" label="Popup Window Width" description="Width for modal window."/>
-		<param name="popuph" type="text" default="500" size="6" menu="hide" label="Popup Window Height" description="Height for modal window."/>
+		<param name="popupw" type="text" default="800" size="6" menu="hide" label='POPUP_WINDOW_WIDTH'  description="Width for modal window."/>
+		<param name="popuph" type="text" default="500" size="6" menu="hide" label='POPUP_WINDOW_HEIGHT'  description="Height for modal window."/>
 		<param name="defaultcat" type="jevboolean" default="0" menu="hide" label="JEV_Use_Default_Cat" description="JEV_Use_Default_Cat_tip" />
 		<param name="forcepopupcalendar" type="jevboolean" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" />
 		<param name="com_calForceCatColorEventForm" type="list" default="2" menu="hide" label="JEV_DEF_EC_HIDE_FORCE" description="JEV_TIP_DEF_EC_HIDE_FORCE">
@@ -184,7 +184,7 @@
 			<option value="2">JEV_ALWAYS_CAT_COLOR</option>
 		</param>
 		<!--
-		<param name="com_defColor" type="radio" default="category" menu="hide" label="JEV_DEF_EVENT_COLOR" description="">
+		<param name="com_defColor" type="radio" default='CATEGORY'  menu="hide" label="JEV_DEF_EVENT_COLOR" description="">
 			<option value="none">JEV_DEF_EC_NONE</option>
 			<option value="category">JEV_DEF_EC_CATEGORY</option>
 		</param>
@@ -207,33 +207,33 @@
 		<param name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		
 	</params>
 	
-	<params group="Event Detail View">
+	<params group="JEV_EVENT_DETAIL_VIEW">
 		<param name="com_byview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_BY" description="" />
 		<param name="com_mailview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" />
 		<param name="com_hitsview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_HITS" description="" />
 		<param name="com_repeatview" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_TIME" description="" />
 	</params>
 	
-	<params group="Main Monthly Calendar">
-		<param name="@spacer" type="jevinfo" default="Settings related to Monthly view"  menu="hide" label="" description="" />	
+	<params group="JEV_MAIN_MONTHLY_CALENDAR">
+		<param name="@spacer" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW'   menu="hide" label="" description="" />	
 		<param name="com_calCutTitle" type="text" default="15" menu="hide" size="4" label="JEV_CUT_TITLE" description="JEV_TIP_CUT_TITLE"/>
 		<param name="com_calMaxDisplay" type="text" default="15" menu="hide" size="4" label="JEV_MAX_DISPLAY" description="JEV_TIP_MAX_DISPLAY"/>
 		<param name="com_calDisplayStarttime" type="jevboolean" default="1" menu="hide" label="JEV_DIS_STARTTIME" description="JEV_TIP_DIS_STARTTIME" />
 
 		<param name="@spacer" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" />	
 		<param name="com_enableToolTip" type="jevboolean" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" />			
-		<param name="tooltiptype" type="list" default="joomla" menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" >			
+		<param name="tooltiptype" type="list" default='JOOMLA'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" >			
 			<option value="overlib">Overlib</option>
 			<option value="joomla">Joomla</option>
 		</param>
 		<param name="com_calTTBackground" type="jevboolean" default="1" class="jevp_tooltip" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" />			
-		<param name="com_calTTPosX" type="list" default="LEFT" class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX">
+		<param name="com_calTTPosX" type="list" default='LEFT'  class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX">
 			<option value="LEFT">JEV_LEFT</option>
 			<option value="CENTER">JEV_CENTER</option>
 			<option value="RIGHT">JEV_RIGHT</option>
 		</param>
          <!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
-		<param name="com_calTTPosY" type="list" default="BELOW"  class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY">
+		<param name="com_calTTPosY" type="list" default='BELOW'   class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY">
 			<option value="BELOW">JEV_BELOW</option>
 			<option value="ABOVE">JEV_ABOVE</option>
 		</param>
@@ -242,8 +242,8 @@
 		<param name="com_calTTShadowY" type="jevboolean" default="0" class="jevp_tooltip" menu="hide" label="JEV_TT_SHADOWY" description="" />					
 	</params>
 	
-	<params group="Year/Category View">
-		<param name="@spacer" type="jevinfo" default="Settings related to Yearly and Category view"  menu="hide" label="" description="" />	
+	<params group="JEV_YEAR_CATEGORY_VIEW">
+		<param name="@spacer" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_AND_CATEGORY_VIEW'   menu="hide" label="" description="" />	
 		<param name="com_calEventListRowsPpg" type="list" default="10" menu="hide" label="JEV_NR_OF_LIST" description="JEV_TIP_NR_OF_LIST">
 			<option value="5">5</option>
 			<option value="10">10</option>
@@ -260,7 +260,7 @@
 			<option value="1">JEV_YES</option>
 		</param>		
 
-		<param name="@spacer" type="jevinfo" default="Settings related to Yearly view"  menu="hide" label="" description="" />	
+		<param name="@spacer" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" />	
 		<param name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
 		<param name="showyeardate" type="jevboolean" default="0" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" />
 	</params>
@@ -273,7 +273,7 @@
 		<param name="com_rss_live_bookmarks" type="jevboolean" default="1" menu="hide" label="JEV_RSS_LIVE_BOOKMARKS" description="JEV_RSS_LIVE_BOOKMARKS_TIP" />
 		
 		<param name="com_rss_modid" type="rssmod" default="0" menu="hide" label="JEV_RSS_MODID" description="JEV_RSS_MODID_TIP" />
-		<param name="com_rss_title" type="text" default="JEvents Syndication for Joomla" menu="hide" size="50" label="JEV_RSS_TITLE" description=""/>
+		<param name="com_rss_title" type="text" default='JEVENTS_SYNDICATION_FOR_JOOMLA'  menu="hide" size="50" label="JEV_RSS_TITLE" description=""/>
 		<param name="com_rss_description" type="textarea" default="Powered by JEvents!" menu="hide" rows="5" cols="40" label="JEV_RSS_DESCRIPTION" description=""/>
 		<param name="com_rss_limit_text" type="jevboolean" default="0" menu="hide" label="JEV_RSS_LIMIT_TEXT_LENGTH" description="" />
 		<param name="com_rss_text_length" type="text" default="20" menu="hide" size="3" label="JEV_RSS_TEXT_LIMIT" description=""/>
@@ -283,7 +283,7 @@
 	<params group="JEV_TAB_CAL_MOD">
 		<param name="@spacer" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD"  menu="hide" label="" description="" />	
 		
-		<param name="modcal_DispLastMonth" type="list" default="NO" menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="">
+		<param name="modcal_DispLastMonth" type="list" default='NO'  menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -292,7 +292,7 @@
 		</param>
 		<param name="modcal_DispLastMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY"/>
 		
-		<param name="modcal_DispNextMonth" type="list" default="NO" menu="hide" label="JEV_DISPLAY_NEXT_MONTH" description="">
+		<param name="modcal_DispNextMonth" type="list" default='NO'  menu="hide" label="JEV_DISPLAY_NEXT_MONTH" description="">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
@@ -371,8 +371,8 @@
 					name="target_itemid"
 					type="jevmenu"
 					default=""
-					label="Target Menu Item"
-					description="Menu item for target page" />
+					label='TARGET_MENU_ITEM' 
+					description='MENU_ITEM_FOR_TARGET_PAGE'  />
 			</fieldset>		
 		</fields>	
 

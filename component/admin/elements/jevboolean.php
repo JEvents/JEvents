@@ -31,8 +31,8 @@ class JElementJevboolean extends JElement
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 		
 		$options = array ();
-		$options[] = JHTML::_('select.option', 0, JText::_("No"));
-		$options[] = JHTML::_('select.option', 1, JText::_("Yes"));
+		$options[] = JHTML::_('select.option', 0, JText::_("Jev_No"));
+		$options[] = JHTML::_('select.option', 1, JText::_("jev_Yes"));
 
 		if ($raw) {
 			return $options;
