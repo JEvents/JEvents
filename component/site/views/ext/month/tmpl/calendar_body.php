@@ -43,9 +43,9 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 <!-- END weeknumber_row -->
 			<td colspan="2" class="previousmonth" align="center" height="22" nowrap="nowrap" valign="middle">&nbsp;
 <!-- BEGIN previous_month_link_row -->
-      	<?php echo "<a href='".$precedingMonth["link"]."' title='".$precedingMonth['name']."' >"?>
+      	<?php if ($precedingMonth) { echo "<a href='".$precedingMonth["link"]."' title='".$precedingMonth['name']."' >"?>
       	<img src="<?php echo $viewimages;?>/mini_arrowleft.gif" alt="<?php echo $precedingMonth['name'];?>" align="middle" border="0" hspace="5"/>
-      	<?php echo $precedingMonth['name']."</a>";?>
+      	<?php echo $precedingMonth['name']."</a>";}?>
       	
 
 <!-- END previous_month_link_row -->
@@ -54,10 +54,10 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 				<?php echo $this->data['fieldsetText']; ?>
 			</td>
 			<td colspan="2" class="nextmonth" align="center" height="22" nowrap="nowrap" valign="middle">
-      	<?php echo "<a href='".$followingMonth["link"]."' title='".$followingMonth['name']."' >"?>
+      	<?php if ($followingMonth) { echo "<a href='".$followingMonth["link"]."' title='".$followingMonth['name']."' >"?>
       	<?php echo $followingMonth['name'];?>
       	<img src="<?php echo $viewimages;?>/mini_arrowright.gif" alt="<?php echo $followingMonth['name'];?>" align="middle" border="0" hspace="5"/>
-      	<?php echo "</a>";?>
+      	<?php echo "</a>"; }?>
 
 			</td>
 		</tr>
