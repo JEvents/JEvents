@@ -688,7 +688,12 @@ class JEventsDataModel {
 			$dispatcher	=& JDispatcher::getInstance();
 			JPluginHelper::importPlugin('content');
 
-			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			if (JVersion::isCompatible("1.6.0")) {
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+			}
+			else {
+				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			}
 			$row->location($tmprow->text);
 
 			//Contact
@@ -698,7 +703,12 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->contact_info();
 
-			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			if (JVersion::isCompatible("1.6.0")) {
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+			}
+			else {
+				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			}
 			$row->contact_info($tmprow->text);
 
 			//Extra
@@ -709,7 +719,12 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->extra_info();
 
-			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			if (JVersion::isCompatible("1.6.0")) {
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+			}
+			else {
+				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+			}
 			$row->extra_info($tmprow->text);
 
 			$mask = JFactory::getApplication()->getCfg( 'hideAuthor' ) ? MASK_HIDEAUTHOR : 0;
@@ -730,7 +745,12 @@ class JEventsDataModel {
 			$params->set("image",1);
 			$row->text = $row->content();
 
-			$dispatcher->trigger( 'onPrepareContent', array( &$row, &$params, 0 ));
+			if (JVersion::isCompatible("1.6.0")) {
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$row, &$params, 0 ));
+			}
+			else {
+				$dispatcher->trigger( 'onPrepareContent', array( &$row, &$params, 0 ));
+			}
 			$row->content( $row->text );
 
 			$data['row']=$row;
@@ -1005,6 +1025,14 @@ class JEventsDataModel {
 		$monthResult['day1'] = $d1;
 		$monthResult['lastday'] = date("t",$d1);
 		$year = JevDate::strftime("%Y",$d1);
+		
+		$cfg = & JEVConfig::getInstance();
+		$earliestyear =  $cfg->get('com_earliestyear');
+		$latestyear = $cfg->get('com_latestyear');
+		if ($year>$latestyear || $year<$earliestyear){
+			return false;
+		}
+		
 		$monthResult['year'] = $year;
 		$month = JevDate::strftime("%m",$d1);
 		$monthResult['month'] = $month;
@@ -1033,6 +1061,14 @@ class JEventsDataModel {
 		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction*7,$year);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
+		
+		$cfg = & JEVConfig::getInstance();
+		$earliestyear =  $cfg->get('com_earliestyear');
+		$latestyear = $cfg->get('com_latestyear');
+		if ($year>$latestyear || $year<$earliestyear){
+			return false;
+		}
+		
 		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
@@ -1055,6 +1091,14 @@ class JEventsDataModel {
 		$d1 = JevDate::mktime(0,0,0,$month,$day+$direction,$year);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
+		
+		$cfg = & JEVConfig::getInstance();
+		$earliestyear =  $cfg->get('com_earliestyear');
+		$latestyear = $cfg->get('com_latestyear');
+		if ($year>$latestyear || $year<$earliestyear){
+			return false;
+		}
+		
 		$month = JevDate::strftime("%m",$d1);
 		$task = JRequest::getString('jevtask');
 		$Itemid = JEVHelper::getItemid();

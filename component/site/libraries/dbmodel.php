@@ -506,7 +506,7 @@ class JEventsDBModel
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		//echo $db->explain();
+		//$query = $db->replacePrefix($db->getQuery());
 		$ids1 = $db->loadResultArray();
 
 		// Before now
@@ -539,6 +539,7 @@ class JEventsDBModel
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
+		//$query = $db->replacePrefix($db->getQuery());
 		//echo $db->explain();die();
 		$ids2 = $db->loadResultArray();
 
@@ -575,6 +576,7 @@ class JEventsDBModel
 
 			$db = JFactory::getDBO();
 			$db->setQuery($query);
+			//$query = $db->replacePrefix($db->getQuery());
 			//echo $db->explain();die();
 			$ids3 = $db->loadResultArray();
 		}

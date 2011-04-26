@@ -40,8 +40,8 @@
 				<option value="1">JEV_YES</option>
 			</field>
 
-			<field name="@spacer" type="jevinfo" default="Advanced Settings" label="" description="" />
-			<field name="layout" type="text" default="" label="Override Layout" description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
+			<field name="layout" type="text" default="" label='OVERRIDE_LAYOUT'  description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
 		</fieldset>
 	</fields>
 </metadata>

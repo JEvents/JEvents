@@ -36,8 +36,8 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		<tr>
 			<td  class="previousmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">&nbsp;
 <!-- BEGIN previous_month_link_row -->
-      	<?php echo "<a href='".$precedingWeek."' title='".JText::_("Preceeding Week")."' >"?>
-      	<?php echo JText::_("Preceeding Week")."</a>";?>
+      	<?php echo "<a href='".$precedingWeek."' title='".JText::_("PRECEEDING_Week")."' >"?>
+      	<?php echo JText::_("PRECEEDING_Week")."</a>";?>
       	
 
 <!-- END previous_month_link_row -->
@@ -46,8 +46,8 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 				<?php echo  $data['startdate'] . ' - ' . $data['enddate'] ;?>
 			</td>
 			<td  class="nextmonth" align="center" height="22" nowrap="nowrap" valign="middle"  width="33%">
-      	<?php echo "<a href='".$followingWeek."' title='".JText::_("Following Week")."' >"?>
-      	<?php echo JText::_("Following Week")."</a>";?>
+      	<?php echo "<a href='".$followingWeek."' title='".JText::_("FOLLOWING_Week")."' >"?>
+      	<?php echo JText::_("FOLLOWING_Week")."</a>";?>
 			</td>
 		</tr>
 <?php

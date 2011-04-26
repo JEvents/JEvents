@@ -299,7 +299,9 @@ class iCalRRule extends JTable  {
 				$weekdays = array();
 				if ($this->byday!=""){
 					foreach (explode(",",$this->byday) as $bday) {
-						$weekdays[]=$weekdayMap[$bday];
+						if (array_key_exists($bday, $weekdayMap)){
+							$weekdays[]=$weekdayMap[$bday];
+						}
 					}
 				}
 

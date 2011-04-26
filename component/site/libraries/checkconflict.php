@@ -160,9 +160,12 @@ function ProcessRequest(&$requestObject, $returnData){
 
 	if (intval($requestObject->formdata->evid)>0){
 		$db=JFactory::getDBO();
-		$db->setQuery("SELECT * FROM #__jevents_vevent where ev_id=".intval($requestObject->formdata->evid));
-		$event = $db->loadObject();
-		if (!$event || ($event->created_by!=$user->id && !JEVHelper::isAdminUser($user) )){
+		$dataModel = new JEventsDataModel("JEventsAdminDBModel");
+		$queryModel = new JEventsDBModel($dataModel);
+		$event = $queryModel->getEventById( intval($requestObject->formdata->evid),  1, "icaldb" );
+		//$db->setQuery("SELECT * FROM #__jevents_vevent where ev_id=".intval($requestObject->formdata->evid));
+		//	$event = $db->loadObject();
+		if (!$event || (!JEVHelper::canEditEvent($event) )){
 			throwerror("There was an error");
 		}
 	}

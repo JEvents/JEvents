@@ -101,15 +101,21 @@ class JEventsHTML{
 	function buildYearSelect( $year, $args ){
 		$y = date( 'Y' );
 
-		if( $year < $y-2 ){
+		$cfg = & JEVConfig::getInstance();
+		$earliestyear =  $cfg->get('com_earliestyear');
+		$latestyear = $cfg->get('com_latestyear');
+		
+		if( $year < $y-2 && $year >= $earliestyear && $year<= $latestyear){
 			$yearslist[] = JHTML::_('select.option', $year, $year );
 		}
 
 		for( $i = $y-2; $i <= $y+5; $i++ ){
-			$yearslist[] = JHTML::_('select.option', $i, $i );
+			if($i >= $earliestyear && $i<= $latestyear){ 
+				$yearslist[] = JHTML::_('select.option', $i, $i );
+			}
 		}
 
-		if( $year > $y+5 ){
+		if( $year > $y+5 && $year >= $earliestyear && $year<= $latestyear ){
 			$yearslist[] = JHTML::_('select.option', $year, $year );
 		}
 
@@ -178,6 +184,8 @@ class JEventsHTML{
 	{
 
 		if (JVersion::isCompatible("1.6.0")){
+			// need to declare this because of bug in Joomla  JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
+			include_once(JPATH_SITE."/libraries/joomla/html/html/category.php");
 			ob_start();
 			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 			$options = JHtml::_('category.options', $sectionname);
@@ -192,19 +200,23 @@ class JEventsHTML{
 				$options = array_values($options);
 
 				// Thanks to ssobada
-				 $user =JFactory::getUser();
-				 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
-				 $authorisedonly = $params->get("authorisedonly", 0);
-				 $cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
-				 if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
-					$count = count($options);
-					for ($o=0;$o<$count;$o++){
-					   if (!in_array($options[$o]->value, $cats)){
-						  unset($options[$o]);
-					   }
-					}
-					$options = array_values($options);
-				 }
+				// when editing events we restrict the available list!
+				$jevtask = JRequest::getString("jevtask");
+				if (strpos($jevtask, "icalevent.edit")!==false || strpos($jevtask, "icalrepeat.edit")!==false  ){
+					 $user =JFactory::getUser();
+					 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
+					 $authorisedonly = $params->get("authorisedonly", 0);
+					 $cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
+					 if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
+						$count = count($options);
+						for ($o=0;$o<$count;$o++){
+						   if (!in_array($options[$o]->value, $cats)){
+							  unset($options[$o]);
+						   }
+						}
+						$options = array_values($options);
+					 }
+				}
 			}
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >

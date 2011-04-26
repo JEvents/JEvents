@@ -28,8 +28,8 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		<tr>
 			<td  class="previousmonth" align="center" height="22" nowrap="nowrap" valign="middle" width="33%">&nbsp;
 <!-- BEGIN previous_month_link_row -->
-      	<?php echo "<a href='".$precedingDay."' title='".JText::_("Preceeding Day")."' >"?>
-      	<?php echo JText::_("Preceeding Day")."</a>";?>
+      	<?php echo "<a href='".$precedingDay."' title='".JText::_("PRECEEDING_Day")."' >"?>
+      	<?php echo JText::_("PRECEEDING_Day")."</a>";?>
       	
 
 <!-- END previous_month_link_row -->
@@ -38,8 +38,8 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 				<?php echo JEventsHTML::getDateFormat( $this->year, $this->month, $this->day, 0) ;?>
 			</td>
 			<td  class="nextmonth" align="center" height="22" nowrap="nowrap" valign="middle"  width="33%">
-      	<?php echo "<a href='".$followingDay."' title='".JText::_("Following Day")."' >"?>
-      	<?php echo JText::_("Following Day")."</a>";?>
+      	<?php echo "<a href='".$followingDay."' title='".JText::_("FOLLOWING_Day")."' >"?>
+      	<?php echo JText::_("FOLLOWING_Day")."</a>";?>
       	<?php echo "</a>";?>
 
 			</td>
