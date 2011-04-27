@@ -8,6 +8,12 @@ table#jevents_body{
 .jeventslight{
 	color:#000000;
 }
+table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
+	border:none;
+}
+#jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
+	border:none;	
+}
 
 /*********************
 * Calendar style

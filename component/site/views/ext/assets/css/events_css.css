@@ -22,6 +22,7 @@ table#jevents_header td, table#jevents_header tr, .ev_navigation tr, .ev_navigat
 #jevents_body td,#jevents_body tr,#jevents_body p, #jevents_body div {
 	font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
+	border:none;	
 }
 
 #jevents_body select {

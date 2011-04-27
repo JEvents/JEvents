@@ -7,7 +7,12 @@ if( !$this->pop ){
 	$this->_showNavTableBar();
 }
 
-echo $this->loadTemplate("body");
+if (JVersion::isCompatible("1.6.0")){
+	echo $this->loadTemplate("body16");
+}
+else {
+	echo $this->loadTemplate("body");
+}
 
 if( !$this->pop ){
 	$this->_viewNavAdminPanel();

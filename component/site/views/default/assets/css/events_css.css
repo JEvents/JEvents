@@ -12,6 +12,9 @@ table#jevents_header{
 table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
 	border:none;
 }
+#jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
+	border:none;	
+}
 .jeventslight{
 	color:#000000;
 }
@@ -19,7 +22,7 @@ table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_n
 /*********************
 * Calendar style
 **********************/
-.cal_table {
+#jevents_body .cal_table {
    border: 1px solid #000000;
    width:100%!important;
 }
@@ -33,7 +36,7 @@ table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_n
     text-decoration: none;
 	text-align:center;
 }
-.cal_td_daysnames {
+#jevents_body .cal_td_daysnames {
     border-bottom: 1px solid #000000;
     height:25px ! important;
     line-height:25px;
@@ -111,7 +114,7 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
     margin-bottom:1px;
 }
 
-.cal_td_weeklink {
+#jevents_body .cal_td_weeklink {
     background-color: #ece9d8;
 	vertical-align:middle!important;
 	border:black 1px solid;
@@ -191,7 +194,7 @@ ul.ev_ul {
 	padding:0px;
 	margin:5px;
 }
-ul.ev_ul li.ev_td_li {
+#jevents_body  ul.ev_ul li.ev_td_li {
   	border-style:solid;
   	border-width:0 0 0 5px;
   	margin-bottom:1px;
@@ -263,7 +266,7 @@ a.ev_link_weekday:hover  {
 .jev_catdesc {
 	margin-bottom:4px;
 }
-.ev_table {
+#jevents_body  .ev_table {
     border-right: 1px solid black;
     border-left: 1px solid black;
     border-bottom: 1px solid black;
@@ -271,11 +274,11 @@ a.ev_link_weekday:hover  {
 .ev_table td {
     padding:5px;
 }
-.ev_td_right {
+#jevents_body .ev_td_right {
 	/*background-color: #FFDEAD;*/
     border-top: 1px solid #000000;
 }
-.ev_td_left {
+#jevents_body .ev_td_left {
     background-color: #c5d5e5;
     border-right: 1px solid #000000;
     border-top: 1px solid #000000;
@@ -288,7 +291,7 @@ a.ev_link_weekday:hover  {
     vertical-align: top;
     width:100px!important;
 }
-.ev_td_today {
+#jevents_body .ev_td_today {
     background-color: #E9B4A1;
     border-right: 1px solid #000000;
     border-top: 1px solid #000000;
