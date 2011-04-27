@@ -21,7 +21,7 @@ class JEventsHelper
 	public static function addSubmenu($vName)
 	{
 		JSubMenuHelper::addEntry(
-			JText::_('CONTROL PANEL'),
+			JText::_( 'CONTROL_PANEL' ),
 			'index.php?option=com_jevents',
 			$vName == ''
 		);

@@ -40,7 +40,7 @@ class AdminCpanelController extends JController
 		$cols = $db->loadObjectList('Field');
 		if (is_null($cols) || !isset($cols['modified']))
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Setup Was Required"));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_( 'DATABASE_TABLE_SETUP_WAS_REQUIRED' ));
 			$this->redirect();
 			//return;
 		}
@@ -53,7 +53,7 @@ class AdminCpanelController extends JController
 		{
 			$session = JFactory::getSession();
 			$session->set('fixexceptions', 1);
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_("Database Table Setup Was Required"));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_( 'DATABASE_TABLE_SETUP_WAS_REQUIRED' ));
 			$this->redirect();
 			//return;
 		}
@@ -72,7 +72,7 @@ class AdminCpanelController extends JController
 		$jevadmin = $params->getValue("jevadmin", -1);
 		if ($jevadmin == -1)
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_("Please check configuration and save"));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_( 'PLEASE_CHECK_CONFIGURATION_AND_SAVE' ));
 			$this->redirect();
 		}
 
@@ -112,12 +112,12 @@ class AdminCpanelController extends JController
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			$this->view->assign("warning", JText::_("Calendars not setup properly"));
+			$this->view->assign("warning", JText::_( 'CALENDARS_NOT_SETUP_PROPERLY' ));
 		}
 
 		// Set the layout
 		$this->view->setLayout('cpanel');
-		$this->view->assign('title', JText::_("Control Panel"));
+		$this->view->assign('title', JText::_( 'CONTROL_PANEL' ));
 
 		$this->view->display();
 

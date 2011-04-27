@@ -33,11 +33,11 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Control Panel'));
+		$document->setTitle(JText::_( 'JEVENTS' ) . ' :: ' .JText::_( 'JEVENTS' ));
 		
 		// Set toolbar items for the page
 		//JToolBarHelper::preferences('com_jevents', '580', '750');
-		JToolBarHelper::title( JText::_('JEvents') .' :: '. JText::_( 'Control Panel' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'JEVENTS' ) .' :: '. JText::_( 'JEVENTS' ), 'jevents' );
 		/*
 		$user= JFactory::getUser();
 		if ($user->authorise('core.admin','com_jevents.admin')) {
@@ -53,7 +53,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 		//JToolBarHelper::help( 'screen.cpanel', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);

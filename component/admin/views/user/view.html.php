@@ -31,10 +31,10 @@ class AdminUserViewUser extends JEventsAbstractView
 		$livesite = JURI::base();
 		$document->addStyleSheet($livesite.'components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
 
-		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Users'));
+		$document->setTitle(JText::_( 'JEVENTS' ) . ' :: ' .JText::_( 'JEVENTS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Users' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'USERS' ), 'jevents' );
 		JToolBarHelper::addNew("user.edit");
 		JToolBarHelper::editList("user.edit");
 		//JToolBarHelper::publish("user.publish");
@@ -69,10 +69,10 @@ class AdminUserViewUser extends JEventsAbstractView
 			$document->addStyleSheet($livesite.'components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
 		}
 
-		$document->setTitle(JText::_('JEvents') . ' :: ' .JText::_('Edit User'));
+		$document->setTitle(JText::_( 'JEVENTS' ) . ' :: ' .JText::_( 'JEVENTS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit User' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EDIT_USER' ), 'jevents' );
 
 		JToolBarHelper::save("user.save");
 		JToolBarHelper::cancel("user.overview");

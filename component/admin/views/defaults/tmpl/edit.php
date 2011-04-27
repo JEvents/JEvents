@@ -40,21 +40,21 @@ $this->replaceLabels($this->item->value);
        	<div style="margin-bottom:20px;">
 	        <table cellpadding="5" cellspacing="0" border="0" >
     			<tr>
-                	<td align="left"><?php echo JText::_('TITLE'); ?>:</td>
+                	<td align="left"><?php echo JText::_( 'TITLE' ); ?>:</td>
                     <td colspan="2">
                     	<?php echo htmlspecialchars( $this->item->title, ENT_QUOTES, 'UTF-8'); ?>
                     	<!--<input class="inputbox" type="text" name="title" size="50" maxlength="100" value="<?php echo htmlspecialchars( $this->item->title, ENT_QUOTES, 'UTF-8'); ?>" />//-->
                     </td>
       			</tr>
     			<tr>
-                	<td align="left"><?php echo JText::_('NAME'); ?>:</td>
+                	<td align="left"><?php echo JText::_( 'NAME' ); ?>:</td>
                     <td colspan="2">
                     	<?php echo htmlspecialchars( $this->item->name, ENT_QUOTES, 'UTF-8'); ?>
                     </td>
       			</tr>
                  <tr>
                  	<td valign="top" align="left">
-                    <?php echo JText::_('TEXT'); ?>
+                    <?php echo JText::_( 'TEXT' ); ?>
                     </td>
                     <td >
                     <?php

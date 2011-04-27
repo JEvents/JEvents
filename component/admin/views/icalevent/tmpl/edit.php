@@ -69,19 +69,19 @@ $tabs = & JPane::getInstance('tabs');
 <?php
 if ($this->editCopy){
 	$repeatStyle="";
-	echo "<h3>".JText::_("You are editing a copy of an Ical event")."</h3>";
+	echo "<h3>".JText::_( 'YOU_ARE_EDITING_A_COPY_OF_AN_ICAL_EVENT' )."</h3>";
 }
 else if ($this->repeatId==0) {
 	$repeatStyle="";
 	// Don't show warning for new events
 	if ($this->ev_id>0){
-		echo JText::_("You are editing an Ical event");
+		echo JText::_( 'YOU_ARE_EDITING_AN_ICAL_EVENT' );
 	}
 }
 else {
 	$repeatStyle="style='display:none;'";
 	?>
-	<h3><?php echo JText::_("You are editing an Ical Repeat");?></h3>
+	<h3><?php echo JText::_( 'YOU_ARE_EDITING_AN_ICAL_REPEAT' );?></h3>
 	<input type="hidden" name="cid[]" value="<?php echo $this->rp_id;?>" />
 	<?php
 }

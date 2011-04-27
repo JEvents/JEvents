@@ -34,7 +34,7 @@ class AdminConfigController extends JController {
 	function convert(){
 
 		if (!JEVHelper::isAdminUser()){
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( "Not Authorised must be admin" ));
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
 		}
 
@@ -48,7 +48,7 @@ class AdminConfigController extends JController {
 		$db->setQuery( $sql );
 		$cols = $db->loadObjectList();
 		if (is_null($cols) ){
-			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=cpanel.show",false),JText::_("Old JEvents category table missing"));
+			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=cpanel.show",false),JText::_( 'OLD_JEVENTS_CATEGORY_TABLE_MISSING' ));
 			$this->redirect();
 		}
 		$uptodate = false;
@@ -73,7 +73,7 @@ class AdminConfigController extends JController {
 		$db->setQuery( $sql );
 		$cols = $db->loadObjectList();
 		if (is_null($cols) ){
-			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=cpanel.show",false),JText::_("Old JEvents events table missing"));
+			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=cpanel.show",false),JText::_( 'OLD_JEVENTS_EVENTS_TABLE_MISSING' ));
 			$this->redirect();
 		}
 		$uptodate = false;
@@ -606,10 +606,10 @@ SQL;
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
 			if (JVersion::isCompatible("1.6.0"))  {
-				$cat->bind(array("title"=>JText::_("Default"), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
 			}
 			else {
-				$cat->bind(array("title"=>JText::_("Default"), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
+				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
 			}
 			$cat->store();
 			$catid=$cat->id;

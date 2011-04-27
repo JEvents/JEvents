@@ -36,10 +36,10 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 		JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('Categories'));
+		$document->setTitle(JText::_( 'CATEGORIES' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Categories' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'CATEGORIES' ), 'jevents' );
 	
 		JToolBarHelper::publishList('categories.publish');
 		JToolBarHelper::unpublishList('categories.unpublish');
@@ -50,7 +50,7 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
 		//JToolBarHelper::help( 'screen.categories', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 						
 		JHTML::_('behavior.tooltip');
 
@@ -73,16 +73,16 @@ class AdminCategoriesViewCategories extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('Categories'));
+		$document->setTitle(JText::_( 'CATEGORIES' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Categories' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'CATEGORIES' ), 'jevents' );
 	
 		JToolBarHelper::save('categories.save');
 		JToolBarHelper::cancel('categories.list');
 		//JToolBarHelper::help( 'screen.categories.edit', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		

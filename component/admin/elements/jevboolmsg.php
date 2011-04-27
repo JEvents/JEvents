@@ -42,8 +42,8 @@ class JElementJevboolmsg extends JElement
 		}
 		
 		$options = array ();
-		$options[] = JHTML::_('select.option', 0, JText::_("No"));
-		$options[] = JHTML::_('select.option', 1, JText::_("Yes"));
+		$options[] = JHTML::_('select.option', 0, JText::_( 'NO' ));
+		$options[] = JHTML::_('select.option', 1, JText::_( 'YES' ));
 
 		$radio =  JHTML::_('select.radiolist', $options, ''.$control_name.'['.$name.']', ' onclick="if(this.value==0) document.getElementById(\'jevcopymsg\').style.display=\'block\';  else document.getElementById(\'jevcopymsg\').style.display=\'none\';" ', 'value', 'text', $value, $control_name.$name );
 		

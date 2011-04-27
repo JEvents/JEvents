@@ -56,7 +56,7 @@ class AdminCategoriesController extends JController {
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_("Not Authorised must be admin" ));
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
 		}
 
@@ -117,8 +117,8 @@ class AdminCategoriesController extends JController {
 		$db->setQuery($sql);
 		$result = $db->loadObjectList();
 
-		$categories[] = JHTML::_('select.option', '-1', '- '.JText::_('Select Parent').' -');
-		$categories[] = JHTML::_('select.option', '0', JText::_('No Parent'));
+		$categories[] = JHTML::_('select.option', '-1', '- '.JText::_( 'SELECT_PARENT' ).' -');
+		$categories[] = JHTML::_('select.option', '0', JText::_( 'NO_PARENT' ));
 		// RSH 9/28/10 Added check for empty categories - don't do array_merge if empty!
 		$categories = array_merge($categories, ((is_array($result)) ? $result : array()) ); // RSH 9/28/10
 		$parents = JHTML::_('select.genericlist',  $categories, 'parentid', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', $parent);
@@ -131,7 +131,7 @@ class AdminCategoriesController extends JController {
 
 		// Set the layout
 		$this->view->setLayout('overview');
-		$this->view->assign('title'   , JText::_("Categories"));
+		$this->view->assign('title'   , JText::_( 'CATEGORIES' ));
 		$this->view->assign('cats',$cats);
 		$this->view->assign('parents',$parents);
 		$this->view->assign('pageNav',$pageNav);
@@ -209,7 +209,7 @@ class AdminCategoriesController extends JController {
 		. ' ORDER BY gid desc, name'
 		;
 		$db->setQuery( $query );
-		$users[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select Admin' ) .' -' );
+		$users[] = JHTML::_('select.option',  '0', '- '. JText::_( 'SELECT_ADMIN' ) .' -' );
 		$users = array_merge( $users, $db->loadObjectList() );
 
 		$users = JHTML::_('select.genericlist',   $users, 'admin', 'class="inputbox" size="1" ', 'value', 'text', intval( $cat->getAdminId() ) );
@@ -231,7 +231,7 @@ class AdminCategoriesController extends JController {
 
 		// Set the layout
 		$this->view->setLayout('edit');
-		$this->view->assign('title'   , JText::_("Categories"));
+		$this->view->assign('title'   , JText::_( 'CATEGORIES' ));
 		$this->view->assign('cat',$cat);
 		$this->view->assign('plist',$plist);
 		$this->view->assign('glist',$glist);
@@ -254,7 +254,7 @@ class AdminCategoriesController extends JController {
 
 		$user =& JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( "Not Authorised must be admin" ));
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
 		}
 
@@ -291,7 +291,7 @@ class AdminCategoriesController extends JController {
 	function saveorder(){
 		$user =& JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin" ));
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
 		}
 		$cid = JRequest::getVar(	'cid',	array(0) );
@@ -322,7 +322,7 @@ class AdminCategoriesController extends JController {
 	function delete(){
 		$user =& JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ) );
 			return;
 		}
 		$cid = JRequest::getVar(	'cid',	array(0) );
@@ -360,7 +360,7 @@ class AdminCategoriesController extends JController {
 		$db->setQuery( $query );
 		$cals = $db->loadObjectList();
 		if (count($cals)>0){
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("CANNOT DELETE DEFAULT CALENDAR CATEGORY") );
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_( 'CANNOT_DELETE_DEFAULT_CALENDAR_CATEGORY' ) );
 			return;
 		}
 
@@ -372,7 +372,7 @@ class AdminCategoriesController extends JController {
 		$db->setQuery( $query );
 		$db->query();
 
-		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_("Categorys deleted") );
+		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", JText::_( 'CATEGORYS_DELETED' ) );
 		return;
 	}
 
@@ -392,7 +392,7 @@ class AdminCategoriesController extends JController {
 	function toggleCatPublish($cid,$newstate){
 		$user =& JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
-			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_("Not Authorised must be admin") );
+			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ) );
 			return;
 		}
 

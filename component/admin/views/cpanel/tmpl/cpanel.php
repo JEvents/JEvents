@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				if ($this->migrated && !$params->get("hideMigration",0)){
 					$link = "index.php?option=".JEV_COM_COMPONENT."&task=config.convert";
-					$this->_quickiconButton( $link, "jevents_migrate_sml.png", JText::_('JEV_ADMIN_CONVERT'),"/administrator/components/".JEV_COM_COMPONENT."/assets/images/","","if (!confirm('".JText::_("Are you sure")."')) return false;");
+					$this->_quickiconButton( $link, "jevents_migrate_sml.png", JText::_('JEV_ADMIN_CONVERT'),"/administrator/components/".JEV_COM_COMPONENT."/assets/images/","","if (!confirm('".JText::_( 'ARE_YOU_SURE' )."')) return false;");
 				}
 				?>
 				

@@ -27,10 +27,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('ICals'));
+		$document->setTitle(JText::_( 'ICALS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'ICals' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'ICALS' ), 'jevents' );
 
 		JToolBarHelper::publishList('icals.publish');
 		JToolBarHelper::unpublishList('icals.unpublish');
@@ -41,7 +41,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
 		//JToolBarHelper::help( 'screen.ical', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);
@@ -58,10 +58,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JEVHelper::script('editical.js','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('Edit ICS'));
+		$document->setTitle(JText::_( 'EDIT_ICS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit ICS' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EDIT_ICS' ), 'jevents' );
 
 		//JToolBarHelper::save('icals.save');
 		$bar = & JToolBar::getInstance('toolbar');

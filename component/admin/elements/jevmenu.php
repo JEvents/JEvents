@@ -34,7 +34,7 @@ class JElementJevmenu extends JElement
 
 		// assemble menu items to the array
 		$options 	= array();
-		$options[]	= JHTML::_('select.option', '', '- '.JText::_('Select Item').' -');
+		$options[]	= JHTML::_('select.option', '', '- '.JText::_( 'SELECT_ITEM' ).' -');
 		
 		// load the list of menu types
 		// TODO: move query to model
@@ -142,7 +142,7 @@ class JElementJevmenu extends JElement
 				unset($item);
 			}
 		}
-		//array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('Select Menu').' -', 'id', 'title'));
+		//array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_( 'SELECT_MENU' ).' -', 'id', 'title'));
 
 		return JHTML::_('select.genericlist',  $items2, ''.$control_name.'['.$name.']', '', 'id', 'title', $value, $control_name.$name );
 	}

@@ -282,7 +282,7 @@ class AdminIcalsController extends JController {
 				$ics->label=$icsLabel;
 				// TODO update access and state
 				$ics->updateDetails();
-				$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", JText::_("ICS saved"));
+				$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", JText::_( 'ICS_SAVED' ));
 				$this->redirect();
 			}
 
@@ -332,7 +332,7 @@ class AdminIcalsController extends JController {
 		$message = '';
 		if ($icsFile !== false) {
 			$icsFileid = $icsFile->store();
-			$message = JText::_('ICS FILE IMPORTED');
+			$message = JText::_( 'ICS_FILE_IMPORTED' );
 		}
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
@@ -422,7 +422,7 @@ class AdminIcalsController extends JController {
 			$ics->ignoreembedcat= $ignoreembed;
 			// TODO update access and state
 			$ics->updateDetails();
-			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", JText::_("ICS saved"));
+			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", JText::_( 'ICS_SAVED' ));
 			$this->redirect();
 		}
 	}
@@ -538,7 +538,7 @@ class AdminIcalsController extends JController {
 		$icsFile = iCalICSFile::editICalendar($icsid,$catid,$access,$state,$icsLabel);
 		$icsFileid = $icsFile->store();
 
-		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('ICal File Created'));
+		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_( 'ICAL_FILE_CREATED' ));
 	}
 
 

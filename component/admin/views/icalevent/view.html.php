@@ -30,10 +30,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = & JFactory::getDocument();
-		$document->setTitle(JText::_('ICal Events'));
+		$document->setTitle(JText::_( 'ICAL_EVENTS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('ICal Events'), 'jevents');
+		JToolBarHelper::title(JText::_( 'ICAL_EVENTS' ), 'jevents');
 
 		//JToolBarHelper::custom('icalevent.csvimport','upload.png','upload.png','JEV_ADMIN_CSVIMPORT',false);
 		JToolBarHelper::publishList('icalevent.publish');
@@ -46,7 +46,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false);
 		//JToolBarHelper::help( 'screen.ical', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option=' . JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);
@@ -65,10 +65,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JEVHelper::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 		JEVHelper::script('editical.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document->setTitle(JText::_('Edit ICal Event'));
+		$document->setTitle(JText::_( 'EDIT_ICAL_EVENT' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('Edit ICal Event'), 'jevents');
+		JToolBarHelper::title(JText::_( 'EDIT_ICAL_EVENT' ), 'jevents');
 
 		$bar = & JToolBar::getInstance('toolbar');
 		if ($this->id > 0)
@@ -115,16 +115,16 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = & JFactory::getDocument();
-		$document->setTitle(JText::_('CSV Import'));
+		$document->setTitle(JText::_( 'CSV_IMPORT' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('CSV Import'), 'jevents');
+		JToolBarHelper::title(JText::_( 'CSV_IMPORT' ), 'jevents');
 
 		JToolBarHelper::cancel('icalevent.list');
 
 		$this->_hideSubmenu();
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option=' . JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->getValue("section",0);

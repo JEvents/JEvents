@@ -98,9 +98,9 @@ class AdminUserController extends JController   {
 		$model = $this->getModel('user');
 
 		if ($model->store($cid,$post)) {
-			$msg = JText::_( 'User Saved' );
+			$msg = JText::_( 'USER_SAVED' );
 		} else {
-			$msg = JText::_( 'Error Saving User' );
+			$msg = JText::_( 'ERROR_SAVING_USER' );
 		}
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);
@@ -127,9 +127,9 @@ class AdminUserController extends JController   {
 			$countdeleted += $user->delete()?1:0;
 		}
 		if ($countdeleted = count($users)){
-			$msg = JText::_( 'Users Deleted' );
+			$msg = JText::_( 'USERS_DELETED' );
 		} else {
-			$msg = JText::_( 'Not All Users Deleted' );
+			$msg = JText::_( 'NOT_ALL_USERS_DELETED' );
 		}
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);
@@ -138,94 +138,94 @@ class AdminUserController extends JController   {
 	}
 	
 	function publishUser(  ) {
-		$this->changeState("published",1, JText::_( 'User Enabled' ));
+		$this->changeState("published",1, JText::_( 'USER_ENABLED' ));
 	}
 
 	
 	function unpublishUser(  ) {
-		$this->changeState("published",0, JText::_( 'User Disabled' ));
+		$this->changeState("published",0, JText::_( 'USER_DISABLED' ));
 	}
 
 	function cancreate(  ) {
-		$this->changeState("cancreate",1, JText::_( 'User Can Create Events' ));
+		$this->changeState("cancreate",1, JText::_( 'USER_CAN_CREATE_EVENTS' ));
 	}
 
 	function cannotcreate(  ) {
-		$this->changeState("cancreate",0, JText::_( 'User Cannot Create Events' ));
+		$this->changeState("cancreate",0, JText::_( 'USER_CANNOT_CREATE_EVENTS' ));
 	}
 	
 	function canedit(  ) {
-		$this->changeState("canedit",1, JText::_( 'User Can Edit Events' ));
+		$this->changeState("canedit",1, JText::_( 'USER_CAN_EDIT_EVENTS' ));
 	}
 
 	function cannotedit(  ) {
-		$this->changeState("canedit",0, JText::_( 'User Cannot Edit Events' ));
+		$this->changeState("canedit",0, JText::_( 'USER_CANNOT_EDIT_EVENTS' ));
 	}
 
 	function candeleteown(  ) {
-		$this->changeState("candeleteown",1, JText::_( 'User Can Delete Own' ));
+		$this->changeState("candeleteown",1, JText::_( 'USER_CAN_DELETE_OWN' ));
 	}
 
 	function cannotdeleteown(  ) {
-		$this->changeState("candeleteown",0, JText::_( 'User Cannot Delete Own' ));
+		$this->changeState("candeleteown",0, JText::_( 'USER_CANNOT_DELETE_OWN' ));
 	}
 	
 	function candeleteall(  ) {
-		$this->changeState("candeleteall",1, JText::_( 'User Can Delete All' ));
+		$this->changeState("candeleteall",1, JText::_( 'USER_CAN_DELETE_ALL' ));
 	}
 
 	function cannotdeleteall(  ) {
-		$this->changeState("candeleteall",0, JText::_( 'User Cannot Delete All' ));
+		$this->changeState("candeleteall",0, JText::_( 'USER_CANNOT_DELETE_ALL' ));
 	}
 	
 	function canpublishown(  ) {
-		$this->changeState("canpublishown",1, JText::_( 'User Can Publish Own' ));
+		$this->changeState("canpublishown",1, JText::_( 'USER_CAN_PUBLISH_OWN' ));
 	}
 
 	function cannotpublishown(  ) {
-		$this->changeState("canpublishown",0, JText::_( 'User Cannot Publish Own' ));
+		$this->changeState("canpublishown",0, JText::_( 'USER_CANNOT_PUBLISH_OWN' ));
 	}
 
 
 	function canpublishall(  ) {
-		$this->changeState("canpublishall",1, JText::_( 'User Can Publish All' ));
+		$this->changeState("canpublishall",1, JText::_( 'USER_CAN_PUBLISH_ALL' ));
 	}
 
 	function cannotpublishall(  ) {
-		$this->changeState("canpublishall",0, JText::_( 'User Cannot Publish All' ));
+		$this->changeState("canpublishall",0, JText::_( 'USER_CANNOT_PUBLISH_ALL' ));
 	}
 
 	function canuploadimages(  ) {
-		$this->changeState("canuploadimages",1, JText::_( 'User Can Upload Images' ));
+		$this->changeState("canuploadimages",1, JText::_( 'USER_CAN_UPLOAD_IMAGES' ));
 	}
 
 	function cannotuploadimages(  ) {
-		$this->changeState("canuploadimages",0, JText::_( 'User Cannot Upload Images' ));
+		$this->changeState("canuploadimages",0, JText::_( 'USER_CANNOT_UPLOAD_IMAGES' ));
 	}
 	
 	function canuploadmovies(  ) {
-		$this->changeState("canuploadmovies",1, JText::_( 'User Can Upload Files' ));
+		$this->changeState("canuploadmovies",1, JText::_( 'USER_CAN_UPLOAD_FILES' ));
 	}
 
 	function cannotuploadmovies(  ) {
-		$this->changeState("canuploadmovies",0, JText::_( 'User Cannot Upload Files' ));
+		$this->changeState("canuploadmovies",0, JText::_( 'USER_CANNOT_UPLOAD_FILES' ));
 	}
 
 	// These apply to extra attributes - user specific or global
 	function cancreateown(  ) {
-		$this->changeState("cancreateown",1, JText::_( 'User Can Create Own Extras' ));
+		$this->changeState("cancreateown",1, JText::_( 'USER_CAN_CREATE_OWN_EXTRAS' ));
 	}
 
 	function cannotcreateown(  ) {
-		$this->changeState("cancreateown",0, JText::_( 'User Cannot Create Own Extras' ));
+		$this->changeState("cancreateown",0, JText::_( 'USER_CANNOT_CREATE_OWN_EXTRAS' ));
 	}
 	
 	function cancreateglobal(  ) {
-		$this->changeState("cancreateglobal",1, JText::_( 'User Can Create Global Extras' ));
+		$this->changeState("cancreateglobal",1, JText::_( 'USER_CAN_CREATE_GLOBAL_EXTRAS' ));
 	}
 
 	function cannotcreateglobal(  ) {
-		$this->changeState("cancreateglobal",0, JText::_( 'User Cannot Create Global Extras' ));
+		$this->changeState("cancreateglobal",0, JText::_( 'USER_CANNOT_CREATE_GLOBAL_EXTRAS' ));
 	}
 	
 	
@@ -246,7 +246,7 @@ class AdminUserController extends JController   {
 		if ($user->store()){
 			$msg = $successMessage;
 		} else {
-			$msg = JText::_( 'Error Updating User' );
+			$msg = JText::_( 'ERROR_UPDATING_USER' );
 		}
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);

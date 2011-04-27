@@ -26,10 +26,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		 JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('ICal Event Repeats'));
+		$document->setTitle(JText::_( 'ICAL_EVENT_REPEATS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'ICal Event Repeats' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'ICAL_EVENT_REPEATS' ), 'jevents' );
 
 		JToolBarHelper::editList('icalrepeat.edit');
 		JToolBarHelper::deleteList('Delete this repeat?','icalrepeat.delete');
@@ -54,10 +54,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JEVHelper::script('editical.js','administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 		JEVHelper::script('view_detail.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
-		$document->setTitle(JText::_('Edit ICal Repeat'));
+		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit ICal Repeat' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 
 		$this->addSaveToolBarButton();
 		JToolBarHelper::apply('icalrepeat.apply');
@@ -83,7 +83,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// Add a standard button
 		//$bar->appendButton( 'Standard', $icon, $alt, $task, $listSelect, $x );
 
-		$buttontext = JText::_("Save");
+		$buttontext = JText::_( 'SAVE' );
 		$buttonhtml = '<a href="#" onclick="javascript:return clickIcalSaveButton();" class="toolbar">
 		<span class="icon-32-save" title="'.$buttontext.'"></span>'.$buttontext.'</a><div style="position:relative;clear:both;">';
 
@@ -95,21 +95,21 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
             	</div>
             	
             	<?php 
-            	$buttontext = JText::_("Save this");
+            	$buttontext = JText::_( 'SAVE_THIS' );
             	$buttontask = "icalrepeat.save";
             	?>
 				<div><a href="#" onclick="javascript:submitbutton('<?php echo $buttontask;?>');return false;" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext);?>"></span><?php echo $buttontext;?></a></div>
 
 	           	<?php 
 	           	/*
-            	$buttontext = JText::_("Save future");
+            	$buttontext = JText::_( 'SAVE_FUTURE' );
             	$buttontask = "icalrepeat.savefuture";
 				<div><a href="#" onclick="javascript:return submitbutton('<?php echo $buttontask;?>')" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext);?>"></span><?php echo $buttontext;?></a></div>
 				*/
             	?>
 
 				<?php 
-            	$buttontext = JText::_("Save all");
+            	$buttontext = JText::_( 'SAVE_ALL' );
             	$buttontask = "icalevent.save";
             	?>
 				<div><a href="#" onclick="javascript:submitbutton('<?php echo $buttontask;?>');return false;" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext);?>"></span><?php echo $buttontext;?></a></div>
@@ -127,7 +127,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 		$toolbar = & JToolBar::getInstance('toolbar');
 
-         $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.detail\');return false;" href="#"><span class="icon-32-cancel" title="Cancel"> </span>'.JText::_("Cancel").'</a>';
+         $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.detail\');return false;" href="#"><span class="icon-32-cancel" title="Cancel"> </span>'.JText::_( 'CANCEL' ).'</a>';
          $toolbar->appendButton( 'Custom',$html, "customcancel");
 
 	}

@@ -30,16 +30,16 @@ class AdminConfigViewconfig extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('Configuration'));
+		$document->setTitle(JText::_( 'CONFIGURATION' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Configuration' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'CONFIGURATION' ), 'jevents' );
 	
 		JToolBarHelper::save('config.save');
 		JToolBarHelper::cancel('cpanel.cpanel');
 		//JToolBarHelper::help( 'screen.config.edit', true);
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 				
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		
@@ -54,14 +54,14 @@ class AdminConfigViewconfig extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('DB Setup'));
+		$document->setTitle(JText::_( 'DB_SETUP' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'DB Setup' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );
 	
 		JToolBarHelper::cancel('cpanel.cpanel');
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 						
 	}	
 	
@@ -73,14 +73,14 @@ class AdminConfigViewconfig extends JEventsAbstractView
 		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_('Events Migration'));
+		$document->setTitle(JText::_( 'EVENTS_MIGRATION' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Events Migration' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EVENTS_MIGRATION' ), 'jevents' );
 	
 		JToolBarHelper::cancel('cpanel.cpanel');
 
-		JSubMenuHelper::addEntry(JText::_('Control Panel'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 						
 	}	
 

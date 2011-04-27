@@ -269,7 +269,7 @@ class AdminIcaleventController extends JController {
 		// get list of ics Files
 		$icsfiles = array();
 		//$icsfiles[] =  JHTML::_('select.option', '0', "Choose ICS FILE" );
-		$icsfiles[] = JHTML::_('select.option', '-1', JText::_("ALL ICS FILES"));
+		$icsfiles[] = JHTML::_('select.option', '-1', JText::_( 'ALL_ICS_FILES' ));
 
 		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
 		if (!$showUnpublishedICS){
@@ -296,14 +296,14 @@ class AdminIcaleventController extends JController {
 		}
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
 
-		$options[] = JHTML::_('select.option', '0', JText::_('No'));
-		$options[] = JHTML::_('select.option', '1', JText::_('Yes'));
+		$options[] = JHTML::_('select.option', '0', JText::_( 'NO' ));
+		$options[] = JHTML::_('select.option', '1', JText::_( 'YES' ));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast );
 
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_('All Events'));
-		$options[] = JHTML::_('select.option', '1', JText::_('Published'));
-		$options[] = JHTML::_('select.option', '2', JText::_('Unpublished'));
+		$options[] = JHTML::_('select.option', '0', JText::_( 'ALL_EVENTS' ));
+		$options[] = JHTML::_('select.option', '1', JText::_( 'PUBLISHED' ));
+		$options[] = JHTML::_('select.option', '2', JText::_( 'UNPUBLISHED' ));
 		$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state );
 
 		$catData = JEV_CommonFunctions::getCategoryData();
@@ -330,7 +330,7 @@ class AdminIcaleventController extends JController {
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		$this->editCopy = true;
 		$this->edit();
@@ -351,7 +351,7 @@ class AdminIcaleventController extends JController {
 		}
 
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$repeatId = 0;
@@ -379,7 +379,7 @@ class AdminIcaleventController extends JController {
 			}
 
 			if (!JEVHelper::canEditEvent($row)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 		}
 		else {
@@ -471,7 +471,7 @@ class AdminIcaleventController extends JController {
 		}
 		else {
 			if (count($nativeCals)==0 || !is_array($nativeCals)){
-				JError::raiseWarning(870, JText::_("INVALID CALENDAR STRUCTURE") );
+				JError::raiseWarning(870, JText::_( 'INVALID_CALENDAR_STRUCTURE' ) );
 			}
 
 			$icsid = $row->icsid()>0?$row->icsid():current($nativeCals)->ics_id;
@@ -606,7 +606,7 @@ class AdminIcaleventController extends JController {
 	function csvimport () {
 		
 		if (!JFactory::getApplication()->isAdmin()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		// get the view
@@ -633,7 +633,7 @@ class AdminIcaleventController extends JController {
 			$this->view->assign('callist',$callist);
 		}
 		else {
-			JError::raiseWarning(870, JText::_("INVALID CALENDAR STRUCTURE") );
+			JError::raiseWarning(870, JText::_( 'INVALID_CALENDAR_STRUCTURE' ) );
 		}
 
 		// Set the layout
@@ -644,7 +644,7 @@ class AdminIcaleventController extends JController {
 
 	private function doSave(& $msg){
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		// clean out the cache
@@ -660,7 +660,7 @@ class AdminIcaleventController extends JController {
 		}
 
          if (!JEVHelper::canCreateEvent($array)){
-            JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+            JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
          }
 
 		$rrule = SaveIcalEvent::generateRRule($array);
@@ -669,7 +669,7 @@ class AdminIcaleventController extends JController {
 		if (isset($array["evid"]) &&  $array["evid"]>0){
 			$event = $this->queryModel->getEventById( intval($array["evid"]), 1, "icaldb" );
 			if (!$event || !JEVHelper::canEditEvent($event)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 		}
 
@@ -740,14 +740,14 @@ class AdminIcaleventController extends JController {
 			if (is_array($cid)) {
 				foreach ($cid as $id) {
 					if (!JEVHelper::canPublishOwnEvents($id)){
-						JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+						JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 					}
 				}
 			}
 			$is_event_editor = true;
 		}
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$db	=& JFactory::getDBO();
@@ -756,7 +756,7 @@ class AdminIcaleventController extends JController {
 			// I should be able to do this in one operation but that can come later
 			$event = $this->queryModel->getEventById( intval($id), 1, "icaldb" );
 			if (is_null($event) || !JEVHelper::canPublishEvent($event)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='".$id."'";
@@ -802,7 +802,7 @@ class AdminIcaleventController extends JController {
 		/*
 		// This is covered by canDeleteEvent below
 		if (!JEVHelper::isEventDeletor()){
-		JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+		JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		*/
 		$cid = JRequest::getVar(	'cid',	array(0) );

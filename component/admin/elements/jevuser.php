@@ -97,7 +97,7 @@ class JElementJevuser extends JElement
 			$db->setQuery( $sql );
 			$users = $db->loadObjectList();
 		}
-		$users2[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select User' ) .' -' );
+		$users2[] = JHTML::_('select.option',  '0', '- '. JText::_( 'SELECT_USER' ) .' -' );
 		$users2 = array_merge( $users2, $users );
 
 		$users = JHTML::_('select.genericlist',   $users2, $control_name.'['.$name.']', 'class="'.$class.'" size="1" ', 'value', 'text', $value );

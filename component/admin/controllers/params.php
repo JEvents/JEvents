@@ -176,8 +176,8 @@ class AdminParamsController extends JController
 
 		}
 
-		$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_("Config saved") );
-		//$this->setMessage(JText::_("Config saved"));
+		$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'CONFIG_SAVED' ) );
+		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();
 	}
 

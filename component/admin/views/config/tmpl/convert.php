@@ -20,7 +20,7 @@ echo "<script>document.location.href='$url';</script>\n";
 }
 else {
 	?>
-<h3><?php echo JText::_("Events migrated");?></h3>
+<h3><?php echo JText::_( 'EVENTS_MIGRATED' );?></h3>
 	<?php
 }
 

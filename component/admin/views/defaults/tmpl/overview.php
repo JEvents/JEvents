@@ -16,10 +16,10 @@ $pathIMG = JURI::root().'/administrator/images/';
 				<?php echo JText::_( 'NUM' ); ?>
 			</th>
 			<th class="title">
-				<?php echo JText::_('Title'); ?>
+				<?php echo JText::_( 'TITLE' ); ?>
 			</th>
 			<th class="title">
-				<?php echo JText::_('Name'); ?>
+				<?php echo JText::_( 'NAME' ); ?>
 			</th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>			
 		</tr>

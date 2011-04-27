@@ -45,7 +45,7 @@ class JElementJevUserGroup extends JElement
 			$ctrl		.= '[]';
 			//$value		= implode( '|', )
 		}
-		//array_unshift( $editors, JHTML::_('select.option',  '', '- '. JText::_( 'Select Editor' ) .' -' ) );
+		//array_unshift( $editors, JHTML::_('select.option',  '', '- '. JText::_( 'SELECT_EDITOR' ) .' -' ) );
 
 		return JHTML::_('select.genericlist',   $gtree, $ctrl, $attribs, 'value', 'text', $value, $control_name.$name );
 	}

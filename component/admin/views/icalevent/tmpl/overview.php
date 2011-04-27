@@ -45,7 +45,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
 			</th>
 			<th class="title" width="50%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-			<th width="10%" nowrap="nowrap"><?php echo JText::_("Repeats"); ?></th>
+			<th width="10%" nowrap="nowrap"><?php echo JText::_( 'REPEATS' ); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 			<th width="20%" nowrap="nowrap"><?php echo JText::_('JEV_TIME_SHEET'); ?></th>

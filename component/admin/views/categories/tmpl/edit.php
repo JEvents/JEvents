@@ -89,7 +89,7 @@ include_once(JEV_LIBS."/colorMap.php");
                     <td>
                     <?php echo $this->alist;?>
                     </td>
-                	<td valign="top" align="left"><?php echo JText::_('PUBLISHED'); ?></td>
+                	<td valign="top" align="left"><?php echo JText::_( 'PUBLISHED' ); ?></td>
                     <td>
                     <?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->cat->published );?>
                     </td>

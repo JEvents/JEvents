@@ -24,7 +24,7 @@ function submitbutton(pressbutton) {
 	var form = document.adminForm;
 	// do field validation
 	if (form.user_id.value == -1) {
-		alert( "<?php echo JText::_( 'MISSING USER SELECTION' ); ?>" );
+		alert( "<?php echo JText::_( 'MISSING_USER_SELECTION' ); ?>" );
 	}
 	else {
 		submitform(pressbutton);
@@ -36,66 +36,66 @@ function submitbutton(pressbutton) {
     <input type="hidden" name="cid" value="<?php echo $this->jevuser->id;?>" />
 	<table border="0" cellpadding="2" cellspacing="2" class="adminform" >
 		<tr>
-			<td width="20%"><?php echo JText::_("User");?></td>
+			<td width="20%"><?php echo JText::_( 'USER' );?></td>
 			<td><?php echo $this->users;?></td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("User Enabled");?></td>
+			<td><?php echo JText::_( 'USER_ENABLED' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "published", null,$this->jevuser->published);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Create Events");?></td>
+			<td><?php echo JText::_( 'CAN_CREATE_EVENTS' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "cancreate", null,$this->jevuser->cancreate);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Events Limit");?></td>
+			<td><?php echo JText::_( 'EVENTS_LIMIT' );?></td>
 			<td>
 			<input type="text" size="15" name="eventslimit" id="eventslimit" value="<?php echo $this->jevuser->eventslimit;?>" />
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Publish Own");?></td>
+			<td><?php echo JText::_( 'CAN_PUBLISH_OWN' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "canpublishown", null,$this->jevuser->canpublishown);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Delete Own Events");?></td>
+			<td><?php echo JText::_( 'CAN_DELETE_OWN_EVENTS' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "candeleteown", null,$this->jevuser->candeleteown);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Edit Events");?></td>
+			<td><?php echo JText::_( 'CAN_EDIT_EVENTS' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "canedit", null,$this->jevuser->canedit);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Publish All");?></td>
+			<td><?php echo JText::_( 'CAN_PUBLISH_ALL' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "canpublishall", null,$this->jevuser->canpublishall);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Delete All Events");?></td>
+			<td><?php echo JText::_( 'CAN_DELETE_ALL_EVENTS' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "candeleteall", null,$this->jevuser->candeleteall);
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Upload Images");?></td>
+			<td><?php echo JText::_( 'CAN_UPLOAD_IMAGES' );?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "canuploadimages", null,$this->jevuser->canuploadimages);
 			?>
@@ -109,7 +109,7 @@ function submitbutton(pressbutton) {
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Extras Limit");?></td>
+			<td><?php echo JText::_( 'EXTRAS_LIMIT' );?></td>
 			<td>
 			<input type="text" size="15" name="extraslimit" id="extraslimit" value="<?php echo $this->jevuser->extraslimit;?>" />
 			</td>

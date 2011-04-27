@@ -134,7 +134,7 @@ class AdminIcalrepeatController extends JController {
 		else $id=$cid;
 
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		// front end passes the id as evid
@@ -163,7 +163,7 @@ class AdminIcalrepeatController extends JController {
 		$row = $this->queryModel->listEventsById($repeatId, true, "icaldb");
 
 		if (!JEVHelper::canEditEvent($row)){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$db =& JFactory::getDBO();
@@ -283,7 +283,7 @@ class AdminIcalrepeatController extends JController {
 
 	private function doSave(& $msg){
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		// clean out the cache
@@ -302,7 +302,7 @@ class AdminIcalrepeatController extends JController {
 		// I should be able to do this in one operation but that can come later
 		$event = $this->queryModel->listEventsById( intval($rp_id), 1, "icaldb" );
 		if (!JEVHelper::canEditEvent($event)){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$db	=& JFactory::getDBO();
@@ -408,10 +408,10 @@ class AdminIcalrepeatController extends JController {
 	// experimentaal code disabled for the time being
 	function savefuture(){
 		// experimentaal code disabled for count (startthe time being
-		JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+		JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		// clean out the cache
@@ -521,7 +521,7 @@ class AdminIcalrepeatController extends JController {
 		$cache->clean(JEV_COM_COMPONENT);
 
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$cid = JRequest::getVar(	'cid',	array(0) );
@@ -534,7 +534,7 @@ class AdminIcalrepeatController extends JController {
 			// I should be able to do this in one operation but that can come later
 			$event = $this->queryModel->listEventsById( intval($id), 1, "icaldb" );
 			if (!JEVHelper::canDeleteEvent($event)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
@@ -591,7 +591,7 @@ class AdminIcalrepeatController extends JController {
 		$cache->clean(JEV_COM_COMPONENT);
 
 		if (!JEVHelper::isEventCreator()){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
 		$this->_deleteFuture();
@@ -618,7 +618,7 @@ class AdminIcalrepeatController extends JController {
 			// I should be able to do this in one operation but that can come later
 			$event = $this->queryModel->listEventsById( intval($id), 1, "icaldb" );
 			if (!JEVHelper::canDeleteEvent($event)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
@@ -626,7 +626,7 @@ class AdminIcalrepeatController extends JController {
 			$repeatdata = null;
 			$repeatdata = $db->loadObject();
 			if (is_null($repeatdata)){
-				JError::raiseError( 4777, JText::_("No such event") );
+				JError::raiseError( 4777, JText::_( 'NO_SUCH_EVENT' ) );
 				return;
 			}
 

@@ -67,7 +67,7 @@ class JevParameter extends  JParameter {
 		}
 
 		if (count($params) < 1) {
-			$html[] = "<tr><td colspan=\"2\"><i>".JText::_('There are no Parameters for this item')."</i></td></tr>";
+			$html[] = "<tr><td colspan=\"2\"><i>".JText::_( 'THERE_ARE_NO_PARAMETERS_FOR_THIS_ITEM' )."</i></td></tr>";
 		}
 
 		$html[] = '</table>';

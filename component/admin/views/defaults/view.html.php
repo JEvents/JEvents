@@ -46,7 +46,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'Control Panel', false );
 
-		JSubMenuHelper::addEntry(JText::_('Defaults'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'DEFAULTS' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 
 		JHTML::_('behavior.tooltip');
 
@@ -92,7 +92,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolBarHelper::save("defaults.save");
 		JToolBarHelper::cancel("defaults.cancel");
 
-		JSubMenuHelper::addEntry(JText::_('Defaults'), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JSubMenuHelper::addEntry(JText::_( 'DEFAULTS' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 
 		JHTML::_('behavior.tooltip');
 
