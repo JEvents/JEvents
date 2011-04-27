@@ -45,10 +45,10 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
-		$document->setTitle(JText::_('Edit ICal Event'));
+		$document->setTitle(JText::_( 'EDIT_ICAL_EVENT' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit ICal Event' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EDIT_ICAL_EVENT' ), 'jevents' );
 	
 		$bar = & JToolBar::getInstance('toolbar');
 		if ($this->id>0){

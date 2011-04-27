@@ -27,7 +27,7 @@ class jevPublishedFilter extends jevFilter
 
 	function jevPublishedFilter($tablename, $filterfield, $isstring=true,$yesLabel="Yes", $noLabel="No"){
 		$this->filterNullValue="0";
-		$this->allLabel = JText::_("All");
+		$this->allLabel = JText::_( 'ALL' );
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
 		$this->filterType = "published";

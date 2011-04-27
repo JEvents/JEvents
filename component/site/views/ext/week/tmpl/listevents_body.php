@@ -27,7 +27,7 @@ $precedingWeek = $this->datamodel->getPrecedingWeek($this->year, $this->month, $
 		<td class="tableh1" colspan="3">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr> 
-					<td><h2><?php echo JText::_("Weekly View");?></h2></td>
+					<td><h2><?php echo JText::_( 'WEEKLY_VIEW' );?></h2></td>
 					<td class="today" align="right"><?php echo  $data['startdate'] . ' - ' . $data['enddate'] ;?></td>
 				</tr>
 			</table>

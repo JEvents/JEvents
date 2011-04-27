@@ -29,7 +29,7 @@ class jevCategoryFilter extends jevFilter
 		}
 
 		$this->filterType="category";
-		$this->filterLabel=JText::_("Category");
+		$this->filterLabel=JText::_( 'CATEGORY' );
 		$this->filterNullValue="0";
 		parent::__construct($tablename,"catid", true);
 

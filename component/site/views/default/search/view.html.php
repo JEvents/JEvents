@@ -26,7 +26,7 @@ class DefaultSearch extends JEventsDefaultView
 
 		$document =& JFactory::getDocument();
 		// TODO do this properly
-		//$document->setTitle(JText::_("BROWSER TITLE"));
+		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 						
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
@@ -40,7 +40,7 @@ class DefaultSearch extends JEventsDefaultView
 
 		$document =& JFactory::getDocument();
 		// TODO do this properly
-		//$document->setTitle(JText::_("BROWSER TITLE"));
+		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 						
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));

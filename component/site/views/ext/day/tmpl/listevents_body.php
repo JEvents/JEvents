@@ -19,7 +19,7 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 		<td class="tableh1" colspan="3">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr> 
-					<td><h2><?php echo JText::_("Daily View");?></h2></td>
+					<td><h2><?php echo JText::_( 'DAILY_VIEW' );?></h2></td>
 					<td class="today" align="right"><?php echo JEventsHTML::getDateFormat( $this->year, $this->month, $this->day, 0) ;?></td>
 				</tr>
 			</table>
@@ -49,7 +49,7 @@ $hasevents = false;
 // Timeless Events First
 if (count($data['hours']['timeless']['events'])>0){
 	$hasevents = true;
-	$start_time = JText::_("Timeless");
+	$start_time = JText::_( 'TIMELESS' );
 
 	echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
 	foreach ($data['hours']['timeless']['events'] as $row) {

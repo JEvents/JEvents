@@ -214,7 +214,7 @@ function simulateSaveEvent($requestObject){
 	include_once(JPATH_SITE."/components/com_jevents/jevents.defines.php");
 
 	if (!JEVHelper::isEventCreator()){
-		throwerror(JText::_("ALERTNOTAUTH") );
+		throwerror(JText::_( 'ALERTNOTAUTH' ) );
 	}
 
 	// Convert formdata to array
@@ -232,7 +232,7 @@ function simulateSaveEvent($requestObject){
 		if (isset($array["evid"]) &&  $array["evid"]>0){
 			$event = $this->queryModel->getEventById( intval($array["evid"]), 1, "icaldb" );
 			if (!JEVHelper::canEditEvent($event)){
-				JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 		}
 
@@ -270,7 +270,7 @@ function simulateSaveRepeat($requestObject){
 	include_once(JPATH_SITE."/components/com_jevents/jevents.defines.php");
 
 	if (!JEVHelper::isEventCreator()){
-		throwerror(JText::_("ALERTNOTAUTH") );
+		throwerror(JText::_( 'ALERTNOTAUTH' ) );
 	}
 
 	// Convert formdata to array
@@ -293,7 +293,7 @@ function simulateSaveRepeat($requestObject){
 	// I should be able to do this in one operation but that can come later
 	$event = $queryModel->listEventsById( intval($rp_id), 1, "icaldb" );
 	if (!JEVHelper::canEditEvent($event)){
-		throwerror(JText::_("ALERTNOTAUTH") );
+		throwerror(JText::_( 'ALERTNOTAUTH' ) );
 	}
 
 	$db	=& JFactory::getDBO();

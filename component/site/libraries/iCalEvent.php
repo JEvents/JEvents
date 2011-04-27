@@ -118,13 +118,13 @@ class iCalEvent extends JTable  {
 		$db =& JFactory::getDBO();
 		$detailid = $this->_detail->store($updateNulls);
 		if (!$detailid){
-			JError::raiseError( 104, JText::_("Problems storing Event Detail"));
+			JError::raiseError( 104, JText::_( 'PROBLEMS_STORING_EVENT_DETAIL' ));
 			echo $db->getErroMsg()."<br/>";
 			return false;
 		}
 		$this->detail_id = $detailid;
 		if (!parent::store($updateNulls)){
-			JError::raiseError( 105, JText::_("Problems storing Event") );
+			JError::raiseError( 105, JText::_( 'PROBLEMS_STORING_EVENT' ) );
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}

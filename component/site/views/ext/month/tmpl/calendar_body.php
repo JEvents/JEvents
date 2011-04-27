@@ -31,7 +31,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 		<td class="tableh1" colspan="8">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr> 
-					<td><h2><?php echo JText::_("Monthly View");?></h2></td>
+					<td><h2><?php echo JText::_( 'MONTHLY_VIEW' );?></h2></td>
 					<td class="today" align="right"><?php echo $this->data['fieldsetText']; ?></td>				
 				</tr>
 			</table>

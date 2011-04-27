@@ -25,7 +25,7 @@ class ICalsController extends AdminIcalsController
 		$cfg = & JEVConfig::getInstance();
 		if ($cfg->get("disableicalexport", 0))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			JError::raiseError(403, JText::_( 'ALERTNOTAUTH' ));
 		}
 
 		// Load abstract "view" class
@@ -657,7 +657,7 @@ class ICalsController extends AdminIcalsController
 		{
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
-				JError::raiseWarning(870, JText::_("INVALID CALENDAR STRUCTURE"));
+				JError::raiseWarning(870, JText::_( 'INVALID_CALENDAR_STRUCTURE' ));
 		}
 
 			$icsid = current($nativeCals)->ics_id;

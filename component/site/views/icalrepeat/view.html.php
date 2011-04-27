@@ -45,19 +45,19 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  
 		JEVHelper::script('view_detail.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
-		$document->setTitle(JText::_('Edit ICal Repeat'));
+		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'Edit ICal Repeat' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 	
 		//JToolBarHelper::save('icalrepeat.save');
 
 		//$this->addSaveToolBarButton();
 		$toolbar = & JToolBar::getInstance('toolbar');
-        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.save\');return false;" href="#"><span class="icon-32-save" title="Save"> </span>'.JText::_("Save").'</a>';
+        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.save\');return false;" href="#"><span class="icon-32-save" title="Save"> </span>'.JText::_( 'SAVE' ).'</a>';
         $toolbar->appendButton( 'Custom',$html, "customsave");
 		
-        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.apply\');return false;" href="#"><span class="icon-32-apply" title="Save"> </span>'.JText::_("Apply").'</a>';
+        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.apply\');return false;" href="#"><span class="icon-32-apply" title="Save"> </span>'.JText::_( 'APPLY' ).'</a>';
         $toolbar->appendButton( 'Custom',$html, "customapply");
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

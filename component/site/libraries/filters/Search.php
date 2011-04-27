@@ -16,7 +16,7 @@ class jevSearchFilter extends jevFilter
 {
 	function __construct($tablename, $filterfield, $isstring=true){
 		$this->filterType="search";
-		$this->filterLabel=JText::_("Search Event");
+		$this->filterLabel=JText::_( 'SEARCH_EVENT' );
 		$this->filterNullValue="";
 		parent::__construct($tablename,$filterfield, true);
 		// Should these be ignored?

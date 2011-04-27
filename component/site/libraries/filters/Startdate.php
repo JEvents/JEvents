@@ -89,14 +89,14 @@ class jevStartdateFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		$filterList=array();
-		$filterList["title"]=JText::_("With Instances");
+		$filterList["title"]=JText::_( 'WITH_INSTANCES' );
 
 		$filterList["html"] = "";
 
 		$options = array();
-		$options[] = JHTML::_('select.option', '0',JText::_('When') );
+		$options[] = JHTML::_('select.option', '0',JText::_( 'WHEN' ) );
 		$options[] = JHTML::_('select.option', '1',JText::_('On_or_after') );
-		$options[] = JHTML::_('select.option', '-1',JText::_('Before') );
+		$options[] = JHTML::_('select.option', '-1',JText::_( 'BEFORE' ) );
 		$filterList["html"] .= JHTML::_('select.genericlist', $options, $this->filterType.'_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0] );
 
 		//$filterList["html"] .=  JHTML::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));

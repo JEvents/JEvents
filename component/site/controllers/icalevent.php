@@ -112,7 +112,7 @@ class ICalEventController extends AdminIcaleventController   {
 		if (!$is_event_editor || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
-				//JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				//JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 			else {
 				$uri = JURI::getInstance();
@@ -132,7 +132,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		$this->editCopy = true;
 
@@ -147,7 +147,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::save();
 	}
@@ -156,7 +156,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::apply();
 	}

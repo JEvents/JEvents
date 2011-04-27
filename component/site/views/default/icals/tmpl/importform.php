@@ -61,14 +61,14 @@ function submitbutton() {
 			<?php  
 	    }	
 	   echo $this->clist; ?><br/><br/>	    
-	  <strong><?php  echo JText::_('SELECT CATEGORY'); ?></strong><br/>
+	  <strong><?php  echo JText::_( 'SELECT_CATEGORY' ); ?></strong><br/>
     <?php    echo JEventsHTML::buildCategorySelect(0, '', $this->dataModel->accessibleCategoryList(), false, true,0,'catid',JEV_COM_COMPONENT, $this->excats); ?><br/><br/>
     
    	 <strong><?php echo JText::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></strong><br/>
 		<input id="ignoreembedcat0" type="radio" value="0" name="ignoreembedcat" checked="checked"/>
-		<label for="ignoreembedcat0"><?php echo JText::_('No'); ?></label>
+		<label for="ignoreembedcat0"><?php echo JText::_( 'NO' ); ?></label>
 		<input id="ignoreembedcat1" type="radio" value="1" name="ignoreembedcat" />
-		<label for="ignoreembedcat1"><?php echo JText::_('Yes'); ?></label><br/><br/>
+		<label for="ignoreembedcat1"><?php echo JText::_( 'YES' ); ?></label><br/><br/>
     
      <input type="submit" name="submit" value="<?php echo JText::_('JEV_IMPORT', true)?>" />
 

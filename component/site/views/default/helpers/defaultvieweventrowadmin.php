@@ -29,10 +29,10 @@ function DefaultViewEventRowAdmin($view,$row, $manage=false){
 
 	if (!$manage && JEVHelper::canPublishEvent($row)){
 		if ($row->published()){
-			$publishlink = '<a href="' . $row->unpublishlink(false)."&rettask=admin.listevents" . '" title="' . JText::_('UNPUBLISH') . '"><b>' . JText::_('UNPUBLISH') . "</b></a>\n";		
+			$publishlink = '<a href="' . $row->unpublishlink(false)."&rettask=admin.listevents" . '" title="' . JText::_( 'UNPUBLISH' ) . '"><b>' . JText::_( 'UNPUBLISH' ) . "</b></a>\n";		
 		}
 		else {
-			$publishlink = '<a href="' . $row->publishlink(false)."&rettask=admin.listevents" . '" title="' . JText::_('PUBLISH') . '"><b>' . JText::_('PUBLISH') . "</b></a>\n";		
+			$publishlink = '<a href="' . $row->publishlink(false)."&rettask=admin.listevents" . '" title="' . JText::_( 'PUBLISH' ) . '"><b>' . JText::_( 'PUBLISH' ) . "</b></a>\n";		
 		}
 	}
 	else {

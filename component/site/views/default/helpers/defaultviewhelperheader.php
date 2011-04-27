@@ -109,8 +109,8 @@ function DefaultViewHelperHeader($view){
 
 		?>
 		<td width="20" class="buttonheading" align="right">
-			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_('Email'); ?>">
-				<?php echo JEVHelper::imagesite( 'emailButton.png',JText::_('Email'));?>
+			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
+				<?php echo JEVHelper::imagesite( 'emailButton.png',JText::_( 'EMAIL' ));?>
 			</a>
 		</td>
 		<?php

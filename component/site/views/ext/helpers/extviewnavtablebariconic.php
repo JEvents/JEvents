@@ -58,7 +58,7 @@ class ExtViewNavTableBarIconic {
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=month.calendar&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYMONTH');?>" class="buttontext">
-							<img src="<?php echo $viewimages;?>/icon-calendarview.gif" alt="<?php echo JText::_("Monthly View");?>" border="0"/><br/>
+							<img src="<?php echo $viewimages;?>/icon-calendarview.gif" alt="<?php echo JText::_( 'MONTHLY_VIEW' );?>" border="0"/><br/>
 							<?php echo  JText::_('JEV_VIEWBYMONTH');?></a>
 					</td>
 <!-- END monthly_view -->

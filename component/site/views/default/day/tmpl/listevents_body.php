@@ -22,7 +22,7 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 <?php
 // Timeless Events First
 if (count($data['hours']['timeless']['events'])>0){
-	$start_time = JText::_("Timeless");
+	$start_time = JText::_( 'TIMELESS' );
 
 	echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
 	echo '<td class="ev_td_right"><ul class="ev_ul">' . "\n";

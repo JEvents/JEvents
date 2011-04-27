@@ -104,7 +104,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$user = &JFactory::getUser();
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
-				//JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+				//JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 			else {
 				$this->setRedirect(JRoute::_("index.php?option=com_user&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
@@ -121,7 +121,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function save(){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::save();
 	}
@@ -130,7 +130,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::apply();
 	}
@@ -138,7 +138,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function delete(){
 		$is_event_editor = JEVHelper::isEventDeletor();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::delete();		
 	}
@@ -146,7 +146,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function deletefuture(){
 		$is_event_editor = JEVHelper::isEventDeletor();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::deletefuture();		
 	}
@@ -155,7 +155,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	protected  function toggleICalEventPublish($cid,$newstate) {
 		$is_event_editor = JEVHelper::isEventPublisher();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
+			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 		parent::toggleICalEventPublish($cid,$newstate);		
 	}
