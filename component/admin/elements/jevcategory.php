@@ -90,7 +90,7 @@ class JElementJevcategory extends JElement
 		if ($raw) {
 			return $options;
 		} else {
-			array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_( 'SELECT_CATEGORY' ).' -', 'id', 'title'));
+			array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_( 'JEV_SELECT_CATEGORY' ).' -', 'id', 'title'));
 			return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="'.$class.'"', 'id', 'title', $value, $control_name.$name );
 		}
 	}

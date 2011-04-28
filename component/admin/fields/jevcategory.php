@@ -68,7 +68,7 @@ class JFormFieldJevcategory extends JFormFieldList
 				}
 			}
 
-			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_( 'SELECT_CATEGORY' ) . ' -'));
+			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_( 'JEV_SELECT_CATEGORY' ) . ' -'));
 		}
 		else
 		{
