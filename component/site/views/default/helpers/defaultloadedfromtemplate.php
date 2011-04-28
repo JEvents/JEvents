@@ -136,13 +136,6 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	}
 	else {
-		// these would slow things down if not needed in the list
-		static $dorepeatsummary;
-		if (!isset($dorepeatsummary)){
-			$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
-		}
-		if ($dorepeatsummary){
-
 		$row = $event;
 		$start_date	= JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
 		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
@@ -152,6 +145,13 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
 		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
 		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
+
+		// these would slow things down if not needed in the list
+		static $dorepeatsummary;
+		if (!isset($dorepeatsummary)){
+			$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
+		}
+		if ($dorepeatsummary){
 
 			// I would this in case we do a full repeat summary
 			/*

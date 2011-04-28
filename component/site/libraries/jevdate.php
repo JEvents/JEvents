@@ -160,6 +160,11 @@ if (JVersion::isCompatible("1.6.0"))
 
 		}
 
+	public function toMySQL($local = false)
+	{
+		return $this->toFormat( '%Y-%m-%d %H:%M:%S', $local);
+	}
+
 
 		public static function strtotime($time, $now=null){
 			static $date;
