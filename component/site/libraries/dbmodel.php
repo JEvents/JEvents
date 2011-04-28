@@ -400,8 +400,126 @@ class JEventsDBModel
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
-
 	}
+	
+	/**
+	 * Fetch recently created events
+	 */
+	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
+	function popularIcalEvents($startdate,$enddate, $limit=10, $noRepeats=0){
+		$user =& JFactory::getUser();
+		$db	=& JFactory::getDBO();
+		$lang =& JFactory::getLanguage();
+		$langtag = $lang->getTag();
+
+		if (strpos($startdate,"-")===false) {
+			$startdate = strftime('%Y-%m-%d 00:00:00',$startdate);
+			$enddate = strftime('%Y-%m-%d 23:59:59',$enddate);
+		}
+
+		// process the new plugins
+		// get extra data and conditionality from plugins
+		$extrawhere =array();
+		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$needsgroup = false;
+
+		$filterarray = array("published","justmine","category","search");
+
+		// If there are extra filters from the module then apply them now
+		$reg =& JFactory::getConfig();
+		$modparams = $reg->getValue("jev.modparams",false);
+		if ($modparams && $modparams->getValue("extrafilters",false)){
+			$filterarray  = array_merge($filterarray, explode(",",$modparams->getValue("extrafilters",false)));
+		}
+
+		$filters = jevFilterProcessing::getInstance($filterarray);
+		$filters->setWhereJoin($extrawhere,$extrajoin );
+		$needsgroup = $filters->needsGroupBy();
+
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger('onListIcalEvents', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
+		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ". implode( " \n LEFT JOIN ", $extrajoin ) : '' );
+		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
+
+		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before
+		$t_datenow = JEVHelper::getNow();
+		$t_datenowSQL =  $t_datenow->toMysql();
+
+		// get the event ids first
+		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
+		. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+		. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+		. $extrajoin
+		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
+		// New equivalent but simpler test
+		. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
+		// We only show events on their first day if they are not to be shown on multiple days so also add this condition
+		. "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)"
+		. $extrawhere
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. " \n AND icsf.state=1"
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		// published state is now handled by filter
+		. "\n AND rpt.startrepeat=(SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')"
+		. "\n GROUP BY ev.ev_id";
+
+		// always in reverse hits  order!
+		$query .= " ORDER BY ev.hits DESC ";
+
+		// This limit will always be enough
+		$query .= " LIMIT ".$limit;
+
+
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		array_push($ids,0);
+		$ids =  implode(",",$ids);
+
+		$groupby = "\n GROUP BY rpt.rp_id";
+		if ($noRepeats) $groupby = "\n GROUP BY ev.ev_id";
+
+		// This version picks the details from the details table
+		// ideally we should check if the event is a repeat but this involves extra queries unfortunately
+		$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+		. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+		. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+		. "\n FROM #__jevents_repetition as rpt"
+		. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+		. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+		. $extrajoin
+		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
+		// New equivalent but simpler test
+		. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+		// We only show events on their first day if they are not to be shown on multiple days so also add this condition
+		. "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)"
+		. $extrawhere
+		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. "  AND icsf.state=1 "
+		. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user))
+		. "  AND ev.ev_id IN (".$ids.")"
+		// published state is now handled by filter
+		. "\n AND rpt.startrepeat=(SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate')"
+		. ($needsgroup?$groupby:"");
+		$query .= " ORDER BY ev.hits DESC ";
+
+		$cache=& JFactory::getCache(JEV_COM_COMPONENT);
+		$rows =  $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag );
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger( 'onDisplayCustomFieldsMultiRowUncached', array( &$rows ));
+
+		return $rows;
+		}
 
 	/* Special version for Latest events module */
 
