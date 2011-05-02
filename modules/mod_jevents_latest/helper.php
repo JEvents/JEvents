@@ -66,7 +66,7 @@ class modJeventsLatestHelper
 			return $viewclass;
 		}
 		else {
-			echo "<strong>".JText::sprintf("JEV PLEASE REINSTALL %s LAYOUT",$theme)."</strong>";
+			echo "<strong>".JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT",$theme)."</strong>";
 			$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.'default'.DS.'latest.php';
 			require_once($bPath);
 			$viewclass = "DefaultModLatestView";

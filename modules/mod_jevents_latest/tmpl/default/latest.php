@@ -893,7 +893,12 @@ class DefaultModLatestView
 				// Also want to cloak contact details so
 				$this->modparams->set("image", 1);
 				$dayEvent->text = $dayEvent->contact_info();
-				$dispatcher->trigger('onPrepareContent', array(&$dayEvent, &$this->modparams, 0), true);
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
+				}
+				else {
+					$dispatcher->trigger('onPrepareContent', array(&$dayEvent, &$this->modparams, 0), true);
+				}
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
@@ -901,7 +906,12 @@ class DefaultModLatestView
 			case 'content':  // Added by Kaz McCoy 1-10-2004
 				$this->modparams->set("image", 1);
 				$dayEvent->data->text = $dayEvent->content();
-				$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
 				$dayEvent->content($dayEvent->data->text);
 				//$content .= substr($dayEvent->content, 0, 150);
 				$content .= $dayEvent->content();
@@ -911,7 +921,12 @@ class DefaultModLatestView
 			case 'location':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->location();
-				$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
 				$dayEvent->location($dayEvent->data->text);
 				$content .= $dayEvent->location();
 				break;
@@ -919,7 +934,12 @@ class DefaultModLatestView
 			case 'extraInfo':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->extra_info();
-				$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
 				$dayEvent->extra_info($dayEvent->data->text);
 				$content .= $dayEvent->extra_info();
 				break;
@@ -1029,6 +1049,9 @@ class DefaultModLatestView
 								{
 									$temp = $dayEvent->customfields[$subparts[0]]['value'];
 									$tempstr .= $temp;
+								}
+								else {
+									$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
 								}
 								$tempstr .= $subparts[1];
 							}
