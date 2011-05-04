@@ -15,7 +15,8 @@ defined('_JEXEC') or die();
 
 $datamodel	= new JEventsDataModel();
 // find appropriate Itemid and setup catids for datamodel
-global $Itemid, $option;
+$Itemid = JRequest::getInt("Itemid");
+$option = JRequest::getCmd("option");
 if ($option==JEV_COM_COMPONENT){
 	$myItemid = $Itemid;
 }
