@@ -35,7 +35,7 @@ $version = JEventsVersion::getInstance();
 						echo $tabs->startPanel( JText::_($group), 'config_'.str_replace(" ","_",$group));
 						echo $this->params->render('params',$group);
 
-						if ($group=="Permissions"){
+						if ($group=="JEV_PERMISSIONS"){
 							$fieldSets = $this->form->getFieldsets();
 							foreach ($fieldSets as $name => $fieldSet) {
 								foreach ($this->form->getFieldset($name) as $field) {
