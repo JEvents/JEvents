@@ -602,7 +602,7 @@ class DefaultModLatestView
 		$keywords = array(
 			'content', 'eventDetailLink', 'createdByAlias', 'color',
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
-			'eventDate', 'endDate', 'startDate', 'title', 'category',
+			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar', 
 			'contact', 'addressInfo', 'location', 'extraInfo',
 			'countdown'
 		);
@@ -889,6 +889,11 @@ class DefaultModLatestView
 				$content .= JEventsHTML::special($catobj);
 				break;
 
+			case 'calendar':
+				$catobj = $dayEvent->getCalendarName();
+				$content .= JEventsHTML::special($catobj);
+				break;
+
 			case 'contact':
 				// Also want to cloak contact details so
 				$this->modparams->set("image", 1);
@@ -1050,8 +1055,24 @@ class DefaultModLatestView
 									$temp = $dayEvent->customfields[$subparts[0]]['value'];
 									$tempstr .= $temp;
 								}
-								else {
-									$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
+								else {								
+									$layout = "list";
+									$jevplugins = JPluginHelper::getPlugin("jevents");
+									foreach ($jevplugins as $jevplugin){
+										$classname = "plgJevents".ucfirst($jevplugin->name);
+										if (is_callable(array($classname,"substitutefield"))){
+											$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),$layout);
+											if (isset($fieldNameArray["values"])) {
+												if (in_array($subparts[0],$fieldNameArray["values"] )){
+													// is the event detail hidden - if so then hide any custom fields too!
+													if (!isset($event->_privateevent) || $event->_privateevent!=3){
+														$tempstr .= call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
+													}
+												}
+											}
+										}
+									}									
+									//$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
 								}
 								$tempstr .= $subparts[1];
 							}
