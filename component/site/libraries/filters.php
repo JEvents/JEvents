@@ -110,6 +110,9 @@ class jevFilterProcessing
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
 			$this->filterpath[] = JPATH_SITE."/plugins/jevents/filters";
+                        $others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
+                        $this->filterpath = array_merge($this->filterpath,$others);
+                        
 			foreach (self::$visiblefilters as $filtername) {
 				$filter = "jev".ucfirst($filtername)."Filter";
 				if (!class_exists($filter)){
@@ -151,6 +154,7 @@ class jevFilterProcessing
 				$filterFile = ucfirst($filtername).'.php';
 
 				$filterFilePath = JPath::find($this->filterpath,$filterFile);
+                                
 				if ($filterFilePath){
 					include_once($filterFilePath);
 				}
