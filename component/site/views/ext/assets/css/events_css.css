@@ -2,14 +2,14 @@
 * Overall layout control
 ************************/
 
-table#jevents_body{
+#jevents_body{
     width:100%;
 }
-table#jevents_header{
+#jevents_header{
 	width:100%!important;
 	border:none;
 }
-table#jevents_header td, table#jevents_header tr, .ev_navigation tr, .ev_navigation td{
+#jevents_header td, #jevents_header tr, .ev_navigation tr, .ev_navigation td{
 	border:none;
 }
 

@@ -2,13 +2,13 @@
 * Overall layout control
 ************************/
 
-table#jevents_body{
+#jevents_body{
     width:100%;
 }
 .jeventslight{
 	color:#000000;
 }
-table#jevents_header td, table#jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
+#jevents_header td, #jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
 	border:none;
 }
 #jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
@@ -460,7 +460,7 @@ div#ev_icon_jumpto{
 }
 
 /* weekly view specifics */
-table#weekview {
+#weekview {
   border:solid 1px black;
   border-bottom:0px;
 }
@@ -483,7 +483,7 @@ td#weekview_right .ev_td_today{
 td#weekview_left, td#weekview_right {
   border-bottom:1px solid black;
 }
-table#weekview .ev_td_right {
+#weekview .ev_td_right {
   border:0px;
   border-top:1px solid black;
 }
@@ -506,11 +506,11 @@ td#weekview_left .even, td#weekview_right .even  {
     background-color: #ece9d8;
 }
 
-table#weekview .ev_link_weekday{
+#weekview .ev_link_weekday{
 	color:inherit;
 }
 
-table#weekview .cal_td_daysnames {
+#weekview .cal_td_daysnames {
 	border-bottom:0px!important;
 }
 

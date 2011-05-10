@@ -128,6 +128,10 @@ RAWTEXT;
 
 		$temp->srcURL =  $uploadURL;
 
+		// Store the ical in the registry so we can retrieve the access level
+		$registry = & JRegistry::getInstance("jevents");
+		$registry->setValue("jevents.icsfile", $temp);
+
 		if (false === ($temp->_icalInfo =& JEVHelper::iCalInstance($uploadURL)) ) {
 			return false;
 		}

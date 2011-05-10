@@ -1517,6 +1517,13 @@ class JEVHelper
 	{
 		if (JVersion::isCompatible("1.6.0"))
 		{
+			// Store the ical in the registry so we can retrieve the access level
+			$registry = & JRegistry::getInstance("jevents");
+			$icsfile = $registry->getValue("jevents.icsfile", false);
+			if ($icsfile) {
+				return $icsfile->access;
+			}
+
 			static $base;
 			if (!isset($base))
 			{
