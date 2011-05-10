@@ -474,6 +474,28 @@ class jIcalEventDB extends jEventCal {
 		return parent::getCategoryName();
 	}
 
+	function getCalendarName( ){
+		$db	=& JFactory::getDBO();
+
+		static $arr_calids;
+
+		$calid = intval($this->icsid());
+
+		if (!isset($arr_calids)) {
+			$catsql = "SELECT ics_id, label as name"
+			. "\n FROM #__jevents_icsfile"			;
+			$db->setQuery($catsql);
+
+			$arr_calids = $db->loadObjectList('ics_id') ;
+		}
+		if (isset($arr_calids[$calid])){
+			return $arr_calids[$calid]->name;
+		}
+		else {
+			return "";
+		}
+	}
+	
 	// Dont report hists for a ICS entry
 	function reportHits(){	}
 

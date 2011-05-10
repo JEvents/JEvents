@@ -307,7 +307,7 @@ class jEventCal {
 		}
 		return $arr_catids[$catid];
 	}
-
+	
 	function checkRepeatMonth($cellDate, $year,$month){
 		// SHOULD REALLY INDEX ON month/year incase more than one being displayed!
 
