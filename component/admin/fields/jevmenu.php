@@ -18,7 +18,6 @@ jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
-
 class JFormFieldJEVmenu extends JFormFieldList
 {
 
