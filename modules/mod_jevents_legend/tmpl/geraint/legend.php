@@ -153,6 +153,7 @@ class GeraintModLegendView extends DefaultModLegendView{
 			return $content;
 		}
 	}
+
 	function listKids($row, $itm, $tsk,$availableCatsIds, $activeParent = false, $activeSubCat=0){
 		$catclass="";
 		if ($row->parent_id>0) $catclass = "childcat";
