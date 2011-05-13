@@ -79,6 +79,8 @@ class jevFilterProcessing
 
 		settype($this->filterpath, 'array'); //force to array
 		$this->filterpath[]=dirname(__FILE__).DS."filters";
+                   $others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
+                   $this->filterpath = array_merge($this->filterpath,$others);
 
 		// Find if filter type module is visible and therefore if the filters should have 'memory'
 		if (!isset(self::$visiblefilters)){
@@ -109,9 +111,6 @@ class jevFilterProcessing
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
-			$this->filterpath[] = JPATH_SITE."/plugins/jevents/filters";
-                        $others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
-                        $this->filterpath = array_merge($this->filterpath,$others);
                         
 			foreach (self::$visiblefilters as $filtername) {
 				$filter = "jev".ucfirst($filtername)."Filter";

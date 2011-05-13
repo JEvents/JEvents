@@ -106,7 +106,8 @@ function DefaultViewHelperHeader16($view){
 		if (strpos($link,"/")===0) $link = substr($link,1);
 		$link = JURI::root().$link;
 
-		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link ));
+		require_once(JPATH_SITE.DS.'components'.DS.'com_mailto'.DS.'helpers'.DS.'mailto.php');
+		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.MailToHelper::addLink( $link ));
 
 		?>
 		<li class="email-icon">

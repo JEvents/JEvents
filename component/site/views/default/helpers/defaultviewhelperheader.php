@@ -104,8 +104,8 @@ function DefaultViewHelperHeader($view){
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 
 		$link = $root.$link;
-
-		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.base64_encode( $link ));
+		require_once(JPATH_SITE.DS.'components'.DS.'com_mailto'.DS.'helpers'.DS.'mailto.php');
+		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.MailToHelper::addLink( $link ));
 
 		?>
 		<td width="20" class="buttonheading" align="right">
