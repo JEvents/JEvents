@@ -65,6 +65,13 @@ if (JVersion::isCompatible("1.6.0")){
 }
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
+if (strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0){
+	//JRequest::setVar("jEV","default");
+	$params->set('iconicwidth',485);
+	$params->set('extpluswidth',485);
+	$params->set('ruthinwidth',485);
+}
+
 // See http://www.php.net/manual/en/timezones.php
 $tz=$params->get("icaltimezonelive","");
 if ($tz!="" && is_callable("date_default_timezone_set")){
