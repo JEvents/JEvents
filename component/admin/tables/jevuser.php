@@ -99,11 +99,17 @@ class TableUser extends JTable
 			$where[] = "tl.id in ($idstring)";
 		}
 
+		$db =& JFactory::getDBO();
+		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
+		$search		= $db->getEscaped( trim( strtolower( $search ) ) );		
+		if($search != ""){
+			$where[] = " ( ju.name like '$search%' OR ju.username like '$search%')";
+		}
+		
 		JPluginHelper::importPlugin("jevents");
 		$dispatcher	=& JDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$db =& JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";

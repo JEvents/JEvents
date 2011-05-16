@@ -45,6 +45,10 @@ class AdminUserViewUser extends JEventsAbstractView
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
 		//JToolBarHelper::help( 'screen.user', true);
 
+		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
+		$db = JFactory::getDbo();
+		$search		= $db->getEscaped( trim( strtolower( $search ) ) );
+		
 		$option				= JRequest::getCmd('option', JEV_COM_COMPONENT);
 
 		$pagination = & $this->get( 'Pagination' );
@@ -52,6 +56,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('users', $users);
+		$this->assignRef('search', $search);
 
 		JHTML::_('behavior.tooltip');
 	}

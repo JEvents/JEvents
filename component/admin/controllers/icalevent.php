@@ -186,8 +186,21 @@ class AdminIcaleventController extends JController {
 			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
 		}
 
+		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
+		$order = JRequest::getCmd("filter_order",'start');
+		$dir = $orderdir=="asc" ? "asc" : "desc";
+		
+		if ($order == 'start'){
+			$order = ($this->_largeDataSet?"\n ORDER BY detail.dtstart $dir": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat $dir");
+		}
+		if ($order == 'created'){
+			$order = ($this->_largeDataSet?"\n ORDER BY ev.created $dir": "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
+		}
+		else {
+			$order = ($this->_largeDataSet?"\n ORDER BY detail.summary $dir": "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
+		}
 		if (JVersion::isCompatible("1.6.0")) 	{
-			$query = "SELECT ev.*, ev.state as evstate, detail.*, a.title as _groupname ".$anonfields
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, a.title as _groupname ".$anonfields
 			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 		. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -202,12 +215,11 @@ class AdminIcaleventController extends JController {
 			. "\n LEFT JOIN #__viewlevels AS a ON a.id = ev.access"
 			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
-			;
+			. $order;
 
 		}
 		else {
-			$query = "SELECT ev.*, ev.state as evstate, detail.*, g.name AS _groupname ".$anonfields
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, g.name AS _groupname ".$anonfields
 			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 		. ($this->_largeDataSet?"":"\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -222,8 +234,7 @@ class AdminIcaleventController extends JController {
 			. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
 			. ( count( $join) ? "\n LEFT JOIN  " . implode( ' LEFT JOIN ', $join) : '' )
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			. ($this->_largeDataSet?"\n ORDER BY detail.dtstart ASC": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat ASC")
-			;
+			. $order;
 		}
 		if ($limit>0){
 			$query .= "\n LIMIT $limitstart, $limit";

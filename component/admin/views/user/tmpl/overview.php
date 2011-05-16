@@ -25,6 +25,18 @@ $url = JRoute::_("index.php?option=".$option);
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10000;"></div>
 	<div id="jevuser">
 	    <form action="<?php echo $url;?>" method="post" name="adminForm"  id="adminForm">
+	<table cellpadding="4" cellspacing="0" border="0" >
+		<tr>
+			<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
+			<td>
+				<input type="text" name="search" id="jevsearch" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
+			</td>
+			<td>
+				<button onclick="this.form.submit();"><?php echo JText::_( 'GO' ); ?></button>
+				<button onclick="document.getElementById('jevsearch').value='';this.form.submit();"><?php echo JText::_( 'RESET' ); ?></button>
+			</td>
+		</tr>
+	</table>
 	<br/>
   <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
 	<thead>

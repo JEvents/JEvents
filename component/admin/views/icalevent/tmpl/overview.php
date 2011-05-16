@@ -18,7 +18,8 @@ $user =& JFactory::getUser();
 // get configuration object
 $cfg = & JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0 );
-
+$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
+$order = JRequest::getCmd("filter_order",'start');
 $pathIMG = JURI::root() . 'administrator/images/'; ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -44,11 +45,17 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 			<th width="20" nowrap="nowrap">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
 			</th>
-			<th class="title" width="50%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
+			<th class="title" width="50%" nowrap="nowrap">
+				<?php echo JHTML::_('grid.sort',  'JEV_ICAL_SUMMARY', 'title', $orderdir, $order); ?>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_( 'REPEATS' ); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-			<th width="20%" nowrap="nowrap"><?php echo JText::_('JEV_TIME_SHEET'); ?></th>
+			<th width="20%" nowrap="nowrap">
+				<?php echo JHTML::_('grid.sort',  'JEV_TIME_SHEET', 'starttime', $orderdir, $order); ?>
+			</th>
+			<th width="20%" nowrap="nowrap">
+				<?php echo JHTML::_('grid.sort',  'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order); ?>
+			</th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
 		</tr>
 
@@ -111,18 +118,21 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
               	}
 				?>
               	</td>
+              	<td align="center"><?php echo $row->created();?></td>
               	<td align="center"><?php echo $row->_groupname;?></td>
             </tr>
             <?php
             $k = 1 - $k;
         } ?>
     	<tr>
-    		<th align="center" colspan="9"><?php echo $this->pageNav->getListFooter(); ?></th>
+    		<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
     	</tr>
     </table>
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
     <input type="hidden" name="task" value="icalevent.list" />
     <input type="hidden" name="boxchecked" value="0" />
+    <input type="hidden" name="filter_order" value="asc" />
+    <input type="hidden" name="filter_order_Dir" value="asc" />
 </form>
 
 <br />
