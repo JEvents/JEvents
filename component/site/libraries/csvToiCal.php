@@ -185,7 +185,7 @@ class CsvToiCal {
 
         $i = 1;
         while (!feof($fp)) {
-            $buffer = fgets($fp, 4096);
+            $buffer = fgets($fp);
             if($buffer == "") break; // end of file or empty line
             if(!$line = $this->parseCsvLine($buffer)) {
                 // something gone wrong, CSV is corrupted, cancel
