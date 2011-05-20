@@ -1,6 +1,6 @@
 var $F = function(element) {
 	element2 = $(element);
-	return element2.get('value');
+	return element2.getValue();
 }
 
 defaultsEditorPlugin = {
@@ -26,8 +26,10 @@ defaultsEditorPlugin = {
 	},
 
 	insert: function ( fieldName, pluginNode) {
-
-		var textToInsert = '{{' + $F(pluginNode) + '}}';
+		var sel = $(pluginNode);
+		//var textToInsert = '{{' + $F(pluginNode) + '}}';
+		// MSIE 8 problem with mootools plugin enabled!
+		var textToInsert = '{{' + sel.value + '}}';
 
 		// Bail if the selectedIndex is 0 (as this is the 'Select...' option)
 		if ( $(pluginNode).selectedIndex == 0 ) return true;
@@ -36,7 +38,11 @@ defaultsEditorPlugin = {
 		$result = jInsertEditorText(textToInsert,fieldName);
 
 		// reset the selected element back to 'Select...'
-		$(pluginNode).selectedIndex = 0;
-		return true;
+		//$(pluginNode).selectedIndex = 0;
+		// needed for MSIE 9 bug - see $(pluginNode)
+		$each($(pluginNode).options, function(option){
+			option.selected = false;
+		});
+		return false;
 	}
 }

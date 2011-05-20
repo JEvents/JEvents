@@ -54,6 +54,33 @@ class AdminDefaultsController extends JController {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(JText::_("JEV_EVENT_LIST_ROW"))." WHERE name='icalevent.list_row'");
 			$db->query();
 		}
+		
+		if (!isset($defaults['month.calendar_cell'])){
+			$db->setQuery("INSERT INTO  #__jev_defaults set name='month.calendar_cell',
+						title=".$db->Quote(JText::_("JEV_EVENT_MONTH_CALENDAR_CELL")).",
+						subject='',
+						value='',
+						state=0");
+			$db->query();
+		}
+		else {
+			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(JText::_("JEV_EVENT_MONTH_CALENDAR_CELL"))." WHERE name='month.calendar_cell'");
+			$db->query();
+		}
+		
+		if (!isset($defaults['month.calendar_tip'])){
+			$db->setQuery("INSERT INTO  #__jev_defaults set name='month.calendar_tip',
+						title=".$db->Quote(JText::_("JEV_EVENT_MONTH_CALENDAR_TIP")).",
+						subject='',
+						value='',
+						state=0");
+			$db->query();
+		}
+		else {
+			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(JText::_("JEV_EVENT_MONTH_CALENDAR_TIP"))." WHERE name='month.calendar_tip'");
+			$db->query();
+		}
+		
 /*
  * Edit Page config must wait for plugins to be updated!
 		if (!isset($defaults['icalevent.edit_page'])){

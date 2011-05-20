@@ -54,7 +54,7 @@ $this->replaceLabels($this->item->value);
       			</tr>
                  <tr>
                  	<td valign="top" align="left">
-                    <?php echo JText::_( 'TEXT' ); ?>
+                    <?php echo JText::_( 'JEV_LAYOUT' ); ?>
                     </td>
                     <td >
                     <?php

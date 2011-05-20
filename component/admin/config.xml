@@ -9,8 +9,8 @@
 		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
-			<option value="-1">HIDE ALTOGETHER</option>
-			<option value="2">ICONS WITHOUT NAVIGATION</option>
+			<option value="-1">HIDE_ALTOGETHER</option>
+			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 		</param>
 		
 		<param name="catid0" type="jevcategory" default="0" scope="com_jevents" label="SPECIFIED_CATEGORY" description='SHOWS_EVENTS_ONLY_FROM_THE_SELECTED_CATEGORY'  />
@@ -93,8 +93,8 @@
 		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
-			<option value="-1">HIDE ALTOGETHER</option>
-			<option value="2">ICONS WITHOUT NAVIGATION</option>
+			<option value="-1">HIDE_ALTOGETHER</option>
+			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 		</param>
 		<param name="com_navbarcolor" type="list" default='GREEN'  menu="hide" label="JEV_NAV_BAR_COLOR" description="">
 			<option value="green">JEV_NAV_BAR_GREEN</option>
