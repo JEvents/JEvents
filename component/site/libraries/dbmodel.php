@@ -86,7 +86,9 @@ class JEventsDBModel
 					if ($catid > 0)
 					{
 						$cat = $allcats->get($catid);
-						$catwhere[] = "c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft;
+						if ($cat){
+							$catwhere[] = "(c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft." )";
+						}
 					}
 				}
 				if (count($catwhere) > 0)
@@ -1247,7 +1249,7 @@ class JEventsDBModel
 		// This version picks the details from the details table
 		if ($count)
 		{
-			$query = "SELECT rpt.rp_id";
+			$query = "SELECT count(distinct rpt.rp_id)";
 		}
 		else
 		{
@@ -1272,12 +1274,10 @@ class JEventsDBModel
 				. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 		;
-		if (!$showrepeats)
-		{
+		if (!$showrepeats && !$count){
 			$query .="\n GROUP BY ev.ev_id";
 		}
-		else if ($needsgroup)
-		{
+		else if ($needsgroup && !$count){
 			$query .="\n GROUP BY rpt.rp_id";
 		}
 
@@ -1289,6 +1289,14 @@ class JEventsDBModel
 		{
 			$query .= " LIMIT " . ($limitstart != "" ? $limitstart . "," : "") . $limit;
 		}
+		
+		if ($count){
+			$db	=& JFactory::getDBO();
+			$db->setQuery( $query );
+			$res = $db->loadResult();
+			return $res;
+		}
+		
 
 		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
 

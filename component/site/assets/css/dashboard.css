@@ -126,6 +126,9 @@ div.dashboard td.valid {
 	color: #FFF;
 	cursor: pointer;
 }
+div.dashboard td.today {
+	background-color: #313435;
+}
 div.dashboard td.active,
 div.dashboard td.hover {
 	color: #CF0;

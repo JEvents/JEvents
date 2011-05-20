@@ -87,20 +87,31 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 		// [tstahl] add a graphic symbol for all day events?
 		$tmp_start_time = (($this->start_time == $this->stop_time && !$this->event->noendtime()) || $this->event->alldayevent()) ? '' : $this->start_time;
 
+		$templatedcell = false;
+		// set truncated title
+		$this->event->_title = $tmpTitle;
 		if( $currentDay['countDisplay'] < $cfg->get('com_calMaxDisplay',5)){
-			if ($this->_view){
-				$this->_view->assignRef("link",$link);
-				$this->_view->assignRef("linkStyle",$linkStyle);
-				$this->_view->assignRef("tmp_start_time",$tmp_start_time);
-				$this->_view->assignRef("tmpTitle",$tmpTitle);
+			ob_start();
+			$templatedcell = $this->loadedFromTemplate('month.calendar_cell', $this->event, 0);
+			$res = ob_get_clean();
+			if ($templatedcell){
+				$templatedcell = $res;
+			}			
+			else {
+				if ($this->_view){
+					$this->_view->assignRef("link",$link);
+					$this->_view->assignRef("linkStyle",$linkStyle);
+					$this->_view->assignRef("tmp_start_time",$tmp_start_time);
+					$this->_view->assignRef("tmpTitle",$tmpTitle);
+				}
+				$title_event_link = $this->loadOverride("cellcontent");
+				// allow fallback to old method
+				if ($title_event_link==""){
+					$title_event_link = "\n".'<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
+					. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
+				}
+				$cellStyle .= "border-bottom-color:$bgeventcolor;padding-left:2px;";
 			}
-			$title_event_link = $this->loadOverride("cellcontent");
-			// allow fallback to old method
-			if ($title_event_link==""){
-				$title_event_link = "\n".'<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
-				. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
-			}
-			$cellStyle .= "border-bottom-color:$bgeventcolor;padding-left:2px;";
 		}else{
 			$eventIMG	= '<img align="left" src="' . JURI::root()
 			. 'components/'.$compname.'/images/event.png" alt="" style="height:12px;width:8px;border:1px solid white;background-color:'.$bgeventcolor.'" />';
@@ -147,8 +158,22 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 					$tooltip = $this->calendarCell_tooltip($currentDay["cellDate"]);
 				}
 
-				$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
-				$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				if (strpos($tooltip,"templated")===0 ) {
+					$title = substr($tooltip,9);
+					$cellString = "";
+				}
+				else {
+					$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
+					$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				}
+
+				if ($templatedcell){
+					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+					$time = $cfg->get('com_calDisplayStarttime')?$tmp_start_time:"";
+					$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
+					return  $templatedcell;
+				}
+				
 				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
 
 				return $html;

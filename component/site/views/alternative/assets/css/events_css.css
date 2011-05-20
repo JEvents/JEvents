@@ -13,6 +13,8 @@
 }
 #jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
 	border:none;	
+	line-height:1.5em;
+
 }
 
 /*********************
@@ -544,6 +546,7 @@ div.jevtt_title{
 div.jevtt_text{
 	padding:2px;
 	width:196px;
+	line-height: 1.3em;
 }
 
 

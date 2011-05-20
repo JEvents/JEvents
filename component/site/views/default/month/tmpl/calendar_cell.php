@@ -11,11 +11,11 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class EventCalendarCell_default {
+class EventCalendarCell_default  extends JEventsDefaultView {
 	protected $_datamodel = null;
 	protected $_view = null;
 
-	function EventCalendarCell_default($event, $datamodel, $view=false){
+	function __construct($event, $datamodel, $view=false){
 		$cfg = & JEVConfig::getInstance();
 		$this->event = $event;
 		$this->_datamodel = $datamodel;
@@ -33,8 +33,19 @@ class EventCalendarCell_default {
 		$this->stop_date	= JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn(), 0 );
 		//$this->stop_time = $this->event->endTime()	;		
 		$this->stop_time  = JEVHelper::getTime($this->event->getUnixEndTime(),$this->event->hdn(),$this->event->mindn());
-	}
+		
+		// we only need the one helper so stick to default layout here!
+		$this->jevlayout="default";	
+		
+		$this->addHelperPath(JEV_VIEWS."/default/helpers");
+		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
 
+		// attach data model
+		$reg = & JevRegistry::getInstance("jevents");
+		$this->datamodel  =  $reg->getReference("jevents.datamodel");
+
+	}
+	
 	function calendarCell_popup($cellDate){
 		$cfg = & JEVConfig::getInstance();
 
@@ -287,11 +298,18 @@ class EventCalendarCell_default {
 			$title_event_link = "<div style='color:black!important;background-color:yellow!important;font-weight:bold'>Problems - check event!</div>";
 		}
 
+
+		ob_start();
+		$templated = $this->loadedFromTemplate('month.calendar_tip', $this->event, 0);
+		$res = ob_get_clean();
+		if ($templated){
+			$res = str_replace("[[TTTIME]]",$cellString, $res);
+			return "templated".$res;
+		}
+
 		//$cellString .= '<br />'.$this->event->content();
 		$cellString .= '<hr />'
-
 		. '<small>' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</small>';
-
 		return $cellString;
 
 		// harden the string for the tooltip
@@ -339,20 +357,29 @@ class EventCalendarCell_default {
 		// [tstahl] add a graphic symbol for all day events?
 		$tmp_start_time = (($this->start_time == $this->stop_time && !$this->event->noendtime()) || $this->event->alldayevent()) ? '' : $this->start_time;
 
+		$templatedcell = false;
 		if( $currentDay['countDisplay'] < $cfg->get('com_calMaxDisplay',5)){
-			if ($this->_view){
-				$this->_view->assignRef("link",$link);
-				$this->_view->assignRef("linkStyle",$linkStyle);
-				$this->_view->assignRef("tmp_start_time",$tmp_start_time);
-				$this->_view->assignRef("tmpTitle",$tmpTitle);
+			ob_start();
+			$templatedcell = $this->loadedFromTemplate('month.calendar_cell', $this->event, 0);
+			$res = ob_get_clean();
+			if ($templatedcell){
+				$templatedcell = $res;
+			}			
+			else {
+				if ($this->_view){
+					$this->_view->assignRef("link",$link);
+					$this->_view->assignRef("linkStyle",$linkStyle);
+					$this->_view->assignRef("tmp_start_time",$tmp_start_time);
+					$this->_view->assignRef("tmpTitle",$tmpTitle);
+				}
+				$title_event_link = $this->loadOverride("cellcontent");
+				// allow fallback to old method
+				if ($title_event_link==""){
+					$title_event_link = '<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
+					. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
+				}
+				$cellStyle .= ' width:100%;';
 			}
-			$title_event_link = $this->loadOverride("cellcontent");
-			// allow fallback to old method
-			if ($title_event_link==""){
-				$title_event_link = '<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
-				. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
-			}
-			$cellStyle .= ' width:100%;';
 		}else{
 			$eventIMG	= '<img align="left" style="border:1px solid white;" src="' . JURI::root()
 			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" height="12" width="8" alt=""' . ' />';
@@ -360,7 +387,6 @@ class EventCalendarCell_default {
 			$title_event_link = '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
 			$cellStyle .= ' float:left;width:10px;';
 		}
-
 		
 		$cellString	= '';
 		// allow template overrides for cell popups
@@ -399,9 +425,24 @@ class EventCalendarCell_default {
 				if ($tooltip==""){
 					$tooltip = $this->calendarCell_tooltip($currentDay["cellDate"]);
 				}
+				$tooltip = $this->correctTooltipLanguage($tooltip);
 
-				$cellString .= '<div class="jevtt_text">'.$tooltip.'</div>';
-				$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				if (strpos($tooltip,"templated")===0 ) {
+					$title = substr($tooltip,9);
+					$cellString = "";
+				}
+				else {
+					$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
+					$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				}
+				
+				if ($templatedcell){
+					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+					$time = $cfg->get('com_calDisplayStarttime')?$tmp_start_time:"";
+					$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
+					return  $templatedcell;
+				}
+
 				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
 
 				return $html;
@@ -442,4 +483,9 @@ class EventCalendarCell_default {
 		}
 		return $tooltip;
 	}
+	
+	protected function correctTooltipLanguage($tip){
+		return str_replace(JText::_("JEV_FIRST_DAY_OF_MULTIEVENT"), JText::_("JEV_MULTIDAY_EVENT"), $tip);
+	}
+	
 }

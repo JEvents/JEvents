@@ -4,6 +4,7 @@
 
 #jevents_body{
     width:100%;
+    line-height:1.5em;
 }
 #jevents_header{
 	width:100%!important;
@@ -11,6 +12,8 @@
 }
 #jevents_header td, #jevents_header tr, .ev_navigation tr, .ev_navigation td{
 	border:none;
+	line-height:1.5em;
+
 }
 
 
@@ -668,6 +671,8 @@ div.jevtt_title{
 div.jevtt_text{
 	padding:2px;
 	width:196px;
+	line-height: 1.3em;
+
 }
 
 

@@ -841,23 +841,30 @@ class JEventsDataModel {
 			}
 		}
 		$catdesc = "";
+		$catname = "";
 		if (count($catids)>1){
 			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
 		}
 		if( $num_events > 0 ){
-			$catname = $rows[0]->getCategoryName();
-			$catdesc = $rows[0]->getCategoryDescription();
-			foreach ($rows as $row) {
-				if ($row->getCategoryName() != $catname){
-					$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
-					break;
+			if (count($catids)==1 && $catids[0]!=0){
+				$catname = $rows[0]->getCategoryName();
+				$catdesc = $rows[0]->getCategoryDescription();
+				foreach ($rows as $row) {
+					if ($row->getCategoryName() != $catname){
+						$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
+						break;
+					}
 				}
+			}
+			else {
+				$catname = "";
+				$catdesc = "";
 			}
 		}
 		else if( count($catids) == 0 ) {
 			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
 		}
-		else if (count($catids) == 1 ) {
+		else if (count($catids) == 1 && $catids[0]!=0) {
 			// get the cat name from the database
 			$db	=& JFactory::getDBO();
 			$user =& JFactory::getUser();

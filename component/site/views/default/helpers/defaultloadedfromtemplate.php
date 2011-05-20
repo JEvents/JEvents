@@ -5,13 +5,18 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	$db = JFactory::getDBO();
 	// find published template
-	static $template;
-	if (!isset($template)){
+	static $templates;
+	if (!isset($templates)){
+		$templates = array();
+	}
+	if (!isset($templates[$template_name])){
 		$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= ".$db->Quote($template_name));
-		$template = $db->loadObject();
+		$templates[$template_name] = $db->loadObject();
 	}
 
-	if (is_null($template) || $template->value=="")  return false;
+	if (is_null($templates[$template_name]) || $templates[$template_name]->value=="")  return false;
+	
+	$template = $templates[$template_name];
 	// now replace the fields
 	$search = array();
 	$replace = array();
@@ -46,7 +51,12 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$search[]="{{MANAGEMENT}}";ob_start();$view->_viewNavAdminPanel();$replace[]=ob_get_clean();$blank[]="";
 
 	$search[]="{{CATEGORY}}";$replace[]=$event->catname();$blank[]="";
-	$search[]="{{COLOUR}}";$replace[]=$event->bgcolor();$blank[]="";
+	$bgcolor = $event->bgcolor();
+	$search[]="{{COLOUR}}";$replace[] = $bgcolor ==""?"#ffffff":$bgcolor ;$blank[]="";
+	$search[]="{{FGCOLOUR}}";$replace[]=$event->fgcolor();$blank[]="";
+	$search[]="{{TTTIME}}";$replace[]="[[TTTIME]]";$blank[]="";
+	$search[]="{{EVTTIME}}";$replace[]="[[EVTTIME]]";$blank[]="";
+	$search[]="{{TOOLTIP}}";$replace[]="[[TOOLTIP]]";$blank[]="";
 
 	$router = JRouter::getInstance("site");
 	$vars = $router->getVars();
@@ -61,8 +71,12 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$search[]="{{CATEGORYLNK}}";$replace[]=$catlink;$blank[]="";
 
 
-	$document = JFactory::getDocument();
-	$document->addStyleDeclaration("div.jevdialogs {position:relative;margin-top:35px;text-align:left;}\n div.jevdialogs img{float:none!important;margin:0px}");
+	static $styledone=false;
+	if (!$styledone){
+		$document = JFactory::getDocument();
+		$document->addStyleDeclaration("div.jevdialogs {position:relative;margin-top:35px;text-align:left;}\n div.jevdialogs img{float:none!important;margin:0px}");
+		$styledone = true;
+	}
 
 	if ($jevparams->get("showicalicon",0) &&  !$jevparams->get("disableicalexport",0) ){
 		JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
@@ -260,7 +274,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	// Now do the plugins
 	// get list of enabled plugins
 
-	$layout = $template_name=="icalevent.list_row"?"list":"detail";
+	$layout = ($template_name=="icalevent.list_row" || $template_name=="month.calendar_cell" || $template_name=="month.calendar_tip")?"list":"detail";
 
 	$jevplugins = JPluginHelper::getPlugin("jevents");
 

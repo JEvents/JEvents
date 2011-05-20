@@ -138,8 +138,14 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 					$tooltip = $this->calendarCell_tooltip($currentDay["cellDate"]);
 				}
 
-				$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
-				$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				if (strpos($tooltip,"templated")===0 ) {
+					$title = substr($tooltip,9);
+					$cellString = "";
+				}
+				else {
+					$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
+					$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
+				}
 				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
 
 				return $html;

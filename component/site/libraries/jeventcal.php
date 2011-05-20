@@ -265,6 +265,17 @@ class jEventCal {
 
 		if (!$arr_catids) {
 			$arr_catids = array();
+			$catsql = "SELECT id, title as name"
+			. "\n FROM #__categories"
+			.( JVersion::isCompatible("1.6.0") ? "\n WHERE extension='com_jevents' " : "\n WHERE section='com_jevents'") 
+			;
+			$db->setQuery($catsql);
+
+			if( $categories = $db->loadObjectList('id') ) {
+				foreach($categories as $k=>$v){
+					$arr_catids[$k]=$v->name;
+				}
+			}
 		}
 		if (!isset($arr_catids[$catid])) {
 			$catsql = "SELECT id, title as name"
