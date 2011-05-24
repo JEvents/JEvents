@@ -250,6 +250,7 @@ class jEventCal {
 
 	function fgcolor($val=""){
 		if (strlen($val)==0) {
+			include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 			if (!isset($this->_fgcolor)) $this->_fgcolor = JevMapColor($this->bgcolor());
 			return $this->_fgcolor;
 		}

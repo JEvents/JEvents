@@ -116,16 +116,16 @@ class JEV_CommonFunctions {
 
 		if (is_object($row) && strtolower(get_class($row))!="stdclass"){
 			if( $cfg->get('com_calForceCatColorEventForm',2) == '2' ){
-				$color = ($row->catid() > 0 ) ? $catData[$row->catid()]->color : '#333333';
+				$color = ($row->catid() > 0 && isset($catData[$row->catid()])) ? $catData[$row->catid()]->color : '#333333';
 			}
-			else $color = $row->useCatColor() ? ( $row->catid() > 0 ) ? $catData[$row->catid()]->color : '#333333' : $row->color_bar();
+			else $color = $row->useCatColor() ? ( $row->catid() > 0  && isset($catData[$row->catid()])) ? $catData[$row->catid()]->color : '#333333' : $row->color_bar();
 
 		}
 		else {
 			if( $cfg->get('com_calForceCatColorEventForm',2) == '2' ){
-				$color = ($row->catid > 0 ) ? $catData[$row->catid]->color : '#333333';
+				$color = ($row->catid > 0  && isset($catData[$row->catid()])) ? $catData[$row->catid]->color : '#333333';
 			}
-			else $color = $row->useCatColor ? ( $row->catid > 0 ) ? $catData[$row->catid]->color : '#333333' : $row->color_bar;
+			else $color = $row->useCatColor ? ( $row->catid > 0  && isset($catData[$row->catid()])) ? $catData[$row->catid]->color : '#333333' : $row->color_bar;
 
 		}
 
