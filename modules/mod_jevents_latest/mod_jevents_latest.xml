@@ -192,7 +192,7 @@
 					<option value="0">Use Component Settings</option>
 					<option value="1">Use Settings Below</option>
 				</field>
-				<field name="modlatest_CustFmtStr" type="textarea" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
+				<field name="modlatest_CustFmtStr" type="textarea" filter="raw" cols="50" rows="5" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="Custom Format String" description="allows a customized specification of the desired event fields and format to be used to display the event in the module. The string can specify html directly. As well, certain event fields can be specified as ${event_field} in the string. For a detailed information follow the help button on the modules tab page at the components configuration" />
 				<field name="modlatest_MaxEvents" type="text" size="3" default="10" label="Maximum Events to Display" description="Maximum number of events to display in the module(max 150)" />
 				<field name="modlatest_Mode" type="list" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP">
 					<option value="0">0 (Current/Following Week Events)</option>
@@ -256,11 +256,11 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="modlatest_rss_title" type="textarea" cols="50" rows="1"
+				<field name="modlatest_rss_title" type="textarea" filter="raw" cols="50" rows="1"
 					default=""
 					label="RSS Title"
 					description="RSS Title. Default is set by the components RSS setting" />
-				<field name="modlatest_rss_description" type="textarea" cols="50" rows="2"
+				<field name="modlatest_rss_description" type="textarea" filter="raw" cols="50" rows="2"
 					default=""
 					label="RSS description"
 					description="RSS description. Default is set by the components RSS setting" />

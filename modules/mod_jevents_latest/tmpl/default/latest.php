@@ -121,7 +121,7 @@ class DefaultModLatestView
 			if ($modid > 0)
 			{
 				// do not use JRoute since this creates .rss link which normal sef can't deal with
-				$this->rsslink = JURI::root() . 'index.php?option=' . JEV_COM_COMPONENT . '&task=modlatest.rss&format=feed&type=rss&modid=' . $modid;
+				$this->rsslink = JURI::root() . 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;modid=' . $modid;
 			}
 			else
 			{
