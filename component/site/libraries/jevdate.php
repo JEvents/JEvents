@@ -244,6 +244,7 @@ else
 			else {
 				$res = strtotime($time);
 			}
+			return $res;
 		}
 
 		public static function mktime(){
