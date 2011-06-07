@@ -312,6 +312,17 @@ RAWTEXT;
 					$vevent->store();
 				}
 
+				// trigger post save plugins e.g. AutoTweet
+				$dispatcher     =& JDispatcher::getInstance();
+				JPluginHelper::importPlugin("jevents");
+				if ($matchingEvent) {
+					JRequest::setVar("evid", $vevent->ev_id);
+				}
+				else {
+					JRequest::setVar("evid", 0);
+				}
+				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent));
+
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();
 

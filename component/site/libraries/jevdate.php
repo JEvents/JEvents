@@ -173,7 +173,13 @@ if (JVersion::isCompatible("1.6.0"))
 			}
 			// reset the timezone !!
 			date_default_timezone_set($date->mytz->getName());
-			return strtotime($time, $now);
+			if ($now!=null){
+				$res = strtotime($time, $now);
+			}
+			else {
+				$res = strtotime($time);
+			}
+			return $res;
 		}
 
 		public static function mktime(){
@@ -232,7 +238,12 @@ else
 		}
 
 		public static function strtotime($time, $now=null){
-			return strtotime($time, $now);
+			if ($now!=null){
+				$res = strtotime($time, $now);
+			}
+			else {
+				$res = strtotime($time);
+			}
 		}
 
 		public static function mktime(){

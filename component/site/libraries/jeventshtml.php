@@ -702,6 +702,8 @@ class JEventsHTML{
 				break;
 
 			default:
+				// in this case $type is a format!
+				return JEV_CommonFunctions::jev_strftime($type,$datestp);
 				break;
 		}
 		return $newdate;

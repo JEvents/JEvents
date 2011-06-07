@@ -18,9 +18,17 @@ function JEventsBuildRoute(&$query)
 {
 	$cfg = & JEVConfig::getInstance();
 	$segments = array();
+
+	// sometimes the task is not set but view and layout are so tackle this!
+	if (!isset($query['task']) && isset($query['view']) && isset($query['layout'])){
+		$query['task'] = $query['view'].".".$query['layout'];
+	}
 	// We don't need the view - its only used to manipulate parameters
 	if (isset($query['view'])){
 		unset($query['view']);
+	}
+	if (isset($query['layout'])){
+		unset($query['layout']);
 	}
 
 	$task = false;

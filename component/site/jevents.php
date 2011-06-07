@@ -58,7 +58,7 @@ if (JVersion::isCompatible("1.6.0")){
 		$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
 	}
 	else {
-		$newparams->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+		$newparams->def('page_heading', JText::_('JEV_CAL_TITLE'));
 	}
 	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
 	$component->params =& $newparams;

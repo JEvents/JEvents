@@ -23,7 +23,7 @@ class ICalsController extends AdminIcalsController
 		//		$this->registerTask( 'show',  'showContent' );
 		// Ensure authorised to do this
 		$cfg = & JEVConfig::getInstance();
-		if ($cfg->get("disableicalexport", 0))
+		if ($cfg->get("disableicalexport", 0) && !$cfg->get("feimport", 0))
 		{
 			JError::raiseError(403, JText::_( 'ALERTNOTAUTH' ));
 		}
@@ -86,12 +86,16 @@ class ICalsController extends AdminIcalsController
 
 	function export()
 	{
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("disableicalexport", 0))
+		{
+			JError::raiseError(403, JText::_( 'ALERTNOTAUTH' ));
+		}		
 
 		$years = JRequest::getVar('years', 'NONE');
 		$cats = JRequest::getVar('catids', 'NONE');
 
 		// validate the key
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$icalkey = $params->get("icalkey", "secret phrase");
 
 		$outlook2003icalexport = JRequest::getInt("outlook2003",0) && $params->get("outlook2003icalexport", 0);
@@ -224,6 +228,15 @@ class ICalsController extends AdminIcalsController
 
 		$mainframe = JFactory::getApplication();
 
+		// get the view
+		$this->view = & $this->getView("icals","html");
+		$this->view->setLayout("export");
+		$this->view->assign("outlook2003icalexport",$outlook2003icalexport);
+		$this->view->assign("icalEvents",$icalEvents);
+		
+		$this->view->export();
+		return;
+		/*
 		ob_end_clean();
 
 		// Define the file as an iCalendar file
@@ -296,7 +309,7 @@ class ICalsController extends AdminIcalsController
 				echo "SUMMARY:" . $a->title() . "\n";
 				echo "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\n";
 				// We Need to wrap this according to the specs
-				/* echo "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
+				// echo "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; 
 				echo $this->setDescription($a->content())."\n";
 
 				if ($a->hasContactInfo())
@@ -557,7 +570,7 @@ class ICalsController extends AdminIcalsController
 
 		echo "END:VCALENDAR";
 		exit();
-
+		*/
 	}
 
 	function icalevent()
