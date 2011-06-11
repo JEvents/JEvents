@@ -12,237 +12,249 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+
 if (JVersion::isCompatible("1.6.0"))
 {
-
-	class JevRegistry extends JRegistry
+	// on some servers with Xcode both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+	if (!defined("JEVREGISTRY"))
 	{
+		define("JEVREGISTRY", 1);
 
-		static function &getInstance($id, $namespace = 'default')
-		{
-			static $instances;
-
-			if (!isset($instances))
-			{
-				$instances = array();
-			}
-
-			if (empty($instances[$id]))
-			{
-				$instances[$id] = new JevRegistry($namespace);
-			}
-
-			return $instances[$id];
-
-		}
-
-		function setReference($regpath, & $value)
-		{
-			// Explode the registry path into an array
-			$nodes = explode('.', $regpath);
-
-			// Get the namespace
-			$count = count($nodes);
-
-			if ($count < 2)
-			{
-				$namespace = $this->_defaultNameSpace;
-			}
-			else
-			{
-				$namespace = array_shift($nodes);
-				$count--;
-			}
-
-			if (!isset($this->_registry[$namespace]))
-			{
-				$this->makeNameSpace($namespace);
-			}
-
-			$ns = & $this->_registry[$namespace]['data'];
-
-			$pathNodes = $count - 1;
-
-			if ($pathNodes < 0)
-			{
-				$pathNodes = 0;
-			}
-
-			for ($i = 0; $i < $pathNodes; $i++)
-			{
-				// If any node along the registry path does not exist, create it
-				if (!isset($ns->$nodes[$i]))
-				{
-					$ns->$nodes[$i] = new stdClass();
-				}
-				$ns = & $ns->$nodes[$i];
-			}
-
-			// Get the old value if exists so we can return it
-			$ns->$nodes[$i] = & $value;
-
-			return $ns->$nodes[$i];
-
-		}
-
-		function & getReference($regpath, $default=null)
-		{
-			$result = $default;
-
-			// Explode the registry path into an array
-			if ($nodes = explode('.', $regpath))
-			{
-				// Get the namespace
-				//$namespace = array_shift($nodes);
-				$count = count($nodes);
-				if ($count < 2)
-				{
-					$namespace = $this->_defaultNameSpace;
-					$nodes[1] = $nodes[0];
-				}
-				else
-				{
-					$namespace = $nodes[0];
-				}
-
-				if (isset($this->_registry[$namespace]))
-				{
-					$ns = & $this->_registry[$namespace]['data'];
-					$pathNodes = $count - 1;
-
-					//for ($i = 0; $i < $pathNodes; $i ++) {
-					for ($i = 1; $i < $pathNodes; $i++)
-					{
-						if ((isset($ns->$nodes[$i])))
-							$ns = & $ns->$nodes[$i];
-					}
-
-					if (isset($ns->$nodes[$i]))
-					{
-						$result = $ns->$nodes[$i];
-					}
-				}
-			}
-			return $result;
-
-		}
-
-	}
-
-}
-else {
 		class JevRegistry extends JRegistry
-	{
-
-		function &getInstance($id, $namespace = 'default')
 		{
-			static $instances;
 
-			if (!isset($instances))
+			static function &getInstance($id, $namespace = 'default')
 			{
-				$instances = array();
-			}
+				static $instances;
 
-			if (empty($instances[$id]))
-			{
-				$instances[$id] = new JevRegistry($namespace);
-			}
-
-			return $instances[$id];
-
-		}
-
-		function setReference($regpath, & $value)
-		{
-			// Explode the registry path into an array
-			$nodes = explode('.', $regpath);
-
-			// Get the namespace
-			$count = count($nodes);
-
-			if ($count < 2)
-			{
-				$namespace = $this->_defaultNameSpace;
-			}
-			else
-			{
-				$namespace = array_shift($nodes);
-				$count--;
-			}
-
-			if (!isset($this->_registry[$namespace]))
-			{
-				$this->makeNameSpace($namespace);
-			}
-
-			$ns = & $this->_registry[$namespace]['data'];
-
-			$pathNodes = $count - 1;
-
-			if ($pathNodes < 0)
-			{
-				$pathNodes = 0;
-			}
-
-			for ($i = 0; $i < $pathNodes; $i++)
-			{
-				// If any node along the registry path does not exist, create it
-				if (!isset($ns->$nodes[$i]))
+				if (!isset($instances))
 				{
-					$ns->$nodes[$i] = new stdClass();
+					$instances = array();
 				}
-				$ns = & $ns->$nodes[$i];
+
+				if (empty($instances[$id]))
+				{
+					$instances[$id] = new JevRegistry($namespace);
+				}
+
+				return $instances[$id];
+
 			}
 
-			// Get the old value if exists so we can return it
-			$ns->$nodes[$i] = & $value;
-
-			return $ns->$nodes[$i];
-
-		}
-
-		function & getReference($regpath, $default=null)
-		{
-			$result = $default;
-
-			// Explode the registry path into an array
-			if ($nodes = explode('.', $regpath))
+			function setReference($regpath, & $value)
 			{
+				// Explode the registry path into an array
+				$nodes = explode('.', $regpath);
+
 				// Get the namespace
-				//$namespace = array_shift($nodes);
 				$count = count($nodes);
+
 				if ($count < 2)
 				{
 					$namespace = $this->_defaultNameSpace;
-					$nodes[1] = $nodes[0];
 				}
 				else
 				{
-					$namespace = $nodes[0];
+					$namespace = array_shift($nodes);
+					$count--;
 				}
 
-				if (isset($this->_registry[$namespace]))
+				if (!isset($this->_registry[$namespace]))
 				{
-					$ns = & $this->_registry[$namespace]['data'];
-					$pathNodes = $count - 1;
+					$this->makeNameSpace($namespace);
+				}
 
-					//for ($i = 0; $i < $pathNodes; $i ++) {
-					for ($i = 1; $i < $pathNodes; $i++)
+				$ns = & $this->_registry[$namespace]['data'];
+
+				$pathNodes = $count - 1;
+
+				if ($pathNodes < 0)
+				{
+					$pathNodes = 0;
+				}
+
+				for ($i = 0; $i < $pathNodes; $i++)
+				{
+					// If any node along the registry path does not exist, create it
+					if (!isset($ns->$nodes[$i]))
 					{
-						if ((isset($ns->$nodes[$i])))
-							$ns = & $ns->$nodes[$i];
+						$ns->$nodes[$i] = new stdClass();
+					}
+					$ns = & $ns->$nodes[$i];
+				}
+
+				// Get the old value if exists so we can return it
+				$ns->$nodes[$i] = & $value;
+
+				return $ns->$nodes[$i];
+
+			}
+
+			function & getReference($regpath, $default=null)
+			{
+				$result = $default;
+
+				// Explode the registry path into an array
+				if ($nodes = explode('.', $regpath))
+				{
+					// Get the namespace
+					//$namespace = array_shift($nodes);
+					$count = count($nodes);
+					if ($count < 2)
+					{
+						$namespace = $this->_defaultNameSpace;
+						$nodes[1] = $nodes[0];
+					}
+					else
+					{
+						$namespace = $nodes[0];
 					}
 
-					if (isset($ns->$nodes[$i]))
+					if (isset($this->_registry[$namespace]))
 					{
-						$result = $ns->$nodes[$i];
+						$ns = & $this->_registry[$namespace]['data'];
+						$pathNodes = $count - 1;
+
+						//for ($i = 0; $i < $pathNodes; $i ++) {
+						for ($i = 1; $i < $pathNodes; $i++)
+						{
+							if ((isset($ns->$nodes[$i])))
+								$ns = & $ns->$nodes[$i];
+						}
+
+						if (isset($ns->$nodes[$i]))
+						{
+							$result = $ns->$nodes[$i];
+						}
 					}
 				}
+				return $result;
+
 			}
-			return $result;
 
 		}
 
 	}
+}
+else
+{
+	if (!defined("JEVREGISTRY"))
+	{
+		define("JEVREGISTRY", 1);
 
+		class JevRegistry extends JRegistry
+		{
+
+			function &getInstance($id, $namespace = 'default')
+			{
+				static $instances;
+
+				if (!isset($instances))
+				{
+					$instances = array();
+				}
+
+				if (empty($instances[$id]))
+				{
+					$instances[$id] = new JevRegistry($namespace);
+				}
+
+				return $instances[$id];
+
+			}
+
+			function setReference($regpath, & $value)
+			{
+				// Explode the registry path into an array
+				$nodes = explode('.', $regpath);
+
+				// Get the namespace
+				$count = count($nodes);
+
+				if ($count < 2)
+				{
+					$namespace = $this->_defaultNameSpace;
+				}
+				else
+				{
+					$namespace = array_shift($nodes);
+					$count--;
+				}
+
+				if (!isset($this->_registry[$namespace]))
+				{
+					$this->makeNameSpace($namespace);
+				}
+
+				$ns = & $this->_registry[$namespace]['data'];
+
+				$pathNodes = $count - 1;
+
+				if ($pathNodes < 0)
+				{
+					$pathNodes = 0;
+				}
+
+				for ($i = 0; $i < $pathNodes; $i++)
+				{
+					// If any node along the registry path does not exist, create it
+					if (!isset($ns->$nodes[$i]))
+					{
+						$ns->$nodes[$i] = new stdClass();
+					}
+					$ns = & $ns->$nodes[$i];
+				}
+
+				// Get the old value if exists so we can return it
+				$ns->$nodes[$i] = & $value;
+
+				return $ns->$nodes[$i];
+
+			}
+
+			function & getReference($regpath, $default=null)
+			{
+				$result = $default;
+
+				// Explode the registry path into an array
+				if ($nodes = explode('.', $regpath))
+				{
+					// Get the namespace
+					//$namespace = array_shift($nodes);
+					$count = count($nodes);
+					if ($count < 2)
+					{
+						$namespace = $this->_defaultNameSpace;
+						$nodes[1] = $nodes[0];
+					}
+					else
+					{
+						$namespace = $nodes[0];
+					}
+
+					if (isset($this->_registry[$namespace]))
+					{
+						$ns = & $this->_registry[$namespace]['data'];
+						$pathNodes = $count - 1;
+
+						//for ($i = 0; $i < $pathNodes; $i ++) {
+						for ($i = 1; $i < $pathNodes; $i++)
+						{
+							if ((isset($ns->$nodes[$i])))
+								$ns = & $ns->$nodes[$i];
+						}
+
+						if (isset($ns->$nodes[$i]))
+						{
+							$result = $ns->$nodes[$i];
+						}
+					}
+				}
+				return $result;
+
+			}
+
+		}
+
+	}
 }

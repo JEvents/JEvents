@@ -88,7 +88,8 @@ class jevCategoryFilter extends jevFilter
 		
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
-		$script = "JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:0});";
+		// try/catch  incase this is called without a filter module!
+		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:0});} catch (e) {}\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
 		

@@ -36,6 +36,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	<?php
 	$linkstart = ob_get_clean();
 
+	$search[]="{{LINK}}";$replace[]=$rowlink;$blank[]="";
 	$search[]="{{LINKSTART}}";$replace[]=$linkstart;$blank[]="";
 	$search[]="{{LINKEND}}";$replace[]="</a>";$blank[]="";
 
