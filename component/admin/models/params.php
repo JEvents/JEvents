@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  * 
@@ -10,243 +11,292 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.model');
 
-if (JVersion::isCompatible("1.6.0")) {
+if (JVersion::isCompatible("1.6.0"))
+{
 	jimport('joomla.application.component.modeladmin');
-	class AdminParamsModelParams extends JModelAdmin {
+	// on some servers with Xcode both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+	if (!defined("JEVADPARMOD"))
+	{
+		define("JEVADPARMOD", 1);
 
-		/**
-	 * Get the params for the configuration variables
-	 */
-		function &getParams()
+		class AdminParamsModelParams extends JModelAdmin
 		{
-			static $instance;
 
-			if ($instance == null)
+			/**
+			 * Get the params for the configuration variables
+			 */
+			function &getParams()
 			{
-				$component	= JEV_COM_COMPONENT;
+				static $instance;
 
-				if (JVersion::isCompatible("1.6.0")) {
-					$table =& JTable::getInstance('extension');
-					//if (!$table->loadByOption( $component ))
-					if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+				if ($instance == null)
+				{
+					$component = JEV_COM_COMPONENT;
+
+					if (JVersion::isCompatible("1.6.0"))
 					{
-						JError::raiseWarning( 500, 'Not a valid component' );
-						return false;
+						$table = & JTable::getInstance('extension');
+						//if (!$table->loadByOption( $component ))
+						if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+						{
+							JError::raiseWarning(500, 'Not a valid component');
+							return false;
+						}
+					}
+					else
+					{
+						$table = & JTable::getInstance('component');
+						if (!$table->loadByOption($component))
+						{
+							JError::raiseWarning(500, 'Not a valid component');
+							return false;
+						}
+					}
+
+					// work out file path
+					if ($path = JRequest::getString('path'))
+					{
+						$path = JPath::clean(JPATH_SITE . DS . $path);
+						JPath::check($path);
+					}
+					else
+					{
+						$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option );
+						$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'config.xml';
+					}
+
+					// Use our own class to add more functionality!
+					include_once(JEV_ADMINLIBS . "jevparams.php");
+					if (file_exists($path))
+					{
+						$instance = new JevParameter($table->params, $path);
+					}
+					else
+					{
+						$instance = new JevParameter($table->params);
 					}
 				}
-				else {
-					$table =& JTable::getInstance('component');
-					if (!$table->loadByOption( $component ))
+				return $instance;
+
+			}
+
+			/**
+			 * Method to get the record form.
+			 *
+			 * @param	array	$data		Data for the form.
+			 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+			 * @return	mixed	A JForm object on success, false on failure
+			 * @since	1.6
+			 */
+			public function getForm($data = array(), $loadData = true)
+			{
+				// Get the form.
+				$form = $this->loadForm('com_jevents.params', 'config', array('control' => 'jform', 'load_data' => $loadData), false, "//config");
+				if (empty($form))
+				{
+					return false;
+				}
+
+				return $form;
+
+			}
+
+			/**
+			 * Method to save the configuration data.
+			 *
+			 * @param	array	An array containing all global config data.
+			 * @return	bool	True on success, false on failure.
+			 * @since	1.6
+			 */
+			public function save($data)
+			{
+				$table = JTable::getInstance('extension');
+
+				// Save the rules.
+				if (isset($data['params']) && isset($data['params']['rules']))
+				{
+					jimport('joomla.access.rules');
+					$rules = new JRules($data['params']['rules']);
+					$asset = JTable::getInstance('asset');
+
+					if (!$asset->loadByName($data['option']))
 					{
-						JError::raiseWarning( 500, 'Not a valid component' );
+						$root = JTable::getInstance('asset');
+						$root->loadByName('root.1');
+						$asset->name = $data['option'];
+						$asset->title = $data['option'];
+						$asset->setLocation($root->id, 'last-child');
+					}
+					$asset->rules = (string) $rules;
+
+					if (!$asset->check() || !$asset->store())
+					{
+						$this->setError($asset->getError());
 						return false;
 					}
+					// We don't need this anymore
+					unset($data['option']);
+					unset($data['params']['rules']);
 				}
 
-				// work out file path
-				if ($path = JRequest::getString( 'path' )) {
-					$path = JPath::clean( JPATH_SITE.DS.$path );
-					JPath::check( $path );
-				} else {
-					$option	= preg_replace( '#\W#', '', isset($table->element)?$table->element:$table->option );
-					$path	= JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'config.xml';
-				}
-
-				// Use our own class to add more functionality!
-				include_once(JEV_ADMINLIBS."jevparams.php");
-				if (file_exists( $path )) {
-					$instance = new JevParameter( $table->params, $path );
-				} else {
-					$instance = new JevParameter( $table->params );
-				}
-			}
-			return $instance;
-		}
-
-
-		/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-		public function getForm($data = array(), $loadData = true)
-		{
-			// Get the form.
-			$form = $this->loadForm('com_jevents.params', 'config', array('control' => 'jform', 'load_data' => $loadData),false,"//config");
-			if (empty($form)) {
-				return false;
-			}
-
-			return $form;
-		}
-
-
-		/**
-	 * Method to save the configuration data.
-	 *
-	 * @param	array	An array containing all global config data.
-	 * @return	bool	True on success, false on failure.
-	 * @since	1.6
-	 */
-		public function save($data)
-		{
-			$table	= JTable::getInstance('extension');
-
-			// Save the rules.
-			if (isset($data['params']) && isset($data['params']['rules'])) {
-				jimport('joomla.access.rules');
-				$rules	= new JRules($data['params']['rules']);
-				$asset	= JTable::getInstance('asset');
-
-				if (!$asset->loadByName($data['option'])) {
-					$root	= JTable::getInstance('asset');
-					$root->loadByName('root.1');
-					$asset->name = $data['option'];
-					$asset->title = $data['option'];
-					$asset->setLocation($root->id,'last-child');
-				}
-				$asset->rules = (string) $rules;
-
-				if (!$asset->check() || !$asset->store()) {
-					$this->setError($asset->getError());
+				// Load the previous Data
+				if (!$table->load($data['id']))
+				{
+					$this->setError($table->getError());
 					return false;
 				}
-				// We don't need this anymore
-				unset($data['option']);
-				unset($data['params']['rules']);
-			}
+				unset($data['id']);
 
-			// Load the previous Data
-			if (!$table->load($data['id'])) {
-				$this->setError($table->getError());
-				return false;
-			}
-			unset($data['id']);
-
-			// Bind the data.
-			if (!$table->bind($data)) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Check the data.
-			if (!$table->check()) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Store the data.
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Clean the cache.
-			$cache = JFactory::getCache('com_config');
-			$cache->clean();
-
-			return true;
-		}
-
-		public function saveRules($data)
-		{
-			$table	= JTable::getInstance('extension');
-
-			// Save the rules.
-			if (isset($data['params']) && isset($data['params']['rules'])) {
-				jimport('joomla.access.rules');
-				$rules	= new JRules($data['params']['rules']);
-				$asset	= JTable::getInstance('asset');
-
-				if (!$asset->loadByName($data['option'])) {
-					$root	= JTable::getInstance('asset');
-					$root->loadByName('root.1');
-					$asset->name = $data['option'];
-					$asset->title = $data['option'];
-					$asset->setLocation($root->id,'last-child');
-				}
-				$asset->rules = (string) $rules;
-
-				if (!$asset->check() || !$asset->store()) {
-					$this->setError($asset->getError());
+				// Bind the data.
+				if (!$table->bind($data))
+				{
+					$this->setError($table->getError());
 					return false;
 				}
-				// We don't need this anymore
-				unset($data['option']);
-				unset($data['params']['rules']);
+
+				// Check the data.
+				if (!$table->check())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+
+				// Store the data.
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+
+				// Clean the cache.
+				$cache = JFactory::getCache('com_config');
+				$cache->clean();
+
+				return true;
+
 			}
 
-			// Clean the cache.
-			$cache = JFactory::getCache('com_config');
-			$cache->clean();
+			public function saveRules($data)
+			{
+				$table = JTable::getInstance('extension');
 
-			return true;
+				// Save the rules.
+				if (isset($data['params']) && isset($data['params']['rules']))
+				{
+					jimport('joomla.access.rules');
+					$rules = new JRules($data['params']['rules']);
+					$asset = JTable::getInstance('asset');
+
+					if (!$asset->loadByName($data['option']))
+					{
+						$root = JTable::getInstance('asset');
+						$root->loadByName('root.1');
+						$asset->name = $data['option'];
+						$asset->title = $data['option'];
+						$asset->setLocation($root->id, 'last-child');
+					}
+					$asset->rules = (string) $rules;
+
+					if (!$asset->check() || !$asset->store())
+					{
+						$this->setError($asset->getError());
+						return false;
+					}
+					// We don't need this anymore
+					unset($data['option']);
+					unset($data['params']['rules']);
+				}
+
+				// Clean the cache.
+				$cache = JFactory::getCache('com_config');
+				$cache->clean();
+
+				return true;
+
+			}
+
 		}
+
 	}
 }
-else {
-	/**
- * @package		Joomla
- * @subpackage	Config
- */
-	class AdminParamsModelParams extends JModel
+else
+{
+	// on some servers with Xcode both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+	if (!defined("JEVADPARMOD"))
 	{
+		define("JEVADPARMOD", 1);
+
 		/**
-	 * Get the params for the configuration variables
-	 */
-		function &getParams()
+		 * @package		Joomla
+		 * @subpackage	Config
+		 */
+		class AdminParamsModelParams extends JModel
 		{
-			static $instance;
 
-			if ($instance == null)
+			/**
+			 * Get the params for the configuration variables
+			 */
+			function &getParams()
 			{
-				$component	= JEV_COM_COMPONENT;
+				static $instance;
 
-				if (JVersion::isCompatible("1.6.0")) {
-					$table =& JTable::getInstance('extension');
-					//if (!$table->loadByOption( $component ))
-					if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+				if ($instance == null)
+				{
+					$component = JEV_COM_COMPONENT;
+
+					if (JVersion::isCompatible("1.6.0"))
 					{
-						JError::raiseWarning( 500, 'Not a valid component' );
-						return false;
+						$table = & JTable::getInstance('extension');
+						//if (!$table->loadByOption( $component ))
+						if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+						{
+							JError::raiseWarning(500, 'Not a valid component');
+							return false;
+						}
+					}
+					else
+					{
+						$table = & JTable::getInstance('component');
+						if (!$table->loadByOption($component))
+						{
+							JError::raiseWarning(500, 'Not a valid component');
+							return false;
+						}
+					}
+
+					// work out file path
+					if ($path = JRequest::getString('path'))
+					{
+						$path = JPath::clean(JPATH_SITE . DS . $path);
+						JPath::check($path);
+					}
+					else
+					{
+						$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option );
+						$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'config.xml';
+					}
+
+					// Use our own class to add more functionality!
+					include_once(JEV_ADMINLIBS . "jevparams.php");
+					if (file_exists($path))
+					{
+						$instance = new JevParameter($table->params, $path);
+					}
+					else
+					{
+						$instance = new JevParameter($table->params);
 					}
 				}
-				else {
-					$table =& JTable::getInstance('component');
-					if (!$table->loadByOption( $component ))
-					{
-						JError::raiseWarning( 500, 'Not a valid component' );
-						return false;
-					}
-				}
+				return $instance;
 
-				// work out file path
-				if ($path = JRequest::getString( 'path' )) {
-					$path = JPath::clean( JPATH_SITE.DS.$path );
-					JPath::check( $path );
-				} else {
-					$option	= preg_replace( '#\W#', '', isset($table->element)?$table->element:$table->option );
-					$path	= JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'config.xml';
-				}
-
-				// Use our own class to add more functionality!
-				include_once(JEV_ADMINLIBS."jevparams.php");
-				if (file_exists( $path )) {
-					$instance = new JevParameter( $table->params, $path );
-				} else {
-					$instance = new JevParameter( $table->params );
-				}
 			}
-			return $instance;
+
 		}
+
 	}
 }

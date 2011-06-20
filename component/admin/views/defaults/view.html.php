@@ -98,7 +98,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		
 
-		$db		=& JFactory::getDBO();
+		$db	=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
 
 		// Get data from the model
@@ -107,6 +107,13 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$this->assignRef('item',		$item);
 
+		if (strpos($item->name, "com_")===0){
+			$parts = explode(".",$item->name);
+			$this->_addPath('template', JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl");
+			if ($item->value=="" && file_exists(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$item->name.".html")) {
+				$item->value = file_get_contents(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$item->name.".html");
+			}
+		}
 		parent::displaytemplate($tpl);
 
 	}

@@ -40,7 +40,7 @@ class JFormFieldJevcolourpicker extends JFormField
 
 		$html[] = '<input type="text" name="'.$this->name.'" value="'.$this->value.'" id="pick1064797275field"/><br/>';
 		$html[]  = '<div class="clr"></div>';
-		$html[]  = '<iframe id="fred"  frameborder="" src="'.JURI::root()."administrator/components/com_jevents/libraries/colours.html?id=fred&j16=1".'" style="height:250px;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;"></iframe>';
+		$html[]  = '<iframe id="fred"  frameborder="" src="'.JURI::root()."administrator/components/com_jevents/libraries/colours.html?id=fred&j16=1".'" style="min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;"></iframe>';
 		$html[]  = '<div class="clr"></div>';
 
 		return implode($html);

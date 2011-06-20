@@ -133,7 +133,7 @@ class JEventsAbstractView extends JView {
 
 		$tip 		= "<!-- Warning -->\n";
 		$tip 		.= '<a href="javascript:void(0)" onmouseover="'. $mouseover .'" onmouseout="return nd();">';
-		$tip 		.= '<img src="'. JURI::root() .'/includes/js/ThemeOffice/warning.png" border="0"  alt="warning"/></a>';
+		$tip 		.= '<img src="'. JURI::root() .'components/'.JEV_COM_COMPONENT.'/assets/images/warning.png" border="0"  alt="warning"/></a>';
 
 		return $tip;
 	}
