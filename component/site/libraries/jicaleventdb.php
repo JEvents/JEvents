@@ -753,6 +753,17 @@ class jIcalEventDB extends jEventCal {
 	
 	
 	function updateHits(){
+		// stop counter being updated repeatedly and in the wrong place
+		$task = JRequest::getCmd("jevtask", "");
+		if ($task != "icalrepeat.detail" && $task != "icalevent.detail" ){
+			return;
+		}
+		static $done = array();
+		if (array_key_exists($this->evdet_id(), $done)){
+			return;
+		}
+		$done[$this->evdet_id()]=1;
+
 		$db =& JFactory::getDBO();
 
 		// Should this happen here?

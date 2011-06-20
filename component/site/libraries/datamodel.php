@@ -410,7 +410,6 @@ class JEventsDataModel {
 
 		$data["months"]=array();
 		$rows = $this->queryModel->listIcalEventsByYear( $year, $data ["limitstart"], $data ["limit"],  $cfg->get('com_showrepeats'));
-
 		$num_events = count( $rows );
 
 		for($month = 1; $month <= 12; $month++) {

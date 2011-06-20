@@ -321,7 +321,8 @@ RAWTEXT;
 				else {
 					JRequest::setVar("evid", 0);
 				}
-				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent));
+				// not a dry run of course!
+				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, false));
 
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();

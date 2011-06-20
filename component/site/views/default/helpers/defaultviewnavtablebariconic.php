@@ -169,9 +169,10 @@ class DefaultViewNavTableBarIconic {
 	    	else {?>
 	    	<td colspan="6" align="center" valign="top">
 	    	<?php }
+			$index = JRoute::_("index.php");
 	    	?>
 	    	<div id="jumpto"  style="display:none">
-			<form name="BarNav" action="index.php" method="get">
+			<form name="BarNav" action="<?php echo $index;?>" method="get">
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
 				<input type="hidden" name="task" value="month.calendar" />
 				<?php

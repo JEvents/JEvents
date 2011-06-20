@@ -90,11 +90,13 @@ if (JVersion::isCompatible("1.6.0"))
 		 */
 		public function toFormat($format = '%Y-%m-%d %H:%M:%S', $local = false)
 		{
+			// do not reset the timezone !! - this is needed for the weekdays 
 			// Set time zone to GMT as JevDate::strftime formats according locale setting.
-			date_default_timezone_set('GMT');
+			// date_default_timezone_set('GMT');
 
 			// Generate the timestamp.
-			$time = (int) parent::format('U');
+			//$time = (int) parent::format('U');
+			$time = $this->getTimeStamp();
 
 			// If the returned time should be local add the GMT offset.
 			if ($local)
@@ -119,7 +121,7 @@ if (JVersion::isCompatible("1.6.0"))
 			{
 				$format = str_replace('%B', $this->monthToString(date('n', $time)), $format);
 			}
-
+			
 			// Generate the formatted string.
 			$date = JevDate::strftime($format, $time);
 

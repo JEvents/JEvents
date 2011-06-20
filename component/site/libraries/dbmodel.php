@@ -576,7 +576,13 @@ class JEventsDBModel
 		$t_datenowSQL = $t_datenow->toMysql();
 
 		// multiday condition
-		if ($multidayTreatment == 2)
+		if ($multidayTreatment == 3)
+		{
+			// We only show events once regardless of multiday setting of event so we allow them all through here!
+			$multiday = "";
+			$multiday2 = "";
+		}
+		else if ($multidayTreatment == 2)
 		{
 			// We only show events on their first day only regardless of multiday setting of event so we allow them all through here!
 			$multiday = "";
@@ -584,7 +590,7 @@ class JEventsDBModel
 		}
 		else if ($multidayTreatment == 1)
 		{
-			// We only show events on their first day only regardless of multiday setting of event so we allow them all through here!
+			// We only show events on all days regardless of multiday setting of event so we allow them all through here!
 			$multiday = "";
 			$multiday2 = "";
 		}
@@ -664,7 +670,7 @@ class JEventsDBModel
 		$ids2 = $db->loadResultArray();
 
 		$ids3 = array();
-		if ($multidayTreatment != 2)
+		if ($multidayTreatment != 2 && $multidayTreatment != 3)
 		{
 			// Mutli day events
 			$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"

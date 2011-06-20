@@ -440,17 +440,19 @@ class JEventsHTML{
 			return $arr_userids[$userid];
 		}else{
 			if (!isset($arr_evids[$evid])) {
-				$querym = "SELECT created_by_alias"
-				. "\n FROM #__events"
-				. "\n WHERE id='$evid'"
-				;
-				$db->setQuery($querym);
-				$userdet = $db->loadResult();
-
-				if( $userdet ){
-					$contactlink = $userdet;
-				}else{
-					$contactlink = JText::_('JEV_ANONYME');
+				$contactlink = JText::_('JEV_ANONYME');
+				$anonplugin = JPluginHelper::getPlugin("jevents","jevanonuser");
+				if ($anonplugin){
+					$db = JFactory::getDBO();
+					$db->setQuery("SELECT a.* FROM #__jev_anoncreator as a LEFT JOIN #__jevents_repetition as r on a.ev_id=r.eventid where r.rp_id=".intval($evid)." LIMIT 1");
+					$anonrow = $db->loadObject();
+					if ($anonrow){
+						if ($agenda_viewmail == '1' ){
+							$contactlink = JHTML::_('email.cloak',$anonrow->email, 1, $anonrow->name, 0);
+						}else{
+							$contactlink = $anonrow->name;
+						}
+					}
 				}
 				$arr_evids[$evid] = $contactlink;
 			}

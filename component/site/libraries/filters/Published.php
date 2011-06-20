@@ -52,6 +52,12 @@ class jevPublishedFilter extends jevFilter
 		// The default is only to show published events
 		if ($this->filter_value==0) return "ev.state=1";	
 		
+		// only show published events to non-logged in users
+		$user = JFactory::getUser();
+		if ($user->get('id')==0){
+			return "ev.state=1";
+		}
+		
 		if (JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor()){
 			if ($this->filter_value==-1) return "";
 			return "ev.state=0";
