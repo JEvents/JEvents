@@ -279,7 +279,7 @@ class DefaultModLatestView
 		}
 		else if ($this->dispMode == 6)
 		{
-			$rows = $this->datamodel->queryModel->listPopularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
+			$rows = $this->datamodel->queryModel->listPopularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
 		}
 		else
 		{

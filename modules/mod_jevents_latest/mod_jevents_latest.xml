@@ -94,6 +94,7 @@
 			<option value="0">Use setting from the event itself</option>
 			<option value="1">Display on all days</option>
 			<option value="2">Display on first day only</option>
+			<option value="3">Display once even if event started in the past</option>
 		</param>
 		<param name="modlatest_DispLinks" type="radio" default="1" label="Display Events As Links" description="display event titles as links to the view_detail com_jevents task which will display details of the event">
 			<option value="0">No</option>
@@ -221,7 +222,7 @@
 					<option value="0">Use setting from the event itself</option>
 					<option value="1">Display on all days</option>
 					<option value="2">Display on first day only</option>
-					<option value="3">Display once</option>
+					<option value="3">Display once even if event started in the past</option>
 				</field>
 				<field name="modlatest_DispLinks" type="radio" default="1" label="Display Events As Links" description="display event titles as links to the view_detail com_jevents task which will display details of the event">
 					<option value="0">No</option>
