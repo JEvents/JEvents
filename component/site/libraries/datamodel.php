@@ -775,7 +775,8 @@ class JEventsDataModel {
 				if ($row2 && $row2->access>JEVHelper::getAid($user)){
 					$uri = JURI::getInstance();
 					$link = $uri->toString();
-					$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
+					$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
+					$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
 					$link = JRoute::_($link);
 					
 					JFactory::getApplication()->redirect($link,JText::_('JEV_LOGIN_TO_VIEWEVENT'));

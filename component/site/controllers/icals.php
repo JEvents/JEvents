@@ -599,7 +599,8 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$this->setRedirect(JRoute::_("index.php?option=com_user&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 			}
 			return;
 		}
@@ -725,7 +726,8 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$this->setRedirect(JRoute::_("index.php?option=com_user&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 			}
 			return;
 		}

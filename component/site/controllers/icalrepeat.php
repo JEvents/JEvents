@@ -40,7 +40,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		{			
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
-			$link = 'index.php?option=com_user&view=login&return='.base64_encode($link);
+			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
+			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
 			$link = JRoute::_($link);
 			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			return;
@@ -107,7 +108,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 				//JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 			}
 			else {
-				$this->setRedirect(JRoute::_("index.php?option=com_user&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 			}
 			return;
 		}

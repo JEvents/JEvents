@@ -94,9 +94,10 @@ if (JVersion::isCompatible("1.6.0"))
 			// Set time zone to GMT as JevDate::strftime formats according locale setting.
 			// date_default_timezone_set('GMT');
 
-			// Generate the timestamp.
-			//$time = (int) parent::format('U');
-			$time = $this->getTimeStamp();
+			 // Generate the timestamp.
+			 $time = (int) parent::format('U',true);
+			 // this requires php 5.3!
+			 //$time = $this->getTimeStamp();
 
 			// If the returned time should be local add the GMT offset.
 			if ($local)
