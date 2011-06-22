@@ -190,10 +190,10 @@ class AdminIcaleventController extends JController {
 		$order = JRequest::getCmd("filter_order",'start');
 		$dir = $orderdir=="asc" ? "asc" : "desc";
 		
-		if ($order == 'start'){
+		if ($order == 'start' || $order == 'starttime'){
 			$order = ($this->_largeDataSet?"\n ORDER BY detail.dtstart $dir": "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat $dir");
 		}
-		if ($order == 'created'){
+		else if ($order == 'created'){
 			$order = ($this->_largeDataSet?"\n ORDER BY ev.created $dir": "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
 		}
 		else {
