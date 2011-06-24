@@ -166,6 +166,7 @@ class AdminIcalrepeatController extends JController {
 			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}
 
+		/*
 		$db =& JFactory::getDBO();
 		// get list of groups
 		$query = "SELECT id AS value, name AS text"
@@ -177,6 +178,8 @@ class AdminIcalrepeatController extends JController {
 		// build the html select list
 		$glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',
 		'value', 'text', intval( $row->access() ) );
+		*/
+		$glist = JEventsHTML::buildAccessSelect( intval( $row->access() ), 'class="inputbox" size="1"');
 
 		// For repeats don't offer choice of ical or category
 
