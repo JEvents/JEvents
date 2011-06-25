@@ -115,8 +115,11 @@ class ModCalController extends JController   {
 		$modview = new $viewclass($params, $modid);
 			
 		?>
-		<script language="javascript">
+		<script type="text/javascript">
+		var doitdone = false;
 		function doit(){
+			if (doitdone) return;
+			doitdone = true;
 			var sillydiv=document.getElementById('silly');
 			parent.navLoaded(sillydiv,<?php echo $modid;?>);
 		}
@@ -126,6 +129,11 @@ class ModCalController extends JController   {
 		echo "<div id='silly'>";
 		echo $modview->getAjaxCal($modid,$month,$year);
 		echo "</div>";
+		?>
+		<script type="text/javascript">
+		doit();
+		</script>
+		<?php
 	}
 
 
