@@ -161,7 +161,7 @@ class CsvToiCal {
         $this->tmpfile = fopen($this->tmpFileName, "w");
         fwrite($this->tmpfile, "BEGIN:VCALENDAR\n");
         fwrite($this->tmpfile, "VERSION:2.0\n");
-        fwrite($this->tmpfile, "PRODID:-//jEvents 1.5 for Joomla//EN\n");
+        fwrite($this->tmpfile, "PRODID:-//jEvents 2.0 for Joomla//EN\n");
         fwrite($this->tmpfile, "CALSCALE:GREGORIAN\n");
         fwrite($this->tmpfile, "METHOD:PUBLISH\n");
     }

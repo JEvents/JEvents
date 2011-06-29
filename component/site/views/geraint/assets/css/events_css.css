@@ -643,6 +643,32 @@ div.jevtt_text{
 	line-height: 1.3em;
 }
 
+/* Joomla 1.6 changes */
+#action_dialog {
+	text-align: left;
+}
+#action_dialog a{
+	display:block;
+	margin:0px 2px;
+}
+#jevents_header {position:relative;}
+#jevents_header ul.actions {
+	list-style-image: none;
+	position:absolute;
+	right:0px;
+	top:0px;
+	list-style-type: none;
+	list-style-image: none;
+	width:auto!important;	
+}
+#jevents_header ul.actions li {
+	line-height:14px!important;	
+	background-image:none!important;
+	padding-left:0px!important;
+	overflow:visible!important;
+	float:left;
+	margin-left:3px;
+}
 /* Print version */
 @media print {
    table.contentpaneopen {

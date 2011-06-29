@@ -20,9 +20,9 @@ header('Content-Type: application/octet-stream; charset=UTF-8');
 header('Content-Disposition: attachment; filename=calendar.ics');
 
 if ($this->outlook2003icalexport)
-	echo "BEGIN:VCALENDAR\nPRODID:-//jEvents 1.5 for Joomla//EN\n";
+	echo "BEGIN:VCALENDAR\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
 else
-	echo "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//jEvents 1.5 for Joomla//EN\n";
+	echo "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
 
 echo "CALSCALE:GREGORIAN\nMETHOD:PUBLISH\n";
 if (!empty($this->icalEvents))
