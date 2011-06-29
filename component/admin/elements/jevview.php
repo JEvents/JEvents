@@ -35,6 +35,7 @@ class JElementJevview extends JElement
 
 		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
+			$load = $lang->load("com_jevents", JPATH_SITE."/components/com_jevents/views/".$viewfile."/assets");
 		}
 		sort( $views );
 		if ($node->attributes('menu')!='hide'){

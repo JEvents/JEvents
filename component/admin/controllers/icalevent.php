@@ -307,8 +307,8 @@ class AdminIcaleventController extends JController {
 		}
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
 
-		$options[] = JHTML::_('select.option', '0', JText::_( 'NO' ));
-		$options[] = JHTML::_('select.option', '1', JText::_( 'YES' ));
+		$options[] = JHTML::_('select.option', '0', JText::_( 'JEV_NO' ));
+		$options[] = JHTML::_('select.option', '1', JText::_( 'JEV_YES' ));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast );
 
 		$options = array();

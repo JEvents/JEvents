@@ -266,7 +266,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 			}
 			</script>
 	        <?php
-	        echo JText::_("Select Ical (from raw icals)");
+	        echo JText::_("SELECT_ICAL");
 			?>
 			</td>
 			<td colspan="3">
@@ -275,7 +275,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 	        echo "</td>";	        
 	    }
 	    else if ($this->clistChoice) {
-	    	echo "<td>".JText::_("Select Ical (from raw icals)")."</td>";
+	    	echo "<td>".JText::_("SELECT_ICAL")."</td>";
 	    	echo "<td colspan='3'>".$this->clist."</td>";
 	    }
 	    else {

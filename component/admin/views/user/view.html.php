@@ -77,7 +77,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$document->setTitle(JText::_( 'JEVENTS' ) . ' :: ' .JText::_( 'JEVENTS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'EDIT_USER' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'JEV_EDIT_USER' ), 'jevents' );
 
 		JToolBarHelper::save("user.save");
 		JToolBarHelper::cancel("user.overview");

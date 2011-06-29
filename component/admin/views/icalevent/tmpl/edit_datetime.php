@@ -38,7 +38,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 		</span>
     </span>
 	<span style="margin:20px" class='checkbox12h'>
-		<span style="font-weight:bold"><?php echo JText::_("12 Hour");?></span>
+		<span style="font-weight:bold"><?php echo JText::_("TWELVE_Hour");?></span>
 		<span><input type="checkbox" id='view12Hour' name='view12Hour' <?php echo !$clock24 ?"checked='checked'":"";?> onclick="toggleView12Hour();" value="1"/>
 		</span>
 	</span>

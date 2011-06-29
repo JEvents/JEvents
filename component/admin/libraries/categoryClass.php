@@ -1,4 +1,4 @@
-cat<?php
+<?php
 /**
  * JEvents Component for Joomla 1.5.x
  *

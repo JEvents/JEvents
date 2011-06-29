@@ -36,7 +36,7 @@ function submitbutton(pressbutton) {
     <input type="hidden" name="cid" value="<?php echo $this->jevuser->id;?>" />
 	<table border="0" cellpadding="2" cellspacing="2" class="adminform" >
 		<tr>
-			<td width="20%"><?php echo JText::_( 'USER' );?></td>
+			<td width="20%"><?php echo JText::_( 'USERNAME' );?></td>
 			<td><?php echo $this->users;?></td>
 		</tr>
 		<tr>

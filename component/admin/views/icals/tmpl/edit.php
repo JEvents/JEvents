@@ -106,9 +106,9 @@ echo JEventsHTML::buildScriptTag('end');
     	<td style="font-weight:bold"><?php echo JText::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></td>
 		<td>
 		<input id="ignoreembedcat0" type="radio" value="0" name="ignoreembedcat" <?php echo $checked0;?>/>
-		<label for="ignoreembedcat0"><?php echo JText::_( 'NO' ); ?></label>
+		<label for="ignoreembedcat0"><?php echo JText::_( 'JEV_NO' ); ?></label>
 		<input id="ignoreembedcat1" type="radio" value="1" name="ignoreembedcat" <?php echo $checked1;?>/>
-		<label for="ignoreembedcat1"><?php echo JText::_( 'YES' ); ?></label><br/><br/>
+		<label for="ignoreembedcat1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
 		</td>
 	</tr>
 </table>	
@@ -131,9 +131,9 @@ echo JEventsHTML::buildScriptTag('end');
 	?>
     <?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?>
 	<input id="isdefault0" type="radio" value="0" name="isdefault" <?php echo $checked0;?>/>
-	<label for="isdefault0"><?php echo JText::_( 'NO' ); ?></label>
+	<label for="isdefault0"><?php echo JText::_( 'JEV_NO' ); ?></label>
 	<input id="isdefault1" type="radio" value="1" name="isdefault" <?php echo $checked1;?>/>
-	<label for="isdefault1"><?php echo JText::_( 'YES' ); ?></label><br/><br/>
+	<label for="isdefault1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
 	<?php if ($id==0){ ?>
 	<button name="newical"  title="Create New" onclick="submitbutton('icals.new');return false;"><?php echo JText::_("CREATE_FROM_SCRATCH");?></button>
 	<?php
@@ -178,9 +178,9 @@ echo JEventsHTML::buildScriptTag('end');
 		?>
 	    <?php echo JText::_('JEV_EVENT_AUTOREFRESH'); ?>
 		<input id="autorefresh0" type="radio" value="0" name="autorefresh" <?php echo $checked0;?>/>
-		<label for="autorefresh0"><?php echo JText::_( 'NO' ); ?></label>
+		<label for="autorefresh0"><?php echo JText::_( 'JEV_NO' ); ?></label>
 		<input id="autorefresh1" type="radio" value="1" name="autorefresh" <?php echo $checked1;?>/>
-		<label for="autorefresh1"><?php echo JText::_( 'YES' ); ?></label><br/><br/>
+		<label for="autorefresh1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
 		
 		<input class="inputbox" type="text" name="uploadURL" id="uploadURL" <?php echo $disabled;?> size="120" value="<?php echo $srcURL;?>"/><br/><br/>
 		<?php if ($id==0){ ?>

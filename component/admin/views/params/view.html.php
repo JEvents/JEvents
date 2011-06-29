@@ -33,10 +33,10 @@ class AdminParamsViewParams extends JEventsAbstractView
 		JEVHelper::stylesheet('eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/');
 
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_( 'CONFIGURATION' ));
+		$document->setTitle(JText::_( 'COM_JEVENTS_CONFIGURATION' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'CONFIGURATION' ), 'jevents' );
+		JToolBarHelper::title( JText::_( 'COM_JEVENTS_CONFIGURATION' ), 'jevents' );
 
 		JToolBarHelper::save('params.save');
 		JToolBarHelper::cancel('cpanel.cpanel');
