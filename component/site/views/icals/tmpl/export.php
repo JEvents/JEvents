@@ -136,10 +136,11 @@ if (!empty($this->icalEvents))
 				$endformat = "%Y%m%dT%H%M%SZ";
 			}
 
-			$start = JevDate::strftime($startformat, $start);
-			$end = JevDate::strftime($endformat, $end);
+			// Do not use JevDate version since this sets timezone to config value!
+			$start = strftime($startformat, $start);
+			$end = strftime($endformat, $end);
 
-			$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+			$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
 
 			// Change back
 			date_default_timezone_set($current_timezone);
@@ -193,7 +194,8 @@ if (!empty($this->icalEvents))
 			echo 'FREQ=' . $a->_freq;
 			if ($a->_until != "" && $a->_until != 0)
 			{
-				echo ';UNTIL=' . JevDate::strftime("%Y%m%dT235959Z", $a->_until);
+				// Do not use JevDate version since this sets timezone to config value!					
+				echo ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
 			}
 			else if ($a->_count != "")
 			{
@@ -259,7 +261,8 @@ if (!empty($this->icalEvents))
 						$current_timezone = date_default_timezone_get();
 						date_default_timezone_set("UTC");
 
-						$deletes[] = JevDate::strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+						// Do not use JevDate version since this sets timezone to config value!
+						$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
 
 						// Change back
 						date_default_timezone_set($current_timezone);
@@ -325,10 +328,11 @@ if (!empty($this->icalEvents))
 						$current_timezone = date_default_timezone_get();
 						date_default_timezone_set("UTC");
 
-						$chstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $chstart);
-						$chend = JevDate::strftime("%Y%m%dT%H%M%SZ", $chend);
-						$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
-						$originalstart = JevDate::strftime("%Y%m%dT%H%M%SZ", $originalstart);
+						// Do not use JevDate version since this sets timezone to config value!								
+						$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
+						$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
+						$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+						$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
 						// Change back
 						date_default_timezone_set($current_timezone);
 					}
