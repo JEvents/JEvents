@@ -808,14 +808,9 @@ class ICalsController extends AdminIcalsController
 		if (!$rpid)
 			return;
 
-		JRequest::setVar("tmpl", "component");
-		// Define the file as an iCalendar file
-		header('Content-Type: text/calendar; method=request; charset=UTF-8');
-		// Give the file a name and force download
-		header('Content-Disposition: attachment; filename=calendar.ics');
-
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$repeat = $this->dataModel->getEventData($rpid, "icaldb", $year, $month, $day);
+		$repeat = $this->dataModel->getEventData($rpid, "icaldb", $year, $month, $day);	
+				
 		if ($repeat && is_array($repeat) && isset($repeat["row"]) && $repeat["row"]->rp_id() == $rpid)
 		{
 			$a = $repeat["row"];
@@ -826,6 +821,27 @@ class ICalsController extends AdminIcalsController
 				$a = $a->getOriginalFirstRepeat();
 			}
 
+			JRequest::setVar("tmpl", "component");
+			// Define the file as an iCalendar file
+			header('Content-Type: text/calendar; method=request; charset=UTF-8');
+			// Give the file a name and force download
+			header('Content-Disposition: attachment; filename=calendar.ics');
+		
+			//$dispatcher = & JDispatcher::getInstance();
+			// just incase we don't have jevents plugins registered yet
+			//JPluginHelper::importPlugin("jevents");
+			//$dispatcher->trigger('onExportRow', array(&$row));
+			$icalEvents[$a->ev_id()] = $a;
+
+			// get the view
+			$this->view = & $this->getView("icals", "html");
+			$this->view->setLayout("export");
+			$this->view->assign("outlook2003icalexport", false);
+			$this->view->assign("icalEvents", $icalEvents);
+
+			$this->view->export();
+			return;
+			
 			$exceptiondata = array();
 			if ($withrepeats)
 			{

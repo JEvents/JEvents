@@ -73,7 +73,9 @@ if (!empty($this->icalEvents))
 			
 	// Call plugin on each event
 	$dispatcher =& JDispatcher::getInstance();
+	ob_start();
 	$dispatcher->trigger( 'onDisplayCustomFieldsMultiRow', array( &$this->icalEvents) );
+	ob_end_clean();
 	
 	foreach ($this->icalEvents as $a)
 	{
@@ -98,6 +100,7 @@ if (!empty($this->icalEvents))
 		if ($a->hasExtraInfo())
 			echo "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)) . "\n";
 
+		$alldayprefix = "";
 		// No doing true timezones!
 		if ($tzid == "" && is_callable("date_default_timezone_set"))
 		{
@@ -117,6 +120,7 @@ if (!empty($this->icalEvents))
 			// If all day event then don't show the start time or end time either
 			if ($a->alldayevent())
 			{
+				$alldayprefix = ";VALUE=DATE";
 				$startformat = "%Y%m%d";
 				$endformat = "%Y%m%d";
 
@@ -148,9 +152,9 @@ if (!empty($this->icalEvents))
 			// If all day event then don't show the start time or end time either
 			if ($a->alldayevent())
 			{
+				$alldayprefix = ";VALUE=DATE";
 				$startformat = "%Y%m%d";
-				$endformat = "%Y%m%d";
-
+				$endformat = ":%Y%m%d";
 
 				// add 10 seconds to make sure its not midnight the previous night
 				$start += 10;
@@ -173,12 +177,12 @@ if (!empty($this->icalEvents))
 			}
 		}
 
-		echo "DTSTAMP$tzid:" . $stamptime . "\n";
-		echo "DTSTART$tzid:" . $start . "\n";
+		echo "DTSTAMP$tzid$alldayprefix:" . $stamptime . "\n";
+		echo "DTSTART$tzid$alldayprefix:" . $start . "\n";
 		// events with no end time don't give a DTEND
 		if (!$a->noendtime())
 		{
-			echo "DTEND$tzid:" . $end . "\n";
+			echo "DTEND$tzid$alldayprefix:" . $end . "\n";
 		}
 		echo "SEQUENCE:" . $a->_sequence . "\n";
 		if ($a->hasrepetition())

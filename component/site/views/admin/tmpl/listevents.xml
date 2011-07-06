@@ -41,7 +41,7 @@
 			</field>
 
 			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
-			<field name="layout" type="text" default="" label='OVERRIDE_LAYOUT'  description="Specify Template Override Layout Name e.g. detail2 or calendar2"/>
+			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
 		</fieldset>
 	</fields>
 </metadata>
