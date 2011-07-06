@@ -43,6 +43,18 @@ class JFormFieldJevcolourpicker extends JFormField
 		$html[]  = '<iframe id="fred"  frameborder="" src="'.JURI::root()."administrator/components/com_jevents/libraries/colours.html?id=fred&j16=1".'" style="min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;"></iframe>';
 		$html[]  = '<div class="clr"></div>';
 
+		// add script to auto open the basic options tab!
+		$doc = JFactory::getDocument();
+		$script = <<<SCRIPT
+window.addEvent('load', function() {
+	var basicoptions = document.getElement('#basic-options')
+	if (basicoptions && !basicoptions.hasClass('pane-toggler-down')) {
+	   basicoptions.fireEvent('click', basicoptions, 1000);
+	};
+});
+SCRIPT;
+		$doc->addScriptDeclaration($script);
+		
 		return implode($html);
 	}
 

@@ -37,7 +37,7 @@ class JEventsAbstractView extends JView {
 
 		// Allow the layout to be overriden by menu parameter - this only works if its valid for the task
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$newlayout = $params->getValue("layout",$layout);
+		$newlayout = $params->getValue("overridelayout",$layout);
 
 		// check the template layout is valid for this task
 		jimport('joomla.filesystem.path');
