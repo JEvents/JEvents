@@ -34,7 +34,7 @@ jimport('joomla.event.plugin');
 // Check for 1.6
 if (!(version_compare(JVERSION, '1.6.0', ">=")))
 {
-	$mainframe->registerEvent('onSearchAreas', 'plgSearchEventsSearchAreas');
+	JFactory::getApplcation()->registerEvent('onSearchAreas', 'plgSearchEventsSearchAreas');
 }
 
 /**
