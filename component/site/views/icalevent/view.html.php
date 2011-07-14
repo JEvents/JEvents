@@ -97,7 +97,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 	function _adminStart(){
 		
 ?>
-	<div style="clear:both"  <?php $mainframe = JFactory::getApplication(); $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplcation()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"class='jeventslight'";?>>
+	<div style="clear:both"  <?php $mainframe = JFactory::getApplication(); $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"class='jeventslight'";?>>
 		<div id="toolbar-box" >
 <?php
 		$bar = & JToolBar::getInstance('toolbar');
