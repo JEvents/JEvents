@@ -436,7 +436,7 @@ class JEV_CommonFunctions {
 		$mail->send();
 	}
 
-	function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink ) {
+	function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink ) {
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -446,6 +446,7 @@ class JEV_CommonFunctions {
 
 		$content  = sprintf( JText::_('JEV_EMAIL_EVENT_TITLE'), $title).$lf.$lf . $content;
 		$content .= $lf.$lf. sprintf( JText::_('JEV_MAIL_TO_ADMIN'), $live_site, $author );
+		$content .= $lf . sprintf( JText::_('JEV_EMAIL_VIEW_EVENT'), $viewlink);
 		$content .= $lf . sprintf( JText::_('JEV_EMAIL_EDIT_EVENT'), $modifylink);
 
 		$uri  =& JURI::getInstance(JURI::base());

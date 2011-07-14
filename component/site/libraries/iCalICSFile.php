@@ -204,6 +204,10 @@ RAWTEXT;
 	 */
 	function store($catid=false , $cleanup=true) {
 
+		// clean out the cache
+		$cache = &JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+		
 		static $categories;
 		if (is_null($categories)){
 			if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
@@ -360,7 +364,8 @@ RAWTEXT;
 						$cat->store();
 						$vevent->catid = $cat->id;
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories where section='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 					}
@@ -448,7 +453,8 @@ RAWTEXT;
 		static $categories;
 		if (is_null($categories)){
 			$db	=& JFactory::getDBO();
-			$sql = "SELECT * FROM #__categories where section='com_jevents'";
+			if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}
@@ -528,7 +534,8 @@ RAWTEXT;
 						$cat->store();
 						$vevent->catid = $cat->id;
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories where section='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 					}
@@ -593,7 +600,8 @@ RAWTEXT;
 						$cat->store();
 						$vevent->catid = $cat->id;
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories where section='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 					}

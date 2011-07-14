@@ -1091,8 +1091,8 @@ class JEVHelper
 
 			// Use generic helper method that can call the plugin to see if user can publish any events
 			$isEventPublisher = JEVHelper::isEventPublisher();
-			if (!$isEventPublisher)
-				return false;
+			if ($isEventPublisher)
+				return true;
 
 			$jevuser = & JEVHelper::getAuthorisedUser();
 			if (!is_null($jevuser))

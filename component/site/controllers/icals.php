@@ -657,7 +657,9 @@ class ICalsController extends AdminIcalsController
 		{
 			// Find which categories to exclude
 			$db = JFactory::getDBO();
-			$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
+			if (JVersion::isCompatible("1.6.0"))  $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
+			else $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
+			
 			$db->setQuery($catsql);
 			$excats = implode(",", $db->loadResultArray());
 		}
