@@ -88,7 +88,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			JToolBarHelper::save('icalevent.save');
 			if (JEVHelper::isEventEditor())
-				JToolBarHelper::apply('icalevent.apply');
+				JToolBarHelper::apply('icalevent.apply', "Apply");
 			//$bar->appendButton( 'Apply',  'apply', "Apply",'icalevent.apply', false, false );
 		}
 

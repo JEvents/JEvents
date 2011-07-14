@@ -694,10 +694,10 @@ class AdminIcaleventController extends JController {
 
 			$row = new jIcalEventDB($event);
 			if (JEVHelper::canPublishEvent($row)){
-				$msg = JText::_("Event Saved", true);
+				$msg = JText::_("Event_Saved", true);
 			}
 			else {
-				$msg = JText::_("Event Saved Under Review", true);
+				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
 			}
 			if ($clearout) {
 				$db = JFactory::getDBO();

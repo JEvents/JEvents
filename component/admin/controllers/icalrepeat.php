@@ -233,7 +233,7 @@ class AdminIcalrepeatController extends JController {
 		$rpt = $this->doSave($msg);
 		
 		$Itemid = JRequest::getInt("Itemid");
-		$msg = JText::_("Event Saved", true);
+		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]='.$rpt->eventid,"ICal rpt and new details saved");
 		}
@@ -261,7 +261,7 @@ class AdminIcalrepeatController extends JController {
 		$rpt = $this->doSave($msg);
 
 		$Itemid = JRequest::getInt("Itemid");
-		$msg = JText::_("Event Saved", true);
+		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin()){
 			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.edit&evid=".$rpt->rp_id."&Itemid=".JEVHelper::getItemid(),$msg);
 		}
