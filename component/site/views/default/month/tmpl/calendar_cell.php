@@ -34,6 +34,13 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		//$this->stop_time = $this->event->endTime()	;		
 		$this->stop_time  = JEVHelper::getTime($this->event->getUnixEndTime(),$this->event->hdn(),$this->event->mindn());
 		
+		$this->stop_time_midnightFix = $this->stop_time ;
+		$this->stop_date_midnightFix = $this->stop_date ;
+		if ($this->event->sdn() == 59 && $this->event->mindn()==59){
+			$this->stop_time_midnightFix = JEVHelper::getTime($this->event->getUnixEndTime()+1,0,0);
+			$this->stop_date_midnightFix = JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn()+1, 0 );
+		}
+		
 		// we only need the one helper so stick to default layout here!
 		$this->jevlayout="default";	
 		
@@ -70,7 +77,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$tmp_time_info = "";
 				}
 				else if($this->start_time != $this->stop_time ){
-					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time;
+					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time_midnightFix;
 				}
 				else {
 					$tmp_time_info = '<br />' . $this->start_time;
@@ -85,7 +92,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time;
 				}
 				else if($this->start_time != $this->stop_time && !$this->event->alldayevent()){
-					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time;
+					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
 				}
 				$publish_inform_overlay = '<table style="border:0px;width:100%;height:100%">'
 				. '<tr><td><b>' . JText::_('JEV_FROM') . ':&nbsp;</b>' . $this->start_date . '&nbsp;'
@@ -243,7 +250,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$tmp_time_info = "";
 				}
 				else if($this->start_time != $this->stop_time ){
-					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time;
+					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time_midnightFix;
 				}
 				else {
 					$tmp_time_info = '<br />' . $this->start_time;
@@ -256,7 +263,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$tmp_time_info = '<br /><strong>' . JText::_('JEV_TIME') . ':&nbsp;</strong>' . $this->start_time;
 				}
 				else if($this->start_time != $this->stop_time && !$this->event->alldayevent()){
-					$tmp_time_info = '<br /><strong>' . JText::_('JEV_TIME') . ':&nbsp;</strong>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time;
+					$tmp_time_info = '<br /><strong>' . JText::_('JEV_TIME') . ':&nbsp;</strong>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
 				}
 				$publish_inform_overlay =  '<strong>' . JText::_('JEV_FROM') . ':&nbsp;</strong>' . $this->start_date . '&nbsp;'
 				. '<br /><strong>' . JText::_('JEV_TO') . ':&nbsp;</strong>' . $this->stop_date

@@ -697,7 +697,7 @@ class jEventCal {
 		if( $this->start_date == $this->stop_date ){
 			if (($this->start_time != $this->stop_time) && !($this->alldayevent())){
 				echo $this->start_date . ',&nbsp;' . $this->start_time
-				. '&nbsp;-&nbsp;' . $this->stop_time;
+				. '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
 			} else {
 				echo $this->start_date;
 			}
@@ -707,7 +707,7 @@ class jEventCal {
 				echo JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
 				. $this->start_time . '<br />'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
-				. $this->stop_time . '<br/>';
+				. $this->stop_time_midnightFix . '<br/>';
 			} else {
 				echo JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
@@ -726,7 +726,7 @@ class jEventCal {
 			if( $this->reccurday() >= 0 || ($this->reccurtype()==1 || $this->reccurtype()==2)){
 				$timeString = "";
 				if ($this->start_time != $this->stop_time) {
-					$timeString = $this->start_time."&nbsp;-&nbsp;".$this->stop_time."&nbsp;";
+					$timeString = $this->start_time."&nbsp;-&nbsp;".$this->stop_time_midnightFix."&nbsp;";
 				}
 				echo $timeString;
 

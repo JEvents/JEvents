@@ -407,7 +407,7 @@ class iCalImport
 	 * TODO make sure if time is UTC we take account of system time offset properly
 	 *
 	 */
-	function unixTime($ical_date)
+	function unixTime($ical_date, $tz=false)
 	{
 		jimport("joomla.utilities.date");
 
@@ -498,9 +498,15 @@ class iCalImport
 				*/
 
 			}
-			else {
+			else if ($tz != false){
 				// really should use the timezone of the inputted date
-				$t = new JevDate($ical_date);
+				$tz = new DateTimeZone($tz);
+				$t = new JevDate($ical_date, $tz);
+				echo "icaldate = ".$ical_date." imported date=".$t->toMySQL()."<br/>";
+				
+			}
+			else {
+				$t = new JevDate($ical_date);				
 			}
 			//$result = $t->toMySQL();
 			$result = $t->toUnix();
@@ -550,7 +556,14 @@ class iCalImport
 			}
 		}
 		else {
-			$value = $this->unixTime($value);
+			$tz = false;
+			if (JString::strpos($key,"TZID=")>0){
+				$parts = explode(";",$key);
+				if (count($parts)>=2 && JString::strpos($parts[1],"TZID=")!==false){
+					$tz = str_replace("TZID=", "",$parts[1]);
+				}
+			}
+			$value = $this->unixTime($value, $tz);
 		}
 		$parts = explode(";",$key);
 

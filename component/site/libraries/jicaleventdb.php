@@ -231,6 +231,10 @@ class jIcalEventDB extends jEventCal {
 
 	function endtime24(){
 		$cfg	 = & JEVConfig::getInstance();
+		// 23:59:59 is actually midnight since we don't record seconds elsewhere
+		if (JevDate::strftime("%H:%M:%S",$this->dtend())=="23:59:59"){
+			return "00:00";
+		}
 		return JevDate::strftime("%H:%M",$this->dtend());
 	}
 
@@ -530,7 +534,7 @@ class jIcalEventDB extends jEventCal {
 			}
 			else if (($this->start_time != $this->stop_time) && !($this->alldayevent())){
 				$sum.= $this->start_date . ',&nbsp;' . $this->start_time
-				. '&nbsp;-&nbsp;' . $this->stop_time . '<br/>';
+				. '&nbsp;-&nbsp;' . $this->stop_time_midnightFix . '<br/>';
 			} else if (($this->start_time == $this->stop_time) && !($this->alldayevent())){
 				$sum.= $this->start_date . ',&nbsp;' . $this->start_time. '<br/>';
 			} else {
@@ -546,7 +550,7 @@ class jIcalEventDB extends jEventCal {
 				$sum.= JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '&nbsp;-&nbsp; '
 				. $this->start_time . '<br />'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '&nbsp;-&nbsp;'
-				. $this->stop_time . '<br/>';
+				. $this->stop_time_midnightFix . '<br/>';
 			} else {
 				$sum.= JText::_('JEV_FROM') . '&nbsp;' . $this->start_date . '<br />'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';

@@ -144,10 +144,17 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
 		$stop_date	= JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn(), 0 );
 		$stop_time	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
+		$stop_time_midnightFix = $stop_time ;
+		$stop_date_midnightFix = $stop_date ;
+		if ($row->sdn() == 59 && $row->mindn()==59){
+			$stop_time_midnightFix = JEVHelper::getTime($row->getUnixEndTime()+1,0,0);
+			$stop_date_midnightFix = JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn()+1, 0 );
+		}
+	
 		$search[]="{{STARTDATE}}";$replace[]=$start_date;$blank[]="";
 		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
 		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
-		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
+		$search[]="{{ENDTIME}}";$replace[]=$stop_time_midnightFix;$blank[]="";
 
 	}
 	else {
@@ -156,10 +163,16 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
 		$stop_date	= JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn(), 0 );
 		$stop_time	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
+		$stop_time_midnightFix = $stop_time ;
+		$stop_date_midnightFix = $stop_date ;
+		if ($row->sdn() == 59 && $row->mindn()==59){
+			$stop_time_midnightFix = JEVHelper::getTime($row->getUnixEndTime()+1,0,0);
+			$stop_date_midnightFix = JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn()+1, 0 );
+		}
 		$search[]="{{STARTDATE}}";$replace[]=$start_date;$blank[]="";
 		$search[]="{{ENDDATE}}";$replace[]=$stop_date;$blank[]="";
 		$search[]="{{STARTTIME}}";$replace[]=$start_time;$blank[]="";
-		$search[]="{{ENDTIME}}";$replace[]=$stop_time;$blank[]="";
+		$search[]="{{ENDTIME}}";$replace[]=$stop_time_midnightFix;$blank[]="";
 
 		// these would slow things down if not needed in the list
 		static $dorepeatsummary;
@@ -167,14 +180,6 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 			$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
 		}
 		if ($dorepeatsummary){
-
-			// I would this in case we do a full repeat summary
-			/*
-			$row->start_date = JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
-			$row->start_time = JEVHelper::getTime($row->getUnixStartTime() );
-			$row->stop_date = JEventsHTML::getDateFormat( $row->ydn(), $row->mdn(), $row->ddn(), 0 );
-			$row->stop_time = JEVHelper::getTime($row->getUnixEndTime() );
-			*/
 
 			$cfg = & JEVConfig::getInstance();
 			$jevtask  = JRequest::getString("jevtask");
@@ -189,12 +194,6 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 				$start_publish  = $row->getUnixStartDate();
 				$stop_publish  = $row->getUnixEndDate();
 
-				$start_date	= JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 0 );
-				$start_time = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
-
-				$stop_date	= JEventsHTML::getDateFormat(  $row->ydn(), $row->mdn(), $row->ddn(), 0 );
-				$stop_time	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
-
 				if( $stop_publish == $start_publish ){
 					if ($row->noendtime()){
 						$times = $start_time;
@@ -203,7 +202,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 						$times = "";
 					}
 					else if($start_time != $stop_time ){
-						$times = $start_time . ' - ' . $stop_time;
+						$times = $start_time . ' - ' . $stop_time_midnightFix;
 					}
 					else {
 						$times = $start_time;
@@ -215,25 +214,22 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 						$times = $start_time;
 					}
 					else if($start_time != $stop_time && !$row->alldayevent()){
-						$times = $start_time . '&nbsp;-&nbsp;' . $stop_time;
+						$times = $start_time . '&nbsp;-&nbsp;' . $stop_time_midnightFix;
 					}
 					$times =$start_date . ' - '	. $stop_date." ". $times."<br/>";
 				}
 			}
 			else if (($jevtask=="day" || $jevtask=="week" )  && ($row->starttime() != $row->endtime()) && !($row->alldayevent())){
-				$starttime = JEVHelper::getTime($row->getUnixStartTime(),$row->hup(),$row->minup());
-				$endtime	= JEVHelper::getTime($row->getUnixEndTime(),$row->hdn(),$row->mindn());
-
 				if ($row->noendtime()){
 					if ($showyeardate && $jevtask=="year"){
-						$times = $starttime. '&nbsp;-&nbsp;' . $endtime . '&nbsp;';
+						$times = $start_time. '&nbsp;-&nbsp;' . $stop_time_midnightFix . '&nbsp;';
 					}
 					else {
-						$times = $starttime. '&nbsp;';
+						$times = $start_time. '&nbsp;';
 					}
 				}
 				else {
-					$times = $starttime. '&nbsp;-&nbsp;' . $endtime . '&nbsp;';
+					$times = $start_time. '&nbsp;-&nbsp;' . $stop_time_midnightFix . '&nbsp;';
 				}
 			}
 			$search[]="{{REPEATSUMMARY}}";$replace[]=$times;$blank[]="";

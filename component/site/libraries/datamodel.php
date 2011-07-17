@@ -666,6 +666,12 @@ class JEventsDataModel {
 			$event_down = new JEventDate( $row->publish_down() );
 			$row->stop_date = JEventsHTML::getDateFormat( $event_down->year, $event_down->month, $event_down->day, 0 );
 			$row->stop_time = JEVHelper::getTime($row->getUnixEndTime() );
+			$row->stop_time_midnightFix = $row->stop_time ;
+			$row->stop_date_midnightFix = $row->stop_date ;
+			if ($event_down->second == 59){
+				$row->stop_time_midnightFix = JEVHelper::getTime($row->getUnixEndTime() +1 );
+				$row->stop_date_midnightFix = JEventsHTML::getDateFormat( $event_down->year, $event_down->month, $event_down->day+1 , 0);
+			}
 
 			// *******************
 			// ** This cloaking should be done by mambot/Joomla function
