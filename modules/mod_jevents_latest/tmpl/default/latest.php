@@ -845,6 +845,11 @@ class DefaultModLatestView
 				}
 				else
 				{
+					// format endDate when midnight to show midnight!
+					if ($match == "endDate" && $dayEvent->sdn()==59){
+						$tempEndDate  = $endDate + 1;
+						$match = "tempEndDate";
+					}
 					// if a '%' sign detected in date format string, we assume JevDate::strftime() is to be used,
 					if (preg_match("/\%/", $dateParm))
 					{
@@ -852,8 +857,12 @@ class DefaultModLatestView
 						$content .= $jmatch->toFormat($dateParm);
 					}
 					// otherwise the date() function is assumed.
-					else
+					else {
 						$content .= date($dateParm, $$match);
+					}
+					if ($match == "tempDndDate" ){
+						$match = "endDate";
+					}
 				}
 
 				if (!$this->disableDateStyle)
