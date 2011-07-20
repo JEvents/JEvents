@@ -70,10 +70,13 @@ function checkValidTime(time){
 		return false;
 	}
 	parts[0] = parseInt(parts[0],10);
+	parts[1] = parseInt(parts[1],10);
+	if (parts[0]==24 && parts[1]==0){
+		parts[0]=0;
+	}
 	if (parts[0]<0 || parts[0]>=24){
 		return false
 	}
-	parts[1] = parseInt(parts[1],10);
 	if (parts[1]<0 || parts[1]>=60 ){
 		return false;
 	}
@@ -214,7 +217,7 @@ function checkEndTime() {
 	startdateparts = start_date.value.split("-");
 	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
 
-	endtimeparts = end_time.value.split(":");
+	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
 	enddateparts = end_date.value.split("-");
 	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],endtimeparts[0],endtimeparts[1],0);
 	//alert(endDate +" vs "+startDate);

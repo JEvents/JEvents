@@ -195,7 +195,7 @@ if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
 
 // if we enter date/time before description then force single pane editing.
 if ($cfg->get('timebeforedescription', 0)) {
-	$cfg->set('com_single_pane_edit', 1);
+	// $cfg->set('com_single_pane_edit', 1);
 }
 if (!$cfg->get('com_single_pane_edit', 0)) {
 	echo $tabs->startPane( 'jevent' );
@@ -414,7 +414,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
     </table>
 	<?php
 	
-	if (!$cfg->get('com_single_pane_edit', 0)) {
+	if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0)) {
 		echo $tabs->endPanel();
 		echo $tabs->startPanel( JText::_('JEV_TAB_CALENDAR'), 'calendar' );
 		echo '<div style="clear:left;margin:0px;padding:0px;height:0px;"></div>';		
@@ -423,7 +423,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 		echo $this->loadTemplate("datetime");	
 	}
 
-	if (!$cfg->get('com_single_pane_edit', 0)) {
+	if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0)) {
 		echo $tabs->endPanel();
 	}
 
