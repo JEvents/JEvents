@@ -236,6 +236,11 @@ else
 {
 	class JevDate extends JDate
 	{
+		function __construct($date = 'now', $tzOffset = 0) {
+			// Joomla 1.5 doesn't use datetimezone so ignore the tzOffset!
+			return parent::__construct());
+		}
+				
 		public function getDate($time = 'now', $tzOffset = null) {
 			return JFactory::getDate($time,$tzOffset);
 		}
