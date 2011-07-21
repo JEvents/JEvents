@@ -15,7 +15,7 @@ var JeventsFilters = {
 						var tag = elem.getTag();
 					}
 					if (tag =='select'){
-						$ES('option',elem).each(
+						elem.getElements('option').each(
 							function(selitem){
 								selitem.selected=(selitem.value==item.value)?true:false;
 							}
