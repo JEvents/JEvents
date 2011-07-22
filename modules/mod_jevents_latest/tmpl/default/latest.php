@@ -870,7 +870,16 @@ class DefaultModLatestView
 				break;
 
 			case 'title':
-
+				$title = $dayEvent->title();
+				if (!empty ($dateParm)){
+					$parts = explode("|",$dateParm);
+					if (count($parts)>0 && strlen($title)>  intval($parts[0])){
+						$title = substr($title, 0, intval($parts[0]));
+						if (count($parts)>1) {
+							$title .= $parts[1];
+						}
+					}
+				}
 				if (!$this->disableTitleStyle)
 					$content .= '<span class="mod_events_latest_content">';
 				if ($this->displayLinks)
@@ -879,20 +888,11 @@ class DefaultModLatestView
 					$link = $dayEvent->viewDetailLink($ev_year, $ev_month, $ev_day, false, $this->myItemid);
 					$link = JRoute::_($link . $this->datamodel->getCatidsOutLink());
 
-					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($dayEvent->title()));
-					/*
-					  "index.php?option=".$compname
-					  . "&task="  . $task_events
-					  . "&agid="  . $dayEvent->id()
-					  . "&year="  . date("Y", $eventDate)
-					  . "&month=" . date("m", $eventDate)
-					  . "&day=" 	. date("d", $eventDate)
-					  . "&Itemid=". $this->myItemid . $this->catout, $dayEvent->title());
-					 */
+					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($title));
 				}
 				else
 				{
-					$content .= JEventsHTML::special($dayEvent->title());
+					$content .= JEventsHTML::special($title);
 				}
 				if (!$this->disableTitleStyle)
 					$content .= '</span>';
@@ -924,13 +924,24 @@ class DefaultModLatestView
 
 			case 'content':  // Added by Kaz McCoy 1-10-2004
 				$this->modparams->set("image", 1);
-				$dayEvent->data->text = $dayEvent->content();
+				 $dayEvent->data->text = $dayEvent->content();
 				if (JVersion::isCompatible("1.6.0")) {
 					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 				}
 				else {
 					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
 				}
+				
+				if (!empty ($dateParm)){
+					$parts = explode("|",$dateParm);
+					if (count($parts)>0 && strlen(strip_tags($dayEvent->data->text)) >  intval($parts[0])){
+						$dayEvent->data->text = substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
+						if (count($parts)>1) {
+							$dayEvent->data->text .= $parts[1];
+						}
+					}
+				}
+				
 				$dayEvent->content($dayEvent->data->text);
 				//$content .= substr($dayEvent->content, 0, 150);
 				$content .= $dayEvent->content();
