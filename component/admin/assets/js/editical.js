@@ -338,7 +338,7 @@ function toggleAllDayEvent()
 	var enddate = document.adminForm.publish_down;
 	var spm   = document.getElementById("startPM");
 	var	sam   = document.getElementById("startAM");
-	var epm   = document.getElementById("endPM"); document.adminForm.noendtime.checked
+	var epm   = document.getElementById("endPM");document.adminForm.noendtime.checked
 	var	eam   = document.getElementById("endAM");
 
 	if (document.adminForm.view12Hour.checked){
@@ -739,7 +739,15 @@ Element.implement ({
 			var name = el.name;
 			var value = el.get('value');
 			if (value === false || !name || el.disabled) return;
-			if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
+			// multi selects
+			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.get('multiple')==true){
+				name = name.substr(0,name.length-2);
+				if (!json[name]) json[name] = [];
+				el.getElements('option').each(function(opt){
+					if (opt.selected ==true) json[name].push(opt.value);
+				});
+			}
+			else if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
 				if (!json[name]) json[name] = [];
 				if (el.checked==true) json[name].push(value);
 			}

@@ -41,6 +41,9 @@ font-size:1.091em;
 padding:5px;
 text-align:left;
 }
+div#jevents table.adminform td.r1, div#jevents table.adminform td.r2 {
+	padding-right:9px!important;
+}
 div#jevents table.adminform td.filter {
 text-align:left;
 }

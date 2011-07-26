@@ -42,6 +42,7 @@ class SaveIcalEvent {
 		$data["publish_down"]	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
 		$data["publish_up"]		= JArrayHelper::getValue( $array,  "publish_up","2006-12-12");
 		$data["SUMMARY"]		= JArrayHelper::getValue( $array,  "title","");
+		$data["URL"]	= JArrayHelper::getValue( $array,  "url","");
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
