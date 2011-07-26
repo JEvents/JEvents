@@ -629,45 +629,49 @@ class JEventsDBModel
 
 		// This limit will always be enough
 		$query .= " LIMIT " . $limit;
-
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		//$query = $db->replacePrefix($db->getQuery());
 		$ids1 = $db->loadResultArray();
 
 		// Before now
-		$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"
-				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-				. $extrajoin
-				. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
-				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-				. $multiday
-				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 "
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				// published state is now handled by filter
-				. "\n AND rpt.startrepeat=(
-				SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
-				 WHERE rpt2.eventid=rpt.eventid
-				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
-			)"
-				. "\n GROUP BY rpt.eventid "
-				. "\n ORDER BY rpt.startrepeat DESC"
-		;
+		if ($startdate < $t_datenowSQL){			
+			$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"
+					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+					. $extrajoin
+					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
+					// New equivalent but simpler test
+					. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+					. $multiday
+					. $extrawhere
+					. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "  AND icsf.state=1 "
+					. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					// published state is now handled by filter
+					. "\n AND rpt.startrepeat=(
+					SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
+					 WHERE rpt2.eventid=rpt.eventid
+					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
+				)"
+					. "\n GROUP BY rpt.eventid "
+					. "\n ORDER BY rpt.startrepeat DESC"
+			;
 
-		// This limit will always be enough
-		$query .= " LIMIT " . $limit;
+			// This limit will always be enough
+			$query .= " LIMIT " . $limit;
 
-		$db = JFactory::getDBO();
-		$db->setQuery($query);
-		//$query = $db->replacePrefix($db->getQuery());
-		//echo $db->explain();die();
-		$ids2 = $db->loadResultArray();
+			$db = JFactory::getDBO();
+			$db->setQuery($query);
+			//$query = $db->replacePrefix($db->getQuery());
+			//echo $db->explain();die();
+			$ids2 = $db->loadResultArray();
+		}
+		else {
+			$ids2 = array();
+		}
 
 		$ids3 = array();
 		if ($multidayTreatment != 2 && $multidayTreatment != 3)
@@ -985,9 +989,9 @@ class JEventsDBModel
 		{
 			//echo $db->getQuery();
 			//echo $db->explain();
+			//exit();
 		}
 
-		//echo $db->_sql;
 		if ($count)
 		{
 			$db->query();

@@ -47,6 +47,10 @@ $cfg->set('jev_debug', 1);
 
 include_once(JPATH_COMPONENT.DS."jevents.defines.php");
 
+$isMobile = false;
+jimport("joomla.environment.browser");
+$browser = JBrowser::getInstance();
+
 $registry	=& JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
 if (JVersion::isCompatible("1.6.0")){
@@ -58,15 +62,23 @@ if (JVersion::isCompatible("1.6.0")){
 		$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
 	}
 	else {
-		$newparams->def('page_heading', JText::_('JEV_CAL_TITLE'));
+		$newparams->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
 	}
 	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
 	$component->params =& $newparams;
+	
+	$isMobile = $browser->isMobile();
+}
+else {
+	$isMobile = $browser->_mobile;
 }
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-if (strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0){
-	//JRequest::setVar("jEV","default");
+if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && T3Common::mobile_device_detect())){
+	JRequest::setVar("jevsmartphone",1);
+	if (JFolder::exists(JEV_VIEWS."/smartphone")){
+		//JRequest::setVar("jEV","smartphone");
+	}
 	$params->set('iconicwidth',485);
 	$params->set('extpluswidth',485);
 	$params->set('ruthinwidth',485);

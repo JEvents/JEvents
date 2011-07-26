@@ -9,7 +9,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	if (!isset($templates)){
 		$templates = array();
 	}
-	if (!isset($templates[$template_name])){
+	if (!array_key_exists($template_name, $templates)){
 		$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= ".$db->Quote($template_name));
 		$templates[$template_name] = $db->loadObject();
 	}

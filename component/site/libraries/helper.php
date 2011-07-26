@@ -934,7 +934,14 @@ class JEVHelper
 				return true;
 			}
 		}
-
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			if ($user->id > 0 && $row->catid()>0){
+				return $user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+			}
+		}
+			
+	 
 		return false;
 
 	}
@@ -1114,6 +1121,13 @@ class JEVHelper
 					return true;
 			}
 		}
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			if ($user->id > 0 && $row->catid()>0){
+				return $user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+			}
+		}
+		
 		return false;
 
 	}

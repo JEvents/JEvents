@@ -551,12 +551,13 @@ div.jev_adminfilter {
 	margin:5px auto 10px auto; 
 }
 
+#jevents_body a.addjevent:hover {background-color: transparent;}
 a.addjevent {
 	width:16px;
 	height:16px;
 	margin-right:2px;
 	float:right;
-    background-image: url("../images/add.png");
+    background-image: url("../images/add.png")!important;
    	background-repeat: no-repeat; 
    	background-position: top left;
    	visibility:hidden;

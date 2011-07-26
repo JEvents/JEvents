@@ -599,7 +599,7 @@ class JEventsHTML{
 		switch( $type ){
 			case '0':
 				if( $format_type == 0 ){
-					return JEV_CommonFunctions::jev_strftime("%A, %d %B %Y",$datestp);
+					return JEV_CommonFunctions::jev_strftime("%A %d %B %Y",$datestp);
 					// Fr style : Monday 03 Juillet 2003
 				}elseif( $format_type == 1 ){
 					return JEV_CommonFunctions::jev_strftime("%A, %B %d, %Y",$datestp);
