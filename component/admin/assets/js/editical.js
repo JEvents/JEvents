@@ -820,6 +820,6 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 			alert('Something went wrong...'+x);
 			hasConflicts = true;
 		}
-	}).get({'json':JSON.encode(requestObject)});
+	}).post({'json':JSON.encode(requestObject)});
 	return hasConflicts;
 }
