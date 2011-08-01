@@ -518,6 +518,22 @@ class jIcalEventDB extends jEventCal {
 		// i.e. 1 = follow english word order by default
 		$grammar = intval(JText::_('JEV_REPEAT_GRAMMAR'));
 
+		if (!isset($this->start_date)) {
+			$event_up = new JEventDate( $this->publish_up() );
+			$this->start_date = JEventsHTML::getDateFormat( $event_up->year, $event_up->month, $event_up->day, 0 );
+			$this->start_time = JEVHelper::getTime($this->getUnixStartTime() );
+
+			$event_down = new JEventDate( $this->publish_down() );
+			$this->stop_date = JEventsHTML::getDateFormat( $event_down->year, $event_down->month, $event_down->day, 0 );
+			$this->stop_time = JEVHelper::getTime($this->getUnixEndTime() );
+			$this->stop_time_midnightFix = $this->stop_time ;
+			$this->stop_date_midnightFix = $this->stop_date ;
+			if ($event_down->second == 59){
+				$this->stop_time_midnightFix = JEVHelper::getTime($this->getUnixEndTime() +1 );
+				$this->stop_date_midnightFix = JEventsHTML::getDateFormat( $event_down->year, $event_down->month, $event_down->day+1 , 0);
+			}
+
+		}
 		if ($this->alldayevent()){
 			if( $this->start_date == $this->stop_date ){
 				$sum.= $this->start_date;

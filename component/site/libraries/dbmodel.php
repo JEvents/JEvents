@@ -1364,7 +1364,8 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))						
+					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. $extrawhere
 					. "\n AND rpt.rp_id = '$rpid'";
 			$query .="\n GROUP BY rpt.rp_id";
@@ -1441,6 +1442,7 @@ class JEventsDBModel
 					. $extrajoin
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. $extrawhere
 					. "\n AND ev.ev_id = '$evid'"
 					. "\n GROUP BY rpt.rp_id"
