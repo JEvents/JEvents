@@ -238,7 +238,7 @@ else
 	{
 		function __construct($date = 'now', $tzOffset = 0) {
 			// Joomla 1.5 doesn't use datetimezone so ignore the tzOffset!
-			return parent::__construct();
+			return parent::__construct($date);
 		}
 				
 		public function getDate($time = 'now', $tzOffset = null) {
