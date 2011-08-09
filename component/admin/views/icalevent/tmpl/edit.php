@@ -143,8 +143,8 @@ function submitbutton(pressbutton) {
 	else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
 		alert ( '<?php echo JText::_('JEV_SELECT_CATEGORY',true) ; ?>' );
 	}
-	else if (form.ics_id.value == "0"){
-		alert( "<?php echo html_entity_decode( 'MISSING_ICAL_SELECTION' , true); ?>" );
+	else if (form.ics_id.value == "10"){
+		alert( "<?php echo html_entity_decode(JText::_( 'JEV_MISSING_ICAL_SELECTION' , true)); ?>" );
 	}
 	else if (form.valid_dates.value =="0"){
 		alert( "<?php echo JText::_("JEV_INVALID_DATES", true );?>");

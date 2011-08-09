@@ -79,6 +79,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
 		. "\n WHERE ical.icaltype = '2'"
+		. "\n AND ical.state = 1"		
 		. "\n AND ical.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 
 		$dispatcher	=& JDispatcher::getInstance();
