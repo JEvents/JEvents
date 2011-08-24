@@ -7,16 +7,17 @@ $data = $this->datamodel->getCatData( $this->catids,false, $this->limit, $this->
 
 $Itemid = JEVHelper::getItemid();
 
-?><div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
+?>
+<div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
 if (count($data['catids'])==1 && $data['catids'][0]!=0 && strlen($data['catdesc'])>0){
 	echo "<div class='jev_catdesc'>".$data['catdesc']."</div>";
 }
-echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
+?>
+<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">
+<?php
 $num_events = count($data['rows']);
 $chdate ="";
 if( $num_events > 0 ){
-	echo "<tr>\n";
-
 	for( $r = 0; $r < $num_events; $r++ ){
 		$row = $data['rows'][$r];
 
@@ -52,9 +53,10 @@ if( $num_events > 0 ){
 		echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $data['catname']. '</b></td>';
 	}
 }
-
-echo '</tr></table><br />' . "\n";
-echo '<br /><br />' . "\n";
+?>
+</tr></table><br />
+<br /><br />
+<?php
 
 // Create the pagination object
 if ($data["total"]>$data["limit"]){
