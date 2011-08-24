@@ -25,7 +25,7 @@ function DefaultViewHelperHeader16($view){
 	$lang = &JFactory::getLanguage();
 ?>
 <div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_header">
-	<?php if ($params->get('show_page_heading', 1)) : ?>
+	<?php if ($params->get('show_page_heading', 0)) : ?>
 	<h1>
 		<?php echo $view->escape($params->get('page_heading')); ?>
 	</h1>

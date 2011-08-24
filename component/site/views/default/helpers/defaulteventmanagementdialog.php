@@ -111,17 +111,17 @@ function DefaultEventManagementDialog($view,$row, $mask){
                  }
                  if ($deleteRepeatLink!=""){
                  ?>
-                 <a href="<?php echo $deleteRepeatLink;?>" onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE' );?>')" id="delete_repeat"  title="delete repeat" style="text-decoration:none;"><img src="<?php echo $deleteRepeatImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE' );?></a><br/>
+                 <a href="<?php echo $deleteRepeatLink;?>" onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE' );?>')" id="delete_repeat"  title="delete repeat" style="text-decoration:none;"><img src="<?php echo $deleteRepeatImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'DELETE_THIS_REPEAT' );?></a><br/>
                  <?php
                  }
                  if ($deleteLink!=""){
                  ?>
-                 <a href="<?php echo $deleteLink;?>" onclick="return confirm('<?php echo JText::_($hasrepeat?'Are you sure you wish to delete this event and all its repeat':'Are you sure you wish to delete this event');?>')" id="delete_event"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_($hasrepeat?"Delete All Repeats":"Delete Event");?></a><br/>
+                 <a href="<?php echo $deleteLink;?>" onclick="return confirm('<?php echo JText::_($hasrepeat?'Are you sure you wish to delete this event and all its repeat':'Are you sure you wish to delete this event');?>')" id="delete_event"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_($hasrepeat?"DELETE_ALL_REPEATS":"DELETE_EVENT");?></a><br/>
             	<?php
                  }
                  if ($deleteFutureLink!=""){
                  ?>
-                 <a href="<?php echo $deleteFutureLink;?>" onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS' )?>')" id="delete_eventfuture"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteFutureImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS' );?></a><br/>
+                 <a href="<?php echo $deleteFutureLink;?>" onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS' )?>')" id="delete_eventfuture"  title="delete event" style="text-decoration:none;"><img src="<?php echo $deleteFutureImg; ?>"  style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'JEV_DELETE_FUTURE_REPEATS' );?></a><br/>
             <?php
 
                  }
