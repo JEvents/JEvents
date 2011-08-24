@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if (JVersion::isCompatible("1.6.0"))
 {
-	// on some servers with Xcode both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
 	if (!defined("JEVREGISTRY"))
 	{
 		define("JEVREGISTRY", 1);
