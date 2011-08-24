@@ -530,10 +530,13 @@ class AdminIcalrepeatController extends JController {
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		if (!is_array($cid)) $cid = array(intval($cid));
 		JArrayHelper::toInteger($cid);
-
+		
 		$db =& JFactory::getDBO();
 		foreach ($cid as $id){
 
+			$evid = JRequest::getInt("evid",0);
+			if ($evid>0 && $id==$evid) continue;
+			
 			// I should be able to do this in one operation but that can come later
 			$event = $this->queryModel->listEventsById( intval($id), 1, "icaldb" );
 			if (!JEVHelper::canDeleteEvent($event)){

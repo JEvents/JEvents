@@ -38,7 +38,7 @@ $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."
 		</tr>
 
         <?php
-        $k 			= 0;
+        $k 	= 0;
         $nullDate 	= $db->getNullDate();
 
         for( $i=0, $n=count( $this->icalrows ); $i < $n; $i++ ){
@@ -69,6 +69,7 @@ $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."
     </table>
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
     <input type="hidden" name="cid[]" value="<?php echo $this->evid;?>" />
+    <input type="hidden" name="evid" value="<?php echo $this->evid;?>" />
     <input type="hidden" name="task" value="icalrepeat.list" />
     <input type="hidden" name="boxchecked" value="0" />
 </form>
