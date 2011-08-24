@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -8,34 +9,53 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * convenience wrapper for config - to ensure backwards compatability
  */
-if (JVersion::isCompatible("1.6.0")){
-	jimport('joomla.html.parameter');
-	class JEVConfig extends JParameter
+if (JVersion::isCompatible("1.6.0"))
+{
+	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+	if (!defined("JEVCONFIG"))
 	{
-		// 1.6 mod
-		static function &getInstance($inifile='') {
-			$params =& JComponentHelper::getParams("com_jevents");
-			return $params;
+		define("JEVCONFIG", 1);
+
+		jimport('joomla.html.parameter');
+
+		class JEVConfig extends JParameter
+		{
+
+			// 1.6 mod
+			static function &getInstance($inifile='')
+			{
+				$params = & JComponentHelper::getParams("com_jevents");
+				return $params;
+
+			}
+
 		}
 
 	}
-
 }
-else {
-	class JEVConfig extends JParameter
+else
+{
+	if (!defined("JEVCONFIG"))
 	{
-		function &getInstance($inifile='') {
-			$params =& JComponentHelper::getParams("com_jevents");
-			return $params;
+		define("JEVCONFIG", 1);
+
+		class JEVConfig extends JParameter
+		{
+
+			function &getInstance($inifile='')
+			{
+				$params = & JComponentHelper::getParams("com_jevents");
+				return $params;
+
+			}
+
 		}
 
 	}
-
 }
