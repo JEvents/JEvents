@@ -305,7 +305,7 @@ class jEventCal {
 			$arr_catids = array();
 		}
 		if (!isset($arr_catids[$catid])) {
-			$catsql = "SELECT id, name,description"
+			$catsql = "SELECT id, title as name, description"
 			. "\n FROM #__categories"
 			. "\n WHERE id='$catid'"
 			;

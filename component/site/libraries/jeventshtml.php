@@ -218,6 +218,10 @@ class JEventsHTML{
 					 }
 				}
 			}
+			// if only one category then preselect it
+			if (count($options)==1){
+				$catid=current($options)->value;
+			}
 			?>
 			<select name="<?php echo $fieldname;?>" <?php echo $args;?> >
 				<option value=""><?php echo $t_first_entry;?></option>
@@ -318,6 +322,12 @@ class JEventsHTML{
 		}
 
 		$categories = array_merge( $categories, $rows );
+
+		// if only one category then preselect it
+		if (count($categories)==2){
+			$catid=$categories[1]->id;
+		}
+		
 		$clist = JHTML::_('select.genericlist', $categories, $fieldname, $args, 'id', 'name', $catid );
 
 		return $clist;
