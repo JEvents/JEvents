@@ -49,7 +49,7 @@ if ($catid==0 && $this->defaultCat>0){
 
 ?>
 <div id="jevents" <?php $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"";?>>
-<form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm">
+<form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"  >
 <?php
 
 // get configuration object
@@ -143,7 +143,7 @@ function submitbutton(pressbutton) {
 	else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
 		alert ( '<?php echo JText::_('JEV_SELECT_CATEGORY',true) ; ?>' );
 	}
-	else if (form.ics_id.value == "10"){
+	else if (form.ics_id.value == "0"){
 		alert( "<?php echo html_entity_decode(JText::_( 'JEV_MISSING_ICAL_SELECTION' , true)); ?>" );
 	}
 	else if (form.valid_dates.value =="0"){

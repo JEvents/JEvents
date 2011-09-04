@@ -338,7 +338,8 @@ function toggleAllDayEvent()
 	var enddate = document.adminForm.publish_down;
 	var spm   = document.getElementById("startPM");
 	var	sam   = document.getElementById("startAM");
-	var epm   = document.getElementById("endPM");document.adminForm.noendtime.checked
+	var epm   = document.getElementById("endPM");
+	document.adminForm.noendtime.checked
 	var	eam   = document.getElementById("endAM");
 
 	if (document.adminForm.view12Hour.checked){
@@ -773,7 +774,8 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 	requestObject.repeatid = repeatid;
 	requestObject.formdata = $(document.adminForm).formToJson();
 
-	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;;
+	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;
+	
 	requestObject.redirect = doRedirect;
 	var hasConflicts = false;
 
@@ -805,7 +807,10 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 					var container = $('jevoverlaps');
 					container.innerHTML="";
 					$A(json.overlaps).each (function(overlap){
-						var elem = new Element ("a", {'href':overlap.url, 'target':'_blank'});
+						var elem = new Element ("a", {
+							'href':overlap.url, 
+							'target':'_blank'
+						});
 						elem.inject(container,'bottom');
 						//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
 						elem.appendText (overlap.conflictMessage);
@@ -820,6 +825,20 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 			alert('Something went wrong...'+x);
 			hasConflicts = true;
 		}
-	}).post({'json':JSON.encode(requestObject)});
+	}).post({
+		'json':JSON.encode(requestObject)
+		});
 	return hasConflicts;
 }
+
+// fix for auto-rotating radio boxes in firefox !!!
+// see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
+window.addEvent ('domready', function() {
+	try {
+		if(Browser.firefox) {
+			$("adminForm").autocomplete='off';
+		}
+	}
+	catch(e){	
+	}
+}); 

@@ -31,7 +31,10 @@ class JEventsCategory extends JTableCategory {
 			$array['parent_id']= 1;
 			$array['language']= "*";
 			if (!isset($array['access'])) {
-				$array['access'] = JRequest::getInt("access");
+				$array['access'] = JRequest::getInt("access", -1);
+				if ($array['access'] == -1){
+					 $array['access'] = (int) JFactory::getConfig()->get('access');
+				}
 			}
 			$array['alias'] = JApplication::stringURLSafe($array['title']);
 			$array['path'] = $array['alias'] ;
