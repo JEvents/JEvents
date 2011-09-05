@@ -830,7 +830,7 @@ var NewCalendar = new Class({
 	// @param cal (obj)
 
 	toggle: function(cal) {
-		document.removeEvent('mousedown', this.fn); // always remove the current mousedown script first
+		if (this.fn) $(document).removeEvent('mousedown', this.fn); // always remove the current mousedown script first
 
 		if (cal.visible) { // simply hide curr cal
 			cal.visible = false;
@@ -863,7 +863,7 @@ var NewCalendar = new Class({
 				this.toggle(cal);
 			}.create({ 'arguments': cal, 'bind': this, 'event': true });
 
-			document.addEvent('mousedown', this.fn);
+			$(document).addEvent('mousedown', this.fn);
 
 			this.calendars.each(function(kal) {
 				if (kal == cal) {
