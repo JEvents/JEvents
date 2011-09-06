@@ -597,7 +597,7 @@ class DefaultModLatestView
 		// for the startDate and endDate fields.
 		//asdbg_break();
 		// interpret linefeed as <br />
-		$customFormat = str_replace("\n", "<br />", $this->customFormatStr);
+		$customFormat = nl2br($this->customFormatStr);
 
 		$keywords = array(
 			'content', 'eventDetailLink', 'createdByAlias', 'color',
@@ -675,6 +675,7 @@ class DefaultModLatestView
 		$content = "";
 		$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
+		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
 
@@ -702,9 +703,9 @@ class DefaultModLatestView
 				{
 
 					if ($firstTime)
-						$content .= '<tr><td class="mod_events_latest_first">';
+						$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest_first">';
 					else
-						$content .= '<tr><td class="mod_events_latest">';
+						$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest">';
 
 					// generate output according custom string
 					foreach ($this->splitCustomFormat as $condtoken)
@@ -752,11 +753,13 @@ class DefaultModLatestView
 					$content .= "</td></tr>\n";
 					$firstTime = false;
 				} // end of foreach
+				$k ++;
+				$k %=2;
 			} // end of foreach
 		}
 		else
 		{
-			$content .= '<tr><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
+			$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
 		}
 		$content .="</table>\n";
 
@@ -848,6 +851,10 @@ class DefaultModLatestView
 					// format endDate when midnight to show midnight!
 					if ($match == "endDate" && $dayEvent->sdn()==59){
 						$tempEndDate  = $endDate + 1;
+						if ($dayEvent->alldayevent()){
+							// if an all day event then we don't want to roll to the next day
+							$tempEndDate -= 86400;
+						}
 						$match = "tempEndDate";
 					}
 					// if a '%' sign detected in date format string, we assume JevDate::strftime() is to be used,

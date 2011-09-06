@@ -46,6 +46,9 @@
 		<param name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 		<param name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 		<param name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<param name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<param name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+		<param name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 		<param name="ignorecatfilter" type="radio" default="0" label="Lock category filters" description="Module will always show events from the categories selected above even if the page view is filtered by category selection">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
@@ -174,6 +177,9 @@
 				<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 				<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 				<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
 				<field name="ignorecatfilter" type="radio" default="0" label="Lock category filters" description="Module will always show events from the categories selected above even if the page view is filtered by category selection">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
