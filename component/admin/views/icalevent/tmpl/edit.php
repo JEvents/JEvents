@@ -69,7 +69,7 @@ $tabs = & JPane::getInstance('tabs');
 <?php
 if ($this->editCopy){
 	$repeatStyle="";
-	echo "<h3>".JText::_( 'YOU_ARE_EDITING_A_COPY_OF_AN_ICAL_EVENT' )."</h3>";
+	echo "<h3>".JText::_( 'YOU_ARE_EDITING_A_COPY_ON_AN_ICAL_EVENT' )."</h3>";
 }
 else if ($this->repeatId==0) {
 	$repeatStyle="";

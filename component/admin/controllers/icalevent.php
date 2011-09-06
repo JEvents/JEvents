@@ -470,7 +470,6 @@ class AdminIcaleventController extends JController {
 			$excats = implode(",",$db->loadResultArray());
 		}
 
-
 		// only offer a choice of native calendars if it exists!
 		if (count($nativeCals)>1){
 			$icalList = array();
