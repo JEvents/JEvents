@@ -102,9 +102,23 @@ function submitbutton(pressbutton) {
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo JText::_("Can Up-load Files");?></td>
+			<td><?php echo JText::_("UPLOAD_FILES");?></td>
 			<td><?php 
 			echo JHTML::_("select.booleanlist", "canuploadmovies", null,$this->jevuser->canuploadmovies);
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td><?php echo JText::_("CREATE_OWN_EXTRAS");?></td>
+			<td><?php 
+			echo JHTML::_("select.booleanlist", "cancreateown", null,$this->jevuser->cancreateown);
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td><?php echo JText::_("CREATE_GLOBAL_EXTRAS");?></td>
+			<td><?php 
+			echo JHTML::_("select.booleanlist", "cancreateglobal", null,$this->jevuser->cancreateglobal);
 			?>
 			</td>
 		</tr>
