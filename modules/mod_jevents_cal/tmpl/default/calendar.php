@@ -209,8 +209,11 @@ class DefaultModCalView
 			myiframe.setAttribute("name","calnav");
 			myiframe.setAttribute("id","calnav");
 			myiframe.style.display = "none";
+			body.appendChild(myiframe);
 		}
-		body.appendChild(myiframe);
+		else {
+			myiframe = document.getElementById('calnav');
+		}
 		myiframe.setAttribute("src",link);
 	}
 	//--></script>
