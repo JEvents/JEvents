@@ -876,7 +876,7 @@ class JEventsDataModel {
 			$user =& JFactory::getUser();
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
 			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
-			' AND c.section = '.$db->Quote(JEV_COM_COMPONENT).
+			' AND c.'.(JVersion::isCompatible("1.6.0")?'extension':'section').' = '.$db->Quote(JEV_COM_COMPONENT).
 			' AND c.id = '.$db->Quote($catids[0]);
 			$db->setQuery($catsql);
 			$catdata = $db->loadObject();

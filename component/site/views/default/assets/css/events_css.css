@@ -578,6 +578,7 @@ td.showjevadd a.addjevent {
    border: 1px solid #D4D5AA;
    padding: 0px;
    max-width: 200px;
+   z-index:99;
 }
  
 .jevtip-text {

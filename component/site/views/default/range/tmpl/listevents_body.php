@@ -54,7 +54,7 @@ echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
     	echo '<tr>';
     	echo '<td align="left" valign="top" class="ev_td_right">' . "\n";
 
-    	if( count($this->catids)==0 ){
+    	if( count($this->catids)==0 || $data['catname']==""){
     		echo JText::_('JEV_EVENT_CHOOSE_CATEG') . '</td>';
     	} else {
     		echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $data['catname']. '</b></td>';

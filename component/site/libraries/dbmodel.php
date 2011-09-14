@@ -185,7 +185,7 @@ class JEventsDBModel
 					. "\n FROM #__categories AS c"
 					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
-					. "\n AND c.section = '" . $sectionname . "'"
+					. (JVersion::isCompatible("1.6.0") ?  ' AND c.extension ' : ' AND c.section') . ' = '.$db->Quote($sectionname)
 					. "\n " . $where;
 			;
 
@@ -244,7 +244,7 @@ class JEventsDBModel
 					. ($levels > 2 ? ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' : '')
 					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
-					. "\n AND c.section = '" . $sectionname . "'"
+					. (JVersion::isCompatible("1.6.0") ?  ' AND c.extension ' : ' AND c.section') . ' = '.$db->Quote($sectionname)
 					. "\n " . $where;
 			;
 

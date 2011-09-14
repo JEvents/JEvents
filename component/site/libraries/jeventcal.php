@@ -257,67 +257,63 @@ class jEventCal {
 		else $this->_fgcolor=$val;
 	}
 
-	function getCategoryName( ){
-		$db	=& JFactory::getDBO();
-
+	function getCategoryData() {
 		static $arr_catids;
 
-		$catid = intval($this->catid());
-
-		if (!$arr_catids) {
+		if (!isset($arr_catids)) {
+			$db	=& JFactory::getDBO();
 			$arr_catids = array();
-			$catsql = "SELECT id, title as name"
-			. "\n FROM #__categories"
-			.( JVersion::isCompatible("1.6.0") ? "\n WHERE extension='com_jevents' " : "\n WHERE section='com_jevents'") 
-			;
-			$db->setQuery($catsql);
-
-			if( $categories = $db->loadObjectList('id') ) {
-				foreach($categories as $k=>$v){
-					$arr_catids[$k]=$v->name;
-				}
+			if ( JVersion::isCompatible("1.6.0") ){
+				$catsql = "SELECT id, title as name, description, params  FROM #__categories  WHERE extension='com_jevents' " ;
 			}
-		}
-		if (!isset($arr_catids[$catid])) {
-			$catsql = "SELECT id, title as name"
-			. "\n FROM #__categories"
-			. "\n WHERE id='$catid'"
-			;
-			$db->setQuery($catsql);
-
-			if( $categories = $db->loadObjectList() ) {
-				$arr_catids[$catid] = $categories[0]->name;
-			} else {
-				$arr_catids[$catid] ='';
+			else {
+				$catsql = "SELECT id, title as name , description, image FROM #__categories  WHERE section='com_jevents'" ;
 			}
+			$db->setQuery($catsql);
+			 $arr_catids = $db->loadObjectList('id') ;
+			
 		}
-		return $arr_catids[$catid];
+		$catid = intval($this->catid());
+		if (isset($arr_catids[$catid])) {
+			return $arr_catids[$catid];
+		}
+		return false;
+		
+	}
+	
+	function getCategoryName( ){		
+		$data = $this->getCategoryData();
+		if ($data) {
+			return $data->name;
+		}
+		return "";
+	}
+
+	function getCategoryImage( ){
+		$data = $this->getCategoryData();
+		if ($data){
+			if (JVersion::isCompatible("1.6.0") ){
+				$params = json_decode($data->params);
+				if (isset($params->image)){ 
+					return "<img src = '".JURI::root().$params->image."' class='catimage' />";
+				}								
+			}
+			else {
+				$image = $data->image;
+				if (!empty ($image)){ 
+					return "<img src = '".JURI::root().$image."' class='catimage' />";
+				}												
+			}			
+		}
+		return "";
 	}
 
 	function getCategoryDescription( ){
-		$db	=& JFactory::getDBO();
-
-		static $arr_catids;
-
-		$catid = intval($this->catid());
-
-		if (!$arr_catids) {
-			$arr_catids = array();
+		$data = $this->getCategoryData();
+		if ($data) {
+			return $data->description;
 		}
-		if (!isset($arr_catids[$catid])) {
-			$catsql = "SELECT id, title as name, description"
-			. "\n FROM #__categories"
-			. "\n WHERE id='$catid'"
-			;
-			$db->setQuery($catsql);
-
-			if( $categories = $db->loadObjectList() ) {
-				$arr_catids[$catid] = $categories[0]->description;
-			} else {
-				$arr_catids[$catid] ='';
-			}
-		}
-		return $arr_catids[$catid];
+		return "";
 	}
 	
 	function checkRepeatMonth($cellDate, $year,$month){

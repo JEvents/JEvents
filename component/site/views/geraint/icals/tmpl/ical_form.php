@@ -60,7 +60,7 @@ $doc->addScriptDeclaration($script);
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 ?>
 
-<form name="ical" method="post">
+<form name="ical" method="post" class="<?php isset($_POST['submit'])?'icalexportresults':'';?>">
 <?php
 $categories = JEV_CommonFunctions::getCategoryData();
 

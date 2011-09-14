@@ -180,6 +180,13 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 			}
 
 		}
+		if ($templatedcell)
+		{
+			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title . $cellString, ENT_QUOTES), $templatedcell);
+			$time = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
+			$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
+			return $templatedcell;
+		}
 
 		// return the whole thing
 		return $cellStart . ' style="' . $cellStyle . '" ' . $cellString . ">\n" . $title_event_link . $cellEnd;

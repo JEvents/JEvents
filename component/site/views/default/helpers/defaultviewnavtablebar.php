@@ -88,7 +88,7 @@ class DefaultViewNavTableBar {
 
 		$gg	="<img border='0' src='"
 		. JURI::root()
-		. "components/".JEV_COM_COMPONENT."/views/".$this->view->getViewName()."/assets/images/$icon"."_"
+		. "components/".JEV_COM_COMPONENT."/views/default/assets/images/$icon"."_"
 		. $cfg->get('com_navbarcolor').".gif' alt='".$alts[$which]."'/>";
 
 		$thelink = '<a href="'.JRoute::_($link.$dates[$which]->toDateURL()).'" title="'.$alts[$which].'">'.$gg.'</a>'."\n";

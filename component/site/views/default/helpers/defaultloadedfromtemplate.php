@@ -69,7 +69,8 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 	$eventlink = substr($eventlink,0,strlen($eventlink)-1);
 	$eventlink = JRoute::_($eventlink);
 	$catlink ='<a class="ev_link_cat" href="'.$eventlink.'"  title="'. JEventsHTML::special($event->catname()).'">'. $event->catname().'</a>';
-	$search[]="{{CATEGORYLNK}}";$replace[]=$catlink;$blank[]="";
+	$search[]="{{CATEGORYLNK}}";$replace[]=$catlink;$blank[]="";	
+	$search[]="{{CATEGORYIMG}}";$replace[]=$event->getCategoryImage();$blank[]="";
 
 
 	static $styledone=false;

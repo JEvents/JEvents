@@ -206,8 +206,10 @@ class JEventsHTML{
 					 $user =JFactory::getUser();
 					 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
 					 $authorisedonly = $params->get("authorisedonly", 0);
-					 $cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
-					 if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
+					 $action = JRequest::getInt("evid",0)>0 ? 'core.edit' : 'core.create';
+					 $cats = $user->getAuthorisedCategories('com_jevents', $action);
+					 //if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
+					 if (isset($user->id) && !$authorisedonly){
 						$count = count($options);
 						for ($o=0;$o<$count;$o++){
 						   if (!in_array($options[$o]->value, $cats)){

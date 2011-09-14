@@ -1,8 +1,22 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+/*
+if (JRequest::getInt("category_fv",-1)==-1) {	
+	// get the cat name from the database
+	$db	=& JFactory::getDBO();
+	$user =& JFactory::getUser();
+	$catsql = 'SELECT c.id FROM #__categories AS c' .
+	' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
+	' AND c.'.(JVersion::isCompatible("1.6.0")?'extension':'section').' = '.$db->Quote(JEV_COM_COMPONENT).
+	" ORDER BY c.level asc, c.title LIMIT 1"	;
+	$db->setQuery($catsql);
+	$catid = $db->loadResult();
 
+	JRequest::setVar("category_fv",$catid);
+	$this->catids = array($catid);
+}
+ */
 $cfg	 = & JEVConfig::getInstance();
-
 $data = $this->datamodel->getCatData( $this->catids,false, $this->limit, $this->limitstart);
 
 $Itemid = JEVHelper::getItemid();
@@ -47,7 +61,7 @@ if( $num_events > 0 ){
 	echo '<tr>';
 	echo '<td align="left" valign="top" class="ev_td_right">' . "\n";
 
-	if( count($this->catids)==0 ){
+	if( count($this->catids)==0 || $data['catname']==""){
 		echo JText::_('JEV_EVENT_CHOOSE_CATEG') . '</td>';
 	} else {
 		echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $data['catname']. '</b></td>';
