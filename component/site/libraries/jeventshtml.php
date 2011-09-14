@@ -199,26 +199,47 @@ class JEventsHTML{
 				}
 				$options = array_values($options);
 
-				// Thanks to ssobada
-				// when editing events we restrict the available list!
-				$jevtask = JRequest::getString("jevtask");
-				if (strpos($jevtask, "icalevent.edit")!==false || strpos($jevtask, "icalrepeat.edit")!==false  ){
-					 $user =JFactory::getUser();
-					 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
-					 $authorisedonly = $params->get("authorisedonly", 0);
-					 $action = JRequest::getInt("evid",0)>0 ? 'core.edit' : 'core.create';
-					 $cats = $user->getAuthorisedCategories('com_jevents', $action);
-					 //if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly){
-					 if (isset($user->id) && !$authorisedonly){
-						$count = count($options);
-						for ($o=0;$o<$count;$o++){
-						   if (!in_array($options[$o]->value, $cats)){
-							  unset($options[$o]);
-						   }
-						}
-						$options = array_values($options);
+			}
+			// Thanks to ssobada
+			// when editing events we restrict the available list!
+			$jevtask = JRequest::getString("jevtask");
+			if (strpos($jevtask, "icalevent.edit")!==false || strpos($jevtask, "icalrepeat.edit")!==false  ){
+				 $user =JFactory::getUser();
+				 $params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
+				 $authorisedonly = $params->get("authorisedonly", 0);
+				 if ($authorisedonly){
+					 $jevuser	= JEVHelper::getAuthorisedUser();
+					 if ($jevuser){
+						 if ($jevuser->categories == "all" ){
+							 $cats = array();
+							 foreach ($options as $opt){
+								 $cats[] = $opt->value;
+							 }
+						 }
+						 else if ($jevuser->categories != "" ){
+							 $cats = explode ("|",$jevuser->categories);
+						 }
+						 else {
+							 $cats = array();
+						 }
 					 }
-				}
+					 else {
+						 $cats = array();
+					 }
+				 }
+				 else {
+					 $action = JRequest::getInt("evid",0)>0 ? 'core.edit' : 'core.create';
+					 $cats = $user->getAuthorisedCategories('com_jevents', $action);				 
+				 }
+				 if (isset($user->id)){
+					$count = count($options);
+					for ($o=0;$o<$count;$o++){
+					   if (!in_array($options[$o]->value, $cats)){
+						  unset($options[$o]);
+					   }
+					}
+					$options = array_values($options);
+				 }
 			}
 			// if only one category then preselect it
 			if (count($options)==1){
