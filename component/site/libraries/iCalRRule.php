@@ -270,7 +270,7 @@ class iCalRRule extends JTable  {
 		}
 
 		if ($this->count==1){
-			echo "count=1 returing<br/>";
+			//echo "count=1 returing<br/>";
 			$this->_makeRepeat($dtstart,$dtend);
 			return $this->_repetitions;
 		}
