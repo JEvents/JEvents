@@ -161,7 +161,7 @@ class SaveIcalEvent {
 
 		$db =& JFactory::getDBO();
 		$success = true;
-		echo "class = ".get_class($vevent);
+		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
 			if (!$vevent->store()){
 				echo $db->getErrorMsg()."<br/>";
