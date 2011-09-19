@@ -145,6 +145,16 @@ class plgSearchEventsearch extends JPlugin
 			}
 		}
 
+		$params = JComponentHelper::getParams("com_jevents");		
+		
+		// See http://www.php.net/manual/en/timezones.php
+		$tz=$params->get("icaltimezonelive","");
+		if ($tz!="" && is_callable("date_default_timezone_set")){
+			$timezone= date_default_timezone_get();
+			date_default_timezone_set($tz);
+			$this->jeventstimezone = $timezone;
+		}
+		
 		$search_ical_attributes = array('det.summary', 'det.description', 'det.location', 'det.contact', 'det.extra_info');
 
 		// process the new plugins
@@ -314,7 +324,7 @@ class plgSearchEventsearch extends JPlugin
 			$rows = $db->loadObjectList("rp_id");
 			foreach ($list_ical as $index => $item)
 			{
-				$startdate = new JDate(strtotime($item->startrepeat));
+				$startdate = new JevDate(strtotime($item->startrepeat));
 				$item->title .= " (" . $startdate->toFormat($dateformat) . ")";
 
 				// Now ensure that the URL is the correc SEF URL
@@ -338,6 +348,12 @@ class plgSearchEventsearch extends JPlugin
 				$list_ical[$index] = $item;
 			}
 		}
+
+		// Must reset the timezone back!!
+		if ($tz && is_callable("date_default_timezone_set")){
+			date_default_timezone_set($timezone);
+		}
+		
 		return $list_ical;
 
 	}
