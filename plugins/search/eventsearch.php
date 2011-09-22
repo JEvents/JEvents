@@ -145,16 +145,17 @@ class plgSearchEventsearch extends JPlugin
 			}
 		}
 
-		$params = JComponentHelper::getParams("com_jevents");		
-		
+		$params = JComponentHelper::getParams("com_jevents");
+
 		// See http://www.php.net/manual/en/timezones.php
-		$tz=$params->get("icaltimezonelive","");
-		if ($tz!="" && is_callable("date_default_timezone_set")){
-			$timezone= date_default_timezone_get();
+		$tz = $params->get("icaltimezonelive", "");
+		if ($tz != "" && is_callable("date_default_timezone_set"))
+		{
+			$timezone = date_default_timezone_get();
 			date_default_timezone_set($tz);
 			$this->jeventstimezone = $timezone;
 		}
-		
+
 		$search_ical_attributes = array('det.summary', 'det.description', 'det.location', 'det.contact', 'det.extra_info');
 
 		// process the new plugins
@@ -183,8 +184,8 @@ class plgSearchEventsearch extends JPlugin
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
 		$extrasearchfields = array();
-		$dispatcher->trigger('onSearchEvents', array (& $extrasearchfields, & $extrajoin,& $needsgroup));
-		
+		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
+
 		$wheres = array();
 		$wheres_ical = array();
 		switch ($phrase) {
@@ -220,15 +221,16 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		if (count($extrasearchfields)>0) {
-			$extraor = implode(" OR ",$extrasearchfields);
-			$extraor = " OR ".$extraor;
+		if (count($extrasearchfields) > 0)
+		{
+			$extraor = implode(" OR ", $extrasearchfields);
+			$extraor = " OR " . $extraor;
 			// replace the ### placeholder with the keyword
-			$extraor = str_replace("###",$text,$extraor);
+			$extraor = str_replace("###", $text, $extraor);
 
-			$where_ical .= $extraor ;
+			$where_ical .= $extraor;
 		}
-		
+
 		$morder = '';
 		$morder_ical = '';
 		switch ($ordering) {
@@ -261,7 +263,6 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		
 		$eventstitle = JText::_("Events Calendar");
 		// Now Search Icals
 		$display2 = array();
@@ -270,7 +271,7 @@ class plgSearchEventsearch extends JPlugin
 			$display2[] = "$search_ical_attribute";
 		}
 		$display = 'CONCAT(' . implode(", ' ', ", $display2) . ')';
-		$query = "SELECT det.summary as title,"
+		$query = "SELECT det.evdet_id, det.summary as title,"
 				. "\n ev.created as created,"
 				. "\n $display as text,"
 				. "\n CONCAT('$eventstitle','/',det.summary) AS section,"
@@ -297,63 +298,63 @@ class plgSearchEventsearch extends JPlugin
 		;
 
 		$db->setQuery($query);
-		$list_ical = $db->loadObjectList();
+		$list_ical = $db->loadObjectList('evdet_id');
 
 		jimport('joomla.utilities.date');
 		if ($list_ical)
 		{
-			$ids = array();
-			foreach ($list_ical as $item)
+			foreach ($list_ical as $id => $item)
 			{
-				$ids[] = $item->rp_id;
-			}
-			$user = JFactory::getUser();
-			$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.*, ev.created as created "
-					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
-					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
-					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
-					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
-					. "\n FROM #__jevents_vevent as ev"
-					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-					. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
-					. "\n AND rpt.rp_id IN (" . implode(",", $ids) . ")";
 
-			$db->setQuery($query);
-			$rows = $db->loadObjectList("rp_id");
-			foreach ($list_ical as $index => $item)
-			{
-				$startdate = new JevDate(strtotime($item->startrepeat));
-				$item->title .= " (" . $startdate->toFormat($dateformat) . ")";
+				$user = JFactory::getUser();
+				$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.*, ev.created as created "
+						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+						. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+						. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+						. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+						. "\n FROM #__jevents_vevent as ev"
+						. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+						. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+						. "\n AND det.evdet_id = $id"
+						. "\n ORDER BY rpt.startrepeat ASC limit 1";
 
-				// Now ensure that the URL is the correc SEF URL
-				if (array_key_exists($item->rp_id, $rows))
-				{
-					$row = $rows[$item->rp_id];
-					$event = new jIcalEventRepeat($row);
-					$myitemid = 0;
-					// I must find the itemid that allows this event to be shown
-					$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
-					// Use the plugin params to ensure menu item is picked up
-					//$modparams = new JParameter($this->_plugin->params);
-					$modparams = new JParameter(null);
-					// pretend to have category restriction
-					$modparams->set("catid0", $row->catid);
-					$modparams->set("ignorecatfilter", 1);
-					$myitemid = findAppropriateMenuID($catidsOut, $modcatids, $catidList, $modparams->toObject(), $showall);
-					$item->href = $event->viewDetailLink($row->yup, $row->mup, $row->dup, false, $myitemid);
-					$link = $item->href;
-				}
-				$list_ical[$index] = $item;
+				$db->setQuery($query);
+				$row = $db->loadObject();
+				if (!$row)
+					continue;
+
+				$event = new jIcalEventRepeat($row);
+				$event = $event->getNextRepeat();
+				
+				$startdate = new JevDate(strtotime($event->_startrepeat));
+				$item->title = $item->title . " (" . $startdate->toFormat($dateformat) . ")";
+				$item->startrepeat = $event->_startrepeat;
+				
+				$myitemid = 0;
+				// I must find the itemid that allows this event to be shown
+				$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
+				// Use the plugin params to ensure menu item is picked up
+				//$modparams = new JParameter($this->_plugin->params);
+				$modparams = new JParameter(null);
+				// pretend to have category restriction
+				$modparams->set("catid0", $row->catid);
+				$modparams->set("ignorecatfilter", 1);
+				$myitemid = findAppropriateMenuID($catidsOut, $modcatids, $catidList, $modparams->toObject(), $showall);
+				$item->href = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myitemid);
+				$link = $item->href;
+
+				$list_ical[$id] = $item;
 			}
 		}
 
 		// Must reset the timezone back!!
-		if ($tz && is_callable("date_default_timezone_set")){
+		if ($tz && is_callable("date_default_timezone_set"))
+		{
 			date_default_timezone_set($timezone);
 		}
-		
+
 		return $list_ical;
 
 	}
