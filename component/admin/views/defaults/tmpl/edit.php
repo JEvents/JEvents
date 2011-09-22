@@ -11,7 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$editor =& JFactory::getEditor();
+if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" )  {
+	$editor =& JFactory::getEditor("none");
+}
+else {
+	$editor =& JFactory::getEditor();
+}
 
 if ($this->item->value=="" && file_exists(dirname(__FILE__).DS.$this->item->name.".html")) $this->item->value = file_get_contents(dirname(__FILE__).DS.$this->item->name.".html");
 $this->replaceLabels($this->item->value);

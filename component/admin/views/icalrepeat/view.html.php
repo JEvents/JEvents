@@ -60,7 +60,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 
 		$this->addSaveToolBarButton();
-		JToolBarHelper::apply('icalrepeat.apply');
+		JToolBarHelper::apply('icalrepeat.apply', "Apply");
 		//$this->addCancelToolBarButton();
 		
 		JToolBarHelper::cancel('icalrepeat.list');
