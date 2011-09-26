@@ -70,9 +70,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				if ($params->get("showPanelNews",1)) {
-					$pane = JPane::getInstance('sliders');
-					echo JHtml::_('sliders.start', 'module-sliders'); 
-					echo JHtml::_('sliders.panel',JText::_("JEV_News"), 'cpanelnews');
+					if (JVersion::isCompatible("1.6")){
+						$pane = JPane::getInstance('sliders');
+						echo JHtml::_('sliders.start', 'cpanel-sliders'); 
+						echo JHtml::_('sliders.panel',JText::_("JEV_News"), 'cpanelnews');
+					}
+					else {
+						$pane = JPane::getInstance('tabs');
+						echo $tabs->startPane( 'cpanel-tabs' );
+						echo $tabs->startPanel( JText::_("JEV_News"), 'cpanelnews');
+					}
 					?>
 				<div style="width: 100%;">
 					<table class="adminlist">
@@ -82,6 +89,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</table>
 				</div>
 				<?php
+					if (!JVersion::isCompatible("1.6")){
+						echo $tabs->endPanel();
+					}
 					$needsupdate = false;
 					$clubnews = $this->renderVersionStatusReport($needsupdate );
 					if ($needsupdate ){
@@ -93,13 +103,27 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						$repid = 'statusreport';
 					}
 					if ($clubnews){
-					echo JHtml::_('sliders.panel',$label, $repid);
+						if (JVersion::isCompatible("1.6")){						
+							echo JHtml::_('sliders.panel',$label, $repid);
+						}
+						else {
+							echo $tabs->startPanel( JText::_("JEV_News"), 'cpanelnews');
+						}
 					?>
 				<div style="width: 100%;">
 					<?php echo $clubnews;?>
 				</div> <?php		
+						if (!JVersion::isCompatible("1.6")){
+							echo $tabs->endPanel();
+						}
+				
 					}
-				 echo JHtml::_('sliders.end'); 
+				if (JVersion::isCompatible("1.6")){						
+					echo JHtml::_('sliders.end'); 
+				}
+				else{
+					echo $tabs->endPane();
+				}
 				} ?>
 			</td>
 		</tr>
