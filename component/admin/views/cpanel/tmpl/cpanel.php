@@ -76,9 +76,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						echo JHtml::_('sliders.panel',JText::_("JEV_News"), 'cpanelnews');
 					}
 					else {
-						$pane = JPane::getInstance('tabs');
+						$tabs = JPane::getInstance('tabs');
 						echo $tabs->startPane( 'cpanel-tabs' );
-						echo $tabs->startPanel( JText::_("JEV_News"), 'cpanelnews');
+						echo $tabs->startPanel( JText::_("JEV_News"), 'cpanelstatus');
 					}
 					?>
 				<div style="width: 100%;">
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							echo JHtml::_('sliders.panel',$label, $repid);
 						}
 						else {
-							echo $tabs->startPanel( JText::_("JEV_News"), 'cpanelnews');
+							echo $tabs->startPanel( $label, 'cpanelstatus');
 						}
 					?>
 				<div style="width: 100%;">

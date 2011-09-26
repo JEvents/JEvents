@@ -138,22 +138,33 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$cache_time = 1;
 
 			jimport('simplepie.simplepie');
-			$cache = JFactory::getCache('feed_parser', 'callback');
 
-			if ($cache_time > 0)
+			if (JVersion::isCompatible("1.6"))
 			{
+				$cache = JFactory::getCache('feed_parser', 'callback');
 				$cache->setLifeTime($cache_time);
+
+				$rssDoc = new SimplePie(null, null, 0);
+
+				$rssDoc->enable_cache(false);
+				$rssDoc->set_feed_url($rssUrl);
+				$rssDoc->force_feed(true);
+				$rssDoc->set_item_limit(999);
+
+				$results = $cache->get(array($rssDoc, 'init'), null, false, false);
 			}
-
-			$rssDoc = new SimplePie(null, null, 0);
-
-			$rssDoc->enable_cache(false);
-			$rssDoc->set_feed_url($rssUrl);
-			$rssDoc->force_feed(true);
-			$rssDoc->set_item_limit(999);
-
-			$results = $cache->get(array($rssDoc, 'init'), null, false, false);
-
+			else
+			{
+				$rssDoc = new SimplePie(
+								$rssUrl,
+								JPATH_BASE . DS . 'cache',
+								$cache_time
+				);
+				$rssDoc->force_feed(true);
+				$rssDoc->handle_content_type();
+				$results = $rssDoc->init();
+			}
+			
 			if ($results == false)
 			{
 				return false;
@@ -186,6 +197,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				{
 					$xmlfiles2 = array();
 				}
+
 				foreach ($xmlfiles2 as $manifest)
 				{
 					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
@@ -250,13 +262,13 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				if (false)
 				{
 					/*
-					$output = '$catmapping = array(' . "\n";
-					foreach ($apps as $appname => $app)
-					{
-						$output .='"' . $appname . '"=> 0,' . "\n";
-					}
-					$output = substr($output, 0, strlen($output) - 2) . ");\n\n";
-					*/
+					  $output = '$catmapping = array(' . "\n";
+					  foreach ($apps as $appname => $app)
+					  {
+					  $output .='"' . $appname . '"=> 0,' . "\n";
+					  }
+					  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
+					 */
 					$catmapping = array(
 						"layout_extplus" => 3,
 						"layout_iconic" => 3,
@@ -301,7 +313,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						"plugin_search_jevlocsearch" => 4,
 						"plugin_search_jevtagsearch" => 9,
 						"plugin_system_autotweetjevents" => 45,
-						"plugin_user_juser" => 24,						
+						"plugin_user_juser" => 24,
 						"component_com_attend_jevents" => 21,
 						"component_com_jevents" => 52,
 						"component_com_jeventstags" => 9,
