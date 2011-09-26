@@ -70,7 +70,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				if ($params->get("showPanelNews",1)) {
-				?>
+					$pane = JPane::getInstance('sliders');
+					echo JHtml::_('sliders.start', 'module-sliders'); 
+					echo JHtml::_('sliders.panel',JText::_("JEV_News"), 'cpanelnews');
+					?>
 				<div style="width: 100%;">
 					<table class="adminlist">
 						<tr class="row0">
@@ -78,7 +81,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 					</table>
 				</div>
-				<?php } ?>
+				<?php
+					$needsupdate = false;
+					$clubnews = $this->renderVersionStatusReport($needsupdate );
+					if ($needsupdate ){
+						$label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
+						$repid = 'updateavailable';
+					}
+					else {
+						$label = JText::_("JEV_VERSION_STATUS_REPORT");
+						$repid = 'statusreport';
+					}
+					if ($clubnews){
+					echo JHtml::_('sliders.panel',$label, $repid);
+					?>
+				<div style="width: 100%;">
+					<?php echo $clubnews;?>
+				</div> <?php		
+					}
+				 echo JHtml::_('sliders.end'); 
+				} ?>
 			</td>
 		</tr>
   </table>
