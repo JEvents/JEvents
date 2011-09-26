@@ -180,6 +180,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				$xmlfiles1 = JFolder::files(JEV_PATH . "views/", "manifest\.xml", true, true);
 				foreach ($xmlfiles1 as $manifest)
 				{
+					if (realpath($manifest) != $manifest) continue;					
 					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 
 					$app = new stdClass();
@@ -210,7 +211,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 					$app = new stdClass();
 					$app->name = $manifestdata["name"];
 					$app->version = $manifestdata["version"];
-					$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . str_replace(".xml", "", basename($manifest));
+					$name = str_replace(".xml", "", basename($manifest));
+					if (JVersion::isCompatible("1.6")){
+						$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+					}
+					else {
+						// simulate Joomla 1.7 directory structure
+						$name = "plugin_" . basename(dirname($manifest)). "_" . $name;
+					}
 					$apps[$name] = $app;
 				}
 
