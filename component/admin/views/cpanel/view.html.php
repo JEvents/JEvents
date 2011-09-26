@@ -247,7 +247,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				}
 
 				// setup the XML file for server	
-				if (true)
+				if (false)
 				{
 					/*
 					$output = '$catmapping = array(' . "\n";
