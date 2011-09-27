@@ -131,11 +131,11 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 			//  get RSS parsed object
 			$options = array();
-			$rssUrl = 'http://www.jevents.net/jevnews?format=feed&type=rss';
+			$rssUrl = 'http://www.jevents.net/versions.xml';
 			$cache_time = 86400;
 
-			$rssUrl = 'http://ubu.jev20j16.com/versions.xml';
-			$cache_time = 1;
+			//$rssUrl = 'http://ubu.jev20j16.com/versions.xml';
+			//$cache_time = 1;
 
 			jimport('simplepie.simplepie');
 
@@ -328,7 +328,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						"component_com_jevlocations-old" => 4,
 						"component_com_jevlocations" => 4,
 						"component_com_jevpeople" => 13,
-						"component_com_rsvppro" => 0,
+						"component_com_rsvppro" => 12,
 						"module_mod_jevents_cal" => 52,
 						"module_mod_jevents_categories" => 52,
 						"module_mod_jevents_filter" => 52,
@@ -336,7 +336,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						"module_mod_jevents_legend" => 52,
 						"module_mod_jevents_notify" => 61,
 						"module_mod_jevents_paidsubs" => 48,
-						"module_mod_jevents_switchview" => 520);
+						"module_mod_jevents_switchview" => 52);
 					foreach ($apps as $appname => $app)
 					{
 						$row = new stdClass();
@@ -364,7 +364,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						if ($item->get_title() == $appname)
 						{
 							$iteminfo = json_decode($item->get_description());
-							if (version_compare($app->version, $iteminfo->version, "<="))
+							if (version_compare($app->version, $iteminfo->version, "<"))
 							{
 								$link = $iteminfo->link != "" ? "<a href='" . $iteminfo->link . "' target='_blank'>" . $app->name . "</a>" : $app->name;
 								if ($iteminfo->criticalversion != "" && version_compare($app->version, $iteminfo->criticalversion, "<"))
@@ -375,8 +375,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 								{
 									$rows[] = array($link, $appname, $app->version, $iteminfo->version, "");
 								}
-								$app->done = true;
 							}
+							$app->done = true;
 						}
 					}
 					if (!$app->done)
