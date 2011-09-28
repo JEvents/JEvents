@@ -29,7 +29,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	{
 		jimport('joomla.html.pane');
 
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0"))
 			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin.css');
 		else
@@ -38,8 +38,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-		// Set toolbar items for the page
-		//JToolBarHelper::preferences('com_jevents', '580', '750');
+// Set toolbar items for the page
+//JToolBarHelper::preferences('com_jevents', '580', '750');
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 		/*
 		  $user= JFactory::getUser();
@@ -53,14 +53,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
+//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		}
-		//JToolBarHelper::help( 'screen.cpanel', true);
+//JToolBarHelper::help( 'screen.cpanel', true);
 
 		JSubMenuHelper::addEntry(JText::_('CONTROL_PANEL'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+//$section = $params->getValue("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -74,7 +74,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		$output = '';
 
-		//  get RSS parsed object
+//  get RSS parsed object
 		$options = array();
 		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
 		$options['cache_time'] = 86400;
@@ -87,7 +87,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 		else
 		{
-			// channel header and link
+// channel header and link
 			$title = str_replace(" ", "_", $rssDoc->get_title());
 			$link = $rssDoc->get_link();
 
@@ -129,13 +129,13 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		if (JEVHelper::isAdminUser())
 		{
 
-			//  get RSS parsed object
+//  get RSS parsed object
 			$options = array();
 			$rssUrl = 'http://www.jevents.net/versions.xml';
 			$cache_time = 86400;
 
-			//$rssUrl = 'http://ubu.jev20j16.com/versions.xml';
-			//$cache_time = 1;
+//$rssUrl = 'http://ubu.jev20j16.com/versions.xml';
+//$cache_time = 1;
 
 			jimport('simplepie.simplepie');
 
@@ -164,111 +164,104 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				$rssDoc->handle_content_type();
 				$results = $rssDoc->init();
 			}
-			
+
 			if ($results == false)
 			{
 				return false;
 			}
 			else
 			{
-
-				jimport("joomla.filesystem.folder");
-
-				$apps = array();
-
-				// club layouts			 
-				$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
-				foreach ($xmlfiles1 as $manifest)
-				{
-					if (realpath($manifest) != $manifest) continue;					
-					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
-
-					$app = new stdClass();
-					$app->name = $manifestdata["name"];
-					$app->version = $manifestdata["version"];
-					$apps["layout_" . basename(dirname($manifest))] = $app;
-				}
-
-				// plugins
-				if (JFolder::exists(JPATH_SITE . "/plugins"))
-				{
-					$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
-				}
-				else
-				{
-					$xmlfiles2 = array();
-				}
-
-				foreach ($xmlfiles2 as $manifest)
-				{
-					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
-					if (!$manifestdata)
-						continue;
-					if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false)
-					{
-						continue;
-					}
-					$app = new stdClass();
-					$app->name = $manifestdata["name"];
-					$app->version = $manifestdata["version"];
-					$name = str_replace(".xml", "", basename($manifest));
-					if (JVersion::isCompatible("1.6")){
-						$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
-					}
-					else {
-						// simulate Joomla 1.7 directory structure
-						$name = "plugin_" . basename(dirname($manifest)). "_" . $name;
-					}
-					$apps[$name] = $app;
-				}
-
-				// components (including JEvents
-				$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
-				foreach ($xmlfiles3 as $manifest)
-				{
-					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
-					if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false)
-					{
-						continue;
-					}
-
-					$app = new stdClass();
-					$app->name = $manifestdata["name"];
-					$app->version = $manifestdata["version"];
-					$name = "component_" . basename(dirname($manifest));
-					$apps[$name] = $app;
-				}
-
-
-				// modules
-				if (JFolder::exists(JPATH_SITE . "/modules"))
-				{
-					$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
-				}
-				else
-				{
-					$xmlfiles4 = array();
-				}
-				foreach ($xmlfiles4 as $manifest)
-				{
-					$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
-					if (!$manifestdata)
-						continue;
-					if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false)
-					{
-						continue;
-					}
-					$app = new stdClass();
-					$app->name = $manifestdata["name"];
-					$app->version = $manifestdata["version"];
-					$app->criticalversion = "";
-					$name = "module_" . str_replace(".xml", "", basename($manifest));
-					$apps[$name] = $app;
-				}
-
-				// setup the XML file for server	
 				if (false)
 				{
+
+					jimport("joomla.filesystem.folder");
+
+					$apps = array();
+
+// club layouts			 
+					$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
+					foreach ($xmlfiles1 as $manifest)
+					{
+						if (realpath($manifest) != $manifest)
+							continue;
+						if (!$manifestdata = $this->getValidManifestFile($manifest))
+							continue;
+
+						$app = new stdClass();
+						$app->name = $manifestdata["name"];
+						$app->version = $manifestdata["version"];
+						$apps["layout_" . basename(dirname($manifest))] = $app;
+					}
+
+// plugins
+					if (JFolder::exists(JPATH_SITE . "/plugins"))
+					{
+						$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
+					}
+					else
+					{
+						$xmlfiles2 = array();
+					}
+
+					foreach ($xmlfiles2 as $manifest)
+					{
+						if (!$manifestdata = $this->getValidManifestFile($manifest))
+							continue;
+
+						$app = new stdClass();
+						$app->name = $manifestdata["name"];
+						$app->version = $manifestdata["version"];
+						$name = str_replace(".xml", "", basename($manifest));
+						if (JVersion::isCompatible("1.6"))
+						{
+							$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+						}
+						else
+						{
+// simulate Joomla 1.7 directory structure
+							$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+						}
+						$apps[$name] = $app;
+					}
+
+// components (including JEvents
+					$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
+					foreach ($xmlfiles3 as $manifest)
+					{
+						if (!$manifestdata = $this->getValidManifestFile($manifest))
+							continue;
+
+						$app = new stdClass();
+						$app->name = $manifestdata["name"];
+						$app->version = $manifestdata["version"];
+						$name = "component_" . basename(dirname($manifest));
+						$apps[$name] = $app;
+					}
+
+
+// modules
+					if (JFolder::exists(JPATH_SITE . "/modules"))
+					{
+						$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
+					}
+					else
+					{
+						$xmlfiles4 = array();
+					}
+					foreach ($xmlfiles4 as $manifest)
+					{
+						if (!$manifestdata = $this->getValidManifestFile($manifest))
+							continue;
+
+						$app = new stdClass();
+						$app->name = $manifestdata["name"];
+						$app->version = $manifestdata["version"];
+						$app->criticalversion = "";
+						$name = "module_" . str_replace(".xml", "", basename($manifest));
+						$apps[$name] = $app;
+					}
+
+// setup the XML file for server	
 					/*
 					  $output = '$catmapping = array(' . "\n";
 					  foreach ($apps as $appname => $app)
@@ -278,11 +271,13 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 					  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
 					 */
 					$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
-					$criticaldata = explode("\n",$criticaldata);
+					$criticaldata = explode("\n", $criticaldata);
 					$criticals = array();
-					foreach ($criticaldata as $critical ){
-						$critical = explode("|",$critical);
-						if (count($critical)>1){
+					foreach ($criticaldata as $critical)
+					{
+						$critical = explode("|", $critical);
+						if (count($critical) > 1)
+						{
 							$criticals[$critical[0]] = $critical[1];
 						}
 					}
@@ -351,11 +346,13 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						$row = new stdClass();
 						$row->version = $app->version;
 						$row->criticalversion = "";
-						if (array_key_exists($appname, $criticals)){
+						if (array_key_exists($appname, $criticals))
+						{
 							$row->criticalversion = $criticals[$appname];
 						}
 						$row->link = array_key_exists($appname, $catmapping) ? "http://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
-						if ($row->link=="") continue;
+						if ($row->link == "")
+							continue;
 						$output .= "<item>\n<title>$appname</title>\n<description><![CDATA[" . json_encode($row) . "]]></description>\n</item>\n";
 					}
 					$output .= "";
@@ -368,33 +365,135 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				$rows = array();
 				$items = $rssDoc->get_items();
 
-				foreach ($apps as $appname => $app)
+				foreach ($items as $item)
 				{
-					$setup[] = $app;
-					$app->done = false;
-					foreach ($items as $item)
+					$apps = array();
+					if (strpos($item->get_title(), "layout_") === 0)
 					{
-						$app->done = true;						
-						if ($item->get_title() == $appname)
+						$layout = str_replace("layout_", "", $item->get_title());
+						if (JFolder::exists(JEV_PATH . "views/$layout"))
 						{
-							$iteminfo = json_decode($item->get_description());
-							if (version_compare($app->version, $iteminfo->version, "<"))
+// club layouts			 
+							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
+							if (!$xmlfiles1)
+								continue;
+							foreach ($xmlfiles1 as $manifest)
 							{
-								$link = $iteminfo->link != "" ? "<a href='" . $iteminfo->link . "' target='_blank'>" . $app->name . "</a>" : $app->name;
-								if ($iteminfo->criticalversion != "" && version_compare($app->version, $iteminfo->criticalversion, "<"))
-								{
-									$rows[] = array($link, $appname, $app->version, $iteminfo->version, "<strong>" . $iteminfo->criticalversion . "</strong>");
-								}
-								else
-								{
-									$rows[] = array($link, $appname, $app->version, $iteminfo->version, "");
-								}
+								if (realpath($manifest) != $manifest)
+									continue;
+								if (!$manifestdata = $this->getValidManifestFile($manifest))
+									continue;
+
+								$app = new stdClass();
+								$app->name = $manifestdata["name"];
+								$app->version = $manifestdata["version"];
+								$apps["layout_" . basename(dirname($manifest))] = $app;
 							}
 						}
 					}
-					if (!$app->done)
+					else if (strpos($item->get_title(), "module_") === 0)
 					{
-						$rows[] = array($app->name, $appname, $app->version, "", "");
+						$module = str_replace("module_", "", $item->get_title());
+// modules
+						if (JFolder::exists(JPATH_SITE . "/modules/$module"))
+						{
+
+							$xmlfiles1 = JFolder::files(JPATH_SITE . "/modules/$module", "\.xml", true, true);
+							if (!$xmlfiles1)
+								continue;
+							foreach ($xmlfiles1 as $manifest)
+							{
+								if (realpath($manifest) != $manifest)
+									continue;
+								if (!$manifestdata = $this->getValidManifestFile($manifest))
+									continue;
+
+								$app = new stdClass();
+								$app->name = $manifestdata["name"];
+								$app->version = $manifestdata["version"];
+								$name = "module_" . str_replace(".xml", "", basename($manifest));
+								$apps[$name] = $app;
+							}
+						}
+					}
+					else if (strpos($item->get_title(), "plugin_") === 0)
+					{
+						$plugin = explode("_", str_replace("plugin_", "", $item->get_title()), 2);
+						if (count($plugin) < 2)
+							continue;
+						// plugins
+						if (JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1]))
+						{
+
+							// modules
+							$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
+
+							foreach ($xmlfiles1 as $manifest)
+							{
+								if (!$manifestdata = $this->getValidManifestFile($manifest))
+									continue;
+
+								$app = new stdClass();
+								$app->name = $manifestdata["name"];
+								$app->version = $manifestdata["version"];
+								$name = str_replace(".xml", "", basename($manifest));
+								if (JVersion::isCompatible("1.6"))
+								{
+									$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+								}
+								else
+								{
+									// simulate Joomla 1.7 directory structure
+									$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+								}
+								$apps[$name] = $app;
+							}
+						}
+					}
+					else if (strpos($item->get_title(), "component_") === 0)
+					{
+						$component = str_replace("component_", "", $item->get_title());
+
+						if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/" . $component))
+						{
+
+							// modules
+							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/components/" . $component, "\.xml", true, true);
+							if (!$xmlfiles1)
+								continue;
+							foreach ($xmlfiles1 as $manifest)
+							{
+								if (!$manifestdata = $this->getValidManifestFile($manifest))
+									continue;
+
+								$app = new stdClass();
+								$app->name = $manifestdata["name"];
+								$app->version = $manifestdata["version"];
+								$name = "component_" . basename(dirname($manifest));
+								$apps[$name] = $app;
+							}
+						}
+					}
+					else
+					{
+						continue;
+					}
+
+					foreach ($apps as $appname => $app)
+					{
+						$iteminfo = json_decode($item->get_description());
+						if (version_compare($app->version, $iteminfo->version, "<"))
+						{
+							$link = $iteminfo->link != "" ? "<a href='" . $iteminfo->link . "' target='_blank'>" . $app->name . "</a>" : $app->name;
+							if ($iteminfo->criticalversion != "" && version_compare($app->version, $iteminfo->criticalversion, "<"))
+							{
+								$rows[] = array($link, $appname, $app->version, $iteminfo->version, "<strong>" . $iteminfo->criticalversion . "</strong>");
+							}
+							else
+							{
+								$rows[] = array($link, $appname, $app->version, $iteminfo->version, "");
+							}
+						}
 					}
 				}
 
@@ -425,6 +524,26 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	}
 
+	private
+
+	function getValidManifestFile($manifest)
+	{
+		$filecontent = JFile::read($manifest);
+		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false)
+		{
+			return false;
+		}
+		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
+		if (!$manifestdata)
+			return false;
+		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false)
+		{
+			return false;
+		}
+		return $manifestdata;
+
+	}
+
 	function limitText($text, $wordcount)
 	{
 		if (!$wordcount)
@@ -450,3 +569,4 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	}
 
 }
+
