@@ -173,193 +173,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			{
 				if (false)
 				{
-
-					jimport("joomla.filesystem.folder");
-
-					$apps = array();
-
-// club layouts			 
-					$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
-					foreach ($xmlfiles1 as $manifest)
-					{
-						if (realpath($manifest) != $manifest)
-							continue;
-						if (!$manifestdata = $this->getValidManifestFile($manifest))
-							continue;
-
-						$app = new stdClass();
-						$app->name = $manifestdata["name"];
-						$app->version = $manifestdata["version"];
-						$apps["layout_" . basename(dirname($manifest))] = $app;
-					}
-
-// plugins
-					if (JFolder::exists(JPATH_SITE . "/plugins"))
-					{
-						$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
-					}
-					else
-					{
-						$xmlfiles2 = array();
-					}
-
-					foreach ($xmlfiles2 as $manifest)
-					{
-						if (!$manifestdata = $this->getValidManifestFile($manifest))
-							continue;
-
-						$app = new stdClass();
-						$app->name = $manifestdata["name"];
-						$app->version = $manifestdata["version"];
-						$name = str_replace(".xml", "", basename($manifest));
-						if (JVersion::isCompatible("1.6"))
-						{
-							$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
-						}
-						else
-						{
-// simulate Joomla 1.7 directory structure
-							$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
-						}
-						$apps[$name] = $app;
-					}
-
-// components (including JEvents
-					$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
-					foreach ($xmlfiles3 as $manifest)
-					{
-						if (!$manifestdata = $this->getValidManifestFile($manifest))
-							continue;
-
-						$app = new stdClass();
-						$app->name = $manifestdata["name"];
-						$app->version = $manifestdata["version"];
-						$name = "component_" . basename(dirname($manifest));
-						$apps[$name] = $app;
-					}
-
-
-// modules
-					if (JFolder::exists(JPATH_SITE . "/modules"))
-					{
-						$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
-					}
-					else
-					{
-						$xmlfiles4 = array();
-					}
-					foreach ($xmlfiles4 as $manifest)
-					{
-						if (!$manifestdata = $this->getValidManifestFile($manifest))
-							continue;
-
-						$app = new stdClass();
-						$app->name = $manifestdata["name"];
-						$app->version = $manifestdata["version"];
-						$app->criticalversion = "";
-						$name = "module_" . str_replace(".xml", "", basename($manifest));
-						$apps[$name] = $app;
-					}
-
-// setup the XML file for server	
-					/*
-					  $output = '$catmapping = array(' . "\n";
-					  foreach ($apps as $appname => $app)
-					  {
-					  $output .='"' . $appname . '"=> 0,' . "\n";
-					  }
-					  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
-					 */
-					$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
-					$criticaldata = explode("\n", $criticaldata);
-					$criticals = array();
-					foreach ($criticaldata as $critical)
-					{
-						$critical = explode("|", $critical);
-						if (count($critical) > 1)
-						{
-							$criticals[$critical[0]] = $critical[1];
-						}
-					}
-					$catmapping = array(
-						"layout_extplus" => 3,
-						"layout_iconic" => 3,
-						"layout_ruthin" => 3,
-						"layout_smartphone" => 3,
-						"plugin_acymailing_tagjevents" => 41,
-						"plugin_community_jevents" => 7,
-						"plugin_content_jevcreator" => 34,
-						"plugin_content_jevent_embed" => 12,
-						"plugin_jevents_agendaminutes" => 12,
-						"plugin_jevents_jevanonuser" => 25,
-						"plugin_jevents_jevcalendar" => 15,
-						"plugin_jevents_jevcatcal" => 15,
-						"plugin_jevents_jevcb" => 18,
-						"plugin_jevents_jevcck" => 64,
-						"plugin_jevents_jevcustomfields" => 10,
-						"plugin_jevents_jevfacebook" => 46,
-						"plugin_jevents_jevfeatured" => 16,
-						"plugin_jevents_jevfiles" => 24,
-						"plugin_jevents_jevhiddendetail" => 51,
-						"plugin_jevents_jevjsstream" => 7,
-						"plugin_jevents_jevjxcoments" => 19,
-						"plugin_jevents_jevlocations" => 4,
-						"plugin_jevents_jevmatchingevents" => 47,
-						"plugin_jevents_jevmetatags" => 58,
-						"plugin_jevents_jevnotify" => 61,
-						"plugin_jevents_jevpaidsubs" => 48,
-						"plugin_jevents_jevpeople" => 13,
-						"plugin_jevents_jevpopupdetail" => 50,
-						"plugin_jevents_jevrsvp" => 14,
-						"plugin_jevents_jevrsvppro" => 12,
-						"plugin_jevents_jevsessions" => 21,
-						"plugin_jevents_jevtags" => 9,
-						"plugin_jevents_jevtimelimit" => 17,
-						"plugin_jevents_jevusers" => 8,
-						"plugin_jevents_jevweekdays" => 59,
-						"plugin_jnews_jnewsjevents" => 24,
-						"plugin_rsvppro_manual" => 12,
-						"plugin_rsvppro_paypalipn" => 12,
-						"plugin_rsvppro_virtuemart" => 12,
-						"plugin_search_eventsearch" => 52,
-						"plugin_search_jevlocsearch" => 4,
-						"plugin_search_jevtagsearch" => 9,
-						"plugin_system_autotweetjevents" => 45,
-						"plugin_user_juser" => 24,
-						"component_com_attend_jevents" => 21,
-						"component_com_jevents" => 52,
-						"component_com_jeventstags" => 9,
-						"component_com_jevlocations-old" => 4,
-						"component_com_jevlocations" => 4,
-						"component_com_jevpeople" => 13,
-						"component_com_rsvppro" => 12,
-						"module_mod_jevents_cal" => 52,
-						"module_mod_jevents_categories" => 52,
-						"module_mod_jevents_filter" => 52,
-						"module_mod_jevents_latest" => 52,
-						"module_mod_jevents_legend" => 52,
-						"module_mod_jevents_notify" => 61,
-						"module_mod_jevents_paidsubs" => 48,
-						"module_mod_jevents_switchview" => 520);
-					foreach ($apps as $appname => $app)
-					{
-						$row = new stdClass();
-						$row->version = $app->version;
-						$row->criticalversion = "";
-						if (array_key_exists($appname, $criticals))
-						{
-							$row->criticalversion = $criticals[$appname];
-						}
-						$row->link = array_key_exists($appname, $catmapping) ? "http://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
-						if ($row->link == "")
-							continue;
-						$output .= "<item>\n<title>$appname</title>\n<description><![CDATA[" . json_encode($row) . "]]></description>\n</item>\n";
-					}
-					$output .= "";
-					$needsupdate = true;
-					ob_end_clean();
-					echo $output;
-					die();
+					$this->generateVersionsFile($rssDoc);
 				}
 
 				$rows = array();
@@ -421,12 +235,20 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						$plugin = explode("_", str_replace("plugin_", "", $item->get_title()), 2);
 						if (count($plugin) < 2)
 							continue;
-						// plugins
-						if (JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1]))
+// plugins
+						if ((JVersion::isCompatible("1.6") && JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])) ||
+								JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0]))
 						{
 
-							// modules
-							$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
+// plugins
+							if (JVersion::isCompatible("1.6"))
+							{
+								$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
+							}
+							else
+							{
+								$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0], $plugin[1] . "\.xml", true, true);
+							}
 
 							foreach ($xmlfiles1 as $manifest)
 							{
@@ -443,7 +265,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 								}
 								else
 								{
-									// simulate Joomla 1.7 directory structure
+// simulate Joomla 1.7 directory structure
 									$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
 								}
 								$apps[$name] = $app;
@@ -457,7 +279,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/" . $component))
 						{
 
-							// modules
+// modules
 							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/components/" . $component, "\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
@@ -524,9 +346,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	}
 
-	private
-
-	function getValidManifestFile($manifest)
+	private function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
 		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false)
@@ -541,6 +361,197 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			return false;
 		}
 		return $manifestdata;
+
+	}
+
+	private function generateVersionsFile($rssDoc)
+	{
+		jimport("joomla.filesystem.folder");
+
+		$apps = array();
+
+// club layouts			 
+		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
+		foreach ($xmlfiles1 as $manifest)
+		{
+			if (realpath($manifest) != $manifest)
+				continue;
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$apps["layout_" . basename(dirname($manifest))] = $app;
+		}
+
+// plugins
+		if (JFolder::exists(JPATH_SITE . "/plugins"))
+		{
+			$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
+		}
+		else
+		{
+			$xmlfiles2 = array();
+		}
+
+		foreach ($xmlfiles2 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$name = str_replace(".xml", "", basename($manifest));
+			if (JVersion::isCompatible("1.6"))
+			{
+				$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+			}
+			else
+			{
+// simulate Joomla 1.7 directory structure
+				$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+			}
+			$apps[$name] = $app;
+		}
+
+// components (including JEvents
+		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
+		foreach ($xmlfiles3 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$name = "component_" . basename(dirname($manifest));
+			$apps[$name] = $app;
+		}
+
+
+// modules
+		if (JFolder::exists(JPATH_SITE . "/modules"))
+		{
+			$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
+		}
+		else
+		{
+			$xmlfiles4 = array();
+		}
+		foreach ($xmlfiles4 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$app->criticalversion = "";
+			$name = "module_" . str_replace(".xml", "", basename($manifest));
+			$apps[$name] = $app;
+		}
+
+// setup the XML file for server	
+		/*
+		  $output = '$catmapping = array(' . "\n";
+		  foreach ($apps as $appname => $app)
+		  {
+		  $output .='"' . $appname . '"=> 0,' . "\n";
+		  }
+		  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
+		 */
+		$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
+		$criticaldata = explode("\n", $criticaldata);
+		$criticals = array();
+		foreach ($criticaldata as $critical)
+		{
+			$critical = explode("|", $critical);
+			if (count($critical) > 1)
+			{
+				$criticals[$critical[0]] = $critical[1];
+			}
+		}
+		$catmapping = array(
+			"layout_extplus" => 3,
+			"layout_iconic" => 3,
+			"layout_ruthin" => 3,
+			"layout_smartphone" => 3,
+			"plugin_acymailing_tagjevents" => 41,
+			"plugin_community_jevents" => 7,
+			"plugin_content_jevcreator" => 34,
+			"plugin_content_jevent_embed" => 12,
+			"plugin_jevents_agendaminutes" => 12,
+			"plugin_jevents_jevanonuser" => 25,
+			"plugin_jevents_jevcalendar" => 15,
+			"plugin_jevents_jevcatcal" => 15,
+			"plugin_jevents_jevcb" => 18,
+			"plugin_jevents_jevcck" => 64,
+			"plugin_jevents_jevcustomfields" => 10,
+			"plugin_jevents_jevfacebook" => 46,
+			"plugin_jevents_jevfeatured" => 16,
+			"plugin_jevents_jevfiles" => 24,
+			"plugin_jevents_jevhiddendetail" => 51,
+			"plugin_jevents_jevjsstream" => 7,
+			"plugin_jevents_jevjxcoments" => 19,
+			"plugin_jevents_jevlocations" => 4,
+			"plugin_jevents_jevmatchingevents" => 47,
+			"plugin_jevents_jevmetatags" => 58,
+			"plugin_jevents_jevnotify" => 61,
+			"plugin_jevents_jevpaidsubs" => 48,
+			"plugin_jevents_jevpeople" => 13,
+			"plugin_jevents_jevpopupdetail" => 50,
+			"plugin_jevents_jevrsvp" => 14,
+			"plugin_jevents_jevrsvppro" => 12,
+			"plugin_jevents_jevsessions" => 21,
+			"plugin_jevents_jevtags" => 9,
+			"plugin_jevents_jevtimelimit" => 17,
+			"plugin_jevents_jevusers" => 8,
+			"plugin_jevents_jevweekdays" => 59,
+			"plugin_jnews_jnewsjevents" => 24,
+			"plugin_rsvppro_manual" => 12,
+			"plugin_rsvppro_paypalipn" => 12,
+			"plugin_rsvppro_virtuemart" => 12,
+			"plugin_search_eventsearch" => 52,
+			"plugin_search_jevlocsearch" => 4,
+			"plugin_search_jevtagsearch" => 9,
+			"plugin_system_autotweetjevents" => 45,
+			"plugin_user_juser" => 24,
+			"component_com_attend_jevents" => 21,
+			"component_com_jevents" => 52,
+			"component_com_jeventstags" => 9,
+			"component_com_jevlocations-old" => 4,
+			"component_com_jevlocations" => 4,
+			"component_com_jevpeople" => 13,
+			"component_com_rsvppro" => 12,
+			"module_mod_jevents_cal" => 52,
+			"module_mod_jevents_categories" => 52,
+			"module_mod_jevents_filter" => 52,
+			"module_mod_jevents_latest" => 52,
+			"module_mod_jevents_legend" => 52,
+			"module_mod_jevents_notify" => 61,
+			"module_mod_jevents_paidsubs" => 48,
+			"module_mod_jevents_switchview" => 520);
+		foreach ($apps as $appname => $app)
+		{
+			$row = new stdClass();
+			$row->version = $app->version;
+			$row->criticalversion = "";
+			if (array_key_exists($appname, $criticals))
+			{
+				$row->criticalversion = $criticals[$appname];
+			}
+			$row->link = array_key_exists($appname, $catmapping) ? "http://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
+			if ($row->link == "")
+				continue;
+			$output .= "<item>\n<title>$appname</title>\n<description><![CDATA[" . json_encode($row) . "]]></description>\n</item>\n";
+		}
+		$output .= "";
+		$needsupdate = true;
+		ob_end_clean();
+		echo $output;
+		die();
 
 	}
 
