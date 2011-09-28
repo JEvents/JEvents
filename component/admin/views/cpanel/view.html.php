@@ -374,6 +374,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 					$app->done = false;
 					foreach ($items as $item)
 					{
+						$app->done = true;						
 						if ($item->get_title() == $appname)
 						{
 							$iteminfo = json_decode($item->get_description());
@@ -388,7 +389,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 								{
 									$rows[] = array($link, $appname, $app->version, $iteminfo->version, "");
 								}
-								$app->done = true;
 							}
 						}
 					}
