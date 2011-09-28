@@ -177,7 +177,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				$apps = array();
 
 				// club layouts			 
-				$xmlfiles1 = JFolder::files(JEV_PATH . "views/", "manifest\.xml", true, true);
+				$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 				foreach ($xmlfiles1 as $manifest)
 				{
 					if (realpath($manifest) != $manifest) continue;					
@@ -267,7 +267,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				}
 
 				// setup the XML file for server	
-				if (false)
+				if (true)
 				{
 					/*
 					  $output = '$catmapping = array(' . "\n";
