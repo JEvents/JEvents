@@ -78,6 +78,9 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		$item_startdate = htmlspecialchars( $row->publish_up());
 		// end date for particular item
 		$item_enddate = htmlspecialchars( $row->publish_down() );
+		if (isset($row->_thumbimg1) && $row->_thumbimg1!=""){
+			$item_description = $row->_thumbimg1. "<br/>".$item_description;
+		}
 		*/
 
 		// load individual item creator class

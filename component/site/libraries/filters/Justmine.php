@@ -26,7 +26,7 @@ class jevJustmineFilter extends jevFilter
 	var $noLabel = "";
 	var $isEventAdmin = false;
 
-	function jevJustmineFilter($tablename, $filterfield, $isstring=true,$yesLabel="Yes", $noLabel="No"){
+	function jevJustmineFilter($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
 		$this->filterNullValue="0";
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);

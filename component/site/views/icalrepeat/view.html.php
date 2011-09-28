@@ -57,7 +57,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
         $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.save\');return false;" href="#"><span class="icon-32-save" title="Save"> </span>'.JText::_( 'SAVE' ).'</a>';
         $toolbar->appendButton( 'Custom',$html, "customsave");
 		
-        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.apply\');return false;" href="#"><span class="icon-32-apply" title="Save"> </span>'.JText::_( 'APPLY' ).'</a>';
+        $html = '<a class="toolbar" onclick="javascript: submitbutton(\'icalrepeat.apply\');return false;" href="#"><span class="icon-32-apply" title="Save"> </span>'.JText::_( 'JEV_APPLY' ).'</a>';
         $toolbar->appendButton( 'Custom',$html, "customapply");
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

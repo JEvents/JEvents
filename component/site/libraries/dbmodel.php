@@ -87,7 +87,8 @@ class JEventsDBModel
 					{
 						$cat = $allcats->get($catid);
 						if ($cat){
-							$catwhere[] = "(c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft." )";
+							//$catwhere[] = "(c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft." )";
+							$catwhere[] = "(c.lft>=" . $cat->lft . " AND c.rgt<=" . $cat->rgt." )";
 						}
 					}
 				}
