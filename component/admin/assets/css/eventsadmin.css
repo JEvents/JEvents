@@ -240,6 +240,7 @@ padding:0;
 .icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
 
+.pane-sliders {font-size:10px;}
 .pane-sliders .panel .adminlist th {display: none;}
 
 #updateavailable span { color:red;}

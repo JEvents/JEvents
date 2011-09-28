@@ -277,6 +277,15 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 					  }
 					  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
 					 */
+					$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
+					$criticaldata = explode("\n",$criticaldata);
+					$criticals = array();
+					foreach ($criticaldata as $critical ){
+						$critical = explode("|",$critical);
+						if (count($critical)>1){
+							$criticals[$critical[0]] = $critical[1];
+						}
+					}
 					$catmapping = array(
 						"layout_extplus" => 3,
 						"layout_iconic" => 3,
@@ -336,13 +345,17 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						"module_mod_jevents_legend" => 52,
 						"module_mod_jevents_notify" => 61,
 						"module_mod_jevents_paidsubs" => 48,
-						"module_mod_jevents_switchview" => 52);
+						"module_mod_jevents_switchview" => 520);
 					foreach ($apps as $appname => $app)
 					{
 						$row = new stdClass();
 						$row->version = $app->version;
 						$row->criticalversion = "";
+						if (array_key_exists($appname, $criticals)){
+							$row->criticalversion = $criticals[$appname];
+						}
 						$row->link = array_key_exists($appname, $catmapping) ? "http://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
+						if ($row->link=="") continue;
 						$output .= "<item>\n<title>$appname</title>\n<description><![CDATA[" . json_encode($row) . "]]></description>\n</item>\n";
 					}
 					$output .= "";
@@ -375,8 +388,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 								{
 									$rows[] = array($link, $appname, $app->version, $iteminfo->version, "");
 								}
+								$app->done = true;
 							}
-							$app->done = true;
 						}
 					}
 					if (!$app->done)
