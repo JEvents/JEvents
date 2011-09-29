@@ -21,7 +21,7 @@ class JEventsVersion {
 	/** @var int Sub Release Level */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level */
-	var $PATCH_LEVEL = '2';
+	var $PATCH_LEVEL = '3';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
