@@ -37,9 +37,16 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 
 
 $theme = JEV_CommonFunctions::getJEventsViewName();
+$modtheme = $params->get("com_calViewName", $theme);
+if ($modtheme==""){
+	$modtheme=$theme;
+}
+$theme=$modtheme;
+
 require_once(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.DS."calendar"));
 $viewclass = ucfirst($theme)."ModCalView";
 $modview = new $viewclass($params, $module->id);
+$modview->jevlayout = $theme;
 echo $modview->getCal();
 
 // Must reset the timezone back!!
