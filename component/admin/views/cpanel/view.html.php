@@ -237,7 +237,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 							continue;
 // plugins
 						if ((JVersion::isCompatible("1.6") && JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])) ||
-								JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0]))
+							(!JVersion::isCompatible("1.6") && JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0]))) 
 						{
 
 // plugins
