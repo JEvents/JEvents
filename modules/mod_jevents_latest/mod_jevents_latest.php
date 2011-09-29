@@ -78,6 +78,11 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $jevhelper = new modJeventsLatestHelper();
 $theme = JEV_CommonFunctions::getJEventsViewName();
+$modtheme = $params->get("com_calViewName", $theme);
+if ($modtheme==""){
+	$modtheme=$theme;
+}
+$theme=$modtheme;
 
 JPluginHelper::importPlugin("jevents");
 
@@ -101,6 +106,7 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 }
 
 $modview = new $viewclass($params, $module->id);
+$modview->jevlayout = $theme;
 echo $modview->displayLatestEvents();
 
 // Must reset the timezone back!!
