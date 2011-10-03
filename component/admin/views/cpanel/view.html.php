@@ -171,10 +171,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			}
 			else
 			{
-				if (false)
-				{
-					$this->generateVersionsFile($rssDoc);
-				}
+				$this->generateVersionsFile($rssDoc);
 
 				$rows = array();
 				$items = $rssDoc->get_items();
@@ -366,6 +363,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	private function generateVersionsFile($rssDoc)
 	{
+		return;
 		jimport("joomla.filesystem.folder");
 
 		$apps = array();
