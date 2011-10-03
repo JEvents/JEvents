@@ -71,7 +71,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				if ($params->get("showPanelNews",1)) {
 					if (JVersion::isCompatible("1.6")){
-						$pane = JPane::getInstance('sliders');
 						echo JHtml::_('sliders.start', 'cpanel-sliders'); 
 						echo JHtml::_('sliders.panel',JText::_("JEV_News"), 'cpanelnews');
 					}
