@@ -349,12 +349,21 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$link = $this->event->viewDetailLink($year,$month,$currentDay['d0'],false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
+		$title          = $this->event->title();
+		
 		// [mic] if title is too long, cut 'em for display
-		$tmpTitle = $this->title;
-		if( JString::strlen( $this->title ) >= $cfg->get('com_calCutTitle',50)){
-			$tmpTitle = JString::substr( $this->title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+		$tmpTitle = $title;
+		// set truncated title
+		if (!isset($this->event->truncatedtitle)){
+			if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
+				$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+			}
+			$tmpTitle = JEventsHTML::special($tmpTitle);			
+			$this->event->truncatedtitle = $tmpTitle;
 		}
-		$tmpTitle = JEventsHTML::special($tmpTitle);
+		else {
+			$tmpTitle = $this->event->truncatedtitle ;
+		}
 
 		// [new mic] if amount of displaing events greater than defined, show only a scmall coloured icon
 		// instead of full text - the image could also be "recurring dependig", which means

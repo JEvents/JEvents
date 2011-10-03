@@ -498,7 +498,7 @@ class iCalImport
 				*/
 
 			}
-			else if ($tz != false){
+			else if ($tz != false && $tz != ""){
 				// really should use the timezone of the inputted date
 				$tz = new DateTimeZone($tz);
 				$t = new JevDate($ical_date, $tz);

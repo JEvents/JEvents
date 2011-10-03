@@ -984,9 +984,9 @@ class JEventsDBModel
 	{
 		$user = JFactory::getUser();
 		$db = & JFactory::getDBO();
-		JEVHelper::isAdminUser($user);
+		$adminuser =JEVHelper::isAdminUser($user);
 		$db->setQuery($query);
-		if (JEVHelper::isAdminUser($user))
+		if ($adminuser)
 		{
 			//echo $db->getQuery();
 			//echo $db->explain();
@@ -1000,7 +1000,7 @@ class JEventsDBModel
 		}
 
 		$icalrows = $db->loadObjectList();
-		if (JEVHelper::isAdminUser($user))
+		if ($adminuser)
 		{
 			echo $db->getErrorMsg();
 		}
@@ -2129,6 +2129,7 @@ class JEventsDBModel
 	function listEventsByKeyword($keyword, $order, &$limit, &$limitstart, &$total, $useRegX=false)
 	{
 		$user = & JFactory::getUser();
+		$adminuser =JEVHelper::isAdminUser($user);
 		$db = & JFactory::getDBO();
 
 		$rows_per_page = $limit;
@@ -2259,7 +2260,7 @@ class JEventsDBModel
 		$query .= "\n $limitstring";
 
 		$db->setQuery($query);
-		if (JEVHelper::isAdminUser($user))
+		if ($adminuser)
 		{
 			//echo $db->_sql;
 			//echo $db->explain();
@@ -2286,7 +2287,10 @@ class JEventsDBModel
 					. "\n ORDER BY rpt.startrepeat ASC limit 1";
 			$db->setQuery($query2);
 			//echo $db->explain();
-			$icalrows[] = $db->loadObject();
+			$data = $db->loadObject();
+			// belts and braces - some servers have a MYSQLK bug on the  user of DISTINCT!
+			if (!$data->ev_id) continue;			
+			$icalrows[] = $data;
 		}
 
 		$num_events = count($icalrows);

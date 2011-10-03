@@ -36,10 +36,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 		$stop_publish   = JevDate::mktime( 0, 0, 0, $event->mdn(), $event->ddn(), $event->ydn() );
 		$event_day      = $event->dup();
 		$event_month    = $event->mup();
-
-		$title          = $event->title();
 		$id             = $event->id();
-
 
 		// this file controls the events component month calendar display cell output.  It is separated from the
 		// showCalendar function in the events.php file to allow users to customize this portion of the code easier.
@@ -72,12 +69,21 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 		$link = $this->event->viewDetailLink($year,$month,$currentDay['d0'],false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
+		$title          = $event->title();
+		
 		// [mic] if title is too long, cut 'em for display
 		$tmpTitle = $title;
-		if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
-			$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+		// set truncated title
+		if (!isset($this->event->truncatedtitle)){
+			if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
+				$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+			}
+			$tmpTitle = JEventsHTML::special($tmpTitle);			
+			$this->event->truncatedtitle = $tmpTitle;
 		}
-		$tmpTitle = JEventsHTML::special($tmpTitle);
+		else {
+			$tmpTitle = $this->event->truncatedtitle ;
+		}
 
 		// [new mic] if amount of displaing events greater than defined, show only a scmall coloured icon
 		// instead of full text - the image could also be "recurring dependig", which means
@@ -89,7 +95,10 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 
 		$templatedcell = false;
 		// set truncated title
-		$this->event->_title = $tmpTitle;
+		if (!isset($this->event->truncatedtitle)){
+			$this->event->_title = $tmpTitle;
+			$this->event->truncatedtitle = true;
+		}
 		if( $currentDay['countDisplay'] < $cfg->get('com_calMaxDisplay',5)){
 			ob_start();
 			$templatedcell = $this->loadedFromTemplate('month.calendar_cell', $this->event, 0);
