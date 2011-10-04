@@ -295,7 +295,7 @@ class AdminIcaleventController extends JController {
 		$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile );
 
 		// get list of creators
-		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by";
+		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
 		$db=& JFactory::getDBO();
 		$db->setQuery( $sql );
 		$users = $db->loadObjectList();

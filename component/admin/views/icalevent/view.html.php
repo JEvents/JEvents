@@ -223,7 +223,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$userOptions[] = JHTML::_('select.option', '-1', 'Select User');
 			foreach ($users as $user)
 			{
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name);
+				$userOptions[] = JHTML::_('select.option', $user->id, $user->name. " ( ".$user->username." )");
 			}
 			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
 			$userlist = JHTML::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
