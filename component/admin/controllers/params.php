@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -10,30 +11,31 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-
 class AdminParamsController extends JController
 {
+
 	/**
 	 * Custom Constructor
 	 */
-	function __construct( $default = array())
+	function __construct($default = array())
 	{
-		$user =& JFactory::getUser();
+		$user = & JFactory::getUser();
 
-		if (!JEVHelper::isAdminUser()) {
-			JFactory::getApplication()->redirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be admin" );
-				return;
-		}		
+		if (!JEVHelper::isAdminUser())
+		{
+			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			return;
+		}
 
 		$default['default_task'] = 'edit';
-		parent::__construct( $default );
+		parent::__construct($default);
 
-		$this->registerTask( 'apply', 'save' );
+		$this->registerTask('apply', 'save');
+
 	}
 
 	/**
@@ -46,15 +48,16 @@ class AdminParamsController extends JController
 		$component = JEV_COM_COMPONENT;
 
 		// get the view
-		$this->view = & $this->getView("params","html");
+		$this->view = & $this->getView("params", "html");
 
-		$model = $this->getModel('params' );
-		if (JVersion::isCompatible("1.6.0")) {
-			$table =& JTable::getInstance('extension');
+		$model = $this->getModel('params');
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			$table = & JTable::getInstance('extension');
 			//if (!$table->loadByOption( $component ))
-			if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 			{
-				JError::raiseWarning( 500, 'Not a valid component' );
+				JError::raiseWarning(500, 'Not a valid component');
 				return false;
 			}
 			// Backwards compatatbility
@@ -63,24 +66,24 @@ class AdminParamsController extends JController
 
 			// Set the layout
 			$this->view->setLayout('edit16');
-
 		}
-		else {
-			$table =& JTable::getInstance('component');
-			if (!$table->loadByOption( $component ))
+		else
+		{
+			$table = & JTable::getInstance('component');
+			if (!$table->loadByOption($component))
 			{
-				JError::raiseWarning( 500, 'Not a valid component' );
+				JError::raiseWarning(500, 'Not a valid component');
 				return false;
 			}
 
 			// Set the layout
 			$this->view->setLayout('edit');
-
 		}
 
 		$this->view->assignRef('component', $table);
-		$this->view->setModel( $model, true );
+		$this->view->setModel($model, true);
 		$this->view->display();
+
 	}
 
 	/**
@@ -89,71 +92,82 @@ class AdminParamsController extends JController
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
+		JRequest::checkToken() or jexit('Invalid Token');
+		//echo $this->getTask();
+		//exit;
 		$component = JEV_COM_COMPONENT;
 
-		$model = $this->getModel('params' );
-		if (JVersion::isCompatible("1.6.0")) {
-			$table =& JTable::getInstance('extension');
+		$model = $this->getModel('params');
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			$table = & JTable::getInstance('extension');
 			//if (!$table->loadByOption( $component ))
-			if (!$table->load( array("element"=>"com_jevents","type"=>"component"))) // 1.6 mod
+			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 			{
-				JError::raiseWarning( 500, 'Not a valid component' );
+				JError::raiseWarning(500, 'Not a valid component');
 				return false;
 			}
 		}
-		else {
-			$table =& JTable::getInstance('component');
-			if (!$table->loadByOption( $component ))
+		else
+		{
+			$table = & JTable::getInstance('component');
+			if (!$table->loadByOption($component))
 			{
-				JError::raiseWarning( 500, 'Not a valid component' );
+				JError::raiseWarning(500, 'Not a valid component');
 				return false;
 			}
 		}
 
-		$post = JRequest::get( 'post' );
+		$post = JRequest::get('post');
 		$post['option'] = $component;
-		$table->bind( $post );
+		$table->bind($post);
 
 		// pre-save checks
-		if (!$table->check()) {
-			JError::raiseWarning( 500, $table->getError() );
+		if (!$table->check())
+		{
+			JError::raiseWarning(500, $table->getError());
 			return false;
 		}
 
 		// save the changes
-		if (!$table->store()) {
-			JError::raiseWarning( 500, $table->getError() );
+		if (!$table->store())
+		{
+			JError::raiseWarning(500, $table->getError());
 			return false;
 		}
 
 		// Now save the form permissions data
-		if (JVersion::isCompatible("1.6.0")) {
+		if (JVersion::isCompatible("1.6.0"))
+		{
 
-			$data	= JRequest::getVar('jform', array(), 'post', 'array');			
-			$option	= JEV_COM_COMPONENT;
+			$data = JRequest::getVar('jform', array(), 'post', 'array');
+			$option = JEV_COM_COMPONENT;
 			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-			$id		= $comp->id;
-			
+			$id = $comp->id;
+
 			// Validate the posted data.
 			JForm::addFormPath(JPATH_COMPONENT);
-			JForm::addFieldPath(JPATH_COMPONENT.'/elements');
-					
-			$form	= $model->getForm();
+			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+
+			$form = $model->getForm();
 			$return = $model->validate($form, $data);
 
 			// Check for validation errors.
-			if ($return === false) {
+			if ($return === false)
+			{
 				// Get the validation messages.
-				$errors	= $model->getErrors();
+				$errors = $model->getErrors();
 
 				$app = JFactory::getApplication();
 				// Push up to three validation messages out to the user.
-				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-					if (JError::isError($errors[$i])) {
+				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+				{
+					if (JError::isError($errors[$i]))
+					{
 						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
-					} else {
+					}
+					else
+					{
 						$app->enqueueMessage($errors[$i], 'notice');
 					}
 				}
@@ -162,23 +176,139 @@ class AdminParamsController extends JController
 				$app->setUserState('com_config.config.global.data', $data);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=params.edit', false));
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
 				return false;
 			}
 
 			// Attempt to save the configuration.
-			$data	= array(
-			'params'	=> $return,
-			'id'		=> $id,
-			'option'	=> $option
+			$data = array(
+				'params' => $return,
+				'id' => $id,
+				'option' => $option
 			);
 			$return = $model->saveRules($data);
-
 		}
-
-		$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'CONFIG_SAVED' ) );
+		//SAVE AND APPLY CODE FROM PRAKASH
+		switch ($this->getTask()) {
+			case 'apply':
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', JText::_('CONFIG_SAVED'));
+				break;
+			default:
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", JText::_('CONFIG_SAVED'));
+				break;
+		}
+		//$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'CONFIG_SAVED' ) );
 		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();
+
+	}
+
+	/**
+	 * Apply the configuration
+	 */
+	function apply()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		$component = JEV_COM_COMPONENT;
+
+		$model = $this->getModel('params');
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			$table = & JTable::getInstance('extension');
+			//if (!$table->loadByOption( $component ))
+			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
+		}
+		else
+		{
+			$table = & JTable::getInstance('component');
+			if (!$table->loadByOption($component))
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
+		}
+
+		$post = JRequest::get('post');
+		$post['option'] = $component;
+		$table->bind($post);
+
+		// pre-save checks
+		if (!$table->check())
+		{
+			JError::raiseWarning(500, $table->getError());
+			return false;
+		}
+
+		// save the changes
+		if (!$table->store())
+		{
+			JError::raiseWarning(500, $table->getError());
+			return false;
+		}
+
+		// Now save the form permissions data
+		if (JVersion::isCompatible("1.6.0"))
+		{
+
+			$data = JRequest::getVar('jform', array(), 'post', 'array');
+			$option = JEV_COM_COMPONENT;
+			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+			$id = $comp->id;
+
+			// Validate the posted data.
+			JForm::addFormPath(JPATH_COMPONENT);
+			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+
+			$form = $model->getForm();
+			$return = $model->validate($form, $data);
+
+			// Check for validation errors.
+			if ($return === false)
+			{
+				// Get the validation messages.
+				$errors = $model->getErrors();
+
+				$app = JFactory::getApplication();
+				// Push up to three validation messages out to the user.
+				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+				{
+					if (JError::isError($errors[$i]))
+					{
+						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					}
+					else
+					{
+						$app->enqueueMessage($errors[$i], 'notice');
+					}
+				}
+
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $data);
+
+				// Redirect back to the edit screen.
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+				return false;
+			}
+
+			// Attempt to save the configuration.
+			$data = array(
+				'params' => $return,
+				'id' => $id,
+				'option' => $option
+			);
+			$return = $model->saveRules($data);
+		}
+
+		$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=params.edit", JText::_('CONFIG_SAVED'));
+		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
+		//$this->edit();
+
 	}
 
 	/**
@@ -186,6 +316,8 @@ class AdminParamsController extends JController
 	 */
 	function cancel()
 	{
-		$this->setRedirect( 'index.php' );
+		$this->setRedirect('index.php');
+
 	}
+
 }
