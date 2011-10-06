@@ -80,7 +80,13 @@ class JInstallerJevlayout extends JObject
 			$this->parent->abort();
 			return false;
 		}
-
+			
+		// copy manifest file for versioning information
+		$layout = $element->getElementByPath('folder')->data();
+		$path['src'] = $this->parent->getPath('manifest');
+		$path['dest'] =$this->parent->getPath('extension_root').DS.$layout.DS.basename($path['src'] );
+		$this->parent->copyFiles(array ($path), true);
+		
 		// Now do the modules in turn
 		$element =& $this->manifest->getElementByPath('modulefiles');
 
