@@ -29,13 +29,12 @@ function DefaultViewHelperHeader16($view){
 	<h1>
 		<?php echo $view->escape($params->get('page_heading')); ?>
 	</h1>
-	<?php endif; ?>
-	<h2 class="contentheading" >
+	<?php endif; ?>	
 	<?php
 	$t_headline = '&nbsp;';
 	switch ($cfg->get('com_calHeadline', 'comp')) {
 		case 'none':
-			$t_headline = '&nbsp;';
+			$t_headline = '';
 			break;
 		case 'menu':
 			$menu2   =& JSite::getMenu();
@@ -48,10 +47,11 @@ function DefaultViewHelperHeader16($view){
 			$t_headline = JText::_('JEV_EVENT_CALENDAR');
 			break;
 	}
-	echo $t_headline;
-	?>
-	</h2>
-	<?php
+	if ($t_headline!=""){
+		?>
+		<h2 class="contentheading" ><?php echo $t_headline;?></h2>
+		<?php
+	}
 	$task = JRequest::getString("jevtask");
 	ob_start();
 	$view->information16();
