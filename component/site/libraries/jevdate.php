@@ -265,6 +265,25 @@ else
 		class JevDate extends JDate
 		{
 
+			function __construct($date = 'now', $tz = 0)
+			{
+				// convert tz to tzOffset
+				$tzOffset = null;
+				if ($tz && is_object($tz) && is_a($tz, "DateTimeZone")){
+					/// if this timezone is not the same as JEvents then adjust accordingly
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					// server offset tiemzone
+					if ($params->get("icaltimezone","")!="" && $params->get("icaltimezone","")!=$tz->getName()){
+						$tzOffset1 = $tz->getOffset(new DateTime($date))/3600;
+						$tz2 = new DateTimeZone($params->get("icaltimezone",""));
+						$tzOffset2 = $tz2->getOffset(new DateTime($date))/3600;
+						$tzOffset = $tzOffset2 - $tzOffset1;						
+					}
+
+				}
+				return parent::__construct($date, $tzOffset);
+			}
+
 			public function getDate($time = 'now', $tzOffset = null)
 			{
 				return JFactory::getDate($time, $tzOffset);
