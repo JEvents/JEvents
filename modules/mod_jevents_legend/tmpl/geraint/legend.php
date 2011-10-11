@@ -62,9 +62,9 @@ class GeraintModLegendView extends DefaultModLegendView{
 			$c++;
 		}
 
-		if ($catidList=="" && ((JVersion::isCompatible("1.6.0") && $this->_params->toString()!="{}") || (!JVersion::isCompatible("1.6.0") &&  $this->_params->_raw!=""))){
+		if ($catidList == "" && $params->get("catid0", "xxx") == "xxx") {
 			modJeventsLegendHelper::getAllCats($this->_params,$catids,$catidList);
-			}
+		}
 
 		$separator = $params->get("catseparator","|");
 		$catidsOut = str_replace(",",$separator,$catidList);
