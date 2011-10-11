@@ -480,6 +480,25 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 		}
 	}
 	else if ($params->get("checkclashes",0)) {
+		$dataModel = new JEventsDataModel();
+		$dbModel = new JEventsDBModel($dataModel);
+
+		$catinfo = $dbModel->getCategoryInfo(array($testevent->catid()));
+		if ($catinfo && count($catinfo)==1){
+			$catinfo = current($catinfo);
+			if (JVersion::isCompatible("1.6.0"))  {
+				$catparams = json_decode($catinfo->params);
+				if (!$catparams->overlaps){
+					return;
+				}
+			}
+			else {
+				if (!$catinfo->overlaps){
+					return;
+				}				
+			}
+		}
+		
 		$sql =  "SELECT * FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 		$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
