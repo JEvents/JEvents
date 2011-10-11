@@ -185,7 +185,9 @@ class JEventsDBModel
 
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
+					. (JVersion::isCompatible("1.6.0") ? "" : ", ex.*")
 					. "\n FROM #__categories AS c"
+					. (JVersion::isCompatible("1.6.0") ? "" : " LEFT JOIN #__jevents_categories as ex on ex.id=c.id")
 					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					. (JVersion::isCompatible("1.6.0") ? ' AND c.extension ' : ' AND c.section') . ' = ' . $db->Quote($sectionname)

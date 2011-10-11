@@ -426,7 +426,9 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				}
 			}
 			else {
-				
+				if (!$catinfo->overlaps){
+					return;
+				}				
 			}
 		}
 		foreach ($testevent->repetitions as $repeat){
