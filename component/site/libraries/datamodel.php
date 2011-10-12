@@ -778,7 +778,8 @@ class JEventsDataModel {
 				. "\n WHERE rpt.rp_id = '$rpid'";
 				$db->setQuery($query);
 				$row2 = $db->loadObject();
-				if ($row2 && (version_compare(JVERSION, '1.6.0', '>=') ? in_array($row2->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $row2->access)){
+				// need to be logged in to see this event?
+				if ($row2 && (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($row2->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) < $row2->access)){
 					$uri = JURI::getInstance();
 					$link = $uri->toString();
 					$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";

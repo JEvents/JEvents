@@ -19,12 +19,13 @@ header('Content-Type: application/octet-stream; charset=UTF-8');
 // Give the file a name and force download
 header('Content-Disposition: attachment; filename=calendar.ics');
 
+$html = "";
 if ($this->outlook2003icalexport)
-	echo "BEGIN:VCALENDAR\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
+	$html .= "BEGIN:VCALENDAR\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
 else
-	echo "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
+	$html .= "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//jEvents 2.0 for Joomla//EN\n";
 
-echo "CALSCALE:GREGORIAN\nMETHOD:PUBLISH\n";
+$html .= "CALSCALE:GREGORIAN\nMETHOD:PUBLISH\n";
 if (!empty($this->icalEvents))
 {
 
@@ -84,21 +85,21 @@ if (!empty($this->icalEvents))
 		{
 			$a = $a->getOriginalFirstRepeat();
 		}
-		echo "BEGIN:VEVENT\n";
-		echo "UID:" . $a->uid() . "\n";
-		echo "CATEGORIES:" . $a->catname() . "\n";
+		$html .= "BEGIN:VEVENT\n";
+		$html .= "UID:" . $a->uid() . "\n";
+		$html .= "CATEGORIES:" . $a->catname() . "\n";
 		if (!empty($a->_class))
-			echo "CLASS:" . $a->_class . "\n";
-		echo "SUMMARY:" . $a->title() . "\n";
-		if ($a->location()!="") echo "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\n";
+			$html .= "CLASS:" . $a->_class . "\n";
+		$html .= "SUMMARY:" . $a->title() . "\n";
+		if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\n";
 		// We Need to wrap this according to the specs
-		/* echo "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
-		echo $this->setDescription($a->content()) . "\n";
+		/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
+		$html .= $this->setDescription($a->content()) . "\n";
 
 		if ($a->hasContactInfo())
-			echo "CONTACT:" . $this->replacetags($a->contact_info()) . "\n";
+			$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\n";
 		if ($a->hasExtraInfo())
-			echo "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)) . "\n";
+			$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)) . "\n";
 
 		$alldayprefix = "";
 		// No doing true timezones!
@@ -178,31 +179,31 @@ if (!empty($this->icalEvents))
 			}
 		}
 
-		echo "DTSTAMP$tzid$alldayprefix:" . $stamptime . "\n";
-		echo "DTSTART$tzid$alldayprefix:" . $start . "\n";
+		$html .= "DTSTAMP$tzid$alldayprefix:" . $stamptime . "\n";
+		$html .= "DTSTART$tzid$alldayprefix:" . $start . "\n";
 		// events with no end time don't give a DTEND
 		if (!$a->noendtime())
 		{
-			echo "DTEND$tzid$alldayprefix:" . $end . "\n";
+			$html .= "DTEND$tzid$alldayprefix:" . $end . "\n";
 		}
-		echo "SEQUENCE:" . $a->_sequence . "\n";
+		$html .= "SEQUENCE:" . $a->_sequence . "\n";
 		if ($a->hasrepetition())
 		{
-			echo 'RRULE:';
+			$html .= 'RRULE:';
 
 			// TODO MAKE SURE COMPAIBLE COMBINATIONS
-			echo 'FREQ=' . $a->_freq;
+			$html .= 'FREQ=' . $a->_freq;
 			if ($a->_until != "" && $a->_until != 0)
 			{
 				// Do not use JevDate version since this sets timezone to config value!					
-				echo ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+				$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
 			}
 			else if ($a->_count != "")
 			{
-				echo ';COUNT=' . $a->_count;
+				$html .= ';COUNT=' . $a->_count;
 			}
 			if ($a->_rinterval != "")
-				echo ';INTERVAL=' . $a->_rinterval;
+				$html .= ';INTERVAL=' . $a->_rinterval;
 			if ($a->_freq == "DAILY")
 			{
 				
@@ -210,29 +211,29 @@ if (!empty($this->icalEvents))
 			else if ($a->_freq == "WEEKLY")
 			{
 				if ($a->_byday != "")
-					echo ';BYDAY=' . $a->_byday;
+					$html .= ';BYDAY=' . $a->_byday;
 			}
 			else if ($a->_freq == "MONTHLY")
 			{
 				if ($a->_bymonthday != "")
 				{
-					echo ';BYMONTHDAY=' . $a->_bymonthday;
+					$html .= ';BYMONTHDAY=' . $a->_bymonthday;
 					if ($a->_byweekno != "")
-						echo ';BYWEEKNO=' . $a->_byweekno;
+						$html .= ';BYWEEKNO=' . $a->_byweekno;
 				}
 				else if ($a->_byday != "")
 				{
-					echo ';BYDAY=' . $a->_byday;
+					$html .= ';BYDAY=' . $a->_byday;
 					if ($a->_byweekno != "")
-						echo ';BYWEEKNO=' . $a->_byweekno;
+						$html .= ';BYWEEKNO=' . $a->_byweekno;
 				}
 			}
 			else if ($a->_freq == "YEARLY")
 			{
 				if ($a->_byyearday != "")
-					echo ';BYYEARDAY=' . $a->_byyearday;
+					$html .= ';BYYEARDAY=' . $a->_byyearday;
 			}
-			echo "\n";
+			$html .= "\n";
 		}
 
 		// Now handle Exceptions
@@ -280,16 +281,17 @@ if (!empty($this->icalEvents))
 			}
 			if (count($deletes) > 0)
 			{
-				echo "EXDATE:" . $this->wraplines(implode(",", $deletes)) . "\n";
+				$html .= "EXDATE:" . $this->wraplines(implode(",", $deletes)) . "\n";
 			}
 		}
 
-		echo "TRANSP:OPAQUE\n";
-		echo "END:VEVENT\n";
+		$html .= "TRANSP:OPAQUE\n";
+		$html .= "END:VEVENT\n";
 
 
 		if (count($changed) > 0)
 		{
+			$this->dataModel = new JEventsDataModel();
 			foreach ($changed as $rpid)
 			{
 				$a = $this->dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
@@ -300,20 +302,20 @@ if (!empty($this->icalEvents))
 					//$dispatcher = & JDispatcher::getInstance();
 					//$dispatcher->trigger('onDisplayCustomFields', array(& $a));
 
-					echo "BEGIN:VEVENT\n";
-					echo "UID:" . $a->uid() . "\n";
-					echo "CATEGORIES:" . $a->catname() . "\n";
+					$html .= "BEGIN:VEVENT\n";
+					$html .= "UID:" . $a->uid() . "\n";
+					$html .= "CATEGORIES:" . $a->catname() . "\n";
 					if (!empty($a->_class))
-						echo "CLASS:" . $a->_class . "\n";
-					echo "SUMMARY:" . $a->title() . "\n";
-					if ($a->location()!="") echo "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\n";
+						$html .= "CLASS:" . $a->_class . "\n";
+					$html .= "SUMMARY:" . $a->title() . "\n";
+					if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\n";
 					// We Need to wrap this according to the specs
-					echo $this->setDescription($a->content()) . "\n";
+					$html .= $this->setDescription($a->content()) . "\n";
 
 					if ($a->hasContactInfo())
-						echo "CONTACT:" . $this->replacetags($a->contact_info()) . "\n";
+						$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\n";
 					if ($a->hasExtraInfo())
-						echo "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); echo "\n";
+						$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\n";
 
 					$exception = $changedexceptions[$rpid];
 					$originalstart = JevDate::strtotime($exception->oldstartrepeat);
@@ -343,13 +345,13 @@ if (!empty($this->icalEvents))
 						$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 						$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 					}
-					echo "DTSTAMP$tzid:" . $stamptime . "\n";
-					echo "DTSTART$tzid:" . $chstart . "\n";
-					echo "DTEND$tzid:" . $chend . "\n";
-					echo "RECURRENCE-ID:" . $originalstart . "\n";
-					echo "SEQUENCE:" . $a->_sequence . "\n";
-					echo "TRANSP:OPAQUE\n";
-					echo "END:VEVENT\n";
+					$html .= "DTSTAMP$tzid:" . $stamptime . "\n";
+					$html .= "DTSTART$tzid:" . $chstart . "\n";
+					$html .= "DTEND$tzid:" . $chend . "\n";
+					$html .= "RECURRENCE-ID:" . $originalstart . "\n";
+					$html .= "SEQUENCE:" . $a->_sequence . "\n";
+					$html .= "TRANSP:OPAQUE\n";
+					$html .= "END:VEVENT\n";
 				}
 			}
 		}
@@ -357,5 +359,10 @@ if (!empty($this->icalEvents))
 }
 
 
-echo "END:VCALENDAR";
+$html .= "END:VCALENDAR";
+
+// clear out any rubbish
+ob_end_clean();
+echo $html;
+
 exit();

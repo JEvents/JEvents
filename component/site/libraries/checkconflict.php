@@ -483,7 +483,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
 
-		$catinfo = $dbModel->getCategoryInfo(array($testevent->catid()));
+		$catinfo = $dbModel->getCategoryInfo(array($repeat->event->catid()));
 		if ($catinfo && count($catinfo)==1){
 			$catinfo = current($catinfo);
 			if (JVersion::isCompatible("1.6.0"))  {
@@ -510,7 +510,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject) {
 		$conflicts = $db->loadObjectList();
 		if ($conflicts && count($conflicts)>0){
 			foreach ($conflicts  as &$conflict){
-				$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $testevent->getCategoryName());
+				$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $repeat->event->getCategoryName());
 			}
 			unset ($conflict);
 			$overlaps = array_merge($overlaps, $conflicts);
