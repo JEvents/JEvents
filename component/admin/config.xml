@@ -371,8 +371,8 @@
 					name="target_itemid"
 					type="jevmenu"
 					default=""
-					label='TARGET_MENU_ITEM' 
-					description='MENU_ITEM_FOR_TARGET_PAGE'  />
+					label='JEV_TARGET_MENU' 
+					description='JEV_TARGET_MENU_TIP'  />
 			</fieldset>		
 		</fields>	
 
