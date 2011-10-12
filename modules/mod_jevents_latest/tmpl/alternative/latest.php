@@ -11,7 +11,8 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-include(dirname(__FILE__)."/../default/latest.php");
+
+include_once(JPATH_SITE."/modules/mod_jevents_latest/tmpl/default/latest.php");
 
 class AlternativeModLatestView extends DefaultModLatestView  
 {
