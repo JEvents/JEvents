@@ -56,6 +56,7 @@ $glist = JEventsHTML::buildAccessSelect($access,'class="inputbox" size="1"',"","
 
 $disabled ="";
 echo JEventsHTML::buildScriptTag('start');
+// leave this as submit button since our submit buttons use the old functional form
 ?>
 function submitbutton(pressbutton) {
 	if (pressbutton.substr(0, 10) == 'icals.list') {

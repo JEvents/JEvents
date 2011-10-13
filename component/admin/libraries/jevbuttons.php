@@ -73,10 +73,11 @@ class JButtonJev extends JButton
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
+		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
 		if ($list) {
-			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  submitbutton('$task')};return false;";
+			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
 		} else {
-			$cmd = "javascript:submitbutton('$task');return false;";
+			$cmd = "javascript:$submitbutton('$task');return false;";
 		}
 
 
@@ -205,7 +206,8 @@ class JButtonJevconfirm extends JButton
 		$todo	 = JString::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
-
+		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
+		
 		if ($hide) {
 			if ($list) {
 				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
@@ -215,21 +217,21 @@ class JButtonJevconfirm extends JButton
 					
 					if($jstestvar==1) {
 						if (confirm('$msg')){
-							submitbutton('$task');
+							$submitbutton('$task');
 						}
 						return false;
 					}
-					submitbutton('$task');
+					$submitbutton('$task');
 				}";
 			} else {
 				$cmd = "javascript:
 					if($jstestvar==1) {
 						if (confirm('$msg')){
-							submitbutton('$task');
+							$submitbutton('$task');
 						}
 						return false;
 					}
-					submitbutton('$task');
+					$submitbutton('$task');
 				";
 			}
 		} else {
@@ -240,21 +242,21 @@ class JButtonJevconfirm extends JButton
 				else{
 					if($jstestvar==1) {
 						if (confirm('$msg')){
-							submitbutton('$task');
+							$submitbutton('$task');
 						}
 						return false;
 					}
-					submitbutton('$task');
+					$submitbutton('$task');
 				}";
 			} else {
 				$cmd = "javascript:
 				if($jstestvar==1) {
 					if (confirm('$msg')){
-						submitbutton('$task');
+						$submitbutton('$task');
 					}
 					return false;
 				}
-				submitbutton('$task');
+				$submitbutton('$task');
 				";
 			}
 		}

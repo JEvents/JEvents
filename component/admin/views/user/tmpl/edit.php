@@ -16,7 +16,13 @@ $option = JEV_COM_COMPONENT;
 $index=JRoute::_("index.php");
 ?>
 <script type="text/javascript" language="Javascript">
-function submitbutton(pressbutton) {
+	<?php if (JVersion::isCompatible("1.6.0")) {
+		echo "Joomla.submitbutton = function (pressbutton) {\n";
+	}
+	else {
+		echo "function submitbutton(pressbutton) {\n";
+	}
+	?>
 	if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 		submitform( pressbutton );
 		return;

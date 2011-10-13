@@ -27,7 +27,7 @@ include_once(JEV_LIBS."/colorMap.php");
 
 		<input type="hidden" name="id" id="id" value="<?php echo $this->cat->id;?>">
 		<script type="text/javascript" language="Javascript">
-
+		// Joomla 1.5 only so leave as submitbutton
 		function submitbutton(pressbutton) {
 			if (pressbutton == 'cancel' || pressbutton == 'categories.list') {
 				submitform( pressbutton );
