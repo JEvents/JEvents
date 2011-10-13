@@ -112,7 +112,7 @@ if ($this->editCopy){
 ?>
 <script type="text/javascript" language="Javascript">
 
-<?php if (JVersion::isCompatible("1.6.0") && JFactory::getApplication()->isAdmin()) {?>
+<?php if (JVersion::isCompatible("1.6.0")) {?>
 Joomla.submitbutton = function (pressbutton) {
 <?php } else { ?>
 function submitbutton(pressbutton) {
