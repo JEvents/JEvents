@@ -145,6 +145,8 @@ class ICalsViewICals extends JEventsAbstractView
 			{
 				$current_timezone = date_default_timezone_get();
 				// Do the Timezone definition
+				// replace any spaces with _ underscores
+				$current_timezone = str_replace(" ","_",$current_timezone);
 				$tzid = ";TZID=$current_timezone";
 				// find the earliest start date
 				$firststart = false;

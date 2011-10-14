@@ -920,6 +920,16 @@ class JEVHelper
 		// must stop anon users from editing any events
 		else if ($user->id > 0 && $row->created_by() == $user->id)
 		{
+			if ($jevuser){
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				if ($authorisedonly){
+					if ($jevuser->published && $jevuser->cancreate){
+						return true;
+					}
+				}
+
+			}
 			if (JVersion::isCompatible("1.6.0"))
 			{
 				$cats = $user->getAuthorisedCategories('com_jevents', 'core.edit');
