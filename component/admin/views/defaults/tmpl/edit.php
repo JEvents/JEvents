@@ -18,6 +18,13 @@ else {
 	$editor =& JFactory::getEditor();
 }
 
+if (strpos($this->item->name, "com_")===0){
+	$lang = JFactory::getLanguage();
+	$parts = explode(".",$this->item->name);
+	$lang->load($parts[0]);
+}
+
+
 if ($this->item->value=="" && file_exists(dirname(__FILE__).DS.$this->item->name.".html")) $this->item->value = file_get_contents(dirname(__FILE__).DS.$this->item->name.".html");
 $this->replaceLabels($this->item->value);
 
@@ -53,7 +60,7 @@ $this->replaceLabels($this->item->value);
     			<tr>
                 	<td align="left"><?php echo JText::_( 'TITLE' ); ?>:</td>
                     <td colspan="2">
-                    	<?php echo htmlspecialchars( $this->item->title, ENT_QUOTES, 'UTF-8'); ?>
+                    	<?php echo htmlspecialchars(JText::_($this->item->title), ENT_QUOTES, 'UTF-8'); ?>
                     	<!--<input class="inputbox" type="text" name="title" size="50" maxlength="100" value="<?php echo htmlspecialchars( $this->item->title, ENT_QUOTES, 'UTF-8'); ?>" />//-->
                     </td>
       			</tr>

@@ -31,6 +31,11 @@ $pathIMG = JURI::root().'/administrator/images/';
 	{
 		$row = &$this->items[$i];
 
+		if (strpos($row->name, "com_")===0){
+			$lang = JFactory::getLanguage();
+			$parts = explode(".",$row->name);
+			$lang->load($parts[0]);
+		}
 		$link 	= JRoute::_( 'index.php?option='.JEV_COM_COMPONENT.'&task=defaults.edit&name='. $row->name );
 
 		?>
@@ -44,7 +49,7 @@ $pathIMG = JURI::root().'/administrator/images/';
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'JEV_Edit_Layout' );?>::<?php echo $this->escape($row->title); ?>">
 					<a href="<?php echo $link; ?>">
-					<?php echo $this->escape($row->title); ?></a>
+					<?php echo $this->escape(JText::_($row->title)); ?></a>
 				</span>
 			</td>
 			<td>

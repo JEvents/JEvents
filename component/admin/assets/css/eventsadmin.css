@@ -106,13 +106,16 @@ td#toolbar-apply {
 }
 
 .jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
-#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select
+#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select,
+#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select
 {
 	margin-bottom:inherit;
 	float:none;
 }
 .jevconfig .current label,
-#jevents .current label  {
+#jevents .current label ,
+#jevents #jevadminform label 
+{
 	float:none;
 	display:inline;
 }
