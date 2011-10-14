@@ -1254,7 +1254,6 @@ class ICalsController extends AdminIcalsController
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$tzid = "";
-		return $tzid;
 		if (is_callable("date_default_timezone_set"))
 		{
 			$current_timezone = date_default_timezone_get();

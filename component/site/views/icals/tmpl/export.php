@@ -29,7 +29,9 @@ $html .= "CALSCALE:GREGORIAN\nMETHOD:PUBLISH\n";
 if (!empty($this->icalEvents))
 {
 
+	ob_start();
 	$tzid = $this->vtimezone($this->icalEvents);
+	$html .= ob_get_clean();
 
 	// Build Exceptions dataset - all done in big batches to save multiple queries
 	$exceptiondata = array();
