@@ -75,7 +75,7 @@ class JInstallerJevlayout extends JAdapterInstance
 		}
 
 		// copy manifest file for versioning information
-		$layout = $element->getElementByPath('folder')->data();
+		$layout = $element->folder->data();
 		$path['src'] = $this->parent->getPath('manifest');
 		$path['dest'] =$this->parent->getPath('extension_root').DS.$layout.DS.basename($path['src'] );
 		$this->parent->copyFiles(array ($path), true);
