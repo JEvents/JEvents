@@ -1307,7 +1307,7 @@ class ICalsController extends AdminIcalsController
 						$prev += ( $t == 0) ? 1 : -1;
 
 						$offset = $transitions[$prev]["offset"];
-						$sign = $offset >= 0 ? "" : "-";
+						$sign = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETFROM:$offset\n";
@@ -1339,7 +1339,7 @@ class ICalsController extends AdminIcalsController
 						$prev += ( $t == 0) ? 1 : -1;
 
 						$offset = $transitions[$prev]["offset"];
-						$sign = $offset >= 0 ? "" : "-";
+						$sign = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETFROM:$offset\n";

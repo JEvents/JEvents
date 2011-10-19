@@ -143,7 +143,14 @@ class ICalsViewICals extends JEventsAbstractView
 			$tzid = "";
 			if (is_callable("date_default_timezone_set"))
 			{
-				$current_timezone = date_default_timezone_get();
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$tz=$params->get("icaltimezonelive","");
+				if ($tz == ""){
+					return "";
+				}
+
+				$current_timezone = $tz;
+				
 				// Do the Timezone definition
 				// replace any spaces with _ underscores
 				$current_timezone = str_replace(" ","_",$current_timezone);
@@ -176,8 +183,8 @@ class ICalsViewICals extends JEventsAbstractView
 				if (count($transitions) >= 2)
 				{
 					$lastyear = $params->get("com_latestyear", 2020);
-					echo "BEGIN:VTIMEZONE\n";
-					echo "TZID:$current_timezone\n";
+					echo "BEGIN:VTIMEZONE\r\n";
+					echo "TZID:$current_timezone\r\n";
 					for ($t = 0; $t < count($transitions); $t++)
 					{
 						$transition = $transitions[$t];
@@ -185,29 +192,29 @@ class ICalsViewICals extends JEventsAbstractView
 						{
 							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;
-							echo "BEGIN:STANDARD\n";
-							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
+							echo "BEGIN:STANDARD\r\n";
+							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\r\n", $transition['ts']);
 							if ($t < count($transitions) - 1)
 							{
-								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
+								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\r\n", $transitions[$t + 1]['ts']);
 							}
 							// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 							$prev = $t;
 							$prev += ( $t == 0) ? 1 : -1;
 
 							$offset = $transitions[$prev]["offset"];
-							$sign = $offset >= 0 ? "" : "-";
+							$sign = $offset >= 0 ? "+" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
-							echo "TZOFFSETFROM:$offset\n";
+							echo "TZOFFSETFROM:$offset\r\n";
 
 							$offset = $transitions[$t]["offset"];
 							$sign = $offset >= 0 ? "" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
-							echo "TZOFFSETTO:$offset\n";
-							echo "TZNAME:$current_timezone " . $transitions[$t]["abbr"] . "\n";
-							echo "END:STANDARD\n";
+							echo "TZOFFSETTO:$offset\r\n";
+							echo "TZNAME:$current_timezone " . $transitions[$t]["abbr"] . "\r\n";
+							echo "END:STANDARD\r\n";
 						}
 					}
 					for ($t = 0; $t < count($transitions); $t++)
@@ -217,32 +224,32 @@ class ICalsViewICals extends JEventsAbstractView
 						{
 							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;
-							echo "BEGIN:DAYLIGHT\n";
-							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transition['ts']);
+							echo "BEGIN:DAYLIGHT\r\n";
+							echo "DTSTART:" . JevDate::strftime("%Y%m%dT%H%M%S\r\n", $transition['ts']);
 							if ($t < count($transitions) - 1)
 							{
-								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\n", $transitions[$t + 1]['ts']);
+								echo "RDATE:" . JevDate::strftime("%Y%m%dT%H%M%S\r\n", $transitions[$t + 1]['ts']);
 							}
 							// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 							$prev = $t;
 							$prev += ( $t == 0) ? 1 : -1;
 
 							$offset = $transitions[$prev]["offset"];
-							$sign = $offset >= 0 ? "" : "-";
+							$sign = $offset >= 0 ? "+" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
-							echo "TZOFFSETFROM:$offset\n";
+							echo "TZOFFSETFROM:$offset\r\n";
 
 							$offset = $transitions[$t]["offset"];
 							$sign = $offset >= 0 ? "" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
-							echo "TZOFFSETTO:$offset\n";
-							echo "TZNAME:$current_timezone " . $transitions[$t]["abbr"] . "\n";
-							echo "END:DAYLIGHT\n";
+							echo "TZOFFSETTO:$offset\r\n";
+							echo "TZNAME:$current_timezone " . $transitions[$t]["abbr"] . "\r\n";
+							echo "END:DAYLIGHT\r\n";
 						}
 					}
-					echo "END:VTIMEZONE\n";
+					echo "END:VTIMEZONE\r\n";
 
 				}
 			}
