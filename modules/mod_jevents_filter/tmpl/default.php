@@ -31,7 +31,9 @@ $form_link = "";
 if ($myItemid>0){
 	$menu = & JSite::getMenu();
 	$menuitem = $menu->getItem($myItemid);
-	$form_link = $menuitem->link. "&Itemid=".$myItemid;
+        if ($menuitem){
+            $form_link = $menuitem->link. "&Itemid=".$myItemid;
+        }
 }
 
 //$myItemid = JEVHelper::getItemid();
