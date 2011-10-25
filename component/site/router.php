@@ -54,6 +54,10 @@ function JEventsBuildRoute(&$query)
 		unset($query['task']);
 	}
 
+        // Translatable URLs
+        $transtask = JText::_("JEV_SEF_".str_replace(".", "_", $task));
+        $transtask = strpos($transtask, "JEV_SEF_")===0 ? $task : $transtask;
+                
 	switch ($task) {
 		case "year.listevents":
 		case "month.calendar":
@@ -67,7 +71,7 @@ function JEventsBuildRoute(&$query)
 		case "search.results":
 		case "admin.listevents":
 			{
-				$segments[]=$task;
+				$segments[]=$transtask;
 				$config	=& JFactory::getConfig();
 				$t_datenow = JEVHelper::getNow();
 
@@ -173,7 +177,7 @@ function JEventsBuildRoute(&$query)
 		case "icalevent.delete":
 		case "icalrepeat.delete":
 		case "icalrepeat.deletefuture":
-			$segments[]=$task;
+			$segments[]=$transtask;
 			if(isset($query['jevtype'])) {
 				unset($query['jevtype']);
 			}
@@ -186,7 +190,7 @@ function JEventsBuildRoute(&$query)
 			}
 			break;
 		case "modlatest.rss":
-			$segments[]=$task;
+			$segments[]=$transtask;
 			// assume implicit feed document
 			//unset($query['format']);
 
@@ -210,7 +214,7 @@ function JEventsBuildRoute(&$query)
 			break;
 		case "icalrepeat.vcal":
 		case "icalevent.vcal":
-			$segments[]=$task;
+			$segments[]=$transtask;
 			if(isset($query['evid'])) {
 				$segments[] = $query['evid'];
 				unset($query['evid']);
@@ -228,7 +232,7 @@ function JEventsBuildRoute(&$query)
 			break;
 
 		default:
-			$segments[]=$task;
+			$segments[]=$transtask;
 			$segments[] = "-";
 			break;
 	}
@@ -240,6 +244,45 @@ function JEventsBuildRoute(&$query)
 function JEventsParseRoute($segments)
 {
 	$vars = array();
+        
+        static $translatedTasks = false;
+        if (!$translatedTasks){
+
+            // Must also load backend language files
+$lang =& JFactory::getLanguage();
+$lang->load("com_jevents", JPATH_SITE);
+
+                $translatedTasks = array();
+                $tasks = array(
+		"year.listevents",
+		"month.calendar",
+		"week.listevents",
+		"day.listevents",
+		"cat.listevents",
+		"jevent.detail",
+		"icalevent.detail",
+		"icalrepeat.detail",
+		"search.form",
+		"search.results",
+		"admin.listevents",
+		"jevent.edit",
+		"icalevent.edit",
+		"icalevent.publish",
+		"icalevent.unpublish",
+		"icalevent.editcopy",
+		"icalrepeat.edit",
+		"jevent.delete",
+		"icalevent.delete",
+		"icalrepeat.delete",
+		"icalrepeat.deletefuture",
+                "modlatest.rss",
+                "icalrepeat.vcal",
+		"icalevent.vcal");
+
+                foreach ($tasks as $tt){
+                    $translatedTasks[JText::_("JEV_SEF_".str_replace(".", "_", $tt))] = $tt;
+                }
+        }
 
 	//Get the active menu item
 	$menu =& JSite::getMenu();
@@ -251,6 +294,12 @@ function JEventsParseRoute($segments)
 	if ($count>0){
 		// task
 		$task = $segments[0];
+                
+                $newsef = false;
+                if (array_key_exists($task, $translatedTasks)){
+                    $task = $translatedTasks[$task];
+                    $newsef = true;
+                }
 		$vars["task"]=$task;
 
 		switch 	($task){

@@ -847,6 +847,10 @@ class JEVHelper
 					if (JVersion::isCompatible("1.6.0"))
 					{
 						$juser = & JFactory::getUser();
+                                                // Never allow unlogged in users to edit events - just in case someone tries to allow this
+                                                if ($user->id==0) {
+                                                    return false;
+                                                }
 						//$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
 						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
 					}
