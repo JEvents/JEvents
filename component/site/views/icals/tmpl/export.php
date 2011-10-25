@@ -158,7 +158,7 @@ if (!empty($this->icalEvents))
 			{
 				$alldayprefix = ";VALUE=DATE";
 				$startformat = "%Y%m%d";
-				$endformat = ":%Y%m%d";
+				$endformat = "%Y%m%d";
 
 				// add 10 seconds to make sure its not midnight the previous night
 				$start += 10;
