@@ -181,7 +181,7 @@ if (!empty($this->icalEvents))
 			}
 		}
 
-		$html .= "DTSTAMP$tzid$alldayprefix:" . $stamptime . "\r\n";
+		$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
 		$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
 		// events with no end time don't give a DTEND
 		if (!$a->noendtime())
