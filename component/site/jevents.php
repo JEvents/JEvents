@@ -139,6 +139,20 @@ if (strpos($cmd, '.') != false) {
 JRequest::setVar("jevtask",$cmd);
 JRequest::setVar("jevcmd",$cmd);
 
+// Are all Jevents pages apart from crawler, rss and details pages to be redirected for search engines?
+if (in_array($cmd, array("year.listevents","month.calendar","week.listevents","day.listevents","cat.listevents","search.form",
+			"search.results","admin.listevents","jevent.edit","icalevent.edit","icalevent.publish","icalevent.unpublish",
+			"icalevent.editcopy","icalrepeat.edit","jevent.delete","icalevent.delete","icalrepeat.delete","icalrepeat.deletefuture")))
+{
+	$browser = JBrowser::getInstance();
+	if ($params->get("redirectrobots", 0) && ($browser->isRobot() || strpos ($browser->getAgentString(), "bingbot")!==false))
+	{
+		// redirect  to crawler menu item
+		$Itemid = $params->get("robotmenuitem", 0);
+		JFactory::getApplication()->redirect(JRoute::_("index.php?option=com_jevents&task=crawler.listevents&Itemid=$Itemid"));
+	}
+}
+
 JPluginHelper::importPlugin("jevents");
 
 // Make sure the view specific language file is loaded
@@ -196,6 +210,10 @@ $registry->setValue("jevents.controller",$controller);
 // record what is running - used by the filters
 $registry->setValue("jevents.activeprocess","component");
 
+// Stop viewing ALL events - it could take VAST amounts of memory
+if (JRequest::getInt("limit" , -1) == 0 ){
+	JRequest::setVar("limit",100);
+}
 // Perform the Request task
 $controller->execute($task);
 
