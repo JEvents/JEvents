@@ -34,13 +34,13 @@ class AdminCpanelController extends JController
 		// check the latest column addition or change
 		// do this in a way that supports mysql 4
 		$db = & JFactory::getDBO();
-		
+
 		$sql = "SHOW COLUMNS FROM `#__jevents_vevdetail`";
 		$db->setQuery($sql);
 		$cols = $db->loadObjectList('Field');
 		if (is_null($cols) || !isset($cols['modified']))
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_( 'DATABASE_TABLE_SETUP_WAS_REQUIRED' ));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			//return;
 		}
@@ -53,7 +53,7 @@ class AdminCpanelController extends JController
 		{
 			$session = JFactory::getSession();
 			$session->set('fixexceptions', 1);
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_( 'DATABASE_TABLE_SETUP_WAS_REQUIRED' ));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			//return;
 		}
@@ -68,25 +68,26 @@ class AdminCpanelController extends JController
 		}
 
 		// category table overlaps
-		if (!JVersion::isCompatible("1.6.0"))  {		
+		if (!JVersion::isCompatible("1.6.0"))
+		{
 			$sql = "SHOW COLUMNS FROM `#__jevents_categories`";
 			$db->setQuery($sql);
 
 			$cols = $db->loadObjectList('Field');
 			if (!isset($cols['overlaps']))
 			{
-				$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_( 'DATABASE_TABLE_SETUP_WAS_REQUIRED' ));
+				$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 				$this->redirect();
 				//return;
-			}		
+			}
 		}
-		
+
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->getValue("jevadmin", -1);
 		if ($jevadmin == -1)
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_( 'PLEASE_CHECK_CONFIGURATION_AND_SAVE' ));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
 			$this->redirect();
 		}
 
@@ -119,19 +120,19 @@ class AdminCpanelController extends JController
 			$this->view->assign('migrated', 0);
 		}
 
-
+		$this->checkCategoryAssets();
 
 		// get all the raw native calendars
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			$this->view->assign("warning", JText::_( 'CALENDARS_NOT_SETUP_PROPERLY' ));
+			$this->view->assign("warning", JText::_('CALENDARS_NOT_SETUP_PROPERLY'));
 		}
 
 		// Set the layout
 		$this->view->setLayout('cpanel');
-		$this->view->assign('title', JText::_( 'CONTROL_PANEL' ));
+		$this->view->assign('title', JText::_('CONTROL_PANEL'));
 
 		$this->view->display();
 
@@ -356,6 +357,102 @@ class AdminCpanelController extends JController
 		}
 		echo "all done";
 		return;
+
+	}
+
+	public function checkCategoryAssets()
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery("SELECT * FROM #__categories WHERE asset_id=0 and extension='com_jevents' order by level , id");
+		$missingassets = $db->loadObjectList();
+		if (count($missingassets) > 0)
+		{
+			foreach ($missingassets as $missingasset)
+			{
+				$this->insertAsset($missingasset);
+			}
+		}
+	}
+
+	private function insertAsset($object)
+	{
+		$db = JFactory::getDbo();
+		// Getting the asset table
+		$table = JTable::getInstance('Asset', 'JTable', array('dbo' => $db));
+
+		// Getting the categories id's
+		$db->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
+		$categories = $db->loadObjectList('id');
+
+		$db->setQuery("SELECT * FROM #__assets WHERE name like 'com_jevents.category.%'");
+		$assets = $db->loadObjectList('id');
+
+		$db->setQuery("SELECT * FROM #__assets WHERE name = 'com_jevents' and parent_id=1");
+		$rootasset = $db->loadObject();
+
+		$assets[$rootasset->id] = $rootasset;
+
+		//
+		// Correct extension
+		//
+		$id = $object->id;
+		$table->name = "com_jevents.category.{$id}";
+
+		// Setting rules values
+		$table->rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
+		$table->title = $db->escape($object->title);
+
+		if ($object->parent_id==1)
+		{
+			$table->parent_id = $rootasset->id;
+			// Check for logic 
+			/*
+			$db->setQuery("SELECT * FROM #__assets WHERE name = 'com_jevents.category." . $object->id . "'");
+			$asset = $db->loadObject();
+			echo $asset->name." ".$asset->parent_id . " vs ".$table->name . " ".$table->parent_id . "<br/>";
+			 * 
+			 */	 
+		}
+		else if (array_key_exists($object->parent_id, $categories) && $categories[$object->parent_id]->asset_id > 0)
+		{
+			$table->parent_id = $categories[$object->parent_id]->asset_id;
+			// Check for logic 
+			/*
+			$db->setQuery("SELECT * FROM #__assets WHERE name = 'com_jevents.category." . $object->id . "'");
+			$asset = $db->loadObject();
+			echo $asset->name." ".$asset->parent_id . " vs ".$table->name . " ".$table->parent_id . "<br/>";
+			 * 
+			 */
+		}
+		
+		// Make sure this asset doesn't exist already
+		$db->setQuery("SELECT * FROM #__assets WHERE name = ".$db->quote($table->name));		
+		$asset = $db->loadObject();
+		if (!$asset){
+			// Insert the asset
+			$table->store();
+		}
+		else {
+			$table = $asset;
+		}
+
+		// updating the category asset_id;
+		$updatetable = '#__categories';
+		$query = "UPDATE {$updatetable} SET asset_id = {$table->id}"
+				. " WHERE id = {$id}";
+		$db->setQuery($query);
+		$db->query();
+
+		// Check for query error.
+		$error = $db->getErrorMsg();
+
+		if ($error)
+		{
+			throw new Exception($error);
+			return false;
+		}
+
+		return true;
 
 	}
 
