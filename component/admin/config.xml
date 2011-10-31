@@ -82,6 +82,9 @@
 			<option value="+1 year">JEV_1_YEAR</option>
 			<option value="+3 years">JEV_3_YEARS</option>
 		</param>
+		<param name="redirectrobots" type="jevboolean" default="0" menu="hide" label="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM" description="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM_DESC"/>
+		<param name="robotmenuitem" type="jevmenu" default="" label="JEV_CRAWLERMENU_FOR_ROBOTS" description="JEV_CRAWLERMENU_FOR_ROBOTS_DESC" />
+		<param name="newsef" type="jevboolean" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		
 		<param name="com_cache" type="jevboolean" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
 
