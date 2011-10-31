@@ -120,7 +120,9 @@ class AdminCpanelController extends JController
 			$this->view->assign('migrated', 0);
 		}
 
-		$this->checkCategoryAssets();
+		if (JVersion::isCompatible("1.6.0")){
+			$this->checkCategoryAssets();
+		}
 
 		// get all the raw native calendars
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
@@ -372,6 +374,15 @@ class AdminCpanelController extends JController
 				$this->insertAsset($missingasset);
 			}
 		}
+
+		// Fix assets with no permissions set!
+		$db->setQuery("SELECT * FROM #__assets WHERE name like 'com_jevents.category.%' AND rules=''");
+		$blankruleassets = $db->loadObjectList('id');
+		if ($blankruleassets && count ($blankruleassets)>0){
+			$db->setQuery("UPDATE #__assets SET rules='".'{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}'."' WHERE name like 'com_jevents.category.%' AND rules=''");
+			$db->query();
+		}
+		
 	}
 
 	private function insertAsset($object)
