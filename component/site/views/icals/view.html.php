@@ -209,7 +209,7 @@ class ICalsViewICals extends JEventsAbstractView
 							echo "TZOFFSETFROM:$offset\r\n";
 
 							$offset = $transitions[$t]["offset"];
-							$sign = $offset >= 0 ? "" : "-";
+							$sign = $offset >= 0 ? "+" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 							echo "TZOFFSETTO:$offset\r\n";
@@ -241,7 +241,7 @@ class ICalsViewICals extends JEventsAbstractView
 							echo "TZOFFSETFROM:$offset\r\n";
 
 							$offset = $transitions[$t]["offset"];
-							$sign = $offset >= 0 ? "" : "-";
+							$sign = $offset >= 0 ? "+" : "-";
 							$offset = abs($offset);
 							$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 							echo "TZOFFSETTO:$offset\r\n";

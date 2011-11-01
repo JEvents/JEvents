@@ -95,7 +95,13 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 	}	
 	
 	function _adminStart(){
-		
+	
+		$dispatcher	=& JDispatcher::getInstance();
+		list($this->year,$this->month,$this->day) = JEVHelper::getYMD();
+		$this->Itemid	= JEVHelper::getItemid();
+		$this->datamodel =new JEventsDataModel();
+		$dispatcher->trigger( 'onJEventsHeader', array($this));
+
 ?>
 	<div style="clear:both"  <?php $mainframe = JFactory::getApplication(); $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"class='jeventslight'";?>>
 		<div id="toolbar-box" >
@@ -117,6 +123,9 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 ?>
 	</div>
 <?php			
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger( 'onJEventsFooter', array($this));
+
 	}
 
 	

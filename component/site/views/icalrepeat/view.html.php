@@ -85,6 +85,12 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 	
 	function _adminStart(){
 		
+		$dispatcher	=& JDispatcher::getInstance();
+		list($this->year,$this->month,$this->day) = JEVHelper::getYMD();
+		$this->Itemid	= JEVHelper::getItemid();
+		$this->datamodel =new JEventsDataModel();
+		$dispatcher->trigger( 'onJEventsHeader', array($this));
+
 ?>
 	<div style="clear:both">
 		<div id="toolbar-box" >
@@ -99,7 +105,11 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		echo $title;
 ?>
 		</div>
-<?php			
+<?php		
+		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher->trigger( 'onJEventsFooter', array($this));
+
+
 	}
 
 	function _adminEnd(){
