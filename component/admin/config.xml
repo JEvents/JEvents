@@ -57,10 +57,10 @@
 		<param name="darktemplate" type="jevboolean" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 		
 		<param name="com_dateformat" type="list" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC">
-			<option value="0">French-English</option>
-			<option value="1">US</option>
-			<option value="2">Continental - German</option>
-			<option value="3">FromLanguage File</option>
+			<option value="0">JEV_FRENCH_ENGLISH</option>
+			<option value="1">JEV_US</option>
+			<option value="2">JEV_CONTINENTAL_GERMAN</option>
+			<option value="3">JEV_FROM_LANGUAGE_FILE</option>
 		</param>		
 		<param name="com_calUseStdTime" type="jevboolean" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		<param name="com_blockRobots" type="radio" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
