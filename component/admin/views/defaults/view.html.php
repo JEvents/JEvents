@@ -44,7 +44,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents' );
 
-		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'Control Panel', false );
+		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', JText::_('JEV_ADMIN_CPANEL'), false );
 
 		JSubMenuHelper::addEntry(JText::_( 'DEFAULTS' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 
