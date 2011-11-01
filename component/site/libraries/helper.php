@@ -848,7 +848,7 @@ class JEVHelper
 					{
 						$juser = & JFactory::getUser();
                                                 // Never allow unlogged in users to edit events - just in case someone tries to allow this
-                                                if ($user->id==0) {
+                                                if ($juser->id==0) {
                                                     return false;
                                                 }
 						//$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
@@ -858,7 +858,7 @@ class JEVHelper
 					{
 						$publishlevel = $params->get("jeveditor_level", 20);
 						$juser = & JFactory::getUser();
-						if (JEVHelper::getGid($user) >= $publishlevel)
+						if (JEVHelper::getGid($juser) >= $publishlevel)
 						{
 							$isEventEditor = true;
 						}
