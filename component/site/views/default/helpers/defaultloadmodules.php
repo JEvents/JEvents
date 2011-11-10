@@ -22,7 +22,7 @@ function DefaultLoadModules($view, $position)
 	}
 	else
 	{
-		$results = $dispatcher->trigger('onPrepareContent', array('com_content.article', &$article, &$params, 0));
+		$results = $dispatcher->trigger('onPrepareContent', array( &$article, &$params, 0));
 	}
 
 	echo $article->text;
