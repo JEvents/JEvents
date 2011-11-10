@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
 	<name>JEvents Calendar</name>
-	<creationDate>October 2011</creationDate>
+	<creationDate>November 2011</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2011 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
