@@ -222,7 +222,7 @@ $registry->setValue("jevents.controller",$controller);
 $registry->setValue("jevents.activeprocess","component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory
-if (JRequest::getInt("limit" , -1) == 0 || JRequest::getInt("limit" , -1) >100 ){
+if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit" , -1) == 0 || JRequest::getInt("limit" , -1) >100 )){
 	JRequest::setVar("limit",100);
 }
 // Perform the Request task
