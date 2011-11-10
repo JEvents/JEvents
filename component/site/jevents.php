@@ -128,7 +128,11 @@ if (strpos($cmd, '.') != false) {
 	if (file_exists($controllerPath)) {
 		require_once($controllerPath);
 	} else {
-		JError::raiseError(500, 'Invalid Controller '.$controllerName);
+		JFactory::getApplication()->enqueueMessage('Invalid Controller - '.$controllerName );
+		$cmd = "month.calendar";
+		list($controllerName, $task) = explode('.', $cmd);
+		$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+		require_once($controllerPath);
 	}
 } else {
 	// Base controller, just set the task
@@ -163,9 +167,16 @@ $controllerClass = ucfirst($controllerName).'Controller';
 if (class_exists($controllerClass)) {
 	$controller = new $controllerClass();
 } else {
-	JError::raiseError(500, 'Invalid Controller Class - '.$controllerClass );
+	JFactory::getApplication()->enqueueMessage('Invalid Controller Class - '.$controllerClass );
+	$cmd = "month.calendar";
+	list($controllerName, $task) = explode('.', $cmd);
+	JRequest::setVar("jevtask",$cmd);
+	JRequest::setVar("jevcmd",$cmd);
+	$controllerClass = ucfirst($controllerName).'Controller';
+	$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+	require_once($controllerPath);
+	$controller = new $controllerClass();
 }
-
 
 // create live bookmark if requested
 $cfg = & JEVConfig::getInstance();
@@ -211,7 +222,7 @@ $registry->setValue("jevents.controller",$controller);
 $registry->setValue("jevents.activeprocess","component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory
-if (JRequest::getInt("limit" , -1) == 0 ){
+if (JRequest::getInt("limit" , -1) == 0 || JRequest::getInt("limit" , -1) >100 ){
 	JRequest::setVar("limit",100);
 }
 // Perform the Request task

@@ -504,61 +504,71 @@ function JEventsBuildRouteNew(&$query, $task)
 				$nowmonth = JevDate::strftime('%m', $t_datenow->toUnix(true));
 				$nowday = JevDate::strftime('%d', $t_datenow->toUnix(true));
 
+				if (isset($query['year']))
+				{
+					$year = $query['year'];
+					unset($query['year']);
+				}
+				else
+				{
+					$year = $nowyear;
+				}
+				
+				if (isset($query['month']))
+				{
+					$month = $query['month'];
+					unset($query['month']);
+				}
+				else
+				{
+					$month =  $nowmonth;
+				}
+				
+				if (isset($query['day']))
+				{
+					$day = $query['day'];
+					unset($query['day']);
+				}
+				else
+				{
+					// if no date in the query then use TODAY not the calendar date
+					$day = $nowday;
+				}
+				
+				// for week data always go to the start of the week
+				if ($task == "week.listevents"){
+					$startday = $cfg->get('com_starday');
+					if(( !$startday ) || ( $startday > 1 )){
+						$startday = 0;
+					}
+					$date = mktime(5,5,5,$month, $day, $year);					
+					$currentday = strftime("%w",$date);
+					if ($currentday>$startday){
+						$date -= ($currentday-$startday)*86400;
+						list($year,$month,$day) = explode("-",strftime("%Y-%m-%d", $date));
+					}
+					else if ($currentday<$startday){
+						$date -= (7+$currentday-$startday)*86400;
+						list($year,$month,$day) = explode("-",strftime("%Y-%m-%d", $date));
+					}
+				}
+
 				// only include the year in the date and list views
 				if (in_array($task, array("year.listevents", "month.calendar", "week.listevents", "day.listevents")))
 				{
-					if (isset($query['year']))
-					{
-						$segments[] = $query['year'];
-						unset($query['year']);
-					}
-					else
-					{
-						// if no date in the query then use TODAY not the calendar date
-						$segments[] = $nowyear;
-					}
-				}
-				else if (isset($query['year']))
-				{
-					unset($query['year']);
+					$segments[] = $year;
 				}
 
 				// only include the month in the date and list views (excluding year)
 				if (in_array($task, array("month.calendar", "week.listevents", "day.listevents")))
 				{
-					if (isset($query['month']))
-					{
-						$segments[] = $query['month'];
-						unset($query['month']);
-					}
-					else
-					{
-						// if no date in the query then use TODAY not the calendar date
-						$segments[] = $nowmonth;
-					}
-				}
-				else if (isset($query['month']))
-				{
-					unset($query['month']);
+					$segments[] = $month;
 				}
 
 				// only include the day in the week and day views (excluding year and month)
 				if (in_array($task, array("week.listevents", "day.listevents")))
 				{
-					if (isset($query['day']))
-					{
-						$segments[] = $query['day'];
-						unset($query['day']);
-					}
-					else
-					{
-						// if no date in the query then use TODAY not the calendar date
-						$segments[] = $nowday;
-					}
-				}
-				else if (isset($query['day']))
-				{
-					unset($query['day']);
+					$segments[] = $day;
 				}
 
 				switch ($task) {

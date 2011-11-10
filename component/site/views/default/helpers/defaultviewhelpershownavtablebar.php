@@ -22,6 +22,9 @@ function DefaultViewHelperShowNavTableBar($view){
 
 	$task = JRequest::getString("jevtask");
 		
+	$view->loadModules("jevpretoolbar");
+	$view->loadModules("jevpretoolbar_".$task);
+	
 	$prev_year = clone($this_date);
 	$prev_year->addMonths( -12 );
 	$next_year = clone($this_date);
@@ -108,5 +111,9 @@ function DefaultViewHelperShowNavTableBar($view){
 			else $view->viewNavTableBar( $today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, "day.listevents", $view->Itemid );
 			break;
 	}
+	
+		$view->loadModules("jevposttoolbar");
+		$view->loadModules("jevposttoolbar_".$task);
+	
 }
 

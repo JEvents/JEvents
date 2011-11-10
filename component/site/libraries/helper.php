@@ -585,22 +585,38 @@ class JEVHelper
 							{
 								$mparams = new JParameter($jevitem->params);
 								$mcatids = array();
-								for ($c = 0; $c < 999; $c++)
-								{
-									$nextCID = "catid$c";
-									//  stop looking for more catids when you reach the last one!
-									if (!$nextCatId = $mparams->get($nextCID, null))
-									{
-										break;
-									}
-									if ($forcecheck->catid() == $mparams->get($nextCID, null))
-									{
-										return $jevitemid;
-									}
+								// New system
+								$newcats = $mparams->get( "catidnew", false);
+								if ($newcats && is_array($newcats )){
+									foreach ($newcats as $newcat){
+										if ($forcecheck->catid() == $newcat)
+										{
+											return $jevitemid;
+										}
 
-									if (!in_array($nextCatId, $mcatids))
+										if ( !in_array( $newcat, $mcatids )){
+											$mcatids[]	= $newcat;
+										}
+									}				
+								}
+								else {
+									for ($c = 0; $c < 999; $c++)
 									{
-										$mcatids[] = $nextCatId;
+										$nextCID = "catid$c";
+										//  stop looking for more catids when you reach the last one!
+										if (!$nextCatId = $mparams->get($nextCID, null))
+										{
+											break;
+										}
+										if ($forcecheck->catid() == $mparams->get($nextCID, null))
+										{
+											return $jevitemid;
+										}
+
+										if (!in_array($nextCatId, $mcatids))
+										{
+											$mcatids[] = $nextCatId;
+										}
 									}
 								}
 								// if no restrictions then can use this

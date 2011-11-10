@@ -15,4 +15,8 @@ JevViewCopyright(); ?>
 	$dispatcher	=& JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsFooter');
 
+	$task = JRequest::getString("jevtask");
+	$view->loadModules("jevpostjevents");
+	$view->loadModules("jevpostjevents_".$task);
+	
 }

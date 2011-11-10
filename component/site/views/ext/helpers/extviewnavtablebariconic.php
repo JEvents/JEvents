@@ -10,9 +10,10 @@ class ExtViewNavTableBarIconic {
 		
 		
 		if (JRequest::getInt( 'pop', 0 )) return;
-		
+				
 		$cfg = & JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
+		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 
 		$viewimages = JURI::root() . "components/".JEV_COM_COMPONENT."/views/".$view->getViewName()."/assets/images";
 
@@ -46,57 +47,57 @@ class ExtViewNavTableBarIconic {
     				<?php } ?>
 				//-->
     		<!-- END add_event -->
-<!-- BEGIN flyer_view -->
+					<?php if (in_array("byyear", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=year.listevents&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYYEAR');?>"  class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-flyer.gif" alt="Flat View" border="0"/><br/>
 							<?php echo JText::_('JEV_VIEWBYYEAR');?></a>
 					</td>
-<!-- END flyer_view -->
-<!-- BEGIN monthly_view -->
+					<?php } ?>
+					<?php if (in_array("bymonth", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=month.calendar&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYMONTH');?>" class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-calendarview.gif" alt="<?php echo JText::_( 'MONTHLY_VIEW' );?>" border="0"/><br/>
 							<?php echo  JText::_('JEV_VIEWBYMONTH');?></a>
 					</td>
-<!-- END monthly_view -->
-<!-- BEGIN weekly_view -->
+					<?php } ?>
+					<?php if (in_array("byweek", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=week.listevents&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYWEEK');?>" class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-weekly.gif" alt="Weekly View" border="0"/><br/>
 							<?php echo  JText::_('JEV_VIEWBYWEEK');?></a>
 					</td>
-<!-- END weekly_view -->
-<!-- BEGIN daily_view -->
+					<?php } ?>
+					<?php if (in_array("byday", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=day.listevents&'. $today_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWTODAY');?>" class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-daily.gif" alt="Daily View" border="0"/><br/>
 							<?php echo JText::_('JEV_VIEWTODAY');?></a>
 					</td>
-
-<!-- END daily_view -->
+					<?php } ?>
+					
 					<?php if ($cfg->get('com_hideshowbycats', 0) == '0') { ?>
-<!-- BEGIN cat_view -->
+					<?php if (in_array("bycat", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=cat.listevents&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYCAT');?>" class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-cats.gif" alt="Categories" border="0"/><br/>
 							<?php echo  JText::_('JEV_VIEWBYCAT');?></a>
 					</td>
-<!-- END cat_view -->
 					<?php } ?>
-<!-- BEGIN search_view -->
+					<?php } ?>
+					<?php if (in_array("search", $this->iconstoshow))   { ?>
 					<td><img name="spacer" src="<?php echo $viewimages;?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 					<td class="buttontext" align="center" nowrap="nowrap" valign="middle">
 						<a href="<?php echo JRoute::_( 'index.php?option=' . $option . $cat . '&task=search.form&'. $view_date->toDateURL() . '&Itemid=' . $Itemid );?>" title="<?php echo  JText::_('JEV_SEARCH_TITLE');?>" class="buttontext">
 							<img src="<?php echo $viewimages;?>/icon-search.gif" alt="Search" border="0"/><br/>
 							<?php echo JText::_('JEV_SEARCH_TITLE');?></a>
 					</td>
-<!-- END search_view -->
+					<?php } ?>
 					
 				</tr>
 			</table>
@@ -104,6 +105,7 @@ class ExtViewNavTableBarIconic {
         </td>
         </tr></table>
 		<?php    	
+		
 	}
 
 }

@@ -127,16 +127,15 @@ class JEventsHTML{
 
 		$cfg = & JEVConfig::getInstance();
 
-		$viewlist[] = JHTML::_('select.option', 'day.listevents', 		JText::_('JEV_VIEWBYDAY') );
-		$viewlist[] = JHTML::_('select.option', 'week.listevents', 	JText::_('JEV_VIEWBYWEEK') );
-		$viewlist[] = JHTML::_('select.option', 'month.calendar', 	JText::_('JEV_VIEWBYMONTH') );
-		$viewlist[] = JHTML::_('select.option', 'year.listevents', 	JText::_('JEV_VIEWBYYEAR') );
-
-		if ($cfg->get('com_hideshowbycats', 0) == '0') {
-			$viewlist[] = JHTML::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT') );
-		}
-
-		$viewlist[] = JHTML::_('select.option', 'search.form', 	JText::_('JEV_SEARCH_TITLE') );
+		$iconstoshow = $cfg->get('iconstoshow', array('byyear','bymonth','byweek','byday','search'));
+		$viewlist = array();
+		
+		if (in_array("byday",$iconstoshow))  $viewlist[] = JHTML::_('select.option', 'day.listevents', 		JText::_('JEV_VIEWBYDAY') );
+		if (in_array("byweek",$iconstoshow))  $viewlist[] = JHTML::_('select.option', 'week.listevents', 	JText::_('JEV_VIEWBYWEEK') );
+		if (in_array("bymonth",$iconstoshow)) $viewlist[] = JHTML::_('select.option', 'month.calendar', 	JText::_('JEV_VIEWBYMONTH') );
+		if (in_array("byyear",$iconstoshow)) $viewlist[] = JHTML::_('select.option', 'year.listevents', 	JText::_('JEV_VIEWBYYEAR') );
+		if (in_array("bycat",$iconstoshow)) $viewlist[] = JHTML::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT') );
+		if (in_array("search",$iconstoshow)) $viewlist[] = JHTML::_('select.option', 'search.form', 	JText::_('JEV_SEARCH_TITLE') );
 
 		$tosend = JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype );
 		echo $tosend;

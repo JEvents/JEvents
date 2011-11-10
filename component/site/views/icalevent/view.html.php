@@ -21,6 +21,7 @@ include_once(JEV_ADMINPATH."/views/icalevent/view.html.php");
 
 class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent 
 {
+	var $jevlayout = null;
 	
 	function __construct($config = array()){
 		include_once(JPATH_ADMINISTRATOR.DS."includes".DS."toolbar.php");
@@ -30,6 +31,13 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		//JEVHelper::stylesheet("system.css", "administrator/templates/system/css/");
 		//JEVHelper::stylesheet("icon.css",  "administrator/templates/khepri/css/");
 		//JEVHelper::stylesheet("general.css", "administrator/templates/khepri/css/");
+		
+		
+		// used only for helper functions
+		$this->jevlayout="default";	
+		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));		
+		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		
 	}	
 	
 	function edit($tpl = null)
@@ -156,5 +164,96 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		
 	}
 
+	// This handles all methods where the view is passed as the first argument
+	function __call($name, $arguments){
+		if (strpos($name,"_")===0){
+			$name="ViewHelper".ucfirst(substr($name,1));
+		}
+		$helper = ucfirst($this->jevlayout).ucfirst($name);
+		if (!$this->loadHelper($helper)){
+			$helper = "Default".ucfirst($name);
+			if (!$this->loadHelper($helper)){
+				return;
+			}
+		}
+		$args = array_unshift($arguments,$this);
+		if (class_exists($helper)){
+			if (class_exists("ReflectionClass") ){
+				$reflectionObj = new ReflectionClass($helper);
+				if (method_exists($reflectionObj,"newInstanceArgs")){
+					$var = $reflectionObj->newInstanceArgs($arguments);	
+				}
+				else {
+					$var = $this->CreateClass($helper,$arguments);
+				}
+			}
+			else {
+				$var = $this->CreateClass($helper,$arguments);
+			}
+			return;
+		}
+		else if (is_callable($helper)){
+			return call_user_func_array($helper,$arguments);
+		}
+	}
+	
+	
+	protected function CreateClass($className, $params) {
+		switch (count($params)) {
+			case 0:
+				return new $className();
+				break;
+			case 1:
+				return new $className($params[0]);
+				break;
+			case 2:
+				return new $className($params[0], $params[1]);
+				break;
+			case 3:
+				return new $className($params[0], $params[1], $params[2]);
+				break;
+			case 4:
+				return new $className($params[0], $params[1], $params[2], $params[3]);
+				break;
+			case 5:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4]);
+				break;
+			case 6:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+				break;
+			case 7:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]);
+				break;
+			case 8:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]);
+				break;
+			case 9:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]);
+				break;
+			case 10:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8], $params[9]);
+				break;
+			default:
+				echo "Too many arguments";
+				return null;
+				break;
+		}
+	}
+
+	function loadHelper( $file = null)
+	{
+		if (function_exists($file) || class_exists($file)) return true;
+		
+		// load the template script
+		jimport('joomla.filesystem.path');
+		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+
+		if ($helper != false)
+		{
+			// include the requested template filename in the local scope
+			include_once $helper;
+		}
+		return $helper;
+	}
 	
 }

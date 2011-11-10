@@ -79,13 +79,25 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	$c=0;
 	$modcatids = array();
 	$catidList = "";
-	for ($c=0;$c<999;$c++){
-		$nextCID="catid$c";
-		//  stop looking for more catids when you reach the last one!
-		if (!isset($modparams->$nextCID)) break;
-		if ($modparams->$nextCID>0 && !in_array($modparams->$nextCID,$modcatids)){
-			$modcatids[]=$modparams->$nextCID;
-			$catidList .= (strlen($catidList)>0?",":"").$modparams->$nextCID;
+	// New system
+	$newcats = isset($modparams->catidnew)?$modparams->catidnew: false;
+	if ($newcats && is_array($newcats )){
+		foreach ($newcats as $newcat){
+			if ( !in_array( $newcat,$modcatids )){
+				$modcatids[]=$newcat;
+				$catidList .= (strlen($catidList)>0?",":"").$newcat;
+			}
+		}				
+	}
+	else {	
+		for ($c=0;$c<999;$c++){
+			$nextCID="catid$c";
+			//  stop looking for more catids when you reach the last one!
+			if (!isset($modparams->$nextCID)) break;
+			if ($modparams->$nextCID>0 && !in_array($modparams->$nextCID,$modcatids)){
+				$modcatids[]=$modparams->$nextCID;
+				$catidList .= (strlen($catidList)>0?",":"").$modparams->$nextCID;
+			}
 		}
 	}
 

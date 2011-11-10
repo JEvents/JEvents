@@ -23,6 +23,8 @@
 				<option value="2">ICONS WITHOUT NAVIGATION</option>
 			</field>
 
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+			<!--
 			<field name="catid0" type="jevcategory"  default="0" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_DESC" />
 			<field name="catid1" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
 			<field name="catid2" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
@@ -34,7 +36,7 @@
 			<field name="catid8" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
 			<field name="catid9" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
 			<field name="catid10" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-
+			//-->
 		</fieldset>
 	</fields>
 </metadata>

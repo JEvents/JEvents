@@ -17,7 +17,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
 		
 		$cfg = & JEVConfig::getInstance();
 		
-		if (JRequest::getInt( 'pop', 0 )) return;
+		if (JRequest::getInt( 'pop', 0 )) return;		
     	?>
     	<div class="ev_navigation">
     		<table  >

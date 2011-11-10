@@ -70,16 +70,27 @@ class JEventsDataModel {
 		$this->catids = array();
 		if ($catidsIn == "NONE") {
 			$this->catidList	= "";
-
-			for ($c=0; $c < 999; $c++) {
-				$nextCID = "catid$c";
-				//  stop looking for more catids when you reach the last one!
-				if (!$nextCatId = $params->get( $nextCID, null)) {
-					break;
-				}
-				if ( !in_array( $nextCatId, $this->catids )){
-					$this->catids[]	= $nextCatId;
-					$this->catidList	.= ( strlen( $this->catidList )>0 ? ',' : '' ) . $nextCatId;
+			// New system
+			$newcats = $params->get( "catidnew", false);
+			if ($newcats && is_array($newcats )){
+				foreach ($newcats as $newcat){
+					if ( !in_array( $newcat, $this->catids )){
+						$this->catids[]	= $newcat;
+						$this->catidList	.= ( strlen( $this->catidList )>0 ? ',' : '' ) . $newcat;
+					}
+				}				
+			}
+			else {
+				for ($c=0; $c < 999; $c++) {
+					$nextCID = "catid$c";
+					//  stop looking for more catids when you reach the last one!
+					if (!$nextCatId = $params->get( $nextCID, null)) {
+						break;
+					}
+					if ( !in_array( $nextCatId, $this->catids )){
+						$this->catids[]	= $nextCatId;
+						$this->catidList	.= ( strlen( $this->catidList )>0 ? ',' : '' ) . $nextCatId;
+					}
 				}
 			}
 			$this->catidsOut = str_replace( ',', $separator, $this->catidList );

@@ -372,39 +372,39 @@ tr.icon_labels{
  padding:0px;
 }
 div#ev_icon_yearly {
-     background-image: url("../images/calyear.png");
+     background-image: url("../images/calyear.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_monthly {
-     background-image: url("../images/calmonth2.png");
+     background-image: url("../images/calmonth2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_monthly_active {
-     background-image: url("../images/calmonth2.png");
+     background-image: url("../images/calmonth2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_weekly{
-     background-image: url("../images/calweek2.png");
+     background-image: url("../images/calweek2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_weekly_active{
-     background-image: url("../images/calweek2.png");
+     background-image: url("../images/calweek2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_daily{
-     background-image: url("../images/calday2.png");
+     background-image: url("../images/calday2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_daily_active{
-     background-image: url("../images/calday2.png");
+     background-image: url("../images/calday2.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_search{
-     background-image: url("../images/calyear.png");
+     background-image: url("../images/calyear.png")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_jumpto{
-     background-image: url("../images/calyear.png");
+     background-image: url("../images/calyear.png")!important;
      background-repeat: no-repeat;
 }
 

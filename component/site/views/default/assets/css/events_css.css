@@ -444,27 +444,27 @@ tr.icon_labels{
  padding:0px;
 }
 div#ev_icon_yearly {
-     background-image: url("../images/cal5x.jpg");
+     background-image: url("../images/cal5x.jpg")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_monthly {
-     background-image: url("../images/cal1x.jpg");
+     background-image: url("../images/cal1x.jpg")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_weekly{
-     background-image: url("../images/cal2x.jpg");
+     background-image: url("../images/cal2x.jpg")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_daily{
-     background-image: url("../images/cal3x.jpg");
+     background-image: url("../images/cal3x.jpg")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_search{
-     background-image: url("../images/cal8x.jpg");
+     background-image: url("../images/cal8x.jpg")!important;
      background-repeat: no-repeat;
 }
 div#ev_icon_jumpto{
-     background-image: url("../images/cal9x.jpg");
+     background-image: url("../images/cal9x.jpg")!important;
      background-repeat: no-repeat;
 }
 
