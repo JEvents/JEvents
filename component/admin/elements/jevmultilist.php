@@ -29,7 +29,24 @@ class JElementJevmultilist extends JElementList
 		if (is_string($value)){
 			$value = explode(",",$value);
 		}
-		return parent::fetchElement($name, $value, &$node, $control_name, $raw);
+
+		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="inputbox"' );
+
+		$class .= " multiple='multiple' ";
+		$options = array ();
+		$size = 0;
+		foreach ($node->children() as $option)
+		{
+			$val	= $option->attributes('value');
+			$text	= $option->data();
+			$options[] = JHTML::_('select.option', $val, JText::_($text));
+			$size ++; 
+		}
+		$class .= " size='$size'";
+
+		$html  = JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.'][]', $class, 'value', 'text', $value, $control_name.$name);		
+		$html = str_replace("<select ", "<select multiple='multiple' ", $html);
+		return $html;
 	}
 
 }
