@@ -590,7 +590,7 @@ class AdminIcaleventController extends JController {
 
 		
 		if (JFactory::getApplication()->isAdmin()){
-			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day&Itemid=$Itemid",$msg);
+			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day",$msg);
 		}
 		else {
 			$Itemid = JRequest::getInt("Itemid");

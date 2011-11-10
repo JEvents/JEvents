@@ -247,3 +247,5 @@ padding:0;
 .pane-sliders .panel .adminlist th {display: none;}
 
 #updateavailable span { color:red;}
+
+#jevents label {display:inline;}

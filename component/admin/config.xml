@@ -63,6 +63,70 @@
 			<option value="3">JEV_FROM_LANGUAGE_FILE</option>
 		</param>		
 		<param name="com_calUseStdTime" type="jevboolean" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
+		
+		<param name="com_cache" type="jevboolean" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
+
+		<param name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
+			<option value="comp">JEV_HEADLINE_COMP</option>
+			<option value="none">JEV_HEADLINE_NONE</option>
+			<option value="menu">JEV_HEADLINE_MENU</option>
+		</param>
+		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<option value="-1">HIDE_ALTOGETHER</option>
+			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
+		</param>
+		<param name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC">
+			<option value="byyear">JEVENTS_LIST_YEAR_DEFAULT_TITLE</option>
+			<option value="bymonth">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
+			<option value="byweek">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
+			<option value="byday">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
+			<option value="bycat">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
+			<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
+		</param>
+		
+		<param name="com_navbarcolor" type="list" default='GREEN'  menu="hide" label="JEV_NAV_BAR_COLOR" description="">
+			<option value="green">JEV_NAV_BAR_GREEN</option>
+			<option value="orange">JEV_NAV_BAR_ORANGE</option>
+			<option value="blue">JEV_NAV_BAR_BLUE</option>
+			<option value="red">JEV_NAV_BAR_RED</option>
+			<option value="gray">JEV_NAV_BAR_GRAY</option>
+			<option value="yellow">JEV_NAV_BAR_YELLOW</option>
+		</param>
+		<param name="com_earliestyear" type="text" default="2000" menu="hide" size="6" label="JEV_EARLIEST_YEAR" description=""/>
+		<param name="com_latestyear" type="text" default="2015" menu="hide" size="6"  label="JEV_LATEST_YEAR" description=""/>
+		<param name="com_starday" type="list" default="0" menu="hide" label="JEV_FIRST_DAY" description="">
+			<option value="0">JEV_SUNDAY_FIRST</option>
+			<option value="1">JEV_MONDAY_FIRST</option>
+		</param>
+		<param name="com_print_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
+		<param name="com_email_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
+		<param name="installlayouts" type="jevboolean" default="0" menu="hide" label="JEV_INSTALL_LAYOUTS" description="JEV_INSTALL_LAYOUTS_TIP" />
+		<param name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
+		<param name="showPanelNews" type="jevboolean" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
+		<param name="hideMigration" type="jevboolean" default="1" label="JEV_HIDE_MIGRATION" description="" />
+
+		<param name="@spacer" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
+		<!-- TIMEZONE DATA //-->
+		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
+		<param name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" description="JEV_TIMEZONE_2_DESC"/>
+		
+		<param name="regexsearch" type="list" default="1" label="JEV_SEARCH_TYPE" description="JEV_SEARCH_TYPE_DESC">
+			<option value="0">JEV_REGEX</option>
+			<option value="1">JEV_FULL_TEXT</option>
+		</param>		
+		
+		<param name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC"/>
+		
+		<!--//
+		<param name="jevkey" type="jevkey" default="" menu="hide" size="40" label='COPYRIGHT_MESSAGE_KEY'  description='PLEASE_USE_THIS_KEY_CODE_AT_THE_JEVENTS_WEBSITE_TO_OBTAIN_A_FREE_CODE_THAT_WILL_DISABLE_THE_COPYRIGHT_MESSAGE'  />
+		<param name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label='COPYRIGHT_UNLOCK_CODE'  description='YOU_CAN_OBTAIN_THIS_FREE_CODE_FROM_THE_JEVENTS_WEBSITE'  />
+		//-->
+	</params>
+	
+	<params  group="ROBOT_SEF_OPTIONS">
+		<param name="newsef" type="jevboolean" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		<param name="com_blockRobots" type="radio" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
@@ -84,62 +148,9 @@
 		</param>
 		<param name="redirectrobots" type="jevboolean" default="0" menu="hide" label="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM" description="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM_DESC"/>
 		<param name="robotmenuitem" type="jevmenu" default="" label="JEV_CRAWLERMENU_FOR_ROBOTS" description="JEV_CRAWLERMENU_FOR_ROBOTS_DESC" />
-		<param name="newsef" type="jevboolean" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
-		
-		<param name="com_cache" type="jevboolean" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
-
-		<param name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
-			<option value="comp">JEV_HEADLINE_COMP</option>
-			<option value="none">JEV_HEADLINE_NONE</option>
-			<option value="menu">JEV_HEADLINE_MENU</option>
-		</param>
-		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
-			<option value="0">JEV_NO</option>
-			<option value="1">JEV_YES</option>
-			<option value="-1">HIDE_ALTOGETHER</option>
-			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
-		</param>
-		<param name="com_navbarcolor" type="list" default='GREEN'  menu="hide" label="JEV_NAV_BAR_COLOR" description="">
-			<option value="green">JEV_NAV_BAR_GREEN</option>
-			<option value="orange">JEV_NAV_BAR_ORANGE</option>
-			<option value="blue">JEV_NAV_BAR_BLUE</option>
-			<option value="red">JEV_NAV_BAR_RED</option>
-			<option value="gray">JEV_NAV_BAR_GRAY</option>
-			<option value="yellow">JEV_NAV_BAR_YELLOW</option>
-		</param>
-		<param name="com_earliestyear" type="text" default="2000" menu="hide" size="6" label="JEV_EARLIEST_YEAR" description=""/>
-		<param name="com_latestyear" type="text" default="2015" menu="hide" size="6"  label="JEV_LATEST_YEAR" description=""/>
-		<param name="com_starday" type="list" default="0" menu="hide" label="JEV_FIRST_DAY" description="">
-			<option value="0">JEV_SUNDAY_FIRST</option>
-			<option value="1">JEV_MONDAY_FIRST</option>
-		</param>
-		<param name="com_print_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
-		<param name="com_email_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
-		<param name="com_hideshowbycats" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_CATS" description="" />
-		<param name="installlayouts" type="jevboolean" default="0" menu="hide" label="JEV_INSTALL_LAYOUTS" description="JEV_INSTALL_LAYOUTS_TIP" />
-		<param name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
+		<param name="blockall" type="jevboolean" default="0" menu="hide" label="JEV_BLOCK_ALL_IN_LISTS" description="JEV_BLOCK_ALL_IN_LISTS_DESC"/>
 		<param name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP"/>
-		<param name="showPanelNews" type="jevboolean" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
-		<param name="hideMigration" type="jevboolean" default="1" label="JEV_HIDE_MIGRATION" description="" />
-
-		<param name="@spacer" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
-		<!-- TIMEZONE DATA //-->
-		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
-		<param name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" description="JEV_TIMEZONE_2_DESC"/>
 		
-		<param name="regexsearch" type="list" default="1" label="JEV_SEARCH_TYPE" description="JEV_SEARCH_TYPE_DESC">
-			<option value="0">JEV_REGEX</option>
-			<option value="1">JEV_FULL_TEXT</option>
-		</param>		
-		
-		<param name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC"/>
-		
-		<param name="allowraw" type="jevboolean" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/>
-
-		<!--//
-		<param name="jevkey" type="jevkey" default="" menu="hide" size="40" label='COPYRIGHT_MESSAGE_KEY'  description='PLEASE_USE_THIS_KEY_CODE_AT_THE_JEVENTS_WEBSITE_TO_OBTAIN_A_FREE_CODE_THAT_WILL_DISABLE_THE_COPYRIGHT_MESSAGE'  />
-		<param name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label='COPYRIGHT_UNLOCK_CODE'  description='YOU_CAN_OBTAIN_THIS_FREE_CODE_FROM_THE_JEVENTS_WEBSITE'  />
-		//-->
 	</params>
 	
 	<params  group="JEV_PERMISSIONS">	
@@ -208,6 +219,8 @@
 
 		<param name="defaultstarttime" type="text" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME" description="JEV_DEFAULT_STARTTIME_TIP"/>
 		<param name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		
+		
+		<param name="allowraw" type="jevboolean" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/> 		
 	</params>
 	
 	<params group="JEV_EVENT_DETAIL_VIEW">
@@ -276,7 +289,7 @@
 		<param name="com_rss_live_bookmarks" type="jevboolean" default="1" menu="hide" label="JEV_RSS_LIVE_BOOKMARKS" description="JEV_RSS_LIVE_BOOKMARKS_TIP" />
 		
 		<param name="com_rss_modid" type="rssmod" default="0" menu="hide" label="JEV_RSS_MODID" description="JEV_RSS_MODID_TIP" />
-		<param name="com_rss_title" type="text" default='JEVENTS_SYNDICATION_FOR_JOOMLA'  menu="hide" size="50" label="JEV_RSS_TITLE" description=""/>
+		<param name="com_rss_title" type="text" default='JEvents RSS Feed for Joomla'  menu="hide" size="50" label="JEV_RSS_TITLE" description=""/>
 		<param name="com_rss_description" type="textarea" default="Powered by JEvents!" menu="hide" rows="5" cols="40" label="JEV_RSS_DESCRIPTION" description=""/>
 		<param name="com_rss_limit_text" type="jevboolean" default="0" menu="hide" label="JEV_RSS_LIMIT_TEXT_LENGTH" description="" />
 		<param name="com_rss_text_length" type="text" default="20" menu="hide" size="3" label="JEV_RSS_TEXT_LIMIT" description=""/>

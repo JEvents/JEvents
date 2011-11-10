@@ -201,7 +201,7 @@ class AdminIcalsController extends JController {
 			$redirect_task="icals.list";
 		}
 		else {
-			$redirect_task="month.calendar";
+			$redirect_task="day.listevents";
 		}
 
 		// clean this up later - this is a quick fix for frontend reloading

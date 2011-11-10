@@ -223,3 +223,5 @@ a#colorPickButton {
 .icon-32-edit 			{ background-image: url(../images/icon-32-edit.png); }
 .icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
+
+#jevents label {display:inline;}

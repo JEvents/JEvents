@@ -49,6 +49,18 @@ $version = JEventsVersion::getInstance();
 					}
 				}
 
+				$haslayouts = false;
+				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
+					$config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
+					if (file_exists($config)){
+						$haslayouts = true;
+					}
+				}
+
+				if ($haslayouts){
+					echo $tabs->startPanel( JText::_("CLUB_LAYOUTS"), "CLUB_LAYOUTS");
+					echo $tabs->startPane( 'layouts' );					
+				}
 				// Now get layout specific parameters
 				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 					$config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
@@ -59,7 +71,10 @@ $version = JEventsVersion::getInstance();
 						echo $tabs->endPanel();
 					}
 				}
-
+				if ($haslayouts){
+					echo $tabs->endPanel();
+					echo $tabs->endPane();
+				}
 				echo $tabs->endPane();
 			}
 			else {
