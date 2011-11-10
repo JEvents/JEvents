@@ -24,8 +24,15 @@ require_once (dirname(__FILE__).DS.'helper.php');
 $jevhelper = new modJeventsLegendHelper();
 
 $theme = JEV_CommonFunctions::getJEventsViewName();
+$modtheme = $params->get("com_calViewName", $theme);
+if ($modtheme==""){
+	$modtheme=$theme;
+}
+$theme=$modtheme;
+
 require_once(JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend"));
 
 $viewclass = ucfirst($theme)."ModLegendView";
 $modview = new $viewclass($params, $module->id);
+$modview->jevlayout = $theme;
 echo $modview->displayCalendarLegend();

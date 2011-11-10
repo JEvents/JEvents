@@ -54,12 +54,30 @@ class GeraintModLegendView extends DefaultModLegendView{
 
 		$c=0;
 		$catids = array();
-		while ($nextCatId = $params->get( "catid$c", null )){
-			if (!in_array($nextCatId,$catids)){
-				$catids[]=$nextCatId;
-				$catidList .= (strlen($catidList)>0?",":"").$nextCatId;
+		// New system
+		$newcats = $params->get("catidnew", false);
+		if ($newcats && is_array($newcats))
+		{
+			foreach ($newcats as $newcat)
+			{
+				if (!in_array($newcat, $catids))
+				{
+					$catids[] = $newcat;
+					$catidList .= (strlen($catidList) > 0 ? "," : "") . $newcat;
+				}
 			}
-			$c++;
+		}
+		else
+		{
+			while ($nextCatId = $params->get("catid$c", null))
+			{
+				if (!in_array($nextCatId, $catids))
+				{
+					$catids[] = $nextCatId;
+					$catidList .= (strlen($catidList) > 0 ? "," : "") . $nextCatId;
+				}
+				$c++;
+			}
 		}
 
 		if ($catidList == "" && $params->get("catid0", "xxx") == "xxx") {

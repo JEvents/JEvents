@@ -35,14 +35,26 @@ class modJeventsLegendHelper
 	{
 		
 		$catidList = "";
-		for ($c = 0; $c < 999; $c++) {
-			$nextCID = "catid$c";
-			//  stop looking for more catids when you reach the last one!
-			if (!$modparams->get($nextCID ,false))
-				break;
-			if ($modparams->get($nextCID) > 0 && !in_array($modparams->get($nextCID), $catids)) {
-				$catids[]=  $modparams->get($nextCID);
-				$catidList .= ( strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
+		// New system
+		$newcats = $modparams->get( "catidnew", false);
+		if ($newcats && is_array($newcats )){
+			foreach ($newcats as $newcat){
+				if ( !in_array( $newcat,$catids )){
+					$catids[]=$newcat;
+					$catidList .= (strlen($catidList)>0?",":"").$newcat;
+				}
+			}				
+		}
+		else {			
+			for ($c = 0; $c < 999; $c++) {
+				$nextCID = "catid$c";
+				//  stop looking for more catids when you reach the last one!
+				if (!$modparams->get($nextCID ,false))
+					break;
+				if ($modparams->get($nextCID) > 0 && !in_array($modparams->get($nextCID), $catids)) {
+					$catids[]=  $modparams->get($nextCID);
+					$catidList .= ( strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
+				}
 			}
 		}
 		

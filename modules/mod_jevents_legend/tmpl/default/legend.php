@@ -102,16 +102,31 @@ class DefaultModLegendView
 
 		$c = 0;
 		$catids = array();
-		while ($nextCatId = $params->get("catid$c", null))
+		// New system
+		$newcats = $params->get("catidnew", false);
+		if ($newcats && is_array($newcats))
 		{
-			if (!in_array($nextCatId, $catids))
+			foreach ($newcats as $newcat)
 			{
-				$catids[] = $nextCatId;
-				$catidList .= ( strlen($catidList) > 0 ? "," : "") . $nextCatId;
+				if (!in_array($newcat, $catids))
+				{
+					$catids[] = $newcat;
+					$catidList .= (strlen($catidList) > 0 ? "," : "") . $newcat;
+				}
 			}
-			$c++;
 		}
-
+		else
+		{
+			while ($nextCatId = $params->get("catid$c", null))
+			{
+				if (!in_array($nextCatId, $catids))
+				{
+					$catids[] = $nextCatId;
+					$catidList .= ( strlen($catidList) > 0 ? "," : "") . $nextCatId;
+				}
+				$c++;
+			}
+		}
 		// special case where params are not yet saved
 		if ($catidList == "" && $params->get("catid0", "xxx") == "xxx")
 		{
