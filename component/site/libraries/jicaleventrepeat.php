@@ -288,12 +288,13 @@ class jIcalEventRepeat extends jIcalEventDB{
 
 		$db	=& JFactory::getDBO();
 
-		$sql = "SELECT *,YEAR(startrepeat) as yup, MONTH(startrepeat ) as mup, DAYOFMONTH(startrepeat ) as dup FROM #__jevents_repetition WHERE eventid=".$this->ev_id()." AND startrepeat<'".$this->_startrepeat."' ORDER BY startrepeat DESC limit 1";
+		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=".$this->ev_id()." AND rpt.startrepeat<'".$this->_startrepeat."' ORDER BY rpt.startrepeat DESC limit 1";
 		$db->setQuery($sql);
 		$prior = $db->loadObject();
 		if (!is_null($prior)) {
 			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$prior->rp_id .'&Itemid='.$Itemid
-			."&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=".urlencode($this->uid());
+			."&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($prior->title);
 			$link = JRoute::_( $link  );
 			$this->_prevRepeat = $link;
 		}
@@ -301,12 +302,13 @@ class jIcalEventRepeat extends jIcalEventDB{
 			$this->_prevRepeat = false;
 		}
 
-		$sql = "SELECT *,YEAR(startrepeat) as yup, MONTH(startrepeat ) as mup, DAYOFMONTH(startrepeat ) as dup FROM #__jevents_repetition WHERE eventid=".$this->ev_id()." AND startrepeat>'".$this->_startrepeat."' ORDER BY startrepeat ASC limit 1";
+		$sql = "SELECT rpt.*,det.summary as title, YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=".$this->ev_id()." AND rpt.startrepeat>'".$this->_startrepeat."' ORDER BY rpt.startrepeat ASC limit 1";
 		$db->setQuery($sql);
 		$post = $db->loadObject();
 		if (!is_null($post)) {
 			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$post->rp_id .'&Itemid='.$Itemid
-			."&year=$post->yup&month=$post->mup&day=$post->dup&uid=".urlencode($this->uid());
+			."&year=$post->yup&month=$post->mup&day=$post->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($post->title);
 			$link = JRoute::_( $link  );
 			$this->_nextRepeat = $link;
 		}

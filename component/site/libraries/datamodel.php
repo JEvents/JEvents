@@ -93,7 +93,8 @@ class JEventsDataModel {
 					}
 				}
 			}
-			$this->catidsOut = str_replace( ',', $separator, $this->catidList );
+			// no need to set catidsOut for menu item since the menu item knows this information already!
+			//$this->catidsOut = str_replace( ',', $separator, $this->catidList );
 		}
 		else {
 			$this->catids = explode( $separator, $catidsIn );
