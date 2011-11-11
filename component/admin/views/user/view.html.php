@@ -114,7 +114,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		}
 
 
-		$userOptions[] = JHTML::_('select.option', '-1',JText::_(SELECT_USER) );
+		$userOptions[] = JHTML::_('select.option', '-1',JText::_('SELECT_USER') );
 		foreach( $users as $user )
 		{
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name. " ($user->username)" );
