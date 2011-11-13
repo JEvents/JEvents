@@ -319,7 +319,9 @@ function JEventsParseRoute($segments)
 
 		foreach ($tasks as $tt)
 		{
-			$translatedTasks[JText::_("JEV_SEF_" . str_replace(".", "_", $tt))] = $tt;
+			$translatedTasks[translatetask($tt)] = $tt;
+			// backup for sites that hadn't translated but now have
+			$translatedTasks[str_replace(".", "_", $tt)] = $tt;
 		}
 	}
 
@@ -475,8 +477,7 @@ function JEventsParseRoute($segments)
 
 function JEventsBuildRouteNew(&$query, $task)
 {
-	$transtask = JText::_("JEV_SEF_" . str_replace(".", "_", $task));
-	$transtask = strpos($transtask, "JEV_SEF_") === 0 ? $task : $transtask;
+	$transtask =translatetask($task);
 
 	$params = JComponentHelper::getParams("com_jevents");
 
@@ -859,4 +860,12 @@ function JEventsParseRouteNew(&$segments, $task)
 
 	return $vars;
 
+}
+
+function translatetask ($task){
+	// if not translated then just drop the . and use _ instead
+	$task = str_replace(".", "_", $task);
+	$transtask = JText::_("JEV_SEF_" . $task);
+	$transtask = strpos($transtask, "JEV_SEF_") === 0 ? $task : $transtask;	
+	return $transtask ;
 }
