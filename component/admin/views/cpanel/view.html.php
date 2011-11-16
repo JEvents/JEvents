@@ -72,12 +72,17 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	function renderJEventsNews()
 	{
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
-		$cache->setLifeTime(86400);
-		// In Joomla 1.7 caching of feeds doesn't work!
-		$cache->setCaching(true);
-				
-		return $cache->get($this, 'renderJEventsNewsCached');
+		if (JVersion::isCompatible("1.6")){
+			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache->setLifeTime(86400);
+			// In Joomla 1.7 caching of feeds doesn't work!
+			$cache->setCaching(true);
+
+			return $cache->get($this, 'renderJEventsNewsCached');
+		}
+		else {
+			return $this->renderJEventsNewsCached();
+		}
 		
 	}
 
@@ -89,7 +94,12 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		//  get RSS parsed object
 		$options = array();
 		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
-		$options['cache_time'] = 0;
+		if (JVersion::isCompatible("1.6")){
+			$options['cache_time'] = 0;
+		}
+		else {
+			$options['cache_time'] = 86400;
+		}
 		
 		$rssDoc = & JFactory::getXMLparser('RSS', $options);
 
