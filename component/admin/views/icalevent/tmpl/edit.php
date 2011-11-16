@@ -437,7 +437,9 @@ if (count($extraTabs)>0) {
 		if (!$cfg->get('com_single_pane_edit', 0)) {
 			echo $tabs->startPanel( $extraTab['title'], $extraTab['paneid'] );
 		}
+		echo "<div class='jevextrablock'>";
 		echo  $extraTab['content'];
+		echo "</div>";
 		if (!$cfg->get('com_single_pane_edit', 0)) {
 			echo $tabs->endPanel();
 		}

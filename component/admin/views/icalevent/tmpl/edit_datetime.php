@@ -17,10 +17,10 @@ if( $cfg->get('com_calUseStdTime') == 0 ) {
 }
 else $clock24=false;
 if ($this->editCopy || $this->repeatId==0) {
-	$repeatStyle=" class='jeveditrepeats' ";
+	$repeatStyle=" class='jeveditrepeats jevdatetime ' ";
 }
 else {
-	$repeatStyle="style='display:none;' class='jeveditrepeats' ";
+	$repeatStyle="style='display:none;' class='jeveditrepeats jevdatetime' ";
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled
@@ -30,7 +30,7 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 }
 
 ?>
-   <div style="clear:both;">
+   <div style="clear:both;" class="jevdatetime">
     <fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration");?></legend>
     <span>
 		<span ><?php echo JText::_('JEV_EVENT_ALLDAY');?></span>

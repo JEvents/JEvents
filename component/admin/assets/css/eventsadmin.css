@@ -107,14 +107,18 @@ td#toolbar-apply {
 
 .jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
 #jevents div.current input, #jevents  div.current textarea, #jevents  div.current select,
-#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select
+#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select, 
+#jevents .jevdatetime input, #jevents .jevdatetime textarea, #jevents .jevdatetime select,
+#jevents .jevextrablock input, #jevents .jevextrablock textarea, #jevents .jevextrablock select
 {
 	margin-bottom:inherit;
 	float:none;
 }
 .jevconfig .current label,
 #jevents .current label ,
-#jevents #jevadminform label 
+#jevents #jevadminform label ,
+#jevents .jevdatetime label,
+#jevents .jevextrablock label
 {
 	float:none;
 	display:inline;
