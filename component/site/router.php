@@ -477,7 +477,7 @@ function JEventsParseRoute($segments)
 
 function JEventsBuildRouteNew(&$query, $task)
 {
-	$transtask =translatetask($task);
+	$transtask = translatetask($task);
 
 	$params = JComponentHelper::getParams("com_jevents");
 
@@ -514,7 +514,7 @@ function JEventsBuildRouteNew(&$query, $task)
 				{
 					$year = $nowyear;
 				}
-				
+
 				if (isset($query['month']))
 				{
 					$month = $query['month'];
@@ -522,9 +522,9 @@ function JEventsBuildRouteNew(&$query, $task)
 				}
 				else
 				{
-					$month =  $nowmonth;
+					$month = $nowmonth;
 				}
-				
+
 				if (isset($query['day']))
 				{
 					$day = $query['day'];
@@ -535,22 +535,26 @@ function JEventsBuildRouteNew(&$query, $task)
 					// if no date in the query then use TODAY not the calendar date
 					$day = $nowday;
 				}
-				
+
 				// for week data always go to the start of the week
-				if ($task == "week.listevents"){
+				if ($task == "week.listevents")
+				{
 					$startday = $cfg->get('com_starday');
-					if(( !$startday ) || ( $startday > 1 )){
+					if ((!$startday ) || ( $startday > 1 ))
+					{
 						$startday = 0;
 					}
-					$date = mktime(5,5,5,$month, $day, $year);					
-					$currentday = strftime("%w",$date);
-					if ($currentday>$startday){
-						$date -= ($currentday-$startday)*86400;
-						list($year,$month,$day) = explode("-",strftime("%Y-%m-%d", $date));
+					$date = mktime(5, 5, 5, $month, $day, $year);
+					$currentday = strftime("%w", $date);
+					if ($currentday > $startday)
+					{
+						$date -= ($currentday - $startday) * 86400;
+						list($year, $month, $day) = explode("-", strftime("%Y-%m-%d", $date));
 					}
-					else if ($currentday<$startday){
-						$date -= (7+$currentday-$startday)*86400;
-						list($year,$month,$day) = explode("-",strftime("%Y-%m-%d", $date));
+					else if ($currentday < $startday)
+					{
+						$date -= (7 + $currentday - $startday) * 86400;
+						list($year, $month, $day) = explode("-", strftime("%Y-%m-%d", $date));
 					}
 				}
 
@@ -723,7 +727,7 @@ function JEventsParseRouteNew(&$segments, $task)
 	// Count route segments
 	$count = count($segments);
 	$slugcount = 1;
-	
+
 	switch ($task) {
 		case "year.listevents":
 		case "month.calendar":
@@ -751,7 +755,7 @@ function JEventsParseRouteNew(&$segments, $task)
 				}
 				$slugcount++;
 			}
-			
+
 			// only include the month in the date and list views (excluding year)
 			if (in_array($task, array("month.calendar", "week.listevents", "day.listevents")))
 			{
@@ -761,7 +765,7 @@ function JEventsParseRouteNew(&$segments, $task)
 				}
 				$slugcount++;
 			}
-			
+
 			// only include the day in the week and day views (excluding year and month)
 			if (in_array($task, array("week.listevents", "day.listevents")))
 			{
@@ -771,7 +775,7 @@ function JEventsParseRouteNew(&$segments, $task)
 				}
 				$slugcount++;
 			}
-			
+
 			if ($count > $slugcount)
 			{
 				switch ($task) {
@@ -780,9 +784,9 @@ function JEventsParseRouteNew(&$segments, $task)
 					case "icalrepeat.detail":
 						$vars['evid'] = $segments[$slugcount];
 						// note that URI decoding swaps /-/ for :
-						if (count($segments) > $slugcount+1 && $segments[$slugcount+1] != ":")
+						if (count($segments) > $slugcount + 1 && $segments[$slugcount + 1] != ":")
 						{
-							$vars['catids'] = $segments[$slugcount+1];
+							$vars['catids'] = $segments[$slugcount + 1];
 						}
 						break;
 					default:
@@ -862,10 +866,40 @@ function JEventsParseRouteNew(&$segments, $task)
 
 }
 
-function translatetask ($task){
+function translatetask($task)
+{
+	$tasks = array(
+		"year.listevents",
+		"month.calendar",
+		"week.listevents",
+		"day.listevents",
+		"cat.listevents",
+		"jevent.detail",
+		"icalevent.detail",
+		"icalrepeat.detail",
+		"search.form",
+		"search.results",
+		"admin.listevents",
+		"jevent.edit",
+		"icalevent.edit",
+		"icalevent.publish",
+		"icalevent.unpublish",
+		"icalevent.editcopy",
+		"icalrepeat.edit",
+		"jevent.delete",
+		"icalevent.delete",
+		"icalrepeat.delete",
+		"icalrepeat.deletefuture",
+		"modlatest.rss",
+		"icalrepeat.vcal",
+		"icalevent.vcal");
+
+	if (!in_array($task, $tasks))
+		return $task;
 	// if not translated then just drop the . and use _ instead
 	$task = str_replace(".", "_", $task);
 	$transtask = JText::_("JEV_SEF_" . $task);
-	$transtask = strpos($transtask, "JEV_SEF_") === 0 ? $task : $transtask;	
-	return $transtask ;
+	$transtask = strpos($transtask, "JEV_SEF_") === 0 ? $task : $transtask;
+	return $transtask;
+
 }

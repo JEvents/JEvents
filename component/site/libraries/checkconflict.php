@@ -146,7 +146,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	{
 		if (!array_key_exists("HTTP_REFERER", $_SERVER))
 		{
-			throwerror("There was an error");
+			throwerror("There was an error - no referrer info available");
 		}
 
 		$live_site = $_SERVER['HTTP_HOST'];
@@ -176,7 +176,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	$user = JFactory::getUser();
 	if (!JEVHelper::isEventCreator())
 	{
-		throwerror("There was an error");
+		throwerror("There was an error - not an event creator");
 	}
 
 	if (intval($requestObject->formdata->evid) > 0)
@@ -189,7 +189,7 @@ function ProcessRequest(&$requestObject, $returnData)
 		//	$event = $db->loadObject();
 		if (!$event || (!JEVHelper::canEditEvent($event) ))
 		{
-			throwerror("There was an error");
+			throwerror("There was an error - cannot edit this event");
 		}
 	}
 
