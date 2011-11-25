@@ -644,7 +644,10 @@ class JEventsDBModel
 					. "\n AND rpt.startrepeat=(
 				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
 				WHERE rpt2.eventid=rpt.eventid
-				AND  rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate'
+				AND  (
+					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
+					OR (rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
+					)
 				$rptwhere
 			)"
 					//. "\n GROUP BY rpt.eventid"

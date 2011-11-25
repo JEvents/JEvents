@@ -219,11 +219,13 @@ class JEventsHTML{
 							 $cats = explode ("|",$jevuser->categories);
 						 }
 						 else {
-							 $cats = array();
+							 $action = JRequest::getInt("evid",0)>0 ? 'core.edit' : 'core.create';
+							 $cats = $user->getAuthorisedCategories('com_jevents', $action);
 						 }
 					 }
 					 else {
-						 $cats = array();
+						 $action = JRequest::getInt("evid",0)>0 ? 'core.edit' : 'core.create';
+						 $cats = $user->getAuthorisedCategories('com_jevents', $action);
 					 }
 				 }
 				 else {

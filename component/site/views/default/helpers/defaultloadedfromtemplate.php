@@ -176,10 +176,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 		$search[]="{{ENDTIME}}";$replace[]=$stop_time_midnightFix;$blank[]="";
 
 		// these would slow things down if not needed in the list
-		static $dorepeatsummary;
-		if (!isset($dorepeatsummary)){
-			$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
-		}
+		$dorepeatsummary = (strpos($template->value,":REPEATSUMMARY}}")!==false);
 		if ($dorepeatsummary){
 
 			$cfg = & JEVConfig::getInstance();
@@ -190,7 +187,7 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 			$row = $event;
 			$times = "";
-			if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="cat"  || $jevtask=="range"){
+			if (($showyeardate && $jevtask=="year") || $jevtask=="search.results" || $jevtask=="month.calendar"  || $jevtask=="cat"  || $jevtask=="range"){
 
 				$start_publish  = $row->getUnixStartDate();
 				$stop_publish  = $row->getUnixEndDate();

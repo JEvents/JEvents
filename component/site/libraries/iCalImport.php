@@ -546,6 +546,107 @@ class iCalImport
 		return  $result;
 	}
 
+	// function to convert windows timezone IDs into Olsen equivalent
+	function convertWindowsTzid($wtzid){
+		$wtzdata = array();
+		$wtzdata["Midway Island, Samoa"] = "Pacific/Midway";
+		$wtzdata["Hawaii-Aleutian"] = "America/Adak";
+		$wtzdata["Hawaii"] = "Etc/GMT+10";
+		$wtzdata["Marquesas Islands"] = "Pacific/Marquesas";
+		$wtzdata["Gambier Islands"] = "Pacific/Gambier";
+		$wtzdata["Alaska"] = "America/Anchorage";
+		$wtzdata["Tijuana, Baja California"] = "America/Ensenada";
+		$wtzdata["Pitcairn Islands"] = "Etc/GMT+8";
+		$wtzdata["Pacific Time (US & Canada)"] = "America/Los_Angeles";
+		$wtzdata["Mountain Time (US & Canada)"] = "America/Denver";
+		$wtzdata["Chihuahua, La Paz, Mazatlan"] = "America/Chihuahua";
+		$wtzdata["Arizona"] = "America/Dawson_Creek";
+		$wtzdata["Saskatchewan, Central America"] = "America/Belize";
+		$wtzdata["Guadalajara, Mexico City, Monterrey"] = "America/Cancun";
+		$wtzdata["Easter Island"] = "Chile/EasterIsland";
+		$wtzdata["Central Time (US & Canada)"] = "America/Chicago";
+		$wtzdata["Eastern Time (US & Canada)"] = "America/New_York";
+		$wtzdata["Cuba"] = "America/Havana";
+		$wtzdata["Bogota, Lima, Quito, Rio Branco"] = "America/Bogota";
+		$wtzdata["Caracas"] = "America/Caracas";
+		$wtzdata["Santiago"] = "America/Santiago";
+		$wtzdata["La Paz"] = "America/La_Paz";
+		$wtzdata["Faukland Islands"] = "Atlantic/Stanley";
+		$wtzdata["Brazil"] = "America/Campo_Grande";
+		$wtzdata["Atlantic Time (Goose Bay)"] = "America/Goose_Bay";
+		$wtzdata["Atlantic Time (Canada)"] = "America/Glace_Bay";
+		$wtzdata["Newfoundland"] = "America/St_Johns";
+		$wtzdata["UTC-3"] = "America/Araguaina";
+		$wtzdata["Montevideo"] = "America/Montevideo";
+		$wtzdata["Miquelon, St. Pierre"] = "America/Miquelon";
+		$wtzdata["Greenland"] = "America/Godthab";
+		$wtzdata["Buenos Aires"] = "America/Argentina/Buenos_Aires";
+		$wtzdata["Brasilia"] = "America/Sao_Paulo";
+		$wtzdata["Mid-Atlantic"] = "America/Noronha";
+		$wtzdata["Cape Verde Is."] = "Atlantic/Cape_Verde";
+		$wtzdata["Azores"] = "Atlantic/Azores";
+		$wtzdata["Greenwich Mean Time : Belfast"] = "Europe/Belfast";
+		$wtzdata["Greenwich Mean Time : Dublin"] = "Europe/Dublin";
+		$wtzdata["Greenwich Mean Time : Lisbon"] = "Europe/Lisbon";
+		$wtzdata["Greenwich Mean Time : London"] = "Europe/London";
+		$wtzdata["Monrovia, Reykjavik"] = "Africa/Abidjan";
+		$wtzdata["Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"] = "Europe/Amsterdam";
+		$wtzdata["Belgrade, Bratislava, Budapest, Ljubljana, Prague"] = "Europe/Belgrade";
+		$wtzdata["Brussels, Copenhagen, Madrid, Paris"] = "Europe/Brussels";
+		$wtzdata["West Central Africa"] = "Africa/Algiers";
+		$wtzdata["Windhoek"] = "Africa/Windhoek";
+		$wtzdata["Beirut"] = "Asia/Beirut";
+		$wtzdata["Cairo"] = "Africa/Cairo";
+		$wtzdata["Gaza"] = "Asia/Gaza";
+		$wtzdata["Harare, Pretoria"] = "Africa/Blantyre";
+		$wtzdata["Jerusalem"] = "Asia/Jerusalem";
+		$wtzdata["Minsk"] = "Europe/Minsk";
+		$wtzdata["Syria"] = "Asia/Damascus";
+		$wtzdata["Moscow, St. Petersburg, Volgograd"] = "Europe/Moscow";
+		$wtzdata["Nairobi"] = "Africa/Addis_Ababa";
+		$wtzdata["Tehran"] = "Asia/Tehran";
+		$wtzdata["Abu Dhabi, Muscat"] = "Asia/Dubai";
+		$wtzdata["Yerevan"] = "Asia/Yerevan";
+		$wtzdata["Kabul"] = "Asia/Kabul";
+		$wtzdata["Ekaterinburg"] = "Asia/Yekaterinburg";
+		$wtzdata["Tashkent"] = "Asia/Tashkent";
+		$wtzdata["Chennai, Kolkata, Mumbai, New Delhi"] = "Asia/Kolkata";
+		$wtzdata["Kathmandu"] = "Asia/Katmandu";
+		$wtzdata["Astana, Dhaka"] = "Asia/Dhaka";
+		$wtzdata["Novosibirsk"] = "Asia/Novosibirsk";
+		$wtzdata["Yangon (Rangoon)"] = "Asia/Rangoon";
+		$wtzdata["Bangkok, Hanoi, Jakarta"] = "Asia/Bangkok";
+		$wtzdata["Krasnoyarsk"] = "Asia/Krasnoyarsk";
+		$wtzdata["Beijing, Chongqing, Hong Kong, Urumqi"] = "Asia/Hong_Kong";
+		$wtzdata["Irkutsk, Ulaan Bataar"] = "Asia/Irkutsk";
+		$wtzdata["Perth"] = "Australia/Perth";
+		$wtzdata["Eucla"] = "Australia/Eucla";
+		$wtzdata["Osaka, Sapporo, Tokyo"] = "Asia/Tokyo";
+		$wtzdata["Seoul"] = "Asia/Seoul";
+		$wtzdata["Yakutsk"] = "Asia/Yakutsk";
+		$wtzdata["Adelaide"] = "Australia/Adelaide";
+		$wtzdata["Darwin"] = "Australia/Darwin";
+		$wtzdata["Brisbane"] = "Australia/Brisbane";
+		$wtzdata["Hobart"] = "Australia/Hobart";
+		$wtzdata["Vladivostok"] = "Asia/Vladivostok";
+		$wtzdata["Lord Howe Island"] = "Australia/Lord_Howe";
+		$wtzdata["Solomon Is., New Caledonia"] = "Etc/GMT-11";
+		$wtzdata["Magadan"] = "Asia/Magadan";
+		$wtzdata["Norfolk Island"] = "Pacific/Norfolk";
+		$wtzdata["Anadyr, Kamchatka"] = "Asia/Anadyr";
+		$wtzdata["Auckland, Wellington"] = "Pacific/Auckland";
+		$wtzdata["Fiji, Kamchatka, Marshall Is."] = "Etc/GMT-12";
+		$wtzdata["Chatham Islands"] = "Pacific/Chatham";
+		$wtzdata["Nuku'alofa"] = "Pacific/Tongatapu";
+		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";		
+
+		// manual entries
+		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
+		
+		$wtzid = str_replace('"','',$wtzid);
+		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
+	}
+	
 	function handleDate($key, $value)
 	{
 		$rawvalue = $value;
@@ -563,6 +664,7 @@ class iCalImport
 				$parts = explode(";",$key);
 				if (count($parts)>=2 && JString::strpos($parts[1],"TZID=")!==false){
 					$tz = str_replace("TZID=", "",$parts[1]);
+					$tz = $this->convertWindowsTzid($tz);
 				}
 			}
 			$value = $this->unixTime($value, $tz);
