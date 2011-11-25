@@ -45,13 +45,13 @@ function plgSearchEventsSearchAreas()
 	if (version_compare(JVERSION, '1.6.0', ">="))
 	{
 		return array(
-			'eventsearch' => 'Events'
+			'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
 		);
 	}
 	else
 	{
 		return array(
-			'events' => 'JEvents'
+			'events' => JText::_('JEV_EVENTS_SEARCH')
 		);
 	}
 
@@ -91,13 +91,13 @@ class plgSearchEventsearch extends JPlugin
 		if (version_compare(JVERSION, '1.6.0', ">="))
 		{
 			return array(
-				'eventsearch' => 'Events'
+				'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
 			);
 		}
 		else
 		{
 			return array(
-				'events' => 'JEvents'
+				'events' => JText::_('JEV_EVENTS_SEARCH')
 			);
 		}
 
