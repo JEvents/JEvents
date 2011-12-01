@@ -25,7 +25,13 @@ function DefaultLoadModules($view, $position)
 		$results = $dispatcher->trigger('onPrepareContent', array( &$article, &$params, 0));
 	}
 
-	echo $article->text;
+	if ($article->text == "{loadposition $position}"){
+		// in case the content plugin is not enabled
+		return "";
+	}
+	else {
+		echo $article->text;
+	}
 
 }
 

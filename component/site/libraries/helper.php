@@ -765,7 +765,7 @@ class JEVHelper
 						$juser = JFactory::getUser();
 						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
 						//$isEventCreator = JAccess::check($juser->id, "core.create","com_jevents");
-						$cats = $juser->getAuthorisedCategories('com_jevents', 'core.create');
+						$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
 						if (count($cats) > 0)
 						{
 							$isEventCreator = true;
@@ -834,7 +834,7 @@ class JEVHelper
 			{
 				if ($user->authorise('core.create', 'com_jevents'))
 					return true;
-				$cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.create');
 				if (in_array($row['catid'], $cats))
 				{
 					return true;
@@ -952,8 +952,8 @@ class JEVHelper
 			}
 			if (JVersion::isCompatible("1.6.0"))
 			{
-				$cats = $user->getAuthorisedCategories('com_jevents', 'core.edit');
-				$cats_own = $user->getAuthorisedCategories('com_jevents', 'core.edit.own');
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
 				if (in_array($row->_catid, $cats))
 					return true;
 				else if (in_array($row->_catid, $cats_own))
@@ -1113,7 +1113,7 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$cats = $user->getAuthorisedCategories('com_jevents', 'core.publish');
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.publish');
 			if (in_array($row->_catid, $cats))
 				return true;
 		}
@@ -1146,7 +1146,7 @@ class JEVHelper
 			}
 			if (JVersion::isCompatible("1.6.0"))
 			{
-				$cats = $user->getAuthorisedCategories('com_jevents', 'core.edit.state');
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 				if (in_array($row->_catid, $cats))
 					return true;
 			}
@@ -1244,7 +1244,7 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$cats = $user->getAuthorisedCategories('com_jevents', 'core.edit.state');
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 			if (in_array($row->_catid, $cats))
 				return true;
 		}
@@ -1396,6 +1396,18 @@ class JEVHelper
 
 	}
 
+	/*
+	 * Our own version that caches the results - the Joomla one doesn't!!!
+	 */
+	function getAuthorisedCategories($user, $component, $action){
+		static $results = array();
+		$key = $user->id.":component:".$action;
+		if (!isset ($results[$key])){
+			$results[$key] = $user->getAuthorisedCategories($component, $action);
+		}
+		return $results[$key];
+	}
+	
 	static public function isAdminUser($user = null)
 	{
 		if (is_null($user))
@@ -1608,19 +1620,6 @@ class JEVHelper
 		{
 			return JHTML::_('image.site', $img, '/images/M_images/', NULL, NULL, $text);
 		}
-
-	}
-
-}
-
-jimport("joomla.application.module.helper");
-
-class JevModuleHelper extends JModuleHelper
-{
-
-	static public function getVisibleModules()
-	{
-		return self::_load();
 
 	}
 

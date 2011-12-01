@@ -31,7 +31,7 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('JEVConfig',JEV_ADMINPATH."/libraries/config.php");
 	
 	JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
-	JLoader::register('JevModuleHelper',JEV_PATH."/libraries/helper.php"); // RSH Required registration for class!
+	JLoader::register('JevModuleHelper',JEV_PATH."/libraries/jevmodulehelper.php"); // RSH Required registration for class!
 
 	// TODO replace with JDate
 	JLoader::register('JEventDate',JEV_PATH."/libraries/jeventdate.php");

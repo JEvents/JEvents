@@ -451,7 +451,7 @@ else $this->_detail = false;
 
 		// First I delete all existing repetitions - I can't do an update or replace
 		// since the repeat may have been= adjusted
-		$sql = "DELETE FROM #__jevents_repetition  WHERE eventid=".$this->ev_id." ORDER BY startrepeat ASC";
+		$sql = "DELETE FROM #__jevents_repetition  WHERE eventid=".$this->ev_id;
 		$db->setQuery($sql);
 		$db->query();
 
