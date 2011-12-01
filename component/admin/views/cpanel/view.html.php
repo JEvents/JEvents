@@ -142,8 +142,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 			$output .= '</table>';
 		}
-		echo $output;
 		return $output;
+		
 
 	}
 
