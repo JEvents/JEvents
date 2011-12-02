@@ -89,7 +89,12 @@ class SearchController extends JController   {
 		$Itemid	= JEVHelper::getItemid();
 
 		$db	= & JFactory::getDBO();
-		$keyword = $db->getEscaped(JRequest::getVar( 'keyword', '' ));
+		$keyword = JRequest::getString( 'keyword', '' );
+		// limit searchword to a maximum of characters
+		$upper_limit = 20;
+		if (strlen($keyword) > $upper_limit) {
+			$keyword	= substr($keyword, 0, $upper_limit - 1);
+		}
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
