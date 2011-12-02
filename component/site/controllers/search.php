@@ -41,7 +41,7 @@ class SearchController extends JController   {
 		$viewType	= $document->getType();
 
 		$db	= & JFactory::getDBO();
-		$keyword = JRequest::getVar( 'keyword', '' );
+		$keyword = JRequest::getString( 'keyword', '' );
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
 		if (JString::strlen($keyword) > $upper_limit) {
