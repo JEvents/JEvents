@@ -925,12 +925,6 @@ class JEventsDataModel {
 
 		$lang = JFactory::getLanguage();
 
-		// limit searchword to a maximum of characters
-		$upper_limit = 20;
-		if (JString::strlen($keyword) > $upper_limit) {
-			$keyword	= substr($keyword, 0, $upper_limit - 1);
-		}
-		
 		$user =& JFactory::getUser();
 		$Itemid = JEVHelper::getItemid();
 		$db	=& JFactory::getDBO();
