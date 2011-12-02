@@ -76,6 +76,8 @@ class JEventsDBModel
 				{
 					jimport("joomla.application.categories");
 					$allcats = JCategories::getInstance("jevents");
+					// prepopulate the list internally
+					$allcats->get('root');
 				}
 
 				$catids = explode(",", $catidList);
@@ -1484,7 +1486,8 @@ class JEventsDBModel
 					. $extrajoin
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. ($includeUnpublished ? "": " AND icsf.state=1")
+					."\n AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. $extrawhere
 					. "\n AND ev.ev_id = '$evid'"
 					. "\n GROUP BY rpt.rp_id"
