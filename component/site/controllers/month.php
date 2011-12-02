@@ -61,7 +61,7 @@ class MonthController extends JController   {
 		$this->view->assign("day",$day);
 		$this->view->assign("year",$year);
 		$this->view->assign("task",$this->_task);
-		
+
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));

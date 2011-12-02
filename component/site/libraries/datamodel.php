@@ -919,7 +919,7 @@ class JEventsDataModel {
 		return $data;
 	}
 
-	function getKeywordData($keyword, $limit, $limitstart, $useRegX=true)
+	function getKeywordData(&$keyword, $limit, $limitstart, $useRegX=true)
 	{
 		$data = array();
 
@@ -988,6 +988,8 @@ class JEventsDataModel {
 
 		$data['rows']=$rows;
 
+		$keyword = htmlspecialchars($keyword);
+		
 		return $data;
 	}
 
