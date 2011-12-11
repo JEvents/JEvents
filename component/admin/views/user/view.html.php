@@ -39,7 +39,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		JToolBarHelper::editList("user.edit");
 		//JToolBarHelper::publish("user.publish");
 		//JToolBarHelper::unpublish("user.unpublish");
-		JToolBarHelper::deleteList("ARE YOU SURE YOU WANT TO DELETE THIS USER", "user.remove");
+		JToolBarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
 		//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		JToolBarHelper::spacer();
 		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
