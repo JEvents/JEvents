@@ -111,7 +111,7 @@ function DefaultViewHelperHeader16($view){
 
 		?>
 		<li class="email-icon">
-			<a href="javascript:void(0);" onclick="javascript:window.open('<? echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
+			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
               	<?php echo JHTML::_('image.site', 'emailButton.png', '/media/system/images/', NULL, NULL, JText::_( 'EMAIL' ));?>
 			</a>
 		</li>

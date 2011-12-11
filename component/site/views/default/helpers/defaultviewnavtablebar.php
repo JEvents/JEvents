@@ -29,7 +29,7 @@ class DefaultViewNavTableBar
 						<a href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>" title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><?php echo JText::_('JEV_VIEWTODAY'); ?></a>
 					</td>
 					<td height="1" align="center" valign="bottom">
-						<form name="ViewSelect" action="index.php" method="get">
+						<form name="ViewSelect" action="<?php echo JURI::root() ."index.php"; ?>" method="get">
 							<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 							<input type="hidden" name="year" value="<?php echo $year; ?>" />
