@@ -7,6 +7,10 @@ function DefaultViewHelperHeader($view){
 		return $view->_header16();
 	}
 
+	$task = JRequest::getString("jevtask");
+	$view->loadModules("jevprejevents");
+	$view->loadModules("jevprejevents_".$task);
+	
 	$dispatcher	=& JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 

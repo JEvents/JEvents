@@ -136,6 +136,9 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	$created = JevDate::getDate($event->created());
 	$search[]="{{CREATED}}";$replace[]=$created->toFormat(JText::_("DATE_FORMAT_CREATED"));$blank[]="";
+	if (JVersion::isCompatible("1.6.0")){
+		$search[]="{{ACCESS}}";$replace[]=$event->getAccessName();$blank[]="";
+	}
 	
 	if ($template_name=="icalevent.detail_body"){
 		$search[]="{{REPEATSUMMARY}}";$replace[]=$event->repeatSummary();$blank[]="";

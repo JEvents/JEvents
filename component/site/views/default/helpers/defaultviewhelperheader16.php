@@ -3,6 +3,10 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperHeader16($view){
 
+	$task = JRequest::getString("jevtask");
+	$view->loadModules("jevprejevents");
+	$view->loadModules("jevprejevents_".$task);
+	
 	$dispatcher	=& JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 

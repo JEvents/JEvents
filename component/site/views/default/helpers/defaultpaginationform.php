@@ -1,9 +1,13 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultPaginationForm($total, $limitstart, $limit){
+function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	jimport('joomla.html.pagination');
 	$pageNav = new JPagination($total, $limitstart, $limit);
+	if ($keyword !="" && method_exists($pageNav,"setAdditionalUrlParam")){		
+		$pageNav->setAdditionalUrlParam("keyword", urlencode($keyword));
+		$pageNav->setAdditionalUrlParam("showpast",JRequest::getInt("showpast",0));
+	}
 	$Itemid = JRequest::getInt("Itemid");
 	$task = JRequest::getVar("jevtask");
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task");

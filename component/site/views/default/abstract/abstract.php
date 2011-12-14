@@ -151,7 +151,7 @@ class JEventsDefaultView extends JEventsAbstractView
 	// These don't follow argument pattern
 	function paginationForm($total, $limitstart, $limit){
 		if ($this->loadHelper("DefaultPaginationForm")){
-			DefaultPaginationForm($total, $limitstart, $limit);
+			DefaultPaginationForm($total, $limitstart, $limit, $this->keyword);
 		}
 	}
 	

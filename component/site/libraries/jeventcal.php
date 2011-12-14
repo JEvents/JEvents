@@ -147,6 +147,22 @@ class jEventCal {
 		return $this->getOrSet(__FUNCTION__,$val);
 	}
 
+	function getAccessName() {
+		if (isset($this->_access)){
+			static $levels;
+			if (!isset($levels)){
+				$db= JFactory::getDbo();
+				$db->setQuery("SELECT id, title FROM #__viewlevels order by ordering ");
+				$levels = $db->loadObjectList('id');
+			}
+			if (isset($levels[$this->_access])){
+				return $levels[$this->_access]->title;
+			}
+		}
+		return "";
+	}
+	
+	
 	function location($val="") {
 		return $this->getOrSet("adresse_info",$val);
 	}
