@@ -379,7 +379,7 @@
 			section="category" />
 //-->
 	</fieldset>
-	
+<!--
 		<fields name="params">
 		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
@@ -391,7 +391,7 @@
 					description='JEV_TARGET_MENU_TIP'  />
 			</fieldset>		
 		</fields>	
-
+//-->
 
 
 </config>
