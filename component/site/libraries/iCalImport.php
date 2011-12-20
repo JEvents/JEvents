@@ -639,6 +639,7 @@ class iCalImport
 		$wtzdata["Chatham Islands"] = "Pacific/Chatham";
 		$wtzdata["Nuku'alofa"] = "Pacific/Tongatapu";
 		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";		
+		$wtzdata["Central Standard Time"] = "America/Chicago";
 
 		// manual entries
 		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
