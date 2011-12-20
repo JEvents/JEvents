@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access');
 						{
 							if (JVersion::isCompatible("1.6"))
 							{
-								echo JHtml::_('sliders.panel', $label, $repid);
+								echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
 							}
 							else
 							{
@@ -141,11 +141,11 @@ defined('_JEXEC') or die('Restricted access');
 						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
 						if (JVersion::isCompatible("1.6"))
 						{
-							echo JHtml::_('sliders.panel', $label, $repid);
+							echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
 						}
 						else
 						{
-							echo $tabs->startPanel($label, 'cpanelstatus');
+							echo $tabs->startPanel($label, 'cpanelstatustextarea');
 						}
 								?>
 							<div style="width: 100%;">
