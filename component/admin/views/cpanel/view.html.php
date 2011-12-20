@@ -580,6 +580,106 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	}
 
+	public function renderVersionsForClipboard(){
+		if (!JEVHelper::isAdminUser())	{
+			return;
+		}
+
+		jimport("joomla.filesystem.folder");
+		$apps = array();
+
+// components (including JEvents
+		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
+		foreach ($xmlfiles3 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$name = "component_" . basename(dirname($manifest));
+			$apps[$name] = $app;
+		}
+
+
+// modules
+		if (JFolder::exists(JPATH_SITE . "/modules"))
+		{
+			$xmlfiles4 = JFolder::files(JPATH_SITE . "/modules", "\.xml", true, true);
+		}
+		else
+		{
+			$xmlfiles4 = array();
+		}
+		foreach ($xmlfiles4 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$app->criticalversion = "";
+			$name = "module_" . str_replace(".xml", "", basename($manifest));
+			$apps[$name] = $app;
+		}
+		
+// club layouts			 
+		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
+		foreach ($xmlfiles1 as $manifest)
+		{
+			if (realpath($manifest) != $manifest)
+				continue;
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$apps["layout_" . basename(dirname($manifest))] = $app;
+		}
+
+// plugins
+		if (JFolder::exists(JPATH_SITE . "/plugins"))
+		{
+			$xmlfiles2 = JFolder::files(JPATH_SITE . "/plugins", "\.xml", true, true);
+		}
+		else
+		{
+			$xmlfiles2 = array();
+		}
+
+		foreach ($xmlfiles2 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$name = str_replace(".xml", "", basename($manifest));
+			if (JVersion::isCompatible("1.6"))
+			{
+				$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+			}
+			else
+			{
+// simulate Joomla 1.7 directory structure
+				$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+			}
+			$apps[$name] = $app;
+		}
+
+		$output = "<textarea rows='40' cols='80'>[code]\n";
+		foreach ($apps as $appname => $app)
+		{
+			$output .= "$appname : $app->version\n";
+		}
+		$output .= "[/code]</textarea>";
+		return $output;
+	}
+	
 	function limitText($text, $wordcount)
 	{
 		if (!$wordcount)

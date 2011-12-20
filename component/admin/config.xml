@@ -14,16 +14,16 @@
 		</param>
 		
 		<param name="catid0" type="jevcategory" default="0" scope="com_jevents" label="SPECIFIED_CATEGORY" description='SHOWS_EVENTS_ONLY_FROM_THE_SELECTED_CATEGORY'  />
-		<param name="catid1" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid2" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid3" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid4" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid5" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid6" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid7" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid8" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid9" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
-		<param name="catid10" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ALSO_INCLUDE_EVENTS_FROM_THIS_ADDITIONAL_CATEGORY'  />
+		<param name="catid1" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid2" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid3" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid4" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid5" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid6" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid7" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid8" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid9" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
+		<param name="catid10" type="jevcategory" default="0" scope="com_jevents" label='ADDITIONAL_CATEGORY'  description='ADDITIONAL_CAT_TIP'  />
 		
 		<param name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" />	
 		<param name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
