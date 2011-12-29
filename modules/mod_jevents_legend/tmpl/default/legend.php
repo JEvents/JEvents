@@ -38,7 +38,7 @@ class DefaultModLegendView
 
 		if ($this->inccss)
 		{
-			JEVHelper::componentStylesheet($this);
+			//JEVHelper::componentStylesheet($this);
 			JEVHelper::componentStylesheet($this, "modstyle.css");
 		}
 
@@ -219,6 +219,7 @@ class DefaultModLegendView
 
 					$registry = & JRegistry::getInstance("jevents");
 					$controller = & $registry->getValue("jevents.controller", null);
+					if (!$controller) return $content;
 					$view = $controller->view;
 
 					//include_once(JPATH_SITE."/components/$option/events.html.php");

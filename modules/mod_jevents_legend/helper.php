@@ -60,4 +60,52 @@ class modJeventsLegendHelper
 		
 	}
 
+	function getViewClass($theme, $module, $layout, $params=false){
+
+		// If we have a specified over ride then use it here
+		if ($params && strlen($params->get("layout",""))>0){
+			$speciallayout = strtolower($params->get("layout",""));
+			// Build the template and base path for the layout
+			$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$theme.DS.$speciallayout.'.php';
+
+			// If the template has a layout override use it
+			if (file_exists($tPath)) {
+				$viewclass = "Override".ucfirst($theme)."ModLegendView".ucfirst($speciallayout);
+				require_once($tPath);
+				if (class_exists($viewclass)){
+					return $viewclass;
+				}
+			}
+		}
+		// Build the template and base path for the layout
+		$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
+		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
+
+		jimport('joomla.filesystem.file');
+		// If the template has a layout override use it
+		if (JFile::exists($tPath)) {
+			require_once($tPath);
+			$viewclass = "Override".ucfirst($theme)."ModLegendView";
+			if (class_exists($viewclass)){
+				return $viewclass;
+			}
+			else {
+				$viewclass = ucfirst($theme)."ModLegendView";
+				return $viewclass;				
+			}
+		}
+		else if (JFile::exists($bPath)) {
+			require_once($bPath);
+			$viewclass = ucfirst($theme)."ModLegendView";
+			return $viewclass;
+		}
+		else {
+			echo "<strong>".JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT",$theme)."</strong>";
+			$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.'default'.DS.'legend.php';
+			require_once($bPath);
+			$viewclass = "DefaultModLegendView";
+			return $viewclass;
+
+		}
+	}		
 }

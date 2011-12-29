@@ -30,9 +30,7 @@ if ($modtheme==""){
 }
 $theme=$modtheme;
 
-require_once(JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend"));
-
-$viewclass = ucfirst($theme)."ModLegendView";
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_legend',$theme.DS."legend", $params);
 $modview = new $viewclass($params, $module->id);
 $modview->jevlayout = $theme;
 echo $modview->displayCalendarLegend();
