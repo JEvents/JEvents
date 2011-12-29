@@ -255,7 +255,7 @@ class DefaultModLatestView
 			}
 		}
 		// only future events
-		else if ($this->pastOnly == 1)
+		else if ($this->pastOnly == 2)
 		{
 			if ($this->startNow)
 			{
