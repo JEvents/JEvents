@@ -43,8 +43,7 @@ if ($modtheme==""){
 }
 $theme=$modtheme;
 
-require_once(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.DS."calendar"));
-$viewclass = ucfirst($theme)."ModCalView";
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.DS."calendar", $params);
 $modview = new $viewclass($params, $module->id);
 $modview->jevlayout = $theme;
 echo $modview->getCal();

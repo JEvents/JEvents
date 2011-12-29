@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-include(dirname(__FILE__)."/../default/calendar.php");
+include(JPATH_SITE."/modules/mod_jevents_cal/tmpl/default/calendar.php");
 
 
 class ExtModCalView extends DefaultModCalView

@@ -30,6 +30,49 @@ class modJeventsCalHelper
 		JEVHelper::loadLanguage('modcal');
 	}
 	
-	
+	function getViewClass($theme, $module, $layout, $params=false){
+
+		// If we have a specified over ride then use it here
+		if ($params && strlen($params->get("layout",""))>0){
+			$speciallayout = strtolower($params->get("layout",""));
+			// Build the template and base path for the layout
+			$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$theme.DS.$speciallayout.'.php';
+
+			// If the template has a layout override use it
+			if (file_exists($tPath)) {
+				$viewclass = "Override".ucfirst($theme)."ModCalView".ucfirst($speciallayout);
+				require_once($tPath);
+				if (class_exists($viewclass)){
+					return $viewclass;
+				}
+			}
+		}
+		// Build the template and base path for the layout
+		$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
+		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
+
+		jimport('joomla.filesystem.file');
+		// If the template has a layout override use it
+		if (JFile::exists($tPath)) {
+			require_once($tPath);
+			$viewclass = "Override".ucfirst($theme)."ModCalView";
+			if (class_exists($viewclass)){
+				return $viewclass;
+			}
+		}
+		else if (JFile::exists($bPath)) {
+			require_once($bPath);
+			$viewclass = ucfirst($theme)."ModCalView";
+			return $viewclass;
+		}
+		else {
+			echo "<strong>".JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT",$theme)."</strong>";
+			$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.'default'.DS.'calendar.php';
+			require_once($bPath);
+			$viewclass = "DefaultModCalView";
+			return $viewclass;
+
+		}
+	}	
 	
 }
