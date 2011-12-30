@@ -780,7 +780,8 @@ class JEventsDataModel {
 		}
 		else {
 			// Do we have to be logged in to see this event?
-			$user = &JFactory::getUser();
+			// If we set the access user for ical export (as an example) then use this user id for access checks!
+			$user = JFactory::getUser(isset($this->accessuser)?$this->accessuser:null);
 			if ($user->id==0)
 			{
 				$db=JFactory::getDBO();

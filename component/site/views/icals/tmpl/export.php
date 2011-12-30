@@ -198,7 +198,9 @@ if (!empty($this->icalEvents))
 			if ($a->_until != "" && $a->_until != 0)
 			{
 				// Do not use JevDate version since this sets timezone to config value!					
-				$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+				// GOOGLE HAS A PROBLEM WITH 235959!!!
+				//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+				$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until+86400);
 			}
 			else if ($a->_count != "")
 			{
@@ -283,7 +285,7 @@ if (!empty($this->icalEvents))
 			}
 			if (count($deletes) > 0)
 			{
-				$html .= "EXDATE:" . $this->wraplines(implode(",", $deletes)) . "\r\n";
+				$html .= "EXDATE$tzid:" . $this->wraplines(implode(",", $deletes)) . "\r\n";
 			}
 		}
 
@@ -293,7 +295,6 @@ if (!empty($this->icalEvents))
 
 		if (count($changed) > 0)
 		{
-			$this->dataModel = new JEventsDataModel();
 			foreach ($changed as $rpid)
 			{
 				$a = $this->dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
@@ -350,7 +351,7 @@ if (!empty($this->icalEvents))
 					$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
 					$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 					$html .= "DTEND$tzid:" . $chend . "\r\n";
-					$html .= "RECURRENCE-ID:" . $originalstart . "\r\n";
+					$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";
 					$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
 					$html .= "TRANSP:OPAQUE\r\n";
 					$html .= "END:VEVENT\r\n";
