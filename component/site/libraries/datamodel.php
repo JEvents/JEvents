@@ -67,6 +67,9 @@ class JEventsDataModel {
 		$separator = $params->get("catseparator","|");
 
 		$catidsIn		= JRequest::getVar(	'catids', 		'NONE' ) ;
+		if ($catidsIn == "NONE") {
+			$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
+		}
 		$this->catids = array();
 		if ($catidsIn == "NONE") {
 			$this->catidList	= "";

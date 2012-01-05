@@ -496,10 +496,6 @@ class ICalsController extends AdminIcalsController
 			}
 
 			JRequest::setVar("tmpl", "component");
-			// Define the file as an iCalendar file
-			header('Content-Type: text/calendar; method=request; charset=UTF-8');
-			// Give the file a name and force download
-			header('Content-Disposition: attachment; filename=calendar.ics');
 		
 			//$dispatcher = & JDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
@@ -510,12 +506,18 @@ class ICalsController extends AdminIcalsController
 			// get the view
 			$this->view = & $this->getView("icals", "html");
 			$this->view->setLayout("export");
+			$this->view->assign("dataModel",$this->dataModel) ;
 			$this->view->assign("outlook2003icalexport", false);
 			$this->view->assign("icalEvents", $icalEvents);
 
 			$this->view->export();
 			return;
 			
+			// Define the file as an iCalendar file
+			header('Content-Type: text/calendar; method=request; charset=UTF-8');
+			// Give the file a name and force download
+			header('Content-Disposition: attachment; filename=calendar.ics');
+
 			$exceptiondata = array();
 			if ($withrepeats)
 			{

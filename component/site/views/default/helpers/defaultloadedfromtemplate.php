@@ -42,6 +42,14 @@ function DefaultLoadedFromTemplate($view,$template_name, $event, $mask){
 
 	$fulllink = $linkstart . $event->title() .'</a>';
 	$search[]="{{TITLE_LINK}}";$replace[]=$fulllink;$blank[]="";
+	
+	// for month calendar cell only
+	if (isset($event->truncatedtitle)) {
+		$search[]="{{TRUNCTITLE}}";$replace[]=$event->truncatedtitle;$blank[]="";
+	}
+	else {
+		$search[]="{{TRUNCTITLE}}";$replace[]=$event->title();$blank[]="";
+	}
 
 	$search[]="{{URL}}";$replace[]=$event->url();$blank[]="";
 

@@ -2035,7 +2035,6 @@ class JEventsDBModel
 					. "\n FROM #__jevents_repetition as rpt  "
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-					. "\n AND rpt.rp_id IN($rplist)"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. $extrajoin
@@ -2043,6 +2042,7 @@ class JEventsDBModel
 					. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 					. $extrawhere
 					//. "\n AND ev.state=1"
+					. "\n AND rpt.rp_id IN($rplist)"
 					. "\n  AND icsf.state=1"
 					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. ($needsgroup ? "\n GROUP BY rpt.rp_id" : "")
@@ -2345,6 +2345,11 @@ class JEventsDBModel
 			// convert rows to jevents
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
+		
+		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
+		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$icalrows));
+		
 		return $icalrows;
 
 	}
