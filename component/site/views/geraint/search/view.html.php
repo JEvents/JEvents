@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class GeraintSearch extends JEventsGeraintView 
+class GeraintViewSearch extends JEventsGeraintView 
 {
 	
 	function form($tpl = null)

@@ -20,7 +20,7 @@ include_once(dirname(__FILE__)."/../icalevent/view.html.php");
  *
  * @static
  */
-class DefaultJevent extends DefaultICalEvent 
+class DefaultViewJevent extends DefaultICalEvent 
 {
 	function __construct($config = null)
 	{		

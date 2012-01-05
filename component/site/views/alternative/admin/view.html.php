@@ -19,7 +19,7 @@ JLoader::register('DefaultAdmin',JEV_PATH."/views/default/admin/view.html.php");
  *
  * @static
  */
-class AlternativeAdmin extends DefaultAdmin 
+class AlternativeViewAdmin extends DefaultAdmin 
 {
 	
 	function listevents($tpl = null)

@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class ExtSearch extends JEventsExtView 
+class ExtViewSearch extends JEventsExtView 
 {
 	
 	function form($tpl = null)

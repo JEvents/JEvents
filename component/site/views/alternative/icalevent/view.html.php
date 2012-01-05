@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeICalEvent extends JEventsAlternativeView 
+class AlternativeViewICalEvent extends JEventsAlternativeView 
 {
 	
 	function detail($tpl = null)

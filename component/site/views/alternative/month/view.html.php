@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeMonth extends JEventsAlternativeView 
+class AlternativeViewMonth extends JEventsAlternativeView 
 {
 	
 	function calendar($tpl = null)

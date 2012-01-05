@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class ExtIcals extends JEventsExtView 
+class ExtViewIcals extends JEventsExtView 
 {
 	
 	function ical($tpl = null)

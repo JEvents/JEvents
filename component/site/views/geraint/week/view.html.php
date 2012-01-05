@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class GeraintWeek extends JEventsGeraintView 
+class GeraintViewWeek extends JEventsGeraintView 
 {
 	function listevents($tpl = null)
 	{

@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeWeek extends JEventsAlternativeView 
+class AlternativeViewWeek extends JEventsAlternativeView 
 {
 	function listevents($tpl = null)
 	{

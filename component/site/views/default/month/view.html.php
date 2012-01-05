@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class DefaultMonth extends JEventsDefaultView 
+class DefaultViewMonth extends JEventsDefaultView 
 {
 	
 	function calendar($tpl = null)

@@ -48,7 +48,7 @@ class MonthController extends JController   {
 
 		$view = "month";
 		$this->addViewPath($this->_basePath.DS."views".DS.$theme);
-		$this->view = & $this->getView($view,$viewType, $theme, 
+		$this->view = & $this->getView($view,$viewType, $theme."View", 
 			array( 'base_path'=>$this->_basePath, 
 				"template_path"=>$this->_basePath.DS."views".DS.$theme.DS.$view.DS.'tmpl',
 				"name"=>$theme.DS.$view));

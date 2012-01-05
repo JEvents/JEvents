@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class ExtCat extends JEventsExtView 
+class ExtViewCat extends JEventsExtView 
 {
 	function listevents($tpl = null)
 	{

@@ -17,6 +17,6 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeYear extends JEventsAlternativeView 
+class AlternativeViewYear extends JEventsAlternativeView 
 {
 }

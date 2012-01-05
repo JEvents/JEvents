@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class DefaultRange extends JEventsDefaultView
+class DefaultViewRange extends JEventsDefaultView
 {
 
 	function listevents($tpl = null)

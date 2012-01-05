@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class DefaultSearch extends JEventsDefaultView 
+class DefaultViewSearch extends JEventsDefaultView 
 {
 	
 	function form($tpl = null)
