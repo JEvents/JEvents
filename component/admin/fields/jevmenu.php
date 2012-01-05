@@ -29,6 +29,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		if (JRequest::getString("option") =="com_config"){
 			?>
 			<script type="text/javascript">
+				alert("<?php echo JText::_("JEV_SET_CONFIG_VIA_COMPONENT",true);?>");
 				window.parent.SqueezeBox.close();
 			</script>
 			<?php

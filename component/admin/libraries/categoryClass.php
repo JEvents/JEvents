@@ -79,6 +79,13 @@ class JEventsCategory extends JTableCategory {
 				$this->_catextra->load($this->id);
 			}
 		}
+		else {
+			$params = new JParameter($this->params);
+			$this->color = $params->get("catcolour", "#000000");
+			$this->overlaps = $params->get("overlaps",0);
+			$this->admin = $params->get("admin",0);
+
+		}
 	}
 
 	function store(){
@@ -100,6 +107,9 @@ class JEventsCategory extends JTableCategory {
 	function getColor(){
 		if (isset($this->_catextra)){
 			return $this->_catextra->color;
+		}
+		else if (isset($this->color)){
+			return $this->color;
 		}
 		else return "#000000";
 	}
@@ -125,6 +135,11 @@ class JEventsCategory extends JTableCategory {
 				return $catuser->username;
 			}
 		}
+		else if (isset($this->admin) && $this->admin>0){
+			$catuser = new JUser();
+			$catuser->load($this->admin);			
+			return $catuser->username;
+		}
 		return $adminuser->username;
 	}
 
@@ -141,6 +156,11 @@ class JEventsCategory extends JTableCategory {
 				$catuser->load($this->_catextra->admin);
 				return $catuser;
 			}
+		}
+		else if (isset($this->admin) && $this->admin>0){
+			$catuser = new JUser();
+			$catuser->load($this->admin);			
+			return $catuser;
 		}
 		return $adminuser;
 	}

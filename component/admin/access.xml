@@ -3,6 +3,7 @@
 	<section name="component" >
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
 		<action name="core.create" title="JEV_JACTION_CREATE" description="JEV_JACTION_CREATE_DESC" />
+		<action name="core.edit.own" title="JEV_JACTION_EDIT_OWN" description="JEV_JACTION_EDIT_OWN_DESC" />
 		<action name="core.edit" title="JEV_JACTION_EDIT" description="JEV_JACTION_EDIT_DESC" />
 		<action name="core.edit.state" title="JEV_JACTION_PUBLISH" description="JEV_JACTION_PUBLISH_DESC" />
 		<action name="core.deleteall" title="JEV_JACTION_DELETE_ALL" description="JEV_JACTION_DELETE_ALL_DESC" />

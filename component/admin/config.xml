@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
+<?xml version="1.0" encoding="utf-8"?><!-- $Id$ -->
 <config>
 	<params addpath="/administrator/components/com_jevents/elements/" >
 
@@ -239,8 +238,8 @@
 		<param name="@spacer" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" />	
 		<param name="com_enableToolTip" type="jevboolean" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" />			
 		<param name="tooltiptype" type="list" default='JOOMLA'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" >			
-			<option value="overlib">Overlib</option>
 			<option value="joomla">Joomla</option>
+			<option value="overlib">Overlib</option>
 		</param>
 		<param name="com_calTTBackground" type="jevboolean" default="1" class="jevp_tooltip" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" />			
 		<param name="com_calTTPosX" type="list" default='LEFT'  class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX">
@@ -358,7 +357,6 @@
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"
 		>
-
 		<field
 			name="rules"
 			type="rules"
@@ -367,7 +365,7 @@
 			filter="rules"
 			component="com_jevents"
 			section="component" />
-<!--
+<!--//
 		<field
 			name="rules"
 			type="rules"
@@ -379,7 +377,7 @@
 			section="category" />
 //-->
 	</fieldset>
-<!--
+
 		<fields name="params">
 		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
@@ -391,7 +389,7 @@
 					description='JEV_TARGET_MENU_TIP'  />
 			</fieldset>		
 		</fields>	
-//-->
+
 
 
 </config>

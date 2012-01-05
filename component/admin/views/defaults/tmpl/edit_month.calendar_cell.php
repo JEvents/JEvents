@@ -26,6 +26,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINK",true)
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TOOLTIP",true);?>", "TOOLTIP");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EVENTTIME",true);?>", "EVTTIME");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCTITLE",true);?>", "TRUNCTITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE_LINK",true);?>", "TITLE_LINK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_REPEATSUMMARY",true);?>", "REPEATSUMMARY");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXT",true);?>", "PREVIOUSNEXT");

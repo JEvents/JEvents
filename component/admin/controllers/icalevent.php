@@ -551,7 +551,7 @@ class AdminIcaleventController extends JController {
 					header('Content-Type:text/html;charset=utf-8');
 				}
 				if ($event && $event->state() ){
-					$link =  $event->viewDetailLink($year,$month,$day,$sef,$itemid);
+					$link =  $event->viewDetailLink($year,$month,$day, true. $Itemid);
 				}
 				else {
 					$link =  JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false);

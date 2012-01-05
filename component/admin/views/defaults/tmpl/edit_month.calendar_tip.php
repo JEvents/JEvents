@@ -23,6 +23,7 @@ defaultsEditorPlugin.node($('jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELE
 // built in group
 var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCTITLE",true);?>", "TRUNCTITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TTTIME",true);?>", "TTTIME");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE_LINK",true);?>", "TITLE_LINK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_REPEATSUMMARY",true);?>", "REPEATSUMMARY");

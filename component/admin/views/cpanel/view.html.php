@@ -544,7 +544,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_system_autotweetjevents" => 45,
 			"plugin_user_juser" => 24,
 			"component_com_attend_jevents" => 21,
-			"component_com_jevents" => 52,
+			//"component_com_jevents" => 52, // JEvents 2.0
+			"component_com_jevents" => 65, // JEvents 2.1
 			"component_com_jeventstags" => 9,
 			"component_com_jevlocations-old" => 4,
 			"component_com_jevlocations" => 4,
@@ -552,12 +553,16 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"component_com_rsvppro" => 62,
 			"module_mod_jevents_cal" => 52,
 			"module_mod_jevents_categories" => 52,
-			"module_mod_jevents_filter" => 52,
-			"module_mod_jevents_latest" => 52,
-			"module_mod_jevents_legend" => 52,
+			//"module_mod_jevents_filter" => 52,
+			//"module_mod_jevents_latest" => 52,
+			//"module_mod_jevents_legend" => 52,
+			"module_mod_jevents_filter" => 65,
+			"module_mod_jevents_latest" => 65,
+			"module_mod_jevents_legend" => 65,
 			"module_mod_jevents_notify" => 61,
 			"module_mod_jevents_paidsubs" => 48,
-			"module_mod_jevents_switchview" => 520);
+			"module_mod_jevents_switchview" => 52
+			);
 		foreach ($apps as $appname => $app)
 		{
 			$row = new stdClass();
