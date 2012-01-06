@@ -61,7 +61,7 @@ class DefaultModLegendView
 		if (!isset($css) && $params->get("hideinactivekids", 1))
 		{
 			$document = JFactory::getDocument();
-			$document->addStyleDeclaration(".childcat {display:none:}");
+			$document->addStyleDeclaration(".childcat {display:none;}");
 			$css = 1;
 		}
 
