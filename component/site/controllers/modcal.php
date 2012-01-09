@@ -109,10 +109,17 @@ class ModCalController extends JController   {
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$theme = $params->get("com_calViewName",$theme);
+		$modtheme = $params->get("com_calViewName", $theme);
+		if ($modtheme==""){
+			$modtheme=$theme;
+		}
+		$theme=$modtheme;
 
-		require(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.DS."calendar"));
+		//require(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.DS."calendar"));
+		require_once (JPATH_SITE.'/modules/mod_jevents_cal/helper.php');
+		$jevhelper = new modJeventsCalHelper();
+		$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.DS."calendar", $params);
 		
-		$viewclass = ucfirst($theme)."ModCalView";
 		$modview = new $viewclass($params, $modid);
 			
 		?>
