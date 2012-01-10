@@ -60,7 +60,7 @@ class modJeventsCalHelper
 				return $viewclass;
 			}
 		}
-		else if (JFile::exists($bPath)) {
+		if (JFile::exists($bPath)) {
 			require_once($bPath);
 			$viewclass = ucfirst($theme)."ModCalView";
 			return $viewclass;
