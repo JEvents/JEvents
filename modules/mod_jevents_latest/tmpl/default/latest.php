@@ -1020,13 +1020,13 @@ class DefaultModLatestView
 				break;
 
 			case 'createdByUserName':
-				$catobj = JEVHelper::getUser($dayEvent->created_by());
+				$catobj = JFactory::getUser($dayEvent->created_by());
 				$content .= isset($catobj->username) ? $catobj->username : "";
 				break;
 
 			case 'createdByUserEmail':
 				// Note that users email address will NOT be available if they don't want to receive email
-				$catobj = JEVHelper::getUser($dayEvent->created_by());
+				$catobj = JFactory::getUser($dayEvent->created_by());
 				$content .= $catobj->sendEmail ? $catobj->email : '';
 				break;
 
