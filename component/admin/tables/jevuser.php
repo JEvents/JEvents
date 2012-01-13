@@ -110,10 +110,16 @@ class TableUser extends JTable
 		$dispatcher	=& JDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
+		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
+		$order = JRequest::getCmd("filter_order",'tl.id');
+		$dir = $orderdir=="asc" ? "asc" : "desc";
+		$order = " ORDER BY ".$order." ".$orderdir;
+		
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";
 		$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
+		$sql .= $order;
 
 		$db->setQuery( $sql	);
 		$users = $db->loadObjectList('id');
@@ -135,6 +141,7 @@ class TableUser extends JTable
 			$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 			$sql .= count($join)>0?implode(" ",$join):"";
 			$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
+			$sql .= $order;
 			$sql .= " LIMIT $limitstart, $limit";
 
 			$db->setQuery( $sql	);
