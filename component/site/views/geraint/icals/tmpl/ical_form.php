@@ -182,6 +182,10 @@ if (isset($_POST['submit']))
 	}
 
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	if ( $params->get("constrained",0) ){
+		$link .="&Itemid=" . JRequest::getInt("Itemid",1);
+	}
+	
 	$icalkey = $params->get("icalkey", "secret phrase");
 	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
 

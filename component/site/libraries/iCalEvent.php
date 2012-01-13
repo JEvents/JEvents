@@ -115,6 +115,9 @@ class iCalEvent extends JTable  {
 			}
 		}
 
+		// place private reference to created_by in event detail in case needed by plugins
+		$this->_detail->_created_by = $this->created_by ;
+				
 		$db =& JFactory::getDBO();
 		$detailid = $this->_detail->store($updateNulls);
 		if (!$detailid){

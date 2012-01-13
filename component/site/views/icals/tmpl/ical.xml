@@ -15,6 +15,7 @@
 	<fields name="params" >
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 			<field name='icalcache' type='text' default="1440" label="JEV_ICALCACHE" description="JEV_ICALCACHE_DESC" />
+			<field name='constrained' type='jevboolean' default="0" label="JEV_CONSTRAIN_EXPORT_USING_SETTINGS_BELOW" description="JEV_CONSTRAIN_EXPORT_DESC" />
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 			<field name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" />
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
