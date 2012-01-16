@@ -59,6 +59,13 @@ class modJeventsLatestHelper
 			if (class_exists($viewclass)){
 				return $viewclass;
 			}
+			else {
+				// fall back to badly declared template override!
+				$viewclass = ucfirst($theme)."ModLatestView";
+				if (class_exists($viewclass)){
+					return $viewclass;
+				}				
+			}
 		}
 		if (JFile::exists($bPath)) {
 			require_once($bPath);
