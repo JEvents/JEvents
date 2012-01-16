@@ -12,14 +12,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-JLoader::register('DefaultAdmin',JEV_PATH."/views/default/admin/view.html.php");
+JLoader::register('DefaultViewAdmin',JEV_PATH."/views/default/admin/view.html.php");
 
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class ExtViewAdmin extends DefaultAdmin 
+class ExtViewAdmin extends DefaultViewAdmin 
 {
 	
 	function listevents($tpl = null)
