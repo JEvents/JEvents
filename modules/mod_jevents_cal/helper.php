@@ -59,6 +59,13 @@ class modJeventsCalHelper
 			if (class_exists($viewclass)){
 				return $viewclass;
 			}
+			else {
+				// fall back to badly declared template override!
+				$viewclass = ucfirst($theme)."ModCalView";
+				if (class_exists($viewclass)){
+					return $viewclass;
+				}				
+			}
 		}
 		if (JFile::exists($bPath)) {
 			require_once($bPath);
