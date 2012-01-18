@@ -4,7 +4,7 @@
  *
  * @version     $Id$
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -21,11 +21,11 @@ class JEventsVersion {
 	/** @var int Sub Release Level */
 	var $DEV_LEVEL 	= '1';
 	/** @var string Patch Level */
-	var $PATCH_LEVEL = '6';
+	var $PATCH_LEVEL = '7';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
-	var $COPYRIGHT 	= 'Copyright &copy; 2006-2011';
+	var $COPYRIGHT 	= 'Copyright &copy; 2006-2012';
 	/** @var string Copyright Text */
 	var $COPYRIGHTBY 	= 'GWE Systems Ltd, JEvents Project Group';
 	/** @var string LINK */

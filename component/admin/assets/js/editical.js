@@ -700,7 +700,7 @@ editor.style.width="550px";
 
 window.addEvent('domready',function(){setupIE6();});
 */
-
+/*
 if (window.webkit) {
 	window.addEvent('domready', function(){
 		setTimeout("fixTabbedWebkit()",100);
@@ -712,7 +712,7 @@ function fixTabbedWebkit(){
 		tinyMCE.execCommand('mceAddControl', false, "jevcontent");
 	}
 }
-
+*/
 // sets the date for the page after save
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
