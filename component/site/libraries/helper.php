@@ -935,6 +935,17 @@ class JEVHelper
 
 		if (JEVHelper::isEventEditor())
 		{
+			// any category restrictions on this?
+			if (JVersion::isCompatible("1.6.0"))
+			{
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
+				if (in_array($row->_catid, $cats))
+					return true;
+				else if (in_array($row->_catid, $cats_own))
+					return true;
+				else return false;
+			}						
 			return true;
 		}
 		// must stop anon users from editing any events
@@ -1113,7 +1124,7 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.publish');
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 			if (in_array($row->_catid, $cats))
 				return true;
 		}
@@ -1121,7 +1132,15 @@ class JEVHelper
 		// can publish all?
 		if (JEVHelper::isEventPublisher(true))
 		{
+			if (JVersion::isCompatible("1.6.0"))
+			{
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+				if (in_array($row->_catid, $cats))
+					return true;
+				else return false;
+			}
 			return true;
+			
 		}
 		else if ($row->created_by() == $user->id)
 		{
@@ -1244,14 +1263,22 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
 			if (in_array($row->_catid, $cats))
 				return true;
 		}
 
-		// can publish all?
+		// can delete all?
 		if (JEVHelper::isEventDeletor(true))
 		{
+			// any category restrictions on this?
+			if (JVersion::isCompatible("1.6.0"))
+			{
+				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
+				if (in_array($row->_catid, $cats))
+					return true;
+				else return false;
+			}			
 			return true;
 		}
 		else if ($row->created_by() == $user->id)

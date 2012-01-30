@@ -555,6 +555,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
+		$rptwhere = array();		
 		$extrafields = "";  // must have comma prefix
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
@@ -574,7 +575,7 @@ class JEventsDBModel
 		$needsgroup = $filters->needsGroupBy();
 
 		$dispatcher = & JDispatcher::getInstance();
-		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup, & $rptwhere));
 
 		// What if join multiplies the rows?
 		// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492
@@ -583,7 +584,6 @@ class JEventsDBModel
 
 		// did any of the plugins adjust the range of dateds allowed eg. timelimit plugin - is so then we need to use this information otherwise we  get problems
 		$regex = "#(rpt.endrepeat>='[0-9:\- ]*' AND rpt.startrepeat<='[0-9:\- ]*')#";
-		$rptwhere = array();
 		foreach ($extrawhere as $exwhere){
 			if (preg_match($regex, $exwhere)){
 				$rptwhere[] = str_replace("rpt.","rpt2.",$exwhere);
@@ -869,8 +869,10 @@ class JEventsDBModel
 		$ids = implode(",", $ids);
 
 		$groupby = "\n GROUP BY rpt.rp_id";
-		if ($noRepeats)
+		if ($noRepeats) {
 			$groupby = "\n GROUP BY ev.ev_id";
+			$needsgroup = true;
+		}
 
 		// This version picks the details from the details table
 		// ideally we should check if the event is a repeat but this involves extra queries unfortunately

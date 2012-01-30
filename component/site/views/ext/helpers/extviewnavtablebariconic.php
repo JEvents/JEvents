@@ -24,6 +24,16 @@ class ExtViewNavTableBarIconic {
 			$hiddencat = '<input type="hidden" name="catids" value="'.$catidsOut.'"/>';
 		}
 
+		// for popup editing
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("editpopup",0)){
+			JHTML::_('behavior.modal');
+			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+			$view->popup=true;
+			$view->popupw = $params->get("popupw",800);
+			$view->popuph = $params->get("popuph",600);
+		}
+		
 		$link = 'index.php?option=' . $option . '&task=' . $task . $cat . '&Itemid=' . $Itemid. '&';
     	?>
     	<table class="ev_navigation" bgcolor="#ffffff" border="0" cellpadding="10" cellspacing="0" width="100%" >

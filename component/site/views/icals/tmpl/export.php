@@ -93,7 +93,14 @@ if (!empty($this->icalEvents))
 		if (!empty($a->_class))
 			$html .= "CLASS:" . $a->_class . "\r\n";
 		$html .= "SUMMARY:" . $a->title() . "\r\n";
-		if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
+		if ($a->location()!="") {
+			if (isset($a->_loc_title)){
+				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->_loc_title)) . "\r\n";
+			}
+			else {
+				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
+			}
+		}
 		// We Need to wrap this according to the specs
 		/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
 		$html .= $this->setDescription($a->content()) . "\r\n";

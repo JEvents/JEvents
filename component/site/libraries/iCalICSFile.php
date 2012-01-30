@@ -29,6 +29,8 @@ class iCalICSFile extends JTable  {
 	// is default ical of its type
 	var $isdefault = 0;
 
+	var $overlaps = 0;
+
 	var $created_by = 0;
 
 	// if true allows for front end refresh via cronjob

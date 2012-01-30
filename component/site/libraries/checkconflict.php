@@ -467,6 +467,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
 
+		// First of all check for Category overlaps
 		$skipCatTest = false;
 		$catinfo = $dbModel->getCategoryInfo(array($testevent->catid()));
 		if ($catinfo && count($catinfo) == 1)
@@ -513,6 +514,35 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				}
 			}
 		}
+		
+		// Next check for Calendar overlaps
+		$db = JFactory::getDbo();
+		$db->setQuery("SELECT * FROM #__jevents_icsfile WHERE ics_id = ".$testevent->icsid());		
+		$calinfo = $db->loadObject();
+		if ($calinfo && $calinfo->overlaps)
+		{
+			foreach ($testevent->repetitions as $repeat)
+			{
+				$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+				$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
+				$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
+				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+				$sql .= " AND evt.icsid=" . $testevent->icsid() . " GROUP BY rpt.rp_id";
+				$sql .= " LIMIT 100";
+				$db->setQuery($sql);
+				$conflicts = $db->loadObjectList();
+				if ($conflicts && count($conflicts) > 0)
+				{
+					foreach ($conflicts as &$conflict)
+					{
+						$conflict->conflictCause = JText::sprintf("JEV_CALENDAR_CLASH", $calinfo->label);
+					}
+					unset($conflict);
+					$overlaps = array_merge($overlaps, $conflicts);
+				}
+			}
+		}
+		
 	}
 
 	$dispatcher = & JDispatcher::getInstance();
