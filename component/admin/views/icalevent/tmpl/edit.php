@@ -369,7 +369,12 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
             }
             echo "<div id='jeveditor'>";
             // parameters : areaname, content, hidden field, width, height, rows, cols
-            echo $editor->display( 'jevcontent',  JEventsHtml::special($this->row->content()) ,  "100%", 250, '70', '10', $t_buttons) ;
+		if (JVersion::isCompatible("1.6.0")) {
+			echo $editor->display( 'jevcontent',  JEventsHtml::special($this->row->content()) ,  "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT) ;
+		}
+		else {
+			echo $editor->display( 'jevcontent',  JEventsHtml::special($this->row->content()) ,  "100%", 250, '70', '10', $t_buttons) ;
+		}
             echo "</div>";
 				?>
             </td>

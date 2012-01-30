@@ -20,6 +20,15 @@ class JEventsAbstractView extends JView {
 	{
 		parent::__construct($config);
 		$this->_addPath('template', $this->_basePath.DS.'views'.DS.'abstract'.DS.'tmpl');
+		// note that the name config variable is ignored in the parent construct!
+		if (JVersion::isCompatible("2.5")){
+			$theme = JEV_CommonFunctions::getJEventsViewName();
+			$this->addTemplatePath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$theme.DS.$this->getName() );
+			
+			// or could have used 
+			//$this->addTemplatePath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$config['name'] );
+			
+		}
 	}
 
 	/**

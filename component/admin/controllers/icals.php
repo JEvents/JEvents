@@ -269,6 +269,7 @@ class AdminIcalsController extends JController {
 				$icsLabel = $currentICS->icsLabel;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
+			$overlaps = JRequest::getInt('overlaps',$currentICS->overlaps);
 			$autorefresh = JRequest::getInt('autorefresh',$autorefresh);
 			$ignoreembedcat = JRequest::getInt('ignoreembedcat',$currentICS->ignoreembedcat);
 
@@ -278,6 +279,7 @@ class AdminIcalsController extends JController {
 				$ics->load($icsid);
 				$ics->catid=$catid;
 				$ics->isdefault=$isdefault;
+				$ics->overlaps=$overlaps;
 				$ics->access=$access;
 				$ics->label=$icsLabel;
 				// TODO update access and state
@@ -406,7 +408,8 @@ class AdminIcalsController extends JController {
 				$uploadURL = $currentICS->srcURL;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
-			$autorefresh = JRequest::getInt('autorefresh',$currentICS->autorefresh);
+			$overlaps = JRequest::getInt('overlaps',$currentICS->overlaps);
+			$autorefesh = JRequest::getInt('autorefresh',$currentICS->autorefresh);
 			$ignoreembed = JRequest::getInt('ignoreembedcat',$currentICS->ignoreembedcat);
 
 			// We are only updating identifiers etc
@@ -414,6 +417,7 @@ class AdminIcalsController extends JController {
 			$ics->load($icsid);
 			$ics->catid=$catid;
 			$ics->isdefault=$isdefault;
+			$ics->overlaps=$overlaps;
 			$ics->created_by=JRequest::getInt("created_by",$currentICS->created_by);
 			$ics->state=$state;
 			$ics->access=$access;

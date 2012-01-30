@@ -34,6 +34,7 @@ if (isset($this->editItem->ics_id)){
 	$access = $this->editItem->access;
 	$srcURL = $this->editItem->srcURL;
 	$filename = $this->editItem->filename;
+	$overlaps = $this->editItem->overlaps;
 	$label = $this->editItem->label;
 	$icaltype = $this->editItem->icaltype;
 	if ($srcURL == "") $filemessage=JText::_("Loaded from Local file called"." ");
@@ -45,6 +46,7 @@ else {
 	$access = 0;
 	$srcURL = "";
 	$filename = "";
+	$overlaps = 0;
 	$label = "";
 	$icaltype = 2;
 	$filemessage=JText::_( 'FROM_FILE' );
@@ -129,12 +131,26 @@ echo JEventsHTML::buildScriptTag('end');
 			$checked1=' checked="checked"';
 			$checked0='';
 		}
-	?>
-    <?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?>
+		if (!isset($this->editItem->overlaps) || $this->editItem->overlaps==0){
+			$overlaps0=' checked="checked"';
+			$overlaps1='';
+		}
+		else {
+			$overlaps1=' checked="checked"';
+			$overlaps0='';
+		}
+		echo JText::_('JEV_EVENT_ISDEFAULT'); ?>
 	<input id="isdefault0" type="radio" value="0" name="isdefault" <?php echo $checked0;?>/>
 	<label for="isdefault0"><?php echo JText::_( 'JEV_NO' ); ?></label>
 	<input id="isdefault1" type="radio" value="1" name="isdefault" <?php echo $checked1;?>/>
-	<label for="isdefault1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
+	<label for="isdefault1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/>
+	
+	<?php	echo JText::_('JEV_BLOCK_OVERLAPS'); ?>
+	<input id="overlaps0" type="radio" value="0" name="overlaps" <?php echo $overlaps0;?>/>
+	<label for="overlaps0"><?php echo JText::_( 'JEV_NO' ); ?></label>
+	<input id="overlaps1" type="radio" value="1" name="overlaps" <?php echo $overlaps1;?>/>	
+	<label for="overlaps1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
+	
 	<?php if ($id==0){ ?>
 	<button name="newical"  title="Create New" onclick="submitbutton('icals.new');return false;"><?php echo JText::_("CREATE_FROM_SCRATCH");?></button>
 	<?php
