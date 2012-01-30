@@ -558,7 +558,7 @@ class AdminIcaleventController extends JController {
 				}
 				?>
 				<script type="text/javascript">
-				window.parent.SqueezeBox.close();
+				//window.parent.SqueezeBox.close();
 				window.parent.alert("<?php echo $msg;?>");
 				window.parent.location="<?php echo $link;?>";
 				</script>
