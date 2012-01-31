@@ -124,6 +124,10 @@ function DefaultViewHelperHeader($view){
 	?>
 	</tr>
 </table>
+<?php 
+	$view->loadModules("jevprejevents2");
+	$view->loadModules("jevprejevents2_".$task);
+?>
 <table class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  echo $params->get("darktemplate",0)?" jeventsdark":"jeventslight"; ?>" id="jevents_body">
 	<tr>
 	<td width="100%">

@@ -129,6 +129,10 @@ function DefaultViewHelperHeader16($view){
 	}
 	?>
 </div>
+<?php 
+	$view->loadModules("jevprejevents2");
+	$view->loadModules("jevprejevents2_".$task);
+?>
 <div class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  ?>" id="jevents_body">
 <?php
 }
