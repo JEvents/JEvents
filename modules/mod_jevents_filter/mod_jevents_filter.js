@@ -9,6 +9,7 @@ var JeventsFilters = {
 				var elem = $(item.id);
 				if (!elem && form[item.id]){
 					elem = form[item.id];
+					elem = $(elem);
 				}
 				if (elem) {
 					try {
