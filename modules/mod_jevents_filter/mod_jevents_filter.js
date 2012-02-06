@@ -7,6 +7,9 @@ var JeventsFilters = {
 			}
 			else {
 				var elem = $(item.id);
+				if (!elem && form[item.id]){
+					elem = form[item.id];
+				}
 				if (elem) {
 					try {
 						var tag = elem.get('tag');
