@@ -85,11 +85,17 @@ class jevCategoryFilter extends jevFilter
 
 
 		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
-		
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
 		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:0});} catch (e) {}\n";
+		
+		if ($this->filter_value!==$this->filterNullValue && $this->filter_value==""){
+			// This forces category settings in URL to reset too since they could be set by SEF 
+			$filterList["html"] .= "<span><input type='hidden' name='catids' id='catidsfv' value='".$this->filter_value."' /></span>";
+			$script .= "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
+		}		
+		
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
 		

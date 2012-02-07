@@ -175,7 +175,7 @@ class ICalsViewICals extends JEventsAbstractView
 					$transitions = $timezone->getTransitions();
 				}
 				$tzindex = 0;
-				while (JevDate::strtotime($transitions[$tzindex]['time']) < $firststart)
+				while (iseet($transitions[$tzindex]) && JevDate::strtotime($transitions[$tzindex]['time']) < $firststart)
 				{
 					$tzindex++;
 				}

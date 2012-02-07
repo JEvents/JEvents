@@ -482,7 +482,7 @@ class JEventsDBModel
 				. "\n GROUP BY ev.ev_id";
 
 		// always in reverse hits  order!
-		$query .= " ORDER BY ev.hits DESC ";
+		$query .= " ORDER BY det.hits DESC ";
 
 		// This limit will always be enough
 		$query .= " LIMIT " . $limit;
@@ -513,18 +513,14 @@ class JEventsDBModel
 				. $extrajoin
 				. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
 				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-				// We only show events on their first day if they are not to be shown on multiple days so also add this condition
-				. "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)"
+				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
 				. $extrawhere
 				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 "
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
-				. "\n AND rpt.startrepeat=(SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate')"
-				. ($needsgroup ? $groupby : "");
-		$query .= " ORDER BY ev.hits DESC ";
+				. ($needsgroup ? $groupby : "");		
+		$query .= " ORDER BY det.hits DESC ";
 
 		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
@@ -798,6 +794,7 @@ class JEventsDBModel
 
 	}
 
+	// BAD VERSION - not used
 	function listPopularIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0)
 	{
 		$user = & JFactory::getUser();
@@ -1082,6 +1079,11 @@ class JEventsDBModel
 		list ($y, $m, $d) = explode(":", JevDate::strftime('%Y:%m:%d', $targetdate));
 		$startdate = JevDate::mktime(0, 0, 0, $m, $d, $y);
 		$enddate = JevDate::mktime(23, 59, 59, $m, $d, $y);
+		
+		// timezone offset (3 hours as a test)
+		//$startdate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $startdate+10800);
+		//$enddate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $enddate+10800);
+		
 		return $this->listIcalEvents($startdate, $enddate);
 
 	}

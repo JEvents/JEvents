@@ -339,7 +339,7 @@ class JEventsHTML
 			}
 			?>
 			<select name="<?php echo $fieldname; ?>" <?php echo $args; ?> >
-				<option value=""><?php echo $t_first_entry; ?></option>
+				<option value="0"><?php echo $t_first_entry; ?></option>
 			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
 			</select>
 			<?php

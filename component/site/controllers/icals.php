@@ -469,8 +469,8 @@ class ICalsController extends AdminIcalsController
 		ob_end_clean();
 		?>
 		<script type="text/javascript">
-			window.parent.SqueezeBox.close();
 			window.alert("<?php echo JText::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
+			window.parent.SqueezeBox.close();
 			//window.parent.location.reload();
 		</script>
 		<?php
