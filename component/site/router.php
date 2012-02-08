@@ -507,7 +507,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 				if (isset($query['year']))
 				{
-					$year = $query['year'];
+					$year = intval($query['year']);
 					unset($query['year']);
 				}
 				else
@@ -517,7 +517,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 				if (isset($query['month']))
 				{
-					$month = $query['month'];
+					$month = intval($query['month']);
 					unset($query['month']);
 				}
 				else
@@ -527,7 +527,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 				if (isset($query['day']))
 				{
-					$day = $query['day'];
+					$day = intval($query['day']);
 					unset($query['day']);
 				}
 				else
