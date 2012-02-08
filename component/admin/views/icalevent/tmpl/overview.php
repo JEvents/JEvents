@@ -46,15 +46,15 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
 			</th>
 			<th class="title" width="50%" nowrap="nowrap">
-				<?php echo JHTML::_('grid.sort',  'JEV_ICAL_SUMMARY', 'title', $orderdir, $order); ?>
+				<?php echo JHTML::_('grid.sort',  'JEV_ICAL_SUMMARY', 'title', $orderdir, $order,"icalevent.list"); ?>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_( 'REPEATS' ); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 			<th width="20%" nowrap="nowrap">
-				<?php echo JHTML::_('grid.sort',  'JEV_TIME_SHEET', 'starttime', $orderdir, $order); ?>
+				<?php echo JHTML::_('grid.sort',  'JEV_TIME_SHEET', 'starttime', $orderdir, $order,"icalevent.list"); ?>
 			</th>
 			<th width="20%" nowrap="nowrap">
-				<?php echo JHTML::_('grid.sort',  'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order); ?>
+				<?php echo JHTML::_('grid.sort',  'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order,"icalevent.list"); ?>
 			</th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
 		</tr>
@@ -134,5 +134,4 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
     <input type="hidden" name="filter_order" value="asc" />
     <input type="hidden" name="filter_order_Dir" value="asc" />
 </form>
-
 <br />

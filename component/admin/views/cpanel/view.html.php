@@ -593,6 +593,13 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		jimport("joomla.filesystem.folder");
 		$apps = array();
 
+		// Joomla
+		$app = new stdClass();
+		$app->name = "Joomla";
+		$version = new JVersion();
+		$app->version = $version->getShortVersion();
+		$apps[$app->name] = $app;
+		
 // components (including JEvents
 		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
 		foreach ($xmlfiles3 as $manifest)
@@ -666,17 +673,23 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$name = str_replace(".xml", "", basename($manifest));
 			if (JVersion::isCompatible("1.6"))
 			{
-				$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+				$group =  basename(dirname(dirname($manifest))) ;
 			}
 			else
 			{
-// simulate Joomla 1.7 directory structure
-				$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+				$group =   basename(dirname($manifest)) ;
 			}
+			$plugin = JPluginHelper::getPlugin( $group,$name);
+			if (!$plugin) {
+				$app->version .= " (not enabled)";
+			} 
+			
+			$name = "plugin_" .$group. "_" . $name;
 			$apps[$name] = $app;
 		}
 
 		$output = "<textarea rows='40' cols='80'>[code]\n";
+		
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";

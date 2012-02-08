@@ -46,21 +46,21 @@ $url = JRoute::_("index.php?option=" . $option);
 			<thead>
 				<tr>
 					<th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->users); ?>);" /></th>
-					<th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('NAME'), 'jname', $orderdir, $order); ?></th>
-					<th width="20%" align="left" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('USERNAME'), 'username', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('ENABLED'), 'published', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE'), 'cancreate', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('DELETE_OWN'), 'candeleteown', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('EDIT_ALL'), 'canedit', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('DELETE_ALL'), 'candeleteall', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order); ?></th>
-					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order); ?></th>
+					<th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('NAME'), 'jname', $orderdir, $order,"icalevent.list"); ?></th>
+					<th width="20%" align="left" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('USERNAME'), 'username', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('ENABLED'), 'published', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE'), 'cancreate', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('MAX_EVENTS'), 'eventslimit', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('PUBLISH_OWN'), 'canpublishown', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('DELETE_OWN'), 'candeleteown', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('EDIT_ALL'), 'canedit', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('PUBLISH_ALL'), 'canpublishall', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('DELETE_ALL'), 'candeleteall', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('UPLOAD_IMAGES'), 'canuploadimages', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('UPLOAD_FILES'), 'canuploadmovies', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE_OWN_EXTRAS'), 'cancreateown', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('CREATE_GLOBAL_EXTRAS'), 'cancreateglobal', $orderdir, $order,"icalevent.list"); ?></th>
+					<th align="center" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('MAX_EXTRAS'), 'extraslimit', $orderdir, $order,"icalevent.list"); ?></th>
 				</tr>
 			</thead>
 			<tfoot>

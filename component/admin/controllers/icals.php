@@ -328,11 +328,11 @@ class AdminIcalsController extends JController {
 			}
 		}
 
-		// preserve ownership
-		if (isset($currentICS) && $currentICS->created_by>0 ) $icsFile->created_by = $currentICS->created_by;
-
 		$message = '';
 		if ($icsFile !== false) {
+			// preserve ownership
+			if (isset($currentICS) && $currentICS->created_by>0 ) $icsFile->created_by = $currentICS->created_by;
+
 			$icsFileid = $icsFile->store();
 			$message = JText::_( 'ICS_FILE_IMPORTED' );
 		}
