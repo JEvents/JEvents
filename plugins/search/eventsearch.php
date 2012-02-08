@@ -15,7 +15,6 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-//JPlugin::loadLanguage( 'plg_search_jevents' );
 // setup for all required function and classes
 $file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 if (file_exists($file))
