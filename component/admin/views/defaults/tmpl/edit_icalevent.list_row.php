@@ -25,6 +25,10 @@ var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JTex
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE_LINK",true);?>", "TITLE_LINK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_REPEATSUMMARY",true);?>", "REPEATSUMMARY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STARTDATE",true);?>", "STARTDATE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STARTTIME",true);?>", "STARTTIME");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ENDDATE",true);?>", "ENDDATE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ENDTIME",true);?>", "ENDTIME");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXT",true);?>", "PREVIOUSNEXT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");

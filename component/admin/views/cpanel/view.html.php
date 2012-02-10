@@ -523,6 +523,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_jevents_jevlocations" => 4,
 			"plugin_jevents_jevmatchingevents" => 47,
 			"plugin_jevents_jevmetatags" => 58,
+			"plugin_jevents_jevmissingevents" => 56,
 			"plugin_jevents_jevnotify" => 61,
 			"plugin_jevents_jevpaidsubs" => 48,
 			"plugin_jevents_jevpeople" => 13,
