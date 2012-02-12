@@ -15,6 +15,8 @@
 	<fields name="params" >
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+			<field name="darktemplate" type="jevboolean" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 				<option value="0">JEV_NO</option>
