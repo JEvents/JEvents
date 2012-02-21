@@ -627,6 +627,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 		foreach ($xmlfiles4 as $manifest)
 		{
+			if (strpos($manifest,"mod_")===false) continue;
+			
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 
@@ -665,6 +667,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		foreach ($xmlfiles2 as $manifest)
 		{
+			if (strpos($manifest,"Zend")>0) continue;
+			
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 

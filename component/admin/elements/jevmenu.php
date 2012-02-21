@@ -108,6 +108,7 @@ class JElementJevmenu extends JElement
 					// RSH 10/4/10 - J!1.6 does a htmlspecialentities and html_entity_decode to screw up the text!  Make sure the correct values are passed for the respective versions
 					//$text = (version_compare(JVERSION, '1.6.0', ">=")) ? utf8_encode(html_entity_decode('&nbsp;&nbsp;&nbsp;' . $item->treename)) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
 					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' .html_entity_decode( $item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
+					$text = str_repeat("&nbsp;",(isset($item->level)?$item->level:$item->sublevel) * 4) . $text;
 					$options[] = JHTML::_('select.option',  $item->id, $text , 'value', 'text', $disable );
 
 				}
