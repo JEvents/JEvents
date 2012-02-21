@@ -164,13 +164,23 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		$test = new JParameter( $testparms->params);
 		$c=0;
 		$catids = array();
-		while ($nextCatId = $test->get( "catid$c", null )){
-			if (!in_array($nextCatId,$catids)){
-				$catids[]=$nextCatId;
-			}
-			$c++;
+		// New system
+		$newcats = $test->get("catidnew", false);
+		if ($newcats && is_array($newcats )){
+			foreach ($newcats as $newcat){
+				if ( !in_array( $newcat,$catids )){
+					$catids[]=$newcat;
+				}
+			}				
 		}
-
+		else {			
+			while ($nextCatId = $test->get( "catid$c", null )){
+				if (!in_array($nextCatId,$catids)){
+					$catids[]=$nextCatId;
+				}
+				$c++;
+			}
+		}
 		// Now check if its an enclosing set of catids so we use this one if the targetid has not been explicitly set
 		if (count($catids)==0 && !isset($targetid) && !($activeMenu && $activeMenu->component==JEV_COM_COMPONENT)) {
 			$Itemid = JEVHelper::getItemid();
@@ -187,12 +197,15 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 						$enclosed = false;
 					}
 				}
+				// if enclosed or menu item is not constrained
 				if ($enclosed) {
 					$possibleset[]=intval($testparms->id);
 					break;
 				}
+				else if ( count($catids)==0){
+					$possibleset[]=intval($testparms->id);
+				}
 			}
-
 		}
 	}
 

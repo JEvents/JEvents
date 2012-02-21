@@ -67,11 +67,11 @@ class JEventsDataModel {
 		$separator = $params->get("catseparator","|");
 
 		$catidsIn		= JRequest::getVar(	'catids', 		'NONE' ) ;
-		if ($catidsIn == "NONE") {
+		if ($catidsIn == "NONE"   || $catidsIn == 0 ) {
 			$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
 		}
 		$this->catids = array();
-		if ($catidsIn == "NONE") {
+		if ($catidsIn == "NONE"  || $catidsIn == 0 ) {
 			$this->catidList	= "";
 			// New system
 			$newcats = $params->get( "catidnew", false);

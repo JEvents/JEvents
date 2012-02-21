@@ -319,6 +319,7 @@ class JEventsHTML
 						$cats = $user->getAuthorisedCategories('com_jevents', $action);
 					}
 				}
+				// allow anon-user event creation through
 				if (isset($user->id))
 				{
 					$count = count($options);

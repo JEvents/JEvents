@@ -31,7 +31,7 @@ class CsvLine {
     var $dtend;
     var $timezone;
     var $rrule;
-
+    var $cf;
     /**
      * default constructor with manatory parameters
      *
@@ -46,6 +46,7 @@ class CsvLine {
         $this->dtstart = $dtstart;
         $this->dtend = $dtend;
         $timezone = "UTC";  // default timezone
+	$this->cf = array();
     }
 
     /**
@@ -99,6 +100,10 @@ class CsvLine {
         $this->rrule = trim($rrule);
     }
 
+    public function Customfield($cf, $col) {
+        $this->cf[$col] = $cf;
+    }
+	
 	public function getExtraInfo() {
         return $this->extraInfo;
     }
@@ -166,6 +171,11 @@ class CsvLine {
         if($this->extraInfo != "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
         if($this->rrule != "") $ical .= "RRULE:".$this->rrule."\n";
 
+	if (count($this->cf)>0){
+		foreach($this->cf as $key => $cf){
+			$ical .= "custom_".$key.":".$cf."\n";
+		}
+	}
         $ical .= "SEQUENCE:0\n";
         $ical .= "TRANSP:OPAQUE\n";
         $ical .= "END:VEVENT\n";

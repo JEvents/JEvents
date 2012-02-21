@@ -401,7 +401,7 @@ class JEventsDBModel
 				//. "\n AND ev.state=1"
 				. ($needsgroup ? $groupby : "");
 		$query .= " ORDER BY ev.created DESC ";
-
+		//echo str_replace("#__", 'jos_', $query);
 		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
 
