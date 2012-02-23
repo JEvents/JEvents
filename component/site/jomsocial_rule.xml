@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jomsocial>
+	<component>com_jevents</component>
+	<rules>
+		<rule>
+			<name>Create an Event</name>
+			<description>Give points when registered user creates an event</description>
+			<action_string>event.create</action_string>
+			<publish>false</publish>
+			<points>1</points>
+			<access_level>1</access_level>
+		</rule>
+	</rules>
+</jomsocial>

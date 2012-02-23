@@ -196,6 +196,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					$blank[] = "";
 					break;
 
+				case "{{CATDESC}}":
+					$search[] = "{{CATDESC}}";
+					$replace[] = $event->getCategoryDescription();
+					$blank[] = "";
+					break;
 
 				case "{{ICALDIALOG}}":
 				case "{{ICALBUTTON}}":
