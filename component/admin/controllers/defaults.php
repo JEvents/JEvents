@@ -21,6 +21,13 @@ class AdminDefaultsController extends JController {
 	function __construct($config = array())
 	{
 		parent::__construct($config);
+		
+		if (!JEVHelper::isAdminUser())
+		{
+			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			return;
+		}
+		
 		$this->registerTask( 'list',  'overview' );
 		$this->registerTask( 'new',  'edit' );
 		$this->registerDefaultTask("overview");

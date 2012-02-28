@@ -379,7 +379,7 @@
 	</fieldset>
 
 		<fields name="params">
-		
+<!--		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
 					<field 
 					name="target_itemid"
@@ -388,6 +388,7 @@
 					label='JEV_TARGET_MENU' 
 					description='JEV_TARGET_MENU_TIP'  />
 			</fieldset>		
+			//-->
 		</fields>	
 
 
