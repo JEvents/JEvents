@@ -271,7 +271,7 @@ class DefaultModLatestView
 		$periodEnd = $endDate; //substr($endDate,0,10);
 
 		$reg = & JFactory::getConfig();
-		$reg->setValue("jev.modparams", $this->modparams);
+		$reg->setValue("jev.modparams", $this->modparams);		
 		if ($this->dispMode == 5)
 		{
 			$this->sortReverse = true;
@@ -284,7 +284,7 @@ class DefaultModLatestView
 		else
 		{
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
-		}
+		}		
 		$reg->setValue("jev.modparams", false);
 
 		// determine the events that occur each day within our range
@@ -782,8 +782,8 @@ class DefaultModLatestView
 			}
 
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
-					. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS Feed") . '" target="_blank">'
-					. '<img src="' . $rssimg . '" alt="' . JText::_("RSS Feed") . '" />'
+					. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
+					. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
 					. JText::_("SUBSCRIBE_TO_RSS_FEED")
 					. '</a>'
 					. '</div>';

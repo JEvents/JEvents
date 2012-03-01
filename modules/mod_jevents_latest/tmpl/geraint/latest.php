@@ -115,8 +115,8 @@ class GeraintModLatestView extends DefaultModLatestView
 			}
 
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
-			.'<a href="'.$this->rsslink.'" title="'.JText::_("RSS Feed").'" target="_blank">'
-			.'<img src="'.$rssimg.'" alt="'.JText::_("RSS Feed").'" />'
+			.'<a href="'.$this->rsslink.'" title="'.JText::_("RSS_FEED").'" target="_blank">'
+			.'<img src="'.$rssimg.'" alt="'.JText::_("RSS_FEED").'" />'
 			.JText::_("SUBSCRIBE_TO_RSS_FEED")
 			. '</a>'
 			. '</div>';
