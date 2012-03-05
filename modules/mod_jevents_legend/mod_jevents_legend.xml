@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
 	<name>JEvents Legend</name>
-	<creationDate>January 2012</creationDate>
+	<creationDate>February 2012</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>2.1.2</version>
+	<version>2.1.3</version>
 	<description>Shows legend for JEvents categories</description>
 	<files>
 		<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>
@@ -36,8 +36,6 @@
   
 		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
   
-		<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-		<!--
 		<param name="catid0" type="category" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
 		<param name="catid1" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 		<param name="catid2" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
@@ -49,7 +47,6 @@
 		<param name="catid8" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 		<param name="catid9" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 		<param name="catid10" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		//-->
 
 		<param name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
 			<option value="0">No</option>
@@ -82,6 +79,8 @@
 
 				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
 
+		<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+		<!--
 				<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
 				<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 				<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
@@ -93,6 +92,7 @@
 				<field name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 				<field name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
 				<field name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
+		//-->
 
 
 				<field name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">

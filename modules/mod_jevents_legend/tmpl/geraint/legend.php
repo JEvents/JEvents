@@ -89,7 +89,7 @@ class GeraintModLegendView extends DefaultModLegendView{
 
 		// I should only show legend for items that **can** be shown in calendar so must filter based on GET/POST
 		$catidsIn = JRequest::getVar('catids', "NONE" );
-		if ($catidsIn!="NONE") $catidsGP = explode($separator,$catidsIn);
+		if ($catidsIn!="NONE" && $catidsIn!="0") $catidsGP = explode($separator,$catidsIn);
 		else $catidsGP = array();
 		$catidsGPList = implode(",",$catidsGP);
 
