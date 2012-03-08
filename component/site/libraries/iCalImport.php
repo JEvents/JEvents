@@ -275,7 +275,7 @@ class iCalImport
 		}
 
 		$rawkey="";
-		if (JString::stristr($key,"DTSTART") || JString::stristr($key,"DTEND") || JString::stristr($key,"EXDATE")) {
+		if (JString::stristr($key,"DTSTART") || JString::stristr($key,"DTEND") || JString::stristr($key,"EXDATE") ) {
 			list($key,$value,$rawkey,$rawvalue) = $this->handleDate($key,$value);
 
 			// if midnight then move back one day (ISO 8601 uses seconds past midnight http://www.iso.org/iso/date_and_time_format)
@@ -365,6 +365,16 @@ class iCalImport
 					$value = str_replace('http://',"http",$value);
 				}
 
+				 if ($key=="RECURRENCE-ID"){
+					if (count($parts)>1 ){
+						for ($i=1; $i<count($parts);$i++) {
+							if (JString::stristr($parts[$i],"TZID")){
+								$value = $parts[$i].";".$value;
+							}
+						}
+					}
+				 }
+				 
 				// THIS IS NEEDED BECAUSE OF DODGY carriage returns in google calendar UID
 				// TODO check its enough
 				if ($append){

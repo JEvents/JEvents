@@ -624,7 +624,7 @@ class JEventsDBModel
 		// Find the ones after now (only if not past only)
 		if ($modparams->get("pastonly", 0) != 1)
 		{
-			$query = "SELECT DISTINCT rpt.eventid FROM #__jevents_repetition as rpt"
+			$query = "SELECT  rpt.eventid FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
@@ -648,8 +648,6 @@ class JEventsDBModel
 					)
 				$rptwhere
 			)"
-					//. "\n GROUP BY rpt.eventid"
-					. "\n ORDER BY rpt.startrepeat ASC"
 			;
 
 			// This limit will always be enough
@@ -658,7 +656,12 @@ class JEventsDBModel
 			$db->setQuery($query);
 			//$query = $db->replacePrefix($db->getQuery());
 			//echo $db->replacePrefix($db->getQuery())."<br/>";
+			//list($usec, $sec) = explode(" ", microtime());
+			//$before = ((float) $usec + (float) $sec);			
 			$ids1 = $db->loadResultArray();
+			//list ($usec, $sec) = explode(" ", microtime());
+			//$time_end = (float) $usec + (float) $sec;
+			//echo "data  1 obtained in ". round($time_end - $before, 4)."<br/>";
 		}
 		else
 		{
@@ -689,8 +692,6 @@ class JEventsDBModel
 					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
 					$rptwhere
 				)"
-					. "\n GROUP BY rpt.eventid "
-					. "\n ORDER BY rpt.startrepeat DESC"
 			;
 
 			// This limit will always be enough
@@ -733,8 +734,6 @@ class JEventsDBModel
 				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
 				$rptwhere
 			)"
-					. "\n GROUP BY rpt.eventid "
-					. "\n ORDER BY rpt.startrepeat DESC"
 			;
 
 			// This limit will always be enough
@@ -780,7 +779,7 @@ class JEventsDBModel
 				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
-				. ($needsgroup ? $groupby : "");
+				. $groupby ;
 		;
 
 		$cache = & JFactory::getCache(JEV_COM_COMPONENT);

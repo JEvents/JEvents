@@ -362,7 +362,14 @@ else $this->_detail = false;
 	 */
 	function adjustRepetition($matchingEvent){
 		$eventid = $this->ev_id;
-		$start = iCalImport::unixTime($this->recurrence_id);
+		
+		$tz = false;
+		if (JString::stristr($this->recurrence_id,"TZID")){
+			list($tz, $this->recurrence_id) = explode(";", $this->recurrence_id);
+			$tz= str_replace("TZID=", "", $tz);
+			$tz = iCalImport::convertWindowsTzid($tz);
+		}
+		$start = iCalImport::unixTime($this->recurrence_id, $tz);
 		$duplicatecheck = md5($eventid . $start );
 
 		// find the existing repetition in order to get the detailid

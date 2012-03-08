@@ -1340,17 +1340,23 @@ class JEVHelper
 			if (is_null($rows[$id]))
 			{
 				// if the user has been deleted then try to suppress the warning
-				$handlers = JError::getErrorHandling(2);
-				JError::setErrorHandling(2, "ignore");
-				$rows[$id] = JFactory::getUser($id);
-				foreach ($handlers as $handler)
-				{
-					if (!is_array($handler))
-						JError::setErrorHandling(2, $handler);
+				// this causes a problem in Joomla 2.5.1 on some servers
+				if (version_compare(JVERSION, '2.5', '>=') ){
+					$rows[$id] = JFactory::getUser($id);
 				}
-				if ($rows[$id])
-				{
-					$error = JError::getError(true);
+				else {
+					$handlers = JError::getErrorHandling(2);
+					JError::setErrorHandling(2, "ignore");
+					$rows[$id] = JFactory::getUser($id);
+					foreach ($handlers as $handler)
+					{
+						if (!is_array($handler))
+							JError::setErrorHandling(2, $handler);
+					}
+					if ($rows[$id])
+					{
+						$error = JError::getError(true);
+					}
 				}
 			}
 		}

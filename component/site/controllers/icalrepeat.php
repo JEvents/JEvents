@@ -138,7 +138,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	}
 	
 	function delete(){
-		$is_event_editor = JEVHelper::isEventDeletor();
+		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
 			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
 		}

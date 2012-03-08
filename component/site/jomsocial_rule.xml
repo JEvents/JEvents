@@ -10,5 +10,15 @@
 			<points>1</points>
 			<access_level>1</access_level>
 		</rule>
+		<!--
+		<rule>
+			<name>Delete an Event</name>
+			<description>Removed points from event creator when an event is deleted</description>
+			<action_string>event.delete</action_string>
+			<publish>false</publish>
+			<points>-1</points>
+			<access_level>1</access_level>
+		</rule>
+		//-->
 	</rules>
 </jomsocial>
