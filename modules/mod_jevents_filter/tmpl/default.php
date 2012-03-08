@@ -49,13 +49,13 @@ if ($form_link==""){
 	$form_link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . JRequest::getVar("jevtask", "cat.listevents"). "&Itemid=".$myItemid;
 }
 
+// category ID gets picked up by POST results!
 $form_link = JRoute::_($form_link
 . ($evid ? '&evid=' . $evid : '')
 . ($jevtype ? '&jevtype=' . $jevtype : '')
 . ($year ? '&year=' . $year : '')
 . ($month ? '&month=' . $month : '')
 . ($day ? '&day=' . $day : '')
-. ((strlen($tmpCatids)>0)?"&catids=".$tmpCatids:"")
 ,false);
 
 $filters = $jevhelper->getFilters();

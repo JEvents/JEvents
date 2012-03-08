@@ -16,8 +16,17 @@ if (count($filterHTML)>0){
 	JEVHelper::script("mod_jevents_filter.js","modules/mod_jevents_filter/",true);
 	?>
 	<form action="<?php echo $form_link;?>" id="jeventspost" name="jeventspost" method="post">
+	<?php
+		// This forces category settings in URL to reset too since they could be set by SEF 
+		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
+		
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($script);
+	?>
+	<input type='text' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut);?>' />
 	<table cellpadding="0" cellspacing="0" border="0">
 	<?php	
+	
 	foreach ($filterHTML as $filter){
 		if (!isset($filter["title"])) continue;
 		echo "<tr>";
