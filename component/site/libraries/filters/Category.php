@@ -33,8 +33,16 @@ class jevCategoryFilter extends jevFilter
 		$this->filterNullValue="0";
 		parent::__construct($tablename,"catid", true);
 
+		// if catids come from the URL then use this if filter is blank
+		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") {
+			if (JRequest::getInt("catids",0)>0){
+				$this->filter_value=JRequest::getInt("catids",0);
+			}
+		}
+		
 		$catid = $this->filter_value;
-		$this->allAccessibleCategories = $this->datamodel->accessibleCategoryList();		
+		// NO filtering of the list att all
+		$this->allAccessibleCategories = $this->datamodel->accessibleCategoryList(null, $this->datamodel->mmcatids,$this->datamodel->mmcatidList);		
 		if ($this->filter_value==$this->filterNullValue || $this->filter_value==""){ 
 			$this->accessibleCategories = $this->allAccessibleCategories;
 		}
@@ -83,18 +91,11 @@ class jevCategoryFilter extends jevFilter
 		$filterList=array();
 		$filterList["title"]=JText::_("Select_Category");
 
-
-		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
+		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="$(\'catidsfv\').value=this.value;submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
 		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:0});} catch (e) {}\n";
-		
-		if ($this->filter_value!==$this->filterNullValue && $this->filter_value==""){
-			// This forces category settings in URL to reset too since they could be set by SEF 
-			$filterList["html"] .= "<span><input type='hidden' name='catids' id='catidsfv' value='".$this->filter_value."' /></span>";
-			$script .= "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
-		}		
 		
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);

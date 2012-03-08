@@ -18,6 +18,9 @@ class JEventsDataModel {
 	var $catidsOut = "";
 	var $catids = null;
 	var $catidList = null;
+	// menu/module catid constraints - distinct from URL
+	var $mmcatids = null;
+	var $mmcatidList = null;
 
 	var $aid = null;
 
@@ -70,6 +73,32 @@ class JEventsDataModel {
 		if ($catidsIn == "NONE"   || $catidsIn == 0 ) {
 			$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
 		}
+		
+		// set menu/module constraint values for later use
+		$this->mmcatids = array();
+		// New system
+		$newcats = $params->get( "catidnew", false);
+		if ($newcats && is_array($newcats )){
+			foreach ($newcats as $newcat){
+				if ( !in_array( $newcat, $this->mmcatids )){
+					$this->mmcatids[]	= $newcat;
+				}
+			}				
+		}
+		else {
+			for ($c=0; $c < 999; $c++) {
+				$nextCID = "catid$c";
+				//  stop looking for more catids when you reach the last one!
+				if (!$nextCatId = $params->get( $nextCID, null)) {
+					break;
+				}
+				if ( !in_array( $nextCatId, $this->mmcatids )){
+					$this->mmcatids[]	= $nextCatId;
+				}
+			}
+		}
+		$this->mmcatidList = implode(",",$this->mmcatids);
+		
 		$this->catids = array();
 		if ($catidsIn == "NONE"  || $catidsIn == 0 ) {
 			$this->catidList	= "";
@@ -79,7 +108,6 @@ class JEventsDataModel {
 				foreach ($newcats as $newcat){
 					if ( !in_array( $newcat, $this->catids )){
 						$this->catids[]	= $newcat;
-						$this->catidList	.= ( strlen( $this->catidList )>0 ? ',' : '' ) . $newcat;
 					}
 				}				
 			}
@@ -92,10 +120,10 @@ class JEventsDataModel {
 					}
 					if ( !in_array( $nextCatId, $this->catids )){
 						$this->catids[]	= $nextCatId;
-						$this->catidList	.= ( strlen( $this->catidList )>0 ? ',' : '' ) . $nextCatId;
 					}
 				}
 			}
+			$this->catidList = implode(",",$this->catids);
 			// no need to set catidsOut for menu item since the menu item knows this information already!
 			//$this->catidsOut = str_replace( ',', $separator, $this->catidList );
 		}
