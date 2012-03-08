@@ -82,6 +82,9 @@ div#jevoverlapwarning h4 {
 	margin:5px 0px;
 }
 
+.jev_edit_event_notice {
+	width:500px;
+}
 /* For dark templates */
 div.jeventsdark div#toolbar-box {background-color:transparent!important;}
 div.jeventsdark dl.tabs dt {background-color:transparent!important;}

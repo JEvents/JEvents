@@ -215,6 +215,9 @@ div#jevoverlapwarning h4 {
 	margin:5px 0px;
 }
 
+.jev_edit_event_notice {
+	width:500px;
+}
 a#colorPickButton {
 	text-decoration:none;
 	padding:5px;

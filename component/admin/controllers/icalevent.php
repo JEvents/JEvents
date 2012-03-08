@@ -577,6 +577,53 @@ class AdminIcaleventController extends JController {
 			}
 		}
 	}
+	
+	function savenew() {
+	
+		$msg="";
+		$event = $this->doSave($msg);
+
+		
+		if (JFactory::getApplication()->isAdmin()){
+			$this->setRedirect( 'index.php?option=' . JEV_COM_COMPONENT. '&task=icalevent.edit',$msg);
+		}
+		else {
+			$Itemid = JRequest::getInt("Itemid");
+			list($year,$month,$day) = JEVHelper::getYMD();
+
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("editpopup",0)) {
+				ob_end_clean();
+				if (!headers_sent()){
+					header('Content-Type:text/html;charset=utf-8');
+				}
+				if ($event && $event->state() ){
+					$link =  $event->viewDetailLink($year,$month,$day, true. $Itemid);
+				}
+				else {
+					$link =  JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false);
+				}
+				?>
+				<script type="text/javascript">
+				//window.parent.SqueezeBox.close();
+				window.parent.alert("<?php echo $msg;?>");
+				window.parent.location="<?php echo $link;?>";
+				</script>
+				<?php
+				exit();
+			}
+
+			// if the event is published then return to the event
+			if ($event && $event->state() ){
+				list($year,$month,$day) = JEVHelper::getYMD();
+				$this->setRedirect($event->viewDetailLink($year,$month,$day,$sef,$itemid) ,$msg);
+			}
+			else {
+				// I can't go back to the same repetition since its id has been lost
+				$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid",false),$msg);
+			}
+		}
+	}
 
 	function apply() {
 
