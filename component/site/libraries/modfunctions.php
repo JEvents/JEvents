@@ -25,8 +25,8 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		JRequest::setVar("category_fv",0);
 	}
 	
-	$menu = & JSite::getMenu();
-	$menuitems =& $menu->getItems("component",JEV_COM_COMPONENT);
+	$menu = JSite::getMenu();
+	$menuitems = $menu->getItems("component",JEV_COM_COMPONENT);
 	// restrict this list to those accessible by the user
 	if (!is_null($menuitems)){
 		foreach ($menuitems as $index=>$menuitem) {
@@ -71,6 +71,20 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 			$myItemid = 1;
 			$menuitems = array();
 		}
+	}
+	
+	// put the best guess first for checking category selections
+	if ($myItemid>0){
+		$newmenuitems =array();
+		foreach ($menuitems as $item) {
+			if ($myItemid == $item->id) {
+				array_unshift($newmenuitems, $item);
+			}
+			else {
+				array_push($newmenuitems, $item);
+			}
+		}
+		$menuitems = $newmenuitems;
 	}
 
 	//Finds the first enclosing setof catids from menu item if it exists !

@@ -116,7 +116,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					break;
 
 				case "{{TRUNCATED_DESC}}":
-					$search[] = "{{TRUNCATED_DESC:.*}}";
+					$search[] = "{{TRUNCATED_DESC:.*?}}";
 					$replace[] = $event->content();
 					$blank[] = "";
 					//	$search[]="|{{TRUNCATED_DESC:(.*)}}|";$replace[]=$event->content();

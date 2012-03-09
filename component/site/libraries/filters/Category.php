@@ -32,13 +32,6 @@ class jevCategoryFilter extends jevFilter
 		$this->filterLabel=JText::_( 'CATEGORY' );
 		$this->filterNullValue="0";
 		parent::__construct($tablename,"catid", true);
-
-		// if catids come from the URL then use this if filter is blank
-		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") {
-			if (JRequest::getInt("catids",0)>0){
-				$this->filter_value=JRequest::getInt("catids",0);
-			}
-		}
 		
 		$catid = $this->filter_value;
 		// NO filtering of the list att all
@@ -88,10 +81,18 @@ class jevCategoryFilter extends jevFilter
 
 		if (!$this->filterField) return "";
 
+		$filter_value = $this->filter_value;
+		// if catids come from the URL then use this if filter is blank
+		if ($filter_value==$this->filterNullValue  || $filter_value=="") {
+			if (JRequest::getInt("catids",0)>0){
+				$filter_value=JRequest::getInt("catids",0);
+			}
+		}
+		
 		$filterList=array();
 		$filterList["title"]=JText::_("Select_Category");
 
-		$filterList["html"] = JEventsHTML::buildCategorySelect( $this->filter_value, 'onchange="$(\'catidsfv\').value=this.value;submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
+		$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="$(\'catidsfv\').value=this.value;submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
