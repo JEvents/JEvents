@@ -645,6 +645,11 @@ class AdminIcalrepeatController extends JController {
 			$db->setQuery( $query);
 			$detailids = $db->loadResultArray();
 
+			// Find repeat ids future repetitions 
+			$query = "SELECT rp_id FROM #__jevents_repetition WHERE eventid=".$repeatdata->eventid . " AND startrepeat>='".$repeatdata->startrepeat."'";
+			$db->setQuery( $query);
+			$rp_ids= $db->loadResultArray();
+			
 			// Change the underlying event repeat rule details  !!
 			$query = "SELECT * FROM #__jevents_rrule WHERE eventid=$repeatdata->eventid";
 			$db->setQuery( $query);
@@ -679,6 +684,21 @@ class AdminIcalrepeatController extends JController {
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onDeleteEventDetails' , array(implode(",",$detailids)));
 
+			// setup exception data
+			foreach ($rp_ids as $rp_id){
+				$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$rp_id";
+				$db->setQuery( $query);
+				$data = null;
+				$data = $db->loadObject();
+				
+				$exception = iCalException::loadByRepeatId($rp_id);
+				if (!$exception){
+					$exception = new iCalException($db);
+					$exception->bind(get_object_vars($data));
+				}
+				$exception->exception_type = 0; // deleted
+				$exception->store();				
+			}
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid=".$repeatdata->eventid . " AND startrepeat>='".$repeatdata->startrepeat."'";
 			$db->setQuery( $query);
 			$db->query();
