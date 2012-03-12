@@ -142,6 +142,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					$blank[] = "";
 					break;
 
+				case "{{CALENDAR}}":
+					$search[] = "{{CALENDAR}}";
+					$replace[] = $event->getCalendarName();
+					$blank[] = "";
+					break;
+				
 				case "{{COLOUR}}":
 					$bgcolor = $event->bgcolor();
 					$search[] = "{{COLOUR}}";

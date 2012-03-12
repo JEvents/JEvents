@@ -99,41 +99,47 @@ class JEventsDataModel {
 		}
 		$this->mmcatidList = implode(",",$this->mmcatids);
 		
-		$this->catids = array();
-		if ($catidsIn == "NONE"  || $catidsIn == 0 ) {
-			$this->catidList	= "";
-			// New system
-			$newcats = $params->get( "catidnew", false);
-			if ($newcats && is_array($newcats )){
-				foreach ($newcats as $newcat){
-					if ( !in_array( $newcat, $this->catids )){
-						$this->catids[]	= $newcat;
-					}
-				}				
-			}
-			else {
-				for ($c=0; $c < 999; $c++) {
-					$nextCID = "catid$c";
-					//  stop looking for more catids when you reach the last one!
-					if (!$nextCatId = $params->get( $nextCID, null)) {
-						break;
-					}
-					if ( !in_array( $nextCatId, $this->catids )){
-						$this->catids[]	= $nextCatId;
-					}
-				}
-			}
-			$this->catidList = implode(",",$this->catids);
-			// no need to set catidsOut for menu item since the menu item knows this information already!
-			//$this->catidsOut = str_replace( ',', $separator, $this->catidList );
+		// if resettting then always reset to module/menu value
+		if (intval(JRequest::getVar('filter_reset',0))){
+			$this->catids = $this->mmcatids;
+			$this->catidList  = $this->mmcatidList ;
 		}
 		else {
-			$this->catids = explode( $separator, $catidsIn );
-			// hardening!
-			$this->catidList = JEVHelper::forceIntegerArray($this->catids,true);
-			$this->catidsOut = str_replace(',', $separator, $this->catidList);
+			$this->catids = array();
+			if ($catidsIn == "NONE"  || $catidsIn == 0 ) {
+				$this->catidList	= "";
+				// New system
+				$newcats = $params->get( "catidnew", false);
+				if ($newcats && is_array($newcats )){
+					foreach ($newcats as $newcat){
+						if ( !in_array( $newcat, $this->catids )){
+							$this->catids[]	= $newcat;
+						}
+					}				
+				}
+				else {
+					for ($c=0; $c < 999; $c++) {
+						$nextCID = "catid$c";
+						//  stop looking for more catids when you reach the last one!
+						if (!$nextCatId = $params->get( $nextCID, null)) {
+							break;
+						}
+						if ( !in_array( $nextCatId, $this->catids )){
+							$this->catids[]	= $nextCatId;
+						}
+					}
+				}
+				$this->catidList = implode(",",$this->catids);
+				// no need to set catidsOut for menu item since the menu item knows this information already!
+				//$this->catidsOut = str_replace( ',', $separator, $this->catidList );
+			}
+			else {
+				$this->catids = explode( $separator, $catidsIn );
+				// hardening!
+				$this->catidList = JEVHelper::forceIntegerArray($this->catids,true);
+				$this->catidsOut = str_replace(',', $separator, $this->catidList);
+			}
 		}
-
 		// some functions e.g. JEventCal::viewDetailLink don't have access to a datamodel so set a global value
 		// as a backup
 		global $catidsOut;

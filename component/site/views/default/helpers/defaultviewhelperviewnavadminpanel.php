@@ -82,7 +82,6 @@ function DefaultViewHelperViewNavAdminPanel($view){
                         	. ($month ? '&month=' . $month : '')
                         	. ($day ? '&day=' . $day : '')
                         	. "&Itemid=".$myItemid
-                        	. "&catids=".$datamodel->catidsOut
                         	,false);
 
 							?>
