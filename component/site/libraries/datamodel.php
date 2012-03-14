@@ -903,7 +903,7 @@ class JEventsDataModel {
 			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
 		}
 		if( $num_events > 0 ){
-			if (count($catids)==1 && $catids[0]!=0){
+			if ((count($catids)==1 && $catids[0]!=0)  || (count($this->catids)==1 && $this->catids[0]!=0)  ){
 				$catname = $rows[0]->getCategoryName();
 				$catdesc = $rows[0]->getCategoryDescription();
 				foreach ($rows as $row) {
@@ -921,14 +921,15 @@ class JEventsDataModel {
 		else if( count($catids) == 0 ) {
 			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
 		}
-		else if (count($catids) == 1 && $catids[0]!=0) {
+		else if ((count($catids)==1 && $catids[0]!=0)  || (count($this->catids)==1 && $this->catids[0]!=0)  ){
 			// get the cat name from the database
 			$db	=& JFactory::getDBO();
 			$user =& JFactory::getUser();
+			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
 			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
 			' AND c.'.(JVersion::isCompatible("1.6.0")?'extension':'section').' = '.$db->Quote(JEV_COM_COMPONENT).
-			' AND c.id = '.$db->Quote($catids[0]);
+			' AND c.id = '.$db->Quote($catid);
 			$db->setQuery($catsql);
 			$catdata = $db->loadObject();
 			if ($catdata){
