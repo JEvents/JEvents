@@ -181,7 +181,7 @@ class ExtModLegendView extends DefaultModLegendView{
 		if ($row->parent_id>0 && $activeParent) $catclass = "activechildcat";
 		if ($row->parent_id>0 && $activeSubCat>0 && $row->id!=$activeSubCat  && !isset($row->activeNode))  $catclass = "childcat";
 
-		$cat = $row->id>0?"&catids=$row->id":"&catids=$availableCatsIds";
+		$cat = $row->id>0 ? "&catids=$row->id" : "";
 		$content = "<tr class='".$catclass."'><td style='border:solid 1px #000000;height:5px;width:5px;background-color:".$row->color."'></td>\n"
 		."<td class='legend' >"
 		."<a style='text-decoration:none' href='".JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk")."' title='".JEventsHTML::special($row->name)."'>"
