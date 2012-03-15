@@ -92,7 +92,7 @@ class jevCategoryFilter extends jevFilter
 		$filterList=array();
 		$filterList["title"]=JText::_("Select_Category");
 
-		$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="$(\'catidsfv\').value=this.value;submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
+		$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if ($(\'catidsfv\')) $(\'catidsfv\').value=this.value;submit(this.form)" style="font-size:10px;"',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
