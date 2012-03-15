@@ -69,16 +69,20 @@ if (JVersion::isCompatible("1.6.0")){
 	$component->params =& $newparams;
 	
 	$isMobile = $browser->isMobile();
+	// Joomla isMobile method doesn't identify all android phones
+	if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], 'android') !== false) {
+		$isMobile = true;
+	}
 }
 else {
 	$isMobile = $browser->_mobile;
 }
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && T3Common::mobile_device_detect())){
+if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
 	JRequest::setVar("jevsmartphone",1);
 	if (JFolder::exists(JEV_VIEWS."/smartphone")){
-		//JRequest::setVar("jEV","smartphone");
+		JRequest::setVar("jEV","smartphone");
 	}
 	$params->set('iconicwidth',485);
 	$params->set('extpluswidth',485);
