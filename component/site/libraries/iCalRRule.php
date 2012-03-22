@@ -513,7 +513,6 @@ class iCalRRule extends JTable  {
 					echo "bymonthday".$this->bymonthday." <br/>";
 					// if not byday then by monthday
 					$days = explode(",",$this->bymonthday);
-
 					// If I have byday and bymonthday then the two considions must be met
 					$weekdays = array();
 					if ($this->byday!=""){
@@ -597,6 +596,21 @@ class iCalRRule extends JTable  {
 					// TODO I should also iterate over week number if this is used
 					//$weeknumbers = explode(",",$this->byweekno);
 
+					if ($this->bysetpos!=""){
+						$newdays = array();
+						$setpositions = explode(",",$this->bysetpos);
+						foreach($setpositions as  $setposition){
+							foreach ($days as $day) {
+								if (strpos($setposition, "+")===false && strpos($setposition, "-")===false){
+									$setposition = "+".$setposition;
+								}
+								$newdays[] = $setposition.$day;
+							}
+						}
+						$days = $newdays ;
+						$this->byday = implode(",",$days);
+					}					
+					
 					$start = $dtstart;
 					$end = $dtend;
 					$countRepeats = 0;

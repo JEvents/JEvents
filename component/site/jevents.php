@@ -79,7 +79,7 @@ else {
 }
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
+if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
 	JRequest::setVar("jevsmartphone",1);
 	if (JFolder::exists(JEV_VIEWS."/smartphone")){
 		JRequest::setVar("jEV","smartphone");

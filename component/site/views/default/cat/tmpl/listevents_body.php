@@ -17,7 +17,7 @@ if (JRequest::getInt("category_fv",-1)==-1) {
 }
  */
 $cfg	 = & JEVConfig::getInstance();
-$data = $this->datamodel->getCatData( $this->catids,false, $this->limit, $this->limitstart);
+$data = $this->datamodel->getCatData( $this->catids,$cfg->get('com_showrepeats',0), $this->limit, $this->limitstart);
 
 $Itemid = JEVHelper::getItemid();
 

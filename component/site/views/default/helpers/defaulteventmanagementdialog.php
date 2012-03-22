@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 function DefaultEventManagementDialog($view,$row, $mask){
 
+	$user = JFactory::getUser();
+	if ($user->get("id")==0) return "";
 	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row))  && !( $mask & MASK_POPUP )) {
 
 		$popup=false;

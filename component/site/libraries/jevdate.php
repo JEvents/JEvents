@@ -71,7 +71,11 @@ if (JVersion::isCompatible("1.6.0"))
 				date_default_timezone_set('UTC');
 				$date = is_numeric($date) ? date('c', $date) : $date;
 
-				// Call the DateTime constructor.
+				// fix potentiall bad date data
+				if (strpos($date,":")>0){
+					$date = str_replace(":", "", $date);
+				}
+				// Call the DateTime constructor
 				parent::__construct($date, $tz);
 
 				// reset the timezone !!

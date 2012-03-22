@@ -647,7 +647,8 @@ class JEventsDBModel
 					OR (rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
 					)
 				$rptwhere
-			)"
+			) 
+			ORDER BY rpt.startrepeat"
 			;
 
 			// This limit will always be enough
@@ -671,6 +672,7 @@ class JEventsDBModel
 		// Before now (only if not past only == future events)
 		if ($startdate < $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
 		{
+			// note the order is the ones nearest today
 			$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
@@ -691,7 +693,8 @@ class JEventsDBModel
 					 WHERE rpt2.eventid=rpt.eventid
 					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
 					$rptwhere
-				)"
+				)
+				ORDER BY rpt.startrepeat desc"
 			;
 
 			// This limit will always be enough
@@ -733,7 +736,8 @@ class JEventsDBModel
 				 WHERE rpt2.eventid=rpt.eventid
 				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
 				$rptwhere
-			)"
+			)
+			ORDER BY rpt.startrepeat"
 			;
 
 			// This limit will always be enough
@@ -779,7 +783,8 @@ class JEventsDBModel
 				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
-				. $groupby ;
+				. $groupby 
+				." ORDER BY rpt.startrepeat";
 		;
 
 		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
