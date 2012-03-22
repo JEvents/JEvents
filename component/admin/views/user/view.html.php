@@ -91,8 +91,13 @@ class AdminUserViewUser extends JEventsAbstractView
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 		if (JVersion::isCompatible("1.6.0")) {
 			$rules = JAccess::getAssetRules("com_jevents", true);
-			$creatorgroups = $rules->getData();
-			$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+			$data = $rules->getData();
+			$creatorgroups = $data["core.create"]->getData();
+			foreach ($data["core.admin"]->getData() as $creatorgroup => $permission) {
+				$creatorgroups[$creatorgroup]=$permission;
+			}
+			// array_merge does a re-indexing !!
+			//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
 			$users = array(0);
 			foreach ($creatorgroups as $creatorgroup => $permission){
 				if ($permission==1){
