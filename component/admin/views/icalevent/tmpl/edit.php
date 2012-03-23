@@ -241,7 +241,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
             <?php } ?>
 		</tr>
 		<?php if(isset($this->users)){?>
-		<tr>
+		<tr class="jevcreator">
         	<td align="left"><?php echo JText::_('JEV_EVENT_CREATOR'); ?>:</td>
             <td colspan="3">
             	<?php echo $this->users;?>
