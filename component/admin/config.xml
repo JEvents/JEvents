@@ -220,6 +220,8 @@
 		<param name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP"/>		
 		
 		<param name="allowraw" type="jevboolean" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/> 		
+		<param name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" />
+
 	</params>
 	
 	<params group="JEV_EVENT_DETAIL_VIEW">
