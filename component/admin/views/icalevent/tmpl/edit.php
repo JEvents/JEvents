@@ -355,7 +355,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 
         ?>
 
-         <tr>
+         <tr  class="jev_description">
          	<td valign="top" align="left">
             <?php echo JText::_('JEV_EVENT_ACTIVITY'); ?>
             </td>
