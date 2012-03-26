@@ -532,8 +532,8 @@ class DefaultModLatestView
 
 	function _sortEventsByDate(&$a, &$b)
 	{
-		$adate = $a->publish_up();
-		$bdate = $b->publish_up();
+		$adate = $a->_startrepeat;
+		$bdate = $b->_startrepeat;
 		return strcmp($adate, $bdate);
 
 	}
