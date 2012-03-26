@@ -441,25 +441,35 @@ class JEV_CommonFunctions {
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
 
-		$htmlmail = true;
-		$lf = ($htmlmail === true) ? '<br />' : '\r\n';
-
-		$content  = sprintf( JText::_('JEV_EMAIL_EVENT_TITLE'), $title).$lf.$lf . $content;
-		$content .= $lf.$lf. sprintf( JText::_('JEV_MAIL_TO_ADMIN'), $live_site, $author );
-		$content .= $lf . sprintf( JText::_('JEV_EMAIL_VIEW_EVENT'), $viewlink);
-		$content .= $lf . sprintf( JText::_('JEV_EMAIL_EDIT_EVENT'), $modifylink);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);				
+		$messagetemplate = $params->get("notifymessage", JText::_('JEV_DEFAULT_NOTIFYMESSAGE'));
+		
+		if (strpos($messagetemplate, "JEV_DEFAULT_NOTIFYMESSAGE")!==false || trim(strip_tags($messagetemplate))=="") {
+			$messagetemplate=sprintf( JText::_('JEV_EMAIL_EVENT_TITLE'), "{TITLE}")."<br/><br/>\n";
+			$messagetemplate.="{DESCRIPTION}<br/><br/>\n";
+			$messagetemplate.=sprintf( JText::_('JEV_MAIL_TO_ADMIN'), "{LIVESITE}","{AUTHOR}")."<br/>\n";
+			$messagetemplate.=sprintf( JText::_('JEV_EMAIL_VIEW_EVENT'), "{VIEWLINK}")."<br/>\n";
+			$messagetemplate.=sprintf( JText::_('JEV_EMAIL_EDIT_EVENT'), "{EDITLINK}")."<br/>\n";
+			$messagetemplate.=sprintf( JText::_('JEV_MANAGE_EVENTS'), "{MANAGEEVENTS}")."<br/>";
+		}
 
 		$uri  =& JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 		$adminLink = $root.JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=admin.listevents&Itemid=".JEVHelper::getAdminItemid());
-		$content .= $lf . JText::sprintf('JEV_MANAGE_EVENTS', $adminLink);
-
+		
+		$messagetemplate = str_replace("{TITLE}", $title,$messagetemplate);
+		$messagetemplate = str_replace("{DESCRIPTION}", $content,$messagetemplate);
+		$messagetemplate = str_replace("{LIVESITE}", $live_site,$messagetemplate);
+		$messagetemplate = str_replace("{AUTHOR}", $author,$messagetemplate);
+		$messagetemplate = str_replace("{VIEWLINK}", $viewlink,$messagetemplate);
+		$messagetemplate = str_replace("{EDITLINK}", $modifylink,$messagetemplate);
+		$messagetemplate = str_replace("{MANAGEEVENTS}", $adminLink,$messagetemplate);
+		
 		// mail function
 		$mail =& JFactory::getMailer();
 		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
 		$mail->addRecipient($adminEmail);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("com_notifyboth")){
 			$jevadminuser = new  JUser($params->get("jevadmin",62));
 			if ($jevadminuser->email != $adminEmail){
@@ -468,7 +478,7 @@ class JEV_CommonFunctions {
 		}
 
 		$mail->setSubject($subject);
-		$mail->setBody($content);
+		$mail->setBody($messagetemplate);
 		$mail->IsHTML(true);
 		$mail->send();
 
