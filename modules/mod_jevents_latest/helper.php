@@ -23,9 +23,9 @@ class modJeventsLatestHelper
 			include_once(JPATH_SITE . "/components/com_jevents/libraries/modfunctions.php");
 
 		} else {
-			die ("JEvents Calendar\n<br />This module needs the JEvents component");
+			die (JText::_('JEV_LATEST_NEEDS_COMPONENT'));
 		}
-
+ 
 		// load language constants
 		JEVHelper::loadLanguage('modlatest');
 	}
