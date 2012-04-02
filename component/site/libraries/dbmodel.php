@@ -624,6 +624,7 @@ class JEventsDBModel
 		// Find the ones after now (only if not past only)
 		if ($modparams->get("pastonly", 0) != 1)
 		{
+			//$query = "SELECT  rpt.eventid, rpt.startrepeat,det.summary, rpt.rp_id FROM #__jevents_repetition as rpt"
 			$query = "SELECT  rpt.eventid FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
@@ -655,14 +656,9 @@ class JEventsDBModel
 			$query .= " LIMIT " . $limit;
 			$db = JFactory::getDBO();
 			$db->setQuery($query);
-			//$query = $db->replacePrefix($db->getQuery());
-			//echo $db->replacePrefix($db->getQuery())."<br/>";
-			//list($usec, $sec) = explode(" ", microtime());
-			//$before = ((float) $usec + (float) $sec);			
+			//var_dump($db->loadObjectList());
+			//$ids1 = array();
 			$ids1 = $db->loadResultArray();
-			//list ($usec, $sec) = explode(" ", microtime());
-			//$time_end = (float) $usec + (float) $sec;
-			//echo "data  1 obtained in ". round($time_end - $before, 4)."<br/>";
 		}
 		else
 		{

@@ -72,7 +72,7 @@ if (JVersion::isCompatible("1.6.0"))
 				$date = is_numeric($date) ? date('c', $date) : $date;
 
 				// fix potentiall bad date data
-				if (strpos($date,":")>0){
+				if (strpos($date,":")>0 && strpos($date,"-")==false){
 					$date = str_replace(":", "", $date);
 				}
 				// Call the DateTime constructor

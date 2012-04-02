@@ -319,6 +319,10 @@ class JEventsHTML
 						$cats = $user->getAuthorisedCategories('com_jevents', $action);
 					}
 				}
+				
+				$dispatcher = & JDispatcher::getInstance();
+				$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
+
 				// allow anon-user event creation through
 				if (isset($user->id))
 				{
