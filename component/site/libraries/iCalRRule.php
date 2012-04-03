@@ -688,6 +688,12 @@ class iCalRRule extends JTable  {
 				// this will be the base from which we count the weeks and weekdays
 				$currentWeekStart = JevDate::strtotime("-$currentWeekDay days",$start);
 
+				// no BYDAY specified
+				if ($this->byday==""){
+					$daynames = array("SU","MO","TU","WE","TH","FR","SA","SU");
+					$this->byday = "+".$daynames[$currentWeekDay];
+					$days = array($this->byday) ;
+				}
 				while  ($countRepeats < $this->count  && !$this->_afterUntil($currentWeekStart)) {
 					list ($currentDay,$currentMonth,$currentYear) = explode(":",JevDate::strftime("%d:%m:%Y",$currentWeekStart));
 

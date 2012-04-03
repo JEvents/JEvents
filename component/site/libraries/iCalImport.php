@@ -274,7 +274,7 @@ class iCalImport
 			$value = $this->parseRRULE($value,$parent);
 		}
 
-		$rawkey="";
+ 		$rawkey="";
 		if (JString::stristr($key,"DTSTART") || JString::stristr($key,"DTEND") || JString::stristr($key,"EXDATE") ) {
 			list($key,$value,$rawkey,$rawvalue) = $this->handleDate($key,$value);
 

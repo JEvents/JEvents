@@ -649,6 +649,7 @@ class JEventsDBModel
 					)
 				$rptwhere
 			) 
+			GROUP BY rpt.eventid
 			ORDER BY rpt.startrepeat"
 			;
 
@@ -690,6 +691,7 @@ class JEventsDBModel
 					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
 					$rptwhere
 				)
+				GROUP BY rpt.eventid
 				ORDER BY rpt.startrepeat desc"
 			;
 
@@ -733,6 +735,7 @@ class JEventsDBModel
 				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
 				$rptwhere
 			)
+			GROUP BY rpt.eventid
 			ORDER BY rpt.startrepeat"
 			;
 

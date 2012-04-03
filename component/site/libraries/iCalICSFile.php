@@ -334,15 +334,16 @@ RAWTEXT;
 				$vevent->storeRepetitions();
 
 				// Save memory by clearing out the repetitions we no longer need
-				$vevent->_repetitions = null;
 				$repetitions = null;
-				$vevent=null;
+				$vevent->_repetitions = null;
+				//$vevent=null;
 				echo "Event Data read in<br/>";
 				//echo "memory = ".memory_get_usage()." ".memory_get_usage(true)."<br/>";
 				ob_flush();
 				flush();
 			}
 		}
+		unset($vevent);
 
 		// Having stored all the repetitions - remove the cancelled instances
 		// this should be done as a batch but for now I'll do them one at a time
@@ -432,9 +433,10 @@ RAWTEXT;
 				JFactory::getApplication()->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
 			}
 		}
-
+		$count = count($this->_icalInfo->vevents) ;
+		unset($this->_icalInfo->vevents);
 		
-		JFactory::getApplication()->enqueueMessage(count($this->_icalInfo->vevents) . ' iCal events processed');
+		JFactory::getApplication()->enqueueMessage($count . ' iCal events processed');
 	}
 
 	// find if icsFile already imported
