@@ -55,7 +55,7 @@ class iCalICSFile extends JTable  {
 	 */
 	function iCalICSFile( &$db ) {
 		parent::__construct( '#__jevents_icsfile', 'ics_id', $db );
-		$this->access = JEVHelper::getBaseAccess();
+		$this->access = intval(JEVHelper::getBaseAccess());
 	}
 
 	function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
@@ -115,6 +115,9 @@ RAWTEXT;
 		$db	=& JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
+		if ($access==0){
+			$temp->access = intval(JEVHelper::getBaseAccess());
+		}
 
 		$urlParts = parse_url($uploadURL);
 		$pathParts = pathinfo($urlParts['path']);
@@ -145,6 +148,9 @@ RAWTEXT;
 		$db	=& JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
+		if ($access==0){
+			$temp->access = intval(JEVHelper::getBaseAccess());
+		}		
 		$temp->srcURL = "";
 		$temp->filename = $file['name'];
 		$temp->icaltype=1;  // i.e. from file
@@ -454,6 +460,10 @@ RAWTEXT;
 	// Method to store the events WITHOUT storing  the calendar itself - used in frontend imports
 	function storeEvents($catid=false ) {
 
+		// clean out the cache
+		$cache = &JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+		
 		static $categories;
 		if (is_null($categories)){
 			$db	=& JFactory::getDBO();
@@ -475,7 +485,7 @@ RAWTEXT;
 			$db->setQuery($sql);
 			$duplicate = $db->loadObject();
 
-			if ($duplicate){
+			if ($duplicate && !$vevent->isCancelled() && !$vevent->isRecurrence()){
 				$veventidstring = $duplicate->ev_id;
 
 				// TODO the ruccurences should take care of all of these??
@@ -514,9 +524,6 @@ RAWTEXT;
 				$db->query();
 
 				// I also need to delete custom data
-				$dispatcher	=& JDispatcher::getInstance();
-				// just incase we don't have jevents plugins registered yet
-				JPluginHelper::importPlugin("jevents");
 				$res = $dispatcher->trigger( 'onDeleteCustomEvent' , array(&$veventidstring));
 
 			}
@@ -570,20 +577,20 @@ RAWTEXT;
 				else {
 					$vevent->store();
 				}
-
+				
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();
 
 				// Save memory by clearing out the repetitions we no longer need
 				$vevent->_repetitions = null;
 				$repetitions = null;
-				$vevent=null;
 				echo "Event Data read in<br/>";
 				//echo "memory = ".memory_get_usage()." ".memory_get_usage(true)."<br/>";
 				ob_flush();
 				flush();
 			}
 		}
+		unset($vevent);
 
 		// Having stored all the repetitions - remove the cancelled instances
 		// this should be done as a batch but for now I'll do them one at a time
