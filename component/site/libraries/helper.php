@@ -764,11 +764,12 @@ class JEVHelper
 					{
 						$juser = JFactory::getUser();
 						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-						//$isEventCreator = JAccess::check($juser->id, "core.create","com_jevents");
-						$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-						if (count($cats) > 0)
-						{
-							$isEventCreator = true;
+						if (!$isEventCreator){
+							$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							if (count($cats) > 0)
+							{
+								$isEventCreator = true;
+							}
 						}
 					}
 					else
@@ -910,6 +911,10 @@ class JEVHelper
 	 */
 	function canEditEvent($row, $user=null)
 	{
+		// store in static to save repeated database calls
+		static $authdata_coreedit = array();
+		static $authdata_editown = array();
+
 		// TODO make this call a plugin
 		if ($user == null)
 		{
@@ -938,6 +943,8 @@ class JEVHelper
 			// any category restrictions on this?
 			if (JVersion::isCompatible("1.6.0"))
 			{
+				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
 				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
 				if (in_array($row->_catid, $cats))
@@ -945,6 +952,20 @@ class JEVHelper
 				else if (in_array($row->_catid, $cats_own))
 					return true;
 				else return false;
+				 */
+				if (!isset($authdata_coreedit[$row->catid()])){
+					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				}
+				if ($authdata_coreedit[$row->catid()]) {
+					return true;
+				}
+				else {
+					if (!isset($authdata_editown[$row->catid()])){
+						$authdata_editown[$row->catid()] =$user->authorise('core.edit.own', 'com_jevents.category.'.$row->catid());
+					}
+					return $authdata_editown[$row->catid()];
+				}
+
 			}						
 			return true;
 		}
@@ -963,12 +984,28 @@ class JEVHelper
 			}
 			if (JVersion::isCompatible("1.6.0"))
 			{
+				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
 				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
 				if (in_array($row->_catid, $cats))
 					return true;
 				else if (in_array($row->_catid, $cats_own))
 					return true;
+				 */
+				if (!isset($authdata_coreedit[$row->catid()])){
+					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				}
+				if ($authdata_coreedit[$row->catid()]) {
+					return true;
+				}
+				else {
+					if (!isset($authdata_editown[$row->catid()])){
+						$authdata_editown[$row->catid()] =$user->authorise('core.edit.own', 'com_jevents.category.'.$row->catid());
+					}
+					return $authdata_editown[$row->catid()];
+				}
+				
 			}
 			else
 			{
@@ -978,7 +1015,10 @@ class JEVHelper
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				return $user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				if (!isset($authdata_coreedit[$row->catid()])){
+					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				}
+				return $authdata_coreedit[$row->catid()];
 			}
 		}
 			
@@ -1101,6 +1141,9 @@ class JEVHelper
 	 */
 	function canPublishEvent($row, $user=null)
 	{
+		// store in static to save repeated database calls
+		static $authdata_editstate = array();
+		
 		// TODO make this call a plugin
 		if ($user == null)
 		{
@@ -1124,9 +1167,16 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
+			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
 			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 			if (in_array($row->_catid, $cats))
 				return true;
+			 */
+			if (!isset($authdata_editstate[$row->catid()])){
+				$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+			}
+			return $authdata_editstate[$row->catid()];
 		}
 
 		// can publish all?
@@ -1134,10 +1184,16 @@ class JEVHelper
 		{
 			if (JVersion::isCompatible("1.6.0"))
 			{
+				// This involes TOO many database queries in Joomla - one per category which can be a LOT
+				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 				if (in_array($row->_catid, $cats))
 					return true;
-				else return false;
+				*/
+				if (!isset($authdata_editstate[$row->catid()])){
+					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				}
+				return $authdata_editstate[$row->catid()];
 			}
 			return true;
 			
@@ -1165,15 +1221,25 @@ class JEVHelper
 			}
 			if (JVersion::isCompatible("1.6.0"))
 			{
+				// This involes TOO many database queries in Joomla - one per category which can be a LOT
+				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
 				if (in_array($row->_catid, $cats))
 					return true;
+				*/
+				if (!isset($authdata_editstate[$row->catid()])){
+					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				}
+				return $authdata_editstate[$row->catid()];
 			}
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				return $user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				if (!isset($authdata_editstate[$row->catid()])){
+					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				}
+				return $authdata_editstate[$row->catid()];
 			}
 		}
 		
@@ -1240,6 +1306,9 @@ class JEVHelper
 	 */
 	function canDeleteEvent($row, $user=null)
 	{
+		// store in static to save repeated database calls
+		static $authdata_coredeleteall = array();
+		
 		// TODO make this call a plugin
 		if ($user == null)
 		{
@@ -1263,9 +1332,16 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
+			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
 			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
 			if (in_array($row->_catid, $cats))
 				return true;
+			*/
+			if (!isset($authdata_coredeleteall[$row->catid()])){
+				$authdata_coredeleteall[$row->catid()] =$user->authorise('core.deleteall', 'com_jevents.category.'.$row->catid());
+			}
+			return $authdata_coredeleteall[$row->catid()];
 		}
 
 		// can delete all?
@@ -1274,10 +1350,16 @@ class JEVHelper
 			// any category restrictions on this?
 			if (JVersion::isCompatible("1.6.0"))
 			{
+				// This involes TOO many database queries in Joomla - one per category which can be a LOT
+				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
 				if (in_array($row->_catid, $cats))
 					return true;
-				else return false;
+				*/
+				if (!isset($authdata_coredeleteall[$row->catid()])){
+					$authdata_coredeleteall[$row->catid()] =$user->authorise('core.deleteall', 'com_jevents.category.'.$row->catid());
+				}
+				return $authdata_coredeleteall[$row->catid()];
 			}			
 			return true;
 		}
