@@ -764,6 +764,8 @@ class JEVHelper
 					{
 						$juser = JFactory::getUser();
 						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
+						// this is too heavy on database queries
+						/*
 						if (!$isEventCreator){
 							$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
 							if (count($cats) > 0)
@@ -771,6 +773,7 @@ class JEVHelper
 								$isEventCreator = true;
 							}
 						}
+						 */
 					}
 					else
 					{
@@ -841,6 +844,23 @@ class JEVHelper
 					return true;
 				}
 			}
+		}
+		else {
+			// are we authorised to do anything with this category or calendar
+			$jevuser = & JEVHelper::getAuthorisedUser();
+			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+			{
+				$allowedcals = explode("|", $jevuser->calendars);
+				if (!in_array($row->_icsid, $allowedcals))
+					return false;
+			}
+
+			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+			{
+				$allowedcats = explode("|", $jevuser->categories);
+				if (!in_array($row->_catid, $allowedcats))
+					return false;
+			}			
 		}
 		return true;
 
@@ -921,6 +941,10 @@ class JEVHelper
 			$user = & JFactory::getUser();
 		}
 
+		if ($user->id==0) {
+			return false;
+		}
+		
 		// are we authorised to do anything with this category or calendar
 		$jevuser = & JEVHelper::getAuthorisedUser();
 		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
@@ -959,29 +983,36 @@ class JEVHelper
 				if ($authdata_coreedit[$row->catid()]) {
 					return true;
 				}
-				else {
+				else if ($user->id > 0 && $row->created_by() == $user->id) {
 					if (!isset($authdata_editown[$row->catid()])){
 						$authdata_editown[$row->catid()] =$user->authorise('core.edit.own', 'com_jevents.category.'.$row->catid());
 					}
 					return $authdata_editown[$row->catid()];
 				}
-
+				// category settings trumps overall setting
+				return false;
 			}						
 			return true;
 		}
 		// must stop anon users from editing any events
 		else if ($user->id > 0 && $row->created_by() == $user->id)
 		{
-			if ($jevuser){
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if ($authorisedonly){
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 0);
+			
+			if ($authorisedonly){
+				if ($jevuser){
 					if ($jevuser->published && $jevuser->cancreate){
 						return true;
 					}
 				}
-
+				else {
+					return false;
+				}
 			}
+
+			
+			// other users can always edit their own unless blocked by category
 			if (JVersion::isCompatible("1.6.0"))
 			{
 				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
@@ -1005,6 +1036,7 @@ class JEVHelper
 					}
 					return $authdata_editown[$row->catid()];
 				}
+				return false;
 				
 			}
 			else
@@ -1088,9 +1120,12 @@ class JEVHelper
 		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
 		$publishown = $params->get("jevpublishown", 0);
+
+		$jevuser = & JEVHelper::getAuthorisedUser();
+		$user = & JFactory::getUser();
+
 		if (!$authorisedonly && $publishown)
 		{
-			$user = & JFactory::getUser();
 
 			// can publish all?
 			if (JEVHelper::isEventPublisher(true))
@@ -1104,6 +1139,18 @@ class JEVHelper
 			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 			$queryModel = new JEventsDBModel($dataModel);
 
+			$evid = intval($evid);
+			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
+			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+			{
+				return true;
+			}
+		}
+		 
+		if ($authorisedonly && $jevuser && $jevuser->canpublishown){
+			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
+			$queryModel = new JEventsDBModel($dataModel);
+			
 			$evid = intval($evid);
 			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
 			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
@@ -1149,34 +1196,33 @@ class JEVHelper
 		{
 			$user = & JFactory::getUser();
 		}
-
 		// are we authorised to do anything with this category or calendar
 		$jevuser = & JEVHelper::getAuthorisedUser();
-		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 0);
+		if ($authorisedonly)
 		{
-			$allowedcals = explode("|", $jevuser->calendars);
-			if (!in_array($row->_icsid, $allowedcals))
-				return false;
-		}
-
-		if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
-		{
-			$allowedcats = explode("|", $jevuser->categories);
-			if (!in_array($row->_catid, $allowedcats))
-				return false;
-		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
-			if (in_array($row->_catid, $cats))
-				return true;
-			 */
-			if (!isset($authdata_editstate[$row->catid()])){
-				$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+			{
+				$allowedcals = explode("|", $jevuser->calendars);
+				if (!in_array($row->_icsid, $allowedcals))
+					return false;
 			}
-			return $authdata_editstate[$row->catid()];
+
+			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+			{
+				$allowedcats = explode("|", $jevuser->categories);
+				if (!in_array($row->_catid, $allowedcats))
+					return false;
+			}
+			if ($user->canpublishall)
+			{
+				return true;
+			}
+			if ($row->created_by() == $user->id && $user->canpublishown){
+				return true;
+ 			}
+
 		}
 
 		// can publish all?
@@ -1330,6 +1376,19 @@ class JEVHelper
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
 		}
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 1);
+		if ($authorisedonly) {
+			if (!is_null($jevuser) && $jevuser->candeleteall) 
+			{
+				return true;
+			}			
+			else if (!is_null($jevuser) && $jevuser->candeleteown && $row->created_by() == $user->id){ 
+				return true;
+			}
+			return false;
+		}
+		
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
