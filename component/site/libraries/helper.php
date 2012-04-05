@@ -960,6 +960,20 @@ class JEVHelper
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
 		}
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 0);
+		if ($authorisedonly){
+			if ($jevuser && $jevuser->published){
+				// creator can edit their own event
+				if ($jevuser->cancreate && $row->created_by() == $user->id ){
+					return true;
+				}
+				else if ($jevuser->canedit){
+					return true;
+				}
+			}
+			return false;
+		}
 
 
 		if (JEVHelper::isEventEditor())
@@ -997,8 +1011,6 @@ class JEVHelper
 		// must stop anon users from editing any events
 		else if ($user->id > 0 && $row->created_by() == $user->id)
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly", 0);
 			
 			if ($authorisedonly){
 				if ($jevuser){
@@ -1215,13 +1227,14 @@ class JEVHelper
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
 			}
-			if ($user->canpublishall)
+			if ($jevuser->canpublishall)
 			{
 				return true;
 			}
-			if ($row->created_by() == $user->id && $user->canpublishown){
+			if ($row->created_by() == $user->id && $jevuser->canpublishown){
 				return true;
  			}
+			return false;
 
 		}
 
