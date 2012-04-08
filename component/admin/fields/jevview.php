@@ -32,7 +32,7 @@ class JFormFieldJevview extends JFormFieldList
 		$views = array();
 		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
 
-		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
+		foreach (JEV_CommonFunctions::getJEventsViewList((string)$this->element["viewtype"]) as $viewfile) {
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
 		sort( $views );
