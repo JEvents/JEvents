@@ -1214,6 +1214,10 @@ class JEVHelper
 		$authorisedonly = $params->get("authorisedonly", 0);
 		if ($authorisedonly)
 		{
+			if (!$jevuser ) {
+				return false;
+			}
+			
 			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
 			{
 				$allowedcals = explode("|", $jevuser->calendars);
@@ -1227,7 +1231,7 @@ class JEVHelper
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
 			}
-			if ($jevuser->canpublishall)
+			if ($jevuser->canpublishall )
 			{
 				return true;
 			}
@@ -1392,6 +1396,10 @@ class JEVHelper
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
 		if ($authorisedonly) {
+			if (!$jevuser ) {
+				return false;
+			}
+
 			if (!is_null($jevuser) && $jevuser->candeleteall) 
 			{
 				return true;

@@ -45,26 +45,33 @@ class JEV_CommonFunctions {
 
 	}
 
-	function getJEventsViewList(){
-
-		static $jEventsViews;
-
-
-		if (!isset($jEventsViews)){
-			$jEventsViews = array();
-			$handler = opendir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/");
-			while ($file = readdir($handler)) {
-				if ($file != '.' && $file != '..' && $file != '.svn' ){
-					if (is_dir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file) && (
-					file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/month") ||
-					file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/config.xml")
-					))
-					$jEventsViews[] = $file;
+	function getJEventsViewList($viewtype=null){
+		$jEventsViews = array();
+		switch ($viewtype) {
+			case  "mod_jevents_latest" :
+			case  "mod_jevents_cal" :
+				$handler = opendir(JPATH_SITE . "/modules/$viewtype/tmpl/");
+				while ($file = readdir($handler)) {
+					if ($file != '.' && $file != '..' && $file != '.svn' ){
+						if (is_dir(JPATH_SITE . "/modules/$viewtype/tmpl/".$file) ){
+							$jEventsViews[] = $file;
+						}
+					}
 				}
-
-			}
+				break;
+			default :
+				$handler = opendir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/");
+				while ($file = readdir($handler)) {
+					if ($file != '.' && $file != '..' && $file != '.svn' ){
+						if (is_dir(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file) && (
+						file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/month") ||
+						file_exists(JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$file."/config.xml")
+						))
+						$jEventsViews[] = $file;
+					}
+				}
 		}
-		return $jEventsViews ;
+		return $jEventsViews;
 	}
 
 	/**
