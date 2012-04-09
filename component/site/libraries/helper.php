@@ -534,9 +534,9 @@ class JEVHelper
 	 * @param mixed $forcecheck - false = no check.  jIcalEventRepeat = should we check the access for the event.  Only checks categories at present.
 	 * @return integer - menu item id
 	 */
-	function getItemid($forcecheck = false)
+	function getItemid($forcecheck = false, $skipbackend= true)
 	{
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isAdmin() && $skipbackend)
 			return 0;
 		static $jevitemid;
 		if (!isset($jevitemid))

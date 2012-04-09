@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<metadata>
+
+	<layout title="COM_JEVENTS_EVENT_DETAIL_TITLE">
+		<help
+			key = "COM_JEVENTS_EVENT_DETAIL_TITLE"
+		/>
+		<message>
+			<![CDATA[COM_JEVENTS_EVENT_DETAIL_TITLE_DESC]]>
+		</message>
+	</layout>
+	
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request"
+				  addfieldpath="/administrator/components/com_jevents/fields">
+
+			<field name="evid" type="jevselectevent"
+				   label="COM_JEVENTS_FIELD_SELECT_EVENT_LABEL"
+				   required="true"
+				   description="COM_JEVENTS_FIELD_SELECT_EVENT_DESC"
+			/>
+		</fieldset>
+	</fields>
+	
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params" >
+
+		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+
+			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+				<option value="-1">HIDE_ALTOGETHER</option>
+				<option value="2">ICONS_WITHOUT_NAVIGATION</option>
+			</field>
+
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+		</fieldset>
+	</fields>
+</metadata>
