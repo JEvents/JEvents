@@ -22,9 +22,8 @@ $document = JFactory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
 	table.filters {margin-bottom:10px}");
-
+$function	= JRequest::getCmd('function', 'jSelectEvent');
 ?>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<?php if (!JRequest::getInt("nomenu")) {?>
 	<table cellpadding="4" cellspacing="0"  class="filters">
@@ -53,8 +52,7 @@ $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 			?>
 			<tr class="row<?php echo $k; ?>">
 				<td width="30%">
-					<a href="#select" onclick="return window.parent.jSelectEvent('<?php echo $link;?>','<?php echo addslashes($repeat->title());?>' , $('Itemid')?$('Itemid').value:0 , <?php echo $repeat->ev_id();?>, <?php echo $repeat->rp_id();?>)" title="<?php echo JText::_('JEV_SELECT_Repeat'); ?>"><?php echo $row->title(); ?></a>
-				</td>
+					<a href="#select" onclick="return window.parent.<?php echo $function;?>('<?php echo $link;?>','<?php echo addslashes($repeat->title());?>' , $('Itemid')?$('Itemid').value:0 , <?php echo $repeat->ev_id();?>, <?php echo $repeat->rp_id();?>)" title="<?php echo JText::_('JEV_SELECT_Repeat'); ?>"><?php echo $row->title(); ?></a>				</td>
 				<td width="40%">
 					<?php
 					$times = '<table style="border: 1px solid #666666; width:100%;">';
@@ -73,8 +71,10 @@ $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 			<th align="center" colspan="9"><?php echo $this->pageNav->getListFooter(); ?></th>
 		</tr>
     </table>
+    <?php echo JHtml::_('form.token'); ?>
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
     <input type="hidden" name="evid" value="<?php echo $this->evid; ?>" />
+    <input type="hidden" name="function" value="<?php echo $function; ?>" />
     <input type="hidden" name="task" value="icalrepeat.select" />
     <input type="hidden" name="tmpl" value="component" />
 </form>

@@ -28,7 +28,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		JHtml::_('behavior.modal', 'a.modal');
 
 		$js = "
-		function jSelectEvent(link, title, Itemid, rpid) {
+		function jSelectEvent_".$this->id."(link, title, Itemid, rpid) {
 			$('selectedeventtitle').value = title;
 			$('selectedevent').value = rpid;
 			SqueezeBox.close();
@@ -41,7 +41,7 @@ class JFormFieldJEVselectEvent extends JFormField
 
 		// Setup variables for display.
 		$html	= array();
-		$link = 'index.php?option=com_jevents&amp;task=icalevent.select&amp;tmpl=component&amp;'.JSession::getFormToken().'=1&amp;nomenu=1';
+		$link = 'index.php?option=com_jevents&amp;task=icalevent.select&amp;tmpl=component&amp;'.JSession::getFormToken().'=1&amp;nomenu=1&function=jSelectEvent_'.$this->id;
 
 		$db	= JFactory::getDBO();
 		$db->setQuery(
