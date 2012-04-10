@@ -153,7 +153,11 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		parent::deletefuture();		
 	}
 
-	
+	function select() {
+		JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+		parent::select();
+	}
+
 	protected  function toggleICalEventPublish($cid,$newstate) {
 		$is_event_editor = JEVHelper::isEventPublisher();
 		if (!$is_event_editor){

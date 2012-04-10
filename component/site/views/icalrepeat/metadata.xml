@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view title="COM_JEVENTS_CREATE_JEVENTS_DEFAULT_TITLE">
-		<message><![CDATA[COM_JEVENTS_CREATE_JEVENTS_DEFAULT_TITLE]]></message>
+	<view title="COM_JEVENTS_EVENT_DETAIL_DEFAULT_TITLE">
+		<message><![CDATA[COM_JEVENTS_EVENT_DETAIL_DEFAULT_TITLE]]></message>
 		<options var="layout" >
 			<option value='detail' name="COM_JEVENTS_EVENT_DETAIL_TITLE" msg="COM_JEVENTS_EVENT_DETAIL_DESC" />
 		</options>				

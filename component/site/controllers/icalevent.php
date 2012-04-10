@@ -163,6 +163,11 @@ class ICalEventController extends AdminIcaleventController   {
 		parent::apply();
 	}
 
+	function select() {
+		JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+		parent::select();
+	}
+	
 	
 		
 }
