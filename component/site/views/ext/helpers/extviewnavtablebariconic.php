@@ -25,6 +25,7 @@ class ExtViewNavTableBarIconic {
 		}
 
 		// for popup editing
+		$view->popup=false;
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0)){
 			JHTML::_('behavior.modal');
