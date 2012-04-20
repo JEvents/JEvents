@@ -323,7 +323,8 @@ class AdminConfigController extends JController {
 
 	function dbsetup(){
 		$db	=& JFactory::getDBO();
-
+		$db->setDebug(0);
+		
 		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
 
 
@@ -805,6 +806,31 @@ SQL;
 		$db->setQuery( $sql );
 		@$db->query();
 
+		// Multi-category Mapping table
+		$sql = <<<SQL
+CREATE TABLE IF NOT EXISTS #__jevents_catmap(
+	evid int(12) NOT NULL auto_increment,
+	catid int(11) NOT NULL default 1,
+	ordering int(5) unsigned NOT NULL default '0',
+	UNIQUE KEY `key_event_category` (`evid`,`catid`)
+) ENGINE=MyISAM $charset;
+SQL;
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+		
+		// fill this table if upgrading !
+		$sql = "SELECT count(evid) from #__jevents_catmap";
+		$db->setQuery($sql);
+		$catmaps = $db->loadResult();
+		if ($catmaps <5 ){
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
+			$db->setQuery($sql);
+			$db->query();
+			
+		}
+		
+		// 
 		// get the view
 		$this->view = & $this->getView("config","html");
 

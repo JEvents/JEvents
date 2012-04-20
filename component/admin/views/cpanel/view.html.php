@@ -371,14 +371,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	private function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false)
+		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false && strpos($filecontent, "joomlacontenteditor") === false && strpos($filecontent, "virtuemart") === false)
 		{
 			return false;
 		}
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false)
+		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false)
 		{
 			return false;
 		}

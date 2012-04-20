@@ -86,7 +86,6 @@ class AdminIcalsController extends JController {
 			. "\n FROM #__jevents_icsfile as icsf "
 			. "\n LEFT JOIN #__viewlevels AS a ON a.id = icsf.access"
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			//	. "\n WHERE icsf.catid IN(".$this->accessibleCategoryList().")"
 			;
 		}
 		else {
@@ -94,7 +93,6 @@ class AdminIcalsController extends JController {
 			. "\n FROM #__jevents_icsfile as icsf "
 			. "\n LEFT JOIN #__groups AS g ON g.id = icsf.access"
 			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			//	. "\n WHERE icsf.catid IN(".$this->accessibleCategoryList().")"
 			;
 		}
 		$query .= "\n ORDER BY icsf.isdefault DESC, icsf.label ASC";

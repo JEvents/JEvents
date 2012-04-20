@@ -27,23 +27,45 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
 		// force state value to event state!
+		$accessibleCategories = $this->accessibleCategoryList();
 		$query = "SELECT ev.*,rr.*, det.*, ev.state as state"
 		. "\n FROM #__jevents_vevent as ev"
 		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = ev.detail_id"
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
+		. "\n WHERE ev.catid IN(".$accessibleCategories.")"
 		. "\n AND ev.ev_id = '$agid'"
 		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();
-		if (count($rows)>0) return $rows[0];
+		
+		if (count($rows)>0){
+			
+			// check multi-category access
+			// do not use jev_com_component incase we call this from locations etc.
+			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			if ($params->get("multicategory",0)){
+				// get list of categories this event is in - are they all accessible?
+				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
+				$catids = $db->loadResultArray();
+
+				// are there any catids not in list of accessible Categories 
+				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
+				if (count($inaccessiblecats )){
+					return null;
+				}
+				$rows[0]->catids = $catids;
+			}
+			
+			return $rows[0];
+		}
 		else return null;
 	}
 
 	function getVEventRepeatById( $rp_id) {
 		$db	=& JFactory::getDBO();
 		$user =& JFactory::getUser();
+		$accessibleCategories = $this->accessibleCategoryList();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -53,14 +75,34 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-		. "\n WHERE ev.catid IN(".$this->accessibleCategoryList().")"
+		. "\n WHERE ev.catid IN(".$accessibleCategories.")"
 		. "\n AND rpt.rp_id = '$rp_id'"
 		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();
-		if (count($rows>0)) return $rows[0];
+		
+		if (count($rows)>0){
+			
+			// check multi-category access
+			// do not use jev_com_component incase we call this from locations etc.
+			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			if ($params->get("multicategory",0)){
+				// get list of categories this event is in - are they all accessible?
+				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
+				$catids = $db->loadResultArray();
+
+				// are there any catids not in list of accessible Categories 
+				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
+				if (count($inaccessiblecats )){
+					return null;
+				}
+				$rows[0]->catids = $catids;
+			}
+			
+			return $rows[0];
+		}
 		else return null;
 
 	}

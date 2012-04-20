@@ -70,8 +70,7 @@ class AdminIcalrepeatController extends JController
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n WHERE ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")"
-				. "\n AND ev.ev_id=" . $id
+				. "\n WHERE ev.ev_id=" . $id
 				. "\n AND icsf.state=1"
 				. ($publishedOnly ? "\n AND ev.state=1" : "");
 		$db->setQuery($query);
@@ -92,8 +91,7 @@ class AdminIcalrepeatController extends JController
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n WHERE ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")"
-				. "\n AND ev.ev_id=" . $id
+				. "\n WHERE ev.ev_id=" . $id
 				. "\n AND icsf.state=1"
 				. ($publishedOnly ? "\n AND ev.state=1" : "")
 				. "\n GROUP BY rpt.rp_id"
@@ -160,8 +158,7 @@ class AdminIcalrepeatController extends JController
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n WHERE ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")"
-				. "\n AND rpt.rp_id=" . $id
+				. "\n WHERE rpt.rp_id=" . $id
 				. "\n AND icsf.ics_id=ev.icsid AND icsf.state=1";
 		$db->setQuery($query);
 		$ev_id = $db->loadResult();
@@ -329,8 +326,7 @@ class AdminIcalrepeatController extends JController
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n WHERE ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")"
-				. "\n AND ev.ev_id=" . $id
+				. "\n WHERE ev.ev_id=" . $id
 				. "\n AND icsf.state=1"
 				. ( count($where) ? "\n AND " . implode(' AND ', $where) : '' )
 				. ($publishedOnly ? "\n AND ev.state=1" : "");
@@ -352,8 +348,7 @@ class AdminIcalrepeatController extends JController
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n WHERE ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")"
-				. "\n AND ev.ev_id=" . $id
+				. "\n WHERE ev.ev_id=" . $id
 				. "\n AND icsf.state=1"
 				. ($publishedOnly ? "\n AND ev.state=1" : "")
 				. ( count($where) ? "\n AND " . implode(' AND ', $where) : '' )

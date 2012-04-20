@@ -92,9 +92,24 @@ class AdminIcaleventController extends JController
 			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
 		}
 
+		$user = & JFactory::getUser();
+		
+		// keep this incase we use filters in category lists
+		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList()  . ")";
+		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		if ($params->get("multicategory",0)){
+			$join[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			$where[]= " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$where[]= " catmap.catid IN(" .$this->queryModel->accessibleCategoryList()  . ")";
+			$needsgroup = true;
+			$catwhere = " 1";
+		}		
+		$where[] = $catwhere;
+		
+		// category filter!
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$user = & JFactory::getUser();
 			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 0);
 			$cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
@@ -104,24 +119,44 @@ class AdminIcaleventController extends JController
 				{
 					for ($i = 0; $i < count($cats); $i++)
 					{
-						$whereCats[$i] = "ev.catid='$cats[$i]'";
+						if ($params->get("multicategory",0)){					
+							$whereCats[$i] = "catmap.catid='$cats[$i]'";
+						}
+						else {
+							$whereCats[$i] = "ev.catid='$cats[$i]'";
+						}
 					}
 					$where[] = '(' . implode(" OR ", $whereCats) . ')';
 				}
 				else if ($cats > 0 && $catid > 0 && in_array($catid, $cats))
 				{
-					$where[] = "ev.catid='$catid'";
+					if ($params->get("multicategory",0)){					
+						$where[] = "catmap.catid='$catid'";
+					}
+					else {
+						$where[] = "ev.catid='$catid'";
+					}
 				}
 				else
 				{
-					$where[] = "ev.catid=''";
+					if ($params->get("multicategory",0)){					
+						$where[] = "catmap.catid=''";
+					}
+					else {
+						$where[] = "ev.catid=''";
+					}
 				}
 			}
 			else
 			{
 				if ($catid > 0)
 				{
-					$where[] = "ev.catid='$catid'";
+					if ($params->get("multicategory",0)){					
+						$where[] = "catmap.catid='$catid'";						
+					}
+					else {
+						$where[] = "ev.catid='$catid'";
+					}
 				}
 			}
 		}
@@ -183,9 +218,6 @@ class AdminIcaleventController extends JController
 		{
 			$where[] = "\n ev.state=0";
 		}
-
-		// keep this incase we use filters in category lists
-		$where[] = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
 
 		// get the total number of records
 		$query = "SELECT count(distinct rpt.eventid)"
@@ -1147,11 +1179,29 @@ class AdminIcaleventController extends JController
 			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
 		}
 
-		$where[] = "ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
+		$user = & JFactory::getUser();
+		
+		// keep this incase we use filters in category lists
+		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList()  . ")";
+		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		if ($params->get("multicategory",0)){
+			$join[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			$where[]= " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$where[]= " catmap.catid IN(" .$this->queryModel->accessibleCategoryList()  . ")";
+			$needsgroup = true;
+			$catwhere = " 1";
+		}		
+		$where[] = $catwhere;
 
 		if ($catid > 0)
 		{
-			$where[] = "ev.catid='$catid'";
+			if ($params->get("multicategory",0)){
+				$where[] = "catmap.catid='$catid'";
+			}
+			else {
+				$where[] = "ev.catid='$catid'";
+			}
 		}
 
 		if ($created_by === "")
@@ -1208,9 +1258,6 @@ class AdminIcaleventController extends JController
 		{
 			$where[] = "\n ev.state=0";
 		}
-
-		// keep this incase we use filters in category lists
-		$where[] = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
 
 		// get the total number of records
 		$query = "SELECT count(distinct rpt.eventid)"

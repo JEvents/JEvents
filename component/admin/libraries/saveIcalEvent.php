@@ -112,8 +112,11 @@ class SaveIcalEvent {
 		$vevent = iCalEvent::iCalEventFromData($data);
 
 		$vevent->catid = JArrayHelper::getValue( $array,  "catid",0);
+		if (is_array($vevent->catid)){
+			  JArrayHelper::toInteger($vevent->catid);
+		}
 		// if catid is empty then use the catid of the ical calendar
-		if ($vevent->catid<=0){
+		if ((is_string($vevent->catid) && $vevent->catid<=0) || (is_array($vevent->catid) && count($vevent->catid)==0)){
 			$query = "SELECT catid FROM #__jevents_icsfile WHERE ics_id=$ics_id";
 			$db->setQuery( $query);
 			$vevent->catid = $db->loadResult();

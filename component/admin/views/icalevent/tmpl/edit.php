@@ -46,7 +46,9 @@ $catid = $this->row->catid();
 if ($catid==0 && $this->defaultCat>0){
 	$catid = $this->defaultCat;
 }
-
+if ($this->row->catids){
+	$catid = $this->row->catids;
+}
 ?>
 <div id="jevents" <?php $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"";?>>
 <form action="<?php echo $action;?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"  >
@@ -298,7 +300,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
         	<td valign="top" align="left" class="jevcategory"><?php echo JText::_('JEV_EVENT_CATEGORY'); ?></td>
             <td style="width:200px"  class="jevcategory">
             <?php 
-            echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true,0,'catid',JEV_COM_COMPONENT, $this->excats);
+            echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true,0,'catid',JEV_COM_COMPONENT, $this->excats, "ordering",true);
             ?>
             </td>
             <?php
