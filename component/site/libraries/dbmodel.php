@@ -28,7 +28,13 @@ class JEventsDBModel
 		$this->legacyEvents = 0;
 
 		$this->datamodel = & $datamodel;
-
+				
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!JVersion::isCompatible("1.6.0")){
+			// Multi-category events only supported in Joomla 2.5 + so disable elsewhere
+			$params->set('multicategory',0);
+		}
+		
 	}
 
 	function accessibleCategoryList($aid=null, $catids=null, $catidList=null)
@@ -342,7 +348,7 @@ class JEventsDBModel
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -467,7 +473,7 @@ class JEventsDBModel
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -612,7 +618,7 @@ class JEventsDBModel
 		$rptwhere = ( count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '' );
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -873,7 +879,7 @@ class JEventsDBModel
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1009,7 +1015,7 @@ class JEventsDBModel
 		}
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1245,7 +1251,7 @@ class JEventsDBModel
 		}
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1378,7 +1384,7 @@ class JEventsDBModel
 		}
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1490,7 +1496,7 @@ class JEventsDBModel
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 			
 			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams("com_jevents");
 			if ($params->get("multicategory",0)){
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1587,7 +1593,7 @@ class JEventsDBModel
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams("com_jevents");
 			if ($params->get("multicategory",0)){
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1703,7 +1709,7 @@ class JEventsDBModel
 		$needsgroup = false;
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1809,7 +1815,7 @@ class JEventsDBModel
 		$needsgroup = false;
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -1981,7 +1987,7 @@ class JEventsDBModel
 		$extrajoin = array();
 			
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -2056,7 +2062,7 @@ class JEventsDBModel
 		$extrajoin = array();
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -2168,7 +2174,7 @@ class JEventsDBModel
 		}
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -2326,7 +2332,7 @@ class JEventsDBModel
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -2473,7 +2479,7 @@ class JEventsDBModel
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -2664,7 +2670,7 @@ class JEventsDBModel
 	function setMultiCategory(&$row,$accessibleCategories){
 		// check multi-category access
 		// do not use jev_com_component incase we call this from locations etc.
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
 			$db = & JFactory::getDBO();
 			// get list of categories this event is in - are they all accessible?

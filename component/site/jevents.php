@@ -77,7 +77,7 @@ if (JVersion::isCompatible("1.6.0")){
 else {
 	$isMobile = $browser->_mobile;
 }
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
 	JRequest::setVar("jevsmartphone",1);
@@ -97,6 +97,10 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 	$registry->setValue("jevents.timezone",$timezone);
 }
 
+if (!JVersion::isCompatible("1.6.0")){
+	// Multi-category events only supported in Joomla 2.5 + so disable elsewhere
+	$params->set('multicategory',0);
+}
 // Must also load backend language files
 $lang =& JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
