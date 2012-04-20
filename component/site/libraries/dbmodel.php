@@ -88,11 +88,13 @@ class JEventsDBModel
 
 				$catids = explode(",", $catidList);
 				$catwhere = array();
+				$hascatid=false;
 				foreach ($catids as $catid)
 				{
 					$catid = intval($catid);
 					if ($catid > 0)
 					{
+						$hascatid=true;
 						$cat = $allcats->get($catid);
 						if ($cat)
 						{
@@ -106,7 +108,7 @@ class JEventsDBModel
 					$where = "AND (" . implode(" OR ", $catwhere) . ")";
 				}
 				// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events 
-				if(count($catids)>0 && count($catwhere)==0){
+				if($hascatid && count($catwhere)==0){
 					$where = " AND 0 ";
 				}
 
