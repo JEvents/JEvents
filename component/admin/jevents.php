@@ -56,6 +56,11 @@ if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezon
 	$registry->setValue("jevents.timezone",$timezone);
 }
 
+if (!JVersion::isCompatible("1.6.0")){
+	// Multi-category events only supported in Joomla 2.5 + so disable elsewhere
+	$params->set('multicategory',0);
+}
+
 // Thanks to ssobada
 if (JVersion::isCompatible("1.6.0")){
    $authorisedonly = $params->get("authorisedonly", 0);
