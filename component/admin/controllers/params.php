@@ -23,7 +23,7 @@ class AdminParamsController extends JController
 	 */
 	function __construct($default = array())
 	{
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 
 		if (!JEVHelper::isAdminUser())
 		{

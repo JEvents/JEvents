@@ -116,7 +116,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		{
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name. " ($user->username)" );
 		}
-		$jevuser	= &JFactory::getUser();
+		$jevuser	= JFactory::getUser();
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id >0 && $this->editItem->created_by>0){
 			$created_by = $this->editItem->created_by;
 		}

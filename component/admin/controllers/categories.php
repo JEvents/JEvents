@@ -54,7 +54,7 @@ class AdminCategoriesController extends JController {
 	{
 
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
@@ -150,7 +150,7 @@ class AdminCategoriesController extends JController {
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=categories.list", "Not Authorised - must be super admin" );
 			return;
@@ -252,7 +252,7 @@ class AdminCategoriesController extends JController {
 		$cid = JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel", JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
@@ -289,7 +289,7 @@ class AdminCategoriesController extends JController {
 	 * 
 	 */
 	function saveorder(){
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ));
 			return;
@@ -320,7 +320,7 @@ class AdminCategoriesController extends JController {
 	 * 
 	 */	
 	function delete(){
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ) );
 			return;
@@ -390,7 +390,7 @@ class AdminCategoriesController extends JController {
 	}
 
 	function toggleCatPublish($cid,$newstate){
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=$this->component&task=cpanel.cpanel",  JText::_( 'NOT_AUTHORISED_MUST_BE_ADMIN' ) );
 			return;

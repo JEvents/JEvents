@@ -18,7 +18,7 @@ class SaveIcalEvent {
 
 		$cfg = & JEVConfig::getInstance();
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		// Allow plugins to check data validity
 		$dispatcher     =& JDispatcher::getInstance();

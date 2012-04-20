@@ -92,7 +92,7 @@ class AdminIcaleventController extends JController
 			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
 		}
 
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 		
 		// keep this incase we use filters in category lists
 		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList()  . ")";
@@ -164,7 +164,12 @@ class AdminIcaleventController extends JController
 		{
 			if ($catid > 0)
 			{
-				$where[] = "ev.catid='$catid'";
+				if ($params->get("multicategory",0)){					
+					$where[] = "catmap.catid='$catid'";						
+				}
+				else {
+					$where[] = "ev.catid='$catid'";
+				}
 			}
 		}
 
@@ -1179,7 +1184,7 @@ class AdminIcaleventController extends JController
 			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
 		}
 
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 		
 		// keep this incase we use filters in category lists
 		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList()  . ")";

@@ -25,7 +25,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
  */
 	function getVEventById( $agid) {
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		// force state value to event state!
 		$accessibleCategories = $this->accessibleCategoryList();
 		$query = "SELECT ev.*,rr.*, det.*, ev.state as state"
@@ -64,7 +64,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 
 	function getVEventRepeatById( $rp_id) {
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$accessibleCategories = $this->accessibleCategoryList();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -117,7 +117,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 
 	function getNativeIcalendars() {
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
 		. "\n WHERE ical.icaltype = '2'"
@@ -135,7 +135,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 
 	function getIcalByIcsid($icsid) {
 		$db	=& JFactory::getDBO();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
 		/*

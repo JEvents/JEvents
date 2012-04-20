@@ -274,7 +274,7 @@ class AdminConfigController extends JController {
 	function droptables() {
 		// disabled unless really needed
 		return;
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
