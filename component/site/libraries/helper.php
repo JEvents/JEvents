@@ -574,7 +574,7 @@ class JEVHelper
 				// TODO second level Check on enclosing categories and other constraints
 				if (count($jevitems) > 0)
 				{
-					$user = & JFactory::getUser();
+					$user =  JFactory::getUser();
 					foreach ($jevitems as $jevitem)
 					{
 						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $jevitem->access)
@@ -656,7 +656,7 @@ class JEVHelper
 				// TODO Check enclosing categories
 				if (count($jevitems) > 0)
 				{
-					$user = & JFactory::getUser();
+					$user =  JFactory::getUser();
 					foreach ($jevitems as $jevitem)
 					{
 						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $jevitem->access)
@@ -778,7 +778,7 @@ class JEVHelper
 					else
 					{
 						$creatorlevel = $params->get("jevcreator_level", 20);
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						if (JEVHelper::getGid($user) >= $creatorlevel)
 						{
 							$isEventCreator = true;
@@ -889,7 +889,7 @@ class JEVHelper
 				{
 					if (JVersion::isCompatible("1.6.0"))
 					{
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
                                                 // Never allow unlogged in users to edit events - just in case someone tries to allow this
                                                 if ($juser->id==0) {
                                                     return false;
@@ -900,7 +900,7 @@ class JEVHelper
 					else
 					{
 						$publishlevel = $params->get("jeveditor_level", 20);
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						if (JEVHelper::getGid($juser) >= $publishlevel)
 						{
 							$isEventEditor = true;
@@ -913,7 +913,7 @@ class JEVHelper
 			  if (is_null($user)){
 			  $params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 			  $editorLevel= $params->get("jeveditor_level",20);
-			  $juser =& JFactory::getUser();
+			  $juser = JFactory::getUser();
 			  if (JEVHelper::getGid($user)>=$editorLevel){
 			  $isEventEditor = true;
 			  }
@@ -944,7 +944,7 @@ class JEVHelper
 		// TODO make this call a plugin
 		if ($user == null)
 		{
-			$user = & JFactory::getUser();
+			$user =  JFactory::getUser();
 		}
 
 		if ($user->id==0) {
@@ -1108,14 +1108,14 @@ class JEVHelper
 				{
 					if (JVersion::isCompatible("1.6.0"))
 					{
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
 						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
 					}
 					else
 					{
 						$publishlevel = $params->get("jevpublish_level", 20);
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						if (JEVHelper::getGid($user) >= $publishlevel)
 						{
 							$isEventPublisher[$type] = true;
@@ -1149,7 +1149,7 @@ class JEVHelper
 		$publishown = $params->get("jevpublishown", 0);
 
 		$jevuser = & JEVHelper::getAuthorisedUser();
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 
 		if (!$authorisedonly && $publishown)
 		{
@@ -1194,7 +1194,7 @@ class JEVHelper
 	{
 		if (!JEVHelper::isEventPublisher())
 			return false;
-		$juser = & JFactory::getUser();
+		$juser =  JFactory::getUser();
 
 		$db = & JFactory::getDBO();
 		$sql = "SELECT id FROM #__jevents_categories WHERE admin=" . $juser->id;
@@ -1221,7 +1221,7 @@ class JEVHelper
 		// TODO make this call a plugin
 		if ($user == null)
 		{
-			$user = & JFactory::getUser();
+			$user =  JFactory::getUser();
 		}
 		// are we authorised to do anything with this category or calendar
 		$jevuser = & JEVHelper::getAuthorisedUser();
@@ -1356,13 +1356,13 @@ class JEVHelper
 
 					if (JVersion::isCompatible("1.6.0"))
 					{
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
 					}
 					else
 					{
 						$publishlevel = $params->get("jevpublish_level", 20);
-						$juser = & JFactory::getUser();
+						$juser =  JFactory::getUser();
 						if (JEVHelper::getGid($user) >= $publishlevel)
 						{
 							$isEventDeletor[$type] = true;
@@ -1398,7 +1398,7 @@ class JEVHelper
 		// TODO make this call a plugin
 		if ($user == null)
 		{
-			$user = & JFactory::getUser();
+			$user =  JFactory::getUser();
 		}
 
 		// are we authorised to do anything with this category or calendar
@@ -1515,7 +1515,7 @@ class JEVHelper
 
 		if (!isset($rows[$id]))
 		{
-			$user = & JFactory::getUser();
+			$user =  JFactory::getUser();
 			$rows[$id] = null;
 			$query = "SELECT ju.id, ju.name, ju.username, ju.usertype, ju.sendEmail, ju.email, cd.name as contactname, "
 					. ' CASE WHEN CHAR_LENGTH(cd.alias) THEN CONCAT_WS(\':\', cd.id, cd.alias) ELSE cd.id END as slug, '
@@ -1584,7 +1584,7 @@ class JEVHelper
 		}
 		if (is_null($id))
 		{
-			$juser = & JFactory::getUser();
+			$juser =  JFactory::getUser();
 			$id = $juser->id;
 		}
 		if (!array_key_exists($id, $userarray))

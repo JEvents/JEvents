@@ -35,7 +35,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function detail() {
 
 		// Do we have to be logged in to see this event
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if (JRequest::getInt("login",0) && $user->id==0)
 		{			
 			$uri = JURI::getInstance();
@@ -102,7 +102,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function edit(){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			$user = &JFactory::getUser();
+			$user = JFactory::getUser();
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				//JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );

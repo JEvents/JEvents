@@ -62,7 +62,7 @@ class iCalEvent extends JTable  {
 	 * @param unknown_type $updateNulls
 	 */
 	function store($updateNulls=false , $overwriteCreator = false) {
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if ($this->ev_id==0){
 			$date =& JevDate::getDate();
@@ -281,7 +281,7 @@ class iCalEvent extends JTable  {
 		// old events access and published state
 		$this->processField("x-access",  JEVHelper::getBaseAccess(), "access");
 		$this->processField("x-state",1, "state");
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$this->processField("x-createdby",$user->id, "created_by");
 		$this->processField("x-createdbyalias","", "created_by_alias");
 		$this->processField("x-modifiedby",$user->id, "modified_by");

@@ -34,7 +34,7 @@ class ICalEventController extends AdminIcaleventController   {
 	function detail() {
 
 		// Do we have to be logged in to see this event
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if (JRequest::getInt("login",0) && $user->id==0)
 		{			
 			$uri = JURI::getInstance();
@@ -97,7 +97,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
 		} else {
@@ -109,7 +109,7 @@ class ICalEventController extends AdminIcaleventController   {
 	function edit(){
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!$is_event_editor || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));

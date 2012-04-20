@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 if (JRequest::getInt("category_fv",-1)==-1) {	
 	// get the cat name from the database
 	$db	=& JFactory::getDBO();
-	$user =& JFactory::getUser();
+	$user = JFactory::getUser();
 	$catsql = 'SELECT c.id FROM #__categories AS c' .
 	' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
 	' AND c.'.(JVersion::isCompatible("1.6.0")?'extension':'section').' = '.$db->Quote(JEV_COM_COMPONENT).

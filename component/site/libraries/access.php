@@ -17,7 +17,7 @@ class JEVAccess {
 	function JEVAccess(){
 		// Editor usertype check
 		global $acl;
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$this->access = new stdClass();
 		$acl =& JFactory::getACL();

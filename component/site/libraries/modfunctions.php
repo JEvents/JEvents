@@ -15,8 +15,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall){
 	// Itemid, search for menuid with lowest access rights
-	$user =& JFactory::getUser();
-	$db	=& JFactory::getDBO();
+	$user = JFactory::getUser();
+	$db	= JFactory::getDBO();
 
 	// Do we ignore category filters?
 	$ignorecatfilter = 0;

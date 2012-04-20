@@ -923,8 +923,8 @@ class JEventsDataModel {
 		}
 		else if ((count($catids)==1 && $catids[0]!=0)  || (count($this->catids)==1 && $this->catids[0]!=0)  ){
 			// get the cat name from the database
-			$db	=& JFactory::getDBO();
-			$user =& JFactory::getUser();
+			$db	= JFactory::getDBO();
+			$user = JFactory::getUser();
 			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
 			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
@@ -964,9 +964,9 @@ class JEventsDataModel {
 
 		$lang = JFactory::getLanguage();
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$Itemid = JEVHelper::getItemid();
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$cfg = & JEVConfig::getInstance();
 
@@ -1038,12 +1038,10 @@ class JEventsDataModel {
 		$data= array();
 
 		$is_event_editor = JEVHelper::isEventCreator();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$Itemid = JEVHelper::getItemid();
-		$user =& JFactory::getUser();
 
-		$db	=& JFactory::getDBO();
-		
+		$db	= JFactory::getDBO();		
 
 		$cfg = & JEVConfig::getInstance();
 

@@ -51,7 +51,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		}
 
 		if ($modid>0){
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 			$query = "SELECT id, params"
 			. "\n FROM #__modules AS m"
 			. "\n WHERE m.published = 1"

@@ -49,7 +49,7 @@ class ModLatestController extends JController   {
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->rss();
 		} else {

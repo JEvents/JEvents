@@ -88,7 +88,7 @@ class jIcalEventDB extends jEventCal {
 			$this->_publish_down = JevDate::strftime( '%Y-%m-%d %H:%M:%S',@$this->dtend());
 		}
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if (!isset($this->_created_by)){
 			$this->_created_by=$user->id;

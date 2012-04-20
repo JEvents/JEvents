@@ -367,8 +367,8 @@ class JEventsHTML
 			<?php
 			return ob_get_clean();
 		}
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user =  JFactory::getUser();
+		$db =  JFactory::getDBO();
 
 		$catsql = 'SELECT c.id, c.published, c.title as ctitle,p.title as ptitle, gp.title as gptitle, ggp.title as ggptitle ' .
 				(JVersion::isCompatible("1.6.0") ? ", c.lft as ordering " : ", c.ordering as ordering") .

@@ -305,8 +305,8 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function recentIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user =  JFactory::getUser();
+		$db =  JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -430,8 +430,8 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function popularIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db =  JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -560,8 +560,8 @@ class JEventsDBModel
 
 	function listLatestIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0, $multidayTreatment = 0)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user =  JFactory::getUser();
+		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -836,8 +836,8 @@ class JEventsDBModel
 	// BAD VERSION - not used
 	function listPopularIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -960,8 +960,8 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function listIcalEvents($startdate, $enddate, $order="", $filters = false, $extrafields="", $extratables="", $limit="")
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -1087,7 +1087,7 @@ class JEventsDBModel
 	function _cachedlistIcalEvents($query, $langtag, $count=false)
 	{
 		$user = JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$adminuser = JEVHelper::isAdminUser($user);
 		$db->setQuery($query);
 		if ($adminuser)
@@ -1211,8 +1211,8 @@ class JEventsDBModel
 			$order = "rpt.startrepeat asc";
 		}
 
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -1353,7 +1353,7 @@ class JEventsDBModel
 		{
 			$user = JFactory::getUser();
 		}
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -1474,8 +1474,8 @@ class JEventsDBModel
 
 	function listEventsById($rpid, $includeUnpublished=0, $jevtype="icaldb")
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$frontendPublish = JEVHelper::isEventPublisher();
 
 		if ($jevtype == "icaldb")
@@ -1570,8 +1570,8 @@ class JEventsDBModel
 	 */
 	function getEventById($evid, $includeUnpublished=0, $jevtype="icaldb")
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		$frontendPublish = JEVHelper::isEventPublisher();
 
@@ -1672,8 +1672,8 @@ class JEventsDBModel
 
 	function listIcalEventsByCreator($creator_id, $limitstart, $limit, $orderby='dtstart ASC')
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		$cfg = & JEVConfig::getInstance();
 
@@ -1782,8 +1782,8 @@ class JEventsDBModel
 
 	function listIcalEventRepeatsByCreator($creator_id, $limitstart, $limit, $orderby="rpt.startrepeat")
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		$cfg = & JEVConfig::getInstance();
 
@@ -1974,8 +1974,8 @@ class JEventsDBModel
 
 	function countIcalEventsByCreator($creator_id)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		$extrawhere = array();
 		$extrajoin = array();
@@ -2049,8 +2049,8 @@ class JEventsDBModel
 
 	function countIcalEventRepeatsByCreator($creator_id)
 	{
-		$user = & JFactory::getUser();
-		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
 		$extrawhere = array();
 		$extrajoin = array();
@@ -2202,7 +2202,7 @@ class JEventsDBModel
 			$order = (strpos($order, 'ORDER BY') === false ? " ORDER BY " : " ") . $order;
 		}
 
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($showrepeats)
 		{
 			$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields"
@@ -2406,9 +2406,9 @@ class JEventsDBModel
 
 	function listEventsByKeyword($keyword, $order, &$limit, &$limitstart, &$total, $useRegX=false)
 	{
-		$user = & JFactory::getUser();
+		$user = JFactory::getUser();
 		$adminuser = JEVHelper::isAdminUser($user);
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$rows_per_page = $limit;
 		if (empty($limitstart) || !$limitstart)

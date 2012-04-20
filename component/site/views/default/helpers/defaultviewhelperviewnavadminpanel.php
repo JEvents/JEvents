@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperViewNavAdminPanel($view){
 	$is_event_editor = JEVHelper::isEventCreator();
-	$user = & JFactory::getUser();
+	$user = JFactory::getUser();
 
 	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 

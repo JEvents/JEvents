@@ -672,7 +672,7 @@ class jEventCal {
 
 	function canUserEdit(){
 		$is_event_creator = JEVHelper::isEventCreator();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		
 		// are we authorised to do anything with this category or calendar
 		$jevuser =& JEVHelper::getAuthorisedUser();

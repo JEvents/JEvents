@@ -261,7 +261,7 @@ class jevFilter
 		// If using caching should disable session filtering if not logged in
 		$cfg	 = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		// TODO chek this logic
 		if (intval(JRequest::getVar('filter_reset',0))){
 			$this->filter_value =  $this->filterNullValue;

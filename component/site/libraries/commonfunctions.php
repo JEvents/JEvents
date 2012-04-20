@@ -356,7 +356,7 @@ class JEV_CommonFunctions {
 	function hasAdvancedRowPermissions($row,$user=null){
 		// TODO make this call a plugin
 		if ($user==null){
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 		}
 
 		// strictt publishing test

@@ -88,7 +88,7 @@ class ModCalController extends JController   {
 
 		list($year,$month,$day) = JEVHelper::getYMD();
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$query = "SELECT id, params"
 		. "\n FROM #__modules AS m"
 		. "\n WHERE m.published = 1"
@@ -161,7 +161,7 @@ class ModCalController extends JController   {
 		$this->modid = $modid;
 
 		
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$cfg = & JEVConfig::getInstance();
 		$db	=& JFactory::getDBO();

@@ -73,7 +73,7 @@ class ICalsController extends AdminIcalsController
 		// View caching logic -- simple... are we logged in?
 		$cfg = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
@@ -272,7 +272,7 @@ class ICalsController extends AdminIcalsController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			$user = &JFactory::getUser();
+			$user = JFactory::getUser();
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
@@ -378,7 +378,7 @@ class ICalsController extends AdminIcalsController
 		// View caching logic -- simple... are we logged in?
 		$cfg = & JEVConfig::getInstance();
 		$useCache = intval($cfg->get('com_cache', 0));
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
@@ -401,7 +401,7 @@ class ICalsController extends AdminIcalsController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			$user = &JFactory::getUser();
+			$user = JFactory::getUser();
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
