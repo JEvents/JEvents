@@ -47,6 +47,32 @@ class JEventsDataModel {
 
 	function setupModuleCatids($modparams){
 		$this->myItemid = findAppropriateMenuID ($this->catidsOut, $this->catids, $this->catidList, $modparams->toObject(), $this->moduleAllCats);
+		
+		// set menu/module constraint values for later use
+		$this->mmcatids = array();
+		// New system
+		$newcats = $modparams->get( "catidnew", false);
+		if ($newcats && is_array($newcats )){
+			foreach ($newcats as $newcat){
+				if ( !in_array( $newcat, $this->mmcatids )){
+					$this->mmcatids[]	= $newcat;
+				}
+			}				
+		}
+		else {
+			for ($c=0; $c < 999; $c++) {
+				$nextCID = "catid$c";
+				//  stop looking for more catids when you reach the last one!
+				if (!$nextCatId = $modparams->get( $nextCID, null)) {
+					break;
+				}
+				if ( !in_array( $nextCatId, $this->mmcatids )){
+					$this->mmcatids[]	= $nextCatId;
+				}
+			}
+		}
+		$this->mmcatidList = implode(",",$this->mmcatids);
+		
 		return $this->myItemid;
 	}
 

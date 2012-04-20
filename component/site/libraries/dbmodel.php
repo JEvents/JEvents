@@ -105,6 +105,10 @@ class JEventsDBModel
 				{
 					$where = "AND (" . implode(" OR ", $catwhere) . ")";
 				}
+				// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events 
+				if(count($catids)>0 && count($catwhere)==0){
+					$where = " AND 0 ";
+				}
 
 				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 				$query = "SELECT c.id"
