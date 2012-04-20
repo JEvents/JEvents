@@ -323,7 +323,12 @@ class AdminConfigController extends JController {
 
 	function dbsetup(){
 		$db	=& JFactory::getDBO();
-		$db->setDebug(0);
+		if (JVersion::isCompatible("1.6")){
+			$db->setDebug(0);
+		}
+		else {
+			$db->debug(0);
+		}
 		
 		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
 
