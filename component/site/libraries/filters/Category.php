@@ -70,8 +70,32 @@ class jevCategoryFilter extends jevFilter
 		$filter = " ev.catid IN (".implode(",",$catlist).")";
 		*/
 		$filter = " ev.catid IN (".$this->accessibleCategories.")";
+		
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("multicategory",0)){
+			// access will already be checked
+			$filter = " catmap.catid IN(" . $this->accessibleCategories . ")";
+			$this->needsgroupby = true;
+		}
 		return $filter;
 	}
+	
+	// Ths join to catmap tables should already be done!
+	/*
+	function _createJoinFilter($prefix=""){
+		if (!$this->filterField ) return "";
+		if (intval($this->filter_value)==$this->filterNullValue) return "";
+
+		$filter = "";
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("multicategory",0)){
+			$filter .= "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$filter .=  "\n LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+		}
+		return $filter;	
+	}
+	*/
 
 	/**
  * Creates javascript session memory reset action

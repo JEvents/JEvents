@@ -819,5 +819,33 @@ class jEventCal {
 		return "";
 	}
 
+	function catids() {
+		if (isset($this->_catids)){
+			if (isset($this->_catidsarray)){
+				return $this->_catidsarray;
+			}
+			$catids = $this->_catids;
+			if (is_string($catids) && strpos( $catids, ",")>0){
+				$catids = str_replace('"','', $catids);
+				$catids = explode(",",$catids);
+			}
+			if (!is_array($catids)){
+				$catids = array($catids);
+			}
+			JArrayHelper::toInteger($catids);
+			$this->_catidsarray= $catids;
+			return $catids;
+		}
+		return false;
+	}
+	
+	function __get($field) {
+		$field = "_".$field;
+		if (isset($this->$field)) return $this->$field;
+		else {
+			return false;
+		}		
+	}
+
 
 }

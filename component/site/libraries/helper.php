@@ -860,6 +860,12 @@ class JEVHelper
 				$allowedcats = explode("|", $jevuser->categories);
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
+				// check multi cats too
+				if ($row->catids()){
+					if (count( array_diff($row->catids(true), $allowedcats))){
+						return false;
+					}
+				}
 			}			
 		}
 		return true;
@@ -959,6 +965,12 @@ class JEVHelper
 			$allowedcats = explode("|", $jevuser->categories);
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
+			// check multi cats too
+			if ($row->catids()){
+				if (count( array_diff($row->catids(true), $allowedcats))){
+					return false;
+				}
+			}
 		}
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 0);
@@ -991,17 +1003,18 @@ class JEVHelper
 					return true;
 				else return false;
 				 */
-				if (!isset($authdata_coreedit[$row->catid()])){
-					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				if (!isset($authdata_coreedit[$key])){
+					$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
-				if ($authdata_coreedit[$row->catid()]) {
+				if ($authdata_coreedit[$key]) {
 					return true;
 				}
 				else if ($user->id > 0 && $row->created_by() == $user->id) {
-					if (!isset($authdata_editown[$row->catid()])){
-						$authdata_editown[$row->catid()] =$user->authorise('core.edit.own', 'com_jevents.category.'.$row->catid());
+					if (!isset($authdata_editown[$key])){
+						$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
 					}
-					return $authdata_editown[$row->catid()];
+					return $authdata_editown[$key];
 				}
 				// category settings trumps overall setting
 				return false;
@@ -1036,17 +1049,18 @@ class JEVHelper
 				else if (in_array($row->_catid, $cats_own))
 					return true;
 				 */
-				if (!isset($authdata_coreedit[$row->catid()])){
-					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				if (!isset($authdata_coreedit[$key])){
+					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
-				if ($authdata_coreedit[$row->catid()]) {
+				if ($authdata_coreedit[$key]) {
 					return true;
 				}
 				else {
-					if (!isset($authdata_editown[$row->catid()])){
-						$authdata_editown[$row->catid()] =$user->authorise('core.edit.own', 'com_jevents.category.'.$row->catid());
+					if (!isset($authdata_editown[$key])){
+						$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
 					}
-					return $authdata_editown[$row->catid()];
+					return $authdata_editown[$key];
 				}
 				return false;
 				
@@ -1059,10 +1073,11 @@ class JEVHelper
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				if (!isset($authdata_coreedit[$row->catid()])){
-					$authdata_coreedit[$row->catid()] =$user->authorise('core.edit', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($key);
+				if (!isset($authdata_coreedit[$key])){
+					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
-				return $authdata_coreedit[$row->catid()];
+				return $authdata_coreedit[$key];
 			}
 		}
 			
@@ -1230,6 +1245,12 @@ class JEVHelper
 				$allowedcats = explode("|", $jevuser->categories);
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
+				// check multi cats too
+				if ($row->catids()){
+					if (count( array_diff($row->catids(true), $allowedcats))){
+						return false;
+					}
+				}
 			}
 			if ($jevuser->canpublishall )
 			{
@@ -1253,10 +1274,10 @@ class JEVHelper
 				if (in_array($row->_catid, $cats))
 					return true;
 				*/
-				if (!isset($authdata_editstate[$row->catid()])){
-					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
-				}
-				return $authdata_editstate[$row->catid()];
+				// allow multi-categories
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
+				return $authdata_editstate[$key];
 			}
 			return true;
 			
@@ -1290,19 +1311,21 @@ class JEVHelper
 				if (in_array($row->_catid, $cats))
 					return true;
 				*/
-				if (!isset($authdata_editstate[$row->catid()])){
-					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				if (!isset($authdata_editstate[$key])){
+					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 				}
-				return $authdata_editstate[$row->catid()];
+				return $authdata_editstate[$key];
 			}
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				if (!isset($authdata_editstate[$row->catid()])){
-					$authdata_editstate[$row->catid()] =$user->authorise('core.edit.state', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				if (!isset($authdata_editstate[$key])){
+					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 				}
-				return $authdata_editstate[$row->catid()];
+				return $authdata_editstate[$key];
 			}
 		}
 		
@@ -1392,6 +1415,12 @@ class JEVHelper
 			$allowedcats = explode("|", $jevuser->categories);
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
+			// check multi cats too
+			if ($row->catids()){
+				if (count( array_diff($row->catids(true), $allowedcats))){
+					return false;
+				}
+			}
 		}
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
@@ -1418,10 +1447,11 @@ class JEVHelper
 			if (in_array($row->_catid, $cats))
 				return true;
 			*/
-			if (!isset($authdata_coredeleteall[$row->catid()])){
-				$authdata_coredeleteall[$row->catid()] =$user->authorise('core.deleteall', 'com_jevents.category.'.$row->catid());
+			$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+			if (!isset($authdata_coredeleteall[$key])){
+				$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 			}
-			return $authdata_coredeleteall[$row->catid()];
+			return $authdata_coredeleteall[$key];
 		}
 
 		// can delete all?
@@ -1436,10 +1466,11 @@ class JEVHelper
 				if (in_array($row->_catid, $cats))
 					return true;
 				*/
-				if (!isset($authdata_coredeleteall[$row->catid()])){
-					$authdata_coredeleteall[$row->catid()] =$user->authorise('core.deleteall', 'com_jevents.category.'.$row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				if (!isset($authdata_coredeleteall[$key])){
+					$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 				}
-				return $authdata_coredeleteall[$row->catid()];
+				return $authdata_coredeleteall[$key];
 			}			
 			return true;
 		}
@@ -1818,4 +1849,20 @@ class JEVHelper
 
 	}
 
+	static public function authoriseCategories($action, $catids, $user){
+		if (is_string($catids) && strpos( $catids, ",")>0){
+			$catids = str_replace('"','', $catids);
+			$catids = explode(",",$catids);
+		}
+		if (!is_array($catids)){
+			$catids = array($catids);
+		}
+		JArrayHelper::toInteger($catids);
+		$result = count($catids)>0;
+		foreach ($catids as $catid){
+			$result = $user->authorise($action, 'com_jevents.category.'.$catid) ? true : false;
+			if (!$result) return false;
+		}
+		return $result;
+	}
 }

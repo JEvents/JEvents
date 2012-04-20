@@ -611,6 +611,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
+		$params =new JParameter(null);
+		$tmprow = new stdClass();
+		$tmprow->text = $template_value;
+		$dispatcher	=& JDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
+		if (JVersion::isCompatible("1.6.0")) {
+			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+		}
+		else {
+			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+		}
+		$template_value = $tmprow->text;
+		
 		echo $template_value;
 		return true;
 

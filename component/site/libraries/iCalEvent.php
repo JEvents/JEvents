@@ -126,12 +126,29 @@ class iCalEvent extends JTable  {
 			return false;
 		}
 		$this->detail_id = $detailid;
+		// Keep the multiple catids for storing after this
+		$catids = false;
+		if (is_array($this->catid)){
+			$catids = $this->catid;
+			$this->catid =$this->catid[0];
+		}
 		if (!parent::store($updateNulls)){
 			JError::raiseError( 105, JText::_( 'PROBLEMS_STORING_EVENT' ) );
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}
-
+		if ($catids) {
+			$pairs = array();
+			$order = 0;
+			foreach ($catids as $catid){
+				$pairs[] =   "($this->ev_id,$catid, $order)";
+				 $order++;
+			}
+			$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES ".implode(",", $pairs));
+			$sql =$db->getQuery();
+			$success = $db->query();
+		}
+		
 		// I also need to store custom data - when we need the event itself and not just the detail
 		$dispatcher	=& JDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet

@@ -221,7 +221,7 @@ class JEventsHTML
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
 	 */
-	function buildCategorySelect($catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false, $order="ordering")
+	function buildCategorySelect($catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false, $order="ordering",$eventediting = false)
 	{
 
 		if (JVersion::isCompatible("1.6.0"))
@@ -337,14 +337,31 @@ class JEventsHTML
 					$options = array_values($options);
 				}
 			}
+			else {
+				
+			}
 			// if only one category then preselect it
 			if (count($options) == 1)
 			{
 				$catid = current($options)->value;
 			}
-			?>
+			
+			// should we offer multi-choice categories?
+			// do not use jev_com_component incase we call this from locations etc.
+			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			if ($eventediting && $params->get("multicategory",0)){
+				$size = count($options)>6 ? 6 : count($options)+1;
+				?>
+			<select name="<?php echo $fieldname; ?>[]" <?php echo $args; ?> multiple="multiple" size="<?php echo $size;?>">
+				<?php
+			}
+			else {
+				?>
 			<select name="<?php echo $fieldname; ?>" <?php echo $args; ?> >
 				<option value="0"><?php echo $t_first_entry; ?></option>
+				<?php
+			}
+			?>
 			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
 			</select>
 			<?php
