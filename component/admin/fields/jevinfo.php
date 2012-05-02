@@ -18,6 +18,10 @@ jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('spacer');
 
+// Must load admin language files
+$lang =& JFactory::getLanguage();
+$lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
 /**
  * JEVMenu Field class for the JEvents Component
  *
