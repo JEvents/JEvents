@@ -3,7 +3,7 @@
 /**
  * Events Calendar Search plugin for Joomla 1.5.x
  *
- * @version     $Id: eventsearch.php 3247 2012-02-08 14:20:13Z geraintedwards $
+ * @version     $Id: eventsearch.php 3588 2012-05-02 10:40:19Z geraintedwards $
  * @package     Events
  * @subpackage  Mambot Events Calendar
  * @copyright   Copyright (C) 2008-2011 GWE Systems Ltd
@@ -41,6 +41,7 @@ if (!(version_compare(JVERSION, '1.6.0', ">=")))
  */
 function plgSearchEventsSearchAreas()
 {
+	JPlugin::loadLanguage("search","eventsearch");
 	if (version_compare(JVERSION, '1.6.0', ">="))
 	{
 		return array(
@@ -70,9 +71,10 @@ class plgSearchEventsearch extends JPlugin
 	 * @param 	array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgSearchEventsearch(&$subject, $config = array()) // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
+	function __construct(&$subject, $config = array()) // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
 	{
 		parent::__construct($subject, $config);  // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
+		JPlugin::loadLanguage();
 		// load plugin parameters
 		if (!(version_compare(JVERSION, '1.6.0', ">=")))
 		{
