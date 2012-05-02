@@ -874,16 +874,7 @@ $dbend = (float)$usec + (float)$sec;
 					. "  AND icsf.state=1 "
 					. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					// published state is now handled by filter
-					. "\n AND rpt.startrepeat=(
-						SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
-						WHERE rpt2.eventid=rpt.eventid
-						AND  (
-							(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
-							OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
-							)
-						$rptwhere
-					) 
-					GROUP BY rpt.rp_id
+					. "\n GROUP BY rpt.rp_id
 					ORDER BY rpt.startrepeat ASC"
 				;
 
@@ -924,13 +915,7 @@ $dbend = (float)$usec + (float)$sec;
 						. "  AND icsf.state=1 "
 						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 						// published state is now handled by filter
-						. "\n AND rpt.startrepeat=(
-							SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
-							WHERE rpt2.eventid=rpt.eventid
-							AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
-							$rptwhere
-						)
-						GROUP BY rpt.rp_id
+						. "\n GROUP BY rpt.rp_id
 						ORDER BY rpt.startrepeat desc"
 				;
 
@@ -971,13 +956,7 @@ $dbend = (float)$usec + (float)$sec;
 						. "  AND icsf.state=1 "
 						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 						// published state is now handled by filter
-						. "\n AND rpt.startrepeat=(
-							SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
-							WHERE rpt2.eventid=rpt.eventid
-							AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
-							$rptwhere
-						)
-						GROUP BY rpt.rp_id
+						. "\n GROUP BY rpt.rp_id
 						ORDER BY rpt.startrepeat asc"
 				;
 
