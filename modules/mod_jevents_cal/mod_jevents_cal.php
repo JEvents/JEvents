@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: mod_jevents_cal.php 3143 2011-12-29 10:15:10Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module JEvents Calendar
  * @copyright   Copyright (C) 2006-2008 JEvents Project Group

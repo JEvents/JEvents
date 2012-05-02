@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ --> 
+<!-- $Id: metadata.xml 1255 2010-10-06 13:05:26Z royceharding $ --> 
 <metadata>
 	<view title="COM_JEVENTS_LIST_CATEGORY_DEFAULT_TITLE">
 		<message><![CDATA[COM_JEVENTS_LIST_CATEGORY_DEFAULT_DESC]]></message>

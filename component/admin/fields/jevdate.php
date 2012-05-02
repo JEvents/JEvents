@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: jevdate.php 1300 2010-10-13 14:49:16Z royceharding $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html

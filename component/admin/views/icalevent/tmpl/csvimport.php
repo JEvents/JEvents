@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: csvimport.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html

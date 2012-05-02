@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,7 +52,6 @@ class JEventsDBModel
 			$catidList = $this->datamodel->catidList;
 		}
 
-		$cfg = & JEVConfig::getInstance();
 		$sectionname = JEV_COM_COMPONENT;
 
 		static $instances;
@@ -573,7 +572,6 @@ class JEventsDBModel
 	function listLatestIcalEvents($startdate, $enddate, $limit=10, $noRepeats=0, $multidayTreatment = 0)
 	{
 		$user =  JFactory::getUser();
-		$db = JFactory::getDBO();
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -669,17 +667,205 @@ class JEventsDBModel
 			$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
 		}
 
-		// Find the ones after now (only if not past only)
-		if ($modparams->get("pastonly", 0) != 1)
+		if ($noRepeats)
 		{
-			//$query = "SELECT  rpt.eventid, rpt.startrepeat,det.summary, rpt.rp_id FROM #__jevents_repetition as rpt"
-			$query = "SELECT  rpt.eventid FROM #__jevents_repetition as rpt"
+			// Display a repeating event ONCE we group by event id selecting the most appropriate repeat for each one
+
+			// Find the ones after now (only if not past only)
+			$rows1 = array();
+			if ($enddate >= $t_datenowSQL && $modparams->get("pastonly", 0) != 1)
+			{
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
+						. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. $extrajoin
+						. $catwhere
+						// New equivalent but simpler test
+						. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
+						. $multiday
+						. $extrawhere
+						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "  AND icsf.state=1 "
+						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						// published state is now handled by filter
+						. "\n AND rpt.startrepeat=(
+				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
+				WHERE rpt2.eventid=rpt.eventid
+				AND  (
+					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
+					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
+					)
+				$rptwhere
+			) 
+			GROUP BY ev.ev_id
+			ORDER BY rpt.startrepeat"	;
+
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+				
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+				
+			}
+
+			// Before now (only if not past only == future events)
+			$rows2 = array();			
+			if ($startdate <= $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
+			{
+				// note the order is the ones nearest today
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
+						. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. $extrajoin
+						. $catwhere
+						// New equivalent but simpler test
+						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+						. $multiday
+						. $extrawhere
+						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "  AND icsf.state=1 "
+						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						// published state is now handled by filter
+						. "\n AND rpt.startrepeat=(
+					SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
+					 WHERE rpt2.eventid=rpt.eventid
+					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
+					$rptwhere
+				)
+				GROUP BY ev.ev_id
+				ORDER BY rpt.startrepeat desc"
+				;
+
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+			}
+
+			$ids3 = array();
+			if ($multidayTreatment != 2 && $multidayTreatment != 3)
+			{
+				// Mutli day events
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
+						. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. $extrajoin
+						. $catwhere
+						// Must be starting before NOW otherwise would already be picked up
+						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+						. $multiday2
+						. $extrawhere
+						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "  AND icsf.state=1 "
+						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						// published state is now handled by filter
+						. "\n AND rpt.startrepeat=(
+				SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
+				 WHERE rpt2.eventid=rpt.eventid
+				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
+				$rptwhere
+			)
+			GROUP BY ev.ev_id
+			ORDER BY rpt.startrepeat"
+				;
+
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+			}
+			
+			// ensure specific event is not used more than once
+			$events = array();
+			$rows = array();
+			// future events
+			foreach ($rows1 as $val){
+				if (!in_array($val->ev_id(), $events)){
+					//echo $val->_startrepeat." ".$val->ev_id()." ".$val->title()."<br/>";
+					$events[] = $val->ev_id();
+					$rows[]=$val;
+				}
+			}
+			// straddling multi-day event
+			foreach ($rows3 as $val){
+				if (!in_array($val->ev_id(), $events)){
+					//echo $val->_startrepeat." ".$val->ev_id()." ".$val->title()."<br/>";
+					$events[] = $val->ev_id();
+					$rows[]=$val;
+				}
+			}
+			// past events 
+			foreach ($rows2 as $val){
+				if (!in_array($val->ev_id(), $events)){
+					//echo $val->_startrepeat." ".$val->ev_id()." ".$val->title()."<br/>";
+					$events[] = $val->ev_id();
+					$rows[]=$val;
+				}
+			}
+			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";			
+			unset($rows1);
+			unset($rows2);
+			unset($rows3);
+			
+		}
+		else {
+			// Display a repeating event for EACH repeat
+			// We therefore fetch 3 sets of possible repeats if necessary i.e. not over the limit!
+
+			// Find the ones after now (only if not past only)
+			$rows1 = array();
+			if ($enddate >= $t_datenowSQL && $modparams->get("pastonly", 0) != 1)
+			{
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 					. $extrajoin
-					.$catwhere 
+					. $catwhere
 					// New equivalent but simpler test
 					. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 					. $multiday
@@ -689,154 +875,157 @@ class JEventsDBModel
 					. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					// published state is now handled by filter
 					. "\n AND rpt.startrepeat=(
-				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
-				WHERE rpt2.eventid=rpt.eventid
-				AND  (
-					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
-					OR (rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
-					)
-				$rptwhere
-			) 
-			GROUP BY rpt.eventid
-			ORDER BY rpt.startrepeat"
-			;
+						SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
+						WHERE rpt2.eventid=rpt.eventid
+						AND  (
+							(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
+							OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
+							)
+						$rptwhere
+					) 
+					GROUP BY rpt.rp_id
+					ORDER BY rpt.startrepeat ASC"
+				;
 
-			// This limit will always be enough
-			$query .= " LIMIT " . $limit;
-			$db = JFactory::getDBO();
-			$db->setQuery($query);
-			//var_dump($db->loadObjectList());
-			//$ids1 = array();
-			$ids1 = $db->loadResultArray();
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+				
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+			}
+
+			// Before now (only if not past only == future events)
+			$rows2 = array();
+			if ($startdate <= $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
+			{
+				// note the order is the ones nearest today
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
+						. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. $extrajoin
+						. $catwhere
+						// New equivalent but simpler test
+						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+						. $multiday
+						. $extrawhere
+						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "  AND icsf.state=1 "
+						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						// published state is now handled by filter
+						. "\n AND rpt.startrepeat=(
+							SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
+							WHERE rpt2.eventid=rpt.eventid
+							AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
+							$rptwhere
+						)
+						GROUP BY rpt.rp_id
+						ORDER BY rpt.startrepeat desc"
+				;
+
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+
+			}
+
+			$rows3 = array();
+			if ($multidayTreatment != 2 && $multidayTreatment != 3)
+			{
+				// Mutli day events
+				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					. "\n FROM #__jevents_repetition as rpt"
+						. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. $extrajoin
+						. $catwhere
+						// Must be starting before NOW otherwise would already be picked up
+						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+						. $multiday2
+						. $extrawhere
+						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "  AND icsf.state=1 "
+						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						// published state is now handled by filter
+						. "\n AND rpt.startrepeat=(
+							SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
+							WHERE rpt2.eventid=rpt.eventid
+							AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
+							$rptwhere
+						)
+						GROUP BY rpt.rp_id
+						ORDER BY rpt.startrepeat asc"
+				;
+
+				// This limit will always be enough
+				$query .= " LIMIT " . $limit;
+
+				$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+list($usec, $sec) = explode(" ", microtime());
+$dbstart = ((float)$usec + (float)$sec);				
+				$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+list ($usec,$sec) = explode(" ", microtime());
+$dbend = (float)$usec + (float)$sec;
+//echo "query ". round($dbend - $dbstart,4)."<br/>";
+				
+			}
+			
+			// ensure specific repeat is not used more than once
+			$repeats = array();
+			$rows = array();
+			// future events
+			foreach ($rows1 as $val){
+				if (!in_array($val->rp_id(), $repeats)){
+					$repeats[] = $val->rp_id();
+					$rows[]=$val;
+				}
+			}
+			// straddling multi-day event
+			foreach ($rows3 as $val){
+				if (!in_array($val->rp_id(), $repeats)){
+					$repeats[] = $val->rp_id();
+					$rows[]=$val;
+				}
+			}
+			// past events 
+			foreach ($rows2 as $val){
+				if (!in_array($val->rp_id(), $repeats)){
+					$repeats[] = $val->rp_id();
+					$rows[]=$val;
+				}
+			}
+			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";
+			unset($rows1);
+			unset($rows2);
+			unset($rows3);
+			
 		}
-		else
-		{
-			$ids1 = array();
-		}
-
-		// Before now (only if not past only == future events)
-		if ($startdate < $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
-		{
-			// note the order is the ones nearest today
-			$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"
-					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-					. $extrajoin
-					.$catwhere 
-					// New equivalent but simpler test
-					. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-					. $multiday
-					. $extrawhere
-					. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 "
-					. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					// published state is now handled by filter
-					. "\n AND rpt.startrepeat=(
-					SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
-					 WHERE rpt2.eventid=rpt.eventid
-					AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.startrepeat >= '$startdate'
-					$rptwhere
-				)
-				GROUP BY rpt.eventid
-				ORDER BY rpt.startrepeat desc"
-			;
-
-			// This limit will always be enough
-			$query .= " LIMIT " . $limit;
-
-			$db = JFactory::getDBO();
-			$db->setQuery($query);
-			//$query = $db->replacePrefix($db->getQuery());
-			//echo $db->explain();die();
-			//echo $db->replacePrefix($db->getQuery())."<br/>";
-			$ids2 = $db->loadResultArray();
-		}
-		else
-		{
-			$ids2 = array();
-		}
-
-		$ids3 = array();
-		if ($multidayTreatment != 2 && $multidayTreatment != 3)
-		{
-			// Mutli day events
-			$query = "SELECT rpt.eventid  FROM #__jevents_repetition as rpt"
-					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-					. $extrajoin
-					.$catwhere 
-					// Must be starting before NOW otherwise would already be picked up
-					. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-					. $multiday2
-					. $extrawhere
-					. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 "
-					. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					// published state is now handled by filter
-					. "\n AND rpt.startrepeat=(
-				SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
-				 WHERE rpt2.eventid=rpt.eventid
-				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
-				$rptwhere
-			)
-			GROUP BY rpt.eventid
-			ORDER BY rpt.startrepeat"
-			;
-
-			// This limit will always be enough
-			$query .= " LIMIT " . $limit;
-
-			$db = JFactory::getDBO();
-			$db->setQuery($query);
-			//$query = $db->replacePrefix($db->getQuery());
-			//echo $db->explain();die();
-			//echo $db->replacePrefix($db->getQuery())."<br/>";
-			$ids3 = $db->loadResultArray();
-		}
-		$ids = array_merge($ids1, $ids2, $ids3);
-		array_push($ids, 0);
-		$ids = array_unique($ids);
-
-		// As an alternative to avoid the temporary table  we could use php array_unique and array_slice to get the list of ids - with no memory issues.
-
-		$ids = implode(",", $ids);
-
-		$groupby = "\n GROUP BY rpt.rp_id";
-		if ($noRepeats)
-			$groupby = "\n GROUP BY ev.ev_id";
-
-		// This version picks the details from the details table
-		// ideally we should check if the event is a repeat but this involves extra queries unfortunately
-		$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
-				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
-				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
-				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
-				. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
-				. "\n FROM #__jevents_repetition as rpt"
-				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
-				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
-				. $extrajoin
-				.$catwhere 
-				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND ev.ev_id IN (" . $ids . ")"
-				// published state is now handled by filter
-				. $groupby 
-				." ORDER BY rpt.startrepeat";
-		;
-
-		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
-
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+		
+		//echo "count rows = ".count($rows)."<Br/>";
 
 		$dispatcher = & JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
@@ -987,7 +1176,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
-		// $extrafields = "";  // must have comma prefix
+		$extrafields = "";  // must have comma prefix
 		// $extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
@@ -1034,8 +1223,6 @@ class JEventsDBModel
 				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
-
-		$accessibleCategoryList = $this->accessibleCategoryList();
 			
 		// This version picks the details from the details table
 		// ideally we should check if the event is a repeat but this involves extra queries unfortunately
@@ -1339,7 +1526,7 @@ class JEventsDBModel
 
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function listIcalEventsByRange($startdate, $enddate, $limitstart, $limit, $showrepeats = true, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="", $count=false)
-	{
+	{		
 		list($year, $month, $day) = explode('-', $startdate);
 		list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
@@ -1373,6 +1560,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix
 		$needsgroup = false;
 
 		if (!$filters)
@@ -1991,6 +2179,7 @@ class JEventsDBModel
 
 		$extrawhere = array();
 		$extrajoin = array();
+		$extrafields = "";
 			
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params = JComponentHelper::getParams("com_jevents");
@@ -2066,7 +2255,8 @@ class JEventsDBModel
 
 		$extrawhere = array();
 		$extrajoin = array();
-
+		$extrafields = "";  // must have comma prefix		
+		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory",0)){
@@ -2141,6 +2331,7 @@ class JEventsDBModel
 	function listIcalEventsByCat($catids, $showrepeats = false, $total=0, $limitstart=0, $limit=0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields="", $extratables="")
 	{
 		$db = & JFactory::getDBO();
+		$user = JFactory::getUser();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!
 		$aid = null;
@@ -2306,7 +2497,8 @@ class JEventsDBModel
 	function countIcalEventsByCat($catids, $showrepeats = false)
 	{
 		$db = & JFactory::getDBO();
-
+		$user = JFactory::getUser();
+		
 		// Use catid in accessibleCategoryList to pick up offsping too!
 		$aid = null;
 		$catidlist = implode(",", $catids);
@@ -2465,6 +2657,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix		
 		$needsgroup = false;
 
 		$filterarray = array("published");

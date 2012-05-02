@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: rss.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -44,9 +44,9 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		// removes all formating from the intro text for the description text
 		$item_description = $row->content();
-		$item_description = JFilterOutput::cleanText( $item_description );
 		if ( $this->info[ 'limit_text' ] ) {
 			if ( $this->info[ 'text_length' ] ) {
+				$item_description = JFilterOutput::cleanText( $item_description );
 				// limits description text to x words
 				$item_description_array = explode( ' ', $item_description );
 				$count = count( $item_description_array );
@@ -62,6 +62,9 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 				// do not include description when text_length = 0
 				$item_description = NULL;
 			}
+		}
+		else {
+			$item_description = "<![CDATA[$item_description]]>"  ;
 		}
 
 		// type for particular item - category name

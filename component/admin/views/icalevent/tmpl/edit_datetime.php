@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: edit_datetime.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -128,6 +128,12 @@ if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
             <td class="r1"><input type="radio" name="freq" id="WEEKLY" value="WEEKLY" onclick="toggleFreq('WEEKLY');" /><label for='WEEKLY'><?php echo JText::_( 'WEEKLY' );?></label></td>
             <td class="r2"><input type="radio" name="freq" id="MONTHLY" value="MONTHLY" onclick="toggleFreq('MONTHLY');" /><label for='MONTHLY'><?php echo JText::_( 'MONTHLY' );?></label></td>
             <td class="r1"><input type="radio" name="freq" id="YEARLY" value="YEARLY" onclick="toggleFreq('YEARLY');" /><label for='YEARLY'><?php echo JText::_( 'YEARLY' );?></label></td>
+	   <?php 
+		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		if ($params->get("dayselect",0)){
+		?>
+            <td class="r2"><input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');" /><label for='IRREGULAR'><?php echo JText::_( 'IRREGULAR' );?></label></td>
+		<?php } ?>
             </tr>
 		</table>
         </fieldset>

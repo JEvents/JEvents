@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: version.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,7 +23,7 @@ class JEventsVersion {
 	/** @var string Patch Level */
 	var $PATCH_LEVEL = '0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'Beta';
+	var $DEV_STATUS = 'Beta2';
 	/** @var string Copyright Text */
 	var $COPYRIGHT 	= 'Copyright &copy; 2006-2012';
 	/** @var string Copyright Text */

@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: jevents.defines.php 3091 2011-12-11 10:01:05Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html

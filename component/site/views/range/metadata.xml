@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ --> 
+<!-- $Id: metadata.xml 1962 2011-04-26 13:32:33Z geraintedwards $ --> 
 <metadata>
 	<view title="Date Range">
 		<message><![CDATA[Monthly View]]></message>

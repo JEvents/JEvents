@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: helper.php 3141 2011-12-29 10:13:17Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module JEvents Calendar
  * @copyright   Copyright (C) 2006-2008 JEvents Project Group

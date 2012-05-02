@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: view.html.php 2942 2011-11-01 16:12:51Z carcam $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html

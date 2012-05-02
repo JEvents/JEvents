@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: icalevent.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -36,7 +36,9 @@ class AdminIcaleventController extends JController
 
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
-
+		
+		$dispatcher	= JDispatcher::getInstance();
+		JPluginHelper::importPlugin('finder');		
 	}
 
 	/**
@@ -264,13 +266,17 @@ class AdminIcaleventController extends JController
 		{
 			$order = ($this->_largeDataSet ? "\n ORDER BY ev.created $dir" : "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
 		}
+		else if ($order == 'modified')
+		{
+			$order = ($this->_largeDataSet ? "\n ORDER BY m,odified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
+		}
 		else
 		{
 			$order = ($this->_largeDataSet ? "\n ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, a.title as _groupname " . $anonfields
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields
 					. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 					. ($this->_largeDataSet ? "" : "\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -289,7 +295,7 @@ class AdminIcaleventController extends JController
 		}
 		else
 		{
-			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, g.name AS _groupname " . $anonfields
+			$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified, g.name AS _groupname " . $anonfields
 					. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 					. ($this->_largeDataSet ? "" : "\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -857,7 +863,18 @@ class AdminIcaleventController extends JController
 			$array['jevcontent'] = JRequest::getString("jevcontent", "", "POST", JREQUEST_ALLOWRAW);
 		}
 
-		if (!JEVHelper::canCreateEvent($array))
+		// convert event data to objewct so we can test permissions
+		$eventobj = new stdClass();
+		foreach ($array as $key => $val){
+			$newkey = "_".$key;
+			$eventobj->$newkey = $val;
+		}
+		$eventobj->_icsid = $eventobj->_ics_id;
+		if (is_array($eventobj->_catid)){
+			$eventobj->_catid = current($eventobj->_catid);
+		}
+		
+		if (!JEVHelper::canCreateEvent($eventobj))
 		{
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 		}

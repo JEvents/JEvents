@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!-- $Id$ -->
+<?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
 <config>
 	<params addpath="/administrator/components/com_jevents/elements/" >
 
@@ -170,7 +170,7 @@
 		<!-- 
 		<param name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
 		//-->
-		<param name="icalkey" type="text" default='SECRET_PHRASE'  menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_CAL_KEY_DESC"/>
+		<param name="icalkey" type="text" default='SECRET_PHRASE'  menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_ICAL_KEY_DESC"/>
 		<param name="showicalicon" type="jevboolean" default="0" menu="hide" label="JEV_SHOW_ICAL_ICON" description="JEV_SHOW_ICAL_ICON_DESC"/>
 		<param name="disableicalexport" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_ICAL_EXPORT" description="JEV_DISABLE_ICAL_EXPORT_DESC"/>
 		<param name="outlook2003icalexport" type="jevboolean" default="0" menu="hide" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
@@ -186,6 +186,7 @@
 
 	<params group="JEV_EVENT_EDITING">
 		<param name="multicategory" type="jevboolean" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC'/>
+		<!--<param name="dayselect" type="jevboolean" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC'/>//-->
 		<param name="editpopup" type="jevboolean" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description='FRONTEND_EDIT_IN_POPUP_DESC'/>
 		<param name="disablerepeats" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC"/>
 		<param name="popupw" type="text" default="800" size="6" menu="hide" label='POPUP_WINDOW_WIDTH'  description='POPUP_WINDOW_WIDTH_DESC'/>

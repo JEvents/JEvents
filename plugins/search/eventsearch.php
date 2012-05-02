@@ -3,7 +3,7 @@
 /**
  * Events Calendar Search plugin for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: eventsearch.php 3247 2012-02-08 14:20:13Z geraintedwards $
  * @package     Events
  * @subpackage  Mambot Events Calendar
  * @copyright   Copyright (C) 2008-2011 GWE Systems Ltd

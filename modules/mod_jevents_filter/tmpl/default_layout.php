@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: default_layout.php 3323 2012-03-08 13:37:46Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module JEvents Filter
  * @copyright   Copyright (C) 2008 GWE Systems Ltd

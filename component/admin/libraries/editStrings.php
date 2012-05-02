@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: editStrings.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,5 +19,6 @@ $editStrings .= "var jevyears= '".JText::_("years",true)."';\n";
 $editStrings .= "var jevmonths= '".JText::_("months",true)."';\n";
 $editStrings .= "var jevweeks= '".JText::_("weeks",true)."';\n";
 $editStrings .= "var jevdays= '".JText::_("days",true)."';\n";
+$editStrings .= "var jevirregular= '".JText::_("irregular",true)."';\n";
 
 $editStrings .=" // end JEvents Language Srings\n";

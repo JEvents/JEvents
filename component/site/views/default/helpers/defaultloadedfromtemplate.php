@@ -422,6 +422,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 									{
 										$times = $start_time;
 									}
+									else if ($row->alldayevent())
+									{
+										$times = "";
+									}								
 									else if ($start_time != $stop_time && !$row->alldayevent())
 									{
 										$times = $start_time . '&nbsp;-&nbsp;' . $stop_time_midnightFix;
@@ -442,6 +446,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 										$times = $start_time . '&nbsp;';
 									}
 								}
+								else if ($row->alldayevent())
+								{
+									$times = "";
+								}								
 								else
 								{
 									$times = $start_time . '&nbsp;-&nbsp;' . $stop_time_midnightFix . '&nbsp;';

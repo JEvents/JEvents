@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: mod_jevents_latest.php 3309 2012-03-01 10:07:50Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module Latest JEvents
  * @copyright   Copyright (C) 2006-2008 JEvents Project Group

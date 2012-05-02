@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id$
+ * @version     $Id: overview.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -55,6 +55,9 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 			</th>
 			<th width="20%" nowrap="nowrap">
 				<?php echo JHTML::_('grid.sort',  'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order,"icalevent.list"); ?>
+			</th>
+			<th width="20%" nowrap="nowrap">
+				<?php echo JHTML::_('grid.sort',  'JEV_MODIFIED', 'modified', $orderdir, $order,"icalevent.list"); ?>
 			</th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
 		</tr>
@@ -119,6 +122,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 				?>
               	</td>
               	<td align="center"><?php echo $row->created();?></td>
+              	<td align="center"><?php echo $row->modified;?></td>
               	<td align="center"><?php echo $row->_groupname;?></td>
             </tr>
             <?php
