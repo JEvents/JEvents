@@ -910,6 +910,11 @@ class DefaultModLatestView
 				$content .= JEventsHTML::special($catobj);
 				break;
 
+			case 'categoryimage':
+				$catobj = $dayEvent->getCategoryImage();
+				$content .= $catobj;
+				break;
+			
 			case 'calendar':
 				$catobj = $dayEvent->getCalendarName();
 				$content .= JEventsHTML::special($catobj);
