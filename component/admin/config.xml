@@ -2,7 +2,7 @@
 <config>
 	<params addpath="/administrator/components/com_jevents/elements/" >
 
-		<param name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+		<param name="com_calViewName" type="jevview" default="geraint" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 		<param name="darktemplate" type="jevboolean" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 
 		<param name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
@@ -52,7 +52,7 @@
 	</params>
 
 	<params  group="JEV_TAB_COMPONENT">
-		<param name="com_calViewName" type="jevview" default='GERAINT'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+		<param name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 		<param name="darktemplate" type="jevboolean" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 		
 		<param name="com_dateformat" type="list" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC">
