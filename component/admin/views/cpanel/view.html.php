@@ -399,8 +399,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
-			if (realpath($manifest) != $manifest)
-				continue;
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 

@@ -11,7 +11,6 @@
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
-		<filename>mod_jevents_latest_ReadMe.txt</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
