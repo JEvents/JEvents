@@ -861,8 +861,8 @@ class JEVHelper
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
 				// check multi cats too
-				if ($row->catids()){
-					if (count( array_diff($row->catids(true), $allowedcats))){
+				if (JEVHelper::rowCatids($row)){
+					if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
 						return false;
 					}
 				}
@@ -966,8 +966,8 @@ class JEVHelper
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
 			// check multi cats too
-			if ($row->catids()){
-				if (count( array_diff($row->catids(true), $allowedcats))){
+			if (JEVHelper::rowCatids($row)){
+				if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
 					return false;
 				}
 			}
@@ -1246,8 +1246,8 @@ class JEVHelper
 				if (!in_array($row->_catid, $allowedcats))
 					return false;
 				// check multi cats too
-				if ($row->catids()){
-					if (count( array_diff($row->catids(true), $allowedcats))){
+				if (JEVHelper::rowCatids($row)){
+					if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
 						return false;
 					}
 				}
@@ -1416,8 +1416,8 @@ class JEVHelper
 			if (!in_array($row->_catid, $allowedcats))
 				return false;
 			// check multi cats too
-			if ($row->catids()){
-				if (count( array_diff($row->catids(true), $allowedcats))){
+			if (JEVHelper::rowCatids($row)){
+				if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
 					return false;
 				}
 			}
@@ -1864,5 +1864,26 @@ class JEVHelper
 			if (!$result) return false;
 		}
 		return $result;
+	}
+	
+	static public function rowCatids(&$row){
+		if (isset($row->_catids)){
+			if (isset($row->_catidsarray)){
+				return $row->_catidsarray;
+			}
+			$catids = $row->_catids;
+			if (is_string($catids) && strpos( $catids, ",")>0){
+				$catids = str_replace('"','', $catids);
+				$catids = explode(",",$catids);
+			}
+			if (!is_array($catids)){
+				$catids = array($catids);
+			}
+			JArrayHelper::toInteger($catids);
+			$row->_catidsarray= $catids;
+			return $catids;
+		}
+		return false;
+		
 	}
 }
