@@ -626,7 +626,7 @@ class JEventsHTML
 					{
 						//$contactlink = '<a href="mailto:' . $userdet->email
 						//. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'
-						//. $userdet->username . '</a>';						
+						//. $userdet->username . '</a>';
 						$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
 					}
 					else
