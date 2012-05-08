@@ -23,7 +23,7 @@ if (count($filterHTML)>0){
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
 	?>
-	<input type='text' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut);?>' />
+	<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut);?>' />
 	<table cellpadding="0" cellspacing="0" border="0">
 	<?php	
 	

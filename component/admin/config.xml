@@ -185,7 +185,7 @@
 	</params>
 
 	<params group="JEV_EVENT_EDITING">
-		<!--<param name="multicategory" type="jevboolean" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC'/>//-->
+		<param name="multicategory" type="jevboolean" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC'/>
 		<!--<param name="dayselect" type="jevboolean" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC'/>//-->
 		<param name="editpopup" type="jevboolean" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description='FRONTEND_EDIT_IN_POPUP_DESC'/>
 		<param name="disablerepeats" type="jevboolean" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC"/>
