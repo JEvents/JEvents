@@ -612,6 +612,7 @@ class JEventsHTML
 		{
 			if (!isset($arr_userids[$userid]))
 			{
+                                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$userdet = JEVHelper::getContact($userid);
 
 				$contactlink = "";
@@ -627,11 +628,19 @@ class JEventsHTML
 						//$contactlink = '<a href="mailto:' . $userdet->email
 						//. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'
 						//. $userdet->username . '</a>';
-						$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
+                                            if ($params->get('contact_display_name', 0) == 1) {
+						$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->username, 0);
+                                            } else {
+                                                $contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->username, 0);
+                                            }
 					}
 					else
 					{
+                                            if ($params->get('contact_display_name', 0) == 1) {
 						$contactlink = $userdet->username;
+                                            } else {
+                                                $contactlink = $userdet->name;
+                                            }
 					}
 				}
 				$arr_userids[$userid] = $contactlink;
