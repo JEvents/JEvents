@@ -513,7 +513,7 @@ class JEventsDBModel
 				. " \n AND icsf.state=1"
 				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 				// published state is now handled by filter
-				. "\n AND rpt.startrepeat=(SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')"
+				. "\n AND rpt.startrepeat=(SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate')"
 				. "\n GROUP BY ev.ev_id";
 
 		// always in reverse hits  order!
@@ -699,7 +699,7 @@ class JEventsDBModel
 				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
 				WHERE rpt2.eventid=rpt.eventid
 				AND  (
-					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.endrepeat <= '$enddate')
+					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate')
 					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
 					)
 				$rptwhere
