@@ -767,7 +767,7 @@ $dbend = (float)$usec + (float)$sec;
 //echo "query ". round($dbend - $dbstart,4)."<br/>";
 			}
 
-			$ids3 = array();
+			$row3 = array();
 			if ($multidayTreatment != 2 && $multidayTreatment != 3)
 			{
 				// Mutli day events

@@ -31,6 +31,7 @@ class CsvLine {
     var $dtend;
     var $timezone;
     var $rrule;
+    var $noendtime;
     var $cf;
     /**
      * default constructor with manatory parameters
@@ -100,7 +101,15 @@ class CsvLine {
         $this->rrule = trim($rrule);
     }
 
-    public function Customfield($cf, $col) {
+    public function getNoendtime() {
+        return $this->noendtime;
+    }
+
+    public function setNoendtime($noendtime) {
+        $this->noendtime = intval($noendtime);
+    }
+
+	public function Customfield($cf, $col) {
         $this->cf[$col] = $cf;
     }
 	
@@ -170,6 +179,7 @@ class CsvLine {
         if($this->contact != "") $ical .= "CONTACT:".$this->contact."\n";
         if($this->extraInfo != "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
         if($this->rrule != "") $ical .= "RRULE:".$this->rrule."\n";
+        if($this->noendtime!= "") $ical .= "NOENDTIME:".$this->noendtime."\n";
 
 	if (count($this->cf)>0){
 		foreach($this->cf as $key => $cf){
