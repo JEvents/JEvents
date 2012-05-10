@@ -1073,7 +1073,7 @@ class JEVHelper
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				$key = $row->catids()?json_encode($row->catids()):json_encode($key);
+				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
 				if (!isset($authdata_coreedit[$key])){
 					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
