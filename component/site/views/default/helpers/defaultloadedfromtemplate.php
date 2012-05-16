@@ -370,10 +370,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 						$replace[] = $stop_date;
 						$blank[] = "";
 						$search[] = "{{STARTTIME}}";
-						$replace[] = $start_time;
+						$replace[] = $row->alldayevent()?"":$start_time;
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
-						$replace[] = $stop_time_midnightFix;
+						$replace[] = ($row->noendtime()||$row->alldayevent())?"":$stop_time_midnightFix;
 						$blank[] = "";
 
 						// these would slow things down if not needed in the list

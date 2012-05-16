@@ -832,13 +832,13 @@ class AdminIcalrepeatController extends JController
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN (" . implode(",", $detailids) . ")";
 				$db->setQuery($query);
 				$db->query();
-			}
 
-			// I also need to clean out associated custom data
-			$dispatcher = & JDispatcher::getInstance();
-			// just incase we don't have jevents plugins registered yet
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventDetails', array(implode(",", $detailids)));
+				// I also need to clean out associated custom data
+				$dispatcher = & JDispatcher::getInstance();
+				// just incase we don't have jevents plugins registered yet
+				JPluginHelper::importPlugin("jevents");
+				$res = $dispatcher->trigger('onDeleteEventDetails', array(implode(",", $detailids)));
+			}
 
 			// setup exception data
 			foreach ($rp_ids as $rp_id)
@@ -861,8 +861,8 @@ class AdminIcalrepeatController extends JController
 			$db->setQuery($query);
 			$db->query();
 
-			// Also clear out defund exceptions
-			$query = "DELETE FROM #__jevents_exception WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
+			// Also clear out defunct exceptions
+			$query = "DELETE FROM #__jevents_exception WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "' and exception_type=1 ";
 			$db->setQuery($query);
 			$db->query();
 		}

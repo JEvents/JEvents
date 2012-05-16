@@ -631,7 +631,7 @@ class JEventsHTML
 					}
 					else
 					{
-						$contactlink = $userdet->username;
+						$contactlink = $userdet->name;
 					}
 				}
 				$arr_userids[$userid] = $contactlink;
