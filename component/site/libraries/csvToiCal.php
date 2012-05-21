@@ -167,9 +167,6 @@ class CsvToiCal
 				case "DTSTART":
 				case "DTEND":
 					break;
-				case "NOENDTIME":
-					$dataLine->setNoendtime($data[$order]);					
-					break;
 				default:
 					$dataLine->customField($data[$order], $col);
 					break;

@@ -11,9 +11,13 @@
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
+		<filename>mod_jevents_latest_ReadMe.txt</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
+        <languages folder="languages">
+		<language tag="en-GB">en-GB.mod_jevents_latest.ini</language>
+	</languages>
 	<params addpath="/administrator/components/com_jevents/elements/">
 		<param name="@spacer" type="jevinfo" default="JEV PARAMS"   label="" description="" />			
 		<param name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" />

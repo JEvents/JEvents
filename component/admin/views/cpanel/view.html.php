@@ -165,10 +165,9 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 			if (JVersion::isCompatible("1.6"))
 			{
-				// this caching doesn't work!!!
-				//$cache = JFactory::getCache('feed_parser', 'callback');
-				//$cache->setLifeTime($cache_time);
-				//$cache->setCaching(true);
+				$cache = JFactory::getCache('feed_parser', 'callback');
+				$cache->setLifeTime($cache_time);
+				$cache->setCaching(true);
 
 				$rssDoc = new SimplePie(null, null, 0);
 
@@ -177,8 +176,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 				$rssDoc->force_feed(true);
 				$rssDoc->set_item_limit(999);
 
-				//$results = $cache->get(array($rssDoc, 'init'), null, false, false);
-				$results = $rssDoc->init();
+				$results = $cache->get(array($rssDoc, 'init'), null, false, false);
 			}
 			else
 			{
@@ -360,7 +358,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						$output .= '</td></tr>';
 						$k = ($k + 1) % 2;
 					}
-					$output .= '</table>';
+					$output .= '</table';
 					$needsupdate = true;
 					return $output;
 				}
@@ -401,6 +399,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
+			if (realpath($manifest) != $manifest)
+				continue;
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 
