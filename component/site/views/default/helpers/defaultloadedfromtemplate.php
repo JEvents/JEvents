@@ -619,6 +619,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
+		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
+		$template_value = str_replace("@", "@£@", $template_value);
 		$params =new JParameter(null);
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
@@ -631,6 +633,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
 		}
 		$template_value = $tmprow->text;
+		$template_value = str_replace( "@£@", "@",$template_value);
 		
 		echo $template_value;
 		return true;
