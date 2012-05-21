@@ -714,6 +714,14 @@ class JEventsDataModel {
 
 		$row = $this->queryModel->listEventsById ($rpid, 1, $jevtype);  // include unpublished events for publishers and above
 
+		// if the event is not published then make sure the user can edit or publish it or created it before allowing it to be seen!
+		if ($row && !$row->published()) {
+			$user= JFactory::getUser();
+			if ($user->id!=$row->created_by() && !JEVHelper::canEditEvent($row)  && !JEVHelper::canPublishEvent($row)  && !JEVHelper::isAdminUser($user) ) {
+				$row=null;
+			}
+		}
+		
 		$num_row = count($row);
 
 		// No matching rows - use uid as alternative
@@ -724,7 +732,7 @@ class JEventsDataModel {
 				$num_row = count($row);
 			}
 		}
-
+		
 		if( $num_row ){
 
 			// process the new plugins
