@@ -862,7 +862,11 @@ class AdminIcaleventController extends JController
 		{
 			$array['jevcontent'] = JRequest::getString("jevcontent", "", "POST", JREQUEST_ALLOWRAW);
 		}
-
+		// convert nl2br if there is no HTML
+		if (strip_tags($array['jevcontent'] ) == $array['jevcontent'] ){
+			$array['jevcontent']  = nl2br($array['jevcontent'] );
+		}
+		
 		// convert event data to objewct so we can test permissions
 		$eventobj = new stdClass();
 		foreach ($array as $key => $val){

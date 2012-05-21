@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade">
 	<name>JEvents Filter</name>
-	<creationDate>March 2012</creationDate>
+	<creationDate>May 2012</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd</copyright>	  
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
