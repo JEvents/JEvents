@@ -12,7 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="jevents">
 	<?php if (isset($this->warning))
-	{ ?>
+	{
+		?>
 		<dl id="system-message">
 			<dt class="notice">Message</dt>
 			<dd class="notice fade">
@@ -123,56 +124,57 @@ defined('_JEXEC') or die('Restricted access');
 							}
 							?>
 							<div style="width: 100%;">
-								<?php echo $clubnews; ?>
+							<?php echo $clubnews; ?>
 							</div> <?php
+							if (!JVersion::isCompatible("1.6"))
+							{
+								echo $tabs->endPanel();
+							}
+						}
 						if (!JVersion::isCompatible("1.6"))
 						{
 							echo $tabs->endPanel();
 						}
-					}
-					if (!JVersion::isCompatible("1.6"))
-					{
-						echo $tabs->endPanel();
-					}
-					$needsupdate = false;
-					$clubnews = $this->renderVersionsForClipboard();
-					if ($clubnews)
-					{
-						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
+						$needsupdate = false;
+						$clubnews = $this->renderVersionsForClipboard();
+						if ($clubnews)
+						{
+							$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
+							if (JVersion::isCompatible("1.6"))
+							{
+								echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
+							}
+							else
+							{
+								echo $tabs->startPanel($label, 'cpanelstatustextarea');
+							}
+							?>
+							<div style="width: 100%;">
+								<h3><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION"); ?></h3>
+							<?php echo $clubnews; ?>
+							</div> <?php
+							if (!JVersion::isCompatible("1.6"))
+							{
+								echo $tabs->endPanel();
+							}
+						}
 						if (JVersion::isCompatible("1.6"))
 						{
-							echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
+							echo JHtml::_('sliders.end');
 						}
 						else
 						{
-							echo $tabs->startPanel($label, 'cpanelstatustextarea');
-						}
-								?>
-							<div style="width: 100%;">
-								<h3><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></h3>
-								<?php echo $clubnews; ?>
-							</div> <?php
-						if (!JVersion::isCompatible("1.6"))
-						{
-							echo $tabs->endPanel();
+							echo $tabs->endPane();
 						}
 					}
-					if (JVersion::isCompatible("1.6"))
-					{
-						echo JHtml::_('sliders.end');
-					}
-					else
-					{
-						echo $tabs->endPane();
-					}
-				}
-				?>
+					?>
 				</td>
 			</tr>
 		</table>
 		<p align="center">
 			<a href="<?php $version = & JEventsVersion::getInstance();
-					echo $version->getUrl(); ?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
+					echo $version->getUrl();
+					?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
 			&nbsp;
 			<span style="color:#999999; font-size:9px;"><?php echo $version->getShortCopyright(); ?></span>
 		</p>

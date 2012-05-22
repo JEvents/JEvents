@@ -360,7 +360,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						$output .= '</td></tr>';
 						$k = ($k + 1) % 2;
 					}
-					$output .= '</table';
+					$output .= '</table>';
 					$needsupdate = true;
 					return $output;
 				}
