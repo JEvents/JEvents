@@ -400,7 +400,7 @@ class DefaultModLegendView
 		$st1 = "background-color:" . $row->color . ";color:" . JevMapColor($row->color);
 		//$cat = $row->id > 0 ? "&catids=$row->id" : "&catids=$availableCatsIds";
 		$cat = $row->id > 0 ? "&catids=$row->id" : "";
-		$content = "<li style='list-style:none;margin-top:5px;'>"
+		$content = "\n<li style='list-style:none;margin-top:5px;'>"
 				. "<div class='event_legend_name' style='" . $st1 . "'>"
 				//."$row->name ($row->id)</div>"
 				. "<a href='" . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "' style='color:inherit'>"
