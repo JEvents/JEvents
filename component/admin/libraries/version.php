@@ -23,7 +23,7 @@ class JEventsVersion {
 	/** @var string Patch Level */
 	var $PATCH_LEVEL = '0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'Beta3';
+	var $DEV_STATUS = 'RC1';
 	/** @var string Copyright Text */
 	var $COPYRIGHT 	= 'Copyright &copy; 2006-2012';
 	/** @var string Copyright Text */
