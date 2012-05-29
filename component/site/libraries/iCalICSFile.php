@@ -260,22 +260,33 @@ RAWTEXT;
 				// if existing category then use it
 				if (!$this->ignoreembedcat && strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
-					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
-						$vevent->catid = $categories[$evcat[0]]->id;
-					}
-					// if no such category then create it
-					else if (count($evcat)>0) {
+					if (count($evcat)>0) {
 						include_once(JEV_ADMINLIBS."categoryClass.php");
-						$cat = new JEventsCategory($db);
-						$cat->bind(array("title"=>$evcat[0]));
-						$cat->published=1;
-						$cat->store();
-						$vevent->catid = $cat->id;
+						foreach ($evcat as $ct){
+							// if no such category then create it/them
+							if(!array_key_exists($ct,$categories)){
+								$cat = new JEventsCategory($db);
+								$cat->bind(array("title"=>$ct));
+								$cat->published=1;
+								$cat->store();
+							}
+						}
 						// must reset  the list of categories now
 						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
+
+						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+						if ($params->get("multicategory",0) && count($evcat)>1){
+							$vevent->catid = array();
+							foreach ($evcat as $ct){
+								$vevent->catid[] =  $categories[$ct]->id;
+							}							
+						}
+						else {
+							$vevent->catid =  $categories[$evcat[0]]->id;							
+						}
 					}
 				}
 				else {
@@ -360,23 +371,33 @@ RAWTEXT;
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence())){
 				// if existing category then use it
 				if (strlen($vevent->_detail->categories)>0){
-					$evcat = explode(",",$vevent->_detail->categories);
-					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
-						$vevent->catid = $categories[$evcat[0]]->id;
-					}
-					// if no such category then create it
-					else if (count($evcat)>0) {
+					if (count($evcat)>0) {
 						include_once(JEV_ADMINLIBS."categoryClass.php");
-						$cat = new JEventsCategory($db);
-						$cat->bind(array("title"=>$evcat[0]));
-						$cat->published=1;
-						$cat->store();
-						$vevent->catid = $cat->id;
+						foreach ($evcat as $ct){
+							// if no such category then create it/them
+							if(!array_key_exists($ct,$categories)){
+								$cat = new JEventsCategory($db);
+								$cat->bind(array("title"=>$ct));
+								$cat->published=1;
+								$cat->store();
+							}
+						}
 						// must reset  the list of categories now
 						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
+
+						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+						if ($params->get("multicategory",0) && count($evcat)>1){
+							$vevent->catid = array();
+							foreach ($evcat as $ct){
+								$vevent->catid[] =  $categories[$ct]->id;
+							}							
+						}
+						else {
+							$vevent->catid =  $categories[$evcat[0]]->id;							
+						}
 					}
 				}
 				else {
