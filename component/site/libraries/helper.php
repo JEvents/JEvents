@@ -1451,7 +1451,9 @@ class JEVHelper
 			if (!isset($authdata_coredeleteall[$key])){
 				$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 			}
-			return $authdata_coredeleteall[$key];
+			if ($authdata_coredeleteall[$key]) {
+				return $authdata_coredeleteall[$key];
+			}
 		}
 
 		// can delete all?
@@ -1470,11 +1472,16 @@ class JEVHelper
 				if (!isset($authdata_coredeleteall[$key])){
 					$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 				}
-				return $authdata_coredeleteall[$key];
+				if ($authdata_coredeleteall[$key]) {
+					return $authdata_coredeleteall[$key];
+				}
 			}			
-			return true;
 		}
-		else if ($row->created_by() == $user->id)
+		
+		// There seems to be a problem with category permissions - sometimes Joomla ACL set to yes in category but result is false!
+		
+		// fall back to being able to delete own events if a publisher
+		if ($row->created_by() == $user->id)
 		{
 			$jevuser = & JEVHelper::getAuthorisedUser();
 			if (!is_null($jevuser))
@@ -1860,6 +1867,8 @@ class JEVHelper
 		JArrayHelper::toInteger($catids);
 		$result = count($catids)>0;
 		foreach ($catids as $catid){
+			// this is an invalid category so skip it!
+			if ($catid==0) continue;
 			$result = $user->authorise($action, 'com_jevents.category.'.$catid) ? true : false;
 			if (!$result) return false;
 		}

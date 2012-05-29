@@ -41,7 +41,9 @@ if (!(version_compare(JVERSION, '1.6.0', ">=")))
  */
 function plgSearchEventsSearchAreas()
 {
-	JPlugin::loadLanguage("search","eventsearch");
+	$lang = JFactory::getLanguage();
+	$lang ->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
+	
 	if (version_compare(JVERSION, '1.6.0', ">="))
 	{
 		return array(

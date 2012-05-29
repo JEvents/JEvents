@@ -1092,6 +1092,10 @@ class AdminIcaleventController extends JController
 			$db->setQuery($query);
 			$db->query();
 
+			$query = "DELETE FROM #__jevents_catmap WHERE evid IN ($veventidstring)";
+			$db->setQuery($query);
+			$db->query();
+
 			if (strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";

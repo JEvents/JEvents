@@ -382,6 +382,7 @@ class JEV_CommonFunctions {
 		$adminuser = $cat->getAdminUser();
 
 		$adminEmail	= $adminuser->email;
+		$adminName	= $adminuser->name;
 		$config = new JConfig();
 		$sitename =  $config->sitename;
 
