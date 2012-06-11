@@ -117,7 +117,7 @@ class AdminIcaleventController extends JController
 			$cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
 			if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly)
 			{
-				if ($cats > 0 && $catid < 1)
+				if (count($cats) > 0 && $catid < 1)
 				{
 					for ($i = 0; $i < count($cats); $i++)
 					{
@@ -130,7 +130,7 @@ class AdminIcaleventController extends JController
 					}
 					$where[] = '(' . implode(" OR ", $whereCats) . ')';
 				}
-				else if ($cats > 0 && $catid > 0 && in_array($catid, $cats))
+				else if (count($cats) > 0 && $catid > 0 && in_array($catid, $cats))
 				{
 					if ($params->get("multicategory",0)){					
 						$where[] = "catmap.catid='$catid'";

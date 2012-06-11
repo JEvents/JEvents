@@ -192,15 +192,15 @@ div.eventstyle {
 * List style
 **************************/
 ul.ev_ul {
-	list-style:none;
-	padding:0px;
-	margin:5px;
+	list-style:none!important;
+	padding:0px!important;
+	margin:5px!important;
 }
 ul.ev_ul li.ev_td_li {
   	border-style:solid;
   	border-width:0 0 0 5px;
-  	margin-bottom:1px;
-  	padding-left:2px;
+  	margin-bottom:1px!important;
+  	padding-left:3px!important;
   	background-image:none
 }
 a.ev_link_cat:link {
