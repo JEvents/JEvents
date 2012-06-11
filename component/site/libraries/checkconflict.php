@@ -293,7 +293,7 @@ function simulateSaveEvent($requestObject)
 			throwerror(JText::_('ALERTNOTAUTH'));
 		}
 	}
-
+	$row = false;
 
 	// do dry run of event saving!
 	if ($event = SaveIcalEvent::save($array, $queryModel, $rrule, true))
@@ -301,6 +301,10 @@ function simulateSaveEvent($requestObject)
 
 		$row = new jIcalEventDB($event);
 		$row->repetitions = $event->_repetitions;
+		if (is_array($row->_catid)){
+			$row->_catids = $row->_catid;
+			$row->_catid = $row->_catid[0];
+		}
 	}
 	else
 	{
@@ -468,24 +472,26 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		$dbModel = new JEventsDBModel($dataModel);
 
 		// First of all check for Category overlaps
-		$skipCatTest = false;
-		$catinfo = $dbModel->getCategoryInfo(array($testevent->catid()));
-		if ($catinfo && count($catinfo) == 1)
+		$skipCatTest = true;
+		$catinfo = $dbModel->getCategoryInfo( $testevent->catids() ? $testevent->catids() : array($testevent->catid()));
+		if ($catinfo && count($catinfo)  >0)
 		{
-			$catinfo = current($catinfo);
-			if (JVersion::isCompatible("1.6.0"))
+			foreach ($catinfo as $ci)
 			{
-				$catparams = json_decode($catinfo->params);
-				if (!$catparams->overlaps)
+				if (JVersion::isCompatible("1.6.0"))
 				{
-					$skipCatTest = true;
+					$catparams = json_decode($ci->params);
+					if ($catparams->overlaps)
+					{
+						$skipCatTest = false;
+					}
 				}
-			}
-			else
-			{
-				if (!$catinfo->overlaps)
+				else
 				{
-					$skipCatTest = true;
+					if ($ci->overlaps)
+					{
+						$skipCatTest = false;
+					}
 				}
 			}
 		}
