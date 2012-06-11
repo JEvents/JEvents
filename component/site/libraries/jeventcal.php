@@ -289,6 +289,16 @@ class jEventCal {
 			 $arr_catids = $db->loadObjectList('id') ;
 			
 		}
+		$catids = $this->catids();
+		if($catids && is_array($catids)){
+			$res = array();
+			foreach ($catids  as $catid){
+				if (isset($arr_catids[$catid])) {
+					$res[] = $arr_catids[$catid];
+				}
+			}
+			return $res;
+		}
 		$catid = intval($this->catid());
 		if (isset($arr_catids[$catid])) {
 			return $arr_catids[$catid];
@@ -299,6 +309,13 @@ class jEventCal {
 	
 	function getCategoryName( ){		
 		$data = $this->getCategoryData();
+		if (is_array($data)){
+			$res = array();
+			foreach ($data  as $cat){
+				$res[] = $cat->name;
+			}
+			return implode(", ", $res);
+		}
 		if ($data) {
 			return $data->name;
 		}
@@ -307,6 +324,9 @@ class jEventCal {
 
 	function getCategoryImage( ){
 		$data = $this->getCategoryData();
+		if (is_array($data)) {
+			$data = $data[0];
+		}
 		if ($data){
 			if (JVersion::isCompatible("1.6.0") ){
 				$params = json_decode($data->params);
@@ -326,6 +346,9 @@ class jEventCal {
 
 	function getCategoryDescription( ){
 		$data = $this->getCategoryData();
+		if (is_array($data)) {
+			$data = $data[0];
+		}
 		if ($data) {
 			return $data->description;
 		}
