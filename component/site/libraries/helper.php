@@ -838,11 +838,18 @@ class JEVHelper
 			{
 				if ($user->authorise('core.create', 'com_jevents'))
 					return true;
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.create');
-				if (in_array($row['catid'], $cats))
+				$allowedcats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.create');
+				if (!in_array($row->_catid, $allowedcats))
 				{
-					return true;
+					return false;
 				}
+				// check multi cats too
+				if (JEVHelper::rowCatids($row)){
+					if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
+						return false;
+					}
+				}
+
 			}
 		}
 		else {

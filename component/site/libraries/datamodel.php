@@ -1231,7 +1231,7 @@ class JEventsDataModel {
 
 		list( $adate, $atime ) = explode( ' ', $a->publish_up() );
 		list( $bdate, $btime ) = explode( ' ', $b->publish_up() );
-
+		
 		// allday events first, equal time sort by title
 		$atime = $a->alldayevent() ? '00:00'.$a->title() : $atime.$a->title();
 		$btime = $b->alldayevent() ? '00:00'.$b->title() : $btime.$b->title();

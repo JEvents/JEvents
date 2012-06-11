@@ -599,13 +599,14 @@ div.jev_pagination {
 	text-align:center;
 }
 /***************************
-* Daily View 
+* List View 
 ***************************/
 #jevents_body li.ev_td_li{ 
 	border-style:solid;
 	border-width:0px 0px 1px 5px;
 	display:block;
-	margin:0px 10px;
+	margin:1px 10px;
+	padding-left:3px;
 	list-style-type:none!important;
 }
 

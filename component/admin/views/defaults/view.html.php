@@ -76,7 +76,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		include_once(JPATH_ADMINISTRATOR.DS."includes".DS."toolbar.php");
 		// TODO find the active admin template
-		JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
+		if (!JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
