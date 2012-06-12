@@ -33,7 +33,7 @@ class JElementJevtimezone extends JElementText
 				$options = array();
 				$options[]	= JHTML::_('select.option', '', '- '.JText::_( 'SELECT_TIMEZONE' ).' -');
 				foreach ($zones as $zone) {
-					if (strpos($zone,"/")===false) continue;
+					if (strpos($zone,"/")===false && strpos($zone,"UTC")===false)  continue;
 					if (strpos($zone,"Etc")===0) continue;
 					$options[]	= JHTML::_('select.option', $zone, $zone);
 				}

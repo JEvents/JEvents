@@ -663,8 +663,12 @@ class JEventsDBModel
 		{
 			// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 			// i.e. the event settings are used
-			$multiday = "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
-			$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			// This is the true version of these conditions
+			//$multiday = "\n AND ((rpt.startrepeat >= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			//$multiday2 = "\n AND ((rpt.startrepeat <= '$startdate' AND det.multiday=0) OR  det.multiday=1)";
+			// BUT this is logically equivalent and appears much faster  on some databases
+			$multiday = "\n AND (rpt.startrepeat >= '$startdate' OR  det.multiday=1)";
+			$multiday2 = "\n AND (rpt.startrepeat <= '$startdate'OR  det.multiday=1)";			
 		}
 
 		if ($noRepeats)
@@ -791,14 +795,20 @@ $dbend = (float)$usec + (float)$sec;
 						. "  AND icsf.state=1 "
 						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 						// published state is now handled by filter
+						// This is the correct approach but can be slow
+						/*
 						. "\n AND rpt.startrepeat=(
 				SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
 				 WHERE rpt2.eventid=rpt.eventid
 				AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'
 				$rptwhere
-			)
-			GROUP BY ev.ev_id
-			ORDER BY rpt.startrepeat"
+			)"		
+						 */
+						// This is the alternative - it could produce unexpected results if you have overlapping repeats over 'now' but this is  low risk
+						."\n AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'"
+						
+						." \n GROUP BY ev.ev_id
+						ORDER BY rpt.startrepeat"
 				;
 
 				// This limit will always be enough

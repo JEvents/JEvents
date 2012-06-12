@@ -63,6 +63,9 @@ JHTML::_('behavior.tooltip');
 jimport('joomla.html.pane');
 $tabs = & JPane::getInstance('tabs');
 
+$document = JFactory::getDocument();
+$js = '	window.addEvent(\'load\', function(){ document.getElements(\'dt.event\').each(function(tab){ tab.fireEvent(\'click\'); })  });';
+$document->addScriptDeclaration($js);
 
 // these are needed for front end admin
 ?>
