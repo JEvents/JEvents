@@ -805,7 +805,7 @@ $dbend = (float)$usec + (float)$sec;
 			)"		
 						 */
 						// This is the alternative - it could produce unexpected results if you have overlapping repeats over 'now' but this is  low risk
-						."\n AND rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat >= '$t_datenowSQL'"
+						."\n AND rpt.startrepeat <= '$t_datenowSQL' AND rpt.endrepeat >= '$t_datenowSQL'"
 						
 						." \n GROUP BY ev.ev_id
 						ORDER BY rpt.startrepeat"
