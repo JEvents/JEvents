@@ -233,6 +233,10 @@ class plgSearchEventsearch extends JPlugin
 
 			$where_ical .= $extraor;
 		}
+		// some of the where statements may already be escaped 
+		$where_ical = str_replace("%'%'","%'",$where_ical );
+		$where_ical = str_replace("''","'",$where_ical );
+		$where_ical = str_replace("'%'%","'%",$where_ical );
 
 		$morder = '';
 		$morder_ical = '';
