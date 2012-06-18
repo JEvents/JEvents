@@ -112,8 +112,8 @@
 		<param name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" description="JEV_TIMEZONE_2_DESC"/>
 		
 		<param name="regexsearch" type="list" default="1" label="JEV_SEARCH_TYPE" description="JEV_SEARCH_TYPE_DESC">
-			<option value="0">JEV_REGEX</option>
-			<option value="1">JEV_FULL_TEXT</option>
+			<option value="1">JEV_REGEX</option>
+			<option value="0">JEV_FULL_TEXT</option>
 		</param>		
 		
 		<param name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC"/>
