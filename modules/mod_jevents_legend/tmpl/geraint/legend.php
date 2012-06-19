@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-include(dirname(__FILE__)."/../default/legend.php");
+include_once(JPATH_SITE."/modules/mod_jevents_legend/tmpl/default/legend.php");
 
 class GeraintModLegendView extends DefaultModLegendView{
 
