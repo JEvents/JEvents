@@ -1482,6 +1482,10 @@ class JEVHelper
 				if ($authdata_coredeleteall[$key]) {
 					return $authdata_coredeleteall[$key];
 				}
+			}	
+			else {
+				// in Joomla 1.5 this is enough
+				return true;
 			}			
 		}
 		
