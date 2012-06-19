@@ -15,7 +15,7 @@ $viewimages = $viewpath . "/images";
 
 $view =  $this->getViewName();
 
-$data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
+$this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
 
 // previous and following month names and links
 $followingWeek = $this->datamodel->getFollowingWeek($this->year, $this->month, $this->day);

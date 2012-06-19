@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	 = & JEVConfig::getInstance();
 
-$data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
+$this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
 
 $option = JEV_COM_COMPONENT;
 $Itemid = JEVHelper::getItemid();

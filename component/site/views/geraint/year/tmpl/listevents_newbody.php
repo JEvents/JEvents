@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Note that using a $limit value of -1 the limit is ignored in the query
-$data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);
+$this->data = $data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $row = $params->get("row","");

@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	 = & JEVConfig::getInstance();
 
-$data = $this->datamodel->getDataForAdmin( $this->creator_id, $this->limit, $this->limitstart );
+$this->data = $data = $this->datamodel->getDataForAdmin( $this->creator_id, $this->limit, $this->limitstart );
 
 $frontendPublish = intval($cfg->get('com_frontendPublish', 0)) > 0;
 

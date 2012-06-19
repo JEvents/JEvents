@@ -1499,7 +1499,7 @@ class JEVHelper
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 1);
 			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && $publishown)
+			if (!$authorisedonly && ($publishown ||  JEVHelper::canPublishEvent($row, $user)))
 			{
 				return true;
 			}

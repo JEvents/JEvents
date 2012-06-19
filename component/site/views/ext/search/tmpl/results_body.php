@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $useRegX = intval($params->get("regexsearch",0));
-$data = $this->datamodel->getKeywordData($this->keyword, $this->limit, $this->limitstart, $useRegX);
+$this->data = $data = $this->datamodel->getKeywordData($this->keyword, $this->limit, $this->limitstart, $useRegX);
 
 $Itemid = JEVHelper::getItemid();
 

@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 $cfg	 = & JEVConfig::getInstance();
 
 // Note that using a $limit value of -1 the limit is ignored in the query
-$data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);
+$this->data = $data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);
 
 echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
 //echo '<fieldset id="ev_fieldset"><legend class="ev_fieldset">' . JText::_('JEV_ARCHIVE') . '</legend><br />' . "\n";
