@@ -506,10 +506,9 @@ class JEventsDataModel {
 		return $data;
 	}
 
-	function getRangeData($start,$end, $limit, $limitstart )
+	function getRangeData($start,$end, $limit, $limitstart ,  $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC")
 	{
 		
-
 		$data = array();
 
 		$db	=& JFactory::getDBO();
@@ -536,7 +535,7 @@ class JEventsDataModel {
 			$data ["limitstart"]=0;
 		}
 
-		$data["rows"] = $this->queryModel->listIcalEventsByRange( $start,$end, $data ["limitstart"], $data ["limit"],  $cfg->get('com_showrepeats'));
+		$data["rows"] = $this->queryModel->listIcalEventsByRange( $start,$end, $data ["limitstart"], $data ["limit"],  $cfg->get('com_showrepeats'), $order);
 
 		return $data;
 	}

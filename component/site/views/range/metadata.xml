@@ -32,8 +32,18 @@
 			<param name='strend' type='text' default='TOMORROW'  label='STRTOTIME_END_DATE'  description="" />
 
 			<param name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
+			
+			<param name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
+				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
+				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
+				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+			</param>
+
 			<param name="@spacer" type="spacer" default=""   label="" description="" />	
+			
 		</params>
+		
+		
 	</state>
 
 </metadata>

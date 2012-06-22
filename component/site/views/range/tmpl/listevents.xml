@@ -32,6 +32,12 @@
 			<param name='strstart' type='text' default='YESTERDAY'  label='STRTOTIME_START_DATE'  description="" />
 			<param name='strend' type='text' default='TOMORROW'  label='STRTOTIME_END_DATE'  description="" />
 
+			<param name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
+				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
+				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
+				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+			</param>
+
 			<param name="@spacer" type="spacer" default=""   label="" description="" />
 		</params>
 	</state>
@@ -57,6 +63,13 @@
 			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" />
 			<field name='strstart' type='text' default='YESTERDAY'  label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" />
 			<field name='strend' type='text' default='TOMORROW'  label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" />
+			
+			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
+				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
+				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
+				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+			</field>
+
 		</fieldset>
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >

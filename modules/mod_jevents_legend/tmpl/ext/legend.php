@@ -24,6 +24,11 @@ class ExtModLegendView extends DefaultModLegendView{
 	}
 
 	function displayCalendarLegend($style="list"){
+		// do not display normal legend if dynamic legend is visible on this page
+		$registry	=& JRegistry::getInstance("jevents");
+		if ($registry->getValue("jevents.dynamiclegend",0)) {
+			return;
+		}
 
 		// since this is meant to be a comprehensive legend look for catids from menu first:
 		$cfg = & JEVConfig::getInstance();
