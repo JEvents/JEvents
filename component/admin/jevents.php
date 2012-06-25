@@ -9,7 +9,6 @@
  * @link        http://www.jevents.net
  */
 
-
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
 if (version_compare(phpversion(), '5.0.0', '<')===true) {
