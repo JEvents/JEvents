@@ -72,10 +72,6 @@
 		<param name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
 		<param name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="modcal_useLocalParam" type="list" default="0" label="Use Settings" description="Use settings defined global in Component or defined here">
-			<option value="0">Use Component Settings</option>
-			<option value="1">Use Settings Below</option>
-		</param>
 		<param name="modcal_DispLastMonth" type="list" default="NO" label="Display Last Month ?" description="&lt;b&gt;NO:&lt;/b&gt; never display a Last Months calendar&lt;br /&gt;
 			   &lt;b&gt;YES - with stop day:&lt;/b&gt; display a Last Months calendar only if there were scheduled events in that month&lt;br /&gt;
 			   &lt;b&gt;YES - if has events AND with stop day:&lt;/b&gt; display Last Months calendar only if there were events scheduled for that month. Stop displaying Last Months calendar if this months current day of month is at least r&lt;br /&gt;
@@ -109,47 +105,21 @@
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="Module_Parameters"   label="" description="" />
 				<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-				<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
-					<option value="0">Jev_no</option>
-					<option value="1">Jev_yes</option>
-				</field>
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
-				</field>
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-				<field name="noeventcheck" type="jevboolean" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP" />
-				<field name="allcats" type="radio" default="1" label="JEV_FROM_ALL_CATS" description="JEV_FROM_ALL_CATS_TIP">
-					<option value="0">Jev_no</option>
-					<option value="1">Jev_yes</option>
-				</field>
+                                <field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-				<!--
-				<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified_category" description="SPECIFIED_CAT_TIP" />
-				<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-				<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-				<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-				<field name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-				//-->
-				<field name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />
-				<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				
+                		<field name="allcats" type="radio" default="1" label="JEV_FROM_ALL_CATS" description="JEV_FROM_ALL_CATS_TIP">
+					<option value="0">Jev_no</option>
+					<option value="1">Jev_yes</option>
+				</field>
+                                <field name="@spacer" type="spacer" default="" label="" description="" />
+                                
+                                <param name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="Use settings defined global in Component or defined here">
+                                    <option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
+                                    <option value="1">JEV_LATEST_USE_SETTINGS</option>
+                                </param>
+              			<field name="noeventcheck" type="jevboolean" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP" />
 				<field name="ignorecatfilter" type="jevboolean" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" />
 				<field name="ignorefiltermodule" type="jevboolean" default="0" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" />
-				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
 				<field name="@spacer" type="jevinfo"  default="JEV_HEADER_LINKS"/>
 				<field name="minical_showlink" type="radio" default="1" label="JEV_TITLE_AS" description="JEV_TITLE_AS_TIP">
 					<option value="0">None</option>
@@ -172,10 +142,6 @@
 				<field name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
 				<field name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="modcal_useLocalParam" type="list" default="0" label="Use Settings" description="Use settings defined global in Component or defined here">
-					<option value="0">Use Component Settings</option>
-					<option value="1">Use Settings Below</option>
-				</field>
 				<field name="modcal_DispLastMonth" type="list" default="NO" label="Display Last Month ?" description="&lt;b&gt;NO:&lt;/b&gt; never display a Last Months calendar&lt;br /&gt;
 			   &lt;b&gt;YES - with stop day:&lt;/b&gt; display a Last Months calendar only if there were scheduled events in that month&lt;br /&gt;
 			   &lt;b&gt;YES - if has events AND with stop day:&lt;/b&gt; display Last Months calendar only if there were events scheduled for that month. Stop displaying Last Months calendar if this months current day of month is at least r&lt;br /&gt;
@@ -200,10 +166,41 @@
 					<option value="ALWAYS_events">ALWAYS - if has events</option>
 				</field>
 				<field name="modcal_DispNextMonthDays" type="text" size="2" default="0" label="Days left to Start displaying Next Month" description="Days left in Current Month to Start displaying Next Month" />
-				<field name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
-				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
-		<!--<field name="target_itemid" type="text" default="" label="Target Menu Itemid" description="Menu itemid for target page" />//-->
 			</fieldset>
+                        <fieldset name="JEV_LATEST_CLUB_ADDONS"  addfieldpath="/administrator/components/com_jevents/fields/">
+                                <field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
+				<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+                        </fieldset>
+                        <fieldset name="Advanced"  addfieldpath="/administrator/components/com_jevents/fields/">
+                            <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+                      		<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+					<option value="0">Jev_no</option>
+					<option value="1">Jev_yes</option>
+				</field>
+				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
+					<option value="1">Use global</option>
+					<option value="0">No caching</option>
+				</field>
+                      		<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+					<option value="0">Jev_no</option>
+					<option value="1">Jev_yes</option>
+				</field>
+                            <field name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
+
+                       </fieldset>
 		</fields>
 	</config>
 
