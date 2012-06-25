@@ -290,7 +290,13 @@ RAWTEXT;
 					}
 				}
 				else {
-					$vevent->catid = $catid;
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					if ($params->get("multicategory",0) ){
+						$vevent->catid = array($catid);
+					}
+					else {
+						$vevent->catid = $catid;
+					}
 				}
 				// These now gets picked up in the event
 				//$vevent->access = $this->access;
@@ -401,7 +407,13 @@ RAWTEXT;
 					}
 				}
 				else {
-					$vevent->catid = $catid;
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					if ($params->get("multicategory",0) ){
+						$vevent->catid = array($catid);
+					}
+					else {
+						$vevent->catid = $catid;
+					}
 				}
 				$vevent->access = $this->access;
 				$vevent->state =  $this->state;

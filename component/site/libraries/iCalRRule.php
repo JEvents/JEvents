@@ -403,6 +403,18 @@ class iCalRRule extends JTable  {
 					}
 
 				}
+				// see ical RFC 2445 page 42
+				/*
+   Each BYDAY value can also be preceded by a positive (+n) or negative
+   (-n) integer. If present, this indicates the nth occurrence of the
+   specific day within the MONTHLY or YEARLY RRULE. For example, within
+   a MONTHLY rule, +1MO (or simply 1MO) represents the first Monday
+   within the month, whereas -1MO represents the last Monday of the
+   month. If an integer modifier is not present, it means all days of
+   this type within the specified frequency. For example, within a
+   MONTHLY rule, MO represents all Mondays within the month.							 
+				 */
+				
 				// annual repeats of the start date - TODO check this
 				else if ($this->byday=="") {
 					$start = $dtstart;
@@ -420,6 +432,17 @@ class iCalRRule extends JTable  {
 				}
 				else {
 					$days = explode(",",$this->byday);
+					// duplicate where necessary 
+					$extradays = array();
+					foreach ($days as $day) {
+						if (strpos($day, "+")===false && strpos($day, "-")===false ) {
+							for ($i=2;$i<=52;$i++){
+								$extradays[] = "+".$i.$day;
+							}
+						}
+					}
+					$days = array_merge($days, $extradays);
+					
 					$start = $dtstart;
 					$end = $dtend;
 					$countRepeats = 0;
@@ -433,7 +456,10 @@ class iCalRRule extends JTable  {
 							}
 
 							$details=array();
-							preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
+							if (strpos($day, "+")===false && strpos($day, "-")===false ) {
+								$day = "+1".$day;
+							}
+							preg_match("/(\+|-?)(\d+)(.{2})/",$day,$details);
 							if (count($details)!=4) {
 								echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 								return  $this->_repetitions;
@@ -473,6 +499,9 @@ class iCalRRule extends JTable  {
 									list ($startDay,$startMonth,$startYear,$startWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$start));
 									$monthStart = JevDate::mktime(0,0,0,$startMonth,1,$startYear);
 									$msWD = JevDate::strftime("%w",$monthStart );
+									if (!isset($weekdayMap[$dayname])){
+										$x = 1;
+									}
 									$adjustment = 1 + (7+$weekdayMap[$dayname]-$msWD)%7;
 
 									$targetstartDay = $adjustment+($weeknumber-1)*7;

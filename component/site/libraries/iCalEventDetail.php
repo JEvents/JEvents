@@ -84,7 +84,7 @@ class iCalEventDetail extends JTable  {
 			$res = $dispatcher->trigger( 'onStoreCustomDetails' , array(&$this));
 		}
 		else {
-			JError::raiseError("Problem saving event ".$this->_db->getErrorMsg());
+			JError::raiseError(321, "Problem saving event ".$this->_db->getErrorMsg());
 		}
 		return $this->evdet_id;
 	}
@@ -215,6 +215,12 @@ class iCalEventDetail extends JTable  {
 			// if no dtend or duration (e.g. from imported iCal) - set no end time
 			$this->noendtime = 1;
 			$this->dtend = iCalImport::unixTime($this->dtstartraw);
+			// an all day event
+			if ($this->dtend==$this->dtstart && strlen($this->dtstartraw)==8){
+				// convert to JEvents all day event mode!
+				//$this->allday = 1;				
+				$this->dtend += 86399; 
+			}
 		}
 
 		// Process any custom fields

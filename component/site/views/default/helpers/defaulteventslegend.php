@@ -20,6 +20,6 @@ function DefaultEventsLegend($view){
 	$modview = new $viewclass($params, $module->id);
 	echo $modview->displayCalendarLegend("block");
 
-	echo "<br style='clear:both'/>";
+	echo "<br style='clear:both;height:0px;line-height:0px;'/>";
 }
 
