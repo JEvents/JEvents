@@ -64,7 +64,8 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 			}
 		}
 		else {
-			$item_description = "<![CDATA[$item_description]]>"  ;
+			// this can lead to double CDATA wrapping which is a problem in Firefox 13+
+			//$item_description = "<![CDATA[$item_description]]>"  ;
 		}
 
 		// type for particular item - category name
