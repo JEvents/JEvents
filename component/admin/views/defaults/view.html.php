@@ -105,15 +105,23 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$model	=& $this->getModel();
 		$item	= & $this->get( 'Data');
 
-		$this->assignRef('item',		$item);
-
 		if (strpos($item->name, "com_")===0){
 			$parts = explode(".",$item->name);
+			// special numbered case e.g. managed people
+			if (count($parts)==4){
+				$iname= str_replace(".$parts[2].",".",$item->name);
+			}
+			else {
+				$iname  = $item->name;
+			}
 			$this->_addPath('template', JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl");
-			if ($item->value=="" && file_exists(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$item->name.".html")) {
-				$item->value = file_get_contents(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$item->name.".html");
+			if ($item->value=="" && file_exists(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$iname.".html")) {
+				$item->value = file_get_contents(JPATH_ADMINISTRATOR."/components/".$parts[0]."/views/defaults/tmpl/".$iname.".html");
 			}
 		}
+		
+		$this->assignRef('item',		$item);
+		
 		parent::displaytemplate($tpl);
 
 	}

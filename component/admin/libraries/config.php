@@ -15,7 +15,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * convenience wrapper for config - to ensure backwards compatability
  */
-if (JVersion::isCompatible("1.6.0"))
+$version = new JVersion();
+if ($version->isCompatible("1.6.0"))
 {
 	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
 	if (!defined("JEVCONFIG"))
