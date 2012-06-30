@@ -521,6 +521,26 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 				case "{{CONTACT}}":
 					if ($event->hasContactInfo())
 					{
+						if (strpos($event->contact_info(),'<script')===false){
+							$dispatcher	=& JDispatcher::getInstance();
+							JPluginHelper::importPlugin('content');
+
+							//Contact
+							$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
+							if (strpos($event->contact_info(),'<a href=')===false){
+								$event->contact_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
+							}
+							$tmprow = new stdClass();
+							$tmprow->text = $event->contact_info();
+
+							if (JVersion::isCompatible("1.6.0")) {
+								$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+							}
+							else {
+								$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+							}
+							$event->contact_info($tmprow->text);
+						}
 						$search[] = "{{CONTACT_LABEL}}";
 						$replace[] = JText::_('JEV_EVENT_CONTACT') . "&nbsp;";
 						$blank[] = "";
@@ -540,6 +560,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					break;
 
 				case "{{EXTRAINFO}}":
+					//Extra
+					if (strpos($event->extra_info(),'<script')===false){
+						if (strpos($event->extra_info(),'<a href=')===false){
+							$event->extra_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
+						}
+						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
+						$tmprow = new stdClass();
+						$tmprow->text = $event->extra_info();
+
+						if (JVersion::isCompatible("1.6.0")) {
+							$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+						}
+						else {
+							$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+						}
+						$event->extra_info($tmprow->text);
+					}
+					
 					$search[] = "{{EXTRAINFO}}";
 					$replace[] = $event->extra_info();
 					$blank[] = "";
