@@ -1868,7 +1868,7 @@ class JEVHelper
 	}
 
 	static public function authoriseCategories($action, $catids, $user){
-		if (is_string($catids) && strpos( $catids, "[")===0){
+		if (is_string($catids) && (strpos( $catids, "[")===0 || strpos( $catids,'"')===0)){
 			$catids = json_decode($catids);
 		}
 		else if (is_string($catids) && strpos( $catids, ",")>0){

@@ -360,7 +360,7 @@ RAWTEXT;
 				$repetitions = null;
 				$vevent->_repetitions = null;
 				//$vevent=null;
-				echo "Event Data read in<br/>";
+				//echo "Event Data read in<br/>";
 				//echo "memory = ".memory_get_usage()." ".memory_get_usage(true)."<br/>";
 				if ($flush){
 					ob_flush();
@@ -436,7 +436,7 @@ RAWTEXT;
 
 		// Now remove existing events that have been deleted
 		if ($cleanup){
-			if(count($existingevents)>0){
+			if(count($existingevents)>0){								
 				$todelete = array();
 				foreach ($existingevents as $event) {
 					$todelete[]= $event->ev_id;
