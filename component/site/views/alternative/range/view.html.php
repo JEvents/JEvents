@@ -40,8 +40,10 @@ class AlternativeViewRange extends JEventsAlternativeView
 		$this->assign("endmonth",$endmonth);
 		$this->assign("endday",$endday);
 
+		$order = $params->get("dataorder", "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC");
+		
 		// Note that using a $limit value of -1 the limit is ignored in the query
-		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart));
+		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart, $order));
 
 	}
 }

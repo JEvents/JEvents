@@ -168,7 +168,7 @@ RAWTEXT;
 	/**
 	 * Used to create Ical from raw strring
 	 */
-	function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label=""){
+	function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	=& JFactory::getDBO();
 		$temp = null;
 		$temp = new iCalICSFile($db);
@@ -177,7 +177,7 @@ RAWTEXT;
 			$temp->icaltype=2;  // i.e. from file
 		}
 		else {
-			$temp->_setup($icsid,$catid,$access,$state);
+			$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 			$temp->srcURL = "";
 			$temp->filename = "_from_events_cat".$catid;
 			$temp->icaltype=2;  // i.e. from file
@@ -210,7 +210,7 @@ RAWTEXT;
 	 *
 	 * @param int $catid - forced category for the underlying events
 	 */
-	function store($catid=false , $cleanup=true) {
+	function store($catid=false , $cleanup=true , $flush =true) {
 
 		// clean out the cache
 		$cache = &JFactory::getCache('com_jevents');
@@ -360,10 +360,12 @@ RAWTEXT;
 				$repetitions = null;
 				$vevent->_repetitions = null;
 				//$vevent=null;
-				echo "Event Data read in<br/>";
+				//echo "Event Data read in<br/>";
 				//echo "memory = ".memory_get_usage()." ".memory_get_usage(true)."<br/>";
-				ob_flush();
-				flush();
+				if ($flush){
+					ob_flush();
+					flush();
+				}
 			}
 		}
 		unset($vevent);
@@ -434,7 +436,7 @@ RAWTEXT;
 
 		// Now remove existing events that have been deleted
 		if ($cleanup){
-			if(count($existingevents)>0){
+			if(count($existingevents)>0){								
 				$todelete = array();
 				foreach ($existingevents as $event) {
 					$todelete[]= $event->ev_id;
@@ -491,11 +493,12 @@ RAWTEXT;
 	}
 
 	// Method to store the events WITHOUT storing  the calendar itself - used in frontend imports
-	function storeEvents($catid=false ) {
+	function storeEvents($catid=false , $flush =true) {
 
 		// clean out the cache
 		$cache = &JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		
 		static $categories;
 		if (is_null($categories)){
@@ -567,7 +570,16 @@ RAWTEXT;
 				if (!$this->ignoreembedcat && strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
 					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
-						$vevent->catid = $categories[$evcat[0]]->id;
+						if ($params->get("multicategory",0) && count($evcat)>1){
+							$vevent->catid = array();
+							foreach ($evcat as $ct){
+								$vevent->catid[] =  $categories[$ct]->id;
+							}							
+						}
+						else {
+							$vevent->catid =  $categories[$evcat[0]]->id;							
+						}
+
 					}
 					// if no such category then create it
 					else if (count($evcat)>0) {
@@ -576,7 +588,12 @@ RAWTEXT;
 						$cat->bind(array("title"=>$evcat[0]));
 						$cat->published=1;
 						$cat->store();
-						$vevent->catid = $cat->id;
+						if ($params->get("multicategory",0)){
+							$vevent->catid[] = $cat->id;
+						}
+						else {
+							$vevent->catid = $cat->id;
+						}
 						// must reset  the list of categories now
 						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
@@ -585,7 +602,12 @@ RAWTEXT;
 					}
 				}
 				else {
-					$vevent->catid = $catid;
+					if ($params->get("multicategory",0)){
+						$vevent->catid[] = $catid;
+					}
+					else {
+						$vevent->catid = $catid;
+					}
 				}
 				$vevent->icsid = $this->ics_id;
 				// The refreshed field is used to track dropped events on reload
@@ -619,8 +641,10 @@ RAWTEXT;
 				$repetitions = null;
 				echo "Event Data read in<br/>";
 				//echo "memory = ".memory_get_usage()." ".memory_get_usage(true)."<br/>";
-				ob_flush();
-				flush();
+				if ($flush){
+					ob_flush();
+					flush();
+				}
 			}
 		}
 		unset($vevent);
@@ -633,7 +657,15 @@ RAWTEXT;
 				if (strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
 					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
-						$vevent->catid = $categories[$evcat[0]]->id;
+						if ($params->get("multicategory",0) && count($evcat)>1){
+							$vevent->catid = array();
+							foreach ($evcat as $ct){
+								$vevent->catid[] =  $categories[$ct]->id;
+							}							
+						}
+						else {
+							$vevent->catid =  $categories[$evcat[0]]->id;							
+						}
 					}
 					// if no such category then create it
 					else if (count($evcat)>0) {
@@ -642,7 +674,12 @@ RAWTEXT;
 						$cat->bind(array("title"=>$evcat[0]));
 						$cat->published=1;
 						$cat->store();
-						$vevent->catid = $cat->id;
+						if ($params->get("multicategory",0)){
+							$vevent->catid[] = $cat->id;
+						}
+						else {
+							$vevent->catid = $cat->id;
+						}
 						// must reset  the list of categories now
 						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
@@ -651,7 +688,12 @@ RAWTEXT;
 					}
 				}
 				else {
-					$vevent->catid = $catid;
+					if ($params->get("multicategory",0)){
+						$vevent->catid[] = $catid;
+					}
+					else {
+						$vevent->catid = $catid;
+					}
 				}
 				$vevent->access = $this->access;
 				$vevent->state =  $this->state;

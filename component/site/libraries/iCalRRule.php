@@ -288,7 +288,7 @@ class iCalRRule extends JTable  {
 		static $weeklySecs = 604800;
 		// TODO implement byyearday
 		// TODO do full leap year audit e.g. YEARLY repeats
-		echo "freq = ".$this->freq."<br/>";
+		//echo "freq = ".$this->freq."<br/>";
 		switch ($this->freq) {
 			case "YEARLY":
 				// TODO the code doesn't yet deal with multiple bymonths
@@ -557,7 +557,7 @@ class iCalRRule extends JTable  {
 
 					// do the current month first
 					while  ($countRepeats < $this->count  && !$this->_afterUntil($currentMonthStart)) {
-						echo $countRepeats ." ".$this->count." ".$currentMonthStart."<br/>";
+						//echo $countRepeats ." ".$this->count." ".$currentMonthStart."<br/>";
 						list ($currentMonth,$currentYear) = explode(":",JevDate::strftime("%m:%Y",$currentMonthStart));
 						$currentMonthDays = date("t",$currentMonthStart);
 						foreach ($days as $day) {
@@ -590,13 +590,13 @@ class iCalRRule extends JTable  {
 									}
 								}
 								else {
-									echo "$daynumber $currentMonthDays bd=".$this->byday." <br/>";
+									//echo "$daynumber $currentMonthDays bd=".$this->byday." <br/>";
 									// must not go over end month etc.
 									if ($daynumber>$currentMonthDays) continue;
-									echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
+									//echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
 									$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear);
 									$targetEnd = $targetStart+$duration;
-									echo "$targetStart $targetEnd $dtstartMidnight<br/>";
+									//echo "$targetStart $targetEnd $dtstartMidnight<br/>";
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
 									}
@@ -608,7 +608,7 @@ class iCalRRule extends JTable  {
 											}
 										}
 										$countRepeats+=$this->_makeRepeat($targetStart,$targetEnd);
-										echo "countrepeats = $countRepeats<br/>";
+										//echo "countrepeats = $countRepeats<br/>";
 									}
 								}
 							}

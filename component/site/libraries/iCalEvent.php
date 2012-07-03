@@ -177,14 +177,23 @@ class iCalEvent extends JTable  {
 	}
 
 	function matchingEventDetails(){
+		// no need to look more than once if I've already changed the data
+		if (isset($this->_matched)){ 
+			return;
+		}
 		$sql = "SELECT *  from #__jevents_vevent as vev,#__jevents_vevdetail as det"
 		."\n WHERE vev.uid = '".$this->uid."'"
 		."\n AND vev.detail_id = det.evdet_id";
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
 		if (count($matches)>0 && isset($matches[0]->ev_id)) {
+			$this->_matched = true;
+			if ($matches[0]->icsid != $this->icsid){
+				echo "Matched duplicate uid $this->uid to find ".count($matches)." icsid = ".$matches[0]->icsid."<br/>";
+			}
 			return $matches[0];
 		}
+		$this->_matched = false;
 		return false;
 	}
 

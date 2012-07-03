@@ -1010,7 +1010,7 @@ class JEVHelper
 					return true;
 				else return false;
 				 */
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_coreedit[$key])){
 					$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
@@ -1056,7 +1056,7 @@ class JEVHelper
 				else if (in_array($row->_catid, $cats_own))
 					return true;
 				 */
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_coreedit[$key])){
 					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
@@ -1080,7 +1080,7 @@ class JEVHelper
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_coreedit[$key])){
 					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 				}
@@ -1282,7 +1282,7 @@ class JEVHelper
 					return true;
 				*/
 				// allow multi-categories
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 				return $authdata_editstate[$key];
 			}
@@ -1318,7 +1318,7 @@ class JEVHelper
 				if (in_array($row->_catid, $cats))
 					return true;
 				*/
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_editstate[$key])){
 					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 				}
@@ -1328,7 +1328,7 @@ class JEVHelper
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			if ($user->id > 0 && $row->catid()>0){
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_editstate[$key])){
 					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 				}
@@ -1454,7 +1454,7 @@ class JEVHelper
 			if (in_array($row->_catid, $cats))
 				return true;
 			*/
-			$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 			if (!isset($authdata_coredeleteall[$key])){
 				$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 			}
@@ -1475,7 +1475,7 @@ class JEVHelper
 				if (in_array($row->_catid, $cats))
 					return true;
 				*/
-				$key = $row->catids()?json_encode($row->catids()):json_encode($row->catid());
+				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
 				if (!isset($authdata_coredeleteall[$key])){
 					$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
 				}
@@ -1868,7 +1868,7 @@ class JEVHelper
 	}
 
 	static public function authoriseCategories($action, $catids, $user){
-		if (is_string($catids) && strpos( $catids, "[")===0){
+		if (is_string($catids) && (strpos( $catids, "[")===0 || strpos( $catids,'"')===0)){
 			$catids = json_decode($catids);
 		}
 		else if (is_string($catids) && strpos( $catids, ",")>0){
@@ -1876,10 +1876,10 @@ class JEVHelper
 			$catids = explode(",",$catids);
 		}
 		if (!is_array($catids)){
-			$catids = array($catids);
+			$catids = array(intval($catids));
 		}
 		JArrayHelper::toInteger($catids);
-		$result = count($catids)>0;
+		$result = false;//count($catids)>0;
 		foreach ($catids as $catid){
 			// this is an invalid category so skip it!
 			if ($catid==0) continue;
