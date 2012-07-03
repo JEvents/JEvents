@@ -527,7 +527,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 
 							//Contact
 							$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
-							if (strpos($event->contact_info(),'<a href=')===false){
+							if (strpos($event->contact_info(),'<a href=')===false && $event->contact_info()!=""){
 								$event->contact_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 							}
 							$tmprow = new stdClass();
@@ -561,7 +561,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 
 				case "{{EXTRAINFO}}":
 					//Extra
-					if (strpos($event->extra_info(),'<script')===false){
+					if (strpos($event->extra_info(),'<script')===false  && $event->extra_info()!=""){
+						$dispatcher	=& JDispatcher::getInstance();
+						JPluginHelper::importPlugin('content');
+						
 						if (strpos($event->extra_info(),'<a href=')===false){
 							$event->extra_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
