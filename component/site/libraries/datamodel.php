@@ -764,25 +764,27 @@ class JEventsDataModel {
 
 			$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 
-			// Adresse
-			// don't convert address that already has a link tag
-			if (strpos($row->location(),'<a href=')===false){
-				$row->location(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $row->location()));
-			}
-			$tmprow = new stdClass();
-			$tmprow->text = $row->location();
+			// Addresse
+			if (!is_numeric($row->location())){
+				// don't convert address that already has a link tag
+				if (strpos($row->location(),'<a href=')===false){
+					$row->location(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $row->location()));
+				}
+				$tmprow = new stdClass();
+				$tmprow->text = $row->location();
 
-			$dispatcher	=& JDispatcher::getInstance();
-			JPluginHelper::importPlugin('content');
+				$dispatcher	=& JDispatcher::getInstance();
+				JPluginHelper::importPlugin('content');
 
-			if (JVersion::isCompatible("1.6.0")) {
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+				}
+				else {
+					$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+				}
+				$row->location($tmprow->text);
 			}
-			else {
-				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
-			}
-			$row->location($tmprow->text);
-
+			
 			//Contact
 			if (strpos($row->contact_info(),'<a href=')===false){
 				$row->contact_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $row->contact_info()));
