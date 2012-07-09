@@ -270,7 +270,7 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		$eventstitle = JText::_("Events Calendar");
+		$eventstitle = JText::_("JEV_EVENTS_SEARCH_TITLE");
 		// Now Search Icals
 		$display2 = array();
 		foreach ($search_ical_attributes as $search_ical_attribute)
