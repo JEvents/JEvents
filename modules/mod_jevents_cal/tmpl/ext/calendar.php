@@ -96,6 +96,7 @@ class ExtModCalView extends DefaultModCalView
 		$viewpath = JURI::root() . "components/$compname/views/".$viewname."/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref = "index.php?option=$compname&Itemid=".$this->myItemid.$this->cat."&task=";
+                
 
 		/*
 		$linkprevious = $linkpref."month.calendar&day=$cal_day&month=$cal_prev_month&year=$cal_prev_month_year";
