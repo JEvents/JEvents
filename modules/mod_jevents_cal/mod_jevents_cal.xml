@@ -199,7 +199,8 @@
 					<option value="1">Jev_yes</option>
 				</field>
                             <field name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
-
+                            <field name="mini_cal_width" type="text" default="140px" label="MINI_CAL_WIDTH" description="MINI_CAL_WIDTH_DESC" />    
+                            <field name="mini_cal_height" type="text" default="0" label="MINI_CAL_HEIGHT" description="MINI_CAL_HEIGHT_DESC" />    
                        </fieldset>
 		</fields>
 	</config>

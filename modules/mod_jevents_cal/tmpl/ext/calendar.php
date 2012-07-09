@@ -92,7 +92,7 @@ class ExtModCalView extends DefaultModCalView
 			$cal_next_month_year 	+=1;
 		}
 
-		$viewname = $this->getTheme();
+		$viewname = $this->jevlayout;
 		$viewpath = JURI::root() . "components/$compname/views/".$viewname."/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref = "index.php?option=$compname&Itemid=".$this->myItemid.$this->cat."&task=";
@@ -143,26 +143,28 @@ class ExtModCalView extends DefaultModCalView
 		<tr>
 			<td>
 START;
+                $mini_cal_width = $this->modparams->get("mini_cal_width",'140px');
+                $mini_cal_height = $this->modparams->get("mini_cal_height",0);
 		if( $this->minical_showlink ){
 		$content .= <<<START
 			
-				<table width="100%" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
+				<table style="width:$mini_cal_width;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
 					<tr>
-						<td valign="middle" height="18" align="center">
-							$linkprevious
-                		</td>
-		                <td width="98%" valign="middle" nowrap="nowrap" height="18" align="center" class="extcal_month_label">
-							$linkcurrent
-		                </td>
-						<td valign="middle" height="18" align="center">
-		                    $linknext
-                		</td>
+                                            <td valign="middle" height="18" align="center">
+						$linkprevious
+                                            </td>
+                                            <td width="98%" valign="middle" nowrap="nowrap" height="18" align="center" class="extcal_month_label">
+						$linkcurrent
+                                            </td>
+                                            <td valign="middle" height="18" align="center">
+                                                $linknext
+                                            </td>
 					</tr>
 				</table>
 START;
 }
 		$content .= <<<START
-				<table class="extcal_weekdays">
+				<table style='width:$mini_cal_width;' class="extcal_weekdays">
 START;
 		$lf="\n";
 
@@ -170,7 +172,7 @@ START;
 		// Days name rows - with blank week no.
 		$content	.= "<tr>\n<td/>\n";
 		for ($i=0;$i<7;$i++) {
-			$content.="<td  class='extcal_weekdays'>".$day_name[($i+$startday)%7]."</td>".$lf	;
+			$content.="<td style='width:" . $mini_cal_width . ";' class='extcal_weekdays'>".$day_name[($i+$startday)%7]."</td>".$lf	;
 		}
 		$content.="</tr>\n";
 
