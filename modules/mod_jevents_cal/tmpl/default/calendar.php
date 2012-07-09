@@ -286,10 +286,12 @@ class DefaultModCalView
 		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
 
 		$content    = '';
-		
+                $mini_cal_width = $this->modparams->get("mini_cal_width",'140px');
+                $mini_cal_height = $this->modparams->get("mini_cal_height",0);
+                
 		if( $this->minical_showlink ){
 
-			$content .= "\n".'<table cellpadding="0" cellspacing="0" align="center" class="mod_events_monthyear" >' . "\n"
+			$content .= "\n".'<table cellpadding="0" cellspacing="0" align="center" style="width:' . $mini_cal_width .';" class="mod_events_monthyear" >' . "\n"
 			. '<tr >' . "\n";
 
 			if( $this->minical_showlink == 1 ){
@@ -354,7 +356,7 @@ class DefaultModCalView
 
 
 
-		$content	.= '<table align="center" class="mod_events_table" cellspacing="0" cellpadding="2" >'.$lf
+		$content	.= '<table align="center" class="mod_events_table" style="height:' . $mini_cal_height .';width:' . $mini_cal_width .';"  cellspacing="0" cellpadding="2" >'.$lf
 		. '<tr class="mod_events_dayname">'.$lf;
 
 		// Days name rows
