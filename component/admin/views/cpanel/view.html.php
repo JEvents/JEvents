@@ -503,6 +503,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"layout_iconic" => 3,
 			"layout_ruthin" => 3,
 			"layout_smartphone" => 3,
+			"layout_map" => 3,
 			"plugin_acymailing_tagjevents" => 41,
 			"plugin_community_jevents" => 7,
 			"plugin_content_jevcreator" => 34,
@@ -546,7 +547,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_user_juser" => 24,
 			"component_com_attend_jevents" => 21,
 			//"component_com_jevents" => 52, // JEvents 2.0
-			"component_com_jevents" => 65, // JEvents 2.1
+			//"component_com_jevents" => 65, // JEvents 2.1
+			"component_com_jevents" => 71, // JEvents 2.2
 			"component_com_jeventstags" => 9,
 			"component_com_jevlocations-old" => 4,
 			"component_com_jevlocations" => 4,
@@ -557,9 +559,9 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			//"module_mod_jevents_filter" => 52,
 			//"module_mod_jevents_latest" => 52,
 			//"module_mod_jevents_legend" => 52,
-			"module_mod_jevents_filter" => 65,
-			"module_mod_jevents_latest" => 65,
-			"module_mod_jevents_legend" => 65,
+			"module_mod_jevents_filter" => 71,
+			"module_mod_jevents_latest" => 71,
+			"module_mod_jevents_legend" => 71,
 			"module_mod_jevents_notify" => 61,
 			"module_mod_jevents_paidsubs" => 48,
 			"module_mod_jevents_switchview" => 52

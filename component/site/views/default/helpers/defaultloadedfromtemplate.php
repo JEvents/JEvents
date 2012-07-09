@@ -565,6 +565,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 						$dispatcher	=& JDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 						
+						$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 						if (strpos($event->extra_info(),'<a href=')===false){
 							$event->extra_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}

@@ -131,7 +131,11 @@ function submitbutton(pressbutton) {
 		submitform( pressbutton );
 		return;
 	}
+	var form = document.adminForm;
+	<?php echo $editor->getContent( 'jevcontent' ); 	?>
+		
 	try {
+		
 		if (!JevrRequiredFields.verify(document.adminForm)){
 			return;
 		}
@@ -139,8 +143,6 @@ function submitbutton(pressbutton) {
 	catch (e){
 		
 	}
-	var form = document.adminForm;
-	<?php echo $editor->getContent( 'jevcontent' );  ?>
 	// do field validation
 	if (form.title.value == "") {
 		alert ( "<?php echo html_entity_decode( JText::_('JEV_E_WARNTITLE') ); ?>" );
