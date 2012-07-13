@@ -540,7 +540,7 @@ function JEventsBuildRouteNew(&$query, $task)
 				if ($task == "week.listevents" && is_int($month))
 				{
 					$startday = $cfg->get('com_starday');
-					if ((!$startday ) || ( $startday > 1 ))
+					if (!$startday  )
 					{
 						$startday = 0;
 					}

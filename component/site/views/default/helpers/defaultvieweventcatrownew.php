@@ -9,6 +9,9 @@ function DefaultViewEventCatRowNew($view,$row,$args="") {
 	$vars = $router->getVars();
 	$vars["catids"]=$row->catid();
 
+	if (array_key_exists("Itemid", $vars) && is_null($vars["Itemid"])) {
+		$vars["Itemid"] = JRequest::getInt("Itemid",0);
+	}
 	$eventlink = "index.php?";
 	foreach ($vars as $key=>$val) {
 		$eventlink.= $key."=".$val."&";

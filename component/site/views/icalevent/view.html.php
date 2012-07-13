@@ -133,7 +133,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 <?php			
 		$dispatcher	=& JDispatcher::getInstance();
 		$dispatcher->trigger( 'onJEventsFooter', array($this));
-
+		
 	}
 
 	

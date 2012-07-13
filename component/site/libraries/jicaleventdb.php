@@ -311,6 +311,7 @@ class jIcalEventDB extends jEventCal {
 	function startWeekNo() {
 
 		$cfg = & JEVConfig::getInstance();
+		// TODO get this to handle Saturday start!
 		$fmt = ($cfg->get("com_starday")==0)?"%U":"%W";
 		return JevDate::strftime($fmt,$this->dtstart());
 	}

@@ -52,8 +52,10 @@ class JFormFieldJEVuser extends JFormFieldList
 			$action = "core.create";
 		}
 		// need to merge the arrays because of stupid way Joomla checks super user permissions
-		$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups[$action]->getData());
-
+		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups[$action]->getData());
+		// use union orf arrays sincee getData no longer has string keys in the resultant array
+		$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups[$action]->getData();
+		
 		$users = array(0);
 		foreach ($creatorgroups as $creatorgroup => $permission)
 		{

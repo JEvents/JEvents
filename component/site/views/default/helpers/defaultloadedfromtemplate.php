@@ -1,29 +1,31 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
+function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false)
 {
 
 	$db = JFactory::getDBO();
-// find published template
+	// find published template
 	static $templates;
 	if (!isset($templates))
 	{
 		$templates = array();
 	}
-	if (!array_key_exists($template_name, $templates))
+	if (!$template_value)
 	{
-		$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name));
-		$templates[$template_name] = $db->loadObject();
+		if (!array_key_exists($template_name, $templates))
+		{
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name));
+			$templates[$template_name] = $db->loadObject();
+		}
+
+		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
+			return false;
+
+		$template = $templates[$template_name];
+
+		$template_value = $template->value;
 	}
-
-	if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-		return false;
-
-	$template = $templates[$template_name];
-
-	$template_value = $template->value;
-
 // strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
 	$template_value = str_replace("\r", '', $template_value);
 	$template_value = str_replace("\n", '', $template_value);
@@ -65,15 +67,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 			case "{{LINKSTART}}":
 			case "{{LINKEND}}":
 			case "{{TITLE_LINK}}":
-// Title link
-				$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
-				$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
-				ob_start();
-				?>
-				<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()); ?>">
-					<?php
-					$linkstart = ob_get_clean();
-
+				if ($view)
+				{
+					// Title link
+					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
+					$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
+					ob_start();
+					?>
+					<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()); ?>">
+						<?php
+						$linkstart = ob_get_clean();
+					}
+					else
+					{
+						$rowlink = $linkstart = "";
+					}
 					$search[] = "{{LINK}}";
 					$replace[] = $rowlink;
 					$blank[] = "";
@@ -130,9 +138,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 
 				case "{{MANAGEMENT}}":
 					$search[] = "{{MANAGEMENT}}";
-					ob_start();
-					$view->_viewNavAdminPanel();
-					$replace[] = ob_get_clean();
+					if ($view)
+					{
+						ob_start();
+						$view->_viewNavAdminPanel();
+						$replace[] = ob_get_clean();
+					}
+					else
+					{
+						$replace[] = "";
+					}
 					$blank[] = "";
 					break;
 
@@ -147,7 +162,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					$replace[] = $event->getCalendarName();
 					$blank[] = "";
 					break;
-				
+
 				case "{{COLOUR}}":
 					$bgcolor = $event->bgcolor();
 					$search[] = "{{COLOUR}}";
@@ -207,6 +222,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					$replace[] = $event->getCategoryDescription();
 					$blank[] = "";
 					break;
+				case "{{CATID}}":
+					$search[] = "{{CATID}}";
+					$replace[] = $event->catid();
+					$blank[] = "";
+					break;
+				case "{{PARENT_CATEGORY}}":
+					$search[] = "{{PARENT_CATEGORY}}";
+					$replace[] = $event->getParentCategory();
+					$blank[] = "";
+					break;
 
 				case "{{ICALDIALOG}}":
 				case "{{ICALBUTTON}}":
@@ -232,10 +257,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 						<div class="jevdialogs">
 							<?php
 							$search[] = "{{ICALDIALOG}}";
-							ob_start();
-							$view->eventIcalDialog($event, $mask);
-							$dialog = ob_get_clean();
-							$replace[] = $dialog;
+							if ($view)
+							{
+								ob_start();
+								$view->eventIcalDialog($event, $mask);
+								$dialog = ob_get_clean();
+								$replace[] = $dialog;
+							}
+							else
+							{
+								$replace[] = "";
+							}
 							$blank[] = "";
 							echo $dialog;
 							?>
@@ -262,15 +294,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 						ob_start();
 						?>
 						<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
-					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 						</a>
 						<div class="jevdialogs">
 							<?php
 							$search[] = "{{EDITDIALOG}}";
-							ob_start();
-							$view->eventManagementDialog($event, $mask);
-							$dialog = ob_get_clean();
-							$replace[] = $dialog;
+							if ($view)
+							{
+								ob_start();
+								$view->eventManagementDialog($event, $mask);
+								$dialog = ob_get_clean();
+								$replace[] = $dialog;
+							}
+							else
+							{
+								$replace[] = "";
+							}
 							$blank[] = "";
 							echo $dialog;
 							?>
@@ -370,14 +409,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 						$replace[] = $stop_date;
 						$blank[] = "";
 						$search[] = "{{STARTTIME}}";
-						$replace[] = $row->alldayevent()?"":$start_time;
+						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
-						$replace[] = ($row->noendtime()||$row->alldayevent())?"":$stop_time_midnightFix;
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 
 						// these would slow things down if not needed in the list
-						$dorepeatsummary = (strpos($template->value, ":REPEATSUMMARY}}") !== false);
+						$dorepeatsummary = (strpos($template_value, ":REPEATSUMMARY}}") !== false);
 						if ($dorepeatsummary)
 						{
 
@@ -425,7 +464,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 									else if ($row->alldayevent())
 									{
 										$times = "";
-									}								
+									}
 									else if ($start_time != $stop_time && !$row->alldayevent())
 									{
 										$times = $start_time . '&nbsp;-&nbsp;' . $stop_time_midnightFix;
@@ -449,7 +488,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 								else if ($row->alldayevent())
 								{
 									$times = "";
-								}								
+								}
 								else
 								{
 									$times = $start_time . '&nbsp;-&nbsp;' . $stop_time_midnightFix . '&nbsp;';
@@ -467,7 +506,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 					static $doprevnext;
 					if (!isset($doprevnext))
 					{
-						$doprevnext = (strpos($template->value, ":PREVIOUSNEXT}}") !== false);
+						$doprevnext = (strpos($template_value, ":PREVIOUSNEXT}}") !== false);
 					}
 					if ($doprevnext)
 					{
@@ -521,23 +560,27 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 				case "{{CONTACT}}":
 					if ($event->hasContactInfo())
 					{
-						if (strpos($event->contact_info(),'<script')===false){
-							$dispatcher	=& JDispatcher::getInstance();
+						if (strpos($event->contact_info(), '<script') === false)
+						{
+							$dispatcher = & JDispatcher::getInstance();
 							JPluginHelper::importPlugin('content');
 
 							//Contact
 							$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
-							if (strpos($event->contact_info(),'<a href=')===false && $event->contact_info()!=""){
-								$event->contact_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
+							if (strpos($event->contact_info(), '<a href=') === false && $event->contact_info() != "")
+							{
+								$event->contact_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 							}
 							$tmprow = new stdClass();
 							$tmprow->text = $event->contact_info();
 
-							if (JVersion::isCompatible("1.6.0")) {
-								$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+							if (JVersion::isCompatible("1.6.0"))
+							{
+								$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 							}
-							else {
-								$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+							else
+							{
+								$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
 							}
 							$event->contact_info($tmprow->text);
 						}
@@ -561,27 +604,31 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 
 				case "{{EXTRAINFO}}":
 					//Extra
-					if (strpos($event->extra_info(),'<script')===false  && $event->extra_info()!=""){
-						$dispatcher	=& JDispatcher::getInstance();
+					if (strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
+					{
+						$dispatcher = & JDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
-						
+
 						$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
-						if (strpos($event->extra_info(),'<a href=')===false){
-							$event->extra_info(preg_replace('#(http://)('.$pattern.'*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
+						if (strpos($event->extra_info(), '<a href=') === false)
+						{
+							$event->extra_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
 						$tmprow = new stdClass();
 						$tmprow->text = $event->extra_info();
 
-						if (JVersion::isCompatible("1.6.0")) {
-							$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+						if (JVersion::isCompatible("1.6.0"))
+						{
+							$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 						}
-						else {
-							$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+						else
+						{
+							$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
 						}
 						$event->extra_info($tmprow->text);
 					}
-					
+
 					$search[] = "{{EXTRAINFO}}";
 					$replace[] = $event->extra_info();
 					$blank[] = "";
@@ -663,20 +710,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask)
 
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
 		$template_value = str_replace("@", "@£@", $template_value);
-		$params =new JParameter(null);
+		$params = new JParameter(null);
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher = & JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
-		if (JVersion::isCompatible("1.6.0")) {
-			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 		}
-		else {
-			$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
+		else
+		{
+			$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
 		}
 		$template_value = $tmprow->text;
-		$template_value = str_replace( "@£@", "@",$template_value);
-		
+		$template_value = str_replace("@£@", "@", $template_value);
+
 		echo $template_value;
 		return true;
 

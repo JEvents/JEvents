@@ -69,6 +69,7 @@ foreach ($jevplugins as $jevplugin){
 			optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , '<?php echo $fieldNameArray["group"];?>');
 			<?php
 			for ($i=0;$i<count($fieldNameArray['labels']);$i++) {
+				if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;
 				?>
 				defaultsEditorPlugin.node(optgroup , "<?php echo $fieldNameArray['labels'][$i];?>", "<?php echo $fieldNameArray['values'][$i];?>");
 				<?php

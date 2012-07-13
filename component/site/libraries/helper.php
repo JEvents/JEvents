@@ -689,11 +689,20 @@ class JEVHelper
 		if (!isset($data))
 		{
 			$datenow = JEVHelper::getNow();
-			list($year, $month, $day) = explode('-', $datenow->toFormat('%Y-%m-%d'));
+			list($yearnow, $monthnow, $daynow) = explode('-', $datenow->toFormat('%Y-%m-%d'));
 
-			$year = min(2100, abs(intval(JRequest::getVar('year', $year))));
-			$month = min(99, abs(intval(JRequest::getVar('month', $month))));
-			$day = min(3650, abs(intval(JRequest::getVar('day', $day))));
+			$year = min(2100, abs(intval(JRequest::getVar('year', $yearnow))));
+			$month = min(99, abs(intval(JRequest::getVar('month', $monthnow))));
+			$day = min(3650, abs(intval(JRequest::getVar('day', $daynow))));
+			if ($day <= 0){
+				$day = $daynow;
+			}
+			if ($month <= 0){
+				$month = $monthnow;
+			}
+			if ($year <= 0){
+				$year = $yearnow;
+			}
 			if ($day <= '9')
 			{
 				$day = '0' . $day;
@@ -809,6 +818,7 @@ class JEVHelper
 				}
 			}
 
+			JPluginHelper::importPlugin("jevents");
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}

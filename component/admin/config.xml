@@ -98,6 +98,7 @@
 		<param name="com_starday" type="list" default="0" menu="hide" label="JEV_FIRST_DAY" description="">
 			<option value="0">JEV_SUNDAY_FIRST</option>
 			<option value="1">JEV_MONDAY_FIRST</option>
+			<option value="6">JEV_SATURDAY_FIRST</option>
 		</param>
 		<param name="com_print_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
 		<param name="com_email_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>

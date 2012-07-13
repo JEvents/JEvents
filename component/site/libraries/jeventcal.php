@@ -280,7 +280,7 @@ class jEventCal {
 			$db	=& JFactory::getDBO();
 			$arr_catids = array();
 			if ( JVersion::isCompatible("1.6.0") ){
-				$catsql = "SELECT id, title as name, description, params  FROM #__categories  WHERE extension='com_jevents' " ;
+				$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
 			}
 			else {
 				$catsql = "SELECT id, title as name , description, image FROM #__categories  WHERE section='com_jevents'" ;
@@ -307,17 +307,19 @@ class jEventCal {
 		
 	}
 	
-	function getCategoryName( ){		
+	function getParentCategory( ){		
 		$data = $this->getCategoryData();
 		if (is_array($data)){
 			$res = array();
 			foreach ($data  as $cat){
-				$res[] = $cat->name;
+				if (isset($cat->pname)  && $cat->pname!="ROOT") {
+					$res[] = $cat->pname;
+				}
 			}
 			return implode(", ", $res);
 		}
-		if ($data) {
-			return $data->name;
+		if ($data && isset($data->pname) && $data->pname!="ROOT") {
+			return $data->pname;
 		}
 		return "";
 	}
@@ -351,6 +353,21 @@ class jEventCal {
 		}
 		if ($data) {
 			return $data->description;
+		}
+		return "";
+	}
+	
+	function getCategoryName( ){		
+		$data = $this->getCategoryData();
+		if (is_array($data)){
+			$res = array();
+			foreach ($data  as $cat){
+				$res[] = $cat->name;
+			}
+			return implode(", ", $res);
+		}
+		if ($data) {
+			return $data->name;
 		}
 		return "";
 	}

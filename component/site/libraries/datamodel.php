@@ -262,7 +262,7 @@ class JEventsDataModel {
 			$data["fieldsetText"]=$fieldsetText;
 		}
 		$startday = $cfg->get('com_starday');
-		if(( !$startday ) || ( $startday > 1 )){
+		if(( !$startday ) ){
 			$startday = 0;
 		}
 		$data['startday']=$startday;
