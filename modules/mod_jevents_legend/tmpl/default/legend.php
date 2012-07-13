@@ -47,7 +47,7 @@ class DefaultModLegendView
 
 		$menu = & JApplication::getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
-		if ($menuItem->component == JEV_COM_COMPONENT)
+		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{
 			$this->myTask = isset($menuItem->query["task"]) ? $menuItem->query["task"] : ($menuItem->query["view"] . "." . $menuItem->query["layout"]);
 		}

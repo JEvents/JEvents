@@ -79,7 +79,7 @@
 					<option value="5">JEV_LATEST_DISPLAY_MODE_5</option>
 					<option value="6">JEV_LATEST_DISPLAY_MODE_6</option>
 		</param>
-		<param name="modlatest_Days" type="text" default="30" size="2" label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS=" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC" />
+		<param name="modlatest_Days" type="text" default="30" size="2" label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC" />
 		<param name="startnow" type="radio" default="0" label="START_NOW" description="START_NOW_DESC">
 			<option value="0">JEV_NO</option>`
 			<option value="1">JEV_Yes</option>
