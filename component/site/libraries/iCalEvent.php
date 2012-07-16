@@ -144,6 +144,10 @@ class iCalEvent extends JTable  {
 				$pairs[] =   "($this->ev_id,$catid, $order)";
 				 $order++;
 			}
+			$db->setQuery("DELETE FROM #__jevents_catmap where evid = ".$this->ev_id." AND catid NOT IN (".implode(",",$catids).")");
+			$sql =$db->getQuery();
+			$success = $db->query();
+			
 			$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES ".implode(",", $pairs));
 			$sql =$db->getQuery();
 			$success = $db->query();
