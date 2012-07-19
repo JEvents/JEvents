@@ -585,7 +585,7 @@ class JEventsHTML
 
 	}
 
-	function getUserMailtoLink($evid, $userid, $admin=false)
+	function getUserMailtoLink($evid, $userid, $admin = false)
 	{
 
 		$db = & JFactory::getDBO();
@@ -612,6 +612,7 @@ class JEventsHTML
 		{
 			if (!isset($arr_userids[$userid]))
 			{
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$userdet = JEVHelper::getContact($userid);
 
 				$contactlink = "";
@@ -620,18 +621,32 @@ class JEventsHTML
 					if (isset($userdet->slug) && $userdet->slug && $agenda_viewmail == '1')
 					{
 						$contactlink = JRoute::_('index.php?option=com_contact&view=contact&id=' . $userdet->slug . '&catid=' . $userdet->catslug);
-						$contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">' . $userdet->contactname . '</a>';
+						$contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . ' target="_blank" >' . $userdet->contactname . '</a>';
 					}
 					else if ($userdet->email && $agenda_viewmail == '1')
 					{
 						//$contactlink = '<a href="mailto:' . $userdet->email
 						//. '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '">'
 						//. $userdet->username . '</a>';
-						$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
+						if ($params->get('contact_display_name', 0) == 1)
+						{
+							$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
+						}
+						else
+						{
+							$contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->username, 0);
+						}
 					}
 					else
 					{
-						$contactlink = $userdet->name;
+						if ($params->get('contact_display_name', 0) == 1)
+						{
+							$contactlink = $userdet->name;
+						}
+						else
+						{
+							$contactlink = $userdet->username;
+						}
 					}
 				}
 				$arr_userids[$userid] = $contactlink;
