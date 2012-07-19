@@ -74,7 +74,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$this->_hideSubmenu();
 
-		include_once(JPATH_ADMINISTRATOR.DS."includes".DS."toolbar.php");
+		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 		// TODO find the active admin template
 		if (!JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
 

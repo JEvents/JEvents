@@ -110,7 +110,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		}
 		else {
-			$minaccess = $params->getValue("jevcreator_level",19);
+			$minaccess = $params->get("jevcreator_level",19);
 			// get users AUTHORS and above
 			$sql = "SELECT * FROM #__users where gid>=".$minaccess;
 			$db->setQuery( $sql );

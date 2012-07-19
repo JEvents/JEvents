@@ -60,7 +60,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		JSubMenuHelper::addEntry(JText::_('CONTROL_PANEL'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-//$section = $params->getValue("section",0);
+//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -184,7 +184,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			{
 				$rssDoc = new SimplePie(
 								$rssUrl,
-								JPATH_BASE . DS . 'cache',
+								JPATH_BASE . '/' . 'cache',
 								$cache_time
 				);
 				$rssDoc->force_feed(true);
@@ -547,8 +547,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_user_juser" => 24,
 			"component_com_attend_jevents" => 21,
 			//"component_com_jevents" => 52, // JEvents 2.0
-			//"component_com_jevents" => 65, // JEvents 2.1
-			"component_com_jevents" => 71, // JEvents 2.2
+			"component_com_jevents" => 65, // JEvents 2.1
 			"component_com_jeventstags" => 9,
 			"component_com_jevlocations-old" => 4,
 			"component_com_jevlocations" => 4,

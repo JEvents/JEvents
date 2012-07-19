@@ -45,7 +45,7 @@ $cfg = & JEVConfig::getInstance();
 $cfg->set('jev_debug', 1);
 */
 
-include_once(JPATH_COMPONENT.DS."jevents.defines.php");
+include_once(JPATH_COMPONENT.'/'."jevents.defines.php");
 
 $isMobile = false;
 jimport("joomla.environment.browser");
@@ -106,7 +106,7 @@ $lang =& JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 
 // Load Site specific language overrides
-$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.JFactory::getApplication()->getTemplate());
+$lang->load(JEV_COM_COMPONENT, JPATH_THEMES.'/'.JFactory::getApplication()->getTemplate());
 
 // disable Zend php4 compatability mode
 @ini_set("zend.ze1_compatibility_mode","Off");
@@ -129,7 +129,7 @@ if (strpos($cmd, '.') != false) {
 
 	// Define the controller name and path
 	$controllerName	= strtolower($controllerName);
-	$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
 	//$controllerName = "Front".$controllerName;
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
@@ -139,7 +139,7 @@ if (strpos($cmd, '.') != false) {
 		JFactory::getApplication()->enqueueMessage('Invalid Controller - '.$controllerName );
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);
-		$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+		$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
 		require_once($controllerPath);
 	}
 } else {
@@ -181,7 +181,7 @@ if (class_exists($controllerClass)) {
 	JRequest::setVar("jevtask",$cmd);
 	JRequest::setVar("jevcmd",$cmd);
 	$controllerClass = ucfirst($controllerName).'Controller';
-	$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
 	require_once($controllerPath);
 	$controller = new $controllerClass();
 }

@@ -14,19 +14,19 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class JEventsAbstractView extends JView {
+class JEventsAbstractView extends JViewLegacy {
 	
 	function __construct($config = null)
 	{
 		parent::__construct($config);
-		$this->_addPath('template', $this->_basePath.DS.'views'.DS.'abstract'.DS.'tmpl');
+		$this->_addPath('template', $this->_basePath.'/'.'views'.'/'.'abstract'.'/'.'tmpl');
 		// note that the name config variable is ignored in the parent construct!
 		if (JVersion::isCompatible("2.5")){
 			$theme = JEV_CommonFunctions::getJEventsViewName();
-			$this->addTemplatePath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$theme.DS.$this->getName() );
+			$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$theme.'/'.$this->getName() );
 			
 			// or could have used 
-			//$this->addTemplatePath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS.$config['name'] );
+			//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
 			
 		}
 	}
@@ -46,7 +46,7 @@ class JEventsAbstractView extends JView {
 
 		// Allow the layout to be overriden by menu parameter - this only works if its valid for the task
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$newlayout = $params->getValue("overridelayout",$layout);
+		$newlayout = $params->get("overridelayout",$layout);
 
 		// check the template layout is valid for this task
 		jimport('joomla.filesystem.path');

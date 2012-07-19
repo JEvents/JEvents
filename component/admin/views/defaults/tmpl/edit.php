@@ -25,7 +25,7 @@ if (strpos($this->item->name, "com_")===0){
 }
 
 
-if ($this->item->value=="" && file_exists(dirname(__FILE__).DS.$this->item->name.".html")) $this->item->value = file_get_contents(dirname(__FILE__).DS.$this->item->name.".html");
+if ($this->item->value=="" && file_exists(dirname(__FILE__).'/'.$this->item->name.".html")) $this->item->value = file_get_contents(dirname(__FILE__).'/'.$this->item->name.".html");
 $this->replaceLabels($this->item->value);
 
 ?>		

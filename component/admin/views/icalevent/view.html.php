@@ -49,7 +49,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -101,7 +101,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->_hideSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -130,7 +130,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -219,7 +219,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				else
 				{
 					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-					$minaccess = $params->getValue("jevcreator_level", 19);
+					$minaccess = $params->get("jevcreator_level", 19);
 					$sql = "SELECT * FROM #__users where gid>=" . $minaccess;
 					$sql .= " ORDER BY name ASC";
 					$db->setQuery($sql);

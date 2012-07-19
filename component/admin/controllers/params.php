@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-class AdminParamsController extends JController
+class AdminParamsController extends JControllerAdmin
 {
 
 	/**

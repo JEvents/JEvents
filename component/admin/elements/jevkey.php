@@ -30,7 +30,7 @@ class JElementJevkey extends JElementText
 		}
 
 		$params = $this->_parent;
-		$showcopy = $params->getValue("com_copyright",0);
+		$showcopy = $params->get("com_copyright",0);
 		$style=' style="display:none" ';
 		if (!$showcopy){
 			$style=' style="display:block" ';
@@ -44,7 +44,7 @@ class JElementJevkey extends JElementText
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$params = $this->_parent;
-		$showcopy = $params->getValue("com_copyright",0);
+		$showcopy = $params->get("com_copyright",0);
 		$style=' style="display:none" ';
 		if (!$showcopy){
 			$style=' style="display:block" ';

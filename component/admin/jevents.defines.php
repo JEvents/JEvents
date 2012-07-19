@@ -65,4 +65,5 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('JEV_CommonFunctions',JEV_PATH."libraries/commonfunctions.php");
 	
 
-
+// Legacy code
+	JLoader::register('JParameter', JEV_ADMINLIBS . 'jevparams.php');

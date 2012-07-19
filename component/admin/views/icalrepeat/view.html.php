@@ -37,7 +37,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', JText::_('JEV_ADMIN_CPANEL'), false);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -72,7 +72,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$this->_hideSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 

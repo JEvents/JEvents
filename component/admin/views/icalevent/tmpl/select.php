@@ -87,8 +87,8 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 
 				  // generate SEF url = see http://forum.joomla.org/viewtopic.php?f=544&t=454993#p2013006 thanks
 				  jimport( 'joomla.application.router' );
-				  require_once (JPATH_ROOT . DS . 'includes' . DS . 'router.php');
-				  require_once (JPATH_ROOT . DS . 'includes' . DS . 'application.php');
+				  require_once (JPATH_ROOT . '/' . 'includes' . '/' . 'router.php');
+				  require_once (JPATH_ROOT . '/' . 'includes' . '/' . 'application.php');
 				  // better will be check if SEF option is enable!
 				  $router = new JRouterSite(array('mode'=>JROUTER_MODE_SEF));
 

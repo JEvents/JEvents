@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
 
-class AdminConfigController extends JController {
+class AdminConfigController extends JControllerAdmin {
 
 	/**
 	 * Controler for the Config Management
@@ -373,6 +373,7 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
+/*
 		$sql = "alter table #__jevents_vevent add column lockevent tinyint(3) NOT NULL default 0";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -388,7 +389,7 @@ SQL;
 		$sql = "alter table #__jevents_vevent add index stateidx (state)";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 
 		/**
 	 * create table if it doesn't exit
@@ -441,7 +442,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN url text NOT NULL default ''";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -469,7 +470,7 @@ SQL;
 		$sql = "ALTER TABLE #__jevents_vevdetail ADD FULLTEXT searchIdx (summary,description)"	;
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	rr_id int(12) NOT NULL auto_increment,
@@ -496,11 +497,11 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_rrule ADD INDEX eventid (eventid)";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 	rp_id int(12) NOT NULL auto_increment,
@@ -523,7 +524,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventstart ( eventid , startrepeat )";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -547,7 +548,7 @@ SQL;
 		$sql = "alter table #__jevents_repetition add index startend (startrepeat,endrepeat)";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 
 		// exception_type 0=delete, 1=other exception
 		$sql = <<<SQL
@@ -568,7 +569,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_exception add column startrepeat datetime  NOT NULL default '0000-00-00 00:00:00'";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -580,7 +581,7 @@ SQL;
 		$sql = "ALTER TABLE #__jevents_exception add column tempfield datetime  NOT NULL default '0000-00-00 00:00:00'";
 		$db->setQuery( $sql );
 		@$db->query();
-		
+*/		
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_categories (
 	id int(12) NOT NULL default 0 PRIMARY KEY,
@@ -593,7 +594,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_categories add column admin int(12) NOT NULL default 0";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -601,7 +602,7 @@ SQL;
 		$sql = "ALTER TABLE #__jevents_categories add column overlaps tinyint(3) NOT NULL default 0";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 		
 		// Add one category by default if none exist already
 		$sql = "SELECT count(id) from #__jevents_categories";
@@ -664,7 +665,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jevents_icsfile ADD overlaps tinyint(3) NOT NULL default 0";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -689,7 +690,7 @@ SQL;
 		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(255) NOT NULL default '' ";
 		$db->setQuery($sql);
 		$db->query();
-
+*/
 		// Add one native calendar by default if none exist already
 		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2";
 		$db->setQuery($sql);
@@ -744,7 +745,7 @@ SQL;
 		if (!$db->query()){
 			echo $db->getErrorMsg();
 		}
-
+/*
 		$sql = "ALTER TABLE #__jev_users ADD categories varchar(255) NOT NULL default ''";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -757,7 +758,7 @@ SQL;
 		$db->setQuery( $sql );
 		@$db->query();
 
-
+*/
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_repbyday (
 	rptday DATE  NOT NULL default '0000-00-00',
@@ -787,11 +788,11 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-
+/*
 		$sql = "ALTER TABLE #__jev_defaults ADD params text NOT NULL default ''";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 		$sql = "SHOW COLUMNS FROM #__jev_defaults";
 		$db->setQuery( $sql );
 		$cols = @$db->loadObjectList();
@@ -802,7 +803,7 @@ SQL;
 				@$db->query();
 			}
 		}
-
+/*
 		$sql = "ALTER TABLE #__jev_defaults ADD id int( 11 ) unsigned NOT NULL AUTO_INCREMENT , add key (id) ";
 		$db->setQuery( $sql );
 		@$db->query();
@@ -810,7 +811,7 @@ SQL;
 		$sql = "ALTER TABLE #__jev_defaults ADD PRIMARY KEY id  (id)";
 		$db->setQuery( $sql );
 		@$db->query();
-
+*/
 		// Multi-category Mapping table
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_catmap(

@@ -44,7 +44,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 	}
@@ -74,10 +74,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$this->_hideSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->getValue("section",0);
+		//$section = $params->get("section",0);
 
 		$db = JFactory::getDbo();
-		if ($params->getValue("authorisedonly",0)){
+		if ($params->get("authorisedonly",0)){
 			// get authorised users
 			$sql = "SELECT u.* FROM #__jev_users as jev LEFT JOIN #__users as u on u.id=jev.user_id where jev.published=1 and jev.cancreate=1";
 			$db=& JFactory::getDBO();
@@ -104,7 +104,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 			}
 			else {
-				$minaccess = $params->getValue("jevcreator_level",19);
+				$minaccess = $params->get("jevcreator_level",19);
 				// get users AUTHORS and above
 				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
 				$db->setQuery( $sql );

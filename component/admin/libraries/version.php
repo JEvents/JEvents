@@ -17,13 +17,13 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var int Main Release Level */
-	var $RELEASE 	= '2';
+	var $RELEASE 	= '3';
 	/** @var int Sub Release Level */
-	var $DEV_LEVEL 	= '2';
+	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level */
-	var $PATCH_LEVEL = '4';
+	var $PATCH_LEVEL = '0';
 	/** @var string Development Status */
-	var $DEV_STATUS = '';
+	var $DEV_STATUS = 'alpha';
 	/** @var string Copyright Text */
 	var $COPYRIGHT 	= 'Copyright &copy; 2006-2012';
 	/** @var string Copyright Text */

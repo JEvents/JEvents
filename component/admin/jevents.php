@@ -18,8 +18,8 @@ if (version_compare(phpversion(), '5.0.0', '<')===true) {
 
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
-if (JFile::exists(JPATH_COMPONENT_SITE.DS."metadata.xml")){
-	JFile::delete(JPATH_COMPONENT_SITE.DS."metadata.xml");
+if (JFile::exists(JPATH_COMPONENT_SITE.'/'."metadata.xml")){
+	JFile::delete(JPATH_COMPONENT_SITE.'/'."metadata.xml");
 }
 
 //error_reporting(E_ALL);
@@ -35,7 +35,7 @@ if (!isset($option))  $option = JRequest::getCmd("option"); // 1.6 mod
 define("JEV_COM_COMPONENT",$option);
 define("JEV_COMPONENT",str_replace("com_","",$option));
 
-include_once(JPATH_COMPONENT_ADMINISTRATOR.DS.JEV_COMPONENT.".defines.php");
+include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
 $registry	=& JRegistry::getInstance("jevents");
 /*
@@ -52,7 +52,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 	$timezone= date_default_timezone_get();
 	date_default_timezone_set($params->get("icaltimezonelive",""));
-	$registry->setValue("jevents.timezone",$timezone);
+	$registry->set("jevents.timezone",$timezone);
 }
 
 if (!JVersion::isCompatible("1.6.0")){
@@ -85,7 +85,7 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 	;
 	$db->setQuery($query);
 	$template = $db->loadResult();
-	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.DS."templates".DS.$template);
+	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
 }
 // disable Zend php4 compatability mode
 @ini_set("zend.ze1_compatibility_mode","Off");
@@ -99,7 +99,7 @@ if (strpos($cmd, '.') != false) {
 
 	// Define the controller name and path
 	$controllerName	= strtolower($controllerName);
-	$controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
 	$controllerName = "Admin".$controllerName;
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
@@ -135,7 +135,7 @@ if (class_exists($controllerClass)) {
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.activeprocess","administrator");
+$registry->set("jevents.activeprocess","administrator");
 
 // Perform the Request task
 $controller->execute($task);

@@ -61,13 +61,13 @@ if (JVersion::isCompatible("1.6.0"))
 					// work out file path
 					if ($path = JRequest::getString('path'))
 					{
-						$path = JPath::clean(JPATH_SITE . DS . $path);
+						$path = JPath::clean(JPATH_SITE . '/' . $path);
 						JPath::check($path);
 					}
 					else
 					{
 						$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option );
-						$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'config.xml';
+						$path = JPATH_ADMINISTRATOR . '/' . 'components' . '/' . $option . '/' . 'config.xml';
 					}
 
 					// Use our own class to add more functionality!
@@ -272,13 +272,13 @@ else
 					// work out file path
 					if ($path = JRequest::getString('path'))
 					{
-						$path = JPath::clean(JPATH_SITE . DS . $path);
+						$path = JPath::clean(JPATH_SITE . '/' . $path);
 						JPath::check($path);
 					}
 					else
 					{
 						$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option );
-						$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'config.xml';
+						$path = JPATH_ADMINISTRATOR . '/' . 'components' . '/' . $option . '/' . 'config.xml';
 					}
 
 					// Use our own class to add more functionality!

@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-include_once(JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'category.php');
+JLoader::register('JTableCategory', JPATH_PLATFORM . '/joomla/database/table/category.php');
 
 class JEventsCategory extends JTableCategory {
 

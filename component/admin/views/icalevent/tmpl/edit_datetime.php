@@ -25,7 +25,7 @@ else {
 
 // Disable event repeats for non-full editors if disable repeats is enabled
 $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-if ($params->getValue("disablerepeats",0) && !JEVHelper::isEventEditor() ){
+if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 	$repeatStyle="style='display:none;' class='jeveditrepeats' ";
 }
 

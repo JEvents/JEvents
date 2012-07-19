@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controller');
 
-class AdminCpanelController extends JController
+class AdminCpanelController extends JControllerAdmin
 {
 
 	/**
@@ -35,6 +35,15 @@ class AdminCpanelController extends JController
 		// do this in a way that supports mysql 4
 		$db = & JFactory::getDBO();
 
+		$sql = "SHOW TABLES LIKE '".$db->getPrefix()."jevents_catmap'";
+		$db->setQuery($sql);
+		$table = $db->loadObject();
+		if (!$table) {
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
+			$this->redirect();
+			return;
+		}
+		
 		$sql = "SHOW COLUMNS FROM `#__jevents_catmap`";
 		$db->setQuery($sql);
 		$cols = $db->loadObjectList('Field');
@@ -84,7 +93,7 @@ class AdminCpanelController extends JController
 
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$jevadmin = $params->getValue("jevadmin", -1);
+		$jevadmin = $params->get("jevadmin", -1);
 		if ($jevadmin == -1)
 		{
 			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
@@ -92,7 +101,7 @@ class AdminCpanelController extends JController
 		}
 
 		// Make sure jevlayout is copied and up to date
-		if ($params->getValue("installlayouts", 0))
+		if ($params->get("installlayouts", 0))
 		{
 
 			// RSH Fix to allow the installation to work with J!1.6 11/19/10 - Adapater is now a subclass of JAdapterInstance!

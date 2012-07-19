@@ -235,7 +235,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
             </td>
             <?php 
             $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-            $showpriority = $params->getValue("showpriority",0);
+            $showpriority = $params->get("showpriority",0);
             if ($this->setPriority && $showpriority){ ?>
         	<td  align="left"><?php echo JText::_('JEV_EVENT_PRIORITY'); ?>:</td>
             <td >
