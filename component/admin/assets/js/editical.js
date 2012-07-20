@@ -1,12 +1,12 @@
 /**
-* JEvents Component for Joomla 1.5.x
-*
-* @version     $Id: editical.js 3576 2012-05-01 14:11:04Z geraintedwards $
-* @package     JEvents
-* @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
-* @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
-* @link        http://www.jevents.net
-*/
+ * JEvents Component for Joomla 1.5.x
+ *
+ * @version     $Id: editical.js 3576 2012-05-01 14:11:04Z geraintedwards $
+ * @package     JEvents
+ * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        http://www.jevents.net
+ */
 
 Date.prototype.getYMD =  function()
 {
@@ -106,8 +106,8 @@ function checkTime(time){
 }
 
 /*
-* Does nothing at this stage
-*/
+ * Does nothing at this stage
+ */
 function checkInterval() {
 	updateRepeatWarning();
 
@@ -176,7 +176,7 @@ function set24hTime(time12h){
 			if (hour == 0) {
 			time.value = "12:"+parts[1];
 			}
-			*/
+			 */
 			if (hour == 12) {
 				time.value = "00:"+parts[1];
 			} else {
@@ -542,92 +542,92 @@ function toggleFreq(freq , setup)
 	var intervalLabel = document.getElementById('interval_label');
 	switch (freq) {
 		case "NONE":
-		{
-			myDiv.style.display="none";
-			byyearday.style.display="none";
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="none";
-			byday.style.display="none";
+			{
+				myDiv.style.display="none";
+				byyearday.style.display="none";
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="none";
+				byday.style.display="none";
 
-			// must also reset freq to 1 and count to 1
-			document.getElementById('rinterval').value="1";
-			document.getElementById('count').value="1";
-			document.getElementById('cuc').checked='checked';
-			toggleCountUntil('cu_count');
-		}
-		break;
+				// must also reset freq to 1 and count to 1
+				document.getElementById('rinterval').value="1";
+				document.getElementById('count').value="1";
+				document.getElementById('cuc').checked='checked';
+				toggleCountUntil('cu_count');
+			}
+			break;
 		case "YEARLY":
-		{
-			intervalLabel.innerHTML=jevyears;
-			myDiv.style.display="block";
-			byyearday.style.display="block";
-			document.getElementById('jevbyd').checked="checked";
-			toggleWhichBy("byyearday");
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="none";
-			byday.style.display="none";
-		}
-		break;
+			{
+				intervalLabel.innerHTML=jevyears;
+				myDiv.style.display="block";
+				byyearday.style.display="block";
+				document.getElementById('jevbyd').checked="checked";
+				toggleWhichBy("byyearday");
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="none";
+				byday.style.display="none";
+			}
+			break;
 		case "MONTHLY":
-		{
-			intervalLabel.innerHTML=jevmonths;
-			myDiv.style.display="block";
-			byyearday.style.display="none";
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="block";
-			document.getElementById('jevbmd').checked="checked";
-			toggleWhichBy("bymonthday");
-			byday.style.display="block";
-			weekofmonth.style.display="block";
-			if (!setup) toggleWeekNums(true);
-		}
-		break;
+			{
+				intervalLabel.innerHTML=jevmonths;
+				myDiv.style.display="block";
+				byyearday.style.display="none";
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="block";
+				document.getElementById('jevbmd').checked="checked";
+				toggleWhichBy("bymonthday");
+				byday.style.display="block";
+				weekofmonth.style.display="block";
+				if (!setup) toggleWeekNums(true);
+			}
+			break;
 		case "WEEKLY":
-		{
-			intervalLabel.innerHTML=jevweeks;
-			myDiv.style.display="block";
-			byyearday.style.display="none";
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="none";
-			byday.style.display="block";
-			document.getElementById('jevbd').checked="checked";
-			toggleWhichBy("byday");
-			weekofmonth.style.display="none";
-			// always set week nums false for weekly events
-			toggleWeekNums(false);
-		}
-		break;
+			{
+				intervalLabel.innerHTML=jevweeks;
+				myDiv.style.display="block";
+				byyearday.style.display="none";
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="none";
+				byday.style.display="block";
+				document.getElementById('jevbd').checked="checked";
+				toggleWhichBy("byday");
+				weekofmonth.style.display="none";
+				// always set week nums false for weekly events
+				toggleWeekNums(false);
+			}
+			break;
 		case "DAILY":
-		{
-			intervalLabel.innerHTML=jevdays;
-			myDiv.style.display="block";
-			byyearday.style.display="none";
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="none";
-			byday.style.display="none";
-			document.getElementById('jevbd').checked="checked";
-			//toggleWhichBy("byday");
-			weekofmonth.style.display="none";
-		}
-		break;
+			{
+				intervalLabel.innerHTML=jevdays;
+				myDiv.style.display="block";
+				byyearday.style.display="none";
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="none";
+				byday.style.display="none";
+				document.getElementById('jevbd').checked="checked";
+				//toggleWhichBy("byday");
+				weekofmonth.style.display="none";
+			}
+			break;
 		case "IRREGULAR":
-		{
-			intervalLabel.innerHTML=jevirregular;
-			myDiv.style.display="block";
-			byyearday.style.display="none";
-			bymonth.style.display="none";
-			byweekno.style.display="none";
-			bymonthday.style.display="none";
-			byday.style.display="none";
-			document.getElementById('jevirregular').checked="checked";
-			weekofmonth.style.display="none";
-		}
-		break;
+			{
+				intervalLabel.innerHTML=jevirregular;
+				myDiv.style.display="block";
+				byyearday.style.display="none";
+				bymonth.style.display="none";
+				byweekno.style.display="none";
+				bymonthday.style.display="none";
+				byday.style.display="none";
+				document.getElementById('jevirregular').checked="checked";
+				weekofmonth.style.display="none";
+			}
+			break;
 	}
 
 	updateRepeatWarning();
@@ -712,7 +712,7 @@ editor.style.width="550px";
 }
 
 window.addEvent('domready',function(){setupIE6();});
-*/
+ */
 /*
 if (window.webkit) {
 	window.addEvent('domready', function(){
@@ -725,7 +725,7 @@ function fixTabbedWebkit(){
 		tinyMCE.execCommand('mceAddControl', false, "jevcontent");
 	}
 }
-*/
+ */
 // sets the date for the page after save
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
@@ -840,7 +840,7 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 		}
 	}).post({
 		'json':JSON.encode(requestObject)
-		});
+	});
 	return hasConflicts;
 }
 
@@ -855,3 +855,32 @@ window.addEvent ('domready', function() {
 	catch(e){	
 	}
 }); 
+
+
+/*
+window.addEvent("domready",function(){
+	var form =document.adminForm;
+	$(form).addEvent('submit',function(event){
+		if (form && form.task){
+			var task = form.task.value;
+			if ( task == 'icalevent.save' || task == 'icalrepeat.save' || task == 'icalevent.savenew' || task == 'icalrepeat.savenew'   || task == 'icalevent.apply'  || task == 'icalrepeat.apply'){
+				if ($('publish_up')) {
+					var now = new Date();
+
+					var start_time = document.getElementById("start_time");				
+					var starttimeparts = start_time.value.split(":");
+					var start_date = document.getElementById("publish_up");
+					var startdateparts = start_date.value.split("-");
+					var startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
+
+					if (now>startDate){
+						alert("Events cannot start in the past");
+						event = new Event(event); 
+						event.stop();
+					}
+				}
+			}
+		};
+	});
+});
+*/
