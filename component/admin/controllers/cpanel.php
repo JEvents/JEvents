@@ -11,7 +11,7 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controlleradmin');
 
 class AdminCpanelController extends JControllerAdmin
 {

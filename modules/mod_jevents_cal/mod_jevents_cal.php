@@ -13,7 +13,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).'/'.'helper.php');
 
 $jevhelper = new modJeventsCalHelper();
 
@@ -43,7 +43,7 @@ if ($modtheme==""){
 }
 $theme=$modtheme;
 
-$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.DS."calendar", $params);
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.'/'."calendar", $params);
 $modview = new $viewclass($params, $module->id);
 $modview->jevlayout = $theme;
 echo $modview->getCal();

@@ -19,7 +19,7 @@ $registry->setValue("jevents.activeprocess","mod_jevents_legend");
 $registry->setValue("jevents.moduleid", $module->id);
 $registry->setValue("jevents.moduleparams", $params);
 
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).'/'.'helper.php');
 
 $jevhelper = new modJeventsLegendHelper();
 
@@ -30,7 +30,7 @@ if ($modtheme==""){
 }
 $theme=$modtheme;
 
-$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_legend',$theme.DS."legend", $params);
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_legend',$theme.'/'."legend", $params);
 $modview = new $viewclass($params, $module->id);
 $modview->jevlayout = $theme;
 echo $modview->displayCalendarLegend();

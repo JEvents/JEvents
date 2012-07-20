@@ -36,10 +36,10 @@ class modJeventsFilterHelper
 	
 	function getFilters(){
 		JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
-		$pluginsDir = JPATH_ROOT.DS.'plugins'.DS.'jevents';
+		$pluginsDir = JPATH_ROOT.'/'.'plugins'.'/'.'jevents';
 		$filterlist	= explode(",",str_replace(" ","",$this->params->get('filters', "search")));
-		//$filters = jevFilterProcessing::getInstance(array("artist","category","reset"),$pluginsDir.DS."filters".DS);
-		$filters = jevFilterProcessing::getInstance($filterlist,$pluginsDir.DS."filters".DS);
+		//$filters = jevFilterProcessing::getInstance(array("artist","category","reset"),$pluginsDir.'/'."filters".'/');
+		$filters = jevFilterProcessing::getInstance($filterlist,$pluginsDir.'/'."filters".'/');
 		return $filters;
 	}
 	

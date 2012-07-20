@@ -26,7 +26,7 @@ class DefaultViewJevent extends DefaultICalEvent
 	{		
 		parent::__construct($config);
 
-		$this->addTemplatePath($this->_basePath.DS."views".DS.$this->jevlayout.DS."icalevent".DS.'tmpl');
+		$this->addTemplatePath($this->_basePath.'/'."views".'/'.$this->jevlayout.'/'."icalevent".'/'.'tmpl');
 	}
 	
 	function detail($tpl = null)

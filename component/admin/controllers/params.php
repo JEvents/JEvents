@@ -13,7 +13,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controlleradmin');
 
 class AdminParamsController extends JControllerAdmin
 {
@@ -44,41 +44,24 @@ class AdminParamsController extends JControllerAdmin
 	 */
 	function edit()
 	{
-		//JRequest::setVar('tmpl', 'component'); //force the component template
-		$component = JEV_COM_COMPONENT;
 
 		// get the view
 		$this->view = & $this->getView("params", "html");
 
-		$model = $this->getModel('params');
-		if (JVersion::isCompatible("1.6.0"))
+		//$model = $this->getModel('params');
+		$model = $this->getModel('component');
+		$table = & JTable::getInstance('extension');
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			$table = & JTable::getInstance('extension');
-			//if (!$table->loadByOption( $component ))
-			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
-			// Backwards compatatbility
-			$table->id = $table->extension_id;
-			$table->option = $table->element;
-
-			// Set the layout
-			$this->view->setLayout('edit16');
+			JError::raiseWarning(500, 'Not a valid component');
+			return false;
 		}
-		else
-		{
-			$table = & JTable::getInstance('component');
-			if (!$table->loadByOption($component))
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
+		// Backwards compatatbility
+		$table->id = $table->extension_id;
+		$table->option = $table->element;
 
-			// Set the layout
-			$this->view->setLayout('edit');
-		}
+		// Set the layout
+		$this->view->setLayout('edit16');
 
 		$this->view->assignRef('component', $table);
 		$this->view->setModel($model, true);
@@ -119,6 +102,7 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		$post = JRequest::get('post');
+		$post['params'] 	= JRequest::getVar('jform', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 

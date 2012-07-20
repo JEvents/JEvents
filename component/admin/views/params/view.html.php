@@ -40,33 +40,33 @@ class AdminParamsViewParams extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
 
-		//APPLY BUTTON BY PRAKASH.
-		JToolBarHelper::apply('params.apply'); //APPLY BUTTON
+		JToolBarHelper::apply('params.apply'); 
 		JToolBarHelper::save('params.save');
 		JToolBarHelper::cancel('cpanel.cpanel');
 
 		$model = $this->getModel();
-		$this->params = &$model->getParams();
-
-		$component = JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
 		JHTML::_('behavior.tooltip');
 
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			// Get the actions for the asset.
-			$actions = JAccess::getActions(JEV_COM_COMPONENT, "component");
+		// Get the actions for the asset.
+		$actions = JAccess::getActions(JEV_COM_COMPONENT, "component");
 
-			jimport('joomla.form.form');
+		jimport('joomla.form.form');
 
-			// Add the search path for the admin component config.xml file.
-			JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
+		// Add the search path for the admin component config.xml file.
+		JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
 
-			// Get the form.
-			$modelForm = $model->getForm();
+		// Get the form.
+		$modelForm = $model->getForm();
+		
+		$component	= $this->get('Component');
+		// Bind the form to the data.
+		if ($modelForm && $component->params) {
+			$modelForm->bind($component->params);
+		}		
 
-			$this->assignRef("form", $modelForm);
-		}
+		$this->assignRef("form", $modelForm);
+		$this->assignRef("component", $component);
 
 	}
 

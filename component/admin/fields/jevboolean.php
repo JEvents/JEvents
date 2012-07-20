@@ -42,17 +42,17 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 	 * @since	1.6
 	 */
 	public function getOptions()
-	{
-		// Initialize variables.
-		$options = array();
+	{		
+		// Must load admin language files
+		$lang =& JFactory::getLanguage();
+		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
+		
+		$options = array ();
+		$options[] = JHTML::_('select.option', 0, JText::_("Jev_No"));
+		$options[] = JHTML::_('select.option', 1, JText::_("jev_Yes"));
 
-		$file = JPATH_ADMINISTRATOR . '/components/com_jevents/elements/jevboolean.php';
-		if (file_exists($file) ) {
-			include_once($file);
-		} else {
-			die ("JEvents Locations Fields\n<br />This module needs the JEvents Locations component");
-		}		
+		return $options;
 
-		return JElementJevboolean::fetchElement($this->name, $this->value, $this->element, $this->type, true);  // RSH 10/5/10 - Use the original code for J!1.6
+		
 	}
 }

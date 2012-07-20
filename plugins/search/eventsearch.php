@@ -126,7 +126,7 @@ class plgSearchEventsearch extends JPlugin
 
 		$db = & JFactory::getDBO();
 		$user = & JFactory::getUser();
-		$groups = (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->authorisedLevels()) : false;
+		$groups = (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->getAuthorisedViewLevels()) : false;
 
 		$limit = (version_compare(JVERSION, '1.6.0', '>=')) ? $this->params->get('search_limit', 50) : $this->_params->def('search_limit', 50);
 		$dateformat = (version_compare(JVERSION, '1.6.0', ">=")) ? $this->params->get('date_format', "%d %B %Y") : $this->_params->def('date_format', "%d %B %Y");

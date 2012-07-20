@@ -51,7 +51,7 @@ class JEventsDefaultView extends JEventsAbstractView
 		
 		$this->addHelperPath(realpath(dirname(__FILE__)."/../helpers"));
 		
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
 		// attach data model
 		$this->datamodel  =  new JEventsDataModel();
@@ -167,7 +167,7 @@ class JEventsDefaultView extends JEventsAbstractView
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
-		$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend");
+		$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.'/'."legend");
 		if (!file_exists($modpath)) return;
 		
 		require_once($modpath);

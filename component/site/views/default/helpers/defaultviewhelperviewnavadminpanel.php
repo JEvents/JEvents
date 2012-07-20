@@ -18,7 +18,7 @@ function DefaultViewHelperViewNavAdminPanel($view){
 	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 
 	JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
-	$pluginsDir = JPATH_ROOT.DS.'plugins'.DS.'jevents';
+	$pluginsDir = JPATH_ROOT.'/'.'plugins'.'/'.'jevents';
 	$filters = jevFilterProcessing::getInstance(array("published","justmine","category","reset"));
 
 	$cfg = & JEVConfig::getInstance();

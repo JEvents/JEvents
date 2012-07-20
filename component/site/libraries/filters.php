@@ -38,8 +38,8 @@ class jevFilterProcessing
 			}
 		}
 
-		$pluginsDir = JPATH_ROOT.DS.'plugins'.DS.'jevents';
-		if ($filterpath=="") $filterpath=$pluginsDir.DS."filters";
+		$pluginsDir = JPATH_ROOT.'/'.'plugins'.'/'.'jevents';
+		if ($filterpath=="") $filterpath=$pluginsDir.'/'."filters";
 
 		static $instances;
 		if ($unsetfilter && is_array($instances)){
@@ -78,7 +78,7 @@ class jevFilterProcessing
 		}
 
 		settype($this->filterpath, 'array'); //force to array
-		$this->filterpath[]=dirname(__FILE__).DS."filters";
+		$this->filterpath[]=dirname(__FILE__).'/'."filters";
 		if (JFolder::exists(JPATH_SITE."/plugins/jevents")){
 			$others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
 			if (is_array($others)){

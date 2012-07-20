@@ -5,7 +5,7 @@ function DefaultEventsLegend($view){
 	$cfg = & JEVConfig::getInstance();
 	$theme = JEV_CommonFunctions::getJEventsViewName();
 
-	$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend");
+	$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.'/'."legend");
 	if (!file_exists($modpath)) return;
 
 	// load the helper class

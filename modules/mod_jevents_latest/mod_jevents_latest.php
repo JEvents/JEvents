@@ -12,7 +12,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).'/'.'helper.php');
 
 $jevhelper = new modJeventsLatestHelper();
 $theme = JEV_CommonFunctions::getJEventsViewName();
@@ -30,7 +30,7 @@ $registry->setValue("jevents.activeprocess","mod_jevents_latest");
 $registry->setValue("jevents.moduleid", $module->id);
 $registry->setValue("jevents.moduleparams", $params);
 
-$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.DS."latest", $params);
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.'/'."latest", $params);
 
 $registry	=& JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php

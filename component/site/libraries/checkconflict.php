@@ -13,11 +13,11 @@ define('_SC_START', ((float) $usec + (float) $sec));
 
 // Set flag that this is a parent file
 define('_JEXEC', 1);
-define('DS', DIRECTORY_SEPARATOR);
-$x = realpath(dirname(__FILE__) . DS . ".." . DS . ".." . DS . ".." . DS);
-if (!file_exists($x . DS . "configuration.php") && isset($_SERVER['SCRIPT_FILENAME']))
+define(''/'', DIRECTORY_SEPARATOR);
+$x = realpath(dirname(__FILE__) . '/' . ".." . '/' . ".." . '/' . ".." . '/');
+if (!file_exists($x . '/' . "configuration.php") && isset($_SERVER['SCRIPT_FILENAME']))
 {
-	$x = str_replace(DS . 'components' . DS . 'com_jevents' . DS . 'libraries' . DS . 'checkconflict.php', '', $_SERVER['SCRIPT_FILENAME']);
+	$x = str_replace('/' . 'components' . '/' . 'com_jevents' . '/' . 'libraries' . '/' . 'checkconflict.php', '', $_SERVER['SCRIPT_FILENAME']);
 }
 define('JPATH_BASE', $x);
 
@@ -109,8 +109,8 @@ function ProcessRequest(&$requestObject, $returnData)
 	define("REQUESTOBJECT", serialize($requestObject));
 	define("RETURNDATA", serialize($returnData));
 
-	require_once JPATH_BASE . DS . 'includes' . DS . 'defines.php';
-	require_once JPATH_BASE . DS . 'includes' . DS . 'framework.php';
+	require_once JPATH_BASE . '/' . 'includes' . '/' . 'defines.php';
+	require_once JPATH_BASE . '/' . 'includes' . '/' . 'framework.php';
 
 	$requestObject = unserialize(REQUESTOBJECT);
 	$returnData = unserialize(RETURNDATA);

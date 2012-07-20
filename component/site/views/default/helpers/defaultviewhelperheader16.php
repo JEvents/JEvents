@@ -110,7 +110,7 @@ function DefaultViewHelperHeader16($view){
 		if (strpos($link,"/")===0) $link = substr($link,1);
 		$link = JURI::root().$link;
 
-		require_once(JPATH_SITE.DS.'components'.DS.'com_mailto'.DS.'helpers'.DS.'mailto.php');
+		require_once(JPATH_SITE.'/'.'components'.'/'.'com_mailto'.'/'.'helpers'.'/'.'mailto.php');
 		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.MailToHelper::addLink( $link ));
 
 		?>

@@ -34,10 +34,17 @@ echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
     			echo '</ul></td></tr>' . "\n";
     		}
 
+ $datenow = JEVHelper::getNow();
+$class =  $datenow->toFormat('%Y-%m-%d')>$row->startDate() ? "class='pastevent'":"";
+              if( $event_day_month_year <> $chdate ){
+                 $date =JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 1 );
+                 echo '<tr '.$class.'><td class="ev_td_left">'.$date.'</td>' . "\n";
+                 echo '<td align="left" valign="top" class="ev_td_right"><ul class="ev_ul">' . "\n";
+              }
     		if( $event_day_month_year <> $chdate ){
-    			$date =JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 1 );
-    			echo '<tr><td class="ev_td_left">'.$date.'</td>' . "\n";
-    			echo '<td align="left" valign="top" class="ev_td_right"><ul class="ev_ul">' . "\n";
+//    			$date =JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 1 );
+  //  			echo '<tr><td class="ev_td_left">'.$date.'</td>' . "\n";
+    //			echo '<td align="left" valign="top" class="ev_td_right"><ul class="ev_ul">' . "\n";
     		}
 
     		$listyle = 'style="border-color:'.$row->bgcolor().';"';

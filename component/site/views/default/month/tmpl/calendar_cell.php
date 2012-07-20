@@ -45,7 +45,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$this->jevlayout="default";	
 		
 		$this->addHelperPath(JEV_VIEWS."/default/helpers");
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
 		// attach data model
 		$reg = & JevRegistry::getInstance("jevents");

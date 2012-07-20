@@ -106,7 +106,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$viewclass = ucfirst($theme)."ModLatestView";
 
 		jimport('joomla.application.module.helper');
-		require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',$theme.DS."latest"));
+		require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',$theme.'/'."latest"));
 		$jeventCalObject = new $viewclass($params,$modid);
 
 		$jeventCalObject->getLatestEventsData($info["count"]);

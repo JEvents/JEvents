@@ -31,7 +31,7 @@ class JEventsGeraintView extends JEventsDefaultView
 
 		$this->addHelperPath(dirname(__FILE__)."/../helpers/");
 		
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");
+		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
 	}
 

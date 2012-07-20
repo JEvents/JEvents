@@ -24,7 +24,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 	var $jevlayout = null;
 	
 	function __construct($config = array()){
-		include_once(JPATH_ADMINISTRATOR.DS."includes".DS."toolbar.php");
+		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 		parent::__construct($config);	
 		
 		// TODO find the active admin template
@@ -34,7 +34,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		// used only for helper functions
 		$this->jevlayout="default";	
 		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));		
-		$this->addHelperPath( JPATH_BASE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.JEV_COM_COMPONENT.DS."helpers");		
+		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");		
 	}	
 	
 	function edit($tpl = null)

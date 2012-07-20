@@ -66,7 +66,7 @@ class modJeventsLegendHelper
 		if ($params && strlen($params->get("layout",""))>0){
 			$speciallayout = strtolower($params->get("layout",""));
 			// Build the template and base path for the layout
-			$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$theme.DS.$speciallayout.'.php';
+			$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$theme.'/'.$speciallayout.'.php';
 
 			// If the template has a layout override use it
 			if (file_exists($tPath)) {
@@ -78,8 +78,8 @@ class modJeventsLegendHelper
 			}
 		}
 		// Build the template and base path for the layout
-		$tPath = JPATH_SITE.DS.'templates'.DS.JFactory::getApplication()->getTemplate().DS.'html'.DS.$module.DS.$layout.'.php';
-		$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.$layout.'.php';
+		$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$layout.'.php';
+		$bPath = JPATH_SITE.'/'.'modules'.'/'.$module.'/'.'tmpl'.'/'.$layout.'.php';
 
 		jimport('joomla.filesystem.file');
 		// If the template has a layout override use it
@@ -101,7 +101,7 @@ class modJeventsLegendHelper
 		}
 		else {
 			echo "<strong>".JText::sprintf("JEV_PLEASE_REINSTALL_LAYOUT",$theme)."</strong>";
-			$bPath = JPATH_SITE.DS.'modules'.DS.$module.DS.'tmpl'.DS.'default'.DS.'legend.php';
+			$bPath = JPATH_SITE.'/'.'modules'.'/'.$module.'/'.'tmpl'.'/'.'default'.'/'.'legend.php';
 			require_once($bPath);
 			$viewclass = "DefaultModLegendView";
 			return $viewclass;

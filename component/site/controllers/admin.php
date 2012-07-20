@@ -75,11 +75,11 @@ class AdminController extends JController   {
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "admin";
-		$this->addViewPath($this->_basePath.DS."views".DS.$theme);
+		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = & $this->getView($view,$viewType, $theme."View",
 		array( 'base_path'=>$this->_basePath,
-		"template_path"=>$this->_basePath.DS."views".DS.$theme.DS.$view.DS.'tmpl',
-		"name"=>$theme.DS.$view));
+		"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
+		"name"=>$theme.'/'.$view));
 
 		// Set the layout
 		$this->view->setLayout('listevents');

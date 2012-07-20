@@ -72,7 +72,7 @@ class JEVHelper
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
 				// Load Site specific language overrides
-				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . DS . JFactory::getApplication()->getTemplate());
+				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate());
 
 				break;
 
@@ -487,7 +487,7 @@ class JEVHelper
 		$cfg = & JEVConfig::getInstance();
 
 		// check if this function is already loaded
-		if (!JFactory::getApplication()->get('loadOverlib'))
+		if (!$cfg->get('loadOverlib'))
 		{
 			if ($cfg->get("com_enableToolTip", 1) || JFactory::getApplication()->isAdmin())
 			{
@@ -504,7 +504,7 @@ class JEVHelper
 					$document->addScript(JURI::root() . 'includes/js/overlib_hideform_mini.js');
 				}
 				// change state so it isnt loaded a second time
-				JFactory::getApplication()->set('loadOverlib', true);
+				$cfg->set('loadOverlib', true);
 
 				if ($cfg->get("com_calTTShadow", 1) && !JFactory::getApplication()->isAdmin())
 				{
@@ -1697,7 +1697,7 @@ class JEVHelper
 				$view->jevlayout = $view->getTheme();
 		}
 
-		if (file_exists(JPATH_BASE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'html' . DS . JEV_COM_COMPONENT . DS . $view->jevlayout . DS . "assets" . DS . "css" . DS . $filename))
+		if (file_exists(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . '/' . "assets" . '/' . "css" . '/' . $filename))
 		{
 			JEVHelper::stylesheet($filename, 'templates/' . JFactory::getApplication()->getTemplate() . '/html/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . "/assets/css/");
 		}
@@ -1738,7 +1738,7 @@ class JEVHelper
 		}
 		if (JVersion::isCompatible("1.6.0"))
 		{
-			$levels = $user->authorisedLevels();
+			$levels = $user->getAuthorisedViewLevels();
 
 			if ($type == 'string')
 			{
