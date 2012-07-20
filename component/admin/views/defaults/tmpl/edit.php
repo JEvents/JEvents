@@ -82,7 +82,9 @@ $this->replaceLabels($this->item->value);
                     </td>
                     <td valign="top">
 		                 <?php
-		                 echo $this->loadTemplate($this->item->name);
+				$pattern = "#.*([0-9]*).*#";
+				$name  = preg_replace("#\.[0-9]#","",$this->item->name);
+		                 echo $this->loadTemplate($name);
 		                 ?>                    
                     </td>
                  </tr>
