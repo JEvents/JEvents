@@ -101,7 +101,9 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$options['cache_time'] = 86400;
 		}
 		
-		$rssDoc = & JFactory::getXMLparser('RSS', $options);
+		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time'] );
+
+		//$rssDoc = & JFactory::getXMLparser('RSS', $options);
 
 		if ($rssDoc == false)
 		{

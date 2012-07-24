@@ -11,9 +11,9 @@
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controllerform');
 
-class AdminDefaultsController extends JController {
+class AdminDefaultsController extends JControllerForm {
 	/**
 	 * Controler for the Control Panel
 	 * @param array		configuration

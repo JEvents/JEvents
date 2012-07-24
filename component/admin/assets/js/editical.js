@@ -856,7 +856,6 @@ window.addEvent ('domready', function() {
 	}
 }); 
 
-
 /*
 window.addEvent("domready",function(){
 	var form =document.adminForm;

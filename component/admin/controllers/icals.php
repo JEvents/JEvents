@@ -11,10 +11,10 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controllerform');
 
 
-class AdminIcalsController extends JController {
+class AdminIcalsController extends JControllerForm {
 
 	var $_debug = false;
 	var $queryModel = null;

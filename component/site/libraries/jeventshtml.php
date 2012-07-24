@@ -227,7 +227,12 @@ class JEventsHTML
 		if (JVersion::isCompatible("1.6.0"))
 		{
 			// need to declare this because of bug in Joomla  JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
-			include_once(JPATH_SITE . "/libraries/joomla/html/html/category.php");
+			if (JVersion::isCompatible("3.0")){
+				include_once(JPATH_SITE . "/libraries/cms/html/category.php");
+			}
+			else {
+				include_once(JPATH_SITE . "/libraries/joomla/html/html/category.php");
+			}
 			ob_start();
 			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 			$options = JHtml::_('category.options', $sectionname);
@@ -834,7 +839,7 @@ class JEventsHTML
 		$datestp = ( JevDate::mktime(0, 0, 0, $month, $day, $year));
 
 		// if date format is from langauge file then do this first
-		if ($format_type == 3)
+		if ($format_type == 3 && is_numeric($type))
 		{
 			return JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_" . $type), $datestp);
 		}

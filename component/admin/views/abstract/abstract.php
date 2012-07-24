@@ -90,11 +90,19 @@ class JEventsAbstractView extends JViewLegacy {
 	 	if( $path === null || $path === '' ) {
 	 		$path = '/administrator/images/';
 	 	}
+		$alttext = str_replace("<br/>", " ", $text);
 		?>
 		<div style="float:left;">
 			<div class="icon">
-				<a href="<?php echo $link; ?>" <?php echo $target;?>  <?php echo $onclick;?>>
-					<?php echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text ); ?>
+				<a href="<?php echo $link; ?>" <?php echo $target;?>  <?php echo $onclick;?> title="<?php echo $alttext;?>">
+					<?php 
+					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text ); 
+					if (strpos($path, '/')===0){
+						$path = substr($path,1);
+					}
+					echo JHTML::_('image', $path.$image, $alttext , array('title'=>$alttext), false);
+					//JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true)
+					?>
 					<span><?php echo $text; ?></span>
 				</a>
 			</div>
