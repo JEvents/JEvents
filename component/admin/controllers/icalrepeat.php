@@ -477,8 +477,8 @@ class AdminIcalrepeatController extends JController
 
 		$data["X-COLOR"] = JRequest::getVar("color", "");
 
-		// Add any custom fields into $data array
-		$array = JRequest::get("post");
+		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
+		$array = JRequest::get("post", 2);
 		foreach ($array as $key => $value)
 		{
 			if (strpos($key, "custom_") === 0)
