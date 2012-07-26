@@ -445,7 +445,7 @@ RAWTEXT;
 
 				$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$detailids = $db->loadResultArray();
+				$detailids = $db->loadColumn();
 				$detailidstring = implode(",",$detailids);
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
@@ -528,7 +528,7 @@ RAWTEXT;
 				// This would fail if all recurrances have been 'adjusted'
 				$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$detailids = $db->loadResultArray();
+				$detailids = $db->loadColumn();
 				$detailidstring = implode(",",$detailids);
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";

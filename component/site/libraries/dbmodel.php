@@ -121,7 +121,7 @@ class JEventsDBModel
 				;
 
 				$db->setQuery($query);
-				$catlist = $db->loadResultArray();
+				$catlist = $db->loadColumn();
 
 				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
 			}
@@ -145,7 +145,7 @@ class JEventsDBModel
 				;
 
 				$db->setQuery($query);
-				$catlist = $db->loadResultArray();
+				$catlist = $db->loadColumn();
 
 				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
 			}
@@ -392,7 +392,7 @@ class JEventsDBModel
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		array_push($ids, 0);
 		$ids = implode(",", $ids);
 
@@ -525,7 +525,7 @@ class JEventsDBModel
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		array_push($ids, 0);
 		$ids = implode(",", $ids);
 
@@ -1102,7 +1102,7 @@ $dbend = (float)$usec + (float)$sec;
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		array_push($ids, 0);
 		$ids = implode(",", $ids);
 
@@ -1533,7 +1533,7 @@ $dbend = (float)$usec + (float)$sec;
 		if (JRequest::getString("jevtask", "") == "icals.export")
 		{
 			$registry = & JRegistry::getInstance("jevents");
-			$user = $registry->getValue("jevents.icaluser", false);
+			$user = $registry->get("jevents.icaluser", false);
 			if (!$user)
 				$user = JFactory::getUser();
 		}
@@ -2067,7 +2067,7 @@ $dbend = (float)$usec + (float)$sec;
 			;
 
 			$db->setQuery($query);
-			$rplist = $db->loadResultArray();
+			$rplist = $db->loadColumn();
 			//echo $db->explain();
 
 			$rplist = implode(',', array_merge(array(-1), $rplist));
@@ -2115,7 +2115,7 @@ $dbend = (float)$usec + (float)$sec;
 			;
 
 			$db->setQuery($query);
-			$rplist = $db->loadResultArray();
+			$rplist = $db->loadColumn();
 
 			$rplist = implode(',', array_merge(array(-1), $rplist));
 
@@ -2437,7 +2437,7 @@ $dbend = (float)$usec + (float)$sec;
 			$db->setQuery($query);
 			//echo $db->explain();
 
-			$rplist = $db->loadResultArray();
+			$rplist = $db->loadColumn();
 
 			$rplist = implode(',', array_merge(array(-1), $rplist));
 
@@ -2568,7 +2568,7 @@ $dbend = (float)$usec + (float)$sec;
 
 			$db->setQuery($query);
 
-			$rplist = $db->loadResultArray();
+			$rplist = $db->loadColumn();
 
 			$rplist = implode(',', array_merge(array(-1), $rplist));
 
@@ -2751,7 +2751,7 @@ $dbend = (float)$usec + (float)$sec;
 			//echo $db->explain();
 		}
 		//echo $db->explain();
-		$details = $db->loadResultArray();
+		$details = $db->loadColumn();
 
 		$icalrows = array();
 		foreach ($details as $detid)
@@ -2863,7 +2863,7 @@ $dbend = (float)$usec + (float)$sec;
 			$db = & JFactory::getDBO();
 			// get list of categories this event is in - are they all accessible?
 			$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$row->ev_id);
-			$catids = $db->loadResultArray();
+			$catids = $db->loadColumn();
 			// backward compatbile
 			if(!$catids){
 				return true;

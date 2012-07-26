@@ -64,7 +64,7 @@ class jevCategoryFilter extends jevFilter
 			;
 			
 			$db->setQuery($query);
-			$catlist =  $db->loadResultArray();
+			$catlist =  $db->loadColumn();
 			array_unshift($catlist,-1);
 		
 		$filter = " ev.catid IN (".implode(",",$catlist).")";

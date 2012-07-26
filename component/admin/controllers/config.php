@@ -890,7 +890,7 @@ SQL;
 			$query="SELECT id FROM #__categories"
 			."\n WHERE title='$ec->cat_name (jcal)' and section='com_events'";
 			$db->setQuery($query);
-			$ids = $db->loadResultArray();
+			$ids = $db->loadColumn();
 			$idlist = implode(",",$ids);
 
 			if (count($ids)>0){

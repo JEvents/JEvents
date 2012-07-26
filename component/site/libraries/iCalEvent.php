@@ -463,7 +463,7 @@ else $this->_detail = false;
 		."\n WHERE eventid=".$this->ev_id
 		."\n AND rpt.eventdetail_id != ".$this->_detail->evdet_id;
 		$db->setQuery($sql);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (count($ids)>0){
 			$idlist = implode(",",$ids);
 			$sql = "DELETE FROM #__jevents_vevdetail  WHERE evdet_id IN(".$idlist.")";

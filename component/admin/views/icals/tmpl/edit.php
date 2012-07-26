@@ -117,12 +117,10 @@ echo JEventsHTML::buildScriptTag('end');
 </table>	
 		<?php
 	// Tabs
-	jimport('joomla.html.pane');
-	$tabs = & JPane::getInstance('tabs');
-	echo $tabs->startPane( 'icals' );
+        echo JHtml::_('tabs.start', 'ical-tabs');
 
 	if ($id==0 || $icaltype==2){
-		echo $tabs->startPanel( JText::_("FROM_SCRATCH"), 'icalsnative' );
+		echo JHtml::_('tabs.panel', JText::_("FROM_SCRATCH"), "icalnative");
 		if (!isset($this->editItem->isdefault) || $this->editItem->isdefault==0){
 			$checked0=' checked="checked"';
 			$checked1='';
@@ -155,11 +153,10 @@ echo JEventsHTML::buildScriptTag('end');
 	<button name="newical"  title="Create New" onclick="submitbutton('icals.new');return false;"><?php echo JText::_("CREATE_FROM_SCRATCH");?></button>
 	<?php
 	}
-	echo $tabs->endPanel();
 	}
 
 	if ($id==0 || $icaltype==1){
-		echo $tabs->startPanel( $filemessage, 'icalsfile' );
+		echo JHtml::_('tabs.panel', $filemessage, "icalsfile");
 	?>
 	<?php if ($id==0){ ?>
 	<h3><?php echo $filename;?></h3>
@@ -167,11 +164,10 @@ echo JEventsHTML::buildScriptTag('end');
 	<button name="loadical"  title="Load Ical" onclick="var icalfile=document.getElementById('upload').value;if (icalfile.length==0)return false; else submitbutton('icals.save');return false;"><?php echo JText::_( 'LOAD_ICAL_FROM_FILE' );?></button>
 	<?php
 	}
-	echo $tabs->endPanel();
 	}
 
 	if ($id==0 || $icaltype==0){
-		echo $tabs->startPanel( JText::_( 'FROM_URL' ), 'icalsurl' );
+                echo JHtml::_('tabs.panel',  JText::_( 'FROM_URL' ), "icalsurl");
 	?>
 		<?php
 		$urlsAllowed = ini_get("allow_url_fopen");
@@ -204,10 +200,7 @@ echo JEventsHTML::buildScriptTag('end');
 		<button name="loadical"  title="Load Ical"  <?php echo $disabled;?> onclick="var icalfile=document.getElementById('uploadURL').value;if (icalfile.length==0)return false; else submitbutton('icals.save');return false;"><?php echo JText::_( 'LOAD_ICAL_FROM_URL' );?></button>
 		<?php
 		}
-		echo $tabs->endPanel();
 	}
-
-	echo $tabs->endPane();
 
 	?>
 <input type="hidden" name="icsid" id="icsid"  <?php echo $disabled;?> value="<?php echo $id;?>"/>

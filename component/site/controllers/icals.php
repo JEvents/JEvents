@@ -335,7 +335,7 @@ class ICalsController extends AdminIcalsController
 			else $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
 			
 			$db->setQuery($catsql);
-			$excats = implode(",", $db->loadResultArray());
+			$excats = implode(",", $db->loadColumn());
 		}
 
 

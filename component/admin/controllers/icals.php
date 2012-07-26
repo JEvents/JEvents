@@ -573,7 +573,7 @@ class AdminIcalsController extends JControllerForm {
 
 		$query = "SELECT ev_id FROM #__jevents_vevent WHERE icsid IN ($icsids)";
 		$db->setQuery( $query);
-		$veventids = $db->loadResultArray();
+		$veventids = $db->loadColumn();
 		$veventidstring = implode(",",$veventids);
 
 		if ($veventidstring) {
@@ -581,7 +581,7 @@ class AdminIcalsController extends JControllerForm {
 			// This would fail if all recurrances have been 'adjusted'
 			$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery( $query);
-			$detailids = $db->loadResultArray();
+			$detailids = $db->loadColumn();
 			$detailidstring = implode(",",$detailids);
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";

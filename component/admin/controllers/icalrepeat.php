@@ -796,12 +796,12 @@ class AdminIcalrepeatController extends JController
 			// Find detail ids for future repetitions that don't match the global event detail
 			$query = "SELECT eventdetail_id FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "' AND eventdetail_id<>" . $eventdetailid;
 			$db->setQuery($query);
-			$detailids = $db->loadResultArray();
+			$detailids = $db->loadColumn();
 
 			// Find repeat ids future repetitions 
 			$query = "SELECT rp_id FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
-			$rp_ids = $db->loadResultArray();
+			$rp_ids = $db->loadColumn();
 
 			// Change the underlying event repeat rule details  !!
 			$query = "SELECT * FROM #__jevents_rrule WHERE eventid=$repeatdata->eventid";

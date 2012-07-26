@@ -30,9 +30,9 @@ class jevFilterProcessing
 		if ($uid==""){
 			// find what is running - used by the filters
 			$registry	=& JRegistry::getInstance("jevents");
-			$activeprocess = $registry->getValue("jevents.activeprocess","");
-			$moduleid = $registry->getValue("jevents.moduleid", 0);
-			$moduleparams = $registry->getValue("jevents.moduleparams", false);
+			$activeprocess = $registry->get("jevents.activeprocess","");
+			$moduleid = $registry->get("jevents.moduleid", 0);
+			$moduleparams = $registry->get("jevents.moduleparams", false);
 			if ($moduleparams && $moduleparams->get("ignorefiltermodule",false)){
 				$uid="mod".$moduleid;
 			}
@@ -253,7 +253,7 @@ class jevFilter
 		
 
 		$registry	=& JRegistry::getInstance("jevents");
-		$indexedvisiblefilters = $registry->getValue("indexedvisiblefilters",array());
+		$indexedvisiblefilters = $registry->get("indexedvisiblefilters",array());
 
 		// This is our best guess as to whether this filter is visible on this page.
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
