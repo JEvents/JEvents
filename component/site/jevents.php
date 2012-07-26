@@ -70,8 +70,13 @@ if (JVersion::isCompatible("1.6.0")){
 	
 	$isMobile = $browser->isMobile();
 	// Joomla isMobile method doesn't identify all android phones
-	if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], 'android') !== false) {
-		$isMobile = true;
+	if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT'])){
+		if (stripos($_SERVER['HTTP_USER_AGENT'], 'android') >0) {
+			$isMobile = true;
+		}
+		else 	if (stripos($_SERVER['HTTP_USER_AGENT'], 'iphone')>0 || stripos($_SERVER['HTTP_USER_AGENT'], 'ipod')>0)  {
+			$isMobile = true;
+		}
 	}
 }
 else {
