@@ -416,7 +416,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 
 						// these would slow things down if not needed in the list
-						$dorepeatsummary = (strpos($template_value, ":REPEATSUMMARY}}") !== false);
+						$dorepeatsummary = (strpos($template_value, "{{REPEATSUMMARY}}") !== false);
 						if ($dorepeatsummary)
 						{
 
