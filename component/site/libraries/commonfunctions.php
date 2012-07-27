@@ -90,7 +90,7 @@ class JEV_CommonFunctions {
 				$cats = $db->loadObjectList('id');
 				foreach ($cats as &$cat){
 					$cat->name = $cat->title;
-					$params = new JParameter($cat->params);
+					$params = new JRegistry($cat->params);
 					$cat->color = $params->get("catcolour","");
 					$cat->overlaps = $params->get("overlaps",0);
 				}
@@ -334,7 +334,7 @@ class JEV_CommonFunctions {
 		if(strpos($format, '%B') !== false)
 		$format = str_replace('%B', JEVHelper::getMonthName(date('n', $timestamp)), $format);
 
-		if (JUtility::isWinOS()) {
+		if (JApplication::isWinOS()) {
 			if (!class_exists('JEV_CompatWin')) {
 				require_once(dirname(__FILE__) . '/compatwin.php');
 			}

@@ -111,7 +111,11 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		$dispatcher->trigger( 'onJEventsHeader', array($this));
 
 ?>
-	<div style="clear:both"  <?php $mainframe = JFactory::getApplication(); $params=JComponentHelper::getParams(JEV_COM_COMPONENT);echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"class='jeventslight'";?>>
+	<div style="clear:both"  
+            <?php $mainframe = JFactory::getApplication(); 
+            $params=JComponentHelper::getParams(JEV_COM_COMPONENT);
+            echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate",0))?"class='jeventsdark'":"class='jeventslight'";
+            ?>>
 		<div id="toolbar-box" >
 <?php
 		$bar = & JToolBar::getInstance('toolbar');
@@ -119,8 +123,12 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 		echo $barhtml;
-		
-		$title = JFactory::getApplication()->get('JComponentTitle');
+		if (JVersion::isCompatible("3.0")){
+                   $title = JFactory::getApplication()->JComponentTitle;
+                }
+                else {
+                   $title = JFactory::getApplication()->get('JComponentTitle');
+                }
 		echo $title;
 ?>
 		</div>

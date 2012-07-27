@@ -21,9 +21,9 @@ JPluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.activeprocess","mod_jevents_cal");
-$registry->setValue("jevents.moduleid", $module->id);
-$registry->setValue("jevents.moduleparams", $params);
+$registry->set("jevents.activeprocess","mod_jevents_cal");
+$registry->set("jevents.moduleid", $module->id);
+$registry->set("jevents.moduleparams", $params);
 
 // See http://www.php.net/manual/en/timezones.php
 $compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -32,7 +32,7 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 	$timezone= date_default_timezone_get();
 	//echo "timezone is ".$timezone."<br/>";
 	date_default_timezone_set($tz);
-	$registry->setValue("jevents.timezone",$timezone);
+	$registry->set("jevents.timezone",$timezone);
 }
 
 

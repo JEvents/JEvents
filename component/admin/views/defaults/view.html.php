@@ -143,7 +143,12 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
 			
-			$title = JFactory::getApplication()->get('JComponentTitle');
+                        if (JVersion::isCompatible("3.0")){
+                        $title = JFactory::getApplication()->JComponentTitle;
+                        }
+                        else {
+                        $title = JFactory::getApplication()->get('JComponentTitle');
+                        }
 			echo $title;
 			?>
 			<div class="clr"></div>

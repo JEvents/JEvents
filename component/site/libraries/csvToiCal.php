@@ -204,7 +204,7 @@ class CsvToiCal
 	private function createNewTmpICal()
 	{
 		$config = & JFactory::getConfig();
-		$this->tmpFileName = tempnam($config->getValue('config.tmp_path'), "phpJE");
+		$this->tmpFileName = tempnam($config->get('config.tmp_path'), "phpJE");
 		//$this->tmpFileName = tempnam("/tmp", "phpJE");
 		$this->tmpfile = fopen($this->tmpFileName, "w");
 		fwrite($this->tmpfile, "BEGIN:VCALENDAR\n");

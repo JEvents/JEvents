@@ -80,7 +80,7 @@ class JEventsCategory extends JTableCategory {
 			}
 		}
 		else {
-			$params = new JParameter($this->params);
+			$params = new JRegistry($this->params);
 			$this->color = $params->get("catcolour", "#000000");
 			$this->overlaps = $params->get("overlaps",0);
 			$this->admin = $params->get("admin",0);

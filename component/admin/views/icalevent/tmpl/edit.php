@@ -60,8 +60,7 @@ $cfg = & JEVConfig::getInstance();
 JHTML::_('behavior.tooltip');
 // This causes a javascript error in MSIE 7 if the scripts haven't loaded when the dom is ready!
 //JHTML::_('behavior.calendar');
-jimport('joomla.html.pane');
-$tabs = & JPane::getInstance('tabs');
+echo JHtml::_('tabs.start', 'tabs');
 
 $document = JFactory::getDocument();
 $js = '	window.addEvent(\'load\', function(){ document.getElements(\'dt.event\').each(function(tab){ tab.fireEvent(\'click\'); })  });';
@@ -205,8 +204,7 @@ if ($cfg->get('timebeforedescription', 0)) {
 	// $cfg->set('com_single_pane_edit', 1);
 }
 if (!$cfg->get('com_single_pane_edit', 0)) {
-	echo $tabs->startPane( 'jevent' );
-	echo $tabs->startPanel( JText::_('JEV_TAB_COMMON'), 'event' );
+	echo JHtml::_('tabs.panel', JText::_("JEV_TAB_COMMON"), "event");
 	echo '<div style="clear:left;margin:0px;padding:0px;height:0px;"></div>';
 }
 
@@ -427,17 +425,13 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 	<?php
 	
 	if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0)) {
-		echo $tabs->endPanel();
-		echo $tabs->startPanel( JText::_('JEV_TAB_CALENDAR'), 'calendar' );
+                echo JHtml::_('tabs.panel', JText::_("JEV_TAB_CALENDAR"), "calendar");
 		echo '<div style="clear:left;margin:0px;padding:0px;height:0px;"></div>';		
 	}
 	if (!$cfg->get('timebeforedescription', 0)) {
 		echo $this->loadTemplate("datetime");	
 	}
 
-	if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0)) {
-		echo $tabs->endPanel();
-	}
 
 // Plugins CAN BE LAYERED IN HERE
 global $params;
@@ -447,19 +441,16 @@ $dispatcher->trigger( 'onEventEdit' , array(&$extraTabs,&$this->row,&$params), t
 if (count($extraTabs)>0) {
 	foreach ($extraTabs as $extraTab) {
 		if (!$cfg->get('com_single_pane_edit', 0)) {
-			echo $tabs->startPanel( $extraTab['title'], $extraTab['paneid'] );
+                        echo JHtml::_('tabs.panel', $extraTab['title'], $extraTab['paneid']);
 		}
 		echo "<div class='jevextrablock'>";
 		echo  $extraTab['content'];
 		echo "</div>";
-		if (!$cfg->get('com_single_pane_edit', 0)) {
-			echo $tabs->endPanel();
-		}
 	}
 }
 
 	if (!$cfg->get('com_single_pane_edit', 0)) {
-		echo $tabs->endPane();
+            	echo JHtml::_('tabs.end');
 	}
 ?>
 </div>

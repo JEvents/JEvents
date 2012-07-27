@@ -339,10 +339,10 @@ class JEventsDBModel
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);
@@ -464,10 +464,10 @@ class JEventsDBModel
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);
@@ -594,10 +594,10 @@ class JEventsDBModel
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);
@@ -1049,10 +1049,10 @@ $dbend = (float)$usec + (float)$sec;
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);
@@ -1175,10 +1175,10 @@ $dbend = (float)$usec + (float)$sec;
 
 			// If there are extra filters from the module then apply them now
 			$reg = & JFactory::getConfig();
-			$modparams = $reg->getValue("jev.modparams", false);
-			if ($modparams && $modparams->getValue("extrafilters", false))
+			$modparams = $reg->get("jev.modparams", false);
+			if ($modparams && $modparams->get("extrafilters", false))
 			{
-				$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+				$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 			}
 
 			$filters = jevFilterProcessing::getInstance($filterarray);
@@ -1388,11 +1388,11 @@ $dbend = (float)$usec + (float)$sec;
 		list($xyear, $month, $day) = JEVHelper::getYMD();
 		$thisyear = new JevDate("+0 seconds");
 		list($thisyear, $thismonth, $thisday) = explode("-", $thisyear->toFormat("%Y-%m-%d"));
-		if (!$this->cfg->getValue("showyearpast", 1) && $year < $thisyear)
+		if (!$this->cfg->get("showyearpast", 1) && $year < $thisyear)
 		{
 			return array();
 		}
-		$startdate = ($this->cfg->getValue("showyearpast", 1) || $year > $thisyear) ? JevDate::mktime(0, 0, 0, 1, 1, $year) : JevDate::mktime(0, 0, 0, $thismonth, $thisday, $thisyear);
+		$startdate = ($this->cfg->get("showyearpast", 1) || $year > $thisyear) ? JevDate::mktime(0, 0, 0, 1, 1, $year) : JevDate::mktime(0, 0, 0, $thismonth, $thisday, $thisyear);
 		$enddate = JevDate::mktime(23, 59, 59, 12, 31, $year);
 		if (!$count)
 		{
@@ -1519,7 +1519,7 @@ $dbend = (float)$usec + (float)$sec;
 		list($year, $month, $day) = explode('-', $startdate);
 		list($thisyear, $thismonth, $thisday) = JEVHelper::getYMD();
 
-		//$startdate 	= $this->cfg->getValue("showyearpast",1)?JevDate::mktime( 0, 0, 0, intval($month),intval($day),intval($year) ):JevDate::mktime( 0, 0, 0, $thismonth,$thisday, $thisyear );
+		//$startdate 	= $this->cfg->get("showyearpast",1)?JevDate::mktime( 0, 0, 0, intval($month),intval($day),intval($year) ):JevDate::mktime( 0, 0, 0, $thismonth,$thisday, $thisyear );
 		$startdate = JevDate::mktime(0, 0, 0, intval($month), intval($day), intval($year));
 
 		$startdate = JevDate::strftime('%Y-%m-%d', $startdate);
@@ -2334,7 +2334,7 @@ $dbend = (float)$usec + (float)$sec;
 		$extrajoin = array();
 		$needsgroup = false;
 
-		if (!$this->cfg->getValue("showyearpast", 1))
+		if (!$this->cfg->get("showyearpast", 1))
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$startdate = JevDate::mktime(0, 0, 0, $month, $day, $year);
@@ -2500,7 +2500,7 @@ $dbend = (float)$usec + (float)$sec;
 		$extrajoin = array();
 		$needsgroup = false;
 
-		if (!$this->cfg->getValue("showyearpast", 1))
+		if (!$this->cfg->get("showyearpast", 1))
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$startdate = JevDate::mktime(0, 0, 0, $month, $day, $year);
@@ -2652,10 +2652,10 @@ $dbend = (float)$usec + (float)$sec;
 		$filterarray = array("published");
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);

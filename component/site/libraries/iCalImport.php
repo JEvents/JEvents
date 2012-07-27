@@ -426,7 +426,7 @@ class iCalImport
 		static $offset = null;
 		if (is_null($offset)) {
 			$config	=& JFactory::getConfig();
-			$offset = $config->getValue('config.offset', 0);
+			$offset = $config->get('config.offset', 0);
 
 		}
 		if (!is_numeric($ical_date)){

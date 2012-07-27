@@ -201,7 +201,7 @@ echo JEventsHTML::buildScriptTag('end');
 		<?php
 		}
 	}
-
+	echo JHtml::_('tabs.end');
 	?>
 <input type="hidden" name="icsid" id="icsid"  <?php echo $disabled;?> value="<?php echo $id;?>"/>
 

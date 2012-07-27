@@ -738,7 +738,7 @@ class JEventsDataModel {
 			$dispatcher	=& JDispatcher::getInstance();
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
-			$params =new JParameter(null);
+			$params =new JRegistry(null);
 			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() );
 
 			$event_up = new JEventDate( $row->publish_up() );

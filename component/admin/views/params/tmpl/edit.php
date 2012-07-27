@@ -25,16 +25,14 @@ $version = JEventsVersion::getInstance();
 			$names = array();
 			$groups = $this->params->getGroups();
 			if (count($groups)>0){
-				jimport('joomla.html.pane');
-				$tabs = & JPane::getInstance('tabs');
-				echo $tabs->startPane( 'configs' );
+                                echo JHtml::_('tabs.start','tabs');
+
 				$strings=array();
 				$tips=array();
 				foreach ($groups as $group=>$count) {
 					if ($group!="_default" && $count>0){
-						echo $tabs->startPanel( JText::_($group), 'config_'.str_replace(" ","_",$group));
+                                                echo JHtml::_('tabs.panel', JText::_($group), 'config_'.str_replace(" ","_",$group));
 						echo $this->params->render('params',$group);
-						echo $tabs->endPanel();
 					}
 				}
 
@@ -42,14 +40,13 @@ $version = JEventsVersion::getInstance();
 				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
 					$config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
 					if (file_exists($config)){
-						$viewparams = new JParameter( $this->params->toString(), $config );
-						echo $tabs->startPanel( JText::_(ucfirst($viewfile)), 'config_'.str_replace(" ","_",$viewfile));
+						$viewparams = new JRegistry( $this->params->toString(), $config );
+						echo  JHtml::_('tabs.panel',JText::_(ucfirst($viewfile)), 'config_'.str_replace(" ","_",$viewfile));
 						echo $viewparams->render();
-						echo $tabs->endPanel();
 					}
 				}
 
-				echo $tabs->endPane();
+				echo JHtml::_('tabs.end');
 			}
 			else {
 				echo $this->params->render();

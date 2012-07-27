@@ -15,7 +15,7 @@ function DefaultEventsLegend($view){
 	$viewclass = ucfirst($theme)."ModLegendView";
 	$module = JModuleHelper::getModule("mod_jevents_legend",false);
 
-	$params = new JParameter( $module->params );
+	$params = new JRegistry( $module->params );
 
 	$modview = new $viewclass($params, $module->id);
 	echo $modview->displayCalendarLegend("block");

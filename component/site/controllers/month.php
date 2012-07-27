@@ -13,7 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
-class MonthController extends JController   {
+class MonthController extends JControllerLegacy   {
 
 	function __construct($config = array())
 	{

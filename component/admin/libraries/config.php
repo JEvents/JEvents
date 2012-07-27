@@ -15,48 +15,20 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * convenience wrapper for config - to ensure backwards compatability
  */
-$version = new JVersion();
-if ($version->isCompatible("1.6.0"))
-{
-	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
-	if (!defined("JEVCONFIG"))
-	{
-		define("JEVCONFIG", 1);
+// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
+if (!defined("JEVCONFIG")) {
+    define("JEVCONFIG", 1);
 
-		jimport('joomla.html.parameter');
+    
 
-		class JEVConfig extends JParameter
-		{
+    class JEVConfig {
 
-			// 1.6 mod
-			static function &getInstance($inifile='')
-			{
-				$params = & JComponentHelper::getParams("com_jevents");
-				return $params;
+        // 1.6 mod
+        static function &getInstance($inifile = '') {
+            $params = & JComponentHelper::getParams("com_jevents");
+            return $params;
+        }
 
-			}
+    }
 
-		}
-
-	}
-}
-else
-{
-	if (!defined("JEVCONFIG"))
-	{
-		define("JEVCONFIG", 1);
-
-		class JEVConfig extends JParameter
-		{
-
-			function &getInstance($inifile='')
-			{
-				$params = & JComponentHelper::getParams("com_jevents");
-				return $params;
-
-			}
-
-		}
-
-	}
 }

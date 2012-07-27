@@ -276,9 +276,9 @@ class DefaultModCalView
 		}		
 
 		$reg =& JFactory::getConfig();
-		$reg->setValue("jev.modparams",$this->modparams);
+		$reg->set("jev.modparams",$this->modparams);
 		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
-		$reg->setValue("jev.modparams",false);
+		$reg->set("jev.modparams",false);
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);

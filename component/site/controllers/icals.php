@@ -150,7 +150,7 @@ class ICalsController extends AdminIcalsController
 			}
 
 			$registry = & JRegistry::getInstance("jevents");
-			$registry->setValue("jevents.icaluser", $puser);
+			$registry->set("jevents.icaluser", $puser);
 		}
 		else if ($k != "NONE")
 		{

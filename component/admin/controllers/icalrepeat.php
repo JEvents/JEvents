@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-class AdminIcalrepeatController extends JController
+class AdminIcalrepeatController extends JControllerLegacy
 {
 
 	var $_debug = false;

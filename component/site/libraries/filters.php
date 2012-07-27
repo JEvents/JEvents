@@ -96,8 +96,8 @@ class jevFilterProcessing
 			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
 			//  but we can't do anything about that
 			foreach ($visblemodules as $module) {
-				jimport("joomla.html.parameter");
-				$modparams =  new JParameter($module->params);
+				
+				$modparams =  new JRegistry($module->params);
 				if ($module->module == "mod_jevents_filter" ){
 					$filters = $modparams->get("filters","");
 				}
@@ -135,7 +135,7 @@ class jevFilterProcessing
 			}
 
 			$registry	=& JRegistry::getInstance("jevents");
-			$registry->setValue("indexedvisiblefilters",self::$indexedvisiblefilters);
+			$registry->set("indexedvisiblefilters",self::$indexedvisiblefilters);
 		}
 
 		// get filter details

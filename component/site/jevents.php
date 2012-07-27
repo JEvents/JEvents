@@ -94,7 +94,7 @@ $tz=$params->get("icaltimezonelive","");
 if ($tz!="" && is_callable("date_default_timezone_set")){
 	$timezone= date_default_timezone_get();
 	date_default_timezone_set($tz);
-	$registry->setValue("jevents.timezone",$timezone);
+	$registry->set("jevents.timezone",$timezone);
 }
 
 if (!JVersion::isCompatible("1.6.0")){
@@ -225,9 +225,9 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 // Add reference for constructor in registry - unfortunately there is no add by reference method
 // we rely on php efficiency to not create a copy
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.controller",$controller);
+$registry->set("jevents.controller",$controller);
 // record what is running - used by the filters
-$registry->setValue("jevents.activeprocess","component");
+$registry->set("jevents.activeprocess","component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory
 if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit" , -1) == 0 || JRequest::getInt("limit" , -1) >100 )){

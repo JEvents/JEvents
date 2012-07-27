@@ -14,7 +14,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 jimport('joomla.application.component.controller');
 
 
-class AdminUserController extends JController   {
+class AdminUserController extends JControllerLegacy   {
 
 	/** @var string		current used task */
 	protected $task=null;

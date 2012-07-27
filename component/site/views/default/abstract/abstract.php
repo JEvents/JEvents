@@ -161,29 +161,6 @@ class JEventsDefaultView extends JEventsAbstractView
 		}
 	}
 
-	/*
-	// moved to a helper
-	function eventsLegend(){
-		$cfg = & JEVConfig::getInstance();
-		$theme = JEV_CommonFunctions::getJEventsViewName();
-
-		$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.'/'."legend");
-		if (!file_exists($modpath)) return;
-		
-		require_once($modpath);
-
-		$viewclass = ucfirst($theme)."ModLegendView";
-		$module = JModuleHelper::getModule("mod_jevents_legend",false);
-		
-		$params = new JParameter( $module->params );
-		
-		$modview = new $viewclass($params, $module->id);
-		echo $modview->displayCalendarLegend("block");
-
-		echo "<br style='clear:both'/>";
-	}
-	*/
-
 	// This handles all methods where the view is passed as the first argument
 	function __call($name, $arguments){
 		if (strpos($name,"_")===0){
