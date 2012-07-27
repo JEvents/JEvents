@@ -710,7 +710,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
 		$template_value = str_replace("@", "@£@", $template_value);
-		$params = new JParameter(null);
+		$params = new JRegistry(null);
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
 		$dispatcher = & JDispatcher::getInstance();

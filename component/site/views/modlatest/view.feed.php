@@ -63,9 +63,9 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 			$modules = $db->loadObjectList();
 			if (count($modules)<=0){
 				// fake module parameter
-				$params =new JParameter('');
+				$params =new JRegistry('');
 			} else {
-				$params =new JParameter( $modules[0]->params );
+				$params =new JRegistry( $modules[0]->params );
 			}
 		}
 		else {

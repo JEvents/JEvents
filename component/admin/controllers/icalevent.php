@@ -10,9 +10,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controlleradmin');
 
-class AdminIcaleventController extends JController
+class AdminIcaleventController extends JControllerAdmin
 {
 
 	var $_debug = false;
@@ -570,7 +570,7 @@ class AdminIcaleventController extends JController
 				$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
 			}
 			$db->setQuery($catsql);
-			$excats = implode(",", $db->loadResultArray());
+			$excats = implode(",", $db->loadColumn());
 		}
 
 		// only offer a choice of native calendars if it exists!
@@ -1081,7 +1081,7 @@ class AdminIcaleventController extends JController
 			// This would fail if all recurrances have been 'adjusted'
 			$query = "SELECT DISTINCT (eventdetail_id) FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$detailids = $db->loadResultArray();
+			$detailids = $db->loadColumn();
 			$detailidstring = implode(",", $detailids);
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";

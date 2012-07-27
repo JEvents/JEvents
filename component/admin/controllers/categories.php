@@ -15,7 +15,7 @@ jimport('joomla.application.component.controller');
 
 JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 
-class AdminCategoriesController extends JController {
+class AdminCategoriesController extends JControllerLegacy {
 	var $component = null;
 	var $categoryTable = null;
 	var $categoryClassname = null;

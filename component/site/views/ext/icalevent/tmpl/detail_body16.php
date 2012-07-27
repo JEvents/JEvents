@@ -27,7 +27,7 @@ if( array_key_exists('row',$this->data) ){
 	$cfg	 = & JEVConfig::getInstance();	
 
 	$dispatcher	=& JDispatcher::getInstance();
-	$params =new JParameter(null);
+	$params =new JRegistry(null);
 
 	if (isset($row)) {
         $customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );

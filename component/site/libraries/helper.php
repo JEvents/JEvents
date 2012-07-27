@@ -291,7 +291,7 @@ class JEVHelper
 				return JevDate::strftime("%H:%M", $date);
 			}
 		}
-		else if (JUtility::isWinOS())
+		else if (JApplication::isWinOS())
 		{
 			return JevDate::strftime("%#I:%M%p", $date);
 		}
@@ -583,7 +583,7 @@ class JEVHelper
 
 							if ($forcecheck)
 							{
-								$mparams = new JParameter($jevitem->params);
+								$mparams = new JRegistry($jevitem->params);
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get( "catidnew", false);
@@ -1216,7 +1216,7 @@ class JEVHelper
 		$db = & JFactory::getDBO();
 		$sql = "SELECT id FROM #__jevents_categories WHERE admin=" . $juser->id;
 		$db->setQuery($sql);
-		$catids = $db->loadResultArray();
+		$catids = $db->loadColumn();
 		if (count($catids) > 0)
 			return $catids;
 		return false;
@@ -1799,7 +1799,7 @@ class JEVHelper
 	{
 
 		// Include mootools framework
-		JHtml::_('behavior.mootools', true);
+		JHtml::_('behavior.framework', true);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		if (JVersion::isCompatible("1.6.0"))
@@ -1829,7 +1829,7 @@ class JEVHelper
 		{
 			// Store the ical in the registry so we can retrieve the access level
 			$registry = & JRegistry::getInstance("jevents");
-			$icsfile = $registry->getValue("jevents.icsfile", false);
+			$icsfile = $registry->get("jevents.icsfile", false);
 			if ($icsfile) {
 				return $icsfile->access;
 			}
@@ -1872,7 +1872,7 @@ class JEVHelper
 		}
 		else
 		{
-			return JHTML::_('image.site', $img, '/images/M_images/', NULL, NULL, $text);
+			return JHTML::_('image', $img, '/images/M_images/', NULL, NULL, $text);
 		}
 
 	}

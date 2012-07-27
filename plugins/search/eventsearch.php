@@ -81,7 +81,7 @@ class plgSearchEventsearch extends JPlugin
 		if (!(version_compare(JVERSION, '1.6.0', ">=")))
 		{
 			$this->_plugin = & JPluginHelper::getPlugin('search', 'eventsearch');
-			$this->_params = new JParameter($this->_plugin->params);
+			$this->_params = new JRegistry($this->_plugin->params);
 		}
 
 	}
@@ -170,10 +170,10 @@ class plgSearchEventsearch extends JPlugin
 		$filterarray = array("published");
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
-		$modparams = $reg->getValue("jev.modparams", false);
-		if ($modparams && $modparams->getValue("extrafilters", false))
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
 		{
-			$filterarray = array_merge($filterarray, explode(",", $modparams->getValue("extrafilters", false)));
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
 		}
 
 		$filters = jevFilterProcessing::getInstance($filterarray);
@@ -343,8 +343,8 @@ class plgSearchEventsearch extends JPlugin
 				// I must find the itemid that allows this event to be shown
 				$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
 				// Use the plugin params to ensure menu item is picked up
-				//$modparams = new JParameter($this->_plugin->params);
-				$modparams = new JParameter(null);
+				//$modparams = new JRegistry($this->_plugin->params);
+				$modparams = new JRegistry(null);
 				// pretend to have category restriction
 				$modparams->set("catid0", $row->catid);
 				$modparams->set("ignorecatfilter", 1);

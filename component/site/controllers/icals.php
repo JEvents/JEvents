@@ -150,7 +150,7 @@ class ICalsController extends AdminIcalsController
 			}
 
 			$registry = & JRegistry::getInstance("jevents");
-			$registry->setValue("jevents.icaluser", $puser);
+			$registry->set("jevents.icaluser", $puser);
 		}
 		else if ($k != "NONE")
 		{
@@ -335,7 +335,7 @@ class ICalsController extends AdminIcalsController
 			else $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
 			
 			$db->setQuery($catsql);
-			$excats = implode(",", $db->loadResultArray());
+			$excats = implode(",", $db->loadColumn());
 		}
 
 

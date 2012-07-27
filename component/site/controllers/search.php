@@ -13,7 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
-class SearchController extends JController   {
+class SearchController extends JControllerLegacy   {
 
 	function __construct($config = array())
 	{
@@ -100,7 +100,7 @@ class SearchController extends JController   {
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
 		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->getValue("com_calEventListRowsPpg",15)));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();

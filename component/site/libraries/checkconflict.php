@@ -164,7 +164,7 @@ function ProcessRequest(&$requestObject, $returnData)
 		$tz = $params->get("icaltimezonelive", "");
 		date_default_timezone_set($tz);
 		$registry = & JRegistry::getInstance("jevents");
-		$registry->setValue("jevents.timezone", $timezone);
+		$registry->set("jevents.timezone", $timezone);
 	}
 
 	$token = JUtility::getToken();

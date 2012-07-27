@@ -271,7 +271,7 @@ class DefaultModLatestView
 		$periodEnd = $endDate; //substr($endDate,0,10);
 
 		$reg = & JFactory::getConfig();
-		$reg->setValue("jev.modparams", $this->modparams);		
+		$reg->set("jev.modparams", $this->modparams);		
 		if ($this->dispMode == 5)
 		{
 			$this->sortReverse = true;
@@ -285,7 +285,7 @@ class DefaultModLatestView
 		{
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
 		}		
-		$reg->setValue("jev.modparams", false);
+		$reg->set("jev.modparams", false);
 
 		// determine the events that occur each day within our range
 

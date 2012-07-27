@@ -131,7 +131,16 @@ if (JVersion::isCompatible("1.6.0"))
 				return $result;
 
 			}
+                        
+                        /* GWE Function to allow storing references *?
+                         * 
+                         */
 
+                        function makeNameSpace($namespace)
+                        {
+                                $this->_registry[$namespace] = array('data' => new stdClass());
+                                return true;
+                        }
 		}
 
 	}

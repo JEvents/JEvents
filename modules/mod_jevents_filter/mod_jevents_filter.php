@@ -19,9 +19,9 @@ $jevhelper = new modJeventsFilterHelper($params);
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.activeprocess","mod_jevents_filter");
-$registry->setValue("jevents.moduleid", $module->id);
-$registry->setValue("jevents.moduleparams", $params);
+$registry->set("jevents.activeprocess","mod_jevents_filter");
+$registry->set("jevents.moduleid", $module->id);
+$registry->set("jevents.moduleparams", $params);
 
 require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
 

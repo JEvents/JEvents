@@ -175,7 +175,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// now find an appropriate enclosing set and associated menu item
 	$possibleset = array();
 	foreach ($menuitems as $testparms) {
-		$test = new JParameter( $testparms->params);
+		$test = new JRegistry( $testparms->params);
 		$c=0;
 		$catids = array();
 		// New system

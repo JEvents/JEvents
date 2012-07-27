@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0" method="upgrade">
+<extension type="module" version="2.5" method="upgrade">
+
 	<name>JEvents Calendar</name>
 	<creationDate>June 2012</creationDate>
 	<author>GWE Systems Ltd</author>
@@ -14,92 +15,6 @@
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<params addpath="/administrator/components/com_jevents/elements/">
-		<param name="@spacer" type="jevinfo" default="Module_Parameters"   label="" description="" />
-		<param name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-		<param name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
-			<option value="0">Jev_no</option>
-			<option value="1">Jev_yes</option>
-		</param>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-		<param name="noeventcheck" type="jevboolean" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP" />
-		<param name="allcats" type="radio" default="1" label="JEV_FROM_ALL_CATS" description="JEV_FROM_ALL_CATS_TIP">
-			<option value="0">Jev_no</option>
-			<option value="1">Jev_yes</option>
-		</param>
-		<param name="catid0" type="category" default="0" scope="com_jevents" label="Specified_category" description="SPECIFIED_CAT_TIP" />
-		<param name="catid1" type="category" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-		<param name="catid2" type="category" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-		<param name="catid3" type="category" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-		<param name="catid4" type="category" default="0" scope="com_jevents" label="Additional_category" description="ADDITIONAL_CAT_TIP" />
-		<param name="@spacer" type="jevinfo" default="Additional constraints"   label="" description="" />
-		<param name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-		<param name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />		
-		<param name="ignorecatfilter" type="jevboolean" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" />
-		<param name="ignorefiltermodule" type="jevboolean" default="0" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" />
-		<param name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
-		<param name="@spacer" type="jevinfo"  default="JEV_HEADER_LINKS"/>
-		<param name="minical_showlink" type="radio" default="1" label="JEV_TITLE_AS" description="JEV_TITLE_AS_TIP">
-			<option value="0">None</option>
-			<option value="1">JEV_AS_LINK</option>
-			<option value="2">JEV_AS_TEXT</option>
-		</param>
-		<param name="minical_prevyear" type="jevboolean" default="1" label="JEV_PREV_YEAR" description="JEV_PREV_YEAR_TIP" />
-		<param name="minical_prevmonth" type="jevboolean" default="1" label="JEV_PREV_MONTH" description="JEV_PREV_MONTH_TIP" />
-		<param name="minical_actmonth" type="radio" default="1" label="JEV_CURR_MONTH" description="JEV_CURR_MONTH_TIP">
-			<option value="0">Jev_no</option>
-			<option value="1">JEV_AS_LINK</option>
-			<option value="2">JEV_AS_TEXT</option>
-		</param>
-		<param name="minical_actyear" type="radio" default="1" label="JEV_CURR_YEAR" description="JEV_CURR_YEAR_TIP">
-			<option value="0">Jev_no</option>
-			<option value="1">JEV_AS_LINK</option>
-			<option value="2">JEV_AS_TEXT</option>
-		</param>
-		<param name="minical_nextmonth" type="jevboolean" default="1" label="JEV_NEXT_MONTH" description="JEV_NEXT_MONTH_TIP" />
-		<param name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
-		<param name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="modcal_DispLastMonth" type="list" default="NO" label="Display Last Month ?" description="&lt;b&gt;NO:&lt;/b&gt; never display a Last Months calendar&lt;br /&gt;
-			   &lt;b&gt;YES - with stop day:&lt;/b&gt; display a Last Months calendar only if there were scheduled events in that month&lt;br /&gt;
-			   &lt;b&gt;YES - if has events AND with stop day:&lt;/b&gt; display Last Months calendar only if there were events scheduled for that month. Stop displaying Last Months calendar if this months current day of month is at least r&lt;br /&gt;
-			   &lt;b&gt;ALWAYS:&lt;/b&gt; always display a Last Months calendar&lt;br /&gt;
-			   &lt;b&gt;ALWAYS - if has events:&lt;/b&gt; display a Last Months calendar. Stop displaying Last Months calendar if this months current day of month is at least r">
-			<option value="NO">Jev_no</option>
-			<option value="YES_stop">Yes - with stop day</option>
-			<option value="YES_stop_events">Yes - if has events AND with stop day</option>
-			<option value="ALWAYS">ALWAYS</option>
-			<option value="ALWAYS_events">ALWAYS - if has events</option>
-		</param>
-		<param name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="Day to Stop displaying Last Month" description="Day in Current Month to Stop displaying Last Month" />
-		<param name="modcal_DispNextMonth" type="list" default="NO" label="Display Next Month ?" description="&lt;b&gt;NO&lt;/b&gt; never display a Next Months calendar&lt;br /&gt;
-			   &lt;b&gt;YES - with start day:&lt;/b&gt; display a Next Months calendar only if there were scheduled events in that month&lt;br /&gt;
-			   &lt;b&gt;YES - if has events AND with start day:&lt;/b&gt; display Next Months calendar only if there were events scheduled for that month. Start displaying Next Months calendar if this months current day of month is within r days of the first day of Next month&lt;br /&gt;
-			   &lt;b&gt;ALWAYS:&lt;/b&gt; always display a Next Months calendar&lt;br /&gt;
-			   &lt;b&gt;ALWAYS - if has events:&lt;/b&gt; display a Next Months calendar. Start displaying Next Months calendar if this months current day of month is within r days of the first day of Next month">
-			<option value="NO">Jev_no</option>
-			<option value="YES_stop">Yes - with start day</option>
-			<option value="YES_stop_events">Yes - if has events AND with start day</option>
-			<option value="ALWAYS">ALWAYS</option>
-			<option value="ALWAYS_events">ALWAYS - if has events</option>
-		</param>
-		<param name="modcal_DispNextMonthDays" type="text" size="2" default="0" label="Days left to Start displaying Next Month" description="Days left in Current Month to Start displaying Next Month" />
-		<param name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
-		<!--<param name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
-		<!--<param name="target_itemid" type="text" default="" label="Target Menu Itemid" description="Menu itemid for target page" />//-->
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
@@ -204,4 +119,4 @@
 		</fields>
 	</config>
 
-</install>
+</extension>

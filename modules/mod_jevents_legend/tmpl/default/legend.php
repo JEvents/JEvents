@@ -71,7 +71,7 @@ class DefaultModLegendView
 	{
 		// do not display normal legend if dynamic legend is visible on this page
 		$registry	=& JRegistry::getInstance("jevents");
-		if ($registry->getValue("jevents.dynamiclegend",0)) {
+		if ($registry->get("jevents.dynamiclegend",0)) {
 			return;
 		}
 
@@ -223,7 +223,7 @@ class DefaultModLegendView
 					$component = & JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
 					$registry = & JRegistry::getInstance("jevents");
-					$controller = & $registry->getValue("jevents.controller", null);
+					$controller = & $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
 
@@ -263,7 +263,7 @@ class DefaultModLegendView
 			foreach ($catlist as &$cat)
 			{
 				$cat->name = $cat->title;
-				$params = new JParameter($cat->params);
+				$params = new JRegistry($cat->params);
 				$cat->color = $params->get("catcolour", "");
 				$cat->overlaps = $params->get("overlaps", 0);
 			}

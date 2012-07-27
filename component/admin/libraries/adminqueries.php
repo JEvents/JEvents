@@ -47,7 +47,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			if ($params->get("multicategory",0)){
 				// get list of categories this event is in - are they all accessible?
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
-				$catids = $db->loadResultArray();
+				$catids = $db->loadColumn();
 
 				// are there any catids not in list of accessible Categories 
 				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
@@ -91,7 +91,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			if ($params->get("multicategory",0)){
 				// get list of categories this event is in - are they all accessible?
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
-				$catids = $db->loadResultArray();
+				$catids = $db->loadColumn();
 
 				// are there any catids not in list of accessible Categories 
 				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));

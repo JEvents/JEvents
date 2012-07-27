@@ -26,9 +26,9 @@ JPluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.activeprocess","mod_jevents_latest");
-$registry->setValue("jevents.moduleid", $module->id);
-$registry->setValue("jevents.moduleparams", $params);
+$registry->set("jevents.activeprocess","mod_jevents_latest");
+$registry->set("jevents.moduleid", $module->id);
+$registry->set("jevents.moduleparams", $params);
 
 $viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.'/'."latest", $params);
 
@@ -40,7 +40,7 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 	$timezone= date_default_timezone_get();
 	//echo "timezone is ".$timezone."<br/>";
 	date_default_timezone_set($tz);
-	$registry->setValue("jevents.timezone",$timezone);
+	$registry->set("jevents.timezone",$timezone);
 }
 
 $modview = new $viewclass($params, $module->id);

@@ -14,7 +14,7 @@
 defined('JPATH_BASE') or die();
 jimport('joomla.html.toolbar.button');
 
-class JButtonJev extends JButton
+class JToolbarButtonJev extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -85,7 +85,7 @@ class JButtonJev extends JButton
 	}	
 }
 
-class JButtonJevlink extends JButton
+class JToolbarButtonJevlink extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -150,7 +150,7 @@ class JButtonJevlink extends JButton
 }
 
 
-class JButtonJevconfirm extends JButton
+class JToolbarButtonJevconfirm extends JToolbarButton
 {
 	/**
 	 * Button type

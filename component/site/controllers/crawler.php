@@ -13,7 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
-class CrawlerController extends JController   {
+class CrawlerController extends JControllerLegacy   {
 
 	function __construct($config = array())
 	{
@@ -36,7 +36,7 @@ class CrawlerController extends JController   {
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
 		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = $params->getValue("com_calEventListRowsPpg",15);
+		$limit = $params->get("com_calEventListRowsPpg",15);
 
 		$Itemid	= JEVHelper::getItemid();
 

@@ -13,7 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
-class ModCalController extends JController   {
+class ModCalController extends JControllerLegacy   {
 
 	var $modid = null;
 
@@ -104,7 +104,7 @@ class ModCalController extends JController   {
 				return;
 			}
 		}
-		$params = new JParameter( $modules[0]->params );
+		$params = new JRegistry( $modules[0]->params );
 
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();

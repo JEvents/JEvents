@@ -838,7 +838,7 @@ class jIcalEventDB extends jEventCal {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried
 				$jregistry	=& JRegistry::getInstance("jevents");
 				// This is the server default timezone
-				$jtimezone = $jregistry->getValue("jevents.timezone", false);
+				$jtimezone = $jregistry->get("jevents.timezone", false);
 				if ($jtimezone){
 					// This is the JEvents set timezone
 					$timezone = date_default_timezone_get();
