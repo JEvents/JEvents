@@ -113,10 +113,10 @@
 				</field>
                                 <field name="@spacer" type="spacer" default="" label="" description="" />
                                 
-                                <param name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="Use settings defined global in Component or defined here">
+                                <field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="Use settings defined global in Component or defined here">
                                     <option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
                                     <option value="1">JEV_LATEST_USE_SETTINGS</option>
-                                </param>
+                                </field>
               			<field name="noeventcheck" type="jevboolean" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP" />
 				<field name="ignorecatfilter" type="jevboolean" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" />
 				<field name="ignorefiltermodule" type="jevboolean" default="0" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" />
