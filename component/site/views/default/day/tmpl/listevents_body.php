@@ -8,6 +8,7 @@ $this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
 $cfg = & JEVConfig::getInstance();
+$hasevents = fales;
 
 echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') .'</legend><br />' . "\n";
 echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
@@ -23,7 +24,8 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 // Timeless Events First
 if (count($data['hours']['timeless']['events'])>0){
 	$start_time = JText::_( 'TIMELESS' );
-
+        $hasevents = true;
+        
 	echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
 	echo '<td class="ev_td_right"><ul class="ev_ul">' . "\n";
 	foreach ($data['hours']['timeless']['events'] as $row) {
@@ -42,6 +44,7 @@ if (count($data['hours']['timeless']['events'])>0){
 
 for ($h=0;$h<24;$h++){
 	if (count($data['hours'][$h]['events'])>0){
+                $hasevents = true;
 		$start_time = JEVHelper::getTime($data['hours'][$h]['hour_start']);
 
 		echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
@@ -59,6 +62,13 @@ for ($h=0;$h<24;$h++){
 		}
 		echo "</ul></td></tr>\n";
 	}
+}
+if (!$hasevents) {
+		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
+		echo "<li class='ev_td_li' style='border:0px;'>\n";
+		echo JText::_('JEV_NO_EVENTS') ;
+		echo "</li>\n";
+		echo "</ul></td></tr>\n";
 }
 echo '</table><br />' . "\n";
 echo '</fieldset><br /><br />' . "\n";
