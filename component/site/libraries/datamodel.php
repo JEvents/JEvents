@@ -938,7 +938,7 @@ class JEventsDataModel {
 			$catname = JText::_('JEV_EVENT_CHOOSE_CATEG');
 		}
                 // should not use the category data since it coujld be a sub category
-		if( false && $num_events > 0 ){
+		if( false && $num_events > 0){
 			if ((count($catids)==1 && $catids[0]!=0)  || (count($this->catids)==1 && $this->catids[0]!=0)  ){
 				$catname = $rows[0]->getCategoryName();
 				$catdesc = $rows[0]->getCategoryDescription();
