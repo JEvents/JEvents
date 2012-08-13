@@ -633,6 +633,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->extra_info();
 					$blank[] = "";
 					break;
+                                        
+                                case "{{RPID}}":
+                                    $search[] = "{{RPID}}";
+                                    $replace[] = $event->rp_id();
+                                    $blank[] = "";
+                                break;
 
 				default:
 					break;
