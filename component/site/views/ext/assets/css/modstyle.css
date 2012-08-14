@@ -11,7 +11,7 @@
 	text-decoration: none;
 }
 #extcal_minical TABLE.extcal_weekdays {
-	background-image: url(../images/bg1.gif);
+	background-image: url(../images/bg1.gif);        
 	background-repeat: repeat-x;
 	border-top: 1px solid #FFFFFF;
 	width:135px;
@@ -63,6 +63,7 @@
 #extcal_minical .extcal_todaycell {
 	color:#99AAAA;
 	background-image: url(../images/rect.gif);
+        background-size:cover;
 }
 
 #extcal_minical .extcal_sundaycell {
