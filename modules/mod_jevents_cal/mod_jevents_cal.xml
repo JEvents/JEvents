@@ -113,6 +113,8 @@
 					<option value="0">Jev_no</option>
 					<option value="1">Jev_yes</option>
 				</field>
+                            <field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH" description="COM_MODULES_CAL_WIDTH_DESC" />
+                            <field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT" description="COM_MODULES_CAL_HEIGHT_DESC" />
                             <field name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
 
                        </fieldset>
