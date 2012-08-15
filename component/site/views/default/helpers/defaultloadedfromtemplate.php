@@ -164,8 +164,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					break;
 
 				case "{{COLOUR}}":
+				case "{{colour}}":
 					$bgcolor = $event->bgcolor();
-					$search[] = "{{COLOUR}}";
+					$search[] = $strippedmatch;
 					$replace[] = $bgcolor == "" ? "#ffffff" : $bgcolor;
 					$blank[] = "";
 					break;

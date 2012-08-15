@@ -44,6 +44,7 @@ if (count($data['hours']['timeless']['events'])>0){
 
 for ($h=0;$h<24;$h++){
 	if (count($data['hours'][$h]['events'])>0){
+                $hasevents = true;
 		$start_time = JEVHelper::getTime($data['hours'][$h]['hour_start']);
                 $hasevents = true;
 
