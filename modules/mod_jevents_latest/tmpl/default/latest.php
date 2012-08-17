@@ -673,11 +673,11 @@ class DefaultModLatestView
 		$this->getLatestEventsData();
 
 		$content = "";
-		$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
+			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -756,12 +756,14 @@ class DefaultModLatestView
 				$k ++;
 				$k %=2;
 			} // end of foreach
+			$content .="</table>\n";
 		}
 		else
 		{
+			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
+			$content .="</table>\n";
 		}
-		$content .="</table>\n";
 
 		$callink_HTML = '<div class="mod_events_latest_callink">'
 				. $this->getCalendarLink()
