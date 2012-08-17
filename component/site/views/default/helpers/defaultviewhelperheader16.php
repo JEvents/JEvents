@@ -43,8 +43,8 @@ function DefaultViewHelperHeader16($view){
 		case 'menu':
 			$menu2   =& JSite::getMenu();
 			$menu    = $menu2->getActive();
-			if (isset($menu) && isset($menu->name)) {
-				$t_headline = $menu->name;
+			if (isset($menu) && isset($menu->title)) {
+				$t_headline = $menu->title;
 			}
 			break;
 		default:
