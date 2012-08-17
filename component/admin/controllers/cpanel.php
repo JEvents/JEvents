@@ -115,6 +115,65 @@ class AdminCpanelController extends JControllerAdmin
 			}
 		}
 
+		// merge/unmerge menu items?
+		if (JVersion::isCompatible("1.6.0")){
+			// Joomla 2.5 version
+			$sql = 'select id from #__menu where client_id=1 and parent_id=1 and title="com_jevents"';
+			$db->setQuery($sql);			
+			$parent = $db->loadResult();
+
+			$tochange = 'title="Attend JEvents" OR title="com_jevlocations"  OR title="com_jeventstags"  OR title="com_jevpeople"  OR title="com_rsvppro" ';
+			$updatemenus = false;
+			if ($params->get("mergemenus", 1)){
+				$sql = 'SELECT count(id) FROM #__menu 
+				where client_id=1 AND parent_id=1 AND (
+					'.$tochange.'
+				)';
+				$db->setQuery($sql);			
+				$mus = $db->loadResult();
+				if ($mus){
+					$updatemenus = true;
+					
+					$sql = 'UPDATE  #__menu 
+					set parent_id = '.$parent.'
+					where client_id=1 AND parent_id=1 AND (
+						'.$tochange.'
+					)';
+					$db->setQuery($sql);			
+					$db->query();
+					echo $db->getErrorMsg();
+				}
+			}
+			else {
+				$sql = 'SELECT count(id) FROM #__menu 
+				where client_id=1 AND parent_id='.$parent.' AND (
+					'.$tochange.'
+				)';
+				$db->setQuery($sql);			
+				$mus = $db->loadResult();
+				if ($mus){
+					$updatemenus = true;
+
+					// Joomla 2.5 version
+					$sql = 'UPDATE  #__menu 
+					set parent_id = 1
+					where client_id=1 AND parent_id='.$parent.' AND (
+						'.$tochange.'
+					)';
+					$db->setQuery($sql);			
+					$db->query();
+					echo $db->getErrorMsg();				
+				}
+			}
+			
+			if ($updatemenus) {
+				JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+				// rebuild the menus
+				$menu = JTable::getInstance('Menu');
+				$menu->rebuild();
+			}
+		}
+		
 		// get the view
 		$this->view = & $this->getView("cpanel", "html");
 		$sql = 'SHOW TABLES LIKE "' . $db->getPrefix() . 'events"';
