@@ -144,6 +144,7 @@ class AdminCpanelController extends JController
 						$table->path = $table->alias;
 						$table->link = "index.php?option=".$missingmenu->element;
 						$table->type = "component" ;
+						$table->image = "class:component";
 						$table->parent_id = 1;
 						$table->client_id = 1;
 						$table->component_id = $missingmenu->extension_id;
