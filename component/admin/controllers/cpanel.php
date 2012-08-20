@@ -132,6 +132,33 @@ class AdminCpanelController extends JControllerAdmin
 				$db->setQuery($sql);			
 				$mus = $db->loadResult();
 				if ($mus){
+					// check to see if we are creating a duplicate from an upgrade of an addon!
+					$sql = 'SELECT * FROM #__menu 
+					where client_id=1 AND parent_id=1 AND (
+						'.$tochange.'
+					)';
+					$db->setQuery($sql);			
+					$tomerge = $db->loadObjectList();
+
+					$sql = 'SELECT * FROM #__menu 
+					where client_id=1 AND parent_id='.$parent.'  AND (
+						'.$tochange.'
+					)';
+					$db->setQuery($sql);			
+					$alreadymerged = $db->loadObjectList();
+
+					if ($alreadymerged){
+						foreach ($tomerge as $checkitem){
+							foreach ($alreadymerged as $merged){
+								if ($merged->alias == $checkitem->alias && $merged->link == $checkitem->link){
+									// remove duplicates
+									$sql = "DELETE FROM #__menu  where id=$checkitem->id";
+									$db->setQuery($sql);			
+									$db->query();
+								}
+							}
+						}
+					}
 					$updatemenus = true;
 					
 					$sql = 'UPDATE  #__menu 
