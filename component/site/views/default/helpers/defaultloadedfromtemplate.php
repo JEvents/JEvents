@@ -507,7 +507,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					static $doprevnext;
 					if (!isset($doprevnext))
 					{
-						$doprevnext = (strpos($template_value, ":PREVIOUSNEXT}}") !== false);
+						$doprevnext = (strpos($template_value, "{{PREVIOUSNEXT}}") !== false);
 					}
 					if ($doprevnext)
 					{

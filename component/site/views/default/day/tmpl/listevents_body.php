@@ -25,7 +25,7 @@ echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="e
 if (count($data['hours']['timeless']['events'])>0){
 	$start_time = JText::_( 'TIMELESS' );
         $hasevents = true;
-
+        
 	echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
 	echo '<td class="ev_td_right"><ul class="ev_ul">' . "\n";
 	foreach ($data['hours']['timeless']['events'] as $row) {

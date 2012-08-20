@@ -57,9 +57,7 @@
 		<field name="showPanelNews" type="jevboolean" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
 		<field name="hideMigration" type="jevboolean" default="1" label="JEV_HIDE_MIGRATION" description="" />
 
-		<field name="mergemenus" type="jevboolean" default="1" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
-
-		<field name="mergemenus" type="jevboolean" default="1" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
+		<field name="mergemenus" type="jevboolean" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
 
 		<field name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
 		<!-- TIMEZONE DATA //-->
