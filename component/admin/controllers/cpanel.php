@@ -125,6 +125,49 @@ class AdminCpanelController extends JControllerAdmin
 			$tochange = 'title="Attend JEvents" OR title="com_jevlocations"  OR title="com_jeventstags"  OR title="com_jevpeople"  OR title="com_rsvppro" ';
 			$updatemenus = false;
 			if ($params->get("mergemenus", 1)){
+				
+				// is this an upgrade of JEvents in which case we would loose the submenu items and may need to recreate them
+				$sql = 'SELECT title, alias FROM #__menu where client_id=1 AND (
+					'.$tochange.'
+				)';
+				$db->setQuery($sql);			
+				$existingmenus =  $db->loadObjectList();
+				
+				if (!$existingmenus || count($existingmenus)==0) {
+					
+					// find list of installed addons
+					$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
+					$sql = 'SELECT element,extension_id FROM #__extensions  where type="component" AND (
+						'.$installed.'
+					)';
+					$db->setQuery($sql);			
+					$installed  =  $db->loadObjectList();
+					
+					foreach ($installed as $missingmenu){
+						JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+						$table = JTable::getInstance('Menu', 'JTable');
+						
+						$table->id = 0;
+						$table->title = $missingmenu->element;
+						$table->alias = str_replace("_", "-", $missingmenu->element);
+						$table->path = $table->alias;
+						$table->link = "index.php?option=".$missingmenu->element;
+						$table->type = "component" ;
+						$table->parent_id = 1;
+						$table->client_id = 1;
+						$table->component_id = $missingmenu->extension_id;
+						$table->level = 1;
+						$table->home = 0;
+						$table->checked_out = 0;
+						$table->checked_out_time = $db->getNullDate();
+						
+						$table->setLocation(1, "last-child");
+						$table->store();
+						
+
+					}					
+				}
+								
 				$sql = 'SELECT count(id) FROM #__menu 
 				where client_id=1 AND parent_id=1 AND (
 					'.$tochange.'
