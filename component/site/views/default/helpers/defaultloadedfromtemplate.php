@@ -356,6 +356,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ENDDATE}}":
 				case "{{STARTTIME}}":
 				case "{{ENDTIME}}":
+				case "{{ISOSTART}}":
+				case "{{ISOEND}}":					
 					if ($template_name == "icalevent.detail_body")
 					{
 						$search[] = "{{REPEATSUMMARY}}";
@@ -387,6 +389,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ENDTIME}}";
 						$replace[] = $stop_time_midnightFix;
 						$blank[] = "";
+						$search[] = "{{ISOSTART}}";
+						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+						$blank[] = "";
+						$search[] = "{{ISOEND}}";
+						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
+						$blank[] = "";
 					}
 					else
 					{
@@ -415,6 +423,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 
+						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false){
+							$search[] = "{{ISOSTART}}";
+							$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+							$blank[] = "";
+							$search[] = "{{ISOEND}}";
+							$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
+							$blank[] = "";
+						}
+						
 						// these would slow things down if not needed in the list
 						$dorepeatsummary = (strpos($template_value, "{{REPEATSUMMARY}}") !== false);
 						if ($dorepeatsummary)
