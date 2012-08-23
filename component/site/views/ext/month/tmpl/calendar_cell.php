@@ -119,7 +119,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 					$title_event_link = "\n".'<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
 					. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
 				}
-				$cellStyle .= "border-bottom-color:$bgeventcolor;padding-left:2px;";
+				$cellStyle .= "border-bottom-color:#$bgeventcolor;padding-left:2px;";
 			}
 		}else{
 			$eventIMG	= '<img align="left" src="' . JURI::root()
