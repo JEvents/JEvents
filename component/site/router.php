@@ -141,7 +141,25 @@ function JEventsBuildRoute(&$query)
 						}
 						else
 						{
-							$segments[] = "0";
+							if (isset($query["Itemid"]))
+							{
+								// event detail menu item
+								$menu = JSite::getMenu();
+								$menuitem = $menu->getItem($query["Itemid"]);
+								if (!is_null($menuitem) && isset($menuitem->query["evid"]))
+								{
+									$segments[] = $menuitem->query["evid"];
+									if (!isset($query['title'])) {
+										//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+									}
+								}
+								else {
+									$segments[] = "0";									
+								}
+							}
+							else {							
+								$segments[] = "0";
+							}
 						}
 						/*
 						  // Can we drop the use of uid?
@@ -591,7 +609,25 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						else
 						{
-							$segments[] = "0";
+							if (isset($query["Itemid"]))
+							{
+								// event detail menu item
+								$menu = JSite::getMenu();
+								$menuitem = $menu->getItem($query["Itemid"]);
+								if (!is_null($menuitem) && isset($menuitem->query["evid"]))
+								{
+									$segments[] = $menuitem->query["evid"];
+									if (!isset($query['title'])) {
+										//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+									}
+								}
+								else {
+									$segments[] = "0";									
+								}
+							}
+							else {							
+								$segments[] = "0";
+							}								
 						}
 
 						break;

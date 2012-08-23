@@ -113,9 +113,17 @@ class AdminCpanelController extends JController
 			$db->setQuery($sql);			
 			$parent = $db->loadResult();
 
-			$tochange = 'title="Attend JEvents" OR title="com_jevlocations"  OR title="com_jeventstags"  OR title="com_jevpeople"  OR title="com_rsvppro" ';
+			$tochange = ' title="Attend JEvents" OR title="com_jevlocations"  OR title="com_jeventstags"  OR title="com_jevpeople"  OR title="com_rsvppro" ';
 			$updatemenus = false;
 			if ($params->get("mergemenus", 1)){
+				
+				// Clean out old style upper case menu items
+				$toclean = '  title="COM_JEVLOCATIONS"  OR title="COM_JEVENTSTAGS"  OR title="COM_JEVPEOPLE"  OR title="COM_RSVPPRO" ';
+				$sql = 'DELETE FROM #__menu where client_id=1 AND (
+					'.$toclean.'
+				)';
+				$db->setQuery($sql);			
+				$db->query();
 				
 				// is this an upgrade of JEvents in which case we would loose the submenu items and may need to recreate them
 				$sql = 'SELECT title, alias FROM #__menu where client_id=1 AND (
@@ -145,6 +153,7 @@ class AdminCpanelController extends JController
 						$table->link = "index.php?option=".$missingmenu->element;
 						$table->type = "component" ;
 						$table->img = "class:component";
+						$table->menutype = 'main';
 						$table->parent_id = 1;
 						$table->client_id = 1;
 						$table->component_id = $missingmenu->extension_id;
