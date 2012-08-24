@@ -57,6 +57,8 @@
 		<field name="showPanelNews" type="jevboolean" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
 		<field name="hideMigration" type="jevboolean" default="1" label="JEV_HIDE_MIGRATION" description="" />
 
+		<field name="mergemenus" type="jevboolean" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
+
 		<field name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
@@ -68,6 +70,8 @@
 		</field>		
 		
 		<field name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC"/>
+		
+		
 		
 		<!--//
 		<field name="jevkey" type="jevkey" default="" menu="hide" size="40" label='COPYRIGHT_MESSAGE_KEY'  description='PLEASE_USE_THIS_KEY_CODE_AT_THE_JEVENTS_WEBSITE_TO_OBTAIN_A_FREE_CODE_THAT_WILL_DISABLE_THE_COPYRIGHT_MESSAGE'  />

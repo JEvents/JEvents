@@ -256,6 +256,8 @@ class DefaultModLegendView
 		{
 			$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
 					. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					// language filter
+					. "\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')'
 					. " AND c.published = 1"
 					. "\n ORDER BY c.lft";
 			$db->setQuery($sql);

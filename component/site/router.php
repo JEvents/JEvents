@@ -141,7 +141,25 @@ function JEventsBuildRoute(&$query)
 						}
 						else
 						{
-							$segments[] = "0";
+							if (isset($query["Itemid"]))
+							{
+								// event detail menu item
+								$menu = JSite::getMenu();
+								$menuitem = $menu->getItem($query["Itemid"]);
+								if (!is_null($menuitem) && isset($menuitem->query["evid"]))
+								{
+									$segments[] = $menuitem->query["evid"];
+									if (!isset($query['title'])) {
+										//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+									}
+								}
+								else {
+									$segments[] = "0";									
+								}
+							}
+							else {							
+								$segments[] = "0";
+							}
 						}
 						/*
 						  // Can we drop the use of uid?
@@ -214,7 +232,25 @@ function JEventsBuildRoute(&$query)
 			}
 			else
 			{
-				$segments[] = "0";
+				if (isset($query["Itemid"]))
+				{
+					// event detail menu item
+					$menu = JSite::getMenu();
+					$menuitem = $menu->getItem($query["Itemid"]);
+					if (!is_null($menuitem) && isset($menuitem->query["evid"]))
+					{
+						$segments[] = $menuitem->query["evid"];
+						if (!isset($query['title'])) {
+							//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+						}
+					}
+					else {
+						$segments[] = "0";									
+					}
+				}
+				else {							
+					$segments[] = "0";
+				}
 			}
 			break;
 		case "modlatest.rss":
@@ -481,6 +517,19 @@ function JEventsBuildRouteNew(&$query, $task)
 
 	$params = JComponentHelper::getParams("com_jevents");
 
+	// get a menu item based on Itemid or currently active
+	$app		= JFactory::getApplication();
+	$menu		= $app->getMenu();
+	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
+	if (empty($query['Itemid'])) {
+		$menuItem = $menu->getActive();
+		$menuItemGiven = false;
+	}
+	else {
+		$menuItem = $menu->getItem($query['Itemid']);
+		$menuItemGiven = true;
+	}
+	
 	$cfg = & JEVConfig::getInstance();
 	$segments = array();
 

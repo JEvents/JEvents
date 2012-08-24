@@ -190,7 +190,7 @@ class AdminDefaultsController extends JControllerForm {
 
 			// Get/Create the model
 			if ($model = & $this->getModel("default", "defaultsModel")) {
-				if ($model->store(JRequest::get("post",JREQUEST_ALLOWHTML))){
+				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
 					$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",JText::_("JEV_TEMPLATE_SAVED"));
 					return;
 				}

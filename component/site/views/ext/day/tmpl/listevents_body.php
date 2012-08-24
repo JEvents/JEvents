@@ -8,6 +8,7 @@ $this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
 $cfg = & JEVConfig::getInstance();
+$hasevents = false;
 
 // previous and following month names and links
 $followingDay = $this->datamodel->getFollowingDay($this->year, $this->month, $this->day);
@@ -45,7 +46,6 @@ $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $th
 			</td>
 		</tr>
 <?php
-$hasevents = false;
 // Timeless Events First
 if (count($data['hours']['timeless']['events'])>0){
 	$hasevents = true;
