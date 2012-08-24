@@ -897,7 +897,7 @@ class AdminIcaleventController extends JController
 
 		$clearout = false;
 		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && $array["evid"] > 0)
+		if (isset($array["evid"]) && $array["evid"] > 0 && JRequest::getInt("updaterepeats",1))
 		{
 			$clearout = true;
 		}
