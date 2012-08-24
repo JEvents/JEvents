@@ -13,7 +13,10 @@
 
 defined('JPATH_BASE') or die;
 
-include_once(JPATH_SITE."/libraries/joomla/form/fields/editor.php");
+if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
+	include_once(JPATH_SITE."/libraries/joomla/form/fields/editor.php");
+}
+	
 jimport('joomla.html.editor');
 
 class JFormFieldJevhtml extends JFormFieldEditor
