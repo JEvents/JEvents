@@ -10,7 +10,6 @@
 	font-style: normal;
 	text-decoration: none;
 	margin: 0px auto 0.25em auto;	
-    width:140px!important;
 }
 .mod_events_td_title
 {
@@ -97,8 +96,7 @@ a.mod_events_link:hover
 	border: 1px solid #222222;
 	margin: 0.25em auto 0px auto;
 	text-align:center;
-    width:140px!important;
-    cursor:pointer;
+        cursor:pointer;
 	height: 24px;
 	background-image: url( "../images/evback.jpg" );
 }

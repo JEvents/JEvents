@@ -279,6 +279,9 @@ class DefaultModCalView
 		$reg->set("jev.modparams",$this->modparams);
 		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
 		$reg->set("jev.modparams",false);
+                $width = $this->modparams->get("mod_cal_width","140px");
+                $height = $this->modparams->get("mod_cal_height","");
+		
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
@@ -289,7 +292,7 @@ class DefaultModCalView
 		
 		if( $this->minical_showlink ){
 
-			$content .= "\n".'<table cellpadding="0" cellspacing="0" align="center" class="mod_events_monthyear" >' . "\n"
+			$content .= "\n".'<table style="width:'.$width.';" cellpadding="0" cellspacing="0" align="center" class="mod_events_monthyear" >' . "\n"
 			. '<tr >' . "\n";
 
 			if( $this->minical_showlink == 1 ){
@@ -354,7 +357,7 @@ class DefaultModCalView
 
 
 
-		$content	.= '<table align="center" class="mod_events_table" cellspacing="0" cellpadding="2" >'.$lf
+		$content	.= '<table style="width:'.$width.';height:'.$height.'; align="center" class="mod_events_table" cellspacing="0" cellpadding="2" >'.$lf
 		. '<tr class="mod_events_dayname">'.$lf;
 
 		// Days name rows

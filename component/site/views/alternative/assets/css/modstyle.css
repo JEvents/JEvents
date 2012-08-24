@@ -4,7 +4,6 @@
 .mod_events_table
 {
 	border: 1px solid #222222;
-    width:140px!important;
 	text-align: center;
 	font-family: Arial;
 	font-size: 12px;
@@ -96,8 +95,7 @@ a.mod_events_link:hover
 {
 	border: 1px solid #222222;
 	margin-top: 0.25em;
-    width:140px!important;
-    cursor:pointer;
+        cursor:pointer;
 	height: 18px;
 }
 .mod_events_monthyear td
