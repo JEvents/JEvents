@@ -29,6 +29,7 @@ class AdminIcaleventController extends JController
 	{
 		parent::__construct($config);
 		$this->registerTask('list', 'overview');
+		$this->registerTask('unpublish', 'unpublish');
 		$this->registerDefaultTask("overview");
 
 		$cfg = & JEVConfig::getInstance();
