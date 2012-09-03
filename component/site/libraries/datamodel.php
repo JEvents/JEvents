@@ -1026,7 +1026,7 @@ class JEventsDataModel {
 		} else {
 			$searchisValid = true;
 
-			$rows 		= $this->queryModel->listEventsByKeyword( $keyword, 'publish_up,catid', $limit, $limitstart, $total, $useRegX );
+			$rows 		= $this->queryModel->listEventsByKeyword( $keyword, 'catid , rpt.startrepeat ', $limit, $limitstart, $total, $useRegX );
 			$data['total'] = $total;
 			$data['limit']=$limit;
 			$data['limitstart']=$limitstart;

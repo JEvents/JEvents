@@ -2634,7 +2634,7 @@ $dbend = (float)$usec + (float)$sec;
 
 		if (!$order)
 		{
-			$order = 'publish_up';
+			$order = 'publish_up asc, rpt.endrepeat asc ';
 		}
 
 		$order = preg_replace("/[\t ]+/", '', $order);
