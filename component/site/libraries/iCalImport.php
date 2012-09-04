@@ -158,12 +158,12 @@ class iCalImport
 				$csvTrans = new CsvToiCal($file);
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
-		    } else {
+			} else {
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!
 				return false;
-            }
+			}
 		}
 		$begin = JString::strpos($this->rawData,"BEGIN:VCALENDAR",0);
 		$this->rawData = JString::substr($this->rawData,$begin);
