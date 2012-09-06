@@ -93,7 +93,7 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 // Split tasl into command and task
 $cmd = JRequest::getCmd('task', 'cpanel.show');
 
-if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false) {
+if (strpos($cmd, '.') != false) {
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
