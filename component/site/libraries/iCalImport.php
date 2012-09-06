@@ -518,7 +518,14 @@ class iCalImport
 				
 			}
 			else {
-				$t = new JevDate($ical_date);				
+				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$jtz = $compparams->get("icaltimezonelive", "");
+				if ($jtz){
+					$t = new JevDate($ical_date,$jtz);
+				}
+				else {
+					$t = new JevDate($ical_date);
+				}
 			}
 			//$result = $t->toMySQL();
 			$result = $t->toUnix();
