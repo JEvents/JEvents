@@ -129,6 +129,15 @@ class AdminParamsController extends JController
 			return false;
 		}
 
+		// if switching from single cat to multi cat then reset the table entries
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!$params->get("multicategory",0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory']==1){
+			$db = JFactory::getDbo();
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
+			$db->setQuery($sql);
+			$db->query();			
+		}
+
 		// save the changes
 		if (!$table->store())
 		{

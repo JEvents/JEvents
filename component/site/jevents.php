@@ -119,7 +119,7 @@ $lang->load(JEV_COM_COMPONENT, JPATH_THEMES.DS.JFactory::getApplication()->getTe
 // Split task into command and task
 $cmd = JRequest::getCmd('task', false);
 
-if (!$cmd) {
+if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false) {
 	$view =	JRequest::getCmd('view', false);
 	$layout = JRequest::getCmd('layout', "show");
 	if ($view && $layout){
