@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td width="55%" valign="top">
 					<div id="cpanel">
 						<?php
-						if (!JEVHelper::isAdminUser()){
+						if (JEVHelper::isAdminUser()){
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list";
 							$this->_quickiconButton($link, "jevents_calendar_sml.png", JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						}
@@ -57,9 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 							// new version
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit";
 							$this->_quickiconButton($link, "jevents_config_sml.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-						}
 
-						if (!JEVHelper::isAdminUser()){
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						}
