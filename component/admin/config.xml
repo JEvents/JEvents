@@ -297,6 +297,12 @@
 		<field name="modlatest_Days" type="text" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP"/>
 		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" />
 		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" />
+		<field name="modlatest_multiday" type="list" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC">
+			<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
+			<option value="1">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_1</option>
+			<option value="2">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_2</option>
+			<option value="3">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_3</option>
+		</field>
 		<field name="modlatest_DispLinks" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP" />
 		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" />		
 		<field name="modlatest_DisDateStyle" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP" />
