@@ -34,7 +34,14 @@ class AdminCpanelController extends JController
 		// check the latest column addition or change
 		// do this in a way that supports mysql 4
 		$db = & JFactory::getDBO();
-
+		$db	=& JFactory::getDBO();
+		if (JVersion::isCompatible("1.6")){
+			$db->setDebug(0);
+		}
+		else {
+			$db->debug(0);
+		}
+		
 		$sql = "SHOW COLUMNS FROM `#__jevents_catmap`";
 		$db->setQuery($sql);
 		$cols = $db->loadObjectList('Field');
@@ -43,14 +50,6 @@ class AdminCpanelController extends JController
 			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			//return;
-		}
-
-		$db	=& JFactory::getDBO();
-		if (JVersion::isCompatible("1.6")){
-			$db->setDebug(0);
-		}
-		else {
-			$db->debug(0);
 		}
 
 		$sql = "SHOW COLUMNS FROM `#__jevents_exception`";
@@ -99,6 +98,21 @@ class AdminCpanelController extends JController
 			$this->redirect();
 		}
 
+		// Make sure jevlayout is copied and up to date
+		if ($params->get("installlayouts", 0))
+		{
+
+			// RSH Fix to allow the installation to work with J!1.6 11/19/10 - Adapater is now a subclass of JAdapterInstance!
+			$jevlayout_file = (JVersion::isCompatible("1.6.0")) ? 'jevlayout_1.6.php' : 'jevlayout.php';
+
+			jimport('joomla.filesystem.file');
+			if (!JFile::exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
+					md5_file(JEV_ADMINLIBS . $jevlayout_file) != md5_file(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php"))
+			{
+				JFile::copy(JEV_ADMINLIBS . $jevlayout_file, JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php");
+			}
+		}
+		
 		$this->mergeMenus();
 		
 		// get the view
