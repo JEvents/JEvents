@@ -112,10 +112,20 @@ class JEventsDBModel
 				}
 
 				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+				
+				$jevtask = JRequest::getString("jevtask");
+				$isedit = false;
+				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+				{
+					$isedit = true;
+				}
+
 				$query = "SELECT c.id"
 						. "\n FROM #__categories AS c"
 						. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 						. $q_published
+						// language filter only applies when not editing
+						. ($isedit?"":"\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')')
 						. "\n AND c.extension = '" . $sectionname . "'"
 						. "\n " . $where;
 				;

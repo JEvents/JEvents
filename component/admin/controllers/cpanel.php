@@ -45,6 +45,14 @@ class AdminCpanelController extends JController
 			//return;
 		}
 
+		$db	=& JFactory::getDBO();
+		if (JVersion::isCompatible("1.6")){
+			$db->setDebug(0);
+		}
+		else {
+			$db->debug(0);
+		}
+
 		$sql = "SHOW COLUMNS FROM `#__jevents_exception`";
 		$db->setQuery($sql);
 
