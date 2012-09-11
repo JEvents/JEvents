@@ -515,6 +515,12 @@ class AdminIcalrepeatController extends JController
 		$rpt->rp_id = $rp_id;
 		$rpt->store();
 
+		// I may also need to process repeat changes
+		$dispatcher	=& JDispatcher::getInstance();
+		// just incase we don't have jevents plugins registered yet
+		JPluginHelper::importPlugin("jevents");
+		$res = $dispatcher->trigger( 'onStoreCustomRepeat' , array(&$rpt));
+
 		$exception = iCalException::loadByRepeatId($rp_id);
 		if (!$exception)
 		{
