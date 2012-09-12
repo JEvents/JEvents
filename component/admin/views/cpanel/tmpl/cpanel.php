@@ -57,7 +57,8 @@ defined('_JEXEC') or die('Restricted access');
 							// new version
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit";
 							$this->_quickiconButton($link, "jevents_config_sml.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-
+						}
+						if (JEVHelper::isAdminUser()){
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						}
@@ -77,17 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("showPanelNews", 1))
 					{
-						if (JVersion::isCompatible("1.6"))
-						{
-							echo JHtml::_('sliders.start', 'cpanel-sliders');
-							echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
-						}
-						else
-						{
-							$tabs = JPane::getInstance('tabs');
-							echo $tabs->startPane('cpanel-tabs');
-							echo $tabs->startPanel(JText::_("JEV_News"), 'cpanelstatus');
-						}
+						echo JHtml::_('sliders.start', 'cpanel-sliders');
+						echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
 						?>
 						<div style="width: 100%;">
 							<table class="adminlist">
@@ -97,10 +89,6 @@ defined('_JEXEC') or die('Restricted access');
 							</table>
 						</div>
 						<?php
-						if (!JVersion::isCompatible("1.6"))
-						{
-							echo $tabs->endPanel();
-						}
 						$needsupdate = false;
 						$clubnews = $this->renderVersionStatusReport($needsupdate);
 						if ($needsupdate)
@@ -115,58 +103,25 @@ defined('_JEXEC') or die('Restricted access');
 						}
 						if ($clubnews)
 						{
-							if (JVersion::isCompatible("1.6"))
-							{
-								echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
-							}
-							else
-							{
-								echo $tabs->startPanel($label, 'cpanelstatus');
-							}
+							echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
 							?>
 							<div style="width: 100%;">
 								<?php echo $clubnews; ?>
 							</div> <?php
-						if (!JVersion::isCompatible("1.6"))
-						{
-							echo $tabs->endPanel();
-						}
-					}
-					if (!JVersion::isCompatible("1.6"))
-					{
-						echo $tabs->endPanel();
 					}
 					$needsupdate = false;
 					$clubnews = $this->renderVersionsForClipboard();
 					if ($clubnews)
 					{
 						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
-						if (JVersion::isCompatible("1.6"))
-						{
-							echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
-						}
-						else
-						{
-							echo $tabs->startPanel($label, 'cpanelstatustextarea');
-						}
-								?>
+						echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
+							?>
 							<div style="width: 100%;">
 								<h3><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></h3>
 								<?php echo $clubnews; ?>
 							</div> <?php
-						if (!JVersion::isCompatible("1.6"))
-						{
-							echo $tabs->endPanel();
-						}
 					}
-					if (JVersion::isCompatible("1.6"))
-					{
-						echo JHtml::_('sliders.end');
-					}
-					else
-					{
-						echo $tabs->endPane();
-					}
+					echo JHtml::_('sliders.end');
 				}
 				?>
 				</td>
