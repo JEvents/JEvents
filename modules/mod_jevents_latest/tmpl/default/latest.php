@@ -1082,17 +1082,35 @@ class DefaultModLatestView
 							{
 
 								$subparts = explode("}", $part);
-								//$part = str_replace("}","",$part);
-								$subpart = "_" . $subparts[0];
+								
+								if (strpos($subparts[0],"#")>0){
+									$formattedparts = explode("#", $subparts[0]);
+									$subparts[0] = $formattedparts[0];
+								}
+								else {
+									$formattedparts = array($subparts[0], "%s","");
+								}
+								$subpart = "_" .$subparts[0];
+								
 								if (isset($dayEvent->$subpart))
 								{
 									$temp = $dayEvent->$subpart;
-									$tempstr .= $temp;
-								}
+									if ($temp !="") {
+										$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
+									}
+									else {
+										$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
+									}										
+								}		
 								else if (isset($dayEvent->customfields[$subparts[0]]['value']))
 								{
 									$temp = $dayEvent->customfields[$subparts[0]]['value'];
-									$tempstr .= $temp;
+									if ($temp !="") {
+										$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
+									}
+									else {
+										$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
+									}										
 								}
 								else {								
 									$layout = "list";
@@ -1105,7 +1123,13 @@ class DefaultModLatestView
 												if (in_array($subparts[0],$fieldNameArray["values"] )){
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent!=3){
-														$tempstr .= call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
+														$temp = call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
+														if ($temp !="") {
+															$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
+														}
+														else {
+															$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
+														}
 													}
 												}
 											}

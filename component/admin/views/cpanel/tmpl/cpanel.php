@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 						if ($clubnews)
 						{
 							echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
-ß							?>
+							?>
 							<div style="width: 100%;">
 								<?php echo $clubnews; ?>
 							</div> <?php
