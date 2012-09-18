@@ -85,7 +85,7 @@ class JEV_CommonFunctions {
 			$db	=& JFactory::getDBO();
 
 			if (JVersion::isCompatible("1.6.0"))  {
-				$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."'";
+				$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
 				$db->setQuery( $sql);
 				$cats = $db->loadObjectList('id');
 				foreach ($cats as &$cat){
