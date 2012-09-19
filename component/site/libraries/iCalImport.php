@@ -662,7 +662,8 @@ class iCalImport
 		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
 		$wtzdata["Eastern Standard Time"] = "America/New_York";		
 		$wtzdata["W. Europe Standard Time"] = "Europe/Paris";
-		
+		$wtzdata["E. Europe Standard Time"] = "Europe/Helsinki";
+		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;

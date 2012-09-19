@@ -680,6 +680,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					foreach ($fieldNameArray["values"] as $fieldname)
 					{
+						if (!strpos($template_value, $fieldname)!==false) {
+							continue;
+						}
 						$search[] = "{{" . $fieldname . "}}";
 						// is the event detail hidden - if so then hide any custom fields too!
 						if (!isset($event->_privateevent) || $event->_privateevent != 3)
