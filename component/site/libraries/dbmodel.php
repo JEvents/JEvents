@@ -114,7 +114,8 @@ class JEventsDBModel
 				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 				$jevtask = JRequest::getString("jevtask");
 				$isedit = false;
-				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+				// not only for edit pages but for all backend changes we ignore the language filter on categories
+				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false  || JFactory::getApplication()->isAdmin())
 				{
 					$isedit = true;
 				}
