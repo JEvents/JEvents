@@ -115,7 +115,7 @@ class JEventsDBModel
 				
 				$jevtask = JRequest::getString("jevtask");
 				$isedit = false;
-				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin())
 				{
 					$isedit = true;
 				}
