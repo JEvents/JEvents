@@ -20,15 +20,6 @@ defined('_JEXEC') or die();
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
-	function __construct($config = null)
-	{
-		parent::__construct($config);
-		
-		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-
-	}
-
 	/**
 	 * Defaults display function
 	 *

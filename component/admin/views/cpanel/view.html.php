@@ -20,16 +20,6 @@ defined('_JEXEC') or die();
 class AdminCPanelViewCPanel extends JEventsAbstractView
 {
 
-		
-	function __construct($config = array()){
-		parent::__construct($config);
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (!JVersion::isCompatible("3.0.0"))
-			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin16.css');
-		else
-			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
-	}
-	
 
 	/**
 	 * Control Panel display function

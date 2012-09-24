@@ -27,10 +27,6 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 		parent::__construct($config);	
 		
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (!JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin16.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-
 		// used only for helper functions
 		$this->jevlayout="default";	
 		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));		

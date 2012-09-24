@@ -14,6 +14,11 @@
 defined('JPATH_BASE') or die();
 jimport('cms.toolbar.button');
 	
+/* 
+ * 
+ * Joomla 3.0 version
+ * 
+ */
 class JToolbarButtonJev extends JToolbarButton
 {
 	/**
@@ -30,11 +35,22 @@ class JToolbarButtonJev extends JToolbarButton
 		$class	= $this->fetchIconClass($icon);
 		$doTask	= $this->_getCommand($text, $task, $list);
 
-		$html	= "<a href=\"#\" onclick=\"$doTask;return false;\" class=\"toolbar\">\n";
-		$html .= "<span class=\"$class\" title=\"$i18n_text\">\n";
-		$html .= "</span>\n";
-		$html	.= "$i18n_text\n";
-		$html	.= "</a>\n";
+		if ($name == "apply" || $name == "new")
+		{
+			$btnClass = "btn btn-small btn-success";
+			$iconWhite = "icon-white";
+		}
+		else
+		{
+			$btnClass = "btn btn-small";
+			$iconWhite = "";
+		}
+
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
+		$html .= "<i class=\"$class $iconWhite\">\n";
+		$html .= "</i>\n";
+		$html .= "$i18n_text\n";
+		$html .= "</button>\n";
 
 		return $html;
 	}
@@ -167,11 +183,11 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($msg, $name, $task, $list, $hideMenu,$jstestvar);
 
-		$html	= "<a href=\"#\" onclick=\"$doTask;return false;\" class=\"toolbar\">\n";
-		$html .= "<span class=\"$class\" title=\"$text\">\n";
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"btn btn-small\">\n";
+		$html .= "<span class=\"$class\">\n";
 		$html .= "</span>\n";
-		$html	.= "$text\n";
-		$html	.= "</a>\n";
+		$html .= "$text\n";
+		$html .= "</button>\n";
 
 		return $html;
 	}

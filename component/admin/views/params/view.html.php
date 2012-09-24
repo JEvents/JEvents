@@ -18,18 +18,7 @@ defined('_JEXEC') or die();
  * @static
  */
 class AdminParamsViewParams extends JEventsAbstractView
-{
-
-	function __construct($config = null)
-	{
-		parent::__construct($config);
-		
-		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-
-	}
-
-	function edit16()
+{	function edit16()
 	{
 		return $this->edit();
 
