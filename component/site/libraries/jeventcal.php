@@ -706,6 +706,9 @@ class jEventCal {
 		$title = JFilterOutput::stringURLSafe($this->title());
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$this->id() .'&Itemid='.$Itemid
 		."&year=$year&month=$month&day=$day" ;
+		if (JRequest::getCmd("tmpl","")=="component"){
+			$link .= "&tmpl=component";
+		}
 		$link = $sef?JRoute::_( $link  ):$link;
 		return $link;
 	}
