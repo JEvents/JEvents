@@ -69,7 +69,7 @@ class JEventsAbstractView extends JViewLegacy {
 	 */
 	function _hideSubmenu(){
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/hidesubmenu.css');
+		if (!JVersion::isCompatible("3.0.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/hidesubmenu16.css');
 		else JHTML::stylesheet( 'hidesubmenu.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 	}
 

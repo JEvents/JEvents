@@ -12,7 +12,12 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
-jimport('joomla.html.toolbar.button');
+if (JVersion::isCompatible("3.0.0")){
+	jimport('legacy.toolbar.button');
+}
+else {
+	jimport('joomla.html.toolbar.button');
+}
 	
 class JButtonJev extends JButton
 {
@@ -148,6 +153,7 @@ class JButtonJevlink extends JButton
 		return $link;
 	}	
 }
+
 
 class JButtonJevconfirm extends JButton
 {

@@ -64,6 +64,8 @@ if (!defined("JEV_LIBS")){
 	// TODO retire this sometime? - check usage by session registration code first
 	JLoader::register('JEV_CommonFunctions',JEV_PATH."libraries/commonfunctions.php");
 	
+	JLoader::register('JEventsHelper',JEV_HELPERS."jevents.php");
+	
 	// Legacy code	
 	if (!class_exists('JParameter', true)){
 		JLoader::register('JParameter', JEV_ADMINLIBS . 'jparameter.php');

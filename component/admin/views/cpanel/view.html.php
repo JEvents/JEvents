@@ -47,9 +47,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
 		  }
 		 */
-
+		JEventsHelper::addSubmenu();
 		$this->_hideSubmenu();
-
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -57,7 +56,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 //JToolBarHelper::help( 'screen.cpanel', true);
 
-		JSubMenuHelper::addEntry(JText::_('CONTROL_PANEL'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 //$section = $params->get("section",0);
@@ -697,7 +695,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-		$output = "<textarea rows='40' cols='80'>[code]\n";
+		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		
 		foreach ($apps as $appname => $app)
 		{

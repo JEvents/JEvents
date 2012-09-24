@@ -1,258 +1,152 @@
-/** header icons **/
-div.icon-48-jevents {
-	background: url(../images/logo.gif) transparent no-repeat;
-	padding-left:265px!important;
-	line-height:48px;
+/* Sliders */
+.pane-sliders {
+	margin: 0;
+	position: relative;
 }
-
-/* Front end admin styling */
-table.toolbar td.button {
-	background-image:none;
-	background-color:transparent;
-	border:0px;
-}
-
-textarea#extra_info {
-	width:100%;
-	padding:0px!important;
-	margin:0px;
-	height:auto!important;
-}
-
-div#jevents fieldset {
-	border:solid 1px #cccccc;
-	margin-bottom:5px;
-	display:block;
-	padding:5px 0px;
-	background:none;
-}
-div#jevents fieldset {
-	margin:5px;
-	padding:5px;
-}
-div#jevents fieldset legend {
-	padding:0px 10px;
-}
-div#jevents table#jevadminform {
-	font-size:1em;
-	margin:0px 5px 5px 5px;
-}
-div#jevents table#jevadminform td {
-	padding:3px;
-}
-div#jevents table#jevadminform table td {
-	padding:0px;
-}
-
-div#jevents fieldset table {
-	margin:0px;
-}
-
-div#jevents dl.tabs dt {
-	margin:0px 0px 0px 3px;
-}
-
-div#jevents div.current {
-	padding:10px;
-}
-div#jevents fieldset table {
-	font-size:12px;
-}
-
-fieldset.jevconfig div.current td.paramlist_key {
-	width:200px;
-}
-
-/* Editing styles */
-td.r1, span.r1 {
-	background-color:#eeeeee!important;
-	padding:5px 5px 0px 0px;
-}
-td.r2, span.r2 {
-	padding-right:5px;
-}
-
-div#jevoverlapwarning {
-	border:solid 1px red;
-	padding:5px;
-	display:none;
-}
-div#jevoverlapwarning h4 {
-	font-weight:bold;
-	margin:5px 0px;
-}
-
-.jev_edit_event_notice {
-	width:500px;
-}
-/* For dark templates */
-div.jeventsdark div#toolbar-box {background-color:transparent!important;}
-div.jeventsdark dl.tabs dt {background-color:transparent!important;}
-div.jeventsdark dl.tabs dt.open {color:#eeeeee;}
-div.jeventsdark table.adminform {background-color:transparent!important;border:none!important;}
-div.jeventsdark td.r2, div.jeventsdark span.r2 {background-color:transparent!important;}
-div.jeventsdark td.r1, div.jeventsdark span.r1 {background-color:#111111!important;}
-div.jeventsdark div#interval_div fieldset{background-color:transparent!important;}
-div.jeventsdark a#colorPickButton {color:#eeeeee!important;}
-
-/* Can be yused to hide apply button */
-/*
-td#toolbar-apply {
-	display:none;
-}
-*/
-
-
-/* Joomla 1.6 */
-.jevconfig .current{
-	width:inherit;
-}
-
-.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
-#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select,
-#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select, 
-#jevents .jevdatetime input, #jevents .jevdatetime textarea, #jevents .jevdatetime select,
-#jevents .jevextrablock input, #jevents .jevextrablock textarea, #jevents .jevextrablock select
-{
-	margin-bottom:inherit;
-	float:none;
-}
-.jevconfig .current label,
-#jevents .current label ,
-#jevents #jevadminform label ,
-#jevents .jevdatetime label,
-#jevents .jevextrablock label
-{
-	float:none;
-	display:inline;
-}
-.jevconfig .current td.paramlist_key, .jevconfig .current td.paramlist_value {
-	border-bottom:1px solid #ddd;
-	padding:4px 5px 4px 0px;
-}
-.jevconfig .current td.paramlist_key {
-	color:#666;
-	text-align:right;
-	font-weight:bold;
-}
-
-/** toolbar **/
-
-div.header {
-	font-size: 22px; font-weight: bold; color: #0B55C4; line-height: 48px;
-	padding-left: 55px;
-	background-repeat: no-repeat;
-	margin-left: 10px;
-}
-
-div.header span { color: #666; }
-
-div.toolbar { float: right; text-align: right; padding: 0; }
-
-table.toolbar    			 { border-collapse: collapse; padding: 0; margin: 0;	 }
-table.toolbar td 			 { padding: 1px 1px 1px 4px; text-align: center; color: #666; height: 48px; }
-table.toolbar td.spacer  { width: 10px; }
-table.toolbar td.divider { border-right: 1px solid #eee; width: 5px; }
-
-table.toolbar span { float: none; width: 32px; height: 32px; margin: 0 auto; display: block; }
-
-table.toolbar a {
-   display: block; float: left;
-	white-space: nowrap;
-	border: 1px solid #fbfbfb;
-	padding: 1px 5px;
+.pane-sliders .title {
+	margin: 0;
+	padding: 2px;
 	cursor: pointer;
 }
+.pane-sliders .panel {
+	margin-bottom: 3px;
+}
+.pane-sliders .adminlist td {
+	border: 0 none;
+}
+h3.pane-toggler-down a:focus,
+h3.pane-toggler a:focus {
+	outline: none;
+}
+.pane-toggler span {
+	padding-left: 20px;
+}
+.pane-toggler-down span {
+	padding-left: 20px;
+}
+.pane-slider.pane-hide {
+	display: none;
+}
+div#position-icon.pane-sliders div.pane-down div.icon-wrapper {
+	margin: 5px 0 5px 0;
+}
+div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
+	padding: 5px 0 5px 10px;
+	margin: 0;
+}
 
-table.toolbar a:hover {
-	border-left: 1px solid #eee;
-	border-top: 1px solid #eee;
-	border-right: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+/*Sliders color */
+.pane-sliders .title {
+	color: #2c2c2c;
+}
+.pane-sliders .panel {
+	border: 1px solid #738498;
+}
+.pane-sliders .panel h3 {
+	font-size: 1.182em;
+}
+.pane-sliders .panel h3:hover {
+	background: #e5d9c3;
+}
+.pane-sliders .panel h3:hover a {
 	text-decoration: none;
-	color: #0B55C4;
 }
-
-/* Stuff normally in admin template */
-textarea#extra_info {
-	width:100%;
-	padding:0px!important;
-	margin:0px;
-	height:auto!important;
+.pane-sliders .adminlist {
+	border: 0 none;
 }
-
-div#jevents fieldset {
-	border:solid 1px #cccccc;
-	margin-bottom:5px;
-	display:block;
-	padding:5px 0px;
-	background:none;
+.pane-sliders .adminlist td {
+	border: 0 none;
 }
-div#jevents fieldset {
-	margin:5px;
+.pane-toggler span {
+	background: transparent url(../images/j_arrow.png) 5px 50% no-repeat;
+}
+.pane-toggler-down span {
+	background: transparent url(../images/j_arrow_down.png) 5px 50% no-repeat;
+}
+.pane-toggler-down {
+	border-bottom: 1px solid #738498;
+}
+.pane-sliders th, .pane-sliders td {
+	text-align:left;
 	padding:5px;
 }
-div#jevents fieldset legend {
-	padding:0px 10px;
-	color:#146295;
-	font-weight:bold;
-	font-size:1.1em;
-}
-div#jevents table#jevadminform {
-	font-size:1em;
-	margin:0px 5px 5px 5px;
-}
-div#jevents table#jevadminform td {
-	padding:3px;
-}
-div#jevents table#jevadminform table td {
-	padding:0px;
-}
 
-div#jevents fieldset table {
+.versionsinfo {
+	width:100%;
 	margin:0px;
 }
 
-div#jevents dl.tabs {
-float:left;
-margin:10px 0 -1px;
-z-index:50;
+/* -- CONTROL PANEL STYLES ----------------------------- */
+.cpanel div.icon, #cpanel div.icon {
+	text-align: center;
+	margin-right: 15px;
+	float: left;
+	margin-bottom: 15px;
+	font-size:12px;
+	line-height: 14px;
 }
-div#jevents dl.tabs dt {
-background:none repeat scroll 0 0 #F0F0F0;
-border-left:1px solid #CCCCCC;
-border-right:1px solid #CCCCCC;
-border-top:1px solid #CCCCCC;
-color:#666666;
-float:left;
-margin-left:3px;
-padding:4px 10px;
-}
-div#jevents dl.tabs dt.open {
-background:none repeat scroll 0 0 #F9F9F9;
-border-bottom:1px solid #F9F9F9;
-color:#000000;
-z-index:100;
-}
-div#jevents div.current {
-border:1px solid #CCCCCC;
-clear:both;
-padding:10px;
-}
-div#jevents div.current dd {
-margin:0;
-padding:0;
+.cpanel div.icon a, #cpanel div.icon a {
+	background-color: #fff;
+	background-position: -30px;
+	display: block;
+	float: left;
+	height: 97px;
+	width: 108px;
+	color: #565656;
+	vertical-align: middle;
+	text-decoration: none;
+	border: 1px solid #CCC;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-transition-property:
+		background-position,
+		-webkit-border-bottom-left-radius,
+		-webkit-box-shadow;
+	-moz-transition-property:
+		background-position,
+		-moz-border-radius-bottomleft,
+		-moz-box-shadow;
+	-webkit-transition-duration: 0.8s;
+	-moz-transition-duration: 0.8s;
 }
 
+#cpanel div.icon a:hover,
+#cpanel div.icon a:focus,
+#cpanel div.icon a:active,
+.cpanel div.icon a:hover,
+.cpanel div.icon a:focus,
+.cpanel div.icon a:active {
+	background-position: 0;
+	-webkit-border-bottom-left-radius: 50% 20px;
+	-moz-border-radius-bottomleft: 50% 20px;
+	border-bottom-left-radius: 50% 20px;
+	-webkit-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+	box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.25);
+	position: relative;
+	z-index: 10;
+}
 
-.icon-32-save 			{ background-image: url(../images/icon-32-save.png); }
-.icon-32-edit 			{ background-image: url(../images/icon-32-edit.png); }
-.icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
-.icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
+#cpanel img,
+.cpanel img {
+	padding: 10px 0;
+	margin: 0 auto;
+}
 
-.pane-sliders {font-size:10px;}
-.pane-sliders .panel .adminlist th {display: none;}
+#cpanel span,
+.cpanel span {
+	display: block;
+	text-align: center;
+}
 
-#updateavailable span { color:red;}
+div.cpanel-left {
+	width: 54%;
+	float: left;
+}
 
-#jevents label {display:inline;}
+div.cpanel-right {
+	width: 45%;
+	float: right;
+}

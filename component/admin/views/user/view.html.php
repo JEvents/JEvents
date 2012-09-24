@@ -67,12 +67,8 @@ class AdminUserViewUser extends JEventsAbstractView
 		$document =& JFactory::getDocument();
 		// this already includes administrator
 		$livesite = JURI::base();
-		if (JVersion::isCompatible("1.6.0")){
-			JEVHelper::stylesheet('eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/');
-		}
-		else {
-			$document->addStyleSheet($livesite.'components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		}
+		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document->setTitle(JText::_( 'JEVENTS' ) . ' :: ' .JText::_( 'JEVENTS' ));
 

@@ -242,7 +242,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function toolbarConfirmButton($task = '', $msg='', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		include_once(JEV_ADMINPATH . "libraries/jevbuttons.php");
 		$bar = & JToolBar::getInstance('toolbar');
 
 		// Add a standard button

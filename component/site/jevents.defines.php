@@ -65,5 +65,18 @@ JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
 JLoader::register('JEventsAbstractView',JEV_ADMINPATH."/views/abstract/abstract.php");
 JLoader::register('JEventsDefaultView',JEV_PATH."/views/default/abstract/abstract.php");
 
+// joomla 3.0
+JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
+JLoader::register('JToolbarButtonJevlink', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
+JLoader::register('JToolbarButtonJevconfirm', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
+
+//Joomla 2.5
+JLoader::register('JButtonJev', JEV_ADMINPATH . "libraries/jevbuttons.php");
+JLoader::register('JButtonJevlink', JEV_ADMINPATH . "libraries/jevbuttons.php");
+JLoader::register('JButtonJevconfirm', JEV_ADMINPATH . "libraries/jevbuttons.php");
+
 // TODO retire this sometime?
 JLoader::register('JEV_CommonFunctions',JEV_PATH."/libraries/commonfunctions.php");
+
+jimport('joomla.filesystem.folder');
+

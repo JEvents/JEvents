@@ -18,7 +18,7 @@ class JEventsHelper
 	 *
 	 * @param	string	The name of the active view.
 	 */
-	public static function addSubmenu($vName)
+	public static function addSubmenu($vName="")
 	{
 		JSubMenuHelper::addEntry(
 			JText::_( 'CONTROL_PANEL' ),

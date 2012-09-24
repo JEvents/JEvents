@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	?>
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform">
+		<table border="0" cellpadding="2" cellspacing="2" class="adminform">
 
 			<tr>
 				<td width="55%" valign="top">
@@ -82,11 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
 						?>
 						<div style="width: 100%;">
-							<table class="adminlist">
-								<tr class="row0">
-									<td><?php echo $this->renderJEventsNews(); ?></td>
-								</tr>
-							</table>
+							<?php echo $this->renderJEventsNews(); ?>
 						</div>
 						<?php
 						$needsupdate = false;
@@ -116,8 +112,9 @@ defined('_JEXEC') or die('Restricted access');
 						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
 						echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
 							?>
-							<div style="width: 100%;">
-								<h3><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></h3>
+							<div style="width: 100%;padding:0px;">
+								<strong><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></strong>
+								<br/>
 								<?php echo $clubnews; ?>
 							</div> <?php
 					}

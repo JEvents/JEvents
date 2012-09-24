@@ -146,7 +146,6 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 
 	
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true){
-		include_once(JEV_ADMINPATH."libraries/jevbuttons.php");
 		$bar = & JToolBar::getInstance('toolbar');
 
 		// Add a standard button
@@ -155,7 +154,6 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 	}
 	
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = ''){
-		include_once(JEV_ADMINPATH."libraries/jevbuttons.php");
 		$bar = & JToolBar::getInstance('toolbar');
 
 		// Add a standard button
@@ -164,7 +162,6 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 	}
 
 	function toolbarConfirmButton($task = '',  $msg='',  $icon = '', $iconOver = '', $alt = '', $listSelect = true){
-		include_once(JEV_ADMINPATH."libraries/jevbuttons.php");
 		$bar = & JToolBar::getInstance('toolbar');
 
 		// Add a standard button

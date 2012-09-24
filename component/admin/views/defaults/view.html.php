@@ -75,12 +75,10 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$this->_hideSubmenu();
 
 		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
-		// TODO find the active admin template
-		if (!JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet("template.css",JURI::root()."administrator/templates/khepri/css/");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		JEVHelper::script( 'editdefaults.js', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/' );
 
 		$document =& JFactory::getDocument();
