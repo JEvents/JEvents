@@ -30,9 +30,11 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 			<td align="right"><?php echo $this->plist;?></td>
 			<?php } ?>
 			<td align="right"><?php echo $this->clist;?> </td>
+			<?php if (!JVersion::isCompatible("3.0")) { ?>
 			<td align="right"><?php echo $this->icsList;?> </td>
 			<td align="right"><?php echo $this->statelist;?> </td>
 			<td align="right"><?php echo $this->userlist;?> </td>
+			<?php } ?>
 			<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 			<td>
 				<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />

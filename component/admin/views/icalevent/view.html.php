@@ -43,6 +43,105 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
+		$showUnpublishedICS = false;
+
+		$db = JFactory::getDbo();		
+		
+		if (JVersion::isCompatible("3.0")){
+
+			JSubMenuHelper::setAction('index.php?option=com_jevents&task=icalevent.list');
+
+			// get list of ics Files
+			$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
+			if (!$showUnpublishedICS)
+			{
+				$query .= " WHERE ics.state=1";
+			}
+			$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
+
+			$db->setQuery($query);
+			$icsfiles = $db->loadObjectList();
+			$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
+
+			JSubMenuHelper::addFilter(
+				JText::_('ALL_ICS_FILES'),
+				'icsFile',
+				JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
+			);			
+			
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));		
+			$options = array();
+			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			JSubMenuHelper::addFilter(
+				JText::_('ALL_EVENTS'),
+				'state',
+				JHtml::_('select.options', $options, 'value', 'text', $state)
+			);			
+			
+			// get list of creators
+			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
+			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
+			$db = & JFactory::getDBO();
+			$db->setQuery($sql);
+			$users = $db->loadObjectList();
+			$userOptions = array();
+			foreach ($users as $user)
+			{
+				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
+			}
+			JSubMenuHelper::addFilter(
+				JText::_('JEV_EVENT_CREATOR'),
+				'created_by',
+				JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
+			);			
+			
+		}
+		else {
+			
+			// get list of ics Files
+			$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
+			if (!$showUnpublishedICS)
+			{
+				$query .= " WHERE ics.state=1";
+			}
+			$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
+
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+			
+			$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
+			$icsfiles[] = JHTML::_('select.option', '-1', JText::_('ALL_ICS_FILES'));
+			$icsfiles = array_merge($icsfiles, $result);
+			$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
+			$this->assign('icsList', $icslist);
+		
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));		
+			$options = array();
+			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
+			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			
+			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
+			$this->assign('statelist', $statelist);
+			
+			// get list of creators
+			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
+			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
+			$db = & JFactory::getDBO();
+			$db->setQuery($sql);
+			$users = $db->loadObjectList();
+			$userOptions = array();
+			$userOptions[] = JHTML::_('select.option', 0, JText::_("JEV_EVENT_CREATOR"));
+			foreach ($users as $user)
+			{
+				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
+			}
+			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
+			$this->assign('userlist', $userlist);			
+			
+		}
+				
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
