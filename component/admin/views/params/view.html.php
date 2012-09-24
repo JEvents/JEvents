@@ -20,19 +20,23 @@ defined('_JEXEC') or die();
 class AdminParamsViewParams extends JEventsAbstractView
 {
 
+	function __construct($config = null)
+	{
+		parent::__construct($config);
+		
+		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+
+	}
+
 	function edit16()
 	{
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			JEVHelper::stylesheet('eventsadmin16.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
 		return $this->edit();
 
 	}
 
 	function edit()
 	{
-		JEVHelper::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));

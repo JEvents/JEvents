@@ -27,9 +27,9 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 		parent::__construct($config);	
 		
-		// TODO find the active admin template
-		//JEVHelper::stylesheet("system.css",  "administrator/templates/system/css/");
-		//JEVHelper::stylesheet("template.css",  "administrator/templates/khepri/css/");
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (!JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin16.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		// used only for helper functions
 		$this->jevlayout="default";	
@@ -42,10 +42,6 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		$document =& JFactory::getDocument();		
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
-
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JEVHelper::stylesheet( 'eventsadmin16.css','administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin.css','administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  
 		JEVHelper::script('view_detail.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');

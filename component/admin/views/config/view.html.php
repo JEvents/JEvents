@@ -20,14 +20,21 @@ defined('_JEXEC') or die();
 class AdminConfigViewconfig extends JEventsAbstractView 
 {
 
+	
+	function __construct($config = array()){
+		parent::__construct($config);
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (!JVersion::isCompatible("3.0.0"))
+			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin16.css');
+		else
+			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+	}
+
 
 	function edit($tpl = null)
 	{
 		//JRequest::setVar( 'hidemainmenu', 1 );
 		
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_( 'COM_JEVENTS_CONFIGURATION' ));
@@ -49,9 +56,6 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	{
 		//JRequest::setVar( 'hidemainmenu', 1 );
 		
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_( 'DB_SETUP' ));
@@ -68,9 +72,6 @@ class AdminConfigViewconfig extends JEventsAbstractView
 	function convert($tpl = null)
 	{
 		
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_( 'EVENTS_MIGRATION' ));

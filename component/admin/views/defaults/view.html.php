@@ -24,6 +24,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	{
 		parent::__construct($config);
 		
+		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 	}
 
@@ -34,9 +36,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	 */
 	function overview($tpl = null)
 	{
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
-		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
 		$document =& JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS') );
@@ -77,8 +76,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("3.0.0")) JEVHelper::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		else JEVHelper::stylesheet( 'eventsadmin16.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		JEVHelper::script( 'editdefaults.js', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/' );
 
 		$document =& JFactory::getDocument();
