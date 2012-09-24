@@ -1,1 +1,0 @@
-'{"error":false,"client":"administrator","token":"8abbd43a55b2231a62a635731a1a4e23","pressbutton":"icalevent.save","repeatid":0,"formdata":{"jevtype":"","rp_id":"-1","year":"2010","month":"11","day":"22","state":"1","evid":"0","valid_dates":"1","title":"Clashing event","priority":"0","ics_id":"1","color":"'

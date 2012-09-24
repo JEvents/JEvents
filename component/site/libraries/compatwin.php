@@ -23,8 +23,8 @@ class JEV_CompatWin {
 
 		if (!$timestamp) $timestamp = time();
 
-		
-		JFactory::getApplication()->set('jevents.strftime', $timestamp);
+		$registry = JRegistry::getInstance('jevents');
+		$registry->set('jevents.strftime', $timestamp);
 
 		$patterns = array('/%C/', '/%D/', '/%e/', '/%g/', '/%G/',
 						  '/%h/', '/%n/', '/%r/', '/%R/', '/%t/',
@@ -48,8 +48,8 @@ class JEV_CompatWin {
 	function  _cb_strftime($pattern) {
 
 		// timestamp used during callback
-		
-		$ts = JFactory::getApplication()->get('jevents.strftime', time());
+		$registry = JRegistry::getInstance('jevents');
+		$ts = $registry->get('jevents.strftime', time());
 
 		switch ($pattern[0]) {
 			case '%C': return sprintf("%02d", date("Y", $ts) / 100); break;
