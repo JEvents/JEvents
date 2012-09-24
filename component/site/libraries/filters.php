@@ -68,6 +68,7 @@ class jevFilterProcessing
 	}
 
 	function jevFilterProcessing($item, $filterpath=false){
+                jimport('joomla.filesystem.folder');
 
 		$this->filterpath = array();
 		if (is_array($filterpath)){
