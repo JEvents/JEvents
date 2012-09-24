@@ -1545,7 +1545,7 @@ class JEVHelper
 		{
 			$user =  JFactory::getUser();
 			$rows[$id] = null;
-			$query = "SELECT ju.id, ju.name, ju.username, ju.usertype, ju.sendEmail, ju.email, cd.name as contactname, "
+			$query = "SELECT ju.id, ju.name, ju.username, ju.sendEmail, ju.email, cd.name as contactname, "
 					. ' CASE WHEN CHAR_LENGTH(cd.alias) THEN CONCAT_WS(\':\', cd.id, cd.alias) ELSE cd.id END as slug, '
 					. ' CASE WHEN CHAR_LENGTH(cat.alias) THEN CONCAT_WS(\':\', cat.id, cat.alias) ELSE cat.id END AS catslug '
 					. " \n FROM #__users AS ju"
