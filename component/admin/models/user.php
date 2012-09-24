@@ -19,7 +19,7 @@ JLoader::import("jevuser",JPATH_COMPONENT_ADMINISTRATOR."/tables/");
  * @package		Joom!Fish
  * @subpackage	User
  */
-class AdminUserModelUser extends JModel
+class AdminUserModelUser extends JModelLegacy
 {
 	/**
 	 * @var string	name of the current model
