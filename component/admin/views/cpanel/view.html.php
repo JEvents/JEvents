@@ -152,6 +152,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	function renderVersionStatusReport(& $needsupdate)
 	{
+		jimport ("joomla.filesystem.folder");
 		if (JEVHelper::isAdminUser())
 		{
 
