@@ -12,14 +12,9 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
-if (JVersion::isCompatible("3.0.0")){
-	jimport('legacy.toolbar.button');
-}
-else {
-	jimport('joomla.html.toolbar.button');
-}
+jimport('cms.toolbar.button');
 	
-class JButtonJev extends JButton
+class JToolbarButtonJev extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -90,7 +85,7 @@ class JButtonJev extends JButton
 	}	
 }
 
-class JButtonJevlink extends JButton
+class JToolbarButtonJevlink extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -155,7 +150,7 @@ class JButtonJevlink extends JButton
 }
 
 
-class JButtonJevconfirm extends JButton
+class JToolbarButtonJevconfirm extends JToolbarButton
 {
 	/**
 	 * Button type
