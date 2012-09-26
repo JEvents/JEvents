@@ -68,6 +68,7 @@ class jevFilterProcessing
 	}
 
 	function jevFilterProcessing($item, $filterpath=false){
+                jimport('joomla.filesystem.folder');
 
 		$this->filterpath = array();
 		if (is_array($filterpath)){
@@ -79,6 +80,7 @@ class jevFilterProcessing
 
 		settype($this->filterpath, 'array'); //force to array
 		$this->filterpath[]=dirname(__FILE__).'/'."filters";
+		jimport('joomla.filesystem.folder');
 		if (JFolder::exists(JPATH_SITE."/plugins/jevents")){
 			$others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
 			if (is_array($others)){

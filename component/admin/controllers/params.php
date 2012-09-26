@@ -61,7 +61,12 @@ class AdminParamsController extends JControllerAdmin
 		$table->option = $table->element;
 
 		// Set the layout
-		$this->view->setLayout('edit16');
+		if (!JVersion::isCompatible("3.0")){
+			$this->view->setLayout('edit16');
+		}
+		else {
+			$this->view->setLayout('edit');
+		}
 
 		$this->view->assignRef('component', $table);
 		$this->view->setModel($model, true);
@@ -113,6 +118,15 @@ class AdminParamsController extends JControllerAdmin
 			return false;
 		}
 
+		// if switching from single cat to multi cat then reset the table entries
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!$params->get("multicategory",0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory']==1){
+			$db = JFactory::getDbo();
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
+			$db->setQuery($sql);
+			$db->query();			
+		}
+		
 		// save the changes
 		if (!$table->store())
 		{

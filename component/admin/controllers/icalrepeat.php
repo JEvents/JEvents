@@ -477,7 +477,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["X-COLOR"] = JRequest::getVar("color", "");
 
-		// Add any custom fields into $data array - allow raw data which can be sanitised by the plugins
+		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
 		$array = JRequest::get("post", 2);
 		foreach ($array as $key => $value)
 		{
@@ -515,6 +515,12 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt->rp_id = $rp_id;
 		$rpt->store();
 
+		// I may also need to process repeat changes
+		$dispatcher	=& JDispatcher::getInstance();
+		// just incase we don't have jevents plugins registered yet
+		JPluginHelper::importPlugin("jevents");
+		$res = $dispatcher->trigger( 'onStoreCustomRepeat' , array(&$rpt));
+		
 		$exception = iCalException::loadByRepeatId($rp_id);
 		if (!$exception)
 		{

@@ -25,14 +25,16 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	?>
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform">
+		<table border="0" cellpadding="2" cellspacing="2" class="adminform">
 
 			<tr>
 				<td width="55%" valign="top">
 					<div id="cpanel">
 						<?php
-						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list";
-						$this->_quickiconButton($link, "jevents_calendar_sml.png", JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						if (JEVHelper::isAdminUser()){
+							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list";
+							$this->_quickiconButton($link, "jevents_calendar_sml.png", JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						}
 
 						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list";
 						$this->_quickiconButton($link, "jevents_event_sml.png", JText::_('JEV_ADMIN_ICAL_EVENTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
@@ -56,16 +58,12 @@ defined('_JEXEC') or die('Restricted access');
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit";
 							$this->_quickiconButton($link, "jevents_config_sml.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						}
-
-						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
-						$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						if (JEVHelper::isAdminUser()){
+							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
+							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						}
 
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-						if ($this->migrated && !$params->get("hideMigration", 0))
-						{
-							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=config.convert";
-							$this->_quickiconButton($link, "jevents_migrate_sml.png", JText::_('JEV_ADMIN_CONVERT'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", "", "if (!confirm('" . JText::_('ARE_YOU_SURE') . "')) return false;");
-						}
 						?>
 
 					</div>
@@ -79,11 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
 						?>
 						<div style="width: 100%;">
-							<table class="adminlist">
-								<tr class="row0">
-									<td><?php echo $this->renderJEventsNews(); ?></td>
-								</tr>
-							</table>
+							<?php echo $this->renderJEventsNews(); ?>
 						</div>
 						<?php
 						$needsupdate = false;
@@ -101,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 						if ($clubnews)
 						{
 							echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
-ß							?>
+							?>
 							<div style="width: 100%;">
 								<?php echo $clubnews; ?>
 							</div> <?php
@@ -113,8 +107,9 @@ defined('_JEXEC') or die('Restricted access');
 						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
 						echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
 							?>
-							<div style="width: 100%;">
-								<h3><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></h3>
+							<div style="width: 100%;padding:0px;">
+								<strong><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></strong>
+								<br/>
 								<?php echo $clubnews; ?>
 							</div> <?php
 					}

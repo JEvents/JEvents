@@ -30,9 +30,11 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 			<td align="right"><?php echo $this->plist;?></td>
 			<?php } ?>
 			<td align="right"><?php echo $this->clist;?> </td>
+			<?php if (!JVersion::isCompatible("3.0")) { ?>
 			<td align="right"><?php echo $this->icsList;?> </td>
 			<td align="right"><?php echo $this->statelist;?> </td>
 			<td align="right"><?php echo $this->userlist;?> </td>
+			<?php } ?>
 			<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 			<td>
 				<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
@@ -43,7 +45,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
 		<tr>
 			<th width="20" nowrap="nowrap">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
+		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->rows ).")"; ?>" />
 			</th>
 			<th class="title" width="50%" nowrap="nowrap">
 				<?php echo JHTML::_('grid.sort',  'JEV_ICAL_SUMMARY', 'title', $orderdir, $order,"icalevent.list"); ?>

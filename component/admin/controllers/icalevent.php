@@ -29,6 +29,7 @@ class AdminIcaleventController extends JControllerAdmin
 	{
 		parent::__construct($config);
 		$this->registerTask('list', 'overview');
+		$this->registerTask('unpublish', 'unpublish');
 		$this->registerDefaultTask("overview");
 
 		$cfg = & JEVConfig::getInstance();
@@ -359,46 +360,10 @@ class AdminIcaleventController extends JControllerAdmin
 		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
 		$clist = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
 
-		// get list of ics Files
-		$icsfiles = array();
-		//$icsfiles[] =  JHTML::_('select.option', '0', "Choose ICS FILE" );
-		$icsfiles[] = JHTML::_('select.option', '-1', JText::_('ALL_ICS_FILES'));
-
-		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
-		if (!$showUnpublishedICS)
-		{
-			$query .= " WHERE ics.state=1";
-		}
-		$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
-
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
-
-		$icsfiles = array_merge($icsfiles, $result);
-		$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
-
-		// get list of creators
-		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-		$db = & JFactory::getDBO();
-		$db->setQuery($sql);
-		$users = $db->loadObjectList();
-		$userOptions = array();
-		$userOptions[] = JHTML::_('select.option', 0, JText::_("JEV_EVENT_CREATOR"));
-		foreach ($users as $user)
-		{
-			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
-		}
-		$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
-
 		$options[] = JHTML::_('select.option', '0', JText::_('JEV_NO'));
 		$options[] = JHTML::_('select.option', '1', JText::_('JEV_YES'));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
 
-		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
-		$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-		$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
-		$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
 
 		$catData = JEV_CommonFunctions::getCategoryData();
 
@@ -409,12 +374,10 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->view->setLayout('overview');
 
 		$this->view->assign('rows', $rows);
-		$this->view->assign('userlist', $userlist);
+		
 		$this->view->assign('clist', $clist);
 		$this->view->assign('plist', $plist);
-		$this->view->assign('statelist', $statelist);
 		$this->view->assign('search', $search);
-		$this->view->assign('icsList', $icslist);
 		$this->view->assign('pageNav', $pageNav);
 
 		$this->view->display();
@@ -897,7 +860,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$clearout = false;
 		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && $array["evid"] > 0)
+		if (isset($array["evid"]) && $array["evid"] > 0 && JRequest::getInt("updaterepeats",1))
 		{
 			$clearout = true;
 		}

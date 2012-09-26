@@ -158,12 +158,12 @@ class iCalImport
 				$csvTrans = new CsvToiCal($file);
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
-		    } else {
+			} else {
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!
 				return false;
-            }
+			}
 		}
 		$begin = JString::strpos($this->rawData,"BEGIN:VCALENDAR",0);
 		$this->rawData = JString::substr($this->rawData,$begin);
@@ -518,7 +518,14 @@ class iCalImport
 				
 			}
 			else {
-				$t = new JevDate($ical_date);				
+				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$jtz = $compparams->get("icaltimezonelive", "");
+				if ($jtz){
+					$t = new JevDate($ical_date,$jtz);
+				}
+				else {
+					$t = new JevDate($ical_date);
+				}
 			}
 			//$result = $t->toMySQL();
 			$result = $t->toUnix();
@@ -655,7 +662,8 @@ class iCalImport
 		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
 		$wtzdata["Eastern Standard Time"] = "America/New_York";		
 		$wtzdata["W. Europe Standard Time"] = "Europe/Paris";
-		
+		$wtzdata["E. Europe Standard Time"] = "Europe/Helsinki";
+		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;

@@ -20,6 +20,7 @@ defined('_JEXEC') or die();
 class AdminCPanelViewCPanel extends JEventsAbstractView
 {
 
+
 	/**
 	 * Control Panel display function
 	 *
@@ -28,12 +29,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	function cpanel($tpl = null)
 	{
 		jimport('joomla.html.pane');
-
-// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0"))
-			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/eventsadmin.css');
-		else
-			JHTML::stylesheet('eventsadmin.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
@@ -47,9 +42,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
 		  }
 		 */
-
+		JEventsHelper::addSubmenu();
 		$this->_hideSubmenu();
-
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -57,7 +51,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 //JToolBarHelper::help( 'screen.cpanel', true);
 
-		JSubMenuHelper::addEntry(JText::_('CONTROL_PANEL'), 'index.php?option=' . JEV_COM_COMPONENT, true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 //$section = $params->get("section",0);
@@ -152,6 +145,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	function renderVersionStatusReport(& $needsupdate)
 	{
+		jimport ("joomla.filesystem.folder");
 		if (JEVHelper::isAdminUser())
 		{
 
@@ -696,7 +690,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-		$output = "<textarea rows='40' cols='80'>[code]\n";
+		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		
 		foreach ($apps as $appname => $app)
 		{

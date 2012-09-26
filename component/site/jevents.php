@@ -65,6 +65,14 @@ if (JVersion::isCompatible("1.6.0")){
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$newparams->def('page_heading', $params->get('page_title')) ;
 	}
+	
+	// handle global menu item parameter for viewname
+	$com_calViewName = $newparams->get('com_calViewName',"");
+	if ($com_calViewName == "global" || $com_calViewName == ""){
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$newparams->set('com_calViewName',$params->get('com_calViewName'));
+	}
+
 	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
 	$component->params =& $newparams;
 	
@@ -119,7 +127,7 @@ $lang->load(JEV_COM_COMPONENT, JPATH_THEMES.'/'.JFactory::getApplication()->getT
 // Split task into command and task
 $cmd = JRequest::getCmd('task', false);
 
-if (!$cmd) {
+if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false) {
 	$view =	JRequest::getCmd('view', false);
 	$layout = JRequest::getCmd('layout', "show");
 	if ($view && $layout){

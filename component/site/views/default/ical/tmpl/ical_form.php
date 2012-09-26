@@ -93,7 +93,7 @@ foreach ($categories AS $c)
 	{
 		$cb = $cb . " CHECKED";
 	}
-	$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . $c->title . "<br/>\n";
+	$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level-1 ). $c->title  . "<br/>\n";
 	echo $cb;
 }
 

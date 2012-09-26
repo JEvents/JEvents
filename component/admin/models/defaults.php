@@ -5,7 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
-class DefaultsModelDefaults extends JModel
+class DefaultsModelDefaults extends JModelLegacy
 {
 
 	/**
