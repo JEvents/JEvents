@@ -45,7 +45,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
 		<tr>
 			<th width="20" nowrap="nowrap">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
+		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->rows ).")"; ?>" />
 			</th>
 			<th class="title" width="50%" nowrap="nowrap">
 				<?php echo JHTML::_('grid.sort',  'JEV_ICAL_SUMMARY', 'title', $orderdir, $order,"icalevent.list"); ?>
