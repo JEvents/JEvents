@@ -145,8 +145,18 @@ div.cpanel-left {
 	width: 54%;
 	float: left;
 }
-
 div.cpanel-right {
 	width: 45%;
 	float: right;
+}
+
+/* Form styling for checkboxes etc. */
+fieldset.checkboxes ul {
+    margin-left:0px;
+}
+fieldset.checkboxes li {
+    float:left;
+    margin-left: 5px;
+    margin-right:0px;
+    list-style: none;
 }
