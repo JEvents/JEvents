@@ -68,7 +68,7 @@ $document->addScriptDeclaration($js);
 
 // these are needed for front end admin
 ?>
-<input type="hidden" name="jevtype" value="<?php global $jevtype;echo $jevtype;?>" />
+<input type="hidden" name="jevtype" value="icaldb" />
 <div class="jev_edit_event_notice">
 <?php
 if ($this->editCopy){

@@ -61,17 +61,12 @@ class AdminParamsController extends JControllerAdmin
 		$table->option = $table->element;
 
 		// Set the layout
-		if (!JVersion::isCompatible("3.0")){
-			$this->view->setLayout('edit16');
-		}
-		else {
-			$this->view->setLayout('edit');
-		}
-
+		$this->view->setLayout('edit');
+		
 		$this->view->assignRef('component', $table);
 		$this->view->setModel($model, true);
 		$this->view->display();
-
+		
 	}
 
 	/**

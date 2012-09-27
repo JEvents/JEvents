@@ -86,10 +86,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 
         // these are needed for front end admin
         ?>
-        <input type="hidden" name="jevtype" value="<?php
-        global $jevtype;
-        echo $jevtype;
-        ?>" />
+        <input type="hidden" name="jevtype" value="icaldb" />
         <div class="jev_edit_event_notice">
             <?php
             if ($this->editCopy) {
@@ -184,7 +181,7 @@ $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
     $checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
     ?>
-                        checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JUtility::getToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
+                        checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
     <?php
 } else {
     ?>
