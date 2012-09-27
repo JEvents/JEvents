@@ -228,3 +228,8 @@ a#colorPickButton {
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
 
 #jevents label {display:inline;}
+
+/* JForm event editing */
+fieldset.checkboxes li {
+	float:left;
+}

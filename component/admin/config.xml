@@ -108,9 +108,9 @@
 	
 	<fieldset  name="JEV_PERMISSIONS">	
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' />
-		<field name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label='CREATOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_CREATOR'  />
-		<field name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label='EDITOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_EDITOR'  />
-		<field name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label='PUBLISHER_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_PUBLISH_AND_MANAGE_EVENTS'  />
+		<field name="jevcreator_level" class="jevcreator_level" type="usergroup" default="19"  menu="hide" label='CREATOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_CREATOR'  />
+		<field name="jeveditor_level" class="jeveditor_level" type="usergroup" default="20"  menu="hide" label='EDITOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_EDITOR'  />
+		<field name="jevpublish_level" class="jevpublish_level" type="usergroup" default="21" menu="hide" label='PUBLISHER_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_PUBLISH_AND_MANAGE_EVENTS'  />
 
 		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC'/>
 		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" />

@@ -354,7 +354,7 @@ if (!$cfg->get('com_single_pane_edit', 0)) {
 
 		if ($cfg->get('timebeforedescription', 0)) {
 			?><tr><td valign="top" align="left" colspan="4"><?php
-			echo $this->loadTemplate("datetime16");	
+			echo $this->loadTemplate("datetime");	
 			?></td></tr><?php
 		}
 
