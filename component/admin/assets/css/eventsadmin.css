@@ -196,3 +196,9 @@ a#colorPickButton {
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
 
 #jevents label {display:inline;}
+
+#jevents  fieldset.checkboxes li label {
+	display:block;
+}
+#jevents  fieldset.checkboxes li {min-width: 40px;}
+

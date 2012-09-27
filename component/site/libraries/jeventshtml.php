@@ -531,13 +531,13 @@ class JEventsHTML
 					$checked = ' checked="checked"';
 				}
 			}
-			$tosend .= '<span  class="r' . ($a % 2 + 1) . '" ><input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
+			$tosend .= '<li  class="r' . ($a % 2 + 1) . '" ><input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
 					. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />&nbsp;' . "\n"
 					. '<label for="cb_wd' . $a . '">'
-					. $day_name[$a] . '</label></span>' . "\n"
+					. $day_name[$a] . '</label></li>' . "\n"
 			;
 		}
-		echo $tosend;
+		echo "<ul>\n".$tosend."\n</ul>\n";
 
 	}
 
@@ -580,13 +580,13 @@ class JEventsHTML
 				}
 			}
 
-			$tosend .= '<span  class="r' . ($a % 2 + 1) . '" ><input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
+			$tosend .= '<li  class="r' . ($a % 2 + 1) . '" ><input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
 					. $a . '" ' . $args . $checked . '  onclick="updateRepeatWarning();" />&nbsp;' . "\n"
 					. '<label for="cb_wn' . $a . '">'
-					. $week_name[$a] . '</label></span>' . "\n"
+					. $week_name[$a] . '</label></li>' . "\n"
 			;
 		}
-		echo $tosend;
+		echo "<ul>\n".$tosend."\n</ul>\n";
 
 	}
 

@@ -14,7 +14,7 @@ if (defined("EDITING_JEVENT"))
     return;
 define("EDITING_JEVENT", 1);
 
-/*
+
 
 // New version that uses JForm
  
@@ -34,7 +34,7 @@ $form->bind($this->row);
 echo $form->getInput("demo");
 echo $form->getInput("ev_id");
 echo $form->getInput("usergroup");
-*/
+
 
 global $task, $catid;
 $db = & JFactory::getDBO();

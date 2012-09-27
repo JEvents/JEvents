@@ -196,18 +196,19 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor()) {
             </fieldset>
         </div>
         <div  style="float:left;display:none;margin-right:1em;" id="byday">
-            <fieldset class="checkbox btn-group">
+            <fieldset class="checkboxes btn-group inline ">
                 <legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>           			
                 <?php
                 JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
                 ?>
+              </fieldset>
+            <fieldset class="checkboxes btn-group inline ">
                 <div id="weekofmonth">
                     <?php
                     JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums");
                     ?>
                     <br/><?php echo JText::_('COUNT_BACK'); ?><input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>  onclick="updateRepeatWarning();"/>
                 </div>
-            </fieldset>
         </div>
         <div  style="float:left;display:none;margin-right:1em;" id="bysetpos">
             <fieldset><legend><?php echo "NOT YET SUPPORTED" ?></legend>
