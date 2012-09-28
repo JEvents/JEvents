@@ -23,7 +23,7 @@ class AdminParamsController extends JControllerAdmin
 	 */
 	function __construct($default = array())
 	{
-		$user =  JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if (!JEVHelper::isAdminUser())
 		{
@@ -62,11 +62,11 @@ class AdminParamsController extends JControllerAdmin
 
 		// Set the layout
 		$this->view->setLayout('edit');
-		
+
 		$this->view->assignRef('component', $table);
 		$this->view->setModel($model, true);
 		$this->view->display();
-		
+
 	}
 
 	/**
@@ -102,7 +102,7 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		$post = JRequest::get('post');
-		$post['params'] 	= JRequest::getVar('jform', array(), 'post', 'array');
+		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 
@@ -115,13 +115,14 @@ class AdminParamsController extends JControllerAdmin
 
 		// if switching from single cat to multi cat then reset the table entries
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!$params->get("multicategory",0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory']==1){
+		if (!$params->get("multicategory", 0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory'] == 1)
+		{
 			$db = JFactory::getDbo();
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
 			$db->setQuery($sql);
-			$db->query();			
+			$db->query();
 		}
-		
+
 		// save the changes
 		if (!$table->store())
 		{
@@ -312,28 +313,31 @@ class AdminParamsController extends JControllerAdmin
 		$this->setRedirect('index.php');
 
 	}
-	
-	function dbsetup(){
-		$db	=& JFactory::getDBO();
-		if (JVersion::isCompatible("1.6")){
+
+	function dbsetup()
+	{
+		$db = & JFactory::getDBO();
+		if (JVersion::isCompatible("1.6"))
+		{
 			$db->setDebug(0);
 		}
-		else {
+		else
+		{
 			$db->debug(0);
 		}
-		
+
 		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
 
 
 		/**
-	 * create table if it doesn't exit
-	 * 
-	 * For now : 
-	 * 
-	 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-	 * 
-	 * Separate tables for rrule and exrule
-	 */
+		 * create table if it doesn't exit
+		 * 
+		 * For now : 
+		 * 
+		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
+		 * 
+		 * Separate tables for rrule and exrule
+		 */
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
@@ -365,32 +369,51 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "alter table #__jevents_vevent add column lockevent tinyint(3) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
+		$sql = "SHOW COLUMNS FROM #__jevents_vevent";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
 
-		$sql = "alter table #__jevents_vevent add column author_notified tinyint(3) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("lockevent", $cols))
+		{
+			$sql = "alter table #__jevents_vevent add column lockevent tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevent ADD created datetime  NOT NULL default '0000-00-00 00:00:00'";
-		$db->setQuery( $sql );
-		@$db->query();
-		
-		$sql = "alter table #__jevents_vevent add index stateidx (state)";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("author_notified", $cols))
+		{
+			$sql = "alter table #__jevents_vevent add column author_notified tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
+		if (!array_key_exists("created", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevent ADD created datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		$sql = "SHOW INDEX FROM #__jevents_vevent";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("stateidx", $cols))
+		{
+			$sql = "alter table #__jevents_vevent add index stateidx (state)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
 		/**
-	 * create table if it doesn't exit
-	 * 
-	 * For now : 
-	 * 
-	 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-	 * 
-	 * Separate tables for rrule and exrule
-	 */
+		 * create table if it doesn't exit
+		 * 
+		 * For now : 
+		 * 
+		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
+		 * 
+		 * Separate tables for rrule and exrule
+		 */
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	evdet_id int(12) NOT NULL auto_increment,
@@ -434,33 +457,56 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jevents_vevdetail MODIFY COLUMN url text NOT NULL default ''";
-		$db->setQuery( $sql );
-		@$db->query();
+		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD modified datetime  NOT NULL default '0000-00-00 00:00:00' ";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("modified", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD modified datetime  NOT NULL default '0000-00-00 00:00:00' ";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD color varchar(20) NOT NULL default ''";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("color", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD color varchar(20) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD multiday tinyint(3) NOT NULL default 1";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("multiday", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD multiday tinyint(3) NOT NULL default 1";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD noendtime tinyint(3) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("noendtime", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD noendtime tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD hits int(11) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("hits", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD hits int(11) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_vevdetail ADD FULLTEXT searchIdx (summary,description)"	;
-		$db->setQuery( $sql );
-		@$db->query();
+		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("searchIdx", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD FULLTEXT searchIdx (summary,description)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_rrule (
@@ -489,9 +535,16 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jevents_rrule ADD INDEX eventid (eventid)";
-		$db->setQuery( $sql );
-		@$db->query();
+		$sql = "SHOW INDEX FROM #__jevents_rrule";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("eventid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_rrule ADD INDEX eventid (eventid)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_repetition (
@@ -516,30 +569,51 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventstart ( eventid , startrepeat )";
-		$db->setQuery( $sql );
-		@$db->query();
+		$sql = "SHOW INDEX FROM #__jevents_repetition";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
 
-		$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventend ( eventid , endrepeat )";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("eventstart", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventstart ( eventid , startrepeat )";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventdetail ( eventdetail_id  )";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("eventend", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventend ( eventid , endrepeat )";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "alter table #__jevents_repetition add index startrepeat (startrepeat)";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("eventdetail", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_repetition ADD INDEX eventdetail ( eventdetail_id  )";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "alter table #__jevents_repetition add index endrepeat (endrepeat)";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("startrepeat", $cols))
+		{
+			$sql = "alter table #__jevents_repetition add index startrepeat (startrepeat)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "alter table #__jevents_repetition add index startend (startrepeat,endrepeat)";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("endrepeat", $cols))
+		{
+			$sql = "alter table #__jevents_repetition add index endrepeat (endrepeat)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
+		if (!array_key_exists("startend", $cols))
+		{
+			$sql = "alter table #__jevents_repetition add index startend (startrepeat,endrepeat)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
 		// exception_type 0=delete, 1=other exception
 		$sql = <<<SQL
@@ -561,72 +635,42 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jevents_exception add column startrepeat datetime  NOT NULL default '0000-00-00 00:00:00'";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		$sql = "ALTER TABLE #__jevents_exception add column oldstartrepeat datetime  NOT NULL default '0000-00-00 00:00:00'";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		$sql = "ALTER TABLE #__jevents_exception add column tempfield datetime  NOT NULL default '0000-00-00 00:00:00'";
-		$db->setQuery( $sql );
-		@$db->query();
-		
-		$sql = <<<SQL
-CREATE TABLE IF NOT EXISTS #__jevents_categories (
-	id int(12) NOT NULL default 0 PRIMARY KEY,
-	color VARCHAR(8) NOT NULL default '',
-	overlaps tinyint(3) NOT NULL default 0,
-	admin int(12) NOT NULL default 0
-) ENGINE=MyISAM $charset;
-SQL;
-
+		$sql = "SHOW COLUMNS FROM #__jevents_exception";
 		$db->setQuery($sql);
-		$db->query();
-		echo $db->getErrorMsg();
+		$cols = @$db->loadObjectList("Field");
 
-		$sql = "ALTER TABLE #__jevents_categories add column admin int(12) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		$sql = "ALTER TABLE #__jevents_categories add column overlaps tinyint(3) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		
-		// Add one category by default if none exist already
-		$sql = "SELECT count(id) from #__jevents_categories";
-		$db->setQuery($sql);
-		$count = $db->loadResult();
-
-		if($count==0){
-			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
-			$cat = new JEventsCategory($db);
-			if (JVersion::isCompatible("1.6.0"))  {
-				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
-			}
-			else {
-				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
-			}
-			$cat->store();
-			$catid=$cat->id;
+		if (!array_key_exists("startrepeat", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_exception add column startrepeat datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
 		}
-		else {
-			$catid= 0;
+
+		if (!array_key_exists("oldstartrepeat", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_exception add column oldstartrepeat datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (!array_key_exists("tempfield", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_exception add column tempfield datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
 		}
 
 		/**
-	 * create table if it doesn't exit
-	 * 
-	 * For now : 
-	 * 
-	 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
-	 * 
-	 * note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
-	 * Separate tables for rrule and exrule
-	 * 
-	 */
+		 * create table if it doesn't exit
+		 * 
+		 * For now : 
+		 * 
+		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
+		 * 
+		 * note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
+		 * Separate tables for rrule and exrule
+		 * 
+		 */
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	ics_id int(12) NOT NULL auto_increment,
@@ -657,41 +701,86 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jevents_icsfile ADD overlaps tinyint(3) NOT NULL default 0";
-		$db->setQuery( $sql );
-		@$db->query();
 
-		$sql = "alter table #__jevents_icsfile add index stateidx (state)";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		// Alter table
-		$sql = "Alter table #__jevents_icsfile ADD COLUMN isdefault tinyint(3) NOT NULL default 0";
+		$sql = "SHOW COLUMNS FROM #__jevents_icsfile";
 		$db->setQuery($sql);
-		@$db->query();
+		$cols = @$db->loadObjectList("Field");
 
-		$sql = "Alter table #__jevents_icsfile ADD COLUMN ignoreembedcat tinyint(3) NOT NULL default 0";
-		$db->setQuery($sql);
-		@$db->query();
+		if (!array_key_exists("overlaps", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_icsfile ADD overlaps tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "Alter table #__jevents_icsfile ADD COLUMN autorefresh tinyint(3) NOT NULL default 0";
-		$db->setQuery($sql);
-		@$db->query();
+		if (!array_key_exists("isdefault", $cols))
+		{
+			// Alter table
+			$sql = "Alter table #__jevents_icsfile ADD COLUMN isdefault tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (!array_key_exists("ignoreembedcat", $cols))
+		{
+			$sql = "Alter table #__jevents_icsfile ADD COLUMN ignoreembedcat tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (!array_key_exists("autorefresh", $cols))
+		{
+			$sql = "Alter table #__jevents_icsfile ADD COLUMN autorefresh tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
 		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(255) NOT NULL default '' ";
 		$db->setQuery($sql);
 		$db->query();
 
+		$sql = "SHOW INDEX FROM #__jevents_icsfile";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("stateidx", $cols))
+		{
+			$sql = "alter table #__jevents_icsfile add index stateidx (state)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		// Add one category by default if none exist already
+		$sql = "SELECT id from #__categories where extension='com_jevents'";
+		$db->setQuery($sql);
+		$catid = $db->loadResult();
+		
+		if (!$catid) {
+			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
+			$cat = new JEventsCategory($db);
+			if (JVersion::isCompatible("1.6.0"))  {
+				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+			}
+			else {
+				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
+			}
+			$cat->store();
+			$catid=$cat->id;
+		}
+		
 		// Add one native calendar by default if none exist already
 		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2";
 		$db->setQuery($sql);
 		$ics = $db->loadResult();
 
-		if(!$ics || is_null($ics) || $ics==0 ){
-			if (JVersion::isCompatible("1.6.0"))  {
+		if (!$ics || is_null($ics) || $ics == 0)
+		{
+			if (JVersion::isCompatible("1.6.0"))
+			{
 				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
 			}
-			else {
+			else
+			{
 				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,0,$catid,1)";
 			}
 			$db->setQuery($sql);
@@ -732,36 +821,37 @@ CREATE TABLE IF NOT EXISTS #__jev_users (
 	KEY user (user_id  )
 ) ENGINE=MyISAM $charset;
 SQL;
-		$db->setQuery( $sql );
-		if (!$db->query()){
+		$db->setQuery($sql);
+		if (!$db->query())
+		{
 			echo $db->getErrorMsg();
 		}
 
-		$sql = "ALTER TABLE #__jev_users ADD categories varchar(255) NOT NULL default ''";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		$sql = "ALTER TABLE #__jev_users ADD calendars varchar(255) NOT NULL default ''";
-		$db->setQuery( $sql );
-		@$db->query();
-
-		$sql = "ALTER TABLE #__jev_users ADD created datetime  NOT NULL default '0000-00-00 00:00:00'";
-		$db->setQuery( $sql );
-		@$db->query();
-
-
-		$sql = <<<SQL
-CREATE TABLE IF NOT EXISTS #__jevents_repbyday (
-	rptday DATE  NOT NULL default '0000-00-00',
-	rp_id int(12) NOT NULL default 0,
-	catid int(11) NOT NULL default 1,
-	INDEX (rptday),
-	INDEX daycat ( rptday , catid )	
-) ENGINE=MyISAM $charset;
-SQL;
+		$sql = "SHOW COLUMNS FROM #__jev_users";
 		$db->setQuery($sql);
-		$db->query();
-		echo $db->getErrorMsg();
+		$cols = @$db->loadObjectList("Field");
+
+		if (!array_key_exists("categories", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_users ADD categories varchar(255) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (!array_key_exists("calendars", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_users ADD calendars varchar(255) NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (!array_key_exists("created", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_users ADD created datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jev_defaults (
@@ -780,28 +870,37 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
-		$sql = "ALTER TABLE #__jev_defaults ADD params text NOT NULL default ''";
-		$db->setQuery( $sql );
-		@$db->query();
-
 		$sql = "SHOW COLUMNS FROM #__jev_defaults";
-		$db->setQuery( $sql );
-		$cols = @$db->loadObjectList();
-		foreach ($cols as $col){
-			if ($col->Field=='name' && $col->Key=='PRI'){
-				$sql = "ALTER TABLE #__jev_defaults DROP PRIMARY KEY";
-				$db->setQuery( $sql );
-				@$db->query();
-			}
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
+
+		if (!array_key_exists("params", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD params text NOT NULL default ''";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+			
+		if (array_key_exists("name", $cols) && $cols["name"]->Key == 'PRI')
+		{
+			$sql = "ALTER TABLE #__jev_defaults DROP PRIMARY KEY";
+			$db->setQuery($sql);
+			@$db->query();
 		}
 
-		$sql = "ALTER TABLE #__jev_defaults ADD id int( 11 ) unsigned NOT NULL AUTO_INCREMENT , add key (id) ";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (!array_key_exists("id", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD id int( 11 ) unsigned NOT NULL AUTO_INCREMENT , add key (id) ";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
-		$sql = "ALTER TABLE #__jev_defaults ADD PRIMARY KEY id  (id)";
-		$db->setQuery( $sql );
-		@$db->query();
+		if (array_key_exists("id", $cols) && $cols["id"]->Key != 'PRI')
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD PRIMARY KEY id  (id)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
 
 		// Multi-category Mapping table
 		$sql = <<<SQL
@@ -815,27 +914,27 @@ SQL;
 		$db->setQuery($sql);
 		$db->query();
 		echo $db->getErrorMsg();
-		
+
 		// fill this table if upgrading !
 		$sql = "SELECT count(evid) from #__jevents_catmap";
 		$db->setQuery($sql);
 		$catmaps = $db->loadResult();
-		if ($catmaps <5 ){
+		if ($catmaps < 5)
+		{
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
 			$db->setQuery($sql);
 			$db->query();
-			
 		}
-		
+
 		// 
 		// get the view
-		$this->view = & $this->getView("config","html");
+		$this->view = & $this->getView("params", "html");
 
 		// Set the layout
 		$this->view->setLayout('dbsetup');
 
 		$this->view->display();
+
 	}
-	
 
 }
