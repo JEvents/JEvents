@@ -39,7 +39,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery($sql);
 		$table = $db->loadObject();
 		if (!$table) {
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			return;
 		}
@@ -49,7 +49,7 @@ class AdminCpanelController extends JControllerAdmin
 		$cols = $db->loadObjectList('Field');
 		if (is_null($cols) || !isset($cols['evid']))
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			//return;
 		}
@@ -62,7 +62,7 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			$session = JFactory::getSession();
 			$session->set('fixexceptions', 1);
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
+			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 			$this->redirect();
 			//return;
 		}
@@ -85,7 +85,7 @@ class AdminCpanelController extends JControllerAdmin
 			$cols = $db->loadObjectList('Field');
 			if (!isset($cols['overlaps']))
 			{
-				$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=config.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
+				$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
 				$this->redirect();
 				//return;
 			}
