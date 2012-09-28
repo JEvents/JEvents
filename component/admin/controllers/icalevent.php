@@ -709,7 +709,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($event && $event->state())
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$this->setRedirect($event->viewDetailLink($year, $month, $day, $sef, $itemid), $msg);
+				$this->setRedirect($event->viewDetailLink($year, $month, $day, false, $Itemid), $msg);
 			}
 			else
 			{
