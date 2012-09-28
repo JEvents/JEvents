@@ -18,8 +18,8 @@ $user = JFactory::getUser();
 // get configuration object
 $cfg = & JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0 );
-$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
-$order = JRequest::getCmd("filter_order",'start');
+$orderdir = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
+$order = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
 $pathIMG = JURI::root() . 'administrator/images/'; ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -137,7 +137,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
     <input type="hidden" name="task" value="icalevent.list" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="filter_order" value="asc" />
-    <input type="hidden" name="filter_order_Dir" value="asc" />
+    <input type="hidden" name="filter_order" value="<?php echo $order;?>" />
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir;?>" />
 </form>
 <br />

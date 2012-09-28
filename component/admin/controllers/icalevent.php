@@ -255,8 +255,9 @@ class AdminIcaleventController extends JControllerAdmin
 			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
 		}
 
-		$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
-		$order = JRequest::getCmd("filter_order", 'start');
+		$orderdir = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
+		$order = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
+
 		$dir = $orderdir == "asc" ? "asc" : "desc";
 
 		if ($order == 'start' || $order == 'starttime')
