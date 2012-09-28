@@ -70,4 +70,24 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 	}
 
+	function dbsetup($tpl = null)
+	{
+		
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		if (JVersion::isCompatible("1.6.0")) JHTML::stylesheet( 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/eventsadmin.css');
+		else JHTML::stylesheet( 'eventsadmin.css', 'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+
+		$document =& JFactory::getDocument();
+		$document->setTitle(JText::_( 'DB_SETUP' ));
+		
+		// Set toolbar items for the page
+		JToolBarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );
+	
+		JToolBarHelper::cancel('cpanel.cpanel');
+
+		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
+						
+	}	
+
+
 }

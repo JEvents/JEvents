@@ -723,5 +723,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		return $text;
 
 	}
+
 }
 
