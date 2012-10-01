@@ -29,13 +29,13 @@ class JToolbarButtonJev extends JToolbarButton
 	 */
 	var $_name = 'Jev';
 
-	function fetchButton( $type='Jev', $icon = '', $text='',$task='', $list='')
+	function fetchButton($type = 'Jev', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{
 		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($icon);
+		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($text, $task, $list);
 
-		if ($name == "apply" || $name == "new")
+		if ($name == "apply" || $name == "new" || $name == "save")
 		{
 			$btnClass = "btn btn-small btn-success";
 			$iconWhite = "icon-white";
@@ -112,18 +112,29 @@ class JToolbarButtonJevlink extends JToolbarButton
 	var $_name = 'Jevlink';
 
 
-	function fetchButton( $type='Jevlink', $icon = '', $text='',$task='', $list='')
+	function fetchButton( $type='Jevlink', $name = '', $text='',$task='', $list='')
 	{
 		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($icon);
+		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($text, $task, $list);
 
-		$html	= "<a href=\"$doTask\"  class=\"toolbar\">\n";
-		$html .= "<span class=\"$class\" title=\"$i18n_text\">\n";
-		$html .= "</span>\n";
-		$html	.= "$i18n_text\n";
-		$html	.= "</a>\n";
-
+		if ($name == "cancel" )
+		{
+			$btnClass = "btn btn-small btn-danger";
+			$iconWhite = "icon-white";
+		}
+		else
+		{
+			$btnClass = "btn btn-small";
+			$iconWhite = "";
+		}
+		
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
+		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
+		$html .= "</i>\n";
+		$html .= "$i18n_text\n";
+		$html .= "</button>\n";
+		
 		return $html;
 	}
 

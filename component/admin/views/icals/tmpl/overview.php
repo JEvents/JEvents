@@ -44,7 +44,7 @@ $cfg = & JEVConfig::getInstance();
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
 		<tr>
 			<th width="20" nowrap="nowrap">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
+		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->rows ).")"; ?>" />
 			</th>
 			<th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>

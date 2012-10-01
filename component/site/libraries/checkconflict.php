@@ -167,7 +167,7 @@ function ProcessRequest(&$requestObject, $returnData)
 		$registry->set("jevents.timezone", $timezone);
 	}
 
-	$token = JUtility::getToken();
+	$token = JSession::getFormToken();
 	if (!isset($requestObject->token) || $requestObject->token != $token)
 	{
 		throwerror("There was an error - bad token.  Please refresh the page and try again.");
@@ -277,7 +277,12 @@ function simulateSaveEvent($requestObject)
 		$k = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
+	
+	// If the allow HTML flag is set, apply a safe HTML filter to the variable
+	//	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
+	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+	$array = $safeHtmlFilter->clean($formdata, null);
+		
 
 	$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 	$queryModel = new JEventsDBModel($dataModel);
