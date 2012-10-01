@@ -53,7 +53,7 @@
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
 		<field name="installlayouts" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_INSTALL_LAYOUTS" description="JEV_INSTALL_LAYOUTS_TIP" />
-		<field name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
+		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
 
 		<field name="mergemenus" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
