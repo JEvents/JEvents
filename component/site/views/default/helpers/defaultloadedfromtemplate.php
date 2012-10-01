@@ -333,25 +333,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					break;
 
-
 				case "{{CREATED}}":
 					$created = JevDate::getDate($event->created());
 					$search[] = "{{CREATED}}";
 					$replace[] = $created->toFormat(JText::_("DATE_FORMAT_CREATED"));
 					$blank[] = "";
 					break;
-
-
+                                    
 				case "{{ACCESS}}":
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$search[] = "{{ACCESS}}";
-						$replace[] = $event->getAccessName();
-						$blank[] = "";
-					}
+					$search[] = "{{ACCESS}}";
+					$replace[] = $event->getAccessName();
+					$blank[] = "";
 					break;
-
-
+                                    
 				case "{{REPEATSUMMARY}}":
 				case "{{STARTDATE}}":
 				case "{{ENDDATE}}":
@@ -364,7 +358,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{REPEATSUMMARY}}";
 						$replace[] = $event->repeatSummary();
 						$blank[] = "";
-
 						$row = $event;
 						$start_date = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), 0);
 						$start_time = JEVHelper::getTime($row->getUnixStartTime(), $row->hup(), $row->minup());
@@ -592,14 +585,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$tmprow = new stdClass();
 							$tmprow->text = $event->contact_info();
 
-							if (JVersion::isCompatible("1.6.0"))
-							{
-								$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-							}
-							else
-							{
-								$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-							}
+                                                        $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 							$event->contact_info($tmprow->text);
 						}
 						$search[] = "{{CONTACT_LABEL}}";
@@ -635,15 +621,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
 						$tmprow = new stdClass();
 						$tmprow->text = $event->extra_info();
-
-						if (JVersion::isCompatible("1.6.0"))
-						{
-							$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-						}
-						else
-						{
-							$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-						}
+                                                $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 						$event->extra_info($tmprow->text);
 					}
 
@@ -742,14 +720,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tmprow->text = $template_value;
 		$dispatcher = & JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-		}
-		else
-		{
-			$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-		}
+		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 		$template_value = $tmprow->text;
 		$template_value = str_replace("@£@", "@", $template_value);
 

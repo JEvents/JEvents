@@ -223,73 +223,53 @@ class JEventsHTML
 	 */
 	function buildCategorySelect($catid, $args, $catidList=null, $with_unpublished=false, $require_sel=false, $catidtop=0, $fieldname="catid", $sectionname=JEV_COM_COMPONENT, $excludeid=false, $order="ordering",$eventediting = false)
 	{
-
-		if (JVersion::isCompatible("1.6.0"))
+		// need to declare this because of bug in Joomla  JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
+		if (JVersion::isCompatible("3.0")){
+			include_once(JPATH_SITE . "/libraries/cms/html/category.php");
+		}
+		else {
+			include_once(JPATH_SITE . "/libraries/joomla/html/html/category.php");
+		}
+		ob_start();
+		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
+		$options = JHtml::_('category.options', $sectionname);
+		if ($catidList != null)
 		{
-			// need to declare this because of bug in Joomla  JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
-			if (JVersion::isCompatible("3.0")){
-				include_once(JPATH_SITE . "/libraries/cms/html/category.php");
-			}
-			else {
-				include_once(JPATH_SITE . "/libraries/joomla/html/html/category.php");
-			}
-			ob_start();
-			$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
-			$options = JHtml::_('category.options', $sectionname);
-			if ($catidList != null)
+			$cats = explode(',', $catidList);
+			$count = count($options);
+			for ($o = 0; $o < $count; $o++)
 			{
-				$cats = explode(',', $catidList);
-				$count = count($options);
-				for ($o = 0; $o < $count; $o++)
+				if (!in_array($options[$o]->value, $cats))
 				{
-					if (!in_array($options[$o]->value, $cats))
-					{
-						unset($options[$o]);
-					}
+					unset($options[$o]);
 				}
-				$options = array_values($options);
 			}
-			// Thanks to ssobada
-			// when editing events we restrict the available list!
-			$jevtask = JRequest::getString("jevtask");
-			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+			$options = array_values($options);
+		}
+		// Thanks to ssobada
+		// when editing events we restrict the available list!
+		$jevtask = JRequest::getString("jevtask");
+		if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
+		{
+			$user = JFactory::getUser();
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 0);
+			if ($authorisedonly)
 			{
-				$user = JFactory::getUser();
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if ($authorisedonly)
+				$jevuser = JEVHelper::getAuthorisedUser();
+				if ($jevuser)
 				{
-					$jevuser = JEVHelper::getAuthorisedUser();
-					if ($jevuser)
+					if ($jevuser->categories == "all")
 					{
-						if ($jevuser->categories == "all")
+						$cats = array();
+						foreach ($options as $opt)
 						{
-							$cats = array();
-							foreach ($options as $opt)
-							{
-								$cats[] = $opt->value;
-							}
+							$cats[] = $opt->value;
 						}
-						else if ($jevuser->categories != "")
-						{
-							$cats = explode("|", $jevuser->categories);
-						}
-						else
-						{
-							if (JRequest::getInt("evid", 0) > 0)
-							{
-								// TODO - this should check the creator of the event
-								$action = 'core.edit';
-								$cats = $user->getAuthorisedCategories('com_jevents', $action);
-								$action = 'core.edit.own';
-								$cats = array_merge($cats, $user->getAuthorisedCategories('com_jevents', $action));
-							}
-							else
-							{
-								$action = 'core.create';
-								$cats = $user->getAuthorisedCategories('com_jevents', $action);
-							}
-						}
+					}
+					else if ($jevuser->categories != "")
+					{
+						$cats = explode("|", $jevuser->categories);
 					}
 					else
 					{
@@ -324,28 +304,44 @@ class JEventsHTML
 						$cats = $user->getAuthorisedCategories('com_jevents', $action);
 					}
 				}
-				
-				$dispatcher = & JDispatcher::getInstance();
-				$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
-
-				// allow anon-user event creation through
-				if (isset($user->id))
+			}
+			else
+			{
+				if (JRequest::getInt("evid", 0) > 0)
 				{
-					$count = count($options);
-					for ($o = 0; $o < $count; $o++)
-					{
-						if (!in_array($options[$o]->value, $cats))
-						{
-							unset($options[$o]);
-						}
-					}
-					$options = array_values($options);
+					// TODO - this should check the creator of the event
+					$action = 'core.edit';
+					$cats = $user->getAuthorisedCategories('com_jevents', $action);
+					$action = 'core.edit.own';
+					$cats = array_merge($cats, $user->getAuthorisedCategories('com_jevents', $action));
+				}
+				else
+				{
+					$action = 'core.create';
+					$cats = $user->getAuthorisedCategories('com_jevents', $action);
 				}
 			}
-			else {
-				
+			
+			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
+				// allow anon-user event creation through
+			if (isset($user->id))
+			{
+				$count = count($options);
+				for ($o = 0; $o < $count; $o++)
+				{
+					if (!in_array($options[$o]->value, $cats))
+					{
+						unset($options[$o]);
+					}
+				}
+				$options = array_values($options);
 			}
-			// if only one category then preselect it
+		}
+		else {
+			
+		}
+		// if only one category then preselect it
 			if (count($options) == 1)
 			{
 				$catid = current($options)->value;
@@ -371,12 +367,12 @@ class JEventsHTML
 			</select>
 			<?php
 			return ob_get_clean();
-		}
-		$user =  JFactory::getUser();
+		
+                $user =  JFactory::getUser();
 		$db =  JFactory::getDBO();
 
 		$catsql = 'SELECT c.id, c.published, c.title as ctitle,p.title as ptitle, gp.title as gptitle, ggp.title as ggptitle ' .
-				(JVersion::isCompatible("1.6.0") ? ", c.lft as ordering " : ", c.ordering as ordering") .
+				', c.lft as ordering ' .
 				// for Joomfish onlu
 				' , p.id as pid, gp.id as gpid, ggp.id as ggpid ' .
 				' FROM #__categories AS c' .
@@ -385,10 +381,7 @@ class JEventsHTML
 				' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
 				//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
 				"WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
-		if (JVersion::isCompatible("1.6.0"))
-			$catsql .= ' AND c.extension = ' . $db->Quote($sectionname);
-		else
-			$catsql .= ' AND c.section = ' . $db->Quote($sectionname);
+		$catsql .= ' AND c.extension = ' . $db->Quote($sectionname);
 
 		if ($with_unpublished)
 		{
@@ -404,10 +397,7 @@ class JEventsHTML
 		{
 			$catsql .=' AND c.id IN (' . trim($catidList) . ')';
 		}
-		if (JVersion::isCompatible("1.6.0"))
-			$catsql .=" ORDER BY c.lft";
-		else
-			$catsql .=" ORDER BY c.ordering";
+		$catsql .=" ORDER BY c.lft";
 
 		$db->setQuery($catsql);
 		//echo $db->_sql;
@@ -418,11 +408,8 @@ class JEventsHTML
 
 		foreach ($rows as $key => $option)
 		{
-			if (JVersion::isCompatible("1.6.0") && $option->pid == 1)
-			{
-				$option->pid = 0;
-				$option->ptitle = null;
-			}
+			$option->pid = 0;
+			$option->ptitle = null;
 			$title = $option->ctitle;
 			if (!is_null($option->ptitle))
 			{
@@ -1046,38 +1033,18 @@ class JEventsHTML
 
 	function buildAccessSelect($access, $attribs='class="inputbox" onchange="this.form.submit()"', $text = "", $fieldname="access")
 	{
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			ob_start();
-			?>
-			<select name="<?php echo $fieldname; ?>" <?php echo $attribs; ?> >
-			<?php
-			if ($text != "")
-			{
-				?>
-					<option value=""><?php echo $text; ?></option>
-				<?php
-			}
-			?>
-			<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $access); ?>
-			</select>
-			<?php
-			return ob_get_clean();
-		}
-		else
-		{
-			// get list of groups
-			$db = JFactory::getDBO();
-			$user = JFactory::getUser();
-			$query = "SELECT id AS value, name AS text"
-					. "\n FROM #__groups"
-					. "\n WHERE id <= " . $user->aid
-					. "\n ORDER BY id";
-			$db->setQuery($query);
-			$groups = $db->loadObjectList();
-			return JHTML::_('select.genericlist', $groups, $fieldname, 'class="inputbox" size="1"', 'value', 'text', $access);
-		}
-
+            ob_start();
+            ?>
+            <select name="<?php echo $fieldname; ?>" <?php echo $attribs; ?> >
+            <?php
+            if ($text != "")
+            {
+            ?>
+                <option value=""><?php echo $text; ?></option>
+            <?php } ?>
+            <?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $access); ?>
+            	</select>
+		<?php
+		return ob_get_clean();
 	}
-
 }

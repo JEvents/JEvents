@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0" method="upgrade">
+<extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>JEvents Legend</name>
 	<creationDate>July 2012</creationDate>
 	<author>GWE Systems Ltd</author>
@@ -14,47 +14,6 @@
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<params addpath="/administrator/components/com_jevents/elements/">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="show_admin" type="radio" default="0" label="Show Admin Panel" description="Show admin panel i.e. 'add event' and 'my events' in this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="modlegend_inccss" type="radio" default="1" label="Include Events CSS" description="Tells the module if the module Events CSS should be included or not.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="nonjeventsdisable" type="radio" default="1" label="Disable on non-JEvents Pages" description="Hide the module when displayed on non-JEvents pages">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-  <!--    <param name="cache" type="jevboolean" default="0" label="Indent Subcats" description="Should sub categories be indented" />//-->
-  
-		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
-  
-		<param name="catid0" type="category" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
-		<param name="catid1" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid2" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid3" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid4" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid5" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid6" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid7" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid8" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid9" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		<param name="catid10" type="category" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-
-		<param name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-
-	</params>
-
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
@@ -75,34 +34,13 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-  <!--    <field name="cache" type="jevboolean" default="0" label="Indent Subcats" description="Should sub categories be indented" />//-->
-
 				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
-
-		<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-		<!--
-				<field name="catid0" type="jevcategory" default="0" scope="com_jevents" label="Specified category" description="Shows events only from the selected category" />
-				<field name="catid1" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid2" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid3" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid4" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid5" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid6" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid7" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid8" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid9" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-				<field name="catid10" type="jevcategory" default="0" scope="com_jevents" label="Additional category" description="Also include events from this additional category" />
-		//-->
-
-
+                                <field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 				<field name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-
 			</fieldset>
 		</fields>
 	</config>
-
-
-</install>
+</extension>

@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla 1.6.x
  *
  * Installer adapter for jevents layouts
  * 
- * @version     $Id: jevlayout.php 2706 2011-10-06 13:15:29Z geraintedwards $
+ * @version     $Id: jevlayout_1.6.php 2821 2011-10-17 07:56:31Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,24 +14,17 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+jimport('joomla.base.adapterinstance');
+
 /**
  * JevLayout installer
  *
  */
-class JInstallerJevlayout extends JObject
+class JInstallerJevlayout extends JAdapterInstance
 {
-	/**
-	 * Constructor
-	 *
-	 * @access	protected
-	 * @param	object	$parent	Parent object [JInstaller instance]
-	 * @return	void
-	 * @since	1.5
-	 */
-	function __construct(&$parent)
-	{
-		$this->parent =& $parent;
-	}
+
+	protected $manifest = null;
+	
 
 	/**
 	 * Custom install method
@@ -46,8 +39,7 @@ class JInstallerJevlayout extends JObject
 		$db =& $this->parent->getDBO();
 
 		// Get the extension manifest object
-		$manifest =& $this->parent->getManifest();
-		$this->manifest =& $manifest->document;
+		$this->manifest = $this->parent->getManifest();
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -56,16 +48,17 @@ class JInstallerJevlayout extends JObject
 		 */
 
 		// Set the layout name
-		$name =& $this->manifest->getElementByPath('name');
-		$name = JFilterInput::clean($name->data(), 'string');
+		$name =(string) $this->manifest->name;
+		$name = JFilterInput::getInstance()->clean($name, 'string');
 		$this->set('name', $name);
 
 		// Get the component description
-		$description = & $this->manifest->getElementByPath('description');
-		if (is_a($description, 'JSimpleXMLElement')) {
-			$this->parent->set('message', $description->data());
-		} else {
-			$this->parent->set('message', '' );
+		$description = (string) $this->manifest->description;
+		if ($description) {
+			$this->parent->set('message', JText::_($description));
+		}
+		else {
+			$this->parent->set('message', '');
 		}
 
 		$basePath = JPATH_SITE;
@@ -74,26 +67,26 @@ class JInstallerJevlayout extends JObject
 		$this->parent->setPath('extension_root', $basePath.'/components/com_jevents/views');
 
 		// Copy all necessary files
-		$element =& $this->manifest->getElementByPath('componentfiles');
+		$element =& $this->manifest->componentfiles;
 		if ($this->parent->parseFiles($element, -1) === false) {
 			// Install failed, roll back changes
 			$this->parent->abort();
 			return false;
 		}
-			
+
 		// copy manifest file for versioning information
-		$layout = $element->getElementByPath('folder')->data();
+		$layout = $element->folder->data();
 		$path['src'] = $this->parent->getPath('manifest');
 		$path['dest'] =$this->parent->getPath('extension_root').'/'.$layout.'/'.basename($path['src'] );
 		$this->parent->copyFiles(array ($path), true);
-		
+				
 		// Now do the modules in turn
-		$element =& $this->manifest->getElementByPath('modulefiles');
+		$element =& $this->manifest->modulefiles;
 
 		// Find modules to copy
 		foreach ($element->children() as $child)
 		{
-			if (is_a($child, 'JSimpleXMLElement')) {
+			if ($child) {
 				$modulename = $child->name();
 
 				$this->parent->setPath('extension_root', $basePath.'/modules/'.$modulename."/tmpl");
@@ -104,7 +97,7 @@ class JInstallerJevlayout extends JObject
 				}
 
 				// Copy all necessary files
-				$modelement =& $element->getElementByPath($modulename);
+				$modelement =& $element->$modulename;
 				if ($this->parent->parseFiles($modelement, -1) === false) {
 					// Install failed, roll back changes
 					$this->parent->abort();

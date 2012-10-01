@@ -34,12 +34,8 @@ class JElementJevhtml extends JElement
 		$value = str_replace('\n', "<br/>", JText::_($value));
 		//$value = str_replace("\n", "<br/>", $value);
 
-		if (JVERSION::isCompatible(1.6)){
-			$html =  $editor->display($control_name.'['.$name.']', $value , $width, $height, $cols, $rows, $buttons , $control_name.$name);
-		}
-		else {
-			$html =  $editor->display($control_name.'['.$name.']', $value , $width, $height, $cols, $rows, $buttons );
-		}		
+		$html =  $editor->display($control_name.'['.$name.']', $value , $width, $height, $cols, $rows, $buttons , $control_name.$name);
+				
 		if (JRequest::getCmd("task")=="templates.edit"){			
 			ob_start();
 			?>
