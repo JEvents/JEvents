@@ -116,11 +116,8 @@ if ($this->editCopy){
 ?>
 <script type="text/javascript" language="Javascript">
 
-<?php if (JVersion::isCompatible("1.6.0")) {?>
 Joomla.submitbutton = function (pressbutton) {
-<?php } else { ?>
-function submitbutton(pressbutton) {
-<?php }  ?>	
+
 	if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
 		if (document.adminForm['catid']){
 			// restore catid to input value

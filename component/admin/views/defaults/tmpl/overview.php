@@ -57,14 +57,7 @@ $pathIMG = JURI::root().'/administrator/images/';
 			</td>
           	<td align="center">
           	<?php
-			if (JVersion::isCompatible("1.6.0")) {
-				$img =  $row->state?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
-			}
-			else {
-	          	$img = $row->state?'publish_g.png':'publish_r.png';
-				$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
-			}
-
+		$img =  $row->state?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
           	?>
           	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo  $img; ?></a>
           	</td>

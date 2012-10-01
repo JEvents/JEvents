@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0" method="upgrade">
+<extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>JEvents Filter</name>
 	<creationDate>June  2012</creationDate>
 	<author>GWE Systems Ltd</author>
@@ -15,15 +15,6 @@
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<params addpath="/administrator/components/com_jevents/elements/">
-		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="filters" type="text" size="60" default="search" label="Filters to use" description="Comma separated list of filters to apply" />
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
@@ -62,4 +53,4 @@
 			</fieldset>
 		</fields>
 	</config>	
-</install>
+</extension>

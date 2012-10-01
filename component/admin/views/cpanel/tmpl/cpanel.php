@@ -39,14 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list";
 						$this->_quickiconButton($link, "jevents_event_sml.png", JText::_('JEV_ADMIN_ICAL_EVENTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 
-						if (JVersion::isCompatible("1.6.0"))
-						{
-							$link = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
-						}
-						else
-						{
-							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=categories.list";
-						}
+						$link = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
+						
 						$this->_quickiconButton($link, "jevents_categories_sml.png", JText::_('JEV_INSTAL_CATS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 
 						if (JEVHelper::isAdminUser())

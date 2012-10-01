@@ -776,12 +776,8 @@ class JEventsDataModel {
 				$dispatcher	=& JDispatcher::getInstance();
 				JPluginHelper::importPlugin('content');
 
-				if (JVersion::isCompatible("1.6.0")) {
-					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-				}
-				else {
-					$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
-				}
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+				
 				$row->location($tmprow->text);
 			}
 			
@@ -792,12 +788,8 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->contact_info();
 
-			if (JVersion::isCompatible("1.6.0")) {
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-			}
-			else {
-				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
-			}
+			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+			
 			$row->contact_info($tmprow->text);
 
 			//Extra
@@ -808,12 +800,8 @@ class JEventsDataModel {
 			$tmprow = new stdClass();
 			$tmprow->text = $row->extra_info();
 
-			if (JVersion::isCompatible("1.6.0")) {
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
-			}
-			else {
-				$dispatcher->trigger( 'onPrepareContent', array( &$tmprow, &$params, 0 ));
-			}
+			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
+			
 			$row->extra_info($tmprow->text);
 
 			$mask = JFactory::getApplication()->getCfg( 'hideAuthor' ) ? MASK_HIDEAUTHOR : 0;
@@ -834,12 +822,8 @@ class JEventsDataModel {
 			$params->set("image",1);
 			$row->text = $row->content();
 
-			if (JVersion::isCompatible("1.6.0")) {
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$row, &$params, 0 ));
-			}
-			else {
-				$dispatcher->trigger( 'onPrepareContent', array( &$row, &$params, 0 ));
-			}
+			$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$row, &$params, 0 ));
+		
 			$row->content( $row->text );
 
 			$data['row']=$row;
@@ -964,7 +948,7 @@ class JEventsDataModel {
 			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
 			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
-			' AND c.'.(JVersion::isCompatible("1.6.0")?'extension':'section').' = '.$db->Quote(JEV_COM_COMPONENT).
+			' AND c.extension = '.$db->Quote(JEV_COM_COMPONENT).
 			' AND c.id = '.$db->Quote($catid);
 			$db->setQuery($catsql);
 			$catdata = $db->loadObject();

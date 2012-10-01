@@ -37,13 +37,7 @@ $this->replaceLabels($this->item->value);
 		<input type="hidden" name="name" value="<?php echo $this->item->name;?>">
 		
 		<script type="text/javascript" language="Javascript">
-			<?php if (JVersion::isCompatible("1.6.0")) {
-				echo "Joomla.submitbutton = function (pressbutton) {\n";
-			}
-			else {
-				echo "function submitbutton(pressbutton) {\n";
-			}
-			?>
+			<?php echo "Joomla.submitbutton = function (pressbutton) {\n"; ?>
 			var form = document.adminForm;
 			<?php echo $editor->getContent( 'value' ); ?>
 			<?php

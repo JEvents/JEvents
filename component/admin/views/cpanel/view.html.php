@@ -64,19 +64,12 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	 */
 	function renderJEventsNews()
 	{
+                $cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+		$cache->setLifeTime(86400);
+		// In Joomla 1.7 caching of feeds doesn't work!
+		$cache->setCaching(true);
 
-		if (JVersion::isCompatible("1.6")){
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
-			$cache->setLifeTime(86400);
-			// In Joomla 1.7 caching of feeds doesn't work!
-			$cache->setCaching(true);
-
-			$cache->get($this, 'renderJEventsNewsCached');
-		}
-		else {
-			return $this->renderJEventsNewsCached();
-		}
-		
+		$cache->get($this, 'renderJEventsNewsCached');	
 	}
 
 	function renderJEventsNewsCached()
@@ -87,12 +80,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		//  get RSS parsed object
 		$options = array();
 		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
-		if (JVersion::isCompatible("1.6")){
-			$options['cache_time'] = 0;
-		}
-		else {
-			$options['cache_time'] = 86400;
-		}
+		$options['cache_time'] = 0;
 		
 		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time'] );
 
@@ -159,34 +147,19 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 			jimport('simplepie.simplepie');
 
-			if (JVersion::isCompatible("1.6"))
-			{
-				// this caching doesn't work!!!
-				//$cache = JFactory::getCache('feed_parser', 'callback');
-				//$cache->setLifeTime($cache_time);
-				//$cache->setCaching(true);
+        		// this caching doesn't work!!!
+			//$cache = JFactory::getCache('feed_parser', 'callback');
+			//$cache->setLifeTime($cache_time);
+			//$cache->setCaching(true);
 
-				$rssDoc = new SimplePie(null, null, 0);
+			$rssDoc = new SimplePie(null, null, 0);
+			$rssDoc->enable_cache(false);
+			$rssDoc->set_feed_url($rssUrl);
+			$rssDoc->force_feed(true);
+			$rssDoc->set_item_limit(999);
 
-				$rssDoc->enable_cache(false);
-				$rssDoc->set_feed_url($rssUrl);
-				$rssDoc->force_feed(true);
-				$rssDoc->set_item_limit(999);
-
-				//$results = $cache->get(array($rssDoc, 'init'), null, false, false);
-				$results = $rssDoc->init();
-			}
-			else
-			{
-				$rssDoc = new SimplePie(
-								$rssUrl,
-								JPATH_BASE . '/' . 'cache',
-								$cache_time
-				);
-				$rssDoc->force_feed(true);
-				$rssDoc->handle_content_type();
-				$results = $rssDoc->init();
-			}
+			//$results = $cache->get(array($rssDoc, 'init'), null, false, false);
+			$results = $rssDoc->init();
 
 			if ($results == false)
 			{
@@ -256,20 +229,11 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						if (count($plugin) < 2)
 							continue;
 // plugins
-						if ((JVersion::isCompatible("1.6") && JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])) ||
-							(!JVersion::isCompatible("1.6") && JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0]))) 
+						if ((JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1]))							) 
 						{
-
 // plugins
-							if (JVersion::isCompatible("1.6"))
-							{
-								$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
-							}
-							else
-							{
-								$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0], $plugin[1] . "\.xml", true, true);
-							}
-
+							$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
+							
 							foreach ($xmlfiles1 as $manifest)
 							{
 								if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -279,15 +243,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 								$app->name = $manifestdata["name"];
 								$app->version = $manifestdata["version"];
 								$name = str_replace(".xml", "", basename($manifest));
-								if (JVersion::isCompatible("1.6"))
-								{
-									$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
-								}
-								else
-								{
-// simulate Joomla 1.7 directory structure
-									$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
-								}
+								$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
 								$apps[$name] = $app;
 							}
 						}
@@ -425,17 +381,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
 			$name = str_replace(".xml", "", basename($manifest));
-			if (JVersion::isCompatible("1.6"))
-			{
-				$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
-			}
-			else
-			{
+			
+                        $name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+			
 // simulate Joomla 1.7 directory structure
-				$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
+			$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
 			}
-			$apps[$name] = $app;
-		}
+		$apps[$name] = $app;
+		
 
 // components (including JEvents
 		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
@@ -673,14 +626,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
 			$name = str_replace(".xml", "", basename($manifest));
-			if (JVersion::isCompatible("1.6"))
-			{
-				$group =  basename(dirname(dirname($manifest))) ;
-			}
-			else
-			{
-				$group =   basename(dirname($manifest)) ;
-			}
+			$group =  basename(dirname(dirname($manifest))) ;			
 			$plugin = JPluginHelper::getPlugin( $group,$name);
 			if (!$plugin) {
 				$app->version .= " (not enabled)";

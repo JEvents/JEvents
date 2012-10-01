@@ -493,16 +493,9 @@ class JEVHelper
 			{
 				$document = & JFactory::getDocument();
 				// RSH 10/11/10 - Check location of overlib files - j!1.6 doesn't include them!
-				if (JVersion::isCompatible("1.6.0"))
-				{
-					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_mini.js');
-					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_hideform_mini.js');
-				}
-				else
-				{
-					$document->addScript(JURI::root() . 'includes/js/overlib_mini.js');
-					$document->addScript(JURI::root() . 'includes/js/overlib_hideform_mini.js');
-				}
+				$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_mini.js');
+				$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_hideform_mini.js');
+				
 				// change state so it isnt loaded a second time
 				$cfg->set('loadOverlib', true);
 
@@ -769,30 +762,18 @@ class JEVHelper
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$juser = JFactory::getUser();
-						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-						// this is too heavy on database queries
-						/*
-						if (!$isEventCreator){
-							$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-							if (count($cats) > 0)
-							{
-								$isEventCreator = true;
-							}
-						}
-						 */
-					}
-					else
-					{
-						$creatorlevel = $params->get("jevcreator_level", 20);
-						$juser =  JFactory::getUser();
-						if (JEVHelper::getGid($user) >= $creatorlevel)
+					$juser = JFactory::getUser();
+					$isEventCreator = $juser->authorise('core.create', 'com_jevents');
+					// this is too heavy on database queries
+					/*
+					if (!$isEventCreator){
+						$cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+						if (count($cats) > 0)
 						{
 							$isEventCreator = true;
 						}
 					}
+					 */
 				}
 			}
 			else if ($user->cancreate)
@@ -844,23 +825,19 @@ class JEVHelper
 		$authorisedonly = $params->get("authorisedonly", 0);
 		if (!$authorisedonly)
 		{
-			if (JVersion::isCompatible("1.6.0"))
+			if ($user->authorise('core.create', 'com_jevents'))
+				return true;
+			$allowedcats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.create');
+			if (!in_array($row->_catid, $allowedcats))
 			{
-				if ($user->authorise('core.create', 'com_jevents'))
-					return true;
-				$allowedcats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.create');
-				if (!in_array($row->_catid, $allowedcats))
-				{
+				return false;
+			}
+			// check multi cats too
+			if (JEVHelper::rowCatids($row)){
+				if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
 					return false;
 				}
-				// check multi cats too
-				if (JEVHelper::rowCatids($row)){
-					if (count( array_diff(JEVHelper::rowCatids($row), $allowedcats))){
-						return false;
-					}
-				}
-
-			}
+			}			
 		}
 		else {
 			// are we authorised to do anything with this category or calendar
@@ -904,25 +881,13 @@ class JEVHelper
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$juser =  JFactory::getUser();
-                                                // Never allow unlogged in users to edit events - just in case someone tries to allow this
-                                                if ($juser->id==0) {
-                                                    return false;
-                                                }
-						//$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
-						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
-					}
-					else
-					{
-						$publishlevel = $params->get("jeveditor_level", 20);
-						$juser =  JFactory::getUser();
-						if (JEVHelper::getGid($juser) >= $publishlevel)
-						{
-							$isEventEditor = true;
-						}
-					}
+                                    $juser =  JFactory::getUser();
+                                    // Never allow unlogged in users to edit events - just in case someone tries to allow this
+                                    if ($juser->id==0) {
+                                        return false;
+                                    }
+                                    //$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
+                                    $isEventEditor = $juser->authorise('core.edit', 'com_jevents');	
 				}
 			}
 			/*
@@ -1008,34 +973,32 @@ class JEVHelper
 		if (JEVHelper::isEventEditor())
 		{
 			// any category restrictions on this?
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
-				/*
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
-				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
-				if (in_array($row->_catid, $cats))
+			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+			$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
+			if (in_array($row->_catid, $cats))
+			return true;
+			else if (in_array($row->_catid, $cats_own))
 					return true;
-				else if (in_array($row->_catid, $cats_own))
-					return true;
-				else return false;
-				 */
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_coreedit[$key])){
-					$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
+			else return false;
+			 */
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key])){
+				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
+			}
+			if ($authdata_coreedit[$key]) {
+				return true;
+			}
+			else if ($user->id > 0 && $row->created_by() == $user->id) {
+				if (!isset($authdata_editown[$key])){
+					$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
 				}
-				if ($authdata_coreedit[$key]) {
-					return true;
-				}
-				else if ($user->id > 0 && $row->created_by() == $user->id) {
-					if (!isset($authdata_editown[$key])){
-						$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
-					}
-					return $authdata_editown[$key];
-				}
-				// category settings trumps overall setting
-				return false;
-			}						
+				return $authdata_editown[$key];
+			}
+			// category settings trumps overall setting
+			return false;
+								
 			return true;
 		}
 		// must stop anon users from editing any events
@@ -1055,8 +1018,7 @@ class JEVHelper
 
 			
 			// other users can always edit their own unless blocked by category
-			if (JVersion::isCompatible("1.6.0"))
-			{
+			
 				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
 				/*
 				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
@@ -1080,25 +1042,15 @@ class JEVHelper
 					return $authdata_editown[$key];
 				}
 				return false;
-				
+                }
+					
+                if ($user->id > 0 && $row->catid()>0){
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key])){
+				$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
 			}
-			else
-			{
-				return true;
-			}
-		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			if ($user->id > 0 && $row->catid()>0){
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_coreedit[$key])){
-					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
-				}
-				return $authdata_coreedit[$key];
-			}
-		}
-			
-	 
+			return $authdata_coreedit[$key];
+		}		 
 		return false;
 
 	}
@@ -1123,21 +1075,10 @@ class JEVHelper
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$juser =  JFactory::getUser();
-						//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
-						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
-					}
-					else
-					{
-						$publishlevel = $params->get("jevpublish_level", 20);
-						$juser =  JFactory::getUser();
-						if (JEVHelper::getGid($user) >= $publishlevel)
-						{
-							$isEventPublisher[$type] = true;
-						}
-					}
+					$juser =  JFactory::getUser();
+					//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
+					$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+					
 				}
 			}
 			else if ($user->canpublishall)
@@ -1214,10 +1155,10 @@ class JEVHelper
 		$juser =  JFactory::getUser();
 
 		$db = & JFactory::getDBO();
-		$sql = "SELECT id FROM #__jevents_categories WHERE admin=" . $juser->id;
+		$sql = "SELECT id FROM #__categories WHERE created_user_id=" . $juser->id;
 		$db->setQuery($sql);
 		$catids = $db->loadColumn();
-		if (count($catids) > 0)
+		if (count($catids) > 0) 
 			return $catids;
 		return false;
 
@@ -1283,19 +1224,17 @@ class JEVHelper
 		// can publish all?
 		if (JEVHelper::isEventPublisher(true))
 		{
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				// This involes TOO many database queries in Joomla - one per category which can be a LOT
-				/*
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
-				if (in_array($row->_catid, $cats))
-					return true;
-				*/
-				// allow multi-categories
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-				return $authdata_editstate[$key];
-			}
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+			if (in_array($row->_catid, $cats))
+				return true;
+			*/
+			// allow multi-categories
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+			$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
+			return $authdata_editstate[$key];
+			
 			return true;
 			
 		}
@@ -1320,34 +1259,29 @@ class JEVHelper
 			{
 				return true;
 			}
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				// This involes TOO many database queries in Joomla - one per category which can be a LOT
-				/*
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
-				if (in_array($row->_catid, $cats))
-					return true;
-				*/
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_editstate[$key])){
-					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-				}
-				return $authdata_editstate[$key];
+			
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+			if (in_array($row->_catid, $cats))
+				return true;
+			*/
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+			if (!isset($authdata_editstate[$key])){
+				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 			}
+			return $authdata_editstate[$key];
+			
 		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			if ($user->id > 0 && $row->catid()>0){
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_editstate[$key])){
-					$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-				}
-				return $authdata_editstate[$key];
-			}
+		if ($user->id > 0 && $row->catid()>0){
+		$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+		if (!isset($authdata_editstate[$key])){
+			$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
 		}
-		
+		return $authdata_editstate[$key];
+		}
+				
 		return false;
-
 	}
 
 	// is the user an event publisher - i.e. can publish own OR other events
@@ -1370,21 +1304,8 @@ class JEVHelper
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$juser =  JFactory::getUser();
-						$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
-					}
-					else
-					{
-						$publishlevel = $params->get("jevpublish_level", 20);
-						$juser =  JFactory::getUser();
-						if (JEVHelper::getGid($user) >= $publishlevel)
-						{
-							$isEventDeletor[$type] = true;
-						}
-					}
+					$juser =  JFactory::getUser();
+					$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
 				}
 			}
 			else if ($user->candeleteall)
@@ -1456,9 +1377,25 @@ class JEVHelper
 			return false;
 		}
 		
-		if (JVersion::isCompatible("1.6.0"))
+		// This involes TOO many database queries in Joomla - one per category which can be a LOT
+		/*
+		$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
+		if (in_array($row->_catid, $cats))
+			return true;
+		*/
+		$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+		if (!isset($authdata_coredeleteall[$key])){
+			$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
+		}
+		if ($authdata_coredeleteall[$key]) {
+			return $authdata_coredeleteall[$key];
+		}
+		
+		// can delete all?
+		if (JEVHelper::isEventDeletor(true))
 		{
-			 // This involes TOO many database queries in Joomla - one per category which can be a LOT
+			// any category restrictions on this?
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
 			/*
 			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
 			if (in_array($row->_catid, $cats))
@@ -1471,32 +1408,7 @@ class JEVHelper
 			if ($authdata_coredeleteall[$key]) {
 				return $authdata_coredeleteall[$key];
 			}
-		}
-
-		// can delete all?
-		if (JEVHelper::isEventDeletor(true))
-		{
-			// any category restrictions on this?
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				// This involes TOO many database queries in Joomla - one per category which can be a LOT
-				/*
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
-				if (in_array($row->_catid, $cats))
-					return true;
-				*/
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_coredeleteall[$key])){
-					$authdata_coredeleteall[$key] =JEVHelper::authoriseCategories('core.deleteall', $key, $user);
-				}
-				if ($authdata_coredeleteall[$key]) {
-					return $authdata_coredeleteall[$key];
-				}
-			}	
-			else {
-				// in Joomla 1.5 this is enough
-				return true;
-			}			
+					
 		}
 		
 		// There seems to be a problem with category permissions - sometimes Joomla ACL set to yes in category but result is false!
@@ -1668,21 +1580,9 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			//$access = JAccess::check($user->id, "core.admin","com_jevents");
-			$access = $user->authorise('core.admin', 'com_jevents');
-			return $access;
-		}
-		else
-		{
-			if (strtolower(JEVHelper::getUserType($user)) != "super administrator" && strtolower(JEVHelper::getUserType($user)) != "administrator")
-			{
-				return false;
-			}
-			return true;
-		}
-
+		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		$access = $user->authorise('core.admin', 'com_jevents');
+		return $access;
 	}
 
 	function componentStylesheet($view, $filename='events_css.css')
@@ -1719,14 +1619,8 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
-		}
-		else
-		{
-			return $user->gid;
-		}
+		return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
+	
 
 	}
 
@@ -1736,33 +1630,25 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			$levels = $user->getAuthorisedViewLevels();
+                $levels = $user->getAuthorisedViewLevels();
 
-			if ($type == 'string')
-			{
-				return implode(',', $levels);
-			}
-			elseif ($type == 'array')
-			{
-				return $levels;
-			}
-			elseif ($type = 'max')
-			{
-				return max($levels);
-			}
-			else
-			{
-				// not sure!
-				return false; //  ??
-			}
+		if ($type == 'string')
+		{
+			return implode(',', $levels);
+		}
+		elseif ($type == 'array')
+		{
+			return $levels;
+		}
+		elseif ($type = 'max')
+		{
+			return max($levels);
 		}
 		else
 		{
-			return intval($user->aid);
+			// not sure!
+			return false; //  ??
 		}
-
 	}
 
 	static public function getUserType($user = null)
@@ -1771,27 +1657,18 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
-		if (JVersion::isCompatible("1.6.0"))
-		{
 			$groups = $user->groups;  // RSH 10/17/10 - Get groups, sort them, get the last one, return the value
 			asort($groups);
 			$last_group = end($groups);
 			return ($last_group == 'Super Users') ? "Super Administrator" : $last_group;
-		}
-		else
-		{
-			return $user->usertype;
-		}
-
 	}
 
 	static public function stylesheet($file, $path)
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0"))
-			JHTML::stylesheet($path . $file);
-		else
-			JHTML::stylesheet($file, $path);
+		
+		JHTML::stylesheet($path . $file);
+		
 
 	}
 
@@ -1802,8 +1679,6 @@ class JEVHelper
 		JHtml::_('behavior.framework', true);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0"))
-		{
 			JHTML::script($path . $file);
 			/*
 			  $document = JFactory::getDocument();
@@ -1812,10 +1687,6 @@ class JEVHelper
 			  }
 			  $document->addScript($path.$file);
 			 */
-		}
-		else
-			JHTML::script($file, $path);
-
 	}
 
 	static public function setupJoomla160()
@@ -1825,56 +1696,39 @@ class JEVHelper
 
 	static public function getBaseAccess()
 	{
-		if (JVersion::isCompatible("1.6.0"))
+		// Store the ical in the registry so we can retrieve the access level
+		$registry = & JRegistry::getInstance("jevents");
+		$icsfile = $registry->get("jevents.icsfile", false);
+		if ($icsfile) {
+			return $icsfile->access;
+		}
+		static $base;
+		if (!isset($base))
 		{
-			// Store the ical in the registry so we can retrieve the access level
-			$registry = & JRegistry::getInstance("jevents");
-			$icsfile = $registry->get("jevents.icsfile", false);
-			if ($icsfile) {
-				return $icsfile->access;
-			}
-
-			static $base;
-			if (!isset($base))
+			// NB this method is no use if you delete the public access level - it assumes that 1 always exists!!!
+			//$levels = JAccess::getAuthorisedViewLevels(0);
+			$levels = array();
+			if (count($levels) > 0)
 			{
-				// NB this method is no use if you delete the public access level - it assumes that 1 always exists!!!
-				//$levels = JAccess::getAuthorisedViewLevels(0);
-				$levels = array();
-				if (count($levels) > 0)
-				{
-					$base = $levels[0];
-				}
-				else
-				{
-					// Get a database object.
-					$db = JFactory::getDBO();
-
-					// Set the query for execution.
-					$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
-					$base = $db->loadResult();
-				}
+				$base = $levels[0];
 			}
-			return $base;
-		}
-		else
-		{
-			return 0;
-		}
+			else
+			{
+				// Get a database object.
+				$db = JFactory::getDBO();
 
+                                // Set the query for execution.
+				$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
+				$base = $db->loadResult();
+			}
+		}
+		return $base;
 	}
 
 	static public function imagesite($img, $text)
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			return JHTML::_('image', 'system/' . $img, $text, NULL, true);
-		}
-		else
-		{
-			return JHTML::_('image', $img, '/images/M_images/', NULL, NULL, $text);
-		}
-
+		return JHTML::_('image', 'system/' . $img, $text, NULL, true);
 	}
 
 	static public function authoriseCategories($action, $catids, $user){

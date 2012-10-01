@@ -48,12 +48,7 @@ class JButtonJev extends JButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$icon;
-		}
-		else {
-			return $this->_parent->_name.'-'.$icon;
-		}
+		return $this->_parent->getName().'-'.$icon;
 	}
 	
 	/**
@@ -73,7 +68,7 @@ class JButtonJev extends JButton
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
-		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
+		$submitbutton = "Joomla.submitbutton";
 		if ($list) {
 			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
 		} else {
@@ -120,13 +115,7 @@ class JButtonJevlink extends JButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$icon;
-		}
-		else {
-			return $this->_parent->_name.'-'.$icon;
-		}
-
+		return $this->_parent->getName().'-'.$icon;
 	}
 	
 	/**
@@ -184,12 +173,7 @@ class JButtonJevconfirm extends JButton
 	 */
 	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$name;
-		}
-		else {
-			return $this->_parent->_name.'-'.$name;
-		}
+		return $this->_parent->getName().'-'.$name;		
 	}
 
 	/**
@@ -205,7 +189,7 @@ class JButtonJevconfirm extends JButton
 		$todo	 = JString::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
-		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
+		$submitbutton = "Joomla.submitbutton";
 		
 		if ($hide) {
 			if ($list) {

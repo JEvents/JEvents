@@ -31,7 +31,7 @@ class ICalsController extends AdminIcalsController
 		// Load abstract "view" class
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents' . ucfirst($theme) . 'View', JEV_VIEWS . "/$theme/abstract/abstract.php");
-		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0"))
+		if (!isset($this->_basePath))
 		{
 			$this->_basePath = $this->basePath;
 			$this->_task = $this->task;
@@ -121,34 +121,10 @@ class ICalsController extends AdminIcalsController
 			if ($key != $pk)
 				JError::raiseError(403, "JEV_ERROR");
 
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				// ensure "user" can access non-public categories etc.
-				$this->dataModel->aid = JEVHelper::getAid($puser);
-				$this->dataModel->accessuser = $puser->get('id');
-			}
-			else {
-				// Get an ACL object
-				$acl = & JFactory::getACL();
-
-				// Get the user group from the ACL
-				$grp = $acl->getAroGroup($puser->get('id'));
-
-				//Mark the user as logged in
-				$puser->set('guest', 0);
-				$puser->set('aid', 1);
-
-				// Fudge Authors, Editors, Publishers and Super Administrators into the special access group
-				if ($acl->is_group_child_of($grp->name, 'Registered') || $acl->is_group_child_of($grp->name, 'Public Backend'))
-				{
-					$puser->set('aid', 2);
-				}
-
-				// ensure "user" can access non-public categories etc.
-				$this->dataModel->aid = $puser->aid;
-				$this->dataModel->accessuser = $puser->get('id');
-			}
-
+			// ensure "user" can access non-public categories etc.
+			$this->dataModel->aid = JEVHelper::getAid($puser);
+			$this->dataModel->accessuser = $puser->get('id');
+			
 			$registry = & JRegistry::getInstance("jevents");
 			$registry->set("jevents.icaluser", $puser);
 		}
@@ -331,8 +307,7 @@ class ICalsController extends AdminIcalsController
 		{
 			// Find which categories to exclude
 			$db = JFactory::getDBO();
-			if (JVersion::isCompatible("1.6.0"))  $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
-			else $catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND section="com_jevents"';
+			$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
 			
 			$db->setQuery($catsql);
 			$excats = implode(",", $db->loadColumn());

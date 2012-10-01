@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" method="upgrade">
-
+<extension type="module" version="2.5" method="upgrade" client="site">
 	<name>JEvents Calendar</name>
 	<creationDate>June 2012</creationDate>
 	<author>GWE Systems Ltd</author>

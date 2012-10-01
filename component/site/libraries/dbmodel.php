@@ -29,12 +29,7 @@ class JEventsDBModel
 
 		$this->datamodel = & $datamodel;
 				
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!JVersion::isCompatible("1.6.0")){
-			// Multi-category events only supported in Joomla 2.5 + so disable elsewhere
-			$params->set('multicategory',0);
-		}
-		
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);	
 	}
 
 	function accessibleCategoryList($aid=null, $catids=null, $catidList=null)
@@ -74,91 +69,63 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (JVersion::isCompatible("1.6.0"))
+			static $allcats;
+			if (!isset($allcats))
 			{
-				static $allcats;
-				if (!isset($allcats))
+				jimport("joomla.application.categories");
+				$allcats = JCategories::getInstance("jevents");
+				// prepopulate the list internally
+				$allcats->get('root');
+			}
+			$catids = explode(",", $catidList);
+			$catwhere = array();
+			$hascatid=false;
+			foreach ($catids as $catid)
+			{
+				$catid = intval($catid);
+				if ($catid > 0)
 				{
-					jimport("joomla.application.categories");
-					$allcats = JCategories::getInstance("jevents");
-					// prepopulate the list internally
-					$allcats->get('root');
-				}
-
-				$catids = explode(",", $catidList);
-				$catwhere = array();
-				$hascatid=false;
-				foreach ($catids as $catid)
-				{
-					$catid = intval($catid);
-					if ($catid > 0)
+					$hascatid=true;
+					$cat = $allcats->get($catid);
+					if ($cat)
 					{
-						$hascatid=true;
-						$cat = $allcats->get($catid);
-						if ($cat)
-						{
-							//$catwhere[] = "(c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft." )";
-							$catwhere[] = "(c.lft>=" . $cat->lft . " AND c.rgt<=" . $cat->rgt . " )";
-						}
+						//$catwhere[] = "(c.lft<=" . $cat->rgt . " AND c.rgt>=" . $cat->lft." )";
+						$catwhere[] = "(c.lft>=" . $cat->lft . " AND c.rgt<=" . $cat->rgt . " )";
 					}
 				}
-				if (count($catwhere) > 0)
-				{
-					$where = "AND (" . implode(" OR ", $catwhere) . ")";
-				}
-				// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events 
-				if($hascatid && count($catwhere)==0){
-					$where = " AND 0 ";
-				}
-
-				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
-				$jevtask = JRequest::getString("jevtask");
-				$isedit = false;
-				// not only for edit pages but for all backend changes we ignore the language filter on categories
-				if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false  || JFactory::getApplication()->isAdmin())
-				{
-					$isedit = true;
-				}
-				
-				$query = "SELECT c.id"
-						. "\n FROM #__categories AS c"
-						. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
-						. $q_published
-						// language filter only applies when not editing
-						. ($isedit?"":"\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')')
-						. "\n AND c.extension = '" . $sectionname . "'"
-						. "\n " . $where;
-				;
-
-				$db->setQuery($query);
-				$catlist = $db->loadColumn();
-
-				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
 			}
-			else
+			if (count($catwhere) > 0)
 			{
-				if (count($catids) > 0 && !is_null($catidList) && $catidList != "0")
-				{
-					$where = ' AND (c.id IN (' . $catidList . ') OR p.id IN (' . $catidList . ')  OR gp.id IN (' . $catidList . ') OR ggp.id IN (' . $catidList . '))';
-				}
-
-				$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
-				$query = "SELECT c.id"
-						. "\n FROM #__categories AS c"
-						. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
-						. ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id '
-						. ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id '
-						. "\n WHERE c.access " . ( version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
-						. $q_published
-						. "\n AND c.section = '" . $sectionname . "'"
-						. "\n " . $where;
-				;
-
-				$db->setQuery($query);
-				$catlist = $db->loadColumn();
-
-				$instances[$index] = implode(',', array_merge(array(-1), $catlist));
+				$where = "AND (" . implode(" OR ", $catwhere) . ")";
 			}
+			// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events 
+			if($hascatid && count($catwhere)==0){
+				$where = " AND 0 ";
+			}
+			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$jevtask = JRequest::getString("jevtask");
+			$isedit = false;
+			// not only for edit pages but for all backend changes we ignore the language filter on categories
+			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false  || JFactory::getApplication()->isAdmin())
+			{
+				$isedit = true;
+			}
+				
+			$query = "SELECT c.id"
+					. "\n FROM #__categories AS c"
+					. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+					. $q_published
+					// language filter only applies when not editing
+					. ($isedit?"":"\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')')
+					. "\n AND c.extension = '" . $sectionname . "'"
+					. "\n " . $where;
+			;
+
+			$db->setQuery($query);
+			$catlist = $db->loadColumn();
+
+			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
+			
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategories', array(& $instances[$index]));
 			if (count($instances[$index]) == 0)
@@ -208,12 +175,11 @@ class JEventsDBModel
 
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
-					. (JVersion::isCompatible("1.6.0") ? "" : ", ex.*")
 					. "\n FROM #__categories AS c"
-					. (JVersion::isCompatible("1.6.0") ? "" : " LEFT JOIN #__jevents_categories as ex on ex.id=c.id")
+					. " LEFT JOIN #__jevents_categories as ex on ex.id=c.id"
 					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
-					. (JVersion::isCompatible("1.6.0") ? ' AND c.extension ' : ' AND c.section') . ' = ' . $db->Quote($sectionname)
+					. ' AND c.extension  = ' . $db->Quote($sectionname)
 					. "\n " . $where;
 			;
 
@@ -272,7 +238,7 @@ class JEventsDBModel
 					. ($levels > 2 ? ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' : '')
 					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
-					. (JVersion::isCompatible("1.6.0") ? ' AND c.extension ' : ' AND c.section') . ' = ' . $db->Quote($sectionname)
+					. ' AND c.extension ' . ' = ' . $db->Quote($sectionname)
 					. "\n " . $where;
 			;
 

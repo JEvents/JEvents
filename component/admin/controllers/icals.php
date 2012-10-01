@@ -81,20 +81,13 @@ class AdminIcalsController extends JControllerForm {
 			$limitstart = 0;
 		}
 
-		if (JVersion::isCompatible("1.6.0")){
-			$query = "SELECT icsf.*, a.title as _groupname"
-			. "\n FROM #__jevents_icsfile as icsf "
-			. "\n LEFT JOIN #__viewlevels AS a ON a.id = icsf.access"
-			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			;
-		}
-		else {
-			$query = "SELECT icsf.*, g.name AS _groupname"
-			. "\n FROM #__jevents_icsfile as icsf "
-			. "\n LEFT JOIN #__groups AS g ON g.id = icsf.access"
-			. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
-			;
-		}
+		
+		$query = "SELECT icsf.*, a.title as _groupname"
+		. "\n FROM #__jevents_icsfile as icsf "
+		. "\n LEFT JOIN #__viewlevels AS a ON a.id = icsf.access"
+		. ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+		;
+		
 		$query .= "\n ORDER BY icsf.isdefault DESC, icsf.label ASC";
 		if ($limit>0){
 			$query .= "\n LIMIT $limitstart, $limit";
@@ -614,13 +607,12 @@ class AdminIcalsController extends JControllerForm {
 		$component_name = "com_jevents";
 
 		$db	=& JFactory::getDBO();
-		if (JVersion::isCompatible("1.6.0"))  $query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
-		else $query = "SELECT COUNT(*) AS count FROM #__categories WHERE section='$component_name'";
+		$query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
 		if ($count<=0){
 			// RSH 9/28/10 - Added check for J!1.6 to use different URL for reroute
-			$redirectURL = (JVersion::isCompatible("1.6.0")) ? "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT : "index.php?option=" . JEV_COM_COMPONENT . "&task=categories.list";
+			$redirectURL = "index.php?option=com_categories&extension=" . JEV_COM_COMPONENT;
 			$this->setRedirect($redirectURL, "You must first create at least one category");
 			$this->redirect();
 		}
