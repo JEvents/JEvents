@@ -248,7 +248,6 @@ class DefaultModLegendView
 
 		$db = JFactory::getDBO();
 		$aid = $this->datamodel->aid;
-
 		$user = & JFactory::getUser();
 
 		// Get all the categories
@@ -268,7 +267,7 @@ class DefaultModLegendView
 			$cat->overlaps = $params->get("overlaps", 0);
 		}
 		unset($cat);
-
+		
 		// any plugin based resitrictions
 		$dispatcher = & JDispatcher::getInstance();
 		// remember NOT to reindex the list

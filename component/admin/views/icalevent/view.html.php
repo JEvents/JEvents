@@ -236,92 +236,46 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
-
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
-			$access = $user->authorise('core.admin', 'com_jevents');
-		}
-		else
-		{
-			// Get an ACL object
-			$acl = & JFactory::getACL();
-			$grp = $acl->getAroGroup($user->get('id'));
-			// if no valid group (e.g. anon user) then skip this.
-			if (!$grp)
-				return;
-
-			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
-		}
-
+		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+		$access = $user->authorise('core.admin', 'com_jevents');
 
 		$db = JFactory::getDBO();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
-
-			if (JVersion::isCompatible("1.6.0"))
+			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 0);
+			// if authorised only then load from database
+			if ($authorisedonly)
 			{
-				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				// if authorised only then load from database
-				if ($authorisedonly)
-				{
-					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
-					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-					$sql .= " WHERE tl.cancreate=1";
-					$sql .= " ORDER BY ju.name ASC";
-					$db->setQuery($sql);
-					$users = $db->loadObjectList();
-				}
-				else
-				{
-					$rules = JAccess::getAssetRules("com_jevents", true);
-					$creatorgroups = $rules->getData();
-					// need to merge the arrays because of stupid way Joomla checks super user permissions
-					//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
-					// use union orf arrays sincee getData no longer has string keys in the resultant array
-					$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
-					
-					$users = array(0);
-					foreach ($creatorgroups as $creatorgroup => $permission)
-					{
-						if ($permission == 1)
-						{
-							$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
-						}
-					}
-					$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
-					$db->setQuery($sql);
-					$users = $db->loadObjectList();
-				}
+				$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
+				$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+				$sql .= " WHERE tl.cancreate=1";
+				$sql .= " ORDER BY ju.name ASC";
+				$db->setQuery($sql);
+				$users = $db->loadObjectList();
 			}
 			else
 			{
-				$db = JFactory::getDBO();
-
-				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				// if authorised only then load from database
-				if ($authorisedonly)
+				$rules = JAccess::getAssetRules("com_jevents", true);
+				$creatorgroups = $rules->getData();
+				// need to merge the arrays because of stupid way Joomla checks super user permissions
+				//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+				// use union orf arrays sincee getData no longer has string keys in the resultant array
+				$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+				
+				$users = array(0);
+				foreach ($creatorgroups as $creatorgroup => $permission)
 				{
-					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
-					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-					$sql .= " WHERE tl.cancreate=1";
-					$sql .= " ORDER BY ju.name ASC";
-					$db->setQuery($sql);
-					$users = $db->loadObjectList();
+                                	if ($permission == 1)
+                                        {
+						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+					}
 				}
-				else
-				{
-					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-					$minaccess = $params->get("jevcreator_level", 19);
-					$sql = "SELECT * FROM #__users where gid>=" . $minaccess;
-					$sql .= " ORDER BY name ASC";
-					$db->setQuery($sql);
-					$users = $db->loadObjectList();
-				}
+				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+				$db->setQuery($sql);
+				$users = $db->loadObjectList();
 			}
-
+			
 			$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
 			foreach ($users as $user)
 			{

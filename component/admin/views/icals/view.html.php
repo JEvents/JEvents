@@ -79,33 +79,21 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 			$users = $db->loadObjectList();
 		}
 		else {
-			if (JVersion::isCompatible("1.6.0")) {
-				$rules = JAccess::getAssetRules("com_jevents", true);
-				$creatorgroups = $rules->getData();
-				// need to merge the arrays because of stupid way Joomla checks super user permissions
-				//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
-				// use union orf arrays sincee getData no longer has string keys in the resultant array
-				$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
-				$users = array(0);
-				foreach ($creatorgroups as $creatorgroup => $permission){
-					if ($permission==1){
-						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
-					}
+			$rules = JAccess::getAssetRules("com_jevents", true);
+			$creatorgroups = $rules->getData();
+			// need to merge the arrays because of stupid way Joomla checks super user permissions
+			//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+			// use union orf arrays sincee getData no longer has string keys in the resultant array
+			$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+			$users = array(0);
+			foreach ($creatorgroups as $creatorgroup => $permission){
+				if ($permission==1){
+					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 				}
-				$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
-
 			}
-			else {
-				$minaccess = $params->get("jevcreator_level",19);
-				// get users AUTHORS and above
-				$sql = "SELECT * FROM #__users where gid>=".$minaccess;
-				$db->setQuery( $sql );
-				$users = $db->loadObjectList();
-
-			}
-
+			$sql = "SELECT * FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+			$db->setQuery( $sql );
+			$users = $db->loadObjectList();
 		}
 		$userOptions = array();
 		foreach( $users as $user )

@@ -90,7 +90,7 @@ class AdminCpanelController extends JControllerAdmin
 		{
 
 			// RSH Fix to allow the installation to work with J!1.6 11/19/10 - Adapater is now a subclass of JAdapterInstance!
-			$jevlayout_file = (JVersion::isCompatible("1.6.0")) ? 'jevlayout_1.6.php' : 'jevlayout.php';
+			$jevlayout_file = 'jevlayout.php';
 
 			jimport('joomla.filesystem.file');
 			if (!JFile::exists(JPATH_SITE . "/libraries/joomla/installer/adapters/jevlayout.php") ||
@@ -115,10 +115,8 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			$this->view->assign('migrated', 0);
 		}
-
-		if (JVersion::isCompatible("1.6.0")){
 			$this->checkCategoryAssets();
-		}
+		
 
 		// get all the raw native calendars
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
@@ -467,151 +465,143 @@ class AdminCpanelController extends JControllerAdmin
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$db = JFactory::getDbo();
 		// merge/unmerge menu items?
-		if (JVersion::isCompatible("1.6.0")){
-			// Joomla 2.5 version
-			$sql = 'select id from #__menu where client_id=1 and parent_id=1 and title="com_jevents"';
-			$db->setQuery($sql);			
-			$parent = $db->loadResult();
+		// Joomla 2.5 version
+		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and title="com_jevents"';
+		$db->setQuery($sql);			
+		$parent = $db->loadResult();
 
-			$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
-			$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
+		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
+		$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
 			
-			// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them
-			$sql = 'SELECT id, title, alias, link FROM #__menu where client_id=1 AND (
-				'.$toexist.'
-			)';
-			// order by parent id to remove the appropriate duplicate - list the ones we want to keep first
-			$sql .= ' ORDER BY parent_id '.($params->get("mergemenus", 1) ? 'desc':'asc');
-			$db->setQuery($sql);			
-			$existingmenus =  $db->loadObjectList();
+		// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them
+		$sql = 'SELECT id, title, alias, link FROM #__menu where client_id=1 AND (
+		'.$toexist.'
+		)';
+		// order by parent id to remove the appropriate duplicate - list the ones we want to keep first
+		$sql .= ' ORDER BY parent_id '.($params->get("mergemenus", 1) ? 'desc':'asc');
+		$db->setQuery($sql);			
+		$existingmenus =  $db->loadObjectList();
 
-			if (!$existingmenus) {
-				$existingmenus = array();
-			}
+		if (!$existingmenus) {
+			$existingmenus = array();
+		}
 
-			// are there any duplicates
-			$links = array();
-			$updatemenus = false;			
-			foreach ($existingmenus as $em){
-				if (array_key_exists($em->link, $links)){
-					$sql = "DELETE FROM #__menu where client_id and id=$em->id OR parent_id=$em->id";
-					$db->setQuery($sql);			
-					$db->query();			
-					$updatemenus = true;
-				}
-				else {
-					$links[$em->link]=$em;
-				}
+		// are there any duplicates
+		$links = array();
+		$updatemenus = false;			
+		foreach ($existingmenus as $em){
+			if (array_key_exists($em->link, $links)){
+				$sql = "DELETE FROM #__menu where client_id and id=$em->id OR parent_id=$em->id";
+				$db->setQuery($sql);			
+				$db->query();			
+				$updatemenus = true;
 			}
-			if ($updatemenus) {
-				JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
-				// rebuild the menus
-				$menu = JTable::getInstance('Menu');
-				$menu->rebuild();
+			else {
+				$links[$em->link]=$em;
 			}
+		}
+		if ($updatemenus) {
+			JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			// rebuild the menus
+			$menu = JTable::getInstance('Menu');
+			$menu->rebuild();
+		}
 			
-			// find list of installed addons
-			$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
-			$sql = 'SELECT element,extension_id FROM #__extensions  where type="component" AND (
-				'.$installed.'
-			)';
-			$db->setQuery($sql);			
-			$installed  =  $db->loadObjectList();
+		// find list of installed addons
+		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
+		$sql = 'SELECT element,extension_id FROM #__extensions  where type="component" AND (
+		'.$installed.'
+		)';
+		$db->setQuery($sql);			
+		$installed  =  $db->loadObjectList();
 
-			foreach ($installed as $missingmenu){
-				if (array_key_exists("index.php?option=".$missingmenu->element, $links)){
-					continue;
-				}
-				JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
-				$table = JTable::getInstance('Menu', 'JTable');
-
-				$table->id = 0;
-				$table->title = $missingmenu->element;
-				$table->alias = str_replace("_", "-", $missingmenu->element);
-				$table->path = $table->alias;
-				$table->link = "index.php?option=".$missingmenu->element;
-				$table->type = "component" ;
-				$table->img = "class:component";
-				$table->parent_id = 1;
-				$table->client_id = 1;
-				$table->component_id = $missingmenu->extension_id;
-				$table->level = 1;
-				$table->home = 0;
-				$table->checked_out = 0;
-				$table->checked_out_time = $db->getNullDate();
-
-				$table->setLocation(1, "last-child");
-				$table->store();
-
-
+		foreach ($installed as $missingmenu){
+			if (array_key_exists("index.php?option=".$missingmenu->element, $links)){
+				continue;
+			}
+			JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			$table = JTable::getInstance('Menu', 'JTable');
+			$table->id = 0;
+			$table->title = $missingmenu->element;
+			$table->alias = str_replace("_", "-", $missingmenu->element);
+			$table->path = $table->alias;
+			$table->link = "index.php?option=".$missingmenu->element;
+			$table->type = "component" ;
+			$table->img = "class:component";
+			$table->parent_id = 1;
+			$table->client_id = 1;
+			$table->component_id = $missingmenu->extension_id;
+			$table->level = 1;
+			$table->home = 0;
+			$table->checked_out = 0;
+			$table->checked_out_time = $db->getNullDate();
+			$table->setLocation(1, "last-child");
+			$table->store();
 			}					
-			
 		
-			$updatemenus = false;			
-			if ($params->get("mergemenus", 1)){
-							
-												
-				$sql = 'SELECT count(id) FROM #__menu 
+		$updatemenus = false;			
+		if ($params->get("mergemenus", 1)){
+											
+			$sql = 'SELECT count(id) FROM #__menu 
+			where client_id=1 AND parent_id=1 AND (
+				'.$tochange.'
+			)';
+			$db->setQuery($sql);			
+			$mus = $db->loadResult();
+			if ($mus){
+				// check to see if we are creating a duplicate from an upgrade of an addon!
+				$sql = 'SELECT * FROM #__menu 
 				where client_id=1 AND parent_id=1 AND (
 					'.$tochange.'
 				)';
 				$db->setQuery($sql);			
-				$mus = $db->loadResult();
-				if ($mus){
-					// check to see if we are creating a duplicate from an upgrade of an addon!
-					$sql = 'SELECT * FROM #__menu 
-					where client_id=1 AND parent_id=1 AND (
-						'.$tochange.'
-					)';
-					$db->setQuery($sql);			
-					$tomerge = $db->loadObjectList();
+				$tomerge = $db->loadObjectList();
 
-					$sql = 'SELECT * FROM #__menu 
-					where client_id=1 AND parent_id='.$parent.'  AND (
-						'.$tochange.'
-					)';
-					$db->setQuery($sql);			
-					$alreadymerged = $db->loadObjectList();
-
-					if ($alreadymerged){
-						foreach ($tomerge as $checkitem){
-							foreach ($alreadymerged as $merged){
-								if ($merged->alias == $checkitem->alias && $merged->link == $checkitem->link){
-									// remove duplicates
-									$sql = "DELETE FROM #__menu  where id=$checkitem->id";
-									$db->setQuery($sql);			
-									$db->query();
-								}
-							}
-						}
-					}
-					$updatemenus = true;
-					
-					$sql = 'UPDATE  #__menu 
-					set parent_id = '.$parent.'
-					where client_id=1 AND parent_id=1 AND (
-						'.$tochange.'
-					)';
-					$db->setQuery($sql);			
-					$db->query();
-					echo $db->getErrorMsg();
-				}
-			}
-			else {
-				$sql = 'SELECT count(id) FROM #__menu 
-				where client_id=1 AND parent_id='.$parent.' AND (
+                                $sql = 'SELECT * FROM #__menu 
+				where client_id=1 AND parent_id='.$parent.'  AND (
 					'.$tochange.'
 				)';
 				$db->setQuery($sql);			
-				$mus = $db->loadResult();
-				if ($mus){
-					$updatemenus = true;
+				$alreadymerged = $db->loadObjectList();
 
-					// Joomla 2.5 version
+				if ($alreadymerged){
+					foreach ($tomerge as $checkitem){
+						foreach ($alreadymerged as $merged){
+							if ($merged->alias == $checkitem->alias && $merged->link == $checkitem->link){
+								// remove duplicates
+								$sql = "DELETE FROM #__menu  where id=$checkitem->id";
+								$db->setQuery($sql);			
+								$db->query();
+							}
+						}
+					}
+				}
+				$updatemenus = true;
+				
+				$sql = 'UPDATE  #__menu 
+				set parent_id = '.$parent.'
+				where client_id=1 AND parent_id=1 AND (
+				'.$tochange.'
+				)';
+				$db->setQuery($sql);			
+				$db->query();
+				echo $db->getErrorMsg();
+			}
+		}
+		else {
+			$sql = 'SELECT count(id) FROM #__menu 
+			where client_id=1 AND parent_id='.$parent.' AND (
+			'.$tochange.'
+			)';
+			$db->setQuery($sql);			
+			$mus = $db->loadResult();
+			if ($mus){
+        			$updatemenus = true;
+				// Joomla 2.5 version
 					$sql = 'UPDATE  #__menu 
 					set parent_id = 1
 					where client_id=1 AND parent_id='.$parent.' AND (
-						'.$tochange.'
+					'.$tochange.'
 					)';
 					$db->setQuery($sql);			
 					$db->query();
@@ -624,8 +614,6 @@ class AdminCpanelController extends JControllerAdmin
 				// rebuild the menus
 				$menu = JTable::getInstance('Menu');
 				$menu->rebuild();
-			}
-		}
-		
+			}		
 	}
 }

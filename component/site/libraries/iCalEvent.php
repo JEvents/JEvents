@@ -90,20 +90,8 @@ class iCalEvent extends JTable  {
 
 		$access = false;
 		if ($user->get('id')>0){
-			if (JVersion::isCompatible("1.6.0")) {
-				//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
-				$access = $user->authorise('core.deleteall', 'com_jevents');
-			}
-			else {
-				// does this logged in have backend access
-				// Get an ACL object
-				$acl =& JFactory::getACL();
-				$grp = $acl->getAroGroup($user->get('id'));
-				// if no valid group (e.g. anon user) then skip this.
-				if (!$grp) return;
-
-				$access = $acl->is_group_child_of($grp->name, 'Public Backend');
-			}
+			//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+			$access = $user->authorise('core.deleteall', 'com_jevents');
 		}
 
 		if (!(($jevuser && $jevuser->candeleteall) || $access) || $creatorid==0){

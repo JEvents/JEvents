@@ -6,8 +6,6 @@ defined('JPATH_BASE') or die;
 // Class to fix Joomla 1.6 date class bugs
 jimport("joomla.utilities.date");
 
-if (JVersion::isCompatible("1.6.0"))
-{
 	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
 	if (!defined("JEVDATE"))
 	{
@@ -258,91 +256,3 @@ if (JVersion::isCompatible("1.6.0"))
 		}
 
 	}
-}
-else
-{
-	// on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
-	if (!defined("JEVDATE"))
-	{
-		define("JEVDATE", 1);
-
-		class JevDate extends JDate
-		{
-
-			function __construct($date = 'now', $tz = 0)
-			{
-				// convert tz to tzOffset
-				$tzOffset = null;
-				if ($tz && is_object($tz) && is_a($tz, "DateTimeZone")){
-					/// if this timezone is not the same as JEvents then adjust accordingly
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-					// server offset tiemzone
-					if ($params->get("icaltimezone","")!="" && $params->get("icaltimezone","")!=$tz->getName()){
-						$tzOffset1 = $tz->getOffset(new DateTime($date))/3600;
-						$tz2 = new DateTimeZone($params->get("icaltimezone",""));
-						$tzOffset2 = $tz2->getOffset(new DateTime($date))/3600;
-						$tzOffset = $tzOffset2 - $tzOffset1;						
-					}
-
-				}
-				return parent::__construct($date, $tzOffset);
-			}
-
-			public function getDate($time = 'now', $tzOffset = null)
-			{
-				return JFactory::getDate($time, $tzOffset);
-
-			}
-
-			public static function strtotime($time, $now=null)
-			{
-				if ($now != null)
-				{
-					$res = strtotime($time, $now);
-				}
-				else
-				{
-					$res = strtotime($time);
-				}
-				return $res;
-
-			}
-
-			public static function mktime()
-			{
-				$arg = func_get_args();
-
-				$name = "mktime";
-				if (is_callable($name))
-				{
-					return call_user_func_array($name, $arg);
-				}
-
-			}
-
-			public static function strftime()
-			{
-				$name = "strftime";
-				$arg = func_get_args();
-				if (is_callable($name))
-				{
-					return call_user_func_array($name, $arg);
-				}
-
-			}
-
-			public function __call($name, $arguments)
-			{
-				$args = array_unshift($arguments, $this);
-
-				if (is_callable($name))
-				{
-					return call_user_func_array($name, $arg);
-				}
-
-			}
-
-		}
-
-	}
-}

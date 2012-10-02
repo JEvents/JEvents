@@ -24,13 +24,7 @@ function DefaultEventManagementDialog($view,$row, $mask){
 		}
 
 		$hasrepeat = false;
-
-		if (JVersion::isCompatible("1.6.0")){
-			$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';
-		}
-		else {
-			$pathIMG = JURI::root() . 'administrator/images';
-		}
+		$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';
 		$editImg = $pathIMG."/edit_f2.png";
 		$editLink = $row->editLink();
 		$editLink = $popup?"javascript:jevEditPopup('".$editLink."',$popupw, $popuph);":$editLink;

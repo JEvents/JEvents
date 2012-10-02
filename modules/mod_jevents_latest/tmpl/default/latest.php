@@ -776,13 +776,7 @@ class DefaultModLatestView
 
 		if ($this->displayRSS)
 		{
-			if (JVersion::isCompatible("1.6.0")) {
-				$rssimg = JURI::root() . "media/system/images/livemarks.png";
-			}
-			else {
-				$rssimg = JURI::root() . "images/M_images/livemarks.png";
-			}
-
+			$rssimg = JURI::root() . "media/system/images/livemarks.png";
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 					. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
 					. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
@@ -926,26 +920,17 @@ class DefaultModLatestView
 				// Also want to cloak contact details so
 				$this->modparams->set("image", 1);
 				$dayEvent->text = $dayEvent->contact_info();
-				if (JVersion::isCompatible("1.6.0")) {
-					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
-				}
-				else {
-					$dispatcher->trigger('onPrepareContent', array(&$dayEvent, &$this->modparams, 0), true);
-				}
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
+				
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
 
 			case 'content':  // Added by Kaz McCoy 1-10-2004
 				$this->modparams->set("image", 1);
-				 $dayEvent->data->text = $dayEvent->content();
-				if (JVersion::isCompatible("1.6.0")) {
-					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
-				}
-				else {
-					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
-				}
-				
+				$dayEvent->data->text = $dayEvent->content();
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+								
 				if (!empty ($dateParm)){
 					$parts = explode("|",$dateParm);
 					if (count($parts)>0 && strlen(strip_tags($dayEvent->data->text)) >  intval($parts[0])){
@@ -965,12 +950,7 @@ class DefaultModLatestView
 			case 'location':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->location();
-				if (JVersion::isCompatible("1.6.0")) {
-					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
-				}
-				else {
-					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
-				}
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 				$dayEvent->location($dayEvent->data->text);
 				$content .= $dayEvent->location();
 				break;
@@ -978,12 +958,7 @@ class DefaultModLatestView
 			case 'extraInfo':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->extra_info();
-				if (JVersion::isCompatible("1.6.0")) {
-					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
-				}
-				else {
-					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
-				}
+				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 				$dayEvent->extra_info($dayEvent->data->text);
 				$content .= $dayEvent->extra_info();
 				break;

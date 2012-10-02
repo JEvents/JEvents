@@ -17,7 +17,7 @@ define("EDITING_JEVENT", 1);
 
 
 // New version that uses JForm
- /*
+ 
 JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR."/models/forms/");
 $xpath = false;
 // leave form control blank since we want the fields as ev_id and not jform[ev_id]
@@ -34,7 +34,7 @@ $form->bind($this->row);
 echo $form->getInput("demo");
 echo $form->getInput("ev_id");
 echo $form->getInput("usergroup");
-*/
+
 
 global $task, $catid;
 $db = & JFactory::getDBO();
@@ -132,12 +132,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
             }
             ?>
             <script type="text/javascript" language="Javascript">
-
-<?php if (JVersion::isCompatible("1.6.0")) { ?>
         Joomla.submitbutton = function (pressbutton) {
-<?php } else { ?>
-            function submitbutton(pressbutton) {
-<?php } ?>	
             if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
                 if (document.adminForm['catid']){
                     // restore catid to input value
@@ -408,11 +403,7 @@ if ($cfg->get('com_show_editor_buttons')) {
 }
 echo "<div id='jeveditor'>";
 // parameters : areaname, content, hidden field, width, height, rows, cols
-if (JVersion::isCompatible("1.6.0")) {
-    echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
-} else {
-    echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons);
-}
+echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
 echo "</div>";
 ?>
                         </td>

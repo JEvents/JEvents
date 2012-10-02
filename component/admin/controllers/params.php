@@ -81,25 +81,14 @@ class AdminParamsController extends JControllerAdmin
 		$component = JEV_COM_COMPONENT;
 
 		$model = $this->getModel('params');
-		if (JVersion::isCompatible("1.6.0"))
+		$table = & JTable::getInstance('extension');
+		//if (!$table->loadByOption( $component ))
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			$table = & JTable::getInstance('extension');
-			//if (!$table->loadByOption( $component ))
-			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
+			JError::raiseWarning(500, 'Not a valid component');
+			return false;
 		}
-		else
-		{
-			$table = & JTable::getInstance('component');
-			if (!$table->loadByOption($component))
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
-		}
+		
 
 		$post = JRequest::get('post');
 		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
@@ -135,57 +124,51 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		// Now save the form permissions data
-		if (JVersion::isCompatible("1.6.0"))
+		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$option = JEV_COM_COMPONENT;
+		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+		$id = $comp->id;
+		// Validate the posted data.
+		JForm::addFormPath(JPATH_COMPONENT);
+		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+
+		$form = $model->getForm();
+		$return = $model->validate($form, $data);
+
+		// Check for validation errors.
+		if ($return === false)
 		{
-
-			$data = JRequest::getVar('jform', array(), 'post', 'array');
-			$option = JEV_COM_COMPONENT;
-			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-			$id = $comp->id;
-
-			// Validate the posted data.
-			JForm::addFormPath(JPATH_COMPONENT);
-			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
-
-			$form = $model->getForm();
-			$return = $model->validate($form, $data);
-
-			// Check for validation errors.
-			if ($return === false)
+			// Get the validation messages.
+			$errors = $model->getErrors();
+			$app = JFactory::getApplication();
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				// Get the validation messages.
-				$errors = $model->getErrors();
-
-				$app = JFactory::getApplication();
-				// Push up to three validation messages out to the user.
-				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+				if (JError::isError($errors[$i]))
 				{
-					if (JError::isError($errors[$i]))
-					{
-						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
-					}
-					else
-					{
-						$app->enqueueMessage($errors[$i], 'notice');
-					}
+					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
 				}
-
-				// Save the data in the session.
-				$app->setUserState('com_config.config.global.data', $data);
-
-				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
-				return false;
+				else
+				{
+					$app->enqueueMessage($errors[$i], 'notice');
+				}
 			}
 
-			// Attempt to save the configuration.
-			$data = array(
-				'params' => $return,
-				'id' => $id,
-				'option' => $option
-			);
-			$return = $model->saveRules($data);
+			// Save the data in the session.
+			$app->setUserState('com_config.config.global.data', $data);
+			// Redirect back to the edit screen.
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+			return false;
 		}
+
+		// Attempt to save the configuration.
+		$data = array(
+			'params' => $return,
+			'id' => $id,
+			'option' => $option
+		);
+		$return = $model->saveRules($data);
+		
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -212,25 +195,14 @@ class AdminParamsController extends JControllerAdmin
 		$component = JEV_COM_COMPONENT;
 
 		$model = $this->getModel('params');
-		if (JVersion::isCompatible("1.6.0"))
+		$table = & JTable::getInstance('extension');
+		//if (!$table->loadByOption( $component ))
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			$table = & JTable::getInstance('extension');
-			//if (!$table->loadByOption( $component ))
-			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
+			JError::raiseWarning(500, 'Not a valid component');
+			return false;
 		}
-		else
-		{
-			$table = & JTable::getInstance('component');
-			if (!$table->loadByOption($component))
-			{
-				JError::raiseWarning(500, 'Not a valid component');
-				return false;
-			}
-		}
+		
 
 		$post = JRequest::get('post');
 		$post['option'] = $component;
@@ -251,58 +223,51 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		// Now save the form permissions data
-		if (JVersion::isCompatible("1.6.0"))
+		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$option = JEV_COM_COMPONENT;
+		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+		$id = $comp->id;
+		// Validate the posted data.
+		JForm::addFormPath(JPATH_COMPONENT);
+		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+		$form = $model->getForm();
+		$return = $model->validate($form, $data);
+
+		// Check for validation errors.
+		if ($return === false)
 		{
+			// Get the validation messages.
+			$errors = $model->getErrors();
 
-			$data = JRequest::getVar('jform', array(), 'post', 'array');
-			$option = JEV_COM_COMPONENT;
-			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-			$id = $comp->id;
-
-			// Validate the posted data.
-			JForm::addFormPath(JPATH_COMPONENT);
-			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
-
-			$form = $model->getForm();
-			$return = $model->validate($form, $data);
-
-			// Check for validation errors.
-			if ($return === false)
+			$app = JFactory::getApplication();
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				// Get the validation messages.
-				$errors = $model->getErrors();
-
-				$app = JFactory::getApplication();
-				// Push up to three validation messages out to the user.
-				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+				if (JError::isError($errors[$i]))
 				{
-					if (JError::isError($errors[$i]))
-					{
-						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
-					}
-					else
-					{
-						$app->enqueueMessage($errors[$i], 'notice');
-					}
+					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
 				}
-
-				// Save the data in the session.
-				$app->setUserState('com_config.config.global.data', $data);
-
-				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
-				return false;
+				else
+				{
+					$app->enqueueMessage($errors[$i], 'notice');
+				}
 			}
 
-			// Attempt to save the configuration.
-			$data = array(
-				'params' => $return,
-				'id' => $id,
-				'option' => $option
-			);
-			$return = $model->saveRules($data);
+			// Save the data in the session.
+			$app->setUserState('com_config.config.global.data', $data);
+			// Redirect back to the edit screen.
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+			return false;
 		}
 
+		// Attempt to save the configuration.
+		$data = array(
+			'params' => $return,
+			'id' => $id,
+			'option' => $option
+		);
+		$return = $model->saveRules($data);
+		
 		$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=params.edit", JText::_('CONFIG_SAVED'));
 		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();
@@ -321,15 +286,8 @@ class AdminParamsController extends JControllerAdmin
 	function dbsetup()
 	{
 		$db = & JFactory::getDBO();
-		if (JVersion::isCompatible("1.6"))
-		{
-			$db->setDebug(0);
-		}
-		else
-		{
-			$db->debug(0);
-		}
-
+		$db->setDebug(0);
+		
 		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
 
 
@@ -762,12 +720,7 @@ SQL;
 		if (!$catid) {
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			if (JVersion::isCompatible("1.6.0"))  {
-				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
-			}
-			else {
-				$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>0));
-			}
+			$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
 			$cat->store();
 			$catid=$cat->id;
 		}
@@ -779,14 +732,7 @@ SQL;
 
 		if (!$ics || is_null($ics) || $ics == 0)
 		{
-			if (JVersion::isCompatible("1.6.0"))
-			{
-				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
-			}
-			else
-			{
-				$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,0,$catid,1)";
-			}
+			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
 			$db->setQuery($sql);
 			$db->query();
 			echo $db->getErrorMsg();
