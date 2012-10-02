@@ -25,9 +25,10 @@ class CatController extends JControllerLegacy   {
 		// Load abstract "view" class
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
-		
-		$this->_basePath = $this->basePath;
-		$this->_task = $this->task;		
+		if (!isset($this->_basePath)){
+			$this->_basePath = $this->basePath;
+			$this->_task = $this->task;		
+		}
 	}
 
 	function listevents() {

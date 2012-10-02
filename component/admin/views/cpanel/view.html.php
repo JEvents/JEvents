@@ -382,13 +382,10 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$app->version = $manifestdata["version"];
 			$name = str_replace(".xml", "", basename($manifest));
 			
-                        $name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+                          $name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
 			
-// simulate Joomla 1.7 directory structure
-			$name = "plugin_" . basename(dirname($manifest)) . "_" . $name;
-			}
-		$apps[$name] = $app;
-		
+			$apps[$name] = $app;
+		}
 
 // components (including JEvents
 		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);

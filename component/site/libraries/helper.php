@@ -1019,29 +1019,29 @@ class JEVHelper
 			
 			// other users can always edit their own unless blocked by category
 			
-				 // This involes TOO many database queries in Joomla - one per category which can be a LOT
-				/*
-				$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
-				$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
-				if (in_array($row->_catid, $cats))
-					return true;
-				else if (in_array($row->_catid, $cats_own))
-					return true;
-				 */
-				$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
-				if (!isset($authdata_coreedit[$key])){
-					$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			$cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+			$cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
+			if (in_array($row->_catid, $cats))
+				return true;
+			else if (in_array($row->_catid, $cats_own))
+				return true;
+			*/
+			$key = $row->catids()?json_encode($row->catids()):json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key])){
+				$authdata_coreedit[$key] =JEVHelper::authoriseCategories('core.edit', $key, $user);
+			}
+			if ($authdata_coreedit[$key]) {
+				return true;
+			}
+			else {
+				if (!isset($authdata_editown[$key])){
+					$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
 				}
-				if ($authdata_coreedit[$key]) {
-					return true;
-				}
-				else {
-					if (!isset($authdata_editown[$key])){
-						$authdata_editown[$key] =JEVHelper::authoriseCategories('core.edit.own', $key, $user);
-					}
-					return $authdata_editown[$key];
-				}
-				return false;
+				return $authdata_editown[$key];
+			}
+			return false;
                 }
 					
                 if ($user->id > 0 && $row->catid()>0){
