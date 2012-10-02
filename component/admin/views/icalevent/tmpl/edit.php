@@ -14,10 +14,8 @@ if (defined("EDITING_JEVENT"))
     return;
 define("EDITING_JEVENT", 1);
 
-
-
+/*
 // New version that uses JForm
- 
 JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR."/models/forms/");
 $xpath = false;
 // leave form control blank since we want the fields as ev_id and not jform[ev_id]
@@ -34,8 +32,7 @@ $form->bind($this->row);
 echo $form->getInput("demo");
 echo $form->getInput("ev_id");
 echo $form->getInput("usergroup");
-
-
+*/
 global $task, $catid;
 $db = & JFactory::getDBO();
 $editor = & JFactory::getEditor();
