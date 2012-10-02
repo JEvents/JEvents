@@ -118,7 +118,11 @@ class AdminParamsController extends JControllerAdmin
 		if (!$params->get("multicategory", 0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory'] == 1)
 		{
 			$db = JFactory::getDbo();
-			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
+			$sql = "DELETE FROM #__jevents_catmap";
+			$db->setQuery($sql);
+			$db->query();			
+			
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
 			$db->query();
 		}

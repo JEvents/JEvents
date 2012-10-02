@@ -84,24 +84,16 @@ class JEV_CommonFunctions {
 		if (!isset($cats)){
 			$db	=& JFactory::getDBO();
 
-			if (JVersion::isCompatible("1.6.0"))  {
-				$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
-				$db->setQuery( $sql);
-				$cats = $db->loadObjectList('id');
-				foreach ($cats as &$cat){
-					$cat->name = $cat->title;
-					$params = new JRegistry($cat->params);
-					$cat->color = $params->get("catcolour","");
-					$cat->overlaps = $params->get("overlaps",0);
-				}
-				unset ($cat);
-
+			$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
+			$db->setQuery( $sql);
+			$cats = $db->loadObjectList('id');
+			foreach ($cats as &$cat){
+				$cat->name = $cat->title;
+				$params = new JRegistry($cat->params);
+				$cat->color = $params->get("catcolour","");
+				$cat->overlaps = $params->get("overlaps",0);
 			}
-			else {
-				$sql = "SELECT c.*, e.color FROM #__jevents_categories AS e LEFT JOIN #__categories as c ON c.id=e.id";
-				$db->setQuery( $sql);
-				$cats = $db->loadObjectList('id');
-			}
+			unset ($cat);
 
 			$dispatcher	=& JDispatcher::getInstance();
 			$dispatcher->trigger('onGetCategoryData', array (& $cats));

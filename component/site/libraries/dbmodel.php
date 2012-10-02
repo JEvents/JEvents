@@ -210,10 +210,9 @@ class JEventsDBModel
 			$query = "SELECT c.*"
 					. (JVersion::isCompatible("1.6.0") ? "" : ", ex.*")
 					. "\n FROM #__categories AS c"
-					. (JVersion::isCompatible("1.6.0") ? "" : " LEFT JOIN #__jevents_categories as ex on ex.id=c.id")
-					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+					. "\n WHERE c.access IN (' . $aid . ')' "
 					. $q_published
-					. (JVersion::isCompatible("1.6.0") ? ' AND c.extension ' : ' AND c.section') . ' = ' . $db->Quote($sectionname)
+					. ' AND c.extension = ' . $db->Quote($sectionname)
 					. "\n " . $where;
 			;
 

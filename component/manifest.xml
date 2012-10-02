@@ -10,7 +10,6 @@
 	<version>3.0.0alpha</version>
 	<description>Events, meetings and more</description>
 
-	<installfile>install/install.php</installfile>
 	<scriptfile>install/scriptfile.php</scriptfile>
 	
     <files folder="site">

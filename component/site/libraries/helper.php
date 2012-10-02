@@ -659,9 +659,9 @@ class JEVHelper
 					$user =  JFactory::getUser();
 					foreach ($jevitems as $jevitem)
 					{
-						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $jevitem->access)
+						if (in_array($jevitem->access, JEVHelper::getAid($user, 'array')))
 						{
-							if (strpos($active->link, "admin.listevents") > 0)
+							if (strpos($jevitem->link, "admin.listevents") > 0)
 							{
 								$jevitemid = $jevitem->id;
 								return $jevitemid;
@@ -1214,9 +1214,9 @@ class JEVHelper
 		$juser =  JFactory::getUser();
 
 		$db = & JFactory::getDBO();
-		$sql = "SELECT id FROM #__jevents_categories WHERE admin=" . $juser->id;
+		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id."\"%')";
 		$db->setQuery($sql);
-		$catids = $db->loadColumn();
+		$catids = $db->loadColumn();		
 		if (count($catids) > 0)
 			return $catids;
 		return false;

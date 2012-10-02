@@ -76,21 +76,6 @@ class AdminCpanelController extends JControllerAdmin
 			}
 		}
 
-		// category table overlaps
-		if (!JVersion::isCompatible("1.6.0"))
-		{
-			$sql = "SHOW COLUMNS FROM `#__jevents_categories`";
-			$db->setQuery($sql);
-
-			$cols = $db->loadObjectList('Field');
-			if (!isset($cols['overlaps']))
-			{
-				$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
-				$this->redirect();
-				//return;
-			}
-		}
-
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->get("jevadmin", -1);

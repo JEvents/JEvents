@@ -179,7 +179,16 @@ if (!empty($this->icalEvents))
 
 			$start = JevDate::strftime($startformat, $start);
 			$end = JevDate::strftime($endformat, $end);
-			$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+			
+			if ( is_callable("date_default_timezone_set")) {
+				date_default_timezone_set("UTC");			
+				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+				// Change back
+				date_default_timezone_set($current_timezone);				
+			}
+			else {
+				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+			}
 
 			// in case the first repeat is changed
 			if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
@@ -188,7 +197,7 @@ if (!empty($this->icalEvents))
 			}
 		}
 
-		$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+		$html .= "DTSTAMP:" . $stamptime . "\r\n";
 		$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
 		// events with no end time don't give a DTEND
 		if (!$a->noendtime())
