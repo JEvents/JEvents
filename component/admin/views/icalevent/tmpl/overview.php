@@ -80,31 +80,18 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
               	<td align="center">
               	<?php
               	if ($row->hasrepetition()){
-					if (JVersion::isCompatible("1.6.0")) {
-						$img = JHTML::_('image','admin/featured.png', '',array('title'=>''),true);
-					}
-					else {
-						$img = "copy_f2.png";
-						$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
-					}
-
-              	?>
+			$img = JHTML::_('image','admin/featured.png', '',array('title'=>''),true);   	
+                ?>
           	    	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')">
-						<?php echo $img;?>
-					</a>
+                        	<?php echo $img;?>
+			</a>
           	    <?php }?>
               	</td>
               	<td align="center"><?php echo $row->creatorName();?></td>
               	<td align="center">
               	<?php  
-				if (JVersion::isCompatible("1.6.0")) {
-					$img =  $row->state()?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
-				}
-				else {
-					$img = $row->state()?'tick.png':'publish_x.png';
-					$img = '<img src="'.$pathIMG . $img.'" width="16" height="16" border="0" alt="" />';
-				}
-              	?>
+		$img =  $row->state()?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
+		?>
               	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')">
 					<?php echo $img;?>
 				</a>

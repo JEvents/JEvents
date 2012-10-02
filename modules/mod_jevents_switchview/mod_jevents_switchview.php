@@ -25,9 +25,9 @@ if (file_exists($file) ) {
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","mod_jevents_switchview");
-$registry->set("jevents.moduleid", $module->id);
-$registry->set("jevents.moduleparams", $params);
+$registry->setValue("jevents.activeprocess","mod_jevents_switchview");
+$registry->setValue("jevents.moduleid", $module->id);
+$registry->setValue("jevents.moduleparams", $params);
 
 // load language constants
 JEVHelper::loadLanguage('modswitchview');

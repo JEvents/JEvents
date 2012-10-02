@@ -110,13 +110,8 @@ class ExtModLatestView extends DefaultModLatestView
 		if ($this->linkToCal == 2) $content .= $callink_HTML;
 
 		if ($this->displayRSS){
-			if (JVersion::isCompatible("1.6.0")) {
-				$rssimg = JURI::root() . "media/system/images/livemarks.png";
-			}
-			else {
-				$rssimg = JURI::root() . "images/M_images/livemarks.png";
-			}
-
+			$rssimg = JURI::root() . "media/system/images/livemarks.png";
+			
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 			.'<a href="'.$this->rsslink.'" title="'.JText::_("RSS_FEED").'"  target="_blank">'
 			.'<img src="'.$rssimg.'" alt="'.JText::_("RSS_FEED").'" />'

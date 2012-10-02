@@ -48,16 +48,8 @@ class SaveIcalEvent {
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = JRequest::getInt("jev_creatorid",0);
 		if ( $creatorid>0){
-			if (JVersion::isCompatible("1.6.0")) {
-				//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
-				$access = $user->authorise('core.admin', 'com_jevents');
-			}
-			else {
-				// Get an ACL object
-				$acl =& JFactory::getACL();
-				$grp = $acl->getAroGroup($user->get('id'));
-				$access = $acl->is_group_child_of($grp->name, 'Public Backend');
-			}
+			$access = $user->authorise('core.admin', 'com_jevents');
+		
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
 			}
@@ -122,9 +114,7 @@ class SaveIcalEvent {
 			$vevent->catid = $db->loadResult();
 		}
 		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",0));
-		if (!JVersion::isCompatible("1.6.0")) {
-			$vevent->access = $vevent->access > $user->aid?$user->aid:$vevent->access;
-		}
+
 		$vevent->state =  intval(JArrayHelper::getValue( $array,  "state",0));
 		// Shouldn't really do this like this
 		$vevent->_detail->priority =  intval(JArrayHelper::getValue( $array,  "priority",0));

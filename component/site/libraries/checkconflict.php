@@ -483,20 +483,10 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		{
 			foreach ($catinfo as $ci)
 			{
-				if (JVersion::isCompatible("1.6.0"))
+                            $catparams = json_decode($ci->params);
+				if ($catparams->overlaps)
 				{
-					$catparams = json_decode($ci->params);
-					if ($catparams->overlaps)
-					{
-						$skipCatTest = false;
-					}
-				}
-				else
-				{
-					if ($ci->overlaps)
-					{
-						$skipCatTest = false;
-					}
+					$skipCatTest = false;
 				}
 			}
 		}
@@ -597,20 +587,10 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		if ($catinfo && count($catinfo) == 1)
 		{
 			$catinfo = current($catinfo);
-			if (JVersion::isCompatible("1.6.0"))
+			$catparams = json_decode($catinfo->params);
+			if (!$catparams->overlaps)
 			{
-				$catparams = json_decode($catinfo->params);
-				if (!$catparams->overlaps)
-				{
-					$skipCatTest = true;
-				}
-			}
-			else
-			{
-				if (!$catinfo->overlaps)
-				{
-					$skipCatTest = true;
-				}
+				$skipCatTest = true;
 			}
 		}
 

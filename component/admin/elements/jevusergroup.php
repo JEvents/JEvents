@@ -18,10 +18,8 @@ class JElementJevUserGroup extends JElement
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		// TODO 1.6 ACL VERSION OF THIS
-		if (JVersion::isCompatible("1.6.0")) {
-			return "";
-		}
-		
+		return "";
+				
 		$acl	=& JFactory::getACL();
 		$gtree	= $acl->get_group_children_tree( null, 'USERS', false );
 		foreach ($gtree as &$item) {

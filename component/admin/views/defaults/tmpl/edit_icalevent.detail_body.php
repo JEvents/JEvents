@@ -51,9 +51,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_DE
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALENDAR",true);?>", "CALENDAR");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATIONDATE",true);?>", "CREATED");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ADMIN_PANEL",true);?>", "MANAGEMENT");
-<?php if (JVersion::isCompatible("1.6.0")){?>
-	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
-<?php } ?>
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
 
 <?php
 // get list of enabled plugins

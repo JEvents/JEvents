@@ -23,79 +23,39 @@ class JEventsCategory extends JTableCategory {
 	// security check
 	function bind( $array ) {
 		$cfg = & JEVConfig::getInstance();
-		
-		if (JVersion::isCompatible("1.6.0"))  {
+		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
+		parent::bind($array);
 
-			$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
-			$array['extension']= "com_jevents";
-			$array['parent_id']= 1;
-			$array['language']= "*";
-			if (!isset($array['access'])) {
-				$array['access'] = JRequest::getInt("access", -1);
-				if ($array['access'] == -1){
-					 $array['access'] = (int) JFactory::getConfig()->get('access');
-				}
-			}
-			$array['alias'] = JApplication::stringURLSafe($array['title']);
-			$array['path'] = $array['alias'] ;
-			
-			$this->setLocation($array['parent_id'], 'last-child');
-
-			parent::bind($array);
-
+		if (!isset($this->_catextra)){
+			$this->_catextra = new CatExtra($this->_db);
 		}
-		else {
-			$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
-			parent::bind($array);
+		$this->_catextra->color = array_key_exists("color",$array)?$array['color']:"#000000";
+		if(!preg_match("/^#[0-9a-f]+$/i", $this->_catextra->color)) $this->_catextra->color= "#000000";
+		unset($this->color);
 
-			if (!isset($this->_catextra)){
-				$this->_catextra = new CatExtra($this->_db);
-			}
-			$this->_catextra->color = array_key_exists("color",$array)?$array['color']:"#000000";
-			if(!preg_match("/^#[0-9a-f]+$/i", $this->_catextra->color)) $this->_catextra->color= "#000000";
-			unset($this->color);
+		$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
+		unset($this->admin);
 
-			$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
-			unset($this->admin);
+		$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
 
-			$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
-
-			// Fill in the gaps
-			$this->name=$this->title;
-			$this->section="com_jevents";
-			$this->image_position="left";
-		}
+		// Fill in the gaps
+		$this->name=$this->title;
+		$this->section="com_jevents";
+		$this->image_position="left";	
 
 		return true;
 	}
 
 	function load($oid=null){
 		parent::load($oid);
-		if (!JVersion::isCompatible("1.6.0"))  {
-			if (!isset($this->_catextra)){
-				$this->_catextra = new CatExtra($this->_db);
-			}
-			if ($this->id>0){
-				$this->_catextra->load($this->id);
-			}
-		}
-		else {
-			$params = new JRegistry($this->params);
-			$this->color = $params->get("catcolour", "#000000");
-			$this->overlaps = $params->get("overlaps",0);
-			$this->admin = $params->get("admin",0);
-
-		}
+		$params = new JRegistry($this->params);
+		$this->color = $params->get("catcolour", "#000000");
+		$this->overlaps = $params->get("overlaps",0);
+		$this->admin = $params->get("admin",0);		
 	}
 
 	function store(){
 		$success = parent::store();
-		if (! JVersion::isCompatible("1.6.0"))  {
-			if (isset($this->_catextra)){
-				$this->_catextra->id = $this->id;
-				$this->_catextra->store();
-			}
-		}
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
 			$dispatcher	=& JDispatcher::getInstance();
@@ -176,27 +136,18 @@ class JEventsCategory extends JTableCategory {
 	public static function categoriesTree() {
 
 		$db = & JFactory::getDBO();
-		if (JVersion::isCompatible("1.6.0"))  {
-			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."'";
-			$query.=" ORDER BY parent, lft";
-		}
-		else {
-			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE section = '".JEV_COM_COMPONENT."'";
-			$query.=" ORDER BY parent, ordering";
-		}
-
+		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."'";
+		$query.=" ORDER BY parent, lft";
 		$db->setQuery($query);
 		$mitems = $db->loadObjectList();
 		echo $db->getErrorMsg();
 		$children = array ();
 		if ($mitems) {
 			foreach ($mitems as $v) {
-				if (JVersion::isCompatible("1.6.0"))  {
-					if ($v->parent==1){
-						$v->parent=$v->parent_id=0;
-					}
-					$v->level -= 1;
+				if ($v->parent==1){
+					$v->parent=$v->parent_id=0;
 				}
+				$v->level -= 1;
 				$pt = $v->parent;
 				$list = @$children[$pt]?$children[$pt]: array ();
 				array_push($list, $v);
@@ -206,11 +157,8 @@ class JEventsCategory extends JTableCategory {
 		$list = JHTML::_('menu.treerecurse', 0, '', array (), $children, 9999, 0, 0);
 		$mitems = array ();
 		foreach ($list as $item) {
-			if (JVersion::isCompatible("1.6.0"))  {
-				$item->treename = str_replace("&#160;","  ",$item->treename);
-				$mitems[] = JHTML::_('select.option', $item->id, $item->treename);
-			}
-			else $mitems[] = JHTML::_('select.option', $item->id, $item->treename);
+			$item->treename = str_replace("&#160;","  ",$item->treename);
+			$mitems[] = JHTML::_('select.option', $item->id, $item->treename);
 		}
 		return $mitems;
 	}
