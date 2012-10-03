@@ -202,3 +202,7 @@ a#colorPickButton {
 }
 #jevents  fieldset.checkboxes li {min-width: 40px;}
 
+/* workaround for stupid protostar sizing defaults which eliminate multi-select list height settings*/
+.select[multiple],select[size] {
+	height: auto!important;
+}

@@ -22,6 +22,12 @@
         </field>
         <field name="usergroup" type="usergroup" multiple="multiple" size="5" label="user groups" />
 		
+	<field name="show_title" type="list" default="val2" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC">
+          <option value="val1">Option 1</option>
+          <option value="val2">Option 2</option>
+          <option value="val3">Option 3</option>
+          <option value="val4">Option 4</option>
+	</field>
 		
 			
     </fieldset>

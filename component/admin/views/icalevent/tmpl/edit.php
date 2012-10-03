@@ -32,7 +32,9 @@ $form->bind($this->row);
 echo $form->getInput("demo");
 echo $form->getInput("ev_id");
 echo $form->getInput("usergroup");
+echo $form->getInput("show_title");
 */
+
 global $task, $catid;
 $db = & JFactory::getDBO();
 $editor = & JFactory::getEditor();
