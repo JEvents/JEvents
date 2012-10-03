@@ -15,7 +15,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once (dirname(__FILE__).'/'.'helper.php');
 
 $jevhelper = new modJeventsLatestHelper();
-$theme = JEV_CommonFunctions::getJEventsViewName($jEventsView);
+$theme = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
 if ($modtheme == "global" || $modtheme == ""){
 	$modtheme=$theme;
