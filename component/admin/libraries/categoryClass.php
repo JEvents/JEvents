@@ -177,7 +177,7 @@ class JEventsCategory extends JTableCategory {
 
 		$db = & JFactory::getDBO();
 		if (JVersion::isCompatible("1.6.0"))  {
-			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."'";
+			$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."' and published>=0";
 			$query.=" ORDER BY parent, lft";
 		}
 		else {
