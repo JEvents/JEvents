@@ -12,12 +12,12 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once (dirname(__FILE__).'/'.'helper.php');
+require_once (dirname(__FILE__).DS.'helper.php');
 
 $jevhelper = new modJeventsLatestHelper();
 $theme = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
-if ($modtheme == "global" || $modtheme == ""){
+if ($modtheme=="" || $modtheme=="global"){
 	$modtheme=$theme;
 }
 $theme=$modtheme;
@@ -26,11 +26,11 @@ JPluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","mod_jevents_latest");
-$registry->set("jevents.moduleid", $module->id);
-$registry->set("jevents.moduleparams", $params);
+$registry->setValue("jevents.activeprocess","mod_jevents_latest");
+$registry->setValue("jevents.moduleid", $module->id);
+$registry->setValue("jevents.moduleparams", $params);
 
-$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.'/'."latest", $params);
+$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.DS."latest", $params);
 
 $registry	=& JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
@@ -40,7 +40,7 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 	$timezone= date_default_timezone_get();
 	//echo "timezone is ".$timezone."<br/>";
 	date_default_timezone_set($tz);
-	$registry->set("jevents.timezone",$timezone);
+	$registry->setValue("jevents.timezone",$timezone);
 }
 
 $modview = new $viewclass($params, $module->id);

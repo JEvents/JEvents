@@ -67,7 +67,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
 
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 5));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$search = $db->getEscaped(trim(strtolower($search)));
