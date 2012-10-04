@@ -136,7 +136,7 @@ class JEventsCategory extends JTableCategory {
 	public static function categoriesTree() {
 
 		$db = & JFactory::getDBO();
-		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."'";
+		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."' and published>=0";
 		$query.=" ORDER BY parent, lft";
 		$db->setQuery($query);
 		$mitems = $db->loadObjectList();
