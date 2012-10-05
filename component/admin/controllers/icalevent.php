@@ -412,7 +412,7 @@ class AdminIcaleventController extends JControllerAdmin
 		else
 		{
 			$vevent = new iCalEvent($db);
-			$vevent->set("freq", "DAILY");
+			$vevent->set("freq", "NONE");
 			$vevent->set("description", "");
 			$vevent->set("summary", "");
 			list($year, $month, $day) = JEVHelper::getYMD();

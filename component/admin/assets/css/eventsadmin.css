@@ -150,6 +150,9 @@ div.cpanel-right {
 	float: right;
 }
 
+/* params editing styling */
+.paramlist_key {width:40%;}
+
 /* Form styling for checkboxes etc. */
 fieldset.checkboxes ul {
     margin-left:0px;
