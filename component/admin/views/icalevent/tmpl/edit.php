@@ -29,11 +29,10 @@ foreach ($this->row as $k => $v) {
 }
 $form->bind($this->row);
 
-echo $form->getInput("demo")."<br/>";
-echo $form->getInput("ev_id")."<br/>";
-echo $form->getInput("usergroup")."<br/>";
-echo $form->getInput("show_title")."<br/>";
-echo $form->getInput("radiodemo")."<br/>";
+echo $form->getInput("demo");
+echo $form->getInput("ev_id");
+echo $form->getInput("usergroup");
+echo $form->getInput("show_title");
 */
 
 global $task, $catid;

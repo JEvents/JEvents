@@ -59,39 +59,35 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				<li <?php echo $class; ?>><a data-toggle="tab" href="#<?php echo $name; ?>"><?php echo JText::_($label); ?></a></li>
 				<?php
 			}
-			/*
-			 * Drop Down tabs - but the drop down doesn't get cleared !
-			  if ($haslayouts)
-			  {
-			  ?>
-			  <li class="dropdown">
-			  <a data-toggle="dropdown"  class="dropdown-toggle"  href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?>  <b class="caret"></b></a>
-			  <ul class="dropdown-menu">
-			  <?php
-			  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
-			  {
-			  $config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
-			  if (file_exists($config))
-			  {
-			  ?>
-			  <li ><a data-toggle="tab" href="#<?php echo $viewfile; ?>"><?php echo $viewfile; ?></a></li>
-			  <?php
-			  }
-			  }
-			  ?>
-			  </ul>
-			  </li>
-			  <?php
-			  }
-			 */
+			if ($haslayouts)
+			{
+				?>
+				<li class="dropdown">
+					<a data-toggle="dropdown"  class="dropdown-toggle"  href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?>  <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<?php
+						foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
+						{
+							$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
+							if (file_exists($config))
+							{
+								?>
+								<li ><a data-toggle="tab" href="#<?php echo $viewfile; ?>"><?php echo $viewfile; ?></a></li>
+								<?php
+							}
+						}
+						?>
+					</ul>
+				</li>
+				<?php
+			}
 			?>
-			<li ><a data-toggle="tab" href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?></a></li>
 		</ul>
 
 		<?php
 		echo JHtml::_('bootstrap.startPane', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
 		$fieldSets = $this->form->getFieldsets();
-
+		
 		foreach ($fieldSets as $name => $fieldSet)
 		{
 			if ($name == "permissions")
@@ -103,7 +99,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 			$html = array();
 
-			$html[] = '<table class="paramlist admintable" >';
+			$html[] = '<table width="100%" class="paramlist admintable" cellspacing="1">';
 
 			if (isset($fieldSet->description) && !empty($fieldSet->description))
 			{
@@ -166,36 +162,50 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 		if ($haslayouts)
 		{
-			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
-			?>
-			<ul class="nav nav-tabs" id="myLayoutTabs">
-				<?php
-				$first = false;
-				foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
-				{
-					$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
-					if (file_exists($config))
-					{
+			/*
+			  echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
+			  ?>
+			  <ul class="nav nav-tabs" id="myLayoutTabs">
+			  <?php
+			  $first = true;
+			  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
+			  {
+			  $config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
+			  if (file_exists($config))
+			  {
 
-						if (!$first)
-						{
-							$first = $viewfile;
-							$class = ' class="active"';
-						}
-						else
-						{
-							$class = '';
-						}
-						?>
-						<li <?php echo $class; ?>><a data-toggle="tab" href="#<?php echo $viewfile; ?>"><?php echo $viewfile; ?></a></li>
-						<?php
-					}
-				}
-				?>
-			</ul>	  
-			<?php
-			echo JHtml::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
+			  if ($first)
+			  {
+			  $first = false;
+			  $class = ' class="active"';
+			  }
+			  else
+			  {
+			  $class = '';
+			  }
+			  ?>
+			  <li <?php echo $class; ?>><a data-toggle="tab" href="<?php echo $viewfile; ?>"><?php echo $viewfile; ?></a></li>
+			  <?php
+			  }
+			  }
+			  ?>
+			  </ul>
+			  <?php
+			  echo JHtml::_('bootstrap.startPane', "myLayoutTabs");
+			 */
+			/*
+			  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
+			  {
+			  $config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
+			  if (file_exists($config))
+			  {
+			  $activeviewfile = $viewfile;
+			  break;
+			  }
+			  }
 
+			  echo JHtml::_('bootstrap.startAccordion', 'myLayoutsliders', array('active' => $activeviewfile));
+			 */
 			// Now get layout specific parameters
 			//JForm::addFormPath(JPATH_COMPONENT ."/views/");
 			foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
@@ -204,16 +214,18 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
 				if (file_exists($config))
 				{
+					//echo JHtml::_('bootstrap.addSlide', 'myLayoutsliders', ucfirst($viewfile), $viewfile);
+					//echo JHtml::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
+					echo JHtml::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
 
 					$layoutform = JForm::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
 					$layoutform->bind($this->component->params);
 
 					$fieldSets = $layoutform->getFieldsets();
-					$html = array();
-					$hasconfig = false;
 					foreach ($fieldSets as $name => $fieldSet)
 					{
-						$html[] = '<table class="paramlist admintable" >';
+						$html = array();
+						$html[] = '<table width="100%" class="paramlist admintable" cellspacing="1">';
 
 						if (isset($fieldSet->description) && !empty($fieldSet->description))
 						{
@@ -227,7 +239,6 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							{
 								continue;
 							}
-							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 
 							if (strlen($class) > 0)
@@ -237,7 +248,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							$html[] = "<tr $class>";
 							if (!isset($field->label) || $field->label == "")
 							{
-								$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
+								$html[] = '<td width="40%" class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
 								$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
 							}
 							else
@@ -247,25 +258,19 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 							$html[] = '</tr>';
 						}
-						$html[] = '</table>';
 					}
+					$html[] = '</table>';
 
-					if (!$hasconfig) {
-						$x = 1;
-					}
-					if ($hasconfig) {
-						echo JHtml::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
-						//echo JHtml::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
+					echo implode("\n", $html);
 
-						echo implode("\n", $html);
-
-						echo JHtml::_('bootstrap.endPanel');
-						//echo JHtml::_('bootstrap.endPanel');
-					}
+					//echo JHtml::_('bootstrap.endSlide');
+					//echo JHtml::_('bootstrap.endPanel');
+					echo JHtml::_('bootstrap.endPanel');
 				}
 			}
-			echo JHtml::_('bootstrap.endPane', 'myLayoutTabs');
-			echo JHtml::_('bootstrap.endPanel');
+			//echo JHtml::_('bootstrap.endAccordion');
+			//echo JHtml::_('bootstrap.endPane', 'myLayoutTabs');
+			//echo JHtml::_('bootstrap.endPanel');
 		}
 		echo JHtml::_('bootstrap.endPane', 'myParamsTabs');
 		?>

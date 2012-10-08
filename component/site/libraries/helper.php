@@ -1679,8 +1679,14 @@ class JEVHelper
 		JHtml::_('behavior.framework', true);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JHTML::script($path . $file);
-
+			JHTML::script($path . $file);
+			/*
+			  $document = JFactory::getDocument();
+			  if (strpos($path, '/')!==0 && strpos($path, 'http')!==0){
+			  $path = "/".$path;
+			  }
+			  $document->addScript($path.$file);
+			 */
 	}
 
 	static public function setupJoomla160()
