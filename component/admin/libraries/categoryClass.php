@@ -25,24 +25,30 @@ class JEventsCategory extends JTableCategory {
 		$cfg = & JEVConfig::getInstance();
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
+		
+		$params = new JRegistry();
+		$color = array_key_exists("color",$array)?$array['color']:"#000000";
+		if(!preg_match("/^#[0-9a-f]+$/i", $color)) $color= "#000000";
+		$params->set("color",$color);
+		
+		$admin = array_key_exists("admin",$array)?$array['admin']:0;
+		$params->set("admin",$admin);
+		
+		$overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
+		$params->set("overlaps",$overlaps);
 
-		if (!isset($this->_catextra)){
-			$this->_catextra = new CatExtra($this->_db);
-		}
-		$this->_catextra->color = array_key_exists("color",$array)?$array['color']:"#000000";
-		if(!preg_match("/^#[0-9a-f]+$/i", $this->_catextra->color)) $this->_catextra->color= "#000000";
-		unset($this->color);
-
-		$this->_catextra->admin = array_key_exists("admin",$array)?$array['admin']:0;
-		unset($this->admin);
-
-		$this->_catextra->overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
-
+		$params->set("image","");
+		
+		$this->params = (string)  $params;
+		
 		// Fill in the gaps
-		$this->name=$this->title;
-		$this->section="com_jevents";
-		$this->image_position="left";	
-
+		$this->parent_id = array_key_exists("parent_id",$array)?intval($array['parent_id']):1;
+		$this->level = array_key_exists("level",$array)?intval($array['level']):1;		
+		$this->extension="com_jevents";
+		$this->language ="*";
+		
+		$this->setLocation(1, 'last-child');
+		
 		return true;
 	}
 
@@ -60,47 +66,15 @@ class JEventsCategory extends JTableCategory {
 			JPluginHelper::importPlugin("jevents");
 			$dispatcher	=& JDispatcher::getInstance();
 			$set = $dispatcher->trigger('afterSaveCategory', array ($this));
+/*			
+			$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
+			if (!$table->rebuild())
+			{
+				echo JError::raiseError(500, $table->getError());
+			}
+*/			
 		}
 		return $success;
-	}
-
-	function getColor(){
-		if (isset($this->_catextra)){
-			return $this->_catextra->color;
-		}
-		else if (isset($this->color)){
-			return $this->color;
-		}
-		else return "#000000";
-	}
-
-	function getAdmin(){
-		static $adminuser;
-		if (!isset($adminuser)){
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$adminuser = new  JUser($params->get("jevadmin",62));
-		}
-
-		if (isset($this->_catextra)){
-			if ($this->_catextra->admin>0){
-				$catuser = new JUser();
-				$catuser->load($this->_catextra->admin);
-				// fix deleted admin users
-				if ($catuser->username == ""){
-					$db = JFactory::getDBO();
-					$db->setQuery("UPDATE #__jevents_categories SET admin=0 WHERE admin=".$this->_catextra->admin);
-					$db->query();
-					return "";
-				}
-				return $catuser->username;
-			}
-		}
-		else if (isset($this->admin) && $this->admin>0){
-			$catuser = new JUser();
-			$catuser->load($this->admin);			
-			return $catuser->username;
-		}
-		return $adminuser->username;
 	}
 
 	function getAdminUser(){
@@ -123,14 +97,6 @@ class JEventsCategory extends JTableCategory {
 			return $catuser;
 		}
 		return $adminuser;
-	}
-
-	function getAdminId(){
-
-		if (isset($this->_catextra)){
-			return $this->_catextra->admin;
-		}
-		return 0;
 	}
 
 	public static function categoriesTree() {
@@ -163,29 +129,5 @@ class JEventsCategory extends JTableCategory {
 		return $mitems;
 	}
 
-
-}
-
-class CatExtra extends JTable {
-	var $id 			= null;
-	var $color			= null;
-	var $admin		    = null;
-	var $overlaps	    = null;
-
-	/**
-	 * consturcotr
-	 *
-	 * @param string $db database reference
-	 * @param string $tablename (including #__)
-	 * @return gKwdMap
-	 */
-	function CatExtra( &$db ) {
-		parent::__construct( '#__jevents_categories', "id", $db );
-	}
-
-	function store(){
-		$this->_db->setQuery( "REPLACE #__jevents_categories SET id='$this->id', color='$this->color', admin='$this->admin', overlaps='$this->overlaps'" );
-		$this->_db->query();
-	}
 
 }

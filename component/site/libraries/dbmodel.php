@@ -176,7 +176,7 @@ class JEventsDBModel
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
 					. "\n FROM #__categories AS c"
-					. "\n WHERE c.access IN (' . $aid . ')' "
+					. "\n WHERE c.access IN (" . $aid . ") "
 					. $q_published
 					. ' AND c.extension = ' . $db->Quote($sectionname)
 					. "\n " . $where;
