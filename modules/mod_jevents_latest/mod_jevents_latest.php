@@ -17,7 +17,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 $jevhelper = new modJeventsLatestHelper();
 $theme = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
-if ($modtheme==""){
+if ($modtheme=="" || $modtheme=="global"){
 	$modtheme=$theme;
 }
 $theme=$modtheme;
