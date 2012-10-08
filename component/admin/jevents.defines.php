@@ -76,3 +76,7 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('JButtonJevlink', JEV_ADMINPATH . "libraries/jevbuttons.php");
 	JLoader::register('JButtonJevconfirm', JEV_ADMINPATH . "libraries/jevbuttons.php");
 	
+	// Legacy code	
+	if (!class_exists('JParameter', true)){
+		JLoader::register('JParameter', JEV_ADMINLIBS . 'jparameter.php');
+	}

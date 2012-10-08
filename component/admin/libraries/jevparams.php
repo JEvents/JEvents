@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-class JevParameter extends  JRegistry{
+class JevParameter extends  JParameter {
 	
 	/**
 	 * Render
