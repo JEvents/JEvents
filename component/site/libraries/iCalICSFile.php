@@ -276,7 +276,7 @@ RAWTEXT;
 						$categories = $db->loadObjectList('title');
 
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-						if ($params->get("multicategory",0) && count($evcat)>1){
+						if ($params->get("multicategory",0) ){
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[$ct]->id;
