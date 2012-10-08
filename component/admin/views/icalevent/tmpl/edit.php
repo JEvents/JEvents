@@ -196,7 +196,7 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
             <?php
             if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
                 ?>
-                <div id='jevoverlapwarning'">
+                <div id='jevoverlapwarning'>
                      <div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
                     <div id="jevoverlaps"></div>
                 </div>

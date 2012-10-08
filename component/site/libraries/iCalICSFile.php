@@ -266,6 +266,7 @@ RAWTEXT;
 								$cat = new JEventsCategory($db);
 								$cat->bind(array("title"=>$ct));
 								$cat->published=1;
+								$cat->check();
 								$cat->store();
 							}
 						}
@@ -384,6 +385,7 @@ RAWTEXT;
 								$cat = new JEventsCategory($db);
 								$cat->bind(array("title"=>$ct));
 								$cat->published=1;
+								$cat->check();
 								$cat->store();
 							}
 						}
@@ -667,6 +669,7 @@ RAWTEXT;
 						$cat = new JEventsCategory($db);
 						$cat->bind(array("title"=>$evcat[0]));
 						$cat->published=1;
+						$cat->check();
 						$cat->store();
 						if ($params->get("multicategory",0)){
 							$vevent->catid[] = $cat->id;

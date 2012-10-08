@@ -60,7 +60,6 @@ $cfg = & JEVConfig::getInstance();
 JHTML::_('behavior.tooltip');
 // This causes a javascript error in MSIE 7 if the scripts haven't loaded when the dom is ready!
 //JHTML::_('behavior.calendar');
-echo JHtml::_('tabs.start', 'tabs');
 
 $document = JFactory::getDocument();
 $js = '	window.addEvent(\'load\', function(){ document.getElements(\'dt.event\').each(function(tab){ tab.fireEvent(\'click\'); })  });';
@@ -185,7 +184,7 @@ function submit2(pressbutton){
 
 if ($params->get("checkclashes",0) || $params->get("noclashes",0)){
 	?>
-	<div id='jevoverlapwarning'">
+	<div id='jevoverlapwarning'>
 		<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING");?></div>
 		<div id="jevoverlaps"></div>
 	</div>
@@ -201,6 +200,7 @@ if ($cfg->get('timebeforedescription', 0)) {
 	// $cfg->set('com_single_pane_edit', 1);
 }
 if (!$cfg->get('com_single_pane_edit', 0)) {
+	echo JHtml::_('tabs.start', 'tabs');
 	echo JHtml::_('tabs.panel', JText::_("JEV_TAB_COMMON"), "event");
 	echo '<div style="clear:left;margin:0px;padding:0px;height:0px;"></div>';
 }
