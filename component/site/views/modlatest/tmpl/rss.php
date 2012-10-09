@@ -44,6 +44,10 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		// removes all formating from the intro text for the description text
 		$item_description = $row->content();
+
+		// remove dodgy border e.g. "diamond/question mark"
+		$item_description = preg_replace('#border=[\"\'][^0-9]*[\"\']#i', '', $item_description);
+
 		if ( $this->info[ 'limit_text' ] ) {
 			if ( $this->info[ 'text_length' ] ) {
 				$item_description = JFilterOutput::cleanText( $item_description );
