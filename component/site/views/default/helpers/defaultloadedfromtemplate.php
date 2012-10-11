@@ -55,7 +55,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		{
 			continue;
 		}
-// Built in fields	
+		// translation string
+		if (strpos($strippedmatch,"{{_")===0 && strpos($strippedmatch," ")===false){
+			$search[] = $strippedmatch;
+			$strippedmatch=substr($strippedmatch,3,strlen($strippedmatch)-5);
+			$replace[] = JText::_($strippedmatch);			
+			$blank[] = "";
+			continue;
+		}
+		// Built in fields	
 		switch ($strippedmatch) {
 			case "{{TITLE}}":
 				$search[] = "{{TITLE}}";

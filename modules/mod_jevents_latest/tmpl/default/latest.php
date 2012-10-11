@@ -604,7 +604,7 @@ class DefaultModLatestView
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar', 
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown'
+			'countdown','categoryimage'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space

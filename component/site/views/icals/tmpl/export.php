@@ -87,6 +87,7 @@ if (!empty($this->icalEvents))
 		{
 			$a = $a->getOriginalFirstRepeat();
 		}
+		if (!$a) continue;
 		$html .= "BEGIN:VEVENT\r\n";
 		$html .= "UID:" . $a->uid() . "\r\n";
 		$html .= "CATEGORIES:" . $a->catname() . "\r\n";

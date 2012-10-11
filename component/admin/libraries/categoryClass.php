@@ -29,7 +29,7 @@ class JEventsCategory extends JTableCategory {
 		$params = new JRegistry();
 		$color = array_key_exists("color",$array)?$array['color']:"#000000";
 		if(!preg_match("/^#[0-9a-f]+$/i", $color)) $color= "#000000";
-		$params->set("color",$color);
+		$params->set("catcolor",$color);
 		
 		$admin = array_key_exists("admin",$array)?$array['admin']:0;
 		$params->set("admin",$admin);

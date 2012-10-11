@@ -471,7 +471,8 @@ class ICalsController extends AdminIcalsController
 			{
 				$a = $a->getOriginalFirstRepeat();
 			}
-
+			if (!$a) return;
+			
 			JRequest::setVar("tmpl", "component");
 		
 			//$dispatcher = & JDispatcher::getInstance();
