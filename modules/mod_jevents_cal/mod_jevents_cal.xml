@@ -14,8 +14,8 @@
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_jevents_cal.ini</language>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_cal.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

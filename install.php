@@ -52,6 +52,11 @@ class pkg_jeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='finder' and type='plugin' and element='jevents'";			
 			$db->setQuery($query);
 			$db->query();
+
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='search' and type='plugin' and element='eventsearch'";
+			$db->setQuery($query);
+			$db->query();
+			
 		}
 	}	
 

@@ -84,8 +84,13 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			  <?php
 			  }
 			 */
+			  if ($haslayouts)
+			  {			
 			?>
 			<li ><a data-toggle="tab" href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?></a></li>
+			<?php
+			  }
+			  ?>
 		</ul>
 
 		<?php
