@@ -87,7 +87,10 @@ class AdminUserViewUser extends JEventsAbstractView
 		$creatorgroups = $data["core.create"]->getData();
 		foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
 		{
-			$creatorgroups[$creatorgroup] = $permission;
+			if ($permission == 1)
+			{
+				$creatorgroups[$creatorgroup] = $permission;
+			}
 		}
 		// array_merge does a re-indexing !!
 		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
