@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>2.2.4</version>
+	<version>3.0.0 beta</version>
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
