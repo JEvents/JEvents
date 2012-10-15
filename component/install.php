@@ -44,9 +44,9 @@ class com_jeventsInstallerScript
 		$db = & JFactory::getDBO();
 		$db->setDebug(0);
 		
-		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
+		$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
 
-		/**
+ 		/**
 		 * create table if it doesn't exit
 		 * 
 		 * For now : 
@@ -131,8 +131,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	hits int(11) NOT NULL default 0,
 	noendtime tinyint(3) NOT NULL default 0,
 		
-	PRIMARY KEY  (evdet_id), 
-	FULLTEXT searchIdx (summary,description)
+	PRIMARY KEY  (evdet_id)
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -405,6 +404,7 @@ SQL;
 			@$db->query();
 		}
 
+/*
 		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
@@ -415,7 +415,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->query();
 		}
-
+*/
 		$sql = "SHOW INDEX FROM #__jevents_rrule";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
