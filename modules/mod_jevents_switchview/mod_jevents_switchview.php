@@ -25,9 +25,9 @@ if (file_exists($file) ) {
 
 // record what is running - used by the filters
 $registry	=& JRegistry::getInstance("jevents");
-$registry->setValue("jevents.activeprocess","mod_jevents_switchview");
-$registry->setValue("jevents.moduleid", $module->id);
-$registry->setValue("jevents.moduleparams", $params);
+$registry->set("jevents.activeprocess","mod_jevents_switchview");
+$registry->set("jevents.moduleid", $module->id);
+$registry->set("jevents.moduleparams", $params);
 
 // load language constants
 JEVHelper::loadLanguage('modswitchview');
@@ -59,7 +59,7 @@ if ($show_preview) {
 }
 ?>
 <img src="<?php echo  JURI::root()."components/com_jevents/views/$cur_view/assets/images/view_thumbnail.png";?>" name="preview" border="1" width="<?php echo $preview_width;?>" height="<?php echo $preview_height;?>" alt="<?php echo $cur_view; ?>" />
-<script language='JavaScript1.2' type='text/javascript'>
+<script  type='text/javascript'>
 <!--
 	function showimage() {
 		//if (!document.images) return;
