@@ -13,6 +13,7 @@
 	<packagerurl>http://www.jevents.net</packagerurl>
 	<description>JEvents  - Events, Meetings, Calendars and More</description>
 	<update></update>
+	<scriptfile>install.php</scriptfile>
 	<files>
 		<file type="component" id="com_jevents" >com_jevents.zip</file>
 		 <file type="module" id="mod_jevents_cal" client="site">mod_jevents_cal.zip</file>
