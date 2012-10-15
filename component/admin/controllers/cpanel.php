@@ -30,52 +30,34 @@ class AdminCpanelController extends JControllerAdmin
 
 	function cpanel()
 	{
-		// check DB
-		// check the latest column addition or change
-		// do this in a way that supports mysql 4
+		
 		$db = & JFactory::getDBO();
-
-		$sql = "SHOW TABLES LIKE '".$db->getPrefix()."jevents_catmap'";
+		// Add one category by default if none exist already
+		$sql = "SELECT id from #__categories where extension='com_jevents'";
 		$db->setQuery($sql);
-		$table = $db->loadObject();
-		if (!$table) {
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
-			$this->redirect();
-			return;
+		$catid = $db->loadResult();
+		
+		if (!$catid) {
+			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
+			$cat = new JEventsCategory($db);
+			$cat->bind(array("title"=>JText::_( 'DEFAULT' ), "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+			$cat->store();
+			$catid=$cat->id;
 		}
 		
-		$sql = "SHOW COLUMNS FROM `#__jevents_catmap`";
+		// Add one native calendar by default if none exist already
+		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2";
 		$db->setQuery($sql);
-		$cols = $db->loadObjectList('Field');
-		if (is_null($cols) || !isset($cols['evid']))
-		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
-			$this->redirect();
-			//return;
-		}
+		$ics = $db->loadResult();
 
-		$sql = "SHOW COLUMNS FROM `#__jevents_exception`";
-		$db->setQuery($sql);
-
-		$cols = $db->loadObjectList('Field');
-		if (!isset($cols['tempfield']))
+		if (!$ics || is_null($ics) || $ics == 0)
 		{
-			$session = JFactory::getSession();
-			$session->set('fixexceptions', 1);
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.dbsetup", false), JText::_('DATABASE_TABLE_SETUP_WAS_REQUIRED'));
-			$this->redirect();
-			//return;
+			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
+			$db->setQuery($sql);
+			$db->query();
+			echo $db->getErrorMsg();
 		}
-		else
-		{
-			$session = JFactory::getSession();
-			if ($session->get("fixexceptions", 0) == 1)
-			{
-				$session->set('fixexceptions', 0);
-				$this->fixExceptions();
-			}
-		}
-
+		
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->get("jevadmin", -1);
