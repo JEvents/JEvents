@@ -10,7 +10,7 @@
 	<version>3.0.0beta</version>
 	<description>Events, meetings and more</description>
 
-	<scriptfile>install/install.php</scriptfile>
+	<scriptfile>install.php</scriptfile>
 	
 	<files folder="site">
 		<folder>assets</folder>
@@ -58,7 +58,6 @@
 			<folder>fields</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
-			<folder>install</folder>
 			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
