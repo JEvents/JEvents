@@ -185,16 +185,26 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 					// need to merge the arrays because of stupid way Joomla checks super user permissions
 					//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
 					// use union orf arrays sincee getData no longer has string keys in the resultant array
-					$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
-					
+					//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+					// use union orf arrays sincee getData no longer has string keys in the resultant array
+					$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
+					// take the higher permission setting
+					foreach ($creatorgroups[["core.create"]->getData() as $creatorgroup => $permission)
+					{
+						if ($permission){
+							$creatorgroupsdata[$creatorgroup]=$permission;
+						}
+					}
+
 					$users = array(0);
-					foreach ($creatorgroups as $creatorgroup => $permission)
+					foreach ($creatorgroupsdata as $creatorgroup => $permission)
 					{
 						if ($permission == 1)
-						{
+											{
 							$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 						}
 					}
+
 					$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
 					$db->setQuery($sql);
 					$users = $db->loadObjectList();
