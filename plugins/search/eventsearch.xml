@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="search" method="upgrade">
+<extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>Search - JEvents</name>
 	<creationDate>June 2012</creationDate>
 	<author>JEvents Project Group</author>
@@ -16,12 +16,6 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_search_eventsearch.ini</language>
 	</languages>
-	<params addpath="/administrator/components/com_jevents/elements/">
-		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
-		<param name="date_format" type="text" size="50" default="%Y-%m-%d" label="Date Format" description="Format for date in return"/>
-		<param name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
-	</params>
-	
 	<config>
 		<fields name="params">
 		
@@ -48,4 +42,4 @@
 			</fieldset>		
 		</fields>
 	</config>	
-</install>
+</extension>
