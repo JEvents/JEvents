@@ -61,11 +61,22 @@ class JElementJevuser extends JElement
 		// need to merge the arrays because of stupid way Joomla checks super user permissions
 		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups[$action]->getData());
 		// use union orf arrays sincee getData no longer has string keys in the resultant array
-		$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups[$action]->getData();
+		//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+		// use union orf arrays sincee getData no longer has string keys in the resultant array
+		$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
+		// take the higher permission setting
+		foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
+		{
+			if ($permission){
+				$creatorgroupsdata[$creatorgroup]=$permission;
+			}
+		}
 
-                $users = array(0);
-		foreach ($creatorgroups as $creatorgroup => $permission){
-			if ($permission==1){
+		$users = array(0);
+		foreach ($creatorgroupsdata as $creatorgroup => $permission)
+		{
+			if ($permission == 1)
+								{
 				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 			}
 		}
