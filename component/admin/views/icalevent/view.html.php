@@ -189,7 +189,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 					// use union orf arrays sincee getData no longer has string keys in the resultant array
 					$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
 					// take the higher permission setting
-					foreach ($creatorgroups[["core.create"]->getData() as $creatorgroup => $permission)
+					foreach ($creatorgroups["core.create"]->getData() as $creatorgroup => $permission)
 					{
 						if ($permission){
 							$creatorgroupsdata[$creatorgroup]=$permission;
