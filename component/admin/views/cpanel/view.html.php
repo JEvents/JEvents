@@ -78,6 +78,12 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			// In Joomla 1.7 caching of feeds doesn't work!
 			$cache->setCaching(true);
 
+			// workaround for Joomla 2.5.7 reversion bug
+			$app = JFactory::getApplication();
+			if (!isset($app->registeredurlparams)){
+				$app->registeredurlparams = new stdClass();
+			}
+			
 			$cache->get($this, 'renderJEventsNewsCached');
 		}
 		else {
