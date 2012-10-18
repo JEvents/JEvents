@@ -58,6 +58,12 @@ class AdminCpanelController extends JControllerAdmin
 			echo $db->getErrorMsg();
 		}
 		
+		if (file_exists(JEV_ADMINPATH."install.php")){
+			include_once(JEV_ADMINPATH."install.php");
+			$installer = new com_jeventsInstallerScript();
+			$installer->update(false);
+		}
+		
 		// are config values setup correctyl
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->get("jevadmin", -1);

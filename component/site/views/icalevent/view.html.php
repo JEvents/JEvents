@@ -87,7 +87,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 			}
 			else
 			{
-				$this->toolbarLinkButton("day.listevents", 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton("day.listevents", 'cancel', 'cancel', 'Cancel', false);
 			}
 		}
 

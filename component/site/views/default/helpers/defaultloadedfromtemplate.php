@@ -15,10 +15,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		if (!array_key_exists($template_name, $templates))
 		{
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name));
-			$templates[$template_name] = $db->loadObject();
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND ".'language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+			$templates[$template_name] = $db->loadObjectList("language");
+			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()])){
+				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
+			}
+			else if (isset($templates[$template_name]["*"])){
+				$templates[$template_name] =$templates[$template_name]["*"];
+			}
+			else {
+				$templates[$template_name] = current($templates[$template_name]);
+			}
 		}
-
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 			return false;
 

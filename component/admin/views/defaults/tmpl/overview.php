@@ -5,6 +5,25 @@ $pathIMG = JURI::root().'/administrator/images/';
 ?>
 
 <form action="index.php" method="post"  name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<div class="filter-select fltrt">	
+			<?php if (count($this->languages)>1){ ?>
+			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->language);?>
+			</select>
+			<?php } ?>
+			<select name="filter_layout_type" class="inputbox" onchange="this.form.submit()">
+				<?php echo $this->addonoptions;?>
+			</select>
+			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("trash"=>0,"archived"=>0,"all"=>0)), 'value', 'text', $this->filter_published, true);?>
+			</select>			
+		</div>
+	</fieldset>
+
+
 <div id="editcell">
 	<table class="adminlist">
 	<thead>
@@ -21,6 +40,11 @@ $pathIMG = JURI::root().'/administrator/images/';
 			<th class="title">
 				<?php echo JText::_( 'NAME' ); ?>
 			</th>
+			<?php if (count($this->languages)>1){ ?>
+			<th >
+				<?php echo JText::_( 'JGRID_HEADING_LANGUAGE' ); ?>
+			</th>
+			<?php } ?>			
 			<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>			
 		</tr>
 	</thead>
@@ -36,15 +60,15 @@ $pathIMG = JURI::root().'/administrator/images/';
 			$parts = explode(".",$row->name);
 			$lang->load($parts[0]);
 		}
-		$link 	= JRoute::_( 'index.php?option='.JEV_COM_COMPONENT.'&task=defaults.edit&name='. $row->name );
+		$link 	= JRoute::_( 'index.php?option='.JEV_COM_COMPONENT.'&task=defaults.edit&id='. $row->id);
 
 		?>
 		<tr class="<?php echo "row$k"; ?>">
-        	<td width="20" >
-                <input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->name; ?>" onclick="isChecked(this.checked);" />
-        	</td>
+			<td width="20" >
+				<?php echo JHtml::_('grid.id', $i, $row->id); ?>
+			</td>
 			<td>
-				<?php echo $i+1; ?>
+			<?php echo $i+1; ?>
 			</td>
 			<td>
 				<span class="editlinktip hasTip" title="<?php echo JText::_( 'JEV_Edit_Layout' );?>::<?php echo $this->escape($row->title); ?>">
@@ -54,13 +78,23 @@ $pathIMG = JURI::root().'/administrator/images/';
 			</td>
 			<td>
 				<?php echo $this->escape($row->name); ?>
+
 			</td>
-          	<td align="center">
-          	<?php
+			<?php if (count($this->languages)>1){ ?>
+			<td class="center">
+				<?php if ($row->language=='*'):?>
+					<?php echo JText::alt('JALL', 'language'); ?>
+				<?php else:?>
+					<?php echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED'); ?>
+				<?php endif;?>
+			</td>
+			<?php } ?>
+			<td align="center">
+			<?php
 		$img =  $row->state?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
-          	?>
-          	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo  $img; ?></a>
-          	</td>
+			?>
+			<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo  $img; ?></a>
+			</td>
 		</tr>
 		<?php
 		$k = 1 - $k;

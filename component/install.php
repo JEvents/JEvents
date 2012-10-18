@@ -605,6 +605,13 @@ SQL;
 			@$db->query();
 		}
 
+		if (!array_key_exists("language", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD language varchar(20) NOT NULL default '*'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+		
 		// fill this table if upgrading !
 		$sql = "DELETE FROM #__jevents_catmap";
 		$db->setQuery($sql);

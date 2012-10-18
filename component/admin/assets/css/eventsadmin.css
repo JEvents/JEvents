@@ -209,3 +209,11 @@ a#colorPickButton {
 .select[multiple],select[size] {
 	height: auto!important;
 }
+
+#filter-bar .fltrt {
+	float:right;
+}
+.adminlist {
+	width:100%;
+	margin-top:10px;
+}

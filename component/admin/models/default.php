@@ -31,10 +31,10 @@ class DefaultsModelDefault extends JModelLegacy
 	{
 		parent::__construct();
 
-		$name = JRequest::getString('name',  '');
+		$id = JRequest::getInt("id");
 		$edit	= JRequest::getVar('edit',true);
 		if($edit){
-			$this->setId($name);
+			$this->setId($id);
 		}
 	}
 
@@ -102,7 +102,7 @@ class DefaultsModelDefault extends JModelLegacy
 		if (empty($this->_data))
 		{
 			$query = 'SELECT * FROM #__jev_defaults' .
-			' WHERE name = '.$this->_db->Quote($this->_id);
+			' WHERE id = '.$this->_db->Quote($this->_id);
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
 			return (boolean) $this->_data;
@@ -116,6 +116,7 @@ class DefaultsModelDefault extends JModelLegacy
 		if (empty($this->_data))
 		{
 			$default = new stdClass();
+			$default->id				= 0;
 			$default->name				= "";
 			$default->title				= "";
 			$default->subject			= "";
