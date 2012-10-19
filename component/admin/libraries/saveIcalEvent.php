@@ -113,7 +113,8 @@ class SaveIcalEvent {
 			$db->setQuery( $query);
 			$vevent->catid = $db->loadResult();
 		}
-		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",0));
+		// minimum access is 1 in Joomla 2.5+
+		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",1);
 
 		$vevent->state =  intval(JArrayHelper::getValue( $array,  "state",0));
 		// Shouldn't really do this like this
