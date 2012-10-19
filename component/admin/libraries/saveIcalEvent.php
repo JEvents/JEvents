@@ -121,7 +121,7 @@ class SaveIcalEvent {
 			$db->setQuery( $query);
 			$vevent->catid = $db->loadResult();
 		}
-		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",0));
+		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",JVersion::isCompatible("1.6.0")?1:0));
 		if (!JVersion::isCompatible("1.6.0")) {
 			$vevent->access = $vevent->access > $user->aid?$user->aid:$vevent->access;
 		}
