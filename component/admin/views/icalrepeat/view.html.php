@@ -43,7 +43,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = & JFactory::getDocument();
-		include(JEV_LIBS . "editStrings.php");
+		include(JEV_ADMINLIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editical.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
