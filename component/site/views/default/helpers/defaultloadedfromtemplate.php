@@ -13,6 +13,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	if (!$template_value)
 	{
+		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
+			return false;
+		
 		if (!array_key_exists($template_name, $templates))
 		{
 			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND ".'language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
@@ -27,8 +30,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$templates[$template_name] = current($templates[$template_name]);
 			}
 		}
-		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-			return false;
+		
 
 		$template = $templates[$template_name];
 
