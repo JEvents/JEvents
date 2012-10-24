@@ -154,12 +154,10 @@ class DefaultModLatestView
 
 		if ($this->linkCloaking)
 		{
-			//return mosHTML::Link("", $text, array('onclick'=>'"window.location.href=\''.josURL($url).'\';return false;"'));
 			return '<a href="#" onclick="window.location.href=\'' . $link . '\'; return false;" ' . $class . ' >' . $text . '</a>';
 		}
 		else
 		{
-			//return mosHTML::Link(josURL($url), "$text");
 			return '<a href="' . $link . '" ' . $class . '>' . $text . '</a>';
 		}
 

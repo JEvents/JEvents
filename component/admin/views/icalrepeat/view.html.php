@@ -67,6 +67,13 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
+		
+                if (JVersion::isCompatible("3.0")){
+                    $this->setLayout("edit");
+                }
+                else {
+                    $this->setLayout("edit16");
+                }		
 
 	}
 

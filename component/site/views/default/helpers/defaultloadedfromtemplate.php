@@ -23,8 +23,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (isset($templates[$template_name]["*"])){
 				$templates[$template_name] =$templates[$template_name]["*"];
 			}
-			else {
+			else if (is_array($templates[$template_name]) && count($templates[$template_name])==0){
+				$templates[$template_name] = null;
+			}
+			else if (is_array($templates[$template_name])){
 				$templates[$template_name] = current($templates[$template_name]);
+			}
+			else {
+				$templates[$template_name] = null;
 			}
 		}
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
