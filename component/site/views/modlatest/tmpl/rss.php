@@ -21,11 +21,11 @@ $doc->setTitle($this->info['title']);
 $doc->setDescription($this->info['description']);
 
 $docimage =new JFeedImage();
-$docimage->set('description', $this->info['description']);
-$docimage->set('title', $this->info['title']);
-$docimage->set('url', $this->info['image_url']);
-$docimage->set('link', $this->info['imagelink']);
-$doc->set('image', $docimage);
+$docimage->description= $this->info['description'];
+$docimage->title=$this->info['title'];
+$docimage->url= $this->info['image_url'];
+$docimage->link= $this->info['imagelink'];
+$doc->image =  $docimage;
 
 foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 	foreach ($ebrd as $row) {
@@ -40,6 +40,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		$targetid = $this->modparams->get("target_itemid",0);
 		$link = $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
+		$link = str_replace("&tmpl=component","",$link );
 		$item_link  = JRoute::_($link.$this->jeventCalObject->datamodel->getCatidsOutLink());
 
 		// removes all formating from the intro text for the description text
@@ -96,17 +97,17 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		// item info
 		if ($row->alldayevent()) {
 			$temptime = new JevDate($eventDate);
-			$item->set('title', $temptime->toFormat(JText::_('JEV_RSS_DATE')) ." : " .$item_title);
+			$item->title =  $temptime->toFormat(JText::_('JEV_RSS_DATE')) ." : " .$item_title;
 		} else {
 			$temptime = new JevDate($eventDate);
-			$item->set('title', $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) ." : " .$item_title);
+			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) ." : " .$item_title;
 		}
-		$item->set('link', $item_link);
-		$item->set('description', $item_description);
-		$item->set('category', $item_type);
+		$item->link = $item_link;
+		$item->description = $item_description;
+		$item->category = $item_type;
 		
 		$eventcreated = new JevDate($row->created());
-		$item->set('date', $eventcreated->toUnix(true));
+		$item->date= $eventcreated->toUnix(true);
 
 		// add item info to RSS document
 		$doc->addItem( $item );

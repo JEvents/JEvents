@@ -64,7 +64,7 @@ if (!defined("JEV_LIBS")){
 	// TODO retire this sometime? - check usage by session registration code first
 	JLoader::register('JEV_CommonFunctions',JEV_PATH."libraries/commonfunctions.php");
 	
-	JLoader::register('JEventsHelper',JEV_HELPERS."jevents.php");
+	JLoader::register('JEventsHelper',JEV_ADMINPATH."helpers/jevents.php");
 
 	// joomla 3.0
 	JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");

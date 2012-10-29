@@ -38,6 +38,7 @@
 		<folder>views/year</folder>
 		<filename>index.html</filename>
 		<filename>jevents.defines.php</filename>
+		<filename>jomsocial_rule.xml</filename>
 		<filename>jevents.php</filename>
 		<filename>mod.defines.php</filename>
 		<filename>router.php</filename>
