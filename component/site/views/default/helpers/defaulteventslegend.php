@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+if (file_exists(JPATH_SITE."/modules/mod_jevents_legend/helper.php")){
 function DefaultEventsLegend($view){
 	$cfg = & JEVConfig::getInstance();
 	$theme = JEV_CommonFunctions::getJEventsViewName();
@@ -21,5 +22,6 @@ function DefaultEventsLegend($view){
 	echo $modview->displayCalendarLegend("block");
 
 	echo "<br style='clear:both;height:0px;line-height:0px;'/>";
+}
 }
 
