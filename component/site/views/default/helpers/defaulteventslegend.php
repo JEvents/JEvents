@@ -1,12 +1,12 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-if (file_exists(JPATH_SITE."/modules/mod_jevents_legend/helper.php")){
-	function DefaultEventsLegend($view){
+function DefaultEventsLegend($view){
+	if (!file_exists(JPATH_SITE.'/modules/mod_jevents_legend/helper.php')) {return;} else {
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
-		$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.'/'."legend");
+		$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.DS."legend");
 		if (!file_exists($modpath)) return;
 
 		// load the helper class
@@ -16,7 +16,7 @@ if (file_exists(JPATH_SITE."/modules/mod_jevents_legend/helper.php")){
 		$viewclass = ucfirst($theme)."ModLegendView";
 		$module = JModuleHelper::getModule("mod_jevents_legend",false);
 
-		$params = new JRegistry( $module->params );
+		$params = new JParameter( $module->params );
 
 		$modview = new $viewclass($params, $module->id);
 		echo $modview->displayCalendarLegend("block");
