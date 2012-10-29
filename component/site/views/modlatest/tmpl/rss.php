@@ -40,6 +40,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		$targetid = $this->modparams->get("target_itemid",0);
 		$link = $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
+		$link = str_replace("&tmpl=component","",$link );
 		$item_link  = JRoute::_($link.$this->jeventCalObject->datamodel->getCatidsOutLink());
 
 		// removes all formating from the intro text for the description text

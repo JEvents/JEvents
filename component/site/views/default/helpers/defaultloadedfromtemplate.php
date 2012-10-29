@@ -400,10 +400,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = $stop_date;
 						$blank[] = "";
 						$search[] = "{{STARTTIME}}";
-						$replace[] = $start_time;
+						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
-						$replace[] = $stop_time_midnightFix;
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());

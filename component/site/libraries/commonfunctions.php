@@ -436,7 +436,7 @@ class JEV_CommonFunctions {
 		$mail->send();
 	}
 
-	function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink ) {
+	function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -477,6 +477,12 @@ class JEV_CommonFunctions {
 			}
 		}
 
+		if ($event){
+			$dispatcher     =& JDispatcher::getInstance();
+			JPluginHelper::importPlugin("jevents");
+			$res = $dispatcher->trigger( 'onSendAdminMail' , array(&$mail, $event));
+		}
+		
 		$mail->setSubject($subject);
 		$mail->setBody($messagetemplate);
 		$mail->IsHTML(true);
