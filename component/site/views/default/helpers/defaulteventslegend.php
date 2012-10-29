@@ -1,8 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-if (file_exists(JPATH_SITE.'/modules/mod_jevents_legend/helper.php')) {
-	function DefaultEventsLegend($view){
+function DefaultEventsLegend($view){
+	if (!file_exists(JPATH_SITE.'/modules/mod_jevents_legend/helper.php')) {return;} else {
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
