@@ -99,7 +99,6 @@
 			<option value="0">JEV_SUNDAY_FIRST</option>
 			<option value="1">JEV_MONDAY_FIRST</option>
 			<option value="6">JEV_SATURDAY_FIRST</option>
-<<<<<<< JEvents22
 		</param>
 		<param name="com_print_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
 		<param name="com_email_icon_view" type="jevboolean" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
@@ -107,17 +106,10 @@
 		<param name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
 		<param name="showPanelNews" type="jevboolean" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
 		<param name="hideMigration" type="jevboolean" default="1" label="JEV_HIDE_MIGRATION" description="" />
-=======
-		</field>
-		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
-		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
-		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
-		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
->>>>>>> local
 
-		<field name="mergemenus" type="jevboolean" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
+		<param name="mergemenus" type="jevboolean" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
 
-		<field name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
+		<param name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
 		<param name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" description="JEV_TIMEZONE_2_DESC"/>
