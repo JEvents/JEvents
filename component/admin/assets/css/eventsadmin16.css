@@ -16,39 +16,39 @@ div#jevents div.current{max-width: none!important;}
 div#jevents tr, div#jevents td {border-width:0px;}
 
 div#jevents table.adminform {
-background-color:#FFFFFF;
-border:1px solid #D5D5D5;
-border-collapse:collapse;
-margin:8px 0 15px;
-width:100%;
+	background-color:#FFFFFF;
+	border:1px solid #D5D5D5;
+	border-collapse:collapse;
+	margin:8px 0 15px;
+	width:100%;
 }
 div#jevents table.adminform tr.row0 {
-background-color:#F9F9F9;
+	background-color:#F9F9F9;
 }
 div#jevents table.adminform tr.row1 {
-background-color:#EEEEEE;
+	background-color:#EEEEEE;
 }
 div#jevents table.adminform th {
-background-repeat:repeat;
-color:#000000;
-font-size:1.091em;
-height:25px;
-padding:6px 2px 4px 4px;
-text-align:left;
+	background-repeat:repeat;
+	color:#000000;
+	font-size:1.091em;
+	height:25px;
+	padding:6px 2px 4px 4px;
+	text-align:left;
 }
 div#jevents table.adminform td {
-font-size:1.091em;
-padding:5px;
-text-align:left;
+	font-size:1.091em;
+	padding:5px;
+	text-align:left;
 }
 div#jevents table.adminform td.r1, div#jevents table.adminform td.r2 {
 	padding-right:9px!important;
 }
 div#jevents table.adminform td.filter {
-text-align:left;
+	text-align:left;
 }
 div#jevents table.adminform td.helpMenu {
-text-align:right;
+	text-align:right;
 }
 
 textarea#extra_info {
@@ -91,34 +91,34 @@ div#jevents fieldset table {
 }
 
 div#jevents dl.tabs {
-float:left;
-margin:10px 0 -1px;
-z-index:50;
+	float:left;
+	margin:10px 0 -1px;
+	z-index:50;
 }
 div#jevents dl.tabs dt {
-background:none repeat scroll 0 0 #F0F0F0;
-border-left:1px solid #CCCCCC;
-border-right:1px solid #CCCCCC;
-border-top:1px solid #CCCCCC;
-color:#666666;
-float:left;
-margin-left:3px;
-padding:4px 10px;
+	background:none repeat scroll 0 0 #F0F0F0;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
+	border-top:1px solid #CCCCCC;
+	color:#666666;
+	float:left;
+	margin-left:3px;
+	padding:4px 10px;
 }
 div#jevents dl.tabs dt.open {
-background:none repeat scroll 0 0 #F9F9F9;
-border-bottom:1px solid #F9F9F9;
-color:#000000;
-z-index:100;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-bottom:1px solid #F9F9F9;
+	color:#000000;
+	z-index:100;
 }
 div#jevents div.current {
-border:1px solid #CCCCCC;
-clear:both;
-padding:10px;
+	border:1px solid #CCCCCC;
+	clear:both;
+	padding:10px;
 }
 div#jevents div.current dd {
-margin:0;
-padding:0;
+	margin:0;
+	padding:0;
 }
 
 /** header icons **/
@@ -129,68 +129,68 @@ div.icon-48-jevents {
 }
 
 div.pagetitle {
-background-repeat:no-repeat;
-margin-left:10px;
-padding-left:60px;
+	background-repeat:no-repeat;
+	margin-left:10px;
+	padding-left:60px;
 }
 div.pagetitle h2 {
-color:#146295;
-font-size:2em;
-font-weight:bold;
-line-height:48px;
-margin:0;
-padding:0;
+	color:#146295;
+	font-size:2em;
+	font-weight:bold;
+	line-height:48px;
+	margin:0;
+	padding:0;
 }
 div.pagetitle span {
-color:#666666;
+	color:#666666;
 }
 div.toolbar-list {
-float:right;
-padding:0;
-text-align:right;
+	float:right;
+	padding:0;
+	text-align:right;
 }
 div.toolbar-list ul {
-margin:0;
-padding:0;
+	margin:0;
+	padding:0;
 }
 div.toolbar-list li {
-color:#666666;
-float:left;
-height:48px;
-list-style:none outside none;
-padding:1px 1px 3px 4px;
-text-align:center;
+	color:#666666;
+	float:left;
+	height:48px;
+	list-style:none outside none;
+	padding:1px 1px 3px 4px;
+	text-align:center;
 }
 div.toolbar-list li.spacer {
-width:10px;
+	width:10px;
 }
 div.toolbar-list li.divider {
-border-right:1px solid #C7C7C7;
-width:2px;
+	border-right:1px solid #C7C7C7;
+	width:2px;
 }
 div.toolbar-list span {
-display:block;
-float:none;
-height:32px;
-margin:0 auto;
-width:32px;
+	display:block;
+	float:none;
+	height:32px;
+	margin:0 auto;
+	width:32px;
 }
 div.toolbar-list a {
-border:1px solid #F4F4F4;
-cursor:pointer;
-display:block;
-float:left;
-padding:1px 5px;
-white-space:nowrap;
-text-decoration: none;
+	border:1px solid #F4F4F4;
+	cursor:pointer;
+	display:block;
+	float:left;
+	padding:1px 5px;
+	white-space:nowrap;
+	text-decoration: none;
 }
 div.toolbar-list a:hover {
-border-color:#EEEEEE #CCCCCC #CCCCCC #EEEEEE;
-border-left:1px solid #EEEEEE;
-border-style:solid;
-border-width:1px;
-color:#0B55C4;
-text-decoration:none;
+	border-color:#EEEEEE #CCCCCC #CCCCCC #EEEEEE;
+	border-left:1px solid #EEEEEE;
+	border-style:solid;
+	border-width:1px;
+	color:#0B55C4;
+	text-decoration:none;
 }
 
 /* Editing styles */
@@ -228,3 +228,42 @@ a#colorPickButton {
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
 
 #jevents label {display:inline;}
+
+/* Joomla 1.6 */
+.jevconfig .current{
+	width:inherit;
+}
+
+.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
+#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select,
+#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select, 
+#jevents .jevdatetime input, #jevents .jevdatetime textarea, #jevents .jevdatetime select,
+#jevents .jevextrablock input, #jevents .jevextrablock textarea, #jevents .jevextrablock select
+{
+	margin-bottom:inherit;
+	float:none;
+}
+.jevconfig .current label,
+#jevents .current label ,
+#jevents #jevadminform label ,
+#jevents .jevdatetime label,
+#jevents .jevextrablock label
+{
+	float:none;
+	display:inline;
+}
+.jevconfig .current td.paramlist_key, .jevconfig .current td.paramlist_value {
+	border-bottom:1px solid #ddd;
+	padding:4px 5px 4px 0px;
+}
+.jevconfig .current td.paramlist_key {
+	color:#666;
+	text-align:right;
+	font-weight:bold;
+	width:300px;
+}
+
+/* JForm event editing */
+fieldset.checkboxes li {
+	float:left;
+}

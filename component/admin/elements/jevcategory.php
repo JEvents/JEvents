@@ -32,19 +32,8 @@ class JElementJevcategory extends JElement
 
 		$db = &JFactory::getDBO();
 
-		if (JVersion::isCompatible("1.6.0"))  {
-			$extension	= $node->getAttribute('extension');
-		}
-		else {
-			$section	= $node->attributes('section');
-			if (!isset ($section)) {
-				// alias for section
-				$section = $node->attributes('scope');
-				if (!isset ($section)) {
-					$section = 'content';
-				}
-			}
-		}
+		$extension	= $node->getAttribute('extension');
+		
 		$class		= $node->attributes('class');
 		if (!$class) {
 			$class = "inputbox";
@@ -58,13 +47,9 @@ class JElementJevcategory extends JElement
 		' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' .
 		//' LEFT JOIN #__categories AS gggp ON gggp.id=ggp.parent_id ' .
 		' WHERE c.published = 1 ' ;
-		if (JVersion::isCompatible("1.6.0"))  {
-			$query .= ' AND c.extension = '.$db->Quote($extension);
-		}
-		else {
-			$query .= ' AND c.section = '.$db->Quote($section);
-		}
-
+		
+		$query .= ' AND c.extension = '.$db->Quote($extension);
+		
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 		echo $db->getErrorMsg();

@@ -53,43 +53,40 @@ $browser = JBrowser::getInstance();
 
 $registry	=& JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
-if (JVersion::isCompatible("1.6.0")){
-	$newparams	= JFactory::getApplication('site')->getParams();
-	// Because the application sets a default page title,
-	// we need to get it from the menu item itself
-	$menu = JFactory::getApplication()->getMenu()->getActive();
-	if ($menu) {
-		$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
-	}
-	else {
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$newparams->def('page_heading', $params->get('page_title')) ;
-	}
-	
-	// handle global menu item parameter for viewname
-	$com_calViewName = $newparams->get('com_calViewName',"");
-	if ($com_calViewName == "global" || $com_calViewName == ""){
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$newparams->set('com_calViewName',$params->get('com_calViewName'));
-	}
 
-	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
-	$component->params =& $newparams;
-	
-	$isMobile = $browser->isMobile();
-	// Joomla isMobile method doesn't identify all android phones
-	if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT'])){
-		if (stripos($_SERVER['HTTP_USER_AGENT'], 'android') >0) {
-			$isMobile = true;
-		}
-		else 	if (stripos($_SERVER['HTTP_USER_AGENT'], 'iphone')>0 || stripos($_SERVER['HTTP_USER_AGENT'], 'ipod')>0)  {
-			$isMobile = true;
-		}
-	}
+$newparams	= JFactory::getApplication('site')->getParams();
+// Because the application sets a default page title,
+// we need to get it from the menu item itself
+$menu = JFactory::getApplication()->getMenu()->getActive();
+if ($menu) {
+	$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
 }
 else {
-	$isMobile = $browser->_mobile;
+	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$newparams->def('page_heading', $params->get('page_title')) ;
 }
+
+// handle global menu item parameter for viewname
+$com_calViewName = $newparams->get('com_calViewName',"");
+if ($com_calViewName == "global" || $com_calViewName == ""){
+	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$newparams->set('com_calViewName',$params->get('com_calViewName'));
+}
+
+$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
+$component->params =& $newparams;
+
+$isMobile = $browser->isMobile();
+// Joomla isMobile method doesn't identify all android phones
+if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT'])){
+	if (stripos($_SERVER['HTTP_USER_AGENT'], 'android') >0) {
+		$isMobile = true;
+	}
+	else 	if (stripos($_SERVER['HTTP_USER_AGENT'], 'iphone')>0 || stripos($_SERVER['HTTP_USER_AGENT'], 'ipod')>0)  {
+		$isMobile = true;
+	}
+}
+        
 $params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
@@ -110,10 +107,6 @@ if ($tz!="" && is_callable("date_default_timezone_set")){
 	$registry->set("jevents.timezone",$timezone);
 }
 
-if (!JVersion::isCompatible("1.6.0")){
-	// Multi-category events only supported in Joomla 2.5 + so disable elsewhere
-	$params->set('multicategory',0);
-}
 // Must also load backend language files
 $lang =& JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
@@ -208,31 +201,18 @@ if ($cfg->get('com_rss_live_bookmarks')) {
 	$rssLink = 'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;
 	$rssLink = JUri::root().$rssLink;
 	
-	if (JVersion::isCompatible("1.6.0")){
-		if (method_exists(JFactory::getDocument(),"addHeadLink")){
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
-		}
-	}
-	else {
-		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - RSS 2.0 Feed" />'. "\n";
-		JFactory::getApplication()->addCustomHeadTag( $rss );
+	if (method_exists(JFactory::getDocument(),"addHeadLink")){
+		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
 	}
 
 	$rssLink =  'index.php?option='.JEV_COM_COMPONENT.'&amp;task=modlatest.rss&amp;format=feed&amp;type=atom&amp;Itemid='.$Itemid.'&amp;modid='.$rssmodid;
 	$rssLink = JUri::root().$rssLink;
 	//$rssLink = JRoute::_($rssLink);
-	if (JVersion::isCompatible("1.6.0")){
-		if (method_exists(JFactory::getDocument(),"addHeadLink")){
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
-		}
+	if (method_exists(JFactory::getDocument(),"addHeadLink")){
+		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
 	}
-	else {
-		$rss = '<link href="' .$rssLink .'"  rel="alternate"  type="application/rss+xml" title="JEvents - Atom Feed" />'. "\n";
-		JFactory::getApplication()->addCustomHeadTag( $rss );
-	}
-
 }
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method

@@ -52,7 +52,17 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				// are there any catids not in list of accessible Categories 
 				$inaccessiblecats = array_diff($catids, explode(",",$accessibleCategories));
 				if (count($inaccessiblecats )){
-					return null;
+					$inaccessiblecats[] = -1;
+					$inaccessiblecats = implode(",",$inaccessiblecats);
+					$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+					$realcatids = $db->loadColumn();
+					if (count ($realcatids) ){
+						return null;						
+					}
+					else {
+						$catids = array_intersect($catids, explode(",",$accessibleCategories));
+
+					}
 				}
 				$rows[0]->catids = $catids;
 			}

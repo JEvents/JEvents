@@ -107,9 +107,11 @@ function DefaultViewHelperHeader16($view){
 		. $view->datamodel->getCatidsOutLink()
 		;
 		$link =JRoute::_($link);
-		if (strpos($link,"/")===0) $link = substr($link,1);
-		$link = JURI::root().$link;
+		//if (strpos($link,"/")===0) $link = substr($link,1);
+		$uri	        =& JURI::getInstance(JURI::base());
+		$root = $uri->toString( array('scheme', 'host', 'port') );
 
+		$link = $root.$link;
 		require_once(JPATH_SITE.'/'.'components'.'/'.'com_mailto'.'/'.'helpers'.'/'.'mailto.php');
 		$url	= JRoute::_('index.php?option=com_mailto&tmpl=component&link='.MailToHelper::addLink( $link ));
 

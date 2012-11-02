@@ -256,7 +256,8 @@ class iCalImport
 			foreach ($this->cal["VEVENT"] as $vevent){
 				// trap for badly constructed all day events
 				if (isset($vevent["DTSTARTRAW"]) && isset($vevent["DTENDRAW"]) && $vevent["DTENDRAW"] ==  $vevent["DTSTARTRAW"]){
-					$vevent["DTEND"] += 86400;
+					//$vevent["DTEND"] += 86400;
+					$vevent["NOENDTIME"]  = 1;
 				}
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}

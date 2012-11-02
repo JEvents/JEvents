@@ -31,9 +31,9 @@ class ExtModLatestView extends DefaultModLatestView
 		$this->getLatestEventsData();
 
 		$content = "";
-		$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 		if(isset($this->eventsByRelDay) && count($this->eventsByRelDay)){
+			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -94,11 +94,13 @@ class ExtModLatestView extends DefaultModLatestView
 					$firstTime=false;
 				} // end of foreach
 			} // end of foreach
+			$content .="</table>\n";
 
 		} else {
+			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$content .= '<tr><td class="mod_events_latest_noevents">'. JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
+			$content .="</table>\n";
 		}
-		$content .="</table>\n";
 
 		$callink_HTML = '<div class="mod_events_latest_callink">'
 		.$this->getCalendarLink()
@@ -108,13 +110,8 @@ class ExtModLatestView extends DefaultModLatestView
 		if ($this->linkToCal == 2) $content .= $callink_HTML;
 
 		if ($this->displayRSS){
-			if (JVersion::isCompatible("1.6.0")) {
-				$rssimg = JURI::root() . "media/system/images/livemarks.png";
-			}
-			else {
-				$rssimg = JURI::root() . "images/M_images/livemarks.png";
-			}
-
+			$rssimg = JURI::root() . "media/system/images/livemarks.png";
+			
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 			.'<a href="'.$this->rsslink.'" title="'.JText::_("RSS_FEED").'"  target="_blank">'
 			.'<img src="'.$rssimg.'" alt="'.JText::_("RSS_FEED").'" />'
