@@ -82,30 +82,39 @@ class AdminUserViewUser extends JEventsAbstractView
 		$db = & JFactory::getDBO();
 
 		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$rules = JAccess::getAssetRules("com_jevents", true);
-		$data = $rules->getData();
-		$creatorgroups = $data["core.create"]->getData();
-		foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
+		if (JVersion::isCompatible("1.6.0"))
 		{
-			if ($permission == 1)
+			$rules = JAccess::getAssetRules("com_jevents", true);
+			$data = $rules->getData();
+			$creatorgroups = $data["core.create"]->getData();
+			foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
 			{
 				$creatorgroups[$creatorgroup] = $permission;
 			}
-		}
-		// array_merge does a re-indexing !!
-		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
-		$users = array(0);
-		foreach ($creatorgroups as $creatorgroup => $permission)
-		{
-			if ($permission == 1)
+			// array_merge does a re-indexing !!
+			//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+			$users = array(0);
+			foreach ($creatorgroups as $creatorgroup => $permission)
 			{
-				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				if ($permission == 1)
+				{
+					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+				}
 			}
+			$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+			$db->setQuery($sql);
+			$users = $db->loadObjectList();
 		}
-		$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
-		$db->setQuery($sql);
-		$users = $db->loadObjectList();
-		
+		else
+		{
+			$minaccess = $params->get("jevcreator_level", 19);
+			// get users AUTHORS and above
+			$sql = "SELECT * FROM #__users where gid>=" . $minaccess;
+			$db->setQuery($sql);
+			$users = $db->loadObjectList();
+		}
+
+
 		$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
 		foreach ($users as $user)
 		{

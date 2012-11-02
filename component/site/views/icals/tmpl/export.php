@@ -87,7 +87,6 @@ if (!empty($this->icalEvents))
 		{
 			$a = $a->getOriginalFirstRepeat();
 		}
-		if (!$a) continue;
 		$html .= "BEGIN:VEVENT\r\n";
 		$html .= "UID:" . $a->uid() . "\r\n";
 		$html .= "CATEGORIES:" . $a->catname() . "\r\n";
@@ -95,10 +94,7 @@ if (!empty($this->icalEvents))
 			$html .= "CLASS:" . $a->_class . "\r\n";
 		$html .= "SUMMARY:" . $a->title() . "\r\n";
 		if ($a->location()!="") {
-			if (!is_numeric($a->location())){
-				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
-			}
-			else if (isset($a->_loc_title)){
+			if (isset($a->_loc_title)){
 				$html .= "LOCATION:" . $this->wraplines($this->replacetags($a->_loc_title)) . "\r\n";
 			}
 			else {
@@ -183,16 +179,7 @@ if (!empty($this->icalEvents))
 
 			$start = JevDate::strftime($startformat, $start);
 			$end = JevDate::strftime($endformat, $end);
-			
-			if ( is_callable("date_default_timezone_set")) {
-				date_default_timezone_set("UTC");			
-				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
-				// Change back
-				date_default_timezone_set($current_timezone);				
-			}
-			else {
-				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
-			}
+			$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 
 			// in case the first repeat is changed
 			if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
@@ -201,7 +188,7 @@ if (!empty($this->icalEvents))
 			}
 		}
 
-		$html .= "DTSTAMP:" . $stamptime . "\r\n";
+		$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
 		$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
 		// events with no end time don't give a DTEND
 		if (!$a->noendtime())
@@ -312,78 +299,70 @@ if (!empty($this->icalEvents))
 		$html .= "TRANSP:OPAQUE\r\n";
 		$html .= "END:VEVENT\r\n";
 
-		$changedrows = array();
-		
-		if (count($changed) > 0 && $changed[0]!=0)
+
+		if (count($changed) > 0)
 		{
 			foreach ($changed as $rpid)
 			{
 				$a = $this->dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
-				
 				if ($a && isset($a["row"]))
 				{
 					$a = $a["row"];
-					$changedrows[] = $a;
+
+					//$dispatcher = & JDispatcher::getInstance();
+					//$dispatcher->trigger('onDisplayCustomFields', array(& $a));
+
+					$html .= "BEGIN:VEVENT\r\n";
+					$html .= "UID:" . $a->uid() . "\r\n";
+					$html .= "CATEGORIES:" . $a->catname() . "\r\n";
+					if (!empty($a->_class))
+						$html .= "CLASS:" . $a->_class . "\r\n";
+					$html .= "SUMMARY:" . $a->title() . "\r\n";
+					if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
+					// We Need to wrap this according to the specs
+					$html .= $this->setDescription($a->content()) . "\r\n";
+
+					if ($a->hasContactInfo())
+						$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";
+					if ($a->hasExtraInfo())
+						$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\r\n";
+
+					$exception = $changedexceptions[$rpid];
+					$originalstart = JevDate::strtotime($exception->oldstartrepeat);
+					$chstart = $a->getUnixStartTime();
+					$chend = $a->getUnixEndTime();
+
+					// No doing true timezones!
+					if ($tzid == "" && is_callable("date_default_timezone_set"))
+					{
+						// UTC!
+						// Change timezone to UTC
+						$current_timezone = date_default_timezone_get();
+						date_default_timezone_set("UTC");
+
+						// Do not use JevDate version since this sets timezone to config value!								
+						$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
+						$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
+						$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+						$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
+						// Change back
+						date_default_timezone_set($current_timezone);
+					}
+					else
+					{
+						$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
+						$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
+						$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+						$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
+					}
+					$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+					$html .= "DTSTART$tzid:" . $chstart . "\r\n";
+					$html .= "DTEND$tzid:" . $chend . "\r\n";
+					$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";
+					$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
+					$html .= "TRANSP:OPAQUE\r\n";
+					$html .= "END:VEVENT\r\n";
 				}
-			}		
-
-			ob_start();
-			$dispatcher->trigger( 'onDisplayCustomFieldsMultiRow', array( &$changedrows) );
-			ob_end_clean();
-
-			foreach ($changedrows as $a)
-			{
-				$html .= "BEGIN:VEVENT\r\n";
-				$html .= "UID:" . $a->uid() . "\r\n";
-				$html .= "CATEGORIES:" . $a->catname() . "\r\n";
-				if (!empty($a->_class))
-					$html .= "CLASS:" . $a->_class . "\r\n";
-				$html .= "SUMMARY:" . $a->title() . "\r\n";
-				if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
-				// We Need to wrap this according to the specs
-				$html .= $this->setDescription($a->content()) . "\r\n";
-
-				if ($a->hasContactInfo())
-					$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";
-				if ($a->hasExtraInfo())
-					$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\r\n";
-
-				$exception = $changedexceptions[$rpid];
-				$originalstart = JevDate::strtotime($exception->oldstartrepeat);
-				$chstart = $a->getUnixStartTime();
-				$chend = $a->getUnixEndTime();
-
-				// No doing true timezones!
-				if ($tzid == "" && is_callable("date_default_timezone_set"))
-				{
-					// UTC!
-					// Change timezone to UTC
-					$current_timezone = date_default_timezone_get();
-					date_default_timezone_set("UTC");
-
-					// Do not use JevDate version since this sets timezone to config value!								
-					$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
-					$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-					$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
-					$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
-					// Change back
-					date_default_timezone_set($current_timezone);
-				}
-				else
-				{
-					$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-					$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-					$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
-					$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
-				}
-				$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
-				$html .= "DTSTART$tzid:" . $chstart . "\r\n";
-				$html .= "DTEND$tzid:" . $chend . "\r\n";
-				$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";
-				$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
-				$html .= "TRANSP:OPAQUE\r\n";
-				$html .= "END:VEVENT\r\n";
-
 			}
 		}
 	}

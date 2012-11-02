@@ -23,7 +23,7 @@ class AdminParamsController extends JControllerAdmin
 	 */
 	function __construct($default = array())
 	{
-		$user = JFactory::getUser();
+		$user =  JFactory::getUser();
 
 		if (!JEVHelper::isAdminUser())
 		{
@@ -61,7 +61,12 @@ class AdminParamsController extends JControllerAdmin
 		$table->option = $table->element;
 
 		// Set the layout
-		$this->view->setLayout('edit');
+		if (!JVersion::isCompatible("3.0")){
+			$this->view->setLayout('edit16');
+		}
+		else {
+			$this->view->setLayout('edit');
+		}
 
 		$this->view->assignRef('component', $table);
 		$this->view->setModel($model, true);
@@ -81,17 +86,28 @@ class AdminParamsController extends JControllerAdmin
 		$component = JEV_COM_COMPONENT;
 
 		$model = $this->getModel('params');
-		$table = & JTable::getInstance('extension');
-		//if (!$table->loadByOption( $component ))
-		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+		if (JVersion::isCompatible("1.6.0"))
 		{
-			JError::raiseWarning(500, 'Not a valid component');
-			return false;
+			$table = & JTable::getInstance('extension');
+			//if (!$table->loadByOption( $component ))
+			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
 		}
-		
+		else
+		{
+			$table = & JTable::getInstance('component');
+			if (!$table->loadByOption($component))
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
+		}
 
 		$post = JRequest::get('post');
-		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
+		$post['params'] 	= JRequest::getVar('jform', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 
@@ -104,18 +120,13 @@ class AdminParamsController extends JControllerAdmin
 
 		// if switching from single cat to multi cat then reset the table entries
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if (!$params->get("multicategory", 0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory'] == 1)
-		{
+		if (!$params->get("multicategory",0) && isset($post["params"]['multicategory']) && $post["params"]['multicategory']==1){
 			$db = JFactory::getDbo();
-			$sql = "DELETE FROM #__jevents_catmap";
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent";
 			$db->setQuery($sql);
 			$db->query();			
-			
-			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
-			$db->setQuery($sql);
-			$db->query();
 		}
-
+		
 		// save the changes
 		if (!$table->store())
 		{
@@ -124,51 +135,57 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		// Now save the form permissions data
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
-		$option = JEV_COM_COMPONENT;
-		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-		$id = $comp->id;
-		// Validate the posted data.
-		JForm::addFormPath(JPATH_COMPONENT);
-		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
-
-		$form = $model->getForm();
-		$return = $model->validate($form, $data);
-
-		// Check for validation errors.
-		if ($return === false)
+		if (JVersion::isCompatible("1.6.0"))
 		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
-			$app = JFactory::getApplication();
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+
+			$data = JRequest::getVar('jform', array(), 'post', 'array');
+			$option = JEV_COM_COMPONENT;
+			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+			$id = $comp->id;
+
+			// Validate the posted data.
+			JForm::addFormPath(JPATH_COMPONENT);
+			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+
+			$form = $model->getForm();
+			$return = $model->validate($form, $data);
+
+			// Check for validation errors.
+			if ($return === false)
 			{
-				if (JError::isError($errors[$i]))
+				// Get the validation messages.
+				$errors = $model->getErrors();
+
+				$app = JFactory::getApplication();
+				// Push up to three validation messages out to the user.
+				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					if (JError::isError($errors[$i]))
+					{
+						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					}
+					else
+					{
+						$app->enqueueMessage($errors[$i], 'notice');
+					}
 				}
-				else
-				{
-					$app->enqueueMessage($errors[$i], 'notice');
-				}
+
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $data);
+
+				// Redirect back to the edit screen.
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+				return false;
 			}
 
-			// Save the data in the session.
-			$app->setUserState('com_config.config.global.data', $data);
-			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
-			return false;
+			// Attempt to save the configuration.
+			$data = array(
+				'params' => $return,
+				'id' => $id,
+				'option' => $option
+			);
+			$return = $model->saveRules($data);
 		}
-
-		// Attempt to save the configuration.
-		$data = array(
-			'params' => $return,
-			'id' => $id,
-			'option' => $option
-		);
-		$return = $model->saveRules($data);
-		
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -195,14 +212,25 @@ class AdminParamsController extends JControllerAdmin
 		$component = JEV_COM_COMPONENT;
 
 		$model = $this->getModel('params');
-		$table = & JTable::getInstance('extension');
-		//if (!$table->loadByOption( $component ))
-		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+		if (JVersion::isCompatible("1.6.0"))
 		{
-			JError::raiseWarning(500, 'Not a valid component');
-			return false;
+			$table = & JTable::getInstance('extension');
+			//if (!$table->loadByOption( $component ))
+			if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
 		}
-		
+		else
+		{
+			$table = & JTable::getInstance('component');
+			if (!$table->loadByOption($component))
+			{
+				JError::raiseWarning(500, 'Not a valid component');
+				return false;
+			}
+		}
 
 		$post = JRequest::get('post');
 		$post['option'] = $component;
@@ -223,51 +251,58 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		// Now save the form permissions data
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
-		$option = JEV_COM_COMPONENT;
-		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-		$id = $comp->id;
-		// Validate the posted data.
-		JForm::addFormPath(JPATH_COMPONENT);
-		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
-		$form = $model->getForm();
-		$return = $model->validate($form, $data);
-
-		// Check for validation errors.
-		if ($return === false)
+		if (JVersion::isCompatible("1.6.0"))
 		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
 
-			$app = JFactory::getApplication();
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			$data = JRequest::getVar('jform', array(), 'post', 'array');
+			$option = JEV_COM_COMPONENT;
+			$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+			$id = $comp->id;
+
+			// Validate the posted data.
+			JForm::addFormPath(JPATH_COMPONENT);
+			JForm::addFieldPath(JPATH_COMPONENT . '/elements');
+
+			$form = $model->getForm();
+			$return = $model->validate($form, $data);
+
+			// Check for validation errors.
+			if ($return === false)
 			{
-				if (JError::isError($errors[$i]))
+				// Get the validation messages.
+				$errors = $model->getErrors();
+
+				$app = JFactory::getApplication();
+				// Push up to three validation messages out to the user.
+				for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					if (JError::isError($errors[$i]))
+					{
+						$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
+					}
+					else
+					{
+						$app->enqueueMessage($errors[$i], 'notice');
+					}
 				}
-				else
-				{
-					$app->enqueueMessage($errors[$i], 'notice');
-				}
+
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $data);
+
+				// Redirect back to the edit screen.
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+				return false;
 			}
 
-			// Save the data in the session.
-			$app->setUserState('com_config.config.global.data', $data);
-			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
-			return false;
+			// Attempt to save the configuration.
+			$data = array(
+				'params' => $return,
+				'id' => $id,
+				'option' => $option
+			);
+			$return = $model->saveRules($data);
 		}
 
-		// Attempt to save the configuration.
-		$data = array(
-			'params' => $return,
-			'id' => $id,
-			'option' => $option
-		);
-		$return = $model->saveRules($data);
-		
 		$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=params.edit", JText::_('CONFIG_SAVED'));
 		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();

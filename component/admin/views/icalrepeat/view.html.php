@@ -43,7 +43,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = & JFactory::getDocument();
-		include(JEV_ADMINLIBS . "editStrings.php");
+		include(JEV_LIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editical.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
@@ -67,13 +67,6 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
-		
-                if (JVersion::isCompatible("3.0")){
-                    $this->setLayout("edit");
-                }
-                else {
-                    $this->setLayout("edit16");
-                }		
 
 	}
 
@@ -88,7 +81,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$buttontext = JText::_('SAVE');
 		$buttonhtml = '<a href="#" onclick="javascript:return clickIcalSaveButton();" class="toolbar">
 		<span class="icon-32-save" title="' . $buttontext . '"></span>' . $buttontext . '</a><div style="position:relative;clear:both;">';
-		$submitbutton = "Joomla.submitbutton";
+		$submitbutton = JVersion::isCompatible("1.6.0") ? "Joomla.submitbutton" : "submitbutton";
 
 		ob_start();
 		?>
@@ -130,7 +123,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	{
 
 		$toolbar = & JToolBar::getInstance('toolbar');
-		$submitbutton = "Joomla.submitbutton";
+		$submitbutton = JVersion::isCompatible("1.6.0") ? "Joomla.submitbutton" : "submitbutton";
 		$html = '<a class="toolbar" onclick="javascript: '.$submitbutton.'(\'icalrepeat.detail\');return false;" href="#"><span class="icon-32-cancel" title="Cancel"> </span>' . JText::_('CANCEL') . '</a>';
 		$toolbar->appendButton('Custom', $html, "customcancel");
 

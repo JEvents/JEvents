@@ -37,13 +37,8 @@ class JFormFieldJevview extends JFormFieldList
 		}
 		sort( $views );
 		if ($this->menu !='hide'){
-                    $task = JRequest::getVar('task');
-                    if ($task == "params.edit") {
-                        unset($views['global']);
-                    } else {
 			array_unshift($views , JHTML::_('select.option', 'global', JText::_( 'USE_GLOBAL' )));
-                    }                        
-                }
+		}
 		return $views;
 		
 	}

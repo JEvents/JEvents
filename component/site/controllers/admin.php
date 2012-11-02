@@ -26,8 +26,10 @@ class AdminController extends JControllerLegacy   {
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
-		$this->_basePath = $this->basePath;
-		$this->_task = $this->task;
+		if (JVersion::isCompatible("1.6.0")){
+			$this->_basePath = $this->basePath;
+			$this->_task = $this->task;
+		}
 	}
 
 	function listevents() {

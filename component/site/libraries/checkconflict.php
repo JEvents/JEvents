@@ -167,7 +167,7 @@ function ProcessRequest(&$requestObject, $returnData)
 		$registry->set("jevents.timezone", $timezone);
 	}
 
-	$token = JSession::getFormToken();
+	$token = JUtility::getToken();
 	if (!isset($requestObject->token) || $requestObject->token != $token)
 	{
 		throwerror("There was an error - bad token.  Please refresh the page and try again.");
@@ -277,12 +277,7 @@ function simulateSaveEvent($requestObject)
 		$k = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	
-	// If the allow HTML flag is set, apply a safe HTML filter to the variable
-	//	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
-	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
-	$array = $safeHtmlFilter->clean($formdata, null);
-		
+	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
 
 	$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 	$queryModel = new JEventsDBModel($dataModel);
@@ -483,10 +478,20 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		{
 			foreach ($catinfo as $ci)
 			{
-                            $catparams = json_decode($ci->params);
-				if ($catparams->overlaps)
+				if (JVersion::isCompatible("1.6.0"))
 				{
-					$skipCatTest = false;
+					$catparams = json_decode($ci->params);
+					if ($catparams->overlaps)
+					{
+						$skipCatTest = false;
+					}
+				}
+				else
+				{
+					if ($ci->overlaps)
+					{
+						$skipCatTest = false;
+					}
 				}
 			}
 		}
@@ -587,10 +592,20 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		if ($catinfo && count($catinfo) == 1)
 		{
 			$catinfo = current($catinfo);
-			$catparams = json_decode($catinfo->params);
-			if (!$catparams->overlaps)
+			if (JVersion::isCompatible("1.6.0"))
 			{
-				$skipCatTest = true;
+				$catparams = json_decode($catinfo->params);
+				if (!$catparams->overlaps)
+				{
+					$skipCatTest = true;
+				}
+			}
+			else
+			{
+				if (!$catinfo->overlaps)
+				{
+					$skipCatTest = true;
+				}
 			}
 		}
 

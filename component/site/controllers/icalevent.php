@@ -25,7 +25,7 @@ class ICalEventController extends AdminIcaleventController   {
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
-		if (!isset($this->_basePath)){
+		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
 			$this->_basePath = $this->basePath;
 			$this->_task = $this->task;
 		}

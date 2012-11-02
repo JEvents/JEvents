@@ -16,9 +16,16 @@ function DefaultLoadModules($view, $position)
 
 	JPluginHelper::importPlugin('content');
 	$dispatcher	= JDispatcher::getInstance();
-	$results = $dispatcher->trigger('onContentPrepare', array('com_content.article', &$article, &$params, 0));
+	if (JVersion::isCompatible("1.6"))
+	{
+		$results = $dispatcher->trigger('onContentPrepare', array('com_content.article', &$article, &$params, 0));
+	}
+	else
+	{
+		$results = $dispatcher->trigger('onPrepareContent', array( &$article, &$params, 0));
+	}
 
-        if ($article->text == "{loadposition $position}"){
+	if ($article->text == "{loadposition $position}"){
 		// in case the content plugin is not enabled
 		return "";
 	}

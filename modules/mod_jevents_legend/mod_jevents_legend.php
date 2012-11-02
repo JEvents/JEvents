@@ -25,7 +25,7 @@ $jevhelper = new modJeventsLegendHelper();
 
 $theme = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
-if ($modtheme=="" || $modtheme=="global"){
+if ($modtheme==""){
 	$modtheme=$theme;
 }
 $theme=$modtheme;

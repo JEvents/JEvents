@@ -48,8 +48,16 @@ class SaveIcalEvent {
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = JRequest::getInt("jev_creatorid",0);
 		if ( $creatorid>0){
-			$access = $user->authorise('core.admin', 'com_jevents');
-		
+			if (JVersion::isCompatible("1.6.0")) {
+				//$access = JAccess::check($user->id, "core.deleteall","com_jevents");
+				$access = $user->authorise('core.admin', 'com_jevents');
+			}
+			else {
+				// Get an ACL object
+				$acl =& JFactory::getACL();
+				$grp = $acl->getAroGroup($user->get('id'));
+				$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+			}
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
 			}
@@ -113,9 +121,10 @@ class SaveIcalEvent {
 			$db->setQuery( $query);
 			$vevent->catid = $db->loadResult();
 		}
-		// minimum access is 1 in Joomla 2.5+
-		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",1));
-
+		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",0));
+		if (!JVersion::isCompatible("1.6.0")) {
+			$vevent->access = $vevent->access > $user->aid?$user->aid:$vevent->access;
+		}
 		$vevent->state =  intval(JArrayHelper::getValue( $array,  "state",0));
 		// Shouldn't really do this like this
 		$vevent->_detail->priority =  intval(JArrayHelper::getValue( $array,  "priority",0));
@@ -222,7 +231,7 @@ class SaveIcalEvent {
 				}
 			}
 
-			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $testevent->title(), $testevent->content(), $created_by, JURI::root(), $modifylink, $viewlink , $testevent);
+			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $testevent->title(), $testevent->content(), $created_by, JURI::root(), $modifylink, $viewlink );
 
 		}
 		if ($success){

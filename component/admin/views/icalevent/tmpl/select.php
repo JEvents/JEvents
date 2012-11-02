@@ -111,14 +111,22 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 						<?php
 						if ($row->hasrepetition())
 						{
-							if (JFactory::getApplication()->isAdmin())
+							if (JVersion::isCompatible("1.6.0"))
 							{
-								$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
+								if (JFactory::getApplication()->isAdmin())
+								{
+									$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
+								}
+								else
+								{
+									$img = JHTML::_('image', 'system/calendar.png', '', array('title' => ''), true);
+								}
 							}
 							else
 							{
-								$img = JHTML::_('image', 'system/calendar.png', '', array('title' => ''), true);
-							}							
+								$img = "copy_f2.png";
+								$img = '<img src="' . $pathIMG . $img . '" width="16" height="16" border="0" alt="" />';
+							}
 							?>
 							<a href="<?php echo JRoute::_("index.php?option=com_jevents&tmpl=component&task=icalrepeat.select&evid=" . $row->ev_id() . "&function=" . $function . "&" . JSession::getFormToken() . '=1&nomenu=' . JRequest::getInt("nomenu")); ?>" title="<?php echo JText::_("JEV_SELECT_REPEAT"); ?>" >
 		<?php echo $img; ?>
@@ -128,7 +136,15 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 					<td align="center"><?php echo $row->creatorName(); ?></td>
 					<td align="center">
 						<?php
-						$img = $row->state() ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						if (JVersion::isCompatible("1.6.0"))
+						{
+							$img = $row->state() ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						}
+						else
+						{
+							$img = $row->state() ? 'tick.png' : 'publish_x.png';
+							$img = '<img src="' . $pathIMG . $img . '" width="16" height="16" border="0" alt="" />';
+						}
 						?>
 						<?php echo $img; ?>
 					</td>

@@ -218,7 +218,9 @@ RAWTEXT;
 		
 		static $categories;
 		if (is_null($categories)){
-			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
+
 			$db	=& JFactory::getDBO();
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
@@ -266,17 +268,17 @@ RAWTEXT;
 								$cat = new JEventsCategory($db);
 								$cat->bind(array("title"=>$ct));
 								$cat->published=1;
-								$cat->check();
 								$cat->store();
 							}
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";						
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-						if ($params->get("multicategory",0) ){
+						if ($params->get("multicategory",0) && count($evcat)>1){
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[$ct]->id;
@@ -385,12 +387,12 @@ RAWTEXT;
 								$cat = new JEventsCategory($db);
 								$cat->bind(array("title"=>$ct));
 								$cat->published=1;
-								$cat->check();
 								$cat->store();
 							}
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
@@ -501,7 +503,8 @@ RAWTEXT;
 		static $categories;
 		if (is_null($categories)){
 			$db	=& JFactory::getDBO();
-			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+			else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}
@@ -592,7 +595,8 @@ RAWTEXT;
 							$vevent->catid = $cat->id;
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 					}
@@ -669,7 +673,6 @@ RAWTEXT;
 						$cat = new JEventsCategory($db);
 						$cat->bind(array("title"=>$evcat[0]));
 						$cat->published=1;
-						$cat->check();
 						$cat->store();
 						if ($params->get("multicategory",0)){
 							$vevent->catid[] = $cat->id;
@@ -678,7 +681,8 @@ RAWTEXT;
 							$vevent->catid = $cat->id;
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						if (JVersion::isCompatible("1.6.0"))  $sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
+						else $sql = "SELECT * FROM #__categories WHERE section='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 					}

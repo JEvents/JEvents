@@ -18,7 +18,11 @@ defined('_JEXEC') or die();
  * @static
  */
 class AdminParamsViewParams extends JEventsAbstractView
-{
+{	function edit16()
+	{
+		return $this->edit();
+
+	}
 
 	function edit()
 	{
@@ -29,7 +33,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
 
-		JToolBarHelper::apply('params.apply');
+		JToolBarHelper::apply('params.apply'); 
 		JToolBarHelper::save('params.save');
 		JToolBarHelper::cancel('cpanel.cpanel');
 
@@ -47,45 +51,16 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		// Get the form.
 		$modelForm = $model->getForm();
-
-		$component = $this->get('Component');
+		
+		$component	= $this->get('Component');
 		// Bind the form to the data.
-		if ($modelForm && $component->params)
-		{
+		if ($modelForm && $component->params) {
 			$modelForm->bind($component->params);
-		}
+		}		
 
 		$this->assignRef("form", $modelForm);
 		$this->assignRef("component", $component);
 
-		// Set the layout
-		if (JVersion::isCompatible("3.0"))
-		{
-			$this->setLayout('edit');
-		}
-		else
-		{
-			$this->setLayout('edit16');
-		}
-
 	}
 
-	function dbsetup($tpl = null)
-	{
-		
-		if (JVersion::isCompatible("3.0")) 	{
-			JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		}
-		else {
-			JEVHelper::stylesheet( 'eventsadmin16.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
-		}
-
-		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_( 'DB_SETUP' ));
-		
-		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );	
-		JToolBarHelper::cancel('cpanel.cpanel');
-		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);						
-	}	
 }

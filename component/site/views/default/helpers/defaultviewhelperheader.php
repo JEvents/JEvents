@@ -2,7 +2,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperHeader($view){
-	return $view->_header16();
+
+	if (JVersion::isCompatible("1.6.0")){
+		return $view->_header16();
+	}
 
 	$task = JRequest::getString("jevtask");
 	$view->loadModules("jevprejevents");

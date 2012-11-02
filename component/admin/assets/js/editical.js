@@ -819,8 +819,7 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 					$('jevoverlapwarning').style.display='block';
 					var container = $('jevoverlaps');
 					container.innerHTML="";
-					// $A => Array.from(item).slice()
-					Array.from(json.overlaps).slice().each (function(overlap){
+					$A(json.overlaps).each (function(overlap){
 						var elem = new Element ("a", {
 							'href':overlap.url, 
 							'target':'_blank'

@@ -1,52 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
 <form>
-	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
-
-		<field name="ev_id" type="hidden" default="0" label="JEV_EVENT_ID" /> 
-		<field name="year" type="hidden" default="0" label="JEV_YEAR" /> 
-		<field name="month" type="hidden" default="0" label="JEV_MONTH" />
-		<field name="day" type="hidden" default="0" label="JEV_DAY" /> 
-		<field name="state" type="hidden" default="0" label="JEV_STATE" />
-		<field name="valid_dates" type="hidden" default="1" label="JEV_VALID_DATES" /> 
-
-		<field name="old_evid" type="hidden" default="1" label="JEV_OLD_EVENT_ID" /> 
-		
-		
-		<field name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
-
-<!--
-		<field name="demo" type="checkboxes" class="btn-group inline" multiple="multiple" default="" label="Demonstration" description="These checkboxes are rendered incorrectly">
-			<option value="val1" class="btn" >Option 1</option>
-			<option value="val2" class="btn" >Option 2</option>
-			<option value="val3" class="btn" >Option 3</option>
-			<option value="val4" class="btn" >Option 4</option>
-		</field>
-//-->
-		<field name="demo" type="checkboxes" class="inline" multiple="multiple" default="" label="Demonstration" description="These checkboxes are rendered incorrectly">
-			<option value="val1"  >Option 1</option>
-			<option value="val2"  >Option 2</option>
-			<option value="val3"  >Option 3</option>
-			<option value="val4" >Option 4</option>
-		</field>
-
-		<field name="usergroup" type="usergroup" multiple="multiple" size="5" label="user groups" />
-		
-		<field name="show_title" type="list" default="val2" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC">
-			<option value="val1">Option 1</option>
-			<option value="val2">Option 2</option>
-			<option value="val3">Option 3</option>
-			<option value="val4">Option 4</option>
-		</field>
-		
-		<field name="radiodemo" type="radio" default="val2"  class="btn-group inline" 
-			   label="Demonstration of Radio List Problem" description="These radio buttons are badly rendered">
-			<option value="val1" class="btn" >Option 1</option>
-			<option value="val2" class="btn" >Option 2</option>
-			<option value="val3" class="btn" >Option 3</option>
-			<option value="val4" class="btn" >Option 4</option>
-		</field>
-		
-			
-	</fieldset>
+    <fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
+        <field name="ev_id" type="text" default="0" label="JEV_EVENT_ID" description="JEV_EVENT_ID_DESCRIPTION" />
+        <field name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+        <field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
+        <field name="demo" type="checkboxes" class="btn-group inline" multiple="multiple"
+default="" label="Demonstration" description="These checkboxes are rendered incorrectly">
+          <option value="val1">Option 1</option>
+          <option value="val2">Option 2</option>
+          <option value="val3">Option 3</option>
+          <option value="val4">Option 4</option>
+        </field>
+        <field name="usergroup" type="usergroup" multiple="multiple" size="5" label="user groups" />
+    </fieldset>
 </form>

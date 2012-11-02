@@ -50,7 +50,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		//JToolBarHelper::save('icalrepeat.save');
 
 		//$this->addSaveToolBarButton();
-		$submitbutton = "Joomla.submitbutton";
+		$submitbutton = JVersion::isCompatible("1.6.0") ? "Joomla.submitbutton" : "submitbutton";
 		$toolbar = & JToolBar::getInstance('toolbar');
         $html = '<a class="toolbar" onclick="javascript: '.$submitbutton.'(\'icalrepeat.save\');return false;" href="#"><span class="icon-32-save" title="Save"> </span>'.JText::_( 'SAVE' ).'</a>';
         $toolbar->appendButton( 'Custom',$html, "customsave");
@@ -75,17 +75,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		JHTML::_('behavior.tooltip');
 
 		
-		$this->_adminStart();		
-
-		if (JVersion::isCompatible("3.0"))
-		{
-			$this->setLayout("edit");
-		}
-		else
-		{
-			$this->setLayout("edit16");
-		}
-		
+		$this->_adminStart();			
 		parent::displaytemplate($tpl);
 		$this->_adminEnd();
 	}	

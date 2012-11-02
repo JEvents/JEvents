@@ -6,7 +6,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.model');
 
 
-class DefaultsModelDefault extends JModelLegacy
+class DefaultsModelDefault extends JModel
 {
 	/**
 	 * id
@@ -31,10 +31,10 @@ class DefaultsModelDefault extends JModelLegacy
 	{
 		parent::__construct();
 
-		$id = JRequest::getInt("id");
+		$name = JRequest::getString('name',  '');
 		$edit	= JRequest::getVar('edit',true);
 		if($edit){
-			$this->setId($id);
+			$this->setId($name);
 		}
 	}
 
@@ -102,7 +102,7 @@ class DefaultsModelDefault extends JModelLegacy
 		if (empty($this->_data))
 		{
 			$query = 'SELECT * FROM #__jev_defaults' .
-			' WHERE id = '.$this->_db->Quote($this->_id);
+			' WHERE name = '.$this->_db->Quote($this->_id);
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
 			return (boolean) $this->_data;
@@ -116,7 +116,6 @@ class DefaultsModelDefault extends JModelLegacy
 		if (empty($this->_data))
 		{
 			$default = new stdClass();
-			$default->id				= 0;
 			$default->name				= "";
 			$default->title				= "";
 			$default->subject			= "";

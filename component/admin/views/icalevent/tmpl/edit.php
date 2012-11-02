@@ -14,8 +14,6 @@ if (defined("EDITING_JEVENT"))
     return;
 define("EDITING_JEVENT", 1);
 
-/*
-// New version that uses JForm
 JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR."/models/forms/");
 $xpath = false;
 // leave form control blank since we want the fields as ev_id and not jform[ev_id]
@@ -29,12 +27,10 @@ foreach ($this->row as $k => $v) {
 }
 $form->bind($this->row);
 
-echo $form->getInput("demo")."<br/>";
-echo $form->getInput("ev_id")."<br/>";
-echo $form->getInput("usergroup")."<br/>";
-echo $form->getInput("show_title")."<br/>";
-echo $form->getInput("radiodemo")."<br/>";
-*/
+echo $form->getInput("demo");
+echo $form->getInput("ev_id");
+echo $form->getInput("usergroup");
+
 
 global $task, $catid;
 $db = & JFactory::getDBO();
@@ -86,7 +82,10 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 
         // these are needed for front end admin
         ?>
-        <input type="hidden" name="jevtype" value="icaldb" />
+        <input type="hidden" name="jevtype" value="<?php
+        global $jevtype;
+        echo $jevtype;
+        ?>" />
         <div class="jev_edit_event_notice">
             <?php
             if ($this->editCopy) {
@@ -132,7 +131,12 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
             }
             ?>
             <script type="text/javascript" language="Javascript">
+
+<?php if (JVersion::isCompatible("1.6.0")) { ?>
         Joomla.submitbutton = function (pressbutton) {
+<?php } else { ?>
+            function submitbutton(pressbutton) {
+<?php } ?>	
             if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
                 if (document.adminForm['catid']){
                     // restore catid to input value
@@ -176,7 +180,7 @@ $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
     $checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
     ?>
-                        checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
+                        checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JUtility::getToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
     <?php
 } else {
     ?>
@@ -197,7 +201,7 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
             <?php
             if ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) {
                 ?>
-                <div id='jevoverlapwarning'>
+                <div id='jevoverlapwarning'">
                      <div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
                     <div id="jevoverlaps"></div>
                 </div>
@@ -403,7 +407,11 @@ if ($cfg->get('com_show_editor_buttons')) {
 }
 echo "<div id='jeveditor'>";
 // parameters : areaname, content, hidden field, width, height, rows, cols
-echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
+if (JVersion::isCompatible("1.6.0")) {
+    echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
+} else {
+    echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons);
+}
 echo "</div>";
 ?>
                         </td>

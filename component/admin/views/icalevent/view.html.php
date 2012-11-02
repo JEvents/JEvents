@@ -30,13 +30,15 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_( 'ICAL_EVENTS' ), 'jevents');
 
-		JToolBarHelper::addNew('icalevent.edit');
-		JToolBarHelper::editList('icalevent.edit');
+		//JToolBarHelper::custom('icalevent.csvimport','upload.png','upload.png','JEV_ADMIN_CSVIMPORT',false);
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
+		JToolBarHelper::addNew('icalevent.edit');
+		JToolBarHelper::editList('icalevent.edit');
 		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 		JToolBarHelper::deleteList('Delete Event and all repeats?', 'icalevent.delete');
 		JToolBarHelper::spacer();
+		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false);
 		//JToolBarHelper::help( 'screen.ical', true);
 
 		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
@@ -150,7 +152,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = & JFactory::getDocument();
-		include(JEV_ADMINLIBS . "editStrings.php");
+		include(JEV_LIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
@@ -166,23 +168,24 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			if ($this->editCopy)
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'Jev_Apply', false);
 				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'Save', false);
 				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_copy_warning"), 'save', 'save', 'JEV_Save_New', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'Jev_Apply', false);
 			}
 			else
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'JEV_Apply', false);
 				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
 				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_Save_New', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'JEV_Apply', false);
 			}
 		}
 		else
 		{
-			if (JEVHelper::isEventEditor())
-				JToolBarHelper::apply('icalevent.apply', "JEV_Apply");				
 			JToolBarHelper::save('icalevent.save');
 			JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
+			if (JEVHelper::isEventEditor())
+				JToolBarHelper::apply('icalevent.apply', "JEV_Apply");				
+			//$bar->appendButton( 'Apply',  'apply', "Apply",'icalevent.apply', false, false );
 		}
 
 		JToolBarHelper::cancel('icalevent.list');
@@ -233,55 +236,92 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
-		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
-		$access = $user->authorise('core.admin', 'com_jevents');
+
+		if (JVersion::isCompatible("1.6.0"))
+		{
+			//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
+			$access = $user->authorise('core.admin', 'com_jevents');
+		}
+		else
+		{
+			// Get an ACL object
+			$acl = & JFactory::getACL();
+			$grp = $acl->getAroGroup($user->get('id'));
+			// if no valid group (e.g. anon user) then skip this.
+			if (!$grp)
+				return;
+
+			$access = $acl->is_group_child_of($grp->name, 'Public Backend');
+		}
+
 
 		$db = JFactory::getDBO();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
-			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly", 0);
-			// if authorised only then load from database
-			if ($authorisedonly)
+
+			if (JVersion::isCompatible("1.6.0"))
 			{
-				$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
-				$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-				$sql .= " WHERE tl.cancreate=1";
-				$sql .= " ORDER BY ju.name ASC";
-				$db->setQuery($sql);
-				$users = $db->loadObjectList();
+				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				// if authorised only then load from database
+				if ($authorisedonly)
+				{
+					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
+					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+					$sql .= " WHERE tl.cancreate=1";
+					$sql .= " ORDER BY ju.name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
+				else
+				{
+					$rules = JAccess::getAssetRules("com_jevents", true);
+					$creatorgroups = $rules->getData();
+					// need to merge the arrays because of stupid way Joomla checks super user permissions
+					//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
+					// use union orf arrays sincee getData no longer has string keys in the resultant array
+					$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+					
+					$users = array(0);
+					foreach ($creatorgroups as $creatorgroup => $permission)
+					{
+						if ($permission == 1)
+						{
+							$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+						}
+					}
+					$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
 			}
 			else
 			{
-				$rules = JAccess::getAssetRules("com_jevents", true);
-				$creatorgroups = $rules->getData();
-				// need to merge the arrays because of stupid way Joomla checks super user permissions
-				//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups["core.create"]->getData());
-				// use union orf arrays sincee getData no longer has string keys in the resultant array
-				//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
-				// use union orf arrays sincee getData no longer has string keys in the resultant array
-				$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
-				// take the higher permission setting
-				foreach ($creatorgroups["core.create"]->getData() as $creatorgroup => $permission)
-				{
-					if ($permission){
-						$creatorgroupsdata[$creatorgroup]=$permission;
-					}
-				}
+				$db = JFactory::getDBO();
 
-				$users = array(0);
-				foreach ($creatorgroupsdata as $creatorgroup => $permission)
+				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				// if authorised only then load from database
+				if ($authorisedonly)
 				{
-									if ($permission == 1)
-										{
-						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
-					}
+					$sql = "SELECT tl.*, ju.*  FROM #__jev_users AS tl ";
+					$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+					$sql .= " WHERE tl.cancreate=1";
+					$sql .= " ORDER BY ju.name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
 				}
-				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
-				$db->setQuery($sql);
-				$users = $db->loadObjectList();
+				else
+				{
+					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$minaccess = $params->get("jevcreator_level", 19);
+					$sql = "SELECT * FROM #__users where gid>=" . $minaccess;
+					$sql .= " ORDER BY name ASC";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
 			}
-			
+
 			$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
 			foreach ($users as $user)
 			{

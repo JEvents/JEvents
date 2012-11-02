@@ -41,36 +41,20 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JHTML::_('behavior.tooltip');
 
 		$this->_hideSubmenu();
+
 		
+
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
 
 		// Get data from the model
-		$model	= $this->getModel();
-		$items		=  $this->get( 'Data');
-		$total		= $this->get( 'Total');
-		$languages	=  $this->get( 'Languages');
-		
-		$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "");
-		$this->assign('language',		$language);
-		$this->assign('languages',		$languages);
-		
-		$layouttype = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
-		$addonoptions = array();
-		$addonoptions[] = JHTML::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
-		$addonoptions[] = JHTML::_('select.option', 'jevents',JText::_('COM_JEVENTS'));
-		$addonoptions[] = JHTML::_('select.option', 'jevpeople',JText::_('COM_JEVPEOPLE'));
-		$addonoptions[] = JHTML::_('select.option', 'jevlocations',JText::_('COM_JEVLOCATIONS'));
-				
-		$addonoptions = JHtml::_('select.options',$addonoptions,  'value', 'text', $layouttype);
-		$this->assign('addonoptions',		$addonoptions);
-		
-		$filter_published  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
-		$this->assign('filter_published',		$filter_published);
-		
+		$model	=& $this->getModel();
+		$items		= & $this->get( 'Data');
+		$total		= & $this->get( 'Total');
+
 		$this->assignRef('user',		JFactory::getUser());
 		$this->assignRef('items',		$items);
-		
+
 		parent::displaytemplate($tpl);
 
 

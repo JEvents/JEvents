@@ -279,7 +279,12 @@ class jEventCal {
 		if (!isset($arr_catids)) {
 			$db	=& JFactory::getDBO();
 			$arr_catids = array();
-			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
+			if ( JVersion::isCompatible("1.6.0") ){
+				$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
+			}
+			else {
+				$catsql = "SELECT id, title as name , description, image FROM #__categories  WHERE section='com_jevents'" ;
+			}
 			$db->setQuery($catsql);
 			 $arr_catids = $db->loadObjectList('id') ;
 			
@@ -325,10 +330,18 @@ class jEventCal {
 			$data = $data[0];
 		}
 		if ($data){
-                	$params = json_decode($data->params);
-			if (isset($params->image)){ 
-				return "<img src = '".JURI::root().$params->image."' class='catimage' />";
-			}		
+			if (JVersion::isCompatible("1.6.0") ){
+				$params = json_decode($data->params);
+				if (isset($params->image)){ 
+					return "<img src = '".JURI::root().$params->image."' class='catimage' />";
+				}								
+			}
+			else {
+				$image = $data->image;
+				if (!empty ($image)){ 
+					return "<img src = '".JURI::root().$image."' class='catimage' />";
+				}												
+			}			
 		}
 		return "";
 	}

@@ -154,10 +154,12 @@ class DefaultModLatestView
 
 		if ($this->linkCloaking)
 		{
+			//return mosHTML::Link("", $text, array('onclick'=>'"window.location.href=\''.josURL($url).'\';return false;"'));
 			return '<a href="#" onclick="window.location.href=\'' . $link . '\'; return false;" ' . $class . ' >' . $text . '</a>';
 		}
 		else
 		{
+			//return mosHTML::Link(josURL($url), "$text");
 			return '<a href="' . $link . '" ' . $class . '>' . $text . '</a>';
 		}
 
@@ -602,7 +604,7 @@ class DefaultModLatestView
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar', 
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown','categoryimage'
+			'countdown'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -671,11 +673,11 @@ class DefaultModLatestView
 		$this->getLatestEventsData();
 
 		$content = "";
+		$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -754,14 +756,12 @@ class DefaultModLatestView
 				$k ++;
 				$k %=2;
 			} // end of foreach
-			$content .="</table>\n";
 		}
 		else
 		{
-			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
-			$content .="</table>\n";
 		}
+		$content .="</table>\n";
 
 		$callink_HTML = '<div class="mod_events_latest_callink">'
 				. $this->getCalendarLink()
@@ -774,7 +774,13 @@ class DefaultModLatestView
 
 		if ($this->displayRSS)
 		{
-			$rssimg = JURI::root() . "media/system/images/livemarks.png";
+			if (JVersion::isCompatible("1.6.0")) {
+				$rssimg = JURI::root() . "media/system/images/livemarks.png";
+			}
+			else {
+				$rssimg = JURI::root() . "images/M_images/livemarks.png";
+			}
+
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 					. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
 					. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
@@ -918,17 +924,26 @@ class DefaultModLatestView
 				// Also want to cloak contact details so
 				$this->modparams->set("image", 1);
 				$dayEvent->text = $dayEvent->contact_info();
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
-				
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
+				}
+				else {
+					$dispatcher->trigger('onPrepareContent', array(&$dayEvent, &$this->modparams, 0), true);
+				}
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
 
 			case 'content':  // Added by Kaz McCoy 1-10-2004
 				$this->modparams->set("image", 1);
-				$dayEvent->data->text = $dayEvent->content();
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
-								
+				 $dayEvent->data->text = $dayEvent->content();
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
+				
 				if (!empty ($dateParm)){
 					$parts = explode("|",$dateParm);
 					if (count($parts)>0 && strlen(strip_tags($dayEvent->data->text)) >  intval($parts[0])){
@@ -948,7 +963,12 @@ class DefaultModLatestView
 			case 'location':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->location();
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
 				$dayEvent->location($dayEvent->data->text);
 				$content .= $dayEvent->location();
 				break;
@@ -956,7 +976,12 @@ class DefaultModLatestView
 			case 'extraInfo':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->extra_info();
-				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				if (JVersion::isCompatible("1.6.0")) {
+					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				}
+				else {
+					$results = $dispatcher->trigger('onPrepareContent', array(&$dayEvent->data, &$this->modparams, 0), true);
+				}
 				$dayEvent->extra_info($dayEvent->data->text);
 				$content .= $dayEvent->extra_info();
 				break;
@@ -1055,35 +1080,17 @@ class DefaultModLatestView
 							{
 
 								$subparts = explode("}", $part);
-								
-								if (strpos($subparts[0],"#")>0){
-									$formattedparts = explode("#", $subparts[0]);
-									$subparts[0] = $formattedparts[0];
-								}
-								else {
-									$formattedparts = array($subparts[0], "%s","");
-								}
-								$subpart = "_" .$subparts[0];
-								
+								//$part = str_replace("}","",$part);
+								$subpart = "_" . $subparts[0];
 								if (isset($dayEvent->$subpart))
 								{
 									$temp = $dayEvent->$subpart;
-									if ($temp !="") {
-										$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
-									}
-									else {
-										$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
-									}										
-								}		
+									$tempstr .= $temp;
+								}
 								else if (isset($dayEvent->customfields[$subparts[0]]['value']))
 								{
 									$temp = $dayEvent->customfields[$subparts[0]]['value'];
-									if ($temp !="") {
-										$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
-									}
-									else {
-										$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
-									}										
+									$tempstr .= $temp;
 								}
 								else {								
 									$layout = "list";
@@ -1096,13 +1103,7 @@ class DefaultModLatestView
 												if (in_array($subparts[0],$fieldNameArray["values"] )){
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent!=3){
-														$temp = call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
-														if ($temp !="") {
-															$tempstr .= str_replace("%s",$temp,$formattedparts[1]);
-														}
-														else {
-															$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
-														}
+														$tempstr .= call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
 													}
 												}
 											}
