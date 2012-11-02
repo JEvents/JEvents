@@ -15,10 +15,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		if (!array_key_exists($template_name, $templates))
 		{
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name));
-			$templates[$template_name] = $db->loadObject();
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND ".'language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+			$templates[$template_name] = $db->loadObjectList("language");
+			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()])){
+				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
+			}
+			else if (isset($templates[$template_name]["*"])){
+				$templates[$template_name] =$templates[$template_name]["*"];
+			}
+			else if (is_array($templates[$template_name]) && count($templates[$template_name])==0){
+				$templates[$template_name] = null;
+			}
+			else if (is_array($templates[$template_name])){
+				$templates[$template_name] = current($templates[$template_name]);
+			}
+			else {
+				$templates[$template_name] = null;
+			}
 		}
-
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 			return false;
 
@@ -55,7 +69,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		{
 			continue;
 		}
-// Built in fields	
+		// translation string
+		if (strpos($strippedmatch,"{{_")===0 && strpos($strippedmatch," ")===false){
+			$search[] = $strippedmatch;
+			$strippedmatch=substr($strippedmatch,3,strlen($strippedmatch)-5);
+			$replace[] = JText::_($strippedmatch);			
+			$blank[] = "";
+			continue;
+		}
+		// Built in fields	
 		switch ($strippedmatch) {
 			case "{{TITLE}}":
 				$search[] = "{{TITLE}}";
@@ -333,25 +355,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					break;
 
-
 				case "{{CREATED}}":
 					$created = JevDate::getDate($event->created());
 					$search[] = "{{CREATED}}";
 					$replace[] = $created->toFormat(JText::_("DATE_FORMAT_CREATED"));
 					$blank[] = "";
 					break;
-
-
+                                    
 				case "{{ACCESS}}":
-					if (JVersion::isCompatible("1.6.0"))
-					{
-						$search[] = "{{ACCESS}}";
-						$replace[] = $event->getAccessName();
-						$blank[] = "";
-					}
+					$search[] = "{{ACCESS}}";
+					$replace[] = $event->getAccessName();
+					$blank[] = "";
 					break;
-
-
+                                    
 				case "{{REPEATSUMMARY}}":
 				case "{{STARTDATE}}":
 				case "{{ENDDATE}}":
@@ -364,7 +380,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{REPEATSUMMARY}}";
 						$replace[] = $event->repeatSummary();
 						$blank[] = "";
-
 						$row = $event;
 						$start_date = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), 0);
 						$start_time = JEVHelper::getTime($row->getUnixStartTime(), $row->hup(), $row->minup());
@@ -385,10 +400,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = $stop_date;
 						$blank[] = "";
 						$search[] = "{{STARTTIME}}";
-						$replace[] = $start_time;
+						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
-						$replace[] = $stop_time_midnightFix;
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
+						$blank[] = "";
+						$search[] = "{{ISOSTART}}";
+						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+						$blank[] = "";
+						$search[] = "{{ISOEND}}";
+						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
 						$blank[] = "";
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
@@ -592,14 +613,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$tmprow = new stdClass();
 							$tmprow->text = $event->contact_info();
 
-							if (JVersion::isCompatible("1.6.0"))
-							{
-								$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-							}
-							else
-							{
-								$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-							}
+                                                        $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 							$event->contact_info($tmprow->text);
 						}
 						$search[] = "{{CONTACT_LABEL}}";
@@ -635,15 +649,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
 						$tmprow = new stdClass();
 						$tmprow->text = $event->extra_info();
-
-						if (JVersion::isCompatible("1.6.0"))
-						{
-							$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-						}
-						else
-						{
-							$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-						}
+                                                $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 						$event->extra_info($tmprow->text);
 					}
 
@@ -742,14 +748,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tmprow->text = $template_value;
 		$dispatcher = & JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
-		if (JVersion::isCompatible("1.6.0"))
-		{
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-		}
-		else
-		{
-			$dispatcher->trigger('onPrepareContent', array(&$tmprow, &$params, 0));
-		}
+		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 		$template_value = $tmprow->text;
 		$template_value = str_replace("@£@", "@", $template_value);
 

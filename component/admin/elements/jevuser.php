@@ -41,64 +41,49 @@ class JElementJevuser extends JElement
 
 		$db =& JFactory::getDBO();
 
-		// TODO - do this properly for Joomla 1.6
-		if (JVersion::isCompatible("1.6.0"))  {
-
-			$rules = JAccess::getAssetRules("com_jevents", true);
-			$creatorgroups = $rules->getData();
-			if (strpos($name,"jevadmin")===0){
-				$action = "core.admin";
-			}
-			else if (strpos($name,"jeveditor")===0){
-				$action = "core.edit";
-			}
-			else if (strpos($name,"jevpublisher")===0){
-				$action = "core.edit.state";
-			}
-			else if (strpos($name,"admin")===0){
-				$action = "core.edit.state";
-			}
-			else {
-				$action = "core.create";
-			}
-			// need to merge the arrays because of stupid way Joomla checks super user permissions
-			//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups[$action]->getData());
-			// use union orf arrays sincee getData no longer has string keys in the resultant array
-			$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups[$action]->getData();
-
-			$users = array(0);
-			foreach ($creatorgroups as $creatorgroup => $permission){
-				if ($permission==1){
-					$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
-				}
-			}
-			$sql = "SELECT id AS value, name AS text FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
-			$db->setQuery( $sql );
-			$users = $db->loadObjectList();
-
+		$rules = JAccess::getAssetRules("com_jevents", true);
+		$creatorgroups = $rules->getData();
+		if (strpos($name,"jevadmin")===0){
+			$action = "core.admin";
+		}
+		else if (strpos($name,"jeveditor")===0){
+			$action = "core.edit";
+		}
+		else if (strpos($name,"jevpublisher")===0){
+			$action = "core.edit.state";
+		}
+		else if (strpos($name,"admin")===0){
+			$action = "core.edit.state";
 		}
 		else {
-			if (strpos($name,"jevadmin")===0){
-				$gid = $params->get('jevpublish_level',24);
-			}
-			else if (strpos($name,"jeveditor")===0){
-				$gid = $params->get('jeveditor_level',20);
-			}
-			else if (strpos($name,"jevpublisher")===0){
-				$gid = $params->get('jevpublish_level',21);
-			}
-			else {
-				$gid = $params->get('jevcreator_level',19);
-			}
-			$sql = 'SELECT id AS value, name AS text'
-			. ' FROM #__users'
-			. ' WHERE block = 0'
-			. ' AND gid >= '.$gid
-			. ' ORDER BY gid desc, name'
-			;
-			$db->setQuery( $sql );
-			$users = $db->loadObjectList();
+			$action = "core.create";
 		}
+		// need to merge the arrays because of stupid way Joomla checks super user permissions
+		//$creatorgroups = array_merge($creatorgroups["core.admin"]->getData(), $creatorgroups[$action]->getData());
+		// use union orf arrays sincee getData no longer has string keys in the resultant array
+		//$creatorgroups = $creatorgroups["core.admin"]->getData()+ $creatorgroups["core.create"]->getData();
+		// use union orf arrays sincee getData no longer has string keys in the resultant array
+		$creatorgroupsdata = $creatorgroups["core.admin"]->getData();
+		// take the higher permission setting
+		foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
+		{
+			if ($permission){
+				$creatorgroupsdata[$creatorgroup]=$permission;
+			}
+		}
+
+		$users = array(0);
+		foreach ($creatorgroupsdata as $creatorgroup => $permission)
+		{
+			if ($permission == 1)
+								{
+				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
+			}
+		}
+		$sql = "SELECT id AS value, name AS text FROM #__users where id IN (".implode(",",array_values($users)).") ORDER BY name asc";
+		$db->setQuery( $sql );
+		$users = $db->loadObjectList();
+
 		$users2[] = JHTML::_('select.option',  '0', '- '. JText::_( 'SELECT_USER' ) .' -' );
 		$users2 = array_merge( $users2, $users );
 

@@ -147,7 +147,7 @@ echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 </form>
 
 <?php
-if (isset($_POST['submit']))
+if (JRequest::getInt("submit"))
 {
 
 	$categories = JRequest::getVar('categories', array(0), 'POST');

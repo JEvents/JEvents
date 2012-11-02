@@ -35,15 +35,10 @@ $this->replaceLabels($this->item->value);
 <tr>
 <td>
 		<input type="hidden" name="name" value="<?php echo $this->item->name;?>">
+		<input type="hidden" name="id" value="<?php echo $this->item->id;?>">
 		
 		<script type="text/javascript" language="Javascript">
-			<?php if (JVersion::isCompatible("1.6.0")) {
-				echo "Joomla.submitbutton = function (pressbutton) {\n";
-			}
-			else {
-				echo "function submitbutton(pressbutton) {\n";
-			}
-			?>
+			<?php echo "Joomla.submitbutton = function (pressbutton) {\n"; ?>
 			var form = document.adminForm;
 			<?php echo $editor->getContent( 'value' ); ?>
 			<?php
@@ -62,6 +57,12 @@ $this->replaceLabels($this->item->value);
                     <td colspan="2">
                     	<?php echo htmlspecialchars(JText::_($this->item->title), ENT_QUOTES, 'UTF-8'); ?>
                     	<!--<input class="inputbox" type="text" name="title" size="50" maxlength="100" value="<?php echo htmlspecialchars( $this->item->title, ENT_QUOTES, 'UTF-8'); ?>" />//-->
+                    </td>
+      			</tr>
+    			<tr>
+                	<td align="left"><?php echo JText::_( 'JFIELD_LANGUAGE_LABEL' ); ?>:</td>
+                    <td colspan="2">
+                    	<?php echo $this->item->language=="*"?JText::alt('JALL', 'language'):$this->item->language ;?>
                     </td>
       			</tr>
     			<tr>

@@ -52,8 +52,7 @@
 		</field>
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"/>
-		<field name="installlayouts" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_INSTALL_LAYOUTS" description="JEV_INSTALL_LAYOUTS_TIP" />
-		<field name="com_copyright" type="jevboolmsg" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
+		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description="" />
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" />
 
 		<field name="mergemenus" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
@@ -108,9 +107,6 @@
 	
 	<fieldset  name="JEV_PERMISSIONS">	
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' />
-		<field name="jevcreator_level" class="jevcreator_level" type="jevusergroup" default="19"  menu="hide" label='CREATOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_CREATOR'  />
-		<field name="jeveditor_level" class="jeveditor_level" type="jevusergroup" default="20"  menu="hide" label='EDITOR_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_EVENT_EDITOR'  />
-		<field name="jevpublish_level" class="jevpublish_level" type="jevusergroup" default="21" menu="hide" label='PUBLISHER_USER_LEVEL'  description='USER_LEVEL_REQUIRED_TO_BE_PUBLISH_AND_MANAGE_EVENTS'  />
 
 		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC'/>
 		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" />

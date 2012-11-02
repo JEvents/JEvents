@@ -29,13 +29,13 @@ class JToolbarButtonJev extends JToolbarButton
 	 */
 	var $_name = 'Jev';
 
-	function fetchButton( $type='Jev', $icon = '', $text='',$task='', $list='')
+	function fetchButton($type = 'Jev', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{
 		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($icon);
+		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($text, $task, $list);
 
-		if ($name == "apply" || $name == "new")
+		if ($name == "apply" || $name == "new" || $name == "save")
 		{
 			$btnClass = "btn btn-small btn-success";
 			$iconWhite = "icon-white";
@@ -64,12 +64,7 @@ class JToolbarButtonJev extends JToolbarButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$icon;
-		}
-		else {
-			return $this->_parent->_name.'-'.$icon;
-		}
+		return $this->_parent->getName().'-'.$icon;
 	}
 	
 	/**
@@ -89,7 +84,7 @@ class JToolbarButtonJev extends JToolbarButton
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
-		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
+		$submitbutton = "Joomla.submitbutton";
 		if ($list) {
 			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
 		} else {
@@ -112,18 +107,29 @@ class JToolbarButtonJevlink extends JToolbarButton
 	var $_name = 'Jevlink';
 
 
-	function fetchButton( $type='Jevlink', $icon = '', $text='',$task='', $list='')
+	function fetchButton( $type='Jevlink', $name = '', $text='',$task='', $list='')
 	{
 		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($icon);
+		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($text, $task, $list);
 
-		$html	= "<a href=\"$doTask\"  class=\"toolbar\">\n";
-		$html .= "<span class=\"$class\" title=\"$i18n_text\">\n";
-		$html .= "</span>\n";
-		$html	.= "$i18n_text\n";
-		$html	.= "</a>\n";
-
+		if ($name == "cancel" )
+		{
+			$btnClass = "btn btn-small btn-danger";
+			$iconWhite = "icon-white";
+		}
+		else
+		{
+			$btnClass = "btn btn-small";
+			$iconWhite = "";
+		}
+		
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
+		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
+		$html .= "</i>\n";
+		$html .= "$i18n_text\n";
+		$html .= "</button>\n";
+		
 		return $html;
 	}
 
@@ -136,13 +142,7 @@ class JToolbarButtonJevlink extends JToolbarButton
 	 */
 	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$icon;
-		}
-		else {
-			return $this->_parent->_name.'-'.$icon;
-		}
-
+		return $this->_parent->getName().'-'.$icon;
 	}
 	
 	/**
@@ -201,12 +201,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	 */
 	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
 	{
-		if (JVersion::isCompatible("1.6.0")) {
-			return $this->_parent->getName().'-'.$name;
-		}
-		else {
-			return $this->_parent->_name.'-'.$name;
-		}
+		return $this->_parent->getName().'-'.$name;
 	}
 
 	/**
@@ -222,7 +217,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		$todo	 = JString::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
-		$submitbutton = JVersion::isCompatible("1.6.0")? "Joomla.submitbutton":"submitbutton";
+		$submitbutton = "Joomla.submitbutton";
 		
 		if ($hide) {
 			if ($list) {

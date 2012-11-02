@@ -106,7 +106,7 @@ class jevStartdateFilter extends jevFilter
 			$maxyear = $params->get("com_latestyear",2150);
 			$document =& JFactory::getDocument();
 			
-			$calendar = (JVersion::isCompatible("1.6.0")) ? 'calendar12.js' : 'calendar11.js';// RSH 9/28/10 - need to make the calendar a variable to be compatible with both mootools1.1 and 1.2
+			$calendar = (JVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 
 		
 			JEVHelper::script($calendar, "components/".JEV_COM_COMPONENT."/assets/js/",true); 
 			JEVHelper::stylesheet("dashboard.css",  "components/".JEV_COM_COMPONENT."/assets/css/",true);  

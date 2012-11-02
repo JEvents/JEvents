@@ -248,40 +248,26 @@ class DefaultModLegendView
 
 		$db = JFactory::getDBO();
 		$aid = $this->datamodel->aid;
-
 		$user = & JFactory::getUser();
 
 		// Get all the categories
-		if (JVersion::isCompatible("1.6.0"))
+		$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
+				. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				// language filter
+				. "\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')'
+				. " AND c.published = 1"
+				. "\n ORDER BY c.lft";
+		$db->setQuery($sql);
+		$catlist = $db->loadObjectList('id');
+		foreach ($catlist as &$cat)
 		{
-			$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
-					. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. " AND c.published = 1"
-					. "\n ORDER BY c.lft";
-			$db->setQuery($sql);
-			$catlist = $db->loadObjectList('id');
-			foreach ($catlist as &$cat)
-			{
-				$cat->name = $cat->title;
-				$params = new JRegistry($cat->params);
-				$cat->color = $params->get("catcolour", "");
-				$cat->overlaps = $params->get("overlaps", 0);
-			}
-			unset($cat);
+			$cat->name = $cat->title;
+			$params = new JRegistry($cat->params);
+			$cat->color = $params->get("catcolour", "");
+			$cat->overlaps = $params->get("overlaps", 0);
 		}
-		else
-		{
-			$query = "SELECT * FROM #__categories AS c
-					LEFT JOIN #__jevents_categories as j ON j.id=c.id"
-					. "\n WHERE  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "\n AND c.published = 1"
-					. "\n AND c.section = '" . JEV_COM_COMPONENT . "'"
-					. "\n ORDER BY c.ordering"
-			;
-			$db->setQuery($query);
-			$catlist = $db->loadObjectList('id');
-		}
-
+		unset($cat);
+		
 		// any plugin based resitrictions
 		$dispatcher = & JDispatcher::getInstance();
 		// remember NOT to reindex the list

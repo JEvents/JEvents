@@ -5,7 +5,7 @@
  * @version     $Id: mod_jevents_latest.php 3309 2012-03-01 10:07:50Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module Latest JEvents
- * @copyright   Copyright (C) 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2006-2012 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://joomlacode.org/gf/project/jevents
  */
@@ -17,7 +17,7 @@ require_once (dirname(__FILE__).'/'.'helper.php');
 $jevhelper = new modJeventsLatestHelper();
 $theme = JEV_CommonFunctions::getJEventsViewName();
 $modtheme = $params->get("com_calViewName", $theme);
-if ($modtheme==""){
+if ($modtheme=="" || $modtheme=="global"){
 	$modtheme=$theme;
 }
 $theme=$modtheme;
