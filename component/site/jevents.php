@@ -79,7 +79,7 @@ $component->params =& $newparams;
 $isMobile = $browser->isMobile();
 // Joomla isMobile method doesn't identify all android phones
 if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT'])){
-	if (stripos($_SERVER['HTTP_USER_AGENT'], 'android') >0) {
+	if (stripos($_SERVER['HTTP_USER_AGENT'], 'android') >0 || stripos($_SERVER['HTTP_USER_AGENT'], 'blackberry') >0) {
 		$isMobile = true;
 	}
 	else 	if (stripos($_SERVER['HTTP_USER_AGENT'], 'iphone')>0 || stripos($_SERVER['HTTP_USER_AGENT'], 'ipod')>0)  {
@@ -90,13 +90,15 @@ if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT'])){
 $params =& JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_')===0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV","")=="smartphone"){
-	JRequest::setVar("jevsmartphone",1);
-	if (JFolder::exists(JEV_VIEWS."/smartphone")){
-		JRequest::setVar("jEV","smartphone");
+	if (!$params->get("disablesmartphone")){
+		JRequest::setVar("jevsmartphone",1);
+		if (JFolder::exists(JEV_VIEWS."/smartphone")){
+			JRequest::setVar("jEV","smartphone");
+		}
+		$params->set('iconicwidth',485);
+		$params->set('extpluswidth',485);
+		$params->set('ruthinwidth',485);
 	}
-	$params->set('iconicwidth',485);
-	$params->set('extpluswidth',485);
-	$params->set('ruthinwidth',485);
 }
 
 // See http://www.php.net/manual/en/timezones.php

@@ -5,7 +5,7 @@ $cfg = & JEVConfig::getInstance();
 
 $view = $this->getViewName();
 
-$script= <<<SCRIPT
+$script = <<<SCRIPT
 function clearIcalCategories(allcats){
 	if(allcats.checked){
 		document.getElements('input[name=categories[]]:checked').each (function(el){
@@ -13,6 +13,7 @@ function clearIcalCategories(allcats){
 				el.checked=false;
 			}
 		});
+		$('othercats').style.display='none';
 	}
 	else {
 		document.getElements('input[name=categories[]]').each (function(el){
@@ -20,6 +21,7 @@ function clearIcalCategories(allcats){
 				el.checked=true;
 			}
 		});
+		$('othercats').style.display='block';		
 	}
 }
 function clearAllIcalCategories(){
@@ -36,6 +38,7 @@ function clearIcalYears(allyears){
 				el.checked=false;
 			}
 		});
+		$('otheryears').style.display='none';		
 	}
 	else {
 		document.getElements('input[name=years[]]').each (function(el){
@@ -43,6 +46,7 @@ function clearIcalYears(allyears){
 				el.checked=true;
 			}
 		});
+		$('otheryears').style.display='block';				
 	}
 }
 function clearAllIcalYears(){
@@ -56,98 +60,12 @@ function clearAllIcalYears(){
 SCRIPT;
 $doc = JFactory::getDocument();
 $doc->addScriptDeclaration($script);
-
-echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
-?>
-
-<form name="ical" method="post" class="<?php isset($_POST['submit'])?'icalexportresults':'';?>">
-<?php
-$categories = JEV_CommonFunctions::getCategoryData();
-
+	
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
-echo "<h3>" . JText::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
-// All categories
-$cb = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
-if (!isset($_POST['categories']))
-{
-	$cb=$cb." CHECKED";
-}
-else if (isset($_POST['categories']) && in_array(0, JRequest::getVar('categories', '', 'POST')))
-{
-	$cb = $cb . " CHECKED";
-}
-echo $cb . "><span >&nbsp;&nbsp;&nbsp;&nbsp;</span><strong>" . JText::_("JEV_EVENT_ALLCAT"). "</strong><br/>\n";
+echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
-foreach ($categories AS $c)
-{
-	// Make sure the user is authorised to view this category and the menu item doesn't block it!
-	if (!in_array($c->id, $accessiblecats))
-		continue;
-	$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
-	if (!isset($_POST['categories']))
-	{
-		//$cb=$cb." CHECKED";
-	}
-	else if (isset($_POST['categories']) && in_array($c->id, JRequest::getVar('categories', '', 'POST')))
-	{
-		$cb = $cb . " CHECKED";
-	}
-	$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level-1 ). $c->title  . "<br/>\n";
-	echo $cb;
-}
-
-echo "<h3>" . JText::_('JEV_REP_YEAR') . "</h3>\n";
-
-// All years
-$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
-if (!isset($_POST['years']))
-{
-	$yt = $yt . " CHECKED";
-}
-else if (isset($_POST['years']) && in_array(0, JRequest::getVar('years', '', 'POST')))
-{
-	$yt = $yt . " CHECKED";
-}
-$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS")  . "</strong><br/>\n";
-echo $yt;
-
-//consturc years array, easy to add own kind of selection
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-$year = array();
-for ($y = $params->get("com_earliestyear", date('Y')); $y <= $params->get("com_latestyear", date('Y')); $y++)
-{
-	if (!in_array($y, $year))
-		$year[] = $y;
-}
-
-foreach ($year AS $y)
-{
-	$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
-	if (!isset($_POST['years']))
-	{
-		//$yt = $yt . " CHECKED";
-	}
-	else if (isset($_POST['years']) && in_array($y, JRequest::getVar('years', '', 'POST')))
-	{
-		$yt = $yt . " CHECKED";
-	}
-	$yt = $yt . ">" . $y . "<br/>\n";
-	echo $yt;
-}
-
-echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
-?>
-	<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
-	<br/>
-	<br/>
-
-	<input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>" />
-
-</form>
-
-<?php
-if (isset($_POST['submit']))
+if (JRequest::getString("submit","")!="")
 {
 
 	$categories = JRequest::getVar('categories', array(0), 'POST');
@@ -157,7 +75,7 @@ if (isset($_POST['submit']))
 	{
 		$cid = intval($cid);
 		// Make sure the user is authorised to view this category and the menu item doesn't block it!
-		if (!in_array($cid, $accessiblecats) && $cid=!0)
+		if (!in_array($cid, $accessiblecats) && $cid = !0)
 			continue;
 		$cats[] = $cid;
 	}
@@ -182,8 +100,9 @@ if (isset($_POST['submit']))
 	}
 
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-	if ( $params->get("constrained",0) ){
-		$link .="&Itemid=" . JRequest::getInt("Itemid",1);
+	if ($params->get("constrained", 0))
+	{
+		$link .="&Itemid=" . JRequest::getInt("Itemid", 1);
 	}
 
 	$icalkey = $params->get("icalkey", "secret phrase");
@@ -211,3 +130,110 @@ if (isset($_POST['submit']))
 		}
 	}
 }
+?>
+
+<form name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
+	<?php
+	$categories = JEV_CommonFunctions::getCategoryData();
+
+	?>
+	<div class='choosecat' style='float:left;width:300px;'>
+		<?php
+		echo "<h3>" . JText::_('JEV_EVENT_CHOOSE_CATEG') . "</h3>\n";
+// All categories
+		$cb = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
+		$checked = false;
+		if (!JRequest::getVar('categories', 0, 'POST'))
+		{
+			$cb = $cb . " CHECKED";
+			$checked = true;
+		}
+		else if (JRequest::getVar('categories', 0, 'POST') && in_array(0, JRequest::getVar('categories', '', 'POST')))
+		{
+			$cb = $cb . " CHECKED";
+			$checked = true;
+		}
+		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+		?>
+		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+			<?php
+			foreach ($categories AS $c)
+			{
+				// Make sure the user is authorised to view this category and the menu item doesn't block it!
+				if (!in_array($c->id, $accessiblecats))
+					continue;
+				$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
+				if (!JRequest::getVar('categories', 0))
+				{
+					//$cb=$cb." CHECKED";
+				}
+				else if (JRequest::getVar('categories', 0) && in_array($c->id, JRequest::getVar('categories', '', 'POST')))
+				{
+					$cb = $cb . " CHECKED";
+				}
+				$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level - 1) . $c->title . "<br/>\n";
+				echo $cb;
+			}
+			?>
+		</div>
+	</div>
+	<div class='chooseyear' style='float:left;width:300px;'>
+		<?php
+		echo "<h3>" . JText::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
+
+// All years
+		$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
+		$checked = false;
+		if (!JRequest::getVar('years', 0))
+		{
+			$yt = $yt . " CHECKED";
+			$checked = true;
+		}
+		else if (JRequest::getVar('years', 0) && in_array(0, JRequest::getVar('years', '', 'POST')))
+		{
+			$yt = $yt . " CHECKED";
+			$checked = true;
+		}
+		$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+		echo $yt;
+		?>
+		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+			<?php
+//consturc years array, easy to add own kind of selection
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$year = array();
+			for ($y = $params->get("com_earliestyear", date('Y')); $y <= $params->get("com_latestyear", date('Y')); $y++)
+			{
+				if (!in_array($y, $year))
+					$year[] = $y;
+			}
+
+			foreach ($year AS $y)
+			{
+				$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
+				if (!JRequest::getVar('years', 0))
+				{
+					//$yt = $yt . " CHECKED";
+				}
+				else if (JRequest::getVar('years', 0) && in_array($y, JRequest::getVar('years', '', 'POST')))
+				{
+					$yt = $yt . " CHECKED";
+				}
+				$yt = $yt . ">" . $y . "<br/>\n";
+				echo $yt;
+			}
+			?>
+		</div>
+	</div>
+	<?php
+	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
+	?>
+	<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
+	<br/>
+	<br/>
+</div>
+
+<input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>" />
+</form>
+

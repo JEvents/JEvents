@@ -255,7 +255,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else if ($order == 'modified')
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY m,odified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
+			$order = ($this->_largeDataSet ? "\n ORDER BY modified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
 		}
 		else
 		{
@@ -775,10 +775,14 @@ class AdminIcaleventController extends JControllerAdmin
 		if ($params->get("allowraw", 0))
 		{
 			$array['jevcontent'] = JRequest::getString("jevcontent", "", "POST", JREQUEST_ALLOWRAW);
+			$array['extra_info'] = JRequest::getString("extra_info", "", "POST", JREQUEST_ALLOWRAW);
 		}
 		// convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent'] ) == $array['jevcontent'] ){
 			$array['jevcontent']  = nl2br($array['jevcontent'] );
+		}
+		if (strip_tags($array['extra_info'] ) == $array['extra_info'] ){
+			$array['extra_info']  = nl2br($array['extra_info'] );
 		}
 		
 		// convert event data to objewct so we can test permissions
