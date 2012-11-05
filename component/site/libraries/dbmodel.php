@@ -855,7 +855,7 @@ class JEventsDBModel
 					// TODO cache this!
 					$db = JFactory::getDbo();
 					$db->setQuery($query);
-					$ids1 = $db->loadResultArray();
+					$ids1 = $db->loadColumn();
 				}
 
 				// Before now (only if not past only == future events)
@@ -889,7 +889,7 @@ class JEventsDBModel
 					// TODO cache this!
 					$db = JFactory::getDbo();
 					$db->setQuery($query);
-					$ids2 = $db->loadResultArray();
+					$ids2 = $db->loadColumn();
 				}
 
 				$ids3 = array();
@@ -922,7 +922,7 @@ class JEventsDBModel
 					// TODO cache this!
 					$db = JFactory::getDbo();
 					$db->setQuery($query);
-					$ids3 = $db->loadResultArray();
+					$ids3 = $db->loadColumn();
 				}
 
 				$ids = array_merge($ids1, $ids2, $ids3);

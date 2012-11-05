@@ -255,7 +255,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else if ($order == 'modified')
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY m,odified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
+			$order = ($this->_largeDataSet ? "\n ORDER BY modified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
 		}
 		else
 		{

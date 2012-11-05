@@ -94,8 +94,8 @@ a.mod_events_link:hover
 .mod_events_monthyear
 {
 	border: 1px solid #222222;
-	margin-top: 0.25em;
-        cursor:pointer;
+	margin:0.25em auto 0px auto;
+         cursor:pointer;
 	height: 18px;
 }
 .mod_events_monthyear td
