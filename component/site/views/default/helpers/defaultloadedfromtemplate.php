@@ -411,6 +411,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ISOEND}}";
 						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
 						$blank[] = "";
+						$search[] = "{{ISOSTART}}";
+						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+						$blank[] = "";
+						$search[] = "{{ISOEND}}";
+						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
+						$blank[] = "";
 					}
 					else
 					{
