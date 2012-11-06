@@ -659,6 +659,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                 break;
 
 				default:
+					$strippedmatch = str_replace (array("{","}"),"",$strippedmatch);
+					if (is_callable(array($event,$strippedmatch))){
+						$search[] = "{{".$strippedmatch."}}";
+		                                    $replace[] = $event->$strippedmatch();
+				                  $blank[] = "";
+					}
 					break;
 			}
 		}

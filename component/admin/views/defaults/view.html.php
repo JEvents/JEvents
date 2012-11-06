@@ -51,7 +51,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$total		= $this->get( 'Total');
 		$languages	=  $this->get( 'Languages');
 		
-		$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "");
+		$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 		$this->assign('language',		$language);
 		$this->assign('languages',		$languages);
 		

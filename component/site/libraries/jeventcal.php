@@ -326,7 +326,7 @@ class jEventCal {
 		}
 		if ($data){
                 	$params = json_decode($data->params);
-			if (isset($params->image)){ 
+			if (isset($params->image) && $params->image!=""){ 
 				return "<img src = '".JURI::root().$params->image."' class='catimage' />";
 			}		
 		}
