@@ -6,7 +6,7 @@ jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
 include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
-include_once(JEV_LIBS."/colorMap.php");
+include_once(JEV_ADMINLIBS."/colorMap.php");
 
 class JFormFieldJevcolourpicker extends JFormField
 {

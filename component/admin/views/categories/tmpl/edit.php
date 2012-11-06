@@ -15,7 +15,7 @@ $cfg = & JEVConfig::getInstance();
 
 $editor =& JFactory::getEditor();
 
-include_once(JEV_LIBS."/colorMap.php");
+include_once(JEV_ADMINLIBS."/colorMap.php");
 
 ?>		
 <div id="jevents">
