@@ -761,6 +761,7 @@ class JEventsDataModel {
 
 			// Parse http and  wrap in <a> tag
 			// trigger content plugin
+			JPluginHelper::importPlugin('content');
 
 			$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 
@@ -774,7 +775,6 @@ class JEventsDataModel {
 				$tmprow->text = $row->location();
 
 				$dispatcher	=& JDispatcher::getInstance();
-				JPluginHelper::importPlugin('content');
 
 				if (JVersion::isCompatible("1.6.0")) {
 					$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
