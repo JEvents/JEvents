@@ -193,7 +193,7 @@ class plgSearchEventsearch extends JPlugin
 		$wheres_ical = array();
 		switch ($phrase) {
 			case 'exact':
-				$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
+				$text = $db->Quote('%' . $db->escape($text, true) . '%', false);
 				// ical
 				$wheres2 = array();
 				foreach ($search_ical_attributes as $search_item)
@@ -211,7 +211,7 @@ class plgSearchEventsearch extends JPlugin
 				$wheres = array();
 				foreach ($words as $word)
 				{
-					$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
+					$word = $db->Quote('%' . $db->escape($word, true) . '%', false);
 					$wheres2 = array();
 					foreach ($search_ical_attributes as $search_item)
 					{

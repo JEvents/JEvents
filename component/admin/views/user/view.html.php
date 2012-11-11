@@ -47,7 +47,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$search = JFactory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$db = JFactory::getDbo();
-		$search = $db->getEscaped(trim(strtolower($search)));
+		$search = $db->escape(trim(strtolower($search)));
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 

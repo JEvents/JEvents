@@ -27,13 +27,16 @@ class jevFilterProcessing
 
 	function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
 
+		if ($uid == 0){
+			$uid ="";
+		}
 		if ($uid==""){
 			// find what is running - used by the filters
 			$registry	=& JRegistry::getInstance("jevents");
 			$activeprocess = $registry->get("jevents.activeprocess","");
-			$moduleid = $registry->get("jevents.moduleid", 0);
+			$moduleid = $registry->get("jevents.moduleid","");
 			$moduleparams = $registry->get("jevents.moduleparams", false);
-			if ($moduleparams && $moduleparams->get("ignorefiltermodule",false)){
+			if ($moduleparams && $moduleparams->get("ignorefiltermodule",false) && $moduleid){
 				$uid="mod".$moduleid;
 			}
 		}
@@ -67,7 +70,7 @@ class jevFilterProcessing
 		return $instances[$key];
 	}
 
-	function jevFilterProcessing($item, $filterpath=false){
+	function __construct($item, $filterpath=false){
                 jimport('joomla.filesystem.folder');
 
 		$this->filterpath = array();
@@ -132,8 +135,14 @@ class jevFilterProcessing
 						continue;
 					}
 				}
-				$thefilter =  new $filter("",$filtername);
-				self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+				if ( defined($filter."::filterType") ){
+					self::$indexedvisiblefilters[$filtername] = $filter::filterType;
+				}
+				else {
+					$thefilter =  new $filter("",$filtername);
+					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+				}
+
 			}
 
 			$registry	=& JRegistry::getInstance("jevents");
@@ -262,7 +271,12 @@ class jevFilter
 
 		// If using caching should disable session filtering if not logged in
 		$cfg	 = & JEVConfig::getInstance();
-		$useCache = intval($cfg->get('com_cache', 0));
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+		
+		// New special code in jevents.php sets the session variables in the cache id calculation!
+		$useCache =false;
+		
 		$user = JFactory::getUser();
 		// TODO chek this logic
 		if (intval(JRequest::getVar('filter_reset',0))){
@@ -359,7 +373,7 @@ $this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->
 	function _createfilterReset(){
 		return 'elems = document.getElementsByName("'.$this->filterType.'_fv");if (elems.length>0) {elems[0].value="'.$this->filterNullValue.'"};';
 	}
-
+	
 }
 
 class jevBooleanFilter extends jevFilter

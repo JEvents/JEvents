@@ -319,20 +319,32 @@ class jEventCal {
 		return "";
 	}
 
-	function getCategoryImage( ){
+	function getCategoryImage($multiple=false){
 		$data = $this->getCategoryData();
+		if ($multiple){
+			if (is_array($data)) {
+				$output = "";
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){ 
+						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+					}							
+				}
+				return $output;
+			}
+		}
 		if (is_array($data)) {
 			$data = $data[0];
 		}
 		if ($data){
-                	$params = json_decode($data->params);
+			$params = json_decode($data->params);
 			if (isset($params->image) && $params->image!=""){ 
-				return "<img src = '".JURI::root().$params->image."' class='catimage' />";
+				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
 			}		
 		}
 		return "";
 	}
-
+	
 	function getCategoryDescription( ){
 		$data = $this->getCategoryData();
 		if (is_array($data)) {

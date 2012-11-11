@@ -193,8 +193,8 @@ class iCalEventDetail extends JTable  {
 		// But this will be done by the SQL update function as part of the store so don't do it twice
 		/*
 		$db = JFactory::getDBO();
-		$this->description = $db->getEscaped($this->description);
-		$this->summary = $db->getEscaped($this->summary);
+		$this->description = $db->escape($this->description);
+		$this->summary = $db->escape($this->summary);
 		*/
 
 		// get default value for multiday from params

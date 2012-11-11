@@ -14,8 +14,10 @@ defined('_JEXEC') or die( 'Direct Access to this location is not allowed.' );
 
 class jevCategoryFilter extends jevFilter
 {
-	function __construct($tablename, $filterfield, $isstring=true){
+	const filterType="category";
 
+	function __construct($tablename, $filterfield, $isstring=true){
+		$this->filterType=self::filterType;
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
@@ -28,7 +30,6 @@ class jevCategoryFilter extends jevFilter
 			$this->datamodel->setupComponentCatids();
 		}
 
-		$this->filterType="category";
 		$this->filterLabel=JText::_( 'CATEGORY' );
 		$this->filterNullValue="0";
 		parent::__construct($tablename,"catid", true);

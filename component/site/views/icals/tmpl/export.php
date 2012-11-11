@@ -77,7 +77,7 @@ if (!empty($this->icalEvents))
 	// Call plugin on each event
 	$dispatcher =& JDispatcher::getInstance();
 	ob_start();
-	$dispatcher->trigger( 'onDisplayCustomFieldsMultiRow', array( &$this->icalEvents) );
+	JEVHelper::onDisplayCustomFieldsMultiRow($this->icalEvents);
 	ob_end_clean();
 	
 	foreach ($this->icalEvents as $a)
