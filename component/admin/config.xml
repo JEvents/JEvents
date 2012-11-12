@@ -13,7 +13,7 @@
 		</field>		
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		
-		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
+		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description=""/>
 
 		<field name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
 			<option value="comp">JEV_HEADLINE_COMP</option>

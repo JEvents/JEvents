@@ -70,7 +70,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 5));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
-		$search = $db->getEscaped(trim(strtolower($search)));
+		$search = $db->escape(trim(strtolower($search)));
 
 		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
 
@@ -332,6 +332,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$this->view->assign('rows', $rows);
 		
+		$this->view->assign('largeDataSet',$this->_largeDataSet);
 		$this->view->assign('clist', $clist);
 		$this->view->assign('plist', $plist);
 		$this->view->assign('search', $search);
@@ -1099,7 +1100,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
-		$search = $db->getEscaped(trim(strtolower($search)));
+		$search = $db->escape(trim(strtolower($search)));
 
 		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
 

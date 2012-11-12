@@ -14,8 +14,10 @@ defined('_VALID_MOS') or defined('_JEXEC') or die( 'No Direct Access' );
 // searches event
 class jevSearchFilter extends jevFilter
 {
+	const filterType="search";
+
 	function __construct($tablename, $filterfield, $isstring=true){
-		$this->filterType="search";
+		$this->filterType=self::filterType;
 		$this->filterLabel=JText::_( 'SEARCH_EVENT' );
 		$this->filterNullValue="";
 		parent::__construct($tablename,$filterfield, true);
@@ -33,7 +35,7 @@ class jevSearchFilter extends jevFilter
 		if (trim($this->filter_value)==$this->filterNullValue) return "";
 
 		$db = JFactory::getDBO();
-		$text = $db->Quote( '%'.$db->getEscaped( $this->filter_value, true ).'%', false );
+		$text = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
 				
 		$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
 

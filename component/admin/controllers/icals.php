@@ -59,7 +59,7 @@ class AdminIcalsController extends JControllerForm {
 		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
 		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ));
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "search{$option}", 'search', '' );
-		$search		= $db->getEscaped( trim( strtolower( $search ) ) );
+		$search		= $db->escape( trim( strtolower( $search ) ) );
 		$where		= array();
 
 		if( $search ){

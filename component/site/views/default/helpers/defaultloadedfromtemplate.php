@@ -7,9 +7,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$db = JFactory::getDBO();
 	// find published template
 	static $templates;
+	static $fieldNameArray;
 	if (!isset($templates))
 	{
 		$templates = array();
+		$fieldNameArray = array();
 	}
 	if (!$template_value)
 	{
@@ -32,6 +34,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else {
 				$templates[$template_name] = null;
 			}
+			
+			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
+				return false;
+
+			// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+			$templates[$template_name]->value = str_replace("\r", '', $templates[$template_name]->value);
+			$templates[$template_name]->value = str_replace("\n", '', $templates[$template_name]->value);
+			// non greedy replacement - because of the ?
+			$templates[$template_name]->value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templates[$template_name]->value);
+
+			$matchesarray = array();
+			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
+
+			$templates[$template_name]->matchesarray = $matchesarray;
+			
 		}
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 			return false;
@@ -39,16 +56,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template = $templates[$template_name];
 
 		$template_value = $template->value;
+		$matchesarray = $templates[$template_name]->matchesarray ;
 	}
-// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
-	$template_value = str_replace("\r", '', $template_value);
-	$template_value = str_replace("\n", '', $template_value);
-// non greedy replacement - because of the ?
-	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
+	else {
+		// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+		$template_value = str_replace("\r", '', $template_value);
+		$template_value = str_replace("\n", '', $template_value);
+		// non greedy replacement - because of the ?
+		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 
-	$matchesarray = array();
-	preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
-
+		$matchesarray = array();
+		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);		
+	}
+	if ($template_value=="")
+		return;
 	if (count($matchesarray) == 0)
 		return;
 
@@ -240,6 +261,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{CATEGORYIMGS}}":
+					$search[] = "{{CATEGORYIMGS}}";
+					$replace[] = $event->getCategoryImage(true);
+					$blank[] = "";
+					break;
+				
 				case "{{CATDESC}}":
 					$search[] = "{{CATDESC}}";
 					$replace[] = $event->getCategoryDescription();
@@ -659,6 +686,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                 break;
 
 				default:
+					$strippedmatch = str_replace (array("{","}"),"",$strippedmatch);
+					if (is_callable(array($event,$strippedmatch))){
+						$search[] = "{{".$strippedmatch."}}";
+		                                    $replace[] = $event->$strippedmatch();
+				                  $blank[] = "";
+					}
 					break;
 			}
 		}
@@ -675,10 +708,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$classname = "plgJevents" . ucfirst($jevplugin->name);
 			if (is_callable(array($classname, "substitutefield")))
 			{
-				$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), $layout);
-				if (isset($fieldNameArray["values"]))
+
+				if (!isset($fieldNameArray[$classname])){
+					$fieldNameArray[$classname] = array();
+				}
+				if (!isset($fieldNameArray[$classname][$layout])){
+					
+					//list($usec, $sec) = explode(" ", microtime());
+					//$starttime = (float) $usec + (float) $sec;
+					
+					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
+					
+					//list ($usec, $sec) = explode(" ", microtime());
+					//$time_end = (float) $usec + (float) $sec;
+					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
+				}
+				if ( isset($fieldNameArray[$classname][$layout]["values"]))
 				{
-					foreach ($fieldNameArray["values"] as $fieldname)
+					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 					{
 						if (!strpos($template_value, $fieldname)!==false) {
 							continue;

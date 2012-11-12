@@ -169,6 +169,9 @@ class AdminParamsController extends JControllerAdmin
 		);
 		$return = $model->saveRules($data);
 		
+		// Clear cache of com_config component.
+		$this->cleanCache('_system');
+		
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -268,6 +271,9 @@ class AdminParamsController extends JControllerAdmin
 		);
 		$return = $model->saveRules($data);
 		
+		// Clear cache of com_config component.
+		$this->cleanCache('_system');
+				
 		$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=params.edit", JText::_('CONFIG_SAVED'));
 		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();
@@ -283,4 +289,31 @@ class AdminParamsController extends JControllerAdmin
 
 	}
 
+
+	/**
+	 * Clean the cache
+	 *
+	 * @param   string   $group      The cache group
+	 * @param   integer  $client_id  The ID of the client
+	 *
+	 * @return  void
+	 *
+	 * @since   12.2
+	 */
+	protected function cleanCache($group = null, $client_id = 0)
+	{
+		$conf = JFactory::getConfig();
+		$dispatcher = JDispatcher::getInstance();
+
+		$options = array(
+			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),
+			'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
+
+		$cache = JCache::getInstance('callback', $options);
+		$cache->clean();
+
+		// Trigger the onContentCleanCache event.
+		$dispatcher->trigger($this->event_clean_cache, $options);
+	}
+	
 }

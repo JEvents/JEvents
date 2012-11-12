@@ -4,7 +4,6 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultViewHelperShowNavTableBar($view){
 	// this, previous and next date handling
 	
-
 	$cfg = & JEVConfig::getInstance();
 
 	// Optionally display no nav bar
@@ -21,6 +20,10 @@ function DefaultViewHelperShowNavTableBar($view){
 	$today_date->setDate( $regs[1], $regs[2], $regs[3] );
 
 	$task = JRequest::getString("jevtask");
+	if ($task == ""){
+		// I think xdebug messes up this variable in the memory so when debugging this is helpful
+		$task = JRequest::getString("jevtask",JRequest::getString("task", JRequest::getString("view").".". JRequest::getString("layout")));	
+	}
 		
 	$view->loadModules("jevpretoolbar");
 	$view->loadModules("jevpretoolbar_".$task);
