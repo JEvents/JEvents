@@ -1272,7 +1272,7 @@ class JEventsDBModel
 			$needsgroup = $filters->needsGroupBy();
 
 			$dispatcher = & JDispatcher::getInstance();
-			//$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+			$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 			// What if join multiplies the rows?
 			// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492

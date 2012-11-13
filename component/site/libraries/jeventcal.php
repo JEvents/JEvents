@@ -242,7 +242,7 @@ class jEventCal {
 
 	function contactLink($val="", $admin=false){
 		if (strlen($val)==0) {
-			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin);
+			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin, $this);
 		}
 		else $this->_contactLink=$val;
 		return $this->_contactLink;
