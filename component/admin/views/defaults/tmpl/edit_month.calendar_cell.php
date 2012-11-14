@@ -33,6 +33,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STARTDATE",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STARTTIME",true);?>", "STARTTIME");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ENDDATE",true);?>", "ENDDATE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ENDTIME",true);?>", "ENDTIME");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DURATION",true);?>", "DURATION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXT",true);?>", "PREVIOUSNEXT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");

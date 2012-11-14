@@ -59,6 +59,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$matchesarray = $templates[$template_name]->matchesarray ;
 	}
 	else {
+		// This is a special scenario where we call this function externally e.g. from RSVP Pro messages 
+		// In this scenario we have not gone through the displaycustomfields plugin
+		static $pluginscalled = array();
+		if (!isset($pluginscalled[$event->rp_id()])){
+			$dispatcher	=& JDispatcher::getInstance();
+			JPluginHelper::importPlugin("jevents");
+			$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+			$pluginscalled[$event->rp_id()] = $event;
+		}
+		else {
+			$event = $pluginscalled[$event->rp_id()];
+		}
+
 		// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
 		$template_value = str_replace("\r", '', $template_value);
 		$template_value = str_replace("\n", '', $template_value);
@@ -402,6 +415,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ENDTIME}}":
 				case "{{ISOSTART}}":
 				case "{{ISOEND}}":
+				case "{{DURATION}}":
 					if ($template_name == "icalevent.detail_body")
 					{
 						$search[] = "{{REPEATSUMMARY}}";
@@ -559,6 +573,39 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$blank[] = "";
 						}
 					}
+					$search[] = "{{DURATION}}";
+						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
+						$fieldval = JText::_("JEV_DURATION_FORMAT");
+						$shownsign = false;
+						if (stripos($fieldval, "%d") !== false)
+						{
+							$days = intval($timedelta / (60 * 60 * 24));
+							$timedelta -= $days * 60 * 60 * 24;
+							$fieldval = str_ireplace("%d", $days, $fieldval);
+							$shownsign = true;
+						}
+						if (stripos($fieldval, "%h") !== false)
+						{
+							$hours = intval($timedelta / (60 * 60));
+							$timedelta -= $hours * 60 * 60;
+							if ($shownsign)
+								$hours = abs($hours);
+							$hours = sprintf("%02d", $hours);
+							$fieldval = str_ireplace("%h", $hours, $fieldval);
+							$shownsign = true;
+						}
+						if (stripos($fieldval, "%m") !== false)
+						{
+							$mins = intval($timedelta / 60);
+							$timedelta -= $hours * 60;
+							if ($mins)
+								$mins = abs($mins);
+							$mins = sprintf("%02d", $mins);
+							$fieldval = str_ireplace("%m", $mins, $fieldval);
+						}
+
+					$replace[] = $fieldval;
+					$blank[] = "";
 					break;
 
 
