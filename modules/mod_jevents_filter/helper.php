@@ -23,7 +23,7 @@ class modJeventsFilterHelper
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
 			include_once($file);
-			include_once(JEV_LIBS."/modfunctions.php");
+			include_once(JPATH_SITE."/components/com_jevents/libraries/modfunctions.php");
 
 		} else {
 			die ("JEvents Calendar\n<br />This module needs the JEvents component");

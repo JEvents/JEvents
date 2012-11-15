@@ -69,7 +69,7 @@ class ModCalController extends JController   {
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
 
-		include_once(JEV_LIBS."/modfunctions.php");
+		include_once(JPATH_SITE."/components/com_jevents/libraries/modfunctions.php");
 		if (!isset($this->_basePath) && JVersion::isCompatible("1.6.0")){
 			$this->_basePath = $this->basePath;
 			$this->_task = $this->task;
