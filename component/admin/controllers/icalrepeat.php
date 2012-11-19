@@ -64,7 +64,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit',10)));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 
 		$query = "SELECT count( DISTINCT rpt.rp_id)"

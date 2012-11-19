@@ -67,7 +67,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
 
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 5));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit',10)));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$search = $db->escape(trim(strtolower($search)));
@@ -1041,18 +1041,33 @@ class AdminIcaleventController extends JControllerAdmin
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
+			
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", "ICal Event(s) deleted");
+			}
+			else
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				list($year, $month, $day) = JEVHelper::getYMD();
+				$rettask = JRequest::getString("rettask", "day.listevents");
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent Deleted");
+			}
+			
 		}
-
-		if (JFactory::getApplication()->isAdmin())
-		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", "ICal Event(s) deleted");
-		}
-		else
-		{
-			$Itemid = JRequest::getInt("Itemid");
-			list($year, $month, $day) = JEVHelper::getYMD();
-			$rettask = JRequest::getString("rettask", "day.listevents");
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent Deleted");
+		else {
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list");
+			}
+			else
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				list($year, $month, $day) = JEVHelper::getYMD();
+				$rettask = JRequest::getString("rettask", "day.listevents");
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false));
+			}
+			
 		}
 
 	}

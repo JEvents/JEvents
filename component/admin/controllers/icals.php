@@ -56,7 +56,7 @@ class AdminIcalsController extends JControllerForm {
 
 		
 		$catid		= intval( JFactory::getApplication()->getUserStateFromRequest( "catid{$option}", 'catid', 0 ));
-		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', 10 ));
+		$limit		= intval( JFactory::getApplication()->getUserStateFromRequest( "viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit',10) ));
 		$limitstart = intval( JFactory::getApplication()->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ));
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "search{$option}", 'search', '' );
 		$search		= $db->escape( trim( strtolower( $search ) ) );

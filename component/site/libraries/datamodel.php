@@ -732,7 +732,7 @@ class JEventsDataModel {
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
-			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() );
+			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() ,false, $row);
 
 			$event_up = new JEventDate( $row->publish_up() );
 			$row->start_date = JEventsHTML::getDateFormat( $event_up->year, $event_up->month, $event_up->day, 0 );
@@ -1016,7 +1016,7 @@ class JEventsDataModel {
 				$row =& $rows[$r];
 
 				$row->catname		= $row->getCategoryName( );
-				$row->contactlink	= JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() );
+				$row->contactlink	= JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() ,false, $row);
 				$row->bgcolor		= JEV_CommonFunctions::setColor($row);
 				$row->fgcolor		= JevMapColor($row->bgcolor);
 
@@ -1080,7 +1080,7 @@ class JEventsDataModel {
 				$row =& $rows[$r];
 
 				$row->catname($row->getCategoryName());
-				$row->contactlink( JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by(), true));
+				$row->contactlink( JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by(), true, $row));
 				$row->bgcolor		= JEV_CommonFunctions::setColor($row);
 				$row->fgcolor		= JevMapColor($row->bgcolor);
 

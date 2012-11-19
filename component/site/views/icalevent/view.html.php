@@ -57,12 +57,14 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'Save', false);
 				if (JEVHelper::isEventEditor())
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'Apply', false);
+				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_copy_warning"), 'save', 'save', 'JEV_Save_New', false);
 			}
 			else
 			{
 				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
 				if (JEVHelper::isEventEditor())
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'Apply', false);
+				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_Save_New', false);
 			}
 		}
 		else
@@ -70,6 +72,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 			$this->toolbarButton("icalevent.save", 'save', 'save', 'Save', false);
 			if (JEVHelper::isEventEditor())
 				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'Apply', false);
+			//JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
