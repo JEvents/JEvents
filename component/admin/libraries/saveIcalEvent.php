@@ -257,8 +257,13 @@ function generateRRule($array){
 		}
 		else {
 			$publish_down	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
-			$until			= JArrayHelper::getValue( $array,  "until",$publish_down);
+			$until			= JArrayHelper::getValue( $array,  "until", $publish_down);
+			$until2		= JArrayHelper::getValue( $array,  "until2" , false);
+			if ($until2){
+				$until = $until2;
+			}
 			$rrule["UNTIL"] = JevDate::strtotime($until." 00:00:00");
+			
 		}
 		$rrule["INTERVAL"] = $interval;
 	}

@@ -271,7 +271,12 @@ function reformatStartEndDates() {
 	end_date2 = document.getElementById("publish_down2");
 	endDate = Date.parse(end_date.value);
 	end_date2.value = endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
-	
+
+	until_date = document.getElementById("until");
+	until_date2 = document.getElementById("until2");
+	untilDate = Date.parse(until_date.value);
+	until_date2.value = untilDate.getFullYear()+"-"+(untilDate.getMonth()+1)+"-"+untilDate.getDate();
+
 }
 function checkUntil(){
 
