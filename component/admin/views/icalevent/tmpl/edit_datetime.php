@@ -55,8 +55,13 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor()) {
                     $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
                     $minyear = $params->get("com_earliestyear", 1970);
                     $maxyear = $params->get("com_latestyear", 2150);
-                    JEVHelper::loadCalendar("publish_up", "publish_up", $this->row->startDate(), $minyear, $maxyear, 'var elem = $("publish_up");checkDates(elem);fixRepeatDates();', "elem = $('publish_up');checkDates(elem);", 'Y-m-d');
+		  $inputdateformat = $params->get("com_editdateformat","d.m.Y");
+		  $document = JFactory::getDocument();
+		  $js = "\neventEditDateFormat='$inputdateformat';Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
+		  $document->addScriptDeclaration($js);
+                    JEVHelper::loadCalendar("publish_up", "publish_up", $this->row->startDate(), $minyear, $maxyear, 'var elem = $("publish_up");checkDates(elem);fixRepeatDates();', "elem = $('publish_up');checkDates(elem);", $inputdateformat);
                     ?>
+		<input type="hidden"  name="publish_up2" id="publish_up2" value="" />
                 </div>
                 <div class="control-group" style="float:left;margin-left:20px!important;">
                     <div class="control-label"  style="float:left">
@@ -93,8 +98,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor()) {
                     $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
                     $minyear = $params->get("com_earliestyear", 1970);
                     $maxyear = $params->get("com_latestyear", 2150);
-                    JEVHelper::loadCalendar("publish_down", "publish_down", $this->row->endDate(), $minyear, $maxyear, 'var elem = $("publish_down");checkDates(elem);', "elem = $('publish_up');checkDates(elem);", 'Y-m-d');
+                    JEVHelper::loadCalendar("publish_down", "publish_down", $this->row->endDate(), $minyear, $maxyear, 'var elem = $("publish_down");checkDates(elem);', "elem = $('publish_up');checkDates(elem);", $inputdateformat);
                     ?>
+		<input type="hidden"  name="publish_down2" id="publish_down2" value="" />
                 </div>
                 <div style="float:left;margin-left:20px!important">
                     <?php echo JText::_('JEV_EVENT_ENDTIME') . "&nbsp;"; ?>
@@ -166,8 +172,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor()) {
                 $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
                 $minyear = $params->get("com_earliestyear", 1970);
                 $maxyear = $params->get("com_latestyear", 2150);
-                JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", 'Y-m-d');
+                JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat);
                 ?>
+		<input type="hidden"  name="until2" id="until2" value="" />
 
             </fieldset>
         </div>

@@ -417,6 +417,9 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset = $params->get("com_starday", 1);
 
+		list ($yearpart,$monthpart,$daypart) = explode("-",$value);
+		$value = str_replace(array("Y","m","d"),array($yearpart,$monthpart,$daypart), $format);
+		
 		$calendar = (JVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 
 		JEVHelper::script($calendar, "components/" . $component . "/assets/js/", true);
 		JEVHelper::stylesheet("dashboard.css", "components/" . $component . "/assets/css/", true);
