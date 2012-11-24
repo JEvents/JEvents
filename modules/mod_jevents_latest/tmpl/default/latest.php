@@ -154,12 +154,10 @@ class DefaultModLatestView
 
 		if ($this->linkCloaking)
 		{
-			//return mosHTML::Link("", $text, array('onclick'=>'"window.location.href=\''.josURL($url).'\';return false;"'));
 			return '<a href="#" onclick="window.location.href=\'' . $link . '\'; return false;" ' . $class . ' >' . $text . '</a>';
 		}
 		else
 		{
-			//return mosHTML::Link(josURL($url), "$text");
 			return '<a href="' . $link . '" ' . $class . '>' . $text . '</a>';
 		}
 
@@ -1087,15 +1085,19 @@ class DefaultModLatestView
 										$tempstr .= str_replace("%s",$temp,$formattedparts[2]);
 									}										
 								}
-								else {								
+								else {
+									
 									$layout = "list";
+									static $fieldNameArrays = array();
 									$jevplugins = JPluginHelper::getPlugin("jevents");
 									foreach ($jevplugins as $jevplugin){
 										$classname = "plgJevents".ucfirst($jevplugin->name);
 										if (is_callable(array($classname,"substitutefield"))){
-											$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),$layout);
-											if (isset($fieldNameArray["values"])) {
-												if (in_array($subparts[0],$fieldNameArray["values"] )){
+											 if (!isset($fieldNameArrays[$classname])){
+												$fieldNameArrays[$classname] = call_user_func(array($classname,"fieldNameArray"),$layout);
+											 }
+											if ( isset($fieldNameArrays[$classname]["values"])) {
+												if (in_array($subparts[0],$fieldNameArrays[$classname]["values"] )){
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent!=3){
 														$temp = call_user_func(array($classname,"substitutefield"),$dayEvent,$subparts[0]);
@@ -1111,6 +1113,7 @@ class DefaultModLatestView
 										}
 									}									
 									//$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
+									
 								}
 								$tempstr .= $subparts[1];
 							}

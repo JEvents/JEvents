@@ -25,12 +25,13 @@ class jevJustmineFilter extends jevFilter
 	var $yesLabel = "";
 	var $noLabel = "";
 	var $isEventAdmin = false;
+	const filterType = "justmine";
 
-	function jevJustmineFilter($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+		$this->filterType=self::filterType;
 		$this->filterNullValue="0";
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
-		$this->filterType = "justmine";
 		$this->filterLabel = JText::_("Show_Only_My_Events");
 
 		// this is a special filter - we always want memory here since only used in frontend management

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" method="upgrade" client="site">
 	<name>Latest JEvents</name>
-	<creationDate>August 2012</creationDate>
+	<creationDate>November 2012</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.0.0 beta</version>
+	<version>3.0.0 RC</version>
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
@@ -27,26 +27,11 @@
 				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX" description="JEV_LATEST_MODULE_CLASS_SUFFIX_DESC" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-				<field name="@spacer" type="jevinfo" default="ADDITIONAL_CONSTRAINTS"   label="" description="" />
-				<field name="extras0" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras1" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras2" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras3" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras4" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras5" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras6" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras7" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras8" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras9" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras10" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras11" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras12" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
-				<field name="extras13" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
 				<field name="ignorecatfilter" type="radio" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
-				<field name="ignorefiltermodule" type="radio" default="0" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP">
+				<field name="ignorefiltermodule" type="radio" default="1" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
@@ -136,6 +121,23 @@
 				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
 
 			</fieldset>
+			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="@spacer" type="jevinfo" default="ADDITIONAL_CONSTRAINTS"   label="" description="" />
+				<field name="extras0" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras1" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras2" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras3" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras4" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras5" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras6" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras7" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras8" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras9" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras10" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras11" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras12" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+				<field name="extras13" type="jevextras" default="" label="ADDITIONAL_CONSTRAINTS" description="JEV_LATEST_ADDITIONAL_CONTRATINTS_DESC" />
+			</fieldset>				
 		</fields>
 	</config>
 </extension>

@@ -150,7 +150,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = & JFactory::getDocument();
-		include(JEV_LIBS . "editStrings.php");
+		include(JEV_ADMINLIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!

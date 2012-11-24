@@ -7,9 +7,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$db = JFactory::getDBO();
 	// find published template
 	static $templates;
+	static $fieldNameArray;
 	if (!isset($templates))
 	{
 		$templates = array();
+		$fieldNameArray = array();
 	}
 	if (!$template_value)
 	{
@@ -23,9 +25,30 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (isset($templates[$template_name]["*"])){
 				$templates[$template_name] =$templates[$template_name]["*"];
 			}
-			else {
+			else if (is_array($templates[$template_name]) && count($templates[$template_name])==0){
+				$templates[$template_name] = null;
+			}
+			else if (is_array($templates[$template_name])){
 				$templates[$template_name] = current($templates[$template_name]);
 			}
+			else {
+				$templates[$template_name] = null;
+			}
+			
+			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
+				return false;
+
+			// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+			$templates[$template_name]->value = str_replace("\r", '', $templates[$template_name]->value);
+			$templates[$template_name]->value = str_replace("\n", '', $templates[$template_name]->value);
+			// non greedy replacement - because of the ?
+			$templates[$template_name]->value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templates[$template_name]->value);
+
+			$matchesarray = array();
+			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
+
+			$templates[$template_name]->matchesarray = $matchesarray;
+			
 		}
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 			return false;
@@ -33,16 +56,33 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template = $templates[$template_name];
 
 		$template_value = $template->value;
+		$matchesarray = $templates[$template_name]->matchesarray ;
 	}
-// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
-	$template_value = str_replace("\r", '', $template_value);
-	$template_value = str_replace("\n", '', $template_value);
-// non greedy replacement - because of the ?
-	$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
+	else {
+		// This is a special scenario where we call this function externally e.g. from RSVP Pro messages 
+		// In this scenario we have not gone through the displaycustomfields plugin
+		static $pluginscalled = array();
+		if (!isset($pluginscalled[$event->rp_id()])){
+			$dispatcher	=& JDispatcher::getInstance();
+			JPluginHelper::importPlugin("jevents");
+			$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+			$pluginscalled[$event->rp_id()] = $event;
+		}
+		else {
+			$event = $pluginscalled[$event->rp_id()];
+		}
 
-	$matchesarray = array();
-	preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
+		// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+		$template_value = str_replace("\r", '', $template_value);
+		$template_value = str_replace("\n", '', $template_value);
+		// non greedy replacement - because of the ?
+		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 
+		$matchesarray = array();
+		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);		
+	}
+	if ($template_value=="")
+		return;
 	if (count($matchesarray) == 0)
 		return;
 
@@ -234,6 +274,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{CATEGORYIMGS}}":
+					$search[] = "{{CATEGORYIMGS}}";
+					$replace[] = $event->getCategoryImage(true);
+					$blank[] = "";
+					break;
+				
 				case "{{CATDESC}}":
 					$search[] = "{{CATDESC}}";
 					$replace[] = $event->getCategoryDescription();
@@ -369,6 +415,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ENDTIME}}":
 				case "{{ISOSTART}}":
 				case "{{ISOEND}}":
+				case "{{DURATION}}":
 					if ($template_name == "icalevent.detail_body")
 					{
 						$search[] = "{{REPEATSUMMARY}}";
@@ -394,10 +441,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = $stop_date;
 						$blank[] = "";
 						$search[] = "{{STARTTIME}}";
-						$replace[] = $start_time;
+						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
-						$replace[] = $stop_time_midnightFix;
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
@@ -526,6 +573,39 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$blank[] = "";
 						}
 					}
+					$search[] = "{{DURATION}}";
+						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
+						$fieldval = JText::_("JEV_DURATION_FORMAT");
+						$shownsign = false;
+						if (stripos($fieldval, "%d") !== false)
+						{
+							$days = intval($timedelta / (60 * 60 * 24));
+							$timedelta -= $days * 60 * 60 * 24;
+							$fieldval = str_ireplace("%d", $days, $fieldval);
+							$shownsign = true;
+						}
+						if (stripos($fieldval, "%h") !== false)
+						{
+							$hours = intval($timedelta / (60 * 60));
+							$timedelta -= $hours * 60 * 60;
+							if ($shownsign)
+								$hours = abs($hours);
+							$hours = sprintf("%02d", $hours);
+							$fieldval = str_ireplace("%h", $hours, $fieldval);
+							$shownsign = true;
+						}
+						if (stripos($fieldval, "%m") !== false)
+						{
+							$mins = intval($timedelta / 60);
+							$timedelta -= $hours * 60;
+							if ($mins)
+								$mins = abs($mins);
+							$mins = sprintf("%02d", $mins);
+							$fieldval = str_ireplace("%m", $mins, $fieldval);
+						}
+
+					$replace[] = $fieldval;
+					$blank[] = "";
 					break;
 
 
@@ -653,6 +733,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                 break;
 
 				default:
+					$strippedmatch = str_replace (array("{","}"),"",$strippedmatch);
+					if (is_callable(array($event,$strippedmatch))){
+						$search[] = "{{".$strippedmatch."}}";
+		                                    $replace[] = $event->$strippedmatch();
+				                  $blank[] = "";
+					}
 					break;
 			}
 		}
@@ -669,10 +755,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$classname = "plgJevents" . ucfirst($jevplugin->name);
 			if (is_callable(array($classname, "substitutefield")))
 			{
-				$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), $layout);
-				if (isset($fieldNameArray["values"]))
+
+				if (!isset($fieldNameArray[$classname])){
+					$fieldNameArray[$classname] = array();
+				}
+				if (!isset($fieldNameArray[$classname][$layout])){
+					
+					//list($usec, $sec) = explode(" ", microtime());
+					//$starttime = (float) $usec + (float) $sec;
+					
+					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
+					
+					//list ($usec, $sec) = explode(" ", microtime());
+					//$time_end = (float) $usec + (float) $sec;
+					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
+				}
+				if ( isset($fieldNameArray[$classname][$layout]["values"]))
 				{
-					foreach ($fieldNameArray["values"] as $fieldname)
+					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 					{
 						if (!strpos($template_value, $fieldname)!==false) {
 							continue;
@@ -734,6 +834,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$params = new JRegistry(null);
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
+		$tmprow->event = $event;
 		$dispatcher = & JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));

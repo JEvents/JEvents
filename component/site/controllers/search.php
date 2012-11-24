@@ -47,7 +47,7 @@ class SearchController extends JControllerLegacy   {
 		if (JString::strlen($keyword) > $upper_limit) {
 			$keyword	= substr($keyword, 0, $upper_limit - 1);
 		}
-		$keyword = $db->getEscaped(JRequest::getVar( 'keyword', '' ));
+		$keyword = $db->escape(JRequest::getVar( 'keyword', '' ));
 
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
@@ -73,7 +73,8 @@ class SearchController extends JControllerLegacy   {
 
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = & JEVConfig::getInstance();
-		$useCache = intval($cfg->get('com_cache', 0));
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
@@ -130,7 +131,8 @@ class SearchController extends JControllerLegacy   {
 
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = & JEVConfig::getInstance();
-		$useCache = intval($cfg->get('com_cache', 0));
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();

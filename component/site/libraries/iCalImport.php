@@ -80,8 +80,8 @@ class iCalImport
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
 
-				// try file_get_contents as a backup
-				if ($isFile && $this->rawData === false) {
+				// try file_get_contents as a backu
+				    if ($this->rawData === false || $this->rawData == "") {
 					$this->rawData = @file_get_contents($file);
 				}
 			}
@@ -145,7 +145,7 @@ class iCalImport
 		//$this->rawData = preg_replace("/[\r\n]+ ([:;])/","$1",$this->rawData);
 
 		// simplify line feed
-		$this->rawData = str_replace("\r\n","\n",$this->rawData);
+		$this->rawData = str_replace("\r\n","\n",trim($this->rawData));
 
 		// remove spurious lines before calendar start
 		if (!JString::stristr($this->rawData,'BEGIN:VCALENDAR')) {
@@ -256,7 +256,8 @@ class iCalImport
 			foreach ($this->cal["VEVENT"] as $vevent){
 				// trap for badly constructed all day events
 				if (isset($vevent["DTSTARTRAW"]) && isset($vevent["DTENDRAW"]) && $vevent["DTENDRAW"] ==  $vevent["DTSTARTRAW"]){
-					$vevent["DTEND"] += 86400;
+					//$vevent["DTEND"] += 86400;
+					$vevent["NOENDTIME"]  = 1;
 				}
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}

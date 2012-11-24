@@ -101,7 +101,7 @@ class TableUser extends JTable
 
 		$db =& JFactory::getDBO();
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
-		$search		= $db->getEscaped( trim( strtolower( $search ) ) );		
+		$search		= $db->escape( trim( strtolower( $search ) ) );		
 		if($search != ""){
 			$where[] = " ( ju.name like '$search%' OR ju.username like '$search%')";
 		}

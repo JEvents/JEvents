@@ -466,7 +466,7 @@ class JEventsHTML
 
 		}
 
-		function getUserMailtoLink($evid, $userid, $admin = false)
+		function getUserMailtoLink($evid, $userid, $admin = false, $event)
 		{
 
 			$db = & JFactory::getDBO();

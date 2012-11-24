@@ -48,6 +48,8 @@ class AdminParamsViewParams extends JEventsAbstractView
 		// Get the form.
 		$modelForm = $model->getForm();
 
+		//$component = isset($this->component)?$this->component : $this->get('Component');
+		
 		$component = $this->get('Component');
 		// Bind the form to the data.
 		if ($modelForm && $component->params)

@@ -226,7 +226,6 @@ class JEventsDataModel {
 		$cfg = & JEVConfig::getInstance();
 
 		if (!$veryshort){
-			//$rows = $this->queryModel->listEventsByMonthNEW( $year, $month, 'reccurtype ASC,publish_up');
 			$icalrows = $this->queryModel->listIcalEventsByMonth( $year, $month);
 
 			// handy for developement in case I comment out part of the above
@@ -572,11 +571,8 @@ class JEventsDataModel {
 		$week_start = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday ), $year );
 		$week_end = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday )+6, $year ); // + 6 for inclusinve week
 
-		$rows = $this->queryModel->listEventsByWeekNEW(JevDate::strftime("%Y-%m-%d",$week_start),JevDate::strftime("%Y-%m-%d",$week_end));
+		$rows = $this->queryModel->listIcalEventsByWeek( $week_start, $week_end);
 
-		$icalrows = $this->queryModel->listIcalEventsByWeek( $week_start, $week_end);
-
-		$rows = array_merge($icalrows,$rows);
 		$rowcount = count( $rows );
 
 		$data['startdate']	= JEventsHTML::getDateFormat( JevDate::strftime("%Y",$week_start), JevDate::strftime("%m",$week_start), JevDate::strftime("%d",$week_start), 1 );
@@ -691,10 +687,7 @@ class JEventsDataModel {
 		$data = array();
 
 		$target_date = JevDate::mktime(0,0,0,$month,$day,$year);
-		$rows	= $this->queryModel->listEventsByDateNEW( JevDate::strftime("%Y-%m-%d",$target_date ));
-		$icalrows = $this->queryModel->listIcalEventsByDay($target_date);
-
-		$rows = array_merge($icalrows,$rows);
+		$rows = $this->queryModel->listIcalEventsByDay($target_date);
 
 		$this->_populateHourData($data, $rows, $target_date);
 
@@ -739,7 +732,7 @@ class JEventsDataModel {
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
-			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() );
+			$row->contactlink = JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() ,false, $row);
 
 			$event_up = new JEventDate( $row->publish_up() );
 			$row->start_date = JEventsHTML::getDateFormat( $event_up->year, $event_up->month, $event_up->day, 0 );
@@ -761,6 +754,7 @@ class JEventsDataModel {
 
 			// Parse http and  wrap in <a> tag
 			// trigger content plugin
+			JPluginHelper::importPlugin('content');
 
 			$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 
@@ -774,7 +768,6 @@ class JEventsDataModel {
 				$tmprow->text = $row->location();
 
 				$dispatcher	=& JDispatcher::getInstance();
-				JPluginHelper::importPlugin('content');
 
 				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
 				
@@ -882,9 +875,7 @@ class JEventsDataModel {
 
 		$cfg = & JEVConfig::getInstance();
 
-		$counter = $this->queryModel->countEventsByCat( $catids);
-		$total = $this->queryModel->countIcalEventsByCat( $catids,$showRepeats);
-		$counter += $total;
+		$counter = $this->queryModel->countIcalEventsByCat( $catids,$showRepeats);
 
 		$data ['total'] =  $counter ;
 		//$limit = $limit ? $limit : $cfg->get('com_calEventListRowsPpg');
@@ -895,10 +886,8 @@ class JEventsDataModel {
 		$data['limit']=$limit;
 		$data['limitstart']=$limitstart;
 
-		$rows 	  = $this->queryModel->listEventsByCat( $catids, $limitstart, $limit );
-		$icalrows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$total, $limitstart, $limit , $order);
+		$rows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$counter, $limitstart, $limit , $order);
 
-		$rows = array_merge($icalrows,$rows);
 		$num_events = count( $rows );
 
 		if (count($catids)==0 || (count($catids)==1 && $catids[0]=="")){
@@ -1027,7 +1016,7 @@ class JEventsDataModel {
 				$row =& $rows[$r];
 
 				$row->catname		= $row->getCategoryName( );
-				$row->contactlink	= JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() );
+				$row->contactlink	= JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by() ,false, $row);
 				$row->bgcolor		= JEV_CommonFunctions::setColor($row);
 				$row->fgcolor		= JevMapColor($row->bgcolor);
 
@@ -1091,7 +1080,7 @@ class JEventsDataModel {
 				$row =& $rows[$r];
 
 				$row->catname($row->getCategoryName());
-				$row->contactlink( JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by(), true));
+				$row->contactlink( JEventsHTML::getUserMailtoLink( $row->id(), $row->created_by(), true, $row));
 				$row->bgcolor		= JEV_CommonFunctions::setColor($row);
 				$row->fgcolor		= JevMapColor($row->bgcolor);
 

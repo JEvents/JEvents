@@ -8,12 +8,14 @@
  * @link        http://www.jevents.net
  */
 
+var eventEditDateFormat = "Y-m-d";
+Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 Date.prototype.getYMD =  function()
 {
 	month = "0"+(this.getMonth()+1);
 	day = "0"+this.getDate();
 	// MSIE 7 still doesn't support negative num1 in substr!!
-	var result = this.getFullYear()+"-"+month.substr(month.length-2)+"-"+day.substr(day.length-2);
+	var result = eventEditDateFormat.replace("Y",this.getFullYear()).replace("m",month.substr(month.length-2)).replace("d",day.substr(day.length-2));
 	//alert(result);
 	return result;
 };
@@ -22,10 +24,8 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	parts = ymd.split("-");
-	//alert(parts[0]+" "+parts[1]+" "+parts[2]);
-	temp = new Date(parts[0],parts[1]-1,parts[2],0,0,0,0);
-	return temp;
+	var mydate = Date.parse(ymd);	
+	return mydate;
 };
 
 function highlightElem(elem){
@@ -214,13 +214,15 @@ function checkEndTime() {
 
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
-	startdateparts = start_date.value.split("-");
-	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
+//	startdateparts = start_date.value.split("-");
+//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
+	startDate = Date.parse(start_date.value);	
 
 	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
-	enddateparts = end_date.value.split("-");
-	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],endtimeparts[0],endtimeparts[1],0);
-	//alert(endDate +" vs "+startDate);
+//	enddateparts = end_date.value.split("-");
+//	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],endtimeparts[0],endtimeparts[1],0);
+	endDate = Date.parse(end_date.value);	
+
 
 	var jevmultiday = document.getElementById('jevmultiday');
 	if (end_date.value>start_date.value){
@@ -259,15 +261,34 @@ function checkDates(elem){
 	updateRepeatWarning();
 }
 
+function reformatStartEndDates() {
+	start_date = document.getElementById("publish_up");
+	start_date2 = document.getElementById("publish_up2");
+	startDate = Date.parse(start_date.value);	
+	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
+	
+	end_date = document.getElementById("publish_down");
+	end_date2 = document.getElementById("publish_down2");
+	endDate = Date.parse(end_date.value);
+	end_date2.value = endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
+
+	until_date = document.getElementById("until");
+	until_date2 = document.getElementById("until2");
+	untilDate = Date.parse(until_date.value);
+	until_date2.value = untilDate.getFullYear()+"-"+(untilDate.getMonth()+1)+"-"+untilDate.getDate();
+
+}
 function checkUntil(){
 
 	start_date = document.getElementById("publish_up");
-	startdateparts = start_date.value.split("-");
-	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
+//	startdateparts = start_date.value.split("-");
+//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
+	startDate = Date.parse(start_date.value);	
 
 	until_date = document.getElementById("until");
-	untildateparts = until_date.value.split("-");
-	untilDate = new Date(untildateparts[0],parseInt(untildateparts[1],10)-1,untildateparts[2],0,0,0,0);
+//	untildateparts = until_date.value.split("-");
+//	untilDate = new Date(untildateparts[0],parseInt(untildateparts[1],10)-1,untildateparts[2],0,0,0,0);
+	untilDate = Date.parse(until_date.value);	
 
 	if (untilDate<startDate){
 		until_date.value = start_date.value;
@@ -280,10 +301,13 @@ function setEndDateWhenNotRepeating(){
 	start_date = document.getElementById("publish_up");
 	end_date = document.getElementById("publish_down");
 
-	startdateparts = start_date.value.split("-");
-	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],1,1,0);
-	enddateparts = end_date.value.split("-");
-	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],1,1,0);
+//	startdateparts = start_date.value.split("-");
+//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],1,1,0);
+	startDate = Date.parse(start_date.value);	
+	
+//	enddateparts = end_date.value.split("-");
+//	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],1,1,0);
+	endDate = Date.parse(end_date.value);	
 	if (startDate>endDate){
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
@@ -637,19 +661,23 @@ function fixRepeatDates(){
 	start_time = document.getElementById("start_time");
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
-	startdateparts = start_date.value.split("-");
-	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
+//	startdateparts = start_date.value.split("-");
+//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
+	startDate = Date.parse(start_date.value);	
+	
 	bmd = document.adminForm.bymonthday;
 	if (bmd.value.indexOf(",")<=0) {
-		bmd.value = parseInt(startdateparts[2],10);
+		//bmd.value = parseInt(startdateparts[2],10);
+		bmd.value = startDate.getDate();
 	}
 
 	byd = document.adminForm.byyearday;
 	byddir = document.adminForm.byd_direction;
 	if (byd.value.indexOf(",")<=0) {
-		yearStart = new Date(startdateparts[0],0,0,0,0,0,0);
+		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
 		// count back from jan 1
-		yearEnd = new Date(Math.round(startdateparts[0])+1,0,1,0,0,0,0);
+		yearEnd = new Date(Math.round(startDate.getFullYear())+1,0,1,0,0,0,0);
+		//alert("year start = "+yearStart+" year end= "+yearEnd);
 		if (byddir.checked){
 			days = ((yearEnd-startDate)/(24*60*60*1000));
 			//byd.value = parseInt(days,10);
@@ -664,8 +692,8 @@ function fixRepeatDates(){
 	bmd = document.adminForm.bymonthday;
 	bmddir = document.adminForm.bmd_direction;
 	if (bmd.value.indexOf(",")<=0) {
-		monthStart = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,0,0,0,0,0);
-		monthEnd = new Date(startdateparts[0],parseInt(startdateparts[1],10),0,0,0,0,0);
+		monthStart = new Date(startDate.getFullYear(),startDate.getMonth()-1,0,0,0,0,0);
+		monthEnd = new Date(startDate.getFullYear(),startDate.getMonth(),0,0,0,0,0);
 		if (bmddir.checked){
 			days = 1+monthEnd.getDate()-startDate.getDate();
 			bmd.value = parseInt(days,10);
@@ -728,13 +756,14 @@ function fixTabbedWebkit(){
  */
 // sets the date for the page after save
 function resetYMD(){
-	start_date = document.getElementById("publish_up");
-
-	startdateparts = start_date.value.split("-");
+//	start_date = document.getElementById("publish_up");
+//	startdateparts = start_date.value.split("-");
+	startDate = Date.parse(start_date.value);	
+	
 	//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],1,1,0);
-	document.adminForm.year.value = startdateparts[0];
-	document.adminForm.month.value = startdateparts[1]
-	document.adminForm.day.value = startdateparts[2]
+	document.adminForm.year.value = startDate.getFullYear();
+	document.adminForm.month.value = startDate.getMonth()+1;
+	document.adminForm.day.value = startDate.getDate();
 }
 
 

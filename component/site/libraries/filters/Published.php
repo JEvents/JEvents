@@ -24,13 +24,14 @@ class jevPublishedFilter extends jevFilter
 	var $yesLabel = "";
 	var $noLabel = "";
 	var $isEventAdmin = false;
+	const filterType = "published";
 
-	function jevPublishedFilter($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+		$this->filterType=self::filterType;
 		$this->filterNullValue="0";
 		$this->allLabel = JText::_( 'ALL' );
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);
-		$this->filterType = "published";
 		$this->filterLabel = JText::_("Show_Unpublished_Events");
 		
 		// this is a special filter - we always want memory here since only used in frontend management

@@ -19,7 +19,7 @@ if (!defined("JEV_COM_COMPONENT")){
 if (!defined("JEV_LIBS")){
 	define("JEV_ADMINPATH",JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/");
 	define("JEV_PATH",JPATH_SITE."/components/".JEV_COM_COMPONENT."/");
-	define("JEV_LIBS",JEV_ADMINPATH."libraries/");
+	define("JEV_LIBS",JEV_PATH."libraries/");
 	define("JEV_ADMINLIBS",JEV_ADMINPATH."libraries/");
 	define("JEV_HELPERS",JEV_ADMINPATH."helpers/");
 	define("JEV_CONFIG",JEV_ADMINPATH."config/");
@@ -29,11 +29,11 @@ if (!defined("JEV_LIBS")){
 }
 	JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
 
-	JLoader::register('JEVConfig',JEV_LIBS."config.php");
+	JLoader::register('JEVConfig',JEV_ADMINLIBS."config.php");
 
-	JLoader::register('SaveIcalEvent',JEV_LIBS."saveIcalEvent.php");
+	JLoader::register('SaveIcalEvent',JEV_ADMINLIBS."saveIcalEvent.php");
 
-	JLoader::register('JEventsVersion',JEV_LIBS."version.php");
+	JLoader::register('JEventsVersion',JEV_ADMINLIBS."version.php");
 	JLoader::register('JEventsDBModel',JEV_PATH."libraries/dbmodel.php");
 	JLoader::register('JEventsDataModel',JEV_PATH."libraries/datamodel.php");
 	
@@ -64,7 +64,7 @@ if (!defined("JEV_LIBS")){
 	// TODO retire this sometime? - check usage by session registration code first
 	JLoader::register('JEV_CommonFunctions',JEV_PATH."libraries/commonfunctions.php");
 	
-	JLoader::register('JEventsHelper',JEV_HELPERS."jevents.php");
+	JLoader::register('JEventsHelper',JEV_ADMINPATH."helpers/jevents.php");
 
 	// joomla 3.0
 	JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");

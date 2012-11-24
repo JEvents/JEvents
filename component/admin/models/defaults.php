@@ -32,9 +32,9 @@ class DefaultsModelDefaults extends JModelLegacy
 			$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 			if (count ($this->getLanguages())==1){
 				$language = "*";
-				if ($language  != "" ){
-					$query->where('def.language = '.$db->quote($language));
-				}
+			}
+			if ($language  != "" ){
+				$query->where('def.language = '.$db->quote($language));
 			}
 			
 			$filter_published  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");

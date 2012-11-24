@@ -13,7 +13,7 @@
 		</field>		
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		
-		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE" description=""/>
+		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description=""/>
 
 		<field name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
 			<option value="comp">JEV_HEADLINE_COMP</option>
@@ -136,6 +136,17 @@
 
 	<fieldset name="JEV_EVENT_EDITING">
 		<field name="multicategory" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC'/>
+		<field name="com_editdateformat" 
+			type="list" 
+			default="Y-m-d" 
+			label="JEV_EVENT_EDIT_DATEFORMAT" 
+			description="JEV_EVENT_EDIT_DATEFORMAT_DESC" 
+		>
+			<option value="Y-m-d">JEV_EVENT_EDIT_DATEFORMAT_YMD_VALUE</option>
+			<option value="m/d/Y">JEV_EVENT_EDIT_DATEFORMAT_MDY_VALUE</option>
+			<option value="d/m/Y">JEV_EVENT_EDIT_DATEFORMAT_DMY_VALUE</option>
+			<option value="d.m.Y">JEV_EVENT_EDIT_DATEFORMAT_EUROPEAN_VALUE</option>
+		</field>
 		<!--<field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC'/>//-->
 		<field name="editpopup" type="jevboolean" class="btn-group" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description='FRONTEND_EDIT_IN_POPUP_DESC'/>
 		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC"/>
@@ -173,7 +184,6 @@
 		
 		<field name="allowraw" type="jevboolean" class="btn-group" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC"/> 		
 		<field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" />
-
 	</fieldset>
 	
 	<fieldset name="JEV_EVENT_DETAIL_VIEW">
@@ -181,10 +191,10 @@
 		<field name="com_mailview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" />
 		<field name="com_hitsview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_HITS" description="" />
 		<field name="com_repeatview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_TIME" description="" />
-                <field name="contact_display_name" type="list" default="0" menu="hide" label="JEV_CONTACT_DISPLAY_NAME" description="JEV_CONTACT_DISPLAY_NAME_DESC" >
-                    	<option value="0">JEV_USER_NAME</option>
+		<field name="contact_display_name" type="list" default="0" menu="hide" label="JEV_CONTACT_DISPLAY_NAME" description="JEV_CONTACT_DISPLAY_NAME_DESC" >
+			<option value="0">JEV_USER_NAME</option>
 			<option value="1">JEV_NAME</option>
-                </field>
+		</field>
 	</fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR">
@@ -320,7 +330,7 @@
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"
-		>
+	>
 		<field
 			name="rules"
 			type="rules"
@@ -342,7 +352,7 @@
 //-->
 	</fieldset>
 
-		<fields name="fieldset">
+	<fields name="fieldset">
 <!--		
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
 					<field 
@@ -353,7 +363,7 @@
 					description='JEV_TARGET_MENU_TIP'  />
 			</fieldset>		
 			//-->
-		</fields>	
+	</fields>	
 
 
 

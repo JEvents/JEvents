@@ -75,7 +75,17 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		JHTML::_('behavior.tooltip');
 
 		
-		$this->_adminStart();			
+		$this->_adminStart();		
+
+		if (JVersion::isCompatible("3.0"))
+		{
+			$this->setLayout("edit");
+		}
+		else
+		{
+			$this->setLayout("edit16");
+		}
+		
 		parent::displaytemplate($tpl);
 		$this->_adminEnd();
 	}	

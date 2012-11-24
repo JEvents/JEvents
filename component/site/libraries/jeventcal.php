@@ -242,7 +242,7 @@ class jEventCal {
 
 	function contactLink($val="", $admin=false){
 		if (strlen($val)==0) {
-			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin);
+			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin, $this);
 		}
 		else $this->_contactLink=$val;
 		return $this->_contactLink;
@@ -319,20 +319,32 @@ class jEventCal {
 		return "";
 	}
 
-	function getCategoryImage( ){
+	function getCategoryImage($multiple=false){
 		$data = $this->getCategoryData();
+		if ($multiple){
+			if (is_array($data)) {
+				$output = "";
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){ 
+						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+					}							
+				}
+				return $output;
+			}
+		}
 		if (is_array($data)) {
 			$data = $data[0];
 		}
 		if ($data){
-                	$params = json_decode($data->params);
-			if (isset($params->image)){ 
-				return "<img src = '".JURI::root().$params->image."' class='catimage' />";
+			$params = json_decode($data->params);
+			if (isset($params->image) && $params->image!=""){ 
+				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
 			}		
 		}
 		return "";
 	}
-
+	
 	function getCategoryDescription( ){
 		$data = $this->getCategoryData();
 		if (is_array($data)) {

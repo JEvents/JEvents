@@ -417,6 +417,9 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset = $params->get("com_starday", 1);
 
+		list ($yearpart,$monthpart,$daypart) = explode("-",$value);
+		$value = str_replace(array("Y","m","d"),array($yearpart,$monthpart,$daypart), $format);
+		
 		$calendar = (JVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 
 		JEVHelper::script($calendar, "components/" . $component . "/assets/js/", true);
 		JEVHelper::stylesheet("dashboard.css", "components/" . $component . "/assets/css/", true);
@@ -1766,5 +1769,67 @@ class JEVHelper
 		}
 		return false;
 		
+	}
+	
+	static public function onDisplayCustomFieldsMultiRow(& $icalrows) {
+		//list($usec, $sec) = explode(" ", microtime());
+		//$starttime = (float) $usec + (float) $sec;
+		
+		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("com_cache",1)){
+		
+			$cachecontroller = JFactory::getCache(JEV_COM_COMPONENT);
+			$oldcaching = $cachecontroller->cache->getCaching();
+			$cachecontroller->cache->setCaching(true);
+
+			$rows = array();
+			$indexmap = array();
+			foreach ($icalrows as $index => & $row) {
+				$indexmap[$row->rp_id()] = $index;
+				$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title());
+				$data = $cachecontroller->cache->get($id);
+				if ($data){
+					if (is_callable("gzcompress")){
+						$data = gzuncompress ($data);
+					}
+					$row = unserialize($data);
+				}
+				else { 
+					//echo "failed to get $id<br/>";
+					$rows[] = $row;
+				}
+			}
+			unset($row);
+
+			if (count($rows)){
+				JPluginHelper::importPlugin('jevents');
+				$dispatcher = & JDispatcher::getInstance();
+				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
+				foreach ($rows as $k => $row) {
+					$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title());
+					$data = serialize($row);
+					if (is_callable("gzcompress")){
+						// 2 seems a good balance between compression and performance
+						$data = gzcompress ($data, 2);
+					}
+					$cached = $cachecontroller->cache->store($data, $id);
+					if ($cached) {
+						//echo "stored $id<br/>";
+					}
+					$index = $indexmap[$row->rp_id()];
+					$icalrows[$index] = $row;
+				}
+			}
+			//list ($usec, $sec) = explode(" ", microtime());
+			//$time_end = (float) $usec + (float) $sec;
+			//echo  "onDisplayCustomFieldsMultiRow  = ".round($time_end - $starttime, 4)."<br/>";		
+
+			$cachecontroller->cache->setCaching($oldcaching);
+		}
+		else {
+			JPluginHelper::importPlugin('jevents');
+			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
+		}
 	}
 }

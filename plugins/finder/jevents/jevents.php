@@ -255,7 +255,12 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		FinderIndexer::index($item);
+		if (JVersion::isCompatible("3.0.0")){
+			$this->indexer->index($item);
+		}
+		else {
+			FinderIndexer::index($item);
+		}
 	}
 
 	/**

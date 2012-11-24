@@ -13,6 +13,7 @@
     font-weight:bold;
     text-align:center !important;
     cursor:pointer;
+    margin:0px auto 0px auto;
 }
 .mod_events_monthyear td
 {
