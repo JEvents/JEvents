@@ -175,65 +175,6 @@ $version = JEventsVersion::getInstance();
 		echo JHtml::_('tabs.end');
 		?>
 
-		<?php
-		/*
-		  $names = array();
-		  $groups = $this->params->getGroups();
-		  if (count($groups)>0){
-		  echo JHtml::_('tabs.start', 'configs');
-
-		  $strings=array();
-		  $tips=array();
-		  foreach ($groups as $group=>$count) {
-		  if ($group!="_default" && $count>0){
-		  echo JHtml::_('tabs.panel', JText::_($group),  'config_'.str_replace(" ","_",$group));
-		  echo $this->params->render('params',$group);
-
-		  if ($group=="JEV_PERMISSIONS"){
-		  $fieldSets = $this->form->getFieldsets();
-		  foreach ($fieldSets as $name => $fieldSet) {
-		  foreach ($this->form->getFieldset($name) as $field) {
-		  echo $field->label;
-		  echo $field->input;
-		  }
-		  }
-
-		  }
-		  }
-		  }
-
-		  $haslayouts = false;
-		  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
-		  $config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
-		  if (file_exists($config)){
-		  $haslayouts = true;
-		  }
-		  }
-
-		  if ($haslayouts){
-		  echo JHtml::_('tabs.panel', JText::_("CLUB_LAYOUTS"), "CLUB_LAYOUTS");
-		  echo JHtml::_('tabs.start', 'layouts');
-		  }
-		  // Now get layout specific parameters
-		  foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile) {
-		  $config = JPATH_SITE . "/components/".JEV_COM_COMPONENT."/views/".$viewfile."/config.xml";
-		  if (file_exists($config)){
-		  $viewparams = new JevParameter( $this->params->toString(), $config );
-		  echo JHtml::_('tabs.panel', JText::_(ucfirst($viewfile)), 'config_'.str_replace(" ","_",$viewfile));
-		  echo $viewparams->render();
-		  }
-		  }
-		  if ($haslayouts){
-		  echo JHtml::_('tabs.end');
-		  }
-		  echo JHtml::_('tabs.end');
-		  }
-		  else {
-		  echo $this->params->render();
-		  }
-		 */
-		?>
-
 		<div class="clr"></div>
 
 	</fieldset>
