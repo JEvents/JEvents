@@ -66,9 +66,9 @@ function submitbutton() {
     
    	 <strong><?php echo JText::_('JEV_IGNORE_EMBEDDED_CATEGORIES'); ?></strong><br/>
 		<input id="ignoreembedcat0" type="radio" value="0" name="ignoreembedcat" checked="checked"/>
-		<label for="ignoreembedcat0"><?php echo JText::_( 'NO' ); ?></label>
+		<label for="ignoreembedcat0"><?php echo JText::_( 'JEV_NO' ); ?></label>
 		<input id="ignoreembedcat1" type="radio" value="1" name="ignoreembedcat" />
-		<label for="ignoreembedcat1"><?php echo JText::_( 'YES' ); ?></label><br/><br/>
+		<label for="ignoreembedcat1"><?php echo JText::_( 'JEV_YES' ); ?></label><br/><br/>
     
      <input type="submit" name="submit" value="<?php echo JText::_('JEV_IMPORT', true)?>" />
 
