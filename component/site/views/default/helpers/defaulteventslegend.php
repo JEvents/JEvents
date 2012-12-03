@@ -9,6 +9,7 @@ function DefaultEventsLegend($view){
 	if (!file_exists($modpath) || !file_exists(JPATH_SITE.'/modules/mod_jevents_legend/helper.php'))  return;
 
 
+
 		// load the helper class
 		require_once (JPATH_SITE.'/modules/mod_jevents_legend/helper.php');
 		require_once($modpath);

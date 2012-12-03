@@ -103,8 +103,12 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor()) {
                     </span>
                     <span id="end_12h_area" style="display:inline">
                         <input class="inputbox" type="text" name="end_12h" id="end_12h" size="8" maxlength="8" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> value="" onchange="check12hTime(this);" />
-                        <input type="radio" name="end_ampm" id="endAM" value="none" checked="checked" onclick="toggleAMPM('endAM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> /><?php echo JText::_('JEV_AM'); ?>
-                        <input type="radio" name="end_ampm" id="endPM" value="none" onclick="toggleAMPM('endPM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> /><?php echo JText::_('JEV_PM'); ?>
+                        <fieldset class="radio btn-group" id="start_ampm" style="display:inline;">
+				<input type="radio" name="end_ampm" id="endAM" value="none" checked="checked" onclick="toggleAMPM('endAM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> />
+				<label for="endAM"><?php echo JText::_('JEV_AM'); ?></label>
+				<input type="radio" name="end_ampm" id="endPM" value="none" onclick="toggleAMPM('endPM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> />
+				<label for="endPM"><?php echo JText::_('JEV_PM'); ?></label>
+		      </fieldset>
                     </span>
                     <span style="margin-left:10px">
                         <span><input type="checkbox" id='noendtime' name='noendtime' <?php echo $this->row->noendtime() ? "checked='checked'" : ""; ?> onclick="toggleNoEndTime();" value="1" />
