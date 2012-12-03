@@ -407,13 +407,31 @@ class JEventsHTML
 						$checked = ' checked="checked"';
 					}
 				}
-				$tosend .= '<li  class="r' . ($a % 2 + 1) . '" ><input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
-						. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />&nbsp;' . "\n"
-						. '<label for="cb_wd' . $a . '">'
-						. $day_name[$a] . '</label></li>' . "\n"
-				;
+				if (JVersion::isCompatible("3.0")){
+					// bootstrap version
+					$tosend .= '' 
+							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
+							. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox btn" />'
+							.'<label for="cb_wd' . $a . '" class="checkbox btn">'
+							.  $day_name[$a] 
+							. '</label>' . "\n"
+					;
+				}
+				else {
+					$tosend .= '<li  class="r' . ($a % 2 + 1) . '" >'
+							. '<label for="cb_wd' . $a . '">'
+							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
+							. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />&nbsp;' . "\n"
+							. $day_name[$a] . '</label></li>' . "\n"
+					;
+				}
 			}
-			echo "<ul>\n" . $tosend . "\n</ul>\n";
+			if (JVersion::isCompatible("3.0")){
+				echo $tosend;
+			}
+			else {
+				echo "<ul>\n" . $tosend . "\n</ul>\n";
+			}
 
 		}
 

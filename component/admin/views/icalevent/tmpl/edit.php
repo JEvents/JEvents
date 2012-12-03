@@ -81,17 +81,17 @@ if ($this->row->catids)
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
 ?>>
-    <form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"  >
+	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal" >
 		<?php
 // get configuration object
 		$cfg = & JEVConfig::getInstance();
 
 		JHTML::_('behavior.tooltip');
 
-		// these are needed for front end admin
+// these are needed for front end admin
 		?>
-        <input type="hidden" name="jevtype" value="icaldb" />
-        <div class="jev_edit_event_notice">
+		<input type="hidden" name="jevtype" value="icaldb" />
+		<div class="jev_edit_event_notice">
 			<?php
 			if ($this->editCopy)
 			{
@@ -101,7 +101,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			else if ($this->repeatId == 0)
 			{
 				$repeatStyle = "";
-				// Don't show warning for new events
+// Don't show warning for new events
 				if ($this->ev_id > 0)
 				{
 					echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
@@ -127,14 +127,14 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 
 // need rp_id for front end editing cancel to work note that evid is the repeat id for viewing detail 
 			?>
-            <input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" /> 
-            <input type="hidden" name="year" value="<?php echo $year; ?>" /> 
-            <input type="hidden" name="month" value="<?php echo $month; ?>" /> 
-            <input type="hidden" name="day" value="<?php echo $day; ?>" /> 
+			<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" /> 
+			<input type="hidden" name="year" value="<?php echo $year; ?>" /> 
+			<input type="hidden" name="month" value="<?php echo $month; ?>" /> 
+			<input type="hidden" name="day" value="<?php echo $day; ?>" /> 
 
-            <input type="hidden" name="state" id="state" value="<?php echo $this->row->state(); ?>" />
-            <input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
-            <input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
+			<input type="hidden" name="state" id="state" value="<?php echo $this->row->state(); ?>" />
+			<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
+			<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
 			<?php
 			if ($this->editCopy)
 			{
@@ -143,7 +143,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<?php
 			}
 			?>
-            <script type="text/javascript" language="Javascript">
+			<script type="text/javascript" language="Javascript">
 				Joomla.submitbutton = function (pressbutton) {
 					if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
 						if (document.adminForm['catid']){
@@ -156,15 +156,15 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					}
 					var form = document.adminForm;
 <?php echo $editor->getContent('jevcontent'); ?>
-		
+
 		try {
-		
+
 			if (!JevrRequiredFields.verify(document.adminForm)){
 				return;
 			}
 		}
 		catch (e){
-		
+
 		}
 		// do field validation
 		if (form.title.value == "") {
@@ -189,17 +189,17 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	?>
-				// reformat start and end dates  to Y-m-d format
-				reformatStartEndDates();
-				checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
+					// reformat start and end dates  to Y-m-d format
+					reformatStartEndDates();
+					checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
 	<?php
 }
 else
 {
 	?>
-				// reformat start and end dates  to Y-m-d format
-				reformatStartEndDates();
-				submit2(pressbutton);
+					// reformat start and end dates  to Y-m-d format
+					reformatStartEndDates();
+					submit2(pressbutton);
 	<?php
 }
 ?>
@@ -212,7 +212,7 @@ else
 		submitform(pressbutton);	
 	}
 
-            </script>
+			</script>
 			<?php
 			if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 			{
@@ -224,13 +224,13 @@ else
 				<?php
 			}
 			?>
-            <div class="adminform" align="left">
+			<div class="adminform" align="left">
 
 
 				<?php
-				// Plugins CAN BE LAYERED IN HERE
+// Plugins CAN BE LAYERED IN HERE
 				global $params;
-				// append array to extratabs keys content, title, paneid
+// append array to extratabs keys content, title, paneid
 				$extraTabs = array();
 				$dispatcher->trigger('onEventEdit', array(&$extraTabs, &$this->row, &$params), true);
 
@@ -273,65 +273,63 @@ else
 					$thisCal = $this->dataModel->queryModel->getIcalByIcsid($this->row->icsid());
 					if (isset($thisCal) && $thisCal->icaltype == 0)
 					{
-						// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
+// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
 						echo JText::_("JEV_IMPORT_WARNING");
 						$native = false;
 					}
 					else if (isset($thisCal) && $thisCal->icaltype == 1)
 					{
-						// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
+// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
 						echo JText::_("JEV_IMPORT_WARNING2");
 						$native = false;
 					}
 				}
 				?>
-                <table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
-                    <tr>
-                        <td align="left"><?php echo JText::_('JEV_EVENT_TITLE'); ?>:</td>
-                        <td>
-                            <input class="inputbox" type="text" name="title" size="50" maxlength="255" value="<?php echo JEventsHtml::special($this->row->title()); ?>" />
-                        </td>
-						<?php
-						$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-						$showpriority = $params->get("showpriority", 0);
-						if ($this->setPriority && $showpriority)
-						{
-							?>
-							<td  align="left"><?php echo JText::_('JEV_EVENT_PRIORITY'); ?>:</td>
-							<td >
-								<?php echo $this->priority; ?>
-							</td>
-							<?php
-						}
-						else
-						{
-							?>
-							<td colspan="2">
-								<input type="hidden" name="priority" value="0" />
-							</td>
-						<?php } ?>
-                    </tr>
+				<div class="control-group">
+					<label class="control-label"><?php echo JText::_('JEV_EVENT_TITLE'); ?>:</label>
+					<div class="controls">
+						<input class="inputbox" type="text" name="title" size="50" maxlength="255" value="<?php echo JEventsHtml::special($this->row->title()); ?>" />
+					</div>
 					<?php
-					if (isset($this->users))
+					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$showpriority = $params->get("showpriority", 0);
+					if ($this->setPriority && $showpriority)
 					{
 						?>
-						<tr class="jevcreator">
-							<td align="left"><?php echo JText::_('JEV_EVENT_CREATOR'); ?>:</td>
-							<td colspan="3">
-	<?php echo $this->users; ?>
-							</td>
-						</tr>			
-						<?php } ?>
-                    <tr>
+						<label class="control-label"><?php echo JText::_('JEV_EVENT_PRIORITY'); ?>:</label>
+						<div class="controls">
+							<?php echo $this->priority; ?>
+						</div>
 						<?php
-						if ($native && $this->clistChoice)
-						{
-							?>
-							<td>
-								<script type="text/javascript" language="Javascript">
-									function preselectCategory(select){
-										var lookup = new Array();
-										lookup[0]=0;
+					}
+					else
+					{
+						?>
+						<input type="hidden" name="priority" value="0" />
+					<?php } ?>
+				</div>
+				<?php
+				if (isset($this->users))
+				{
+					?>
+					<div class="control-group jevcreator">
+						<label class="control-label"><?php echo JText::_('JEV_EVENT_CREATOR'); ?>:</label>
+						<div class="controls">
+							<?php echo $this->users; ?>
+						</div>
+					</div>			
+				<?php } ?>
+				<div class="control-group">
+					<?php
+					if ($native && $this->clistChoice)
+					{
+						?>
+						<label class="control-label"><?php echo JText::_('SELECT_ICAL'); ?>:</label>
+						<div class="controls">
+							<script type="text/javascript" language="Javascript">
+								function preselectCategory(select){
+									var lookup = new Array();
+									lookup[0]=0;
 	<?php
 	foreach ($this->nativeCals as $nc)
 	{
@@ -340,194 +338,200 @@ else
 	?>
 			document.adminForm['catid'].value=lookup[select.value];
 		}
-								</script>
-								<?php
-								echo JText::_("SELECT_ICAL");
-								?>
-							</td>
-							<td colspan="3">
-								<?php
-								echo $this->clist;
-								echo "</td>";
-							}
-							else if ($this->clistChoice)
-							{
-								echo "<td>" . JText::_("SELECT_ICAL") . "</td>";
-								echo "<td colspan='3'>" . $this->clist . "</td>";
-							}
-							else
-							{
-								echo "<td colspan='4'>" . $this->clist . "</td>";
-							}
-							?>
-                    </tr>
-					<?php
-					if (isset($this->offerlock) && $this->offerlock == 1)
-					{
-						echo "<tr>\n";
-						echo "<td>" . JText::_("JEV_LOCK_EVENT") . "</td>";
-						echo "<td colspan='3'><label>" . JText::_("JEV_YES") . "<input type=\"radio\" name=\"lockevent\" value=\"1\" " . ($this->row->lockevent() ? "checked=\"checked\"" : "") . " /></label><label>" . JText::_("JEV_NO") . "<input type=\"radio\" name=\"lockevent\" value=\"0\" " . (!$this->row->lockevent() ? "checked=\"checked\"" : "") . " /></label></td>";
-						echo "</tr>\n";
-					}
-					?>
-                    <tr>
-						<?php
-						if ($this->repeatId == 0)
-						{
-							?>
-							<td valign="top" align="left" class="jevcategory"><?php echo JText::_('JEV_EVENT_CATEGORY'); ?></td>
-							<td style="width:200px"  class="jevcategory">
-								<?php
-								echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true, 0, 'catid', JEV_COM_COMPONENT, $this->excats, "ordering", true);
-								?>
-							</td>
-							<?php
-						}
-						if (isset($this->glist))
-						{
-							?>
-							<td align="left" class="accesslevel"><?php echo JText::_('JEV_EVENT_ACCESSLEVEL'); ?></td>
-							<td class="accesslevel"><?php echo $this->glist; ?></td>
-							<?php
-						}
-						else
-						{
-							echo "<td/><td/>\n";
-						}
-						if ($this->repeatId != 0)
-						{
-							echo "<td/><td/>\n";
-						}
-						?>
-					</tr>
-					<?php
-					if (JFactory::getApplication()->isAdmin())
-					{
-						if ($this->ev_id == 0)
-						{
-							// published by default	
-							$this->row->state(1);
-						}
-
-						$poptions = array();
-						$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
-						$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
-						?>
-						<tr class="jevpublished">
-							<td><?php echo JText::_("JSTATUS");?></td>
-							<td colspan="3">
-								<?php
-								echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->row->state());
-								?>
-							</td>
-						</tr>
-							<?php
-						}
-
-						if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
-						{
-							$hideColour = true;
-						}
-						else if ($cfg->get('com_calForceCatColorEventForm', 0) == 2)
-						{
-							$hideColour = true;
-						}
-						else
-							$hideColour = false;
-						if (!$hideColour)
-						{
-							include_once(JEV_ADMINLIBS . "/colorMap.php");
-							?>
-						<tr>
-							<td valign="top" align="left"><?php echo JText::_('JEV_EVENT_COLOR'); ?></td>
-							<td colspan="3">
-								<table id="pick1064797275" style="background-color:<?php echo $this->row->color() . ';color:' . JevMapColor($this->row->color()); ?>;border:solid 1px black;">
-									<tr>	
-										<td  nowrap="nowrap">
-											<input type="hidden" id="pick1064797275field" name="color" value="<?php echo $this->row->color(); ?>"/>
-											<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
-										</td>
-										<td>
-											<div style="position:relative;z-index:9999;">
-												<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</td></tr>
+							</script>
+						</div>
+						<div class="controls">
+							<?php echo $this->clist; ?>
+						</div>
 						<?php
 					}
-
-					if ($cfg->get('timebeforedescription', 0))
-					{
-						?><tr><td valign="top" align="left" colspan="4"><?php
-								echo $this->loadTemplate("datetime");
-						?></td></tr><?php
-				}
-					?>
-
-                    <tr  class="jev_description">
-                        <td valign="top" align="left">
-<?php echo JText::_('JEV_EVENT_ACTIVITY'); ?>
-                        </td>
-                        <td colspan="3">
-							<?php
-							if ($cfg->get('com_show_editor_buttons'))
-							{
-								$t_buttons = explode(',', $cfg->get('com_editor_button_exceptions'));
-							}
-							else
-							{
-								// hide all
-								$t_buttons = false;
-							}
-							echo "<div id='jeveditor'>";
-// parameters : areaname, content, hidden field, width, height, rows, cols
-							echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
-							echo "</div>";
-							?>
-                        </td>
-                    </tr>
-                    <tr id="jeveditlocation">
-                        <td width="130" align="left"><?php echo JText::_('JEV_EVENT_ADRESSE'); ?></td>
-                        <td colspan="3">
-							<?php
-							$res = $dispatcher->trigger('onEditLocation', array(&$this->row));
-							if (count($res) == 0 || !$res[0])
-							{
-								?>
-								<input class="inputbox" type="text" name="location" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->location()); ?>" />
-								<?php
-							}
-							?>
-                        </td>
-                    </tr>
-                    <tr class="jev_contact">
-                        <td align="left"><?php echo JText::_('JEV_EVENT_CONTACT'); ?></td>
-                        <td colspan="3">
-                            <input class="inputbox" type="text" name="contact_info" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
-                        </td>
-                    </tr>
-                    <tr class="jev_extrainfo">
-                        <td align="left" valign="top"><?php echo JText::_('JEV_EVENT_EXTRA'); ?></td>
-                        <td colspan="3">
-                            <textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4" wrap="virtual" ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
-                        </td>
-                    </tr>
-					<?php
-					foreach ($customfields as $key => $val)
+					else if ($this->clistChoice)
 					{
 						?>
-						<tr class="jevplugin_<?php echo $key; ?>">
-							<td valign="top"  width="130" align="left"><?php echo $customfields[$key]["label"]; ?></td>
-							<td colspan="3"><?php echo $customfields[$key]["input"]; ?></td>
-						</tr>
+						<label class = "control-label"><?php echo JText::_('SELECT_ICAL'); ?>:</label>
+						<div class="controls">
+							<?php echo $this->clist; ?>
+						</div>
+						<?php
+					}
+					else
+					{
+						?>
+						<div class="controls">
+							<?php echo $this->clist; ?>
+						</div>
 						<?php
 					}
 					?>
-
-                </table>
+				</div>
 				<?php
+				if (isset($this->offerlock) && $this->offerlock == 1)
+				{
+					?>
+					<div class='control-group'>
+						<label class="control-label"><?php echo JText::_("JEV_LOCK_EVENT"); ?></label>
+						<div class="controls">
+							<label>
+								<?php echo JText::_("JEV_YES"); ?>
+								<input type=\"radio\" name=\"lockevent\" value=\"1\" <?php echo ($this->row->lockevent() ? "checked=\"checked\"" : "") ?> />
+							</label>
+							<label>
+								<?php echo JText::_("JEV_NO"); ?>
+								<input type=\"radio\" name=\"lockevent\" value=\"0\" <?php echo (!$this->row->lockevent() ? "checked=\"checked\"" : ""); ?> />
+							</label>
+						</div>
+					</div>					
+					<?php
+				}
+				?>
+				<div class="control-group">
+					<?php
+					if ($this->repeatId == 0)
+					{
+						?>
+						<label class="control-label jevcategory"><?php echo JText::_("JEV_EVENT_CATEGORY"); ?></label>
+						<div class="controls jevcategory">
+							<?php
+							echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true, 0, 'catid', JEV_COM_COMPONENT, $this->excats, "ordering", true);
+							?>
+						</div>					
+						<?php
+					}
+					if (isset($this->glist))
+					{
+						?>
+						<label class="control-label accesslevel"><?php echo JText::_("JEV_EVENT_ACCESSLEVEL"); ?></label>
+						<div class="controls accesslevel ">
+							<?php echo $this->glist; ?>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+				if (JFactory::getApplication()->isAdmin())
+				{
+					if ($this->ev_id == 0)
+					{
+// published by default	
+						$this->row->state(1);
+					}
+
+					$poptions = array();
+					$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
+					$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+					?>
+					<div class="control-group jevpublished">
+						<label class="control-label "><?php echo JText::_("JSTATUS"); ?></label>
+						<div class="controls">
+							<?php
+							echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->row->state());
+							?>
+						</div>
+					</div>
+					<?php
+				}
+
+				if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
+				{
+					$hideColour = true;
+				}
+				else if ($cfg->get('com_calForceCatColorEventForm', 0) == 2)
+				{
+					$hideColour = true;
+				}
+				else
+					$hideColour = false;
+				if (!$hideColour)
+				{
+					include_once(JEV_ADMINLIBS . "/colorMap.php");
+					?>
+					<div class="control-group">
+						<label class="control-label "><?php echo JText::_('JEV_EVENT_COLOR'); ?></label>
+						<div class="controls">
+							<table id="pick1064797275" style="background-color:<?php echo $this->row->color() . ';color:' . JevMapColor($this->row->color()); ?>;border:solid 1px black;">
+								<tr>	
+									<td  nowrap="nowrap">
+										<input type="hidden" id="pick1064797275field" name="color" value="<?php echo $this->row->color(); ?>"/>
+										<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
+									</td>
+									<td>
+										<div style="position:relative;z-index:9999;">
+											<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<?php
+				}
+
+				if ($cfg->get('timebeforedescription', 0))
+				{
+					echo $this->loadTemplate("datetime");
+				}
+				?>
+
+				<div class="control-group jev_description">
+					<label class="control-label ">
+						<?php echo JText::_('JEV_EVENT_ACTIVITY'); ?>
+					</label>
+					<div class="controls" id='jeveditor' >
+						<?php
+						if ($cfg->get('com_show_editor_buttons'))
+						{
+							$t_buttons = explode(',', $cfg->get('com_editor_button_exceptions'));
+						}
+						else
+						{
+// hide all
+							$t_buttons = false;
+						}
+// parameters : areaname, content, hidden field, width, height, rows, cols
+						echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
+						?>
+					</div>
+				</div>
+				<div class="control-group jeveditlocation" id="jeveditlocation">
+					<label class="control-label "><?php echo JText::_('JEV_EVENT_ADRESSE'); ?></label>
+					<div class="controls" >
+						<?php
+						$res = $dispatcher->trigger('onEditLocation', array(&$this->row));
+						if (count($res) == 0 || !$res[0])
+						{
+							?>
+							<input class="inputbox" type="text" name="location" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->location()); ?>" />
+							<?php
+						}
+						?>
+					</div>
+				</div>
+				<div class="control-group jev_contact">
+					<label class="control-label "><?php echo JText::_('JEV_EVENT_CONTACT'); ?></label>
+					<div class="controls" >
+						<input class="inputbox" type="text" name="contact_info" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
+					</div>
+				</div>
+				<div class="control-group jev_extrainfo">
+					<label class="control-label "><?php echo JText::_('JEV_EVENT_EXTRA'); ?></label>
+					<div class="controls" >
+						<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4" wrap="virtual" ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
+					</div>
+				</div>
+				<?php
+				foreach ($customfields as $key => $val)
+				{
+					?>
+					<div class="control-group jevplugin_<?php echo $key; ?>">
+						<label class="control-label "><?php echo $customfields[$key]["label"]; ?></left>
+							<div class="controls" >
+								<?php echo $customfields[$key]["input"]; ?>
+							</div>
+					</div>
+					<?php
+				}
+
 				if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
 					echo JHtml::_('bootstrap.endPanel');
@@ -560,10 +564,10 @@ else
 					echo JHtml::_('bootstrap.endPane', 'myEditTabs');
 				}
 				?>
-            </div>
-            <input type="hidden" name="boxchecked" value="0" />
-            <input type="hidden" name="updaterepeats" value="0"/>
-            <input type="hidden" name="task" value="icalevent.edit" />
-            <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
-    </form>
+			</div>
+			<input type="hidden" name="boxchecked" value="0" />
+			<input type="hidden" name="updaterepeats" value="0"/>
+			<input type="hidden" name="task" value="icalevent.edit" />
+			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
+	</form>
 </div>
