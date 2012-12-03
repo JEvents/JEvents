@@ -144,11 +144,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 //  get RSS parsed object
 			$options = array();
-			$rssUrl = 'http://www.jevents.net/versions.xml';
+			// point Joomla 2.5+ users towards the new versions of everything
+			if (JVersion::isCompatible("2.5")){
+				$rssUrl = 'http://www.jevents.net/versions30.xml';
+			}
+			else {
+				$rssUrl = 'http://www.jevents.net/versions.xml';
+			}
 			$cache_time = 86400;
-
-//$rssUrl = 'http://ubu.jev20j16.com/versions.xml';
-//$cache_time = 1;
 
 			jimport('simplepie.simplepie');
 
@@ -504,8 +507,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"component_com_jevlocations" => 4,
 			"component_com_jevpeople" => 13,
 			"component_com_rsvppro" => 62,
-			"module_mod_jevents_cal" => 52,
-			"module_mod_jevents_categories" => 52,
+			"module_mod_jevents_cal" => 71,
+			"module_mod_jevents_categories" => 76,
 			//"module_mod_jevents_filter" => 52,
 			//"module_mod_jevents_latest" => 52,
 			//"module_mod_jevents_legend" => 52,
