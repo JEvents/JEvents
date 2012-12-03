@@ -993,12 +993,16 @@ var NewCalendar = new Class({
 					case 'm':
 					case 'n':
 					dates[1] = i.toInt() - 1;
+					// Fix illegal inputs (gwe)
+					dates[1] = Math.min(Math.max(dates[1],0),11);
 					break;
 
 					// day cases
 					case 'd':
 					case 'j':
 					dates[2] = i.toInt();
+					// Fix illegal inputs (gwe)
+					dates[2] = Math.min(Math.max(dates[1],0),31);
 					break;
 				}
 			}, this);
