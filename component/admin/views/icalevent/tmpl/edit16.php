@@ -175,7 +175,7 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 	?>
 				// reformat start and end dates  to Y-m-d format
 				reformatStartEndDates();
-				checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JUtility::getToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
+				checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
 	<?php
 }
 else
