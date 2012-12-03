@@ -886,7 +886,7 @@ class JEventsDataModel {
 		$data['limit']=$limit;
 		$data['limitstart']=$limitstart;
 
-		$rows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$counter, $limitstart, $limit , $order);
+		$rows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$total, $limitstart, $limit , $order);
 
 		$num_events = count( $rows );
 

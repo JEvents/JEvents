@@ -500,8 +500,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 			// load the template script
 			jimport('joomla.filesystem.path');
 			$filetofind	= strtolower($file).".php";
-			$paths = $this->_view->get("_path");
-			if ( JPath::find($paths['template'], $filetofind)){
+			if ( JPath::find($this->_view->_path['template'], $filetofind)){
 				$tooltip = $this->_view->loadTemplate($tpl);
 			}
 		}

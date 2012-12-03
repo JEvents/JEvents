@@ -834,7 +834,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$params = new JRegistry(null);
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
-		$tmprow->event = $event;
 		$dispatcher = & JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));

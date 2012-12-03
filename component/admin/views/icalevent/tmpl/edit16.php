@@ -181,9 +181,7 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 else
 {
 	?>
-				// reformat start and end dates  to Y-m-d format
-				reformatStartEndDates();
-				submit2(pressbutton);
+									submit2(pressbutton);
 				<?php
 			}
 			?>

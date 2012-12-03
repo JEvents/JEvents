@@ -189,17 +189,13 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	?>
-				// reformat start and end dates  to Y-m-d format
-				reformatStartEndDates();
-				checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
+					checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
 	<?php
 }
 else
 {
 	?>
-				// reformat start and end dates  to Y-m-d format
-				reformatStartEndDates();
-				submit2(pressbutton);
+					submit2(pressbutton);
 	<?php
 }
 ?>

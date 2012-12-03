@@ -67,12 +67,11 @@
 			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 
-			<!--
 			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
-			//-->
+
 			<field name="@spacer" type="jevinfo"  default='ADVANCED_SETTINGS'  label="" description="" />
 			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
 
