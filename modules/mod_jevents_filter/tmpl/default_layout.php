@@ -36,8 +36,8 @@ if (count($filterHTML)>0){
 	}
 	
 	echo "<tr>";
-	echo "<td>".'<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="'.JText::_('RESET').'" />'."</td>";
-	echo "<td >".'<input class="modfilter_button" type="submit" value="'.JText::_('ok').'" />'."</td></tr>";
+	echo "<td>".'<input class="modfilter_button" id="reset" type="button" onclick="JeventsFilters.reset(this.form)" value="'.JText::_('RESET').'" />'."</td>";
+	echo "<td >".'<input class="modfilter_button" id="submit" type="submit" value="'.JText::_('ok').'" />'."</td></tr>";
 	?>
 	</table>
 	</form>
