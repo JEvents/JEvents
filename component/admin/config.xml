@@ -11,7 +11,6 @@
 			<option value="2">JEV_CONTINENTAL_GERMAN</option>
 			<option value="3">JEV_FROM_LANGUAGE_FILE</option>
 		</field>		
-		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		
 		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description=""/>
 
@@ -135,6 +134,7 @@
 	</fieldset>
 
 	<fieldset name="JEV_EVENT_EDITING">
+		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
 		<field name="multicategory" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC'/>
 		<field name="com_editdateformat" 
 			type="list" 

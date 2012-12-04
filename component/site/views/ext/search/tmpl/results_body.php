@@ -50,7 +50,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 		echo "</ul></td>\n";
 	} else {
 		echo "<tr>";
-		echo "<td align='left' valign='top' class='ev_td_right'>\n";
+		echo "<td align='left' valign='top' class='ev_td_right jev_noresults'>\n";
 		// new by mic
 		if( $searchisValid ){
 			echo JText::_('JEV_NO_EVENTFOR') . '&nbsp;<b>' . $this->keyword . '</b>';

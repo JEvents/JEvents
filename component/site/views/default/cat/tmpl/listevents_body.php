@@ -44,7 +44,7 @@ if( $num_events > 0 ){
 	echo "</ul></td>\n";
 } else {
 	echo '<tr>';
-	echo '<td align="left" valign="top" class="ev_td_right">' . "\n";
+	echo '<td align="left" valign="top" class="ev_td_right  jev_noresults">' . "\n";
 
 	if( count($this->catids)==0 || $data['catname']==""){
 		echo JText::_('JEV_EVENT_CHOOSE_CATEG') . '</td>';
