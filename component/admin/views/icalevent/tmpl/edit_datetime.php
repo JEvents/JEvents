@@ -238,7 +238,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 			<fieldset >
-				<legend>WHICH WEEK</legend>           			
+				<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>           			
 				<div class="checkbox btn-group " id="weekofmonth">
 					<?php
 					JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums");

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>JEvents Filter</name>
-	<creationDate>November  2012</creationDate>
+	<creationDate>December  2012</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd</copyright>	  
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.0.0 RC</version>
+	<version>3.0.0 RC2</version>
 	<description>Shows JEvents Filter</description>
 	<files>
 		<filename module="mod_jevents_filter">mod_jevents_filter.php</filename>
