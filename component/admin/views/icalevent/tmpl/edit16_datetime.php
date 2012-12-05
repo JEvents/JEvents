@@ -46,13 +46,6 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
         <fieldset><legend><?php echo JText::_('JEV_EVENT_STARTDATE'); ?></legend>
         <div style="float:left">
 			<?php
-			/*
-			echo JHTML::calendar($this->row->startDate(), 'publish_up', 'publish_up', '%Y-%m-%d',
-			array('size'=>'12',
-			'maxlength'=>'10',
-			'onchange'=>'checkDates(this);fixRepeatDates();'));
-			*/
-
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);
@@ -83,12 +76,6 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
         <fieldset><legend><?php echo JText::_('JEV_EVENT_ENDDATE'); ?></legend>
         <div style="float:left">
 				<?php
-				/*
-				echo JHTML::calendar($this->row->endDate(), 'publish_down', 'publish_down', '%Y-%m-%d',
-				array('size'=>'12',
-				'maxlength'=>'10',
-				'onchange'=>'checkDates(this);'));
-				*/
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 			$minyear = $params->get("com_earliestyear",1970);
 			$maxyear = $params->get("com_latestyear",2150);

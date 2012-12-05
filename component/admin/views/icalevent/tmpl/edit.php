@@ -14,6 +14,10 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+// Load Bookstrap
+JHtml::_('bootstrap.framework');
+JHtmlBootstrap::loadCss();
+
 /*
   // New version that uses JForm
   JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR."/models/forms/");
