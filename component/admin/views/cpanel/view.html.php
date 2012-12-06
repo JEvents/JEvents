@@ -43,7 +43,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		  }
 		 */
 		JEventsHelper::addSubmenu();
-		$this->_hideSubmenu();
 
 		if (JFactory::getApplication()->isAdmin())
 		{

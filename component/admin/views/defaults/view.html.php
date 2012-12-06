@@ -34,13 +34,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents' );
 
-		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', JText::_('JEV_ADMIN_CPANEL'), false );
-
-		JSubMenuHelper::addEntry(JText::_( 'DEFAULTS' ), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JEventsHelper::addSubmenu();
 
 		JHTML::_('behavior.tooltip');
-
-		$this->_hideSubmenu();
 		
 		$db		=& JFactory::getDBO();
 		$uri	=& JFactory::getURI();
@@ -78,8 +74,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 	function edit($tpl = null){
 
-		$this->_hideSubmenu();
-
 		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
@@ -94,7 +88,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolBarHelper::save("defaults.save");
 		JToolBarHelper::cancel("defaults.cancel");
 
-		JSubMenuHelper::addEntry(JText::_( 'DEFAULTS' ), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JEventsHelper::addSubmenu();
 
 		JHTML::_('behavior.tooltip');
 
