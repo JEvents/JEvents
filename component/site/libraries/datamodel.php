@@ -935,7 +935,7 @@ class JEventsDataModel {
 			$db	= JFactory::getDBO();
 			$user = JFactory::getUser();
 			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
-			$catsql = 'SELECT c.title, c.description FROM #__categories AS c' .
+			$catsql = 'SELECT c.title, c.description, c.id FROM #__categories AS c' .
 			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
 			' AND c.extension = '.$db->Quote(JEV_COM_COMPONENT).
 			' AND c.id = '.$db->Quote($catid);

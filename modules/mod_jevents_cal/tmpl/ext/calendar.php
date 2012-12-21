@@ -95,7 +95,7 @@ class ExtModCalView extends DefaultModCalView
 		}
 
 		$viewname = $this->getTheme();
-		$viewpath = JURI::root() . "components/$compname/views/".$viewname."/assets";
+		$viewpath = JURI::root(true) . "/components/$compname/views/".$viewname."/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref = "index.php?option=$compname&Itemid=".$this->myItemid.$this->cat."&task=";
 

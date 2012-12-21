@@ -90,9 +90,20 @@ class AdminIcaleventController extends JControllerAdmin
 		$where = array();
 		$join = array();
 
-		if ($search)
+	          if ($search)
 		{
-			$where[] = "LOWER(detail.summary) LIKE '%$search%'";
+			$searchwhere = array();
+			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
+			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
+			jimport("joomla.filesystem.folder");
+			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && JComponentHelper::getComponent("com_jevlocations", true)->enabled)
+			{
+				$join[] = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
+				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
+				$searchwhere[] = "LOWER(loc.city) LIKE '%$search%'";
+				$searchwhere[] = "LOWER(loc.postcode) LIKE '%$search%'";
+			}
+			$where[] = "(" . implode(" OR ", $searchwhere) . " )";
 		}
 
 		$user =  JFactory::getUser();
@@ -845,6 +856,7 @@ class AdminIcaleventController extends JControllerAdmin
 		else
 		{
 			$msg = JText::_("Event Not Saved", true);
+			$row = null;
 		}
 
 		return $row;

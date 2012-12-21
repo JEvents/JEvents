@@ -12,8 +12,6 @@
 			<option value="3">JEV_FROM_LANGUAGE_FILE</option>
 		</field>		
 		
-		<field name="com_cache" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description=""/>
-
 		<field name="com_calHeadline" type="list" default='COMP'  menu="hide" label="JEV_HEADLINE" description="JEV_HEADLINE_TIP">
 			<option value="comp">JEV_HEADLINE_COMP</option>
 			<option value="none">JEV_HEADLINE_NONE</option>
@@ -77,6 +75,11 @@
 	</fieldset>
 	
 	<fieldset  name="ROBOT_SEF_OPTIONS">
+		<field name="com_cache" type="list"  default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description="JEV_CACHE_EXPLANATION">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES_ONLY_FOR_NOT_LOGGED_IN_VISITORS</option>
+			<option value="2">JEV_YES_BY_USER_ACCESS_LEVEL</option>
+		</field>					
 		<field name="newsef" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		<field name="com_blockRobots" type="list" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
 			<option value="0">JEV_NO</option>
