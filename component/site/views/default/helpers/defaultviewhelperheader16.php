@@ -35,7 +35,7 @@ function DefaultViewHelperHeader16($view){
 	</h1>
 	<?php endif; ?>	
 	<?php
-	$t_headline = '&nbsp;';
+	$t_headline = '';
 	switch ($cfg->get('com_calHeadline', 'comp')) {
 		case 'none':
 			$t_headline = '';
