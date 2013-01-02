@@ -320,7 +320,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	protected function getItem($id)
 	{
-		JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
+		//JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
 
 		// Get the list query and add the extra WHERE clause.
 		$sql = $this->getListQuery();

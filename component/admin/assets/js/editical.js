@@ -551,6 +551,10 @@ function toggleWhichBy(wb)
 		}
 	}
 	updateRepeatWarning();
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
 
 }
 

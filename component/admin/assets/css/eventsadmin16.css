@@ -228,7 +228,8 @@ a#colorPickButton {
 .icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
 
 #jevents label {display:inline;}
-
+#jevents .jeveditrepeats ul {list-style-type: none;}
+#jevents .jeveditrepeats li {display:inline;} 
 /* Joomla 1.6 */
 .jevconfig .current{
 	width:inherit;

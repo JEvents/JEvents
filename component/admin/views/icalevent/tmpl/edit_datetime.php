@@ -231,19 +231,23 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		<div  style="float:left;display:none;margin-right:1em;" id="byday">
 			<fieldset >
 				<legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>           			
-				<div class="checkbox btn-group inline">
-				<?php
-				JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
-				?>
+				<div class="checkbox btn-group ">
+					<?php
+					JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
+					?>
 				</div>
 			</fieldset>
-			<fieldset class="checkbox btn-group inline ">
-				<div id="weekofmonth">
+			<fieldset >
+				<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>           			
+				<div class="checkbox btn-group " id="weekofmonth">
 					<?php
 					JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums");
 					?>
-					<br/><?php echo JText::_('COUNT_BACK'); ?><input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>  onclick="updateRepeatWarning();"/>
 				</div>
+				<div><?php echo JText::_('COUNT_BACK'); ?>
+					<input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>  onclick="updateRepeatWarning();"/>
+				</div>
+			</fieldset>
 		</div>
 		<div  style="float:left;display:none;margin-right:1em;" id="bysetpos">
 			<fieldset><legend><?php echo "NOT YET SUPPORTED" ?></legend>
@@ -305,6 +309,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 	<?php
 }
 ?>
+		setupJEventsBootstrap();
 	}
 	//if (window.attachEvent) window.attachEvent("onload",setupRepeats);
 	//else window.onload=setupRepeats;
@@ -316,59 +321,85 @@ if ($this->row->id() != 0 && $this->row->freq())
 	// toggle unvisible time fields
 	toggleView12Hour();
 
-	alert('needs to check bootstrap is loaded!');
-	(function($){
-		// Turn radios into btn-group
-		$('.radio.btn-group label').addClass('btn');
-		$(".radio.btn-group label:not(.active)").click(function() {
-			var label = $(this);
-			var input = $('#' + label.attr('for'));
-			if (!input.prop('checked')) {
-				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if(input.val()== '') {
-					label.addClass('active btn-primary');
-				} else if(input.val()==0) {
-					label.addClass('active btn-danger');
-				} else {					
+	function setupJEventsBootstrap(){
+		(function($){
+			// Turn radios into btn-group
+			$('.radio.btn-group label').addClass('btn');
+			$(".radio.btn-group label:not(.active)").click(function() {
+				var label = $(this);
+				var input = $('#' + label.attr('for'));
+				if (!input.prop('checked') && !input.prop('disabled')) {
+					label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
+					label.addClass('active btn-success');
+					input.prop('checked', true);
+				}
+			});
+
+			// Turn checkboxes into btn-group
+			$('.checkbox.btn-group label').addClass('btn');
+			//$(".checkbox.btn-group label:not(.active)").click(function() {
+			$(".checkbox.btn-group label").click(function(event) {
+				var label = $(this);
+				var input = $('#' + label.attr('for'));
+				//alert(label.val()+ " checked? "+input.prop('checked')+ " disabled? "+input.prop('disabled')+ " label disabled? "+label.hasClass('disabled'));
+				if (input.prop('disabled')) {
+					label.removeClass('active btn-success btn-danger btn-primary');
+					input.prop('checked', false);
+					event.stopImmediatePropagation();
+					return;
+				}
+				if (!input.prop('checked')) {
 					label.addClass('active btn-success');
 				}
-				input.prop('checked', true);
-			}
-		});
-
-		// Turn checkboxes into btn-group
-		$('.checkbox.btn-group label').addClass('btn');
-		$(".checkbox.btn-group label:not(.active)").click(function() {
-			var label = $(this);
-			var input = $('#' + label.attr('for'));
-			if (!input.prop('checked')) {
-				//label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-				if(input.val()== '') {
-					label.addClass('active btn-primary');
-				} else if(input.val()==0) {
-					label.addClass('active btn-danger');
-				} else {					
-					label.addClass('active btn-success');
+				else {
+					label.removeClass('active btn-success btn-danger btn-primary');
 				}
-				input.prop('checked', true);
-			}
-		});
+				// bootstrap takes care of the checkboxes themselves!
+			});
 		
-		$(".btn-group input[type=checkbox]").each(function() {
-			var input = $(this);
-			input.css('display','none');
-		});
+			$(".btn-group input[type=checkbox]").each(function() {
+				var input = $(this);
+				input.css('display','none');
+			});		
+		})(jQuery);
 		
-		$(".btn-group input[checked=checked]").each(function() {
-			if($(this).val()== '') {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-primary');
-			} else if($(this).val()==0) {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-danger');
-			} else {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-success');
-			}
-		});
-
-	})(jQuery);
+		initialiseBootstrapButtons();
+	}
+	
+	function initialiseBootstrapButtons(){
+		(function($){	
+			// this doesn't seem to find just the checked ones!'
+			//$(".btn-group input[checked=checked]").each(function() {
+			$(".btn-group input").each(function() {
+				var label = $("label[for=" + $(this).attr('id') + "]");
+				var elem = $(this);
+				if (elem.prop('disabled')) {
+					label.addClass('disabled');
+					label.removeClass('active btn-success btn-danger btn-primary');
+					return;
+				}
+				label.removeClass('disabled');
+				if (!elem.prop('checked')) {
+					label.removeClass('active btn-success btn-danger btn-primary');
+					return;
+				}
+				label.addClass('active btn-success');
+			});
+			
+		})(jQuery);
+	}
 	
 </script>
+<?php
+/*
+ // for testing of Bootstrap
+$style= <<<STYLE
+.radio.btn-group input[type="radio"] {
+    display: block!important;
+}
+STYLE;
+
+$doc = JFactory::getDocument();
+$doc->addStyleDeclaration($style);
+
+ */

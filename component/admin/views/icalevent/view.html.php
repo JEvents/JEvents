@@ -39,7 +39,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::spacer();
 		//JToolBarHelper::help( 'screen.ical', true);
 
-		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
+		JEventsHelper::addSubmenu();
 
 		$showUnpublishedICS = false;
 
@@ -188,8 +188,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::cancel('icalevent.list');
 		//JToolBarHelper::help( 'screen.icalevent.edit', true);
 
-		$this->_hideSubmenu();
-
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
@@ -217,9 +215,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolBarHelper::cancel('icalevent.list');
 
-		$this->_hideSubmenu();
-
-		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option=' . JEV_COM_COMPONENT, true);
+		JEventsHelper::addSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

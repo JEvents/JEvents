@@ -43,7 +43,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		  }
 		 */
 		JEventsHelper::addSubmenu();
-		$this->_hideSubmenu();
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -190,6 +189,26 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						{
 // club layouts			 
 							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
+							if ($xmlfiles1 && count($xmlfiles1)>0){
+								foreach ($xmlfiles1 as $manifest)
+								{
+									if (realpath($manifest) != $manifest)
+										continue;
+									if (!$manifestdata = $this->getValidManifestFile($manifest))
+										continue;
+
+									$app = new stdClass();
+									$app->name = $manifestdata["name"];
+									$app->version = $manifestdata["version"];
+									$apps["layout_" . basename(dirname($manifest))] = $app;
+								}
+							}
+						}
+						// package version
+						if (JFolder::exists(JPATH_ADMINISTRATOR . "/manifests/files"))
+						{
+// club layouts			 
+							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "$layout\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
 							foreach ($xmlfiles1 as $manifest)
@@ -610,6 +629,20 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$apps["layout_" . basename(dirname($manifest))] = $app;
 		}
 
+		$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "\.xml", true, true);
+		foreach ($xmlfiles1 as $manifest)
+		{
+			if (realpath($manifest) != $manifest)
+				continue;
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$apps[str_replace(".xml","","layout_" . basename($manifest))] = $app;
+		}
+		
 // plugins
 		if (JFolder::exists(JPATH_SITE . "/plugins"))
 		{

@@ -31,10 +31,9 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolBarHelper::editList('icalrepeat.edit');
 		JToolBarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
 		JToolBarHelper::cancel('icalevent.list');
-		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', JText::_('JEV_ADMIN_CPANEL'), false);
-
+				
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->get("section",0);
+		JEventsHelper::addSubmenu();
 
 		JHTML::_('behavior.tooltip');
 
@@ -60,8 +59,6 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 		JToolBarHelper::cancel('icalrepeat.list');
 		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);
-
-		$this->_hideSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

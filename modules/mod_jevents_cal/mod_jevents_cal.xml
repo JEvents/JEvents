@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" method="upgrade" client="site">
 	<name>JEvents Calendar</name>
 	<creationDate>November 2012</creationDate>
-	<author>GWE Systems Ltd</author>
+	<author>GWE December Ltd</author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.0.0 RC</version>
+	<version>3.0.0 RC2</version>
 	<description>Shows up to 3 different monthly calendar for JEvents component</description>
 	<files>
 		<filename module="mod_jevents_cal">mod_jevents_cal.php</filename>

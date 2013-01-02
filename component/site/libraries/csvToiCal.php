@@ -40,10 +40,11 @@ class CsvToiCal
 	var $file;
 	var $columnSeparator;
 	var $colsOrder = array();
-	var $colsNum = 0; // to check if every line has right number of columns
+	var $colsNum = 0; // to check if every line has right number of columns
 	var $tmpFileName;
 	var $tmpfile;
-	var $timezone = "UTC"; // default timezone
+	var $timezone = "UTC"; // default timezone
+	var $data;
 
 	/**
 	 * default constructor
@@ -52,9 +53,10 @@ class CsvToiCal
 	 * @param columnSeparator separator of columns in CSV file - default ,
 	 */
 
-	public function csvToiCal($file, $columnSeparator = ",")
+	public function csvToiCal($file, $columnSeparator = ",", $data = false)
 	{
 		$this->file = $file;
+		$this->data = $data;
 		$this->columnSeparator = $columnSeparator;
 
 		$this->parseFileHeader();
@@ -104,10 +106,16 @@ class CsvToiCal
 	 */
 	private function parseFileHeader()
 	{
-		$fp = fopen($this->file, 'r');
-		$line = fgets($fp, 4096);
-		$line = trim($line); // remove white spaces, at the end always \n (or \r\n)
-		fclose($fp);
+		if ($this->data){
+			$line = JString::substr($this->data,0,JString::strpos($this->data,"\n")+1);
+		}
+		else {
+			$fp = fopen($this->file, 'r');
+			$line = fgets($fp, 4096);
+			$line = trim($line); // remove white spaces, at the end always \n (or \r\n)
+			fclose($fp);
+		}
+
 		$headers = explode($this->columnSeparator, $line);
 		$this->colsNum = count($headers);
 		for ($i = 0; $i < $this->colsNum; $i++)
@@ -130,7 +138,7 @@ class CsvToiCal
 		$data = str_getcsv($line);
 		// different count of data cols than header cols, bad CSV
 		if (count($data) != $this->colsNum && count($data) != 1)
-		{ // == 1 probably last empty line
+		{ // == 1 probably last empty line
 			// different number of cols than in header, file is not in correct format
 			return false;
 		}
@@ -232,26 +240,49 @@ class CsvToiCal
 	 */
 	private function convertFile($delimiter="\n")
 	{
-		$fp = fopen($this->file, 'r');
 		$this->createNewTmpICal();  // creates new temporary iCal file
 
-		$i = 1;
-		while (!feof($fp))
-		{
-			$buffer = fgets($fp);
-			if ($buffer == "")
-				break; // end of file or empty line
-			if (!$line = $this->parseCsvLine($buffer))
-			{
-				// something gone wrong, CSV is corrupted, cancel
-				return false;
-			}
-			if ($i++ == 1)
-				continue; // fist line is header, so continue
-			fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file
-			$buffer = ''; // clear the buffer
-		}
+		if ($this->data){
+			// unfold content lines according the unfolding procedure of rfc2445
+			$this->data = str_replace("\n ","",$this->data);
+			$this->data = str_replace("\n\t","",$this->data);
 
+			// Convert string into array for easier processing
+			$this->data = explode("\n", $this->data);
+			$i = 1;
+			foreach ($this->data as $buffer){
+				if ($buffer == "")
+					continue; // end of file or empty line
+				if (!$line = $this->parseCsvLine($buffer))
+				{
+					// something gone wrong, CSV is corrupted, cancel
+					return false;
+				}
+				if ($i++ == 1)
+					continue; // fist line is header, so continue
+				fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file				
+			}
+		}
+		else {
+			$fp = fopen($this->file, 'r');
+			$i = 1;
+			while (!feof($fp))
+			{
+				$buffer = fgets($fp);
+				if ($buffer == "")
+					break; // end of file or empty line
+				if (!$line = $this->parseCsvLine($buffer))
+				{
+					// something gone wrong, CSV is corrupted, cancel
+					return false;
+				}
+				if ($i++ == 1)
+					continue; // fist line is header, so continue
+				fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file
+				$buffer = ''; // clear the buffer
+			}
+		}
+				
 		$this->finalizeTmpICal();
 		return true;
 

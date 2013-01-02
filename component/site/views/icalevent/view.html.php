@@ -142,7 +142,7 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 			echo $barhtml;
 			if (JVersion::isCompatible("3.0"))
 			{
-				$title = JFactory::getApplication()->JComponentTitle;
+				$title = "";//JFactory::getApplication()->JComponentTitle;
 			}
 			else
 			{

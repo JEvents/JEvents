@@ -42,8 +42,8 @@ class AdminUserViewUser extends JEventsAbstractView
 		JToolBarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
 		//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		JToolBarHelper::spacer();
-		JToolBarHelper::custom('cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false);
-		//JToolBarHelper::help( 'screen.user', true);
+		
+		JEventsHelper::addSubmenu();
 
 		$search = JFactory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$db = JFactory::getDbo();

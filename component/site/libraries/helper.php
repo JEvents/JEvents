@@ -1635,6 +1635,10 @@ class JEVHelper
 		}
                 $levels = $user->getAuthorisedViewLevels();
 
+		if (JEVHelper::isAdminUser($user) && JFactory::getApplication()->isAdmin()){
+			$levels = array_merge($levels, JAccess::getAuthorisedViewLevels(0));
+		}
+		
 		if ($type == 'string')
 		{
 			return implode(',', $levels);
@@ -1775,18 +1779,28 @@ class JEVHelper
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
 		
+		if (!$icalrows || count($icalrows)==0 ){
+			return;
+		}
+		$user = JFactory::getUser();
 		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("com_cache",1)){
+		// only unlogged in users and not logged in OR all visitors grouped by access level 
+		if ( ($params->get("com_cache",1)==1 && $user->id == 0) 
+			|| $params->get("com_cache",1)==2 ){
 		
 			$cachecontroller = JFactory::getCache(JEV_COM_COMPONENT);
 			$oldcaching = $cachecontroller->cache->getCaching();
 			$cachecontroller->cache->setCaching(true);
 
+			// if grouped by access level caching then add this to the cache id
+			$cachegroups = ($params->get("com_cache",1)==2) ? implode(',', $user->getAuthorisedViewLevels()) : "";
+			$lang = JFactory::getLanguage()->getTag();
+			
 			$rows = array();
 			$indexmap = array();
 			foreach ($icalrows as $index => & $row) {
 				$indexmap[$row->rp_id()] = $index;
-				$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title());
+				$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title(). "-".$cachegroups. $lang);
 				$data = $cachecontroller->cache->get($id);
 				if ($data){
 					if (is_callable("gzcompress")){
@@ -1806,7 +1820,7 @@ class JEVHelper
 				$dispatcher = & JDispatcher::getInstance();
 				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
 				foreach ($rows as $k => $row) {
-					$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title());
+					$id = md5($row->rp_id()." onDisplayCustomFieldsMultiRow ".$row->uid()." ".$row->title(). "-".$cachegroups. $lang);
 					$data = serialize($row);
 					if (is_callable("gzcompress")){
 						// 2 seems a good balance between compression and performance

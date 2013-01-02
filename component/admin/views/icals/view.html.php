@@ -35,10 +35,8 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JToolBarHelper::editList('icals.edit');
 		JToolBarHelper::deleteList('Delete Ical and all associated events and repeats?','icals.delete');
 		JToolBarHelper::spacer();
-		JToolBarHelper::custom( 'cpanel.cpanel', 'default.png', 'default.png', 'JEV_ADMIN_CPANEL', false );
-		//JToolBarHelper::help( 'screen.ical', true);
 
-		JSubMenuHelper::addEntry(JText::_( 'CONTROL_PANEL' ), 'index.php?option='.JEV_COM_COMPONENT, true);
+		JEventsHelper::addSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
@@ -64,8 +62,6 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		}
 		JToolBarHelper::cancel('icals.list');
 		//JToolBarHelper::help( 'screen.icals.edit', true);
-
-		$this->_hideSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

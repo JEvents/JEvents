@@ -779,6 +779,7 @@ class iCalRRule extends JTable  {
 
 				$startYear = JevDate::strftime("%Y",$start);
 				while ($startYear<2027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
+				//while ($startYear<5027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
 					$countRepeats+=$this->_makeRepeat($start,$end);
 					$start = JevDate::strtotime("+".$this->rinterval." days",$start);
 					$end = JevDate::strtotime("+".$this->rinterval." days",$end);

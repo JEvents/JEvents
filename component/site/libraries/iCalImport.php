@@ -155,7 +155,7 @@ class iCalImport
 				&& JString::stristr($firstLine,'DTEND') && JString::stristr($firstLine,'CATEGORIES')
 				&& JString::stristr($firstLine,'TIMEZONE')) {
 				$timezone= date_default_timezone_get();
-				$csvTrans = new CsvToiCal($file);
+				$csvTrans = new CsvToiCal($file, ",",$this->rawData);
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
 			} else {
