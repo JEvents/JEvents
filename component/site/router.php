@@ -533,6 +533,12 @@ function JEventsBuildRouteNew(&$query, $task)
 	$cfg = & JEVConfig::getInstance();
 	$segments = array();
 
+	if (count($query)==2 && isset($query['Itemid'])  && isset($query['option'])){
+		// special case where we do not need any information since its a menu item
+		$segments[] = $transtask;
+		return $segments;
+	}
+	
 	switch ($task) {
 		case "year.listevents":
 		case "month.calendar":

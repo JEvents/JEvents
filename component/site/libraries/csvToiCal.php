@@ -200,8 +200,9 @@ class CsvToiCal
 				isSet($this->colsOrder["DTEND"]) &&
 				isSet($this->colsOrder["TIMEZONE"]))
 			return true;
-		else
+		else{	
 			return false;
+		}
 
 	}
 

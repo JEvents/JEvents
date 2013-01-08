@@ -981,7 +981,9 @@ class JEventsDataModel {
 
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
-		$keyword		= preg_replace( "/[[:space:]]+/", ' +', $keyword );
+		if ($useRegX){
+			$keyword		= preg_replace( "/[[:space:]]+/", ' +', $keyword );
+		}
 		$keyword		= trim( $keyword );
 		$keyword		= preg_replace( "/\++/", '+', $keyword );
 		$keywordcheck	= preg_replace( "/ |\+/", '', $keyword );

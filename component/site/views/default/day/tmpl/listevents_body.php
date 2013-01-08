@@ -7,7 +7,6 @@ $this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $
 
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
-$cfg = & JEVConfig::getInstance();
 $hasevents = false;
 
 echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') .'</legend><br />' . "\n";

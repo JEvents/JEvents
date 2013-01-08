@@ -120,6 +120,8 @@ class jevFilterProcessing
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
+			$registry	=& JRegistry::getInstance("jevents");
+			$registry->set("indexedvisiblefilters",false);			
                         
 			foreach (self::$visiblefilters as $filtername) {
 				$filter = "jev".ucfirst($filtername)."Filter";

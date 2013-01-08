@@ -9,7 +9,7 @@
  */
 
 var eventEditDateFormat = "Y-m-d";
-Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
+//Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 Date.prototype.getYMD =  function()
 {
 	month = "0"+(this.getMonth()+1);
@@ -24,7 +24,17 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	var mydate = Date.parse(ymd);	
+	var lastParser = Date.parsePatterns.getLast();
+	var bits = lastParser.re.exec(ymd);
+	if (bits){
+		var parsed = lastParser.handler(bits);
+		if (!(parsed && parsed.isValid())){
+			parsed = new Date(nativeParse(from));
+			if (!(parsed && parsed.isValid())) parsed = new Date(from.toInt());
+		}
+		return parsed;
+	} 
+	var mydate = Date.parse(ymd);		
 	return mydate;
 };
 
@@ -264,17 +274,20 @@ function checkDates(elem){
 function reformatStartEndDates() {
 	start_date = document.getElementById("publish_up");
 	start_date2 = document.getElementById("publish_up2");
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
 	
 	end_date = document.getElementById("publish_down");
 	end_date2 = document.getElementById("publish_down2");
-	endDate = Date.parse(end_date.value);
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);
 	end_date2.value = endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
 
 	until_date = document.getElementById("until");
 	until_date2 = document.getElementById("until2");
-	untilDate = Date.parse(until_date.value);
+	untilDate = new Date();
+	untilDate = untilDate.dateFromYMD(until_date.value);
 	until_date2.value = untilDate.getFullYear()+"-"+(untilDate.getMonth()+1)+"-"+untilDate.getDate();
 
 }
@@ -715,8 +728,12 @@ function fixRepeatDates(){
 	}
 	bd[startDate.getDay()].checked=true;
 
-	unt = document.getElementById('until');
-	unt.value = start_date.value;
+	until_date = document.getElementById("until");
+	untilDate = Date.parse(until_date.value);	
+
+	if (untilDate<startDate){
+		until_date.value = start_date.value;
+	}
 
 	updateRepeatWarning();
 
