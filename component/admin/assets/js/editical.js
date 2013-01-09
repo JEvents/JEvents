@@ -10,6 +10,58 @@
 
 var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
+
+Date.extend({
+	jeventsParseDate  : function (from ){
+				
+		var keys = {
+			d: /[0-2]?[0-9]|3[01]/,
+			H: /[01]?[0-9]|2[0-3]/,
+			I: /0?[1-9]|1[0-2]/,
+			M: /[0-5]?\d/,
+			s: /\d+/,
+			o: /[a-z]*/,
+			p: /[ap]\.?m\.?/,
+			y: /\d{2}|\d{4}/,
+			Y: /\d{4}/,
+			z: /Z|[+-]\d{2}(?::?\d{2})?/
+		};
+
+		keys.m = keys.I;
+		keys.S = keys.M;
+		
+		var parsed = [];
+		var re = eventEditDateFormat;
+		re = re.replace(/\((?!\?)/g, '(?:') // make all groups non-capturing
+		.replace(/ (?!\?|\*)/g, ',? ') // be forgiving with spaces and commas
+		.replace(/([a-z])/gi,
+			function(match, p1){
+				var p = keys[p1];
+				if (!p) return p1;
+				parsed.push(p1);
+				return '(' + p.source + ')';
+			}
+		);
+		
+		re = new RegExp('^' + re + '$', 'i');
+		var handler = function(bits){
+			bits = bits.slice(1).associate(parsed);
+			var date = new Date().clearTime(),
+			year = bits.y || bits.Y;
+			
+			if (year != null) date.set('year', year); 
+			if ('d' in bits) date.set('date', bits.d); 
+			if ('m' in bits || bits.b || bits.B) date.set('month', bits.m-1); 
+
+			return date;
+		}
+		
+		var bits = re.exec(from);
+		return (bits) ? (parsed = handler(bits)) : false;		
+
+	}
+});
+
 Date.prototype.getYMD =  function()
 {
 	month = "0"+(this.getMonth()+1);
@@ -24,17 +76,7 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	var lastParser = Date.parsePatterns.getLast();
-	var bits = lastParser.re.exec(ymd);
-	if (bits){
-		var parsed = lastParser.handler(bits);
-		if (!(parsed && parsed.isValid())){
-			parsed = new Date(nativeParse(from));
-			if (!(parsed && parsed.isValid())) parsed = new Date(from.toInt());
-		}
-		return parsed;
-	} 
-	var mydate = Date.parse(ymd);		
+	var mydate = Date.jeventsParseDate(ymd);
 	return mydate;
 };
 
