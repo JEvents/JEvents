@@ -21,11 +21,11 @@ class JEventsVersion {
 	/** @var int Sub Release Level */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level */
-	var $PATCH_LEVEL = '0';
+	var $PATCH_LEVEL = '1';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
-	var $COPYRIGHT 	= 'Copyright &copy; 2006-2012';
+	var $COPYRIGHT 	= 'Copyright &copy; 2006-2013';
 	/** @var string Copyright Text */
 	var $COPYRIGHTBY 	= 'GWE Systems Ltd, JEvents Project Group';
 	/** @var string LINK */

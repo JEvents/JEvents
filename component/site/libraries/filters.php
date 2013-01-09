@@ -267,6 +267,7 @@ class jevFilter
 
 		$registry	=& JRegistry::getInstance("jevents");
 		$indexedvisiblefilters = $registry->get("indexedvisiblefilters",array());
+		if (!is_array($indexedvisiblefilters)) $indexedvisiblefilters = array();
 
 		// This is our best guess as to whether this filter is visible on this page.
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
