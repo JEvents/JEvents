@@ -138,7 +138,9 @@ class jevFilterProcessing
 					}
 				}
 				if ( defined($filter."::filterType") ){
-					self::$indexedvisiblefilters[$filtername] = $filter::filterType;
+					$thefilter =  new $filter("",$filtername);
+					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+					//self::$indexedvisiblefilters[$filtername] = $filter::filterType;
 				}
 				else {
 					$thefilter =  new $filter("",$filtername);
