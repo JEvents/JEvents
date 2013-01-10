@@ -21,7 +21,7 @@ function DefaultRedirectDetail($view)
 		{
 			$countevents += count($view->data['hours'][$h]['events']);		
 			if ($countevents >1) return;
-			if ($countevents==1){
+			if ($countevents==1 && count($activeEvents)==0){
 				$activeEvents=$view->data['hours'][$h]['events'];
 			}
 		}
