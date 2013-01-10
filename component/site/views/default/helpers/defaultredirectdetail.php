@@ -10,19 +10,23 @@ function DefaultRedirectDetail($view)
 
 	if ($redirect_to_event == 1)
 	{
-		$view->data  = $data = $view->datamodel->getDayData($view->year, $view->month, $view->day);
 		$activeEvents = array();
-		$countevents = count($data['hours']['timeless']['events']);
-
+		$countevents = count($view->data['hours']['timeless']['events']);
+		if ($countevents >1) return;
+		if ($countevents==1){
+			$activeEvents=$view->data['hours']['timeless']['events'];
+		}
+		
 		for ($h = 0; $h < 24; $h++)
 		{
-			$countevents += count($data['hours'][$h]['events']);		
-			if ($countevents>0){
-				$activeEvents=array_merge($activeEvents,$data['hours'][$h]['events']);
+			$countevents += count($view->data['hours'][$h]['events']);		
+			if ($countevents >1) return;
+			if ($countevents==1){
+				$activeEvents=$view->data['hours'][$h]['events'];
 			}
 		}
 
-		if (count($activeEvents) == 1)
+		if ($countevents == 1)
 		{
 			$row = $activeEvents[0];
 			$rowlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
