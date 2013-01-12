@@ -120,6 +120,8 @@ class jevFilterProcessing
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
+			$registry	=& JRegistry::getInstance("jevents");
+			$registry->set("indexedvisiblefilters",false);			
                         
 			foreach (self::$visiblefilters as $filtername) {
 				$filter = "jev".ucfirst($filtername)."Filter";
@@ -136,7 +138,9 @@ class jevFilterProcessing
 					}
 				}
 				if ( defined($filter."::filterType") ){
-					self::$indexedvisiblefilters[$filtername] = $filter::filterType;
+					$thefilter =  new $filter("",$filtername);
+					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+					//self::$indexedvisiblefilters[$filtername] = $filter::filterType;
 				}
 				else {
 					$thefilter =  new $filter("",$filtername);
@@ -265,6 +269,7 @@ class jevFilter
 
 		$registry	=& JRegistry::getInstance("jevents");
 		$indexedvisiblefilters = $registry->get("indexedvisiblefilters",array());
+		if (!is_array($indexedvisiblefilters)) $indexedvisiblefilters = array();
 
 		// This is our best guess as to whether this filter is visible on this page.
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));

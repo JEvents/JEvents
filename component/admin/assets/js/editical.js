@@ -9,7 +9,59 @@
  */
 
 var eventEditDateFormat = "Y-m-d";
-Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
+//Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
+
+Date.extend({
+	jeventsParseDate  : function (from ){
+				
+		var keys = {
+			d: /[0-2]?[0-9]|3[01]/,
+			H: /[01]?[0-9]|2[0-3]/,
+			I: /0?[1-9]|1[0-2]/,
+			M: /[0-5]?\d/,
+			s: /\d+/,
+			o: /[a-z]*/,
+			p: /[ap]\.?m\.?/,
+			y: /\d{2}|\d{4}/,
+			Y: /\d{4}/,
+			z: /Z|[+-]\d{2}(?::?\d{2})?/
+		};
+
+		keys.m = keys.I;
+		keys.S = keys.M;
+		
+		var parsed = [];
+		var re = eventEditDateFormat;
+		re = re.replace(/\((?!\?)/g, '(?:') // make all groups non-capturing
+		.replace(/ (?!\?|\*)/g, ',? ') // be forgiving with spaces and commas
+		.replace(/([a-z])/gi,
+			function(match, p1){
+				var p = keys[p1];
+				if (!p) return p1;
+				parsed.push(p1);
+				return '(' + p.source + ')';
+			}
+		);
+		
+		re = new RegExp('^' + re + '$', 'i');
+		var handler = function(bits){
+			bits = bits.slice(1).associate(parsed);
+			var date = new Date().clearTime(),
+			year = bits.y || bits.Y;
+			
+			if (year != null) date.set('year', year); 
+			if ('d' in bits) date.set('date', bits.d); 
+			if ('m' in bits || bits.b || bits.B) date.set('month', bits.m-1); 
+
+			return date;
+		}
+		
+		var bits = re.exec(from);
+		return (bits) ? (parsed = handler(bits)) : false;		
+
+	}
+});
+
 Date.prototype.getYMD =  function()
 {
 	month = "0"+(this.getMonth()+1);
@@ -24,7 +76,7 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	var mydate = Date.parse(ymd);	
+	var mydate = Date.jeventsParseDate(ymd);
 	return mydate;
 };
 
@@ -264,17 +316,20 @@ function checkDates(elem){
 function reformatStartEndDates() {
 	start_date = document.getElementById("publish_up");
 	start_date2 = document.getElementById("publish_up2");
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
 	
 	end_date = document.getElementById("publish_down");
 	end_date2 = document.getElementById("publish_down2");
-	endDate = Date.parse(end_date.value);
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);
 	end_date2.value = endDate.getFullYear()+"-"+(endDate.getMonth()+1)+"-"+endDate.getDate();
 
 	until_date = document.getElementById("until");
 	until_date2 = document.getElementById("until2");
-	untilDate = Date.parse(until_date.value);
+	untilDate = new Date();
+	untilDate = untilDate.dateFromYMD(until_date.value);
 	until_date2.value = untilDate.getFullYear()+"-"+(untilDate.getMonth()+1)+"-"+untilDate.getDate();
 
 }
@@ -715,8 +770,12 @@ function fixRepeatDates(){
 	}
 	bd[startDate.getDay()].checked=true;
 
-	unt = document.getElementById('until');
-	unt.value = start_date.value;
+	until_date = document.getElementById("until");
+	untilDate = Date.parse(until_date.value);	
+
+	if (untilDate<startDate){
+		until_date.value = start_date.value;
+	}
 
 	updateRepeatWarning();
 

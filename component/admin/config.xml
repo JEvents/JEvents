@@ -198,6 +198,8 @@
 			<option value="0">JEV_USER_NAME</option>
 			<option value="1">JEV_NAME</option>
 		</field>
+		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" />	
+		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" />		
 	</fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR">

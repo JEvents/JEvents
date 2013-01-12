@@ -10,6 +10,8 @@ $Itemid = JEVHelper::getItemid();
 $cfg = & JEVConfig::getInstance();
 $hasevents = false;
 
+$this->Redirectdetail();
+
 // previous and following month names and links
 $followingDay = $this->datamodel->getFollowingDay($this->year, $this->month, $this->day);
 $precedingDay = $this->datamodel->getPrecedingDay($this->year, $this->month, $this->day);
