@@ -707,6 +707,15 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		return $text;
 
 	}
+        
+        function getTranslatorLink()
+        {
+            $translatorName =  JText::_("JEV_TRANSLATION_AUTHOR");
+            $translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR_URL");
+            $translatorUrl = "<a href=\"$translatorUrl\">$translatorName</a>";
+            
+            return $translatorUrl;
+        }
 
 }
 
