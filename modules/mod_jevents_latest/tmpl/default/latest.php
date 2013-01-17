@@ -68,6 +68,12 @@ class DefaultModLatestView
 		$this->inccss = $params->get('modlatest_inccss', 0);
 		if ($this->inccss)
 		{
+			$modtheme = $params->get("com_calViewName", "");
+			if ($modtheme=="" || $modtheme=="global"){
+				$modtheme=JEV_CommonFunctions::getJEventsViewName();;
+			}
+			$this->jevlayout = $modtheme;
+			
 			JEVHelper::componentStylesheet($this, "modstyle.css");
 		}
 
@@ -264,7 +270,7 @@ class DefaultModLatestView
 				$startDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d, $this->now_Y)) . " 00:00:00";
 			}
 		}
-
+		
 		$periodStart = $beginDate; //substr($beginDate,0,10);
 		$periodEnd = $endDate; //substr($endDate,0,10);
 
@@ -284,7 +290,21 @@ class DefaultModLatestView
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
 		}		
 		$reg->set("jev.modparams", false);
-
+	
+		// Time limit plugin constraints
+		$reg =& JFactory::getConfig();
+		$pastdate = $reg->get("jev.timelimit.past",false);
+		$futuredate = $reg->get("jev.timelimit.future",false);
+		if ($pastdate){			
+			$beginDate = $pastdate>$beginDate ? $pastdate : $beginDate ;
+		}
+		if ($futuredate){
+			$endDate = $futuredate<$endDate ? $futuredate : $endDate ;
+		}
+		$timeLimitNow = $todayBegin<$beginDate ? $beginDate : $todayBegin;
+		$timeLimitNow= JevDate::mktime(0, 0, 0, intval(substr($timeLimitNow, 5, 2)), intval(substr($timeLimitNow, 8, 2)), intval(substr($timeLimitNow, 0, 4)));
+		echo $timeLimitNow ."<br/>";
+		
 		// determine the events that occur each day within our range
 
 		$events = 0;
@@ -329,7 +349,14 @@ class DefaultModLatestView
 		{
 			if (count($rows))
 			{
-				while ($date <= $lastDate)
+				// Timelimit plugin constraints
+				while ($date<$timeLimitNow){
+					$this->eventsByRelDay[$i] = array();
+					$date = JevDate::strtotime("+1 day", $date);
+					$i++;
+				}
+				
+				while ($date <= $lastDate )
 				{
 					// get the events for this $date
 					$eventsThisDay = array();
@@ -418,7 +445,14 @@ class DefaultModLatestView
 					$lastDate = JevDate::mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
 					$i = -1;
 
-					while ($date >= $lastDate)
+					// Timelimit plugin constraints
+					while ($date>$timeLimitNow){
+						$this->eventsByRelDay[$i] = array();
+						$date = JevDate::strtotime("-1 day", $date);
+						$i--;
+					}
+					
+					while ($date >= $lastDate )
 					{
 						// get the events for this $date
 						$eventsThisDay = array();

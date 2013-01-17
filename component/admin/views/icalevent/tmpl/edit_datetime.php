@@ -325,6 +325,11 @@ if ($this->row->id() != 0 && $this->row->freq())
 		(function($){
 			// Turn radios into btn-group
 			$('.radio.btn-group label').addClass('btn');
+			var el = $(".radio.btn-group label:not(.active)");
+			
+			// Isis template and others may already have done this so remove these!
+			$(".radio.btn-group label:not(.active)").unbind('click');
+			
 			$(".radio.btn-group label:not(.active)").click(function() {
 				var label = $(this);
 				var input = $('#' + label.attr('for'));
@@ -337,8 +342,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 
 			// Turn checkboxes into btn-group
 			$('.checkbox.btn-group label').addClass('btn');
-			//$(".checkbox.btn-group label:not(.active)").click(function() {
+			
+			// Isis template and others may already have done this so remove these!
+			$(".checkbox.btn-group label").unbind('click');
+			
 			$(".checkbox.btn-group label").click(function(event) {
+				event || (event = window.event);
 				var label = $(this);
 				var input = $('#' + label.attr('for'));
 				//alert(label.val()+ " checked? "+input.prop('checked')+ " disabled? "+input.prop('disabled')+ " label disabled? "+label.hasClass('disabled'));
@@ -394,12 +403,14 @@ if ($this->row->id() != 0 && $this->row->freq())
 /*
  // for testing of Bootstrap
 $style= <<<STYLE
-.radio.btn-group input[type="radio"] {
-    display: block!important;
+.radio.btn-group input[type="radio"], .checkbox.btn-group input[type="checkbox"]{
+	float:none;
+	margin:5px;
+	display:inline;
 }
 STYLE;
 
 $doc = JFactory::getDocument();
 $doc->addStyleDeclaration($style);
 
- */
+*/

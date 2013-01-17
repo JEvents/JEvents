@@ -161,7 +161,15 @@ function jevSetupAddLink(){
 		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
 	}
 
-	// for ext layout
+	var tds = $$("td.jev_daynum");
+	for (var i=0; i<tds.length; i++)
+	{
+		element = tds[i];
+		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
+		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
+	}
+
+// for ext layout
 	var tds = $$("td.todayclr");
 	for (var i=0; i<tds.length; i++)
 	{

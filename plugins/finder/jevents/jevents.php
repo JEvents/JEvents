@@ -152,12 +152,13 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		}
 
 		// Check for access changes in the category
-		if ($context == 'com_categories.category')
+		if ($context == 'com_categories.category' && $row->extension=="com_jevents")
 		{
 			// Check if the access levels are different
 			if (!$isNew && $this->old_cataccess != $row->access)
 			{
-				$this->categoryAccessChange($row);
+				// TODO sort out category access change finder updates later
+				// $this->categoryAccessChange($row);
 			}
 		}
 
@@ -347,6 +348,32 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->layout = $this->layout;
 
 		return $item;
+	}
+	
+	
+	/**
+	 * Method to get a SQL query to load the published and access states for
+	 * an article and category.
+	 *
+	 * @return  JDatabaseQuery  A database object.
+	 *
+	 * @since   2.5
+	 */
+	protected function getStateQuery()
+	{
+		$sql = $this->db->getQuery(true);
+		// Item ID
+		$sql->select('a.evdet_id as id');
+		// Item and category published state
+		$sql->select('a.' . $this->state_field . ' AS state, c.published AS cat_state');
+		// Item and category access levels
+		$sql->select('evt.access, c.access AS cat_access');
+		$sql->from($this->table . ' AS a');
+		$sql->join('LEFT',' #__jevents_repetition AS rpt ON rpt.eventdetail_id=a.evdet_id');
+		$sql->join('LEFT',' #__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
+		$sql->join('LEFT', '#__categories AS c ON c.id = evt.catid');
+
+		return $sql;
 	}
 	
 }

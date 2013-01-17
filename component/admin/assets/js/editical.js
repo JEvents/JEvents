@@ -819,7 +819,7 @@ function fixTabbedWebkit(){
  */
 // sets the date for the page after save
 function resetYMD(){
-//	start_date = document.getElementById("publish_up");
+	start_date = document.getElementById("publish_up");
 //	startdateparts = start_date.value.split("-");
 	startDate = Date.parse(start_date.value);	
 	

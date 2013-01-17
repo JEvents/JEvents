@@ -4,13 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 $cfg	 = & JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $this->day );
+$this->Redirectdetail();
 
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
 $cfg = & JEVConfig::getInstance();
 $hasevents = false;
-
-$this->Redirectdetail();
 
 // previous and following month names and links
 $followingDay = $this->datamodel->getFollowingDay($this->year, $this->month, $this->day);
