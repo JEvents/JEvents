@@ -45,7 +45,7 @@ $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."
         	$row = &$this->icalrows[$i]; ?>
             <tr class="row<?php echo $k; ?>">
             	<td width="20">
-                    <input type="checkbox" id="cb<?php echo $i;?>" name="cid[]" value="<?php echo $row->rp_id(); ?>" onclick="isChecked(this.checked);" />
+		   <?php echo JHtml::_('grid.id', $i, $row->rp_id()); ?>
             	</td>
               	<td width="30%">
               		<a href="#edit" onclick="return listItemTask('cb<?php echo $i;?>','icalrepeat.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>

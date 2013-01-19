@@ -4,12 +4,11 @@ defined('_JEXEC') or die('Restricted access');
 $cfg = & JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day);
+$this->Redirectdetail();
 
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
 $hasevents = false;
-
-$this->Redirectdetail();
 
 	echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') . '</legend><br />' . "\n";
 	echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";

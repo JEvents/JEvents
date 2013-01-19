@@ -332,6 +332,7 @@ function JEventsParseRoute($segments)
 			"month.calendar",
 			"week.listevents",
 			"day.listevents",
+			"range.listevents",
 			"cat.listevents",
 			"jevent.detail",
 			"icalevent.detail",
@@ -386,6 +387,7 @@ function JEventsParseRoute($segments)
 			case "month.calendar":
 			case "week.listevents":
 			case "day.listevents":
+			case "range.listevents":
 			case "cat.listevents":
 			case "jevent.detail":
 			case "icalevent.detail":
@@ -535,7 +537,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 	if (count($query)==2 && isset($query['Itemid'])  && isset($query['option'])){
 		// special case where we do not need any information since its a menu item
-		$segments[] = $transtask;
+		// $segments[] = $transtask;
 		return $segments;
 	}
 	
@@ -788,6 +790,7 @@ function JEventsParseRouteNew(&$segments, $task)
 		case "month.calendar":
 		case "week.listevents":
 		case "day.listevents":
+		case "range.listevents":
 		case "cat.listevents":
 		case "jevent.detail":
 		case "icalevent.detail":
@@ -928,6 +931,7 @@ function translatetask($task)
 		"month.calendar",
 		"week.listevents",
 		"day.listevents",
+		"range.listevents",
 		"cat.listevents",
 		"jevent.detail",
 		"icalevent.detail",
