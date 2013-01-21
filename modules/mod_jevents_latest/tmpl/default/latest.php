@@ -304,7 +304,6 @@ class DefaultModLatestView
 		}
 		$timeLimitNow = $todayBegin<$beginDate ? $beginDate : $todayBegin;
 		$timeLimitNow= JevDate::mktime(0, 0, 0, intval(substr($timeLimitNow, 5, 2)), intval(substr($timeLimitNow, 8, 2)), intval(substr($timeLimitNow, 0, 4)));
-		echo $timeLimitNow ."<br/>";
 		
 		// determine the events that occur each day within our range
 

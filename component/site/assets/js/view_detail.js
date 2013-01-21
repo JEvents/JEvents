@@ -39,13 +39,13 @@ function clickEditButton(){
 
 	closeAllDialogs();
 	if (currentOpacity<0) currentOpacity = 0;
-	fadeIn("action_dialog");
+	jevFadeIn("action_dialog");
 }
 
 function clickIcalSaveButton(){
 	closeAllDialogs();
 	if (currentOpacity<0) currentOpacity = 0;
-	fadeIn("action_dialog");
+	jevFadeIn("action_dialog");
 	return false;
 }
 
@@ -57,21 +57,21 @@ function closedialog() {
 	}
 
 	if (currentOpacity>opacities.length) currentOpacity =opacities.length;
-	fadeOut("action_dialog");
+	jevFadeOut("action_dialog");
 }
 
 function clickIcalButton(){
 	closeAllDialogs();
 	if (currentOpacity<0) currentOpacity = 0;
-	fadeIn("ical_dialog");
+	jevFadeIn("ical_dialog");
 }
 
 function closeical() {
 	if (currentOpacity>opacities.length) currentOpacity =opacities.length;
-	fadeOut("ical_dialog");
+	jevFadeOut("ical_dialog");
 }
 
-function fadeIn(dlg) {
+function jevFadeIn(dlg) {
 	var myDiv = document.getElementById(dlg);
 	currentOpacity++;
 	if (currentOpacity>=opacities.length){
@@ -83,11 +83,11 @@ function fadeIn(dlg) {
 		myDiv.style.filter="alpha(opacity="+(100*opacities[currentOpacity])+")";
 		myDiv.style.visibility="visible";	
 		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-		myFaderTimeout = setTimeout("fadeIn('"+dlg+"')",pause);
+		myFaderTimeout = setTimeout("jevFadeIn('"+dlg+"')",pause);
 	}
 }
 
-function fadeOut(dlg) {
+function jevFadeOut(dlg) {
 	var myDiv = document.getElementById(dlg);
 	if (!myDiv) return;
 	currentOpacity--;
@@ -100,7 +100,7 @@ function fadeOut(dlg) {
 		//window.status = opacities[currentOpacity];
 		myDiv.style.filter="alpha(opacity="+(100*opacities[currentOpacity])+")";
 		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-		myFaderTimeout = setTimeout("fadeOut('"+dlg+"')",pause);
+		myFaderTimeout = setTimeout("jevFadeOut('"+dlg+"')",pause);
 	}
 }
 
