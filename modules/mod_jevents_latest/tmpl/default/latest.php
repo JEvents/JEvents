@@ -273,9 +273,10 @@ class DefaultModLatestView
 		
 		$periodStart = $beginDate; //substr($beginDate,0,10);
 		$periodEnd = $endDate; //substr($endDate,0,10);
-
+		
 		$reg = & JFactory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);		
+
 		if ($this->dispMode == 5)
 		{
 			$this->sortReverse = true;
@@ -1176,6 +1177,7 @@ class DefaultModLatestView
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{
+			$viewlayout = isset($menuItem->query["view"]) ? ($menuItem->query["view"] . "." . $menuItem->query["layout"]) : "calendar.month";
 			$task = isset($menuItem->query["task"]) ? $menuItem->query["task"] : ($menuItem->query["view"] . "." . $menuItem->query["layout"]);
 		}
 		else

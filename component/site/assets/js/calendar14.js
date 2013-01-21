@@ -495,8 +495,8 @@ var NewCalendar = new Class({
 
 		for (var i = 0; i <= 6; i++) {
 			var th = this.options.days[(i + this.options.offset) % 7];
-
-			tr.adopt(new Element('th', { 'title': th }).appendText(th.substr(0, 1)));
+			var thclass='dashday'+(i + this.options.offset) % 7;
+			tr.adopt(new Element('th', { 'title': th, 'class':thclass }).appendText(th.substr(0, 1)));
 		}
 
 		// 3. day numbers
@@ -536,6 +536,8 @@ var NewCalendar = new Class({
 
 			var day = i - offset;
 			var date = new Date(cal.year, cal.month, day);
+
+			td.setProperty('class', 'dashday'+(day + this.options.offset) % 7);
 
 			var cls = '';
 

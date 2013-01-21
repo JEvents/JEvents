@@ -615,6 +615,8 @@ function toggleWhichBy(wb)
 
 function toggleFreq(freq , setup)
 {
+	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
+	
 	var myDiv = document.getElementById('interval_div');
 	var byyearday = document.getElementById('byyearday');
 	var byweekno = document.getElementById('byweekno');
@@ -712,8 +714,14 @@ function toggleFreq(freq , setup)
 			}
 			break;
 	}
-
-	updateRepeatWarning();
+	if (freq!="NONE" || currentFreq!="NONE"){
+		// can't use the function since it skips freq=NONE
+		// ipdateRepeatWarning();
+		if (document.adminForm.updaterepeats){
+			document.adminForm.updaterepeats.value = 1;
+		}
+		
+	}
 }
 
 function fixRepeatDates(){
@@ -831,7 +839,8 @@ function resetYMD(){
 
 
 function updateRepeatWarning(){
-	if (document.adminForm.updaterepeats){
+	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
+	if (document.adminForm.updaterepeats && currentFreq!="NONE"){
 		document.adminForm.updaterepeats.value = 1;
 	}
 }

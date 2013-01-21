@@ -27,7 +27,8 @@ class DefaultsModelDefaults extends JModelLegacy
 
 			// Join over the language
 			$query->select('l.title AS language_title');
-			$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = def.language');
+			// some servers have mixed collations
+			$query->join('LEFT', $db->quoteName('#__languages').' AS l ON BINARY l.lang_code = BINARY def.language');
 			
 			$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 			if (count ($this->getLanguages())==1){

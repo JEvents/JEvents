@@ -108,9 +108,10 @@ class ModCalController extends JControllerLegacy   {
 
 		$cfg = & JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		$theme = $params->get("com_calViewName",$theme);
+		$comptheme = $params->get("com_calViewName","global");
+		$theme = ($comptheme=="global")?$theme : $comptheme;
 		$modtheme = $params->get("com_calViewName", $theme);
-		if ($modtheme==""){
+		if ($modtheme=="" || $modtheme=="global" ){
 			$modtheme=$theme;
 		}
 		$theme=$modtheme;

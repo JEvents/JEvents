@@ -520,7 +520,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_user_juser" => 24,
 			"component_com_attend_jevents" => 21,
 			//"component_com_jevents" => 52, // JEvents 2.0
-			"component_com_jevents" => 65, // JEvents 2.1
+			//"component_com_jevents" => 65, // JEvents 2.1
+			"component_com_jevents" => 71, // JEvents 2.2
 			"component_com_jeventstags" => 9,
 			"component_com_jevlocations-old" => 4,
 			"component_com_jevlocations" => 4,

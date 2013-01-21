@@ -419,7 +419,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					if ($template_name == "icalevent.detail_body")
 					{
 						$search[] = "{{REPEATSUMMARY}}";
-						$replace[] = $event->repeatSummary();
+						$repeatsummary = $view->repeatSummary($event);
+						if (!$repeatsummary){
+							$repeatsummary = $event->repeatSummary();
+						}
+						$replace[] = $repeatsummary;
+						//$replace[] = $event->repeatSummary();
 						$blank[] = "";
 						$row = $event;
 						$start_date = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), 0);
