@@ -840,7 +840,8 @@ function resetYMD(){
 
 function updateRepeatWarning(){
 	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
-	if (document.adminForm.updaterepeats && currentFreq!="NONE"){
+	if (document.adminForm.updaterepeats && currentFreq!="NONE")
+	{
 		document.adminForm.updaterepeats.value = 1;
 	}
 }
