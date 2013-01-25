@@ -415,6 +415,10 @@ class AdminIcaleventController extends JControllerAdmin
 			{
 				$row = $this->queryModel->listEventsById($repeatId, true, "icaldb");
 			}
+			// for some reason frequency is not always set for imported events !
+			if (!$row->freq()){
+				$row->freq('none');
+			}
 
 			if (!JEVHelper::canEditEvent($row))
 			{
