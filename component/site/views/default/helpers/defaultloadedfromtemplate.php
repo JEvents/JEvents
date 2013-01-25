@@ -683,11 +683,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 								$event->contact_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 							}
-							$tmprow = new stdClass();
-							$tmprow->text = $event->contact_info();
-
-                                                        $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-							$event->contact_info($tmprow->text);
+							// NO need to call conContentPrepate since its called on the template value below here
 						}
 						$search[] = "{{CONTACT_LABEL}}";
 						$replace[] = JText::_('JEV_EVENT_CONTACT') . "&nbsp;";
@@ -720,10 +716,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$event->extra_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
-						$tmprow = new stdClass();
-						$tmprow->text = $event->extra_info();
-                                                $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
-						$event->extra_info($tmprow->text);
+						
+						// NO need to call conContentPrepate since its called on the template value below here
 					}
 
 					$search[] = "{{EXTRAINFO}}";

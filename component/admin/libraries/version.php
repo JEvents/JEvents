@@ -16,12 +16,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
-	/** @var int Main Release Level */
-	var $RELEASE 	= '3';
-	/** @var int Sub Release Level */
-	var $DEV_LEVEL 	= '0';
-	/** @var string Patch Level */
-	var $PATCH_LEVEL = '3';
+	/** @var string Release Level */
+	var $RELEASE 	= '3.0.4';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
@@ -91,7 +87,7 @@ class JEventsVersion {
 	 * @return string Short version format
 	 */
 	function getShortVersion() {
-		return 'v' . $this->RELEASE . '.' . $this->DEV_LEVEL . '.' . $this->PATCH_LEVEL . ' ' . $this->DEV_STATUS;
+		return 'v' . $this->RELEASE . ' ' . $this->DEV_STATUS;
 	}
 
 }

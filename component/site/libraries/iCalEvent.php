@@ -470,6 +470,7 @@ else $this->_detail = false;
 		$sql = "select * FROM #__jevents_repetition  WHERE eventid=".$this->ev_id. " ORDER BY startrepeat ASC";
 		$db->setQuery($sql);
 		$oldrepeats = $db->loadObjectList();
+		$oldrepeatcount = count($oldrepeats);
 		foreach ($oldrepeats as &$oldrepeat) {
 			// find matching day
 			$oldrepeat->startday = substr($oldrepeat->startrepeat,0,10);
@@ -478,18 +479,12 @@ else $this->_detail = false;
 		}
 
 		// First I delete all existing repetitions - I can't do an update or replace
-		// since the repeat may have been= adjusted
-		$sql = "DELETE FROM #__jevents_repetition  WHERE eventid=".$this->ev_id;
-		$db->setQuery($sql);
-		$db->query();
-
-		/*
-		SELECT * FROM #__jevents_vevdetail as detail ,#__jevents_repetition as rpt, #__jevents_vevent as event
-		WHERE eventid=1
-		AND rpt.eventdetail_id=detail.evdet_id
-		AND rpt.eventid = event.ev_id
-		AND rpt.eventdetail_id != detail.evdet_id
-		*/
+		 if (count($this->_repetitions)>1 || $oldrepeatcount>1){
+			// since the repeat may have been= adjusted
+			$sql = "DELETE FROM #__jevents_repetition  WHERE eventid=".$this->ev_id;
+			$db->setQuery($sql);
+			$db->query();
+		 }
 
 		// Now attempt to replace repetitions using the old repeat ids
 		for ($r = 0;$r<count($this->_repetitions);$r++){
@@ -512,7 +507,10 @@ else $this->_detail = false;
 			unset($repeat);
 		}
 
-
+		// if only one repeat in the past and in the future then reuse the same id
+		if (count($this->_repetitions)==1 && $oldrepeatcount==1){
+			$this->_repetitions[0]->old_rpid = $oldrepeats[0]->rp_id;
+		}
 
 		$sql = "REPLACE INTO #__jevents_repetition (rp_id,eventid,eventdetail_id,startrepeat,endrepeat,duplicatecheck) VALUES ";
 		for ($r = 0;$r<count($this->_repetitions);$r++){

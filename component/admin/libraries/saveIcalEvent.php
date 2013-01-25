@@ -185,9 +185,9 @@ class SaveIcalEvent {
 			$vevent->rrule->eventid = $vevent->ev_id;
 		}
 		
-		// Only update the repetitions if the event edit says the reptitions will have changed or a new event
-		if ($newevent || JRequest::getInt("updaterepeats",1)){
-			$repetitions = $vevent->getRepetitions(true);
+		// Only update the repetitions if the event edit says the reptitions will have changed or a new event or ONLY 1 repetition
+		$repetitions = $vevent->getRepetitions(true);
+		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
 				if (!$vevent->storeRepetitions()){
 					echo $db->getErrorMsg()."<br/>";

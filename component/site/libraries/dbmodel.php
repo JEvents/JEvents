@@ -597,18 +597,21 @@ class JEventsDBModel
 			// We only show events once regardless of multiday setting of event so we allow them all through here!
 			$multiday = "";
 			$multiday2 = "";
+			$multiday3 = "";
 		}
 		else if ($multidayTreatment == 2)
 		{
 			// We only show events on their first day only regardless of multiday setting of event so we allow them all through here!
 			$multiday = "";
 			$multiday2 = "";
+			$multiday3 = "";
 		}
 		else if ($multidayTreatment == 1)
 		{
 			// We only show events on all days regardless of multiday setting of event so we allow them all through here!
 			$multiday = "";
 			$multiday2 = "";
+			$multiday3 = "";
 		}
 		else
 		{
@@ -620,6 +623,7 @@ class JEventsDBModel
 			// BUT this is logically equivalent and appears much faster  on some databases
 			$multiday = "\n AND (rpt.startrepeat >= '$startdate' OR  det.multiday=1)";
 			$multiday2 = "\n AND (rpt.startrepeat <= '$startdate'OR  det.multiday=1)";
+			$multiday3 = "AND det.multiday=1";
 		}
 
 		if ($noRepeats)
@@ -654,7 +658,7 @@ class JEventsDBModel
 				WHERE rpt2.eventid=rpt.eventid
 				AND  (
 					(rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate')
-					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  AND det.multiday=1)
+					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  $multiday3)
 					)
 				$rptwhere
 			) 

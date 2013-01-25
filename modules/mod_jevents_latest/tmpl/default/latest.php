@@ -164,7 +164,7 @@ class DefaultModLatestView
 		}
 		else
 		{
-			return '<a href="' . $link . '" ' . $class . '>' . $text . '</a>';
+			return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
 		}
 
 	}
