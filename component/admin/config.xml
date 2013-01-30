@@ -54,6 +54,8 @@
 
 		<field name="mergemenus" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP"/>
 
+		<field name="show_adminpanel" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_ADMIN_PANEL" description="JEV_SHOW_ADMIN_PANEL_DESC"/>
+
 		<field name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" />
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
@@ -228,7 +230,7 @@
 		<field name="com_calTTShadow" type="jevboolean jevp_tooltip" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOW" description="" />			
 		<field name="com_calTTShadowX" type="jevboolean jevp_tooltip" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOWX" description="" />			
 		<field name="com_calTTShadowY" type="jevboolean jevp_tooltip" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" />	
-		<field name="com_calShowLegend" type="jevboolean" class="btn-group" default="0"  menu="hide" label="JEV_MONTH_SHOW_LEGEND" description="JEV_MONTH_SHOW_LEGEND_DESC" />					
+		<field name="com_calShowLegend" type="jevboolean" class="btn-group" default="1"  menu="hide" label="JEV_MONTH_SHOW_LEGEND" description="JEV_MONTH_SHOW_LEGEND_DESC" />					
 	</fieldset>
 	
 	<fieldset name="JEV_YEAR_CATEGORY_VIEW">
