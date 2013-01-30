@@ -536,9 +536,20 @@ function JEventsBuildRouteNew(&$query, $task)
 	$segments = array();
 
 	if (count($query)==2 && isset($query['Itemid'])  && isset($query['option'])){
+
 		// special case where we do not need any information since its a menu item
-		// $segments[] = $transtask;
-		return $segments;
+		// as long as the task matches up!
+		$menu = & JSite::getMenu();
+		$menuitem = $menu->getItem($query["Itemid"]);
+		if (!is_null($menuitem) && isset($menuitem->query["task"]))
+		{
+			if ($task == $menuitem->query["task"]){			
+				return $segments;
+			}
+			else {
+				 $segments[] = $transtask;
+			}
+		}				
 	}
 	
 	switch ($task) {

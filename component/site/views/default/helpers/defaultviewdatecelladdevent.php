@@ -3,6 +3,8 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewDatecellAddEvent($view, $year, $month, $day){
 	if (JEVHelper::isEventCreator()){
+	// no events on Saturday or Sunday!
+	//if (date("N",mktime(0,0,0,$month,$day, $year))>5) return;
     	$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
     	. '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day. '&Itemid=' . $view->Itemid, true);
     	 $eventlinkadd = $view->popup?"javascript:jevEditPopup('".$editLink."',$view->popupw, $view->popuph);":$editLink;

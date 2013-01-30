@@ -80,10 +80,10 @@
 	</administration>
 	
 	<!-- UPDATESERVER DEFINITION -->
-	<updateservers>
+	<!--	<updateservers> //-->
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
 		<!--<server type="extension" priority="1" name="JEventsUpdate Site">http://www.jevents.net/updates/jevents-update.xml</server>//-->
 		<!--<server type="extension" priority="1" name="JEventsUpdate Site">http://ubu.jev20j16.com/updates/jevents-update.xml</server>//-->
-	</updateservers>
+	<!--	</updateservers> //-->
  
 </extension>

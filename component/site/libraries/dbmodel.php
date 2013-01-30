@@ -2733,6 +2733,8 @@ class JEventsDBModel
 		$user = JFactory::getUser();
 		$adminuser = JEVHelper::isAdminUser($user);
 		$db = JFactory::getDBO();
+		
+		$keyword = $db->escape($keyword, true) ;
 
 		$rows_per_page = $limit;
 		if (empty($limitstart) || !$limitstart)
