@@ -227,7 +227,8 @@
 		</field>
 		<field name="com_calTTShadow" type="jevboolean jevp_tooltip" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOW" description="" />			
 		<field name="com_calTTShadowX" type="jevboolean jevp_tooltip" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOWX" description="" />			
-		<field name="com_calTTShadowY" type="jevboolean jevp_tooltip" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" />					
+		<field name="com_calTTShadowY" type="jevboolean jevp_tooltip" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" />	
+		<field name="com_calShowLegend" type="jevboolean" class="btn-group" default="0"  menu="hide" label="JEV_MONTH_SHOW_LEGEND" description="JEV_MONTH_SHOW_LEGEND_DESC" />					
 	</fieldset>
 	
 	<fieldset name="JEV_YEAR_CATEGORY_VIEW">
