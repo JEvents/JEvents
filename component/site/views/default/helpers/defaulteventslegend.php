@@ -3,8 +3,11 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultEventsLegend($view){
 	$cfg = & JEVConfig::getInstance();
-	$theme = JEV_CommonFunctions::getJEventsViewName();
 	
+	if ($cfg->get('com_calShowLegend', 1) == 1) {
+	
+	$theme = JEV_CommonFunctions::getJEventsViewName();	
+		
 	$modpath = JModuleHelper::getLayoutPath('mod_jevents_legend',$theme.'/'."legend");
 	if (!file_exists($modpath) || !file_exists(JPATH_SITE.'/modules/mod_jevents_legend/helper.php'))  return;
 
@@ -22,5 +25,8 @@ function DefaultEventsLegend($view){
 	echo $modview->displayCalendarLegend("block");
 
 	echo "<br style='clear:both;height:0px;line-height:0px;'/>";
+	} else {
+		//Do nothing
+	}
 }
 
