@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 						?>
 
-					</div>
+					</div>                                    
 				</td>
 				<td width="45%" valign="top">
 					<?php
@@ -109,10 +109,13 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					echo JHtml::_('sliders.end');
 				}
-				?>
+				?>                                    
 				</td>
 			</tr>
-		</table>
+		</table>             
+                                    <p>
+                                        <strong><?php echo JText::_("JEV_TRANSLATION_CREDITS");?>:</strong> <i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE");?></i> - <?php echo $this->getTranslatorLink();?>
+                                    </p>
 		<p align="center">
 			<a href="<?php $version = & JEventsVersion::getInstance();
 					echo $version->getUrl(); ?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
