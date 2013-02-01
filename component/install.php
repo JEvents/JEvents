@@ -612,14 +612,22 @@ SQL;
 			@$db->query();
 		}
 		
-		// fill this table if upgrading !
+		// fill this table if upgrading  and there are no mapped categories
+		$sql = "SELECT count(*) FROM #__jevents_catmap";
+		$db->setQuery($sql);
+		$count = $db->loadResult();
+
+		/*
 		$sql = "DELETE FROM #__jevents_catmap";
 		$db->setQuery($sql);
-		$db->query();			
-
-		$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
-		$db->setQuery($sql);
-		$db->query();		
+		$db->query();					
+		*/
+		
+		if (!$count){
+			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
+			$db->setQuery($sql);
+			$db->query();					
+		}
 
 	}
 
