@@ -266,15 +266,12 @@ function checkEndTime() {
 
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
-//	startdateparts = start_date.value.split("-");
-//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 
 	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
-//	enddateparts = end_date.value.split("-");
-//	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],endtimeparts[0],endtimeparts[1],0);
-	endDate = Date.parse(end_date.value);	
-
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);
 
 	var jevmultiday = document.getElementById('jevmultiday');
 	if (end_date.value>start_date.value){
@@ -336,14 +333,12 @@ function reformatStartEndDates() {
 function checkUntil(){
 
 	start_date = document.getElementById("publish_up");
-//	startdateparts = start_date.value.split("-");
-//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 
 	until_date = document.getElementById("until");
-//	untildateparts = until_date.value.split("-");
-//	untilDate = new Date(untildateparts[0],parseInt(untildateparts[1],10)-1,untildateparts[2],0,0,0,0);
-	untilDate = Date.parse(until_date.value);	
+	untilDate = new Date();
+	untilDate = untilDate.dateFromYMD(until_date.value);	
 
 	if (untilDate<startDate){
 		until_date.value = start_date.value;
@@ -356,13 +351,12 @@ function setEndDateWhenNotRepeating(){
 	start_date = document.getElementById("publish_up");
 	end_date = document.getElementById("publish_down");
 
-//	startdateparts = start_date.value.split("-");
-//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],1,1,0);
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 	
-//	enddateparts = end_date.value.split("-");
-//	endDate = new Date(enddateparts[0],parseInt(enddateparts[1],10)-1,enddateparts[2],1,1,0);
-	endDate = Date.parse(end_date.value);	
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);	
+	
 	if (startDate>endDate){
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
@@ -728,9 +722,8 @@ function fixRepeatDates(){
 	start_time = document.getElementById("start_time");
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
-//	startdateparts = start_date.value.split("-");
-//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],0,0,0,0);
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 	
 	bmd = document.adminForm.bymonthday;
 	if (bmd.value.indexOf(",")<=0) {
@@ -778,8 +771,12 @@ function fixRepeatDates(){
 	}
 	bd[startDate.getDay()].checked=true;
 
+	endDate = new Date();
+	endDate = endDate.dateFromYMD(end_date.value);
+
 	until_date = document.getElementById("until");
-	untilDate = Date.parse(until_date.value);	
+	untilDate = new Date();
+	untilDate = untilDate.dateFromYMD(until_date.value);
 
 	if (untilDate<startDate){
 		until_date.value = start_date.value;
@@ -828,10 +825,9 @@ function fixTabbedWebkit(){
 // sets the date for the page after save
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
-//	startdateparts = start_date.value.split("-");
-	startDate = Date.parse(start_date.value);	
+	startDate = new Date();
+	startDate = startDate.dateFromYMD(start_date.value);	
 	
-	//	startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],1,1,0);
 	document.adminForm.year.value = startDate.getFullYear();
 	document.adminForm.month.value = startDate.getMonth()+1;
 	document.adminForm.day.value = startDate.getDate();

@@ -374,6 +374,14 @@ function simulateSaveRepeat($requestObject)
 	$data["DESCRIPTION"] = valueIfExists($array, "jevcontent", "", 'request', 'html', 2);
 	$data["publish_down"] = valueIfExists($array, "publish_down", "2006-12-12");
 	$data["publish_up"] = valueIfExists($array, "publish_up", "2006-12-12");
+	
+	if (isset($array["publish_down2"]) && $array["publish_down2"]){
+		$data["publish_down"] = $array["publish_down2"];
+	}
+	if (isset($array["publish_up2"]) && $array["publish_up2"]){
+		$data["publish_up"] = $array["publish_up2"];
+	}
+	
 	$interval = valueIfExists($array, "rinterval", 1);
 	$data["SUMMARY"] = valueIfExists($array, "title", "");
 
@@ -477,30 +485,58 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		$dbModel = new JEventsDBModel($dataModel);
 
 		// First of all check for Category overlaps
-		$skipCatTest = true;
-		$catinfo = $dbModel->getCategoryInfo( $testevent->catids() ? $testevent->catids() : array($testevent->catid()));
-		if ($catinfo && count($catinfo)  >0)
+		$catids = $testevent->catids() ? $testevent->catids() : array($testevent->catid());
+		$skipCatTest = false;
+		$catinfo = $dbModel->getCategoryInfo( $catids );
+		if ($catinfo && count($catinfo) >0)
 		{
-			foreach ($catinfo as $ci)
-			{
-                            $catparams = json_decode($ci->params);
-				if ($catparams->overlaps)
-				{
-					$skipCatTest = false;
+			for ($c=0;$c<count($catids);$c++){
+				if (isset($catinfo[$catids[$c]])){
+					$cinfo = $catinfo[$catids[$c]];
+					$catparams = json_decode($cinfo->params);
+					if (!$catparams->overlaps)
+					{
+						unset($catids[$c]);
+					}
 				}
 			}
+			if (count($catids)==0){
+				$skipCatTest = true;
+			}
 		}
+		else {
+			$skipCatTest = true;
+		}
+		
 		if (!$skipCatTest)
 		{
 			foreach ($testevent->repetitions as $repeat)
 			{
 
-				$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+				$sql = "SELECT *, evt.catid ";
+				if ($params->get("multicategory", 0))
+				{
+					$sql .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
+				}
+				$sql .= " FROM #__jevents_repetition as rpt ";
 				$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 				$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
+
+				if ($params->get("multicategory", 0))
+				{
+					$sql .= " LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+					$sql .= " LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+				}
+
 				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
-				//$sql .= " AND (evt.catid=".$testevent->catid()." OR evt.icsid=".$testevent->icsid().") GROUP BY rpt.rp_id";
-				$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
+				if ($params->get("multicategory", 0))
+				{
+					 $sql .= " AND  catmap.catid IN(" . implode(",",$catids) . ") GROUP BY rpt.rp_id";
+					
+				}
+				else {
+					$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
+				}
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
 				$conflicts = $db->loadObjectList();
@@ -508,7 +544,15 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				{
 					foreach ($conflicts as &$conflict)
 					{
-						$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $testevent->getCategoryName());
+						$conflictCats = isset($conflict->catids) ? explode(",",$conflict->catids) : array($conflict->catid);
+						$catname = array();
+						foreach ($conflictCats as $cc){
+							if (isset($catinfo[$cc])){
+								$catname[] = $catinfo[$cc]->title;
+							}
+						}
+						$cat = count($catname)>0 ? implode(", ",$catname) : $testevent->getCategoryName();
+						$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
 					}
 					unset($conflict);
 					$overlaps = array_merge($overlaps, $conflicts);
@@ -582,34 +626,75 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
 
+		$catids =$repeat->event->catids() ;
+		if (!$catids){
+			$catids = array($repeat->event->catid());
+		}
+		
 		$skipCatTest = false;
-		$catinfo = $dbModel->getCategoryInfo(array($repeat->event->catid()));
-		if ($catinfo && count($catinfo) == 1)
+		$catinfo = $dbModel->getCategoryInfo($catids);
+		if ($catinfo && count($catinfo) >0)
 		{
-			$catinfo = current($catinfo);
-			$catparams = json_decode($catinfo->params);
-			if (!$catparams->overlaps)
-			{
+			for ($c=0;$c<count($catids);$c++){
+				if (isset($catinfo[$catids[$c]])){
+					$cinfo = $catinfo[$catids[$c]];
+					$catparams = json_decode($cinfo->params);
+					if (!$catparams->overlaps)
+					{
+						unset($catids[$c]);
+					}
+				}
+			}
+			if (count($catids)==0){
 				$skipCatTest = true;
 			}
+		}
+		else {
+			$skipCatTest = true;
 		}
 
 		if (!$skipCatTest)
 		{
-			$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+			$sql = "SELECT *, evt.catid ";
+			if ($params->get("multicategory", 0))
+			{
+				$sql .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
+			}
+			$sql .= " FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 			$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
+			if ($params->get("multicategory", 0))
+			{
+				$sql .= " LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+				$sql .= " LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			}
 			$sql .= " WHERE rpt.rp_id<>" . intval($repeat->rp_id) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
-			//$sql .= " AND (evt.catid=".$repeat->event->catid()." OR evt.icsid=".$repeat->event->icsid().") GROUP BY rpt.rp_id";
-			$sql .= " AND (evt.catid=" . $repeat->event->catid() . ") GROUP BY rpt.rp_id";
+			if ($params->get("multicategory", 0))
+			{
+				$sql .= " AND  catmap.catid IN(" . implode(",",$catids) . ") GROUP BY rpt.rp_id";
+			}
+			else {
+				$sql .= " AND (evt.catid=" . $repeat->event->catid() . ") GROUP BY rpt.rp_id";
+			}
 			$sql .= " LIMIT 100";
+			
+
+			
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts) > 0)
 			{
 				foreach ($conflicts as &$conflict)
 				{
-					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $repeat->event->getCategoryName());
+					$conflictCats = isset($conflict->catids) ? explode(",",$conflict->catids) : array($conflict->catid);
+					$catname = array();
+					foreach ($conflictCats as $cc){
+						if (isset($catinfo[$cc])){
+							$catname[] = $catinfo[$cc]->title;
+						}
+					}
+					$cat = count($catname)>0 ? implode(", ",$catname) : $testevent->getCategoryName();
+					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
 				}
 				unset($conflict);
 				$overlaps = array_merge($overlaps, $conflicts);
