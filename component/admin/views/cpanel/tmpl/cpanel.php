@@ -113,9 +113,15 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 			</tr>
 		</table>             
-                                    <p>
-                                        <strong><?php echo JText::_("JEV_TRANSLATION_CREDITS");?>:</strong> <i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE");?></i> - <?php echo $this->getTranslatorLink();?>
-                                    </p>
+		<?php 
+		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" &&  JFactory::getLanguage()->getTag() !="en-GB") {
+		?>
+		<p>
+			<strong><?php echo JText::_("JEV_TRANSLATION_CREDITS");?>:</strong> <i><?php echo JText::_("JEV_TRANSLATION_LANGUAGE");?></i> - <?php echo $this->getTranslatorLink();?>
+		</p>
+		<?php 
+		}
+		?>
 		<p align="center">
 			<a href="<?php $version = & JEventsVersion::getInstance();
 					echo $version->getUrl(); ?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
