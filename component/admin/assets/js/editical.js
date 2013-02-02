@@ -48,7 +48,8 @@ Date.extend({
 			bits = bits.slice(1).associate(parsed);
 			var date = new Date().clearTime(),
 			year = bits.y || bits.Y;
-			
+			// set month to January  to ensure we can set days to 31 first!!!
+			date.set('month', 0); 
 			if (year != null) date.set('year', year); 
 			if ('d' in bits) date.set('date', bits.d); 
 			if ('m' in bits || bits.b || bits.B) date.set('month', bits.m-1); 
