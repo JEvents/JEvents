@@ -448,7 +448,7 @@ echo "</div>";
 						</td>
 					</tr>
 					<tr id="jeveditlocation">
-						<td width="130" align="left"><?php echo JText::_('JEV_EVENT_ADRESSE'); ?></td>
+						<td width="130" align="left"  valign="top"><?php echo JText::_('JEV_EVENT_ADRESSE'); ?></td>
 						<td colspan="3">
 				<?php
 				$res = $dispatcher->trigger('onEditLocation', array(&$this->row));

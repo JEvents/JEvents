@@ -541,9 +541,12 @@ function JEventsBuildRouteNew(&$query, $task)
 		// as long as the task matches up!
 		$menu = & JSite::getMenu();
 		$menuitem = $menu->getItem($query["Itemid"]);
-		if (!is_null($menuitem) && isset($menuitem->query["task"]))
+		if (!is_null($menuitem) && (isset($menuitem->query["task"]) || (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]))))
 		{
-			if ($task == $menuitem->query["task"]){			
+			if (isset($menuitem->query["task"]) && $task == $menuitem->query["task"]){
+				return $segments;
+			}
+			else if (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]) && $task == $menuitem->query["view"].".".$menuitem->query["layout"]){
 				return $segments;
 			}
 			else {
