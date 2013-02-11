@@ -24,6 +24,17 @@ class JEventsHelper
 		$task = JRequest::getCmd("task", "cpanel.cpanel");
 		$option = JRequest::getCmd("option", "com_categories");
 		
+		//Use a bit of CSS to hide the Options button on category page.
+		//Added if statement, incase in future we extend the helper, this way it will only ever apply to the categories component.
+		if ($option = 'com_categories') {
+			$stylelink = '<style type="text/css">' ."\n";
+			$stylelink .= '#toolbar-popup-options {display:none;}' ."\n";
+			$stylelink .= '</style>' ."\n";
+
+			$document =& JFactory::getDocument();
+			$document->addCustomTag($stylelink);
+		}
+
 		if ($vName == "")
 		{
 			$vName = $task;
