@@ -101,7 +101,7 @@ function DefaultEventManagementDialog($view,$row, $mask){
                  }
                  if ($editLink!=""){
                  ?>
-            	<a href="<?php echo $editLink;?>" id="edit_event" title="edit event" style="text-decoration:none;"><img src="<?php echo $editImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'EDIT_EVENT' );?></a><br/>
+            	<a href="<?php echo $editLink;?>" id="edit_event" title="edit event" style="text-decoration:none;"><img src="<?php echo $editImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php if ($editRepeatLink!=""){ echo JText::_( 'EDIT_EVENT_WHOLE_REPEAT' ); } else {echo JText::_( 'EDIT_EVENT' );}?></a><br/>
             	<a href="<?php echo $editCopyLink;?>" id="edit_eventcopy" title="edit event" style="text-decoration:none;"><img src="<?php echo $editCopyImg; ?>" style="width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;" alt="" /><?php echo JText::_( 'COPY_AND_EDIT_EVENT' );?></a><br/>
                  <?php
                  }
