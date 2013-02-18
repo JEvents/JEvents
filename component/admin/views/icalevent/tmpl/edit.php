@@ -15,6 +15,7 @@ if (defined("EDITING_JEVENT"))
 define("EDITING_JEVENT", 1);
 
 // Load Bookstrap
+JHtml::_('behavior.framework',true);
 JHtml::_('bootstrap.framework');
 JHtmlBootstrap::loadCss();
 

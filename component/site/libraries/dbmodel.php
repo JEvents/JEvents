@@ -117,8 +117,8 @@ class JEventsDBModel
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
 					. "\n AND c.extension = '" . $sectionname . "'"
-					. "\n " . $where;
-			;
+					. "\n " . $where
+					. "\n ORDER BY c.lft asc"  ;
 
 			$db->setQuery($query);
 			$catlist = $db->loadColumn();
@@ -631,7 +631,7 @@ class JEventsDBModel
 			// Display a repeating event ONCE we group by event id selecting the most appropriate repeat for each one
 			// Find the ones after now (only if not past only)
 			$rows1 = array();
-			if ($enddate >= $t_datenowSQL && $modparams->get("pastonly", 0) != 1)
+			if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 			{
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -674,7 +674,7 @@ class JEventsDBModel
 
 			// Before now (only if not past only == future events)
 			$rows2 = array();
-			if ($startdate <= $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
+			if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 			{
 				// note the order is the ones nearest today
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
@@ -814,7 +814,7 @@ class JEventsDBModel
 				// We therefore fetch 3 sets of possible repeats if necessary i.e. not over the limit!
 				// Find the ones after now (only if not past only)
 				$ids1 = array();
-				if ($enddate >= $t_datenowSQL && $modparams->get("pastonly", 0) != 1)
+				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
 					$query = "SELECT DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
@@ -846,7 +846,7 @@ class JEventsDBModel
 
 				// Before now (only if not past only == future events)
 				$ids2 = array();
-				if ($startdate <= $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
+				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
 					// note the order is the ones nearest today
 					$query = "SELECT  DISTINCT rpt.rp_id"
@@ -954,7 +954,7 @@ class JEventsDBModel
 				// We therefore fetch 3 sets of possible repeats if necessary i.e. not over the limit!
 				// Find the ones after now (only if not past only)
 				$rows1 = array();
-				if ($enddate >= $t_datenowSQL && $modparams->get("pastonly", 0) != 1)
+				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -989,7 +989,7 @@ class JEventsDBModel
 
 				// Before now (only if not past only == future events)
 				$rows2 = array();
-				if ($startdate <= $t_datenowSQL && $modparams->get("pastonly", 0) < 2)
+				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
 					// note the order is the ones nearest today
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
