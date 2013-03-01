@@ -373,18 +373,18 @@ else
 				if (isset($this->offerlock) && $this->offerlock == 1)
 				{
 					?>
-					<div class='control-group'>
+					<div class="control-group">
 						<label class="control-label"><?php echo JText::_("JEV_LOCK_EVENT"); ?></label>
-						<div class="controls">
-							<label>
+						<div class="controls radio btn-group">
+							<label class="radio btn"  for="lockevent1">
 								<?php echo JText::_("JEV_YES"); ?>
-								<input type=\"radio\" name=\"lockevent\" value=\"1\" <?php echo ($this->row->lockevent() ? "checked=\"checked\"" : "") ?> />
+								<input type="radio" name="lockevent" id="lockevent1" value="1" <?php echo ($this->row->lockevent() ? "checked='checked'" : "") ?> />
 							</label>
-							<label>
+							<label class="radio btn" for="lockevent0">
 								<?php echo JText::_("JEV_NO"); ?>
-								<input type=\"radio\" name=\"lockevent\" value=\"0\" <?php echo (!$this->row->lockevent() ? "checked=\"checked\"" : ""); ?> />
+								<input type="radio" name="lockevent" id="lockevent0" value="0" <?php echo (!$this->row->lockevent() ? "checked='checked'" : ""); ?> />
 							</label>
-						</div>
+						</div>					
 					</div>					
 					<?php
 				}
