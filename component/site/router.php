@@ -319,6 +319,7 @@ function JEventsParseRoute($segments)
 	$vars = array();
 
 	static $translatedTasks = false;
+	static $tasks;
 	if (!$translatedTasks)
 	{
 
@@ -373,6 +374,25 @@ function JEventsParseRoute($segments)
 	{
 		// task
 		$task = $segments[0];
+		if (translatetask("icalrepeat.detail")==""  && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks)){
+			//array_unshift($segments, "icalrepeat.detail");			
+			array_unshift($segments, "");
+			if (count($segments)==3){
+				$title = $segments[1];
+				$segments[1] = $segments[2];
+				$segments[2] = "-";
+				$segments[3] = $title;
+			}
+			else if ($segments>3){
+				$title = $segments[2];
+				$catid = $segments[1];
+				$evid = $segments[3];
+				$segments[1] = $evid;
+				$segments[2] = $catid;
+				$segments[3] = $title;
+			}
+			$task = $segments[0];
+		}
 
 		$newsef = false;
 		if (array_key_exists($task, $translatedTasks))
@@ -655,14 +675,16 @@ function JEventsBuildRouteNew(&$query, $task)
 						{
 							unset($query['jevtype']);
 						}
-						if (isset($query['evid']))
-						{
-							$segments[] = $query['evid'];
-							unset($query['evid']);
-						}
-						else
-						{
-							$segments[] = "0";
+						if ($transtask!=""){						
+							if (isset($query['evid']))
+							{
+								$segments[] = $query['evid'];
+								unset($query['evid']);
+							}
+							else
+							{
+								$segments[] = "0";
+							}
 						}
 
 						break;
@@ -676,7 +698,9 @@ function JEventsBuildRouteNew(&$query, $task)
 				}
 				else
 				{
-					$segments[] = "-";
+					if ($transtask!=""){
+						$segments[] = "-";
+					}
 				}
 
 				switch ($task) {
@@ -696,6 +720,18 @@ function JEventsBuildRouteNew(&$query, $task)
 						{
 							$segments[] = "-";
 						}
+						if ($transtask==""){
+							if (isset($query['evid']))
+							{
+								$segments[] = $query['evid'];
+								unset($query['evid']);
+							}
+							else
+							{
+								$segments[] = "0";
+							}
+						}
+						
 
 						break;
 					default:
