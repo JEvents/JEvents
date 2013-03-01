@@ -77,6 +77,10 @@ class modJeventsLegendHelper
 				}
 			}
 		}
+		if ($layout=="" || $layout=="global"){
+			$layout=JEV_CommonFunctions::getJEventsViewName();;
+		}
+		
 		// Build the template and base path for the layout
 		$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$layout.'.php';
 		$bPath = JPATH_SITE.'/'.'modules'.'/'.$module.'/'.'tmpl'.'/'.$layout.'.php';

@@ -374,9 +374,9 @@ class DefaultModLatestView
 						{
 							if (($this->norepeat && $row->hasrepetition())
 									// use settings from the event - multi day event only show once
-									|| ($this->multiday == 0 && $row->ddn() != $row->dup() && $row->multiday() == 0)
+									|| ($this->multiday == 0 && ($row->ddn() != $row->dup() || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) && $row->multiday() == 0)
 									// override settings from the event - multi day event only show once/on first day
-									|| (($this->multiday == 2 || $this->multiday == 3) && $row->ddn() != $row->dup() )
+									|| (($this->multiday == 2 || $this->multiday == 3) && ($row->ddn() != $row->dup()  || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) )
 							)
 							{
 								// make sure this event has not already been used!
@@ -462,9 +462,9 @@ class DefaultModLatestView
 							{
 								if (($this->norepeat && $row->hasrepetition())
 										// use settings from the event - multi day event only show once
-										|| ($this->multiday == 0 && $row->ddn() != $row->dup() && $row->multiday() == 0)
+										|| ($this->multiday == 0 && ($row->ddn() != $row->dup() || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) && $row->multiday() == 0)
 										// override settings from the event - multi day event only show once/on first day
-										|| (($this->multiday == 2 || $this->multiday == 3) && $row->ddn() != $row->dup() )
+										|| (($this->multiday == 2 || $this->multiday == 3) && ($row->ddn() != $row->dup()  || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) )										
 								)
 								{
 									// make sure this event has not already been used!
