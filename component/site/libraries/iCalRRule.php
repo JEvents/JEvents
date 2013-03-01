@@ -351,7 +351,7 @@ class iCalRRule extends JTable  {
 							}
 						}
 						// now ago to the start of next year
-						if ($currentYear+$this->rinterval>2036) return  $this->_repetitions;
+						if ($currentYear+$this->rinterval>2099) return  $this->_repetitions;
 						$currentYearStart = JevDate::mktime(0,0,0,1,1,$currentYear+$this->rinterval);
 					}
 
@@ -398,7 +398,7 @@ class iCalRRule extends JTable  {
 							}
 						}
 						// now ago to the start of next month
-						if ($currentYear+$this->rinterval>2036) return  $this->_repetitions;
+						if ($currentYear+$this->rinterval>2099) return  $this->_repetitions;
 						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth,1,$currentYear+$this->rinterval);
 					}
 
@@ -526,7 +526,7 @@ class iCalRRule extends JTable  {
 						$start = $targetStart;
 						$end = $targetEnd;
 						list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
-						if (($y+$this->rinterval+$m/12)>2036) return  $this->_repetitions;
+						if (($y+$this->rinterval+$m/12)>2099) return  $this->_repetitions;
 						$start = JevDate::mktime($h,$min,$s,$m,1,$y+$this->rinterval);
 						$end = $start + $duration;
 					}
@@ -614,7 +614,7 @@ class iCalRRule extends JTable  {
 							}
 						}
 						// now ago to the start of next month
-						if (($currentYear+($currentMonth+$this->rinterval)/12)>2036) return  $this->_repetitions;
+						if (($currentYear+($currentMonth+$this->rinterval)/12)>2099) return  $this->_repetitions;
 						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
 					}
 
@@ -700,7 +700,7 @@ class iCalRRule extends JTable  {
 							}
 						}
 						// now go to the start of next month
-						if (($currentYear+($currentMonth+$this->rinterval)/12)>2036) return  $this->_repetitions;
+						if (($currentYear+($currentMonth+$this->rinterval)/12)>2099) return  $this->_repetitions;
 						$currentMonthStart = JevDate::mktime(0,0,0,$currentMonth+$this->rinterval,1,$currentYear);
 					}
 				}
@@ -766,7 +766,7 @@ class iCalRRule extends JTable  {
 					}
 
 					// now go to the start of next week
-					if ($currentYear+($currentMonth/12)>2036) return  $this->_repetitions;
+					if ($currentYear+($currentMonth/12)>2099) return  $this->_repetitions;
 					$currentWeekStart = JevDate::strtotime("+".($this->rinterval)." weeks",$currentWeekStart);
 
 				}

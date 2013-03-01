@@ -338,7 +338,7 @@ else $this->_detail = false;
 			return $this->_repetitions;
 		}
 		// if no rrule then only one instance
-		if (!isset($this->rrule)){
+		if (!isset($this->rrule)  || $this->rrule->freq=="none" ){
 			$db	=& JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;

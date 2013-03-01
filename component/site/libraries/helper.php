@@ -750,14 +750,6 @@ class JEVHelper
 		if (!isset($isEventCreator))
 		{
 			$isEventCreator = false;
-			/*
-			  // experiment in alternative approval mechanism
-			  // just incase we don't have jevents plugins registered yet
-			  JPluginHelper::importPlugin("jevents");
-			  $dispatcher	=& JDispatcher::getInstance();
-			  $set = $dispatcher->trigger('isEventCreator', array (& $isEventCreator));
-			  if (count($set)>0) return $isEventCreator;
-			 */
 			$user = & JEVHelper::getAuthorisedUser();
 			if (is_null($user))
 			{
@@ -777,6 +769,27 @@ class JEVHelper
 						}
 					}
 					 */
+					if ($isEventCreator){
+						$okcats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+						if (count($okcats) > 0)
+						{
+							$juser = JFactory::getUser();
+							$dataModel = new JEventsDataModel();
+							$dataModel->setupComponentCatids();
+
+							$allowedcats = explode(",",$dataModel->accessibleCategoryList());
+							$intersect = array_intersect($okcats, $allowedcats);
+							
+							if (count($intersect) == 0) {
+								$isEventCreator = false;
+							}
+							
+						}
+						else {
+							$isEventCreator = false;
+						}
+					}
+					
 				}
 			}
 			else if ($user->cancreate)
@@ -799,6 +812,22 @@ class JEVHelper
 				else
 				{
 					$isEventCreator = true;
+				}
+				// are we blocked by category or calendar constraints
+				if ($isEventCreator && $user->categories != "" && $user->categories != "all")
+				{
+					$okcats = explode("|", $user->categories);
+
+					$juser = JFactory::getUser();
+					$dataModel = new JEventsDataModel();
+					$dataModel->setupComponentCatids();
+					
+					$allowedcats = explode(",",$dataModel->accessibleCategoryList());
+					$intersect = array_intersect($okcats, $allowedcats);
+					
+					if (count($intersect) == 0) {
+						$isEventCreator = false;
+					}
 				}
 			}
 

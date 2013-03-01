@@ -965,8 +965,20 @@ class JEventsHTML
 				{
 					?>
 					<option value=""><?php echo $text; ?></option>
-				<?php } ?>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $access); ?>
+				<?php } 
+				$assetGroups = JHtml::_('access.assetgroups');
+				// only offer access levels the user has access to
+				$user = JFactory::getUser();
+				if (!$user->get("isRoot",0)){
+					$viewlevels = $user->getAuthorisedViewLevels();
+					foreach ($assetGroups as $i => $level){
+						if (!in_array($level->value ,$viewlevels )){
+							unset($assetGroups[$i]);
+						}
+					}
+					$assetGroups = array_values($assetGroups);
+				}
+				echo JHtml::_('select.options',$assetGroups , 'value', 'text', $access); ?>
 			</select>
 			<?php
 			return ob_get_clean();
