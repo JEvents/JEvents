@@ -1237,8 +1237,9 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function listIcalEvents($startdate, $enddate, $order = "", $filters = false, $extrafields = "", $extratables = "", $limit = "")
 	{
-		//list($usec, $sec) = explode(" ", microtime());
-		//$starttime = (float) $usec + (float) $sec;
+		$debuginfo  = false;
+		list($usec, $sec) = explode(" ", microtime());
+		$starttime = (float) $usec + (float) $sec;
 
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
@@ -1288,9 +1289,11 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 		}
 
-		//list ($usec, $sec) = explode(" ", microtime());
-		//$time_end = (float) $usec + (float) $sec;
-		//echo  "after setup filters = ".round($time_end - $starttime, 4)."<br/>";
+		if ($debuginfo){
+			list ($usec, $sec) = explode(" ", microtime());
+			$time_end = (float) $usec + (float) $sec;
+			echo  "after setup filters = ".round($time_end - $starttime, 4)."<br/>";
+		}
 		
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params = JComponentHelper::getParams("com_jevents");
@@ -1352,9 +1355,11 @@ class JEventsDBModel
 			$db->setQuery($query);
 			$rptids = $db->loadColumn();
 
-			//list ($usec, $sec) = explode(" ", microtime());
-			//$time_end = (float) $usec + (float) $sec;
-			//echo  "after rptids  = ".round($time_end - $starttime, 4)."<br/>";
+			if ($debuginfo){
+				list ($usec, $sec) = explode(" ", microtime());
+				$time_end = (float) $usec + (float) $sec;
+				echo  "after rptids  = ".round($time_end - $starttime, 4)."<br/>";
+			}
 			
 			if (count($rptids)>0){
 
@@ -1436,17 +1441,37 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 			}
 
-			// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
-			$rows = $this->_cachedlistIcalEvents($query, $langtag);
-			//$cache = JFactory::getCache(JEV_COM_COMPONENT);
-			//$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+			if ($debuginfo){
+				$db = JFactory::getDBO();
+				$db->setQuery($query);
+				$rows = $db->loadObjectList();
+				list ($usec, $sec) = explode(" ", microtime());
+				$time_end = (float) $usec + (float) $sec;
+				echo  "pre convert rows (".count($rows).") = ".round($time_end - $starttime, 4)."<br/>";
+
+				$icalcount = count($rows);
+				for ($i = 0; $i < $icalcount; $i++)
+				{
+					// convert rows to jIcalEvents
+					$rows[$i] = new jIcalEventRepeat($rows[$i]);
+				}
+				
+			}
+			else {
+
+				// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
+				$rows = $this->_cachedlistIcalEvents($query, $langtag);			
+			}
+
 		}
 		$dispatcher = & JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
-		//list ($usec, $sec) = explode(" ", microtime());
-		//$time_end = (float) $usec + (float) $sec;
-		//echo  "listIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
+		if ($debuginfo){
+			list ($usec, $sec) = explode(" ", microtime());
+			$time_end = (float) $usec + (float) $sec;
+			echo  "listIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
+		}
 		
 		return $rows;
 
@@ -1454,6 +1479,10 @@ class JEventsDBModel
 
 	function _cachedlistIcalEvents($query, $langtag, $count = false)
 	{
+		$debuginfo  = false;
+		list($usec, $sec) = explode(" ", microtime());
+		$starttime = (float) $usec + (float) $sec;
+
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 		$adminuser = JEVHelper::isAdminUser($user);
@@ -1477,6 +1506,13 @@ class JEventsDBModel
 			echo $db->getErrorMsg();
 		}
 		$icalcount = count($icalrows);
+		
+		if ($debuginfo){
+			list ($usec, $sec) = explode(" ", microtime());
+			$time_end = (float) $usec + (float) $sec;
+			echo  "pre converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
+		}
+		
 		$valid = true;
 		for ($i = 0; $i < $icalcount; $i++)
 		{
@@ -1495,6 +1531,12 @@ class JEventsDBModel
 
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
+		if ($debuginfo){
+			list ($usec, $sec) = explode(" ", microtime());
+			$time_end = (float) $usec + (float) $sec;
+			echo  "after converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
+		}
+		
 		return $icalrows;
 
 	}
