@@ -520,7 +520,7 @@ class AdminIcaleventController extends JControllerAdmin
 				JError::raiseWarning(870, JText::_('INVALID_CALENDAR_STRUCTURE'));
 			}
 
-			$icsid = $row->icsid() > 0 ? $row->icsid() : current($nativeCals)->ics_id;
+			$icsid = $row->icsid() > 0 ? $row->icsid() : (count($nativeCals)>0? current($nativeCals)->ics_id : 0);
 
 			$clist = '<input type="hidden" name="ics_id" value="' . $icsid . '" />';
 			$this->view->assign('clistChoice', false);

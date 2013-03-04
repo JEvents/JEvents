@@ -264,7 +264,7 @@ RAWTEXT;
 							// if no such category then create it/them
 							if(!array_key_exists($ct,$categories)){
 								$cat = new JEventsCategory($db);
-								$cat->bind(array("title"=>$ct));
+								$cat->bind(array("title"=>trim($ct)));
 								$cat->published=1;
 								$cat->check();
 								$cat->store();
@@ -279,7 +279,7 @@ RAWTEXT;
 						if ($params->get("multicategory",0) ){
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
-								$vevent->catid[] =  $categories[$ct]->id;
+								$vevent->catid[] =  $categories[trim($ct)]->id;
 							}							
 						}
 						else {

@@ -337,7 +337,9 @@ function simulateSaveRepeat($requestObject)
 		$k = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
+	//$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
+	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+	$array = $safeHtmlFilter->clean($formdata, null);
 
 	if (!array_key_exists("rp_id", $array) || intval($array["rp_id"]) <= 0)
 	{

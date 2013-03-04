@@ -105,7 +105,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 				?>
 				<tr class="row<?php echo $k; ?>">
 					<td >
-						<a href="#select" onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes($repeat->title()); ?>' , ($('Itemid')?$('Itemid').value:0) , <?php echo $repeat->rp_id(); ?>, <?php echo $repeat->ev_id(); ?>)" title="<?php echo JText::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
+						<a href="#select" onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , ($('Itemid')?$('Itemid').value:0) , <?php echo $repeat->rp_id(); ?>, <?php echo $repeat->ev_id(); ?>)" title="<?php echo JText::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
 					<td align="center">
 						<?php
@@ -129,6 +129,9 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 					<td align="center">
 						<?php
 						$img = $row->state() ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						if ($img == "" || strpos($img, 'src=""')>0){
+							$img = $row->state()?JText::_("JEV_PUBLISHED"): JText::_("JEV_NOT_PUBLISHED");
+						}
 						?>
 						<?php echo $img; ?>
 					</td>
