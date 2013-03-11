@@ -348,5 +348,19 @@ $controller->execute($task);
 //$time_end = (float) $usec + (float) $sec;
 //echo  "JEvents component post task   = ".round($time_end - $starttime, 4)."<br/>";
 
+// Set the browser title to include site name if required
+$title =  JFactory::getDocument()->GetTitle();
+$app = JFactory::getApplication();
+if (empty($title)) {
+	$title = $app->getCfg('sitename');
+}
+elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+	$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+}
+elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+}
+JFactory::getDocument()->SetTitle($title);
+
 // Redirect if set by the controller
 $controller->redirect();

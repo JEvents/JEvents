@@ -389,6 +389,18 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$apps["layout_" . basename(dirname($manifest))] = $app;
 		}
 
+		$xmlfiles1 = JFolder::files(JPATH_MANIFESTS . "/files", "\.xml", true, true);
+		foreach ($xmlfiles1 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$apps["layout_" . str_replace(".xml","",basename($manifest))] = $app;
+		}
+		
 // plugins
 		if (JFolder::exists(JPATH_SITE . "/plugins"))
 		{

@@ -55,6 +55,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINKSTART",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINKEND",true);?>", "LINKEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_URL",true);?>", "URL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
 <?php
 // get list of enabled plugins
 $jevplugins = JPluginHelper::getPlugin("jevents");

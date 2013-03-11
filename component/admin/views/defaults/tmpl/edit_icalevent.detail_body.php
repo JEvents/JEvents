@@ -47,6 +47,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LAB
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY",true);?>", "CATEGORY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_LINK",true);?>", "CATEGORYLNK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_IMAGE",true);?>", "CATEGORYIMG");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_IMAGES",true);?>", "CATEGORYIMGS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_DESCRIPTION",true);?>", "CATDESC");
@@ -54,6 +55,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALENDAR",t
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATIONDATE",true);?>", "CREATED");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ADMIN_PANEL",true);?>", "MANAGEMENT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
 
 <?php
 // get list of enabled plugins

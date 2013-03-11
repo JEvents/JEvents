@@ -1,0 +1,7 @@
+# Explicitly declare text files we want to always be normalized and converted 
+# to native line endings on checkout.
+*.php text eol=lf
+*.xml text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ini text eol=lf

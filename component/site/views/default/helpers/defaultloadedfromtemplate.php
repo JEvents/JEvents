@@ -118,6 +118,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->title();
 				$blank[] = "";
 				break;
+			case "{{PRIORITY}}":
+				$search[] = "{{PRIORITY}}";
+				$replace[] = $event->priority();
+				$blank[] = "";
+				break;
 
 			case "{{LINK}}":
 			case "{{LINKSTART}}":
@@ -253,18 +258,41 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{CATEGORYLNK}}":
 					$router = JRouter::getInstance("site");
-					$vars = $router->getVars();
-					$vars["catids"] = $event->catid();
-					$eventlink = "index.php?";
-					foreach ($vars as $key => $val)
-					{
-						$eventlink.= $key . "=" . $val . "&";
+					$catlinks = array();
+					if ($jevparams->get("multicategory",0)){
+						$catids = $event->catids();
 					}
-					$eventlink = substr($eventlink, 0, strlen($eventlink) - 1);
-					$eventlink = JRoute::_($eventlink);
-					$catlink = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($event->catname()) . '">' . $event->catname() . '</a>';
+					else {
+						$catids = array($event->catids());
+					}
+					
+					$catdata = $event->getCategoryData();					
+					
+					$vars = $router->getVars();
+					foreach ($catids as $cat){
+						$vars["catids"] = $cat;
+						$catname = "xxx";
+						foreach ($catdata  as $cg){
+							if ($cat == $cg->id){
+								$catname = $cg->name;
+								break;
+							}
+						}
+						$eventlink = "index.php?";
+						foreach ($vars as $key => $val)
+						{
+							if ($key=="task" && ($val=="icalrepeat.detail" ||  $val=="icalevent.detail")){
+								$val = "week.listevents";
+							}
+							$eventlink.= $key . "=" . $val . "&";
+						}
+						$eventlink = substr($eventlink, 0, strlen($eventlink) - 1);
+						$eventlink = JRoute::_($eventlink);
+
+						$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
+					}
 					$search[] = "{{CATEGORYLNK}}";
-					$replace[] = $catlink;
+					$replace[] = implode(", ",$catlinks);
 					$blank[] = "";
 					break;
 
