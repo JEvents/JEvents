@@ -24,6 +24,22 @@ class JEventsHelper
 		$task = JRequest::getCmd("task", "cpanel.cpanel");
 		$option = JRequest::getCmd("option", "com_categories");
 		
+		//Use a bit of CSS to hide the Options button on category page.
+		//Added if statement, incase in future we extend the helper, this way it will only ever apply to the categories component.
+		if ($option = 'com_categories') {
+			$stylelink = '<style type="text/css">' ."\n";
+			//Check if Joomla 3.0 or 2.5? 3.0 has bootstrap so different id.
+			if (!JVersion::isCompatible("3.0")) {
+				$stylelink .= '#toolbar-popup-options {display:none;}' ."\n";
+			} elseif (version_compare(JVERSION, '3.0.0', ">=")) {
+				$stylelink .= '#toolbar-options {display:none;}' ."\n";
+			}			
+			$stylelink .= '</style>' ."\n";
+			
+			$document =& JFactory::getDocument();
+			$document->addCustomTag($stylelink);
+		}
+
 		if ($vName == "")
 		{
 			$vName = $task;

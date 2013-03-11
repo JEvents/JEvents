@@ -113,23 +113,49 @@ if (JRequest::getString("submit","")!="")
 	{
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
-
-	echo "<p><a href='$publiclink'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+	
+	
+	//Webcal Subscribe button:
+	//Replace http with webcal
+	
+	$webcalurl_pub = str_replace('http:', 'webcal:', $publiclink);
+	$webcalurl_priv = str_replace('http:', 'webcal:', $privatelink);
+	
+	echo "<h3>" . JText::_("JEV_ICAL_GENERATED") . "</h3>";
+	if ($params->get("show_webcal_url", 0) == 1){
+		echo "<p class='ical_form_button'><a href='$webcalurl_pub'>" . JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL') . "</a></p>";
+	}
+	if ($params->get("show_ical_download", 1) == 1){
+		echo "<p class='ical_form_button'><a href='$publiclink'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+	}
 	if ($user->id != 0)
 	{
-		echo "<p><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+		if ($params->get("show_ical_download", 1) == 1){
+			echo "<p class='ical_form_button'><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+		}
+		if ($params->get("show_webcal_url", 0) == 1){
+			echo "<p class='ical_form_button'><a href='$webcalurl_priv'>" . JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL') . "</a></p>";
+		}
 	}
 
 	if ($cfg->get("outlook2003icalexport", 0))
 	{
-		echo "<p>" . JText::_('Outlook 2003 specific links') . "</p>";
-		echo "<p><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+		echo "<p class='ical_form_button'>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</p>";
+		echo "<p class='ical_form_button'><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
 		if ($user->id != 0)
 		{
-			echo "<p><a href='$privatelink&outlook2003='>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+			echo "<p class='ical_form_button'><a href='$privatelink&outlook2003='>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 		}
 	}
+	
+	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
+	if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") == 0 && $cfg->get("show_webcal_url") == 0) {
+		echo "<div style='margin:15px;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
+	}
 }
+if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") == 0 && $cfg->get("show_webcal_url") == 0) {
+	
+} else {
 ?>
 
 <form name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
@@ -234,6 +260,6 @@ if (JRequest::getString("submit","")!="")
 	<br/>
 </div>
 
-<input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>" />
+<input type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
 </form>
-
+<?php } ?>
