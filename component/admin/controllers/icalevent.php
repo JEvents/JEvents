@@ -162,14 +162,7 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				else
 				{
-					if ($filtercat)
-					{
-						$where[] = "catmapcat.lft BETWEEN $filtercat->lft AND $filtercat->rgt";
-					}
-					else
-					{
-						$where[] = "ev.catid='$catid'";
-					}
+					$where[] = "ev.catid='$catid'";
 				}
 			}
 			else
@@ -201,14 +194,7 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				else
 				{
-					if ($filtercat)
-					{
-						$where[] = "catmapcat.lft BETWEEN $filtercat->lft AND $filtercat->rgt";
-					}
-					else
-					{
-						$where[] = "ev.catid='$catid'";
-					}
+					$where[] = "ev.catid='$catid'";
 				}
 			}
 		}
