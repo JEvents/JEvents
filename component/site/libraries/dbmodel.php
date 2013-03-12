@@ -498,6 +498,7 @@ class JEventsDBModel
 				// published state is now handled by filter
 				. ($needsgroup ? $groupby : "");
 		$query .= " ORDER BY det.hits DESC ";
+		$query .= " LIMIT " . $limit;
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);

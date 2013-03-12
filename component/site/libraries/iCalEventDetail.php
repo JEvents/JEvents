@@ -222,6 +222,12 @@ class iCalEventDetail extends JTable  {
 				$this->dtend += 86399; 
 			}
 		}
+		if ($this->dtend<$this->dtstart && strlen($this->dtstartraw)==8){
+			// convert to JEvents all day event mode!
+			$this->noendtime = 1;
+			//$this->allday = 1;				
+			$this->dtend = $this->dtstart + 86399; 
+		}
 
 		// Process any custom fields
 		$this->processCustom();
