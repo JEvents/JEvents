@@ -42,6 +42,8 @@ class ICalsController extends AdminIcalsController
 	// Thanks to HiFi
 	function ical()
 	{
+		// Include mootools framework
+		JHtml::_('behavior.framework', true);
 
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$Itemid = JEVHelper::getItemid();

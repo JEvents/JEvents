@@ -518,7 +518,7 @@ var NewCalendar = new Class({
 			var day = i - offset;
 			var date = new Date(cal.year, cal.month, day);
 
-			td.setProperty('class', 'dashday'+(day + this.options.offset) % 7);
+			td.setProperty('class', 'dashday'+((i - 1) % 7  + this.options.offset) % 7);
 
 			var cls = '';
 
