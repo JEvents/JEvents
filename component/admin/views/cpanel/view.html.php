@@ -608,10 +608,15 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
-
+			
 			$app = new stdClass();
 			$app->name = $manifestdata["name"];
-			$app->version = $manifestdata["version"];
+			$sefConfig = &Sh404sefFactory::getConfig();
+			if ($sefConfig->Enabled == "1") {
+				$app->version = $manifestdata["version"];
+			} else {
+				$app->version = $manifestdata["version"] . " Disabled in SH404 settings";
+			}
 			$name = "component_" . basename(dirname($manifest));
 			$apps[$name] = $app;
 		}
