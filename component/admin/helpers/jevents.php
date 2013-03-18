@@ -58,6 +58,11 @@ class JEventsHelper
 			JSubMenuHelper::addEntry(
 					JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName , array('defaults.list','defaults.overview'))
 			);
+		
+		//Support should only be for Admins really.
+		JSubMenuHelper::addEntry(
+				JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+		);
 		}
 		
 	}

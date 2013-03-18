@@ -352,14 +352,14 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	private function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false && strpos($filecontent, "joomlacontenteditor") === false && strpos($filecontent, "virtuemart") === false)
+		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false && strpos($filecontent, "joomlacontenteditor") === false && strpos($filecontent, "virtuemart") === false && strpos($filecontent, "sh404SEF") === false)
 		{
 			return false;
 		}
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false)
+		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false)
 		{
 			return false;
 		}
@@ -601,6 +601,20 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$name = "component_" . basename(dirname($manifest));
 			$apps[$name] = $app;
 		}
+		
+// SH404 Component Check
+		$xmlfiles5 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true);
+		foreach ($xmlfiles5 as $manifest)
+		{
+			if (!$manifestdata = $this->getValidManifestFile($manifest))
+				continue;
+
+			$app = new stdClass();
+			$app->name = $manifestdata["name"];
+			$app->version = $manifestdata["version"];
+			$name = "component_" . basename(dirname($manifest));
+			$apps[$name] = $app;
+		}
 
 
 // modules
@@ -721,14 +735,43 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 	}
         
-        function getTranslatorLink()
-        {
-            $translatorUrl =  JText::_("JEV_TRANSLATION_AUTHOR");
-            //$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR_URL");
-            //$translatorUrl = "<a href=\"$translatorUrl\">$translatorName</a>";
-            
-            return $translatorUrl;
-        }
+	function getTranslatorLink()
+	{
+		$translatorUrl =  JText::_("JEV_TRANSLATION_AUTHOR");
+		//$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR_URL");
+		//$translatorUrl = "<a href=\"$translatorUrl\">$translatorName</a>";
 
+		return $translatorUrl;
+	}
+	
+	function support()
+	{
+		jimport('joomla.html.pane');
+
+		$document = & JFactory::getDocument();
+		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+
+// Set toolbar items for the page
+//JToolBarHelper::preferences('com_jevents', '580', '750');
+		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		/*
+		  $user= JFactory::getUser();
+		  if ($user->authorise('core.admin','com_jevents.admin')) {
+		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
+		  }
+		 */
+		JEventsHelper::addSubmenu();
+
+		if (JFactory::getApplication()->isAdmin())
+		{
+//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
+		}
+//JToolBarHelper::help( 'screen.cpanel', true);
+
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+//$section = $params->get("section",0);
+
+	}
 }
 
