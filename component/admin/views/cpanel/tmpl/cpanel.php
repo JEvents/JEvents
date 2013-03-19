@@ -55,6 +55,9 @@ defined('_JEXEC') or die('Restricted access');
 						if (JEVHelper::isAdminUser()){
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+							// Support Info
+							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
+							$this->_quickiconButton($link, "Support_icon.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						}
 
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -91,19 +94,6 @@ defined('_JEXEC') or die('Restricted access');
 							echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
 							?>
 							<div style="width: 100%;">
-								<?php echo $clubnews; ?>
-							</div> <?php
-					}
-					$needsupdate = false;
-					$clubnews = $this->renderVersionsForClipboard();
-					if ($clubnews)
-					{
-						$label = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
-						echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
-							?>
-							<div style="width: 100%;padding:0px;">
-								<strong><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION");?></strong>
-								<br/>
 								<?php echo $clubnews; ?>
 							</div> <?php
 					}
