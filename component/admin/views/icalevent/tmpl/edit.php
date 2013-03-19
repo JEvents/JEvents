@@ -44,11 +44,16 @@ JHtmlBootstrap::loadCss();
 global $task, $catid;
 $db = & JFactory::getDBO();
 $editor = & JFactory::getEditor();
+if ($editor->get("_name")=="codemirror"){
+	$editor =  JFactory::getEditor("none");
+	JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR","WARNING"));
+}
 
 // clean any existing cache files
 $cache = & JFactory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
-$action = JFactory::getApplication()->isAdmin() ? "index.php" : JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
+// use JRoute to preseve language selection
+$action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_( "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
 // load any custom fields
 $dispatcher = & JDispatcher::getInstance();
@@ -160,7 +165,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 						return;
 					}
 					var form = document.adminForm;
-<?php echo $editor->getContent('jevcontent'); ?>
+<?php echo $editor->save('jevcontent'); ?>
 
 		try {
 

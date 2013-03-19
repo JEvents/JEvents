@@ -49,7 +49,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
 		</tr>
 	</table>
 
-	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
+	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 		<tr>
 			<th width="20" nowrap="nowrap">
 		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->rows ).")"; ?>" />
@@ -89,7 +89,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
               	if ($row->hasrepetition()){
 			$img = JHTML::_('image','admin/featured.png', '',array('title'=>''),true);   	
                 ?>
-          	    	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')">
+          	    	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')" class="btn btn-micro">
                         	<?php echo $img;?>
 			</a>
           	    <?php }?>
@@ -99,7 +99,7 @@ $pathIMG = JURI::root() . 'administrator/images/'; ?>
               	<?php  
 		$img =  $row->state()?JHTML::_('image','admin/tick.png', '',array('title'=>''),true):JHTML::_('image','admin/publish_x.png', '',array('title'=>''),true);
 		?>
-              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')">
+              	<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro">
 					<?php echo $img;?>
 				</a>
               	</td>

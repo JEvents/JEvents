@@ -614,6 +614,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						{
 							$days = intval($timedelta / (60 * 60 * 24));
 							$timedelta -= $days * 60 * 60 * 24;
+/*
+							if ($timedelta>3610){
+								//if more than 1 hour and 10 seconds over a day then round up the day output
+								$days +=1;
+							}
+							 */							
 							$fieldval = str_ireplace("%d", $days, $fieldval);
 							$shownsign = true;
 						}

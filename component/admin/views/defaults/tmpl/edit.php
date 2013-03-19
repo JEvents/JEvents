@@ -40,7 +40,6 @@ $this->replaceLabels($this->item->value);
 		<script type="text/javascript" language="Javascript">
 			<?php echo "Joomla.submitbutton = function (pressbutton) {\n"; ?>
 			var form = document.adminForm;
-			<?php echo $editor->getContent( 'value' ); ?>
 			<?php
 			// in case editor is toggled off - needed for TinyMCE
 			echo $editor->save( 'value' );

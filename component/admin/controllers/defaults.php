@@ -30,6 +30,7 @@ class AdminDefaultsController extends JControllerForm {
 		
 		$this->registerTask( 'list',  'overview' );
 		$this->registerTask( 'new',  'edit' );
+		$this->registerTask( 'save',  'apply' );
 		$this->registerDefaultTask("overview");
 
 		// Make sure DB is up to date
@@ -193,6 +194,10 @@ class AdminDefaultsController extends JControllerForm {
 			// Get/Create the model
 			if ($model = & $this->getModel("default", "defaultsModel")) {
 				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
+					if (JRequest::getCmd("task")=="defaults.apply"){
+						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));
+						return;
+					}					
 					$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",JText::_("JEV_TEMPLATE_SAVED"));
 					return;
 				}

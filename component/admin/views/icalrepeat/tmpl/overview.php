@@ -28,7 +28,7 @@ $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."
 		</tr>
 	</table>
 
-	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
+	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 		<tr>
 			<th width="20" nowrap="nowrap">
 		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->icalrows ).")"; ?>" />

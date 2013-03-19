@@ -85,6 +85,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents' );
 
+		JToolBarHelper::apply("defaults.apply");
 		JToolBarHelper::save("defaults.save");
 		JToolBarHelper::cancel("defaults.cancel");
 
