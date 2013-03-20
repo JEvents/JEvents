@@ -722,3 +722,19 @@ div.jevtt_text{
 	}
 }
 
+
+/* ICAL Export style */
+p.ical_form_button a {
+	border: 1px solid rgb(202, 202, 202);
+	padding: 10px;
+	border-radius: 4px;
+	background-color: rgb(247, 247, 247);
+	color: rgb(107, 121, 107);
+	line-height:2.6;
+}
+p.ical_form_button a:hover {
+
+}
+.ical_submit {
+	padding:5px;
+}
