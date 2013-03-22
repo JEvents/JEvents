@@ -352,10 +352,18 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 	private function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (strpos($filecontent, "jevents.net") === false && strpos($filecontent, "gwesystems.com") === false && strpos($filecontent, "joomlacontenteditor") === false && strpos($filecontent, "virtuemart") === false && strpos($filecontent, "sh404SEF") === false)
+		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false)
 		{
 			return false;
 		}
+		// for JCE and Virtuemart only check component version number
+		if ( stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false  || strpos($filecontent, "JCE") !== false)
+		{
+			if (strpos ($filecontent, "type='component'") === false && strpos ($filecontent, 'type="component"') === false){
+				return false;
+			}
+		}
+		
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
@@ -589,7 +597,11 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$apps[$app->name] = $app;
 		
 // components (including JEvents
-		$xmlfiles3 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true);
+		$xmlfiles3 = array_merge( JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true) ,
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true) ,
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart.xml", true, true), 
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce.xml", true, true) 
+				);
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -598,30 +610,23 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$app = new stdClass();
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
-			$name = "component_" . basename(dirname($manifest));
-			$apps[$name] = $app;
-		}
-		
-// SH404 Component Check
-		$xmlfiles5 = JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true);
-		foreach ($xmlfiles5 as $manifest)
-		{
-			if (!$manifestdata = $this->getValidManifestFile($manifest))
-				continue;
-			
-			$app = new stdClass();
-			$app->name = $manifestdata["name"];
-			$sefConfig = &Sh404sefFactory::getConfig();
-			if ($sefConfig->Enabled == "1") {
-				$app->version = $manifestdata["version"];
-			} else {
-				$app->version = $manifestdata["version"] . " Disabled in SH404 settings";
+			// is sh404sef disabled ?
+			if (basename(dirname($manifest)) == "com_sh404sef" ){
+				if (is_callable("Sh404sefFactory::getConfig")){
+					$sefConfig = &Sh404sefFactory::getConfig();
+					if (!$sefConfig->Enabled ) {
+						$app->version = $manifestdata["version"] . " (Disabled in SH404 settings)";
+					}
+				}
+				else {
+					$app->version = $manifestdata["version"] . " (sh404sef system plugins not enabled)";
+				}
+				
 			}
 			$name = "component_" . basename(dirname($manifest));
 			$apps[$name] = $app;
 		}
-
-
+		
 // modules
 		if (JFolder::exists(JPATH_SITE . "/modules"))
 		{

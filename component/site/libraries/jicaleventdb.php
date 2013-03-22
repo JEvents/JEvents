@@ -233,7 +233,8 @@ class jIcalEventDB extends jEventCal {
 		$cfg	 = & JEVConfig::getInstance();
 		// 23:59:59 is actually midnight since we don't record seconds elsewhere
 		if (JevDate::strftime("%H:%M:%S",$this->dtend())=="23:59:59"){
-			return "00:00";
+			// If we set this time to 00 then event editing will so a zero time length event i.e. 00:00 is midnight at the start of the day
+		//	return "00:00";
 		}
 		return JevDate::strftime("%H:%M",$this->dtend());
 	}
