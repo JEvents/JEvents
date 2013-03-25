@@ -26,9 +26,15 @@ class JEventsHelper
 		
 		if ($option == 'com_categories') {
 			$doc =& JFactory::getDocument();
-			$hide_options = '#toolbar-popup-options {'
+			if (!JVersion::isCompatible("3.0")) {
+				$hide_options = '#toolbar-popup-options {'
 				. 'display:none;'
 				. '}'; 
+			} else {
+				$hide_options = '#toolbar-options {'
+				. 'display:none;'
+				. '}'; 
+			}
 			$doc->addStyleDeclaration( $hide_options );
 		}
 		
