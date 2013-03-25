@@ -23,11 +23,14 @@ class JEventsHelper
 	{
 		$task = JRequest::getCmd("task", "cpanel.cpanel");
 		$option = JRequest::getCmd("option", "com_categories");
-		$doc =& JFactory::getDocument();
-		$hide_options = '#toolbar-popup-options {'
-			. 'display:none;'
-			. '}'; 
-		$doc->addStyleDeclaration( $hide_options );
+		
+		if ($option = 'com_categories') {
+			$doc =& JFactory::getDocument();
+			$hide_options = '#toolbar-popup-options {'
+				. 'display:none;'
+				. '}'; 
+			$doc->addStyleDeclaration( $hide_options );
+		}
 		
 		if ($vName == "")
 		{
