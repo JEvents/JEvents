@@ -137,7 +137,8 @@
 		<field name="icalformatted" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_DESCRIPTIONS_FORMATTED" description="JEV_ICAL_DESCRIPTIONS_FORMATTED_DESC"/>
 		<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_WEBCAL_URL" description="JEV_ICAL_WEBCAL_URL_DESC" />
 		<field name="show_ical_download" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ICAL_ALLOW_DOWNLOAD" description="JEV_ICAL_ALLOW_DOWNLOAD" />
-	</fieldset>
+		<field name="show_webcal_google" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_GOOGLE_CALENDAR" description="JEV_ICAL_GOOGLE_CALENDAR_DESC"/>
+</fieldset>
 
 	<fieldset name="JEV_EVENT_EDITING">
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description=""/>
