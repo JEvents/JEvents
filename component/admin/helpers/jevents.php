@@ -24,6 +24,20 @@ class JEventsHelper
 		$task = JRequest::getCmd("task", "cpanel.cpanel");
 		$option = JRequest::getCmd("option", "com_categories");
 		
+		if ($option == 'com_categories') {
+			$doc =& JFactory::getDocument();
+			if (!JVersion::isCompatible("3.0")) {
+				$hide_options = '#toolbar-popup-options {'
+				. 'display:none;'
+				. '}'; 
+			} else {
+				$hide_options = '#toolbar-options {'
+				. 'display:none;'
+				. '}'; 
+			}
+			$doc->addStyleDeclaration( $hide_options );
+		}
+		
 		if ($vName == "")
 		{
 			$vName = $task;

@@ -7,7 +7,7 @@ select.dashboard {
 }
 
 button.dashboard {
-	background: url(../images/dashboard-icon.gif);
+	background: url('../images/dashboard-icon.gif');
 	border: 0;
 	cursor: pointer;
 	height: 20px;
@@ -22,7 +22,7 @@ button.dashboard.active {
 }
 
 div.dashboard {
-	background: url(../images/dashboard.png);
+	background: url('../images/dashboard.png');
 	height: 175px;
 	padding: 0 12px;
 	text-align: center;
@@ -71,11 +71,11 @@ div.dashboard caption.dualnav a {
 	top:1px;
 }
 div.dashboard caption a.prev {
-	background-image: url(../images/dashboard-prev.gif);
+	background-image: url('../images/dashboard-prev.gif');
 	left: 1px;
 }
 div.dashboard caption a.next {
-	background-image: url(../images/dashboard-next.gif);
+	background-image: url('../images/dashboard-next.gif');
 	right: 1px;
 }
 div.dashboard caption a:hover {

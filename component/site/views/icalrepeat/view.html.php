@@ -39,7 +39,7 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
 
-		JEVHelper::script('editical.js',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/js/');  
+		JEVHelper::script('editical.js',  'components/'.JEV_COM_COMPONENT.'/assets/js/');  
 		JEVHelper::script('view_detail.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');
 		
 		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));

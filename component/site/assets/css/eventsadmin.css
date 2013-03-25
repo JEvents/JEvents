@@ -58,10 +58,10 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	border: 0 none;
 }
 .pane-toggler span {
-	background: transparent url(../images/j_arrow.png) 5px 50% no-repeat;
+	background: transparent url('../images/j_arrow.png') 5px 50% no-repeat;
 }
 .pane-toggler-down span {
-	background: transparent url(../images/j_arrow_down.png) 5px 50% no-repeat;
+	background: transparent url('../images/j_arrow_down.png') 5px 50% no-repeat;
 }
 .pane-toggler-down {
 	border-bottom: 1px solid #738498;
@@ -194,10 +194,10 @@ a#colorPickButton {
 	text-decoration:none;
 	padding:5px;
 }
-.icon-32-save 			{ background-image: url(../images/icon-32-save.png); }
-.icon-32-edit 			{ background-image: url(../images/icon-32-edit.png); }
-.icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
-.icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
+.icon-32-save 			{ background-image: url('../images/icon-32-save.png'); }
+.icon-32-edit 			{ background-image: url('../images/icon-32-edit.png'); }
+.icon-32-cancel 		{ background-image: url('../images/icon-32-cancel.png'); }
+.icon-32-apply			{ background-image: url('../images/icon-32-apply.png'); }
 
 #jevents label {display:inline;}
 
