@@ -148,6 +148,21 @@ if (JRequest::getString("submit","")!="")
 		}
 	}
 	
+	// New ICAL Export Options for Google,
+	if ($params->get("show_webcal_google", 0) == 1){
+		echo "<div class='jev_google_export'>";
+		echo "<div class='jev_google_export_pub'><a href='http://www.google.com/calendar/render?cid=". urlencode($publiclink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
+		echo JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL_SHORT') . "</div>\n";
+
+		if ($user->id != 0)
+		{
+			echo "<div class='jev_google_export_priv'><a href='http://www.google.com/calendar/render?cid=". urlendcode($privatelink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
+			echo JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL_SHORT'). "</div>\n";
+		}
+		echo"</div>";
+	}
+	
+	
 	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
 	if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") == 0 && $cfg->get("show_webcal_url") == 0) {
 		echo "<div style='margin:15px;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";

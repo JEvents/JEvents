@@ -688,6 +688,7 @@ div.jevtt_text{
 	}
 }
 
+
 /* ICAL Export style */
 p.ical_form_button a {
 	border: 1px solid rgb(202, 202, 202);
@@ -702,4 +703,17 @@ p.ical_form_button a:hover {
 }
 .ical_submit {
 	padding:5px;
+}
+
+.jev_google_export {
+ float:left;
+ width:100%;   
+}
+.jev_google_export img{
+    display:block;
+    margin-top:5px;
+}
+.jev_google_export_pub, .jev_google_export_priv {
+	float:left;
+	margin:5px;
 }
