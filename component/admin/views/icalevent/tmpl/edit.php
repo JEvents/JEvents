@@ -467,7 +467,7 @@ else
 									</td>
 									<td>
 										<div style="position:relative;z-index:9999;">
-											<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
+											<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
 										</div>
 									</td>
 								</tr>

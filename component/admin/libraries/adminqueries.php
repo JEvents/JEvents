@@ -28,11 +28,30 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		$user = JFactory::getUser();
 		// force state value to event state!
 		$accessibleCategories = $this->accessibleCategoryList();
+		
+		
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$extrajoin = "";
+		$extrawhere = "";
+		$params = JComponentHelper::getParams("com_jevents");
+		if ($params->get("multicategory", 0))
+		{
+			$extrajoin = "\n LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = ev.ev_id";
+			$extrajoin .= "\n LEFT JOIN  #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			$extrawhere = " AND  catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere .= " AND catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+			$catwhere = "\n WHERE 1 ";
+		}
+		
+		// in case we have an event with no category set for some reason
+		// $accessibleCategories .= ",0";
 		$query = "SELECT ev.*,rr.*, det.*, ev.state as state"
 		. "\n FROM #__jevents_vevent as ev"
 		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = ev.detail_id"
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-		. "\n WHERE ev.catid IN(".$accessibleCategories.")"
+		. $extrajoin
+		. $catwhere
+		. $extrawhere				
 		. "\n AND ev.ev_id = '$agid'"
 		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 		$db->setQuery( $query );

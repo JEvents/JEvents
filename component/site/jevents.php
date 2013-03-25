@@ -286,7 +286,7 @@ if ($conf->get('caching', 1))
 
 	$session = JFactory::getSession();
 	$sessionregistry = $session->get('registry');
-	$sessionArray = $sessionregistry->toArray();
+	$sessionArray = isset($sessionregistry) ? $sessionregistry->toArray(): false;
 	$sessionArrayData = array();
 	if (is_array($sessionArray))
 	{
