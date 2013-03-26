@@ -82,7 +82,7 @@ class iCalImport
 					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 				}
 				
-				curl_setopt($ch, CURLOPT_URL,($isFile?"file://":"").$file);
+				curl_setopt($ch, CURLOPT_URL, $file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
