@@ -73,6 +73,15 @@ class iCalImport
 
 			if (!$isFile && is_callable("curl_exec")){
 				$ch = curl_init();
+				
+				// Set curl option CURLOPT_HTTPAUTH, if the url includes user name and password.
+				// e.g. http://username:password@www.example.com/cal.ics
+				$username = parse_url($file, PHP_URL_USER);
+				$password = parse_url($file, PHP_URL_PASS);
+				if ($username != "" && $password != "") {
+					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+				}
+				
 				curl_setopt($ch, CURLOPT_URL,($isFile?"file://":"").$file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
