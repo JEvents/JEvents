@@ -114,15 +114,11 @@ if (JRequest::getString("submit","")!="")
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
 	}
 	
-	
-	//Webcal Subscribe button:
-	//Replace http with webcal
-	
-	$webcalurl_pub = str_replace('http:', 'webcal:', $publiclink);
-	$webcalurl_priv = str_replace('http:', 'webcal:', $privatelink);
-	
 	echo "<h3>" . JText::_("JEV_ICAL_GENERATED") . "</h3>";
 	if ($params->get("show_webcal_url", 0) == 1){
+		//Webcal Subscribe button:
+		//Replace http with webcal	
+		$webcalurl_pub = str_replace(array('http:','https:'), 'webcal:', $publiclink);
 		echo "<p class='ical_form_button'><a href='$webcalurl_pub'>" . JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL') . "</a></p>";
 	}
 	if ($params->get("show_ical_download", 1) == 1){
@@ -134,6 +130,9 @@ if (JRequest::getString("submit","")!="")
 			echo "<p class='ical_form_button'><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 		}
 		if ($params->get("show_webcal_url", 0) == 1){
+			//Webcal Subscribe button:
+			//Replace http with webcal	
+			$webcalurl_priv = str_replace(array('http:', 'https:'), 'webcal:', $privatelink);
 			echo "<p class='ical_form_button'><a href='$webcalurl_priv'>" . JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL') . "</a></p>";
 		}
 	}
@@ -156,7 +155,7 @@ if (JRequest::getString("submit","")!="")
 
 		if ($user->id != 0)
 		{
-			echo "<div class='jev_google_export_priv'><a href='http://www.google.com/calendar/render?cid=". urlendcode($privatelink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
+			echo "<div class='jev_google_export_priv'><a href='http://www.google.com/calendar/render?cid=". urlencode($privatelink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
 			echo JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL_SHORT'). "</div>\n";
 		}
 		echo"</div>";
