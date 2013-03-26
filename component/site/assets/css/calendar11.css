@@ -16,7 +16,7 @@ select.calendar {
 }
 
 button.calendar {
-	background: url(../imagescalendar-icon.gif);
+	background: url('../imagescalendar-icon.gif');
 	border: 0;
 	cursor: pointer;
 	float: left;
@@ -30,7 +30,7 @@ button.calendar.active {
 }
 
 div.calendar {
-	background: url(../imagescalendar.png);
+	background: url('../imagescalendar.png');
 	height: 195px;
 	padding: 0 6px;
 	text-align: center;
@@ -68,11 +68,11 @@ div.calendar {
 		width: 11px;
 	}
 	div.calendar caption a.prev {
-		background-image: url(../imagescalendar-prev.gif);
+		background-image: url('../imagescalendar-prev.gif');
 		left: 0;
 	}
 	div.calendar caption a.next {
-		background-image: url(../imagescalendar-next.gif);
+		background-image: url('../imagescalendar-next.gif');
 		right: 0;
 	}
 	div.calendar caption a:hover {
@@ -110,7 +110,7 @@ div.calendar {
 		width: 21px;
 	}
 	div.calendar td {
-		background: url(../imagescalendar-td.gif);
+		background: url('../imagescalendar-td.gif');
 		color: #FFF;
 		font-size: 11px;
 	}
@@ -118,20 +118,20 @@ div.calendar {
 		color: #999;
 	}
 	div.calendar td.valid {
-		background: url(../imagescalendar-valid.gif);
+		background: url('../imagescalendar-valid.gif');
 		color: #0597DB;
 		cursor: pointer;
 	}
 	div.calendar td.hilite {
-		background: url(../imagescalendar-hilite.gif);
+		background: url('../imagescalendar-hilite.gif');
 	}
 	div.calendar td.inactive {
-		background: url(../imagescalendar-td.gif) 0 100%;
+		background: url('../imagescalendar-td.gif') 0 100%;
 		color: #FFF;
 	}
 	div.calendar td.active,
 	div.calendar td.hover {
-		background: url(../imagescalendar-valid.gif) 0 100%;
+		background: url('../imagescalendar-valid.gif') 0 100%;
 		color: #FFF;
 		cursor: pointer;
 	}

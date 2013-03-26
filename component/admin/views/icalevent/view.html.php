@@ -154,7 +154,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JEVHelper::script('editical.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() <= "") {
 			$document->setTitle(JText::_( 'CREATE_ICAL_EVENT' ));

@@ -123,7 +123,7 @@ div#jevents div.current dd {
 
 /** header icons **/
 div.icon-48-jevents {
-	background: url(../images/logo.gif) transparent no-repeat;
+	background: url('../images/logo.gif') transparent no-repeat;
 	padding-left:265px!important;
 	line-height:48px;
 }
@@ -222,10 +222,10 @@ a#colorPickButton {
 	text-decoration:none;
 	padding:5px;
 }
-.icon-32-save 			{ background-image: url(../images/icon-32-save.png); }
-.icon-32-edit 			{ background-image: url(../images/icon-32-edit.png); }
-.icon-32-cancel 		{ background-image: url(../images/icon-32-cancel.png); }
-.icon-32-apply 		{ background-image: url(../images/icon-32-apply.png); }
+.icon-32-save 			{ background-image: url('../images/icon-32-save.png'); }
+.icon-32-edit 			{ background-image: url('../images/icon-32-edit.png'); }
+.icon-32-cancel 		{ background-image: url('../images/icon-32-cancel.png'); }
+.icon-32-apply 		{ background-image: url('../images/icon-32-apply.png'); }
 
 #jevents label {display:inline;}
 #jevents .jeveditrepeats ul {list-style-type: none;}
