@@ -17,8 +17,10 @@ $datamodel	= new JEventsDataModel();
 // find appropriate Itemid and setup catids for datamodel
 $Itemid = JRequest::getInt("Itemid");
 $option = JRequest::getCmd("option");
+$jevtask = false;
 if ($option==JEV_COM_COMPONENT){
 	$myItemid = $Itemid;
+	$jevtask = JRequest::getVar("jevtask", "year.listevents");
 }
 else {
 	$myItemid = $params->get("target_itemid",0);
@@ -31,7 +33,8 @@ $form_link = "";
 if ($myItemid>0){
 	$menu = & JSite::getMenu();
 	$menuitem = $menu->getItem($myItemid);
-        if ($menuitem){
+	// if on a detail page or not already on a jevents component page then pick up the default task
+        if ($menuitem && (!$jevtask || strpos($jevtask, "detail")!==false)){
             $form_link = $menuitem->link. "&Itemid=".$myItemid;
         }
 }
