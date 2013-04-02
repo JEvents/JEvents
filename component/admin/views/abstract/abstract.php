@@ -21,10 +21,10 @@ class JEventsAbstractView extends JViewLegacy {
 		parent::__construct($config);
 
 		if (JVersion::isCompatible("3.0")) 	{
-			JEVHelper::stylesheet( 'eventsadmin.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+			JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 		else {
-			JEVHelper::stylesheet( 'eventsadmin16.css',  'administrator/components/'.JEV_COM_COMPONENT.'/assets/css/' );
+			JEVHelper::stylesheet( 'eventsadmin16.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 		
 		$this->_addPath('template', $this->_basePath.'/'.'views'.'/'.'abstract'.'/'.'tmpl');
