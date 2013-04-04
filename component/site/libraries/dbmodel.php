@@ -977,7 +977,8 @@ class JEventsDBModel
 							. "  AND icsf.state=1 "
 							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 							// published state is now handled by filter
-							. "\n GROUP BY rpt.rp_id
+							// duplicating the sort in the group statements improves MySQL performance
+							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
 						ORDER BY rpt.startrepeat ASC"
 					;
 
@@ -1013,7 +1014,8 @@ class JEventsDBModel
 							. "  AND icsf.state=1 "
 							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 							// published state is now handled by filter
-							. "\n GROUP BY rpt.rp_id
+							// duplicating the sort in the group statements improves MySQL performance
+							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
 							ORDER BY rpt.startrepeat desc"
 					;
 
@@ -1048,7 +1050,8 @@ class JEventsDBModel
 							. "  AND icsf.state=1 "
 							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 							// published state is now handled by filter
-							. "\n GROUP BY rpt.rp_id
+							// duplicating the sort in the group statements improves MySQL performance
+							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
 							ORDER BY rpt.startrepeat asc"
 					;
 

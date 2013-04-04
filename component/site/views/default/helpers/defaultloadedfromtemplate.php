@@ -610,6 +610,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
 						$fieldval = JText::_("JEV_DURATION_FORMAT");
 						$shownsign = false;
+						// whole days!
+						if (stripos($fieldval, "%wd") !== false)
+						{
+							$days = intval($timedelta / (60 * 60 * 24));
+							$timedelta -= $days * 60 * 60 * 24;
+
+							if ($timedelta>3610){
+								//if more than 1 hour and 10 seconds over a day then round up the day output
+								$days +=1;
+							}
+
+							$fieldval = str_ireplace("%d", $days, $fieldval);
+							$shownsign = true;
+						}
 						if (stripos($fieldval, "%d") !== false)
 						{
 							$days = intval($timedelta / (60 * 60 * 24));

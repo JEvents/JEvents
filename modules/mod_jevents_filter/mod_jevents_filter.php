@@ -15,6 +15,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once (dirname(__FILE__).'/'.'helper.php');
 
+// reset filters when viewed on non-JEvents page - make this a configurable option
+/*
+$option = JRequest::getCmd("option");
+if ($option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
+	$session = JFactory::getSession();
+	$sessionregistry = $session->get('registry');
+	$sessiondata =$sessionregistry->toArray();
+	foreach($sessiondata as $key => $val){
+		if (strpos($key, "fv_ses")>0 || strpos($key, "fvs_ses")>0){
+			$sessionregistry->set($key, null);
+		}
+	}
+	// display nothing on non-jevents pages - again make this a config option
+	return ;
+}
+*/
+
 $jevhelper = new modJeventsFilterHelper($params);
 
 // record what is running - used by the filters

@@ -41,7 +41,7 @@ $url = JRoute::_("index.php?option=" . $option);
             </tr>
         </table>
         <br/>
-        <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist">
+        <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist   table table-striped">
             <thead>
                 <tr>
                     <th width="20">

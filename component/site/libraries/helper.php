@@ -1662,11 +1662,33 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
-                $levels = $user->getAuthorisedViewLevels();
+		$root = $user->get("isRoot");
+		if ($root){
+			static $rootlevels  = false;
+			if (!$rootlevels ){
+				// Get a database object.
+				$db = JFactory::getDBO();
 
-		if (JEVHelper::isAdminUser($user) && JFactory::getApplication()->isAdmin()){
-			$levels = array_merge($levels, JAccess::getAuthorisedViewLevels(0));
+				// Build the base query.
+				$query = $db->getQuery(true);
+				$query->select('id, rules');
+				$query->from($query->qn('#__viewlevels'));
+
+				// Set the query for execution.
+				$db->setQuery((string) $query);
+				$rootlevels = $db->loadColumn();
+				JArrayHelper::toInteger($rootlevels);
+			}
+			$levels = $rootlevels;
 		}
+		else {
+			$levels = $user->getAuthorisedViewLevels();
+			if (JEVHelper::isAdminUser($user) && JFactory::getApplication()->isAdmin()){
+				// Make sure admin users can see public events
+				$levels = array_merge($levels, JAccess::getAuthorisedViewLevels(0));
+			}
+		}
+
 		
 		if ($type == 'string')
 		{

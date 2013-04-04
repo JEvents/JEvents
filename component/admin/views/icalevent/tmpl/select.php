@@ -53,7 +53,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 <?php } ?>
 	</table>
 
-	<table  class="adminlist">
+	<table  class="adminlist   table table-striped">
 		<thead>
 			<tr>
 				<th class="title" width="50%" nowrap="nowrap">
