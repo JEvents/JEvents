@@ -12,6 +12,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+if (JRequest::getCmd("task")=="icalrepeat.detail"){
+	if ($params->get('showindetails', 0) == 0) {
+	   return;
+	}
+} else {
+	
 
 $datamodel	= new JEventsDataModel();
 // find appropriate Itemid and setup catids for datamodel
@@ -62,3 +68,5 @@ $filters = $jevhelper->getFilters();
 $filterHTML = $filters->getFilterHTML();
 
 require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
+
+}

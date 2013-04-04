@@ -31,6 +31,7 @@
 					default=""
 					label="Target Menu Item"
 					description="Menu item for target page" />
+				<field name="showindetails" type="jevboolean" default="0" label="JEV_SHOW_IN_DETAILS" description="JEV_SHOW_IN_DETAILS_DESC" />
 			</fieldset>
 			<fieldset
 				name="advanced">
