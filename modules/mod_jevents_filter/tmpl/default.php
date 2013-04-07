@@ -18,7 +18,8 @@ $datamodel = new JEventsDataModel();
 $Itemid = JRequest::getInt("Itemid");
 $option = JRequest::getCmd("option");
 $jevtask = false;
-if ($option==JEV_COM_COMPONENT){
+if ($option == JEV_COM_COMPONENT)
+{
 	$myItemid = $Itemid;
 	$jevtask = JRequest::getVar("jevtask", "year.listevents");
 }
@@ -37,9 +38,10 @@ if ($myItemid > 0)
 	$menu = & JSite::getMenu();
 	$menuitem = $menu->getItem($myItemid);
 	// if on a detail page or not already on a jevents component page then pick up the default task
-        if ($menuitem && (!$jevtask || strpos($jevtask, "detail")!==false)){
-            $form_link = $menuitem->link. "&Itemid=".$myItemid;
-        }
+	if ($menuitem && (!$jevtask || strpos($jevtask, "detail") !== false))
+	{
+		$form_link = $menuitem->link . "&Itemid=" . $myItemid;
+	}
 }
 
 //$myItemid = JEVHelper::getItemid();
@@ -68,20 +70,8 @@ $form_link = JRoute::_($form_link
 $filters = $jevhelper->getFilters();
 $filterHTML = $filters->getFilterHTML();
 
-
-
-if (JRequest::getCmd("task") == "icalrepeat.detail")
+if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0)
 {
-	if ($params->get('showindetails', 0) == 0)
-	{
-		return;
-	}
-	else
-	{
-		require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
-	}
+	return;
 }
-else
-{
-	require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
-}
+require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
