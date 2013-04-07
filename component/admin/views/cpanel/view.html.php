@@ -100,7 +100,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			$title = str_replace(" ", "_", $rssDoc->get_title());
 			$link = $rssDoc->get_link();
 
-			$output = '<table class="adminlist">';
+			$output = '<table class="adminlist   table table-striped">';
 			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . JText::_($title) . '</th></tr>';
 
 			$items = array_slice($rssDoc->get_items(), 0, 3);

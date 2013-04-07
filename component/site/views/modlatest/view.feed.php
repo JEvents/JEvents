@@ -93,8 +93,8 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		if (($params->get('modlatest_useLocalParam', 0) == 1) && (!empty($t_description))) {
 			$info['description'] = $t_description;
 		}
-		$info['image_url']		= htmlspecialchars($cfg->get( 'com_rss_logo', JURI::root() . 'administrator/components/' . JEV_COM_COMPONENT . '/assets/images/logo.gif'));
-		if ($info['image_url']=="") $info['image_url']	= htmlspecialchars( JURI::root() . 'administrator/components/' . JEV_COM_COMPONENT . '/assets/images/logo.gif');
+		$info['image_url']		= htmlspecialchars($cfg->get( 'com_rss_logo', JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/logo.gif'));
+		if ($info['image_url']=="") $info['image_url']	= htmlspecialchars( JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/logo.gif');
 		$info['image_alt'] 		= $info['title'];
 
 		$info['limit_text']		= $cfg->get( 'com_rss_limit_text', 1 );

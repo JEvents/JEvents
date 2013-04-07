@@ -25,7 +25,7 @@ $pathIMG = JURI::root().'/administrator/images/';
 
 
 <div id="editcell">
-	<table class="adminlist">
+	<table class="adminlist   table table-striped">
 	<thead>
 		<tr>
 			<th width="20" nowrap="nowrap">

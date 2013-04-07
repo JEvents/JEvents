@@ -587,7 +587,9 @@ function JEventsBuildRouteNew(&$query, $task)
 		case "search.form":
 		case "search.results":
 		case "admin.listevents": {
-				$segments[] = $transtask;
+				if (!in_array($transtask, $segments)){
+					$segments[] = $transtask;
+				}
 				$config = & JFactory::getConfig();
 				$t_datenow = JEVHelper::getNow();
 

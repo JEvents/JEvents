@@ -52,8 +52,10 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. $extrajoin
 		. $catwhere
 		. $extrawhere				
-		. "\n AND ev.ev_id = '$agid'"
-		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
+		. "\n AND ev.ev_id = '$agid'";
+		if (!$user->get("isRoot")){
+			$query .= "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
+		}
 		$db->setQuery( $query );
 
 		$rows = $db->loadObjectList();

@@ -23,6 +23,15 @@
 				<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 			</field>
 
+			<field name="iconstoshow" type="jevmultilist" mulitple="multiple" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC">
+				<option value="byyear">JEVENTS_LIST_YEAR_DEFAULT_TITLE</option>
+				<option value="bymonth">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
+				<option value="byweek">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
+				<option value="byday">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
+				<option value="bycat">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
+				<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
+			</field>
+
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 			<!--
 			<field name="catid0" type="jevcategory"  default="0" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_DESC" />

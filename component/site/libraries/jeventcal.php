@@ -705,7 +705,7 @@ class jEventCal {
 		$title = JFilterOutput::stringURLSafe($this->title());
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$this->id() .'&Itemid='.$Itemid
 		."&year=$year&month=$month&day=$day" ;
-		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd("option","")!="com_acymailing"){
+		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd('task', 'selectfunction')!='icalevent.select'  && JRequest::getCmd("option","")!="com_acymailing" && JRequest::getCmd("option","")!="com_jnews"){
 			$link .= "&tmpl=component";
 		}
 		$link = $sef?JRoute::_( $link  ):$link;

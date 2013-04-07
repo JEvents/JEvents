@@ -20,7 +20,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids");
 	?>
 	<div class="jev_pagination">
-	<form action="<?php echo $link;?>" method="post">
+	<form action="<?php echo $link;?>" method="post" xxx="1">
 	<?php
 	echo $pageNav->getListFooter(); 
 	?>

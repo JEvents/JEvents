@@ -343,7 +343,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						ob_start();
 						?>
 						<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
-							<img src="<?php echo JURI::root() . 'administrator/components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;"/>
+							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;"/>
 						</a>
 						<div class="jevdialogs">
 							<?php
@@ -610,6 +610,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
 						$fieldval = JText::_("JEV_DURATION_FORMAT");
 						$shownsign = false;
+						// whole days!
+						if (stripos($fieldval, "%wd") !== false)
+						{
+							$days = intval($timedelta / (60 * 60 * 24));
+							$timedelta -= $days * 60 * 60 * 24;
+
+							if ($timedelta>3610){
+								//if more than 1 hour and 10 seconds over a day then round up the day output
+								$days +=1;
+							}
+
+							$fieldval = str_ireplace("%d", $days, $fieldval);
+							$shownsign = true;
+						}
 						if (stripos($fieldval, "%d") !== false)
 						{
 							$days = intval($timedelta / (60 * 60 * 24));
