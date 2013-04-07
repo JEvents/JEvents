@@ -70,8 +70,12 @@ $form_link = JRoute::_($form_link
 $filters = $jevhelper->getFilters();
 $filterHTML = $filters->getFilterHTML();
 
-if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0)
+//Check if in event details
+//We never need filters in an edit page, this could cause user issues, so if there remove to.
+if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0 || JRequest::getCmd("task") == "icalevent.edit")
 {
 	return;
 }
+
+//Check if creating / editing an event
 require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
