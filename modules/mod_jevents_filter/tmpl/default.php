@@ -74,4 +74,4 @@ if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetai
 {
 	return;
 }
-require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
+require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
