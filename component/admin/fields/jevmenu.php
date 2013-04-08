@@ -26,13 +26,11 @@ class JFormFieldJEVmenu extends JFormFieldList
 	public function getOptions()
 	{
 		// Trap to stop the config from being editing from the categories page
+		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components. 
 		if (JRequest::getString("option") =="com_config"){
-			?>
-			<script type="text/javascript">
-				alert("<?php echo JText::_("JEV_SET_CONFIG_VIA_COMPONENT",true);?>");
-				window.parent.SqueezeBox.close();
-			</script>
-			<?php
+			$redirect_url  =  "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
+			$app  = & JFactory::getApplication();
+			$app->redirect($redirect_url); //redirect 
 			exit();
 		}
 

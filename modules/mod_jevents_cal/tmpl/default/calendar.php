@@ -357,7 +357,7 @@ class DefaultModCalView
 
 
 
-		$content	.= '<table style="width:'.$width.';height:'.$height.'; align="center" class="mod_events_table" cellspacing="0" cellpadding="2" >'.$lf
+		$content	.= '<table style="width:'.$width.';height:'.$height.';" align="center" class="mod_events_table" cellspacing="0" cellpadding="2" >'.$lf
 		. '<tr class="mod_events_dayname">'.$lf;
 
 		// Days name rows
