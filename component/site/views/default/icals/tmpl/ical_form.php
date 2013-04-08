@@ -5,63 +5,10 @@ $cfg = & JEVConfig::getInstance();
 
 $view = $this->getViewName();
 
-$script = <<<SCRIPT
-function clearIcalCategories(allcats){
-	if(allcats.checked){
-		document.getElements('input[name=categories[]]:checked').each (function(el){
-			if (el.value!=0){
-				el.checked=false;
-			}
-		});
-		$('othercats').style.display='none';
-	}
-	else {
-		document.getElements('input[name=categories[]]').each (function(el){
-			if (el.value!=0 && el.checked==false){
-				el.checked=true;
-			}
-		});
-		$('othercats').style.display='block';		
-	}
-}
-function clearAllIcalCategories(){
-		document.getElements('input[name=categories[]]:checked').each (function(el){
-			if (el.value==0){
-				el.checked=false;
-			}
-		});
-}
-function clearIcalYears(allyears){
-	if(allyears.checked){
-		document.getElements('input[name=years[]]:checked').each (function(el){
-			if (el.value!=0){
-				el.checked=false;
-			}
-		});
-		$('otheryears').style.display='none';		
-	}
-	else {
-		document.getElements('input[name=years[]]').each (function(el){
-			if (el.value!=0 && el.checked==false){
-				el.checked=true;
-			}
-		});
-		$('otheryears').style.display='block';				
-	}
-}
-function clearAllIcalYears(){
-		document.getElements('input[name=years[]]:checked').each (function(el){
-			if (el.value==0){
-				el.checked=false;
-			}
-		});
-}
-
-SCRIPT;
-$doc = JFactory::getDocument();
-$doc->addScriptDeclaration($script);
+echo $this->ExportScript();
 	
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
+
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
@@ -112,67 +59,40 @@ if (JRequest::getString("submit","")!="")
 	if ($user->id != 0)
 	{
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
+	} else {
+		$privatelink = "";
 	}
 		
-	echo "<h3>" . JText::_("JEV_ICAL_GENERATED") . "</h3>";
-	if ($params->get("show_webcal_url", 0) == 1){
-		//Webcal Subscribe button:
-		//Replace http with webcal	
-		$webcalurl_pub = str_replace(array('http:','https:'), 'webcal:', $publiclink);
-		echo "<p class='ical_form_button'><a href='$webcalurl_pub'>" . JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL') . "</a></p>";
+	echo "<h2 class='ical_generated'>" . JText::_("JEV_ICAL_GENERATED") . "</h2>";
+	
+	echo "<h3 class='export_pub'>" . JText::_("Public Events") . "</h3>";
+	echo "<h3 class='export_priv'>" . JText::_("Public and Private Events") . "</h3>";
+	
+	if ($cfg->get("show_webcal_url", 0) == 1){
+		echo $this->ExportWebCal($publiclink, $privatelink);
 	}
-	if ($params->get("show_ical_download", 1) == 1){
-		echo "<p class='ical_form_button'><a href='$publiclink'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
-	}
-	if ($user->id != 0)
-	{
-		if ($params->get("show_ical_download", 1) == 1){
-			echo "<p class='ical_form_button'><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
-		}
-		if ($params->get("show_webcal_url", 0) == 1){
-			//Webcal Subscribe button:
-			//Replace http with webcal	
-			$webcalurl_priv = str_replace(array('http:', 'https:'), 'webcal:', $privatelink);
-			echo "<p class='ical_form_button'><a href='$webcalurl_priv'>" . JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL') . "</a></p>";
-		}
+	
+	if ($cfg->get("show_ical_download", 1) == 1){
+		echo $this->ExportIcalDownload($publiclink, $privatelink);
 	}
 
-	if ($cfg->get("outlook2003icalexport", 0))
+	if ($cfg->get("outlook2003icalexport", 0) == 1)
 	{
-		echo "<p class='ical_form_button'>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</p>";
-		echo "<p class='ical_form_button'><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
-		if ($user->id != 0)
-		{
-			echo "<p class='ical_form_button'><a href='$privatelink&outlook2003='>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
-		}
+		echo $this->ExportOutlook2003($publiclink, $privatelink);
 	}
 	
 	// New ICAL Export Options for Google,
-	if ($params->get("show_webcal_google", 0) == 1){
-		echo "<div class='jev_google_export'>";
-		echo "<div class='jev_google_export_pub'><a href='http://www.google.com/calendar/render?cid=". urlencode($publiclink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
-		echo JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL_SHORT') . "</div>\n";
-
-		if ($user->id != 0)
-		{
-			echo "<div class='jev_google_export_priv'><a href='http://www.google.com/calendar/render?cid=". urlencode($privatelink) ."' target='_blank'><img src='". JURI::root() ."/components/com_jevents/images/gc_button6.gif' border='0'></a>";
-			echo JText::_('JEV_REP_ICAL_PRIVATE_WEBCAL_SHORT'). "</div>\n";
-		}
-		echo"</div>";
-	}
-	
-	
-	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
-	if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") == 0 && $cfg->get("show_webcal_url") == 0) {
-		echo "<div style='margin:15px;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
+	if ($cfg->get("show_webcal_google", 0) == 1){
+		echo $this->ExportGoogle($publiclink, $privatelink);
 	}
 }
-if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") == 0 && $cfg->get("show_webcal_url") == 0) {
-	
+if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0)) {
+	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
+	echo "<div style='margin:15px;font-weight:bold;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
 } else {
 ?>
-
-<form name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
+<div class="export_form">
+<form id="ical" name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
 	<?php
 	$categories = JEV_CommonFunctions::getCategoryData();
 
@@ -269,11 +189,11 @@ if ($cfg->get("outlook2003icalexport") == 0 && $cfg->get("show_ical_download") =
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
-	<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
-	<br/>
-	<br/>
-</div>
-
-<input class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
+	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/>
+	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
+	
+<input id="submit" class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
 </form>
+</div>
+</div>
 <?php } ?>

@@ -24,8 +24,8 @@
 * Calendar style
 **********************/
 #jevents_body .cal_table {
-   border: 1px solid #000000;
-   width:100%!important;
+	border: 1px solid #000000;
+	width:100%!important;
 }
 #cal_title {
 	margin:0.5em auto;
@@ -196,11 +196,11 @@ ul.ev_ul {
 	margin:5px;
 }
 #jevents_body  ul.ev_ul li.ev_td_li {
-  	border-style:solid;
-  	border-width:0 0 0 5px;
-  	margin-bottom:1px;
-  	padding-left:2px;
-  	background-image:none
+	border-style:solid;
+	border-width:0 0 0 5px;
+	margin-bottom:1px;
+	padding-left:2px;
+	background-image:none
 }
 a.ev_link_cat:link {
     font-size:12px;
@@ -311,7 +311,7 @@ a.ev_link_weekday:hover  {
 /**********************
 * Form style
 **********************/
- /* Styles for dhtml tabbed-pages */
+/* Styles for dhtml tabbed-pages */
 .ontab {
     font-family : Verdana, Arial, Helvetica, sans-serif;
     font-size: 10px;
@@ -362,7 +362,7 @@ a.ev_link_weekday:hover  {
 }
 .pagetext {
 	visibility: hidden;
-   display: none;
+	display: none;
 	position: relative;
 	top: 0;
 }
@@ -424,48 +424,48 @@ a.nav_bar_link:hover  {
 ****************************/
 
 td.iconic_td {
-   width:60px!important;
-   margin:0px;
-   padding:0px;
+	width:60px!important;
+	margin:0px;
+	padding:0px;
 }
 div.nav_bar_cal{
-   margin:0px;
-   padding:0px;
-   width:50px;
+	margin:0px;
+	padding:0px;
+	width:50px;
 }
 div.nav_bar_cal img, div.nav_bar_cal a{
-   height:31px;
-   width:50px;
-   border:0;
+	height:31px;
+	width:50px;
+	border:0;
 }
 tr.icon_labels{
- font-size:7pt;
- margin:0px;
- padding:0px;
+	font-size:7pt;
+	margin:0px;
+	padding:0px;
 }
 div#ev_icon_yearly {
-     background-image: url("../images/cal5x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal5x.jpg")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_monthly {
-     background-image: url("../images/cal1x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal1x.jpg")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_weekly{
-     background-image: url("../images/cal2x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal2x.jpg")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_daily{
-     background-image: url("../images/cal3x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal3x.jpg")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_search{
-     background-image: url("../images/cal8x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal8x.jpg")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_jumpto{
-     background-image: url("../images/cal9x.jpg")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/cal9x.jpg")!important;
+	background-repeat: no-repeat;
 }
 
 div.jev_pagination {
@@ -502,12 +502,12 @@ div.event_legend_name a{
    	background-color:inherit;
    	color:black;
 }
-	
+
 div.event_legend_desc {
 	background-color:white;
 	color:black;
 	padding:3px 3px 3px 20px;
-	
+
 }
 
 tr.dialogs, tr.dialogs td, tr.dialogs div{
@@ -527,7 +527,7 @@ tr.dialogs, tr.dialogs td, tr.dialogs div{
 	margin-top:5px;
 	margin-left:0px;
 	margin-bottom:4px;
-/*	width:90px;*/
+	/*	width:90px;*/
 	min-width:90px;
 	white-space:nowrap;
 	overflow:hidden;
@@ -563,7 +563,7 @@ a.addjevent {
    	visibility:hidden;
 }
 a.addjevent img {
-border-width:0px!important;
+	border-width:0px!important;
 }
 td.showjevadd a.addjevent {
    	visibility:visible;
@@ -573,23 +573,23 @@ td.showjevadd a.addjevent {
 * Mootools ToolTips for JEvents Calendar
 ****************************************/
 .jevtip-tip, .jevtip {
-   float: left;
-   background: #f5f5f5;
-   border: 1px solid #D4D5AA;
-   padding: 0px;
-   max-width: 400px;
-   z-index:99;
-   font-size:10pt;
+	float: left;
+	background: #f5f5f5;
+	border: 1px solid #D4D5AA;
+	padding: 0px;
+	max-width: 400px;
+	z-index:99;
+	font-size:10pt;
 } 
 .jevtip-text {
-   padding: 0;
-   margin: 0;
-   font-size: 0.8em;
+	padding: 0;
+	margin: 0;
+	font-size: 0.8em;
 }
- 
+
 div.jevtt_title{
-   font-weight: bold;
-   font-size: 1.2em;
+	font-weight: bold;
+	font-size: 1.2em;
 	padding:2px;
 	width:196px;
 }
@@ -597,7 +597,7 @@ div.jevtt_text{
 	padding:2px;
 	width:196px;
 	line-height: 1.3em;
-	
+
 }
 
 /* Joomla 1.6 changes */
@@ -629,16 +629,16 @@ div.jevtt_text{
 
 /* Print version */
 @media print {
-   @page {
-   	   size:landscape;
-   }
-   body.contentpane {
-   	   filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3); 
-   }
-   table.contentpaneopen {
-   		background-image:none!important;
-       background-color:white!important;
-   }
+	@page {
+		size:landscape;
+	}
+	body.contentpane {
+		filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3); 
+	}
+	table.contentpaneopen {
+		background-image:none!important;
+		background-color:white!important;
+	}
 	div.ev_navigation {
 		display:none;
 	}
@@ -651,15 +651,30 @@ div.jevtt_text{
 }
 
 /* ICAL Export style */
-p.ical_form_button a {
+div.ical_form_button.export_public a{
+	float:left;
+	margin-bottom:5px;
+	margin-right: 2%;
+	width:45%;
+	clear:both;
+}
+div.ical_form_button.export_private a {
+	float:right;
+	margin-bottom:5px;
+	margin-left:2%;
+	width:45%;
+	text-align:right;
+	clear:both;
+}
+div.ical_form_button a{
 	border: 1px solid rgb(202, 202, 202);
-	padding: 10px;
+	padding: 6px;
 	border-radius: 4px;
 	background-color: rgb(247, 247, 247);
 	color: rgb(107, 121, 107);
 	line-height:2.6;
 }
-p.ical_form_button a:hover {
+div.ical_form_button a:hover {
 
 }
 .ical_submit {
@@ -667,14 +682,50 @@ p.ical_form_button a:hover {
 }
 
 .jev_google_export {
- float:left;
- width:100%;   
+	float:left;
+	width:100%;   
 }
 .jev_google_export img{
     display:block;
     margin-top:5px;
 }
-.jev_google_export_pub, .jev_google_export_priv {
+.jev_google_export_pub {
 	float:left;
 	margin:5px;
+}
+.jev_google_export_priv {
+	float:right;
+	margin:5px;
+}
+h3.export_pub {
+	float:left;
+	width:50%;
+	text-align:left;
+}
+h3.export_priv {
+	float:right;
+	width:50%;
+	text-align:right;
+}
+.ical_form_button.export_public h3 {
+	text-align:center;
+}
+h2.ical_generated {
+	text-align:center;
+}
+input.ical_submit {
+	margin:10px 0 10px 0;
+	display:block;
+}
+.icalformat label {
+	display:inline-block;
+}
+div.export_form {
+	background-color:#cfcfcf;
+	display:inline-block;  
+	width:97%;
+	border-radius:5px; 
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	padding:10px;
 }
