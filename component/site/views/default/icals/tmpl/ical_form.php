@@ -66,7 +66,10 @@ if (JRequest::getString("submit","")!="")
 	echo "<h2 class='ical_generated'>" . JText::_("JEV_ICAL_GENERATED") . "</h2>";
 	
 	echo "<h3 class='export_pub'>" . JText::_("Public Events") . "</h3>";
-	echo "<h3 class='export_priv'>" . JText::_("Public and Private Events") . "</h3>";
+	if ($user->id != 0)
+	{
+		echo "<h3 class='export_priv'>" . JText::_("Public and Private Events") . "</h3>";
+	}
 	
 	if ($cfg->get("show_webcal_url", 0) == 1){
 		echo $this->ExportWebCal($publiclink, $privatelink);
