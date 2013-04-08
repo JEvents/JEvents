@@ -31,7 +31,29 @@
 					default=""
 					label="Target Menu Item"
 					description="Menu item for target page" />
-				<field name="showindetails" type="jevboolean" default="0" label="JEV_SHOW_IN_DETAILS" description="JEV_SHOW_IN_DETAILS_DESC" />
+				<field
+					name="resetfilters"
+					type="list"
+					default="none"
+					label="When to reset filters?"
+					description="If this module is enabled on ALL pages on your site then you can reset the JEvents filters according to these options" >
+						<option value="none">No automatic reset</option>
+						<option value="nonjevents">On any non-JEvents pages</option>
+						<option value="newmenu">When new menu item is selected even if this is a JEvents page</option>
+				</field>
+				<field
+					name="disablenonjeventspages"
+					type="jevboolean"
+					default="0"
+					label="Disable output on non-jevents pages"
+					description="Used in conjuction with option to reset filters" />
+			
+				<field 
+					name="showindetails" 
+					type="jevboolean" 
+					default="0" 
+					label="JEV_SHOW_IN_DETAILS" 
+					description="JEV_SHOW_IN_DETAILS_DESC" />
 			</fieldset>
 			<fieldset
 				name="advanced">
