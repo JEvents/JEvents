@@ -664,7 +664,6 @@ div.ical_form_button.export_private a {
 	margin-left:2%;
 	width:45%;
 	text-align:right;
-	clear:both;
 }
 div.ical_form_button a{
 	border: 1px solid rgb(202, 202, 202);
