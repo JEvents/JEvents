@@ -630,11 +630,16 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				if ($event && $event->state())
 				{
-					$link = $event->viewDetailLink($year, $month, $day, true . $Itemid);
+					$link = $event->viewDetailLink($year, $month, $day, true , $Itemid);
 				}
 				else
 				{
-					$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);
+					if (JFactory::getUser()->id>0){
+						JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
+					}
+					else {
+						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);
+					}
 				}
 				?>
 				<script type="text/javascript">
@@ -654,8 +659,13 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			else
 			{
-				// I can't go back to the same repetition since its id has been lost
-				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), $msg);
+				if (JFactory::getUser()->id>0){
+					$this->setRedirect(JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1"), $msg);
+				}
+				else {
+					// I can't go back to the same repetition since its id has been lost
+					$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), $msg);
+				}
 			}
 		}
 

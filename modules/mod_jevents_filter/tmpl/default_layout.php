@@ -26,13 +26,16 @@ if (count($filterHTML)>0){
 	<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut);?>' />
 	<table cellpadding="0" cellspacing="0" border="0">
 	<?php	
-	
+	$hasreset = false;
 	foreach ($filterHTML as $filter){
 		if (!isset($filter["title"])) continue;
 		echo "<tr>";
 		if (strlen($filter["title"])>0) echo "<td>".$filter["title"]."</td>";
 		else echo "<td/>";
 		echo "<td>".$filter["html"]."</td></tr>";
+		if (strpos($filter["html"], 'filter_reset')>0){
+			$hasreset=true;
+		}
 	}
 	
 	echo "<tr>";
@@ -40,6 +43,11 @@ if (count($filterHTML)>0){
 	echo "<td >".'<input class="modfilter_button" type="submit" value="'.JText::_('ok').'" />'."</td></tr>";
 	?>
 	</table>
+	<?php
+	if (!$hasreset) {
+		echo 	"<input type='hidden' name='filter_reset' id='filter_reset' value='0' /><input type='button' value='".JText::_( 'RESET' )."' onclick='$$(\"input[name=filter_reset]\").each(function(el){el.value=1;});form.submit()' />";
+	}
+	?>
 	</form>
 	<?php 
 }

@@ -46,7 +46,9 @@ class CsvLine {
         $this->summary = $summary;
         $this->dtstart = $dtstart;
         $this->dtend = $dtend;
-        $timezone = "UTC";  // default timezone
+        // default timezone
+        $this->timezone = date_default_timezone_get();
+		
 	$this->cf = array();
     }
 
@@ -171,8 +173,8 @@ class CsvLine {
         $ical .= "UID:".$this->getUid()."\n"
                ."CATEGORIES:".$this->categories."\n"
                ."SUMMARY:".$this->summary."\n"
-               ."DTSTART:".$this->datetimeToUtcIcsFormat($this->dtstart)."\n"
-               ."DTEND:".$this->datetimeToUtcIcsFormat($this->dtend)."\n";
+               ."DTSTART".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtstart)."\n"
+               ."DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
         if($this->dtstamp != "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
         if($this->location != "") $ical .= "LOCATION:".$this->location."\n";
         if($this->description != "") $ical .= "DESCRIPTION:".$this->description."\n";
@@ -213,4 +215,24 @@ class CsvLine {
 		$datetime = JevDate::strtotime($datetime);
         return gmdate("Ymd", $datetime)."T".gmdate("His", $datetime)."Z";
     }
+	
+    /**
+     * Function converts datetime to iCal format
+     *
+     * @param datetime Datetime of the event
+     * @return converted datetime in iCal format
+     */
+    private function datetimeToIcsFormat($datetime) {
+		$datetime = JevDate::strtotime($datetime);
+        return date("Ymd", $datetime)."T".date("His", $datetime);
+    }
+
+	private function timezoneoutput(){
+		if ($this->timezone!=""){
+			return ";TZID=".$this->timezone;
+		}
+		else {
+			return "";
+		}
+	}
 }

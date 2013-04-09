@@ -1869,6 +1869,21 @@ class JEventsDBModel
 			$extratables = "";  // must have comma prefix
 			$extrawhere = array();
 			$extrajoin = array();
+			
+			$filterarray = array("published", "justmine",  "search");
+
+			// If there are extra filters from the module then apply them now
+			$reg = & JFactory::getConfig();
+			$modparams = $reg->get("jev.modparams", false);
+			if ($modparams && $modparams->get("extrafilters", false))
+			{
+				$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
+			}
+
+			$filters = jevFilterProcessing::getInstance($filterarray);
+			$filters->setWhereJoin($extrawhere, $extrajoin);
+			$needsgroup = $filters->needsGroupBy();
+			
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
@@ -1967,6 +1982,21 @@ class JEventsDBModel
 			$extratables = "";  // must have comma prefix
 			$extrawhere = array();
 			$extrajoin = array();
+			
+			$filterarray = array("published", "justmine",  "search");
+
+			// If there are extra filters from the module then apply them now
+			$reg = & JFactory::getConfig();
+			$modparams = $reg->get("jev.modparams", false);
+			if ($modparams && $modparams->get("extrafilters", false))
+			{
+				$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
+			}
+
+			$filters = jevFilterProcessing::getInstance($filterarray);
+			$filters->setWhereJoin($extrawhere, $extrajoin);
+			$needsgroup = $filters->needsGroupBy();
+			
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 

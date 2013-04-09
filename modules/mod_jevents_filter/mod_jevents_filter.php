@@ -39,6 +39,9 @@ if ($option=="com_jevents"){
 		JFactory::getApplication()->setUserState("jevents.filtermenuitem",$active->id);
 	}
 }
-
+if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
+	return;
+}
 require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
+
 
