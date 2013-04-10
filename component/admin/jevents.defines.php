@@ -47,6 +47,8 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('jIcalEventDB',JEV_PATH."libraries/jicaleventdb.php");
 	JLoader::register('jIcalEventRepeat',JEV_PATH."libraries/jicaleventrepeat.php");
 
+	JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
+	
 	JLoader::register('iCalImport',JEV_PATH."libraries/iCalImport.php");
 	JLoader::register('iCalRepetition',JEV_PATH."libraries/iCalRepetition.php");
 	JLoader::register('iCalException',JEV_PATH."libraries/iCalException.php");
