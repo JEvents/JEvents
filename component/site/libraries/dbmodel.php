@@ -1870,7 +1870,12 @@ class JEventsDBModel
 			$extrawhere = array();
 			$extrajoin = array();
 			
-			$filterarray = array("published", "justmine",  "search");
+			if ($includeUnpublished){
+				$filterarray = array("justmine",  "search");
+			}
+			else {
+				$filterarray = array("published", "justmine",  "search");
+			}
 
 			// If there are extra filters from the module then apply them now
 			$reg = & JFactory::getConfig();
@@ -1983,7 +1988,12 @@ class JEventsDBModel
 			$extrawhere = array();
 			$extrajoin = array();
 			
-			$filterarray = array("published", "justmine",  "search");
+			if ($includeUnpublished){
+				$filterarray = array("justmine",  "search");
+			}
+			else {
+				$filterarray = array("published", "justmine",  "search");
+			}
 
 			// If there are extra filters from the module then apply them now
 			$reg = & JFactory::getConfig();
