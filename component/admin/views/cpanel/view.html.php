@@ -339,6 +339,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 						$output .= '</td></tr>';
 						$k = ($k + 1) % 2;
 					}
+					
 					$output .= '</table>';
 					$needsupdate = true;
 					return $output;
@@ -712,7 +713,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		}
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
-		
+		$output .=  "PHP Version : " .phpversion() . "\n";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
