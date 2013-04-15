@@ -6,6 +6,4 @@ $this->_showNavTableBar();
 
 echo $this->loadTemplate("form");
 
-$this->_viewNavAdminPanel();
-
 $this->_footer();
