@@ -18,5 +18,7 @@ JevViewCopyright(); ?>
 	$task = JRequest::getString("jevtask");
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_".$task);
+
+	JEVHelper::componentStylesheet($view, "extra.css");
 	
 }

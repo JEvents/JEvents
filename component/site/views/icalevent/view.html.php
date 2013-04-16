@@ -112,6 +112,8 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 			$this->setLayout("edit16");
 		}
 
+		JEVHelper::componentStylesheet($this, "editextra.css");		
+		
 		parent::displaytemplate($tpl);
 
 		$this->_adminEnd();

@@ -45,7 +45,7 @@ if (count($filterHTML)>0){
 	</table>
 	<?php
 	if (!$hasreset) {
-		echo 	"<input type='hidden' name='filter_reset' id='filter_reset' value='0' /><input type='button' value='".JText::_( 'RESET' )."' onclick='$$(\"input[name=filter_reset]\").each(function(el){el.value=1;});form.submit()' />";
+		echo 	"<input type='hidden' name='filter_reset' id='filter_reset' value='0' />";
 	}
 	?>
 	</form>

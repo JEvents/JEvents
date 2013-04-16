@@ -2,7 +2,7 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEvents Package</name>
 	<packagename>jevents</packagename>
-	<version>3.0.12</version>
+	<version>3.0.13</version>
 	<url>http://www.jevents.net</url>
 	<creationDate>April 2013</creationDate>
 	<author>Geraint Edwards</author>

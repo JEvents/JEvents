@@ -39,6 +39,9 @@ class jevFilterProcessing
 			if ($moduleparams && $moduleparams->get("ignorefiltermodule",false) && $moduleid){
 				$uid="mod".$moduleid;
 			}
+			else if ($moduleid && $registry->get("getnewfilters")){
+				$uid="mod".$moduleid;
+			}
 		}
 
 		$pluginsDir = JPATH_ROOT.'/'.'plugins'.'/'.'jevents';
@@ -293,7 +296,8 @@ class jevFilter
 			else if ($modparams->get("resetfilters")=="nonjevents" &&  ($option=="com_jevents" || $option=="com_jevlocations" || $option=="com_jevpeople" || $option=="com_rsvppro"  || $option=="com_jevtags")) {
 				$menu	= JSite::getMenu();
 				$active = $menu->getActive();
-				if ($active && $active->id != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
+				// Must use JRequest::getInt("Itemid") since missing event finder resets active menu item!
+				if (JRequest::getInt("Itemid",0) && JRequest::getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
 					JRequest::setVar('filter_reset',1);
 				}				
 			}
