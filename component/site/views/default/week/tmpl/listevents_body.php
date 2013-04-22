@@ -1,71 +1,57 @@
+<?php 
+defined('_JEXEC') or die('Restricted access');
+
+$cfg	 = & JEVConfig::getInstance();
+
+$this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
+
+$option = JEV_COM_COMPONENT;
+$Itemid = JEVHelper::getItemid();
+
+echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFOR') . '&nbsp;' . JText::_('JEV_WEEK')
+. ' : </legend><br />' . "\n";
+echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
+?>
+    <tr valign="top">
+        <td colspan="2"  align="center" class="cal_td_daysnames">
+           <!-- <div class="cal_daysnames"> -->
+            <?php echo  $data['startdate'] . ' - ' . $data['enddate'] ;?>
+            <!-- </div> -->
+        </td>
+    </tr>
 <?php
-$datacount = count($this->data["dates"]);
-for( $d = 0; $d < $datacount; $d++ ){
-   if ($this->data["dates"][$d]["monthType"]!="current"){
-      continue;      
-   }
-$num_events = count($data['rows']);
-$chdate ="";
-if( $num_events > 0 ){
+for( $d = 0; $d < 7; $d++ ){
 
+	$day_link = '<a class="ev_link_weekday" href="' . $data['days'][$d]['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">'
+	. JEV_CommonFunctions::jev_strftime("%A", JevDate::mktime(3,0,0,$data['days'][$d]['week_month'], $data['days'][$d]['week_day'], $data['days'][$d]['week_year']))."<br/>"
+	. JEventsHTML::getDateFormat( $data['days'][$d]['week_year'], $data['days'][$d]['week_month'], $data['days'][$d]['week_day'], 2 ).'</a>'."\n";
 
-$day_link = '<a class="ev_link_weekday" href="' . $this->data['dates'][$d]['link'] . '" title="' . JText::_('JEV_CLICK_TOSWITCH_DAY') . '">' . JEventsHTML::getDateFormat( $this->data['dates'][$d]['year'], $this->data['dates'][$d]['month'], $this->data['dates'][$d]['d'], 2 ).'</a>'."\n";
-   ?>
-   <div class="jev_daysnames jev_daysnames_<?php echo $this->colourscheme;?> jev_<?php echo $this->colourscheme;?>">
-       <?php echo $day_link;?>
-   </div>
+	if( $data['days'][$d]['today'])	$bg = 'class="ev_td_today"';
+	else $bg = 'class="ev_td_left"';
 
+	echo '<tr><td ' . $bg . '>' . $day_link . '</td>' . "\n";
+	echo '<td class="ev_td_right">' . "\n";
 
+	$num_events		= count($data['days'][$d]['rows']);
+	if ($num_events>0) {
+		echo "<ul class='ev_ul'>\n";
 
+		for( $r = 0; $r < $num_events; $r++ ){
+			$row = $data['days'][$d]['rows'][$r];
 
+			$listyle = 'style="border-color:'.$row->bgcolor().';"';
+			echo "<li class='ev_td_li' $listyle>\n";
+			if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
+				$this->viewEventRowNew ( $row);
+				echo "&nbsp;::&nbsp;";
+				$this->viewEventCatRowNew($row);
+			}
+			echo "</li>\n";
+		}
+		echo "</ul>\n";
+	}
+	echo '</td></tr>' . "\n";
+} // end for days
 
-   <div class="jev_listrow">
-   <?php
-   echo "<ul class='ev_ul'>\n";
-
-
-
-
-
-
-   for( $r = 0; $r < $num_events; $r++ ){
-      $row = $data['rows'][$r];
-
-      $event_day_month_year    = $row->dup() . $row->mup() . $row->yup();
-
-      if(( $event_day_month_year <> $chdate ) && $chdate <> '' ){
-         echo '</ul></div>' . "\n";
-      }
-
-      if( $event_day_month_year <> $chdate ){
-         $date =JEventsHTML::getDateFormat( $row->yup(), $row->mup(), $row->dup(), 1 );
-         echo '<div class="jev_listrow"><ul class="ev_ul">' . "\n";
-      }
-
-      $listyle = 'style="border-color:'.$row->bgcolor().';"';
-      echo "<li class='ev_td_li' $listyle>\n";
-      if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
-         $this->viewEventRowNew ( $row,'view_detail',JEV_COM_COMPONENT, $Itemid);
-      }
-      echo "</li>\n";
-
-      $chdate = $event_day_month_year;
-}
-    echo "</ul></div>\n";      
-      
-      
-} // end for days 
-
-?>
-   </div>      
-      
-      
-      
-      ?>
-   
-   <?php 
-
-}
-?>
-</div>
-<div class="jev_clear" ></div>
+echo '</table><br />' . "\n";
+echo '</fieldset><br /><br />' . "\n";
