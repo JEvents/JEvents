@@ -784,5 +784,35 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 //$section = $params->get("section",0);
 
 	}
+		function custom_css()
+	{
+		jimport('joomla.html.pane');
+
+		$document = & JFactory::getDocument();
+		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+
+	// Set toolbar items for the page
+
+		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		/*
+		  $user= JFactory::getUser();
+		  if ($user->authorise('core.admin','com_jevents.admin')) {
+		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
+		  }
+		 */
+		JEventsHelper::addSubmenu();
+
+		if (JFactory::getApplication()->isAdmin())
+		{
+	//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
+		}
+	//JToolBarHelper::help( 'screen.cpanel', true);
+
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	//$section = $params->get("section",0);
+
+	}
+	
 }
 
