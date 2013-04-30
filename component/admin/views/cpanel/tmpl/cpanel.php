@@ -58,6 +58,11 @@ defined('_JEXEC') or die('Restricted access');
 							// Support Info
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
 							$this->_quickiconButton($link, "Support_icon.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+							// Custom CSS
+							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.custom_css";
+							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+						
+							
 						}
 
 						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

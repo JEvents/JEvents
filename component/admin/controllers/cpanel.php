@@ -133,6 +133,18 @@ class AdminCpanelController extends JControllerAdmin
 
 		$this->view->display();
 	}
+	
+	function custom_css()
+	{
+		//Get the view
+		$this->view = & $this->getView("cpanel", "html");
+		
+		// Set the layout
+		$this->view->setLayout('custom_css');
+		$this->view->assign('title', JText::_('CONTROL_PANEL'));
+
+		$this->view->display();
+	}
 
 	function fixExceptions()
 	{
