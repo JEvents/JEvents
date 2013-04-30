@@ -159,20 +159,6 @@ class JEventsAbstractView extends JViewLegacy {
 		}
 		return $str;
 	}
-
-	/**
-	* Utility function to provide Warning Icons - should be in Joomla 1.5 but isn't!
-	*/
-	function jevWarning($warning, $title='Joomla! Warning') {
-
-		$mouseover 	= 'return overlib(\''. $warning .'\', CAPTION, \''. $title .'\', BELOW, RIGHT);';
-
-		$tip 		= "<!-- Warning -->\n";
-		$tip 		.= '<a href="javascript:void(0)" onmouseover="'. $mouseover .'" onmouseout="return nd();">';
-		$tip 		.= '<img src="'. JURI::root() .'components/'.JEV_COM_COMPONENT.'/assets/images/warning.png" border="0"  alt="warning"/></a>';
-
-		return $tip;
-	}
 	
 
 }
