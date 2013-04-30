@@ -271,7 +271,7 @@ $url = JRoute::_("index.php?option=" . $option);
         <input type="hidden" name="filter_order" value="<?php echo JRequest::getCmd("filter_order", "tl.id"); ?>" />
         <input type="hidden" name="filter_order_Dir" value="<?php echo JRequest::getCmd("filter_order_Dir", "asc"); ?>" />
     </form>
-    <script  type="text/javascript" src="<?php echo JURI::root(); ?>includes/js/overlib_mini.js"></script>
+    <?php JEVHelper::loadOverlib();?>
     <script language="javascript" type="text/javascript">
         function submitbutton(pressbutton) {
             var form = document.getElementsByName ('adminForm');

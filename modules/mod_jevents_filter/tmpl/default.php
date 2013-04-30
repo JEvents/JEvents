@@ -68,6 +68,13 @@ $form_link = JRoute::_($form_link
 				, false);
 
 $filters = $jevhelper->getFilters();
+
+$option = JRequest::getCmd("option");
+if ($params->get("disablenonjeventspages",0) && $option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
+	// display nothing on non-jevents pages - again make this a config option
+	return ;
+}
+
 $filterHTML = $filters->getFilterHTML();
 
 //Check if in event details

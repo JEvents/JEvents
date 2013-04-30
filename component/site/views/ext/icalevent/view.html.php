@@ -32,6 +32,12 @@ class ExtViewICalEvent extends JEventsExtView
 		//$this->assign("introduction", $params->get("intro",""));
 
 		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day );
+		// Dynamic pathway
+		if (isset($this->data['row'])){
+			$pathway =& JFactory::getApplication()->getPathway();
+
+			$pathway->addItem($this->data['row']->title() ,"");
+		}
 		
 	}	
 }

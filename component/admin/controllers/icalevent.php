@@ -463,6 +463,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$vevent->set("freq", "NONE");
 			$vevent->set("description", "");
 			$vevent->set("summary", "");
+			$vevent->set("access", "1");
 			list($year, $month, $day) = JEVHelper::getYMD();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

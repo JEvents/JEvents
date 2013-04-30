@@ -226,8 +226,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->body = FinderIndexerHelper::prepareContent($item->body, $item->params);
 
 		// Build the necessary route and path information.
-		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid;//$this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid;
+		$itemid= $this->params->get("target_itemid",0);
+		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;
 		
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 

@@ -343,7 +343,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						ob_start();
 						?>
 						<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
-							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;"/>
+							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;" class="nothumb"/>
 						</a>
 						<div class="jevdialogs">
 							<?php
@@ -424,7 +424,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					break;
 
 				case "{{CREATED}}":
-					$created = JevDate::getDate($event->created());
+					$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$jtz = $compparams->get("icaltimezonelive", "");
+					if ($jtz == "" ){
+						$jtz = null;
+					}
+					$created = JevDate::getDate($event->created(), $jtz);
 					$search[] = "{{CREATED}}";
 					$replace[] = $created->toFormat(JText::_("DATE_FORMAT_CREATED"));
 					$blank[] = "";
@@ -672,6 +677,46 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$search[] = "{{PREVIOUSNEXT}}";
 						$replace[] = $event->previousnextLinks();
+						$blank[] = "";
+					}
+					break;
+
+				case "{{FIRSTREPEAT}}":
+					static $dofirstrepeat;
+					if (!isset($dofirstrepeat))
+					{
+						$dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false);
+					}
+					if ($dofirstrepeat)
+					{
+						$search[] = "{{FIRSTREPEAT}}";
+						$firstrepeat = $event->getFirstRepeat();
+						if ($firstrepeat->rp_id()==$event->rp_id()){
+							$replace[]="";
+						}
+						else {
+							$replace[] = "<a class='ev_firstrepeat' href='".$firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true)."' title='".JText::_('JEV_FIRSTREPEAT')."' >".JText::_('JEV_FIRSTREPEAT')."</a>";
+						}
+						$blank[] = "";
+					}
+					break;
+					
+				case "{{LASTREPEAT}}":
+					static $dolastrepeat;
+					if (!isset($dolastrepeat))
+					{
+						$dolastrepeat = (strpos($template_value, "{{LASTREPEAT}}") !== false);
+					}
+					if ($dolastrepeat)
+					{
+						$search[] = "{{LASTREPEAT}}";
+						$lastrepeat = $event->getLastRepeat();
+						if ($lastrepeat->rp_id()==$event->rp_id()){
+							$replace[]="";
+						}
+						else {
+							$replace[] = "<a class='ev_lastrepeat' href='".$lastrepeat->viewDetailLink($lastrepeat->yup(), $lastrepeat->mup(), $lastrepeat->dup(), true)."' title='".JText::_('JEV_LASTREPEAT')."' >".JText::_('JEV_LASTREPEAT')."</a>";
+						}
 						$blank[] = "";
 					}
 					break;

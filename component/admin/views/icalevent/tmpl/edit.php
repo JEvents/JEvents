@@ -534,7 +534,7 @@ else
 				{
 					?>
 					<div class="control-group jevplugin_<?php echo $key; ?>">
-						<label class="control-label "><?php echo $customfields[$key]["label"]; ?></left>
+						<label class="control-label "><?php echo $customfields[$key]["label"]; ?></label>
 							<div class="controls" >
 								<?php echo $customfields[$key]["input"]; ?>
 							</div>

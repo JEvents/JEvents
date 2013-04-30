@@ -143,7 +143,8 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
+		return JError::raiseError(404, 'Invalid Controller - ' . $controllerName);
+		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);
 		$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
