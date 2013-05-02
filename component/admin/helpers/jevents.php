@@ -23,62 +23,106 @@ class JEventsHelper
 	{
 		$task = JRequest::getCmd("task", "cpanel.cpanel");
 		$option = JRequest::getCmd("option", "com_categories");
-		
-		if ($option == 'com_categories') {
-			$doc =& JFactory::getDocument();
-			if (!JVersion::isCompatible("3.0")) {
+
+		if ($option == 'com_categories')
+		{
+			$doc = & JFactory::getDocument();
+			if (!JVersion::isCompatible("3.0"))
+			{
 				$hide_options = '#toolbar-popup-options {'
-				. 'display:none;'
-				. '}'; 
-			} else {
-				$hide_options = '#toolbar-options {'
-				. 'display:none;'
-				. '}'; 
+						. 'display:none;'
+						. '}';
 			}
-			$doc->addStyleDeclaration( $hide_options );
+			else
+			{
+				$hide_options = '#toolbar-options {'
+						. 'display:none;'
+						. '}';
+			}
+			$doc->addStyleDeclaration($hide_options);
 		}
-		
+
 		if ($vName == "")
 		{
 			$vName = $task;
-		}		
-		JSubMenuHelper::addEntry(
-				JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
-		);
-
-		JSubMenuHelper::addEntry(
-				JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
-		);
-		
+		}
 		// could be called from categories component
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");		
-		if (JEVHelper::isAdminUser())
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+
+		if (JVersion::isCompatible("3.0"))
 		{
-			JSubMenuHelper::addEntry(
-				JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
+			JHtmlSidebar::addEntry(
+					JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
 			);
+
+			JHtmlSidebar::addEntry(
+					JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
+			);
+
+			if (JEVHelper::isAdminUser())
+			{
+				JHtmlSidebar::addEntry(
+						JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
+				);
+			}
+			JHtmlSidebar::addEntry(
+					JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
+			);
+			if (JEVHelper::isAdminUser())
+			{
+				JHtmlSidebar::addEntry(
+						JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
+				);
+				JHtmlSidebar::addEntry(
+						JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
+				);
+				JHtmlSidebar::addEntry(
+						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
+				);
+
+				//Support should only be for Admins really.
+				JHtmlSidebar::addEntry(
+						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+				);
+			}
 		}
-		JSubMenuHelper::addEntry(
-				JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents" , $vName == 'categories'
-		);
-		if (JEVHelper::isAdminUser())
-		{
+		else {
 			JSubMenuHelper::addEntry(
-					JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
+					JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
 			);
+
 			JSubMenuHelper::addEntry(
-					JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
+					JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
 			);
+
+			if (JEVHelper::isAdminUser())
+			{
+				JSubMenuHelper::addEntry(
+						JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
+				);
+			}
 			JSubMenuHelper::addEntry(
-					JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName , array('defaults.list','defaults.overview'))
+					JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
 			);
-		
-		//Support should only be for Admins really.
-		JSubMenuHelper::addEntry(
-				JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
-		);
+			if (JEVHelper::isAdminUser())
+			{
+				JSubMenuHelper::addEntry(
+						JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
+				);
+				JSubMenuHelper::addEntry(
+						JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
+				);
+				JSubMenuHelper::addEntry(
+						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
+				);
+
+				//Support should only be for Admins really.
+				JSubMenuHelper::addEntry(
+						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+				);
+			}
 		}
-		
+
 	}
 
 	/**

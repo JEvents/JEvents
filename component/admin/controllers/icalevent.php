@@ -73,7 +73,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$search = $db->escape(trim(strtolower($search)));
 
-		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
+		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "-1");
 
 		// Is this a large dataset ?
 		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
@@ -199,11 +199,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 		}
 
-		if ($created_by === "")
-		{
-			$where[] = "ev.created_by=0";
-		}
-		else
+		if ($created_by >=0)
 		{
 			$created_by = intval($created_by);
 			if ($created_by > 0)
@@ -1407,7 +1403,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 		$userOptions = array();
-		$userOptions[] = JHTML::_('select.option', 0, JText::_("JEV_EVENT_CREATOR"));
+		$userOptions[] = JHTML::_('select.option', "0", JText::_("JEV_EVENT_CREATOR"));
 		foreach ($users as $user)
 		{
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");

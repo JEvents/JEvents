@@ -66,7 +66,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		
 		$this->assignRef('user',		JFactory::getUser());
 		$this->assignRef('items',		$items);
-		
+
+		if (JVersion::isCompatible("3.0")){
+			$this->sidebar = JHtmlSidebar::render();					
+		}						
+
 		parent::displaytemplate($tpl);
 
 
