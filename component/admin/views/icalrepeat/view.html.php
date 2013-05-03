@@ -37,6 +37,9 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
+		if (JVersion::isCompatible("3.0")){
+			$this->sidebar = JHtmlSidebar::render();					
+		}
 	}
 
 	function edit($tpl = null)

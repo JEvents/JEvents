@@ -47,7 +47,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		
 		if (JVersion::isCompatible("3.0")){
 
-			JSubMenuHelper::setAction('index.php?option=com_jevents&task=icalevent.list');
+			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 
 			// get list of ics Files
 			$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
@@ -61,7 +61,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$icsfiles = $db->loadObjectList();
 			$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('ALL_ICS_FILES'),
 				'icsFile',
 				JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
@@ -71,14 +71,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$options = array();
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('ALL_EVENTS'),
 				'state',
 				JHtml::_('select.options', $options, 'value', 'text', $state)
 			);			
 			
 			// get list of creators
-			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
+			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
 			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
 			$db = & JFactory::getDBO();
 			$db->setQuery($sql);
@@ -86,14 +86,19 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$userOptions = array();
 			foreach ($users as $user)
 			{
+				if (!$user->id) {
+					$user->id = 0;
+				}
 				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 			}
-			JSubMenuHelper::addFilter(
+			
+			JHtmlSidebar::addFilter(
 				JText::_('JEV_EVENT_CREATOR'),
 				'created_by',
 				JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
 			);			
 			
+			$this->sidebar = JHtmlSidebar::render();			
 		}
 		else {
 			
@@ -124,15 +129,18 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->assign('statelist', $statelist);
 			
 			// get list of creators
-			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', 0);
+			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
 			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
 			$db = & JFactory::getDBO();
 			$db->setQuery($sql);
 			$users = $db->loadObjectList();
 			$userOptions = array();
-			$userOptions[] = JHTML::_('select.option', 0, JText::_("JEV_EVENT_CREATOR"));
+			$userOptions[] = JHTML::_('select.option', "", JText::_("JEV_EVENT_CREATOR"));
 			foreach ($users as $user)
 			{
+				if (!$user->id) {
+					$user->id = 0;
+				}
 				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 			}
 			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);

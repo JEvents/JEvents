@@ -975,7 +975,7 @@ window.addEvent("domready",function(){
 					if (now>startDate){
 						alert("Events cannot start in the past");
 						event = new Event(event); 
-						event.stop();
+						event.stopImmediatePropagation();
 					}
 				}
 			}

@@ -22,11 +22,10 @@ class JEventsAbstractView extends JViewLegacy {
 		jimport( 'joomla.filesystem.file' );
 
 		// Lets check if we have editted before! if not... rename the custom file.
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css") == false) {	
-			JFile::copy(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css.new", JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css");
+		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css")) {	
+			// It is definitely now created, lets load it!
+			JEVHelper::stylesheet( 'jevcustom.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
-		// It is definitely now created, lets load it!
-		JEVHelper::stylesheet( 'jevcustom.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		
 		if (JVersion::isCompatible("3.0")) 	{
 			JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
@@ -158,20 +157,6 @@ class JEventsAbstractView extends JViewLegacy {
 			. '</span>';
 		}
 		return $str;
-	}
-
-	/**
-	* Utility function to provide Warning Icons - should be in Joomla 1.5 but isn't!
-	*/
-	function jevWarning($warning, $title='Joomla! Warning') {
-
-		$mouseover 	= 'return overlib(\''. $warning .'\', CAPTION, \''. $title .'\', BELOW, RIGHT);';
-
-		$tip 		= "<!-- Warning -->\n";
-		$tip 		.= '<a href="javascript:void(0)" onmouseover="'. $mouseover .'" onmouseout="return nd();">';
-		$tip 		.= '<img src="'. JURI::root() .'components/'.JEV_COM_COMPONENT.'/assets/images/warning.png" border="0"  alt="warning"/></a>';
-
-		return $tip;
 	}
 	
 

@@ -244,8 +244,8 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 
-		// Add a standard button
-		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
+		// Add a standard button - never need to check for cancelled exceptions when editing a repeat!
+		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, 0);
 
 	}
 

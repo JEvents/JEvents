@@ -17,12 +17,6 @@ require_once (dirname(__FILE__).'/'.'helper.php');
 
 // reset filters when viewed on non-JEvents page - make this a configurable option
 
-$option = JRequest::getCmd("option");
-if ($params->get("disablenonjeventspages",0) && $option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
-	// display nothing on non-jevents pages - again make this a config option
-	return ;
-}
-
 
 $jevhelper = new modJeventsFilterHelper($params);
 

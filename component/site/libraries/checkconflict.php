@@ -109,7 +109,34 @@ function ProcessRequest(&$requestObject, $returnData)
 	define("REQUESTOBJECT", serialize($requestObject));
 	define("RETURNDATA", serialize($returnData));
 
-	require_once JPATH_BASE . '/' . 'includes' . '/' . 'defines.php';
+	// Do this ourselves to avoid Joomla 3.0 template path issues
+	// require_once JPATH_BASE . '/' . 'includes' . '/' . 'defines.php';
+	
+	//Global definitions.
+	//Joomla framework path definitions.
+	$parts = explode(DIRECTORY_SEPARATOR, JPATH_BASE);
+
+	//Defines.
+	define('JPATH_ROOT',           implode(DIRECTORY_SEPARATOR, $parts));
+	define('JPATH_SITE',          JPATH_ROOT);
+	define('JPATH_CONFIGURATION', JPATH_ROOT);
+	define('JPATH_ADMINISTRATOR', JPATH_ROOT . '/administrator');
+	define('JPATH_LIBRARIES',     JPATH_ROOT . '/libraries');
+	define('JPATH_PLUGINS',       JPATH_ROOT . '/plugins');
+	define('JPATH_INSTALLATION',  JPATH_ROOT . '/installation');
+	// IMPORTANT CHANGE!
+	$requestObject = unserialize(REQUESTOBJECT);
+	$client = "site";
+	if (isset($requestObject->client) && in_array($requestObject->client, array("site", "administrator")))
+	{
+		$client = $requestObject->client;
+	}
+	$patharray = array("site"=>JPATH_SITE, "administrator"=>JPATH_ADMINISTRATOR);
+	define('JPATH_THEMES',        $patharray[$client] . '/templates');
+	
+	define('JPATH_CACHE',         JPATH_ROOT . '/cache');
+	define('JPATH_MANIFESTS',     JPATH_ADMINISTRATOR . '/manifests');
+	
 	require_once JPATH_BASE . '/' . 'includes' . '/' . 'framework.php';
 
 	$requestObject = unserialize(REQUESTOBJECT);

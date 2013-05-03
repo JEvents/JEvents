@@ -494,6 +494,12 @@ class AdminIcalrepeatController extends JControllerLegacy
 			{
 				$data[$key] = $value;
 			}
+			// convert jform data to data format used before
+			if (strpos($key,"jform")===0 && is_array($value)){
+				foreach ($value as $cfkey => $cfvalue) {
+					$data["custom_".$cfkey]=$cfvalue;
+				}
+			}			
 		}
 
 		$detail = iCalEventDetail::iCalEventDetailFromData($data);

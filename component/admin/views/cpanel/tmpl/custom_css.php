@@ -30,7 +30,12 @@ if (JRequest::getVar('save'))
 	}
 
 	$file = 'jevcustom.css';
+	$srcfile = 	 'jevcustom.css.new';
 	$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
+	$srcfilepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
+	if (!JFile::exists($filepath)){
+		$filepath = $srcfilepath;
+	}
 	$content = '';
 	$html = '';
 	$msg = JRequest::getVar('msg', '', 'GET');
@@ -38,23 +43,14 @@ if (JRequest::getVar('save'))
 
 	ob_start();
 
-	if (is_writable($filepath))
-	{
-		$content = JFile::read($filepath);
-		?>
+	$content = JFile::read($filepath);
+	?>
 
-		<form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post" name="custom_css_save" id="custom_css_save">
-			<textarea rows="28" cols="93" name="content"><?php echo $content; ?></textarea>
-			<input type="submit" style="display:block;margin-left:2px;" name="save" class="btn btn-success" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
-		</form>
-		<?php
-	}
-	else
-	{
-		?>
-		<div><?php echo JText::_('JEV_CSS_UNWRITABLE'); ?></div>
-		<?php
-	}
+	<form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post" name="custom_css_save" id="custom_css_save">
+		<textarea rows="28" cols="93" name="content"><?php echo $content; ?></textarea>
+		<input type="submit" style="display:block;margin-left:2px;" name="save" class="btn btn-success" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
+	</form>
+	<?php
 
 	$html = ob_get_contents();
 	@ob_end_clean();

@@ -56,6 +56,10 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
+		if (JVersion::isCompatible("3.0")){
+			$this->sidebar = JHtmlSidebar::render();					
+		}						
+
 	}
 
 	/**
@@ -782,6 +786,10 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 //$section = $params->get("section",0);
+
+		if (JVersion::isCompatible("3.0")){
+			$this->sidebar = JHtmlSidebar::render();					
+		}						
 
 	}
 		function custom_css()

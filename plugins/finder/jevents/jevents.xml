@@ -18,4 +18,18 @@
 		<language tag="en-GB">language/en-GB.plg_finder_jevents.ini</language>
 		<language tag="en-GB">language/en-GB.plg_finder_jevents.sys.ini</language>
 	</languages>
+	<config>
+		<fields name="params">
+		
+			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
+				<field
+					name="target_itemid"
+					type="jevmenu"
+					default=""
+					label="Target Menu Item"
+					description="Menu item for target page" />
+			</fieldset>		
+		</fields>
+	</config>	
+	
 </extension>

@@ -25,6 +25,15 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	?>
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<?php if (!empty($this->sidebar)) : ?>
+		<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+		</div>
+		<div id="j-main-container" class="span10">
+			<?php else : ?>
+			<div id="j-main-container">
+	<?php endif; ?>
+		
 		<table border="0" cellpadding="2" cellspacing="2" class="adminform">
 
 			<tr>
@@ -55,12 +64,12 @@ defined('_JEXEC') or die('Restricted access');
 						if (JEVHelper::isAdminUser()){
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+							// Custom CSS
+							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.custom_css";
+							$this->_quickiconButton($link, "jevents_customcss_sml.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 							// Support Info
 							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
 							$this->_quickiconButton($link, "Support_icon.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-							// Custom CSS
-							$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.custom_css";
-							$this->_quickiconButton($link, "jevents_layouts_sml.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 						
 							
 						}
@@ -127,5 +136,6 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="task" value="cpanel" />
 		<input type="hidden" name="act" value="" />
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
+			</div>
 	</form>
 </div>
