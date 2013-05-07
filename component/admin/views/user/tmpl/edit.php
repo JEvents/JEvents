@@ -15,7 +15,7 @@ global  $task;
 $option = JEV_COM_COMPONENT;
 $index=JRoute::_("index.php");
 ?>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript" >
 	<?php 
 		echo "Joomla.submitbutton = function (pressbutton) {\n";
 	?>

@@ -209,7 +209,7 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
    </div>
    <div style="clear:both;"></div>
 </div>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript" >
 // make the correct frequency visible
 function setupRepeats(){
 	<?php

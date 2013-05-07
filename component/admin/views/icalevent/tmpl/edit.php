@@ -153,7 +153,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<?php
 			}
 			?>
-			<script type="text/javascript" language="Javascript">
+			<script type="text/javascript" >
 				Joomla.submitbutton = function (pressbutton) {
 					if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
 						if (document.adminForm['catid']){
@@ -271,11 +271,10 @@ else
 						?>
 					</ul>
 					<?php
+					// Tabs
+					echo JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
+					echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
 				}
-
-// Tabs
-				echo JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
-				echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
 
 				$native = true;
 				if ($this->row->icsid() > 0)
@@ -336,7 +335,7 @@ else
 						?>
 						<label class="control-label"><?php echo JText::_('SELECT_ICAL'); ?>:</label>
 						<div class="controls">
-							<script type="text/javascript" language="Javascript">
+							<script type="text/javascript" >
 								function preselectCategory(select){
 									var lookup = new Array();
 									lookup[0]=0;
@@ -463,11 +462,11 @@ else
 								<tr>	
 									<td  nowrap="nowrap">
 										<input type="hidden" id="pick1064797275field" name="color" value="<?php echo $this->row->color(); ?>"/>
-										<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
+										<a id="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
 									</td>
 									<td>
 										<div style="position:relative;z-index:9999;">
-											<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
+											<iframe id="fred" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;"></iframe>
 										</div>
 									</td>
 								</tr>
@@ -526,7 +525,7 @@ else
 				<div class="control-group jev_extrainfo">
 					<label class="control-label "><?php echo JText::_('JEV_EVENT_EXTRA'); ?></label>
 					<div class="controls" >
-						<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4" wrap="virtual" ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
+						<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4"  ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
 					</div>
 				</div>
 				<?php

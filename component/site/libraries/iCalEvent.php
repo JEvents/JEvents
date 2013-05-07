@@ -129,16 +129,22 @@ class iCalEvent extends JTable  {
 			$pairs = array();
 			$order = 0;
 			foreach ($catids as $catid){
-				$pairs[] =   "($this->ev_id,$catid, $order)";
-				 $order++;
+				if ($catid==""){
+					$catid=-1;
+				}
+				else {
+					$pairs[] =   "($this->ev_id,$catid, $order)";
+					$order++;
+				}
 			}
 			$db->setQuery("DELETE FROM #__jevents_catmap where evid = ".$this->ev_id." AND catid NOT IN (".implode(",",$catids).")");
 			$sql =$db->getQuery();
 			$success = $db->query();
-			
-			$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES ".implode(",", $pairs));
-			$sql =$db->getQuery();
-			$success = $db->query();
+			if (count($pairs)>0){
+				$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES ".implode(",", $pairs));
+				$sql =$db->getQuery();
+				$success = $db->query();
+			}
 		}
 		
 		// I also need to store custom data - when we need the event itself and not just the detail

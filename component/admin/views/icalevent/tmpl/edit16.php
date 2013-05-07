@@ -130,7 +130,7 @@ if ($this->editCopy)
 	<?php
 }
 ?>
-			<script type="text/javascript" language="Javascript">
+			<script type="text/javascript" >
 
 				Joomla.submitbutton = function (pressbutton) {
 
@@ -285,7 +285,7 @@ if ($this->setPriority && $showpriority)
 							{
 								?>
 							<td>
-								<script type="text/javascript" language="Javascript">
+								<script type="text/javascript" >
 									function preselectCategory(select){
 										var lookup = new Array();
 										lookup[0]=0;
@@ -402,11 +402,11 @@ if (!$hideColour)
 									<tr>	
 										<td  nowrap="nowrap">
 											<input type="hidden" id="pick1064797275field" name="color" value="<?php echo $this->row->color(); ?>"/>
-											<a id="colorPickButton" name ="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
+											<a id="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
 										</td>
 										<td>
 											<div style="position:relative;z-index:9999;">
-												<iframe id="fred" frameborder="0" src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;"></iframe>
+												<iframe id="fred"  src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;"></iframe>
 											</div>
 										</td>
 									</tr>
@@ -475,7 +475,7 @@ echo "</div>";
 					<tr class="jev_extrainfo">
 						<td align="left" valign="top"><?php echo JText::_('JEV_EVENT_EXTRA'); ?></td>
 						<td colspan="3">
-							<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4" wrap="virtual" ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
+							<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4"  ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
 						</td>
 					</tr>
 				<?php
@@ -486,9 +486,9 @@ echo "</div>";
 							<td valign="top"  width="130" align="left"><?php echo $customfields[$key]["label"]; ?></td>
 							<td colspan="3"><?php echo $customfields[$key]["input"]; ?></td>
 						</tr>
-	<?php
-}
-?>
+					<?php
+				}
+				?>
 
 				</table>
 <?php

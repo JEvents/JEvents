@@ -196,7 +196,7 @@ class DefaultModCalView
 		if ($included) return;
 		$included = true;
 ?>
-	<script language="javascript"  type="text/javascript" ><!--
+	<script   type="text/javascript" ><!--
 	function navLoaded(elem, modid){
 		var myspan = document.getElementById("testspan"+modid);
 		var modbody = myspan.parentNode;

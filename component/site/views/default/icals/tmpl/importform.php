@@ -17,7 +17,7 @@ echo "<h3>".JText::_('JEV_IMPORT_ICALEVENT')."</h3>\n";
 
 ?>
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript" >
 function submitbutton() {
 	var form = document.ical;
 	
@@ -45,7 +45,7 @@ function submitbutton() {
 	<input class="inputbox" type="text" name="uploadURL" id="uploadURL" size="30" /><br/><br/>
 
 	<?php 	if ($this->clistChoice){?>
-			<script type="text/javascript" language="Javascript">
+			<script type="text/javascript" >
 			function preselectCategory(select){
 				var lookup = new Array();
 				lookup[0]=0;
