@@ -70,16 +70,19 @@ $form_link = JRoute::_($form_link
 $filters = $jevhelper->getFilters();
 
 $option = JRequest::getCmd("option");
-if ($params->get("disablenonjeventspages",0) && $option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
+if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $option != "com_jevlocations" && $option != "com_jevpeople" && $option != "com_rsvppro" && $option != "com_jevtags")
+{
 	// display nothing on non-jevents pages - again make this a config option
-	return ;
+	return;
 }
 
 $filterHTML = $filters->getFilterHTML();
 
 //Check if in event details
 //We never need filters in an edit page, this could cause user issues, so if there remove to.
-if ((JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0) || JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit")
+if (
+		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalrepeat.detail") && $params->get('showindetails', 0) == 0)
+		|| JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit")
 {
 	return;
 }
