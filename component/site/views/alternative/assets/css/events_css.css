@@ -554,6 +554,24 @@ div.jevtt_text{
 /* Joomla 1.6 changes */
 #action_dialog {
 	text-align: left;
+	 position:absolute;
+	 right:0px;
+	 background-color:#dedede;
+	 border:solid 1px #000000;
+	 width:200px;
+	 padding:10px;
+	 visibility:hidden;
+	 z-index:999;
+}
+#action_dialog div {
+	width:12px!important;
+	position:absolute;
+	right:0px;
+	top:0px;
+	background-color:#ffffff;
+	border:solid #000000;
+	border-width:0 0 1px 1px;
+	text-align:center;
 }
 #action_dialog a{
 	display:block;

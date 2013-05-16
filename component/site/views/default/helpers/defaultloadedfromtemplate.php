@@ -261,12 +261,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$catlinks = array();
 					if ($jevparams->get("multicategory",0)){
 						$catids = $event->catids();
+						$catdata = $event->getCategoryData();					
 					}
 					else {
-						$catids = array($event->catids());
-					}
-					
-					$catdata = $event->getCategoryData();					
+						$catids = array($event->catid());
+						$catdata = array($event->getCategoryData());
+					}					
 					
 					$vars = $router->getVars();
 					foreach ($catids as $cat){

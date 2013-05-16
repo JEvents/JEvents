@@ -218,6 +218,9 @@ class GeraintModLegendView extends DefaultModLegendView{
 		if ($row->parent_id>0 && $activeSubCat>0 && $row->id!=$activeSubCat  && !isset($row->activeNode))  $catclass = "childcat";
 
 		$cat = $row->id>0 ? "&catids=$row->id" : "";
+		//$rowparams = new JRegistry(isset($row->params)?$row->params:null);
+		//$image = $rowparams->get("image",false);
+		//$image = $image? "<img src = '".JURI::root().$image."' class='catimage'  alt='categoryimage' />" : "";
 		$content = '<div class="event_legend_item '.$catclass.'" style="border-color:'.$row->color.'">';
 		$content .= '<div class="event_legend_name" style="border-color:'.$row->color.'">'
 		. '<a href="'.JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk").'" title="'.JEventsHTML::special($row->name).'">'

@@ -82,8 +82,8 @@ function DefaultEventManagementDialog($view,$row, $mask){
 		}
 
             ?>
-            <div id="action_dialog"  style="position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;">
-            	<div style="width:12px!important;position:absolute;right:0px;top:0px;background-color:#ffffff;;border:solid #000000;border-width:0 0 1px 1px;text-align:center;">
+            <div id="action_dialog" >
+            	<div >					
             		<a href="javascript:void(0)" onclick="closedialog()" style="font-weight:bold;text-decoration:none;color:#000000;">x</a>
             	</div>
                  <?php

@@ -21,7 +21,8 @@ class AlternativeBuildMonthSelect {
 			$name_of_month = JEVHelper::getMonthName($m)." $y";
 			$monthslist[] = JHTML::_('select.option', "$m|$y", $name_of_month );
 		}
-
+		$link = str_replace(array("day.listevents","week.listevents","year.listevents","cat.listevents","icalrepeat.detail","icalevent.detail"),"month.calendar",$link);
+		
 		$tosend = "<script type='text/javascript'>\n";
 		$tosend .= "/* <![CDATA[ */\n";
 		$tosend .= " function selectMD(elem) {

@@ -505,7 +505,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_acymailing_tagjevents" => 41,
 			"plugin_community_jevents" => 7,
 			"plugin_content_jevcreator" => 34,
-			"plugin_content_jevent_embed" => 12,
+			"plugin_content_jevent_embed" => 113,
 			"plugin_jevents_agendaminutes" => 12,
 			"plugin_jevents_jevanonuser" => 25,
 			"plugin_jevents_jevcalendar" => 15,
@@ -538,7 +538,8 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_rsvppro_manual" => 62,
 			"plugin_rsvppro_paypalipn" => 62,
 			"plugin_rsvppro_virtuemart" => 62,
-			"plugin_search_eventsearch" => 52,
+			//"plugin_search_eventsearch" => 52, // JEvents 2.2
+			"plugin_search_eventsearch" => 71,
 			"plugin_search_jevlocsearch" => 4,
 			"plugin_search_jevtagsearch" => 9,
 			"plugin_system_autotweetjevents" => 45,
@@ -546,7 +547,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"component_com_attend_jevents" => 21,
 			//"component_com_jevents" => 52, // JEvents 2.0
 			//"component_com_jevents" => 65, // JEvents 2.1
-			"component_com_jevents" => 71, // JEvents 2.2
+			"component_com_jevents" => 71, // JEvents 3.0
 			"component_com_jeventstags" => 9,
 			"component_com_jevlocations-old" => 4,
 			"component_com_jevlocations" => 4,

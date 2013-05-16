@@ -18,6 +18,10 @@ function JEventsBuildRoute(&$query)
 {
 	$params = JComponentHelper::getParams("com_jevents");
 
+	// Must also load backend language files
+	$lang = & JFactory::getLanguage();
+	$lang->load("com_jevents", JPATH_SITE);
+	
 	$cfg = & JEVConfig::getInstance();
 	$segments = array();
 

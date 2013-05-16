@@ -86,6 +86,7 @@ class iCalImport
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
 
@@ -675,6 +676,7 @@ class iCalImport
 		$wtzdata["E. Europe Standard Time"] = "Europe/Helsinki";
 		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
 		$wtzdata["Mountain Standard Time"] = "America/Denver";
+		$wtzdata["Romance Standard Time"] = "Europe/Brussels";
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
