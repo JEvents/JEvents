@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" method="upgrade" client="site">
-	<name>Latest JEvents</name>
+	<name>JEvents Latest Events</name>
 	<creationDate>April 2013</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2013 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
