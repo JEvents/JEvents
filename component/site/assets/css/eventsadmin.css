@@ -10,6 +10,9 @@
 }
 .pane-sliders .panel {
 	margin-bottom: 3px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 .pane-sliders .adminlist td {
 	border: 0 none;

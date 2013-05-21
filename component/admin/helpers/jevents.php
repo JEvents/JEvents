@@ -123,7 +123,7 @@ class JEventsHelper
 				JSubMenuHelper::addEntry(
 						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
 				);
-								JHtmlSidebar::addEntry(
+				JSubMenuHelper::addEntry(
 						JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
 				);
 			}
