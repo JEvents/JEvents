@@ -31,7 +31,21 @@ class ExtViewSearch extends JEventsExtView
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 		
+		//Set Meta information - As per menu item.
+		if ($params->get('menu-meta_description'))
+		{
+			$document->setDescription($params->get('menu-meta_description'));
+		}
+		if ($params->get('menu-meta_keywords'))
+		{
+			$document->setMetadata('keywords', $params->get('menu-meta_keywords'));
+		}
 
+		// This will not override the JEvents Helper for blocking Robots. 
+		if ($params->get('robots'))
+		{
+			$document->setMetadata('robots', $params->get('robots'));
+		}
 	}	
 
 	function results($tpl = null)
