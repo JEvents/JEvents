@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla 1.5.x
  *
@@ -8,7 +9,6 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
@@ -17,6 +17,33 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeViewYear extends JEventsAlternativeView 
+class AlternativeViewYear extends JEventsAlternativeView
 {
+
+	function listevents($tpl = null)
+	{
+		JEVHelper::componentStylesheet($this);
+
+		$document = & JFactory::getDocument();
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		//Set Meta information - As per menu item.
+		if ($params->get('menu-meta_description'))
+		{
+			$document->setDescription($params->get('menu-meta_description'));
+		}
+		if ($params->get('menu-meta_keywords'))
+		{
+			$document->setMetadata('keywords', $params->get('menu-meta_keywords'));
+		}
+
+		// This will not override the JEvents Helper for blocking Robots. 
+		if ($params->get('robots'))
+		{
+			$document->setMetadata('robots', $params->get('robots'));
+		}
+
+	}
+
 }
