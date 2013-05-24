@@ -383,20 +383,6 @@ class JEVHelper
 				return;
 			}
 		}
-		
-	// Set! normal Meta's while we are here...
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$document = & JFactory::getDocument();
-		
-		if ($params->get('menu-meta_description'))
-		{
-			$document->setDescription($params->get('menu-meta_description'));
-		}
-
-		if ($params->get('menu-meta_keywords'))
-		{
-			$params->setMetadata('keywords', $params->get('menu-meta_keywords'));
-		}
 
 	}
 
