@@ -26,6 +26,9 @@ function DefaultViewHelperHeader($view){
 
 	// stop crawler and set meta tag
 	JEVHelper::checkRobotsMetaTag();
+	
+	// Call the MetaTag setter function.
+	JEVHelper::SetMetaTags();
 
  if ($params->get('show_page_title', 1) ){?>
 	<div class="componentheading<?php echo $view->escape($params->get('pageclass_sfx')); ?>">

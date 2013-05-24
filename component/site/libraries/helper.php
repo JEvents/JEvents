@@ -385,6 +385,27 @@ class JEVHelper
 		}
 
 	}
+	
+	//New MetaSet Function, to set the meta tags if they exist in the Menu Item
+	
+	function SetMetaTags()
+	{	
+		//Get Document to set the Meta Tags to.
+		$document =& JFactory::getDocument();
+		
+		//Get the Params.
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		if ($params->get('menu-meta_description'))
+		{
+			$document->setDescription($params->get('menu-meta_description'));
+		}
+	  
+		if ($params->get('menu-meta_keywords'))
+		{
+			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
+		}
+	}
 
 	function forceIntegerArray(&$cid, $asString=true)
 	{
