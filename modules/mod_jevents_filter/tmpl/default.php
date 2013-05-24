@@ -81,7 +81,7 @@ $filterHTML = $filters->getFilterHTML();
 //Check if in event details
 //We never need filters in an edit page, this could cause user issues, so if there remove to.
 if (
-		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalevent.editcopy" ||JRequest::getCmd("task") == "icalevent.detail") && $params->get('showindetails', 0) == 0)	|| JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit")
+		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalevent.detail") && $params->get('showindetails', 0) == 0)	|| JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit")
 {
 	return;
 }
