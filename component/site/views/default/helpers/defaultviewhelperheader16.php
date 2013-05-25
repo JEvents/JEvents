@@ -26,6 +26,9 @@ function DefaultViewHelperHeader16($view){
 	// stop crawler and set meta tag
 	JEVHelper::checkRobotsMetaTag();
 
+	// Call the MetaTag setter function.
+	JEVHelper::SetMetaTags();
+	
 	$lang = &JFactory::getLanguage();
 ?>
 <div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_header">

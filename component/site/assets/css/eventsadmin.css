@@ -10,6 +10,9 @@
 }
 .pane-sliders .panel {
 	margin-bottom: 3px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 .pane-sliders .adminlist td {
 	border: 0 none;
@@ -218,3 +221,7 @@ div.icon-48-jevents { height: 45px; width:170px; }
 	width:100%;
 	margin-top:10px;
 }
+
+table.versionstatuslist tr:nth-child(odd)		{ background-color:#cecece;}
+table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }
+table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
