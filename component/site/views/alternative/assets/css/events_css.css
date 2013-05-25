@@ -427,6 +427,10 @@ div.jev_pagination {
 	width:100%;
 	text-align:center;
 }
+.jev_pagination li {
+	display:inline;
+	margin-right:3px;
+}
 
 /* Event Legend Module Styling */
 .moduletable div.event_legend_container {

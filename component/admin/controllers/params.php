@@ -313,6 +313,7 @@ class AdminParamsController extends JControllerAdmin
 		$cache->clean();
 
 		// Trigger the onContentCleanCache event.
+		$this->event_clean_cache = 'onContentCleanCache';
 		$dispatcher->trigger($this->event_clean_cache, $options);
 	}
 	

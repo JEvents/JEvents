@@ -530,7 +530,7 @@ if (!$cfg->get('com_single_pane_edit', 0))
 			</div>
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="updaterepeats" value="0"/>
-			<input type="hidden" name="task" value="icalevent.edit" />
+			<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task","icalevent.edit"); ?>" />
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 	</form>
 </div>

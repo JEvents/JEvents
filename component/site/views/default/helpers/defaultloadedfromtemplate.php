@@ -449,6 +449,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ISOSTART}}":
 				case "{{ISOEND}}":
 				case "{{DURATION}}":
+				case "{{MULTIENDDATE}}":
 					if ($template_name == "icalevent.detail_body")
 					{
 						$search[] = "{{REPEATSUMMARY}}";
@@ -490,6 +491,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ISOEND}}";
 						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
 						$blank[] = "";
+						$search[] = "{{MULTIENDDATE}}";
+						$replace[] = $row->endDate()>$row->startDate() ? $stop_date : "";
+						$blank[] = "";
 					}
 					else
 					{
@@ -516,6 +520,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 						$search[] = "{{ENDTIME}}";
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
+						$blank[] = "";
+						$search[] = "{{MULTIENDDATE}}";
+						$replace[] = $row->endDate()>$row->startDate() ? $stop_date : "";
 						$blank[] = "";
 
 						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false){

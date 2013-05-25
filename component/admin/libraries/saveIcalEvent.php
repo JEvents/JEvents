@@ -141,14 +141,10 @@ class SaveIcalEvent {
 		// Always unpublish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents",0);
-		if (!JFactory::getApplication()->isAdmin()){
-			if ($frontendPublish && $ev_id==0){
-				$vevent->state = 1;
-			}else if (!$frontendPublish){
-				$vevent->state = 0;
-				// In this case we send a notification email to admin
-				$notifyAdmin = true;
-			}
+		if (!$frontendPublish){
+			$vevent->state = 0;
+			// In this case we send a notification email to admin
+			$notifyAdmin = true;
 		}
 
 		$vevent->icsid = $ics_id;

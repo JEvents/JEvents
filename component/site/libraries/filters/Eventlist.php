@@ -46,10 +46,6 @@ class jevEventlistFilter extends jevFilter
 				$Itemid = $this->datamodel->myItemid;
 				foreach ($events as $event){
 					$link = $event->viewDetailLink($event->yup(),$event->mup(),$event->dup(),true, $Itemid);
-					if (strpos( $link, "/")===0){
-						$link = substr($link, 1);
-					}
-					$link = JURI::root().$link;
 					$options[] = JHTML::_('select.option', $link, $event->title() ,"value","text");			
 				}				
 			}

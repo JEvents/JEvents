@@ -598,6 +598,10 @@ div.jev_pagination {
 	width:100%;
 	text-align:center;
 }
+.jev_pagination li {
+	display:inline;
+	margin-right:3px;
+}
 /***************************
 * List View 
 ***************************/

@@ -418,7 +418,7 @@ else
 					?>
 				</div>
 				<?php
-				if (JFactory::getApplication()->isAdmin())
+				if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher())
 				{
 					if ($this->ev_id == 0)
 					{
@@ -576,7 +576,7 @@ else
 			</div>
 			<input type="hidden" name="boxchecked" value="0" />
 			<input type="hidden" name="updaterepeats" value="0"/>
-			<input type="hidden" name="task" value="icalevent.edit" />
+			<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task","icalevent.edit"); ?>" />
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 	</form>
 </div>
