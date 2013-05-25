@@ -268,3 +268,11 @@ a#colorPickButton {
 fieldset.checkboxes li {
 	float:left;
 }
+
+/* Round the Panel Corners */
+.pane-sliders .panel {
+	margin-bottom: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}

@@ -767,26 +767,11 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-// Set toolbar items for the page
-//JToolBarHelper::preferences('com_jevents', '580', '750');
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
-		/*
-		  $user= JFactory::getUser();
-		  if ($user->authorise('core.admin','com_jevents.admin')) {
-		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
-		  }
-		 */
+
 		JEventsHelper::addSubmenu();
 
-		if (JFactory::getApplication()->isAdmin())
-		{
-//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
-		}
-//JToolBarHelper::help( 'screen.cpanel', true);
-
-
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-//$section = $params->get("section",0);
 
 		if (JVersion::isCompatible("3.0")){
 			$this->sidebar = JHtmlSidebar::render();					
@@ -800,27 +785,15 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$document = & JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-	// Set toolbar items for the page
-
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
-		/*
-		  $user= JFactory::getUser();
-		  if ($user->authorise('core.admin','com_jevents.admin')) {
-		  JToolBarHelper::preferences('com_jevents' , '600', $width = '950');
-		  }
-		 */
+
 		JEventsHelper::addSubmenu();
 
-		if (JFactory::getApplication()->isAdmin())
-		{
-	//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
-		}
-	//JToolBarHelper::help( 'screen.cpanel', true);
-
-
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-	//$section = $params->get("section",0);
 
+		if (JVersion::isCompatible("3.0")){
+			$this->sidebar = JHtmlSidebar::render();					
+		}
 	}
 	
 }

@@ -80,9 +80,12 @@ class JEventsHelper
 						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
 				);
 
-				//Support should only be for Admins really.
+				//Support & CSS Customs should only be for Admins really.
 				JHtmlSidebar::addEntry(
 						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+				);
+				JHtmlSidebar::addEntry(
+						JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
 				);
 			}
 		}
@@ -116,9 +119,12 @@ class JEventsHelper
 						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
 				);
 
-				//Support should only be for Admins really.
+				//Support & CSS customs should only be for Admins really.
 				JSubMenuHelper::addEntry(
 						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+				);
+				JSubMenuHelper::addEntry(
+						JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
 				);
 			}
 		}
