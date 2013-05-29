@@ -57,22 +57,22 @@
 				<field name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
 				<field name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="modcal_DispLastMonth" type="list" default="NO" label="JEV_MINICAL_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC">
+				<field name="modcal_DispLastMonth" type="list" default="NO" label="JEV_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC">
 					<option value="NO">JEV_NO</option>
-					<option value="YES_stop">JEV_MINICAL_YES_STOP_W_DAY</option>
-					<option value="YES_stop_events">JEV_MINICAL_YES_STOP_W_DAY_AND_EVENTS</option>
+					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
-					<option value="ALWAYS_events">ALWAYS - if has events</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="JEV_MINICAL_DTOSTOP_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DTOSTOP_DISPLAY_NEXT_MONTH_DESC" />
 				<field name="modcal_DispNextMonth" type="list" default="NO" label="JEV_MINICAL_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC">
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_MINICAL_YES_STOP_W_DAY</option>
 					<option value="YES_stop_events">JEV_MINICAL_YES_STOP_W_DAY_AND_EVENTS</option>
-					<option value="ALWAYS">ALWAYS</option>
-					<option value="ALWAYS_events">JEV_MINICAL_ALWAYS_IF_EVENTS</option>
+					<option value="ALWAYS">JEV_ALWAYS</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispNextMonthDays" type="text" size="2" default="0" label="JEV_MINICAL_DAYS_LEFT_START_NEXT_MONTH" description="JEV_MINICAL_DAYS_LEFT_START_NEXT_MONTH_DESC" />
+					<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY"/>
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
