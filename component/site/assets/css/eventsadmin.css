@@ -225,3 +225,11 @@ div.icon-48-jevents { height: 45px; width:170px; }
 table.versionstatuslist tr:nth-child(odd)		{ background-color:#cecece;}
 table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }
 table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
+
+.jevdate_labels {
+	float:left;
+	width:80px;
+}
+.jevdate_date {
+	float:left;
+}
