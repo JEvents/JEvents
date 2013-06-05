@@ -64,11 +64,11 @@
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="JEV_MINICAL_DTOSTOP_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DTOSTOP_DISPLAY_NEXT_MONTH_DESC" />
-				<field name="modcal_DispNextMonth" type="list" default="NO" label="JEV_MINICAL_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC">
+				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" />
+				<field name="modcal_DispNextMonth" type="list" default="NO" label="JEV_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC">
 					<option value="NO">JEV_NO</option>
-					<option value="YES_stop">JEV_MINICAL_YES_STOP_W_DAY</option>
-					<option value="YES_stop_events">JEV_MINICAL_YES_STOP_W_DAY_AND_EVENTS</option>
+					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
