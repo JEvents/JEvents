@@ -663,8 +663,9 @@ class jEventCal {
 	function vCalExportLink($sef=false, $singlerecurrence=false){
 		$Itemid	= JEVHelper::getItemid();
 		$task = $singlerecurrence?"icalrepeat":"icalevent";
-		$link = "index.php?option=".JEV_COM_COMPONENT."&task=icals.$task&template=component&evid=".$this->id()
+		$link = "index.php?option=".JEV_COM_COMPONENT."&task=icals.$task&tmpl=component&evid=".$this->id()
 		. "&Itemid=".$Itemid;
+
 		// after testing set showBR = 0
 		//$link .= "&showBR=1";
 		$link = $sef?JRoute::_( $link  ):$link;
