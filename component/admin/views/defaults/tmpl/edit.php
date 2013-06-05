@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" )  {
+if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page" )  {
 	$editor =& JFactory::getEditor("none");
 }
 else {
@@ -25,6 +25,9 @@ if (strpos($this->item->name, "com_")===0){
 }
 
 
+if (JVersion::isCompatible("3.0.0")){
+	if ($this->item->value=="" && file_exists(dirname(__FILE__).'/'.$this->item->name.".3.html")) $this->item->value = file_get_contents(dirname(__FILE__).'/'.$this->item->name.".3.html");
+}
 if ($this->item->value=="" && file_exists(dirname(__FILE__).'/'.$this->item->name.".html")) $this->item->value = file_get_contents(dirname(__FILE__).'/'.$this->item->name.".html");
 $this->replaceLabels($this->item->value);
 

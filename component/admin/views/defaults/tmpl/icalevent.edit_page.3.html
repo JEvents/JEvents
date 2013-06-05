@@ -1,0 +1,155 @@
+{{Message:MESSAGE}}
+<div align="left" class="adminform">
+	{{Tab Label:TABLINK#Common}}
+	{{Tab Label:TABLINK#Calendar}}
+	{{Tab Label:TABLINK#Custom Fields Tab One}}
+	{{Tab Label:TABLINK#Custom Fields Tab Two}}
+	{{Tab Label:TABLINK#Attendance Options}}
+	{{Tab Label:TABLINK#Invitation Options}}
+	{{Tab Label:TABLINK#Email Reminder Options}}
+
+	{{Tab Body Start:TABBODYSTART#Common}}
+	<div class="control-group">
+		<label class="control-label">
+			{{Title Label:TITLE_LBL}} :
+		</label>
+		<div class="controls">
+			{{Title:TITLE}}
+		</div>
+		<label class="control-label" {{Priority:PRIORITY# #style="display:none"}}>
+			{{Priority Label:PRIORITY_LBL}} :
+		</label>
+		<div class="controls">
+			{{Priority:PRIORITY}}
+		</div>
+	</div>
+	<div class="control-group jevcreator" {{Creator:CREATOR# #style="display:none"}}>
+		 <label class="control-label">
+			{{Creator label:CREATOR_LBL}}:
+		</label>
+		<div class="controls">
+			{{Creator:CREATOR}}
+		</div>
+	</div>			
+	<div class="control-group jevical"  {{Calendar:ICAL# #style="display:none"}}>
+		 <label class="control-label">
+			{{Calendar label:ICAL_LBL}}
+		</label>
+		<div class="controls">
+			{{Calendar:ICAL}}
+		</div>
+	</div>
+	<div class="control-group jevlock"  {{Lock Event:LOCK# #style="display:none"}}>
+		 <label class="control-label">
+			{{Lock Event label:LOCK_LBL}}
+		</label>
+		<div class="controls">
+			{{Lock Event:LOCK}}
+		</div>
+	</div>
+	<div class="control-group jevcategory"  {{Category:CATEGORY# #style="display:none"}}>
+		 <label class="control-label">
+			{{Category label:CATEGORY_LBL}}
+		</label>
+		<div class="controls">
+			{{Category:CATEGORY}}
+		</div>
+	</div>
+	<div class="control-group jevaccess" {{Access:ACCESS# #style="display:none"}} >
+		 <label class="control-label">
+			{{Access label:ACCESS_LBL}}
+		</label>
+		<div class="controls">
+			{{Access:ACCESS}}
+		</div>
+	</div>
+	<div class="control-group jevstatus" {{Status:STATUS# #style="display:none"}} >
+		 <label class="control-label">
+			{{Status label:STATUS_LBL}}
+		</label>
+		<div class="controls">
+			{{Status:STATUS}}
+		</div>
+	</div>
+	<div class="control-group jevcolour" {{Event Colour:COLOUR# #style="display:none"}} >
+		 <label class="control-label">
+			{{Colour label:COLOUR_LBL}}
+		</label>
+		<div class="controls">
+			{{Event Colour:COLOUR}}
+		</div>
+	</div>
+
+	<div class="control-group jev_description" id='jeveditor' >
+		<label class="control-label">
+			{{Description label:DESC_LBL}}
+		</label>
+		<div class="controls">
+			{{Description:DESC}}
+		</div>
+	</div>
+
+	<div class="control-group jeveditlocation"  id="jeveditlocation">
+		<label class="control-label">
+			{{LOCATION label:LOCN_LBL}}
+		</label>
+		<div class="controls">
+			{{Location:LOCN}}
+		</div>
+	</div>
+
+	<div class="control-group jev_contact">
+		<label class="control-label">
+			{{Contact label:CONTACT_LBL}}
+		</label>
+		<div class="controls">
+			{{Contact:CONTACT}}
+		</div>
+	</div>
+
+	<div class="control-group jev_extrainfo">
+		<label class="control-label">
+			{{Extra label:EXTRA_LBL}}
+		</label>
+		<div class="controls">
+			{{Extra:EXTRA}}
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">
+			Example of single custom field : {{Custom joomlauser2 label:customfield_joomlauser2_lbl}}
+		</label>
+		<div class="controls">
+			{{Custom joomlauser2:customfield_joomlauser2}}
+		</div>
+	</div>
+
+	{{Custom Fields:CUSTOMFIELDS}} 
+
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Calendar}}
+	{{Calendar tab content:CALTAB}}
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Custom Fields Tab One}}
+	{{Tab 1:CUSTOM_1}}
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Custom Fields Tab Two}}
+	{{Tab 2:CUSTOM_2}}
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Attendance Options}}
+	{{Attendance Tab:ATTENDANCE_OPTIONS}}
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Invitation Options}}
+	{{Invitations Tab:INVITATION_OPTIONS}}
+	{{Tab Body end:TABBODYEND}}
+
+	{{Tab Body Start:TABBODYSTART#Email Reminder Options}}
+	{{Reminder Tab:EMAIL_REMINDER_OPTIONS}}
+	{{Tab Body end:TABBODYEND}}
+</div>

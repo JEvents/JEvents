@@ -13,9 +13,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 if (count($filterHTML)>0){
+	if (JVersion::isCompatible("3.0")){
+		// Load Bookstrap
+		JHtml::_('bootstrap.framework');
+		JHtml::_('formbehavior.chosen', '.jevfiltermodule select');
+	}
+
 	JEVHelper::script("mod_jevents_filter.js","modules/mod_jevents_filter/",true);
 	?>
-	<form action="<?php echo $form_link;?>" id="jeventspost" name="jeventspost<?php echo $module->id;?>" method="post">
+	<form action="<?php echo $form_link;?>" id="jeventspost" name="jeventspost<?php echo $module->id;?>" method="post" class="jevfiltermodule" >
 	<?php
 		// This forces category settings in URL to reset too since they could be set by SEF 
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";

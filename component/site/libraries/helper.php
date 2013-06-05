@@ -344,7 +344,7 @@ class JEVHelper
 	 * @param string $name - metatag name
 	 * @param string $content - metatag value
 	 */
-	function checkRobotsMetaTag($name="robots", $content="noindex, nofollow")
+	static function checkRobotsMetaTag($name="robots", $content="noindex, nofollow")
 	{
 
 		// force robots metatag
@@ -388,7 +388,7 @@ class JEVHelper
 	
 	//New MetaSet Function, to set the meta tags if they exist in the Menu Item
 	
-	function SetMetaTags()
+	static function SetMetaTags()
 	{	
 		//Get Document to set the Meta Tags to.
 		$document =& JFactory::getDocument();

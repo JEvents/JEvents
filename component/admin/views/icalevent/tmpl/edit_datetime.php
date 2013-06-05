@@ -173,7 +173,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		</fieldset>
 	</div>			
 	<!-- END REPEAT FREQ-->
-	<div style="clear:both;display:none" id="interval_div">
+	<div id="interval_div">
 		<div style="float:left">
 			<fieldset><legend><?php echo JText::_('REPEAT_INTERVAL') ?></legend>
 				<input class="inputbox" type="text" name="rinterval" id="rinterval" size="2" maxlength="2" value="<?php echo $this->row->interval(); ?>" onchange="checkInterval();" /><span id='interval_label' style="margin-left:1em"></span>
@@ -185,7 +185,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</fieldset>
 		</div>
 		<div style="float:left;margin-left:20px!important;" id="cu_until">
-			<fieldset style="background-color:#dddddd"><legend><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
+			<fieldset style="background-color:#dddddd">
+				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php
 				/*
 				  echo JHTML::calendar(JevDate::strftime("%Y-%m-%d",$this->row->until()), 'until', 'until', '%Y-%m-%d',	array('size'=>'12','maxlength'=>'10'));
@@ -201,34 +202,43 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		</div>
 	</div>
 	<div style="clear:both;">
-		<div  style="float:left;display:none;margin-right:1em;" id="byyearday">
+		<div   id="byyearday">
 			<fieldset><legend><input type="radio" name="whichby" id="jevbyd" value="byd"  onclick="toggleWhichBy('byyearday');" /><?php echo JText::_('BY_YEAR_DAY'); ?></legend>
-				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
-				<input class="inputbox" type="text" name="byyearday" size="20" maxlength="50" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
-				<br/><?php echo JText::_('COUNT_BACK_YEAR'); ?><input type="checkbox" name="byd_direction"  onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("byyearday"); ?>/>
+				<div>					
+					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="50" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
+				</div>
+				<div class="countback">
+					<?php echo JText::_('COUNT_BACK_YEAR'); ?>
+					<input type="checkbox" name="byd_direction"  onclick="fixRepeatDates();" <?php echo $this->row->getByDirectionChecked("byyearday"); ?>/>
+				</div>
 			</fieldset>
 		</div>
-		<div  style="float:left;display:none;margin-right:1em;" id="bymonth">
+		<div  id="bymonth">
 			<fieldset><legend><input type="radio" name="whichby"  id="jevbm" value="bm"  onclick="toggleWhichBy('bymonth');" /><?php echo JText::_('BY_MONTH'); ?></legend>
 				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
 				<input class="inputbox" type="text" name="bymonth" size="30" maxlength="20" value="<?php echo $this->row->bymonth(); ?>" onchange="checkInterval();" />
 			</fieldset>
 		</div>
-		<div  style="float:left;display:none;margin-right:1em;" id="byweekno">
+		<div id="byweekno">
 			<fieldset><legend><input type="radio" name="whichby"  id="jevbwn" value="bwn"  onclick="toggleWhichBy('byweekno');" /><?php echo JText::_('BY_WEEK_NO'); ?></legend>
 				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
 				<input class="inputbox" type="text" name="byweekno" size="20" maxlength="20" value="<?php echo $this->row->byweekno(); ?>" onchange="checkInterval();" />
 				<br/>Count back from year end<input type="checkbox" name="bwn_direction"  <?php echo $this->row->getByDirectionChecked("byweekno"); ?> />
 			</fieldset>
 		</div>
-		<div  style="float:left;display:none;margin-right:1em;" id="bymonthday">
+		<div   id="bymonthday">
 			<fieldset><legend><input type="radio" name="whichby"  id="jevbmd" value="bmd"  onclick="toggleWhichBy('bymonthday');" /><?php echo JText::_('BY_MONTH_DAY'); ?></legend>
-				<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
-				<input class="inputbox" type="text" name="bymonthday" size="30" maxlength="20" value="<?php echo $this->row->bymonthday(); ?>" onchange="checkInterval();" />
-				<br/><?php echo JText::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"  onclick="fixRepeatDates();"  <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
+				<div>
+					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
+					<input class="inputbox" type="text" name="bymonthday" size="30" maxlength="20" value="<?php echo $this->row->bymonthday(); ?>" onchange="checkInterval();" />
+				</div>
+				<div class="countback">
+					<?php echo JText::_('COUNT_BACK'); ?><input type="checkbox" name="bmd_direction"  onclick="fixRepeatDates();"  <?php echo $this->row->getByDirectionChecked("bymonthday"); ?>/>
+				</div>
 			</fieldset>
 		</div>
-		<div  style="float:left;display:none;margin-right:1em;" id="byday">
+		<div id="byday">
 			<fieldset >
 				<legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>           			
 				<div class="checkbox btn-group ">
@@ -237,19 +247,20 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					?>
 				</div>
 			</fieldset>
-			<fieldset >
+			<fieldset  id="weekofmonth">
 				<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>           			
-				<div class="checkbox btn-group " id="weekofmonth">
+				<div class="checkbox btn-group ">
 					<?php
 					JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums");
 					?>
 				</div>
-				<div><?php echo JText::_('COUNT_BACK'); ?>
+				<div class="countback">
+					<?php echo JText::_('COUNT_BACK'); ?>
 					<input type="checkbox" name="bd_direction" <?php echo $this->row->getByDirectionChecked("byday"); ?>  onclick="updateRepeatWarning();"/>
 				</div>
 			</fieldset>
 		</div>
-		<div  style="float:left;display:none;margin-right:1em;" id="bysetpos">
+		<div  style="display:none;" id="bysetpos">
 			<fieldset><legend><?php echo "NOT YET SUPPORTED" ?></legend>
 			</fieldset>
 		</div>
@@ -364,6 +375,9 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 				}
 				// bootstrap takes care of the checkboxes themselves!
+				
+				// stop the event being triggered twice is click on input AND label outside it!
+				event.preventDefault();
 			});
 		
 			$(".btn-group input[type=checkbox]").each(function() {

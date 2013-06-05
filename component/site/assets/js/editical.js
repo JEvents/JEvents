@@ -566,10 +566,18 @@ function toggleCountUntil(cu){
 				if (inputtype==cu){
 					inputelem.disabled = false;
 					inputelem.parentNode.style.backgroundColor="#ffffff";
+					if (inputelem.getParent('fieldset').getElement('legend')){
+						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
+						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
+					}
 				}
 				else {
 					inputelem.disabled = true;
 					inputelem.parentNode.style.backgroundColor="#dddddd";
+					if (inputelem.getParent('fieldset').getElement('legend')){
+						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
+						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
+					}
 				}
 			}
 		}
@@ -591,10 +599,18 @@ function toggleWhichBy(wb)
 				if (inputtype==wb){
 					inputelem.disabled = false;
 					inputelem.parentNode.style.backgroundColor="#ffffff";
+					if (inputelem.getParent('fieldset').getElement('legend')){
+						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
+						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
+					}					
 				}
 				else {
 					inputelem.disabled = true;
 					inputelem.parentNode.style.backgroundColor="#dddddd";
+					if (inputelem.getParent('fieldset').getElement('legend')){
+						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
+						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
+					}
 				}
 			}
 
