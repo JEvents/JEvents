@@ -197,7 +197,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			if (JEVHelper::isEventEditor())
 				JToolBarHelper::apply('icalevent.apply', "JEV_Apply");				
 			JToolBarHelper::save('icalevent.save');
-			JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
+			JToolBarHelper::save2new('icalevent.savenew', "JEV_Save_New");
 		}
 
 		JToolBarHelper::cancel('icalevent.list');
@@ -208,6 +208,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
+		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
                 
                 if (JVersion::isCompatible("3.0")){
@@ -314,5 +315,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
 
 	}
+	
 
 }

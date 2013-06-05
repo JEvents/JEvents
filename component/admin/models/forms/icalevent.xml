@@ -3,8 +3,12 @@
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
 				
 				
+		<field name="title" type="text" default="" size="40" layoutfield="TITLE" maxlength="255" class="inputbox"  label="JEV_EVENT_CATEGORY" description="Event category" />
+		<field name="catid" type="jeveventcategory" default="0"   layoutfield="CATEGORY" label="JEV_EVENT_CATEGORY" description="Event category" />
+		<field name="priority" type="jeveventpriorities" default="0"  layoutfield="PRIORITY"  label="JEV_EVENT_PRIORITY" description="Event priority" />
+		<field name="creator" type="jeveventcreator" default="0"  layoutfield="CREATOR"  label="JEV_EVENT_CREATOR" description="Event creator" />
 				
-				
+		<field name="color" type="jeveventcolourpicker" default=""  layoutfield="COLOUR"  label="JEV_EVENT_COLOR" description="Event colour picker" />
 				
 <!--
 		<field name="demo" type="checkboxes" class="btn-group inline" multiple="multiple" default="" label="Demonstration" description="These checkboxes are rendered incorrectly">
