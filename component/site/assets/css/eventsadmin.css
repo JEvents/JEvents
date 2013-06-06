@@ -99,6 +99,7 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	vertical-align: middle;
 	text-decoration: none;
 	border: 1px solid #CCC;
+	padding:3px;
 
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -219,7 +220,6 @@ a#colorPickButton {
 	 margin-right:1em;
 	 margin-top:10px;
 }
-#jevents label {display:inline;}
 
 #jevents  fieldset.checkboxes li label {
 	display:block;
@@ -239,9 +239,15 @@ div.icon-48-jevents { height: 45px; width:170px; }
 	margin-top:10px;
 }
 
-table.versionstatuslist tr:nth-child(odd)		{ background-color:#cecece;}
+table.versionstatuslist tr:nth-child(odd)		{ background-color:#f5f5f5;}
 table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }
 table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 
 /* Bootstrap styling - ensure minimal width for list! */
 /*#jevents .jevminwidth { width:250px;}*/
+
+#cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
+	padding:5px;
+	border-radius:10px;
+}
+#jevents fieldset legend input[type='radio'] {margin-right:10px}

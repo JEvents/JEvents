@@ -14,66 +14,24 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
-$db = & JFactory::getDBO();
-$editor = & JFactory::getEditor();
-if ($editor->get("_name") == "codemirror")
-{
-	$editor = JFactory::getEditor("none");
-	JFactory::getApplication()->enqueueMessage("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING");
-}
+JHTML::_('behavior.tooltip');
 
-// clean any existing cache files
-$cache = & JFactory::getCache(JEV_COM_COMPONENT);
-$cache->clean(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+// get configuration object
+$cfg = & JEVConfig::getInstance();
+
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
-// load any custom fields
-$dispatcher = & JDispatcher::getInstance();
-$customfields = array();
-$res = $dispatcher->trigger('onEditCustom', array(&$this->row, &$customfields));
-
-// I need $year,$month,$day So that I can return to an appropriate date after saving an event (the repetition ids have all changed so I can't go back there!!)
-list($year, $month, $day) = JEVHelper::getYMD();
-if (!isset($this->ev_id))
-{
-	$this->ev_id = $this->row->ev_id();
-}
-
-if ($this->editCopy)
-{
-	$this->old_ev_id = $this->ev_id;
-	$this->ev_id = 0;
-	$this->repeatId = 0;
-	$this->rp_id = 0;
-	unset($this->row->_uid);
-	$this->row->id(0);
-}
-
-$catid = $this->row->catid();
-if ($catid == 0 && $this->defaultCat > 0)
-{
-	$catid = $this->defaultCat;
-}
-if ($this->row->catids)
-{
-	$catid = $this->row->catids;
-}
-
-JHTML::_('behavior.tooltip');
 $document = JFactory::getDocument();
 $js = '	window.addEvent(\'load\', function(){ document.getElements(\'dt.event\').each(function(tab){ tab.fireEvent(\'click\'); })  });';
 $document->addScriptDeclaration($js);
 ?>
 <div id="jevents" <?php
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
 ?>>
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"  >
 		<?php
-		$search = array();
-		$replace = array();
-		$blank = array();
 		ob_start();
 
 		// these are needed for front end admin
@@ -134,11 +92,11 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			}
 		}
 
-		$search[] = "{{MESSAGE}}";
+		$this->searchtags[] = "{{MESSAGE}}";
 		$output = ob_get_clean();
-		$replace[] = $output;
+		$this->replacetags[] = $output;
 		echo $output;
-		$blank[] = "";
+		$this->blanktags[] = "";
 
 		ob_start();
 		if (isset($this->row->_uid))
@@ -148,9 +106,15 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			<?php
 		}
 
+		// I need $year,$month,$day So that I can return to an appropriate date after saving an event (the repetition ids have all changed so I can't go back there!!)
+		list($year, $month, $day) = JEVHelper::getYMD();
 		// need rp_id for front end editing cancel to work note that evid is the repeat id for viewing detail 
 		?>
 		<input type="hidden" name="jevtype" value="icaldb" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="updaterepeats" value="0"/>
+		<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task", "icalevent.edit"); ?>" />
+		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 		<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" /> 
 		<input type="hidden" name="year" value="<?php echo $year; ?>" /> 
 		<input type="hidden" name="month" value="<?php echo $month; ?>" /> 
@@ -181,7 +145,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-<?php echo $editor->save('jevcontent'); ?>
+<?php echo $this->editor->save('jevcontent'); ?>
 		
 		try {
 		
@@ -208,7 +172,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		else {
 <?php
 // in case editor is toggled off - needed for TinyMCE
-echo $editor->save('jevcontent');
+echo $this->editor->save('jevcontent');
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
@@ -241,13 +205,13 @@ else
 		</script>
 
 		<?php
-		$search[] = "{{HIDDENINFO}}";
+		$this->searchtags[] = "{{HIDDENINFO}}";
 		$output = ob_get_clean();
-		$replace[] = $output;
+		$this->replacetags[] = $output;
 		echo $output;
-		$blank[] = "";
+		$this->blanktags[] = "";
 		?>
-		<div class="adminform" align="left">
+		<div class="adminform" align="left">			
 			<?php
 			// if we enter date/time before description then force single pane editing.
 			// get configuration object
@@ -266,430 +230,90 @@ else
 			?>
 			<table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
 				<tr>
-					<td align="left">
-						<?php
-						ob_start();
-						echo JText::_('JEV_EVENT_TITLE');
-						$search[] = "{{TITLE_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>:
-					</td>
-					<td>
-						<?php ob_start(); ?>
-						<input class="inputbox" type="text" name="title" size="50" maxlength="255" value="<?php echo JEventsHtml::special($this->row->title()); ?>" />
-						<?php
-						$search[] = "{{TITLE}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
+					<td align="left"><?php echo $this->form->getLabel("title"); ?></td>
+					<td><?php echo $this->form->getInput("title"); ?></td>
 					<?php
-					$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-					$showpriority = $params->get("showpriority", 0);
-					if ($this->setPriority && $showpriority)
+					if ($this->form->getInput("priority"))
 					{
 						?>
-						<td  align="left">
-							<?php
-							ob_start();
-							echo JText::_('JEV_EVENT_PRIORITY');
-							$search[] = "{{PRIORITY_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>:
-						</td>
-						<td >
-							<?php ob_start(); ?>
-							<?php echo $this->priority; ?>
-							<?php
-							$search[] = "{{PRIORITY}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<?php
-					}
-					else
-					{
-						?>
-						<td colspan="2">
-							<?php ob_start(); ?>
-							<input type="hidden" name="priority" value="0" />
-							<?php
-							$search[] = "{{PRIORITY}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<?php
-					}
-					?>
+						<td  align="left"><?php echo $this->form->getLabel("priority"); ?></td>
+						<td ><?php echo $this->form->getInput("title"); ?></td>
+					<?php } ?>
 				</tr>
 				<?php
-				if (isset($this->users))
+				if ($this->form->getInput("creator"))
 				{
 					?>
 					<tr class="jevcreator">
-						<td align="left">
-							<?php
-							ob_start();
-							echo JText::_('JEV_EVENT_CREATOR');
-							$search[] = "{{CREATOR_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-							:</td>
-						<td colspan="3">
-							<?php ob_start(); ?>
-							<?php echo $this->users; ?>
-							<?php
-							$search[] = "{{CREATOR}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>							
-						</td>
+						<td align="left"><?php echo $this->form->getLabel("creator"); ?></td>
+						<td colspan="3"><?php echo $this->form->getInput("creator"); ?></td>
 					</tr>			
 					<?php
 				}
-				else
-				{
-					$search[] = "{{CREATOR}}";
-					$replace[] = "";
-					$blank[] = "";
-				}
-				?>
-				<tr class="jevical">
-					<?php
-					if ($native && $this->clistChoice)
-					{
-						?>
-						<td align="left">
-							<?php
-							ob_start();
-							echo JText::_('SELECT_ICAL');
-							$search[] = "{{ICAL_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td colspan="3">
-							<?php ob_start(); ?>							
-							<script type="text/javascript" >
-								function preselectCategory(select){
-									var lookup = new Array();
-									lookup[0]=0;
-	<?php
-	foreach ($this->nativeCals as $nc)
-	{
-		echo 'lookup[' . $nc->ics_id . ']=' . $nc->catid . ';';
-	}
-	?>
-									document.adminForm['catid'].value=lookup[select.value];
-								}
-							</script>
-							<?php
-							echo $this->clist;
-							$search[] = "{{ICAL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>														
-						</td>
-						<?php
-					}
-					else if ($this->clistChoice)
-					{
-						?>
-						<td>
-							<?php
-							ob_start();
-							echo JText::_('SELECT_ICAL');
-							$search[] = "{{ICAL_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td colspan='3'>
-							<?php
-							ob_start();
-							echo $this->clist;
-							$search[] = "{{ICAL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>														
-						</td>
-						<?php
-					}
-					else
-					{
-						?>
-						<td colspan='4'>
-							<?php
-							ob_start();
-							echo $this->clist;
-							$search[] = "{{ICAL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							$search[] = "{{ICAL_LBL}}";
-							$replace[] = "";
-							$blank[] = "";
-							?>														
-						</td>
-						<?php
-					}
-					?>
-				</tr>
-				<?php
-				if (isset($this->offerlock) && $this->offerlock == 1)
+
+				if ($this->form->getInput("ics_id"))
 				{
 					?>
-					<tr>
-						<td>
-							<?php
-							ob_start();
-							echo JText::_("JEV_LOCK_EVENT");
-							$search[] = "{{LOCK_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td colspan='3'>
-							<?php ob_start(); ?>							
-							<label>
-								<?php echo JText::_("JEV_YES"); ?>
-								<input type="radio" name="lockevent" value="1" <?php echo ($this->row->lockevent() ? "checked='checked'" : ""); ?> />
-							</label>
-							<label>
-								<?php echo JText::_("JEV_NO"); ?>
-								<input type="radio" name="lockevent" value="0"  <?php echo (!$this->row->lockevent() ? "checked='checked'" : "") ?> />
-							</label>
-							<?php
-							$search[] = "{{LOCK}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>																					
-						</td>
+					<tr class="jevical">
+						<td align="left"><?php echo $this->form->getLabel("ics_id"); ?></td>
+						<td colspan="3"><?php echo $this->form->getInput("ics_id"); ?></td>
 					</tr>
 					<?php
 				}
-				else
+
+				if ($this->form->getInput("lockevent"))
 				{
-					$search[] = "{{LOCK}}";
-					$replace[] = "";
-					$blank[] = "";
-				}
-				?>
-				<tr>
-					<?php
-					if ($this->repeatId == 0)
-					{
-						?>
-						<td valign="top" align="left" class="jevcategory">
-							<?php
-							ob_start();
-							echo JText::_("JEV_EVENT_CATEGORY");
-							$search[] = "{{CATEGORY_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td style="width:200px"  class="jevcategory">
-							<?php
-							ob_start();
-
-							echo JEventsHTML::buildCategorySelect($catid, 'id="catid" ', $this->dataModel->accessibleCategoryList(), $this->with_unpublished_cat, true, 0, 'catid', JEV_COM_COMPONENT, $this->excats, "ordering", true);
-
-							$search[] = "{{CATEGORY}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>																												
-						</td>
-						<?php
-					}
-					else
-					{
-						$search[] = "{{CATEGORY}}";
-						$replace[] = "";
-						$blank[] = "";
-					}
-
-					if (isset($this->glist))
-					{
-						?>
-						<td align="left" class="accesslevel">
-							<?php
-							ob_start();
-							echo JText::_("JEV_EVENT_ACCESSLEVEL");
-							$search[] = "{{ACCESS_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td class="accesslevel">
-							<?php
-							ob_start();
-							echo $this->glist;
-							$search[] = "{{ACCESS}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<?php
-					}
-					else
-					{
-						echo "<td/><td/>\n";
-						$search[] = "{{ACCESS}}";
-						$replace[] = "";
-						$blank[] = "";
-					}
-
-					if ($this->repeatId != 0)
-					{
-						echo "<td/><td/>\n";
-					}
 					?>
-				</tr>
-				<?php
-				if (JFactory::getApplication()->isAdmin())
-				{
-					if ($this->ev_id == 0)
-					{
-						// published by default	
-						$this->row->state(1);
-					}
+					<tr>
+						<td><?php echo $this->form->getLabel("lockevent"); ?></td>
+						<td colspan='3'><?php echo $this->form->getInput("lockevent"); ?></td>
+					</tr>
+					<?php
+				}
 
-					$poptions = array();
-					$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
-					$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+				if ($this->form->getLabel("catid") || $this->form->getLabel("access"))
+				{
+					?>
+					<tr>
+						<?php
+						if ($this->form->getLabel("catid"))
+						{
+							?>
+							<td valign="top" align="left" class="jevcategory"><?php echo $this->form->getLabel("catid"); ?></td>
+							<td style="width:200px"  class="jevcategory"><?php echo $this->form->getInput("catid"); ?></td>
+							<?php
+						}
+
+						if ($this->form->getLabel("access"))
+						{
+							?>
+							<td align="left" class="accesslevel">	<?php echo $this->form->getLabel("access"); ?>	</td>
+							<td class="accesslevel"><?php echo $this->form->getInput("access"); ?></td>
+							<?php
+						}
+						?>
+					</tr>
+					<?php
+				}
+
+				if ($this->form->getLabel("state"))
+				{
 					?>
 					<tr class="jevpublished">
-						<td>
-							<?php
-							ob_start();
-							echo JText::_("JSTATUS");
-							$search[] = "{{STATUS_LBL}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
-						<td colspan="3">
-							<?php
-							ob_start();
-							echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->row->state());
-							$search[] = "{{STATUS}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
+						<td><?php echo $this->form->getLabel("state"); ?></td>
+						<td colspan="3"><?php echo $this->form->getInput("state"); ?></td>
 					</tr>
 					<?php
-				}
-				else
-				{
-					$search[] = "{{STATUS}}";
-					$replace[] = "";
-					$blank[] = "";
 				}
 
-				$cfg = & JEVConfig::getInstance();
-				if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
+				if ($this->form->getInput("color"))
 				{
-					$hideColour = true;
-				}
-				else if ($cfg->get('com_calForceCatColorEventForm', 0) == 2)
-				{
-					$hideColour = true;
-				}
-				else
-					$hideColour = false;
-				if (!$hideColour)
-				{
-					include_once(JEV_ADMINLIBS . "/colorMap.php");
 					?>
 					<tr>
-						<td valign="top" align="left">
-						<?php
-						ob_start();
-						echo JText::_("JEV_EVENT_COLOR");
-						$search[] = "{{COLOUR_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";						
-						?>
-						</td>
-						<td colspan="3">
-							<?php ob_start(); ?>
-							<table id="pick1064797275" style="background-color:<?php echo $this->row->color() . ';color:' . JevMapColor($this->row->color()); ?>;border:solid 1px black;">
-								<tr>	
-									<td  nowrap="nowrap">
-										<input type="hidden" id="pick1064797275field" name="color" value="<?php echo $this->row->color(); ?>"/>
-										<a id="colorPickButton" href="javascript:void(0)"  onclick="document.getElementById('fred').style.visibility='visible';"	  style="visibility:visible;color:<?php echo JevMapColor($this->row->color()); ?>;font-weight:bold;"><?php echo JText::_('JEV_COLOR_PICKER'); ?></a>
-									</td>
-									<td>
-										<div style="position:relative;z-index:9999;">
-											<iframe id="fred"  src="<?php echo JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/libraries/colours.html?id=fred"; ?>" style="position:absolute;width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;"></iframe>
-										</div>
-									</td>
-								</tr>
-							</table>
-							<?php
-							$search[] = "{{COLOUR}}";
-							$output = ob_get_clean();
-							$replace[] = $output;
-							echo $output;
-							$blank[] = "";
-							?>
-						</td>
+						<td valign="top" align="left"><?php echo $this->form->getLabel("color"); ?></td>
+						<td colspan="3"><?php echo $this->form->getInput("color"); ?>	</td>
 					</tr>
 					<?php
-				}
-				else
-				{
-					$search[] = "{{COLOUR}}";
-					$replace[] = "";
-					$blank[] = "";
 				}
 
 				$cfg = & JEVConfig::getInstance();
@@ -701,11 +325,11 @@ else
 							<?php
 							ob_start();
 							echo $this->loadTemplate("datetime");
-							$search[] = "{{CALTAB}}";
+							$this->searchtags[] = "{{CALTAB}}";
 							$output = ob_get_clean();
-							$replace[] = $output;
+							$this->replacetags[] = $output;
 							echo $output;
-							$blank[] = "";
+							$this->blanktags[] = "";
 							?>
 						</td>
 					</tr>
@@ -714,157 +338,40 @@ else
 				?>
 
 				<tr  class="jev_description">
-					<td valign="top" align="left">
-						<?php
-						ob_start();
-						echo JText::_('JEV_EVENT_ACTIVITY');
-						$search[] = "{{DESC_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
-					<td colspan="3">
-						<?php
-						ob_start();
-						$cfg = & JEVConfig::getInstance();
-						if ($cfg->get('com_show_editor_buttons'))
-						{
-							$t_buttons = explode(',', $cfg->get('com_editor_button_exceptions'));
-						}
-						else
-						{
-							// hide all
-							$t_buttons = false;
-						}
-						echo "<div id='jeveditor'>";
-// parameters : areaname, content, hidden field, width, height, rows, cols
-						if (JVersion::isCompatible("1.6.0"))
-						{
-							echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
-						}
-						else
-						{
-							echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons);
-						}
-						echo "</div>";
-						$search[] = "{{DESC}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
+					<td valign="top" align="left"><?php echo $this->form->getLabel("jevcontent"); ?></td>
+					<td colspan="3"><?php echo $this->form->getInput("jevcontent"); ?></td>
 				</tr>
+
 				<tr id="jeveditlocation">
-					<td width="130" align="left"  valign="top">
-						<?php
-						ob_start();
-						echo JText::_('JEV_EVENT_ADRESSE');
-						$search[] = "{{LOCN_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
-					<td colspan="3">
-						<?php
-						ob_start();
-						$res = $dispatcher->trigger('onEditLocation', array(&$this->row));
-						if (count($res) == 0 || !$res[0])
-						{
-							?>
-							<input class="inputbox" type="text" name="location" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->location()); ?>" />
-							<?php
-						}
-						$search[] = "{{LOCN}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
+					<td width="130" align="left"  valign="top"><?php echo $this->form->getLabel("location"); ?></td>
+					<td colspan="3"><?php echo $this->form->getInput("location"); ?></td>
 				</tr>
 				<tr class="jev_contact">
-					<td align="left">
-						<?php
-						ob_start();
-						echo JText::_('JEV_EVENT_CONTACT');
-						$search[] = "{{CONTACT_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
-					<td colspan="3">
-						<?php ob_start(); ?>
-						<input class="inputbox" type="text" name="contact_info" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
-						<?php
-						$search[] = "{{CONTACT}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
+					<td align="left"><?php echo $this->form->getLabel("contact_info"); ?></td>
+					<td colspan="3"><?php echo $this->form->getInput("contact_info"); ?></td>
 				</tr>
 				<tr class="jev_extrainfo">
-					<td align="left" valign="top">
-						<?php
-						ob_start();
-						echo JText::_('JEV_EVENT_EXTRA');
-						$search[] = "{{EXTRA_LBL}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
-					<td colspan="3">
-						<?php ob_start(); ?>
-						<textarea class="text_area" name="extra_info" id="extra_info" cols="50" rows="4"  ><?php echo JEventsHtml::special($this->row->extra_info()); ?></textarea>
-						<?php
-						$search[] = "{{EXTRA}}";
-						$output = ob_get_clean();
-						$replace[] = $output;
-						echo $output;
-						$blank[] = "";
-						?>
-					</td>
+					<td align="left" valign="top"><?php echo $this->form->getLabel("extra_info"); ?></td>
+					<td colspan="3"><?php echo $this->form->getInput("extra_info"); ?></td>
 				</tr>						
 				<?php
-				ob_start();
-				foreach ($customfields as $key => $val)
+				foreach ($this->customfields as $key => $val)
 				{
-					$search[] = '{{' . $key . '}}';
-					$replace[] = $customfields[$key]["input"];
-					$blank[] = "";
-					$search[] = '{{' . $key . '_lbl}}';
-					$replace[] = $customfields[$key]["label"];
-					$blank[] = "";
 					?>
 					<tr class="jevplugin_<?php echo $key; ?>">
 						<td valign="top"  width="130" align="left">
 							<?php
-							echo $customfields[$key]["label"];
+							echo $this->customfields[$key]["label"];
 							?>
 						</td>
 						<td colspan="3">
 							<?php
-							echo $customfields[$key]["input"];
+							echo $this->customfields[$key]["input"];
 							?>
 						</td>
 					</tr>
 					<?php
 				}
-				$search[] = "{{CUSTOMFIELDS}}";
-				$output = ob_get_clean();
-				$replace[] = $output;
-				echo $output;
-				$blank[] = "";
 				?>
 
 			</table>
@@ -879,22 +386,16 @@ else
 			{
 				ob_start();
 				echo $this->loadTemplate("datetime");
-				$search[] = "{{CALTAB}}";
+				$this->searchtags[] = "{{CALTAB}}";
 				$output = ob_get_clean();
-				$replace[] = $output;
+				$this->replacetags[] = $output;
 				echo $output;
-				$blank[] = "";
+				$this->blanktags[] = "";
 			}
 
-
-// Plugins CAN BE LAYERED IN HERE
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-// append array to extratabs keys content, title, paneid
-			$extraTabs = array();
-			$dispatcher->trigger('onEventEdit', array(&$extraTabs, &$this->row, &$params), true);
-			if (count($extraTabs) > 0)
+			if (count($this->extraTabs) > 0)
 			{
-				foreach ($extraTabs as $extraTab)
+				foreach ($this->extraTabs as $extraTab)
 				{
 					$cfg = & JEVConfig::getInstance();
 					if (!$cfg->get('com_single_pane_edit', 0))
@@ -902,13 +403,7 @@ else
 						echo JHtml::_('tabs.panel', $extraTab['title'], $extraTab['paneid']);
 					}
 					echo "<div class='jevextrablock'>";
-					ob_start();
 					echo $extraTab['content'];
-					$search[] = "{{" . str_replace(" ", "_", strtoupper($extraTab['title'])) . "}}";
-					$output = ob_get_clean();
-					$replace[] = $output;
-					echo $output;
-					$blank[] = "";
 					echo "</div>";
 				}
 			}
@@ -921,14 +416,10 @@ else
 		</div>
 		<?php
 		$output = ob_get_clean();
-		if (!$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $search, $replace, $blank))
+		if (!$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
 		{
 			echo $output;
 		}   // if (!$this->loadedFromTemplate('icalevent.edit_page', $this->row, 0)){
 		?>
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="updaterepeats" value="0"/>
-		<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task", "icalevent.edit"); ?>" />
-		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 	</form>
 </div>

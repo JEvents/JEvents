@@ -1,15 +1,15 @@
 <?php
-
 defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
-include_once(JEV_ADMINLIBS."/colorMap.php");
+include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
+include_once(JEV_ADMINLIBS . "/colorMap.php");
 
 class JFormFieldJeveventcolourpicker extends JFormField
 {
+
 	/**
 	 * The form field type.
 	 *
@@ -26,8 +26,26 @@ class JFormFieldJeveventcolourpicker extends JFormField
 	 */
 	protected function getInput()
 	{
-		ob_start();
-		?>
+		$cfg = & JEVConfig::getInstance();
+
+		$hideColour = false;
+		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
+		{
+			$hideColour = true;
+		}
+		else if ($cfg->get('com_calForceCatColorEventForm', 0) == 2)
+		{
+			$hideColour = true;
+		}
+		else {
+			$hideColour = false;
+		}
+		
+		if (!$hideColour)
+		{
+
+			ob_start();
+			?>
 			<table id="pick1064797275" style="background-color:<?php echo $this->value . ';color:' . JevMapColor($this->value); ?>;border:solid 1px black;">
 				<tr>	
 					<td  nowrap="nowrap">
@@ -41,8 +59,21 @@ class JFormFieldJeveventcolourpicker extends JFormField
 					</td>
 				</tr>
 			</table>
-		<?php
-		return ob_get_clean();
+			<?php
+			return ob_get_clean();
+		}
+		return "";
+
+	}
+
+	protected function getLabel()
+	{
+		if ($this->getInput())
+		{
+			return parent::getLabel();
+		}
+		return "";
+
 	}
 
 }

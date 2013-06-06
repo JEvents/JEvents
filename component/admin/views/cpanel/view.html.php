@@ -58,7 +58,10 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		if (JVersion::isCompatible("3.0")){
 			$this->sidebar = JHtmlSidebar::render();					
-		}						
+		}
+		else {
+			$this->setLayout("cpanel25");
+		}
 
 	}
 

@@ -10,116 +10,88 @@
 
 	{{Tab Body Start:TABBODYSTART#Common}}
 	<div class="control-group">
-		<label class="control-label">
-			{{Title Label:TITLE_LBL}} :
-		</label>
+		{{Title Label:TITLE_LBL}}
 		<div class="controls">
 			{{Title:TITLE}}
 		</div>
-		<label class="control-label" {{Priority:PRIORITY# #style="display:none"}}>
-			{{Priority Label:PRIORITY_LBL}} :
-		</label>
-		<div class="controls">
-			{{Priority:PRIORITY}}
-		</div>
+	</div>
+	<div class="control-group jevpriority" {{Priority:PRIORITY# #style="display:none"}}>
+		{{Priority Label:PRIORITY_LBL}} 	
+		{{Priority:PRIORITY#<div class="controls">%s</div>}}
 	</div>
 	<div class="control-group jevcreator" {{Creator:CREATOR# #style="display:none"}}>
-		 <label class="control-label">
-			{{Creator label:CREATOR_LBL}}:
-		</label>
+		{{Creator label:CREATOR_LBL}}
 		<div class="controls">
 			{{Creator:CREATOR}}
 		</div>
 	</div>			
 	<div class="control-group jevical"  {{Calendar:ICAL# #style="display:none"}}>
-		 <label class="control-label">
-			{{Calendar label:ICAL_LBL}}
-		</label>
+		{{Calendar label:ICAL_LBL}}
 		<div class="controls">
 			{{Calendar:ICAL}}
 		</div>
 	</div>
 	<div class="control-group jevlock"  {{Lock Event:LOCK# #style="display:none"}}>
-		 <label class="control-label">
-			{{Lock Event label:LOCK_LBL}}
-		</label>
+		{{Lock Event label:LOCK_LBL}}
 		<div class="controls">
 			{{Lock Event:LOCK}}
 		</div>
 	</div>
 	<div class="control-group jevcategory"  {{Category:CATEGORY# #style="display:none"}}>
-		 <label class="control-label">
-			{{Category label:CATEGORY_LBL}}
-		</label>
+		{{Category label:CATEGORY_LBL}}
 		<div class="controls">
 			{{Category:CATEGORY}}
 		</div>
 	</div>
 	<div class="control-group jevaccess" {{Access:ACCESS# #style="display:none"}} >
-		 <label class="control-label">
-			{{Access label:ACCESS_LBL}}
-		</label>
+		{{Access label:ACCESS_LBL}}
 		<div class="controls">
 			{{Access:ACCESS}}
 		</div>
 	</div>
-	<div class="control-group jevstatus" {{Status:STATUS# #style="display:none"}} >
-		 <label class="control-label">
-			{{Status label:STATUS_LBL}}
-		</label>
+	<div class="control-group jevstate" {{State:STATE# #style="display:none"}} >
+		{{State label:STATE_LBL}}
 		<div class="controls">
-			{{Status:STATUS}}
+			{{State:STATE}}
 		</div>
 	</div>
 	<div class="control-group jevcolour" {{Event Colour:COLOUR# #style="display:none"}} >
-		 <label class="control-label">
-			{{Colour label:COLOUR_LBL}}
-		</label>
+		{{Colour label:COLOUR_LBL}}
 		<div class="controls">
 			{{Event Colour:COLOUR}}
 		</div>
 	</div>
 
 	<div class="control-group jev_description" id='jeveditor' >
-		<label class="control-label">
-			{{Description label:DESC_LBL}}
-		</label>
+		{{Description label:DESC_LBL}}
 		<div class="controls">
 			{{Description:DESC}}
 		</div>
 	</div>
 
 	<div class="control-group jeveditlocation"  id="jeveditlocation">
-		<label class="control-label">
-			{{LOCATION label:LOCN_LBL}}
-		</label>
+		{{LOCATION label:LOCN_LBL}}
 		<div class="controls">
 			{{Location:LOCN}}
 		</div>
 	</div>
 
 	<div class="control-group jev_contact">
-		<label class="control-label">
-			{{Contact label:CONTACT_LBL}}
-		</label>
+		{{Contact label:CONTACT_LBL}}
 		<div class="controls">
 			{{Contact:CONTACT}}
 		</div>
 	</div>
 
 	<div class="control-group jev_extrainfo">
-		<label class="control-label">
-			{{Extra label:EXTRA_LBL}}
-		</label>
+		{{Extra label:EXTRA_LBL}}
 		<div class="controls">
 			{{Extra:EXTRA}}
 		</div>
 	</div>
 
 	<div class="control-group">
-		<label class="control-label">
-			Example of single custom field : {{Custom joomlauser2 label:customfield_joomlauser2_lbl}}
-		</label>
+		Example of single custom field : {{Custom joomlauser2 label:customfield_joomlauser2_lbl}}
 		<div class="controls">
 			{{Custom joomlauser2:customfield_joomlauser2}}
 		</div>

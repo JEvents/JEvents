@@ -356,12 +356,20 @@ if ($this->row->id() != 0 && $this->row->freq())
 			
 			// Isis template and others may already have done this so remove these!
 			$(".checkbox.btn-group label").unbind('click');
+			$(".checkbox.btn-group label input[type='checkbox']").unbind('click');
 			
 			$(".checkbox.btn-group label").click(function(event) {
 				event || (event = window.event);
+				
+				// stop the event being triggered twice is click on input AND label outside it!
+				if (event.target.tagName.toUpperCase()=="INPUT"){
+					//event.preventDefault();
+					return;
+				}
+				
 				var label = $(this);
 				var input = $('#' + label.attr('for'));
-				//alert(label.val()+ " checked? "+input.prop('checked')+ " disabled? "+input.prop('disabled')+ " label disabled? "+label.hasClass('disabled'));
+				//alert(label.val()+ " "+event.target.tagName+" checked? "+input.prop('checked')+ " disabled? "+input.prop('disabled')+ " label disabled? "+label.hasClass('disabled'));
 				if (input.prop('disabled')) {
 					label.removeClass('active btn-success btn-danger btn-primary');
 					input.prop('checked', false);
@@ -376,8 +384,6 @@ if ($this->row->id() != 0 && $this->row->freq())
 				}
 				// bootstrap takes care of the checkboxes themselves!
 				
-				// stop the event being triggered twice is click on input AND label outside it!
-				event.preventDefault();
 			});
 		
 			$(".btn-group input[type=checkbox]").each(function() {
