@@ -269,7 +269,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 </div>
 <script type="text/javascript" >
 	// make the correct frequency visible
-	function setupRepeats(){
+	function setupRepeats(){	
+	hideEmptyJevTabs()
 <?php
 if ($this->row->id() != 0 && $this->row->freq())
 {

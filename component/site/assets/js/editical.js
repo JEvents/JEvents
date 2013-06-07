@@ -999,3 +999,36 @@ window.addEvent("domready",function(){
 	});
 });
 */
+
+window.addEvent('domready',function(){hideEmptyJevTabs();});
+
+// Hide empty tabs and their links
+function hideEmptyJevTabs() {
+		var tabs = $$("#myEditTabsContent .tab-pane");
+		if (tabs){
+			tabs.each(function(tab) {
+				if (tab.children.length==0){
+					tab.style.display="none";
+					var tablink = document.getElement("#myEditTabs a[href='#"+tab.id+"']");
+					if (tablink){
+						tablink.getParent().style.display="none";
+					}
+				}
+			})
+		}
+		tabs = $$(".adminform dd.tabs .jevextrablock");
+		if (tabs){
+			var tablinks = $$(".adminform dl dt.tabs");
+			tabs.each(function(tab) {
+				if (tab.children.length==0){
+					var classname = tab.getParent().className.clean().replace(" ","").replace("tabs","");
+					tab.innerHTML="xx";
+					//tab.style.display="none";
+					var tablink = document.getElement(".adminform #"+classname);
+					if (tablink){
+						tablink.style.display="none";
+					}
+				}
+			})
+		}
+	}
