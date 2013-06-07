@@ -251,3 +251,8 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 	border-radius:10px;
 }
 #jevents fieldset legend input[type='radio'] {margin-right:10px}
+
+.tip-wrap {
+	max-width:80%!important;
+	text-align: left!important;
+}

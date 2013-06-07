@@ -202,9 +202,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::cancel('icalevent.list');
 		//JToolBarHelper::help( 'screen.icalevent.edit', true);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->get("section",0);
-
 		JHTML::_('behavior.tooltip');
 
 		// TODO move this into JForm field type!
@@ -219,6 +216,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->setLayout("edit16");
 		}
 
+		$this->setupEditForm();
+
+	}
+
+	protected function setupEditForm () {
+		
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		
 		$this->editor = & JFactory::getEditor();
 		if ($this->editor->get("_name") == "codemirror")
 		{
@@ -413,7 +418,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->blanktags[] = "";
 
 	}
-
+	
 	function csvimport($tpl = null)
 	{
 
