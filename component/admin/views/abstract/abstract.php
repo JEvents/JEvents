@@ -375,6 +375,7 @@ class JEventsAbstractView extends JViewLegacy
 			if ($tablinks && count($tablinks)==2 && count($tablinks[0])>0){
 				for ($tab=0;$tab<count($tablinks[0]);$tab++){
 					$paneid = str_replace(" ","_",htmlspecialchars($tablinks[1][$tab]));
+
 					if ($tab==0){
 						$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs"><li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablinks[1][$tab]. '</a></li>';
 					}
@@ -453,31 +454,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		
 		$template_value = str_replace($search, $replace, $template_value);
-		
-		// Plugins CAN BE LAYERED IN HERE
-		/*
-		$params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
-		// append array to extratabs keys content, title, paneid
-		$extraTabs = array();
-		$dispatcher = & JDispatcher::getInstance();		
-		$dispatcher->trigger('onEventEdit', array(&$extraTabs, &$this->row, &$params), true);
-		if (count($extraTabs) > 0)
-		{
-			foreach ($extraTabs as $extraTab)
-			{
-				if (!JVersion::isCompatible("3.0.0")){
-					$tabContent  = '<dt class="tabs ' . $extraTab['paneid'] . '"><span><h3><a href="javascript:void(0);">' . $extraTab['title'] . '</a></h3></span></dt><dd class="tabs">'."\n";
-					$tabContent  .= "<div class='jevextrablock'>"."\n";
-					$tabContent  .=  $extraTab['content']."\n";
-					$template_value = str_replace("{{TABBODYSTART#".$extraTab['title']."}}",$tabContent, $template_value);	
-				}
-				else {
-				}
-								
-			}
-		}
-		*/
-		
+				
 		// finish off the other tabs
 		if (!JVersion::isCompatible("3.0.0")){
 			$tabstartarray = array();
@@ -485,8 +462,8 @@ class JEventsAbstractView extends JViewLegacy
 			if (isset($tabstartarray[0]) && count($tabstartarray[0])>0){
 				foreach ($tabstartarray[0] as $ts){
 					$title = str_replace(array("{{TABBODYSTART#","}}"),"", $ts);
-					$paneid = base64_encode($title);
-					$tabContent  = '<dt class="tabs ' . $paneid . '"><span><h3><a href="javascript:void(0);">' . $title . '</a></h3></span></dt><dd class="tabs">'."\n";
+					$paneid = str_replace("=","",base64_encode($title));
+					$tabContent  = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . $title . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
 					$tabContent  .= "<div class='jevextrablock'>"."\n";
 					//$tabContent  .=  $title."\n";
 					$template_value = str_replace("{{TABBODYSTART#".$title."}}",$tabContent, $template_value);	
@@ -494,10 +471,11 @@ class JEventsAbstractView extends JViewLegacy
 			}						
 		}
 
-		//$template_value = str_replace($matchesarray[0], "", $template_value);
+		// Final Cleanups
+		$template_value = str_replace($matchesarray[0], "", $template_value);
 		
 		// non greedy replacement - because of the ?
-		//$template_value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanUnpublished'),  $template_value);		
+		$template_value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanUnpublished'),  $template_value);		
 		
 		$params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
 		
