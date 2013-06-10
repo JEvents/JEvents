@@ -26,7 +26,7 @@ class JFormFieldJeveventlocation extends JFormField
 		ob_start();
 		$event = $this->form->jevdata[$this->name]["event"];
 		$dispatcher = JDispatcher::getInstance();
-		$res = $dispatcher->trigger('onEditLocation', array($event));
+		$res = $dispatcher->trigger('onEditLocation', array(&$event));
 		if (count($res) == 0 || !$res[0])
 		{
 			?>
