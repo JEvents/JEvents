@@ -17,14 +17,14 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.1.0Beta';
+	var $RELEASE 	= '3.1.0';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
 	var $PATCH_LEVEL = '0';
 	
 	/** @var string Development Status */
-	var $DEV_STATUS = 'Stable';
+	var $DEV_STATUS = 'Beta';
 	/** @var string Copyright Text */
 	var $COPYRIGHT 	= 'Copyright &copy; 2006-2013';
 	/** @var string Copyright Text */
