@@ -113,6 +113,8 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		}
 
 		JEVHelper::componentStylesheet($this, "editextra.css");		
+
+		$this->setupEditForm();
 		
 		parent::displaytemplate($tpl);
 

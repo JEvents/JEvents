@@ -358,7 +358,7 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<select name="<?php echo $fieldname; ?>[]" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>">
+			<select name="<?php echo $fieldname; ?>[]" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 				<?php
 			}
 			else

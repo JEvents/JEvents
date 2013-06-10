@@ -49,6 +49,19 @@ class AdminDefaultsController extends JControllerForm {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_DETAIL_PAGE")." WHERE name='icalevent.detail_body'");
 			$db->query();
 		}
+
+		if (!isset($defaults['icalevent.edit_page'])){
+			$db->setQuery("INSERT INTO  #__jev_defaults set name='icalevent.edit_page',
+						title=".$db->Quote("JEV_EVENT_EDIT_PAGE").",
+						subject='',
+						value='',
+						state=0");
+			$db->query();
+		}
+		else {
+			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_EDIT_PAGE")." WHERE name='icalevent.edit_page'");
+			$db->query();
+		}
 		
 		if (!isset($defaults['icalevent.list_row'])){
 			$db->setQuery("INSERT INTO  #__jev_defaults set name='icalevent.list_row',

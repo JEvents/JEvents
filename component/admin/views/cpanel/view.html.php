@@ -58,7 +58,10 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 
 		if (JVersion::isCompatible("3.0")){
 			$this->sidebar = JHtmlSidebar::render();					
-		}						
+		}
+		else {
+			$this->setLayout("cpanel25");
+		}
 
 	}
 
@@ -529,6 +532,7 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 			"plugin_jevents_jevpopupdetail" => 50,
 			"plugin_jevents_jevrsvp" => 14,
 			"plugin_jevents_jevrsvppro" => 62,
+			"plugin_jevents_jevsendfb" => 45,
 			"plugin_jevents_jevsessions" => 21,
 			"plugin_jevents_jevtags" => 9,
 			"plugin_jevents_jevtimelimit" => 17,

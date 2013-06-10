@@ -919,10 +919,13 @@ class DefaultModLatestView
 					$content .= '<span class="mod_events_latest_content">';
 				if ($this->displayLinks)
 				{
-
 					$link = $dayEvent->viewDetailLink($ev_year, $ev_month, $ev_day, false, $this->myItemid);
-					$link = JRoute::_($link . $this->datamodel->getCatidsOutLink());
-
+					if ($this->modparams->set("ignorefiltermodule", 0)){
+						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink()."&filter_reset=1");
+					}
+					else {
+						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+					}
 					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($title));
 				}
 				else

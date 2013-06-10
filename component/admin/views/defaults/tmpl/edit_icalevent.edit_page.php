@@ -32,8 +32,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCATION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB",true);?>", "TAB");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRATABS",true);?>", "EXTAB");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_LINK",true);?>", "TABLINK#name");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_BODY_START",true);?>", "TABBODYSTART#name");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_BODY_END",true);?>", "TABBODYEND");
 <?php
 // get list of enabled plugins
 $jevplugins = JPluginHelper::getPlugin("jevents");

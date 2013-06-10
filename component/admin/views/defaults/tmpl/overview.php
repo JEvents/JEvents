@@ -82,7 +82,7 @@ $pathIMG = JURI::root() . '/administrator/images/';
 	<?php echo $i + 1; ?>
 								</td>
 								<td>
-									<span class="editlinktip hasTip" title="<?php echo JText::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape($row->title); ?>">
+									<span class="editlinktip hasTip" title="<?php echo JText::_('JEV_Edit_Layout'); ?>::<?php echo $this->escape(JText::_($row->title)); ?>">
 										<a href="<?php echo $link; ?>">
 									<?php echo $this->escape(JText::_($row->title)); ?></a>
 									</span>
