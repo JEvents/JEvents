@@ -237,7 +237,7 @@ else
 					{
 						?>
 						<td  align="left"><?php echo $this->form->getLabel("priority"); ?></td>
-						<td ><?php echo $this->form->getInput("title"); ?></td>
+						<td ><?php echo $this->form->getInput("priority"); ?></td>
 					<?php } ?>
 				</tr>
 				<?php
