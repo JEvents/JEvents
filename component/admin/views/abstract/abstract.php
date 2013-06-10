@@ -375,12 +375,12 @@ class JEventsAbstractView extends JViewLegacy
 			if ($tablinks && count($tablinks)==2 && count($tablinks[0])>0){
 				for ($tab=0;$tab<count($tablinks[0]);$tab++){
 					$paneid = str_replace(" ","_",htmlspecialchars($tablinks[1][$tab]));
-
+					$tablabel = ($paneid==JText::_($paneid)) ? $tablinks[1][$tab] : JText::_($paneid);
 					if ($tab==0){
-						$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs"><li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablinks[1][$tab]. '</a></li>';
+						$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs"><li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
 					}
 					else {
-						$tabreplace = '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablinks[1][$tab]. '</a></li>';
+						$tabreplace = '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
 					}
 					if ($tab==count($tablinks[0])-1){
 						$tabreplace.= "</ul>";

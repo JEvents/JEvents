@@ -639,7 +639,7 @@ class JEventsDataModel {
 			$row =& $rows[$r];
 			if ($row->checkRepeatDay($target_date))  {
 
-				if ($row->alldayevent() || (!$row->noendtime() && ($row->hup()==$row->hdn() && $row->minup()==$row->mindn() && $row->sup()==$row->sdn()))){
+				if ($row->alldayevent() || (!$row->noendtime() && ($row->hup()==$row->hdn() && $row->minup()==$row->mindn() && $row->sup()==$row->sdn() && ($row->hup()==0 || $row->hup()==24)))){
 					$count = count($data['hours']['timeless']['events']);
 					$data['hours']['timeless']['events'][$count]=$row;
 				}
@@ -655,7 +655,7 @@ class JEventsDataModel {
 			for( $r = 0; $r < $num_events; $r++ ){
 				$row =& $rows[$r];
 				if (!isset($row->alreadyHourSlotted) && $row->checkRepeatDay($target_date))  {
-					if ($row->alldayevent() || (!$row->noendtime() && ($row->hup()==$row->hdn() && $row->minup()==$row->mindn() && $row->sup()==$row->sdn()))){
+					if ($row->alldayevent() || (!$row->noendtime() && ($row->hup()==$row->hdn() && $row->minup()==$row->mindn() && $row->sup()==$row->sdn() && ($row->hup()==0 || $row->hup()==24)))){
 						// Ignore timeless events
 					}
 					// if first hour of the day get the previous days events here!!

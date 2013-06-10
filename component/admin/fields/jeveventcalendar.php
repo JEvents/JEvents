@@ -43,6 +43,12 @@ class JFormFieldJeveventcalendar extends JFormField
 			}
 			?>
 			document.adminForm['catid'].value=lookup[select.value];
+				// trigger Bootstrap Chosen replacement
+				try {
+					jQuery(document.adminForm['catid']).trigger("liszt:updated");
+				}
+				catch (e){									
+				}
 			}
 				</script>
 			<?php 
