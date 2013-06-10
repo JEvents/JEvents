@@ -263,3 +263,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .jevdate_date {
 	float:left;
 }
+
+#selectlocationbutton {
+ margin-left: 5px;   
+}
