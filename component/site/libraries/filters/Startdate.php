@@ -32,6 +32,14 @@ class jevStartdateFilter extends jevFilter
 		$this->filterLabel="";
 		$this->dmap = "rpt";
 		parent::__construct($tablename,$filterfield, true);
+		
+		// This filter is special and always remembers for logged in users
+		if (JFactory::getUser()->id>0){
+			$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );
+			for ($v=0;$v<$this->valueNum;$v++){
+				$this->filter_values[$v] = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fvs_ses'.$v, $this->filterType.'_fvs'.$v,$this->filterNullValues[$v] );
+			}
+		}
 
 		$this->_date = $this->filter_values[1];
 		$this->_onorbefore = $this->filter_values[0];
@@ -88,6 +96,11 @@ class jevStartdateFilter extends jevFilter
 
 		if (!$this->filterField) return "";
 
+		// only works on admin list events pages
+		if (JRequest::getCmd("task")!="admin.listevents"){
+			return "";
+		}
+		
 		$filterList=array();
 		$filterList["title"]=JText::_( 'WITH_INSTANCES' );
 
