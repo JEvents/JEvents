@@ -269,6 +269,11 @@ fieldset.checkboxes li {
 	float:left;
 }
 
+/* Fix for bad templates that leave default modal class unchanged in bootstrap */
+#jevents a.modal {
+	position:static;
+}
+
 /* Round the Panel Corners */
 .pane-sliders .panel {
 	margin-bottom: 3px;
