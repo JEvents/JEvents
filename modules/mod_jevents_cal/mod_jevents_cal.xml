@@ -20,13 +20,12 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="@spacer" type="jevinfo" default="Module_Parameters"   label="" description="" />
+				<field name="@spacer" type="jevinfo" default="MODULE_PARAMETERS"   label="" description="" />
 				<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-                                
-				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="Use settings defined global in Component or defined here">
+				<field name="@spacer" type="spacer" default="" label="" description="" />                         
+				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="JEV_LATEST_USE_SETTINGS_DESC">
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
@@ -58,68 +57,58 @@
 				<field name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
 				<field name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="modcal_DispLastMonth" type="list" default="NO" label="Display Last Month ?" description="&lt;b&gt;NO:&lt;/b&gt; never display a Last Months calendar&lt;br /&gt;
-			   &lt;b&gt;YES - with stop day:&lt;/b&gt; display a Last Months calendar only if there were scheduled events in that month&lt;br /&gt;
-			   &lt;b&gt;YES - if has events AND with stop day:&lt;/b&gt; display Last Months calendar only if there were events scheduled for that month. Stop displaying Last Months calendar if this months current day of month is at least r&lt;br /&gt;
-			   &lt;b&gt;ALWAYS:&lt;/b&gt; always display a Last Months calendar&lt;br /&gt;
-			   &lt;b&gt;ALWAYS - if has events:&lt;/b&gt; display a Last Months calendar. Stop displaying Last Months calendar if this months current day of month is at least r">
-					<option value="NO">Jev_no</option>
-					<option value="YES_stop">Yes - with stop day</option>
-					<option value="YES_stop_events">Yes - if has events AND with stop day</option>
-					<option value="ALWAYS">ALWAYS</option>
-					<option value="ALWAYS_events">ALWAYS - if has events</option>
+				<field name="modcal_DispLastMonth" type="list" default="NO" label="JEV_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC">
+					<option value="NO">JEV_NO</option>
+					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
+					<option value="ALWAYS">JEV_ALWAYS</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="Day to Stop displaying Last Month" description="Day in Current Month to Stop displaying Last Month" />
-				<field name="modcal_DispNextMonth" type="list" default="NO" label="Display Next Month ?" description="&lt;b&gt;NO&lt;/b&gt; never display a Next Months calendar&lt;br /&gt;
-			   &lt;b&gt;YES - with start day:&lt;/b&gt; display a Next Months calendar only if there were scheduled events in that month&lt;br /&gt;
-			   &lt;b&gt;YES - if has events AND with start day:&lt;/b&gt; display Next Months calendar only if there were events scheduled for that month. Start displaying Next Months calendar if this months current day of month is within r days of the first day of Next month&lt;br /&gt;
-			   &lt;b&gt;ALWAYS:&lt;/b&gt; always display a Next Months calendar&lt;br /&gt;
-			   &lt;b&gt;ALWAYS - if has events:&lt;/b&gt; display a Next Months calendar. Start displaying Next Months calendar if this months current day of month is within r days of the first day of Next month">
-					<option value="NO">Jev_no</option>
-					<option value="YES_stop">Yes - with start day</option>
-					<option value="YES_stop_events">Yes - if has events AND with start day</option>
-					<option value="ALWAYS">ALWAYS</option>
-					<option value="ALWAYS_events">ALWAYS - if has events</option>
+				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" />
+				<field name="modcal_DispNextMonth" type="list" default="NO" label="JEV_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC">
+					<option value="NO">JEV_NO</option>
+					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
+					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
+					<option value="ALWAYS">JEV_ALWAYS</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispNextMonthDays" type="text" size="2" default="0" label="Days left to Start displaying Next Month" description="Days left in Current Month to Start displaying Next Month" />
+					<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY"/>
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
-				<field name="extras0" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras1" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras2" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras3" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras4" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras5" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras6" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras7" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras8" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras9" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras10" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras11" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras12" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
-				<field name="extras13" type="jevextras" default="" label="Additional constraints" description="Additional menu constraints from addons" />
+				<field name="extras0" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras1" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras2" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras3" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras4" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras5" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras6" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras7" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras8" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras9" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras10" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras11" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras12" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+				<field name="extras13" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
 			</fieldset>
 			<fieldset name="Advanced"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX" description="PARAMMODULECLASSSUFFIX" />
 				<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
 					<option value="0">Jev_no</option>
 					<option value="1">Jev_yes</option>
 				</field>
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="JEV_CACHING" description="JEV_CACHING_DESC">
+					<option value="1">USE_GLOBAL</option>
+					<option value="0">JEV_NO_CACHING</option>
 				</field>
 				<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
-					<option value="0">Jev_no</option>
-					<option value="1">Jev_yes</option>
+					<option value="0">JEV_NO</option>
+					<option value="1">JEV_YES</option>
 				</field>
 				<field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH" description="COM_MODULES_CAL_WIDTH_DESC" />
 				<field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT" description="COM_MODULES_CAL_HEIGHT_DESC" />
-				<field name="modcal_LinkCloaking" type="jevboolean" default="0" label="Hide Links using Javascript" description="Make links inaccessible to most search engines" />
-
+				<field name="modcal_LinkCloaking" type="jevboolean" default="0" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
 			</fieldset>
 		</fields>
 	</config>
-
 </extension>

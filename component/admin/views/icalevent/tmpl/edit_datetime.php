@@ -49,8 +49,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</span>
 		</div>
 		<div  class="control-group">
-			<label style="float:left" ><?php echo JText::_('JEV_EVENT_STARTDATE'); ?>:</label>
-			<div  style="float:left;margin-left:20px!important;">
+			<label class="jevdate_labels" ><?php echo JText::_('JEV_EVENT_STARTDATE'); ?>:</label>
+			<div class="jevdate_date">
 				<?php
 				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear = $params->get("com_earliestyear", 1970);
@@ -64,14 +64,14 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<input type="hidden"  name="publish_up2" id="publish_up2" value="" />
 			</div>
 			<div style="float:left;margin-left:20px!important;">
-				<label style="float:left" ><?php echo JText::_('JEV_EVENT_STARTTIME'); ?>:</label>
-				<div style="float:left;margin-left:20px!important">
+				<label class="jevdate_labels"><?php echo JText::_('JEV_EVENT_STARTTIME'); ?>:</label>
+				<div class="jevdate_date">
 					<div id="start_24h_area" style="display:inline">
 						<input class="inputbox" type="text" name="start_time" id="start_time" size="8" <?php echo $this->row->alldayevent() ? "disabled='disabled'" : ""; ?> maxlength="8" value="<?php echo $this->row->starttime24(); ?>" onchange="checkTime(this);"/>
 					</div>
 					<div  id="start_12h_area"  style="display:inline">
 						<input class="inputbox" type="text" name="start_12h" id="start_12h" size="8" maxlength="8" <?php echo $this->row->alldayevent() ? "disabled='disabled'" : ""; ?> value="" onchange="check12hTime(this);" />
-						<div class="radio btn-group " id="start_ampm"  style="display:inline;">
+						<div class="radio btn-group " id="start_ampm"  style="display:inline-block;">
 							<label for="startAM" class="radio btn">
 								<input type="radio" name="start_ampm" id="startAM" value="none" checked="checked" onclick="toggleAMPM('startAM');" <?php echo $this->row->alldayevent() ? "disabled='disabled'" : ""; ?> />									
 								<?php echo JText::_('JEV_AM'); ?>									
@@ -86,8 +86,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</div>   
 		</div>
 		<div  class="control-group">
-			<label style="float:left" ><?php echo JText::_('JEV_EVENT_ENDDATE'); ?>:</label>
-			<div  style="float:left;margin-left:20px!important;">
+			<label class="jevdate_labels" ><?php echo JText::_('JEV_EVENT_ENDDATE'); ?>:</label>
+			<div class="jevdate_date">
 				<?php
 				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear = $params->get("com_earliestyear", 1970);
@@ -97,8 +97,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<input type="hidden"  name="publish_down2" id="publish_down2" value="" />
 			</div>
 			<div style="float:left;margin-left:20px!important">
-				<label style="float:left" ><?php echo JText::_('JEV_EVENT_ENDTIME'); ?>:</label>
-				<div style="float:left;margin-left:20px!important">
+				<label class="jevdate_labels" ><?php echo JText::_('JEV_EVENT_ENDTIME'); ?>:</label>
+				<div class="jevdate_date">
 					<div  id="end_24h_area" style="display:inline">
 						<input class="inputbox" type="text" name="end_time" id="end_time" size="8" maxlength="8" <?php echo ($this->row->alldayevent() || $this->row->noendtime()) ? "disabled='disabled'" : ""; ?> value="<?php echo $this->row->endtime24(); ?>" onchange="checkTime(this);" />
 					</div>
@@ -128,9 +128,15 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 			<label style="font-weight:bold;" ><?php echo JText::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
 			<div style="float:left;"><?php echo JText::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
-			<div  style="float:left;margin-left:20px!important;">
-				<input type="radio" name="multiday" value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>  onclick="updateRepeatWarning();" /><?php echo JText::_("JEV_YES"); ?>
-				<input type="radio" name="multiday" value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>  onclick="updateRepeatWarning();" /><?php echo JText::_("JEV_NO"); ?>
+			<div class="radio btn-group" style="float:left;margin-left:20px!important;">
+				<label for="yes"  class="radio btn">
+				<input type="radio" id="yes" name="multiday" value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>  onclick="updateRepeatWarning();" />
+					<?php echo JText::_("JEV_YES"); ?>
+				</label>
+				<label for="no" class="radio btn">
+				<input type="radio" id="no" name="multiday" value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>  onclick="updateRepeatWarning();" />
+					<?php echo JText::_("JEV_NO"); ?>
+				</label>
 			</div>
 		</div>
 	</fieldset>

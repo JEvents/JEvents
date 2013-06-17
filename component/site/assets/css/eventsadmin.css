@@ -43,7 +43,7 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	color: #2c2c2c;
 }
 .pane-sliders .panel {
-	border: 1px solid #738498;
+	border: 1px solid #CCC;
 }
 .pane-sliders .panel h3 {
 	font-size: 1.182em;
@@ -255,4 +255,15 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .tip-wrap {
 	max-width:80%!important;
 	text-align: left!important;
+}
+.jevdate_labels {
+	float:left;
+	width:80px;
+}
+.jevdate_date {
+	float:left;
+}
+
+#selectlocationbutton {
+ margin-left: 5px;   
 }
