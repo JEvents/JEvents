@@ -246,6 +246,20 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 /* Bootstrap styling - ensure minimal width for list! */
 /*#jevents .jevminwidth { width:250px;}*/
 
+/* Fix for bad templates that leave default modal class unchanged in bootstrap */
+#jevents a.modal {
+	position:static;
+}
+.radio.btn > input[type="radio"] {
+    display: none;
+}
+
+.form-inline #publish_up-lbl, .form-inline #publish_down-lbl  {
+	width:100px;
+}
+.form-inline #start_time-lbl, .form-inline #end_time-lbl  {
+	width:100px;
+}
 #cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
 	padding:5px;
 	border-radius:10px;
