@@ -540,5 +540,214 @@ class JEventsAbstractView extends JViewLegacy
 		return $matches;
 
 	}
-	
+
+	protected function setupEditForm () {
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		$this->editor = & JFactory::getEditor();
+		if ($this->editor->get("_name") == "codemirror")
+		{
+			$this->editor = JFactory::getEditor("none");
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+		}
+
+		// clean any existing cache files
+		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+		$cache->clean(JEV_COM_COMPONENT);
+
+		// Prepare the data
+		// Experiment in the use of JForm
+		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$xpath = false;
+		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
+		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
+
+		$rowdata = array();
+		foreach ($this->row as $k => $v)
+		{
+			if (strpos($k, "_") === 0)
+			{
+				$newk = substr($k, 1);
+				//$this->row->$newk = $v;
+			}
+			else
+			{
+				$newk = $k;
+			}
+			$rowdata[$newk] = $v;
+		}
+		$this->form->bind($rowdata);
+
+		$this->form->setValue("view12Hour", $params->get('com_calUseStdTime',0)?1:0);
+
+		$this->catid = $this->row->catid();
+		if ($this->catid == 0 && $this->defaultCat > 0)
+		{
+			$this->catid = $this->defaultCat;
+		}
+		if ($this->row->catids)
+		{
+			$this->catid = $this->row->catids;
+		}
+
+		if (!isset($this->ev_id))
+		{
+			$this->ev_id = $this->row->ev_id();
+		}
+
+		if ($this->editCopy)
+		{
+			$this->old_ev_id = $this->ev_id;
+			$this->ev_id = 0;
+			$this->repeatId = 0;
+			$this->rp_id = 0;
+			unset($this->row->_uid);
+			$this->row->id(0);
+		}
+
+		$native = true;
+		$thisCal = null;
+		if ($this->row->icsid() > 0)
+		{
+			$thisCal = $this->dataModel->queryModel->getIcalByIcsid($this->row->icsid());
+			if (isset($thisCal) && $thisCal->icaltype == 0)
+			{
+				// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
+				$native = false;
+			}
+			else if (isset($thisCal) && $thisCal->icaltype == 1)
+			{
+				// note that icaltype = 0 for imported from URL, 1 for imported from file, 2 for created natively
+				$native = false;
+			}
+		}
+
+		// Event editing buttons
+		$this->form->setValue("jevcontent", null, $this->row->content());
+		if ($params->get('com_show_editor_buttons'))
+		{
+			$this->form->setFieldAttribute("jevcontent", "buttons", $params->get('com_editor_button_exceptions'));
+		}
+		else
+		{
+			$this->form->setFieldAttribute("jevcontent", "buttons", "false");
+		}
+
+		// Make data available to the form
+		$this->form->jevdata["catid"]["dataModel"] = $this->dataModel;
+		$this->form->jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
+		$this->form->jevdata["catid"]["repeatId"] = $this->repeatId;
+		if (JRequest::getCmd("task")=="icalevent.edit"){
+			$this->form->jevdata["catid"]["excats"] = $this->excats;
+		}
+		$this->form->setValue("catid", null, $this->catid);
+
+		if (JRequest::getCmd("task")=="icalevent.edit"){
+			$this->form->jevdata["creator"]["users"] = $this->users;
+		}
+		
+		$this->form->jevdata["ics_id"]["clist"] = $this->clist;
+		$this->form->jevdata["ics_id"]["clistChoice"] = $this->clistChoice;
+		$this->form->jevdata["ics_id"]["thisCal"] = $thisCal;
+		$this->form->jevdata["ics_id"]["native"] = $native;
+		$this->form->jevdata["ics_id"]["nativeCals"] = $this->nativeCals;
+
+		$this->form->jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
+
+		$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
+
+		$this->form->jevdata["state"]["ev_id"] = $this->ev_id;
+
+		$this->form->jevdata["location"]["event"] = $this->row;
+		$this->form->jevdata["publish_up"]["event"] = $this->row;
+		$this->form->jevdata["publish_down"]["event"] = $this->row;
+		$this->form->jevdata["start_time"]["event"] = $this->row;
+		$this->form->jevdata["end_time"]["event"] = $this->row;
+
+		// replacement values
+		$this->searchtags = array();
+		$this->replacetags = array();
+		$this->blanktags = array();
+
+		$fields = $this->form->getFieldSet();
+		foreach ($fields as $key => $field)
+		{
+			if ($this->form->getFieldAttribute($key, "layoutfield"))
+			{
+				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
+				$this->replacetags[] = $field->label;
+				$this->blanktags[] = "";
+
+				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "}}";
+				$this->replacetags[] = $field->input;
+				$this->blanktags[] = "";
+
+			}
+		}
+
+		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
+		// append array to extratabs keys content, title, paneid
+		$this->extraTabs = array();
+		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
+
+		foreach ($this->extraTabs as $extraTab)
+		{
+			$this->searchtags[] = "{{" . str_replace(" ", "_", strtoupper($extraTab['title'])) . "}}";
+			$this->replacetags[] = $extraTab['content'];
+			$this->blanktags[] = "";
+		}
+
+
+		// load any custom fields
+		$this->customfields = array();
+		$res = $dispatcher->trigger('onEditCustom', array(&$this->row, &$this->customfields));
+
+		ob_start();
+		foreach ($this->customfields as $key => $val)
+		{
+			$this->searchtags[] = '{{' . $key . '}}';
+			$this->replacetags[] = $this->customfields[$key]["input"];
+			$this->blanktags[] = "";
+			$this->searchtags[] = '{{' . $key . '_lbl}}';
+			$this->replacetags[] = $this->customfields[$key]["label"];
+			$this->blanktags[] = "";
+
+			if (JVersion::isCompatible("3.0"))
+			{
+				?>
+				<div class="control-group jevplugin_<?php echo $key; ?>">
+					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+					<div class="controls" >
+				<?php echo $this->customfields[$key]["input"]; ?>
+					</div>
+				</div>
+				<?php
+			}
+			else
+			{
+				?>
+				<tr class="jevplugin_<?php echo $key; ?>">
+					<td valign="top"  width="130" align="left">
+						<?php
+						echo $this->customfields[$key]["label"];
+						?>
+					</td>
+					<td colspan="3">
+						<?php
+						echo $this->customfields[$key]["input"];
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+		}
+		$this->searchtags[] = "{{CUSTOMFIELDS}}";
+		$output = ob_get_clean();
+		$this->replacetags[] = $output;
+		$this->blanktags[] = "";
+
+	}
+
 }

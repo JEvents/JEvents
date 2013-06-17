@@ -14,6 +14,10 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+// get configuration object
+$cfg = & JEVConfig::getInstance();
+
 // Load Bookstrap
 JHtml::_('behavior.framework', true);
 JHtml::_('bootstrap.framework');
@@ -21,13 +25,14 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-JHtmlBootstrap::loadCss();
-JHTML::_('behavior.tooltip');
+if ($params->get("bootstrapchosen", 1)){
+	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+}
+if ($params->get("bootstrapcss", 1)){
+	JHtmlBootstrap::loadCss();
+}
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-// get configuration object
-$cfg = & JEVConfig::getInstance();
+JHTML::_('behavior.tooltip');
 
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
@@ -250,7 +255,7 @@ else
 			<div class="control-group">
 				<?php echo $this->form->getLabel("title"); ?>
 				<div class="controls">
-					<?php echo $this->form->getInput("title"); ?>
+					<?php echo str_replace("/>", " data-placeholder='xx' />",$this->form->getInput("title")); ?>
 				</div>
 			</div>
 			<?php

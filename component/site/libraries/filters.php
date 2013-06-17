@@ -221,6 +221,9 @@ class jevFilterProcessing
 			$this->filterHTML = array();
 			foreach ($this->filters as $filter) {
 				$filterHTML = $filter->_createfilterHTML();
+				if (!is_array($filterHTML)){
+					continue;
+				}
 				if (array_key_exists("merge",$filterHTML)){
 					$this->filterHTML = array_merge($this->filterHTML,$filterHTML["merge"]);
 				}

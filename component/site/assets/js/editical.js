@@ -1000,7 +1000,13 @@ window.addEvent("domready",function(){
 });
 */
 
-window.addEvent('domready',function(){hideEmptyJevTabs();});
+window.addEvent('domready',function(){
+	if ($('view12Hour')){
+		$('view12Hour').addEvent('click', function(){toggleView12Hour();});
+	}
+
+	hideEmptyJevTabs();
+});
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {

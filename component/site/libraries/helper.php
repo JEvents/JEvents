@@ -556,9 +556,14 @@ class JEVHelper
 		if (JFactory::getApplication()->isAdmin() && $skipbackend)
 			return 0;
 		static $jevitemid;
+		$evid = $forcecheck?$forcecheck->ev_id() : 0;
 		if (!isset($jevitemid))
 		{
-			$jevitemid = 0;
+			$jevitemid = array();
+		}
+		if (!isset($jevitemid[$evid]))
+		{
+			$jevitemid[$evid] = 0;
 			$menu = & JSite::getMenu();
 			$active = $menu->getActive();
 			$Itemid = JRequest::getInt("Itemid");
@@ -566,7 +571,7 @@ class JEVHelper
 			{
 				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 				$Itemid = JRequest::getInt("Itemid");
-				if ($Itemid > 0 && $jevitemid != $Itemid)
+				if ($Itemid > 0 && $jevitemid[$evid] != $Itemid)
 				{
 					$active = $menu->getItem($Itemid);
 				}
@@ -575,15 +580,15 @@ class JEVHelper
 			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 			if ($Itemid == 0)
 				$Itemid = JRequest::getInt("amp;Itemid", 0);
-			if ($option == JEV_COM_COMPONENT && $Itemid > 0)
+			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && JRequest::getCmd("task")!="crawler.listevents" && JRequest::getCmd("jevtask")!="crawler.listevents")
 			{
-				$jevitemid = $Itemid;
-				return $jevitemid;
+				$jevitemid[$evid] = $Itemid;
+				return $jevitemid[$evid];
 			}
-			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT)
+			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false  && strpos($active->link, "crawler") === false)
 			{
-				$jevitemid = $active->id;
-				return $jevitemid;
+				$jevitemid[$evid] = $active->id;
+				return $jevitemid[$evid];
 			}
 			else
 			{
@@ -596,11 +601,11 @@ class JEVHelper
 					{
 						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $jevitem->access)
 						{
-							$jevitemid = $jevitem->id;
+							$jevitemid[$evid] = $jevitem->id;
 
 							if ($forcecheck)
 							{
-								$mparams = new JRegistry($jevitem->params);
+								$mparams = is_string($jevitem->params)  ? new JRegistry($jevitem->params) : $jevitem->params;
 								$mcatids = array();
 								// New system
 								$newcats = $mparams->get( "catidnew", false);
@@ -608,7 +613,7 @@ class JEVHelper
 									foreach ($newcats as $newcat){
 										if ($forcecheck->catid() == $newcat)
 										{
-											return $jevitemid;
+											return $jevitemid[$evid];
 										}
 
 										if ( !in_array( $newcat, $mcatids )){
@@ -627,7 +632,7 @@ class JEVHelper
 										}
 										if ($forcecheck->catid() == $mparams->get($nextCID, null))
 										{
-											return $jevitemid;
+											return $jevitemid[$evid];
 										}
 
 										if (!in_array($nextCatId, $mcatids))
@@ -639,18 +644,18 @@ class JEVHelper
 								// if no restrictions then can use this
 								if (count($mcatids) == 0)
 								{
-									return $jevitemid;
+									return $jevitemid[$evid];
 								}
 								continue;
 							}
 
-							return $jevitemid;
+							return $jevitemid[$evid];
 						}
 					}
 				}
 			}
 		}
-		return $jevitemid;
+		return $jevitemid[$evid];
 
 	}
 

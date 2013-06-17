@@ -636,7 +636,7 @@ class DefaultModLatestView
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar', 
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown','categoryimage'
+			'countdown','categoryimage', 'duration'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -990,6 +990,62 @@ class DefaultModLatestView
 				$content .= $dayEvent->location();
 				break;
 
+			case 'duration':				
+				$timedelta = ($dayEvent->noendtime() || $dayEvent->alldayevent()) ? "" : $dayEvent->getUnixEndTime()-$dayEvent->getUnixStartTime();
+				if ($timedelta==""){
+					break;
+				}
+				$fieldval = (isset($dateParm) && $dateParm != '') ? $dateParm : JText::_("JEV_DURATION_FORMAT");
+				$shownsign = false;
+				// whole days!
+				if (stripos($fieldval, "%wd") !== false)
+				{
+					$days = intval($timedelta / (60 * 60 * 24));
+					$timedelta -= $days * 60 * 60 * 24;
+
+					if ($timedelta>3610){
+						//if more than 1 hour and 10 seconds over a day then round up the day output
+						$days +=1;
+					}
+
+					$fieldval = str_ireplace("%wd", $days, $fieldval);
+					$shownsign = true;
+				}
+				if (stripos($fieldval, "%d") !== false)
+				{
+					$days = intval($timedelta / (60 * 60 * 24));
+					$timedelta -= $days * 60 * 60 * 24;
+/*
+					if ($timedelta>3610){
+						//if more than 1 hour and 10 seconds over a day then round up the day output
+						$days +=1;
+					}
+						*/							
+					$fieldval = str_ireplace("%d", $days, $fieldval);
+					$shownsign = true;
+				}
+				if (stripos($fieldval, "%h") !== false)
+				{
+					$hours = intval($timedelta / (60 * 60));
+					$timedelta -= $hours * 60 * 60;
+					if ($shownsign)
+						$hours = abs($hours);
+					$hours = sprintf("%02d", $hours);
+					$fieldval = str_ireplace("%h", $hours, $fieldval);
+					$shownsign = true;
+				}
+				if (stripos($fieldval, "%m") !== false)
+				{
+					$mins = intval($timedelta / 60);
+					$timedelta -= $hours * 60;
+					if ($mins)
+						$mins = abs($mins);
+					$mins = sprintf("%02d", $mins);
+					$fieldval = str_ireplace("%m", $mins, $fieldval);
+				}
+				$content .= $fieldval;
+				break;
+			
 			case 'extraInfo':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->extra_info();

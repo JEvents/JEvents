@@ -28,7 +28,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (is_array($templates[$template_name]) && count($templates[$template_name])==0){
 				$templates[$template_name] = null;
 			}
-			else if (is_array($templates[$template_name])){
+			else if (is_array($templates[$template_name]) && count($templates[$template_name])>0)
+			{
 				$templates[$template_name] = current($templates[$template_name]);
 			}
 			else {

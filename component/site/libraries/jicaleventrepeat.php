@@ -181,13 +181,13 @@ class jIcalEventRepeat extends jIcalEventDB{
 		return $link;
 	}
 
-	function viewDetailLink($year,$month,$day,$sef=true, $Itemid=0){
-		$Itemid	= $Itemid>0?$Itemid:JEVHelper::getItemid();
+	function viewDetailLink($year,$month,$day,$sef=true, $Itemid=0){		
+		$Itemid	= $Itemid>0?$Itemid:JEVHelper::getItemid($this);
 		// uid = event series unique id i.e. the actual event
 		$title = JFilterOutput::stringURLSafe($this->title());
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$this->rp_id() .'&Itemid='.$Itemid
 		."&year=$year&month=$month&day=$day&title=".$title."&uid=".urlencode($this->uid());
-		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd('task', 'selectfunction')!='icalevent.select'  && JRequest::getCmd("option","")!="com_acymailing" && JRequest::getCmd("option","")!="com_jnews"){
+		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd('task', 'selectfunction')!='icalevent.select'  && JRequest::getCmd("option","")!="com_acymailing" && JRequest::getCmd("option","")!="com_jnews" && JRequest::getCmd("jevtask","")!="crawler.listevents"){
 			$link .= "&tmpl=component";
 		}
 		// SEF is applied later

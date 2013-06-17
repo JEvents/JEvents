@@ -75,6 +75,8 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
                     $this->setLayout("edit16");
                 }		
 
+		$this->setupEditForm();
+
 	}
 
 	function addSaveToolBarButton()

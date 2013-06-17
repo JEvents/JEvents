@@ -44,10 +44,11 @@ class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
 		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
-		$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
-
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+		
+		// reset the title because JToolbar messes is up in Joomla 3.0 in the frontend !!
+		$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 
 		$bar = & JToolBar::getInstance('toolbar');
 		if ($this->id > 0)

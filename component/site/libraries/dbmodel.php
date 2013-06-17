@@ -2132,7 +2132,7 @@ class JEventsDBModel
 		}
 
 		$where = '';
-		if ($creator_id == 'ADMIN')
+		if ($creator_id == 'ADMIN' ||  JEVHelper::isEventEditor() || JEVHelper::isEventPublisher(true))
 		{
 			$where = "";
 		}
@@ -2242,7 +2242,7 @@ class JEventsDBModel
 
 		$adminCats = JEVHelper::categoryAdmin();
 		$where = '';
-		if ($creator_id == 'ADMIN')
+		if ($creator_id == 'ADMIN' ||  JEVHelper::isEventEditor() || JEVHelper::isEventPublisher(true))
 		{
 			$where = "";
 		}
