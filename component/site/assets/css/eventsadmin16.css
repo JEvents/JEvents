@@ -281,3 +281,10 @@ fieldset.checkboxes li {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
+.jevdate_labels {
+	float:left;
+}
+.jevdate_date {
+	float:left;
+	margin-left:20px!important;
+}

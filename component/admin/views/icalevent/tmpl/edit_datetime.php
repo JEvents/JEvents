@@ -41,6 +41,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo $this->form->getInput("view12Hour"); ?>
 			</span>
 		</div>
+
 		<div  class="control-group  form-inline">
 			<span class="jevstartdate">
 				<?php echo $this->form->getLabel("publish_up"); ?>
@@ -52,6 +53,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo $this->form->getInput("start_time"); ?>
 			</span>
 		</div>
+
 		<div  class="control-group  form-inline">
 			<span class="jevenddate">
 				<?php echo $this->form->getLabel("publish_down"); ?>
@@ -75,9 +77,15 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 			<label style="font-weight:bold;" ><?php echo JText::_('JEV_EVENT_MULTIDAY'); ?></label><br/>
 			<div style="float:left;"><?php echo JText::_('JEV_EVENT_MULTIDAY_LONG') . "&nbsp;"; ?></div>
-			<div  style="float:left;margin-left:20px!important;">
-				<input type="radio" name="multiday" value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>  onclick="updateRepeatWarning();" /><?php echo JText::_("JEV_YES"); ?>
-				<input type="radio" name="multiday" value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>  onclick="updateRepeatWarning();" /><?php echo JText::_("JEV_NO"); ?>
+			<div class="radio btn-group" style="float:left;margin-left:20px!important;">
+				<label for="yes"  class="radio btn">
+				<input type="radio" id="yes" name="multiday" value="1" <?php echo $this->row->multiday() ? 'checked="checked"' : ''; ?>  onclick="updateRepeatWarning();" />
+					<?php echo JText::_("JEV_YES"); ?>
+				</label>
+				<label for="no" class="radio btn">
+				<input type="radio" id="no" name="multiday" value="0" <?php echo $this->row->multiday() ? '' : 'checked="checked"'; ?>  onclick="updateRepeatWarning();" />
+					<?php echo JText::_("JEV_NO"); ?>
+				</label>
 			</div>
 		</div>
 	</fieldset>
