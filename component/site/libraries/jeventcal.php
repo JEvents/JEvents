@@ -665,6 +665,7 @@ class jEventCal {
 		$task = $singlerecurrence?"icalrepeat":"icalevent";
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=icals.$task&tmpl=component&evid=".$this->id()
 		. "&Itemid=".$Itemid;
+
 		// after testing set showBR = 0
 		//$link .= "&showBR=1";
 		$link = $sef?JRoute::_( $link  ):$link;
