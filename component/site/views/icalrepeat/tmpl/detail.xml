@@ -21,6 +21,10 @@
 				   required="true"
 				   description="COM_JEVENTS_FIELD_SELECT_EVENT_DESC"
 			/>
+			<field name="rp_id" type="jevselectevent"
+				   label=""
+				   description=""
+			/>
 		</fieldset>
 	</fields>
 	

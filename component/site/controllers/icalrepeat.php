@@ -42,7 +42,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$link = $uri->toString();
 			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
 			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
-			$link = JRoute::_($link);
+			$link = JRoute::_($link, false);
 			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			return;
 		}

@@ -300,75 +300,6 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		
 		
-		// Now do the plugins
-		// get list of enabled plugins
-
-		$layout = "edit";
-
-		$jevplugins = JPluginHelper::getPlugin("jevents");
-
-		foreach ($jevplugins as $jevplugin)
-		{
-			$classname = "plgJevents" . ucfirst($jevplugin->name);
-			if (is_callable(array($classname, "substitutefield")))
-			{
-
-				if (!isset($fieldNameArray[$classname])){
-					$fieldNameArray[$classname] = array();
-				}
-				if (!isset($fieldNameArray[$classname][$layout])){
-					
-					//list($usec, $sec) = explode(" ", microtime());
-					//$starttime = (float) $usec + (float) $sec;
-					
-					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
-					
-					//list ($usec, $sec) = explode(" ", microtime());
-					//$time_end = (float) $usec + (float) $sec;
-					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
-				}
-				if ( isset($fieldNameArray[$classname][$layout]["values"]))
-				{
-					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
-					{
-						if (!strpos($template_value, $fieldname)!==false) {
-							continue;
-						}
-						$search[] = "{{" . $fieldname . "}}";
-						// is the event detail hidden - if so then hide any custom fields too!
-						if (!isset($event->_privateevent) || $event->_privateevent != 3)
-						{
-							$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
-							if (is_callable(array($classname, "blankfield")))
-							{
-								$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
-							}
-							else
-							{
-								$blank[] = "";
-							}
-						}
-						else
-						{
-							$blank[] = "";
-							$replace[] = "";
-						}
-					}
-				}
-			}
-		}
-		
-		for ($s = 0; $s < count($search); $s++)
-		{
-			global $tempreplace, $tempevent, $tempsearch, $tempblank;
-			$tempreplace = $replace[$s];
-			$tempblank = $blank[$s];
-			$tempsearch = str_replace("}}", "#", $search[$s]);
-			$tempevent = $event;
-			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", array($this, 'jevSpecialHandling2'), $template_value);
-		}
-
-
 		// Close all the tabs in Joomla < 3.0
 		if (JVersion::isCompatible("3.0.0")){
 			preg_match_all('|{{TABLINK#(.*?)}}|', $template_value, $tablinks);
@@ -452,9 +383,7 @@ class JEventsAbstractView extends JViewLegacy
 				}
 			}									
 		}
-		
-		$template_value = str_replace($search, $replace, $template_value);
-				
+
 		// finish off the other tabs
 		if (!JVersion::isCompatible("3.0.0")){
 			$tabstartarray = array();
@@ -463,14 +392,92 @@ class JEventsAbstractView extends JViewLegacy
 				foreach ($tabstartarray[0] as $ts){
 					$title = str_replace(array("{{TABBODYSTART#","}}"),"", $ts);
 					$paneid = str_replace("=","",base64_encode($title));
-					$tabContent  = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . $title . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
+					$tabContent  = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
 					$tabContent  .= "<div class='jevextrablock'>"."\n";
 					//$tabContent  .=  $title."\n";
-					$template_value = str_replace("{{TABBODYSTART#".$title."}}",$tabContent, $template_value);	
+					$template_value = str_replace("{{TABBODYSTART#".$title."}}",$tabContent, $template_value);
 				}
-			}						
+			}
 		}
 
+		// Now do the plugins
+		// get list of enabled plugins
+		/*
+		$layout = "edit";
+
+		$jevplugins = JPluginHelper::getPlugin("jevents");
+
+		foreach ($jevplugins as $jevplugin)
+		{
+			$classname = "plgJevents" . ucfirst($jevplugin->name);
+			if (is_callable(array($classname, "substitutefield")))
+			{
+
+				if (!isset($fieldNameArray[$classname])){
+					$fieldNameArray[$classname] = array();
+				}
+				if (!isset($fieldNameArray[$classname][$layout])){
+
+					//list($usec, $sec) = explode(" ", microtime());
+					//$starttime = (float) $usec + (float) $sec;
+
+					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
+
+					//list ($usec, $sec) = explode(" ", microtime());
+					//$time_end = (float) $usec + (float) $sec;
+					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
+				}
+				if ( isset($fieldNameArray[$classname][$layout]["values"]))
+				{
+					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
+					{
+						if (!strpos($template_value, $fieldname)!==false) {
+							continue;
+						}
+						$search[] = "{{" . $fieldname . "}}";
+						if (strpos($fieldname, "_lbl")>0 && isset($this->customfields[str_replace("_lbl","",$fieldname)])){
+							$replace[] = $this->customfields[str_replace("_lbl","",$fieldname)]["label"]."xx";
+						}
+						else if (isset($this->customfields[$fieldname])){
+							$replace[] = $this->customfields[$fieldname]["input"]."yy";
+						}
+						// is the event detail hidden - if so then hide any custom fields too!
+						else if (!isset($event->_privateevent) || $event->_privateevent != 3)
+						{
+							$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
+							if (is_callable(array($classname, "blankfield")))
+							{
+								$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
+							}
+							else
+							{
+								$blank[] = "";
+							}
+						}
+						else
+						{
+							$blank[] = "";
+							$replace[] = "";
+						}
+					}
+				}
+			}
+		}
+		 * 
+		 */
+
+		for ($s = 0; $s < count($search); $s++)
+		{
+			global $tempreplace, $tempevent, $tempsearch, $tempblank;
+			$tempreplace = $replace[$s];
+			$tempblank = $blank[$s];
+			$tempsearch = str_replace("}}", "#", $search[$s]);
+			$tempevent = $event;
+			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", array($this, 'jevSpecialHandling2'), $template_value);
+		}
+
+		$template_value = str_replace($search, $replace, $template_value);
+				
 		// Final Cleanups
 		$template_value = str_replace($matchesarray[0], "", $template_value);
 		
@@ -742,6 +749,7 @@ class JEventsAbstractView extends JViewLegacy
 				</tr>
 				<?php
 			}
+
 		}
 		$this->searchtags[] = "{{CUSTOMFIELDS}}";
 		$output = ob_get_clean();

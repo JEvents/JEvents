@@ -24,13 +24,24 @@ class JFormFieldJEVselectEvent extends JFormField
 
 	protected function getInput()
 	{
+		if ($this->fieldname=="rp_id"){
+			// The active event id field.
+			if (0 == (int)$this->value) {
+				$value = '';
+			} else {
+				$value = (int)$this->value;
+			}
+			return  '<input type="text" id="selectedrepeat"   name="'.$this->name.'" value="'.$value.'" />';
+		}
+
 		// Load the modal behavior script.
 		JHtml::_('behavior.modal', 'a.modal');
 
 		$js = "
-		function jSelectEvent_".$this->id."(link, title, Itemid, rpid) {
+		function jSelectEvent_".$this->id."(link, title, Itemid, evid, rpid) {
 			$('selectedeventtitle').value = title;
-			$('selectedevent').value = rpid;
+			$('selectedevent').value = evid;
+			$('selectedrepeat').value = rpid;
 			SqueezeBox.close();
 			return false;
 		}";
@@ -43,12 +54,15 @@ class JFormFieldJEVselectEvent extends JFormField
 		$html	= array();
 		$link = 'index.php?option=com_jevents&amp;task=icalevent.select&amp;tmpl=component&amp;'.JSession::getFormToken().'=1&amp;nomenu=1&function=jSelectEvent_'.$this->id;
 
+		// get the repeat id
+		$rpidfield = $this->form->getField("rp_id", "request");
+		$rp_id = $rpidfield->value;
 		$db	= JFactory::getDBO();
 		$db->setQuery(
 			'SELECT det.summary as title' .
 			' FROM #__jevents_vevdetail as det ' .
 			' LEFT JOIN #__jevents_repetition as rep ON rep.eventdetail_id = det.evdet_id' .
-			' WHERE rep.rp_id = '.(int) $this->value
+			' WHERE rep.rp_id = '.(int) $rp_id
 		);
 		$title = $db->loadResult();
 		echo $db->getErrorMsg();
