@@ -38,11 +38,12 @@ defaultsEditorPlugin = {
 		$result = jInsertEditorText(textToInsert,fieldName);
 
 		// reset the selected element back to 'Select...'
-		//$(pluginNode).selectedIndex = 0;
+		$(pluginNode).selectedIndex = 0;
 		// needed for MSIE 9 bug - see $(pluginNode)
-		$each($(pluginNode).options, function(option){
-			option.selected = false;
-		});
+                                    for (var i=0; i<sel.length; i++){
+                                        sel.options[i].selected = false;
+                                    }
+                                    var test = $(pluginNode).options;
 		return false;
 	}
 }
