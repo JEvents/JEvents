@@ -467,8 +467,8 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		 * 
 		 */
-
-		for ($s = 0; $s < count($search); $s++)
+                                    $searchCount = count($search);
+		for ($s = 0; $s < $searchCount; $s++)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
 			$tempreplace = $replace[$s];
