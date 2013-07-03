@@ -790,7 +790,6 @@ class AdminCPanelViewCPanel extends JEventsAbstractView
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
-		JToolBarHelper::cancel('cpanel.cpanel');
 		JEventsHelper::addSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
