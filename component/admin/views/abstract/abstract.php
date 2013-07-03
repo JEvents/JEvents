@@ -258,9 +258,8 @@ class JEventsAbstractView extends JViewLegacy
 
 		$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		//var_dump($matchesarray);
-
-		for ($i = 0; $i < count($matchesarray[0]); $i++)
+                                    $matchesarrayCount = count($matchesarray[0]);                                    
+		for ($i = 0; $i < $matchesarrayCount; $i++)
 		{
 			$strippedmatch = preg_replace('/(#|:)+[^}]*/', '', $matchesarray[0][$i]);
 
@@ -303,8 +302,9 @@ class JEventsAbstractView extends JViewLegacy
 		// Close all the tabs in Joomla < 3.0
 		if (JVersion::isCompatible("3.0.0")){
 			preg_match_all('|{{TABLINK#(.*?)}}|', $template_value, $tablinks);
-			if ($tablinks && count($tablinks)==2 && count($tablinks[0])>0){
-				for ($tab=0;$tab<count($tablinks[0]);$tab++){
+                                                      $tablinks0Count = count($tablinks[0]);
+			if ($tablinks && count($tablinks)==2 && $tablinks0Count>0){                                                                        
+				for ($tab=0;$tab<$tablinks0Count;$tab++){
 					$paneid = str_replace(" ","_",htmlspecialchars($tablinks[1][$tab]));
 					$tablabel = ($paneid==JText::_($paneid)) ? $tablinks[1][$tab] : JText::_($paneid);
 					if ($tab==0){
@@ -323,10 +323,11 @@ class JEventsAbstractView extends JViewLegacy
 			// Create the tabs content
 			$tabendarray = array();
 			preg_match_all('|{{TABBODYEND}}|', $template_value, $tabendarray);
-			if (isset($tabendarray[0]) && count($tabendarray[0])>0){
+                                                      $tabendarray0Count = count($tabendarray[0]);
+			if (isset($tabendarray[0]) && $tabendarray0Count>0){
 				$tabendreplace = array();
 				$tabendsearch = array();
-				for ($tab=0;$tab<count($tabendarray[0]);$tab++){
+				for ($tab=0;$tab<$tabendarray0Count;$tab++){
 					$te = $tabendarray[0][$tab];
 					$tabendsearch[]="|$te|";
 					if ($tab==count($tablinks[0])-1){
@@ -340,8 +341,9 @@ class JEventsAbstractView extends JViewLegacy
 
 				$tabstartarray = array();
 				preg_match_all('|{{TABBODYSTART#(.*?)}}|', $template_value, $tabstartarray);
-				if (isset($tabstartarray[0]) && count($tabstartarray[0])>0 &&  count($tabstartarray[0])==count($tablinks[0])){
-					for ($tab=0;$tab<count($tabstartarray[0]);$tab++){
+                                                                        $tabstartarray0Count = count($tabstartarray[0]);
+				if (isset($tabstartarray[0]) && $tabstartarray0Count>0 &&  count($tabstartarray[0])==count($tablinks[0])){
+					for ($tab=0;$tab<$tabstartarray0Count;$tab++){
 						$paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
 						if ($tab ==0){							
 							$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
