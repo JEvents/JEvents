@@ -58,7 +58,10 @@ if (JRequest::getVar('save'))
 				<div id="j-main-container">
 <?php endif; ?>
 				<textarea rows="28" cols="93" name="content"><?php echo $content; ?></textarea>
-				<input type="submit" style="display:block;margin-left:2px;" name="save" class="btn btn-success" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
+				<div style="display:block;margin-left:2px;">
+				<input type="submit" name="save" class="btn btn-success" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
+				<a href="index.php?option=com_jevents&task=cpanel.cpanel" class="btn btn-danger" ><?php echo JText::_('JCANCEL'); ?></a>
+				</div>
 				</form>
 				<?php
 				$html = ob_get_contents();
