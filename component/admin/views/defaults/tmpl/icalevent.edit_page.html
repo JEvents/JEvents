@@ -1,14 +1,6 @@
 {{Message:MESSAGE}}
 <div align="left" class="adminform">
-	{{Tab Label:TABLINK#JEV_TAB_COMMON}}
-	{{Tab Label:TABLINK#JEV_TAB_CALENDAR}}
-	{{Tab Label:TABLINK#Custom Fields Tab One}}
-	{{Tab Label:TABLINK#Custom Fields Tab Two}}
-	{{Tab Label:TABLINK#JEV_ATTENDANCE}}
-	{{Tab Label:TABLINK#JEV_INVITATION_OPTIONS}}
-	{{Tab Label:TABLINK#JEV_REMINDER_OPTIONS}}
-
-	{{Tab Body Start:TABBODYSTART#Common}}
+	{{Tab Body Start:TABBODYSTART#JEV_TAB_COMMON}}
 	<table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
 		<tr>
 			<td align="left">
@@ -123,35 +115,22 @@
 	<table cellpadding="5" cellspacing="2" border="0"  class="adminform" id="jevadminform">
 		{{Custom Fields:CUSTOMFIELDS}} 
 	</table>
-	
-	
-	{{Tab Body end:TABBODYEND}}
-
-	{{Tab Body Start:TABBODYSTART#Calendar}}
-	{{Calendar tab content:CALTAB}}
-	{{Tab Body end:TABBODYEND}}
 
 	{{Tab Body Start:TABBODYSTART#JEV_TAB_CALENDAR}}
 	{{Calendar tab content:CALTAB}}
-	{{Tab Body end:TABBODYEND}}
 
 	{{Tab Body Start:TABBODYSTART#Custom Fields Tab One}}
 	{{Tab 1:CUSTOM_1}}
-	{{Tab Body end:TABBODYEND}}
 
 	{{Tab Body Start:TABBODYSTART#Custom Fields Tab Two}}
 	{{Tab 2:CUSTOM_2}}
-	{{Tab Body end:TABBODYEND}}
-
+        
 	{{Tab Body Start:TABBODYSTART#JEV_ATTENDANCE}}
 	{{Attendance Tab:ATTENDANCE_OPTIONS}}
-	{{Tab Body end:TABBODYEND}}
 
 	{{Tab Body Start:TABBODYSTART#JEV_INVITATION_OPTIONS}}
 	{{Invitations Tab:INVITATION_OPTIONS}}
-	{{Tab Body end:TABBODYEND}}
 
 	{{Tab Body Start:TABBODYSTART#JEV_REMINDER_OPTIONS}}
 	{{Reminder Tab:EMAIL_REMINDER_OPTIONS}}
-	{{Tab Body end:TABBODYEND}}
 </div>
