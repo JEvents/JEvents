@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Colour Selection</title>
+<style type="text/css">
+body{
+padding:0px;
+margin:0px;
+}
+div#newColorPicker {
+	position:absolute;
+	/*display:none;*/
+}
+.colorTable {
+	background-color:#f0f0f0;
+	border:solid 1px #222222;	
+}
+.colorpickertile {
+  width                 : 20px;
+  height                : 20px;
+  margin                : 1px;
+  border-left           : 1px solid ThreeDShadow;
+  border-top            : 1px solid ThreeDShadow;
+  border-right          : 1px solid ThreeDHighlight;
+  border-bottom         : 1px solid ThreeDHighlight;
+}
+.colorpickertile:hover {
+  border-right           : 1px solid ThreeDShadow;
+  border-bottom          : 1px solid ThreeDShadow;
+  border-left            : 1px solid ThreeDHighlight;
+  border-top         	 : 1px solid ThreeDHighlight;
+}
+#colorpreview {
+  font-size				 : 10pt;
+  font-weight			 : bold;
+  padding-left           : 0.5em;
+  background-color		 : #FFFFFF;	
+  color					 : #000000;
+  border-left            : 1px solid ThreeDShadow;
+  border-top             : 1px solid ThreeDShadow;
+  border-right           : 1px solid ThreeDHighlight;
+  border-bottom          : 1px solid ThreeDHighlight;
+}
+a#colorPickButton{
+	border: 1px solid #000000; 
+	font-family:Verdana; 
+	font-weight: bold; 
+	font-size:10px; 
+	background:#eeeeee;
+	text-decoration: none;
+}
+td#cancel {
+	font-family:Verdana; 
+	font-weight: bold; 
+	font-size:10px; 
+	text-align:right;
+}
+</style>
+</head>
+<body>
+<script  type="text/javascript">
+// <!--
+function showPreview(evt) {
+	if (window.event) target = window.event.srcElement;
+	else target = evt.target;
+	if (!target) return;
+	parts = target.id.split("_");
+	brightness=parts[0];
+	bc=parts[1];
+	cp = document.getElementById('colorpreview');
+	//cp.innerHTML=target.id;
+	cp.style.backgroundColor="#"+bc;
+	if (brightness=="dark") cp.style.color="#FFFFFF";
+	else cp.style.color="#000000";
+}
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+  return "";
+}
+function setcolors() {
+	alldivs = document.getElementsByTagName('div');
+	for(i=0;i<alldivs.length;i++){
+		if (alldivs[i].className=="colorpickertile") {
+			parts = alldivs[i].id.split("_");
+			alldivs[i].style.backgroundColor="#"+parts[1];
+			if (alldivs[i].attachEvent) {
+				alldivs[i].attachEvent("onmousedown",makeChoice)
+				alldivs[i].attachEvent("onmouseover",showPreview)
+			}
+			else {
+				alldivs[i].onmousedown = makeChoice;
+				alldivs[i].onmouseover = showPreview;
+			}
+		}
+	}
+	
+	try {
+	ncp = document.getElementById("newColorPicker");
+	//alert(ncp.clientHeight);
+	id = getQueryVariable("id");
+	window.parent.document.getElementById(id).style.height=ncp.clientHeight+"px";
+	window.parent.document.getElementById(id).style.width=ncp.clientWidth+"px";
+	}
+	catch(e){}
+}
+function makeChoice(evt) {	
+	if (window.event) target = window.event.srcElement;
+	else target = evt.target;
+	if (!target) return;
+	parts = target.id.split("_");
+	brightness=parts[0];
+	bc=parts[1];
+	
+	cp = document.getElementById('colorpreview');
+	var j16 = getQueryVariable("j16");
+	if (j16!=1) window.parent.document.getElementById(id).style.visibility = "hidden";
+	//alert("background color is '#"+bc+"' text will be "+brightness);
+	window.parent.document.getElementById("pick1064797275field").value="#"+bc;
+	window.parent.document.getElementById("pick1064797275").style.backgroundColor="#"+bc;
+	if (brightness=="dark") {
+		window.parent.document.getElementById("pick1064797275").style.color="white";
+		window.parent.document.getElementById("colorPickButton").style.color="white";
+	}
+	else {
+		window.parent.document.getElementById("pick1064797275").style.color="black";
+		window.parent.document.getElementById("colorPickButton").style.color="black";
+	}
+}
+function cancelColors(){
+	id = getQueryVariable("id");
+	var j16 = getQueryVariable("j16");
+	if (j16!=1) window.parent.document.getElementById(id).style.visibility = "hidden";
+}
+function showColors(){
+	document.getElementById("newColorPicker").style.display="block";
+	
+}
+function setPickerColor(catcol,rowcol){
+	if (document.adminForm.useCatColor.checked) {
+		document.adminForm.color_bar.value=catcol;
+		document.getElementById("pick1064797275").style.backgroundColor=catcol;
+	} else {
+		document.adminForm.color_bar.value=rowcol;
+		document.getElementById("pick1064797275").style.backgroundColor=rowcol;
+	}
+}
+function togglePicker(catcol,rowcol){
+	setPickerColor(catcol,rowcol);
+	currentStyle = document.getElementById("colorPickButton").style.visibility;
+	document.getElementById("colorPickButton").style.visibility=(currentStyle=="visible")?"hidden":"visible";
+}
+
+if (window.attachEvent) window.attachEvent("onload", setcolors);
+else window.onload=setcolors;
+// -->
+</script>
+<div id="newColorPicker">
+    <table border="0" cellpadding="1" cellspacing="1" class="colorTable">
+        <tr>
+          <td><div class="colorpickertile" id='light_FFFFFF'></div></td>
+          <td><div class="colorpickertile" id='light_FFCCCC'></div></td>
+          <td><div class="colorpickertile" id='light_FFCC99'></div></td>
+          <td><div class="colorpickertile" id='light_FFFF99'></div></td>
+          <td><div class="colorpickertile" id='light_FFFFCC'></div></td>
+          <td><div class="colorpickertile" id='light_99FF99'></div></td>
+          <td><div class="colorpickertile" id='light_99FFFF'></div></td>
+          <td><div class="colorpickertile" id='light_CCFFFF'></div></td>
+          <td><div class="colorpickertile" id='light_CCCCFF'></div></td>
+          <td><div class="colorpickertile" id='light_FFCCFF'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='light_CCCCCC'></div></td>
+          <td><div class="colorpickertile" id='dark_FF6666'></div></td>
+          <td><div class="colorpickertile" id='light_FF9966'></div></td>
+          <td><div class="colorpickertile" id='light_FFFF66'></div></td>
+          <td><div class="colorpickertile" id='light_FFFF33'></div></td>
+          <td><div class="colorpickertile" id='light_66FF99'></div></td>
+          <td><div class="colorpickertile" id='light_33FFFF'></div></td>
+          <td><div class="colorpickertile" id='light_66FFFF'></div></td>
+          <td><div class="colorpickertile" id='dark_9999FF'></div></td>
+          <td><div class="colorpickertile" id='light_FF99FF'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='light_C0C0C0'></div></td>
+          <td><div class="colorpickertile" id='dark_FF0000'></div></td>
+          <td><div class="colorpickertile" id='dark_FF9900'></div></td>
+          <td><div class="colorpickertile" id='light_FFCC66'></div></td>
+          <td><div class="colorpickertile" id='light_FFFF00'></div></td>
+          <td><div class="colorpickertile" id='light_33FF33'></div></td>
+          <td><div class="colorpickertile" id='light_66CCCC'></div></td>
+          <td><div class="colorpickertile" id='light_33CCFF'></div></td>
+          <td><div class="colorpickertile" id='dark_6666CC'></div></td>
+          <td><div class="colorpickertile" id='dark_CC66CC'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='dark_999999'></div></td>
+          <td><div class="colorpickertile" id='dark_CC0000'></div></td>
+          <td><div class="colorpickertile" id='dark_FF6600'></div></td>
+          <td><div class="colorpickertile" id='light_FFCC33'></div></td>
+          <td><div class="colorpickertile" id='light_FFCC00'></div></td>
+          <td><div class="colorpickertile" id='dark_33CC00'></div></td>
+          <td><div class="colorpickertile" id='light_00CCCC'></div></td>
+          <td><div class="colorpickertile" id='dark_3366FF'></div></td>
+          <td><div class="colorpickertile" id='dark_6633FF'></div></td>
+          <td><div class="colorpickertile" id='dark_CC33CC'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='dark_666666'></div></td>
+          <td><div class="colorpickertile" id='dark_990000'></div></td>
+          <td><div class="colorpickertile" id='dark_CC6600'></div></td>
+          <td><div class="colorpickertile" id='dark_CC9933'></div></td>
+          <td><div class="colorpickertile" id='dark_999900'></div></td>
+          <td><div class="colorpickertile" id='dark_009900'></div></td>
+          <td><div class="colorpickertile" id='dark_339999'></div></td>
+          <td><div class="colorpickertile" id='dark_3333FF'></div></td>
+          <td><div class="colorpickertile" id='dark_6600CC'></div></td>
+          <td><div class="colorpickertile" id='dark_993399'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='dark_333333'></div></td>
+          <td><div class="colorpickertile" id='dark_660000'></div></td>
+          <td><div class="colorpickertile" id='dark_993300'></div></td>
+          <td><div class="colorpickertile" id='dark_996633'></div></td>
+          <td><div class="colorpickertile" id='dark_666600'></div></td>
+          <td><div class="colorpickertile" id='dark_006600'></div></td>
+          <td><div class="colorpickertile" id='dark_336666'></div></td>
+          <td><div class="colorpickertile" id='dark_000099'></div></td>
+          <td><div class="colorpickertile" id='dark_333399'></div></td>
+          <td><div class="colorpickertile" id='dark_663366'></div></td>
+        </tr>
+        <tr>
+          <td><div class="colorpickertile" id='dark_000000'></div></td>
+          <td><div class="colorpickertile" id='dark_330000'></div></td>
+          <td><div class="colorpickertile" id='dark_663300'></div></td>
+          <td><div class="colorpickertile" id='dark_663333'></div></td>
+          <td><div class="colorpickertile" id='dark_333300'></div></td>
+          <td><div class="colorpickertile" id='dark_003300'></div></td>
+          <td><div class="colorpickertile" id='dark_003333'></div></td>
+          <td><div class="colorpickertile" id='dark_000066'></div></td>
+          <td><div class="colorpickertile" id='dark_330099'></div></td>
+          <td><div class="colorpickertile" id='dark_330033'></div></td>
+        </tr>
+        <tr>
+          <td colspan="7"><div id="colorpreview">This is a preview</div></td>
+          <td colspan="3" id="cancel"><a href="javascript:cancelColors()">Cancel</a></td>
+        </tr>
+    </table>
+</div>
+
+<script  type="text/javascript">
+	var j16 = getQueryVariable("j16");
+	if (j16==1) window.document.getElementById('cancel').style.visibility = "hidden";
+</script>
+</body>
+</html>

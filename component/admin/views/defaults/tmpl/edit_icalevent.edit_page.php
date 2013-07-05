@@ -25,7 +25,8 @@ defined('_JEXEC') or die('Restricted access');
 defaultsEditorPlugin.node($('jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
 var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_BODY_START",true);?>", "TABBODYSTART#name");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_START",true);?>", "TABSTART#name");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_END_TABS",true);?>", "TABSEND#name");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_MESSAGE",true);?>", "MESSAGE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE_LABEL",true);?>", "TITLE_LBL");

@@ -268,11 +268,15 @@ function checkEndTime() {
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
+	startDate.setHours(starttimeparts[0]);
+	startDate.setMinutes(starttimeparts[1]);
 
 	endtimeparts = (end_time.value=="00:00") ? [23,59] : end_time.value.split(":");
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
+	endDate.setHours(endtimeparts[0]);
+	endDate.setMinutes(endtimeparts[1]);
 
 	var jevmultiday = document.getElementById('jevmultiday');
 	if (end_date.value>start_date.value){

@@ -491,7 +491,14 @@ class JEVHelper
 		$script.='}
 				);
 			});';
-		$document->addScriptDeclaration($script);
+
+		// stop same field script being loaded multiple times
+		static $processedfields = array();
+		if (!in_array($fieldname,$processedfields)){
+			$document->addScriptDeclaration($script);
+		}
+		$processedfields[]=$fieldname;
+		
 		if ($onchange != "")
 		{
 			$onchange = 'onchange="' . $onchange . '"';

@@ -19,10 +19,10 @@
 			<field name='constrained' type='jevboolean' default="0" label="JEV_CONSTRAIN_EXPORT_USING_SETTINGS_BELOW" description="JEV_CONSTRAIN_EXPORT_DESC" />
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 		
-			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
-			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_WEBCAL_URL" description="JEV_ICAL_WEBCAL_URL_DESC" />
-			<field name="show_ical_download" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ICAL_ALLOW_DOWNLOAD" description="JEV_ICAL_ALLOW_DOWNLOAD" />
-			<field name="show_webcal_google" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_GOOGLE_CALENDAR" description="JEV_ICAL_GOOGLE_CALENDAR_DESC"/>
+			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="0" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
+			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_WEBCAL_URL" description="JEV_ICAL_WEBCAL_URL_DESC" />
+			<field name="show_ical_download" type="jevboolean" class="btn-group" default="1"  label="JEV_ICAL_ALLOW_DOWNLOAD" description="JEV_ICAL_ALLOW_DOWNLOAD" />
+			<field name="show_webcal_google" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_GOOGLE_CALENDAR" description="JEV_ICAL_GOOGLE_CALENDAR_DESC"/>
 		
 			<field name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" />
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />

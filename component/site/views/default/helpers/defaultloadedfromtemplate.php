@@ -219,6 +219,32 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{ALLCATEGORIES}}":
+					$search[] = "{{ALLCATEGORIES}}";
+					static $allcat_catids;
+
+					if (!isset($allcat_catids)) {
+						$db	=& JFactory::getDBO();
+						$arr_catids = array();
+						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' " ;
+						$db->setQuery($catsql);
+						 $allcat_catids = $db->loadObjectList('id') ;
+					}
+					$db = JFactory::getDbo();
+					$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = ".$event->ev_id());
+					$allcat_eventcats = $db->loadColumn() ;
+
+					$allcats = array();
+					foreach ($allcat_eventcats as $catid){
+						if(isset($allcat_catids[$catid])){
+							$allcats[]=$allcat_catids[$catid]->name ;
+						}
+
+					}
+					$replace[] = implode(", ", $allcats);
+					$blank[] = "";
+					break;
+
 				case "{{CALENDAR}}":
 					$search[] = "{{CALENDAR}}";
 					$replace[] = $event->getCalendarName();

@@ -838,7 +838,27 @@ var NewCalendar = new Class({
 			cal.visible = false;
 			cal.button.removeClass(this.classes.active); // active
 
-			this.fx.start('opacity', 1, 0);
+			// not sure why this isn't working any more !!??
+			//this.fx.start('opacity', 1, 0);
+			// so we do it manually
+			if (this.calendar.getStyle('opacity') == 0) { // show
+				if (window.ie6) { this.iframe.setStyle('display', 'block'); }
+				this.calendar.setStyle('display', 'block');
+				this.fireEvent('onShowStart', this.element);
+			}
+			else { // hide
+				this.fireEvent('onHideStart', this.element);
+			}
+			this.calendar.style.opacity=0;
+			if (this.calendar.getStyle('opacity') == 0) { // hidden
+				this.calendar.setStyle('display', 'none');
+				if (window.ie6) { this.iframe.setStyle('display', 'none'); }
+				this.fireEvent('onHideComplete', this.element);
+			}
+			else { // shown
+				this.fireEvent('onShowComplete', this.element);
+			}
+
 		}
 		else { // otherwise show (may have to hide others)
 			// hide cal on out-of-bounds click
@@ -902,7 +922,28 @@ var NewCalendar = new Class({
 
 			this.display(cal);
 
-			this.fx.start('opacity', 0, 1);
+			// not sure why this isn't working any more
+			//this.fx.start('opacity', 0, 1);
+
+			// resort to instant appearance
+			if (this.calendar.getStyle('opacity') == 0) { // show
+				if (window.ie6) { this.iframe.setStyle('display', 'block'); }
+				this.calendar.setStyle('display', 'block');
+				this.fireEvent('onShowStart', this.element);
+			}
+			else { // hide
+				this.fireEvent('onHideStart', this.element);
+			}
+			this.calendar.style.opacity=1;
+			if (this.calendar.getStyle('opacity') == 0) { // hidden
+				this.calendar.setStyle('display', 'none');
+				if (window.ie6) { this.iframe.setStyle('display', 'none'); }
+				this.fireEvent('onHideComplete', this.element);
+			}
+			else { // shown
+				this.fireEvent('onShowComplete', this.element);
+			}
+
 		}
 	},
 

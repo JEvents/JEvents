@@ -185,7 +185,7 @@ class JEventsAbstractView extends JViewLegacy
 	/**
 	 * Loads event editing layout using template
 	 */
-	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), 	$replace = array(), $blank = array())
+	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), $replace = array(), $blank = array())
 	{
 		$db = JFactory::getDBO();
 		// find published template
@@ -232,7 +232,8 @@ class JEventsAbstractView extends JViewLegacy
 			$templates[$template_name]->value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanEditLabels'), $templates[$template_name]->value);
 
 			// Make sure hidden fields and javascript are all loaded
-			if (strpos($templates[$template_name]->value,"{{HIDDENINFO}}")===false){
+			if (strpos($templates[$template_name]->value, "{{HIDDENINFO}}") === false)
+			{
 				$templates[$template_name]->value .= "{{HIDDENINFO}}";
 			}
 			$matchesarray = array();
@@ -258,7 +259,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-                                    $matchesarrayCount = count($matchesarray[0]);                                    
+		$matchesarrayCount = count($matchesarray[0]);
 		for ($i = 0; $i < $matchesarrayCount; $i++)
 		{
 			$strippedmatch = preg_replace('/(#|:)+[^}]*/', '', $matchesarray[0][$i]);
@@ -279,164 +280,180 @@ class JEventsAbstractView extends JViewLegacy
 			// Built in fields	
 			// can implement special handlers here!
 			/*
-			switch ($strippedmatch) {
-				case "{{TITLE}}":
-					$search[] = "{{TITLE}}";
-					$replace[] = $event->title();
-					$blank[] = "";
-					break;
-				default:
-					$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
-					if (is_callable(array($event, $strippedmatch)))
-					{
-						$search[] = "{{" . $strippedmatch . "}}";
-						$replace[] = $event->$strippedmatch();
-						$blank[] = "";
-					}
-					break;
-			}
+			  switch ($strippedmatch) {
+			  case "{{TITLE}}":
+			  $search[] = "{{TITLE}}";
+			  $replace[] = $event->title();
+			  $blank[] = "";
+			  break;
+			  default:
+			  $strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
+			  if (is_callable(array($event, $strippedmatch)))
+			  {
+			  $search[] = "{{" . $strippedmatch . "}}";
+			  $replace[] = $event->$strippedmatch();
+			  $blank[] = "";
+			  }
+			  break;
+			  }
 			 */
 		}
-		
-		
+
+
 		// Close all the tabs in Joomla > 3.0
-		if (JVersion::isCompatible("3.0.0")){
-                                                      $tabstartarray = array(); 
-			preg_match_all('|{{TABBODYSTART#(.*?)}}|', $template_value, $tabstartarray);
-                                                      if ($tabstartarray && count($tabstartarray)==2)
-                                                      {
-                                                            $tabstartarray0Count = count($tabstartarray[0]);
-                                                            if ($tabstartarray0Count>0){                                  
-                                                                    //We get and add all the tabs
-                                                                    $tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';                        
-                                                                    for ($tab=0;$tab<$tabstartarray0Count;$tab++){
-                                                                            $paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
-                                                                            $tablabel = ($paneid==JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
-                                                                            if ($tab==0){
-                                                                                    $tabreplace .= '<li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-                                                                            }
-                                                                            else {
-                                                                                    $tabreplace .= '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-                                                                            }                                                                                          
-                                                                    }
-                                                                    $tabreplace.= "</ul>";
-                                                                    $tabreplace = $tabreplace . $tabstartarray[0][0];
-                                                                    $template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value  );
-                                                            }
-                                                      }	
-			// Create the tabs content
-			if (isset($tabstartarray[0]) && $tabstartarray0Count >0){
-                                                                        for ($tab=0;$tab<$tabstartarray0Count;$tab++){                                                                            
-						$paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
-						if ($tab ==0){							
-							$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+		if (JVersion::isCompatible("3.0"))
+		{
+			$tabstartarray = array();
+			preg_match_all('|{{TABSTART#(.*?)}}|', $template_value, $tabstartarray);
+			if ($tabstartarray && count($tabstartarray) == 2)
+			{
+				$tabstartarray0Count = count($tabstartarray[0]);
+				if ($tabstartarray0Count > 0)
+				{
+					//We get and add all the tabs
+					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
+					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+					{
+						$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+						$tablabel = ($paneid == JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
+						if ($tab == 0)
+						{
+							$tabreplace .= '<li class="active"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 						}
-                                                                                                            else if ($tab==$tabstartarray0Count-1){
-                                                                                                                              $tabcode = JHtml::_('bootstrap.endPanel').  JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid).JHtml::_('bootstrap.endPanel'). JHtml::_('bootstrap.endPane', 'myEditTabs');	
-                                                                                                            }
-						else {
-							$tabcode =JHtml::_('bootstrap.endPanel'). JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+						else
+						{
+							$tabreplace .= '<li ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 						}
-						$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 					}
-			}									
+					$tabreplace.= "</ul>";
+					$tabreplace = $tabreplace . $tabstartarray[0][0];
+					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
+				}
+			}
+			// Create the tabs content
+			if (isset($tabstartarray[0]) && $tabstartarray0Count > 0)
+			{
+				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+				{
+					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+					if ($tab == 0)
+					{
+						$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					}
+					else
+					{
+						$tabcode = JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+					}
+					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
+				}
+				// Manually close the tabs
+				$template_value = str_replace("{{TABSEND}}", JHtml::_('bootstrap.endPane'), $template_value);
+
+			}
 		}
-		else {
+		else
+		{
 			// TABLINKS are not relevant before Joomla 3.0
 			// non greedy replacement - because of the ?
-			$template_value = preg_replace_callback('|{{TABLINK.*?}}|', array($this, 'cleanUnpublished'),  $template_value);		
-			
-                                                      $tabstartarray = array();
-                                                      preg_match_all('|{{TABBODYSTART#.*?}}|', $template_value, $tabstartarray);
-                                                      if (isset($tabstartarray[0]))
-                                                      {
-                                                            $tabstartarray0Count = count($tabstartarray[0]);
-                                                            if ($tabstartarray0Count>0){
-                                                                    for ($tab=0;$tab<$tabstartarray0Count;$tab++){
-                                                                            $title = str_replace(array("{{TABBODYSTART#","}}"),"", $tabstartarray[0][$tab]);
-                                                                            $paneid = str_replace("=","",base64_encode($title));
-                                                                            $tabContent = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
-                                                                            $tabContent .= "<div class='jevextrablock'>"."\n";
-                                                                            if ($tab ==0){							
-                                                                                    $tabcode = JHtml::_('tabs.start', 'tabs').$tabContent;
-                                                                            }
-                                                                            else {
-                                                                                    $tabcode ="</div></dd>"."\n".  $tabContent;
-                                                                            }
+			$template_value = preg_replace_callback('|{{TABLINK.*?}}|', array($this, 'cleanUnpublished'), $template_value);
 
-                                                                            $template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
-                                                                    }
-                                                                    $template_value .= "</div></dd></dl>"."\n";	
-                                                            }
-                                                      }									
+			$tabstartarray = array();
+			preg_match_all('|{{TABSTART#.*?}}|', $template_value, $tabstartarray);
+			if (isset($tabstartarray[0]))
+			{
+				$tabstartarray0Count = count($tabstartarray[0]);
+				if ($tabstartarray0Count > 0)
+				{
+					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
+					{
+						$title = str_replace(array("{{TABSTART#", "}}"), "", $tabstartarray[0][$tab]);
+						$paneid = str_replace("=", "", base64_encode($title));
+						$tabContent = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">' . "\n";
+						$tabContent .= "<div class='jevextrablock'>" . "\n";
+						if ($tab == 0)
+						{
+							$tabcode = JHtml::_('tabs.start', 'tabs') . $tabContent;
+						}
+						else
+						{
+							$tabcode = "</div></dd>" . "\n" . $tabContent;
+						}
+
+						$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
+					}
+					// Manually close the tabs
+					$template_value = str_replace("{{TABSEND}}", "</div></dd></dl>", $template_value);
+					//$template_value .= "</div></dd></dl>" . "\n";
+				}
+			}
 		}
 
 		// Now do the plugins
 		// get list of enabled plugins
 		/*
-		$layout = "edit";
+		  $layout = "edit";
 
-		$jevplugins = JPluginHelper::getPlugin("jevents");
+		  $jevplugins = JPluginHelper::getPlugin("jevents");
 
-		foreach ($jevplugins as $jevplugin)
-		{
-			$classname = "plgJevents" . ucfirst($jevplugin->name);
-			if (is_callable(array($classname, "substitutefield")))
-			{
+		  foreach ($jevplugins as $jevplugin)
+		  {
+		  $classname = "plgJevents" . ucfirst($jevplugin->name);
+		  if (is_callable(array($classname, "substitutefield")))
+		  {
 
-				if (!isset($fieldNameArray[$classname])){
-					$fieldNameArray[$classname] = array();
-				}
-				if (!isset($fieldNameArray[$classname][$layout])){
+		  if (!isset($fieldNameArray[$classname])){
+		  $fieldNameArray[$classname] = array();
+		  }
+		  if (!isset($fieldNameArray[$classname][$layout])){
 
-					//list($usec, $sec) = explode(" ", microtime());
-					//$starttime = (float) $usec + (float) $sec;
+		  //list($usec, $sec) = explode(" ", microtime());
+		  //$starttime = (float) $usec + (float) $sec;
 
-					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
+		  $fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
 
-					//list ($usec, $sec) = explode(" ", microtime());
-					//$time_end = (float) $usec + (float) $sec;
-					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
-				}
-				if ( isset($fieldNameArray[$classname][$layout]["values"]))
-				{
-					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
-					{
-						if (!strpos($template_value, $fieldname)!==false) {
-							continue;
-						}
-						$search[] = "{{" . $fieldname . "}}";
-						if (strpos($fieldname, "_lbl")>0 && isset($this->customfields[str_replace("_lbl","",$fieldname)])){
-							$replace[] = $this->customfields[str_replace("_lbl","",$fieldname)]["label"]."xx";
-						}
-						else if (isset($this->customfields[$fieldname])){
-							$replace[] = $this->customfields[$fieldname]["input"]."yy";
-						}
-						// is the event detail hidden - if so then hide any custom fields too!
-						else if (!isset($event->_privateevent) || $event->_privateevent != 3)
-						{
-							$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
-							if (is_callable(array($classname, "blankfield")))
-							{
-								$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
-							}
-							else
-							{
-								$blank[] = "";
-							}
-						}
-						else
-						{
-							$blank[] = "";
-							$replace[] = "";
-						}
-					}
-				}
-			}
-		}
+		  //list ($usec, $sec) = explode(" ", microtime());
+		  //$time_end = (float) $usec + (float) $sec;
+		  //echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
+		  }
+		  if ( isset($fieldNameArray[$classname][$layout]["values"]))
+		  {
+		  foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
+		  {
+		  if (!strpos($template_value, $fieldname)!==false) {
+		  continue;
+		  }
+		  $search[] = "{{" . $fieldname . "}}";
+		  if (strpos($fieldname, "_lbl")>0 && isset($this->customfields[str_replace("_lbl","",$fieldname)])){
+		  $replace[] = $this->customfields[str_replace("_lbl","",$fieldname)]["label"]."xx";
+		  }
+		  else if (isset($this->customfields[$fieldname])){
+		  $replace[] = $this->customfields[$fieldname]["input"]."yy";
+		  }
+		  // is the event detail hidden - if so then hide any custom fields too!
+		  else if (!isset($event->_privateevent) || $event->_privateevent != 3)
+		  {
+		  $replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
+		  if (is_callable(array($classname, "blankfield")))
+		  {
+		  $blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
+		  }
+		  else
+		  {
+		  $blank[] = "";
+		  }
+		  }
+		  else
+		  {
+		  $blank[] = "";
+		  $replace[] = "";
+		  }
+		  }
+		  }
+		  }
+		  }
 		 * 
 		 */
-                                    $searchCount = count($search);
+		$searchCount = count($search);
 		for ($s = 0; $s < $searchCount; $s++)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -448,16 +465,16 @@ class JEventsAbstractView extends JViewLegacy
 		}
 
 		$template_value = str_replace($search, $replace, $template_value);
-				
+
 		// Final Cleanups
 		$template_value = str_replace($matchesarray[0], "", $template_value);
-		
+
 		// non greedy replacement - because of the ?
-		$template_value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanUnpublished'),  $template_value);		
+		$template_value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanUnpublished'), $template_value);
 		
-		$params =  JComponentHelper::getParams(JEV_COM_COMPONENT);
-		
-		
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+
 		echo $template_value;
 
 		return true;
@@ -508,7 +525,7 @@ class JEventsAbstractView extends JViewLegacy
 			return "";
 
 	}
-	
+
 	function cleanUnpublished($matches)
 	{
 		if (count($matches) == 1)
@@ -519,7 +536,9 @@ class JEventsAbstractView extends JViewLegacy
 
 	}
 
-	protected function setupEditForm () {
+	protected
+			function setupEditForm()
+	{
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -557,7 +576,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		$this->form->bind($rowdata);
 
-		$this->form->setValue("view12Hour", $params->get('com_calUseStdTime',0)?1:0);
+		$this->form->setValue("view12Hour", $params->get('com_calUseStdTime', 0) ? 1 : 0);
 
 		$this->catid = $this->row->catid();
 		if ($this->catid == 0 && $this->defaultCat > 0)
@@ -616,15 +635,17 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->jevdata["catid"]["dataModel"] = $this->dataModel;
 		$this->form->jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
 		$this->form->jevdata["catid"]["repeatId"] = $this->repeatId;
-		if (JRequest::getCmd("task")=="icalevent.edit"){
+		if (JRequest::getCmd("task") == "icalevent.edit")
+		{
 			$this->form->jevdata["catid"]["excats"] = $this->excats;
 		}
 		$this->form->setValue("catid", null, $this->catid);
 
-		if (JRequest::getCmd("task")=="icalevent.edit"){
+		if (JRequest::getCmd("task") == "icalevent.edit")
+		{
 			$this->form->jevdata["creator"]["users"] = $this->users;
 		}
-		
+
 		$this->form->jevdata["ics_id"]["clist"] = $this->clist;
 		$this->form->jevdata["ics_id"]["clistChoice"] = $this->clistChoice;
 		$this->form->jevdata["ics_id"]["thisCal"] = $thisCal;
@@ -660,7 +681,6 @@ class JEventsAbstractView extends JViewLegacy
 				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "}}";
 				$this->replacetags[] = $field->input;
 				$this->blanktags[] = "";
-
 			}
 		}
 
@@ -708,19 +728,18 @@ class JEventsAbstractView extends JViewLegacy
 				?>
 				<tr class="jevplugin_<?php echo $key; ?>">
 					<td valign="top"  width="130" align="left">
-						<?php
-						echo $this->customfields[$key]["label"];
-						?>
+				<?php
+				echo $this->customfields[$key]["label"];
+				?>
 					</td>
 					<td colspan="3">
-						<?php
-						echo $this->customfields[$key]["input"];
-						?>
+				<?php
+				echo $this->customfields[$key]["input"];
+				?>
 					</td>
 				</tr>
 				<?php
 			}
-
 		}
 		$this->searchtags[] = "{{CUSTOMFIELDS}}";
 		$output = ob_get_clean();

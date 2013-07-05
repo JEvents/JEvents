@@ -256,6 +256,14 @@ class jEventCal {
 		else $this->_catname=$val;
 	}
 
+	function allcategories($val=""){
+		if (strlen($val)==0) {
+			if (!isset($this->_catname)) $this->_catname = $this->getCategoryName();
+			return $this->_catname;
+		}
+		else $this->_catname=$val;
+	}
+
 	function bgcolor($val=""){
 		if (strlen($val)==0) {
 			if (!isset($this->_bgcolor)) $this->_bgcolor = JEV_CommonFunctions::setColor($this);
