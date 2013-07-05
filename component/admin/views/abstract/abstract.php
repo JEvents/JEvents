@@ -258,9 +258,8 @@ class JEventsAbstractView extends JViewLegacy
 
 		$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		//var_dump($matchesarray);
-
-		for ($i = 0; $i < count($matchesarray[0]); $i++)
+                                    $matchesarrayCount = count($matchesarray[0]);                                    
+		for ($i = 0; $i < $matchesarrayCount; $i++)
 		{
 			$strippedmatch = preg_replace('/(#|:)+[^}]*/', '', $matchesarray[0][$i]);
 
@@ -300,58 +299,46 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		
 		
-		// Close all the tabs in Joomla < 3.0
+		// Close all the tabs in Joomla > 3.0
 		if (JVersion::isCompatible("3.0.0")){
-			preg_match_all('|{{TABLINK#(.*?)}}|', $template_value, $tablinks);
-			if ($tablinks && count($tablinks)==2 && count($tablinks[0])>0){
-				for ($tab=0;$tab<count($tablinks[0]);$tab++){
-					$paneid = str_replace(" ","_",htmlspecialchars($tablinks[1][$tab]));
-					$tablabel = ($paneid==JText::_($paneid)) ? $tablinks[1][$tab] : JText::_($paneid);
-					if ($tab==0){
-						$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs"><li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-					}
-					else {
-						$tabreplace = '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-					}
-					if ($tab==count($tablinks[0])-1){
-						$tabreplace.= "</ul>";
-					}
-					$template_value = str_replace($tablinks[0][$tab], $tabreplace, $template_value  );
-				}
-			}
-				
+                                                      $tabstartarray = array(); 
+			preg_match_all('|{{TABBODYSTART#(.*?)}}|', $template_value, $tabstartarray);
+                                                      if ($tabstartarray && count($tabstartarray)==2)
+                                                      {
+                                                            $tabstartarray0Count = count($tabstartarray[0]);
+                                                            if ($tabstartarray0Count>0){                                  
+                                                                    //We get and add all the tabs
+                                                                    $tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';                        
+                                                                    for ($tab=0;$tab<$tabstartarray0Count;$tab++){
+                                                                            $paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
+                                                                            $tablabel = ($paneid==JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
+                                                                            if ($tab==0){
+                                                                                    $tabreplace .= '<li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
+                                                                            }
+                                                                            else {
+                                                                                    $tabreplace .= '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
+                                                                            }                                                                                          
+                                                                    }
+                                                                    $tabreplace.= "</ul>";
+                                                                    $tabreplace = $tabreplace . $tabstartarray[0][0];
+                                                                    $template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value  );
+                                                            }
+                                                      }	
 			// Create the tabs content
-			$tabendarray = array();
-			preg_match_all('|{{TABBODYEND}}|', $template_value, $tabendarray);
-			if (isset($tabendarray[0]) && count($tabendarray[0])>0){
-				$tabendreplace = array();
-				$tabendsearch = array();
-				for ($tab=0;$tab<count($tabendarray[0]);$tab++){
-					$te = $tabendarray[0][$tab];
-					$tabendsearch[]="|$te|";
-					if ($tab==count($tablinks[0])-1){
-						$tabendreplace[]= JHtml::_('bootstrap.endPanel'). JHtml::_('bootstrap.endPane', 'myEditTabs');				
-					}
-					else {
-						$tabendreplace[]= JHtml::_('bootstrap.endPanel');
-					}					
-				}
-				$template_value = preg_replace($tabendsearch,$tabendreplace, $template_value, 1);	
-
-				$tabstartarray = array();
-				preg_match_all('|{{TABBODYSTART#(.*?)}}|', $template_value, $tabstartarray);
-				if (isset($tabstartarray[0]) && count($tabstartarray[0])>0 &&  count($tabstartarray[0])==count($tablinks[0])){
-					for ($tab=0;$tab<count($tabstartarray[0]);$tab++){
+			if (isset($tabstartarray[0]) && $tabstartarray0Count >0){
+                                                                        for ($tab=0;$tab<$tabstartarray0Count;$tab++){                                                                            
 						$paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
 						if ($tab ==0){							
 							$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
 						}
+                                                                                                            else if ($tab==$tabstartarray0Count-1){
+                                                                                                                              $tabcode = JHtml::_('bootstrap.endPanel').  JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid).JHtml::_('bootstrap.endPanel'). JHtml::_('bootstrap.endPane', 'myEditTabs');	
+                                                                                                            }
 						else {
-							$tabcode = JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+							$tabcode =JHtml::_('bootstrap.endPanel'). JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
 						}
 						$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 					}
-				}
 			}									
 		}
 		else {
@@ -359,45 +346,29 @@ class JEventsAbstractView extends JViewLegacy
 			// non greedy replacement - because of the ?
 			$template_value = preg_replace_callback('|{{TABLINK.*?}}|', array($this, 'cleanUnpublished'),  $template_value);		
 			
-			// close all the tabs
-			// close the last one differently though
-			$tabendarray = array();
-			preg_match_all('|{{TABBODYEND}}|', $template_value, $tabendarray);
-			if (isset($tabendarray[0]) && count($tabendarray[0])>0){
-				$tabendreplace = array();
-				$tabendsearch = array();		
-				foreach ($tabendarray[0] as $te){
-					$tabendsearch[]="|$te|";
-					$tabendreplace[]= "</div></dd>"."\n";	
-				}
-				$tabendreplace[count($tabendreplace)-1]="</div></dd></dl>"."\n";
-				$template_value = preg_replace($tabendsearch,$tabendreplace, $template_value, 1);	
+                                                      $tabstartarray = array();
+                                                      preg_match_all('|{{TABBODYSTART#.*?}}|', $template_value, $tabstartarray);
+                                                      if (isset($tabstartarray[0]))
+                                                      {
+                                                            $tabstartarray0Count = count($tabstartarray[0]);
+                                                            if ($tabstartarray0Count>0){
+                                                                    for ($tab=0;$tab<$tabstartarray0Count;$tab++){
+                                                                            $title = str_replace(array("{{TABBODYSTART#","}}"),"", $tabstartarray[0][$tab]);
+                                                                            $paneid = str_replace("=","",base64_encode($title));
+                                                                            $tabContent = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
+                                                                            $tabContent .= "<div class='jevextrablock'>"."\n";
+                                                                            if ($tab ==0){							
+                                                                                    $tabcode = JHtml::_('tabs.start', 'tabs').$tabContent;
+                                                                            }
+                                                                            else {
+                                                                                    $tabcode ="</div></dd>"."\n".  $tabContent;
+                                                                            }
 
-				$tabstartarray = array();
-				preg_match_all('|{{TABBODYSTART#.*?}}|', $template_value, $tabstartarray);
-				if (isset($tabstartarray[0]) && count($tabstartarray[0])>0){
-
-					$tabcode = JHtml::_('tabs.start', 'tabs')."</dd>"."\n";
-					
-					$template_value = str_replace($tabstartarray[0][0], $tabcode.$tabstartarray[0][0], $template_value);
-				}
-			}									
-		}
-
-		// finish off the other tabs
-		if (!JVersion::isCompatible("3.0.0")){
-			$tabstartarray = array();
-			preg_match_all('|{{TABBODYSTART#.*?}}|', $template_value, $tabstartarray);
-			if (isset($tabstartarray[0]) && count($tabstartarray[0])>0){
-				foreach ($tabstartarray[0] as $ts){
-					$title = str_replace(array("{{TABBODYSTART#","}}"),"", $ts);
-					$paneid = str_replace("=","",base64_encode($title));
-					$tabContent  = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">'."\n";
-					$tabContent  .= "<div class='jevextrablock'>"."\n";
-					//$tabContent  .=  $title."\n";
-					$template_value = str_replace("{{TABBODYSTART#".$title."}}",$tabContent, $template_value);
-				}
-			}
+                                                                            $template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
+                                                                    }
+                                                                    $template_value .= "</div></dd></dl>"."\n";	
+                                                            }
+                                                      }									
 		}
 
 		// Now do the plugins
@@ -465,8 +436,8 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		 * 
 		 */
-
-		for ($s = 0; $s < count($search); $s++)
+                                    $searchCount = count($search);
+		for ($s = 0; $s < $searchCount; $s++)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
 			$tempreplace = $replace[$s];
