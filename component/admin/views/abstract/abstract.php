@@ -303,25 +303,27 @@ class JEventsAbstractView extends JViewLegacy
 		if (JVersion::isCompatible("3.0.0")){
                                                       $tabstartarray = array(); 
 			preg_match_all('|{{TABBODYSTART#(.*?)}}|', $template_value, $tabstartarray);
-                                                      $tabstartarray0Count = count($tabstartarray[0]);
-			if ($tabstartarray && count($tabstartarray)==2 && $tabstartarray0Count>0){                                  
-                                                                        //We get and add all the tabs
-                                                                        $tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';                        
-				for ($tab=0;$tab<$tabstartarray0Count;$tab++){
-					$paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
-					$tablabel = ($paneid==JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
-					if ($tab==0){
-						$tabreplace .= '<li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-					}
-					else {
-						$tabreplace .= '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
-					}                                                                                          
-				}
-                                                                        $tabreplace.= "</ul>";
-                                                                        $tabreplace = $tabreplace . $tabstartarray[0][0];
-				$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value  );
-			}
-				
+                                                      if ($tabstartarray && count($tabstartarray)==2)
+                                                      {
+                                                            $tabstartarray0Count = count($tabstartarray[0]);
+                                                            if ($tabstartarray0Count>0){                                  
+                                                                    //We get and add all the tabs
+                                                                    $tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';                        
+                                                                    for ($tab=0;$tab<$tabstartarray0Count;$tab++){
+                                                                            $paneid = str_replace(" ","_",htmlspecialchars($tabstartarray[1][$tab]));
+                                                                            $tablabel = ($paneid==JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
+                                                                            if ($tab==0){
+                                                                                    $tabreplace .= '<li class="active"><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
+                                                                            }
+                                                                            else {
+                                                                                    $tabreplace .= '<li ><a data-toggle="tab" href="#'.$paneid .'">'. $tablabel. '</a></li>';
+                                                                            }                                                                                          
+                                                                    }
+                                                                    $tabreplace.= "</ul>";
+                                                                    $tabreplace = $tabreplace . $tabstartarray[0][0];
+                                                                    $template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value  );
+                                                            }
+                                                      }	
 			// Create the tabs content
 			if (isset($tabstartarray[0]) && $tabstartarray0Count >0){
                                                                         for ($tab=0;$tab<$tabstartarray0Count;$tab++){                                                                            
