@@ -43,14 +43,14 @@
 				</field>
 				<field
 					name="disablenonjeventspages"
-					type="jevboolean"
+					type="jevboolean" class="btn-group"
 					default="0"
 					label="Disable output on non-jevents pages"
 					description="Used in conjuction with option to reset filters" />
 			
 				<field 
 					name="showindetails" 
-					type="jevboolean" 
+					type="jevboolean" class="btn-group"
 					default="0" 
 					label="JEV_SHOW_IN_DETAILS" 
 					description="JEV_SHOW_IN_DETAILS_DESC" />
