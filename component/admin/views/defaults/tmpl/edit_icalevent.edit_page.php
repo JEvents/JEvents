@@ -48,6 +48,54 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
+//
+Joomla.submitbutton = function (pressbutton){
+
+    if(pressbutton == "defaults.apply" || pressbutton == "defaults.save")
+    {
+        <?php $editor = & JFactory::getEditor("none");?>
+        var requiredFields = ['CALTAB','TITLE'];
+        var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
+        if(defaultsLayout == '')
+        {
+                if( !confirm ('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT");?>'))
+                {                                      
+                    return;
+                }
+                else
+                {
+                    submitform(pressbutton);
+                }
+        }
+        else
+        {
+                var missingFields = [];
+                requiredFields.each(function(requiredField, index){
+                    var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";
+                    if(!defaultsLayout.test(requiredFieldRE))
+                    {
+                            missingFields.push(requiredField);                
+                    }
+                });
+                    if (missingFields.length >0){
+			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD");?>'+'\n';
+			missingFields.each (function (msg, index){
+				message +=  msg +'\n';
+			});
+			alert(message);
+                    }
+                    else
+                    {
+                        submitform(pressbutton);
+                    }
+        }
+        
+    }
+    else
+    {
+        submitform(pressbutton);
+    }
+}
 <?php
 // get list of enabled plugins
 $jevplugins = JPluginHelper::getPlugin("jevents");

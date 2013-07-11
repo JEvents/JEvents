@@ -536,10 +536,8 @@ class JEventsAbstractView extends JViewLegacy
 
 	}
 
-	protected
-			function setupEditForm()
+	protected function setupEditForm()
 	{
-
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$this->editor = & JFactory::getEditor();
@@ -672,13 +670,14 @@ class JEventsAbstractView extends JViewLegacy
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
 		{
-			if ($this->form->getFieldAttribute($key, "layoutfield"))
+                                                      $fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
+			if ($fieldAttribute)
 			{
 				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
 				$this->replacetags[] = $field->label;
 				$this->blanktags[] = "";
 
-				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "}}";
+				$this->searchtags[] = '{{' . $fieldAttribute . "}}";
 				$this->replacetags[] = $field->input;
 				$this->blanktags[] = "";
 			}
