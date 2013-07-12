@@ -46,15 +46,23 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					continue;
 				}
 				$label = empty($fieldSet->label) ? $name : $fieldSet->label;
-				if ($first)
-				{
-					$first = false;
-					$class = ' class="active"';
+				
+				if (!empty($fieldSet->difficulty)) {
+        				$difficultySetClass = "difficulty" . $fieldSet->difficulty;
+        				if ($params->get("com_difficulty", 1) < $fieldSet->difficulty) {
+         			   	$difficultySetClass .= " hiddenDifficulty";
+       					}
+   				}
+   				else {
+     				   $difficultySetClass = "";
 				}
-				else
-				{
-					$class = '';
-				}
+				if ($first) {
+      				  	$first = false;
+       					$class = " class= active' $class $difficultySetClass'";
+   				} 
+   				else {
+       					$class = " class=' $difficultySetClass'";
+    				}
 				?>
 				<li <?php echo $class; ?>><a data-toggle="tab" href="#<?php echo $name; ?>"><?php echo JText::_($label); ?></a></li>
 				<?php
@@ -124,17 +132,24 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				$class = isset($field->class) ? $field->class : "";
 
-				if (strlen($class) > 0)
-				{
-					$class = " class='$class'";
-				}
-				$html[] = "<tr $class>";
-				if (!isset($field->label) || $field->label == "")
+			$difficultyClass = "difficulty" . $this->form->getFieldAttribute($field->fieldname, "difficulty");
+                    	if ($params->get("com_difficulty", 1) < $this->form->getFieldAttribute($field->fieldname, "difficulty")) {
+                        	$difficultyClass .= " hiddenDifficulty";
+                    	}
+
+                    	if (strlen($class) > 0) {
+                        $class = " class='$class $difficultyClass'";
+                    	} else {
+                        $class = " class=' $difficultyClass'";
+                   	}
+
+			$html[] = "<tr $class>";
+			if (!isset($field->label) || $field->label == "")
 				{
 					$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
 					$html[] = '<td class="paramlist_value">' . $field->input . '</td>';
 				}
-				else
+			else
 				{
 					$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
 				}
