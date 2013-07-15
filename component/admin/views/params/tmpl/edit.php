@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.html.bootstrap');
+// We need to get the params first
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 $version = JEventsVersion::getInstance();
 
@@ -49,6 +51,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				
 				if (!empty($fieldSet->difficulty)) {
         				$difficultySetClass = "difficulty" . $fieldSet->difficulty;
+					
         				if ($params->get("com_difficulty", 1) < $fieldSet->difficulty) {
          			   	$difficultySetClass .= " hiddenDifficulty";
        					}
@@ -58,7 +61,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				if ($first) {
       				  	$first = false;
-       					$class = " class= active' $class $difficultySetClass'";
+       					$class = " class= active' $difficultySetClass'";
    				} 
    				else {
        					$class = " class=' $difficultySetClass'";
