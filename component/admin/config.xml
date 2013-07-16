@@ -2,13 +2,12 @@
 <config>
 
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" difficulty="1">
-       
-                <field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_DIFFICULTY" description="JEV_DIFFICULTY_DESC" difficulty="1">
+            <!--<field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_DIFFICULTY" description="JEV_DIFFICULTY_DESC" difficulty="1">
 			<option value="1" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});">JEV_BASIC</option>
 			<option value="2" onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});
                                                         $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE</option>
 			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
-		</field>
+		</field>-->
             
 		<field name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC" difficulty="1"/>

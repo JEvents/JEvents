@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.html.bootstrap');
+// We need to get the params first
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 $version = JEventsVersion::getInstance();
 
@@ -24,10 +26,23 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 	}
 }
 ?>
+<!-- Set Difficulty : -->
 
 <form action="index.php" method="post" name="adminForm" autocomplete="off" id="adminForm">
-
 	<fieldset class='jevconfig'>
+		<table style="width:100%;text-align:right;">
+			<tr class=" difficulty1" >
+				<td class="paramlist_key"><span style="display:inline-block;" class="editlinktip"><label id="jform_com_difficulty-lbl" for="jform_com_difficulty" class="hasTip" title=""><?php echo JText::_('JEV_DIFFICULTY'); ?> </label></span>
+		
+					<fieldset style="display: inline-block;vertical-align: middle;" id="jform_com_difficulty" class="radio btn-group">
+					<!-- Basic : -->
+					<input type="radio" id="jform_com_difficulty0" name="jform[com_difficulty]" value="1" <?php if ($params->get("com_difficulty", 1) == 1) : echo 'checked="checked"'; endif;?> onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});"><label for="jform_com_difficulty0" class="btn"><?php echo JText::_('JEV_BASIC'); ?></label>
+					<!-- Intermediate: -->
+					<input type="radio" id="jform_com_difficulty1" name="jform[com_difficulty]" value="2" <?php if ($params->get("com_difficulty", 1) == 2) : echo 'checked="checked"'; endif;?> onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});                                                         $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});"><label for="jform_com_difficulty1" class="btn"><?php echo JText::_('JEV_INTERMEDIATE');?></label>
+					<!-- Advanced: -->
+					<input type="radio" id="jform_com_difficulty2" name="jform[com_difficulty]" value="3" <?php if ($params->get("com_difficulty", 1) == 3) : echo 'checked="checked"'; endif;?> onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});"><label for="jform_com_difficulty2" class="btn"><?php echo JText::_('JEV_ADVANCED'); ?></label></fieldset></td>
+			</tr>
+		</table>
 		<legend>
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
@@ -49,6 +64,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				
 				if (!empty($fieldSet->difficulty)) {
         				$difficultySetClass = "difficulty" . $fieldSet->difficulty;
+					
         				if ($params->get("com_difficulty", 1) < $fieldSet->difficulty) {
          			   	$difficultySetClass .= " hiddenDifficulty";
        					}
@@ -58,7 +74,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				if ($first) {
       				  	$first = false;
-       					$class = " class= active' $class $difficultySetClass'";
+       					$class = " class= active' $difficultySetClass'";
    				} 
    				else {
        					$class = " class=' $difficultySetClass'";
