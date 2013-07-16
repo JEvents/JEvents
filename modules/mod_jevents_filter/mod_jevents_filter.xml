@@ -17,43 +17,57 @@
 	</files>
 	<config>
 		<fields name="params">
+			<fieldset addfieldpath="/modules/mod_jevents_filter/fields" />
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
 				<field
 					name="filters"
-					type="text"
+					type="jevfilters"
 					default="search"
-					label="Filters to use"
+					label="JEV_SELECT_FILTERS"
 					size="50"
-					description="Comma separated list of filters to apply" />
+					description="JEV_SELECT_FILTERS_DESC" />
 				<field
 					name="target_itemid"
 					type="jevmenu"
 					default=""
-					label="Target Menu Item"
-					description="Menu item for target page" />
+					label="JEV_FILTER_TARGET_MENU_ITEM"
+					description="JEV_FILTER_TARGET_MENU_ITEM_DESC" />
 				<field
 					name="resetfilters"
 					type="list"
 					default="none"
-					label="When to reset filters?"
-					description="If this module is enabled on ALL pages on your site then you can reset the JEvents filters according to these options" >
-						<option value="none">No automatic reset</option>
-						<option value="nonjevents">On any non-JEvents pages</option>
-						<option value="newmenu">When new menu item is selected even if this is a JEvents page</option>
+					label="JEV_FILTER_WHEN_TO_RESET_FILTERS"
+					description="JEV_FILTER_WHEN_TO_RESET_FILTERS_DESC" >
+						<option value="none">JEV_FILTER_NO_AUTOMATIC_RESET</option>
+						<option value="nonjevents">JEV_FILTER_ANY_NON_JEVENTS_PAGES</option>
+						<option value="newmenu">JEV_FILTER_NEW_MENU_ITEM</option>
 				</field>
 				<field
 					name="disablenonjeventspages"
-					type="jevboolean"
+					type="jevboolean" class="btn-group"
 					default="0"
-					label="Disable output on non-jevents pages"
-					description="Used in conjuction with option to reset filters" />
+					label="JEV_FILTER_DISABLE_ON_NON_JEVENTS"
+					description="JEV_FILTER_DISABLE_ON_NON_JEVENTS_DESC" />
 			
 				<field 
 					name="showindetails" 
-					type="jevboolean" 
+					type="jevboolean" class="btn-group"
 					default="0" 
 					label="JEV_SHOW_IN_DETAILS" 
 					description="JEV_SHOW_IN_DETAILS_DESC" />
+
+				<field
+					name="filterlayout"
+					type="list" 
+					default="vt"
+					label="JEV_FILTER_LAYOUT"
+					description="JEV_FILTER_LAYOUT_DESC" >
+					<option value="vt">JEV_FILTER_VERTICAL_HTML_TABLE</option>
+					<option value="ht">JEV_FILTER_HORIZONTAL_HTML_TABLE</option>
+					<option value="ul">JEV_FILTER_UNORDEREDLIST</option>
+					<option value="ful">JEV_FILTER_LEFT_FLOAT_UNORDEREDLIST</option>
+				</field>
+
 			</fieldset>
 			<fieldset
 				name="advanced">

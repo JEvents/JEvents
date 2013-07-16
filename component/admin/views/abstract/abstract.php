@@ -572,6 +572,9 @@ class JEventsAbstractView extends JViewLegacy
 			}
 			$rowdata[$newk] = $v;
 		}
+		// some variables have fieldnames with camel case names in the form
+		$rowdata["allDayEvent"] = $rowdata["alldayevent"];
+
 		$this->form->bind($rowdata);
 
 		$this->form->setValue("view12Hour", $params->get('com_calUseStdTime', 0) ? 1 : 0);
