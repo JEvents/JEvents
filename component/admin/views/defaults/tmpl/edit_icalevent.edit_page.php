@@ -59,7 +59,7 @@ Joomla.submitbutton = function (pressbutton){
        $requiredfields = "'CALTAB','TITLE'";
        if(!empty($this->requiredfields))
        {
-                $requiredfields .= ",'".implode("','",$this->requiredfields)."'";
+                $requiredfields .= ",".$this->requiredfields;
        }
        ?>
         var requiredFields = [<?php echo $requiredfields; ?>];

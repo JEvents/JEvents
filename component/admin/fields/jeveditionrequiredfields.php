@@ -76,8 +76,9 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
                                     }
 		if (!empty($availableFields)){
                                                         $size = ($size<10)?$size:10;
-                                                        $attr = array('list.attr'   => 'multiple="true"'
-                                                                                                      .'size="'.$size.'"');
+                                                        $attr = array('list.attr'   => 'multiple="true"'                                                                              
+                                                                                                      .'size="'.$size.'"',
+                                                                               'list.select' => $this->value);
 
      
 			$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);

@@ -87,7 +87,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
                 
                                     $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-                                    $requiredfields = $params->com_jeveditionrequiredfields;
+                                    $requiredfields = $params->get("com_jeveditionrequiredfields", "");
+                                    if(!empty($requiredfields))
+                                    {
+                                        $requiredfields = "'".implode("','",$requiredfields)."'";
+                                    }
 
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents' );
