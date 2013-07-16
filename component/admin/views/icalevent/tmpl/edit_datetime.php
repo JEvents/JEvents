@@ -290,12 +290,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 		(function($){
 			// Turn radios into btn-group
 			$('.radio.btn-group label').addClass('btn');
-			var el = $(".radio.btn-group label:not(.active)");
+			var el = $(".radio.btn-group label");
 			
 			// Isis template and others may already have done this so remove these!
-			$(".radio.btn-group label:not(.active)").unbind('click');
+			$(".radio.btn-group label").unbind('click');
 			
-			$(".radio.btn-group label:not(.active)").click(function() {
+			$(".radio.btn-group label").click(function() {
 				var label = $(this);
 				var input = $('#' + label.attr('for'));
 				if (!input.prop('checked') && !input.prop('disabled')) {
