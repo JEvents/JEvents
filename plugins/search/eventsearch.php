@@ -198,7 +198,7 @@ class plgSearchEventsearch extends JPlugin
 				$wheres2 = array();
 				foreach ($search_ical_attributes as $search_item)
 				{
-					$wheres2[] = "LOWER($search_item) LIKE " . $text;
+					$wheres2[] = "LOWER($search_item) LIKE " . $db->escape($text, true);
 				}
 				$where_ical = '(' . implode(') OR (', $wheres2) . ')';
 				break;
@@ -229,7 +229,7 @@ class plgSearchEventsearch extends JPlugin
 			$extraor = implode(" OR ", $extrasearchfields);
 			$extraor = " OR " . $extraor;
 			// replace the ### placeholder with the keyword
-			$extraor = str_replace("###", $text, $extraor);
+			$extraor = str_replace("###", $db->escape($text,true), $extraor);
 
 			$where_ical .= $extraor;
 		}
