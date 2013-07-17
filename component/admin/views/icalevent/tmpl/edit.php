@@ -151,7 +151,11 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-<?php echo $this->editor->save('jevcontent'); ?>
+                                var editorElement = document.id('jevcontent');
+                                if (editorElement)
+                                    {
+                                      <?php echo $this->editor->save('jevcontent'); ?>  
+                                    }
 
 		try {
 
@@ -176,9 +180,15 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			alert( "<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
 		}
 		else {
+                                    
+                                        if(editorElement)
+                                            {                
 <?php
 // in case editor is toggled off - needed for TinyMCE
 echo $this->editor->save('jevcontent');
+?>
+                }
+                <?php
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
