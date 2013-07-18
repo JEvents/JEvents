@@ -26,21 +26,27 @@ class JEventsCategory extends JTableCategory {
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
 		
-		$params = new JRegistry();
-		$color = array_key_exists("color",$array)?$array['color']:"#000000";
-		if(!preg_match("/^#[0-9a-f]+$/i", $color)) $color= "#000000";
-		$params->set("catcolor",$color);
-		
-		$admin = array_key_exists("admin",$array)?$array['admin']:0;
-		$params->set("admin",$admin);
-		
-		$overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
-		$params->set("overlaps",$overlaps);
+		$params = new JRegistry($this->params);
+		if (!$params->get("catcolour", false)){
+			$color = array_key_exists("color",$array)?$array['color']:"#000000";
+			if(!preg_match("/^#[0-9a-f]+$/i", $color)) $color= "#000000";
+			$params->set("catcolor",$color);
+		}
+		if (!$params->get("admin", false)){
+			$admin = array_key_exists("admin",$array)?$array['admin']:0;
+			$params->set("admin",$admin);
+		}
+		if (!$params->get("overlaps", false)){
+			$overlaps = array_key_exists("overlaps",$array)?intval($array['overlaps']):0;
+			$params->set("overlaps",$overlaps);
+		}
 
-		$params->set("image","");
-		
+		if (!$params->get("image", false)){
+			$image = array_key_exists("image",$array)?intval($array['image']):"";
+			$params->set("image",$image);
+		}
 		$this->params = (string)  $params;
-		
+				
 		// Fill in the gaps
 		$this->parent_id = array_key_exists("parent_id",$array)?intval($array['parent_id']):1;
 		$this->level = array_key_exists("level",$array)?intval($array['level']):1;		
@@ -58,6 +64,7 @@ class JEventsCategory extends JTableCategory {
 		$this->color = $params->get("catcolour", "#000000");
 		$this->overlaps = $params->get("overlaps",0);
 		$this->admin = $params->get("admin",0);		
+		$this->image = $params->get("image","");
 	}
 
 	function store(){

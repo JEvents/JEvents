@@ -24,6 +24,9 @@ class JFormFieldJeveventcategory extends JFormField
 	protected function getInput()
 	{
 		if ($this->form->jevdata[$this->name]["repeatId"]==0){
+			if (!isset( $this->form->jevdata[$this->name]["excats"])){
+				 $this->form->jevdata[$this->name]["excats"] = false;
+			}
 			$input = JEventsHTML::buildCategorySelect($this->value, 'id="catid" ', $this->form->jevdata[$this->name]["dataModel"]->accessibleCategoryList(), 
 				$this->form->jevdata[$this->name]["with_unpublished_cat"], true, 0, 'catid', JEV_COM_COMPONENT, $this->form->jevdata[$this->name]["excats"], "ordering", true);
 		}
