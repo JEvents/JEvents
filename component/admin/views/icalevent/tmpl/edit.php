@@ -179,7 +179,21 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		else if (form.valid_dates.value =="0"){
 			alert( "<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
 		}
-		else {
+    
+                
+                <?php
+if(!empty($this->requiredtags))
+{
+    foreach($this->requiredtags as $tag)
+    {
+        echo "else if (form.".$tag.".value == '0'){";
+        echo        "alert('need to add this field');";
+        echo "}";
+    }
+}
+?>   		else {
+                    
+             
                                     
                                         if(editorElement)
                                             {                

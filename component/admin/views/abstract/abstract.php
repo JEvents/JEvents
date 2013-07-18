@@ -664,16 +664,26 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->jevdata["publish_down"]["event"] = $this->row;
 		$this->form->jevdata["start_time"]["event"] = $this->row;
 		$this->form->jevdata["end_time"]["event"] = $this->row;
+                
+                                    //custom requiredfields selected by the user in configuration
+                                    $requiredFields = $params->get('com_jeveditionrequiredfields');
 
 		// replacement values
 		$this->searchtags = array();
 		$this->replacetags = array();
 		$this->blanktags = array();
+                                    $this->requiredtags = array();
 
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
 		{
                                                       $fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
+                                                      
+                                                      if(in_array($fieldAttribute,$requiredFields))
+                                                      {
+                                                          $this->requiredtags[] = $key;
+                                                      }
+                                                      
 			if ($fieldAttribute)
 			{
 				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
