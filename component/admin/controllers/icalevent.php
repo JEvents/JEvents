@@ -234,7 +234,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$datenow = & JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet)
 			{
-				$where[] = "\n rpt.endrepeat>'" . $datenow->toMysql() . "'";
+				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
 			}
 		}
 		if ($state == 1)
@@ -1270,7 +1270,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$datenow = & JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet)
 			{
-				$where[] = "\n rpt.endrepeat>'" . $datenow->toMysql() . "'";
+				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
 			}
 		}
 		if ($state == 1)
