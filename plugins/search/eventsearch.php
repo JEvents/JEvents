@@ -205,9 +205,9 @@ class plgSearchEventsearch extends JPlugin
 			case 'all':
 			case 'any':
 			default:
-                                                                        $text = $db->Quote('%' . $db->escape($text, true) . '%', false);
-				$words = explode(' ', $text);                                                                        
-
+				$words = explode(' ', $text);
+				// for the plugins
+				$text = $db->Quote('%' . $db->escape($text, true) . '%', false);
 				// ical
 				$wheres = array();
 				foreach ($words as $word)
