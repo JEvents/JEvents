@@ -77,7 +77,7 @@ $cfg = & JEVConfig::getInstance();
 					?>
 					<tr class="row<?php echo $k; ?>">
 						<td width="20">
-							<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->ics_id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->ics_id; ?>" onclick="Joomla.isChecked(this.checked);" />
 						</td>
 						<td>
 							<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
