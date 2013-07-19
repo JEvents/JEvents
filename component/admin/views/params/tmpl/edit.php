@@ -28,6 +28,29 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 <form action="index.php" method="post" name="adminForm" autocomplete="off" id="adminForm">
 
 	<fieldset class='jevconfig'>
+		<?php
+		// difficulty rating is outside the tabs!
+		$fieldSets = $this->form->getFieldsets();
+		foreach ($fieldSets as $name => $fieldSet)
+		{
+			foreach ($this->form->getFieldset($name) as $field)
+			{
+				if ($field->fieldname == "com_difficulty")
+				{
+					?>
+					<table style="text-align:left;">
+						<tr class=" difficulty1" >
+							<?php
+								echo  '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
+								echo  '<td class="paramlist_value">' . $field->input . '</td>';
+							?>
+						</tr>
+					</table>
+					<?php
+				}
+			}
+		}
+		?>
 		<legend>
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
@@ -102,9 +125,9 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			{
 				?>
 				<li ><a data-toggle="tab" href="#club_layouts"><?php echo JText::_("CLUB_LAYOUTS"); ?></a></li>
-			<?php
-		}
-		?>
+				<?php
+			}
+			?>
 		</ul>
 
 		<?php
@@ -132,7 +155,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 			foreach ($this->form->getFieldset($name) as $field)
 			{
-				if ($field->hidden)
+				if ($field->hidden || $field->fieldname == "com_difficulty")
 				{
 					continue;
 				}
@@ -190,14 +213,14 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			echo implode("\n", $html);
 			?>
 
-				<?php
-				echo JHtml::_('bootstrap.endPanel');
-			}
+			<?php
+			echo JHtml::_('bootstrap.endPanel');
+		}
 
-			if ($haslayouts)
-			{
-				echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
-				?>
+		if ($haslayouts)
+		{
+			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
+			?>
 			<ul class="nav nav-tabs" id="myLayoutTabs">
 				<?php
 				$first = false;
@@ -218,10 +241,10 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 						}
 						?>
 						<li <?php echo $class; ?>><a data-toggle="tab" href="#<?php echo $viewfile; ?>"><?php echo $viewfile; ?></a></li>
-					<?php
+						<?php
+					}
 				}
-			}
-			?>
+				?>
 			</ul>
 			<?php
 			echo JHtml::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
@@ -311,7 +334,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 	<input type="hidden" name="controller" value="component" />
 	<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 	<input type="hidden" name="task" value="" />
-<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
 
 
