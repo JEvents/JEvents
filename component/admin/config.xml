@@ -97,7 +97,7 @@
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
-                                    <field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="1"/>
+                                    <!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="1"/>//-->
 		<field name="com_editdateformat" 
 			type="list" 
 			default="Y-m-d" 

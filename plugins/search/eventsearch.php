@@ -198,20 +198,21 @@ class plgSearchEventsearch extends JPlugin
 				$wheres2 = array();
 				foreach ($search_ical_attributes as $search_item)
 				{
-					$wheres2[] = "LOWER($search_item) LIKE " . $db->escape($text, true);
+					$wheres2[] = "LOWER($search_item) LIKE " . $text;
 				}
 				$where_ical = '(' . implode(') OR (', $wheres2) . ')';
 				break;
 			case 'all':
 			case 'any':
 			default:
-				$words = explode(' ', $text);
+                                                                        $text = $db->Quote('%' . $db->escape($text, true) . '%', false);
+				$words = explode(' ', $text);                                                                        
 
 				// ical
 				$wheres = array();
 				foreach ($words as $word)
 				{
-					$word = $db->Quote('%' . $db->escape($word, true) . '%', false);
+					$word = $db->Quote('%' . $word . '%', false);
 					$wheres2 = array();
 					foreach ($search_ical_attributes as $search_item)
 					{
