@@ -90,7 +90,7 @@ $url = JRoute::_("index.php?option=" . $option);
 							?>
 							<tr class="<?php echo "row$k"; ?>">
 								<td width="20">
-									<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+									<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
 								</td>
 								<td>
 									<a href="#edit" onclick=" return listItemTask('cb<?php echo $i; ?>','user.edit');"><?php echo $row->jname; ?></a>

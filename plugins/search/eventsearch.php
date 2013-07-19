@@ -205,13 +205,14 @@ class plgSearchEventsearch extends JPlugin
 			case 'all':
 			case 'any':
 			default:
-				$words = explode(' ', $text);
+                                                                        $text = $db->Quote('%' . $db->escape($text, true) . '%', false);
+				$words = explode(' ', $text);                                                                        
 
 				// ical
 				$wheres = array();
 				foreach ($words as $word)
 				{
-					$word = $db->Quote('%' . $db->escape($word, true) . '%', false);
+					$word = $db->Quote('%' . $word . '%', false);
 					$wheres2 = array();
 					foreach ($search_ical_attributes as $search_item)
 					{
@@ -229,7 +230,7 @@ class plgSearchEventsearch extends JPlugin
 			$extraor = implode(" OR ", $extrasearchfields);
 			$extraor = " OR " . $extraor;
 			// replace the ### placeholder with the keyword
-			$extraor = str_replace("###", $text, $extraor);
+			$extraor = str_replace("###", $db->escape($text,true), $extraor);
 
 			$where_ical .= $extraor;
 		}

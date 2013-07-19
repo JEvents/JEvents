@@ -56,7 +56,7 @@ Joomla.submitbutton = function (pressbutton){
         <?php $editor = & JFactory::getEditor("none");?>
                     
        <?php 
-       $requiredfields = "'CALTAB','TITLE'";
+       $requiredfields = "'CALTAB','TITLE','CATEGORY'";
        if(!empty($this->requiredfields))
        {
                 $requiredfields .= ",".$this->requiredfields;
@@ -66,7 +66,7 @@ Joomla.submitbutton = function (pressbutton){
         var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
         if(defaultsLayout == '')
         {
-                if( !confirm ('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT");?>'))
+                if( !confirm ('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT",true);?>'))
                 {                                      
                     return;
                 }
@@ -86,7 +86,7 @@ Joomla.submitbutton = function (pressbutton){
                     }
                 });
                     if (missingFields.length >0){
-			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD");?>'+'\n';
+			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
 			missingFields.each (function (msg, index){
 				message +=  msg +'\n';
 			});
