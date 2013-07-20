@@ -348,7 +348,6 @@ class JEventsAbstractView extends JViewLegacy
 				}
 				// Manually close the tabs
 				$template_value = str_replace("{{TABSEND}}", JHtml::_('bootstrap.endPane'), $template_value);
-
 			}
 		}
 		else
@@ -471,7 +470,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', array($this, 'cleanUnpublished'), $template_value);
-		
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 
@@ -536,7 +535,8 @@ class JEventsAbstractView extends JViewLegacy
 
 	}
 
-	protected function setupEditForm()
+	protected
+			function setupEditForm()
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -666,26 +666,26 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->jevdata["publish_down"]["event"] = $this->row;
 		$this->form->jevdata["start_time"]["event"] = $this->row;
 		$this->form->jevdata["end_time"]["event"] = $this->row;
-                
-                                    //custom requiredfields selected by the user in configuration
-                                    $requiredFields = $params->get('com_jeveditionrequiredfields');
+
+		//custom requiredfields selected by the user in configuration
+		$requiredFields = $params->get('com_jeveditionrequiredfields', array());
 
 		// replacement values
 		$this->searchtags = array();
 		$this->replacetags = array();
 		$this->blanktags = array();
-                                    $this->requiredtags = array();
+		$this->requiredtags = array();
 
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
 		{
-                                                      $fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
-                                                      
-                                                      if(in_array($fieldAttribute,$requiredFields))
-                                                      {
-                                                          $this->requiredtags[] = $key;
-                                                      }
-                                                      
+			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
+
+			if (in_array($fieldAttribute, $requiredFields))
+			{
+				$this->requiredtags[] = $key;
+			}
+
 			if ($fieldAttribute)
 			{
 				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
@@ -732,7 +732,7 @@ class JEventsAbstractView extends JViewLegacy
 				<div class="control-group jevplugin_<?php echo $key; ?>">
 					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
 					<div class="controls" >
-				<?php echo $this->customfields[$key]["input"]; ?>
+						<?php echo $this->customfields[$key]["input"]; ?>
 					</div>
 				</div>
 				<?php
@@ -742,14 +742,14 @@ class JEventsAbstractView extends JViewLegacy
 				?>
 				<tr class="jevplugin_<?php echo $key; ?>">
 					<td valign="top"  width="130" align="left">
-				<?php
-				echo $this->customfields[$key]["label"];
-				?>
+						<?php
+						echo $this->customfields[$key]["label"];
+						?>
 					</td>
 					<td colspan="3">
-				<?php
-				echo $this->customfields[$key]["input"];
-				?>
+						<?php
+						echo $this->customfields[$key]["input"];
+						?>
 					</td>
 				</tr>
 				<?php
