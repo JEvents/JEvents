@@ -56,7 +56,7 @@ Joomla.submitbutton = function (pressbutton){
         <?php $editor = & JFactory::getEditor("none");?>
                     
        <?php 
-       $requiredfields = "'CALTAB','TITLE','CATEGORY'";
+       $requiredfields = "'CALTAB','TITLE','CATEGORY','ICAL'";
        if(!empty($this->requiredfields))
        {
                 $requiredfields .= ",".$this->requiredfields;
