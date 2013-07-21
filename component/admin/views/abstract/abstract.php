@@ -679,22 +679,26 @@ class JEventsAbstractView extends JViewLegacy
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
 		{
-			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
-
-			if (in_array($fieldAttribute, $requiredFields))
-			{
-				$this->requiredtags[] = $key;
-			}
+			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");			
 
 			if ($fieldAttribute)
 			{
-				$this->searchtags[] = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
+                                                                        $searchtag = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
+				$this->searchtags[] = $searchtag;
 				$this->replacetags[] = $field->label;
 				$this->blanktags[] = "";
 
 				$this->searchtags[] = '{{' . $fieldAttribute . "}}";
 				$this->replacetags[] = $field->input;
 				$this->blanktags[] = "";
+			}
+                        
+                                                      if (in_array($fieldAttribute, $requiredFields))
+			{
+                                                                        $requiredTags['key']  = $key;
+                                                                        $requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
+                                                                        $requiredTags['label']  = $searchtag;
+				$this->requiredtags[] = $requiredTags;
 			}
 		}
 

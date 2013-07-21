@@ -182,16 +182,16 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
     
                 
                 <?php
-/*                
+               
 if(!empty($this->requiredtags))
 {
     foreach($this->requiredtags as $tag)
     {
-        echo "else if (form.".$tag.".value == '0'){";
-        echo        "alert('need to add this field');";
+        echo "else if (form.".$tag['key'].".value == '".$tag['default_value']."'){";
+        echo "alert('need to add the '+'".$tag['label']."');";
         echo "}";
     }
-}*/
+}
 ?>   		else {
                                                                      
                                         if(editorElement)
@@ -416,9 +416,9 @@ else
 				</div>
 			</div>
 			<div class="control-group jev_contact">
-				<?php echo $this->form->getLabel("contact_info"); ?>
+				<?php echo $this->form->getLabel("contact"); ?>
 				<div class="controls" >
-					<?php echo $this->form->getInput("contact_info"); ?>					
+					<?php echo $this->form->getInput("contact"); ?>					
 				</div>
 			</div>
 			<div class="control-group jev_extrainfo">

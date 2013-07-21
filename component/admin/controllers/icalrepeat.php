@@ -433,7 +433,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$data["X-EXTRAINFO"] = JRequest::getVar("extra_info", "");
 		$data["LOCATION"] = JRequest::getVar("location", "");
 		$data["allDayEvent"] = JRequest::getVar("allDayEvent", "off");
-		$data["CONTACT"] = JRequest::getVar("contact_info", "");
+		$data["CONTACT"] = JRequest::getVar("contact", "");
 		// allow raw HTML (mask =2)
 		$data["DESCRIPTION"] = JRequest::getVar("jevcontent", "", 'request', 'html', 2);
 		$data["publish_down"] = JRequest::getVar("publish_down", "2006-12-12");

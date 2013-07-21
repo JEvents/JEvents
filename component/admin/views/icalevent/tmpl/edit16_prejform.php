@@ -487,7 +487,7 @@ echo "</div>";
 					<tr class="jev_contact">
 						<td align="left"><?php echo JText::_('JEV_EVENT_CONTACT'); ?></td>
 						<td colspan="3">
-							<input class="inputbox" type="text" name="contact_info" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
+							<input class="inputbox" type="text" name="contact" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->contact_info()); ?>" />
 						</td>
 					</tr>
 					<tr class="jev_extrainfo">
