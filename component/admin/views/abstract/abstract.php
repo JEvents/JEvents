@@ -691,15 +691,17 @@ class JEventsAbstractView extends JViewLegacy
 				$this->searchtags[] = '{{' . $fieldAttribute . "}}";
 				$this->replacetags[] = $field->input;
 				$this->blanktags[] = "";
+                                
+                                                                        if (in_array($fieldAttribute, $requiredFields))
+                                                                        {
+                                                                            $requiredTags['key']  = $key;
+                                                                            $requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
+                                                                            $requiredTags['label']  = $searchtag;
+                                                                            $this->requiredtags[] = $requiredTags;
+                                                                        }
 			}
                         
-                                                      if (in_array($fieldAttribute, $requiredFields))
-			{
-                                                                        $requiredTags['key']  = $key;
-                                                                        $requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
-                                                                        $requiredTags['label']  = $searchtag;
-				$this->requiredtags[] = $requiredTags;
-			}
+                                                      
 		}
 
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
