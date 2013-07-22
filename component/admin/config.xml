@@ -8,7 +8,7 @@
 			<option value="2" onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});
                                                         $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE</option>
 			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
-		</field>-->
+				</field>
             
 		<field name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC" difficulty="1"/>
