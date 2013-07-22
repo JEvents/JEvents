@@ -731,6 +731,20 @@ class JEventsAbstractView extends JViewLegacy
 			$this->searchtags[] = '{{' . $key . '_lbl}}';
 			$this->replacetags[] = $this->customfields[$key]["label"];
 			$this->blanktags[] = "";
+                        
+                                                      if (in_array($key, $requiredFields))
+                                                      {
+                                                          if(preg_match("/image[0-9]{1,2}/",$key)===1)
+                                                          {
+                                                              $requiredTags['id'] ="custom_upload_".$key;
+                                                          }else
+                                                          {
+                                                            $requiredTags['id']  = $key;
+                                                          }
+                                                            $requiredTags['default_value'] = "";
+                                                            $requiredTags['label']  = $this->customfields[$key]["label"];
+                                                            $this->requiredtags[] = $requiredTags;
+                                                      }
 
 			if (JVersion::isCompatible("3.0"))
 			{

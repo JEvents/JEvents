@@ -187,8 +187,8 @@ if(!empty($this->requiredtags))
 {
     foreach($this->requiredtags as $tag)
     {
-        echo "else if (form.".$tag['key'].".value == '".$tag['default_value']."'){";
-        echo "alert('need to add the '+'".$tag['label']."');";
+        echo "else if (form.".$tag['id'].".value == '".$tag['default_value']."'){";
+        echo "alert('". JText::_("JEV_ADD_REQUIRED_FIELD", true)." '+' ".$tag['label']."');";
         echo "}";
     }
 }
