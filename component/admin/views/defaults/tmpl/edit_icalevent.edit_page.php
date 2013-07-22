@@ -78,14 +78,20 @@ Joomla.submitbutton = function (pressbutton){
         else
         {
                 var missingFields = [];
+                //We check tabs closing if necessary:
+                var tabStart =  "\{\{.*:TABSTART#.*\}\}";
+                var tabsEnd =  "\{\{.*:TABSEND.*\}\}";
+                if (defaultsLayout.test(tabStart) && !defaultsLayout.test(tabsEnd))
+                {
+                    missingFields.push('TABSEND');
+                }
                 requiredFields.each(function(requiredField, index){
-                    var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";
+                    var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";                    
                     if(!defaultsLayout.test(requiredFieldRE))
                     {
 			 var options = Array.from($('jevdefaults').options);
 			 options.each (function(opt){
 				 if ((opt.value+"}}").contains(":"+requiredField+"}}")){
-					 //missingFields.push(opt.value.substr(opt.value.indexOf(":"+requiredField)+1));
 					 missingFields.push(opt.value);
 				 }
 			 })
