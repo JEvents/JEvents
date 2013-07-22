@@ -23,6 +23,22 @@ class JFormFieldJEVuser extends JFormFieldList
 
 	protected $type = 'JEVuser';
 
+	protected function getInput()
+	{
+		// if no value set then default to zero
+		if (intval($this->value) == 0){
+
+			$options = (array) $this->getOptions();
+			foreach ($options as $option){
+				if ($option->sendEmail){
+					$this->value = $option->value;
+					break;
+				}
+			}
+		}
+		return parent::getInput();
+	}
+
 	public function getOptions()
 	{
 		$params = JComponentHelper::getParams("com_jevents");
@@ -74,12 +90,13 @@ class JFormFieldJEVuser extends JFormFieldList
 			}
 		}
 				
-		$sql = "SELECT id AS value, name AS text FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+		$sql = "SELECT id AS value, name AS text , sendEmail FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 		
 		$nulluser = new stdClass();
 		$nulluser->value = 0;
+		$nulluser->sendEmail = 0;
 		$nulluser->text = JText::_("SELECT_ADMIN");
 		array_unshift($users, $nulluser);
 		

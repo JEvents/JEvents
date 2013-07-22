@@ -42,8 +42,8 @@ if (!(version_compare(JVERSION, '1.6.0', ">=")))
 function plgSearchEventsSearchAreas()
 {
 	$lang = JFactory::getLanguage();
-	$lang ->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
-	
+	$lang->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
+
 	if (version_compare(JVERSION, '1.6.0', ">="))
 	{
 		return array(
@@ -106,7 +106,7 @@ class plgSearchEventsearch extends JPlugin
 
 	}
 
-	function onContentSearch($text, $phrase='', $ordering='', $areas=null)
+	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 		return $this->onSearch($text, $phrase, $ordering, $areas);
 
@@ -121,7 +121,7 @@ class plgSearchEventsearch extends JPlugin
 	 * @param string matching option, exact|any|all
 	 * @param string ordering option, newest|oldest|popular|alpha|category
 	 */
-	function onSearch($text, $phrase='', $ordering='', $areas=null)
+	function onSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 
 		$db = & JFactory::getDBO();
@@ -206,12 +206,13 @@ class plgSearchEventsearch extends JPlugin
 			case 'any':
 			default:
 				$words = explode(' ', $text);
+				$text = $db->Quote('%' . $db->escape($text, true) . '%', false);
 
 				// ical
 				$wheres = array();
 				foreach ($words as $word)
 				{
-					$word = $db->Quote('%' . $db->escape($word, true) . '%', false);
+					$word = $db->Quote('%' . $db->escape($word) . '%', false);
 					$wheres2 = array();
 					foreach ($search_ical_attributes as $search_item)
 					{
@@ -229,14 +230,15 @@ class plgSearchEventsearch extends JPlugin
 			$extraor = implode(" OR ", $extrasearchfields);
 			$extraor = " OR " . $extraor;
 			// replace the ### placeholder with the keyword
+			// $text is already exscaped above
 			$extraor = str_replace("###", $text, $extraor);
 
 			$where_ical .= $extraor;
 		}
 		// some of the where statements may already be escaped 
-		$where_ical = str_replace("%'%'","%'",$where_ical );
-		$where_ical = str_replace("''","'",$where_ical );
-		$where_ical = str_replace("'%'%","'%",$where_ical );
+		$where_ical = str_replace("%'%'", "%'", $where_ical);
+		$where_ical = str_replace("''", "'", $where_ical);
+		$where_ical = str_replace("'%'%", "'%", $where_ical);
 
 		$morder = '';
 		$morder_ical = '';
@@ -334,12 +336,12 @@ class plgSearchEventsearch extends JPlugin
 
 				$event = new jIcalEventRepeat($row);
 				$event = $event->getNextRepeat();
-				
+
 				$startdate = new JevDate(strtotime($event->_startrepeat));
 				$item->title = $item->title . " (" . $startdate->toFormat($dateformat) . ")";
 				$item->startrepeat = $event->_startrepeat;
-				
-				$myitemid = JRequest::getInt("target_itemid",0);
+
+				$myitemid = JRequest::getInt("target_itemid", 0);
 				// I must find the itemid that allows this event to be shown
 				$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
 				// Use the plugin params to ensure menu item is picked up

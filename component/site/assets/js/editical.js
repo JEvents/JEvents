@@ -565,7 +565,7 @@ function toggleCountUntil(cu){
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = inputs[e];
+			inputelem = $(inputs[e]);
 			if (inputelem.name!="countuntil"){
 				if (inputtype==cu){
 					inputelem.disabled = false;
@@ -598,7 +598,7 @@ function toggleWhichBy(wb)
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = inputs[e];
+			inputelem = $(inputs[e]);
 			if (inputelem.name!="whichby"){
 				if (inputtype==wb){
 					inputelem.disabled = false;

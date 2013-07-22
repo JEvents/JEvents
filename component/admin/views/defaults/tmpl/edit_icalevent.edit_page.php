@@ -37,17 +37,80 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_LA
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL",true);?>", "ICAL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_LABEL",true);?>", "ICAL_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS",true);?>", "ACCESS");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS_LABEL",true);?>", "ACCESS");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS_LABEL",true);?>", "ACCESS_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCATION");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCATION");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCATION_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
+//
+Joomla.submitbutton = function (pressbutton){
+
+    if(pressbutton == "defaults.apply" || pressbutton == "defaults.save")
+    {
+        <?php $editor = & JFactory::getEditor("none");?>
+                    
+       <?php 
+       $requiredfields = "'CALTAB','TITLE','CATEGORY'";
+       if(!empty($this->requiredfields))
+       {
+                $requiredfields .= ",".$this->requiredfields;
+       }
+       ?>
+        var requiredFields = [<?php echo $requiredfields; ?>];
+        var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
+        if(defaultsLayout == '')
+        {
+                if( !confirm ('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT",true);?>'))
+                {                                      
+                    return;
+                }
+                else
+                {
+                    submitform(pressbutton);
+                }
+        }
+        else
+        {
+                var missingFields = [];
+                requiredFields.each(function(requiredField, index){
+                    var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";
+                    if(!defaultsLayout.test(requiredFieldRE))
+                    {
+			 var options = Array.from($('jevdefaults').options);
+			 options.each (function(opt){
+				 if ((opt.value+"}}").contains(":"+requiredField+"}}")){
+					 //missingFields.push(opt.value.substr(opt.value.indexOf(":"+requiredField)+1));
+					 missingFields.push(opt.value);
+				 }
+			 })
+                            
+                    }
+                });
+                    if (missingFields.length >0){
+			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
+			missingFields.each (function (msg, index){
+				message +=  msg +'\n';
+			});
+			alert(message);
+                    }
+                    else
+                    {
+                        submitform(pressbutton);
+                    }
+        }
+        
+    }
+    else
+    {
+        submitform(pressbutton);
+    }
+}
 <?php
 // get list of enabled plugins
 $jevplugins = JPluginHelper::getPlugin("jevents");

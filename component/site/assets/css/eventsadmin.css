@@ -286,3 +286,6 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .hiddenDifficulty  {
 display: none;
 }
+#myParamsTabsContent table.paramlist {
+    width: 100%;
+}

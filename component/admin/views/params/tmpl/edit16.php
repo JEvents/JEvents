@@ -45,7 +45,8 @@ $version = JEventsVersion::getInstance();
 
 			foreach ($this->form->getFieldset($name) as $field)
 			{
-				if ($field->hidden)
+				// do not show difficulty option in Joomla 2.5
+				if ($field->hidden || $field->fieldname=="com_difficulty")
 				{
 					continue;
 				}

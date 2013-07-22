@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.1.0</version>
+	<version>3.1.2</version>
 	<description>Shows up to 3 different monthly calendar for JEvents component</description>
 	<files>
 		<filename module="mod_jevents_cal">mod_jevents_cal.php</filename>
@@ -33,29 +33,29 @@
 					<option value="0">Jev_no</option>										
 					<option value="1">Jev_yes</option>										
 				</field>
-				<field name="ignorecatfilter" type="jevboolean" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" />
-				<field name="ignorefiltermodule" type="jevboolean" default="1" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" />
+				<field name="ignorecatfilter" type="jevboolean" class="btn-group"  default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" />
+				<field name="ignorefiltermodule" type="jevboolean" class="btn-group"  default="1" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" />
 				<field name="@spacer" type="jevinfo"  default="JEV_HEADER_LINKS"/>
-				<field name="minical_showlink" type="radio" default="1" label="JEV_TITLE_AS" description="JEV_TITLE_AS_TIP">
+				<field name="minical_showlink" type="radio" class="btn-group"  default="1" label="JEV_TITLE_AS" description="JEV_TITLE_AS_TIP">
 					<option value="0">None</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_prevyear" type="jevboolean" default="1" label="JEV_PREV_YEAR" description="JEV_PREV_YEAR_TIP" />
-				<field name="minical_prevmonth" type="jevboolean" default="1" label="JEV_PREV_MONTH" description="JEV_PREV_MONTH_TIP" />
-				<field name="minical_actmonth" type="radio" default="1" label="JEV_CURR_MONTH" description="JEV_CURR_MONTH_TIP">
+				<field name="minical_prevyear" type="jevboolean" class="btn-group"  default="1" label="JEV_PREV_YEAR" description="JEV_PREV_YEAR_TIP" />
+				<field name="minical_prevmonth" type="jevboolean" class="btn-group"  default="1" label="JEV_PREV_MONTH" description="JEV_PREV_MONTH_TIP" />
+				<field name="minical_actmonth" type="radio" class="btn-group"  default="1" label="JEV_CURR_MONTH" description="JEV_CURR_MONTH_TIP">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_actyear" type="radio" default="1" label="JEV_CURR_YEAR" description="JEV_CURR_YEAR_TIP">
+				<field name="minical_actyear" type="radio" class="btn-group"  default="1" label="JEV_CURR_YEAR" description="JEV_CURR_YEAR_TIP">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_nextmonth" type="jevboolean" default="1" label="JEV_NEXT_MONTH" description="JEV_NEXT_MONTH_TIP" />
-				<field name="minical_nextyear" type="jevboolean" default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
-				<field name="minical_usedate" type="jevboolean" default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
+				<field name="minical_nextmonth" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_MONTH" description="JEV_NEXT_MONTH_TIP" />
+				<field name="minical_nextyear" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" />
+				<field name="minical_usedate" type="jevboolean" class="btn-group"  default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="modcal_DispLastMonth" type="list" default="NO" label="JEV_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC">
 					<option value="NO">JEV_NO</option>
@@ -93,7 +93,7 @@
 			</fieldset>
 			<fieldset name="Advanced"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX" description="PARAMMODULECLASSSUFFIX" />
-				<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+				<field name="inc_ec_css" type="radio" class="btn-group"  default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
 					<option value="0">Jev_no</option>
 					<option value="1">Jev_yes</option>
 				</field>
@@ -101,13 +101,13 @@
 					<option value="1">USE_GLOBAL</option>
 					<option value="0">JEV_NO_CACHING</option>
 				</field>
-				<field name="inc_ec_css" type="radio" default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+				<field name="inc_ec_css" type="radio" class="btn-group"  default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_YES</option>
 				</field>
 				<field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH" description="COM_MODULES_CAL_WIDTH_DESC" />
 				<field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT" description="COM_MODULES_CAL_HEIGHT_DESC" />
-				<field name="modcal_LinkCloaking" type="jevboolean" default="0" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
+				<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group"  default="0" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
 			</fieldset>
 		</fields>
 	</config>

@@ -2,7 +2,8 @@
 <config>
 
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" difficulty="1">
-            <!--<field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_DIFFICULTY" description="JEV_DIFFICULTY_DESC" difficulty="1">
+       
+                <field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_CONFIG_OPTIONS_TO_SHOW" description="JEV_CONFIG_OPTIONS_TO_SHOW_DESC" difficulty="1">
 			<option value="1" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});">JEV_BASIC</option>
 			<option value="2" onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});
                                                         $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE</option>
@@ -96,6 +97,7 @@
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
+		<!--<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->
 		<field name="com_editdateformat" 
 			type="list" 
 			default="Y-m-d" 

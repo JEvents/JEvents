@@ -81,7 +81,9 @@ class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat
 		{
 			$this->setLayout("edit16");
 		}
-	
+
+		$this->setupEditForm();
+
 		JEVHelper::componentStylesheet($this, "editextra.css");
 
 		parent::displaytemplate($tpl);

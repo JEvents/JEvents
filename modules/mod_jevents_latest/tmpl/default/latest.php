@@ -674,7 +674,7 @@ class DefaultModLatestView
 		{
 			foreach ($this->splitCustomFormat[$ix]['data'] as $keyToken => $customToken)
 			{
-				if (preg_match('/\$\{' . $whsp . '(' . $keywords_or . ')(' . $datefm . ')?' . $whsp . '}/', $customToken, $matches))
+				if (preg_match('/\$\{' . $whsp . '(' . $keywords_or . ')(' . $datefm . ')?' . $whsp . '}/',trim($customToken), $matches))
 				{
 					$this->splitCustomFormat[$ix]['data'][$keyToken] = array();
 					$this->splitCustomFormat[$ix]['data'][$keyToken]['keyword'] = stripslashes($matches[1]);

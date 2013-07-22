@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.1.0</version>
+	<version>3.1.2</version>
 	<description>Shows legend for JEvents categories</description>
 	<files>
 		<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>
@@ -17,26 +17,26 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+				<field name="cache" type="radio" default="0" class="btn-group" label="Enable Cache" description="Select whether to cache the content of this module">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="show_admin" type="radio" default="0" label="Show Admin Panel" description="Show admin panel i.e. 'add event' and 'my events' in this module">
+				<field name="show_admin" type="radio" default="0" class="btn-group"  label="Show Admin Panel" description="Show admin panel i.e. 'add event' and 'my events' in this module">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="modlegend_inccss" type="radio" default="1" label="Include Events CSS" description="Tells the module if the module Events CSS should be included or not.">
+				<field name="modlegend_inccss" type="radio" class="btn-group" default="1" label="Include Events CSS" description="Tells the module if the module Events CSS should be included or not.">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="nonjeventsdisable" type="radio" default="1" label="Disable on non-JEvents Pages" description="Hide the module when displayed on non-JEvents pages">
+				<field name="nonjeventsdisable" type="radio" class="btn-group" default="1" label="Disable on non-JEvents Pages" description="Hide the module when displayed on non-JEvents pages">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
 				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
                                 <field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-				<field name="hideinactivekids" type="radio" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
+				<field name="hideinactivekids" type="radio" class="btn-group" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
