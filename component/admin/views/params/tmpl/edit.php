@@ -56,9 +56,10 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 		<legend>
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
-		<div style="float:right;margin-top:-20px;background-color:#ffffff;padding:2px;">
-			[<?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>]
+		<div class="jev_config_version">
+			 <?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>
 		</div>
+			
 
 		<ul class="nav nav-tabs" id="myParamsTabs">
 			<?php

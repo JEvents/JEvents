@@ -289,3 +289,24 @@ display: none;
 #myParamsTabsContent table.paramlist {
     width: 100%;
 }
+#myParamsTabsContent {
+	border:1px solid #ddd;
+	margin-top:-19px;
+	padding: 15px;
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+}
+.jev_config_version {
+background-color: #ededed;
+border:1px solid #ddd;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+float:right;
+margin-top:-20px;
+padding:2px 5px 2px 5px;
+}
