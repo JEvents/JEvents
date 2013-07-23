@@ -13,7 +13,7 @@
 defined('_JEXEC') or die();
 if (count($filterHTML) > 0)
 {
-	if (JVersion::isCompatible("3.0"))
+	if (JVersion::isCompatible("3.0") && $params->get("enablebootstrap", 1))
 	{
 		// Load Bookstrap
 		JHtml::_('bootstrap.framework');
@@ -46,6 +46,9 @@ if (count($filterHTML) > 0)
 	float:left;
 	margin-right:5px;
 }
+.jevfilterfloatlist li li {
+	float:none;
+}
 STYLE;
 		$document->addStyleDeclaration($style);
 		switch ($params->get("filterlayout", "vt")) {
@@ -63,13 +66,13 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (strlen($filter["title"]) > 0)
+							if (strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
 								<?php
 							}
-							else
+							else if ($params->get("showlabels", 1))
 							{
 								?>
 								<td/>
@@ -86,8 +89,12 @@ STYLE;
 					}
 					?>
 					<tr>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
-						<td ><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></td>
+						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" />
+							<?php if ($params->get("showlabels", 1)) { ?>
+						</td>
+						<td >
+							<?php } ?>
+						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></td>
 					</tr>
 				</table>
 				<?php
@@ -105,13 +112,13 @@ STYLE;
 							{
 								continue;
 							}
-							if (strlen($filter["title"]) > 0)
+							if (strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
 								<?php
 							}
-							else
+							else if ($params->get("showlabels", 1))
 							{
 								?>
 								<td/>
@@ -125,8 +132,10 @@ STYLE;
 								$hasreset = true;
 							}
 						}
+						if ($params->get("showlabels", 1)) {
 						?>
 						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
+						<?php } ?>
 					</tr>
 					<tr>
 						<?php
@@ -144,7 +153,10 @@ STYLE;
 								$hasreset = true;
 							}
 						}
+						if (!$params->get("showlabels", 1)) {
 						?>
+						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
+						<?php } ?>
 						<td ><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></td>
 					</tr>
 				</table>
@@ -167,13 +179,13 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (strlen($filter["title"]) > 0)
+							if (strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>
 								<?php
 							}
-							else
+							else if ($params->get("showlabels", 1))
 							{
 								?>
 								<label>&nbsp;</label>
@@ -192,8 +204,14 @@ STYLE;
 					}
 					?>
 					<li>
-						<label><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></label>
-						<div class="jevfilterinput"><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></div>
+						<div class="jevfilterinput">
+						<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" />
+						<?php 	if ($params->get("showlabels", 1)) {?>
+						</div>
+						<div class="jevfilterinput">
+						<?php } ?>
+						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" />
+						</div>
 					</li>
 				</ul>
 				<?php

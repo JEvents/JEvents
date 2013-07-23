@@ -68,6 +68,20 @@
 					<option value="ful">JEV_FILTER_LEFT_FLOAT_UNORDEREDLIST</option>
 				</field>
 
+				<field
+					name="showlabels"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_SHOWLABELS"
+					description="JEV_FILTER_SHOWLABELS_DESC" />
+
+				<field
+					name="enablebootstrap"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_ENABLE_BOOSTRAP"
+					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
+
 			</fieldset>
 			<fieldset
 				name="advanced">
