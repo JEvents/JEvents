@@ -132,7 +132,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		}
 		?>
 		<script type="text/javascript" >
-
+			<!--
 			Joomla.submitbutton = function (pressbutton) {
 
 				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
@@ -201,7 +201,7 @@ else
 		resetYMD();
 		submitform(pressbutton);	
 	}
-
+		//-->
 		</script>
 
 		<?php
