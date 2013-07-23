@@ -25,10 +25,12 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
-if ($params->get("bootstrapchosen", 1)){
+if ($params->get("bootstrapchosen", 1))
+{
 	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 }
-if ($params->get("bootstrapcss", 1)){
+if ($params->get("bootstrapcss", 1))
+{
 	JHtmlBootstrap::loadCss();
 }
 
@@ -125,10 +127,10 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="updaterepeats" value="0"/>
 		<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task", "icalevent.edit"); ?>" />
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
-		<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" /> 
-		<input type="hidden" name="year" value="<?php echo $year; ?>" /> 
-		<input type="hidden" name="month" value="<?php echo $month; ?>" /> 
-		<input type="hidden" name="day" value="<?php echo $day; ?>" /> 	
+		<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" />
+		<input type="hidden" name="year" value="<?php echo $year; ?>" />
+		<input type="hidden" name="month" value="<?php echo $month; ?>" />
+		<input type="hidden" name="day" value="<?php echo $day; ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
 		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
 		<?php
@@ -140,30 +142,31 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		}
 		?>
 		<script type="text/javascript" >
-			Joomla.submitbutton = function (pressbutton) {
-				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
-					if (document.adminForm['catid']){
+			<!--//
+			Joomla.submitbutton = function(pressbutton) {
+				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew' || pressbutton == 'icalevent.apply' || pressbutton == 'icalrepeat.apply')) {
+					if (document.adminForm['catid']) {
 						// restore catid to input value
-						document.adminForm['catid'].value=0;
-						document.adminForm['catid'].disabled=true;
+						document.adminForm['catid'].value = 0;
+						document.adminForm['catid'].disabled = true;
 					}
-					submitform( pressbutton );
+					submitform(pressbutton);
 					return;
 				}
 				var form = document.adminForm;
-                                var editorElement = $('jevcontent');
-                                if (editorElement)
-                                    {
-                                      <?php echo $this->editor->save('jevcontent'); ?>  
-                                    }
+				var editorElement = $('jevcontent');
+				if (editorElement)
+				{
+<?php echo $this->editor->save('jevcontent'); ?>
+				}
 
-		try {
+				try {
 
-			if (!JevrRequiredFields.verify(document.adminForm)){
-				return;
-			}
-		}
-		catch (e){
+					if (!JevrRequiredFields.verify(document.adminForm)) {
+						return;
+					}
+				}
+				catch (e) {
 
 		}
 		// do field validation
@@ -208,29 +211,29 @@ if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	?>
-                                        // reformat start and end dates  to Y-m-d format
-                                        reformatStartEndDates();
-                                        checkConflict('<?php echo $checkURL; ?>',pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?> );
-<?php
+						// reformat start and end dates  to Y-m-d format
+						reformatStartEndDates();
+						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+	<?php
 }
 else
 {
 	?>
-                                        // reformat start and end dates  to Y-m-d format
-                                        reformatStartEndDates();
-                                        submit2(pressbutton);
+						// reformat start and end dates  to Y-m-d format
+						reformatStartEndDates();
+						submit2(pressbutton);
 	<?php
 }
 ?>
-                                        }
-                }    
+				}
+			}
 
-	function submit2(pressbutton){
-		// sets the date for the page after save
-		resetYMD();
-		submitform(pressbutton);	
-	}
-
+			function submit2(pressbutton) {
+				// sets the date for the page after save
+				resetYMD();
+				submitform(pressbutton);
+			}
+			//-->
 		</script>
 
 		<?php
@@ -276,9 +279,9 @@ else
 			}
 			?>
 			<div class="control-group">
-				<?php echo $this->form->getLabel("title"); ?>
+					<?php echo $this->form->getLabel("title"); ?>
 				<div class="controls">
-					<?php echo str_replace("/>", " data-placeholder='xx' />",$this->form->getInput("title")); ?>
+			<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
 				</div>
 			</div>
 			<?php
@@ -286,9 +289,9 @@ else
 			{
 				?>
 				<div class="control-group">
-					<?php echo $this->form->getLabel("priority"); ?>
+						<?php echo $this->form->getLabel("priority"); ?>
 					<div class="controls">
-						<?php echo $this->form->getInput("priority"); ?>
+				<?php echo $this->form->getInput("priority"); ?>
 					</div>
 				</div>
 				<?php
@@ -299,11 +302,11 @@ else
 			{
 				?>
 				<div class="control-group jevcreator">
-					<?php echo $this->form->getLabel("creator"); ?>
+						<?php echo $this->form->getLabel("creator"); ?>
 					<div class="controls">
-						<?php echo $this->form->getInput("creator"); ?>
+				<?php echo $this->form->getInput("creator"); ?>
 					</div>
-				</div>			
+				</div>
 				<?php
 			}
 
@@ -311,9 +314,9 @@ else
 			{
 				?>
 				<div class="control-group">
-					<?php echo $this->form->getLabel("ics_id"); ?>
+						<?php echo $this->form->getLabel("ics_id"); ?>
 					<div class="controls">
-						<?php echo $this->form->getInput("ics_id"); ?>
+				<?php echo $this->form->getInput("ics_id"); ?>
 					</div>
 				</div>
 				<?php
@@ -323,9 +326,9 @@ else
 			{
 				?>
 				<div class="control-group jevlockevent">
-					<?php echo $this->form->getLabel("lockevent"); ?>
+						<?php echo $this->form->getLabel("lockevent"); ?>
 					<div class="controls radio btn-group">
-						<?php echo $this->form->getInput("lockevent"); ?>
+				<?php echo $this->form->getInput("lockevent"); ?>
 					</div>
 				</div>
 				<?php
@@ -342,8 +345,8 @@ else
 						?>
 
 						<div class="controls jevcategory">
-							<?php echo $this->form->getInput("catid"); ?>
-						</div>					
+						<?php echo $this->form->getInput("catid"); ?>
+						</div>
 						<?php
 					}
 
@@ -353,7 +356,7 @@ else
 						echo $this->form->getLabel("access");
 						?>
 						<div class="controls accesslevel ">
-							<?php echo $this->form->getInput("access"); ?>
+						<?php echo $this->form->getInput("access"); ?>
 						</div>
 						<?php
 					}
@@ -366,9 +369,9 @@ else
 			{
 				?>
 				<div class="control-group jevpublished">
-					<?php echo $this->form->getLabel("state"); ?>
+						<?php echo $this->form->getLabel("state"); ?>
 					<div class="controls">
-						<?php echo $this->form->getInput("state"); ?>
+				<?php echo $this->form->getInput("state"); ?>
 					</div>
 				</div>
 				<?php
@@ -383,9 +386,9 @@ else
 			{
 				?>
 				<div class="control-group jevcolour">
-					<?php echo $this->form->getLabel("color"); ?>
+						<?php echo $this->form->getLabel("color"); ?>
 					<div class="controls">
-						<?php echo $this->form->getInput("color"); ?>
+				<?php echo $this->form->getInput("color"); ?>
 					</div>
 				</div>
 				<?php
@@ -404,27 +407,27 @@ else
 			?>
 
 			<div class="control-group jev_description">
-				<?php echo $this->form->getLabel("jevcontent"); ?>
+					<?php echo $this->form->getLabel("jevcontent"); ?>
 				<div class="controls" id='jeveditor' >
-					<?php echo $this->form->getInput("jevcontent"); ?>
+<?php echo $this->form->getInput("jevcontent"); ?>
 				</div>
 			</div>
 			<div class="control-group jeveditlocation" id="jeveditlocation">
-				<?php echo $this->form->getLabel("location"); ?>
+					<?php echo $this->form->getLabel("location"); ?>
 				<div class="controls" >
-					<?php echo $this->form->getInput("location"); ?>
+<?php echo $this->form->getInput("location"); ?>
 				</div>
 			</div>
 			<div class="control-group jev_contact">
-				<?php echo $this->form->getLabel("contact_info"); ?>
+					<?php echo $this->form->getLabel("contact_info"); ?>
 				<div class="controls" >
-					<?php echo $this->form->getInput("contact_info"); ?>					
+<?php echo $this->form->getInput("contact_info"); ?>					
 				</div>
 			</div>
 			<div class="control-group jev_extrainfo">
-				<?php echo $this->form->getLabel("extra_info"); ?>
+					<?php echo $this->form->getLabel("extra_info"); ?>
 				<div class="controls" >
-					<?php echo $this->form->getInput("extra_info"); ?>
+<?php echo $this->form->getInput("extra_info"); ?>
 				</div>
 			</div>
 
@@ -435,7 +438,7 @@ else
 				<div class="control-group jevplugin_<?php echo $key; ?>">
 					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
 					<div class="controls" >
-						<?php echo $this->customfields[$key]["input"]; ?>
+				<?php echo $this->customfields[$key]["input"]; ?>
 					</div>
 				</div>
 				<?php
