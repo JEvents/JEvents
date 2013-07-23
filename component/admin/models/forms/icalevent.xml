@@ -13,7 +13,7 @@
 		<field name="state" type="jeveventpublished" default="0"   layoutfield="STATE" labelclass="control-label jevpublished"   label="JEV_EVENT_STATE" description="JEV_EVENT_STATE_TIP" />
 
 		<field name="jevcontent" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250" 
-		layoutfield="DESC" labelclass="control-label jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
+		layoutfield="DESCRIPTION" labelclass="control-label jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
 		<field name="location" type="jeveventlocation" default=""   layoutfield="LOCN" labelclass="control-label "   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
 				
 		<field name="color" type="jeveventcolourpicker" default=""  layoutfield="COLOUR"  labelclass="control-label"  label="JEV_EVENT_COLOR" description="JEV_EVENT_COLOR_TIP" />
