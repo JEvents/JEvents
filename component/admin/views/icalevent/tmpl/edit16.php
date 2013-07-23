@@ -347,8 +347,8 @@ else
 					<td colspan="3"><?php echo $this->form->getInput("location"); ?></td>
 				</tr>
 				<tr class="jev_contact">
-					<td align="left"><?php echo $this->form->getLabel("contact"); ?></td>
-					<td colspan="3"><?php echo $this->form->getInput("contact"); ?></td>
+					<td align="left"><?php echo $this->form->getLabel("contact_info"); ?></td>
+					<td colspan="3"><?php echo $this->form->getInput("contact_info"); ?></td>
 				</tr>
 				<tr class="jev_extrainfo">
 					<td align="left" valign="top"><?php echo $this->form->getLabel("extra_info"); ?></td>

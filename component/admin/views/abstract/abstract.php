@@ -574,6 +574,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		// some variables have fieldnames with camel case names in the form
 		$rowdata["allDayEvent"] = $rowdata["alldayevent"];
+                                    $rowdata["contact_info"] = $rowdata["contact"];
 
 		$this->form->bind($rowdata);
 

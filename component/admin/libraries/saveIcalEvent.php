@@ -37,7 +37,7 @@ class SaveIcalEvent {
 		$data["X-EXTRAINFO"]	= JArrayHelper::getValue( $array,  "extra_info","");
 		$data["LOCATION"]		= JArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= JArrayHelper::getValue( $array,  "allDayEvent","off");
-		$data["CONTACT"]		= JArrayHelper::getValue( $array,  "contact","");
+		$data["CONTACT"]		= JArrayHelper::getValue( $array,  "contact_info","");
 		$data["DESCRIPTION"]	= JArrayHelper::getValue( $array,  "jevcontent","");
 		$data["publish_down"]	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
 		$data["publish_up"]		= JArrayHelper::getValue( $array,  "publish_up","2006-12-12");

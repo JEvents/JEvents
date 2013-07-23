@@ -416,9 +416,9 @@ else
 				</div>
 			</div>
 			<div class="control-group jev_contact">
-				<?php echo $this->form->getLabel("contact"); ?>
+				<?php echo $this->form->getLabel("contact_info"); ?>
 				<div class="controls" >
-					<?php echo $this->form->getInput("contact"); ?>					
+					<?php echo $this->form->getInput("contact_info"); ?>					
 				</div>
 			</div>
 			<div class="control-group jev_extrainfo">
