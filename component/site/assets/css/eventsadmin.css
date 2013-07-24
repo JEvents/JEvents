@@ -258,7 +258,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 	width:100px;
 }
 .form-inline #start_time-lbl, .form-inline #end_time-lbl  {
-	width:100px;
+	width:80px;
 }
 #cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
 	padding:5px;
@@ -309,4 +309,8 @@ border-radius: 3px;
 float:right;
 margin-top:-20px;
 padding:2px 5px 2px 5px;
+}
+#start_ampm label, #end_ampm label {
+    padding-left:8px;
+    padding-right: 8px;
 }
