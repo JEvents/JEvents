@@ -133,6 +133,9 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="day" value="<?php echo $day; ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
 		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
+		<?php if (!JFactory::getApplication()->isAdmin()) { ?>
+		<input type="hidden" name="Itemid" id="Itemid" value="<?php echo  JEVHelper::getItemid();?>"  />
+		<?php } ?>
 		<?php
 		if ($this->editCopy)
 		{
@@ -168,42 +171,41 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				}
 				catch (e) {
 
-		}
-		// do field validation
-		if (form.title.value == "") {
-			alert ( "<?php echo html_entity_decode(JText::_('JEV_E_WARNTITLE')); ?>" );
-		}
-		else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
-			alert ( '<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>' );
-		}
-		else if (form.ics_id.value == "0"){
-			alert( "<?php echo html_entity_decode(JText::_('JEV_MISSING_ICAL_SELECTION', true)); ?>" );
-		}
-		else if (form.valid_dates.value =="0"){
-			alert( "<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
-		}
-    
-                
-                <?php
-               
-if(!empty($this->requiredtags))
+				}
+				// do field validation
+				if (form.title.value == "") {
+					alert("<?php echo html_entity_decode(JText::_('JEV_E_WARNTITLE')); ?>");
+				}
+				else if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {
+					alert('<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>');
+				}
+				else if (form.ics_id.value == "0") {
+					alert("<?php echo html_entity_decode(JText::_('JEV_MISSING_ICAL_SELECTION', true)); ?>");
+				}
+				else if (form.valid_dates.value == "0") {
+					alert("<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
+				}
+
+
+<?php
+if (!empty($this->requiredtags))
 {
-    foreach($this->requiredtags as $tag)
-    {
-        echo "else if (form.".$tag['id'].".value == '".$tag['default_value']."'){";
-        echo "alert('". JText::_("JEV_ADD_REQUIRED_FIELD", true)." '+' ".$tag['label']."');";
-        echo "}";
-    }
+	foreach ($this->requiredtags as $tag)
+	{
+		echo "else if (form." . $tag['id'] . ".value == '" . $tag['default_value'] . "'){";
+		echo "alert('" . JText::_("JEV_ADD_REQUIRED_FIELD", true) . " '+' " . $tag['label'] . "');";
+		echo "}";
+	}
 }
-?>   		else {
-                                                                     
-                                        if(editorElement)
-                                            {                
-                                                <?php
-                                                // in case editor is toggled off - needed for TinyMCE
-                                                echo $this->editor->save('jevcontent');
-                                                ?>
-                                            }
+?> else {
+
+					if (editorElement)
+					{
+<?php
+// in case editor is toggled off - needed for TinyMCE
+echo $this->editor->save('jevcontent');
+?>
+					}
 <?php
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -279,9 +281,9 @@ else
 			}
 			?>
 			<div class="control-group">
-					<?php echo $this->form->getLabel("title"); ?>
+				<?php echo $this->form->getLabel("title"); ?>
 				<div class="controls">
-			<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
+					<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
 				</div>
 			</div>
 			<?php
@@ -289,9 +291,9 @@ else
 			{
 				?>
 				<div class="control-group">
-						<?php echo $this->form->getLabel("priority"); ?>
+					<?php echo $this->form->getLabel("priority"); ?>
 					<div class="controls">
-				<?php echo $this->form->getInput("priority"); ?>
+						<?php echo $this->form->getInput("priority"); ?>
 					</div>
 				</div>
 				<?php
@@ -302,9 +304,9 @@ else
 			{
 				?>
 				<div class="control-group jevcreator">
-						<?php echo $this->form->getLabel("creator"); ?>
+					<?php echo $this->form->getLabel("creator"); ?>
 					<div class="controls">
-				<?php echo $this->form->getInput("creator"); ?>
+						<?php echo $this->form->getInput("creator"); ?>
 					</div>
 				</div>
 				<?php
@@ -314,9 +316,9 @@ else
 			{
 				?>
 				<div class="control-group">
-						<?php echo $this->form->getLabel("ics_id"); ?>
+					<?php echo $this->form->getLabel("ics_id"); ?>
 					<div class="controls">
-				<?php echo $this->form->getInput("ics_id"); ?>
+						<?php echo $this->form->getInput("ics_id"); ?>
 					</div>
 				</div>
 				<?php
@@ -326,9 +328,9 @@ else
 			{
 				?>
 				<div class="control-group jevlockevent">
-						<?php echo $this->form->getLabel("lockevent"); ?>
+					<?php echo $this->form->getLabel("lockevent"); ?>
 					<div class="controls radio btn-group">
-				<?php echo $this->form->getInput("lockevent"); ?>
+						<?php echo $this->form->getInput("lockevent"); ?>
 					</div>
 				</div>
 				<?php
@@ -345,7 +347,7 @@ else
 						?>
 
 						<div class="controls jevcategory">
-						<?php echo $this->form->getInput("catid"); ?>
+							<?php echo $this->form->getInput("catid"); ?>
 						</div>
 						<?php
 					}
@@ -356,7 +358,7 @@ else
 						echo $this->form->getLabel("access");
 						?>
 						<div class="controls accesslevel ">
-						<?php echo $this->form->getInput("access"); ?>
+							<?php echo $this->form->getInput("access"); ?>
 						</div>
 						<?php
 					}
@@ -369,9 +371,9 @@ else
 			{
 				?>
 				<div class="control-group jevpublished">
-						<?php echo $this->form->getLabel("state"); ?>
+					<?php echo $this->form->getLabel("state"); ?>
 					<div class="controls">
-				<?php echo $this->form->getInput("state"); ?>
+						<?php echo $this->form->getInput("state"); ?>
 					</div>
 				</div>
 				<?php
@@ -386,9 +388,9 @@ else
 			{
 				?>
 				<div class="control-group jevcolour">
-						<?php echo $this->form->getLabel("color"); ?>
+					<?php echo $this->form->getLabel("color"); ?>
 					<div class="controls">
-				<?php echo $this->form->getInput("color"); ?>
+						<?php echo $this->form->getInput("color"); ?>
 					</div>
 				</div>
 				<?php
@@ -407,27 +409,27 @@ else
 			?>
 
 			<div class="control-group jev_description">
-					<?php echo $this->form->getLabel("jevcontent"); ?>
+				<?php echo $this->form->getLabel("jevcontent"); ?>
 				<div class="controls" id='jeveditor' >
-<?php echo $this->form->getInput("jevcontent"); ?>
+					<?php echo $this->form->getInput("jevcontent"); ?>
 				</div>
 			</div>
 			<div class="control-group jeveditlocation" id="jeveditlocation">
-					<?php echo $this->form->getLabel("location"); ?>
+				<?php echo $this->form->getLabel("location"); ?>
 				<div class="controls" >
-<?php echo $this->form->getInput("location"); ?>
+					<?php echo $this->form->getInput("location"); ?>
 				</div>
 			</div>
 			<div class="control-group jev_contact">
-					<?php echo $this->form->getLabel("contact_info"); ?>
+				<?php echo $this->form->getLabel("contact_info"); ?>
 				<div class="controls" >
-<?php echo $this->form->getInput("contact_info"); ?>					
+					<?php echo $this->form->getInput("contact_info"); ?>
 				</div>
 			</div>
 			<div class="control-group jev_extrainfo">
-					<?php echo $this->form->getLabel("extra_info"); ?>
+				<?php echo $this->form->getLabel("extra_info"); ?>
 				<div class="controls" >
-<?php echo $this->form->getInput("extra_info"); ?>
+					<?php echo $this->form->getInput("extra_info"); ?>
 				</div>
 			</div>
 
@@ -438,7 +440,7 @@ else
 				<div class="control-group jevplugin_<?php echo $key; ?>">
 					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
 					<div class="controls" >
-				<?php echo $this->customfields[$key]["input"]; ?>
+						<?php echo $this->customfields[$key]["input"]; ?>
 					</div>
 				</div>
 				<?php
