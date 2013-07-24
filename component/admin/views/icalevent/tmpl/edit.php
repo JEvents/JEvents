@@ -182,16 +182,16 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
     
                 
                 <?php
-/*                
+               
 if(!empty($this->requiredtags))
 {
     foreach($this->requiredtags as $tag)
     {
-        echo "else if (form.".$tag.".value == '0'){";
-        echo        "alert('need to add this field');";
+        echo "else if (form.".$tag['id'].".value == '".$tag['default_value']."'){";
+        echo "alert('". JText::_("JEV_ADD_REQUIRED_FIELD", true)." '+' ".$tag['label']."');";
         echo "}";
     }
-}*/
+}
 ?>   		else {
                                                                      
                                         if(editorElement)

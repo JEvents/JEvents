@@ -31,7 +31,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
                                    
                                     $jevplugins = JPluginHelper::getPlugin("jevents");
                                     //we dinamically get the size of the select box
-                                    $size = 1;
+                                    $size = 5;
                                     $options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
                                     $options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
                                     $options['LOCATION'] = JText::_("JEV_FIELD_LOCATION",true);
@@ -74,7 +74,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
                                                       }
                                             }
                                     }
-		if (!empty($availableFields)){
+		if (!empty($optionsGroup)){
                                                         $size = ($size<10)?$size:10;
                                                         $attr = array('list.attr'   => 'multiple="true"'                                                                              
                                                                                                       .'size="'.$size.'"',
