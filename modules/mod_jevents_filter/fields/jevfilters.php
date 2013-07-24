@@ -133,7 +133,7 @@ class JFormFieldJevfilters extends JFormFieldText
 		// Initialize JavaScript field attributes.
 		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
-		return $input. '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+		return $input. '<input type="hidden" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
 				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . $readonly . $onchange . $maxLength . '/>';
 
 	}

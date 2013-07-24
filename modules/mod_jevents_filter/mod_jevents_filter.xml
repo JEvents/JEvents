@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.1.2</version>
+	<version>3.1.3</version>
 	<description>Shows JEvents Filter</description>
 	<files>
 		<filename module="mod_jevents_filter">mod_jevents_filter.php</filename>
@@ -67,6 +67,20 @@
 					<option value="ul">JEV_FILTER_UNORDEREDLIST</option>
 					<option value="ful">JEV_FILTER_LEFT_FLOAT_UNORDEREDLIST</option>
 				</field>
+
+				<field
+					name="showlabels"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_SHOWLABELS"
+					description="JEV_FILTER_SHOWLABELS_DESC" />
+
+				<field
+					name="enablebootstrap"
+					type="jevboolean" class="btn-group"
+					default="1"
+					label="JEV_FILTER_ENABLE_BOOSTRAP"
+					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
 
 			</fieldset>
 			<fieldset

@@ -123,6 +123,9 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="state" id="state" value="<?php echo $this->row->state(); ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
 		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
+		<?php if (!JFactory::getApplication()->isAdmin()) { ?>
+		<input type="hidden" name="Itemid" id="Itemid" value="<?php echo  JEVHelper::getItemid();?>"  />
+		<?php } ?>
 		<?php
 		if ($this->editCopy)
 		{
@@ -132,7 +135,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		}
 		?>
 		<script type="text/javascript" >
-
+			<!--
 			Joomla.submitbutton = function (pressbutton) {
 
 				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
@@ -201,7 +204,7 @@ else
 		resetYMD();
 		submitform(pressbutton);	
 	}
-
+		//-->
 		</script>
 
 		<?php

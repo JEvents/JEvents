@@ -41,7 +41,8 @@ $this->replaceLabels($this->item->value);
 		<input type="hidden" name="id" value="<?php echo $this->item->id;?>">
 		
 		<script type="text/javascript" >
-			<?php echo "Joomla.submitbutton = function (pressbutton) {\n"; ?>
+			<!--//
+			Joomla.submitbutton = function (pressbutton) {
 			var form = document.adminForm;
 			<?php
 			// in case editor is toggled off - needed for TinyMCE
@@ -49,7 +50,7 @@ $this->replaceLabels($this->item->value);
 			?>
 			submitform(pressbutton);
 		}
-
+		//-->
 		</script>
         <div class="adminform" align="left">
        	<div style="margin-bottom:20px;">

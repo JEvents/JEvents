@@ -16,10 +16,9 @@ $option = JEV_COM_COMPONENT;
 $index=JRoute::_("index.php");
 ?>
 <script type="text/javascript" >
-	<?php 
-		echo "Joomla.submitbutton = function (pressbutton) {\n";
-	?>
-	if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
+	<!--
+		Joomla.submitbutton = function (pressbutton) {
+if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 		submitform( pressbutton );
 		return;
 	}
@@ -32,6 +31,7 @@ $index=JRoute::_("index.php");
 		submitform(pressbutton);
 	}
 }
+//-->
 </script>
 
 <form action="<?php echo $index;?>" method="post" name="adminForm" id="adminForm">

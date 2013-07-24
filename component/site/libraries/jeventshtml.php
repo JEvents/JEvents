@@ -959,7 +959,7 @@ class JEventsHTML
 		{
 			ob_start();
 			?>
-			<select name="<?php echo $fieldname; ?>" <?php echo $attribs; ?> >
+			<select name="<?php echo $fieldname; ?>" <?php echo $attribs; ?> id="<?php echo $fieldname; ?>" >
 				<?php
 				if ($text != "")
 				{
