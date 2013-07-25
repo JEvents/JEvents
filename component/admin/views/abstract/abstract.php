@@ -325,7 +325,7 @@ class JEventsAbstractView extends JViewLegacy
 							$tabreplace .= '<li ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 						}
 					}
-					$tabreplace.= "</ul>";
+					$tabreplace.= "</ul>\n";
 					$tabreplace = $tabreplace . $tabstartarray[0][0];
 					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
 				}
@@ -347,7 +347,7 @@ class JEventsAbstractView extends JViewLegacy
 					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 				}
 				// Manually close the tabs
-				$template_value = str_replace("{{TABSEND}}", JHtml::_('bootstrap.endPane'), $template_value);
+				$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
 			}
 		}
 		else
