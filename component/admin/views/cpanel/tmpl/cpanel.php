@@ -9,6 +9,7 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 ?>
 <div id="jevents" class="span12">
 	<?php
@@ -34,8 +35,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->sidebar; ?>
 			</div>
 			<?php }
+			if ($params->get("showPanelNews", 1) == 1){
+				$mainspan = 5;
+				$fullspan = 7;
+			} else {
+				$mainspan = 10;
+				$fullspan = 12;
+			}
+			
 		?>
-		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? 5 : 7; ?>  ">
+		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<div id="cpanel" class="well well-small clearfix ">
 				<?php
 				if (JEVHelper::isAdminUser())
@@ -72,14 +81,14 @@ defined('_JEXEC') or die('Restricted access');
 					$this->_quickiconButton($link, "Support_icon.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				
 				?>
 				<div class="clear"></div>
 			</div>
 		</div>
 		<div class="span5">
 			<?php
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			
 			if ($params->get("showPanelNews", 1))
 			{
 				echo JHtml::_('sliders.start', 'cpanel-sliders');

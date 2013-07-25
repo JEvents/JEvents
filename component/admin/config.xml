@@ -3,10 +3,11 @@
 
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" difficulty="1">
        
-                <field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_CONFIG_OPTIONS_TO_SHOW" description="JEV_CONFIG_OPTIONS_TO_SHOW_DESC" difficulty="1">
+		<field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_CONFIG_OPTIONS_TO_SHOW" description="JEV_CONFIG_OPTIONS_TO_SHOW_DESC" difficulty="1">
 			<option value="1" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});">JEV_BASIC</option>
 			<option value="2" onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});
-                                                        $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE</option>
+                                                        $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE
+			</option>
 			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
 		</field>
             
@@ -99,10 +100,10 @@
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->
 		<field name="com_editdateformat" 
-			type="list" 
-			default="Y-m-d" 
-			label="JEV_EVENT_EDIT_DATEFORMAT" 
-			description="JEV_EVENT_EDIT_DATEFORMAT_DESC" difficulty="1" 
+			   type="list" 
+			   default="Y-m-d" 
+			   label="JEV_EVENT_EDIT_DATEFORMAT" 
+			   description="JEV_EVENT_EDIT_DATEFORMAT_DESC" difficulty="1" 
 		>
 			<option value="Y-m-d">JEV_EVENT_EDIT_DATEFORMAT_YMD_VALUE</option>
 			<option value="m/d/Y">JEV_EVENT_EDIT_DATEFORMAT_MDY_VALUE</option>
@@ -110,7 +111,7 @@
 			<option value="d.m.Y">JEV_EVENT_EDIT_DATEFORMAT_EUROPEAN_VALUE</option>
 		</field>
 		<!--<field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC'/>//-->
-                <field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
+		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
 		<field name="defaultcat" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_Use_Default_Cat" description="JEV_Use_Default_Cat_tip" difficulty="2"/>
 		<field name="forcepopupcalendar" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" difficulty="2"/>
 		<field name="com_calForceCatColorEventForm" type="list" default="2" menu="hide" label="JEV_DEF_EC_HIDE_FORCE" description="JEV_TIP_DEF_EC_HIDE_FORCE" difficulty="2">
@@ -125,14 +126,14 @@
 		</field>
 		//-->
                 
-                <field name="editpopup" type="jevboolean" class="btn-group" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description='FRONTEND_EDIT_IN_POPUP_DESC' difficulty="2"/>
+		<field name="editpopup" type="jevboolean" class="btn-group" default="0" menu="hide" label='FRONTEND_EDIT_IN_POPUP'  description='FRONTEND_EDIT_IN_POPUP_DESC' difficulty="2"/>
 		<field name="popupw" type="text" default="800" size="6" menu="hide" label='POPUP_WINDOW_WIDTH'  description='POPUP_WINDOW_WIDTH_DESC' difficulty="2"/>
 		<field name="popuph" type="text" default="500" size="6" menu="hide" label='POPUP_WINDOW_HEIGHT'  description='POPUP_WINDOW_HEIGHT_DESC' difficulty="2"/>
 		<field name="com_single_pane_edit" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ONE_TAB_EVENT" description="JEV_ONE_TAB_EVENT_TIP" difficulty="2"/>
 		
-                <field name="timebeforedescription" type="jevboolean" class="btn-group" default="0" menu="hide" label="SHOW_TIME_DETAILS_BEFORE_DESRIPTION" description="SHOW_TIME_DETAILS_BEFORE_DESRIPTION_DESC" difficulty="1"/>
+		<field name="timebeforedescription" type="jevboolean" class="btn-group" default="0" menu="hide" label="SHOW_TIME_DETAILS_BEFORE_DESRIPTION" description="SHOW_TIME_DETAILS_BEFORE_DESRIPTION_DESC" difficulty="1"/>
 		<field name="multiday" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DEFAULT_MULTIDAY" description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1"/>
-                <field name="com_show_editor_buttons" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_EDITOR_BUTTONS" description="JEV_SHOW_EDITOR_BUTTONS_TIP" difficulty="2"/>
+		<field name="com_show_editor_buttons" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_EDITOR_BUTTONS" description="JEV_SHOW_EDITOR_BUTTONS_TIP" difficulty="2"/>
 		<field name="com_editor_button_exceptions" type="text" default="pagebreak,readmore" menu="hide" size="26" label="JEV_EDITOR_BUTTON_EXCEPTIONS" description="JEV_EDITOR_BUTTON_EXCEPTIONS_TIP" difficulty="2"/>
 		<field name="com_notifyboth" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY" description="JEV_NOTIFY_TIP" difficulty="2"/>
 		<field name="com_notifyallevents" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFYALL" description="JEV_NOTIFYALL_TIP" difficulty="2"/>
@@ -147,7 +148,7 @@
 		<field name="defaultendtime" type="text" default="17:00" menu="hide" size="5" label="JEV_DEFAULT_ENDTIME" description="JEV_DEFAULT_ENDTIME_TIP" difficulty="1"/>		
 		
                 
-                <field name="multicategory" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC' difficulty="2"/>
+		<field name="multicategory" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC' difficulty="2"/>
 		<field name="bootstrapcss" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2"/>
 		<field name="bootstrapchosen" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN" description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" difficulty="2"/>
 
@@ -188,7 +189,7 @@
 			<option value="CENTER">JEV_CENTER</option>
 			<option value="RIGHT">JEV_RIGHT</option>
 		</field>
-         <!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
+		<!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
 		<field name="com_calTTPosY" type="list" default='BELOW'   class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY" difficulty="2">
 			<option value="BELOW">JEV_BELOW</option>
 			<option value="ABOVE">JEV_ABOVE</option>
@@ -221,7 +222,7 @@
 		<field name="showyeardate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" difficulty="1"/>
 	</fieldset>
         
-        <fieldset  name="JEV_ICAL_CALENDAR" difficulty="2">
+	<fieldset  name="JEV_ICAL_CALENDAR" difficulty="2">
 		<field name="@spacer_tzi" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
@@ -237,7 +238,7 @@
 		<field name="feimport" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_FRONTENDIMPORT" description="JEV_FRONTENDIMPORT_TIP" difficulty="3"/>
 		<field name="allowedit" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ALLOW_ICAL_EDIT" description="JEV_ALLOW_ICAL_EDIT_DESC" difficulty="3"/>
 		<field name="icalformatted" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_DESCRIPTIONS_FORMATTED" description="JEV_ICAL_DESCRIPTIONS_FORMATTED_DESC" difficulty="3"/>
-</fieldset>
+	</fieldset>
 	
 	<fieldset name="JEV_TAB_RSS" difficulty="2">
 		<field name="@spacer_rss1" type="jevinfo" default="JEV_SETT_FOR_RSS"  menu="hide" label="" description="" difficulty="2"/>	
@@ -254,7 +255,7 @@
 		<field name="com_rss_logo" type="text" default="" menu="hide" size="60" label="JEV_RSS_LOGO" description="" difficulty="2"/>
 	</fieldset>
         
-        <fieldset  name="ROBOT_SEF_OPTIONS" difficulty="3">
+	<fieldset  name="ROBOT_SEF_OPTIONS" difficulty="3">
 		<field name="com_cache" type="list"  default="0" menu="hide" label="JEV_USE_CACHE_FOR_EVENTS" description="JEV_CACHE_EXPLANATION">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES_ONLY_FOR_NOT_LOGGED_IN_VISITORS</option>
@@ -326,7 +327,7 @@
 		<field name="modlatest_Days" type="text" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"/>
 		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" difficulty="1"/>
 		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1"/>
-         	<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1"/>		
+		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1"/>		
 
 		<field name="modlatest_multiday" type="list" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" difficulty="2">
 			<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
@@ -344,7 +345,7 @@
 		</field>		
 		<field name="modlatest_SortReverse" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="2"/>
 		<field name="modlatest_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3"/>
-                <field name="@spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_custformstr_help::Event Fields,mod_events_latest.php::_cal_lang_lev_date_help::date(),mod_events_latest.php::_cal_lang_lev_strftime_help::strftime()" difficulty="3"/>	
+		<field name="@spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_custformstr_help::Event Fields,mod_events_latest.php::_cal_lang_lev_date_help::date(),mod_events_latest.php::_cal_lang_lev_strftime_help::strftime()" difficulty="3"/>	
 		<field name="modlatest_CustFmtStr" type="textarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3"/>
 		<field name="modlatest_RSS" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3"/>			
 		<field name="modlatest_contentplugins" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3"/>
@@ -364,31 +365,31 @@
 			filter="rules"
 			component="com_jevents"
 			section="component"
-                        difficulty="2"/>
-<!--//
-		<field
-			name="rules"
-			type="rules"
-			id="category_rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
-			filter="rules"
-			component="com_jevents"
-			section="category" />
-//-->
+			difficulty="2"/>
+		<!--//
+				<field
+					name="rules"
+					type="rules"
+					id="category_rules"
+					label="JCONFIG_PERMISSIONS_LABEL"
+					class="inputbox"
+					filter="rules"
+					component="com_jevents"
+					section="category" />
+		//-->
 	</fieldset>
 
 	<fields name="fieldset">
-<!--		
-			<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
-					<field 
-					name="target_itemid"
-					type="jevmenu"
-					default=""
-					label='JEV_TARGET_MENU' 
-					description='JEV_TARGET_MENU_TIP'  />
-			</fieldset>		
-			//-->
+		<!--		
+		<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
+				<field 
+				name="target_itemid"
+				type="jevmenu"
+				default=""
+				label='JEV_TARGET_MENU' 
+				description='JEV_TARGET_MENU_TIP'  />
+		</fieldset>		
+		//-->
 	</fields>	
 
 

@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.html.bootstrap');
+// We need to get the params first
 
 $version = JEventsVersion::getInstance();
 
@@ -24,9 +25,9 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 	}
 }
 ?>
+<!-- Set Difficulty : -->
 
 <form action="index.php" method="post" name="adminForm" autocomplete="off" id="adminForm">
-
 	<fieldset class='jevconfig'>
 		<?php
 		// difficulty rating is outside the tabs!
@@ -54,9 +55,10 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 		<legend>
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>
-		<div style="float:right;margin-top:-20px;background-color:#ffffff;padding:2px;">
-			[<?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>]
+		<div class="jev_config_version">
+			 <?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>
 		</div>
+			
 
 		<ul class="nav nav-tabs" id="myParamsTabs">
 			<?php
