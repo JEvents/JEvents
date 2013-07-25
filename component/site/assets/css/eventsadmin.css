@@ -215,10 +215,10 @@ a#colorPickButton {
 	display:none;
 }
 #byyearday,#bymonth,#byweekno,#bymonthday,#byday {
-	 float:left;
-	 display:none;
-	 margin-right:1em;
-	 margin-top:10px;
+	float:left;
+	display:none;
+	margin-right:1em;
+	margin-top:10px;
 }
 
 #jevents  fieldset.checkboxes li label {
@@ -273,18 +273,18 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 
 .jevdate_labels {
 	float:left;
-	width:80px;
+	min-width:80px
 }
 .jevdate_date {
 	float:left;
 }
 
 #selectlocationbutton {
- margin-left: 5px;   
+	margin-left: 5px;   
 }
 
 .hiddenDifficulty  {
-display: none;
+	display: none;
 }
 #myParamsTabsContent table.paramlist {
     width: 100%;
@@ -293,22 +293,16 @@ display: none;
 	border:1px solid #ddd;
 	margin-top:-19px;
 	padding: 15px;
-    -webkit-border-radius: 5px;
-    -webkit-border-top-left-radius: 0;
-    -moz-border-radius: 5px;
-    -moz-border-radius-topleft: 0;
     border-radius: 5px;
     border-top-left-radius: 0;
 }
 .jev_config_version {
-background-color: #ededed;
-border:1px solid #ddd;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
-float:right;
-margin-top:-20px;
-padding:2px 5px 2px 5px;
+	background-color: #ededed;
+	border:1px solid #ddd;
+	border-radius: 3px;
+	float:right;
+	margin-top:-20px;
+	padding:2px 5px 2px 5px;
 }
 #start_ampm label, #end_ampm label {
     padding-left:8px;

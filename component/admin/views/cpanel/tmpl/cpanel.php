@@ -35,8 +35,16 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			<?php echo $this->sidebar; ?>
 			</div>
 			<?php }
+			if ($params->get("showPanelNews", 1) == 1){
+				$mainspan = 5;
+				$fullspan = 7;
+			} else {
+				$mainspan = 10;
+				$fullspan = 12;
+			}
+			
 		?>
-		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? 10 : 7; ?>  ">
+		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<div id="cpanel" class="well well-small clearfix ">
 				<?php
 				if (JEVHelper::isAdminUser())

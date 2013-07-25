@@ -12,7 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.html.bootstrap');
 // We need to get the params first
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 $version = JEventsVersion::getInstance();
 
