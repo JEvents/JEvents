@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class GeraintViewICalEvent extends JEventsGeraintView 
+class GeraintViewICalevent extends JEventsGeraintView 
 {
 	
 	function detail($tpl = null)
