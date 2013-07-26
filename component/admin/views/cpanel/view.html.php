@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AdminCPanelViewCPanel extends JEventsAbstractView
+class AdminCpanelViewCpanel extends JEventsAbstractView
 {
 
 

@@ -19,7 +19,7 @@ defined('_JEXEC') or die();
  */
 include_once(JEV_ADMINPATH."/views/icalrepeat/view.html.php");
 
-class ICalRepeatViewICalRepeat extends AdminICalRepeatViewICalRepeat 
+class ICalRepeatViewICalrepeat extends AdminICalRepeatViewICalrepeat
 {
 	var $jevlayout = null;
 	
