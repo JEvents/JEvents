@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="0.1.0" client="site" method="upgrade">
+    <name>JEvents Detail Module</name>
+    <author>Owen Petrie</author>
+    <version>0.1.0</version>
+    <description>Displays data from the event detail layout</description>
+    <files>
+        <filename>mod_jevents_detail.xml</filename>
+        <filename module="mod_jevents_detail">mod_jevents_detail.php</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+    </files>
+    <languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_detail.ini</language>
+	</languages>
+    <config>
+    </config>
+</extension>
