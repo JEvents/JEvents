@@ -308,7 +308,12 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
     padding-left:8px;
     padding-right: 8px;
 }
-#toolbar.btn-toolbar div {
+
+/* Toolbar - stop buttons being vertical*/
+.jeventslight .btn-wrapper , .jeventsdark .btn-wrapper{
+display: inline;
+margin-right: 5px;
+}#toolbar.btn-toolbar div {
 	display:inline-block !important; 
 	margin-right:6px;
 }
