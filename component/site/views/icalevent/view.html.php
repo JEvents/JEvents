@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  */
 include_once(JEV_ADMINPATH . "/views/icalevent/view.html.php");
 
-class ICalEventViewIcalEvent extends AdminIcaleventViewIcalevent
+class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 {
 
 	var $jevlayout = null;

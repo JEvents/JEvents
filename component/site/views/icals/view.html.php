@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  * @static
  */
 
-class ICalsViewICals extends JEventsAbstractView 
+class ICalsViewIcals extends JEventsAbstractView 
 {
 	
 	function export($tpl = null)

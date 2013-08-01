@@ -325,7 +325,7 @@ class JEventsAbstractView extends JViewLegacy
 							$tabreplace .= '<li ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 						}
 					}
-					$tabreplace.= "</ul>";
+					$tabreplace.= "</ul>\n";
 					$tabreplace = $tabreplace . $tabstartarray[0][0];
 					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
 				}
@@ -347,7 +347,7 @@ class JEventsAbstractView extends JViewLegacy
 					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 				}
 				// Manually close the tabs
-				$template_value = str_replace("{{TABSEND}}", JHtml::_('bootstrap.endPane'), $template_value);
+				$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
 			}
 		}
 		else
@@ -574,7 +574,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		// some variables have fieldnames with camel case names in the form
 		$rowdata["allDayEvent"] = $rowdata["alldayevent"];
-                                    $rowdata["contact_info"] = $rowdata["contact"];
+		$rowdata["contact_info"] = $rowdata["contact"];
 
 		$this->form->bind($rowdata);
 
@@ -680,11 +680,11 @@ class JEventsAbstractView extends JViewLegacy
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
 		{
-			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");			
+			$fieldAttribute = $this->form->getFieldAttribute($key, "layoutfield");
 
 			if ($fieldAttribute)
 			{
-                                                                        $searchtag = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
+				$searchtag = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
 				$this->searchtags[] = $searchtag;
 				$this->replacetags[] = $field->label;
 				$this->blanktags[] = "";
@@ -692,17 +692,15 @@ class JEventsAbstractView extends JViewLegacy
 				$this->searchtags[] = '{{' . $fieldAttribute . "}}";
 				$this->replacetags[] = $field->input;
 				$this->blanktags[] = "";
-                                
-                                                                        if (in_array($fieldAttribute, $requiredFields))
-                                                                        {
-                                                                            $requiredTags['key']  = $key;
-                                                                            $requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
-                                                                            $requiredTags['label']  = $searchtag;
-                                                                            $this->requiredtags[] = $requiredTags;
-                                                                        }
+
+				if (in_array($fieldAttribute, $requiredFields))
+				{
+					$requiredTags['key'] = $key;
+					$requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
+					$requiredTags['label'] = $searchtag;
+					$this->requiredtags[] = $requiredTags;
+				}
 			}
-                        
-                                                      
 		}
 
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
@@ -732,20 +730,21 @@ class JEventsAbstractView extends JViewLegacy
 			$this->searchtags[] = '{{' . $key . '_lbl}}';
 			$this->replacetags[] = $this->customfields[$key]["label"];
 			$this->blanktags[] = "";
-                        
-                                                      if (in_array($key, $requiredFields))
-                                                      {
-                                                          if(preg_match("/image[0-9]{1,2}/",$key)===1)
-                                                          {
-                                                              $requiredTags['id'] ="custom_upload_".$key;
-                                                          }else
-                                                          {
-                                                            $requiredTags['id']  = $key;
-                                                          }
-                                                            $requiredTags['default_value'] = "";
-                                                            $requiredTags['label']  = $this->customfields[$key]["label"];
-                                                            $this->requiredtags[] = $requiredTags;
-                                                      }
+
+			if (in_array($key, $requiredFields))
+			{
+				if (preg_match("/image[0-9]{1,2}/", $key) === 1)
+				{
+					$requiredTags['id'] = "custom_upload_" . $key;
+				}
+				else
+				{
+					$requiredTags['id'] = $key;
+				}
+				$requiredTags['default_value'] = "";
+				$requiredTags['label'] = $this->customfields[$key]["label"];
+				$this->requiredtags[] = $requiredTags;
+			}
 
 			if (JVersion::isCompatible("3.0"))
 			{
