@@ -310,10 +310,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 }
 
 /* Toolbar - stop buttons being vertical*/
-.jeventslight .btn-wrapper , .jeventsdark .btn-wrapper{
-display: inline;
-margin-right: 5px;
-}#toolbar.btn-toolbar div {
-	display:inline-block !important; 
+.jeventslight #toolbar.btn-toolbar div , .jeventsdark  #toolbar.btn-toolbar div{
+	display:inline-block;
 	margin-right:6px;
 }

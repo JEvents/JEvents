@@ -57,6 +57,13 @@
 					description="JEV_SHOW_IN_DETAILS_DESC" />
 
 				<field
+					name="alwaystarget"
+					type="jevboolean" class="btn-group"
+					default="0"
+					label="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM"
+					description="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM_DESC" />
+
+				<field
 					name="filterlayout"
 					type="list" 
 					default="vt"
