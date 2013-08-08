@@ -33,6 +33,7 @@ class DefaultModLatestView
 	var $linkCloaking = null;
 	var $customFormatStr = null;
 	var $_defaultfFormatStr12 = '${eventDate}[!a: - ${endDate(%l:%M%p)}]<br />${title}';
+	var $_defaultfFormatStr12winos = '${eventDate}[!a: - ${endDate(%I:%M%p)}]<br />${title}';
 	var $_defaultfFormatStr24 = '${eventDate}[!a: - ${endDate(%H:%M)}]<br />${title}';
 	var $defaultfFormatStr = null;
 	var $linkToCal = null; // 0=no, 1=top, 2=bottom
@@ -82,7 +83,7 @@ class DefaultModLatestView
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{
-			$this->defaultfFormatStr = $this->_defaultfFormatStr12;
+			$this->defaultfFormatStr = JFactory::getApplication()->isWinOS()? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
 		}
 		else
 		{
@@ -863,7 +864,7 @@ class DefaultModLatestView
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : JFactory::getApplication()->isWinOS()?' @%I:%M%p':' @%l:%M%p';
 					}
 					else
 					{

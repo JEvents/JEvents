@@ -14,6 +14,7 @@
 		<filename>mod_jevents_filter.js</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
+		<folder>fields</folder>
 	</files>
 	<config>
 		<fields name="params">

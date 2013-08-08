@@ -32,6 +32,9 @@ var JeventsFilters = {
 
 			}
 		});
+		if (form.filter_reset){
+			form.filter_reset.value = 1;
+		}
 		form.submit();
 	}
 }

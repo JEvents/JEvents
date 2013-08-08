@@ -308,6 +308,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
     padding-left:8px;
     padding-right: 8px;
 }
+.jeveditrepeats {margin-bottom:12px;}
 
 /* Toolbar - stop buttons being vertical*/
 .jeventslight #toolbar.btn-toolbar div , .jeventsdark  #toolbar.btn-toolbar div{

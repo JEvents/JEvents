@@ -68,7 +68,7 @@ if (JRequest::getString("submit","")!="")
 	echo "<h3 class='export_pub'>" . JText::_("JEV_PUBLIC_EVENTS") . "</h3>";
 	if ($user->id != 0)
 	{
-		echo "<h3 class='export_priv'>" . JText::_("JEV_PUBLIC_AND_EVENTS") . "</h3>";
+		echo "<h3 class='export_priv'>" . JText::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
 	}
 	
 	if ($cfg->get("show_webcal_url", 0) == 1){
