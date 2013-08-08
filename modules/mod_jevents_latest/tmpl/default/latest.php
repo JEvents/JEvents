@@ -48,8 +48,11 @@ class DefaultModLatestView
 
 	function DefaultModLatestView($params, $modid)
 	{
-
-		$this->_modid = $modid;
+if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css")) {
+$document = & JFactory::getDocument();
+$document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/css/jevcustom.css");
+}
+$this->_modid = $modid;
 		$this->modparams = & $params;
 
 		$jevents_config = & JEVConfig::getInstance();
@@ -58,7 +61,7 @@ class DefaultModLatestView
 		// find appropriate Itemid and setup catids for datamodel
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->modparams);
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
-
+		
 		$user = & JFactory::getUser();
 		$this->aid = $user->aid;
 		// Can't use getCfg since this cannot be changed by Joomfish etc.

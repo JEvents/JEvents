@@ -116,7 +116,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			$cb = $cb . " CHECKED";
 			$checked = true;
 		}
-		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+		echo $cb . " /><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
 		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
 			<?php
@@ -134,7 +134,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					$cb = $cb . " CHECKED";
 				}
-				$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level - 1) . $c->title . "<br/>\n";
+				$cb = $cb . " /><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level - 1) . $c->title . "<br/>\n";
 				echo $cb;
 			}
 			?>
@@ -157,7 +157,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			$yt = $yt . " CHECKED";
 			$checked = true;
 		}
-		$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+		$yt = $yt . " /><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 		echo $yt;
 		?>
 		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
@@ -182,21 +182,25 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					$yt = $yt . " CHECKED";
 				}
-				$yt = $yt . ">" . $y . "<br/>\n";
+				$yt = $yt . " />" . $y . "<br/>\n";
 				echo $yt;
 			}
 			?>
 		</div>
 	</div>
 	<?php
+	
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
+	if ($params->get("icalformatted", 1) == 1){
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/>
+	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
 	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
-	
+<?php } 
+	echo "</div>";
+?>
+
 <input id="submit" class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
 </form>
-</div>
 </div>
 <?php } ?>
