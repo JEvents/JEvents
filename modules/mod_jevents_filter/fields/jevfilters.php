@@ -11,7 +11,7 @@
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
-
+jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');

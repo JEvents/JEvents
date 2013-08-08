@@ -952,7 +952,37 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$template_value = str_replace($search, $replace, $template_value);
 
-		// non greedy replacement - because of the ?
+ $parts = explode("{{MODULESTART#", $template_value);
+ $dynamicmodules = array();
+ foreach ($parts as $part){
+  if (strpos($part, "{{MODULEEND}}")===false){
+   // strip out BAD HTML tags left by WYSIWYG editors
+   if (substr($part, strlen($part)-3)=="<p>"){
+    $template_value = substr($part, 0, strlen($part)-3) ;
+   }
+   else {
+    $template_value = $part;
+   }
+   continue;
+  }
+  // start with module name
+  $modname = substr($part,0,strpos( $part, "}}"));
+  $modulecontent = substr($part, strpos( $part, "}}")+2);
+  $modulecontent = substr($modulecontent, 0, strpos($modulecontent,"{{MODULEEND}}"));
+  // strip out BAD HTML tags left by WYSIWYG editors
+  if (strpos($modulecontent, "</p>")===0){
+   $modulecontent = "<p>x@#".$modulecontent;
+  }
+  if (substr($modulecontent, strlen($modulecontent)-3)=="<p>"){
+   $modulecontent .= "x@#</p>";
+  }
+
+  $modulecontent = str_replace("<p>x@#</p>", "", $modulecontent);
+  $dynamicmodules[$modname] = $modulecontent;
+ }
+ $reg =& JRegistry::getInstance("com_jevents");
+ $reg->set("dynamicmodules",$dynamicmodules);              
+// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
