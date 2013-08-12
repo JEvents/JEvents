@@ -27,6 +27,12 @@ else
 {
 	$myItemid = $params->get("target_itemid", 0);
 }
+
+// if always to target then set it here
+if ($params->get("target_itemid", 0) && $params->get("alwaystarget", 0)) {
+	$myItemid = $params->get("target_itemid", 0);
+}
+
 if ($myItemid == 0)
 {
 	$myItemid = $datamodel->setupModuleCatids($params);
@@ -40,6 +46,9 @@ if ($myItemid > 0)
 	// if on a detail page or not already on a jevents component page then pick up the default task
 	if ($menuitem && (!$jevtask || strpos($jevtask, "detail") !== false))
 	{
+		$form_link = $menuitem->link . "&Itemid=" . $myItemid;
+	}
+	else if ($menuitem && $params->get("alwaystarget", 0)){
 		$form_link = $menuitem->link . "&Itemid=" . $myItemid;
 	}
 }

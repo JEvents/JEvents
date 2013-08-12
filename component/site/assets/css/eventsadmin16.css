@@ -288,3 +288,9 @@ fieldset.checkboxes li {
 	float:left;
 	margin-left:20px!important;
 }
+
+.button2-left {
+    float: left;
+    margin-right: 5px;
+   margin-top:5px;
+}

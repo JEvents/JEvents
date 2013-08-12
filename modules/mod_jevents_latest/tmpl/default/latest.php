@@ -33,6 +33,7 @@ class DefaultModLatestView
 	var $linkCloaking = null;
 	var $customFormatStr = null;
 	var $_defaultfFormatStr12 = '${eventDate}[!a: - ${endDate(%l:%M%p)}]<br />${title}';
+	var $_defaultfFormatStr12winos = '${eventDate}[!a: - ${endDate(%I:%M%p)}]<br />${title}';
 	var $_defaultfFormatStr24 = '${eventDate}[!a: - ${endDate(%H:%M)}]<br />${title}';
 	var $defaultfFormatStr = null;
 	var $linkToCal = null; // 0=no, 1=top, 2=bottom
@@ -47,8 +48,11 @@ class DefaultModLatestView
 
 	function DefaultModLatestView($params, $modid)
 	{
-
-		$this->_modid = $modid;
+if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css")) {
+$document = & JFactory::getDocument();
+$document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/css/jevcustom.css");
+}
+$this->_modid = $modid;
 		$this->modparams = & $params;
 
 		$jevents_config = & JEVConfig::getInstance();
@@ -57,7 +61,7 @@ class DefaultModLatestView
 		// find appropriate Itemid and setup catids for datamodel
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->modparams);
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
-
+		
 		$user = & JFactory::getUser();
 		$this->aid = $user->aid;
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
@@ -82,7 +86,7 @@ class DefaultModLatestView
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{
-			$this->defaultfFormatStr = $this->_defaultfFormatStr12;
+			$this->defaultfFormatStr = JFactory::getApplication()->isWinOS()? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
 		}
 		else
 		{
@@ -863,7 +867,7 @@ class DefaultModLatestView
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : JFactory::getApplication()->isWinOS()?' @%I:%M%p':' @%l:%M%p';
 					}
 					else
 					{

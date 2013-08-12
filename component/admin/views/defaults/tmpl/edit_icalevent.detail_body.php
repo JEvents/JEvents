@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$lang = JFactory::getLanguage();
+$lang->load("mod_jevents_detail", JPATH_SITE);
 ?>
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -60,6 +62,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATIONDAT
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ADMIN_PANEL",true);?>", "MANAGEMENT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_MODULE_START",true);?>", "MODULESTART#modulename");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_MODULE_END",true);?>", "MODULEEND");
 
 <?php
 // get list of enabled plugins
