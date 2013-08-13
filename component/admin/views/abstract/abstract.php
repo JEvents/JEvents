@@ -711,9 +711,16 @@ class JEventsAbstractView extends JViewLegacy
 
 		foreach ($this->extraTabs as $extraTab)
 		{
-			$this->searchtags[] = "{{" . str_replace(" ", "_", strtoupper($extraTab['title'])) . "}}";
+			$extraTab['title'] = str_replace(" ", "_", strtoupper($extraTab['title']));
+			$this->searchtags[] = "{{" . $extraTab['title'] . "}}";
 			$this->replacetags[] = $extraTab['content'];
 			$this->blanktags[] = "";
+			if (JText::_($extraTab['title']) !==$extraTab['title']){
+				$this->searchtags[] = "{{" . JText::_($extraTab['title']) . "}}";
+				$this->replacetags[] = $extraTab['content'];
+				$this->blanktags[] = "";
+			}
+
 		}
 
 
