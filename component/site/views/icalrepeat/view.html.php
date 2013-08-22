@@ -99,7 +99,12 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		$dispatcher->trigger( 'onJEventsHeader', array($this));
 
 ?>
-	<div style="clear:both">
+	<div style="clear:both"
+				<?php
+				$mainframe = JFactory::getApplication();
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
+				?>>
 		<div id="toolbar-box" >
 <?php
 		$bar = & JToolBar::getInstance('toolbar');
