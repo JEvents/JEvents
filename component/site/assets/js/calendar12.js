@@ -839,7 +839,7 @@ var NewCalendar = new Class({
 			cal.button.removeClass(this.classes.active); // active
 
 			// not sure why this isn't working any more !!??
-			//this.fx.start('opacity', 1, 0);
+			this.fx.start('opacity', 1, 0);
 			// so we do it manually
 			if (this.calendar.getStyle('opacity') == 0) { // show
 				if (window.ie6) { this.iframe.setStyle('display', 'block'); }
@@ -923,7 +923,7 @@ var NewCalendar = new Class({
 			this.display(cal);
 
 			// not sure why this isn't working any more
-			//this.fx.start('opacity', 0, 1);
+			this.fx.start('opacity', 0, 1);
 
 			// resort to instant appearance
 			if (this.calendar.getStyle('opacity') == 0) { // show
@@ -936,7 +936,7 @@ var NewCalendar = new Class({
 			}
 			this.calendar.style.opacity=1;
 			if (this.calendar.getStyle('opacity') == 0) { // hidden
-				this.calendar.setStyle('display', 'none');
+				//this.calendar.setStyle('display', 'none');
 				if (window.ie6) { this.iframe.setStyle('display', 'none'); }
 				this.fireEvent('onHideComplete', this.element);
 			}
