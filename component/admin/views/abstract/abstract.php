@@ -720,6 +720,11 @@ class JEventsAbstractView extends JViewLegacy
 				$this->replacetags[] = $extraTab['content'];
 				$this->blanktags[] = "";
 			}
+			if (isset($extraTab['rawtitle'])) {
+				$this->searchtags[] = "{{" . $extraTab['rawtitle'] . "}}";
+				$this->replacetags[] = $extraTab['content'];
+				$this->blanktags[] = "";
+			}
 
 		}
 

@@ -20,7 +20,6 @@ defined('_JEXEC') or die();
 class AdminCpanelViewCpanel extends JEventsAbstractView
 {
 
-
 	/**
 	 * Control Panel display function
 	 *
@@ -56,12 +55,16 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		if (JVersion::isCompatible("3.0")){
-			$this->sidebar = JHtmlSidebar::render();					
+		if (JVersion::isCompatible("3.0"))
+		{
+			$this->sidebar = JHtmlSidebar::render();
 		}
-		else {
+		else
+		{
 			$this->setLayout("cpanel25");
 		}
+
+	//	$this->setUpdateUrls();
 
 	}
 
@@ -70,17 +73,19 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	 */
 	function renderJEventsNews()
 	{
-                $cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+		$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 		$cache->setLifeTime(86400);
 		// In Joomla 1.7 caching of feeds doesn't work!
 		$cache->setCaching(true);
 
 		$app = JFactory::getApplication();
-		if (!isset($app->registeredurlparams)){
+		if (!isset($app->registeredurlparams))
+		{
 			$app->registeredurlparams = new stdClass();
 		}
 
-		$cache->get($this, 'renderJEventsNewsCached');	
+		$cache->get($this, 'renderJEventsNewsCached');
+
 	}
 
 	function renderJEventsNewsCached()
@@ -92,8 +97,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$options = array();
 		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
 		$options['cache_time'] = 0;
-		
-		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time'] );
+
+		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time']);
 
 		//$rssDoc = & JFactory::getXMLparser('RSS', $options);
 
@@ -138,30 +143,31 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		}
 		// do not return the output because of differences between J15 and J17
 		echo $output;
-		
 
 	}
 
 	function renderVersionStatusReport(& $needsupdate)
 	{
-		jimport ("joomla.filesystem.folder");
+		jimport("joomla.filesystem.folder");
 		if (JEVHelper::isAdminUser())
 		{
 
 //  get RSS parsed object
 			$options = array();
 			// point Joomla 2.5+ users towards the new versions of everything
-			if (JVersion::isCompatible("2.5")){
+			if (JVersion::isCompatible("2.5"))
+			{
 				$rssUrl = 'http://www.jevents.net/versions30.xml';
 			}
-			else {
+			else
+			{
 				$rssUrl = 'http://www.jevents.net/versions.xml';
 			}
 			$cache_time = 86400;
 
 			jimport('simplepie.simplepie');
 
-        		// this caching doesn't work!!!
+			// this caching doesn't work!!!
 			//$cache = JFactory::getCache('feed_parser', 'callback');
 			//$cache->setLifeTime($cache_time);
 			//$cache->setCaching(true);
@@ -196,7 +202,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						{
 // club layouts			 
 							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
-							if ($xmlfiles1 && count($xmlfiles1)>0){
+							if ($xmlfiles1 && count($xmlfiles1) > 0)
+							{
 								foreach ($xmlfiles1 as $manifest)
 								{
 									if (realpath($manifest) != $manifest)
@@ -263,11 +270,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						if (count($plugin) < 2)
 							continue;
 // plugins
-						if ((JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1]))							) 
+						if ((JFolder::exists(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1])))
 						{
 // plugins
 							$xmlfiles1 = JFolder::files(JPATH_SITE . "/plugins/" . $plugin[0] . "/" . $plugin[1], "\.xml", true, true);
-							
+
 							foreach ($xmlfiles1 as $manifest)
 							{
 								if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -346,7 +353,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						$output .= '</td></tr>';
 						$k = ($k + 1) % 2;
 					}
-					
+
 					$output .= '</table>';
 					$needsupdate = true;
 					return $output;
@@ -357,7 +364,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 	}
 
-	private function getValidManifestFile($manifest)
+	private
+			function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
 		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false)
@@ -365,13 +373,14 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			return false;
 		}
 		// for JCE and Virtuemart only check component version number
-		if ( stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false  || strpos($filecontent, "JCE") !== false)
+		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false)
 		{
-			if (strpos ($filecontent, "type='component'") === false && strpos ($filecontent, 'type="component"') === false){
+			if (strpos($filecontent, "type='component'") === false && strpos($filecontent, 'type="component"') === false)
+			{
 				return false;
 			}
 		}
-		
+
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
@@ -383,9 +392,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 	}
 
-	private function generateVersionsFile($rssDoc)
+	private
+			function generateVersionsFile($rssDoc)
 	{
-		if (JRequest::getInt("versions",0)==0){
+		if (JRequest::getInt("versions", 0) == 0)
+		{
 			return;
 		}
 		jimport("joomla.filesystem.folder");
@@ -414,9 +425,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app = new stdClass();
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
-			$apps["layout_" . str_replace(".xml","",basename($manifest))] = $app;
+			$apps["layout_" . str_replace(".xml", "", basename($manifest))] = $app;
 		}
-		
+
 // plugins
 		if (JFolder::exists(JPATH_SITE . "/plugins"))
 		{
@@ -436,9 +447,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
 			$name = str_replace(".xml", "", basename($manifest));
-			
-                          $name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
-			
+
+			$name = "plugin_" . basename(dirname(dirname($manifest))) . "_" . $name;
+
 			$apps[$name] = $app;
 		}
 
@@ -525,7 +536,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"plugin_jevents_jevlocations" => 4,
 			"plugin_jevents_jevmatchingevents" => 47,
 			"plugin_jevents_jevmetatags" => 58,
-			"plugin_jevents_jevmissingevents" => 56,
+			"plugin_jevents_jevmissingevent" => 56,
 			"plugin_jevents_jevnotify" => 61,
 			"plugin_jevents_jevpaidsubs" => 48,
 			"plugin_jevents_jevpeople" => 13,
@@ -568,7 +579,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"module_mod_jevents_notify" => 61,
 			"module_mod_jevents_paidsubs" => 48,
 			"module_mod_jevents_switchview" => 52
-			);
+		);
 		foreach ($apps as $appname => $app)
 		{
 			$row = new stdClass();
@@ -591,8 +602,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 	}
 
-	public function renderVersionsForClipboard(){
-		if (!JEVHelper::isAdminUser())	{
+	public
+			function renderVersionsForClipboard()
+	{
+		if (!JEVHelper::isAdminUser())
+		{
 			return;
 		}
 
@@ -605,13 +619,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$version = new JVersion();
 		$app->version = $version->getShortVersion();
 		$apps[$app->name] = $app;
-		
+
 // components (including JEvents
-		$xmlfiles3 = array_merge( JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true) ,
-				JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true) ,
-				JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart.xml", true, true), 
-				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce.xml", true, true) 
-				);
+		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce.xml", true, true)
+		);
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -621,22 +632,25 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
 			// is sh404sef disabled ?
-			if (basename(dirname($manifest)) == "com_sh404sef" ){
-				if (is_callable("Sh404sefFactory::getConfig")){
+			if (basename(dirname($manifest)) == "com_sh404sef")
+			{
+				if (is_callable("Sh404sefFactory::getConfig"))
+				{
 					$sefConfig = &Sh404sefFactory::getConfig();
-					if (!$sefConfig->Enabled ) {
+					if (!$sefConfig->Enabled)
+					{
 						$app->version = $manifestdata["version"] . " (Disabled in SH404 settings)";
 					}
 				}
-				else {
+				else
+				{
 					$app->version = $manifestdata["version"] . " (sh404sef system plugins not enabled)";
 				}
-				
 			}
 			$name = "component_" . basename(dirname($manifest));
 			$apps[$name] = $app;
 		}
-		
+
 // modules
 		if (JFolder::exists(JPATH_SITE . "/modules"))
 		{
@@ -648,8 +662,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		}
 		foreach ($xmlfiles4 as $manifest)
 		{
-			if (strpos($manifest,"mod_")===false) continue;
-			
+			if (strpos($manifest, "mod_") === false)
+				continue;
+
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 
@@ -660,7 +675,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$name = "module_" . str_replace(".xml", "", basename($manifest));
 			$apps[$name] = $app;
 		}
-		
+
 // club layouts			 
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
@@ -687,9 +702,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app = new stdClass();
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
-			$apps[str_replace(".xml","","layout_" . basename($manifest))] = $app;
+			$apps[str_replace(".xml", "", "layout_" . basename($manifest))] = $app;
 		}
-		
+
 // plugins
 		if (JFolder::exists(JPATH_SITE . "/plugins"))
 		{
@@ -702,8 +717,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		foreach ($xmlfiles2 as $manifest)
 		{
-			if (strpos($manifest,"Zend")>0) continue;
-			
+			if (strpos($manifest, "Zend") > 0)
+				continue;
+
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
 				continue;
 
@@ -711,26 +727,28 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app->name = $manifestdata["name"];
 			$app->version = $manifestdata["version"];
 			$name = str_replace(".xml", "", basename($manifest));
-			$group =  basename(dirname(dirname($manifest))) ;			
-			$plugin = JPluginHelper::getPlugin( $group,$name);
-			if (!$plugin) {
+			$group = basename(dirname(dirname($manifest)));
+			$plugin = JPluginHelper::getPlugin($group, $name);
+			if (!$plugin)
+			{
 				$app->version .= " (not enabled)";
-			} 
-			
-			$name = "plugin_" .$group. "_" . $name;
+			}
+
+			$name = "plugin_" . $group . "_" . $name;
 			$apps[$name] = $app;
 		}
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
-		$output .=  "PHP Version : " .phpversion() . "\n";
+		$output .= "PHP Version : " . phpversion() . "\n";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
 		}
 		$output .= "[/code]</textarea>";
 		return $output;
+
 	}
-	
+
 	function limitText($text, $wordcount)
 	{
 		if (!$wordcount)
@@ -754,16 +772,17 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		return $text;
 
 	}
-        
+
 	function getTranslatorLink()
 	{
-		$translatorUrl =  JText::_("JEV_TRANSLATION_AUTHOR");
+		$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR");
 		//$translatorUrl = JText::_("JEV_TRANSLATION_AUTHOR_URL");
 		//$translatorUrl = "<a href=\"$translatorUrl\">$translatorName</a>";
 
 		return $translatorUrl;
+
 	}
-	
+
 	function support()
 	{
 		jimport('joomla.html.pane');
@@ -777,12 +796,14 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if (JVersion::isCompatible("3.0")){
-			$this->sidebar = JHtmlSidebar::render();					
-		}						
+		if (JVersion::isCompatible("3.0"))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 	}
-		function custom_css()
+
+	function custom_css()
 	{
 		jimport('joomla.html.pane');
 
@@ -795,10 +816,124 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if (JVersion::isCompatible("3.0")){
-			$this->sidebar = JHtmlSidebar::render();					
+		if (JVersion::isCompatible("3.0"))
+		{
+			$this->sidebar = JHtmlSidebar::render();
 		}
+
 	}
-	
+
+	function setUpdateUrls()
+	{
+		$params = JComponentHelper::getParams("com_jevents");
+
+		$db = JFactory::getDbo();
+
+		// Process the package
+		$db = JFactory::getDbo();
+		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
+		$db->setQuery("select *, exn.extension_id as extension_id   from #__extensions as exn
+LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
+where exn.type='package'
+and exn.element='pkg_jevents'
+");
+		$pkgupdate = $db->loadObject();
+		if ($pkgupdate && $pkgupdate->update_site_id)
+		{
+			$this->removeComponentUpdate();
+
+			// Now update package update URL
+			$this->setPackageUpdateUrl($pkgupdate);
+		}
+		else if ($pkgupdate && $pkgupdate->extension_id)
+		{
+			$this->removeComponentUpdate();
+
+			// Now set package update URL
+			$this->setPackageUpdateUrl($pkgupdate);
+		}
+		else
+		{
+			// No package installed so fall back to component and set it to update using the package URL :)
+			
+			// Do we already have a record for the update URL for the component - we should remove this 
+			$db->setQuery("select *, exn.extension_id as extension_id  from #__extensions as exn
+	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
+	where exn.type='component'
+	and exn.element='com_jevents'
+	");
+			$cpupdate = $db->loadObject();
+			if ($cpupdate && $cpupdate->update_site_id)
+			{
+				$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
+				$db->query();
+				$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
+				$db->query();
+			}
+
+			// Now set package update URL for the component as opposed to the package ;)
+			$this->setPackageUpdateUrl($cpupdate);
+		}
+
+	}
+
+	private
+			function removeComponentUpdate()
+	{
+		$db = JFactory::getDbo();
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE");
+
+		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
+		$db->setQuery("select * from #__extensions as exn
+	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
+	where exn.type='component'
+	and exn.element='com_jevents'
+	");
+		$cpupdate = $db->loadObject();
+		if ($cpupdate && $cpupdate->update_site_id)
+		{
+			$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
+			$db->query();
+			$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
+			$db->query();
+		}
+
+	}
+
+	private
+			function setPackageUpdateUrl($pkgupdate)
+	{
+		$db  = JFactory::getDbo();
+
+		$version = new JEventsVersion();
+		$version = $version->get('RELEASE');
+		$version = str_replace(" ","",$version);
+		$domain = "ubu.jev20j16.com";
+
+		$extension  = JTable::getInstance("Extension");
+		$extension->load($pkgupdate->extension_id);
+
+		if ($pkgupdate->update_site_id){
+
+		}
+		else {
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES ('JEvents','extension','http://$domain/updates/jevents-update-$version.xml','1','0')");
+			$db->query();
+			echo $db->setErrorMsg();
+			$id = $db->insertid();
+			echo $db->setErrorMsg();
+
+			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
+			$db->query();
+			echo $db->setErrorMsg();
+
+		}
+
+	}
+
 }
 

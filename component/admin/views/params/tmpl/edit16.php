@@ -21,8 +21,17 @@ $version = JEventsVersion::getInstance();
 			[<?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>]
 		</div>
 
-
 		<?php
+		$haslayouts = false;
+		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
+		{
+			$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
+			if (file_exists($config))
+			{
+				$haslayouts = true;
+			}
+		}
+
 		echo JHtml::_('tabs.start', 'config-tabs-' . $this->component->option . '_configuration', array('useCookie' => 1));
 		$fieldSets = $this->form->getFieldsets();
 		foreach ($fieldSets as $name => $fieldSet)
@@ -50,6 +59,16 @@ $version = JEventsVersion::getInstance();
 				{
 					continue;
 				}
+
+				// Hide club update field if no club addons are installed
+				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
+					// disable if no club addons are installed
+					$plugins = JPluginHelper::getPlugin("jevents");
+					if (count($plugins)==0 || !$haslayouts){
+						continue;
+					}
+				}
+
 				$class = isset($field->class) ? $field->class : "";
 
 				if (strlen($class) > 0)
@@ -95,16 +114,6 @@ $version = JEventsVersion::getInstance();
 
 			<div class="clr"></div>
 			<?php
-		}
-
-		$haslayouts = false;
-		foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
-		{
-			$config = JPATH_SITE . "/components/" . JEV_COM_COMPONENT . "/views/" . $viewfile . "/config.xml";
-			if (file_exists($config))
-			{
-				$haslayouts = true;
-			}
 		}
 
 		if ($haslayouts)
