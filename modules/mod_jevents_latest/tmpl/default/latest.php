@@ -1088,6 +1088,18 @@ $this->_modid = $modid;
 					$mins = sprintf("%02d", $mins);
 					$fieldval = str_ireplace("%m", $mins, $fieldval);
 				}
+                                                                        if (stripos($fieldval, "%nopast") !== false)
+                                                                        {
+                                                                                          if($timedelta>=0)
+                                                                                          {
+                                                                                              $fieldval = str_ireplace("%nopast", "", $fieldval);
+                                                                                          }
+                                                                                          else
+                                                                                          {
+                                                                                              $fieldval =  JText::_('JEV_EVENT_FINISHED'); 
+                                                                                          }                                                                                              
+                                                                        }                                                                        
+                                                                        
 
 				$content .= $fieldval;
 				break;
