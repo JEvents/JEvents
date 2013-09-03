@@ -58,6 +58,7 @@
 					<option value="4">JEV_LATEST_DISPLAY_MODE_4</option>
 					<option value="5">JEV_LATEST_DISPLAY_MODE_5</option>
 					<option value="6">JEV_LATEST_DISPLAY_MODE_6</option>
+                                        <option value="7">JEV_LATEST_DISPLAY_MODE_7</option>
 				</field>
 				<field name="modlatest_Days" type="text" default="30" size="2" label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC" />
 				<field name="startnow" type="radio" class="btn-group"  default="0" label="START_NOW" description="START_NOW_DESC">
