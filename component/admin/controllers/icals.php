@@ -184,6 +184,28 @@ class AdminIcalsController extends JControllerForm {
 
 	}
 
+        function reloadall(){
+            if (JFactory::getApplication()->isAdmin()){
+			$redirect_task="icals.list";
+		}
+		else {
+			$redirect_task="day.listevents";
+		}
+              $query = "SELECT icsf.* FROM #__jevents_icsfile as icsf";
+			$db	=& JFactory::getDBO();
+			$db->setQuery($query);
+			$allICS = $db->loadObjectList();
+                    foreach ($allICS as $currentICS){
+                    //only update cals from url
+                   if ($currentICS->icaltype=='0'){
+                        JRequest::setVar('icsid',$currentICS->ics_id);
+                        $testobj=new AdminIcalsController();
+                        $testobj->save();
+                   }
+                   }
+                 $message = JText::_( 'ICS_FILE_IMPORTED' );
+		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
+        } 
 	function save(){
 
 		$authorised = false;
