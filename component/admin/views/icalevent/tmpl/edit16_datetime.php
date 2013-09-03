@@ -51,8 +51,8 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 			$maxyear = $params->get("com_latestyear",2150);
 			$inputdateformat = $params->get("com_editdateformat","d.m.Y");
 			$document = JFactory::getDocument();
-			$js = "\neventEditDateFormat='$inputdateformat';Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
-			$document->addScriptDeclaration($js);
+			//$js = "\neventEditDateFormat='$inputdateformat';Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
+			//$document->addScriptDeclaration($js);
 
 			JEVHelper::loadCalendar("publish_up", "publish_up", $this->row->startDate(),$minyear, $maxyear, 'var elem = $("publish_up");checkDates(elem);fixRepeatDates();',"elem = $('publish_up');checkDates(elem);", $inputdateformat);
 		

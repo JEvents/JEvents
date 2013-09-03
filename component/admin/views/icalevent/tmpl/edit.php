@@ -146,8 +146,6 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		?>
 		<script type="text/javascript" >
                     <?php
-                    $control_name="title";
-
                     if (!empty($this->requiredtags))
                     {
                             foreach ($this->requiredtags as $tag)
