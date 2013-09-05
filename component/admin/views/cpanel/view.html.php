@@ -991,12 +991,14 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
+			//echo ((string) $db->getQuery())."<Br/>";
 			echo $db->setErrorMsg();
 			$id = $db->insertid();
 			echo $db->setErrorMsg();
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
+			//echo ((string) $db->getQuery())."<Br/>";
 			echo $db->setErrorMsg();
 		}
 
