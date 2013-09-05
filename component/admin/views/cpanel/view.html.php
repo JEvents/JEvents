@@ -64,7 +64,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$this->setLayout("cpanel25");
 		}
 
-	//	$this->setUpdateUrls();
+		$this->setUpdateUrls();
 
 	}
 
@@ -200,7 +200,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						$layout = str_replace("layout_", "", $item->get_title());
 						if (JFolder::exists(JEV_PATH . "views/$layout"))
 						{
-// club layouts			 
+// club layouts
 							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
 							if ($xmlfiles1 && count($xmlfiles1) > 0)
 							{
@@ -221,7 +221,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						// package version
 						if (JFolder::exists(JPATH_ADMINISTRATOR . "/manifests/files"))
 						{
-// club layouts			 
+// club layouts
 							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "$layout\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
@@ -403,7 +403,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$apps = array();
 
-// club layouts			 
+// club layouts
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
@@ -490,7 +490,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-// setup the XML file for server	
+// setup the XML file for server
 		/*
 		  $output = '$catmapping = array(' . "\n";
 		  foreach ($apps as $appname => $app)
@@ -676,7 +676,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-// club layouts			 
+// club layouts
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
@@ -827,42 +827,58 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		$params = JComponentHelper::getParams("com_jevents");
 
+		$updates = array("pkg_jevents"=>"com_jevents",
+			"pkg_jevlocations"=>"com_jevlocations",
+			"pkg_jevpeople"=>"com_jevpeople",
+			"pkg_rsvppro"=>"com_rsvppro",
+			"pkg_jevtags"=>"com_jevtags"
+			);
+
+		foreach ($updates as $pkg=>$com)
+		{
+			$this->setUpdateUrlsByPackage($pkg, $com) ;
+		}
+	}
+
+	function setUpdateUrlsByPackage($pkg, $com)
+	{
 		$db = JFactory::getDbo();
 
 		// Process the package
 		$db = JFactory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
+		$this->removeComponentUpdate($com);
+
+		// Now check and setup the package update URL
 		$db->setQuery("select *, exn.extension_id as extension_id   from #__extensions as exn
 LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 where exn.type='package'
-and exn.element='pkg_jevents'
+and exn.element='$pkg'
 ");
 		$pkgupdate = $db->loadObject();
+		// we have a package but not an update record
 		if ($pkgupdate && $pkgupdate->update_site_id)
 		{
-			$this->removeComponentUpdate();
-
 			// Now update package update URL
 			$this->setPackageUpdateUrl($pkgupdate);
 		}
+		// we have a package and an update record
 		else if ($pkgupdate && $pkgupdate->extension_id)
 		{
-			$this->removeComponentUpdate();
-
 			// Now set package update URL
 			$this->setPackageUpdateUrl($pkgupdate);
 		}
 		else
 		{
 			// No package installed so fall back to component and set it to update using the package URL :)
-			
-			// Do we already have a record for the update URL for the component - we should remove this 
+
+			// Do we already have a record for the update URL for the component - we should remove this
 			$db->setQuery("select *, exn.extension_id as extension_id  from #__extensions as exn
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 	where exn.type='component'
-	and exn.element='com_jevents'
+	and exn.element='$com'
 	");
 			$cpupdate = $db->loadObject();
 			if ($cpupdate && $cpupdate->update_site_id)
@@ -874,13 +890,15 @@ and exn.element='pkg_jevents'
 			}
 
 			// Now set package update URL for the component as opposed to the package ;)
-			$this->setPackageUpdateUrl($cpupdate);
+			if ($cpupdate && $cpupdate->extension_id){
+				$this->setPackageUpdateUrl($cpupdate);
+			}
 		}
 
 	}
 
 	private
-			function removeComponentUpdate()
+			function removeComponentUpdate($com)
 	{
 		$db = JFactory::getDbo();
 		$version = JEventsVersion::getInstance();
@@ -891,7 +909,7 @@ and exn.element='pkg_jevents'
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 	where exn.type='component'
-	and exn.element='com_jevents'
+	and exn.element='$com'
 	");
 		$cpupdate = $db->loadObject();
 		if ($cpupdate && $cpupdate->update_site_id)
@@ -914,9 +932,16 @@ and exn.element='pkg_jevents'
 		$version = str_replace(" ","",$version);
 		$domain = "ubu.jev20j16.com";
 
-		$extension  = JTable::getInstance("Extension");
-		$extension->load($pkgupdate->extension_id);
+		//$extension  = JTable::getInstance("Extension");
+		//$extension->load($pkgupdate->extension_id);
+		if ($pkgupdate->client_id==0){
+			// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
+			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
+			$db->query();
+			echo $db->setErrorMsg();
+		}
 
+		// We already have an update site
 		if ($pkgupdate->update_site_id){
 
 		}
@@ -930,7 +955,6 @@ and exn.element='pkg_jevents'
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
 			echo $db->setErrorMsg();
-
 		}
 
 	}
