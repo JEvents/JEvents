@@ -834,6 +834,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro","folder"=>"", "type"=>"package"),
 			array("element"=>"pkg_jevtags","name"=>"com_jevtags","folder"=>"", "type"=>"package"),
 			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevsendfb","name"=>"jevsendfb","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevautotweet","name"=>"jevautotweet","folder"=>"system", "type"=>"plugin"),
+			array("element"=>"jevautotweet","name"=>"jevautotweet","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevfiles","name"=>"jevfiles","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevagendaminutes","name"=>"jevagendaminutes","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevent_embed","name"=>"jevent_embed","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevuser","name"=>"jevuser","folder"=>"user", "type"=>"plugin"),
 			);
 
 		foreach ($updates as $package)
@@ -964,13 +971,15 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($extension->folder){
 				$extensionname = "plg_".$extension->folder."_".$extensionname;
 			}
+			/*
+			 // set the JEvents Version number in the update URL
 			if (isset($extension->manifest_cache)){
 				$extensionmanifest = json_decode($extension->manifest_cache);
 				if (isset($extensionmanifest->version)) {
 					$version = $extensionmanifest->version;
 				}
 			}
-
+			*/
 			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
 			echo $db->setErrorMsg();
@@ -994,5 +1003,4 @@ and exn.element='$pkg' and exn.folder='$folder'
 	}
 
 }
-
 
