@@ -825,7 +825,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 	function setUpdateUrls()
 	{
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$updates = array("pkg_jevents"=>"com_jevents",
 			"pkg_jevlocations"=>"com_jevlocations",
@@ -927,13 +927,19 @@ and exn.element='$pkg'
 	{
 		$db  = JFactory::getDbo();
 
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$clubcode = $params->get("clubcode","");
+		$filter = new JFilterInput();
+		$clubcode = $filter->clean($clubcode, "BASE64")."/";
+
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
 		$domain = "ubu.jev20j16.com";
 
-		//$extension  = JTable::getInstance("Extension");
-		//$extension->load($pkgupdate->extension_id);
+		$extension  = JTable::getInstance("Extension");
+		$extension->load($pkgupdate->extension_id);
+
 		if ($pkgupdate->client_id==0){
 			// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
 			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
@@ -943,10 +949,20 @@ and exn.element='$pkg'
 
 		// We already have an update site
 		if ($pkgupdate->update_site_id){
+			$extensionname = str_replace(" ","_",$extension->name);
+			if (isset($extension->manifest_cache)){
+				$extensionmanifest = json_decode($extension->manifest_cache);
+				if (isset($extensionmanifest->version)) {
+					$version = $extensionmanifest->version;
+				}
+			}
 
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->query();
+			echo $db->setErrorMsg();
 		}
 		else {
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES ('JEvents','extension','http://$domain/updates/jevents-update-$version.xml','1','0')");
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->setErrorMsg();
 			$id = $db->insertid();
