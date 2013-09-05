@@ -827,43 +827,52 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$updates = array("pkg_jevents"=>"com_jevents",
-			"pkg_jevlocations"=>"com_jevlocations",
-			"pkg_jevpeople"=>"com_jevpeople",
-			"pkg_rsvppro"=>"com_rsvppro",
-			"pkg_jevtags"=>"com_jevtags"
+		$updates = array(
+			array("element"=>"pkg_jevents","name"=>"com_jevents","folder"=>"", "type"=>"package"),
+			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations","folder"=>"", "type"=>"package"),
+			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople","folder"=>"", "type"=>"package"),
+			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro","folder"=>"", "type"=>"package"),
+			array("element"=>"pkg_jevtags","name"=>"com_jevtags","folder"=>"", "type"=>"package"),
+			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
 			);
 
-		foreach ($updates as $pkg=>$com)
+		foreach ($updates as $package)
 		{
-			$this->setUpdateUrlsByPackage($pkg, $com) ;
+			$this->setUpdateUrlsByPackage($package) ;
 		}
 	}
 
-	function setUpdateUrlsByPackage($pkg, $com)
+	function setUpdateUrlsByPackage($package)
 	{
+		$pkg = $package["element"];
+		$com= $package["name"];
+		$folder= $package["folder"];
+		$type= $package["type"];
+
 		$db = JFactory::getDbo();
 
 		// Process the package
 		$db = JFactory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		$this->removeComponentUpdate($com);
+		if ($folder=="") {
+			$this->removeComponentUpdate($com);
+		}
 
 		// Now check and setup the package update URL
-		$db->setQuery("select *, exn.extension_id as extension_id   from #__extensions as exn
+		$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type from #__extensions as exn
 LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-where exn.type='package'
-and exn.element='$pkg'
+where exn.type='$type'
+and exn.element='$pkg' and exn.folder='$folder'
 ");
 		$pkgupdate = $db->loadObject();
-		// we have a package but not an update record
+		// we have a package and an update record
 		if ($pkgupdate && $pkgupdate->update_site_id)
 		{
 			// Now update package update URL
 			$this->setPackageUpdateUrl($pkgupdate);
 		}
-		// we have a package and an update record
+		// we have a package but not an update record
 		else if ($pkgupdate && $pkgupdate->extension_id)
 		{
 			// Now set package update URL
@@ -940,16 +949,21 @@ and exn.element='$pkg'
 		$extension  = JTable::getInstance("Extension");
 		$extension->load($pkgupdate->extension_id);
 
-		if ($pkgupdate->client_id==0){
-			// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
+		// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
+		/*
+		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
 			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
 			$db->query();
 			echo $db->setErrorMsg();
 		}
+		 */
 
 		// We already have an update site
 		if ($pkgupdate->update_site_id){
-			$extensionname = str_replace(" ","_",$extension->name);
+			$extensionname = str_replace(" ","_",$extension->element);
+			if ($extension->folder){
+				$extensionname = "plg_".$extension->folder."_".$extensionname;
+			}
 			if (isset($extension->manifest_cache)){
 				$extensionmanifest = json_decode($extension->manifest_cache);
 				if (isset($extensionmanifest->version)) {
@@ -962,6 +976,10 @@ and exn.element='$pkg'
 			echo $db->setErrorMsg();
 		}
 		else {
+			$extensionname = str_replace(" ","_",$extension->element);
+			if ($extension->folder){
+				$extensionname = "plg_".$extension->folder."_".$extensionname;
+			}
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->setErrorMsg();
@@ -976,4 +994,5 @@ and exn.element='$pkg'
 	}
 
 }
+
 
