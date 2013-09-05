@@ -1060,6 +1060,7 @@ $this->_modid = $modid;
 
 			case 'countdown':
 				$timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
+                                                                        $eventPassed = !($timedelta>=0);
 				$fieldval = $dateParm;
 				$shownsign = false;
 				if (stripos($fieldval, "%d") !== false)
@@ -1090,7 +1091,7 @@ $this->_modid = $modid;
 				}
                                                                         if (stripos($fieldval, "%nopast") !== false)
                                                                         {
-                                                                                          if($timedelta>=0)
+                                                                                          if(!$eventPassed)
                                                                                           {
                                                                                               $fieldval = str_ireplace("%nopast", "", $fieldval);
                                                                                           }
