@@ -399,6 +399,16 @@ class AdminCpanelController extends JControllerAdmin
 			$cat->store();
 		}
 
+		// Fix assets with no parents set!
+		$db->setQuery("SELECT * FROM #__assets WHERE name like 'com_jevpeople.category.%' AND parent_id=0");
+		$blankparentassets = $db->loadObjectList('id');
+		foreach ($blankparentassets as $blankparentasset){
+			$catid = str_replace('com_jevpeople.category.', "", $blankparentasset->name);
+			$cat = JTable::getInstance("category");
+			$cat->load($catid);
+			$cat->store();
+		}
+
 	}
 
 	private function insertAsset($object)
