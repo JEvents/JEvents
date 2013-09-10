@@ -239,7 +239,7 @@ class AdminIcalsController extends JControllerForm {
 				if ($currentICS->autorefresh){
 					$authorised = true;
 					$autorefresh=1;
-			}
+				}
 				
 			}
 			else {

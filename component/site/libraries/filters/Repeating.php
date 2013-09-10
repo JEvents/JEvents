@@ -25,10 +25,10 @@ class jevRepeatingFilter extends jevBooleanFilter
 	function _createFilter($prefix=""){
 		if (!$this->filterField ) return "";
 		if ($this->filter_value ==0){
-		$filter = "rr.freq='none'";
+		$filter = "(rr.freq='none' OR rr.freq is null)";
                 }
                 else if ($this->filter_value ==1){
-		$filter = "rr.freq!='none'";
+		$filter = "rr.freq<>'none'";
                 }
                 else $filter="";
 		return $filter;	
