@@ -416,7 +416,7 @@ class DefaultModCalView
 		$db	=& JFactory::getDBO();
 
 		// this will get the viewname based on which classes have been implemented
-		$viewname = $this->getTheme();
+		$viewname = $this->jevlayout;
 
 		$cfg = & JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;

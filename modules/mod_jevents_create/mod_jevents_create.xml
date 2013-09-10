@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="0.1.3" client="site" method="upgrade">
+    <name>JEvents Create Module</name>
+    <author>Owen Petrie</author>
+    <version>0.1.3</version>
+    <description>Creates an event on the date selected using the settings specified in the options</description>
+    <files>
+        <filename>mod_jevents_create.xml</filename>
+        <filename module="mod_jevents_create">mod_jevents_create.php</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.mod_jevents_create.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+                <field
+                    name="event_name"
+                    type="text" required="1"
+                    label="MOD_JEVENTS_CREATE_EVENT_NAME"
+                    description="MOD_JEVENTS_CREATE_EVENT_NAME" />
+                <field
+                    name="event_desc"
+                    type="textarea"
+                    label="MOD_JEVENTS_CREATE_EVENT_DESC"
+                    description="MOD_JEVENTS_CREATE_EVENT_DESC" />                               
+                <field name="displaytitle" type="jevboolean" class="btn-group" default="0" label="MOD_JEVENTS_CREATE_DISP_TITLE" description="MOD_JEVENTS_CREATE_DISP_TITLE_TIP" />				
+                <field name="displaydesc" type="jevboolean" class="btn-group" default="0" label="MOD_JEVENTS_CREATE_DISP_DESC" description="MOD_JEVENTS_CREATE_DISP_DESC_TIP"/>				
+                <field name="autosubmit" type="jevboolean" class="btn-group" default="0" label="MOD_JEVENTS_CREATE_AUTOSUBMIT" description="MOD_JEVENTS_CREATE_AUTOSUBMIT_TIP" />          
+                <field name="catidnew" type="jevcategorynew" required="1" default="" size="10" multiple="false" extension="com_jevents" label="MOD_JEVENTS_CREATE_CATEGORY" description="MOD_JEVENTS_CREATE_CATEGORY" />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
