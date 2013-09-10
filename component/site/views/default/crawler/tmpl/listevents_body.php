@@ -4,13 +4,14 @@ defined('_JEXEC') or die('Restricted access');
 $data = $this->data;
 
 $Itemid = JEVHelper::getItemid();
-
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$Itemid = $params->get("crawlertarget",$Itemid);
 $num_events = count($data['rows']);
 if( $num_events > 0 ){
 	for( $r = 0; $r < $num_events; $r++ ){
 		$row = $data['rows'][$r];
 
-		$rowlink = $row->viewDetailLink($row->yup(),$row->mup(),$row->dup(),true);
+		$rowlink = $row->viewDetailLink($row->yup(),$row->mup(),$row->dup(),true, $Itemid);
 
 		?>
 		<a class="ev_link_row" href="<?php echo $rowlink; ?>"  title="<?php echo JEventsHTML::special($row->title()) ;?>"><?php echo $row->title() ;?></a>

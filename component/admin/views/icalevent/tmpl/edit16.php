@@ -14,6 +14,8 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+ob_start();
+
 JHTML::_('behavior.tooltip');
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -426,3 +428,10 @@ else
 		?>
 	</form>
 </div>
+
+<?php
+// fix for bad HTML in tabs!
+$editpagecode = ob_get_clean();
+//$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
+//$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
+echo $editpagecode;
