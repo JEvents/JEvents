@@ -835,12 +835,20 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"pkg_jevtags","name"=>"com_jevtags","folder"=>"", "type"=>"package"),
 			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
 			array("element"=>"jevsendfb","name"=>"jevsendfb","folder"=>"jevents", "type"=>"plugin"),
-			array("element"=>"jevautotweet","name"=>"jevautotweet","folder"=>"system", "type"=>"plugin"),
-			array("element"=>"jevautotweet","name"=>"jevautotweet","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"autotweetjevents","name"=>"autotweetjevents","folder"=>"system", "type"=>"plugin"),
 			array("element"=>"jevfiles","name"=>"jevfiles","folder"=>"jevents", "type"=>"plugin"),
-			array("element"=>"jevagendaminutes","name"=>"jevagendaminutes","folder"=>"jevents", "type"=>"plugin"),
-			array("element"=>"jevent_embed","name"=>"jevent_embed","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"agendaminutes","name"=>"agendaminutes","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevent_embed","name"=>"jevent_embed","folder"=>"content", "type"=>"plugin"),
 			array("element"=>"jevuser","name"=>"jevuser","folder"=>"user", "type"=>"plugin"),
+			array("element"=>"jevcalendar","name"=>"jevcalendar","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevcatcal","name"=>"jevcatcal","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevcck","name"=>"jevcck","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"k2embedded","name"=>"k2embedded","folder"=>"k2", "type"=>"plugin"),// TODO as 3.x version
+			array("element"=>"jevcreator","name"=>"jevcreator","folder"=>"content", "type"=>"plugin"),
+			array("element"=>"jevcustomfields","name"=>"jevcustomfields","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevfeatured","name"=>"jevfeatured","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevhiddendetail","name"=>"jevhiddendetail","folder"=>"jevents", "type"=>"plugin"),
 			);
 
 		foreach ($updates as $package)
@@ -943,10 +951,14 @@ and exn.element='$pkg' and exn.folder='$folder'
 	{
 		$db  = JFactory::getDbo();
 
+		$sitedomain = rtrim(str_replace(array('https://','http://'),"",JURI::root()),'/');
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$clubcode = $params->get("clubcode","");
 		$filter = new JFilterInput();
-		$clubcode = $filter->clean($clubcode, "BASE64")."/";
+		$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
+
+		$clubcode = base64_encode($clubcode);
 
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
@@ -991,14 +1003,12 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
-			//echo ((string) $db->getQuery())."<Br/>";
 			echo $db->setErrorMsg();
 			$id = $db->insertid();
 			echo $db->setErrorMsg();
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
-			//echo ((string) $db->getQuery())."<Br/>";
 			echo $db->setErrorMsg();
 		}
 

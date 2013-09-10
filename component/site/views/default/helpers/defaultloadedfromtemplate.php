@@ -736,21 +736,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					break;
 					
 				case "{{LASTREPEAT}}":
+				case "{{LASTREPEATEND}}":
 					static $dolastrepeat;
 					if (!isset($dolastrepeat))
 					{
-						$dolastrepeat = (strpos($template_value, "{{LASTREPEAT}}") !== false);
+						$dolastrepeat = (strpos($template_value, "{{LASTREPEAT}}") !== false || strpos($template_value, "{{LASTREPEATEND}}") !== false);
 					}
 					if ($dolastrepeat)
 					{
 						$search[] = "{{LASTREPEAT}}";
 						$lastrepeat = $event->getLastRepeat();
-						if ($lastrepeat->rp_id()==$event->rp_id()){
-							$replace[]="";
+						if ($lastrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
 						}
-						else {
-							$replace[] = "<a class='ev_lastrepeat' href='".$lastrepeat->viewDetailLink($lastrepeat->yup(), $lastrepeat->mup(), $lastrepeat->dup(), true)."' title='".JText::_('JEV_LASTREPEAT')."' >".JText::_('JEV_LASTREPEAT')."</a>";
+						else
+						{
+							$replace[] = "<a class='ev_lastrepeat' href='" . $lastrepeat->viewDetailLink($lastrepeat->yup(), $lastrepeat->mup(), $lastrepeat->dup(), true) . "' title='" . JText::_('JEV_LASTREPEAT') . "' >" . JText::_('JEV_LASTREPEAT') . "</a>";
 						}
+						$blank[] = "";
+
+						$search[] = "{{LASTREPEATEND}}";
+						$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
 						$blank[] = "";
 					}
 					break;
