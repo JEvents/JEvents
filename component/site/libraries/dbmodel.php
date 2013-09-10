@@ -1493,7 +1493,7 @@ class JEventsDBModel
 		$db->setQuery($query);
 		if ($adminuser)
 		{
-			//echo $db->getQuery();
+			//echo $db->getQuery()."<br/>";
 			//echo $db->explain();
 			//exit();
 		}
