@@ -34,7 +34,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
                                     $size = 5;
                                     $options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
                                     $options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
-                                    $options['LOCATION'] = JText::_("JEV_FIELD_LOCATION",true);
+                                    $options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
                                     $options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
                                     $options['EXTRAINFO'] = JText::_("JEV_FIELD_EXTRAINFO",true);
                                     $group = array();                                    

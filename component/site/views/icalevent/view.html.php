@@ -42,6 +42,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+                                    JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		// Set toolbar items for the page
