@@ -63,7 +63,7 @@ class DefaultViewNavTableBarIconic {
 	}
 
 	function _genericMonthNavigation($dates, $alts, $which, $icon){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$task = $this->task;
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid. '&';
 

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="0.1.1" client="site" method="upgrade">
-    <name>JEvents Detail Module</name>
-    <author>Owen Petrie</author>
-    <version>0.1.1</version>
-    <description>Displays data from the event detail layout</description>
-    <files>
-        <filename>mod_jevents_detail.xml</filename>
-        <filename module="mod_jevents_detail">mod_jevents_detail.php</filename>
-        <filename>helper.php</filename>
-        <filename>tmpl/default.php</filename>
-    </files>
-    <languages folder="language">
+	<name>JEvents Detail Module</name>
+	<author>Owen Petrie</author>
+	<version>3.1.8</version>
+	<creationDate>August 2013</creationDate>
+	<copyright>(C) 2013 GWE Systems Ltd</copyright>
+	<description>Displays data from the event detail layout</description>
+	<files>
+		<filename>mod_jevents_detail.xml</filename>
+		<filename module="mod_jevents_detail">mod_jevents_detail.php</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+	</files>
+	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.mod_jevents_detail.ini</language>
 	</languages>
-    <config>
-        <fields name="params">
+	<config>
+		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field
 					name="moduleclass_sfx"
@@ -22,6 +24,6 @@
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			</fieldset>
-	</fields>
-    </config>
+		</fields>
+	</config>
 </extension>

@@ -1060,8 +1060,20 @@ $this->_modid = $modid;
 
 			case 'countdown':
 				$timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
+                                    $eventPassed = !($timedelta>=0);
 				$fieldval = $dateParm;
 				$shownsign = false;
+				if (stripos($fieldval, "%nopast") !== false)
+				{
+					if(!$eventPassed)
+					{
+						$fieldval = str_ireplace("%nopast", "", $fieldval);
+					}
+					else
+					{
+						$fieldval =  JText::_('JEV_EVENT_FINISHED');
+					}
+				}
 				if (stripos($fieldval, "%d") !== false)
 				{
 					$days = intval($timedelta / (60 * 60 * 24));
@@ -1087,7 +1099,7 @@ $this->_modid = $modid;
 						$mins = abs($mins);
 					$mins = sprintf("%02d", $mins);
 					$fieldval = str_ireplace("%m", $mins, $fieldval);
-				}
+				}                                                                        
 
 				$content .= $fieldval;
 				break;

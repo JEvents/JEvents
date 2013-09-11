@@ -275,7 +275,7 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search");
+		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
@@ -401,7 +401,7 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search");
+		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
@@ -536,7 +536,7 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search");
+		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
@@ -1134,7 +1134,7 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search");
+		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
@@ -1266,7 +1266,7 @@ class JEventsDBModel
 
 		if (!$filters)
 		{
-			$filterarray = array("published", "justmine", "category", "search");
+			$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 			// If there are extra filters from the module then apply them now
 			$reg = & JFactory::getConfig();
@@ -1493,7 +1493,7 @@ class JEventsDBModel
 		$db->setQuery($query);
 		if ($adminuser)
 		{
-			//echo $db->getQuery();
+			//echo $db->getQuery()."<br/>";
 			//echo $db->explain();
 			//exit();
 		}
@@ -1612,7 +1612,7 @@ class JEventsDBModel
 
 		if (!$filters)
 		{
-			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search"));
+			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
@@ -1747,7 +1747,7 @@ class JEventsDBModel
 
 		if (!$filters)
 		{
-			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search"));
+			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
@@ -1871,10 +1871,10 @@ class JEventsDBModel
 			$extrajoin = array();
 			
 			if ($includeUnpublished){
-				$filterarray = array("justmine",  "search");
+				$filterarray = array("justmine",  "search", "repeating");
 			}
 			else {
-				$filterarray = array("published", "justmine",  "search");
+				$filterarray = array("published", "justmine",  "search", "repeating");
 			}
 
 			// If there are extra filters from the module then apply them now
@@ -1989,10 +1989,10 @@ class JEventsDBModel
 			$extrajoin = array();
 			
 			if ($includeUnpublished){
-				$filterarray = array("justmine",  "search");
+				$filterarray = array("justmine",  "search", "repeating");
 			}
 			else {
-				$filterarray = array("published", "justmine",  "search");
+				$filterarray = array("published", "justmine",  "search", "repeating");
 			}
 
 			// If there are extra filters from the module then apply them now
@@ -2154,7 +2154,7 @@ class JEventsDBModel
 			$where = " AND ev.created_by = '$creator_id' ";
 		}
 
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search"));
+		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$needsgroup = false;
@@ -2265,7 +2265,7 @@ class JEventsDBModel
 
 		$frontendPublish = JEVHelper::isEventPublisher();
 
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search"));
+		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$needsgroup = false;
@@ -2440,7 +2440,7 @@ class JEventsDBModel
 		  }
 		 */
 
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search"));
+		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
@@ -2512,7 +2512,7 @@ class JEventsDBModel
 
 		// State is managed by plugin
 
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search"));
+		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "startdate", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
@@ -2568,7 +2568,7 @@ class JEventsDBModel
 
 		if (!$filters)
 		{
-			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search"));
+			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
@@ -2724,7 +2724,7 @@ class JEventsDBModel
 			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
 		}
 
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search"));
+		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
