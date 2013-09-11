@@ -197,13 +197,12 @@ class AdminIcalsController extends JControllerForm {
 			$allICS = $db->loadObjectList();
                     foreach ($allICS as $currentICS){
                     //only update cals from url
-                   if ($currentICS->icaltype=='0'){
+                   if ($currentICS->icaltype=='0' && $currentICS->autorefresh==1){
                         JRequest::setVar('icsid',$currentICS->ics_id);
-                        $testobj=new AdminIcalsController();
-                        $testobj->save();
+                        $this->save();
                    }
                    }
-                 $message = JText::_( 'ICS_FILE_IMPORTED' );
+                $message = JText::_( 'ICS_ALL_FILES_IMPORTED' );
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
         } 
 	function save(){
