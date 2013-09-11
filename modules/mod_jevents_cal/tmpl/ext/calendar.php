@@ -73,7 +73,7 @@ class ExtModCalView extends DefaultModCalView
 		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","135px");
-                $height = $this->modparams->get("mod_cal_height","100%");
+                $height = $this->modparams->get("mod_cal_height","");
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$to_day     = date("Y-m-d", $this->timeWithOffset);
@@ -94,7 +94,7 @@ class ExtModCalView extends DefaultModCalView
 			$cal_next_month_year 	+=1;
 		}
 
-		$viewname = $this->jevlayout;
+		$viewname = $this->getTheme();
 		$viewpath = JURI::root(true) . "/components/$compname/views/".$viewname."/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref = "index.php?option=$compname&Itemid=".$this->myItemid.$this->cat."&task=";
@@ -141,14 +141,14 @@ class ExtModCalView extends DefaultModCalView
 
 		$content = <<<START
 <div id="extcal_minical">
-	<table cellspacing="1" cellpadding="0" border="0" align="center" style="width:$width; height:$height; border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
+	<table cellspacing="1" cellpadding="0" border="0" align="center" style="border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
 		<tr>
 			<td>
 START;
 		if( $this->minical_showlink ){
 		$content .= <<<START
 			
-				<table style="width:100%; height:10%;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
+				<table style="width:$width;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
 					<tr>
 						<td valign="middle" height="18" align="center">
 							$linkprevious
@@ -156,7 +156,7 @@ START;
 		                <td width="98%" valign="middle" nowrap="nowrap" height="18" align="center" class="extcal_month_label">
 							$linkcurrent
 		                </td>
-						<td valign="middle" height="18" align="center" style="position: relative; left: -3px;">
+						<td valign="middle" height="18" align="center">
 		                    $linknext
                 		</td>
 					</tr>
@@ -164,7 +164,7 @@ START;
 START;
 }
 		$content .= <<<START
-				<table style="width:100%; height:90%" class="extcal_weekdays">
+				<table style="width:$width;height:$height" class="extcal_weekdays">
 START;
 		$lf="\n";
 
