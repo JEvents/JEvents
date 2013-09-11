@@ -91,6 +91,7 @@
                                         <option value="0">JEV_LATEST_NO_EVENT_DISPLAY_OPTION_0</option>
 					<option value="1">JEV_LATEST_NO_EVENT_DISPLAY_OPTION_1</option>	
                                 </field>
+                                
                                 <field name="modlatest_DisDateStyle" type="radio" class="btn-group"  default="0" label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
