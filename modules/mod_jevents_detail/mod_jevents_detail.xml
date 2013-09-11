@@ -2,7 +2,9 @@
 <extension type="module" version="0.1.1" client="site" method="upgrade">
     <name>JEvents Detail Module</name>
     <author>Owen Petrie</author>
-    <version>0.1.1</version>
+    <authorEmail></authorEmail>
+    <authorUrl>http://www.jevents.net</authorUrl>
+    <version>1.0.1</version>
     <description>Displays data from the event detail layout</description>
     <files>
         <filename>mod_jevents_detail.xml</filename>
