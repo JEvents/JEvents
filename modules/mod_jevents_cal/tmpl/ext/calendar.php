@@ -74,6 +74,7 @@ class ExtModCalView extends DefaultModCalView
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","135px");
                 $height = $this->modparams->get("mod_cal_height","auto");
+                $rowheight = $this->modparams->get("mod_cal_rowheight","auto");
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$to_day     = date("Y-m-d", $this->timeWithOffset);
@@ -164,7 +165,7 @@ START;
 START;
 }
 		$content .= <<<START
-				<table style="width:100%; height:100%; padding-top:23px;" class="extcal_weekdays">
+				<table style="width:100%; " class="extcal_weekdays">
 START;
 		$lf="\n";
 
@@ -179,7 +180,7 @@ START;
 		$datacount = count($data["dates"]);
 		$dn=0;
 		for ($w=0;$w<6 && $dn<$datacount;$w++){
-			$content .="<tr>\n";
+			$content .="<tr style='height:$rowheight;'>\n";
 			// the week column
 			list($week,$link) = each($data['weeks']);
 			$content .= '<td class="extcal_weekcell">';

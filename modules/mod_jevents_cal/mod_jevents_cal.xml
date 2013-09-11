@@ -107,6 +107,7 @@
 				</field>
 				<field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH" description="COM_MODULES_CAL_WIDTH_DESC" />
 				<field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT" description="COM_MODULES_CAL_HEIGHT_DESC" />
+				<field name="mod_cal_rowheight" type="text" default="" label="COM_MODULES_CAL_ROW_HEIGHT" description="COM_MODULES_CAL_ROW_HEIGHT_DESC" />
 				<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group"  default="0" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
 			</fieldset>
 		</fields>
