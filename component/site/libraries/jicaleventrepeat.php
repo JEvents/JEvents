@@ -320,5 +320,73 @@ class jIcalEventRepeat extends jIcalEventDB{
 		}
 
 	}
+        
+        function previousnextEventLinks(){
+		$cfg = & JEVConfig::getInstance();
+                $result="";
+		if ($this->prevEvent() || $this->nextEvent()){
+			if ($this->prevEvent()){
+				$result .= "<div class='ev_prevrepeat'>";
+				$result .= "<a href='".$this->prevEvent()."' title='".JText::_('JEV_PREVIOUSEVENT')."' class='".$cfg->get('com_navbarcolor')."'>".JText::_('JEV_PREVIOUSEVENT')."</a>";
+				$result .= "</div>";
+			}
+			if ($this->nextEvent()){
+				$result .= "<div class='ev_nextrepeat'>";
+				$result .= "<a href='".$this->nextEvent()."' title='".JText::_('JEV_NEXTEVENT')."' class='".$cfg->get('com_navbarcolor')."'>".JText::_('JEV_NEXTEVENT')."</a>";
+				$result .= "</div>";
+			}
+		}
+		return $result;
+	}
 
+        function prevEvent(){
+		if (!isset($this->_prevEvent)){
+			$this->getAdjacentEvents();
+		}
+		return $this->_prevEvent;
+	}
+
+	function nextEvent(){
+		if (is_null($this->_nextEvent)){
+			$this->getAdjacentEvents();
+		}
+		return $this->_nextEvent;
+	}
+        
+        private function getAdjacentEvents(){
+
+		$Itemid	= JEVHelper::getItemid();
+		list($year,$month,$day) = JEVHelper::getYMD();
+
+		$db	=& JFactory::getDBO();
+
+		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.startrepeat<='".$this->_startrepeat."' AND (rpt.rp_id<'".$this->rp_id."' OR rpt.startrepeat<'".$this->_startrepeat."') ORDER BY rpt.startrepeat DESC, rpt.rp_id DESC limit 1";
+		$db->setQuery($sql);
+		$prior = $db->loadObject();
+		if (!is_null($prior)) {
+			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$prior->rp_id .'&Itemid='.$Itemid
+			."&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($prior->title);
+			$link = JRoute::_( $link  );
+			$this->_prevEvent = $link;
+		}
+		else {
+			$this->_prevEvent = false;
+		}
+
+		$sql = "SELECT rpt.*,det.summary as title, YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE  rpt.startrepeat>='".$this->_startrepeat."' AND (rpt.rp_id>'".$this->rp_id."' OR rpt.startrepeat>'".$this->_startrepeat."') ORDER BY rpt.startrepeat ASC, rpt.rp_id ASC limit 1";
+		$db->setQuery($sql);
+		$post = $db->loadObject();
+		if (!is_null($post)) {
+			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$post->rp_id .'&Itemid='.$Itemid
+			."&year=$post->yup&month=$post->mup&day=$post->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($post->title);
+			$link = JRoute::_( $link  );
+			$this->_nextEvent = $link;
+		}
+		else {
+			$this->_nextEvent = false;
+		}
+
+	}
 }
