@@ -240,14 +240,13 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 				// end of today + $days
 				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
 				break;
-
-			case 4:
                         case 7:
-                            $beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m -$this->rangeDays, 1, $this->now_Y)) . " 00:00:00";
+                            $beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
 				// end of this month
-				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m + $this->rangeDays, 0, $this->now_Y)) . " 23:59:59";
+				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
 				if($this->maxEvents)$this->maxEvents=$this->maxEvents*2;
                                 break;
+			case 4:                      
 			default:
 				// beginning of this month
 				$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, 1, $this->now_Y)) . " 00:00:00";
