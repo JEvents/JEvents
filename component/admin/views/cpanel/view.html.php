@@ -828,28 +828,56 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$updates = array(
-			array("element"=>"pkg_jevents","name"=>"com_jevents","folder"=>"", "type"=>"package"),
-			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations","folder"=>"", "type"=>"package"),
-			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople","folder"=>"", "type"=>"package"),
-			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro","folder"=>"", "type"=>"package"),
-			array("element"=>"pkg_jevtags","name"=>"com_jevtags","folder"=>"", "type"=>"package"),
+			array("element"=>"pkg_jevents","name"=>"com_jevents", "type"=>"package"),
+			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations", "type"=>"package"),
+			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople", "type"=>"package"),
+			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro", "type"=>"package"),
+			array("element"=>"pkg_jevtags","name"=>"com_jevtags", "type"=>"package"),
+
+			// Silver - AnonUsers
 			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - AutoTweet
 			array("element"=>"jevsendfb","name"=>"jevsendfb","folder"=>"jevents", "type"=>"plugin"),
 			array("element"=>"autotweetjevents","name"=>"autotweetjevents","folder"=>"system", "type"=>"plugin"),
+			// Silver - MatchingEvents
+			array("element"=>"jevmatchingevents","name"=>"jevmatchingevents","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - StandardImage
 			array("element"=>"jevfiles","name"=>"jevfiles","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - agendaminutes
 			array("element"=>"agendaminutes","name"=>"agendaminutes","folder"=>"jevents", "type"=>"plugin"),
 			array("element"=>"jevent_embed","name"=>"jevent_embed","folder"=>"content", "type"=>"plugin"),
+			// Silver - authorisedusers
 			array("element"=>"jevuser","name"=>"jevuser","folder"=>"user", "type"=>"plugin"),
+			// Silver - calendar
 			array("element"=>"jevcalendar","name"=>"jevcalendar","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - catcal
 			array("element"=>"jevcatcal","name"=>"jevcatcal","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - cck
 			array("element"=>"jevcck","name"=>"jevcck","folder"=>"jevents", "type"=>"plugin"),
-			array("element"=>"k2embedded","name"=>"k2embedded","folder"=>"k2", "type"=>"plugin"),// TODO as 3.x version
+			array("element"=>"k2embedded","name"=>"k2embedded","folder"=>"k2", "type"=>"plugin"),
+			// Silver - creator
 			array("element"=>"jevcreator","name"=>"jevcreator","folder"=>"content", "type"=>"plugin"),
+			// Silver - customfields
 			array("element"=>"jevcustomfields","name"=>"jevcustomfields","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - Dynamic legend
+			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
+			// Silver - facebook
 			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - featured
 			array("element"=>"jevfeatured","name"=>"jevfeatured","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - hiddendetail
 			array("element"=>"jevhiddendetail","name"=>"jevhiddendetail","folder"=>"jevents", "type"=>"plugin"),
-			);
+			// Silver - jomsocial -  TODO
+			array("element"=>"jevjsstream","name"=>"jevjsstream","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevents","name"=>"jevents","folder"=>"community", "type"=>"plugin"),
+			// Silver - layouts
+			array("element"=>"extplus","name"=>"extplus","type"=>"file"),
+			array("element"=>"ruthin","name"=>"ruthin","type"=>"file"),
+			array("element"=>"iconic","name"=>"iconic","type"=>"file"),
+			array("element"=>"map","name"=>"map","type"=>"file"),
+			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
+			array("element"=>"zim","name"=>"zim","type"=>"file"),
+		);
 
 		foreach ($updates as $package)
 		{
@@ -861,7 +889,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		$pkg = $package["element"];
 		$com= $package["name"];
-		$folder= $package["folder"];
+		$folder= isset( $package["folder"])?  $package["folder"] : "";
 		$type= $package["type"];
 
 		$db = JFactory::getDbo();
@@ -880,6 +908,7 @@ LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 where exn.type='$type'
 and exn.element='$pkg' and exn.folder='$folder'
 ");
+
 		$pkgupdate = $db->loadObject();
 		// we have a package and an update record
 		if ($pkgupdate && $pkgupdate->update_site_id)
@@ -992,7 +1021,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
 			echo $db->setErrorMsg();
 		}
@@ -1001,7 +1030,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($extension->folder){
 				$extensionname = "plg_".$extension->folder."_".$extensionname;
 			}
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode$extensionname-update-$version.xml").",'1','0')");
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->setErrorMsg();
 			$id = $db->insertid();

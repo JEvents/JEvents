@@ -371,13 +371,13 @@ class JEVHelper
 			list($cyear, $cmonth, $cday) = JEVHelper::getYMD();
 			$cdate = JevDate::mktime(0, 0, 0, $cmonth, $cday, $cyear);
 			$prior = JevDate::strtotime($cfg->get('robotprior', "-1 day"));
-			if ($cdate < $prior)
+			if ($cdate < $prior && $cfg->get('com_blockRobots', 0))
 			{
 				$document->setMetaData($name, $content);
 				return;
 			}
 			$post = JevDate::strtotime($cfg->get('robotpost', "-1 day"));
-			if ($cdate > $post)
+			if ($cdate > $post && $cfg->get('com_blockRobots', 0))
 			{
 				$document->setMetaData($name, $content);
 				return;
