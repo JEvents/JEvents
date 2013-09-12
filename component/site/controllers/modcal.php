@@ -122,7 +122,7 @@ class ModCalController extends JControllerLegacy   {
 		$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.'/'."calendar", $params);
 		
 		$modview = new $viewclass($params, $modid);
-			
+		$modview->jevlayout = $theme;	
 		?>
 		<script type="text/javascript">
 		var doitdone = false;
