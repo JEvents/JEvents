@@ -877,6 +877,23 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"map","name"=>"map","type"=>"file"),
 			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
 			array("element"=>"zim","name"=>"zim","type"=>"file"),
+			// Silver - Jevents Categories
+			array("element"=>"mod_jevents_categories","name"=>"mod_jevents_categories","type"=>"module"),
+			// Silver - Newsletters - some TODO
+			array("element"=>"tagjevents_jevents","name"=>"tagjevents_jevents","folder"=>"acymailing", "type"=>"plugin"),
+			// Silver - Nnotifications
+			array("element"=>"jevnotify","name"=>"jevnotify","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"mod_jevents_notify","name"=>"mod_jevents_notify","type"=>"module"),
+			// Silver - simpleattend
+			array("element"=>"jevrsvp","name"=>"jevrsvp","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - tabbed modules
+			array("element"=>"mod_tabbedmodules","name"=>"mod_tabbedmodules","type"=>"module"),
+			// Silver - time Limit
+			array("element"=>"jevtimelimit","name"=>"jevtimelimit","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - User Events
+			array("element"=>"jevusers","name"=>"jevusers","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - User Events
+			array("element"=>"jevweekdays","name"=>"jevweekdays","folder"=>"jevents", "type"=>"plugin"),
 		);
 
 		foreach ($updates as $package)
