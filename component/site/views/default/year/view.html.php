@@ -40,8 +40,8 @@ class DefaultViewYear extends JEventsDefaultView
 		$year = JevDate::strftime("%Y",$d1);
 		
 		$cfg = & JEVConfig::getInstance();
-		$earliestyear =  $cfg->get('com_earliestyear');
-		$latestyear = $cfg->get('com_latestyear');
+		$earliestyear =  JEVHelper::getMinYear();
+		$latestyear = JEVHelper::getMaxYear();
 		if ($year>$latestyear || $year<$earliestyear){
 			return false;
 		}
