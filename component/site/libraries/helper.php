@@ -123,6 +123,51 @@ class JEVHelper
 		}
 
 	}
+        
+        /**
+	 * Returns the Max year to display from Config
+	 * 
+	 * @static
+	 * @access public
+	 * @return	string				integer with the max year to show in the calendar
+	 */
+        function getMaxYear()
+        {
+            $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+            $maxyear = $params->get("com_latestyear",2150);            
+            $maxyear = JEVHelper::getYearNumber($maxyear);
+            
+            //Just in case we got text here.
+            if(!is_numeric($maxyear))
+            {
+                $maxyear = "2150";
+            }
+            
+            return $maxyear;
+        }
+        
+        /**
+	 * Returns the Max year to display from Config
+	 * 
+	 * @static
+	 * @access public
+	 * @return	string				integer with the max year to show in the calendar
+	 */
+        function getMinYear()
+        {
+            $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+            $minyear = $params->get("com_earliestyear",1970);
+            
+            $minyear = JEVHelper::getYearNumber($minyear);
+            
+            //Just in case we got text here.
+            if(!is_numeric($minyear))
+            {
+                $minyear = "1970";
+            }
+            
+            return $minyear;
+        }
 
 	/**
 	 * Returns the full month name
@@ -704,6 +749,37 @@ class JEVHelper
 		return $jevitemid;
 
 	}
+        
+        /**
+	 * Get current year number
+	 * @param   string  $year     Year reference or exact number of the year
+	 * @return int
+	 */
+        function getYearNumber($year)
+        {
+            $datenow = JEVHelper::getNow();
+            $yearnow = $datenow->toFormat('%Y');
+            $firstpos = substr($year, 0,1);
+            
+            if ($firstpos == "+")
+            {                
+                $year = substr($year, 1);
+                $year = $yearnow+$year;
+            }
+            else if ($firstpos == "-")
+            {
+                $year = substr($year, 1);
+                $year = $yearnow-$year;
+            }
+            //If we do not get a 4 digit number and no sign we assume it's +$year
+            else if (strlen($year)<4)
+            {                
+                $cuenta = count($year);
+                $year = $yearnow+$year;
+            }
+                            
+            return $year;
+        }
 
 	/**
 	 * Get array Year, Month, Day from current Request, fallback to current date
