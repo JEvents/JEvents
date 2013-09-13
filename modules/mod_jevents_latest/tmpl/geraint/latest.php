@@ -94,7 +94,7 @@ class GeraintModLatestView extends DefaultModLatestView
 				} // end of foreach
 			} // end of foreach
 			$content .="</table>\n";
-		} else {
+		} else if ($this->modparams->get("modlatest_NoEvents", 1)){
 			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$content .= '<tr><td class="mod_events_latest_noevents">'. JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
 			$content .="</table>\n";

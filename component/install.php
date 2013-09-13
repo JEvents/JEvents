@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	created_by_alias varchar(100) NOT NULL default '',
 	modified_by int(11) unsigned NOT NULL default '0',
 
-	rawdata longtext NOT NULL default "",
+	rawdata longtext NOT NULL ,
 	recurrence_id varchar(30) NOT NULL default "",
 	
 	detail_id int(12) NOT NULL default 0,
@@ -100,7 +100,7 @@ SQL;
 CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	evdet_id int(12) NOT NULL auto_increment,
 
-	rawdata longtext NOT NULL default "",
+	rawdata longtext NOT NULL ,
 	dtstart int(11) NOT NULL default 0,
 	dtstartraw varchar(30) NOT NULL default "",
 	duration int(11) NOT NULL default 0,
@@ -111,16 +111,16 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	class  varchar(10) NOT NULL default "",
 	categories varchar(120) NOT NULL default "",
 	color varchar(20) NOT NULL default "",
-	description longtext NOT NULL default "",
+	description longtext NOT NULL ,
 	geolon float NOT NULL default 0,
 	geolat float NOT NULL default 0,
 	location VARCHAR(120) NOT NULL default "",
 	priority tinyint unsigned NOT NULL default 0,
 	status varchar(20) NOT NULL default "",
-	summary longtext NOT NULL default "",
+	summary longtext NOT NULL ,
 	contact VARCHAR(120) NOT NULL default "",
 	organizer VARCHAR(120) NOT NULL default "",
-	url text NOT NULL default "",
+	url text NOT NULL ,
 	extra_info VARCHAR(240) NOT NULL DEFAULT '',
 	created varchar(30) NOT NULL default "",
 	sequence int(11) NOT NULL default 1,
@@ -294,10 +294,10 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	id int( 11 ) unsigned NOT NULL AUTO_INCREMENT ,
 	title varchar(100) NOT NULL default "",
 	name varchar(50) NOT NULL default "",
-	subject text NOT NULL default "",
-	value text NOT NULL default "",
+	subject text NOT NULL ,
+	value text NOT NULL ,
 	state tinyint(3) NOT NULL default 1,
-	params text NOT NULL default "",
+	params text NOT NULL ,
 	PRIMARY KEY  (id),
 	INDEX (name)
 ) $charset;
@@ -579,7 +579,7 @@ SQL;
 
 		if (!array_key_exists("params", $cols))
 		{
-			$sql = "ALTER TABLE #__jev_defaults ADD params text NOT NULL default ''";
+			$sql = "ALTER TABLE #__jev_defaults ADD params text NOT NULL ";
 			$db->setQuery($sql);
 			@$db->query();
 		}
