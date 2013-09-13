@@ -892,8 +892,30 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"jevtimelimit","name"=>"jevtimelimit","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - User Events
 			array("element"=>"jevusers","name"=>"jevusers","folder"=>"jevents", "type"=>"plugin"),
-			// Silver - User Events
+			// Silver - Week Days
 			array("element"=>"jevweekdays","name"=>"jevweekdays","folder"=>"jevents", "type"=>"plugin"),
+			
+			// GOLD addons - PaidSubs - TODO check Virtuemart for Joomla 3.0 is available
+			array("element"=>"jevpaidsubs","name"=>"jevpaidsubs","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"mod_jevents_paidsubs","name"=>"mod_jevents_paidsubs","type"=>"module"),
+
+			// Translations - TODO
+			//array("element"=>"de-DE","name"=>"Deutsch","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - editor button
+			array("element"=>"jevents","name"=>"jevents","folder"=>"editors-xtd", "type"=>"plugin"),
+
+			// Bronze - Meta tags
+			array("element"=>"jevmetatags","name"=>"jevmetatags","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - Missing Events
+			array("element"=>"jevmissingevent","name"=>"jevmissingevent","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - Popups
+			array("element"=>"jevpopupdetail","name"=>"jevpopupdetail","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - sh404sef - TODO
+
 		);
 
 		foreach ($updates as $package)
