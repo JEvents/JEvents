@@ -122,8 +122,8 @@ class JEventsHTML
 		$y = date('Y');
 
 		$cfg = & JEVConfig::getInstance();
-		$earliestyear = $cfg->get('com_earliestyear');
-		$latestyear = $cfg->get('com_latestyear');
+		$earliestyear = JEVHelper::getMinYear();
+		$latestyear = JEVHelper::getMaxYear();
 
 		if ($year < $y - 2 && $year >= $earliestyear && $year <= $latestyear)
 		{

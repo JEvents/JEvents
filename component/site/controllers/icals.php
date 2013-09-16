@@ -162,7 +162,7 @@ class ICalsController extends AdminIcalsController
 		{
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$years = array();
-			for ($y = $params->get("com_earliestyear", date('Y')); $y <= $params->get("com_latestyear", date('Y')); $y++)
+			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
 			{
 				if (!in_array($y, $years))
 					$years[] = $y;
