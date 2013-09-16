@@ -119,7 +119,7 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 		$this->displayRSS = intval($myparam->get('modlatest_RSS', 0));
 		$this->sortReverse = intval($myparam->get('modlatest_SortReverse', 0));
 
-		if ($this->dispMode > 6)
+                if ($this->dispMode > 7)
 			$this->dispMode = 0;
 
 		// $maxEvents hardcoded to 105 for now to avoid bad mistakes in params
@@ -240,8 +240,13 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 				// end of today + $days
 				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
 				break;
-
-			case 4:
+                        case 7:
+                            $beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
+				// end of this month
+				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
+				if($this->maxEvents)$this->maxEvents=$this->maxEvents*2;
+                                break;
+			case 4:                      
 			default:
 				// beginning of this month
 				$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, 1, $this->now_Y)) . " 00:00:00";
@@ -290,12 +295,17 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 		{
 			$rows = $this->datamodel->queryModel->popularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
 		}
+                else if ($this->dispMode == 7)
+		{
+			$rows = $this->datamodel->queryModel->randomIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+                        shuffle($rows);
+                }
 		else
 		{
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
 		}		
 		$reg->set("jev.modparams", false);
-	
+                
 		// Time limit plugin constraints
 		$reg =& JFactory::getConfig();
 		$pastdate = $reg->get("jev.timelimit.past",false);
@@ -329,7 +339,7 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 				usort($rows, array(get_class($this), "_sortEventsByCreationDate"));
 			else if ($this->dispMode == 6)
 				usort($rows, array(get_class($this), "_sortEventsByHits"));
-			else
+			else if ($this->dispMode !== 7)
 				usort($rows, array(get_class($this), "_sortEventsByDate"));
 		}
 
@@ -343,6 +353,25 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 					$eventsThisDay[] = clone $row;
 				}
 
+				if (count($eventsThisDay))
+				{
+					$this->eventsByRelDay[$i] = $eventsThisDay;
+				}
+			}
+		}
+                if ($this->dispMode == 7)
+		{
+			if (count($rows))
+			{
+				$eventsThisDay = array();
+				foreach ($rows as $row)
+				{
+                                    if($i*2<$this->maxEvents){
+					$eventsThisDay[] = clone $row;
+                                        $i=$i+1;
+                                    }
+				}
+                                $i=0;
 				if (count($eventsThisDay))
 				{
 					$this->eventsByRelDay[$i] = $eventsThisDay;
