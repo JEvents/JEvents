@@ -119,8 +119,8 @@ class jevStartdateFilter extends jevFilter
 		//$filterList["html"] .=  JHTML::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
 		
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-			$minyear = $params->get("com_earliestyear",1970);
-			$maxyear = $params->get("com_latestyear",2150);
+			$minyear = JEVHelper::getMinYear();
+			$maxyear = JEVHelper::getMaxYear();
 			$document =& JFactory::getDocument();
 			
 			$calendar = (JVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 

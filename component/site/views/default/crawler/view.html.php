@@ -38,7 +38,7 @@ class DefaultViewCrawler extends JEventsDefaultView
 			list($startyear,$startmonth,$startday)=explode("-",$startdate);
 		}
 		else {
-			$startyear = $params->get("com_earliestyear",2008);
+			$startyear = JEVHelper::getMinYear();
 			$startdate = $startyear."-01-01";
 			$startmonth = 1;
 			$startday = 1;
@@ -55,7 +55,7 @@ class DefaultViewCrawler extends JEventsDefaultView
 			list($endyear,$endmonth,$endday)=explode("-",$enddate);
 		}
 		else {
-			$endyear = $params->get("com_latestyear",2020);
+			$endyear = JEVHelper::getMaxYear();
 			$enddate = $endyear."-12-31";
 			$endmonth = 12;
 			$endday = 31;

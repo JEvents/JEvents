@@ -139,7 +139,7 @@ class DefaultViewNavTableBar
 				. $cfg->get('com_navbarcolor') . ".gif' alt='" . $alts[$which] . "'/>";
 
 		$thelink = '<a href="' . JRoute::_($link . $dates[$which]->toDateURL()) . '" title="' . $alts[$which] . '">' . $gg . '</a>' . "\n";
-		if ($dates[$which]->getYear() >= $cfg->get('com_earliestyear') && $dates[$which]->getYear() <= $cfg->get('com_latestyear'))
+		if ($dates[$which]->getYear() >= JEVHelper::getMinYear() && $dates[$which]->getYear() <= JEVHelper::getMaxYear())
 		{
 			?>
 			<td width="10" align="center" valign="middle"><?php echo $thelink; ?></td>
