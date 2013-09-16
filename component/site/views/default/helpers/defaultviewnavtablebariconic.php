@@ -63,7 +63,7 @@ class DefaultViewNavTableBarIconic {
 	}
 
 	function _genericMonthNavigation($dates, $alts, $which, $icon){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$task = $this->task;
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid. '&';
 
@@ -73,7 +73,7 @@ class DefaultViewNavTableBarIconic {
 		. $cfg->get('com_navbarcolor').".gif' alt='".$alts[$which]."'/>";
 
 		$thelink = '<a href="'.JRoute::_($link.$dates[$which]->toDateURL()).'" title="'.$alts[$which].'">'.$gg.'</a>'."\n";
-		if ($dates[$which]->getYear()>=$cfg->get('com_earliestyear') && $dates[$which]->getYear()<=$cfg->get('com_latestyear')){
+		if ($dates[$which]->getYear()>=JEVHelper::getMinYear() && $dates[$which]->getYear()<=$cfg->get('com_latestyear')){
 		?>
     	<td width="10" align="center" valign="middle"><?php echo $thelink; ?></td>
 		<?php		

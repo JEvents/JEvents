@@ -64,7 +64,7 @@ var NewCalendar = new Class({
 		this.fx = new Fx.Tween(this.calendar, {
 			onStart: function() {
 				if (this.calendar.getStyle('opacity') == 0) { // show
-					if (window.ie6) { this.iframe.setStyle('display', 'block'); }
+					if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'block'); }
 					this.calendar.setStyle('display', 'block');
 					this.fireEvent('onShowStart', this.element);
 				}
@@ -75,7 +75,7 @@ var NewCalendar = new Class({
 			onComplete: function() {
 				if (this.calendar.getStyle('opacity') == 0) { // hidden
 					this.calendar.setStyle('display', 'none');
-					if (window.ie6) { this.iframe.setStyle('display', 'none'); }
+					if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'none'); }
 					this.fireEvent('onHideComplete', this.element);
 				}
 				else { // shown
@@ -88,7 +88,7 @@ var NewCalendar = new Class({
 		if (window.Drag && this.options.draggable) {
 			this.drag = new Drag.Move(this.calendar, {
 				onDrag: function() {
-					if (window.ie6) { this.iframe.setStyles({ left: this.calendar.style.left, top: this.calendar.style.top }); }
+					if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyles({ left: this.calendar.style.left, top: this.calendar.style.top }); }
 				}.bind(this)
 			});
 		}
@@ -927,7 +927,7 @@ var NewCalendar = new Class({
 
 			// resort to instant appearance
 			if (this.calendar.getStyle('opacity') == 0) { // show
-				if (window.ie6) { this.iframe.setStyle('display', 'block'); }
+				if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'block'); }
 				this.calendar.setStyle('display', 'block');
 				this.fireEvent('onShowStart', this.element);
 			}
@@ -936,8 +936,8 @@ var NewCalendar = new Class({
 			}
 			this.calendar.style.opacity=1;
 			if (this.calendar.getStyle('opacity') == 0) { // hidden
-				this.calendar.setStyle('display', 'none');
-				if (window.ie6) { this.iframe.setStyle('display', 'none'); }
+				//this.calendar.setStyle('display', 'none');
+				if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'none'); }
 				this.fireEvent('onHideComplete', this.element);
 			}
 			else { // shown

@@ -14,6 +14,8 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+ob_start();
+
 JHTML::_('behavior.tooltip');
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -135,6 +137,17 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		}
 		?>
 		<script type="text/javascript" >
+                    <?php
+                    $control_name="title";
+
+                    if (!empty($this->requiredtags))
+                    {
+                            foreach ($this->requiredtags as $tag)
+                            {
+                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});";
+                            }
+                    }
+                    ?>
 			<!--
 			Joomla.submitbutton = function (pressbutton) {
 
@@ -151,7 +164,10 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 <?php echo $this->editor->save('jevcontent'); ?>
 		
 		try {
-		
+                                    
+                                                      if (!JevStdRequiredFields.verify(document.adminForm)) {
+						return;
+					}
 			if (!JevrRequiredFields.verify(document.adminForm)){
 				return;
 			}
@@ -160,10 +176,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		
 		}
 		// do field validation
-		if (form.title.value == "") {
-			alert ( "<?php echo html_entity_decode(JText::_('JEV_E_WARNTITLE')); ?>" );
-		}
-		else if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
+		if (form.catid && form.catid.value==0 && form.catid.options && form.catid.options.length){
 			alert ( '<?php echo JText::_('JEV_SELECT_CATEGORY', true); ?>' );
 		}
 		else if (form.ics_id.value == "0"){
@@ -426,3 +439,10 @@ else
 		?>
 	</form>
 </div>
+
+<?php
+// fix for bad HTML in tabs!
+$editpagecode = ob_get_clean();
+//$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
+//$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
+echo $editpagecode;

@@ -64,7 +64,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$this->setLayout("cpanel25");
 		}
 
-	//	$this->setUpdateUrls();
+		$this->setUpdateUrls();
 
 	}
 
@@ -200,7 +200,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						$layout = str_replace("layout_", "", $item->get_title());
 						if (JFolder::exists(JEV_PATH . "views/$layout"))
 						{
-// club layouts			 
+// club layouts
 							$xmlfiles1 = JFolder::files(JEV_PATH . "views/$layout", "manifest\.xml", true, true);
 							if ($xmlfiles1 && count($xmlfiles1) > 0)
 							{
@@ -221,7 +221,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 						// package version
 						if (JFolder::exists(JPATH_ADMINISTRATOR . "/manifests/files"))
 						{
-// club layouts			 
+// club layouts
 							$xmlfiles1 = JFolder::files(JPATH_ADMINISTRATOR . "/manifests/files", "$layout\.xml", true, true);
 							if (!$xmlfiles1)
 								continue;
@@ -403,7 +403,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$apps = array();
 
-// club layouts			 
+// club layouts
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
@@ -490,7 +490,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-// setup the XML file for server	
+// setup the XML file for server
 		/*
 		  $output = '$catmapping = array(' . "\n";
 		  foreach ($apps as $appname => $app)
@@ -676,7 +676,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$apps[$name] = $app;
 		}
 
-// club layouts			 
+// club layouts
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
@@ -825,44 +825,152 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 	function setUpdateUrls()
 	{
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		$updates = array(
+			array("element"=>"pkg_jevents","name"=>"com_jevents", "type"=>"package"),
+			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations", "type"=>"package"),
+			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople", "type"=>"package"),
+			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro", "type"=>"package"),
+			array("element"=>"pkg_jevtags","name"=>"com_jevtags", "type"=>"package"),
+
+			// Silver - AnonUsers
+			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - AutoTweet
+			array("element"=>"jevsendfb","name"=>"jevsendfb","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"autotweetjevents","name"=>"autotweetjevents","folder"=>"system", "type"=>"plugin"),
+			// Silver - MatchingEvents
+			array("element"=>"jevmatchingevents","name"=>"jevmatchingevents","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - StandardImage
+			array("element"=>"jevfiles","name"=>"jevfiles","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - agendaminutes
+			array("element"=>"agendaminutes","name"=>"agendaminutes","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevent_embed","name"=>"jevent_embed","folder"=>"content", "type"=>"plugin"),
+			// Silver - authorisedusers
+			array("element"=>"jevuser","name"=>"jevuser","folder"=>"user", "type"=>"plugin"),
+			// Silver - calendar
+			array("element"=>"jevcalendar","name"=>"jevcalendar","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - catcal
+			array("element"=>"jevcatcal","name"=>"jevcatcal","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - cck
+			array("element"=>"jevcck","name"=>"jevcck","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"k2embedded","name"=>"k2embedded","folder"=>"k2", "type"=>"plugin"),
+			// Silver - creator
+			array("element"=>"jevcreator","name"=>"jevcreator","folder"=>"content", "type"=>"plugin"),
+			// Silver - customfields
+			array("element"=>"jevcustomfields","name"=>"jevcustomfields","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - Dynamic legend
+			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
+			// Silver - facebook
+			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - featured
+			array("element"=>"jevfeatured","name"=>"jevfeatured","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - hiddendetail
+			array("element"=>"jevhiddendetail","name"=>"jevhiddendetail","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - jomsocial -  TODO
+			array("element"=>"jevjsstream","name"=>"jevjsstream","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"jevents","name"=>"jevents","folder"=>"community", "type"=>"plugin"),
+			// Silver - layouts
+			array("element"=>"extplus","name"=>"extplus","type"=>"file"),
+			array("element"=>"ruthin","name"=>"ruthin","type"=>"file"),
+			array("element"=>"iconic","name"=>"iconic","type"=>"file"),
+			array("element"=>"map","name"=>"map","type"=>"file"),
+			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
+			array("element"=>"zim","name"=>"zim","type"=>"file"),
+			// Silver - Jevents Categories
+			array("element"=>"mod_jevents_categories","name"=>"mod_jevents_categories","type"=>"module"),
+			// Silver - Newsletters - some TODO
+			array("element"=>"tagjevents_jevents","name"=>"tagjevents_jevents","folder"=>"acymailing", "type"=>"plugin"),
+			// Silver - Nnotifications
+			array("element"=>"jevnotify","name"=>"jevnotify","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"mod_jevents_notify","name"=>"mod_jevents_notify","type"=>"module"),
+			// Silver - simpleattend
+			array("element"=>"jevrsvp","name"=>"jevrsvp","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - tabbed modules
+			array("element"=>"mod_tabbedmodules","name"=>"mod_tabbedmodules","type"=>"module"),
+			// Silver - time Limit
+			array("element"=>"jevtimelimit","name"=>"jevtimelimit","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - User Events
+			array("element"=>"jevusers","name"=>"jevusers","folder"=>"jevents", "type"=>"plugin"),
+			// Silver - Week Days
+			array("element"=>"jevweekdays","name"=>"jevweekdays","folder"=>"jevents", "type"=>"plugin"),
+			
+			// GOLD addons - PaidSubs - TODO check Virtuemart for Joomla 3.0 is available
+			array("element"=>"jevpaidsubs","name"=>"jevpaidsubs","folder"=>"jevents", "type"=>"plugin"),
+			array("element"=>"mod_jevents_paidsubs","name"=>"mod_jevents_paidsubs","type"=>"module"),
+
+			// Translations - TODO
+			//array("element"=>"de-DE","name"=>"Deutsch","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - editor button
+			array("element"=>"jevents","name"=>"jevents","folder"=>"editors-xtd", "type"=>"plugin"),
+
+			// Bronze - Meta tags
+			array("element"=>"jevmetatags","name"=>"jevmetatags","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - Missing Events
+			array("element"=>"jevmissingevent","name"=>"jevmissingevent","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - Popups
+			array("element"=>"jevpopupdetail","name"=>"jevpopupdetail","folder"=>"jevents", "type"=>"plugin"),
+
+			// Bronze - sh404sef - TODO
+
+		);
+
+		foreach ($updates as $package)
+		{
+			$this->setUpdateUrlsByPackage($package) ;
+		}
+	}
+
+	function setUpdateUrlsByPackage($package)
+	{
+		$pkg = $package["element"];
+		$com= $package["name"];
+		$folder= isset( $package["folder"])?  $package["folder"] : "";
+		$type= $package["type"];
 
 		$db = JFactory::getDbo();
 
 		// Process the package
 		$db = JFactory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		$db->setQuery("select *, exn.extension_id as extension_id   from #__extensions as exn
+		if ($folder=="") {
+			$this->removeComponentUpdate($com);
+		}
+
+		// Now check and setup the package update URL
+		$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type from #__extensions as exn
 LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-where exn.type='package'
-and exn.element='pkg_jevents'
+where exn.type='$type'
+and exn.element='$pkg' and exn.folder='$folder'
 ");
+
 		$pkgupdate = $db->loadObject();
+		// we have a package and an update record
 		if ($pkgupdate && $pkgupdate->update_site_id)
 		{
-			$this->removeComponentUpdate();
-
 			// Now update package update URL
 			$this->setPackageUpdateUrl($pkgupdate);
 		}
+		// we have a package but not an update record
 		else if ($pkgupdate && $pkgupdate->extension_id)
 		{
-			$this->removeComponentUpdate();
-
 			// Now set package update URL
 			$this->setPackageUpdateUrl($pkgupdate);
 		}
 		else
 		{
 			// No package installed so fall back to component and set it to update using the package URL :)
-			
-			// Do we already have a record for the update URL for the component - we should remove this 
+
+			// Do we already have a record for the update URL for the component - we should remove this
 			$db->setQuery("select *, exn.extension_id as extension_id  from #__extensions as exn
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 	where exn.type='component'
-	and exn.element='com_jevents'
+	and exn.element='$com'
 	");
 			$cpupdate = $db->loadObject();
 			if ($cpupdate && $cpupdate->update_site_id)
@@ -874,13 +982,15 @@ and exn.element='pkg_jevents'
 			}
 
 			// Now set package update URL for the component as opposed to the package ;)
-			$this->setPackageUpdateUrl($cpupdate);
+			if ($cpupdate && $cpupdate->extension_id){
+				$this->setPackageUpdateUrl($cpupdate);
+			}
 		}
 
 	}
 
 	private
-			function removeComponentUpdate()
+			function removeComponentUpdate($com)
 	{
 		$db = JFactory::getDbo();
 		$version = JEventsVersion::getInstance();
@@ -891,7 +1001,7 @@ and exn.element='pkg_jevents'
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 	where exn.type='component'
-	and exn.element='com_jevents'
+	and exn.element='$com'
 	");
 		$cpupdate = $db->loadObject();
 		if ($cpupdate && $cpupdate->update_site_id)
@@ -909,6 +1019,15 @@ and exn.element='pkg_jevents'
 	{
 		$db  = JFactory::getDbo();
 
+		$sitedomain = rtrim(str_replace(array('https://','http://'),"",JURI::root()),'/');
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$clubcode = $params->get("clubcode","");
+		$filter = new JFilterInput();
+		$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
+
+		$clubcode = base64_encode($clubcode);
+
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
@@ -917,11 +1036,40 @@ and exn.element='pkg_jevents'
 		$extension  = JTable::getInstance("Extension");
 		$extension->load($pkgupdate->extension_id);
 
-		if ($pkgupdate->update_site_id){
+		// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
+		/*
+		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
+			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
+			$db->query();
+			echo $db->setErrorMsg();
+		}
+		 */
 
+		// We already have an update site
+		if ($pkgupdate->update_site_id){
+			$extensionname = str_replace(" ","_",$extension->element);
+			if ($extension->folder){
+				$extensionname = "plg_".$extension->folder."_".$extensionname;
+			}
+			/*
+			 // set the JEvents Version number in the update URL
+			if (isset($extension->manifest_cache)){
+				$extensionmanifest = json_decode($extension->manifest_cache);
+				if (isset($extensionmanifest->version)) {
+					$version = $extensionmanifest->version;
+				}
+			}
+			*/
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->query();
+			echo $db->setErrorMsg();
 		}
 		else {
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES ('JEvents','extension','http://$domain/updates/jevents-update-$version.xml','1','0')");
+			$extensionname = str_replace(" ","_",$extension->element);
+			if ($extension->folder){
+				$extensionname = "plg_".$extension->folder."_".$extensionname;
+			}
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->setErrorMsg();
 			$id = $db->insertid();
@@ -930,7 +1078,6 @@ and exn.element='pkg_jevents'
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
 			echo $db->setErrorMsg();
-
 		}
 
 	}

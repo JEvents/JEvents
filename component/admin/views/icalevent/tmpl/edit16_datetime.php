@@ -47,8 +47,8 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
         <div style="float:left">
 			<?php
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-			$minyear = $params->get("com_earliestyear",1970);
-			$maxyear = $params->get("com_latestyear",2150);
+			$minyear = JEVHelper::getMinYear();
+			$maxyear = JEVHelper::getMaxYear();
 			$inputdateformat = $params->get("com_editdateformat","d.m.Y");
 			$document = JFactory::getDocument();
 			$js = "\neventEditDateFormat='$inputdateformat';Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
@@ -77,8 +77,8 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
         <div style="float:left">
 				<?php
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-			$minyear = $params->get("com_earliestyear",1970);
-			$maxyear = $params->get("com_latestyear",2150);
+			$minyear = JEVHelper::getMinYear();
+			$maxyear = JEVHelper::getMaxYear();
 			JEVHelper::loadCalendar("publish_down", "publish_down", $this->row->endDate(),$minyear, $maxyear, 'var elem = $("publish_down");checkDates(elem);',"elem = $('publish_up');checkDates(elem);", $inputdateformat);
 			
 			?>
@@ -152,8 +152,8 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
 			 echo JHTML::calendar(JevDate::strftime("%Y-%m-%d",$this->row->until()), 'until', 'until', '%Y-%m-%d',	array('size'=>'12','maxlength'=>'10'));
 			 */
 			$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-			$minyear = $params->get("com_earliestyear",1970);
-			$maxyear = $params->get("com_latestyear",2150);
+			$minyear = JEVHelper::getMinYear();
+			$maxyear = JEVHelper::getMaxYear();
 			JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d",$this->row->until()),$minyear, $maxyear, 'updateRepeatWarning();',"checkUntil();updateRepeatWarning();", $inputdateformat);
 			?>
 			<input type="hidden"  name="until2" id="until2" value="" />

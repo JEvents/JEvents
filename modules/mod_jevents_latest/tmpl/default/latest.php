@@ -52,7 +52,7 @@ if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css
 $document = & JFactory::getDocument();
 $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/css/jevcustom.css");
 }
-$this->_modid = $modid;
+		$this->_modid = $modid;
 		$this->modparams = & $params;
 
 		$jevents_config = & JEVConfig::getInstance();
@@ -61,7 +61,7 @@ $this->_modid = $modid;
 		// find appropriate Itemid and setup catids for datamodel
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->modparams);
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
-		
+
 		$user = & JFactory::getUser();
 		$this->aid = $user->aid;
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
@@ -119,7 +119,7 @@ $this->_modid = $modid;
 		$this->displayRSS = intval($myparam->get('modlatest_RSS', 0));
 		$this->sortReverse = intval($myparam->get('modlatest_SortReverse', 0));
 
-		if ($this->dispMode > 6)
+                if ($this->dispMode > 7)
 			$this->dispMode = 0;
 
 		// $maxEvents hardcoded to 105 for now to avoid bad mistakes in params
@@ -240,8 +240,13 @@ $this->_modid = $modid;
 				// end of today + $days
 				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
 				break;
-
-			case 4:
+                        case 7:
+                            $beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
+				// end of this month
+				$endDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d + $this->rangeDays, $this->now_Y)) . " 23:59:59";
+				if($this->maxEvents)$this->maxEvents=$this->maxEvents*2;
+                                break;
+			case 4:                      
 			default:
 				// beginning of this month
 				$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, 1, $this->now_Y)) . " 00:00:00";
@@ -290,12 +295,17 @@ $this->_modid = $modid;
 		{
 			$rows = $this->datamodel->queryModel->popularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
 		}
+                else if ($this->dispMode == 7)
+		{
+			$rows = $this->datamodel->queryModel->randomIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+                        shuffle($rows);
+                }
 		else
 		{
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
 		}		
 		$reg->set("jev.modparams", false);
-	
+                
 		// Time limit plugin constraints
 		$reg =& JFactory::getConfig();
 		$pastdate = $reg->get("jev.timelimit.past",false);
@@ -329,7 +339,7 @@ $this->_modid = $modid;
 				usort($rows, array(get_class($this), "_sortEventsByCreationDate"));
 			else if ($this->dispMode == 6)
 				usort($rows, array(get_class($this), "_sortEventsByHits"));
-			else
+			else if ($this->dispMode !== 7)
 				usort($rows, array(get_class($this), "_sortEventsByDate"));
 		}
 
@@ -343,6 +353,25 @@ $this->_modid = $modid;
 					$eventsThisDay[] = clone $row;
 				}
 
+				if (count($eventsThisDay))
+				{
+					$this->eventsByRelDay[$i] = $eventsThisDay;
+				}
+			}
+		}
+                if ($this->dispMode == 7)
+		{
+			if (count($rows))
+			{
+				$eventsThisDay = array();
+				foreach ($rows as $row)
+				{
+                                    if($i*2<$this->maxEvents){
+					$eventsThisDay[] = clone $row;
+                                        $i=$i+1;
+                                    }
+				}
+                                $i=0;
 				if (count($eventsThisDay))
 				{
 					$this->eventsByRelDay[$i] = $eventsThisDay;
@@ -794,7 +823,7 @@ $this->_modid = $modid;
 			} // end of foreach
 			$content .="</table>\n";
 		}
-		else
+		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
 			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$content .= '<tr class="jevrow'.$k.'"><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
@@ -1060,8 +1089,20 @@ $this->_modid = $modid;
 
 			case 'countdown':
 				$timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
+                                    $eventPassed = !($timedelta>=0);
 				$fieldval = $dateParm;
 				$shownsign = false;
+				if (stripos($fieldval, "%nopast") !== false)
+				{
+					if(!$eventPassed)
+					{
+						$fieldval = str_ireplace("%nopast", "", $fieldval);
+					}
+					else
+					{
+						$fieldval =  JText::_('JEV_EVENT_FINISHED');
+					}
+				}
 				if (stripos($fieldval, "%d") !== false)
 				{
 					$days = intval($timedelta / (60 * 60 * 24));

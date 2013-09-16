@@ -30,8 +30,8 @@ class JFormFieldJeveventdate extends JFormField
 		$event = $this->form->jevdata[$this->name]["event"];
 		$eventfield = $this->name=="publish_up"?"startDate":"endDate";
 		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$minyear = $params->get("com_earliestyear", 1970);
-		$maxyear = $params->get("com_latestyear", 2150);
+		$minyear = JEVHelper::getMinYear();
+		$maxyear = JEVHelper::getMaxYear();
 		$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
 		static $firsttime;
 		if (!defined($firsttime)){

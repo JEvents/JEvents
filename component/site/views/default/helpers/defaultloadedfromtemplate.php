@@ -736,21 +736,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					break;
 					
 				case "{{LASTREPEAT}}":
+				case "{{LASTREPEATEND}}":
 					static $dolastrepeat;
 					if (!isset($dolastrepeat))
 					{
-						$dolastrepeat = (strpos($template_value, "{{LASTREPEAT}}") !== false);
+						$dolastrepeat = (strpos($template_value, "{{LASTREPEAT}}") !== false || strpos($template_value, "{{LASTREPEATEND}}") !== false);
 					}
 					if ($dolastrepeat)
 					{
 						$search[] = "{{LASTREPEAT}}";
 						$lastrepeat = $event->getLastRepeat();
-						if ($lastrepeat->rp_id()==$event->rp_id()){
-							$replace[]="";
+						if ($lastrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
 						}
-						else {
-							$replace[] = "<a class='ev_lastrepeat' href='".$lastrepeat->viewDetailLink($lastrepeat->yup(), $lastrepeat->mup(), $lastrepeat->dup(), true)."' title='".JText::_('JEV_LASTREPEAT')."' >".JText::_('JEV_LASTREPEAT')."</a>";
+						else
+						{
+							$replace[] = "<a class='ev_lastrepeat' href='" . $lastrepeat->viewDetailLink($lastrepeat->yup(), $lastrepeat->mup(), $lastrepeat->dup(), true) . "' title='" . JText::_('JEV_LASTREPEAT') . "' >" . JText::_('JEV_LASTREPEAT') . "</a>";
 						}
+						$blank[] = "";
+
+						$search[] = "{{LASTREPEATEND}}";
+						$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
 						$blank[] = "";
 					}
 					break;
@@ -1040,15 +1047,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$parts = explode(":", $matches[0]);
 			if (count($parts) == 2)
 			{
-				$wordcount = intval(str_replace("}}", "", $parts[1]));
+				$wordcount = str_replace("}}", "", $parts[1]);
+				$charcount = 0;
+				if (strpos($wordcount, "chars")>0){
+					$charcount = intval(str_replace("chars","",$wordcount));
+					$wordcount = 0;
+				}
+				else {
+					$wordcount =intval($wordcount);
+				}
 				$value = strip_tags($tempreplace);
 
 				$value = str_replace("  ", " ", $value);
 				$words = explode(" ", $value);
-				if (count($words) > $wordcount)
+				if ($wordcount>0 && count($words) > $wordcount)
 				{
 					$words = array_slice($words, 0, $wordcount);
 					$words[] = " ...";
+					return implode(" ", $words);
+				}
+				if ($charcount>0 && strlen($value) > $charcount)
+				{
+					return substr($value, 0, $charcount)." ...";
 				}
 				return implode(" ", $words);
 			}

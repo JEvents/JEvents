@@ -64,7 +64,7 @@ $version = JEventsVersion::getInstance();
 				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
 					// disable if no club addons are installed
 					$plugins = JPluginHelper::getPlugin("jevents");
-					if (count($plugins)==0 || !$haslayouts){
+					if (count($plugins)==0 && !$haslayouts){
 						continue;
 					}
 				}
