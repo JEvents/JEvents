@@ -1024,7 +1024,7 @@ var NewCalendar = new Class({
 					case 'j':
 					dates[2] = i.toInt();
 					// Fix illegal inputs (gwe)
-					dates[2] = Math.min(Math.max(dates[1],0),31);
+					dates[2] = Math.min(Math.max(dates[2],0),31);
 					break;
 				}
 			}, this);
