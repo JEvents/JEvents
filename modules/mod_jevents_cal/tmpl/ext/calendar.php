@@ -157,7 +157,7 @@ START;
 		                <td width="98%" valign="middle" nowrap="nowrap" height="18" align="center" class="extcal_month_label">
 							$linkcurrent
 		                </td>
-						<td valign="middle" height="18" align="center" style="position: relative; left: -3px;">
+						<td valign="middle" height="18" align="center" style="margin: 0 auto; min-width: 4px;">
 		                    $linknext
                 		</td>
 					</tr>
