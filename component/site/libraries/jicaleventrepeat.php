@@ -357,16 +357,32 @@ class jIcalEventRepeat extends jIcalEventDB{
 
 		$Itemid	= JEVHelper::getItemid();
 		list($year,$month,$day) = JEVHelper::getYMD();
-
-		$db	=& JFactory::getDBO();
-
-		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.startrepeat<='".$this->_startrepeat."' AND (rpt.rp_id<'".$this->rp_id."' OR rpt.startrepeat<'".$this->_startrepeat."') ORDER BY rpt.startrepeat DESC, rpt.rp_id DESC limit 1";
-		$db->setQuery($sql);
-		$prior = $db->loadObject();
-		if (!is_null($prior)) {
-			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$prior->rp_id .'&Itemid='.$Itemid
-			."&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($prior->title);
+                $this->datamodel  =  new JEventsDataModel();
+                
+                 $pastev=0;
+                 $limit=10;
+                while ($pastev==0):
+		$prev=$this->datamodel->queryModel->listIcalEvents('1970-01-01 00:00:00',$this->_startrepeat,"rpt.startrepeat DESC, rpt.rp_id DESC",false,"","",$limit);    
+                for ($i=0;$i<count($prev);$i++){
+                    if ($this->_startrepeat>$prev[$i]->_startrepeat){
+                            $prior=$prev[$i];
+                            $pastev=1;
+                            break;
+                    }                   
+                    else if ($prev[$i]->_rp_id < $this->_rp_id && $this->_startrepeat==$prev[$i]->_startrepeat) {
+                            $prior=$prev[$i];
+                            $pastev=1;
+                            break;
+                    }
+                }
+                if (count($prev)<$limit) {
+                    $pastev=1;
+                }
+                $limit=$limit*2; 
+                endwhile;               
+                if (!is_null($prior)) { 
+			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$prior->_rp_id .'&Itemid='.$Itemid
+			."&year=".$prior->_yup."&month=".$prior->_mup."&day=".$prior->_dup."&uid=".urlencode($prior->_uid)."&title=".JFilterOutput::stringURLSafe($prior->_title);
 			$link = JRoute::_( $link  );
 			$this->_prevEvent = $link;
 		}
@@ -374,10 +390,28 @@ class jIcalEventRepeat extends jIcalEventDB{
 			$this->_prevEvent = false;
 		}
 
-		$sql = "SELECT rpt.*,det.summary as title, YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE  rpt.startrepeat>='".$this->_startrepeat."' AND (rpt.rp_id>'".$this->rp_id."' OR rpt.startrepeat>'".$this->_startrepeat."') ORDER BY rpt.startrepeat ASC, rpt.rp_id ASC limit 1";
-		$db->setQuery($sql);
-		$post = $db->loadObject();
+                $pastevpost=0;
+                 $limit=10;
+                while ($pastevpost==0):
+		$next=$this->datamodel->queryModel->listIcalEvents($this->_startrepeat,'2038-01-01 00:00:00',"rpt.startrepeat ASC, rpt.rp_id ASC",false,"","",$limit);    
+                for ($i=0;$i<count($next);$i++){
+                    if ($this->_startrepeat<$next[$i]->_startrepeat){
+                            $post=$next[$i];
+                            $pastevpost=1;
+                            break;
+                    }              
+                    else if ($next[$i]->_rp_id > $this->_rp_id && $this->_startrepeat==$next[$i]->_startrepeat) {
+                            $post=$next[$i];
+                            $pastevpost=1;
+                            break;
+                    }
+                }
+                if (count($next)<$limit) {
+                    $pastevpost=1;
+                }
+                $limit=$limit*2; 
+                endwhile;  
+                
 		if (!is_null($post)) {
 			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$post->rp_id .'&Itemid='.$Itemid
 			."&year=$post->yup&month=$post->mup&day=$post->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($post->title);
