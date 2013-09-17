@@ -1031,7 +1031,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
-		$domain = "ubu.jev20j16.com";
+		//$domain = "ubu.jev20j16.com";
+		$domain = "www.jevents.net";
 
 		$extension  = JTable::getInstance("Extension");
 		$extension->load($pkgupdate->extension_id);

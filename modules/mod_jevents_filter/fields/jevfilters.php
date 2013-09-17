@@ -37,7 +37,8 @@ class JFormFieldJevfilters extends JFormFieldText
 	protected
 			function getInput()
 	{
-
+		jimport('joomla.filesystem.folder');
+		
 		$invalue = str_replace(" ","",$this->value);
 		$invalue = explode(",",$invalue);
 
@@ -51,7 +52,6 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		$this->filterpath[] = JPATH_SITE . "/components/com_jevents/libraries/filters";
 
-		jimport('joomla.filesystem.folder');
 		if (JFolder::exists(JPATH_SITE . "/plugins/jevents"))
 		{
 			$others = JFolder::folders(JPATH_SITE . "/plugins/jevents", 'filters', true, true);
