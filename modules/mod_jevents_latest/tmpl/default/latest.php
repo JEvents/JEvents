@@ -286,6 +286,9 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 		$reg = & JFactory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);		
 
+                //We get filter value to set it up again after getting the module data adn set the published_fv value to 0
+                $filter_value = JFactory::getApplication()->getUserStateFromRequest( 'published_fv_ses', 'published_fv', "0" );	
+                JRequest::setVar('published_fv',"0");
 		if ($this->dispMode == 5)
 		{
 			$this->sortReverse = true;
@@ -302,8 +305,10 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
                 }
 		else
 		{
-			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
+			
+                        $rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);                        
 		}		
+                JRequest::setVar('published_fv',$filter_value);
 		$reg->set("jev.modparams", false);
                 
 		// Time limit plugin constraints
