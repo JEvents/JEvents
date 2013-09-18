@@ -35,6 +35,11 @@ class DayController extends JControllerLegacy   {
 	function listevents() {
 
 		list($year,$month,$day) = JEVHelper::getYMD();
+                $limitstart = intval( JRequest::getVar('start',  JRequest::getVar( 'limitstart', -1 ) ) );
+		
+		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",0)));
+                if ($params->get("com_calEventMenuListRowsPpg",-1) && $params->get("com_calEventMenuListRowsPpg",-1)>=0)  $limit=$params->get("com_calEventMenuListRowsPpg",0);		
 		$Itemid	= JEVHelper::getItemid();
 
 		// get the view
@@ -56,6 +61,8 @@ class DayController extends JControllerLegacy   {
 		$this->view->setLayout('listevents');
 
 		$this->view->assign("Itemid",$Itemid);
+                $this->view->assign("limit",$limit);
+                $this->view->assign("limitstart",$limitstart);
 		$this->view->assign("month",$month);
 		$this->view->assign("day",$day);
 		$this->view->assign("year",$year);

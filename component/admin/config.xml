@@ -10,7 +10,7 @@
 			</option>
 			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
 		</field>
-
+            
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO'   menu="hide" label="" description="" difficulty="1"/>
 		<field name="clubcode" type="text" size="60" default=''  menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE" description="JEV_JOOMLA_UPDATE_CLUBCODE_DESC" difficulty="1"/>
 
@@ -102,7 +102,7 @@
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->
-                <field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>
+		<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>
 		<field name="com_editdateformat" 
 			   type="list" 
 			   default="Y-m-d" 
@@ -203,9 +203,9 @@
 		<field name="com_calTTShadowY" type="jevboolean jevp_tooltip" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" difficulty="2"/>	
 	</fieldset>
 	
-	<fieldset name="JEV_YEAR_CATEGORY_VIEW" difficulty="1">
-		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_AND_CATEGORY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
-		<field name="com_calEventListRowsPpg" type="list" default="10" menu="hide" label="JEV_NR_OF_LIST" description="JEV_TIP_NR_OF_LIST" difficulty="1">
+	<fieldset name="JEV_LIST_VIEW" difficulty="1">
+		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_ALL_LIST_VIEWS'   menu="hide" label="" description="" difficulty="1"/>		
+            	<field name="com_calEventListRowsPpg" type="list" default="10" menu="hide" label="JEV_NR_OF_LIST" description="JEV_TIP_NR_OF_LIST" difficulty="1">
 			<option value="5">5</option>
 			<option value="10">10</option>
 			<option value="15">15</option>
@@ -216,12 +216,13 @@
 			<option value="100">100</option>
 			<option value="0">ALL</option>
 		</field>
+                <field name="@spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_AND_CATEGORY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	              	
 		<field name="showyearpast" type="list" default="1" menu="hide" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP" difficulty="1">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
 		</field>		
 
-		<field name="@spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
+		<field name="@spacer_cv3" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
 		<field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="1"/>
 		<field name="showyeardate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" difficulty="1"/>
 	</fieldset>

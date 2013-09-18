@@ -40,7 +40,8 @@ class CatController extends JControllerLegacy   {
 		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
-
+                if ($params->get("com_calEventMenuListRowsPpg",-1) && $params->get("com_calEventMenuListRowsPpg",-1)>=0)  $limit=$params->get("com_calEventMenuListRowsPpg",0);
+		
 		//	$catid 	= intval( JRequest::getVar( 	'catid', 		0 ) );
 		$catids 	= JRequest::getVar( 	'catids', 		"") ;
 		$catids = explode("|",$catids);

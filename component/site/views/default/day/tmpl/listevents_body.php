@@ -3,14 +3,14 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg = & JEVConfig::getInstance();
 
-$this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day);
+$this->data = $data = $this->datamodel->getDayData($this->year, $this->month, $this->day,$this->limit,$this->limitstart);
 $this->Redirectdetail();
 
 $cfg = & JEVConfig::getInstance();
 $Itemid = JEVHelper::getItemid();
 $hasevents = false;
 
-	echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') . '</legend><br />' . "\n";
+	//echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFORTHE') . '</legend><br />' . "\n";
 	echo '<table align="center" width="90%" cellspacing="0" cellpadding="5" class="ev_table">' . "\n";
 	?>
 	<tr valign="top">
@@ -52,7 +52,7 @@ $hasevents = false;
 			$hasevents = true;
 			$start_time = JEVHelper::getTime($data['hours'][$h]['hour_start']);
 			$hasevents = true;
-
+ 
 			echo '<tr><td class="ev_td_left">' . $start_time . '</td>' . "\n";
 			echo '<td class="ev_td_right"><ul class="ev_ul">' . "\n";
 			foreach ($data['hours'][$h]['events'] as $row)
@@ -80,6 +80,9 @@ $hasevents = false;
 		echo "</ul></td></tr>\n";
 	}
 	echo '</table><br />' . "\n";
-	echo '</fieldset><br /><br />' . "\n";
+//	echo '</fieldset><br /><br />' . "\n";
 //  $this->showNavTableText(10, 10, $num_events, $offset, '');
 
+if ($data["total"]>$data["limit"]){
+    	$this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
+    }

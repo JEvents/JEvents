@@ -516,12 +516,12 @@ class JEventsDBModel
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
-            
+
                 $userid = JRequest::getVar('jev_userid',"0");
                 
                 if($userid=="0")
                 {
-                    $user = JFactory::getUser();
+		$user = JFactory::getUser();
                 }
                 else
                 {
@@ -2155,19 +2155,26 @@ class JEventsDBModel
 
 	}
 
-	function listIcalEventsByDay($targetdate)
+	function listIcalEventsByDay($targetdate,$data=null)
 	{
 		// targetdate is midnight at start of day - but just in case
 		list ($y, $m, $d) = explode(":", JevDate::strftime('%Y:%m:%d', $targetdate));
-		$startdate = JevDate::mktime(0, 0, 0, $m, $d, $y);
-		$enddate = JevDate::mktime(23, 59, 59, $m, $d, $y);
-
+		
 		// timezone offset (3 hours as a test)
 		//$startdate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $startdate+10800);
 		//$enddate = JevDate::strftime('%Y-%m-%d %H:%M:%S', $enddate+10800);
 
-		return $this->listIcalEvents($startdate, $enddate);
-
+        if ($data["limit"] && $data["limit"]>0 && $data["total"] && $data["limit"]<$data["total"] ) {
+            $startdate =  strval($y) ."-" . strval($m)."-".  strval($d) ." 00:00:00"  ;
+            $enddate = strval($y) ."-". strval($m). "-". strval($d) ." 23:59:59" ;
+            return $rows = $this->listIcalEventsByRange( $startdate, $enddate,$data ["limitstart"],$data ["limit"]);
+        }
+	else {
+            $startdate = JevDate::mktime(0, 0, 0, $m, $d, $y);
+            $enddate = JevDate::mktime(23, 59, 59, $m, $d, $y);    
+            return $this->listIcalEvents($startdate, $enddate);
+        }
+        
 	}
 
 	function listIcalEventsByWeek($weekstart, $weekend)
