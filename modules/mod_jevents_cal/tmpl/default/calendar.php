@@ -195,29 +195,14 @@ class DefaultModCalView
 		static $included = false;
 		if ($included) return;
 		$included = true;
-?>
-	<script   type="text/javascript" ><!--
-	function navLoaded(elem, modid){
-		var myspan = document.getElementById("testspan"+modid);
-		var modbody = myspan.parentNode;
-		modbody.innerHTML=elem.innerHTML;
-	}
-	function callNavigation(link){
-		var body = document.getElementsByTagName('body')[0];
-		if (!document.getElementById('calnav')){
-			myiframe = document.createElement('iframe');
-			myiframe.setAttribute("name","calnav");
-			myiframe.setAttribute("id","calnav");
-			myiframe.style.display = "none";
-			body.appendChild(myiframe);
+		$viewname = $this->getTheme();
+		if (file_exists(JPATH_SITE."/modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js")){
+			JHtml::script("modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js");
 		}
 		else {
-			myiframe = document.getElementById('calnav');
+			JHtml::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
 		}
-		myiframe.setAttribute("src",link);
 	}
-	//--></script>
-	<?php }
 
 	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
 		$cfg = & JEVConfig::getInstance();
@@ -416,7 +401,7 @@ class DefaultModCalView
 		$db	=& JFactory::getDBO();
 
 		// this will get the viewname based on which classes have been implemented
-		$viewname = $this->jevlayout;
+		$viewname = $this->getTheme();
 
 		$cfg = & JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;

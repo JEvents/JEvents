@@ -10,7 +10,10 @@
 			</option>
 			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
 		</field>
-            
+
+		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO'   menu="hide" label="" description="" difficulty="1"/>
+		<field name="clubcode" type="text" size="60" default=''  menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE" description="JEV_JOOMLA_UPDATE_CLUBCODE_DESC" difficulty="1"/>
+
 		<field name="com_calViewName" type="jevview" default='geraint'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC" difficulty="1"/>
 		
@@ -90,8 +93,8 @@
 	<fieldset  name="JEV_PERMISSIONS" difficulty="1">	
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' difficulty="1"/>
 
-		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC' difficulty="2"/>
-		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="2"/>
+		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC' difficulty="1"/>
+		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="1"/>
 	</fieldset>
 		
 	
@@ -99,6 +102,7 @@
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
 		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->
+                <field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>
 		<field name="com_editdateformat" 
 			   type="list" 
 			   default="Y-m-d" 

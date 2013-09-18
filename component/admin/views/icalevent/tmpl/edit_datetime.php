@@ -144,8 +144,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php
 				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$minyear = $params->get("com_earliestyear", 1970);
-				$maxyear = $params->get("com_latestyear", 2150);
+				$minyear = JEVHelper::getMinYear();
+				$maxyear = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
 				JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat);
 				?>

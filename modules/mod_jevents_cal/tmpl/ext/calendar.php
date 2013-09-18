@@ -95,7 +95,7 @@ class ExtModCalView extends DefaultModCalView
 			$cal_next_month_year 	+=1;
 		}
 
-		$viewname = $this->jevlayout;
+		$viewname = $this->getTheme();
 		$viewpath = JURI::root(true) . "/components/$compname/views/".$viewname."/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref = "index.php?option=$compname&Itemid=".$this->myItemid.$this->cat."&task=";
@@ -142,7 +142,7 @@ class ExtModCalView extends DefaultModCalView
                 
 		$content = <<<START
 <div id="extcal_minical">
-	<table cellspacing="1" cellpadding="0" border="0" align="center" style="width:$width; height:$height; border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
+	<table cellspacing="1" cellpadding="0" border="0" align="center" style="border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
 		<tr>
 			<td style="vertical-align: top;">
 START;

@@ -15,8 +15,8 @@
     <languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.mod_jevents_detail.ini</language>
 	</languages>
-    <config>
-        <fields name="params">
+	<config>
+		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field
 					name="moduleclass_sfx"
@@ -24,6 +24,6 @@
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			</fieldset>
-	</fields>
-    </config>
+		</fields>
+	</config>
 </extension>
