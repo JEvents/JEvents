@@ -1024,9 +1024,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$clubcode = $params->get("clubcode","");
 		$filter = new JFilterInput();
-		$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
-
-		$clubcode = base64_encode($clubcode);
+		$clubcode = $filter->clean($clubcode, "CMD");
+		//$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
+		//$clubcode = base64_encode($clubcode);
 
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
