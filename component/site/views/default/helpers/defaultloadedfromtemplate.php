@@ -714,6 +714,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 					}
 					break;
+                                        
+                               case "{{PREVIOUSNEXTEVENT}}":
+					static $doprevnextevent;
+					if (!isset($doprevnextevent))
+					{
+						$doprevnextevent = (strpos($template_value, "{{PREVIOUSNEXTEVENT}}") !== false);
+					}
+					if ($doprevnextevent)
+					{
+						$search[] = "{{PREVIOUSNEXTEVENT}}";
+						$replace[] = $event->previousnextEventLinks();
+						$blank[] = "";
+					}
+					break;
 
 				case "{{FIRSTREPEAT}}":
 					static $dofirstrepeat;
@@ -989,7 +1003,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
  }
  $reg =& JRegistry::getInstance("com_jevents");
  $reg->set("dynamicmodules",$dynamicmodules);              
-// non greedy replacement - because of the ?
+		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
