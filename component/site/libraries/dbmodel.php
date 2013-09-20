@@ -517,16 +517,16 @@ class JEventsDBModel
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
             
-                $userid = JRequest::getVar('jev_userid',"0");
-                
-                if($userid=="0")
-                {
-                    $user = JFactory::getUser();
-                }
-                else
-                {
-                    $user = JFactory::getUser($userid);
-                }
+		$userid = JRequest::getVar('jev_userid',"0");
+
+		if($userid=="0")
+		{
+			$user = JFactory::getUser();
+		}
+		else
+		{
+			$user = JFactory::getUser($userid);
+		}
 		$lang = & JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
