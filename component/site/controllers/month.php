@@ -33,6 +33,20 @@ class MonthController extends JControllerLegacy   {
 	function calendar() {
 
 		list($year,$month,$day) = JEVHelper::getYMD();
+                
+		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+                $theme = JEV_CommonFunctions::getJEventsViewName();
+                if ($theme!="extplus") $listtest=substr($theme, 0, 2)."listmonth";
+                else $listtest="eplistmonth";
+                if ($params->get($listtest,0)){
+                    $limitstart = intval( JRequest::getVar('start',  JRequest::getVar( 'limitstart', -1 ) ) );
+                    $limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",0)));
+                    if ($params->get("com_calEventMenuListRowsPpg",-1) && $params->get("com_calEventMenuListRowsPpg",-1)>=0)  $limit=$params->get("com_calEventMenuListRowsPpg",0);
+                }
+                else {
+                    $limit=0;
+                    $limitstart=0;
+                }
 		$Itemid	= JEVHelper::getItemid();
 
 		// get the view
@@ -41,8 +55,7 @@ class MonthController extends JControllerLegacy   {
 		$viewType	= $document->getType();
 		
 		$cfg = & JEVConfig::getInstance();
-		$theme = JEV_CommonFunctions::getJEventsViewName();
-
+		
 		$view = "month";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = & $this->getView($view,$viewType, $theme."View", 
@@ -54,6 +67,8 @@ class MonthController extends JControllerLegacy   {
 		$this->view->setLayout('calendar');
 
 		$this->view->assign("Itemid",$Itemid);
+                $this->view->assign("limit",$limit);
+                $this->view->assign("limitstart",$limitstart);
 		$this->view->assign("month",$month);
 		$this->view->assign("day",$day);
 		$this->view->assign("year",$year);

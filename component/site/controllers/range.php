@@ -40,9 +40,10 @@ class RangeController extends JControllerLegacy   {
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
 		
 		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
-
-		$Itemid	= JEVHelper::getItemid();
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));               
+                if ($params->get("com_calEventMenuListRowsPpg",-1) && $params->get("com_calEventMenuListRowsPpg",-1)>=0)  $limit=$params->get("com_calEventMenuListRowsPpg",0);		
+		
+                $Itemid	= JEVHelper::getItemid();
 
 		// get the view
 

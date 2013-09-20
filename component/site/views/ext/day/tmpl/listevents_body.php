@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	 = & JEVConfig::getInstance();
 
-$this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $this->day );
+$this->data = $data = $this->datamodel->getDayData( $this->year, $this->month, $this->day,$this->limit,$this->limitstart );
 $this->Redirectdetail();
 
 $cfg = & JEVConfig::getInstance();
@@ -96,3 +96,6 @@ if (!$hasevents) {
 }
 ?>
 </table>
+<?php if ($data["total"]>$data["limit"]){
+    	$this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
+    }?>

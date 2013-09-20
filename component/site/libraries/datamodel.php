@@ -207,7 +207,7 @@ class JEventsDataModel {
 	 * @param boolean $veryshort - use true for module which only requires dates and nothing about events
 	 * @return array - calendar data array
 	 */
-	function getCalendarData( $year, $month, $day , $short=false, $veryshort = false){
+	function getCalendarData( $year, $month, $day , $short=false, $veryshort = false,$limit=0,$limitstart=0){
 		
 
 		$data = array();
@@ -225,8 +225,34 @@ class JEventsDataModel {
 
 		$cfg = & JEVConfig::getInstance();
 
+                $today=JevDate::mktime( 0, 0, 0, date("m"), date("d"), date("Y"));
+                $month_start = JevDate::mktime(0, 0, 0, $month, 1, $year);
+		$month_end = JevDate::mktime(23, 59, 59, $month, date('t', $month_start), $year);             
+                $data ["limit"] = $limit;
+                $data ["limitstart"]=$limitstart;
+                if ($data ["limit"]>0){
+                        $counter1 = count($this->queryModel->listIcalEventsByMonth($year, $month));             
+			$data["total"] =  $counter1 ;
+			if( $data["total"] <= $data ["limit"] ) {
+				$data ["limitstart"] = 0;
+			}
+                        if ($data ["limitstart"]<0){
+                            if ($month_start<$today && $today<$month_end){                                
+                                $counter2 = count($this->queryModel->listIcalEvents($today, $month_end));		
+                                $data ["limitstart"]=$data["total"]-$counter2;
+                            }
+                            else $data ["limitstart"]=0;                           
+                        }
+		}
+		else {
+			$data["total"]=0;
+			$data ["limitstart"]=0;
+		}                                        
+                $data ["limitstart"]=$data ["limitstart"]-($data ["limitstart"]%$data ["limit"]);            
+                $month_end = strval($year) ."-". strval($month). "-". strval(date('t', $month_start)) ." 23:59:59" ; 
+                $month_start =  strval($year) ."-" . strval($month)."-01 00:00:00"  ;                                  
 		if (!$veryshort){
-			$icalrows = $this->queryModel->listIcalEventsByMonth( $year, $month);
+			$icalrows = $this->queryModel->listIcalEventsByRange( $month_start, $month_end,$data["limitstart"],$data["limit"]);
 
 			// handy for developement in case I comment out part of the above
 			if (!isset($rows)) $rows = array();
@@ -548,7 +574,7 @@ class JEventsDataModel {
 	 * @param boolean $detailedDay when true gives hour by hour data for the day $day
 	 * @return unknown
 	 */
-	function getWeekData($year, $month, $day, $detailedDay=false) {
+	function getWeekData($year, $month, $day, $limit=0,$limitstart=-1, $detailedDay=false) {
 
 		
 		$Itemid = JEVHelper::getItemid();
@@ -570,10 +596,33 @@ class JEventsDataModel {
 
 		$week_start = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday ), $year );
 		$week_end = JevDate::mktime( 0, 0, 0, $month, ( $day - $numday )+6, $year ); // + 6 for inclusinve week
-
-		$rows = $this->queryModel->listIcalEventsByWeek( $week_start, $week_end);
-
-		$rowcount = count( $rows );
+                $today=JevDate::mktime( 0, 0, 0, date("m"), date("d"), date("Y"));
+                
+                $data ["limit"] = $limit;
+                $data ["limitstart"]=$limitstart;
+               if ($data ["limit"]>0){
+                        $counter1 = count($this->queryModel->listIcalEventsByWeek($week_start, $week_end));             
+			$data["total"] =  $counter1 ;
+			if( $data["total"] <= $data ["limit"] ) {
+				$data ["limitstart"] = 0;
+			}
+                        if ($data ["limitstart"]<0){
+                            if ($week_start<$today && $today<$week_end){
+                                $counter2 = count($this->queryModel->listIcalEventsByWeek($today, $week_end));		
+                                $data ["limitstart"]=$data["total"]-$counter2;
+                            }
+                            else $data ["limitstart"]=0;                           
+                        }
+		}
+		else {
+			$data["total"]=0;
+			$data ["limitstart"]=0;
+		}
+                $data ["limitstart"]=$data ["limitstart"]-($data ["limitstart"]%$data ["limit"]);   
+                $week_start1 =  strval($year) ."-" . strval($month)."-".  strval($day - $numday)  ;
+		$week_end1 = strval($year) ."-". strval($month). "-". strval($day - $numday +6)  ; // + 6 for inclusinve week
+                
+		$rows = $this->queryModel->listIcalEventsByRange( $week_start1, $week_end1,$data ["limitstart"],$data ["limit"]);
 
 		$data['startdate']	= JEventsHTML::getDateFormat( JevDate::strftime("%Y",$week_start), JevDate::strftime("%m",$week_start), JevDate::strftime("%d",$week_start), 1 );
 		$data['enddate']	= JEventsHTML::getDateFormat( JevDate::strftime("%Y",$week_end), JevDate::strftime("%m",$week_end), JevDate::strftime("%d",$week_end), 1 );
@@ -679,16 +728,27 @@ class JEventsDataModel {
 
 	}
 
-	function getDayData($year, $month, $day) {
+	function getDayData($year, $month, $day, $limit=0, $limitstart=0) {
 		
 
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
 		$data = array();
 
-		$target_date = JevDate::mktime(0,0,0,$month,$day,$year);
-		$rows = $this->queryModel->listIcalEventsByDay($target_date);
-
+                $target_date = JevDate::mktime(0,0,0,$month,$day,$year);
+                
+                $data ["limit"] = $limit;
+                $data ["limitstart"]=$limitstart;
+               if ($data ["limit"]>0){
+                        $counter1 = count($this->queryModel->listIcalEventsByDay($target_date,$data));             
+			$data["total"] =  $counter1 ;
+			if ($data ["limitstart"]<0) $data["limitstart"] = 0;			
+		}
+		else {
+			$data["total"]=0;
+			$data ["limitstart"]=0;
+		}               		
+		$rows = $this->queryModel->listIcalEventsByDay($target_date,$data);               
 		$this->_populateHourData($data, $rows, $target_date);
 
 		return $data;

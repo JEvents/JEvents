@@ -15,7 +15,7 @@ $viewimages = $viewpath . "/images";
 
 $view =  $this->getViewName();
 
-$this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day);
+$this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $this->day,$this->limit,$this->limitstart);
 
 // previous and following month names and links
 $followingWeek = $this->datamodel->getFollowingWeek($this->year, $this->month, $this->day);
@@ -85,3 +85,6 @@ for( $d = 0; $d < 7; $d++ ){
 
 ?>
 </table>
+<?php if ($data["total"]>$data["limit"]){
+    	$this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
+    }?>
