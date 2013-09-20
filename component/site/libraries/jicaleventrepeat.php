@@ -320,5 +320,107 @@ class jIcalEventRepeat extends jIcalEventDB{
 		}
 
 	}
+        
+        function previousnextEventLinks(){
+		$cfg = & JEVConfig::getInstance();
+                $result="";
+		if ($this->prevEvent() || $this->nextEvent()){
+			if ($this->prevEvent()){
+				$result .= "<div class='ev_prevrepeat'>";
+				$result .= "<a href='".$this->prevEvent()."' title='".JText::_('JEV_PREVIOUSEVENT')."' class='".$cfg->get('com_navbarcolor')."'>".JText::_('JEV_PREVIOUSEVENT')."</a>";
+				$result .= "</div>";
+			}
+			if ($this->nextEvent()){
+				$result .= "<div class='ev_nextrepeat'>";
+				$result .= "<a href='".$this->nextEvent()."' title='".JText::_('JEV_NEXTEVENT')."' class='".$cfg->get('com_navbarcolor')."'>".JText::_('JEV_NEXTEVENT')."</a>";
+				$result .= "</div>";
+			}
+		}
+		return $result;
+	}
 
+        function prevEvent(){
+		if (!isset($this->_prevEvent)){
+			$this->getAdjacentEvents();
+		}
+		return $this->_prevEvent;
+	}
+
+	function nextEvent(){
+		if (is_null($this->_nextEvent)){
+			$this->getAdjacentEvents();
+		}
+		return $this->_nextEvent;
+	}
+        
+        private function getAdjacentEvents(){
+
+		$Itemid	= JEVHelper::getItemid();
+		list($year,$month,$day) = JEVHelper::getYMD();
+                $this->datamodel  =  new JEventsDataModel();
+                
+                 $pastev=0;
+                 $limit=10;
+                while ($pastev==0):
+		$prev=$this->datamodel->queryModel->listIcalEvents('1970-01-01 00:00:00',$this->_startrepeat,"rpt.startrepeat DESC, rpt.rp_id DESC",false,"","",$limit);    
+                for ($i=0;$i<count($prev);$i++){
+                    if ($this->_startrepeat>$prev[$i]->_startrepeat){
+                            $prior=$prev[$i];
+                            $pastev=1;
+                            break;
+                    }                   
+                    else if ($prev[$i]->_rp_id < $this->_rp_id && $this->_startrepeat==$prev[$i]->_startrepeat) {
+                            $prior=$prev[$i];
+                            $pastev=1;
+                            break;
+                    }
+                }
+                if (count($prev)<$limit) {
+                    $pastev=1;
+                }
+                $limit=$limit*2; 
+                endwhile;               
+                if (!is_null($prior)) { 
+			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$prior->_rp_id .'&Itemid='.$Itemid
+			."&year=".$prior->_yup."&month=".$prior->_mup."&day=".$prior->_dup."&uid=".urlencode($prior->_uid)."&title=".JFilterOutput::stringURLSafe($prior->_title);
+			$link = JRoute::_( $link  );
+			$this->_prevEvent = $link;
+		}
+		else {
+			$this->_prevEvent = false;
+		}
+
+                $pastevpost=0;
+                 $limit=10;
+                while ($pastevpost==0):
+		$next=$this->datamodel->queryModel->listIcalEvents($this->_startrepeat,'2038-01-01 00:00:00',"rpt.startrepeat ASC, rpt.rp_id ASC",false,"","",$limit);    
+                for ($i=0;$i<count($next);$i++){
+                    if ($this->_startrepeat<$next[$i]->_startrepeat){
+                            $post=$next[$i];
+                            $pastevpost=1;
+                            break;
+                    }              
+                    else if ($next[$i]->_rp_id > $this->_rp_id && $this->_startrepeat==$next[$i]->_startrepeat) {
+                            $post=$next[$i];
+                            $pastevpost=1;
+                            break;
+                    }
+                }
+                if (count($next)<$limit) {
+                    $pastevpost=1;
+                }
+                $limit=$limit*2; 
+                endwhile;  
+                
+		if (!is_null($post)) {
+			$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$post->rp_id .'&Itemid='.$Itemid
+			."&year=$post->yup&month=$post->mup&day=$post->dup&uid=".urlencode($this->uid())."&title=".JFilterOutput::stringURLSafe($post->title);
+			$link = JRoute::_( $link  );
+			$this->_nextEvent = $link;
+		}
+		else {
+			$this->_nextEvent = false;
+		}
+
+	}
 }
