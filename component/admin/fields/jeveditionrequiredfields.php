@@ -24,32 +24,34 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 	 */
 	protected $type = 'Jeveditionrequiredfields';
 
-                  protected function getInput() {
-                      parent::getOptions();
+	protected function getInput()
+	{
+		parent::getOptions();
                                     
-                                    $availableFields = array();
-                                   
-                                    $jevplugins = JPluginHelper::getPlugin("jevents");
-                                    //we dinamically get the size of the select box
-                                    $size = 5;
-                                    $options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
-                                    $options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
-                                    $options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
-                                    $options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
-                                    $options['EXTRAINFO'] = JText::_("JEV_FIELD_EXTRAINFO",true);
-                                    $group = array();                                    
-                                    $group['value'] =JText::_("JEV_CORE_DATA",true);
-                                    $group['text'] =JText::_("JEV_CORE_DATA",true);
-                                    
-                                    $group['items'] = $options;
-                                    $optionsGroup[]=$group;
-                                    unset($options);
-                                    
-                                    foreach ($jevplugins as $jevplugin){
-                                            // At present only rsvp pro support secondary tabs and special input formats
-                                            if (!in_array($jevplugin->name, array("jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags","jevlocations"))){
-                                                    continue;
-                                            }
+		$availableFields = array();
+
+		$jevplugins = JPluginHelper::getPlugin("jevents");
+		//we dinamically get the size of the select box
+		$size = 5;
+		$options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
+		$options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
+		$options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
+		$options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
+		$options['EXTRA'] = JText::_("JEV_FIELD_EXTRAINFO",true);
+		$group = array();
+		$group['value'] =JText::_("JEV_CORE_DATA",true);
+		$group['text'] =JText::_("JEV_CORE_DATA",true);
+
+		$group['items'] = $options;
+		$optionsGroup[]=$group;
+		unset($options);
+
+		foreach ($jevplugins as $jevplugin)
+		{
+			// At present only rsvp pro support secondary tabs and special input formats
+			if (!in_array($jevplugin->name, array("jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevtags", "jevmetatags","jevlocations"))){
+					continue;
+		}
                                             $classname = "plgJevents".ucfirst($jevplugin->name);
                                             if (is_callable(array($classname,"fieldNameArray"))){
                                                       $lang = JFactory::getLanguage();
