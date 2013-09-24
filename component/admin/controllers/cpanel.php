@@ -443,7 +443,15 @@ class AdminCpanelController extends JControllerAdmin
 				
 				if($oldPackage)
 				{
-					JError::raiseNotice("100", JText::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE',$language['name']));
+					if (JText::_("JEV_UPDATE_LANGUAGE_PACKAGE")=="JEV_UPDATE_LANGUAGE_PACKAGE")
+					{
+						$updateLanguagePackMessage = JText::sprintf('Your JEvents language package for %s is not the latest official release from JEvents. Please go to <a href="http://www.jevents.net/translations">JEvents site</a> and get the latest version to enable live update system for JEvents languages.',$language['name']);
+					}
+					else
+					{
+						$updateLanguagePackMessage = JText::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE',$language['name']);
+					}
+					JError::raiseNotice("100", $updateLanguagePackMessage);
 				}
 			}			
 		}
