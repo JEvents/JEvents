@@ -341,8 +341,7 @@ class plgSearchEventsearch extends JPlugin
 				$item->title = $item->title . " (" . $startdate->toFormat($dateformat) . ")";
 				$item->startrepeat = $event->_startrepeat;
 
-				$myitemid = JRequest::getInt("target_itemid", 0);
-				$myitemid = $this->params->get("target_itemid",$myitemid);
+				$myitemid = $this->params->get("target_itemid",0);
 				if($myitemid == 0)
 				{
 					// I must find the itemid that allows this event to be shown
