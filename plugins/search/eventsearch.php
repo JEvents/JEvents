@@ -350,6 +350,7 @@ class plgSearchEventsearch extends JPlugin
 				// pretend to have category restriction
 				$modparams->set("catid0", $row->catid);
 				$modparams->set("ignorecatfilter", 1);
+				$modparams->set("target_itemid",$this->_params->get("target_itemid",$myitemid));
 				$myitemid = findAppropriateMenuID($catidsOut, $modcatids, $catidList, $modparams->toObject(), $showall);
 				$item->href = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myitemid);
 				$link = $item->href;
