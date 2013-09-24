@@ -111,7 +111,12 @@ class AdminCpanelController extends JControllerAdmin
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			$this->view->assign("warning", JText::_('CALENDARS_NOT_SETUP_PROPERLY'));
+			JError::raiseWarning("100", JText::_('CALENDARS_NOT_SETUP_PROPERLY'));
+		}
+
+		if (JEVHelper::isAdminUser())
+		{
+			$this->checkLanguagePackages();
 		}
 
 		// Set the layout
@@ -409,6 +414,47 @@ class AdminCpanelController extends JControllerAdmin
 			$cat->store();
 		}
 
+	}
+
+	private function checkLanguagePackages()
+	{
+		$languages = JLanguage::getKnownLanguages();
+
+		foreach($languages as $language)
+		{
+			$oldPackage = true;
+			if($language['tag']!=="en-GB" )
+			{
+				if(is_file(JPATH_SITE . "/language/".$language['tag']."/".$language['tag'].".com_jevents.ini") || is_file(JPATH_ADMINISTRATOR. "/language/".$language['tag']."/".$language['tag'].".com_jevents.ini"))
+				{
+					$db = & JFactory::getDBO();
+					// Add one category by default if none exist already
+					$sql = "SELECT element from #__extensions WHERE type = 'file'";
+					$db->setQuery($sql);
+					$elements = $db->loadObjectList();
+					foreach($elements as $element)
+					{
+						if($element->element === $language['tag']."_JEvents")
+						{
+							$oldPackage = false;
+						}
+					}
+				}
+				
+				if($oldPackage)
+				{
+					if (JText::_("JEV_UPDATE_LANGUAGE_PACKAGE")=="JEV_UPDATE_LANGUAGE_PACKAGE")
+					{
+						$updateLanguagePackMessage = JText::sprintf('Your JEvents language package for %s is not the latest official release from JEvents. Please go to <a href="http://www.jevents.net/translations">JEvents site</a> and get the latest version to enable live update system for JEvents languages.',$language['name']);
+					}
+					else
+					{
+						$updateLanguagePackMessage = JText::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE',$language['name']);
+					}
+					JError::raiseNotice("100", $updateLanguagePackMessage);
+				}
+			}			
+		}
 	}
 
 	private function insertAsset($object)

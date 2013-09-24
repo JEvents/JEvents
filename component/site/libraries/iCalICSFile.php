@@ -359,11 +359,12 @@ RAWTEXT;
 				else {
 					JRequest::setVar("evid", 0);
 				}
-				// not a dry run of course!
-				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, false));
 
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();
+
+				// not a dry run of course!
+				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, false));
 
 				// Save memory by clearing out the repetitions we no longer need
 				$repetitions = null;

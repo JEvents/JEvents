@@ -899,8 +899,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"jevpaidsubs","name"=>"jevpaidsubs","folder"=>"jevents", "type"=>"plugin"),
 			array("element"=>"mod_jevents_paidsubs","name"=>"mod_jevents_paidsubs","type"=>"module"),
 
-			// Translations - TODO
-			//array("element"=>"de-DE","name"=>"Deutsch","folder"=>"jevents", "type"=>"plugin"),
+			// Translations - TODO club translations.  Normal JEvents translations handled below!
 
 			// Bronze - editor button
 			array("element"=>"jevents","name"=>"jevents","folder"=>"editors-xtd", "type"=>"plugin"),
@@ -917,6 +916,15 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			// Bronze - sh404sef - TODO
 
 		);
+		// Do the language files for Joomla
+		$db = JFactory::getDbo();
+		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents'");
+		$translations = $db->loadObjectList();
+		foreach ($translations  as $translation){
+			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
+			$updates[]= array("element"=>$translation->element,"name"=>$translation->name,"type"=>"file");
+		}
+
 
 		foreach ($updates as $package)
 		{
@@ -1024,9 +1032,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$clubcode = $params->get("clubcode","");
 		$filter = new JFilterInput();
-		$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
-
-		$clubcode = base64_encode($clubcode);
+		$clubcode = $filter->clean($clubcode, "CMD");
+		//$clubcode = $filter->clean($clubcode, "BASE64")."-".$sitedomain;
+		//$clubcode = base64_encode($clubcode);
+		$clubcode = $clubcode . "-".base64_encode($sitedomain);
 
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');

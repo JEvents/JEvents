@@ -341,16 +341,20 @@ class plgSearchEventsearch extends JPlugin
 				$item->title = $item->title . " (" . $startdate->toFormat($dateformat) . ")";
 				$item->startrepeat = $event->_startrepeat;
 
-				$myitemid = JRequest::getInt("target_itemid", 0);
-				// I must find the itemid that allows this event to be shown
-				$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
-				// Use the plugin params to ensure menu item is picked up
-				//$modparams = new JRegistry($this->_plugin->params);
-				$modparams = new JRegistry(null);
-				// pretend to have category restriction
-				$modparams->set("catid0", $row->catid);
-				$modparams->set("ignorecatfilter", 1);
-				$myitemid = findAppropriateMenuID($catidsOut, $modcatids, $catidList, $modparams->toObject(), $showall);
+				$myitemid = $this->params->get("target_itemid",0);
+				if($myitemid == 0)
+				{
+					// I must find the itemid that allows this event to be shown
+					$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
+					// Use the plugin params to ensure menu item is picked up
+					//$modparams = new JRegistry($this->_plugin->params);
+					$modparams = new JRegistry(null);
+					// pretend to have category restriction
+					$modparams->set("catid0", $row->catid);
+					$modparams->set("ignorecatfilter", 1);
+
+					$myitemid = findAppropriateMenuID($catidsOut, $modcatids, $catidList, $modparams->toObject(), $showall);
+				}
 				$item->href = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myitemid);
 				$link = $item->href;
 
