@@ -24,56 +24,60 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 	 */
 	protected $type = 'Jeveditionrequiredfields';
 
-                  protected function getInput() {
-                      parent::getOptions();
+	protected function getInput()
+	{
+		parent::getOptions();
                                     
-                                    $availableFields = array();
-                                   
-                                    $jevplugins = JPluginHelper::getPlugin("jevents");
-                                    //we dinamically get the size of the select box
-                                    $size = 5;
-                                    $options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
-                                    $options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
-                                    $options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
-                                    $options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
-                                    $options['EXTRAINFO'] = JText::_("JEV_FIELD_EXTRAINFO",true);
-                                    $group = array();                                    
-                                    $group['value'] =JText::_("JEV_CORE_DATA",true);
-                                    $group['text'] =JText::_("JEV_CORE_DATA",true);
-                                    
-                                    $group['items'] = $options;
-                                    $optionsGroup[]=$group;
-                                    unset($options);
-                                    
-                                    foreach ($jevplugins as $jevplugin){
-                                            // At present only rsvp pro support secondary tabs and special input formats
-                                            if (!in_array($jevplugin->name, array("jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags","jevlocations"))){
-                                                    continue;
-                                            }
-                                            $classname = "plgJevents".ucfirst($jevplugin->name);
-                                            if (is_callable(array($classname,"fieldNameArray"))){
-                                                      $lang = JFactory::getLanguage();
-			$lang->load("plg_jevents_".$jevplugin->name,JPATH_ADMINISTRATOR);
-			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"), "edit");
-			if (!isset($fieldNameArray['labels'])) continue;
-                                                      $fieldNameArrayCount = count($fieldNameArray['labels']);
-                                                      if($fieldNameArrayCount>0)
-                                                      {
-                                                            $size +=  $fieldNameArrayCount;
-                                                            for ($i=0;$i<$fieldNameArrayCount;$i++) {
-                                                                    if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;
-                                                                    $options[$fieldNameArray['values'][$i]]=$fieldNameArray['labels'][$i];
-                                                                    $availableFields[$jevplugin->name][]= JHtml::_('select.option',$fieldNameArray['values'][$i],$fieldNameArray['labels'][$i]);
-                                                            }
-                                                            $group = array();
-                                                            $group['value'] = $fieldNameArray['group'];
-                                                            $group['text']  = $fieldNameArray['group'];
-                                                            $group['items'] = $options;
-                                                            $optionsGroup[]=$group;
-                                                            unset($options);
-                                                      }
-                                            }
-                                    }
+		$availableFields = array();
+
+		$jevplugins = JPluginHelper::getPlugin("jevents");
+		//we dinamically get the size of the select box
+		$size = 5;
+		//$options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
+		$options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
+		$options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
+		$options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
+		$options['EXTRA'] = JText::_("JEV_FIELD_EXTRAINFO",true);
+		$group = array();
+		$group['value'] =JText::_("JEV_CORE_DATA",true);
+		$group['text'] =JText::_("JEV_CORE_DATA",true);
+
+		$group['items'] = $options;
+		$optionsGroup[]=$group;
+		unset($options);
+
+		foreach ($jevplugins as $jevplugin)
+		{
+			// At present we only support JEvents, Resources Manager, Agenda & Minutes, Standard Images and Files, Tags and Metatags
+			if (!in_array($jevplugin->name, array("jevpeople" , "agendaminutes", "jevfiles", "jevtags", "jevmetatags"))) continue;
+
+			$classname = "plgJevents".ucfirst($jevplugin->name);
+			if (is_callable(array($classname,"fieldNameArray")))
+			{
+				$lang = JFactory::getLanguage();
+				$lang->load("plg_jevents_".$jevplugin->name,JPATH_ADMINISTRATOR);
+				$fieldNameArray = call_user_func(array($classname,"fieldNameArray"), "edit");
+				if (!isset($fieldNameArray['labels'])) continue;
+				$fieldNameArrayCount = count($fieldNameArray['labels']);
+				if($fieldNameArrayCount>0)
+				{
+					$size +=  $fieldNameArrayCount;
+					for ($i=0;$i<$fieldNameArrayCount;$i++)
+					{
+						if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;
+						if ($fieldNameArray['values'][$i]=='people_selfallocation')  continue;
+						$options[$fieldNameArray['values'][$i]]=$fieldNameArray['labels'][$i];
+						$availableFields[$jevplugin->name][]= JHtml::_('select.option',$fieldNameArray['values'][$i],$fieldNameArray['labels'][$i]);
+					}
+					$group = array();
+					$group['value'] = $fieldNameArray['group'];
+					$group['text']  = $fieldNameArray['group'];
+					$group['items'] = $options;
+					$optionsGroup[]=$group;
+					unset($options);
+				}
+			}
+		}
 		if (!empty($optionsGroup)){
                                                         $size = ($size<10)?$size:10;
                                                         $attr = array('list.attr'   => 'multiple="true"'                                                                              
