@@ -18,7 +18,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		?>
 		<dl id="system-message">
 			<dt class="notice">Message</dt>
-			<dd class="notice fade">
+			<dd class="notice">
 				<ul>
 					<li><?php echo $this->warning; ?></li>
 				</ul>

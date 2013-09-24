@@ -677,10 +677,10 @@ class JEventsAbstractView extends JViewLegacy
 		$this->blanktags = array();
 		$this->requiredtags = array();
                 
-                                    $requiredTags['id'] = "title";
-                                    $requiredTags['default_value'] = "";
-                                    $requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ". JText::_("JEV_FIELD_TITLE",true);
-                                    $this->requiredtags[] = $requiredTags;
+		$requiredTags['id'] = "title";
+		$requiredTags['default_value'] = "";
+		$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ". JText::_("JEV_FIELD_TITLE",true);
+		$this->requiredtags[] = $requiredTags;
 
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
@@ -750,32 +750,32 @@ class JEventsAbstractView extends JViewLegacy
 
 			if (in_array($key, $requiredFields))
 			{
-                                                                        if( isset($this->customfields[$key]["default_value"]) && isset($this->customfields[$key]["id_to_check"]) )
-                                                                        {
-                                                                            $requiredTags['default_value'] = $this->customfields[$key]["default_value"];
-                                                                            $requiredTags['id'] = $this->customfields[$key]["id_to_check"];
-                                                                            $requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ".$requiredTags['id'];
-                                                                        }
-                                                                        else
-                                                                        {    
-                                                                                if ($key ==="agenda" || $key ==="minutes")
-                                                                                {
-                                                                                    $requiredTags['id'] = "custom_".$key;
-                                                                                }                                                                        
-                                                                                else if (preg_match("/image[0-9]{1,2}/", $key) === 1)
-                                                                                {
-                                                                                        $requiredTags['id'] = "custom_upload_" . $key;
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                        $requiredTags['id'] = $key;
-                                                                                }
-                                                                                $requiredTags['default_value'] = "";
-                                                                                                                                                                
-                                                                        }
-                                                                        $requiredTags['label'] = $this->customfields[$key]["label"];
-                                                                        $this->requiredtags[] = $requiredTags;
-                                                      }
+				if( isset($this->customfields[$key]["default_value"]) && isset($this->customfields[$key]["id_to_check"]) )
+				{
+					$requiredTags['default_value'] = $this->customfields[$key]["default_value"];
+					$requiredTags['id'] = $this->customfields[$key]["id_to_check"];
+					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ".$requiredTags['id'];
+				}
+/*				else
+				{
+						if ($key ==="agenda" || $key ==="minutes")
+						{
+							$requiredTags['id'] = "custom_".$key;
+						}
+						else if (preg_match("/image[0-9]{1,2}/", $key) === 1)
+						{
+								$requiredTags['id'] = "custom_upload_" . $key;
+						}
+						else
+						{
+								$requiredTags['id'] = $key;
+						}
+						$requiredTags['default_value'] = "";
+
+				}*/
+				$requiredTags['label'] = $this->customfields[$key]["label"];
+				$this->requiredtags[] = $requiredTags;
+			}
 			if (JVersion::isCompatible("3.0"))
 			{
 				?>
