@@ -27,20 +27,26 @@ class JFormFieldJevconditionallist extends JFormFieldList {
     protected function getInput() {
         if (is_string($this->value)) {
             $this->value = explode(",", $this->value);
-        }
+        }       
+        $conditions=(string) $this->element["conditional"];
+        $conditional=(string) $this->element['name'];
+        $condarray=(string) $this->element['conditions'];       
         $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
-        if (in_array($params->get("com_calViewName", "default"), array("ruthin", "iconic", "extplus")))  $extracondition = '|| layout.value=="global"';
+        $conditionarray=explode(",",$condarray);
+        if (in_array($params->get($conditions, "default"), $conditionarray)==TRUE)  $conditionarray[]="global";
         else $extracondition = "";
+        $condarray="'".(string) implode("','",$conditionarray)."'";
         $script = <<<SCRIPT
-        window.onload = function setupLayoutChange(){
-            var layout=document.getElementById("jform_params_com_calViewName");
-            layout.setAttribute("onchange", "layoutChange()");
-        layoutChange()
+        window.onload = function setupJevConditions(){
+            var condition=document.getElementById("jform_params_$conditions");
+            condition.setAttribute("onchange", "jevConditions()");
+        jevConditions()
         }
-        function layoutChange(){var layout=document.getElementById("jform_params_com_calViewName"); 
-            var eventsno = document.getElementById("jform_params_com_calEventMenuListRowsPpg-lbl"); 
+        function jevConditions(){var condition=document.getElementById("jform_params_$conditions"); 
+            var eventsno = document.getElementById("jform_params_$conditional-lbl"); 
             var hiddencontrol=eventsno.parentNode.parentNode; 
-            if (layout.value=="extplus" || layout.value=="iconic" || layout.value=="ruthin" $extracondition ) hiddencontrol.style.display="block";
+            var conditionsarray=new Array($condarray);  
+            if (conditionsarray.indexOf(condition.value)>=0 ) hiddencontrol.style.display="block";
             else hiddencontrol.style.display="none";}               
 SCRIPT;
                 
