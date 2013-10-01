@@ -178,7 +178,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				{
 					$difficultyClass .= " hiddenDifficulty";
 				}
-
+                                
 				if (strlen($class) > 0)
 				{
 					$class = " class='$class $difficultyClass'";
@@ -294,11 +294,17 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							}
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
-
+                                                        
+                                                        if(strpos($field->id,'ruthinscalabledayname') !== false && $this->component->params->get("ruscalable", "1")=="0") $class .= " hiddenDifficulty";
+                                                        if(strpos($field->id,'ruthinwidth') !== false && $this->component->params->get("ruscalable", "1")=="1") $class .= " hiddenDifficulty";
+                                                        if(strpos($field->id,'extplusscalabledayname') !== false && $this->component->params->get("epscalable", "1")=="0") $class .= " hiddenDifficulty";
+                                                        if(strpos($field->id,'extpluswidth') !== false && $this->component->params->get("epscalable", "1")=="1") $class .= " hiddenDifficulty";
+                                                        if(strpos($field->id,'icscalabledayname') !== false && $this->component->params->get("icscalable", "1")=="0") $class .= " hiddenDifficulty";
+                                                        if(strpos($field->id,'iconicwidth') !== false && $this->component->params->get("icscalable", "1")=="1") $class .= " hiddenDifficulty";
 							if (strlen($class) > 0)
 							{
 								$class = " class='$class'";
-							}
+							}                                                        
 							$html[] = "<tr $class>";
 							if (!isset($field->label) || $field->label == "")
 							{
