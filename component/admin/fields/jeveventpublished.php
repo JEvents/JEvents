@@ -26,7 +26,9 @@ class JFormFieldJeveventpublished extends JFormField
 		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher())
 		{
 			$ev_id= $this->form->jevdata[$this->name]["ev_id"];
-			
+			  JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                          JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 
+		
 			if ($ev_id == 0)
 			{
 				// published by default	

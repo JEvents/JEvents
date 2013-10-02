@@ -2006,14 +2006,17 @@ class JEVHelper
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 	}        
-       public static function ConditionalFields($element,$component){
+     public static function ConditionalFields($element,$component){
         $conditions=(string) $element["conditional"];
         $conditional=(string) $element['name'];
         if (strpos("@",$conditional)>=0) $conditional=str_replace("@","_",$conditional);
         $condarray=(string) $element['conditions'];
         $condtype=(string) $element['type'];
         $fielddefault=(string) $element['default'];
-        $multi=(string)  $element['multiple'];          
+        $multi=(string)  $element['multiple'];     
+        if ($component=="jevents.edit.icalevent") $condparam="";
+        elseif ($component=="com_config.component") $condparam="jform_";
+        else $condparam="jform_params_";
         if ($conditions){
         $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
         $conditionarray=explode(",",$condarray);
@@ -2024,7 +2027,7 @@ class JEVHelper
                 
         var jevConditional_$conditional={
         setupJevConditions:function(){
-        var condition=$("jform_params_$conditions") ? $("jform_params_$conditions") : $("jform_$conditions");          
+        var condition=$("$condparam$conditions");          
         if (condition.className.indexOf("radio")>=0) {
             for (var i=0;i<condition.childNodes.length; i++){
                 if (condition.childNodes[i].type=="radio")  {
@@ -2048,8 +2051,8 @@ class JEVHelper
         },
                 
         jevCondition:function(){
-            var condition=$("jform_params_$conditions") ? $("jform_params_$conditions") : $("jform_$conditions");
-            var eventsno = $("jform_params_$conditional") ? $("jform_params_$conditional") : $("jform_$conditional"); 
+            var condition=$("$condparam$conditions");
+            var eventsno = $("$condparam$conditional"); 
             var hiddencontrol=eventsno.parentNode.parentNode; 
             var conditionsarray=new Array($condarray); 
             if (condition.type=="checkbox") condition.value=condition.checked;
@@ -2072,7 +2075,8 @@ class JEVHelper
                 }
             }
             if (conditionsarray.indexOf(condition.value)>=0 ) {
-                if (hiddencontrol.tagName=="TR") hiddencontrol.style.display="table-row";    
+                if (hiddencontrol.tagName=="TR") hiddencontrol.style.display="table-row"; 
+                if (hiddencontrol.tagName=="SPAN") hiddencontrol.style.display="inline"; 
                 else hiddencontrol.style.display="block";                
             }
             else {

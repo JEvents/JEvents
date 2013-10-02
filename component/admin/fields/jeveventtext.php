@@ -22,6 +22,8 @@ class JFormFieldJeveventtext extends JFormFieldText
 	 */
 	protected function getInput()
 	{
+                 JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 		
 		$input = parent::getInput();
 		if (strpos($input, "placeholder")===false){
 			$placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars(JText::_($this->element['placeholder'])) . '"' : '';

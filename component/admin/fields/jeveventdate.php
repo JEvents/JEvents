@@ -45,6 +45,8 @@ class JFormFieldJeveventdate extends JFormField
 		<?php
 
 		$html = ob_get_clean();
+                JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 
 		return $html;
 
 	}
