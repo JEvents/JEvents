@@ -123,8 +123,8 @@ class JEVHelper
 		}
 
 	}
-        
-        /**
+
+	/**
 	 * Returns the Max year to display from Config
 	 * 
 	 * @static
@@ -749,8 +749,8 @@ class JEVHelper
 		return $jevitemid;
 
 	}
-        
-        /**
+
+	/**
 	 * Get current year number
 	 * @param   string  $year     Year reference or exact number of the year
 	 * @return int
@@ -2005,5 +2005,103 @@ class JEVHelper
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
-	}
+	}        
+       public static function ConditionalFields($element,$component){
+        $conditions=(string) $element["conditional"];
+        $conditional=(string) $element['name'];
+        if (strpos("@",$conditional)>=0) $conditional=str_replace("@","_",$conditional);
+        $condarray=(string) $element['conditions'];
+        $condtype=(string) $element['type'];
+        $fielddefault=(string) $element['default'];
+        $multi=(string)  $element['multiple'];          
+        if ($conditions){
+        $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+        $conditionarray=explode(",",$condarray);
+        if (in_array($params->get($conditions, "default"), $conditionarray )==TRUE && $component!="com_config.component")  $conditionarray[]="global";
+        $condarray="'".(string) implode("','",$conditionarray)."'";
+        $fielddefaultarray="'".(string) str_replace(",","','",$fielddefault)."'";
+        $script = <<<SCRIPT
+                
+        var jevConditional_$conditional={
+        setupJevConditions:function(){
+        var condition=$("jform_params_$conditions") ? $("jform_params_$conditions") : $("jform_$conditions");          
+        if (condition.className.indexOf("radio")>=0) {
+            for (var i=0;i<condition.childNodes.length; i++){
+                if (condition.childNodes[i].type=="radio")  {
+                condition.childNodes[i].addEvent("click", function(){jevConditional_$conditional.jevCondition()});        
+                }
+            }        
+        }
+        else if(condition.tagName=="SELECT"){
+                if ($(condition.id+"_chzn")){
+                var condition_chzn = $(condition.id+"_chzn");
+                    for (var i=0;i<condition_chzn.childNodes.length; i++){
+                        condition_chzn.childNodes[i].addEvent("click", function(){jevConditional_$conditional.jevCondition()}); 
+                    }
+                }
+                else condition.addEvent("change", function(){jevConditional_$conditional.jevCondition()}); 
+        }   
+        else {
+            condition.addEvent("change", function(){jevConditional_$conditional.jevCondition()}); 
+        }     
+        jevConditional_$conditional.jevCondition();
+        },
+                
+        jevCondition:function(){
+            var condition=$("jform_params_$conditions") ? $("jform_params_$conditions") : $("jform_$conditions");
+            var eventsno = $("jform_params_$conditional") ? $("jform_params_$conditional") : $("jform_$conditional"); 
+            var hiddencontrol=eventsno.parentNode.parentNode; 
+            var conditionsarray=new Array($condarray); 
+            if (condition.type=="checkbox") condition.value=condition.checked;
+            if (condition.childNodes[0] && condition.childNodes[0].type=="radio"){
+                for (var i=0;i<condition.childNodes.length; i++){ 
+                    if (condition.childNodes[i].checked) condition.value=condition.childNodes[i].value;
+                }
+            }
+            if (condition.multiple && condition.tagName=="SELECT"){
+                for (var i=0;i<condition.options.length; i++){ 
+                    if (condition.options[i].selected  && conditionsarray.indexOf(condition.options[i].value)>=0) conditionsarray[0]=condition.value;
+                }
+            }
+            if (condition.childNodes[0] && condition.childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0].type=="checkbox"){
+                condition.value=new Array();
+                for (var i=0;i<condition.childNodes[0].childNodes.length; i++){ 
+                    if (condition.childNodes[0].childNodes[i].childNodes[0].checked && conditionsarray.indexOf(condition.childNodes[0].childNodes[i].childNodes[0].value)>=0){
+                    condition.value=conditionsarray[0];
+                    }
+                }
+            }
+            if (conditionsarray.indexOf(condition.value)>=0 ) {
+                if (hiddencontrol.tagName=="TR") hiddencontrol.style.display="table-row";    
+                else hiddencontrol.style.display="block";                
+            }
+            else {
+                if ("$multi" || "$condtype"=="jevuser" ){
+                    var defaultarray = new Array($fielddefaultarray);
+                    for (var i=0;i<eventsno.options.length; i++){                    
+                        if (defaultarray.indexOf(eventsno.options[i].value)>=0){
+                            eventsno.options[i].selected=true;
+                        }
+                        else eventsno.options[i].selected=false;
+                    }
+                }
+                else eventsno.value="$fielddefault";
+                hiddencontrol.style.display="none";
+            }
+            try {
+                jQuery(eventsno).trigger("liszt:updated");
+            }
+            catch (e){									
+            }
+       }   
+}
+        window.addEvent('load', function(){
+        jevConditional_$conditional.setupJevConditions();        
+        });
+SCRIPT;
+        
+        $document = JFactory::getDocument();
+        $document->addScriptDeclaration($script);
+        } 
+        }
 }
