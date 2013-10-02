@@ -48,8 +48,8 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 
 		foreach ($jevplugins as $jevplugin)
 		{
-			// At present we only support JEvents, Resources Manager, Agenda & Minutes, Standard Images and Files, Tags and Metatags
-			if (!in_array($jevplugin->name, array("jevpeople" , "agendaminutes", "jevfiles", "jevtags", "jevmetatags"))) continue;
+			// At present we only support JEvents, Agenda & Minutes, CCK plugin, Standard Images and Files, Resources Manager, Metatags and Tags
+			if (!in_array($jevplugin->name, array("agendaminutes", "jevcck","jevfiles", "jevmetatags", "jevpeople" , "jevtags"))) continue;
 
 			$classname = "plgJevents".ucfirst($jevplugin->name);
 			if (is_callable(array($classname,"fieldNameArray")))
@@ -78,18 +78,15 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 				}
 			}
 		}
-		if (!empty($optionsGroup)){
-                                                        $size = ($size<10)?$size:10;
-                                                        $attr = array('list.attr'   => 'multiple="true"'                                                                              
-                                                                                                      .'size="'.$size.'"',
-                                                                               'list.select' => $this->value);
-
+		if (!empty($optionsGroup))
+		{
+			$size = ($size<10)?$size:10;
+			$attr = array('list.attr' => 'multiple="true"'.'size="'.$size.'"',
+						'list.select' => $this->value);
      
 			$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);
 		}
 
-                                    return $input;                                    
-                  }
-
-
+		return $input;
+	}
 }
