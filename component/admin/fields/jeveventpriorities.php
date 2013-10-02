@@ -25,12 +25,12 @@ class JFormFieldJeveventpriorities extends JFormField
 	{	
 		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$showpriority = $params->get("showpriority", 0);
-                JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-                JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 
-		
+               
 		// only those who can publish globally can set priority field
 		if ($showpriority && JEVHelper::isEventPublisher(true))
 		{
+                     JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                     JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 		
 			$list = array();
 			for ($i = 0; $i < 10; $i++)
 			{
