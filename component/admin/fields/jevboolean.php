@@ -41,6 +41,12 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 	 * @return	array	The field option objects.
 	 * @since	1.6
 	 */
+        protected function getInput()
+	{
+        JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+        JEVHelper::ConditionalFields( $this->element,$this->form->getName());   		
+        return parent::getInput();
+	}
 	public function getOptions()
 	{		
 		// Must load admin language files

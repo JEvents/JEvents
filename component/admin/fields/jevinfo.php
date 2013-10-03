@@ -90,7 +90,9 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 			}
 			$value = implode(", ", $parts);
 		}
-		return "<strong style='color:#993300'>" . JText::_($value) . "</strong>";
+                JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 
+		return "<strong id=$this->id style='color:#993300'>" . JText::_($value) . "</strong>";
 
 	}
 

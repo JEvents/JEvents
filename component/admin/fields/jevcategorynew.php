@@ -25,6 +25,12 @@ class JFormFieldJevcategorynew extends JFormFieldList
 	 * @return	array	The field option objects.
 	 * @since	1.6
 	 */
+        protected function getInput()
+	{
+        JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+        JEVHelper::ConditionalFields( $this->element,$this->form->getName());   		
+        return parent::getInput();
+	}       
 	protected function getOptions()
 	{
 		// Initialize variables.

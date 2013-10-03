@@ -357,12 +357,24 @@ class jIcalEventRepeat extends jIcalEventDB{
 
 		$Itemid	= JEVHelper::getItemid();
 		list($year,$month,$day) = JEVHelper::getYMD();
-                $this->datamodel  =  new JEventsDataModel();
-                
+                $this->datamodel  =  new JEventsDataModel();    
+                JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                if(method_exists("JEVHelper", "getMinYear"))
+			{
+				$minyear =  JEVHelper::getMinYear();
+				$maxyear = JEVHelper::getMaxYear();
+			}
+			else
+			{
+                                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$minyear = $params->get("com_earliestyear", 1970);
+				$maxyear = $params->get("com_latestyear", 2150);
+			} 
+                           
                  $pastev=0;
                  $limit=10;
                 while ($pastev==0):
-		$prev=$this->datamodel->queryModel->listIcalEvents('1970-01-01 00:00:00',$this->_startrepeat,"rpt.startrepeat DESC, rpt.rp_id DESC",false,"","",$limit);    
+		$prev=$this->datamodel->queryModel->listIcalEvents($minyear.'-01-01 00:00:00',$this->_startrepeat,"rpt.startrepeat DESC, rpt.rp_id DESC",false,"","",$limit);    
                 for ($i=0;$i<count($prev);$i++){
                     if ($this->_startrepeat>$prev[$i]->_startrepeat){
                             $prior=$prev[$i];
@@ -393,7 +405,7 @@ class jIcalEventRepeat extends jIcalEventDB{
                 $pastevpost=0;
                  $limit=10;
                 while ($pastevpost==0):
-		$next=$this->datamodel->queryModel->listIcalEvents($this->_startrepeat,'2038-01-01 00:00:00',"rpt.startrepeat ASC, rpt.rp_id ASC",false,"","",$limit);    
+		$next=$this->datamodel->queryModel->listIcalEvents($this->_startrepeat,$maxyear.'-01-01 00:00:00',"rpt.startrepeat ASC, rpt.rp_id ASC",false,"","",$limit);    
                 for ($i=0;$i<count($next);$i++){
                     if ($this->_startrepeat<$next[$i]->_startrepeat){
                             $post=$next[$i];

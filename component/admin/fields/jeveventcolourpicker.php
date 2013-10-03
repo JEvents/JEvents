@@ -43,7 +43,8 @@ class JFormFieldJeveventcolourpicker extends JFormField
 		
 		if (!$hideColour)
 		{
-
+                        JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                        JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 	
 			ob_start();
 			?>
 			<table id="pick1064797275" style="background-color:<?php echo $this->value . ';color:' . JevMapColor($this->value); ?>;border:solid 1px black;">
@@ -59,7 +60,8 @@ class JFormFieldJeveventcolourpicker extends JFormField
 					</td>
 				</tr>
 			</table>
-			<?php
+                        <div id="color" style="display:none;"></div>
+			<?php                     	
 			return ob_get_clean();
 		}
 		return "";
