@@ -2005,11 +2005,12 @@ class JEVHelper
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
-	}        
-       public static function ConditionalFields($element,$component){
+	}       
+        public static function ConditionalFields($element,$component){
         $conditions=(string) $element["conditional"];
         $conditional=(string) $element['name'];
         if ($conditional=="creator") $conditional="jev_creatorid";
+        if ($conditional=="location") $conditional="evlocation";
         if (strpos("@",$conditional)>=0) $conditional=str_replace("@","_",$conditional);
         $condarray=(string) $element['conditions'];
         $condtype=(string) $element['type'];

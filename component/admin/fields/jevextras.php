@@ -67,11 +67,13 @@ class JFormFieldJevextras extends JFormField
 		// load any custom fields
 		$dispatcher	=& JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
-		$id = $this->id;
-
+		$id = $this->id;  
+                JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                JEVHelper::ConditionalFields( $this->element,$this->form->getName());   
+	
 		if (array_key_exists($id,$this->data)){
 			$item = $this->data[$id];
-			if (isset($item->html) && $item->html!="") return $item->html;
+			if (isset($item->html) && $item->html!="") return $item->html."<div id=".$this->id." style='display:none;'></div>";
 
 		}
 		else return "";
