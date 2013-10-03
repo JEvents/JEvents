@@ -131,7 +131,7 @@ class JEVHelper
 	 * @access public
 	 * @return	string				integer with the max year to show in the calendar
 	 */
-        function getMaxYear()
+function getMaxYear()
         {
             $params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
             $maxyear = $params->get("com_latestyear",2150);            
@@ -2005,10 +2005,11 @@ class JEVHelper
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
-	}       
+	}        
         public static function ConditionalFields($element,$component){
         $conditions=(string) $element["conditional"];
         $conditional=(string) $element['name'];
+        $condlabel=$element['label'];
         if ($conditional=="creator") $conditional="jev_creatorid";
         if ($conditional=="location") $conditional="evlocation";
         if (strpos("@",$conditional)>=0) $conditional=str_replace("@","_",$conditional);
@@ -2091,6 +2092,7 @@ class JEVHelper
                         else eventsno.options[i].selected=false;
                     }
                 }
+                else if("$condlabel"=="Specified Person?" || "$condlabel"=="Specified Location?" ) $conditional.Delete();
                 else eventsno.value="$fielddefault";
                 hiddencontrol.style.display="none";
             }
