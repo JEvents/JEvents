@@ -57,8 +57,9 @@ class JFormFieldJeveventtime extends JFormField
 		</div>
 		<?php
 		$html = ob_get_clean();
-                  JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-                JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 		
+                 $this->element['default']=$event->$time24function();
+                 JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+                 JEVHelper::ConditionalFields( $this->element,$this->form->getName()); 
 		return $html;
 
 	}

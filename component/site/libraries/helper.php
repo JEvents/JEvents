@@ -2006,9 +2006,10 @@ class JEVHelper
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 	}        
-     public static function ConditionalFields($element,$component){
+       public static function ConditionalFields($element,$component){
         $conditions=(string) $element["conditional"];
         $conditional=(string) $element['name'];
+        if ($conditional=="creator") $conditional="jev_creatorid";
         if (strpos("@",$conditional)>=0) $conditional=str_replace("@","_",$conditional);
         $condarray=(string) $element['conditions'];
         $condtype=(string) $element['type'];
@@ -2080,7 +2081,7 @@ class JEVHelper
                 else hiddencontrol.style.display="block";                
             }
             else {
-                if ("$multi" || "$condtype"=="jevuser" ){
+                if ("$multi" || "$condtype"=="jevuser" || "$condtype"=="jeveventcreator" ){
                     var defaultarray = new Array($fielddefaultarray);
                     for (var i=0;i<eventsno.options.length; i++){                    
                         if (defaultarray.indexOf(eventsno.options[i].value)>=0){
