@@ -2020,6 +2020,7 @@ function getMaxYear()
         if ($component=="jevents.edit.icalevent") $condparam="";
         elseif ($component=="com_config.component") $condparam="jform_";
         else $condparam="jform_params_";
+        $fieldparam=($condtype=="jevcf") ? "" : $condparam;
         if ($conditions){
         $params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
         $conditionarray=explode(",",$condarray);
@@ -2055,7 +2056,7 @@ function getMaxYear()
                 
         jevCondition:function(){
             var condition=$("$condparam$conditions");
-            var eventsno = $("$condparam$conditional"); 
+            var eventsno = $("$fieldparam$conditional"); 
             var hiddencontrol=eventsno.parentNode.parentNode; 
             var conditionsarray=new Array($condarray); 
             if (condition.type=="checkbox") condition.value=condition.checked;

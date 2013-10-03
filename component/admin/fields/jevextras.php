@@ -98,12 +98,36 @@ SCRIPT;
                 $document->addScriptDeclaration($script);
             }
             if (isset($item->html) && $item->html != "")
+                if ($item->name=="jevcf"){
+                    $block=$item->html;
+                  while(substr_count($block,"<tr>")>0){
+                      $row = substr($block,strpos($block,"<tr>"),strpos($block,"</tr>")-strpos($block,"<tr>")+5);
+                      $field=substr($row,strpos($row,"</td>")+5);
+                      $field2=strpos($field,"id='") ? substr($field,strpos($field,"id='")+4): substr($field,strpos($field,'id="')+4);
+                      $fieldid=(strpos($field2,'" ')<strpos($field2,"' ")) ? substr($field2,0,strpos($field2,"' ")) : substr($field2,0,strpos($field2,'" '));
+                     // $fieldelement=new SimpleXMLElement;
+                      $fieldelement['name']=$fieldid;
+                      $fieldelement["conditional"]=($fieldid!="") ? (string) $this->element["conditional"] : "";
+                      $fieldelement["conditions"]=(string) $this->element["conditions"];
+                      $fieldelement["label"]=(string) $this->element["label"];
+                      $fieldelement["type"]="jevcf";
+                      //if (strpos($field2,"value")!=strlen($field2)-strrpos($field2,"value")){
+                      $fieldelement["default"]=(string) $this->element["default"];
+                      //}
+                     // $fieldoffset=(strpos($field2," ",strpos($field2,"value="))>strpos($field2,">",strpos($field2,"value="))) ? strpos($field2,">",strpos($field2,"value=")) : strpos($field2," ",strpos($field2,"value="));
+                     // $fieldelement["default"]=substr($field2,strpos($field2,"value=")+7,$fieldoffset-strpos($field2,"value=")-8);
+                      $fieldelement["multi"]=(string) $this->element["multi"];
+                      JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+                      JEVHelper::ConditionalFields($fieldelement, $this->form->getName());
+                      $block=substr($block,strlen($row)+strpos($block,"<tr>"));
+                  }
+                }
                 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
                 JEVHelper::ConditionalFields($this->element, $this->form->getName());
                 return $item->html . "<div id='" . $this->id . "' style='display:none;'></div>";
-            }
+        }
             else  return "";
-            }
+    }
 
 	public function setup(& $element, $value, $group = null)
 	{
