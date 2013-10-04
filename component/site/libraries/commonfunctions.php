@@ -459,6 +459,9 @@ class JEV_CommonFunctions {
 		
 		$messagetemplate = str_replace("{TITLE}", $title,$messagetemplate);
 		$messagetemplate = str_replace("{DESCRIPTION}", $content,$messagetemplate);
+		if ($event){
+			//$messagetemplate = str_replace("{EXTRA}", $event->extra_info(),$messagetemplate);
+		}
 		$messagetemplate = str_replace("{LIVESITE}", $live_site,$messagetemplate);
 		$messagetemplate = str_replace("{AUTHOR}", $author,$messagetemplate);
 		$messagetemplate = str_replace("{VIEWLINK}", $viewlink,$messagetemplate);

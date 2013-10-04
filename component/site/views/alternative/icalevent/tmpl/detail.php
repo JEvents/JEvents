@@ -6,7 +6,14 @@ $this->_header();
 if( !$this->pop ){
 	$this->_showNavTableBar();
 }
-echo $this->loadTemplate("body16");
+if (JVersion::isCompatible("3.0"))
+{
+	echo $this->loadTemplate("body");
+}
+else
+{
+	echo $this->loadTemplate("body16");
+}
 
 if( !$this->pop ){
 	$this->_viewNavAdminPanel();

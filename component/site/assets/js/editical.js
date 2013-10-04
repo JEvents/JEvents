@@ -46,7 +46,9 @@ Date.extend({
 		re = new RegExp('^' + re + '$', 'i');
 		var handler = function(bits){
 			bits = bits.slice(1).associate(parsed);
-			var date = new Date().clearTime(),
+			var date = new Date().clearTime();
+			// Brazil timezone problems when clocks change - a date of 20 Oct 2013 is parsed as 11pm on 19th October !!!
+			date.setHours(6);
 			year = bits.y || bits.Y;
 			// set month to January  to ensure we can set days to 31 first!!!
 			date.set('month', 0); 
