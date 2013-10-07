@@ -441,8 +441,12 @@ else
 </div>
 
 <?php
-// fix for bad HTML in tabs!
 $editpagecode = ob_get_clean();
+// fix for bad HTML in tabs!
 //$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
 //$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
+// Remove chosen/bootstrap styling if required
+//$editpagecode = str_replace(" btn-group","",$editpagecode);
+//$editpagecode = str_replace(" btn-success","",$editpagecode);
+//$editpagecode = str_replace(" btn","",$editpagecode);
 echo $editpagecode;

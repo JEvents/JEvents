@@ -18,8 +18,8 @@ var JevStdRequiredFields = {
                                                     // should we skip this test because of category restrictions?
                                                     if (typeof(JevrCategoryFields)!='undefined' && JevrCategoryFields.skipVerify(name))  return;
                                                     var matches = new Array();
-                                                    $$(form.elements).each (function (testitem,testi) {
-                                                            if(testitem.name == name || "custom_"+testitem.name == name || testitem.id == name  || ("#"+testitem.id) == name  || testitem.hasClass(name.substr(1))){
+                                                    Array.from(form.elements).slice().each (function (testitem,testi) {
+                                                            if(testitem.name == name || "custom_"+testitem.name == name || testitem.id == name  || ("#"+testitem.id) == name  || $(testitem).hasClass(name.substr(1))){
                                                                     matches.push(testitem);		
                                                             };
                                                     });

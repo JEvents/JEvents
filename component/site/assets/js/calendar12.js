@@ -437,7 +437,8 @@ var NewCalendar = new Class({
 	// @param cal (obj)
 
 	clicked: function(td, day, cal) {
-		cal.val = (this.value(cal) == day) ? null : new Date(cal.year, cal.month, day); // set new value - if same then disable
+		// Use 6am to help avoid clock change issues
+		cal.val = (this.value(cal) == day) ? null : new Date(cal.year, cal.month, day, 6); // set new value - if same then disable
 
 		this.write(cal);
 
@@ -508,7 +509,8 @@ var NewCalendar = new Class({
 			}
 		}, this);
 		var d = new Date();
-		var today = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); // today obv
+		// Use 6am to help avoid clock change issues
+		var today = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 6).getTime(); // today obv
 
 		for (var i = 1; i < 43; i++) { // 1 to 42 (6 x 7 or 6 weeks)
 			if ((i - 1) % 7 == 0) { tr = new Element('tr').injectInside(tbody); } // each week is it's own table row
@@ -516,7 +518,8 @@ var NewCalendar = new Class({
 			var td = new Element('td').injectInside(tr);
 
 			var day = i - offset;
-			var date = new Date(cal.year, cal.month, day);
+			// Use 6am to help avoid clock change issues
+			var date = new Date(cal.year, cal.month, day, 6);
 
 			td.setProperty('class', 'dashday'+((i - 1) % 7  + this.options.offset) % 7);
 

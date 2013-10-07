@@ -22,7 +22,6 @@ function JEventsBuildRoute(&$query)
 	$lang = & JFactory::getLanguage();
 	$lang->load("com_jevents", JPATH_SITE);
 	
-	$cfg = & JEVConfig::getInstance();
 	$segments = array();
 
 	// sometimes the task is not set but view and layout are so tackle this!
