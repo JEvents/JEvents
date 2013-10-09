@@ -893,7 +893,7 @@ $document->addStyleSheet(JURI::base( true ) . "/components/com_jevents/assets/cs
 				if (!$this->disableDateStyle)
 					$content .= '<span class="mod_events_latest_date">';
 
-				if (!$dayEvent->alldayevent() && $match == "endDate" && ($dayEvent->noendtime() || $dayEvent->getUnixStartTime() == $dayEvent->getUnixEndTime()))
+				if (!$dayEvent->alldayevent() && $match == "endDate" && (($dayEvent->noendtime() && ($dayEvent->getUnixStartDate() == $dayEvent->getUnixEndDate())) || $dayEvent->getUnixStartTime() == $dayEvent->getUnixEndTime()))
 				{
 					$time_fmt = "";
 				}
