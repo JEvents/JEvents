@@ -18,25 +18,8 @@ if( array_key_exists('row',$this->data) ){
 	$row=$this->data['row'];
 
 	// Dynamic Page Title
+	JFactory::getDocument()->SetTitle( $row->title() );
 	
-	//get menu item id
-	$menuitemid = JRequest::getVar('Itemid');
-	
-	//get menu page title if there is an Itemid
-	if ($menuitemid)
-	{
-		$app = JFactory::getApplication();
-		$menu = $app->getMenu();
-		$menuparams = $menu->getParams( $menuitemid );
-		$title = $menuparams->get('page_title');
-	}	
-	//Check the view and then set title depending if a detail view via menu item.
-	$gview = JRequest::getVar('layout');
-	if ($title && $gview =="detail" ) {
-		JFactory::getDocument()->SetTitle( $title );
-	} else {
-		JFactory::getDocument()->SetTitle($row->title());
-	}
 	$mask = $this->data['mask'];
 	$page = 0;
 
