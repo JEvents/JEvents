@@ -39,6 +39,12 @@
 					default=""
 					label="Target Menu Item"
 					description="Menu item for target page" />
+			    <field
+					name="all_language_search"
+					type="checkbox"
+					default="1"
+					label="JEV_EVENTS_SEARCH_ALL_LANGUAGES_LBL"
+					description="JEV_EVENTS_SEARCH_ALL_LANGUAGES_DESC"/>
 			</fieldset>		
 		</fields>
 	</config>	

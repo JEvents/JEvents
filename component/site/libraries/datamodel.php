@@ -862,8 +862,8 @@ class JEventsDataModel {
 		}
 	}
 
-	function accessibleCategoryList($aid=null, $catids=null, $catidList=null){
-		return $this->queryModel->accessibleCategoryList($aid, $catids, $catidList);
+	function accessibleCategoryList($aid=null, $catids=null, $catidList=null, $allLanguages=false){
+		return $this->queryModel->accessibleCategoryList($aid, $catids, $catidList, $allLanguages);
 	}
 
 	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
