@@ -91,19 +91,9 @@ class plgSearchEventsearch extends JPlugin
 	 */
 	function onContentSearchAreas()
 	{
-		if (version_compare(JVERSION, '1.6.0', ">="))
-		{
-			return array(
-				'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
-			);
-		}
-		else
-		{
-			return array(
-				'events' => JText::_('JEV_EVENTS_SEARCH')
-			);
-		}
-
+		return array(
+			'events' => JText::_('JEV_EVENTS_SEARCH')
+		);
 	}
 
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
