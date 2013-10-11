@@ -159,15 +159,10 @@ class plgSearchEventsearch extends JPlugin
 		$needsgroup = false;
 
 		$filterarray = array("published");
-		if($allLanguages)
-		{
-			$dataModel = new JEventsDataModel();
-			$catwhere = "\n AND ev.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,true) . ")";
-		}
-		else
-		{
-			$catwhere;
-		}
+
+		$dataModel = new JEventsDataModel();
+		$catwhere = "\n AND ev.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,$allLanguages) . ")";
+
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
