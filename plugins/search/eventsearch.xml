@@ -31,14 +31,14 @@
 					name="date_format"
 					type="text"
 					default="%Y-%m-%d"
-					label="Date Format"
-					description="Format for date in return" />					
+					label="JEV_EVENTS_SEARCH_DATE_FORMAT_LBL"
+					description="JEV_EVENTS_SEARCH_DATE_FORMAT_DESC" />
 				<field
 					name="target_itemid"
 					type="jevmenu"
 					default=""
-					label="Target Menu Item"
-					description="Menu item for target page" />
+					label="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_LBL"
+					description="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_DESC" />
 			    <field
 					name="all_language_search"
 					type="checkbox"
