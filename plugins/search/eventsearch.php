@@ -91,19 +91,9 @@ class plgSearchEventsearch extends JPlugin
 	 */
 	function onContentSearchAreas()
 	{
-		if (version_compare(JVERSION, '1.6.0', ">="))
-		{
-			return array(
-				'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
-			);
-		}
-		else
-		{
-			return array(
-				'events' => JText::_('JEV_EVENTS_SEARCH')
-			);
-		}
-
+		return array(
+			'events' => JText::_('JEV_EVENTS_SEARCH')
+		);
 	}
 
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
@@ -130,6 +120,7 @@ class plgSearchEventsearch extends JPlugin
 
 		$limit = (version_compare(JVERSION, '1.6.0', '>=')) ? $this->params->get('search_limit', 50) : $this->_params->def('search_limit', 50);
 		$dateformat = (version_compare(JVERSION, '1.6.0', ">=")) ? $this->params->get('date_format', "%d %B %Y") : $this->_params->def('date_format', "%d %B %Y");
+		$allLanguages = $this->params->get('all_language_search', true);
 
 		$limit = "\n LIMIT $limit";
 
@@ -168,6 +159,10 @@ class plgSearchEventsearch extends JPlugin
 		$needsgroup = false;
 
 		$filterarray = array("published");
+
+		$dataModel = new JEventsDataModel();
+		$catwhere = "\n AND ev.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,$allLanguages) . ")";
+
 		// If there are extra filters from the module then apply them now
 		$reg = & JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
@@ -301,6 +296,7 @@ class plgSearchEventsearch extends JPlugin
 				. "\n AND b.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 				. "\n AND b.published = '1'"
 				. $extrawhere
+				. $catwhere
 				. "\n GROUP BY det.evdet_id"
 				. "\n ORDER BY " . ($morder_ical ? $morder_ical : $order_ical)
 				. $limit
