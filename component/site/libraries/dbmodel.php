@@ -30,7 +30,7 @@ class JEventsDBModel
 
 	}
 
-	function accessibleCategoryList($aid = null, $catids = null, $catidList = null)
+	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false)
 	{
 		if (is_null($aid))
 		{
@@ -105,7 +105,7 @@ class JEventsDBModel
 			$jevtask = JRequest::getString("jevtask");
 			$isedit = false;
 			// not only for edit pages but for all backend changes we ignore the language filter on categories
-			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin())
+			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || $allLanguages)
 			{
 				$isedit = true;
 			}
