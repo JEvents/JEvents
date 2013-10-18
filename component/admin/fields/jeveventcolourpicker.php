@@ -43,6 +43,8 @@ class JFormFieldJeveventcolourpicker extends JFormField
 		
 		if (!$hideColour)
 		{
+			JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+			JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
 			ob_start();
 			?>

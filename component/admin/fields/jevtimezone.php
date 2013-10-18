@@ -23,6 +23,9 @@ class JFormFieldJevtimezone extends JFormField
 
 	protected function getInput()
 	{
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		if (class_exists("DateTimeZone"))
 		{
 			$zones = DateTimeZone::listIdentifiers();
@@ -40,7 +43,7 @@ class JFormFieldJevtimezone extends JFormField
 					$options[] = JHTML::_('select.option', $zone, $zone);
 				}
 			}
-			return JHTML::_('select.genericlist', $options, $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->name);
+			return JHTML::_('select.genericlist', $options, $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id);
 		}
 		else
 		{
@@ -51,7 +54,7 @@ class JFormFieldJevtimezone extends JFormField
 			 */
 			$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-			return '<input type="text" name="' . $this->name . '" id="' . $this->name . '" value="' . $this->value . '" />';
+			return '<input type="text" name="' . $this->name . '" id="' . $this->id. '" value="' . $this->value . '" />';
 		}
 
 	}

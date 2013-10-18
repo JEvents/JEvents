@@ -308,6 +308,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$eventlink = "index.php?";
 						foreach ($vars as $key => $val)
 						{
+							// this is only used in the latest events module so do not perpetuate it here
+							if ($key=="filter_reset") continue;
 							if ($key=="task" && ($val=="icalrepeat.detail" ||  $val=="icalevent.detail")){
 								$val = "week.listevents";
 							}
@@ -646,7 +648,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 					}
 					$search[] = "{{DURATION}}";
-						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
+						$timedelta = $row->noendtime()  ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
+						if ( $row->alldayevent()){
+							$timedelta = $row->getUnixEndDate() - $row->getUnixStartDate();
+						}
 						$fieldval = JText::_("JEV_DURATION_FORMAT");
 						$shownsign = false;
 						// whole days!

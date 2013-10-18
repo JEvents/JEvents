@@ -82,10 +82,13 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 		{
 			$size = ($size<10)?$size:10;
 			$attr = array('list.attr' => 'multiple="true"'.'size="'.$size.'"',
-						'list.select' => $this->value);
+						'list.select' => $this->value, 'id' => $this->id);
      
 			$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);
 		}
+
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
 		return $input;
 	}

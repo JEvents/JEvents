@@ -155,7 +155,10 @@ div.cpanel-right {
 }
 
 /* params editing styling */
-.paramlist_key {width:40%;}
+.paramlist_key {
+	width:30%;
+	padding-bottom:10px;
+}
 
 /* Form styling for checkboxes etc. */
 fieldset.checkboxes ul {

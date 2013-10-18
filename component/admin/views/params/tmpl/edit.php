@@ -54,11 +54,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 		?>
 		<legend>
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
-		</legend>
-		<div class="jev_config_version">
-			 <?php echo $version->getShortVersion(); ?>&nbsp;<a href='<?php echo $version->getURL(); ?>'><?php echo JText::_('JEV_CHECK_VERSION'); ?> </a>
-		</div>
-			
+		</legend>	
 
 		<ul class="nav nav-tabs" id="myParamsTabs">
 			<?php
@@ -88,7 +84,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				if ($first)
 				{
 					$first = false;
-					$class = " class= active' $class $difficultySetClass'";
+					$class = " class= 'active $class $difficultySetClass'";
 				}
 				else
 				{

@@ -33,6 +33,10 @@ class JFormFieldJeveventcategory extends JFormField
 		else {
 			$input = "";
 		}
+
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		return  $input;
 	}
 	

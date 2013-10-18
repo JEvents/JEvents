@@ -25,6 +25,9 @@ class JFormFieldJEVuser extends JFormFieldList
 
 	protected function getInput()
 	{
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		// if no value set then default to zero
 		if (intval($this->value) == 0){
 

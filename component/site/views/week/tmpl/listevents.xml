@@ -34,21 +34,9 @@
 				<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
 			</field>
 
-			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-			<!--
-			<field name="catid0" type="jevcategory"  default="0" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_DESC" />
-			<field name="catid1" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid2" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid3" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid4" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid5" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid6" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid7" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid8" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid9" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			<field name="catid10" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
-			//-->
+			<field name="rollingweeks" type="text" default="1"  size="4" label="JEV_ROLLING_WEEKS_CLUB_ONLY" description="JEV_ROLLING_WEEKS_CLUB_ONLY_DESC"/>
 
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />

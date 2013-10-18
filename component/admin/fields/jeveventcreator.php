@@ -22,7 +22,10 @@ class JFormFieldJeveventcreator extends JFormField
 	 * @since	1.6
 	 */
 	protected function getInput()
-	{	
+	{
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		if (isset($this->form->jevdata[$this->name]["users"])){
 			return $this->form->jevdata[$this->name]["users"];
 		}

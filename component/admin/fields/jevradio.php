@@ -8,14 +8,12 @@
 defined('_JEXEC') or die();
 
 
-include_once(JPATH_SITE."/libraries/joomla/form/fields/textarea.php");
+include_once(JPATH_SITE."/libraries/joomla/form/fields/radio.php");
 
-class JFormFieldJevtextarea extends JFormFieldTextarea
+class JFormFieldJevradio extends JFormFieldRadio
 {
 	protected function getInput()
 	{
-		$this->value = str_replace('<br />', "\n", JText::_($this->value));
-
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
