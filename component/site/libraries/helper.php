@@ -2200,6 +2200,9 @@ class JEVHelper
 					jevCondition: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
 						var condition = $(condparam + conditions);
 						var eventsno = $(fieldparam+conditional);
+						if (!condition || !eventsno){
+							return;
+						}
 						var hiddencontrol = eventsno.parentNode.parentNode;
 						var conditionsarray = new Array(condarray);
 						if (condition.type == "checkbox") {

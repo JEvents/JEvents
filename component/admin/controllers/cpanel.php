@@ -422,11 +422,13 @@ class AdminCpanelController extends JControllerAdmin
 
 		foreach($languages as $language)
 		{
-			$oldPackage = true;
-			if($language['tag']!=="en-GB" )
+			$oldPackage = false;
+			if(!in_array($language['tag'], array("en-GB")))
 			{
 				if(is_file(JPATH_SITE . "/language/".$language['tag']."/".$language['tag'].".com_jevents.ini") || is_file(JPATH_ADMINISTRATOR. "/language/".$language['tag']."/".$language['tag'].".com_jevents.ini"))
 				{
+					$oldPackage = true;
+
 					$db = & JFactory::getDBO();
 					// Add one category by default if none exist already
 					$sql = "SELECT element from #__extensions WHERE type = 'file'";

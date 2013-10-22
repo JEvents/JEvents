@@ -6,7 +6,10 @@
 		<field name="title" type="jeveventtext" default="" size="40" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
 		<field name="catid" type="jeveventcategory" default="0"   layoutfield="CATEGORY" labelclass="control-label"  label="JEV_EVENT_CATEGORY" description="JEV_EVENT_CATEGORY_TIP" />
 		<field name="priority" type="jeveventpriorities" default="0"  layoutfield="PRIORITY"  labelclass="control-label" label="JEV_EVENT_PRIORITY" description="JEV_EVENT_PRIORITY_TIP" />
-		<field name="creator" type="jeveventcreator" default="0"  layoutfield="CREATOR"  labelclass="control-label" label="JEV_EVENT_CREATOR" description="JEV_EVENT_CREATOR_TIP" conditional="title" conditions="fred" />
+		<field name="creator" type="jeveventcreator" default="0"  layoutfield="CREATOR"  labelclass="control-label" label="JEV_EVENT_CREATOR" description="JEV_EVENT_CREATOR_TIP" />
+		<!--
+		conditional="title" conditions="fred" />
+		//-->
 		<field name="ics_id" type="jeveventcalendar" default="0"   layoutfield="ICAL" labelclass="control-label"  label="JEV_EVENT_CALENDAR" description="JEV_EVENT_CALENDAR_TIP" />
 		<field name="lockevent" type="jeveventlock" default="0"   layoutfield="LOCK" labelclass="control-label" label="JEV_LOCK_EVENT" description="JEV_LOCK_EVENT_TIP" />
 		<field name="access" type="jeveventaccess" default="1"   layoutfield="ACCESS" labelclass="control-label accesslevel"   label="JEV_EVENT_ACCESSLEVEL" description="JEV_EVENT_ACCESSLEVEL_TIP" />
