@@ -581,14 +581,14 @@ class JEventsDBModel
 		}
 		$rptwhere = ( count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '' );
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user)) . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
