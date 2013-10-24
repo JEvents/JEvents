@@ -13,6 +13,7 @@ defined('_JEXEC') or die('No Direct Access');
 
 JLoader::register('JEVConfig', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/config.php");
 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
 
 function JEventsBuildRoute(&$query)
 {

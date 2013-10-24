@@ -31,6 +31,8 @@ class TableDefault extends JTable
 	var $subject = null;
 	var $value = null;
 	var $state = null;
+	var $language = null;
+	var $params = null;
 
 	/**
 	 * Constructor

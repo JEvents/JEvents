@@ -72,6 +72,27 @@ class DefaultsModelDefault extends JModelLegacy
 	 */
 	function store($data)
 	{
+
+		if (isset($data["params"]) && is_array($data["params"])){
+			if (isset($data["id"])) {
+				$this->setId(intval($data["id"]));
+				$this->_loadData();
+				if (isset($this->_data->params) && $this->_data->params!=""){
+					$oldparams = json_decode($this->_data->params);
+					if (!is_array($oldparams)){
+						$keys = array_keys(get_object_vars($oldparams));
+						foreach ($keys as $key){
+							if ($key == "modid" || $key=="modval"){
+								continue;
+							}
+							$data["params"][$key] = $oldparams->$key;
+						}
+					}
+				}
+				$data["params"] = json_encode($data["params"]);
+			}
+		}
+
 		$row = & $this->getTable();
 
 		// Bind the form fields to the session table

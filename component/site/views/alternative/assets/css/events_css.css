@@ -12,7 +12,7 @@
 	border:none;
 }
 #jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
-	border:none;	
+	border:none;
 	line-height:1.5em;
 
 }
@@ -45,7 +45,7 @@
 .cal_td_daysoutofmonth {
     color:rgb(170,170,170);
     text-align:center;
-	border:solid 1px rgb(207,207,207);    
+	border:solid 1px rgb(207,207,207);
 }
 .cal_daysoutofmonth {
     font-family:  Arial;
@@ -132,11 +132,11 @@ ul.ev_ul {
 	margin:5px;
 }
 ul.ev_ul li.ev_td_li {
-  	border-style:solid;
-  	border-width:0 0 0 5px;
-  	margin-bottom:1px;
-  	padding-left:2px;
-  	background-image:none
+	border-style:solid;
+	border-width:0 0 0 5px;
+	margin-bottom:1px;
+	padding-left:2px;
+	background-image:none
 }
 a.ev_link_cat:link {
     font-size:12px;
@@ -243,7 +243,7 @@ a.ev_link_weekday:hover  {
 /**********************
 * Form style
 **********************/
- /* Styles for dhtml tabbed-pages */
+/* Styles for dhtml tabbed-pages */
 .ontab {
     font-family : Verdana, Arial, Helvetica, sans-serif;
     font-size: 10px;
@@ -294,7 +294,7 @@ a.ev_link_weekday:hover  {
 }
 .pagetext {
 	visibility: hidden;
-   display: none;
+	display: none;
 	position: relative;
 	top: 0;
 }
@@ -320,7 +320,7 @@ a.ev_link_weekday:hover  {
 }
 /* Calendar navigaton area */
 div.ev_navigation {
-margin-bottom:0.5em;
+	margin-bottom:0.5em;
 }
 /* Calendar admin panel */
 div.ev_adminpanel {
@@ -352,60 +352,60 @@ a.nav_bar_link:hover  {
 ****************************/
 
 td.iconic_td {
-   width:44px!important;
-   margin:0px;
-   padding:0px;
+	width:44px!important;
+	margin:0px;
+	padding:0px;
 }
 div.nav_bar_cal{
-   margin:0px;
-   padding:0px;
-   width:44px;
+	margin:0px;
+	padding:0px;
+	width:44px;
 }
 div.nav_bar_cal img, div.nav_bar_cal a{
-   height:33px;
-   width:44px;
-   border:0;
+	height:33px;
+	width:44px;
+	border:0;
 }
 tr.icon_labels{
- font-size:8pt;
- margin:0px;
- padding:0px;
+	font-size:8pt;
+	margin:0px;
+	padding:0px;
 }
 div#ev_icon_yearly {
-     background-image: url("../images/calyear.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calyear.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_monthly {
-     background-image: url("../images/calmonth2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calmonth2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_monthly_active {
-     background-image: url("../images/calmonth2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calmonth2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_weekly{
-     background-image: url("../images/calweek2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calweek2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_weekly_active{
-     background-image: url("../images/calweek2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calweek2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_daily{
-     background-image: url("../images/calday2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calday2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_daily_active{
-     background-image: url("../images/calday2.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calday2.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_search{
-     background-image: url("../images/calyear.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calyear.png")!important;
+	background-repeat: no-repeat;
 }
 div#ev_icon_jumpto{
-     background-image: url("../images/calyear.png")!important;
-     background-repeat: no-repeat;
+	background-image: url("../images/calyear.png")!important;
+	background-repeat: no-repeat;
 }
 
 /* Monthly view */
@@ -461,12 +461,12 @@ div.event_legend_name a{
    	background-color:inherit;
    	color:black;
 }
-	
+
 div.event_legend_desc {
 	background-color:white;
 	color:black;
 	padding:3px 3px 3px 10px;
-	
+
 }
 
 /* Component Legend Styling
@@ -505,7 +505,7 @@ div.event_legend_desc {
 div.jev_adminfilter {
 	text-align:center;
 	font-weight:bold;
-	margin:5px auto 10px auto; 
+	margin:5px auto 10px auto;
 }
 #jevents_body a.addjevent:hover {background-color: transparent;}
 a.addjevent {
@@ -519,7 +519,7 @@ a.addjevent {
    	visibility:hidden;
 }
 a.addjevent img {
-border-width:0px!important;
+	border-width:0px!important;
 }
 td.showjevadd a.addjevent {
    	visibility:visible;
@@ -529,23 +529,23 @@ td.showjevadd a.addjevent {
 * Mootools ToolTips for JEvents Calendar
 ****************************************/
 .jevtip-tip, .jevtip {
-   float: left;
-   background: #f5f5f5;
-   border: 1px solid #D4D5AA;
-   padding: 0px;
-   max-width: 400px;
-   z-index:99;
-   font-size:10pt;
+	float: left;
+	background: #f5f5f5;
+	border: 1px solid #D4D5AA;
+	padding: 0px;
+	max-width: 400px;
+	z-index:99;
+	font-size:10pt;
 } 
 .jevtip-text {
-   padding: 0;
-   margin: 0;
-   font-size: 0.8em;
+	padding: 0;
+	margin: 0;
+	font-size: 0.8em;
 }
- 
+
 div.jevtt_title{
-   font-weight: bold;
-   font-size: 1.2em;
+	font-weight: bold;
+	font-size: 1.2em;
 	padding:2px;
 	width:196px;
 }
@@ -558,14 +558,14 @@ div.jevtt_text{
 /* Joomla 1.6 changes */
 #action_dialog {
 	text-align: left;
-	 position:absolute;
-	 right:0px;
-	 background-color:#dedede;
-	 border:solid 1px #000000;
-	 width:200px;
-	 padding:10px;
-	 visibility:hidden;
-	 z-index:999;
+	position:absolute;
+	right:0px;
+	background-color:#dedede;
+	border:solid 1px #000000;
+	width:200px;
+	padding:10px;
+	visibility:hidden;
+	z-index:999;
 }
 #action_dialog div {
 	width:12px!important;
@@ -590,10 +590,10 @@ div.jevtt_text{
 	list-style-type: none;
 	list-style-image: none;
 	width:auto!important;
-	
+
 }
 #jevents_header ul.actions li {
-	line-height:14px!important;	
+	line-height:14px!important;
 	background-image:none!important;
 	padding-left:0px!important;
 	overflow:visible!important;
@@ -603,10 +603,10 @@ div.jevtt_text{
 
 /* Print version */
 @media print {
-   table.contentpaneopen {
-   		background-image:none!important;
-       background-color:white!important;
-   }
+	table.contentpaneopen {
+		background-image:none!important;
+		background-color:white!important;
+	}
 	div.ev_navigation {
 		display:none;
 	}
@@ -650,7 +650,7 @@ div.ical_form_button a:hover {
 
 .jev_google_export {
 	float:left;
-	width:100%;   
+	width:100%;
 }
 .jev_google_export img{
     display:block;
@@ -689,10 +689,187 @@ input.ical_submit {
 }
 div.export_form {
 	background-color:#cfcfcf;
-	display:inline-block;  
+	display:inline-block;
 	width:97%;
-	border-radius:5px; 
+	border-radius:5px;
 	background-color: #f5f5f5;
 	border: 1px solid #e3e3e3;
 	padding:10px;
+}
+
+/*********************
+* Calendar style (DIVS)
+**********************/
+.cal_div {
+	border:solid 1px rgb(207,207,207);
+	width:100%;
+}
+.cal_div .topleft {
+	height:55px!important;
+	font-weight:bold;
+	width:2.7%;
+	float:left;
+}
+.cal_div .toprow {
+	height:25px!important;
+	line-height:25px;
+	font-weight:bold;
+	width:97.3%;
+	float:left;
+}
+.cal_div  .cal_div_month, .cal_div  .cal_div_currentmonth {
+	text-align:center;
+	letter-spacing:3px;;
+	float:left;
+	width:27.8%;
+	margin:0px;
+	padding:0px;
+	font-weight:bold;
+	vertical-align: middle;
+}
+.cal_div  .cal_div_month span , .cal_div  .cal_div_currentmonth span {
+	display:block;
+	border-style: solid;
+	border-width: 0px 1px 1px 0px;
+	border-color: rgb(207,207,207);
+	height:30px;
+	line-height: 30px;
+}
+.cal_div  .cal_div_month_prev span {
+	border-width: 0px 1px 1px 1px;
+}
+.cal_div  .cal_div_month_next span {
+	border-width: 0px 0px 1px 0px;
+}
+.cal_div  .cal_div_currentmonth {
+	background-color:rgb(153,221,255);
+	width:41.70%
+}
+
+.cal_div_daynames {
+    height:25px ! important;
+    line-height:25px;
+    color:black;
+    font-weight:bold;
+    text-align:center;
+	width:13.90%;
+	float:left;
+	margin:0px;
+	padding:0px;
+}
+.cal_div_daynames span {
+
+}
+.cal_div_daynames0 span {
+
+}
+
+.cal_div_weekrow {
+	clear:left;
+	padding:0px;
+	margin:0px;
+	width:100%;
+	height:100%;
+}
+.cal_div_weekrow .divclear {
+	clear:left;
+	padding:0px;
+	margin:0px;
+}
+.cal_div_weeklink {
+	vertical-align:middle!important;
+	width:2.7%;
+	padding:0px;
+	margin:0px;
+	text-align: center;
+	float:left;
+	min-height: 81px;
+}
+.cal_div_weeklink  span {
+	display:block;
+	border-style:solid;
+	border-width:1px 1px 0px 0px;
+	border-color: rgb(207,207,207);
+	min-height: 80px;
+}
+.cal_div_weeklink a {
+    font-size:10px;
+    font-weight: bold;
+    font-family: Verdana;
+    text-decoration: none;
+    color:inherit!important;
+}
+
+.cal_div_daysoutofmonth, .cal_div_daysnoevents, .cal_div_today {
+	float:left;
+	width:13.90%;
+	padding:0px;
+	margin:0px;
+	height:100%;
+	line-height:100%;
+}
+.cal_div_daysoutofmonth span, .cal_div_daysnoevents span, .cal_div_today span{
+	display:block;
+}
+
+.cal_div_daysoutofmonth > span{
+    color:rgb(170,170,170);
+    text-align:center;
+	border-style:solid;
+	border-width:1px 1px 0px 0px;
+	border-color: rgb(207,207,207);
+
+}
+.cal_daysoutofmonth {
+    font-family:  Arial;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+.cal_div_today > span{
+	border-style:solid;
+	border-width:1px 1px 0px 0px;
+	border-color: rgb(207,207,207);
+    background-color:rgb(221,238,255);
+    padding:0px !important;
+}
+.cal_div_daysnoevents > span{
+	border-style:solid;
+	border-width:1px 1px 0px 0px;
+	border-color: rgb(207,207,207);
+    padding:0px !important;
+}
+.cal_div_day6 > span {
+	border-right-width: 0px;
+}
+
+a.cal_daylink:link {
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+	margin-left:2px;
+	margin-top:2px;
+}
+a.cal_daylink:visited{
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+a.cal_daylink:hover{
+    font-style: normal;
+    font-weight: bold;
+    color: Red;
+    text-decoration: none;
+}
+a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
+    font-weight: bold;
+    text-decoration: none;
+    color:inherit!important;
+	vertical-align:middle!important;
+    margin-bottom:1px;
 }
