@@ -6,11 +6,17 @@ defined('_JEXEC') or die('Restricted access');
 class modDetailHelper
 {
 
-	function getDetailBody()
+	function getDetailBody($modid)
 	{
+		if (trim($modid)=="") {
+			return false;
+		}
 		$reg = & JRegistry::getInstance("com_jevents");
-		$detail = $reg->get("dynamicmodules");
-		return $detail;
+		$moddata = $reg->get("dynamicmodules");
+		if (isset($moddata[$modid])){
+			return $moddata[$modid];
+		}
+		return false;
 
 	}
 

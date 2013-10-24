@@ -2166,14 +2166,16 @@ class JEVHelper
 			var jevConditional = {
 					setupJevConditions: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
 						var condition = $(condparam+ conditions);
-				if (!condition) {alert((condparam+ conditions) +" "+ condition);}
-						if (condition.className.indexOf("radio") >= 0) {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].type == "radio") {
-									condition.childNodes[i].addEvent("click", function() {
-										jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-									});
-								}
+						var radioElements = condition.getElements('input[type=radio]');
+						if (radioElements.length > 0) {
+							for (var i = 0; i < radioElements.length; i++) {
+								// Need both for Chosen replacements
+								radioElements[i].addEvent("click", function() {
+									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+								});
+								radioElements[i].addEvent("change", function() {
+									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+								});
 							}
 						}
 						else if (condition.tagName == "SELECT") {
@@ -2203,15 +2205,21 @@ class JEVHelper
 						if (!condition || !eventsno){
 							return;
 						}
+						// Joomla 3.x named element is inside control and also control-group elements
 						var hiddencontrol = eventsno.parentNode.parentNode;
+						// Joomla 2.5
+						if (hiddencontrol.tagName=="UL"){
+							hiddencontrol = eventsno.parentNode;
+						}
 						var conditionsarray = new Array(condarray);
 						if (condition.type == "checkbox") {
 							condition.value = condition.checked;
 						}
-						if (condition.childNodes[0] && condition.childNodes[0].type == "radio") {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].checked)
-									condition.value = condition.childNodes[i].value;
+						var radioElements = condition.getElements('input[type=radio]');
+						if (radioElements.length>0) {
+							for (var i = 0; i < radioElements.length; i++) {
+								if (radioElements[i].checked)
+									condition.value = radioElements[i].value;
 							}
 						}
 						if (condition.multiple && condition.tagName == "SELECT") {
@@ -2220,11 +2228,12 @@ class JEVHelper
 									conditionsarray[0] = condition.value;
 							}
 						}
-						// There must be a better way of doing this
-						if (condition.childNodes[0] && condition.childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0].type == "checkbox") {
+						
+						var checkboxElements = condition.type=="checkbox"? new Array(condition) : condition.getElements('input[type=checkbox]');				
+						if (checkboxElements.length>0) {
 							condition.value = new Array();
-							for (var i = 0; i < condition.childNodes[0].childNodes.length; i++) {
-								if (condition.childNodes[0].childNodes[i].childNodes[0].checked && conditionsarray.indexOf(condition.childNodes[0].childNodes[i].childNodes[0].value) >= 0) {
+							for (var i = 0; i < checkboxElements.length; i++) {
+								if (checkboxElements[i].checked && conditionsarray.indexOf(checkboxElements[i].value) >= 0) {
 									condition.value = conditionsarray[0];
 								}
 							}

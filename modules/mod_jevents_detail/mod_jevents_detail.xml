@@ -25,6 +25,11 @@
 					type="text"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="dynmodid"
+					type="text"
+					label="JEV_DEFAULTS_MODULE_ID"
+					description="JEV_DEFAULTS_MODULE_ID_DES" />
 			</fieldset>
 		</fields>
 	</config>
