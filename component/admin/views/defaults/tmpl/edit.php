@@ -101,6 +101,10 @@ echo $editor->save('value');
 						</div>
 					</div>
 
+					<?php
+					if ($this->item->name != "month.calendar_tip" && $this->item->name != "icalevent.edit_page" && strpos($this->item->name, "com_jevpeople")===false && strpos($this->item->name, "com_jevlocations")===false)
+					{
+						?>
 					<h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_MODULES");?></h3>
 					<?php
 
@@ -145,7 +149,9 @@ echo $editor->save('value');
 							<td align="left" valign="top"><?php echo str_replace("value", "modval".$count, str_replace("jevdefaults", "jevmods".$count, $selectbox));?></td>
 						</tr>
 					</table>
-
+					<?php
+					}
+					?>
 				</td>
 			</tr>
 		</table>
