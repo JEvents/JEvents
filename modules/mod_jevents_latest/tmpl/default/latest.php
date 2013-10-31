@@ -79,7 +79,7 @@ class DefaultModLatestView
 		{
 			$document = & JFactory::getDocument();
 			$document->addStyleSheet(JURI::base(true) . "/components/com_jevents/assets/css/jevcustom.css");
-		}
+		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
 
