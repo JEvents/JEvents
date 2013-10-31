@@ -24,7 +24,7 @@ class GetjsonController extends JControllerLegacy   {
 		}
 		parent::__construct($config);
 		// TODO get this from config
-		$this->registerDefaultTask( 'calendar' );
+		$this->registerDefaultTask( 'monthEvents' );
 
 		$cfg = & JEVConfig::getInstance();
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
