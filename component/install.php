@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	contact VARCHAR(120) NOT NULL default "",
 	organizer VARCHAR(120) NOT NULL default "",
 	url text NOT NULL ,
-	extra_info VARCHAR(240) NOT NULL DEFAULT '',
+	extra_info text NOT NULL DEFAULT '',
 	created varchar(30) NOT NULL default "",
 	sequence int(11) NOT NULL default 1,
 	state tinyint(3) NOT NULL default 1,
@@ -400,6 +400,12 @@ SQL;
 		if (!array_key_exists("hits", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail ADD hits int(11) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+		if (array_key_exists("extra_info", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail modify extra_info text NOT NULL default ''";
 			$db->setQuery($sql);
 			@$db->query();
 		}
