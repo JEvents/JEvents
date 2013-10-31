@@ -21,13 +21,6 @@ class JEventsAbstractView extends JViewLegacy
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
-		// Lets check if we have editted before! if not... rename the custom file.
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
-		{
-			// It is definitely now created, lets load it!
-			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
-
 		if (JVersion::isCompatible("3.0"))
 		{
 			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');

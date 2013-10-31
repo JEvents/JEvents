@@ -853,6 +853,8 @@ var NewCalendar = new Class({
 				this.fireEvent('onHideStart', this.element);
 			}
 			this.calendar.style.opacity=0;
+			// Stupid MooTools - probably a workaround for MSIE 8
+			this.calendar.setStyle('opacity',0);
 			if (this.calendar.getStyle('opacity') == 0) { // hidden
 				this.calendar.setStyle('display', 'none');
 				if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'none'); }
@@ -938,6 +940,8 @@ var NewCalendar = new Class({
 				this.fireEvent('onHideStart', this.element);
 			}
 			this.calendar.style.opacity=1;
+			// Stupid MooTools - probably a workaround for MSIE 8
+			this.calendar.setStyle('opacity',1);
 			if (this.calendar.getStyle('opacity') == 0) { // hidden
 				//this.calendar.setStyle('display', 'none');
 				if (window.ie6 || window.ie7 || window.ie8 || window.ie9) { this.iframe.setStyle('display', 'none'); }

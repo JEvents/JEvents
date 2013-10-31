@@ -42,6 +42,7 @@ class JFormFieldJeveventlock extends JFormField
 			<?php
 		}
 		$input = ob_get_clean();
+
 		return $input;
 
 	}

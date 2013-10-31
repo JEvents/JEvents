@@ -18,7 +18,7 @@ if( array_key_exists('row',$this->data) ){
 	$row=$this->data['row'];
 
 	// Dynamic Page Title
-	JFactory::getDocument()->SetTitle( $row->title() );
+	$this->setPageTitle($row->title());
 
 	$mask = $this->data['mask'];
 	$page = 0;

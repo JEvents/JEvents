@@ -118,7 +118,15 @@ RAWTEXT;
 		if ($access==0){
 			$temp->access = intval(JEVHelper::getBaseAccess());
 		}
-
+		if (false !== stripos($uploadURL, 'webcal://')){
+			$headers = get_headers('https://' . $uploadURL);
+			if ($headers[0] == 'HTTP/1.1 200 OK') {
+				$uploadURL = str_replace('webcal://', 'https://', $uploadURL);
+			}
+			else {
+				$uploadURL = str_replace('webcal://', 'http://', $uploadURL);
+			}
+		}		
 		$urlParts = parse_url($uploadURL);
 		$pathParts = pathinfo($urlParts['path']);
 		/*

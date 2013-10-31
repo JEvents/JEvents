@@ -4,7 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 $this->_header();
 $this->_showNavTableBar();
 
-echo $this->loadTemplate("body");
+if (1){
+	echo $this->loadTemplate("bodydiv");
+}
+else {
+	echo $this->loadTemplate("body");
+}
 
 $this->_viewNavAdminPanel();
 

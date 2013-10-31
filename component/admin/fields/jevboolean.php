@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Locations Component for Joomla 1.5.x
  *
@@ -8,7 +9,6 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
 // Check to ensure this file is included in Joomla!
 
 defined('JPATH_BASE') or die;
@@ -27,13 +27,24 @@ JFormHelper::loadFieldClass('radio');
  */
 class JFormFieldJEVBoolean extends JFormFieldRadio
 {
+
 	/**
 	 * The form field type.s
 	 *
 	 * @var		string
 	 * @since	1.6
 	 */
-	protected $type = 'JEVBoolean';
+	protected
+			$type = 'JEVBoolean';
+
+	protected
+			function getInput()
+	{
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+		return parent::getInput();
+
+	}
 
 	/**
 	 * Method to get the field options.
@@ -41,18 +52,19 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 	 * @return	array	The field option objects.
 	 * @since	1.6
 	 */
-	public function getOptions()
-	{		
+	public
+			function getOptions()
+	{
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = & JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
-		
-		$options = array ();
+
+		$options = array();
 		$options[] = JHTML::_('select.option', 0, JText::_("Jev_No"));
 		$options[] = JHTML::_('select.option', 1, JText::_("jev_Yes"));
 
 		return $options;
 
-		
 	}
+
 }

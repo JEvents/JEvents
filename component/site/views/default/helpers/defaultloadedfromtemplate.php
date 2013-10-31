@@ -13,29 +13,35 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$templates = array();
 		$fieldNameArray = array();
 	}
+	$specialmodules = false;
+
 	if (!$template_value)
 	{
 		if (!array_key_exists($template_name, $templates))
 		{
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND ".'language in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 			$templates[$template_name] = $db->loadObjectList("language");
-			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()])){
+			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))
+			{
 				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
 			}
-			else if (isset($templates[$template_name]["*"])){
-				$templates[$template_name] =$templates[$template_name]["*"];
+			else if (isset($templates[$template_name]["*"]))
+			{
+				$templates[$template_name] = $templates[$template_name]["*"];
 			}
-			else if (is_array($templates[$template_name]) && count($templates[$template_name])==0){
+			else if (is_array($templates[$template_name]) && count($templates[$template_name]) == 0)
+			{
 				$templates[$template_name] = null;
 			}
-			else if (is_array($templates[$template_name]) && count($templates[$template_name])>0)
+			else if (is_array($templates[$template_name]) && count($templates[$template_name]) > 0)
 			{
 				$templates[$template_name] = current($templates[$template_name]);
 			}
-			else {
+			else
+			{
 				$templates[$template_name] = null;
 			}
-			
+
 			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 				return false;
 
@@ -48,8 +54,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$matchesarray = array();
 			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
 
+			if (isset($templates[$template_name]->params))
+			{
+				$templates[$template_name]->params = new JRegistry($templates[$template_name]->params);
+
+				// must populate matches array from module output too since it may otherwise be skipped!
+				$modval = $templates[$template_name]->params->get("modval");
+				if ($modval && is_array($modval)){
+					foreach ($modval as $mv){
+						if (trim($mv)!=""){
+							$mv = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $mv);
+							$mvmatchesarray = array();
+							preg_match_all('|{{.*?}}|', $mv, $mvmatchesarray);
+							if (isset($matchesarray[0]) && isset($mvmatchesarray[0])){
+								$matchesarray[0] = array_merge($matchesarray[0], $mvmatchesarray[0]);
+							}
+						}
+					}
+				}
+			}
+
 			$templates[$template_name]->matchesarray = $matchesarray;
-			
+
 		}
 		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 			return false;
@@ -57,19 +83,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template = $templates[$template_name];
 
 		$template_value = $template->value;
-		$matchesarray = $templates[$template_name]->matchesarray ;
+		$specialmodules = $template->params;
+
+		$matchesarray = $templates[$template_name]->matchesarray;
 	}
-	else {
+	else
+	{
 		// This is a special scenario where we call this function externally e.g. from RSVP Pro messages 
 		// In this scenario we have not gone through the displaycustomfields plugin
 		static $pluginscalled = array();
-		if (!isset($pluginscalled[$event->rp_id()])){
-			$dispatcher	=& JDispatcher::getInstance();
+		if (!isset($pluginscalled[$event->rp_id()]))
+		{
+			$dispatcher = & JDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
-			$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+			$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
 			$pluginscalled[$event->rp_id()] = $event;
 		}
-		else {
+		else
+		{
 			$event = $pluginscalled[$event->rp_id()];
 		}
 
@@ -80,9 +111,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $template_value);
 
 		$matchesarray = array();
-		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);		
+		preg_match_all('|{{.*?}}|', $template_value, $matchesarray);
 	}
-	if ($template_value=="")
+	if ($template_value == "")
 		return;
 	if (count($matchesarray) == 0)
 		return;
@@ -94,7 +125,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	//var_dump($matchesarray);
+	// Adjust template_value to include dynamic module output then strip it out afterwards
+	if ($specialmodules)
+	{
+		$modids = $specialmodules->get("modid", array());
+		if (count($modids)>0){
+			$modvals = $specialmodules->get("modval", array());
+			for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
+				$template_value .= "{{MODULESTART#".$modids[$count]."}}";
+				$template_value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
+				$template_value .= "{{MODULEEND}}";
+			}
+		}
+	}
 
 	for ($i = 0; $i < count($matchesarray[0]); $i++)
 	{
@@ -105,10 +148,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			continue;
 		}
 		// translation string
-		if (strpos($strippedmatch,"{{_")===0 && strpos($strippedmatch," ")===false){
+		if (strpos($strippedmatch, "{{_") === 0 && strpos($strippedmatch, " ") === false)
+		{
 			$search[] = $strippedmatch;
-			$strippedmatch=substr($strippedmatch,3,strlen($strippedmatch)-5);
-			$replace[] = JText::_($strippedmatch);			
+			$strippedmatch = substr($strippedmatch, 3, strlen($strippedmatch) - 5);
+			$replace[] = JText::_($strippedmatch);
 			$blank[] = "";
 			continue;
 		}
@@ -223,23 +267,25 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$search[] = "{{ALLCATEGORIES}}";
 					static $allcat_catids;
 
-					if (!isset($allcat_catids)) {
-						$db	=& JFactory::getDBO();
+					if (!isset($allcat_catids))
+					{
+						$db = & JFactory::getDBO();
 						$arr_catids = array();
-						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' " ;
+						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 						$db->setQuery($catsql);
-						 $allcat_catids = $db->loadObjectList('id') ;
+						$allcat_catids = $db->loadObjectList('id');
 					}
 					$db = JFactory::getDbo();
-					$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = ".$event->ev_id());
-					$allcat_eventcats = $db->loadColumn() ;
+					$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+					$allcat_eventcats = $db->loadColumn();
 
 					$allcats = array();
-					foreach ($allcat_eventcats as $catid){
-						if(isset($allcat_catids[$catid])){
-							$allcats[]=$allcat_catids[$catid]->name ;
+					foreach ($allcat_eventcats as $catid)
+					{
+						if (isset($allcat_catids[$catid]))
+						{
+							$allcats[] = $allcat_catids[$catid]->name;
 						}
-
 					}
 					$replace[] = implode(", ", $allcats);
 					$blank[] = "";
@@ -286,21 +332,26 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{CATEGORYLNK}}":
 					$router = JRouter::getInstance("site");
 					$catlinks = array();
-					if ($jevparams->get("multicategory",0)){
+					if ($jevparams->get("multicategory", 0))
+					{
 						$catids = $event->catids();
-						$catdata = $event->getCategoryData();					
+						$catdata = $event->getCategoryData();
 					}
-					else {
+					else
+					{
 						$catids = array($event->catid());
 						$catdata = array($event->getCategoryData());
-					}					
-					
+					}
+
 					$vars = $router->getVars();
-					foreach ($catids as $cat){
+					foreach ($catids as $cat)
+					{
 						$vars["catids"] = $cat;
 						$catname = "xxx";
-						foreach ($catdata  as $cg){
-							if ($cat == $cg->id){
+						foreach ($catdata as $cg)
+						{
+							if ($cat == $cg->id)
+							{
 								$catname = $cg->name;
 								break;
 							}
@@ -308,7 +359,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$eventlink = "index.php?";
 						foreach ($vars as $key => $val)
 						{
-							if ($key=="task" && ($val=="icalrepeat.detail" ||  $val=="icalevent.detail")){
+							// this is only used in the latest events module so do not perpetuate it here
+							if ($key == "filter_reset")
+								continue;
+							if ($key == "task" && ($val == "icalrepeat.detail" || $val == "icalevent.detail"))
+							{
 								$val = "week.listevents";
 							}
 							$eventlink.= $key . "=" . $val . "&";
@@ -319,7 +374,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
 					}
 					$search[] = "{{CATEGORYLNK}}";
-					$replace[] = implode(", ",$catlinks);
+					$replace[] = implode(", ", $catlinks);
 					$blank[] = "";
 					break;
 
@@ -334,7 +389,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->getCategoryImage(true);
 					$blank[] = "";
 					break;
-				
+
 				case "{{CATDESC}}":
 					$search[] = "{{CATDESC}}";
 					$replace[] = $event->getCategoryDescription();
@@ -373,22 +428,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;" class="nothumb"/>
 						</a>
 						<div class="jevdialogs">
-							<?php
-							$search[] = "{{ICALDIALOG}}";
-							if ($view)
-							{
-								ob_start();
-								$view->eventIcalDialog($event, $mask);
-								$dialog = ob_get_clean();
-								$replace[] = $dialog;
-							}
-							else
-							{
-								$replace[] = "";
-							}
-							$blank[] = "";
-							echo $dialog;
-							?>
+						<?php
+						$search[] = "{{ICALDIALOG}}";
+						if ($view)
+						{
+							ob_start();
+							$view->eventIcalDialog($event, $mask);
+							$dialog = ob_get_clean();
+							$replace[] = $dialog;
+						}
+						else
+						{
+							$replace[] = "";
+						}
+						$blank[] = "";
+						echo $dialog;
+						?>
 						</div>
 
 						<?php
@@ -415,22 +470,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 						</a>
 						<div class="jevdialogs">
-							<?php
-							$search[] = "{{EDITDIALOG}}";
-							if ($view)
-							{
-								ob_start();
-								$view->eventManagementDialog($event, $mask);
-								$dialog = ob_get_clean();
-								$replace[] = $dialog;
-							}
-							else
-							{
-								$replace[] = "";
-							}
-							$blank[] = "";
-							echo $dialog;
-							?>
+						<?php
+						$search[] = "{{EDITDIALOG}}";
+						if ($view)
+						{
+							ob_start();
+							$view->eventManagementDialog($event, $mask);
+							$dialog = ob_get_clean();
+							$replace[] = $dialog;
+						}
+						else
+						{
+							$replace[] = "";
+						}
+						$blank[] = "";
+						echo $dialog;
+						?>
 						</div>
 
 						<?php
@@ -453,7 +508,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{CREATED}}":
 					$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 					$jtz = $compparams->get("icaltimezonelive", "");
-					if ($jtz == "" ){
+					if ($jtz == "")
+					{
 						$jtz = null;
 					}
 					$created = JevDate::getDate($event->created(), $jtz);
@@ -461,13 +517,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $created->toFormat(JText::_("DATE_FORMAT_CREATED"));
 					$blank[] = "";
 					break;
-                                    
+
 				case "{{ACCESS}}":
 					$search[] = "{{ACCESS}}";
 					$replace[] = $event->getAccessName();
 					$blank[] = "";
 					break;
-                                    
+
 				case "{{REPEATSUMMARY}}":
 				case "{{STARTDATE}}":
 				case "{{ENDDATE}}":
@@ -481,7 +537,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$search[] = "{{REPEATSUMMARY}}";
 						$repeatsummary = $view->repeatSummary($event);
-						if (!$repeatsummary){
+						if (!$repeatsummary)
+						{
 							$repeatsummary = $event->repeatSummary();
 						}
 						$replace[] = $repeatsummary;
@@ -513,13 +570,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 						$search[] = "{{ISOSTART}}";
-						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
 						$blank[] = "";
 						$search[] = "{{ISOEND}}";
-						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
+						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
 						$blank[] = "";
 						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate()>$row->startDate() ? $stop_date : "";
+						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
 						$blank[] = "";
 					}
 					else
@@ -549,15 +606,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
 						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate()>$row->startDate() ? $stop_date : "";
+						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
 						$blank[] = "";
 
-						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false){
+						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
+						{
 							$search[] = "{{ISOSTART}}";
-							$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hup(),$row->minup());
+							$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
 							$blank[] = "";
 							$search[] = "{{ISOEND}}";
-							$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d")."T".sprintf('%02d:%02d:00', $row->hdn(),$row->mindn());
+							$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
 							$blank[] = "";
 						}
 
@@ -646,55 +704,60 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 					}
 					$search[] = "{{DURATION}}";
-						$timedelta = ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime()-$row->getUnixStartTime();
-						$fieldval = JText::_("JEV_DURATION_FORMAT");
-						$shownsign = false;
-						// whole days!
-						if (stripos($fieldval, "%wd") !== false)
-						{
-							$days = intval($timedelta / (60 * 60 * 24));
-							$timedelta -= $days * 60 * 60 * 24;
+					$timedelta = $row->noendtime() ? "" : $row->getUnixEndTime() - $row->getUnixStartTime();
+					if ($row->alldayevent())
+					{
+						$timedelta = $row->getUnixEndDate() - $row->getUnixStartDate();
+					}
+					$fieldval = JText::_("JEV_DURATION_FORMAT");
+					$shownsign = false;
+					// whole days!
+					if (stripos($fieldval, "%wd") !== false)
+					{
+						$days = intval($timedelta / (60 * 60 * 24));
+						$timedelta -= $days * 60 * 60 * 24;
 
-							if ($timedelta>3610){
-								//if more than 1 hour and 10 seconds over a day then round up the day output
-								$days +=1;
-							}
+						if ($timedelta > 3610)
+						{
+							//if more than 1 hour and 10 seconds over a day then round up the day output
+							$days +=1;
+						}
 
-							$fieldval = str_ireplace("%d", $days, $fieldval);
-							$shownsign = true;
-						}
-						if (stripos($fieldval, "%d") !== false)
-						{
-							$days = intval($timedelta / (60 * 60 * 24));
-							$timedelta -= $days * 60 * 60 * 24;
-/*
-							if ($timedelta>3610){
-								//if more than 1 hour and 10 seconds over a day then round up the day output
-								$days +=1;
-							}
-							 */							
-							$fieldval = str_ireplace("%d", $days, $fieldval);
-							$shownsign = true;
-						}
-						if (stripos($fieldval, "%h") !== false)
-						{
-							$hours = intval($timedelta / (60 * 60));
-							$timedelta -= $hours * 60 * 60;
-							if ($shownsign)
-								$hours = abs($hours);
-							$hours = sprintf("%02d", $hours);
-							$fieldval = str_ireplace("%h", $hours, $fieldval);
-							$shownsign = true;
-						}
-						if (stripos($fieldval, "%m") !== false)
-						{
-							$mins = intval($timedelta / 60);
-							$timedelta -= $hours * 60;
-							if ($mins)
-								$mins = abs($mins);
-							$mins = sprintf("%02d", $mins);
-							$fieldval = str_ireplace("%m", $mins, $fieldval);
-						}
+						$fieldval = str_ireplace("%d", $days, $fieldval);
+						$shownsign = true;
+					}
+					if (stripos($fieldval, "%d") !== false)
+					{
+						$days = intval($timedelta / (60 * 60 * 24));
+						$timedelta -= $days * 60 * 60 * 24;
+						/*
+						  if ($timedelta>3610){
+						  //if more than 1 hour and 10 seconds over a day then round up the day output
+						  $days +=1;
+						  }
+						 */
+						$fieldval = str_ireplace("%d", $days, $fieldval);
+						$shownsign = true;
+					}
+					if (stripos($fieldval, "%h") !== false)
+					{
+						$hours = intval($timedelta / (60 * 60));
+						$timedelta -= $hours * 60 * 60;
+						if ($shownsign)
+							$hours = abs($hours);
+						$hours = sprintf("%02d", $hours);
+						$fieldval = str_ireplace("%h", $hours, $fieldval);
+						$shownsign = true;
+					}
+					if (stripos($fieldval, "%m") !== false)
+					{
+						$mins = intval($timedelta / 60);
+						$timedelta -= $hours * 60;
+						if ($mins)
+							$mins = abs($mins);
+						$mins = sprintf("%02d", $mins);
+						$fieldval = str_ireplace("%m", $mins, $fieldval);
+					}
 
 					$replace[] = $fieldval;
 					$blank[] = "";
@@ -714,8 +777,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 					}
 					break;
-                                        
-                               case "{{PREVIOUSNEXTEVENT}}":
+
+				case "{{PREVIOUSNEXTEVENT}}":
 					static $doprevnextevent;
 					if (!isset($doprevnextevent))
 					{
@@ -739,16 +802,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$search[] = "{{FIRSTREPEAT}}";
 						$firstrepeat = $event->getFirstRepeat();
-						if ($firstrepeat->rp_id()==$event->rp_id()){
-							$replace[]="";
+						if ($firstrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
 						}
-						else {
-							$replace[] = "<a class='ev_firstrepeat' href='".$firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true)."' title='".JText::_('JEV_FIRSTREPEAT')."' >".JText::_('JEV_FIRSTREPEAT')."</a>";
+						else
+						{
+							$replace[] = "<a class='ev_firstrepeat' href='" . $firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true) . "' title='" . JText::_('JEV_FIRSTREPEAT') . "' >" . JText::_('JEV_FIRSTREPEAT') . "</a>";
 						}
 						$blank[] = "";
 					}
 					break;
-					
+
 				case "{{LASTREPEAT}}":
 				case "{{LASTREPEATEND}}":
 					static $dolastrepeat;
@@ -864,7 +929,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$event->extra_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
-						
 						// NO need to call conContentPrepate since its called on the template value below here
 					}
 
@@ -872,19 +936,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->extra_info();
 					$blank[] = "";
 					break;
-                                        
-                                case "{{RPID}}":
-                                    $search[] = "{{RPID}}";
-                                    $replace[] = $event->rp_id();
-                                    $blank[] = "";
-                                break;
+
+				case "{{RPID}}":
+					$search[] = "{{RPID}}";
+					$replace[] = $event->rp_id();
+					$blank[] = "";
+					break;
 
 				default:
-					$strippedmatch = str_replace (array("{","}"),"",$strippedmatch);
-					if (is_callable(array($event,$strippedmatch))){
-						$search[] = "{{".$strippedmatch."}}";
-		                                    $replace[] = $event->$strippedmatch();
-				                  $blank[] = "";
+					$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
+					if (is_callable(array($event, $strippedmatch)))
+					{
+						$search[] = "{{" . $strippedmatch . "}}";
+						$replace[] = $event->$strippedmatch();
+						$blank[] = "";
 					}
 					break;
 			}
@@ -903,25 +968,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			if (is_callable(array($classname, "substitutefield")))
 			{
 
-				if (!isset($fieldNameArray[$classname])){
+				if (!isset($fieldNameArray[$classname]))
+				{
 					$fieldNameArray[$classname] = array();
 				}
-				if (!isset($fieldNameArray[$classname][$layout])){
-					
+				if (!isset($fieldNameArray[$classname][$layout]))
+				{
+
 					//list($usec, $sec) = explode(" ", microtime());
 					//$starttime = (float) $usec + (float) $sec;
-					
+
 					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
-					
+
 					//list ($usec, $sec) = explode(" ", microtime());
 					//$time_end = (float) $usec + (float) $sec;
 					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
 				}
-				if ( isset($fieldNameArray[$classname][$layout]["values"]))
+				if (isset($fieldNameArray[$classname][$layout]["values"]))
 				{
 					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 					{
-						if (!strpos($template_value, $fieldname)!==false) {
+						if (!strpos($template_value, $fieldname) !== false)
+						{
 							continue;
 						}
 						$search[] = "{{" . $fieldname . "}}";
@@ -973,36 +1041,57 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$template_value = str_replace($search, $replace, $template_value);
 
- $parts = explode("{{MODULESTART#", $template_value);
- $dynamicmodules = array();
- foreach ($parts as $part){
-  if (strpos($part, "{{MODULEEND}}")===false){
-   // strip out BAD HTML tags left by WYSIWYG editors
-   if (substr($part, strlen($part)-3)=="<p>"){
-    $template_value = substr($part, 0, strlen($part)-3) ;
-   }
-   else {
-    $template_value = $part;
-   }
-   continue;
-  }
-  // start with module name
-  $modname = substr($part,0,strpos( $part, "}}"));
-  $modulecontent = substr($part, strpos( $part, "}}")+2);
-  $modulecontent = substr($modulecontent, 0, strpos($modulecontent,"{{MODULEEND}}"));
-  // strip out BAD HTML tags left by WYSIWYG editors
-  if (strpos($modulecontent, "</p>")===0){
-   $modulecontent = "<p>x@#".$modulecontent;
-  }
-  if (substr($modulecontent, strlen($modulecontent)-3)=="<p>"){
-   $modulecontent .= "x@#</p>";
-  }
+		if ($specialmodules)
+		{
+			$reg =  JRegistry::getInstance("com_jevents");
 
-  $modulecontent = str_replace("<p>x@#</p>", "", $modulecontent);
-  $dynamicmodules[$modname] = $modulecontent;
- }
- $reg =& JRegistry::getInstance("com_jevents");
- $reg->set("dynamicmodules",$dynamicmodules);              
+			$parts = explode("{{MODULESTART#", $template_value);
+			$dynamicmodules = array();
+			foreach ($parts as $part)
+			{
+				$currentdynamicmodules = $reg->get("dynamicmodules", false);
+				if (strpos($part, "{{MODULEEND}}") === false)
+				{
+					// strip out BAD HTML tags left by WYSIWYG editors
+					if (substr($part, strlen($part) - 3) == "<p>")
+					{
+						$template_value = substr($part, 0, strlen($part) - 3);
+					}
+					else
+					{
+						$template_value = $part;
+					}
+					continue;
+				}
+				// start with module name
+				$modname = substr($part, 0, strpos($part, "}}"));
+				$modulecontent = substr($part, strpos($part, "}}") + 2);
+				$modulecontent = substr($modulecontent, 0, strpos($modulecontent, "{{MODULEEND}}"));
+				// strip out BAD HTML tags left by WYSIWYG editors
+				if (strpos($modulecontent, "</p>") === 0)
+				{
+					$modulecontent = "<p>x@#" . $modulecontent;
+				}
+				if (substr($modulecontent, strlen($modulecontent) - 3) == "<p>")
+				{
+					$modulecontent .= "x@#</p>";
+				}
+
+				$modulecontent = str_replace("<p>x@#</p>", "", $modulecontent);
+				if (isset($currentdynamicmodules[$modname])){
+					if (!is_array($currentdynamicmodules[$modname])){
+						$currentdynamicmodules[$modname] = array($currentdynamicmodules[$modname]);
+					}
+					$currentdynamicmodules[$modname] [] = $modulecontent;
+					$dynamicmodules[$modname] = $currentdynamicmodules[$modname];
+				}
+				else {
+					$dynamicmodules[$modname] = $modulecontent;
+				}
+			}
+			$reg->set("dynamicmodules", $dynamicmodules);
+		}
+
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
@@ -1063,26 +1152,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			{
 				$wordcount = str_replace("}}", "", $parts[1]);
 				$charcount = 0;
-				if (strpos($wordcount, "chars")>0){
-					$charcount = intval(str_replace("chars","",$wordcount));
+				if (strpos($wordcount, "chars") > 0)
+				{
+					$charcount = intval(str_replace("chars", "", $wordcount));
 					$wordcount = 0;
 				}
-				else {
-					$wordcount =intval($wordcount);
+				else
+				{
+					$wordcount = intval($wordcount);
 				}
 				$value = strip_tags($tempreplace);
 
 				$value = str_replace("  ", " ", $value);
 				$words = explode(" ", $value);
-				if ($wordcount>0 && count($words) > $wordcount)
+				if ($wordcount > 0 && count($words) > $wordcount)
 				{
 					$words = array_slice($words, 0, $wordcount);
 					$words[] = " ...";
 					return implode(" ", $words);
 				}
-				if ($charcount>0 && strlen($value) > $charcount)
+				if ($charcount > 0 && strlen($value) > $charcount)
 				{
-					return substr($value, 0, $charcount)." ...";
+					return substr($value, 0, $charcount) . " ...";
 				}
 				return implode(" ", $words);
 			}
@@ -1120,5 +1211,3 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			return "";
 
 	}
-
-	

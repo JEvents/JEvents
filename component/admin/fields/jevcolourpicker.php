@@ -41,7 +41,10 @@ class JFormFieldJevcolourpicker extends JFormField
 		$html[] = '<input type="text" name="'.$this->name.'" value="'.$this->value.'" id="pick1064797275field"/><br/>';
 		$html[]  = '<div class="clr"></div>';
 		$html[]  = '<iframe id="fred"  frameborder="" src="'.JURI::root()."components/com_jevents/libraries/colours.html?id=fred&j16=1".'" style="min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;"></iframe>';
-		$html[]  = '<div class="clr"></div>';
+
+		$conditionparam= ($this->form->getName()!="com_config.component") ? '_params' : '';
+                 $html[]  = '<div class="clr" id="jform'.$conditionparam.'_jevcolourpicker"></div>';
+		//$html[]  = '<div class="clr"></div>';
 
 		// add script to auto open the basic options tab!
 		$doc = JFactory::getDocument();
@@ -54,7 +57,10 @@ window.addEvent('load', function() {
 });
 SCRIPT;
 		$doc->addScriptDeclaration($script);
-		
+
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		return implode($html);
 	}
 

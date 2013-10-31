@@ -24,7 +24,8 @@ class JFormFieldJEVDate extends JFormFieldCalendar
 	
 	public function getInput()
 	{
-		echo 'here';
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 		parent::getInput();
 	}
 

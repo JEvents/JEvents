@@ -24,6 +24,9 @@ class JFormFieldJEVselectEvent extends JFormField
 
 	protected function getInput()
 	{
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		if ($this->fieldname=="rp_id"){
 			// The active event id field.
 			if (0 == (int)$this->value) {

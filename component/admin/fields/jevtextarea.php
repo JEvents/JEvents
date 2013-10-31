@@ -15,6 +15,10 @@ class JFormFieldJevtextarea extends JFormFieldTextarea
 	protected function getInput()
 	{
 		$this->value = str_replace('<br />', "\n", JText::_($this->value));
+
+		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
 		return parent::getInput();
 	}
 	
