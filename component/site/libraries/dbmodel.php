@@ -299,7 +299,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -318,9 +318,9 @@ class JEventsDBModel
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. " \n AND icsf.state=1"
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 				// published state is now handled by filter
 				. "\n GROUP BY ev.ev_id";
 
@@ -357,9 +357,9 @@ class JEventsDBModel
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 "
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
 				//. "\n AND ev.state=1"
@@ -425,7 +425,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -451,9 +451,9 @@ class JEventsDBModel
 				// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 				. "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. " \n AND icsf.state=1"
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 				// published state is now handled by filter
 				. "\n AND rpt.startrepeat=(SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2 WHERE rpt2.eventid=rpt.eventid AND rpt2.startrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate')"
 				. "\n GROUP BY ev.ev_id";
@@ -492,8 +492,8 @@ class JEventsDBModel
 				// New equivalent but simpler test
 				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
+				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
 				. ($needsgroup ? $groupby : "");
@@ -581,14 +581,14 @@ class JEventsDBModel
 		}
 		$rptwhere = ( count($rptwhere) ? ' AND ' . implode(' AND ', $rptwhere) : '' );
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(JEVHelper::getAid($user)) . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -659,9 +659,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 						. $multiday
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n AND rpt.startrepeat=(
 				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
@@ -703,9 +703,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 						. $multiday
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n AND rpt.startrepeat=(
 					SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
@@ -744,9 +744,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 						. $multiday2
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						// This is the correct approach but can be slow
 						/*
@@ -837,9 +837,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 						ORDER BY rpt.startrepeat ASC"
@@ -871,9 +871,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 							ORDER BY rpt.startrepeat desc"
@@ -904,9 +904,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday2
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 							ORDER BY rpt.startrepeat asc"
@@ -982,9 +982,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1019,9 +1019,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1055,9 +1055,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday2
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1188,7 +1188,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -1259,9 +1259,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 						. $multiday
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n AND rpt.startrepeat=(
 				SELECT MIN(startrepeat) FROM #__jevents_repetition as rpt2
@@ -1305,9 +1305,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 						. $multiday
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						. "\n AND rpt.startrepeat=(
 					SELECT MAX(startrepeat) FROM #__jevents_repetition as rpt2
@@ -1346,9 +1346,9 @@ class JEventsDBModel
 						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 						. $multiday2
 						. $extrawhere
-						. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
-						. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+						. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 						// published state is now handled by filter
 						// This is the correct approach but can be slow
 						/*
@@ -1439,9 +1439,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 						ORDER BY RAND()"
@@ -1473,9 +1473,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 							ORDER BY RAND()"
@@ -1506,9 +1506,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday2
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							. "\n GROUP BY rpt.rp_id
 							ORDER BY RAND()"
@@ -1584,9 +1584,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1621,9 +1621,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1657,9 +1657,9 @@ class JEventsDBModel
 							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
 							. $multiday2
 							. $extrawhere
-							. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
-							. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+							. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 							// published state is now handled by filter
 							// duplicating the sort in the group statements improves MySQL performance
 							. "\n GROUP BY rpt.startrepeat , rpt.rp_id
@@ -1768,7 +1768,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -1787,9 +1787,9 @@ class JEventsDBModel
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. " \n AND icsf.state=1"
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 				// published state is now handled by filter
 				. "\n GROUP BY ev.ev_id";
 
@@ -1829,9 +1829,9 @@ class JEventsDBModel
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
 				. $extrawhere
-				. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 "
-				. "\n AND icsf.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND ev.ev_id IN (" . $ids . ")"
 				// published state is now handled by filter
 				//. "\n AND ev.state=1"
@@ -1916,7 +1916,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -1952,8 +1952,8 @@ class JEventsDBModel
 					  AND rbd.rptday >= '$startdate' AND rbd.rptday <= '$enddate' )"
 					 */
 					. $extrawhere
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 					. "\n GROUP BY rpt.rp_id" ;
 
 			if ($order != "")
@@ -2040,8 +2040,8 @@ class JEventsDBModel
 					  AND rbd.rptday >= '$startdate' AND rbd.rptday <= '$enddate' )"
 					 */
 					. $extrawhere
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 					// published state is now handled by filter
 					//. "\n AND ev.state=1"
 					. ($needsgroup ? "\n GROUP BY rpt.rp_id" : "");
@@ -2241,7 +2241,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2279,8 +2279,8 @@ class JEventsDBModel
 				  . "\n OR (rpt.startrepeat <= '$startdate' AND rpt.endrepeat >= '$enddate'))"
 				 */
 				. $extrawhere
-				. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 		// published state is not handled by filter
 		//. "\n AND ev.state=1"
 		;
@@ -2376,7 +2376,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2410,8 +2410,8 @@ class JEventsDBModel
 				// Must suppress multiday events that have already started
 				. "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) "
 				. $extrawhere
-				. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 		;
 		if (!$showrepeats && !$count)
 		{
@@ -2509,7 +2509,7 @@ class JEventsDBModel
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-				$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+				$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 				$needsgroup = true;
 				$catwhere = "\n WHERE 1 ";
@@ -2530,8 +2530,8 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 					. $extrawhere
 					. "\n AND rpt.rp_id = '$rpid'";
 			$query .="\n GROUP BY rpt.rp_id";
@@ -2627,7 +2627,7 @@ class JEventsDBModel
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-				$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+				$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 				$needsgroup = true;
 				$catwhere = "\n WHERE 1 ";
@@ -2649,9 +2649,9 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. ($includeUnpublished ? "" : " AND icsf.state=1")
-					. "\n AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 					. $extrawhere
 					. "\n AND ev.ev_id = '$evid'"
 					. "\n GROUP BY rpt.rp_id"
@@ -2735,7 +2735,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2844,7 +2844,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3011,7 +3011,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3090,7 +3090,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3197,7 +3197,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3245,7 +3245,7 @@ class JEventsDBModel
 					. $extrawhere
 					//. "\n AND ev.state=1"
 					. "\n  AND icsf.state=1"
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. "\n GROUP BY rpt.rp_id"
 					. $order
 					. $limit;
@@ -3262,7 +3262,7 @@ class JEventsDBModel
 					. $catwhere
 					. $extrawhere
 					. "\n  AND icsf.state=1"
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. "\n GROUP BY ev.ev_id"
 			;
 
@@ -3290,7 +3290,7 @@ class JEventsDBModel
 					//. "\n AND ev.state=1"
 					. "\n AND rpt.rp_id IN($rplist)"
 					. "\n  AND icsf.state=1"
-					. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. ($needsgroup ? "\n GROUP BY rpt.rp_id" : "")
 					. $order
 					. $limit;
@@ -3351,7 +3351,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3502,7 +3502,7 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3537,8 +3537,8 @@ class JEventsDBModel
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. $extrajoin
 				. $catwhere
-				. "\n AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
+				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "\n AND ";
 		$query .= $searchpart;
 		$query .= $extrawhere;
@@ -3564,8 +3564,8 @@ class JEventsDBModel
 				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. $extrajoin
 				. $catwhere
-				. "\n  AND icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. "\n  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
+				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 		;
 		$query .= " AND ";
 		$query .= $searchpart;
