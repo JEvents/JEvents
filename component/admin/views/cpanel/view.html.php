@@ -724,6 +724,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
+		$output .= "MySQL Version : " .mysql_get_server_info() . "\n";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
