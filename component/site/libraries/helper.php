@@ -338,7 +338,7 @@ class JEVHelper
 				return JevDate::strftime("%H:%M", $date);
 			}
 		}
-		else if (JApplication::isWinOS())
+		else if (IS_WIN)
 		{
 			return JevDate::strftime("%#I:%M%p", $date);
 		}
