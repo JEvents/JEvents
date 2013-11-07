@@ -116,7 +116,7 @@ class DefaultModLatestView
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{
-			$this->defaultfFormatStr = JFactory::getApplication()->isWinOS() ? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
+			$this->defaultfFormatStr = IS_WIN ? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
 		}
 		else
 		{
