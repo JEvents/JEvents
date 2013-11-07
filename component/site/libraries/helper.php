@@ -831,6 +831,11 @@ class JEVHelper
 			{
 				$month = '0' . $month;
 			}
+
+			// Make sure $day is not outside the month
+			$lastDayOfMonth = strftime("%e",mktime(6,0,0,$month+1,1,$year) - 86400);
+			$day = $lastDayOfMonth< $day ? $lastDayOfMonth : $day;
+			
 			$data = array();
 			$data[] = $year;
 			$data[] = $month;
