@@ -326,7 +326,7 @@ class JEV_CommonFunctions {
 		if(strpos($format, '%B') !== false)
 		$format = str_replace('%B', JEVHelper::getMonthName(date('n', $timestamp)), $format);
 
-		if (JApplication::isWinOS()) {
+		if (IS_WIN) {
 			if (!class_exists('JEV_CompatWin')) {
 				require_once(dirname(__FILE__) . '/compatwin.php');
 			}

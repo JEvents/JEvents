@@ -79,7 +79,7 @@ class DefaultModLatestView
 		{
 			$document = & JFactory::getDocument();
 			$document->addStyleSheet(JURI::base(true) . "/components/com_jevents/assets/css/jevcustom.css");
-		}
+		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
 
@@ -116,7 +116,7 @@ class DefaultModLatestView
 		$this->com_calUseStdTime = intval($jevents_config->get('com_calUseStdTime', 1));
 		if ($this->com_calUseStdTime)
 		{
-			$this->defaultfFormatStr = JFactory::getApplication()->isWinOS() ? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
+			$this->defaultfFormatStr = IS_WIN ? $this->_defaultfFormatStr12winos : $this->_defaultfFormatStr12;
 		}
 		else
 		{
@@ -938,7 +938,7 @@ class DefaultModLatestView
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : JFactory::getApplication()->isWinOS() ? ' @%I:%M%p' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p';
 					}
 					else
 					{

@@ -571,7 +571,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->bind($rowdata);
 
-		$this->form->setValue("view12Hour", $params->get('com_calUseStdTime', 0) ? 1 : 0);
+		$this->form->setValue("view12Hour", null,$params->get('com_calUseStdTime', 0) ? 1 : 0);
 
 		$this->catid = $this->row->catid();
 		if ($this->catid == 0 && $this->defaultCat > 0)
