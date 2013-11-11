@@ -938,7 +938,7 @@ class DefaultModLatestView
 				{
 					if ($this->com_calUseStdTime)
 					{
-						$time_fmt = $dayEvent->alldayevent() ? '' : JFactory::getApplication()->isWinOS() ? ' @%I:%M%p' : ' @%l:%M%p';
+						$time_fmt = $dayEvent->alldayevent() ? '' : IS_WIN ? ' @%I:%M%p' : ' @%l:%M%p';
 					}
 					else
 					{

@@ -31,6 +31,9 @@ class ICalsViewIcals extends JEventsAbstractView
 	{
 		// TODO - run this through plugins first ?
 
+		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
+		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
+		
 		$icalformatted = JRequest::getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
@@ -47,7 +50,7 @@ class ICalsViewIcals extends JEventsAbstractView
 		{
 			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $this->wraplines($description);
 
-	}
+		}
 	}
 
 	protected function replacetags($description)
