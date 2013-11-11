@@ -27,7 +27,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
@@ -37,8 +37,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		$db = & JFactory::getDBO();
-		$uri = & JFactory::getURI();
+		$db = JFactory::getDBO();
+		$uri =  JFactory::getURI();
 
 		// Get data from the model
 		$model = $this->getModel();
@@ -66,7 +66,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$this->assignRef('user', JFactory::getUser());
 		$this->assignRef('items', $items);
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
 		}
@@ -83,7 +83,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editdefaults.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -106,8 +106,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 
 
-		$db = & JFactory::getDBO();
-		$uri = & JFactory::getURI();
+		$db = JFactory::getDBO();
+		$uri =  JFactory::getURI();
 
 		// Get data from the model
 		$model = & $this->getModel();
@@ -150,13 +150,13 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			</div>
 			<div class="m">
 				<?php
-				$bar = & JToolBar::getInstance('toolbar');
+				$bar =  JToolBar::getInstance('toolbar');
 				$barhtml = $bar->render();
 				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 				echo $barhtml;
 
-				if (JVersion::isCompatible("3.0"))
+				if (JevJoomlaVersion::isCompatible("3.0"))
 				{
 					$title = JFactory::getApplication()->JComponentTitle;
 				}

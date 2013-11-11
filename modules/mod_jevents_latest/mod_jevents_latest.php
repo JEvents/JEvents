@@ -25,14 +25,14 @@ $theme=$modtheme;
 JPluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","mod_jevents_latest");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 
 $viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest',$theme.'/'."latest", $params);
 
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
 $compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $tz=$compparams->get("icaltimezonelive","");
@@ -52,5 +52,5 @@ if ($tz && is_callable("date_default_timezone_set")){
 	date_default_timezone_set($timezone);
 }
 
-$dispatcher	=& JDispatcher::getInstance();
+$dispatcher	= JDispatcher::getInstance();
 $dispatcher->trigger( 'onJEventsLatestFooter');

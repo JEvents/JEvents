@@ -41,7 +41,7 @@ if ($myItemid == 0)
 $form_link = "";
 if ($myItemid > 0)
 {
-	$menu = & JSite::getMenu();
+	$menu =  JFactory::getApplication()->getMenu();
 	$menuitem = $menu->getItem($myItemid);
 	// if on a detail page or not already on a jevents component page then pick up the default task
 	if ($menuitem && (!$jevtask || strpos($jevtask, "detail") !== false))

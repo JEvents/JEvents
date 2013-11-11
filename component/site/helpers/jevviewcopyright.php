@@ -17,7 +17,7 @@ function JevViewCopyright() {
 
 	
 
-	$cfg	 = & JEVConfig::getInstance();
+	$cfg	 = JEVConfig::getInstance();
 
 	$version = & JEventsVersion::getInstance();
 

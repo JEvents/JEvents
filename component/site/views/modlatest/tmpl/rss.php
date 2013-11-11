@@ -13,7 +13,7 @@
 defined('_JEXEC') or die();
 
 // setup document
-$doc =& JFactory::getDocument();
+$doc = JFactory::getDocument();
 
 $doc->setLink($this->info['link']);
 $doc->setBase($this->info['base']);

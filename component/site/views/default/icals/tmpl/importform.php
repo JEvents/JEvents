@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	 = & JEVConfig::getInstance();
+$cfg	 = JEVConfig::getInstance();
 
 $view =  $this->getViewName();
 $this->dataModel = new JEventsDataModel("JEventsAdminDBModel");

@@ -24,7 +24,7 @@ class DefaultViewCrawler extends JEventsDefaultView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 		$value = trim($params->get("relstart",""));
 		if ($value != ""){

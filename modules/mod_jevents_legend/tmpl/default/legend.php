@@ -45,7 +45,7 @@ class DefaultModLegendView
 		include_once(JEV_LIBS . "/modfunctions.php");
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->_params);
 
-		$menu = & JApplication::getMenu('site');
+		$menu =  JFactory::getApplication()->getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{
@@ -70,20 +70,20 @@ class DefaultModLegendView
 	function displayCalendarLegend($style="list")
 	{
 		// do not display normal legend if dynamic legend is visible on this page
-		$registry	=& JRegistry::getInstance("jevents");
+		$registry	= JRegistry::getInstance("jevents");
 		if ($registry->get("jevents.dynamiclegend",0)) {
 			return;
 		}
 
 		// since this is meant to be a comprehensive legend look for catids from menu first:
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$Itemid = isset($this->myItemid) ? $this->myItemid : JEVHelper::getItemid();
 		
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$option = JRequest::getCmd('option');
 
@@ -92,18 +92,18 @@ class DefaultModLegendView
 
 		$catidList = "";
 
-		$menu = & JSite::getMenu();
+		$menu =  JFactory::getApplication()->getMenu();
 		$active = $menu->getActive();
 		if ((!is_null($active) && $active->component == JEV_COM_COMPONENT) || !isset($Itemid))
 		{
-			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		}
 		else
 		{
 			// If accessing this function from outside the component then I must load suitable parameters
 			$params = $menu->getParams($Itemid);
 		}
-		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$c = 0;
 		$catids = array();
@@ -220,9 +220,9 @@ class DefaultModLegendView
 				{
 
 					// This is only displayed when JEvents is the component so I can get the component view
-					$component = & JComponentHelper::getComponent(JEV_COM_COMPONENT);
+					$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
-					$registry = & JRegistry::getInstance("jevents");
+					$registry = JRegistry::getInstance("jevents");
 					$controller = & $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
@@ -248,7 +248,7 @@ class DefaultModLegendView
 
 		$db = JFactory::getDBO();
 		$aid = $this->datamodel->aid;
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 
 		// Get all the categories
 		$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
@@ -269,7 +269,7 @@ class DefaultModLegendView
 		unset($cat);
 		
 		// any plugin based resitrictions
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		// remember NOT to reindex the list
 		$dispatcher->trigger('onGetAccessibleCategories', array(& $catlist, false));
 

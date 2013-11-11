@@ -27,13 +27,13 @@ class JElementJevdate extends JElement
 	{
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 		$lang->load("com_jevents", JPATH_SITE);
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		$option = "com_jevents"; 
-		$params =& JComponentHelper::getParams( $option );
+		$params = JComponentHelper::getParams( $option );
 		$minyear = JEVHelper::getMinYear();
 		$maxyear = JEVHelper::getMaxYear();
 		ob_start();

@@ -109,7 +109,7 @@ class JInstallerJevlayout extends JAdapterInstance
 
 
 		// Load the language file
-		$lang		= & JFactory::getLanguage();
+		$lang		= JFactory::getLanguage();
 		$lang->load("jevlayout",$basePath);
 
 		// We don't copy the manifest file since there is no uninstall mechanism

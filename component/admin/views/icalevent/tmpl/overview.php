@@ -12,11 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$db = & JFactory::getDBO();
+$db = JFactory::getDBO();
 $user = JFactory::getUser();
 
 // get configuration object
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 $order = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
@@ -41,7 +41,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 						<td align="right"><?php echo $this->plist; ?></td>
 					<?php } ?>
 					<td align="right"><?php echo $this->clist; ?> </td>
-<?php if (!JVersion::isCompatible("3.0"))
+<?php if (!JevJoomlaVersion::isCompatible("3.0"))
 { ?>
 						<td align="right"><?php echo $this->icsList; ?> </td>
 						<td align="right"><?php echo $this->statelist; ?> </td>
@@ -51,7 +51,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 					<td>
 						<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
 					</td>
-						<?php if (JVersion::isCompatible("3.0"))
+						<?php if (JevJoomlaVersion::isCompatible("3.0"))
 						{ ?>
 						<td align="right">
 							<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
@@ -65,7 +65,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 				<tr>
 					<th width="20" nowrap="nowrap">
-						<input type="checkbox" name="toggle" value="" onclick="<?php echo JVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->rows) . ")"; ?>" />
+						<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->rows) . ")"; ?>" />
 					</th>
 					<th class="title" width="50%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>

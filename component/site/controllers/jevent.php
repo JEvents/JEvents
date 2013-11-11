@@ -23,7 +23,7 @@ class JEventController extends JControllerLegacy   {
 //		$this->registerTask( 'show',  'showContent' );
 
 		// Load abstract "view" class
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
 		if (!isset($this->_basePath)){
@@ -41,15 +41,15 @@ class JEventController extends JControllerLegacy   {
 
 		// get the view
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "jevent";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = & $this->getView($view,$viewType, $theme."View", 
+		$this->view = $this->getView($view,$viewType, $theme."View", 
 			array( 'base_path'=>$this->_basePath, 
 				"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 				"name"=>$theme.'/'.$view));
@@ -67,14 +67,14 @@ class JEventController extends JControllerLegacy   {
 		$this->view->assign("jevtype","jevent");
 		
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
 		} else {
-			$cache =& JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}

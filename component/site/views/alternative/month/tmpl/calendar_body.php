@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	 = & JEVConfig::getInstance();
+$cfg	 = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype",'overlib')=='overlib'){
 	JEVHelper::loadOverlib();

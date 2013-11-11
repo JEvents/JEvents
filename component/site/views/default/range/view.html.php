@@ -24,7 +24,7 @@ class DefaultViewRange extends JEventsDefaultView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 		list($startdate, $enddate) = $this->getStartEndDates();
 

@@ -23,7 +23,7 @@ class AlternativeViewNavTableBarIconic
 
 		$link = 'index.php?option=' . $option . '&task=' . $task . $cat . '&Itemid=' . $Itemid . '&';
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 
 		$monthSelect = $view->buildMonthSelect($link, $view_date->month, $view_date->year);

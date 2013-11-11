@@ -8,10 +8,10 @@ function DefaultViewHelperHeader($view){
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 	
-	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher	= JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
-	$cfg		= & JEVConfig::getInstance();
+	$cfg		= JEVConfig::getInstance();
 	$version	= & JEventsVersion::getInstance();
 	$jevtype	= JRequest::getVar('jevtype');
 	$evid		= JRequest::getInt('evid');
@@ -46,7 +46,7 @@ function DefaultViewHelperHeader($view){
 			$t_headline = '&nbsp;';
 			break;
 		case 'menu':
-			$menu2   =& JSite::getMenu();
+			$menu2   = JFactory::getApplication()->getMenu();
 			$menu    = $menu2->getActive();
 			if (isset($menu) && isset($menu->name)) {
 				$t_headline = $menu->name;
@@ -104,7 +104,7 @@ function DefaultViewHelperHeader($view){
 		;
 		$link =JRoute::_($link);
 		//if (strpos($link,"/")===0) $link = substr($link,1);
-		$uri	        =& JURI::getInstance(JURI::base());
+		$uri	        = JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 
 		$link = $root.$link;

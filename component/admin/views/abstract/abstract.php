@@ -21,7 +21,7 @@ class JEventsAbstractView extends JViewLegacy
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
@@ -32,7 +32,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
 		// note that the name config variable is ignored in the parent construct!
-		if (JVersion::isCompatible("2.5"))
+		if (JevJoomlaVersion::isCompatible("2.5"))
 		{
 			$theme = JEV_CommonFunctions::getJEventsViewName();
 			$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $this->getName());
@@ -89,7 +89,7 @@ class JEventsAbstractView extends JViewLegacy
 	function _hideSubmenu()
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (!JVersion::isCompatible("3.0"))
+		if (!JevJoomlaVersion::isCompatible("3.0"))
 			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/hidesubmenu16.css');
 		else
 			JHTML::stylesheet('hidesubmenu.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -294,7 +294,7 @@ class JEventsAbstractView extends JViewLegacy
 
 
 		// Close all the tabs in Joomla > 3.0
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$tabstartarray = array();
 			preg_match_all('|{{TABSTART#(.*?)}}|', $template_value, $tabstartarray);
@@ -533,7 +533,7 @@ class JEventsAbstractView extends JViewLegacy
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$this->editor = & JFactory::getEditor();
+		$this->editor =  JFactory::getEditor();
 		if ($this->editor->get("_name") == "codemirror")
 		{
 			$this->editor = JFactory::getEditor("none");
@@ -541,7 +541,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 
 		// clean any existing cache files
-		$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+		$cache =  JFactory::getCache(JEV_COM_COMPONENT);
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Prepare the data
@@ -704,7 +704,7 @@ class JEventsAbstractView extends JViewLegacy
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
 		// append array to extratabs keys content, title, paneid
 		$this->extraTabs = array();
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
 
 		foreach ($this->extraTabs as $extraTab)
@@ -769,7 +769,7 @@ class JEventsAbstractView extends JViewLegacy
 				$requiredTags['label'] = $this->customfields[$key]["label"];
 				$this->requiredtags[] = $requiredTags;
 			}
-			if (JVersion::isCompatible("3.0"))
+			if (JevJoomlaVersion::isCompatible("3.0"))
 			{
 				?>
 				<div class="control-group jevplugin_<?php echo $key; ?>">

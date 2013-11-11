@@ -36,7 +36,7 @@ class iCalException extends JTable  {
 
 	function loadByRepeatId($rp_id){
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT * FROM #__jevents_exception WHERE rp_id=".intval($rp_id);
 		$db->setQuery($sql);
 		$data = $db->loadObject();

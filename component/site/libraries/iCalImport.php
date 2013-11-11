@@ -41,7 +41,7 @@ class iCalImport
 		@ini_set("max_execution_time",600);
 
 		echo JText::sprintf("Importing events from ical file %s", $filename)."<br/>";
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
 		// resultant data goes here
 		if ($filename!=""){
@@ -436,7 +436,7 @@ class iCalImport
 
 		static $offset = null;
 		if (is_null($offset)) {
-			$config	=& JFactory::getConfig();
+			$config	= JFactory::getConfig();
 			$offset = $config->get('config.offset', 0);
 
 		}

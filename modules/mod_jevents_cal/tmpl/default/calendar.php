@@ -57,26 +57,26 @@ class DefaultModCalView
 	function DefaultModCalView($params, $modid){
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
-			$document = & JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet(JURI::base(true) . "/components/com_jevents/assets/css/jevcustom.css");
 		}
 
 		$this->_modid = $modid;
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$this->datamodel = new JEventsDataModel();
 
 		// component config object
-		$jevents_config		= & JEVConfig::getInstance();
+		$jevents_config		= JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
 		$this->aid			= $user->aid;
-		$tmplang			=& JFactory::getLanguage();
+		$tmplang			= JFactory::getLanguage();
 
 		// get params exclusive to module
 		$this->inc_ec_css			= $this->modparams->get('inc_ec_css', 1);
@@ -210,7 +210,7 @@ class DefaultModCalView
 	}
 
 	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$adjDate = JevDate::strtotime($adj,$cal_today);
 		list($year,$month) = explode(":",JevDate::strftime("%Y:%m",$adjDate));
@@ -229,8 +229,8 @@ class DefaultModCalView
 
 	function _displayCalendarMod($time, $startday, $linkString, $day_name, $monthMustHaveEvent=false, $basedate=false){
 
-		$db	=& JFactory::getDBO();
-		$cfg = & JEVConfig::getInstance();
+		$db	= JFactory::getDBO();
+		$cfg = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
 
 		$cal_year=date("Y",$time);
@@ -265,7 +265,7 @@ class DefaultModCalView
 			$cal_month=date("m",$time);
 		}		
 
-		$reg =& JFactory::getConfig();
+		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
 		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
 		$reg->set("jev.modparams",false);
@@ -401,14 +401,14 @@ class DefaultModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		// this will get the viewname based on which classes have been implemented
 		$viewname = $this->getTheme();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
 		$viewpath = "components/".JEV_COM_COMPONENT."/views/".$viewname."/assets/css/";
@@ -457,16 +457,16 @@ class DefaultModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		static $isloaded_css = false;
 		// this will get the viewname based on which classes have been implemented
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$viewname = ucfirst($cfg->get('com_calViewName',"default"));
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		// get array
 		$day_name = JEVHelper::getWeekdayLetter(null, 1);

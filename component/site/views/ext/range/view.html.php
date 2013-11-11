@@ -24,7 +24,7 @@ class ExtViewRange extends JEventsExtView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 		list($startdate, $enddate) = $this->getStartEndDates();
 

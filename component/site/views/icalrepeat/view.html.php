@@ -35,7 +35,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	
 	function edit($tpl = null)
 	{
-		$document =& JFactory::getDocument();		
+		$document = JFactory::getDocument();		
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
 
@@ -47,7 +47,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 	
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		$this->toolbarConfirmButton("icalrepeat.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
 		if (JEVHelper::isEventEditor())
 			$this->toolbarConfirmButton("icalrepeat.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'jev_Apply', false);
@@ -73,7 +73,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		
 		$this->_adminStart();		
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->setLayout("edit");
 		}
@@ -100,7 +100,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	
 	function _adminStart(){
 		
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		list($this->year,$this->month,$this->day) = JEVHelper::getYMD();
 		$this->Itemid	= JEVHelper::getItemid();
 		$this->datamodel =new JEventsDataModel();
@@ -115,13 +115,13 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 				?>>
 		<div id="toolbar-box" >
 <?php
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 		echo $barhtml;
 		
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			// JFactory::getApplication()->JComponentTitle;
 			$title ="";
@@ -134,7 +134,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 ?>
 		</div>
 <?php		
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger( 'onJEventsFooter', array($this));
 
 
@@ -160,7 +160,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 					</div>
 					<div class="m">
 <?php
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		$barhtml = $bar->render();
 		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
@@ -239,7 +239,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
@@ -248,7 +248,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
@@ -257,7 +257,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button - never need to check for cancelled exceptions when editing a repeat!
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, 0);

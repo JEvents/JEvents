@@ -16,7 +16,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 	protected $_view = null;
 
 	function __construct($event, $datamodel, $view=false){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->event = $event;
 		$this->_datamodel = $datamodel;
 		$this->_view = $view;
@@ -54,7 +54,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 	}
 	
 	function calendarCell_popup($cellDate){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$publish_inform_title 	= htmlspecialchars( $this->title );
 		$publish_inform_overlay	= '';
@@ -233,7 +233,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 	}
 
 	function calendarCell_tooltip($cellDate){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$publish_inform_title 	= htmlspecialchars( $this->title );
 		$publish_inform_overlay	= '';
@@ -324,9 +324,9 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 	}
 
-	function calendarCell(&$currentDay,$year,$month,$i){
+	function calendarCell(&$currentDay,$year,$month,$i, $slot=""){
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		// this file controls the events component month calendar display cell output.  It is separated from the
 		// showCalendar function in the events.php file to allow users to customize this portion of the code easier.

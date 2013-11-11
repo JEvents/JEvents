@@ -16,7 +16,7 @@ define("EDITING_JEVENT", 1);
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 
 // Load Bookstrap
 JHtml::_('behavior.framework', true);
@@ -208,7 +208,7 @@ echo $this->editor->save('jevcontent');
 					}
 <?php
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";

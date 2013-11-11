@@ -14,9 +14,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 include_once(JEV_VIEWS."/default/month/tmpl/calendar_cell.php");
 
 class EventCalendarCell_geraint extends EventCalendarCell_default{
-	function calendarCell(&$currentDay,$year,$month,$i){
+	function calendarCell(&$currentDay,$year,$month,$i, $slot=""){
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$event = $currentDay["events"][$i];
 		// Event publication infomation

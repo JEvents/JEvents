@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperViewNavAdminPanel($view)
 {
-	$cfg = & JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 
 	if ($cfg->get('show_adminpanel', 1) == 1)
 	{
@@ -26,7 +26,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 		$pluginsDir = JPATH_ROOT . '/' . 'plugins' . '/' . 'jevents';
 		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "reset"));
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		if (JRequest::getInt('pop', 0))
 			return;

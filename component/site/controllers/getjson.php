@@ -26,7 +26,7 @@ class GetjsonController extends JControllerLegacy   {
 		// TODO get this from config
 		$this->registerDefaultTask( 'monthEvents' );
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
 
@@ -48,7 +48,7 @@ class GetjsonController extends JControllerLegacy   {
 		. "\n AND m.id = ". $modid
 		. "\n AND m.access IN (" .  JEVHelper::getAid($user, 'string') . ")"
 		. "\n AND m.client_id != 1";
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$db->setQuery( $query );
 		$modules = $db->loadObjectList();
 		if (count($modules)<=0){
@@ -56,7 +56,7 @@ class GetjsonController extends JControllerLegacy   {
 		}
 		$params = new JRegistry( $modules[0]->params );
 
-		$reg =& JFactory::getConfig();
+		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$params);
 
 		$this->datamodel = new JEventsDataModel();

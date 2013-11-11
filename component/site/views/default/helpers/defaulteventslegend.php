@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 function DefaultEventsLegend($view){
-	$cfg = & JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 	
 	if ($cfg->get('com_calShowLegend', 1) == 1) {
 	

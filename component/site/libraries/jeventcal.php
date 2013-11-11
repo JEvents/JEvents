@@ -28,7 +28,7 @@ class jEventCal {
 
 	function jEventCal($inRow) {
 		// get default value for multiday from params
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){
 			$this->_multiday=$cfg->get('multiday',1);
 		}
@@ -285,7 +285,7 @@ class jEventCal {
 		static $arr_catids;
 
 		if (!isset($arr_catids)) {
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$arr_catids = array();
 			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
 			$db->setQuery($catsql);
@@ -726,7 +726,7 @@ class jEventCal {
 		$user = JFactory::getUser();
 		
 		// are we authorised to do anything with this category or calendar
-		$jevuser =& JEVHelper::getAuthorisedUser();
+		$jevuser = JEVHelper::getAuthorisedUser();
 		if ($this->_icsid>0 && $jevuser && $jevuser->calendars!="" && $jevuser->calendars!="all"){
 			$allowedcals = explode("|",$jevuser->calendars);
 			if (!in_array($this->_icsid,$allowedcals)) return false;
@@ -750,7 +750,7 @@ class jEventCal {
 
 	function repeatSummary(){
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		// i.e. 1 = follow english word order by default
 		$grammar = intval(JText::_('JEV_REPEAT_GRAMMAR'));

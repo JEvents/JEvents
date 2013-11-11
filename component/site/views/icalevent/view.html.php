@@ -37,7 +37,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function edit($tpl = null)
 	{
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
@@ -51,7 +51,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		// reset the title because JToolbar messes is up in Joomla 3.0 in the frontend !!
 		$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->id > 0)
 		{
 			if ($this->editCopy)
@@ -105,7 +105,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		$this->_adminStart();
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->setLayout("edit");
 		}
@@ -135,7 +135,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function _adminStart()
 	{
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
 		$this->Itemid = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
@@ -149,12 +149,12 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 				?>>
 			<div id="toolbar-box" >
 			<?php
-			$bar = & JToolBar::getInstance('toolbar');
+			$bar =  JToolBar::getInstance('toolbar');
 			$barhtml = $bar->render();
 			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
-			if (JVersion::isCompatible("3.0"))
+			if (JevJoomlaVersion::isCompatible("3.0"))
 			{
 				$title ="";// JFactory::getApplication()->JComponentTitle;
 			}
@@ -174,14 +174,14 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		?>
 		</div>
 		<?php
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onJEventsFooter', array($this));
 
 	}
 
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
@@ -190,7 +190,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
@@ -199,7 +199,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");

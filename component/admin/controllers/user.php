@@ -42,7 +42,7 @@ class AdminUserController extends JControllerLegacy   {
 
 		// Populate common data used by view
 		// get the view
-		$this->view = & $this->getView("user","html");
+		$this->view = $this->getView("user","html");
 
 		// Assign data for view
 		$this->view->assignRef('task', $this->task);

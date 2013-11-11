@@ -45,13 +45,13 @@ class jevCategoryFilter extends jevFilter
 		}
 	}
 
-	function _createFilter(){
+	function _createFilter($prefix=""){
 		if (!$this->filterField ) return "";
 		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") return "";
 		/*
 		$sectionname = JEV_COM_COMPONENT;
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q_published = JFactory::getApplication()->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
 		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
 		$query = "SELECT c.id"

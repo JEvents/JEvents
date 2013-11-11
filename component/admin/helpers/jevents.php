@@ -3,6 +3,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
+
 /**
  * JEvents component helper.
  *
@@ -26,8 +28,8 @@ class JEventsHelper
 
 		if ($option == 'com_categories')
 		{
-			$doc = & JFactory::getDocument();
-			if (!JVersion::isCompatible("3.0"))
+			$doc = JFactory::getDocument();
+			if (!JevJoomlaVersion::isCompatible("3.0"))
 			{
 				$hide_options = '#toolbar-popup-options {'
 						. 'display:none;'
@@ -49,7 +51,7 @@ class JEventsHelper
 		// could be called from categories component
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			JHtmlSidebar::addEntry(
 					JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'

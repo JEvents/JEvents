@@ -25,7 +25,7 @@ class ModLatestController extends JControllerLegacy   {
 		// TODO get this from config
 		$this->registerDefaultTask( 'calendar' );
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
 
@@ -41,18 +41,18 @@ class ModLatestController extends JControllerLegacy   {
 		JRequest::setVar("tmpl","component");
 
 		// get the view
-		$this->view = & $this->getView("modlatest","feed");
+		$this->view = $this->getView("modlatest","feed");
 
 		// Set the layout
 		$this->view->setLayout('rss');
 	
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		// Stupid Joomla 3.1 problem where its not possible to use the view cache on RSS feed output!
-		if (JVersion::isCompatible("3.1") || $user->get('id') || !$useCache) {
+		if (JevJoomlaVersion::isCompatible("3.1") || $user->get('id') || !$useCache) {
 			$this->view->rss();
 		} else {
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');

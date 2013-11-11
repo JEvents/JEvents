@@ -22,7 +22,7 @@ class JEventsDBModel
 
 	function JEventsDBModel(&$datamodel)
 	{
-		$this->cfg = & JEVConfig::getInstance();
+		$this->cfg = JEVConfig::getInstance();
 
 		$this->datamodel = & $datamodel;
 
@@ -61,7 +61,7 @@ class JEventsDBModel
 			$index = $aid . '+';
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$where = "";
 
@@ -125,7 +125,7 @@ class JEventsDBModel
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
 
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategories', array(& $instances[$index]));
 			if (count($instances[$index]) == 0)
 			{
@@ -139,7 +139,7 @@ class JEventsDBModel
 	function getCategoryInfo($catids = null, $aid = null)
 	{
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if (is_null($aid))
 		{
 			$aid = $this->datamodel->aid;
@@ -151,7 +151,7 @@ class JEventsDBModel
 
 		$catidList = implode(",", $catids);
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$sectionname = JEV_COM_COMPONENT;
 
 		static $instances;
@@ -193,7 +193,7 @@ class JEventsDBModel
 	function getChildCategories($catids = null, $levels = 1, $aid = null)
 	{
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if (is_null($aid))
 		{
 			$aid = $this->datamodel->aid;
@@ -205,7 +205,7 @@ class JEventsDBModel
 
 		$catidList = implode(",", $catids);
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$sectionname = JEV_COM_COMPONENT;
 
 		static $instances;
@@ -258,7 +258,7 @@ class JEventsDBModel
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -278,7 +278,7 @@ class JEventsDBModel
 		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -289,7 +289,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -367,9 +367,9 @@ class JEventsDBModel
 		$query .= " ORDER BY ev.created DESC ";
 		//echo str_replace("#__", 'jos_', $query);
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
@@ -384,7 +384,7 @@ class JEventsDBModel
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -404,7 +404,7 @@ class JEventsDBModel
 		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -415,7 +415,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -501,9 +501,9 @@ class JEventsDBModel
 		$query .= " LIMIT " . $limit;
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
@@ -527,7 +527,7 @@ class JEventsDBModel
 		{
 			$user = JFactory::getUser($userid);
 		}
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -548,7 +548,7 @@ class JEventsDBModel
 		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -559,7 +559,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup, & $rptwhere));
 
 		//list ($usec, $sec) = explode(" ", microtime());
@@ -679,7 +679,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			// Before now (only if not past only == future events)
@@ -721,7 +721,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			$rows3 = array();
@@ -767,7 +767,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			// ensure specific event is not used more than once
@@ -950,7 +950,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
 					$cache = JFactory::getCache(JEV_COM_COMPONENT);
-					$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
@@ -995,7 +995,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				// Before now (only if not past only == future events)
@@ -1032,7 +1032,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				$rows3 = array();
@@ -1068,7 +1068,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				
@@ -1110,7 +1110,7 @@ class JEventsDBModel
 		}
 		//echo "count rows = ".count($rows)."<Br/>";
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 		
 		//list ($usec, $sec) = explode(" ", microtime());
@@ -1127,7 +1127,7 @@ class JEventsDBModel
 		//$starttime = (float) $usec + (float) $sec;
 
 		$user = JFactory::getUser();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -1148,7 +1148,7 @@ class JEventsDBModel
 		$filterarray = array("published", "justmine", "category", "search");
 
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -1159,7 +1159,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup, & $rptwhere));
 
 		//list ($usec, $sec) = explode(" ", microtime());
@@ -1281,7 +1281,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			// Before now (only if not past only == future events)
@@ -1323,7 +1323,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			$rows3 = array();
@@ -1369,7 +1369,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
-				$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
 			// ensure specific event is not used more than once
@@ -1552,7 +1552,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
 					$cache = JFactory::getCache(JEV_COM_COMPONENT);
-					$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
@@ -1597,7 +1597,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows1 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				// Before now (only if not past only == future events)
@@ -1634,7 +1634,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows2 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				$rows3 = array();
@@ -1670,7 +1670,7 @@ class JEventsDBModel
 					$query .= " LIMIT " . $limit;
 
 					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-					$rows3 = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
 				
@@ -1712,7 +1712,7 @@ class JEventsDBModel
 		}
 		//echo "count rows = ".count($rows)."<Br/>";
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 		
 		//list ($usec, $sec) = explode(" ", microtime());
@@ -1727,7 +1727,7 @@ class JEventsDBModel
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -1747,7 +1747,7 @@ class JEventsDBModel
 		$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -1758,7 +1758,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -1839,9 +1839,9 @@ class JEventsDBModel
 		$query .= " ORDER BY det.hits DESC ";
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
@@ -1857,7 +1857,7 @@ class JEventsDBModel
 
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -1879,7 +1879,7 @@ class JEventsDBModel
 			$filterarray = array("published", "justmine", "category", "search", "repeating");
 
 			// If there are extra filters from the module then apply them now
-			$reg = & JFactory::getConfig();
+			$reg =  JFactory::getConfig();
 			$modparams = $reg->get("jev.modparams", false);
 			if ($modparams && $modparams->get("extrafilters", false))
 			{
@@ -1890,7 +1890,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 			// What if join multiplies the rows?
@@ -2005,7 +2005,7 @@ class JEventsDBModel
 				// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
 				$rows = $this->_cachedlistIcalEvents($query, $langtag);
 				//$cache =  JFactory::getCache(JEV_COM_COMPONENT);
-				//$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+				//$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 			else {
 				$rows = array();
@@ -2078,7 +2078,7 @@ class JEventsDBModel
 			}
 
 		}
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		if ($debuginfo){
@@ -2203,7 +2203,7 @@ class JEventsDBModel
 
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		if (strpos($startdate, "-") === false)
@@ -2226,7 +2226,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		}
 		else
@@ -2304,11 +2304,11 @@ class JEventsDBModel
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag, $count);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag, $count);
 
 		if (!$count)
 		{
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 		}
 
@@ -2335,7 +2335,7 @@ class JEventsDBModel
 		// This code is used by the iCals code with a spoofed user so check if this is what is happening
 		if (JRequest::getString("jevtask", "") == "icals.export")
 		{
-			$registry = & JRegistry::getInstance("jevents");
+			$registry = JRegistry::getInstance("jevents");
 			$user = $registry->get("jevents.icaluser", false);
 			if (!$user)
 				$user = JFactory::getUser();
@@ -2345,7 +2345,7 @@ class JEventsDBModel
 			$user = JFactory::getUser();
 		}
 		$db = JFactory::getDBO();
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
 		// process the new plugins
@@ -2361,7 +2361,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		}
 		else
@@ -2433,7 +2433,7 @@ class JEventsDBModel
 
 		if ($count)
 		{
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$db->setQuery($query);
 			$res = $db->loadResult();
 			return $res;
@@ -2442,9 +2442,9 @@ class JEventsDBModel
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag, $count);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag, $count);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
@@ -2488,7 +2488,7 @@ class JEventsDBModel
 			}
 
 			// If there are extra filters from the module then apply them now
-			$reg = & JFactory::getConfig();
+			$reg =  JFactory::getConfig();
 			$modparams = $reg->get("jev.modparams", false);
 			if ($modparams && $modparams->get("extrafilters", false))
 			{
@@ -2499,7 +2499,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 			
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -2606,7 +2606,7 @@ class JEventsDBModel
 			}
 
 			// If there are extra filters from the module then apply them now
-			$reg = & JFactory::getConfig();
+			$reg =  JFactory::getConfig();
 			$modparams = $reg->get("jev.modparams", false);
 			if ($modparams && $modparams->get("extrafilters", false))
 			{
@@ -2617,7 +2617,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 			
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -2701,7 +2701,7 @@ class JEventsDBModel
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$rows_per_page = $limit;
 
@@ -2768,7 +2768,7 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$needsgroup = false;
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
@@ -2814,7 +2814,7 @@ class JEventsDBModel
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$rows_per_page = $limit;
 
@@ -2879,14 +2879,14 @@ class JEventsDBModel
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 
 		$needsgroup = false;
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
 		$needsgroup = false;
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		if ($frontendPublish)
@@ -3150,7 +3150,7 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!
@@ -3182,7 +3182,7 @@ class JEventsDBModel
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
 
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		}
 		else
@@ -3297,12 +3297,12 @@ class JEventsDBModel
 		}
 
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		$rows = $cache->call('JEventsDBModel::_cachedlistIcalEvents', $query, $langtag);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
 		return $rows;
@@ -3311,7 +3311,7 @@ class JEventsDBModel
 
 	function countIcalEventsByCat($catids, $showrepeats = false)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!
@@ -3341,7 +3341,7 @@ class JEventsDBModel
 		$extrafields = "";  // must have comma prefix
 		$extratables = "";  // must have comma prefix
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -3448,7 +3448,7 @@ class JEventsDBModel
 		$having = "";
 		if (!JRequest::getInt('showpast', 0))
 		{
-			$datenow = & JevDate::getDate("-12 hours");
+			$datenow = JevDate::getDate("-12 hours");
 			$having = " AND rpt.endrepeat>'" . $datenow->toMysql() . "'";
 		}
 
@@ -3480,7 +3480,7 @@ class JEventsDBModel
 
 		$filterarray = array("published");
 		// If there are extra filters from the module then apply them now
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -3492,7 +3492,7 @@ class JEventsDBModel
 		$needsgroup = $filters->needsGroupBy();
 
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
@@ -3619,7 +3619,7 @@ class JEventsDBModel
 
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$icalrows));
 
 		return $icalrows;
@@ -3650,7 +3650,7 @@ class JEventsDBModel
 		$start = $year . '/' . $month . '/' . $day . ' 00:00:00';
 		$end = $year . '/' . $month . '/' . $day . ' 23:59:59';
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.* "
 				. "\n FROM #__jevents_vevent as ev"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -3667,7 +3667,7 @@ class JEventsDBModel
 		}
 
 		// still no match so find the nearest repeat and give a message.
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.*, abs(datediff(rpt.startrepeat," . $db->Quote($start) . ")) as diff "
 				. "\n FROM #__jevents_repetition as rpt"
 				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -3693,7 +3693,7 @@ class JEventsDBModel
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			// get list of categories this event is in - are they all accessible?
 			$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=" . $row->ev_id);
 			$catids = $db->loadColumn();

@@ -21,13 +21,13 @@ require_once (dirname(__FILE__).'/'.'helper.php');
 $jevhelper = new modJeventsFilterHelper($params);
 
 // record what is running - used by the filters
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","mod_jevents_filter");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 $option = JRequest::getCmd("option");
 if ($option=="com_jevents"){
-	$menu	= JSite::getMenu();
+	$menu	= JFactory::getApplication()->getMenu();
 	$active = $menu->getActive();
 	if ($active){
 		JFactory::getApplication()->setUserState("jevents.filtermenuitem",$active->id);

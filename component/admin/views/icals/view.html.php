@@ -23,7 +23,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'ICALS' ));
 
 		// Set toolbar items for the page
@@ -42,7 +42,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
-		if (JVersion::isCompatible("3.0")){
+		if (JevJoomlaVersion::isCompatible("3.0")){
 			$this->sidebar = JHtmlSidebar::render();					
 		}				
 	}
@@ -52,14 +52,14 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 		JEVHelper::script('editical.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'EDIT_ICS' ));
 
 		// Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'EDIT_ICS' ), 'jevents' );
 
 		//JToolBarHelper::save('icals.save');
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id >0){
 			JToolBarHelper::save('icals.savedetails');
 		}
@@ -73,7 +73,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		if ($params->get("authorisedonly",0)){
 			// get authorised users
 			$sql = "SELECT u.* FROM #__jev_users as jev LEFT JOIN #__users as u on u.id=jev.user_id where jev.published=1 and jev.cancreate=1";
-			$db=& JFactory::getDBO();
+			$db= JFactory::getDBO();
 			$db->setQuery( $sql );
 			$users = $db->loadObjectList();
 		}
@@ -129,7 +129,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
                 
-                if (JVersion::isCompatible("3.0")){
+                if (JevJoomlaVersion::isCompatible("3.0")){
                     $this->setLayout("edit");
                 }
                 else {

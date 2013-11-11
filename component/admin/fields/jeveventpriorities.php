@@ -23,7 +23,7 @@ class JFormFieldJeveventpriorities extends JFormField
 	 */
 	protected function getInput()
 	{	
-		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$showpriority = $params->get("showpriority", 0);
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");

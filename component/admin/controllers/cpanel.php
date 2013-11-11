@@ -31,7 +31,7 @@ class AdminCpanelController extends JControllerAdmin
 	function cpanel()
 	{
 		
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		// Add one category by default if none exist already
 		$sql = "SELECT id from #__categories where extension='com_jevents'";
 		$db->setQuery($sql);
@@ -91,7 +91,7 @@ class AdminCpanelController extends JControllerAdmin
 		$this->mergeMenus();
 				
 		// get the view
-		$this->view = & $this->getView("cpanel", "html");
+		$this->view = $this->getView("cpanel", "html");
 		$sql = 'SHOW TABLES LIKE "' . $db->getPrefix() . 'events"';
 		$db->setQuery($sql);
 		$tables = $db->loadObjectList();
@@ -130,7 +130,7 @@ class AdminCpanelController extends JControllerAdmin
 	function support()
 	{
 		//Get the view
-		$this->view = & $this->getView("cpanel", "html");
+		$this->view = $this->getView("cpanel", "html");
 		
 		// Set the layout
 		$this->view->setLayout('support');
@@ -142,7 +142,7 @@ class AdminCpanelController extends JControllerAdmin
 	function custom_css()
 	{
 		//Get the view
-		$this->view = & $this->getView("cpanel", "html");
+		$this->view = $this->getView("cpanel", "html");
 		
 		// Set the layout
 		$this->view->setLayout('custom_css');
@@ -429,7 +429,7 @@ class AdminCpanelController extends JControllerAdmin
 				{
 					$oldPackage = true;
 
-					$db = & JFactory::getDBO();
+					$db = JFactory::getDBO();
 					// Add one category by default if none exist already
 					$sql = "SELECT element from #__extensions WHERE type = 'file'";
 					$db->setQuery($sql);

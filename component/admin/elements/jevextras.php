@@ -35,7 +35,7 @@ class JElementJevextras extends JElement
 	function __construct($parent = null) {
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($parent	);
@@ -53,7 +53,7 @@ class JElementJevextras extends JElement
 		$description = $xmlElement->attributes('description');
 		
 		// load any custom fields
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = intval(str_replace("extras","",$name));
 		$res = $dispatcher->trigger( 'onEditMenuItem' , array(&$this->data, &$value, $control_name, $name, $id, $this->_parent));
@@ -93,7 +93,7 @@ class JElementJevextras extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		// load any custom fields
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = intval(str_replace("extras","",$name));
 

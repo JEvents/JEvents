@@ -6,7 +6,7 @@ $this->_header();
 if( !$this->pop ){
 	$this->_showNavTableBar();
 }
-if (JVersion::isCompatible("3.0"))
+if (JevJoomlaVersion::isCompatible("3.0"))
 {
 	echo $this->loadTemplate("body");
 }

@@ -11,7 +11,7 @@ class ExtViewNavTableBarIconic {
 		
 		if (JRequest::getInt( 'pop', 0 )) return;
 				
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 

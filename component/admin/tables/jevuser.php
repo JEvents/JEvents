@@ -63,12 +63,12 @@ class TableUser extends JTable
 	 * @since 1.0
 	 */
 	function __construct() {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		parent::__construct('#__jev_users', 'id', $db);
 	}
 
 	function checkTable(){
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 	}
 
 	/**
@@ -99,7 +99,7 @@ class TableUser extends JTable
 			$where[] = "tl.id in ($idstring)";
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
 		$search		= $db->escape( trim( strtolower( $search ) ) );		
 		if($search != ""){
@@ -107,7 +107,7 @@ class TableUser extends JTable
 		}
 		
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
 		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
@@ -161,12 +161,12 @@ class TableUser extends JTable
 	function getUserCount() {
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";
@@ -190,12 +190,12 @@ class TableUser extends JTable
 		}
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";

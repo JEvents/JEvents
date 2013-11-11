@@ -23,7 +23,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 	function edit()
 	{
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));
 
 		// Set toolbar items for the page
@@ -61,7 +61,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$this->assignRef("component", $component);
 
 		// Set the layout
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->setLayout('edit');
 		}
@@ -75,14 +75,14 @@ class AdminParamsViewParams extends JEventsAbstractView
 	function dbsetup($tpl = null)
 	{
 		
-		if (JVersion::isCompatible("3.0")) 	{
+		if (JevJoomlaVersion::isCompatible("3.0")) 	{
 			JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 		else {
 			JEVHelper::stylesheet( 'eventsadmin16.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'DB_SETUP' ));
 		
 		// Set toolbar items for the page
