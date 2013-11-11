@@ -24,7 +24,7 @@ class ExtViewICalevent extends JEventsExtView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 						
@@ -34,7 +34,7 @@ class ExtViewICalevent extends JEventsExtView
 		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day );
 		// Dynamic pathway
 		if (isset($this->data['row'])){
-			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway = JFactory::getApplication()->getPathway();
 
 			$pathway->addItem($this->data['row']->title() ,"");
 		}

@@ -12,11 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
 {
-	$editor = & JFactory::getEditor("none");
+	$editor =  JFactory::getEditor("none");
 }
 else
 {
-	$editor = & JFactory::getEditor();
+	$editor =  JFactory::getEditor();
 }
 
 if (strpos($this->item->name, "com_") === 0)
@@ -27,7 +27,7 @@ if (strpos($this->item->name, "com_") === 0)
 }
 
 
-if (JVersion::isCompatible("3.0.0"))
+if (JevJoomlaVersion::isCompatible("3.0.0"))
 {
 	if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".3.html"))
 		$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".3.html");

@@ -37,13 +37,13 @@ define("JEV_COMPONENT",str_replace("com_","",$option));
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 /*
  * frontend only!
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
-if (JVersion::isCompatible("1.6.0")){
+if (JevJoomlaVersion::isCompatible("1.6.0")){
 	$newparams	= JFactory::getApplication()->getParams();
-	$component =& JComponentHelper::getComponent(JEV_COM_COMPONENT);
+	$component = JComponentHelper::getComponent(JEV_COM_COMPONENT);
 	$component->params =& $newparams;
 }
 */
@@ -64,12 +64,12 @@ if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
 }
 
 // Must also load frontend language files
-$lang =& JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 if (!version_compare(JVERSION,'1.6.0',">=")){
 	// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
-	$db =& JFactory::getDBO();
+	$db = JFactory::getDBO();
 	$query = 'SELECT template'
 	. ' FROM #__templates_menu'
 	. ' WHERE client_id = 0 AND menuid=0'
@@ -127,7 +127,7 @@ if (class_exists($controllerClass)) {
 }
 
 // record what is running - used by the filters
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","administrator");
 
 // Perform the Request task

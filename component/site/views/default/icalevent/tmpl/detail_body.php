@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	= & JEVConfig::getInstance();
+$cfg	= JEVConfig::getInstance();
 
 if( 0 == $this->evid) {
 	$Itemid = JRequest::getInt("Itemid");
@@ -24,9 +24,9 @@ if( array_key_exists('row',$this->data) ){
 	$page = 0;
 
 	
-	$cfg	 = & JEVConfig::getInstance();
+	$cfg	 = JEVConfig::getInstance();
 
-	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher	= JDispatcher::getInstance();
 	$params =new JRegistry(null);
 
 	if (isset($row)) {

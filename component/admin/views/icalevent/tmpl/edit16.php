@@ -20,7 +20,7 @@ JHTML::_('behavior.tooltip');
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
@@ -190,7 +190,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 // in case editor is toggled off - needed for TinyMCE
 echo $this->editor->save('jevcontent');
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
@@ -231,7 +231,7 @@ else
 			<?php
 			// if we enter date/time before description then force single pane editing.
 			// get configuration object
-			$cfg = & JEVConfig::getInstance();
+			$cfg = JEVConfig::getInstance();
 
 			if ($cfg->get('timebeforedescription', 0))
 			{
@@ -332,7 +332,7 @@ else
 					<?php
 				}
 
-				$cfg = & JEVConfig::getInstance();
+				$cfg = JEVConfig::getInstance();
 				if ($cfg->get('timebeforedescription', 0))
 				{
 					?>
@@ -392,7 +392,7 @@ else
 
 			</table>
 			<?php
-			$cfg = & JEVConfig::getInstance();
+			$cfg = JEVConfig::getInstance();
 			if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 			{
 				echo JHtml::_('tabs.panel', JText::_("JEV_TAB_CALENDAR"), "calendar");
@@ -413,7 +413,7 @@ else
 			{
 				foreach ($this->extraTabs as $extraTab)
 				{
-					$cfg = & JEVConfig::getInstance();
+					$cfg = JEVConfig::getInstance();
 					if (!$cfg->get('com_single_pane_edit', 0))
 					{
 						echo JHtml::_('tabs.panel', $extraTab['title'], $extraTab['paneid']);

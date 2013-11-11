@@ -17,7 +17,7 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.1.12';
+	var $RELEASE 	= '3.1.13';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
@@ -32,7 +32,7 @@ class JEventsVersion {
 	/** @var string LINK */
 	var $LINK 		= 'http://www.jevents.net';
 
-	function &getInstance() {
+	public static function &getInstance() {
 
 		static $instance;
 
@@ -47,7 +47,7 @@ class JEventsVersion {
 	 * @var    string		property name
 	 * @return mixed		property content
 	 */
-	function get($property) {
+	public function get($property) {
 		if(isset($this->$property)) {
 			return $this->$property;
 		}
@@ -66,34 +66,42 @@ class JEventsVersion {
 	/**
 	 * @return string URL
 	 */
-	function getUrl() {
+	public function getUrl() {
 		return $this->LINK;
 	}
 	/**
 	 * @return string short Copyright
 	 */
-	function getShortCopyright() {
+	public function getShortCopyright() {
 		return $this->COPYRIGHT;
 	}
 	/**
 	 * @return string long Copyright
 	 */
-	function getLongCopyright() {
+	public function getLongCopyright() {
 		return $this->COPYRIGHT . ' ' . $this->COPYRIGHTBY;
 	}
 	/**
 	 * @return string Long format version
 	 */
-	function getLongVersion() {
+	public function getLongVersion() {
 		return $this->PRODUCT .' '. $this->getShortVersion();
 	}
 
 	/**
 	 * @return string Short version format
 	 */
-	function getShortVersion() {
+	public function getShortVersion() {
 		return 'v' . $this->RELEASE . ' ' . $this->DEV_STATUS;
+	}
+	
+}
+
+class JevJoomlaVersion {
+	
+	public static function isCompatible($minimum)
+	{
+		return version_compare(JVERSION, $minimum, 'ge');
 	}
 
 }
-?>

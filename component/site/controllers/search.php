@@ -23,7 +23,7 @@ class SearchController extends JControllerLegacy   {
 		//		$this->registerTask( 'show',  'showContent' );
 
 		// Load abstract "view" class
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
 		if (!isset($this->_basePath)){
@@ -37,10 +37,10 @@ class SearchController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$keyword = JRequest::getString( 'keyword', '' );
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
@@ -49,12 +49,12 @@ class SearchController extends JControllerLegacy   {
 		}
 		$keyword = $db->escape(JRequest::getVar( 'keyword', '' ));
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "search";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = & $this->getView($view,$viewType, $theme."View",
+		$this->view = $this->getView($view,$viewType, $theme."View",
 		array( 'base_path'=>$this->_basePath,
 		"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 		"name"=>$theme.'/'.$view));
@@ -72,14 +72,14 @@ class SearchController extends JControllerLegacy   {
 		$this->view->assign("keyword",$keyword);
 
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
 		} else {
-			$cache =& JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}
@@ -89,7 +89,7 @@ class SearchController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$keyword = JRequest::getString( 'keyword', '' );
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
@@ -100,18 +100,18 @@ class SearchController extends JControllerLegacy   {
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
 		
-		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "search";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = & $this->getView($view,$viewType, $theme."View",
+		$this->view = $this->getView($view,$viewType, $theme."View",
 		array( 'base_path'=>$this->_basePath,
 		"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 		"name"=>$theme.'/'.$view));
@@ -130,14 +130,14 @@ class SearchController extends JControllerLegacy   {
 		$this->view->assign("limitstart",$limitstart);
 
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
 		} else {
-			$cache =& JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$uri = JURI::getInstance();
 			$url = $uri->toString();
 			$cache->get($this->view, 'display', base64_encode($keyword.$Itemid.$limit.$limitstart.$month.$day.$year.$url));

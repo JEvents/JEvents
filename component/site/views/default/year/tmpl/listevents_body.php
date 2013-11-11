@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	 = & JEVConfig::getInstance();
+$cfg	 = JEVConfig::getInstance();
 
 // Note that using a $limit value of -1 the limit is ignored in the query
 $this->data = $data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);

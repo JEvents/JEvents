@@ -25,7 +25,7 @@ if (!defined("JEVCONFIG")) {
 
         // 1.6 mod
         static function &getInstance($inifile = '') {
-            $params = & JComponentHelper::getParams("com_jevents");
+            $params = JComponentHelper::getParams("com_jevents");
             return $params;
         }
 

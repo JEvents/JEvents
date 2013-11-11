@@ -34,7 +34,7 @@ class JFormFieldJevview extends JFormFieldList
 	public function getOptions()
 	{
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$views = array();

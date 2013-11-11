@@ -7,10 +7,10 @@ function DefaultViewHelperHeader16($view){
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 	
-	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher	= JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
-	$cfg		= & JEVConfig::getInstance();
+	$cfg		= JEVConfig::getInstance();
 	$version	= & JEventsVersion::getInstance();
 	$jevtype	= JRequest::getVar('jevtype');
 	$evid		= JRequest::getInt('evid');
@@ -29,7 +29,7 @@ function DefaultViewHelperHeader16($view){
 	// Call the MetaTag setter function.
 	JEVHelper::SetMetaTags();
 	
-	$lang = &JFactory::getLanguage();
+	$lang = JFactory::getLanguage();
 ?>
 <div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_header">
 	<?php if ($params->get('show_page_heading', 0)) : ?>
@@ -44,7 +44,7 @@ function DefaultViewHelperHeader16($view){
 			$t_headline = '';
 			break;
 		case 'menu':
-			$menu2   =& JSite::getMenu();
+			$menu2   = JFactory::getApplication()->getMenu();
 			$menu    = $menu2->getActive();
 			if (isset($menu) && isset($menu->title)) {
 				$t_headline = $menu->title;
@@ -111,7 +111,7 @@ function DefaultViewHelperHeader16($view){
 		;
 		$link =JRoute::_($link);
 		//if (strpos($link,"/")===0) $link = substr($link,1);
-		$uri	        =& JURI::getInstance(JURI::base());
+		$uri	        = JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 
 		$link = $root.$link;

@@ -18,8 +18,8 @@ class ExtModCalView extends DefaultModCalView
 {
 
 	function _displayCalendarMod($time, $startday, $linkString,	&$day_name, $monthMustHaveEvent=false, $basedate=false){
-		$db	=& JFactory::getDBO();
-		$cfg = & JEVConfig::getInstance();
+		$db	= JFactory::getDBO();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
 		$cal_day=date("d",$time);
@@ -68,7 +68,7 @@ class ExtModCalView extends DefaultModCalView
 			$base_next_month_year 	+=1;
 		}
 
-		$reg =& JFactory::getConfig();
+		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
 		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
 		$reg->set("jev.modparams",false);

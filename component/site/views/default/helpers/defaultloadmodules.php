@@ -6,7 +6,7 @@ function DefaultLoadModules($view, $position)
 {
 
 
-	$cfg = & JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 
 	$article = JTable::getInstance('content');
 	$article->text = "{loadposition $position}";

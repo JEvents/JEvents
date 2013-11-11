@@ -25,7 +25,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		JRequest::setVar("category_fv",0);
 	}
 	
-	$menu = JSite::getMenu();
+	$menu = JFactory::getApplication()->getMenu();
 	$menuitems = $menu->getItems("component",JEV_COM_COMPONENT);
 	// restrict this list to those accessible by the user
 	if (!is_null($menuitems)){
@@ -120,7 +120,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	}
 	$catidsOut = str_replace(",","|",$catidList);
 
-	$params	=&  JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params	=  JComponentHelper::getParams(JEV_COM_COMPONENT);
 	$separator = $params->get("catseparator","|");
 	$catidsOut = str_replace("|", $separator,$catidsOut);
 

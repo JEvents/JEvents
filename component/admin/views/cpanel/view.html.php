@@ -29,7 +29,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		jimport('joomla.html.pane');
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		// Set toolbar items for the page
@@ -39,7 +39,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
 		}
@@ -82,9 +82,12 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
 		$options['cache_time'] = 0;
 
+		error_reporting(0);
+		ini_set('display_errors',0);
+
 		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time']);
 
-		//$rssDoc = & JFactory::getXMLparser('RSS', $options);
+		//$rssDoc =  JFactory::getXMLparser('RSS', $options);
 
 		if ($rssDoc == false)
 		{
@@ -139,7 +142,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 //  get RSS parsed object
 			$options = array();
 			// point Joomla 2.5+ users towards the new versions of everything
-			if (JVersion::isCompatible("2.5"))
+			if (JevJoomlaVersion::isCompatible("2.5"))
 			{
 				$rssUrl = 'http://www.jevents.net/versions30.xml';
 			}
@@ -148,6 +151,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				$rssUrl = 'http://www.jevents.net/versions.xml';
 			}
 			$cache_time = 86400;
+
+			error_reporting(0);
+			ini_set('display_errors',0);
 
 			jimport('simplepie.simplepie');
 
@@ -772,7 +778,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		jimport('joomla.html.pane');
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
@@ -781,7 +787,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
 		}
@@ -792,7 +798,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	{
 		jimport('joomla.html.pane');
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
@@ -801,7 +807,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
 		}

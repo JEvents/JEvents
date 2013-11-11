@@ -56,7 +56,7 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 			function getOptions()
 	{
 		// Must load admin language files
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$options = array();

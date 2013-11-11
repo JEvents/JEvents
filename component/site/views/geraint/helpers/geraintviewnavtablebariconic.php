@@ -15,7 +15,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
 		$this->cat = $this->view->datamodel->getCatidsOutLink();
 		$this->task = $task;
 		
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		
 		if (JRequest::getInt( 'pop', 0 )) return;		

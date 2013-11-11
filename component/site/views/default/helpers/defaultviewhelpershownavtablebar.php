@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultViewHelperShowNavTableBar($view){
 	// this, previous and next date handling
 	
-	$cfg = & JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 
 	// Optionally display no nav bar
 	if($cfg->get('com_calUseIconic', 1) == -1) return "";

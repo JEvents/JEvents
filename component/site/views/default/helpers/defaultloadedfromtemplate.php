@@ -94,7 +94,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		static $pluginscalled = array();
 		if (!isset($pluginscalled[$event->rp_id()]))
 		{
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
 			$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
 			$pluginscalled[$event->rp_id()] = $event;
@@ -269,7 +269,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					if (!isset($allcat_catids))
 					{
-						$db = & JFactory::getDBO();
+						$db = JFactory::getDBO();
 						$arr_catids = array();
 						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 						$db->setQuery($catsql);
@@ -624,7 +624,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						if ($dorepeatsummary)
 						{
 
-							$cfg = & JEVConfig::getInstance();
+							$cfg = JEVConfig::getInstance();
 							$jevtask = JRequest::getString("jevtask");
 							$jevtask = str_replace(".listevents", "", $jevtask);
 
@@ -887,7 +887,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						if (strpos($event->contact_info(), '<script') === false)
 						{
-							$dispatcher = & JDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 							JPluginHelper::importPlugin('content');
 
 							//Contact
@@ -920,7 +920,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					//Extra
 					if (strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 					{
-						$dispatcher = & JDispatcher::getInstance();
+						$dispatcher = JDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 
 						$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
@@ -1101,7 +1101,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
 		$tmprow->event = $event;
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 		$template_value = $tmprow->text;

@@ -19,12 +19,12 @@ jimport('joomla.application.component.controller');
 
 class JEV_CommonFunctions {
 
-	function getJEventsViewName(){
+	public static function getJEventsViewName(){
 
 		static $jEventsView;
 
 		if (!isset($jEventsView)){
-			$cfg = & JEVConfig::getInstance();
+			$cfg = JEVConfig::getInstance();
 			// priority of view setting is url, cookie, config,
 			$jEventsView = $cfg->get('com_calViewName',"geraint");
 			$jEventsView = JRequest::getString("jevents_view",$jEventsView,"cookie");
@@ -37,15 +37,15 @@ class JEV_CommonFunctions {
 		return $jEventsView ;
 	}
 
-	function loadJEventsViewLang(){
+	public static function loadJEventsViewLang(){
 
 		$jEventsView = JEV_CommonFunctions::getJEventsViewName();
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load(JEV_COM_COMPONENT."_".$jEventsView);
 
 	}
 
-	function getJEventsViewList($viewtype=null){
+	public static function getJEventsViewList($viewtype=null){
 		$jEventsViews = array();
 		switch ($viewtype) {
 			case  "mod_jevents_latest" :
@@ -78,11 +78,11 @@ class JEV_CommonFunctions {
  * get all events_categories to use category color
  * @return  object
  */
-	function getCategoryData(){
+	public static function getCategoryData(){
 
 		static $cats;
 		if (!isset($cats)){
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 
 			$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
 			$db->setQuery( $sql);
@@ -95,20 +95,20 @@ class JEV_CommonFunctions {
 			}
 			unset ($cat);
 
-			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher	= JDispatcher::getInstance();
 			$dispatcher->trigger('onGetCategoryData', array (& $cats));
 
 		}
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats));
 
 
 		return $cats;
 	}
 
-	function setColor($row){
+	public static function setColor($row){
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		static $catData;
 		if (!isset($catData))   $catData = JEV_CommonFunctions::getCategoryData();
@@ -132,138 +132,6 @@ class JEV_CommonFunctions {
 		return $color;
 	}
 
-	// defunct?
-	function mosEventRepeatArrayMonth( $row=null, $year=null, $month=null) {
-		// builds and returns array
-
-		if( is_null( $row ) || is_null($year) || is_null( $month)) {
-			$eventDays = array();
-			return $eventDays;
-		}
-
-		$monthStartDate = JevDate::mktime( 0,0,0, $month, 1, $year );
-		$daysInMonth = intval(date("t",$monthStartDate ));
-		$monthEndDate = JevDate::mktime( 0,0,0, $month, $daysInMonth , $year );
-		$monthEndSecond = JevDate::mktime( 23,59,59, $month, $daysInMonth , $year );
-
-		return mosEventRepeatArrayPeriod($row, $monthStartDate, $monthEndDate, $monthEndSecond );
-	}
-
-	// defunct?
-	function mosEventRepeatArrayDay( $row=null, $year=null, $month=null, $day=null) {
-		// builds and returns array
-		if( is_null( $row ) || is_null($year) || is_null( $month)|| is_null( $day)) {
-			$eventDays = array();
-			return $eventDays;
-		}
-
-		$dayStartDate = JevDate::mktime( 0,0,0, $month, $day, $year );
-		$dayEndDate = JevDate::mktime( 0,0,0, $month, $day , $year );
-		$dayEndSecond = JevDate::mktime( 23,59,59, $month, $day , $year );
-
-		// This routine will find all the event dates for the month - could make more efficient later?
-		return mosEventRepeatArrayPeriod($row, $dayStartDate, $dayEndDate, $dayEndSecond );
-	}
-
-	// defunct?
-	function mosEventRepeatArrayWeek( $row=null, $weekStart=null, $weekEnd=null) {
-		// builds and returns array
-		if( is_null( $row ) || is_null($weekStart) || is_null( $weekEnd)) {
-			$eventDays = array();
-			return $eventDays;
-		}
-
-		list($dayStart, $monthStart, $yearStart) = explode(":",(date("d:m:Y",$weekStart)));
-		list($dayEnd, $monthEnd, $yearEnd) = explode(":",(date("d:m:Y",$weekEnd)));
-
-		if ($monthStart == $monthEnd) {
-			$weekEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
-			return mosEventRepeatArrayPeriod($row, $weekStart, $weekEnd, $weekEndSecond );
-		}
-		else {
-
-			// do end of first month to start
-			$daysInMonth = intval(date("t",$weekStart ));
-			$monthEndDate = JevDate::mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
-			$monthEndSecond = JevDate::mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
-			$part1 = mosEventRepeatArrayPeriod($row, $weekStart, $monthEndDate, $monthEndSecond );
-
-			// then do start of second month
-			$part2Start = JevDate::mktime( 0,0,0, $monthEnd, 1, $yearEnd );
-			$weekEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
-			$part2 = mosEventRepeatArrayPeriod($row, $part2Start, $weekEnd, $weekEndSecond );
-
-			/*
-			// This is overkill but the mosEventRepeatArrayPeriod function works most simply
-			// if it works with whole months.
-
-			// do end of first month to start
-			$daysInMonth = intval(date("t",$weekStart ));
-			$tempStart = JevDate::mktime( 0,0,0, $monthStart, 1 , $yearStart);
-			$monthEndDate = JevDate::mktime( 0,0,0, $monthStart, $daysInMonth , $yearStart);
-			$monthEndSecond = JevDate::mktime( 23,59,59, $monthStart, $daysInMonth , $yearStart );
-			$part1 = mosEventRepeatArrayPeriod($row, $tempStart, $monthEndDate, $monthEndSecond );
-
-			// then do start of second month
-			$part2Start = JevDate::mktime( 0,0,0, $monthEnd, 1, $yearEnd );
-			$daysInMonth2 = intval(date("t",$weekEnd ));
-			$part2End = JevDate::mktime( 0,0,0, $monthEnd, $daysInMonth2, $yearEnd );
-			$part2EndSecond = JevDate::mktime( 23,59,59, $monthEnd, $daysInMonth2, $yearEnd );
-			$part2 = mosEventRepeatArrayPeriod($row, $part2Start, $part2End, $part2EndSecond);
-			*/
-			foreach ($part2 as $key=>$val){
-				$part1[$key]=$val;
-			}
-			return $part1;
-		}
-
-	}
-
-	// defunct?
-	function mosEventRepeatArrayFlex( $row=null, $flexStart=null, $flexEnd=null) {
-		// builds and returns array
-		if( is_null( $row ) || is_null($flexStart) || is_null( $flexEnd)) {
-			$eventDays = array();
-			return $eventDays;
-		}
-
-		list($dayStart, $monthStart, $yearStart) = explode(":",(date("d:m:Y",$flexStart)));
-		list($dayEnd, $monthEnd, $yearEnd) = explode(":",(date("d:m:Y",$flexEnd)));
-
-		if ($monthStart == $monthEnd && $yearStart==$yearEnd) {
-			$flexEndSecond = JevDate::mktime( 23,59,59, $monthEnd, $dayEnd, $yearEnd );
-			return mosEventRepeatArrayPeriod($row, $flexStart, $flexEnd, $flexEndSecond );
-		}
-		else {
-			$eventDays = array();
-			for($y=$yearStart;$y<=$yearEnd;$y++){
-				$startMonth = 1;
-				if ($y==$yearStart) $startMonth = $monthStart;
-				$endMonth = 12;
-				if ($y==$yearEnd) $endMonth = $monthEnd;
-				for ($m=$startMonth;$m<=$endMonth;$m++){
-					$dateStart = JevDate::mktime(0,0,0,$m,1,$y);
-					$daysInMonth = intval(date("t",$dateStart ));
-					$dateEnd = JevDate::mktime(0,0,0,$m,$daysInMonth,$y);
-					$dateEndSecond = JevDate::mktime(23,59,59,$m,$daysInMonth,$y);
-					$part = mosEventRepeatArrayPeriod($row, $dateStart, $dateEnd, $dateEndSecond);
-
-					foreach ($part as $key=>$val){
-						$eventDays[$key]=$val;
-					}
-				}
-			}
-			return $eventDays;
-		}
-
-	}
-
-	// defunct?
-	function mosEventRepeatArrayPeriod( $row=null, $startPeriod, $endPeriod, $periodEndSecond) {
-		// NEED TO CHECK MONTH and week overlapping month end
-		return $row->getRepeatArray( $startPeriod, $endPeriod, $periodEndSecond);
-	}
-
 	/**
  * Cloaks html link whith javascript
  *
@@ -272,12 +140,12 @@ class JEV_CommonFunctions {
  * @param array $attribs	additional attributes
  * @return string HTML
  */
-	function jEventsLinkCloaking($url='', $text='', $attribs=array()) {
+	public static function jEventsLinkCloaking($url='', $text='', $attribs=array()) {
 
 		static $linkCloaking;
 
 		if (!isset($linkCloaking)) {
-			$cfg = & JEVConfig::getInstance();
+			$cfg = JEVConfig::getInstance();
 			$linkCloaking = $cfg->get('com_linkcloaking', 0);
 		}
 
@@ -292,7 +160,7 @@ class JEV_CommonFunctions {
 		}
 	}
 
-	function jEventsDoLink($url="",$alt="alt",$attr=array()){
+	public static function jEventsDoLink($url="",$alt="alt",$attr=array()){
 		if (strlen($url)==0) $url="javascript:void(0)";
 		$link = "<a href='".$url."' ";
 		if (count($attr)>0) {
@@ -312,7 +180,7 @@ class JEV_CommonFunctions {
  * @param int $timestamp
  * @return string formated string
  */
-	function jev_strftime($format='', $timestamp=null) {
+	public static function jev_strftime($format='', $timestamp=null) {
 
 		if (!$timestamp) $timestamp = time();
 
@@ -345,7 +213,7 @@ class JEV_CommonFunctions {
 	 * @param unknown_type $user
 	 * @return unknown
 	 */
-	function hasAdvancedRowPermissions($row,$user=null){
+	public static function hasAdvancedRowPermissions($row,$user=null){
 		// TODO make this call a plugin
 		if ($user==null){
 			$user = JFactory::getUser();
@@ -365,7 +233,7 @@ class JEV_CommonFunctions {
 	}
 
 
-	function notifyAuthorPublished($event){
+	public static function notifyAuthorPublished($event){
 
 		JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 		$db = JFactory::getDBO();
@@ -391,14 +259,14 @@ class JEV_CommonFunctions {
 		
 		// attach anonymous creator etc.
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
 
 		$rp_id = $testevent->rp_id();
 
 		list($year,$month,$day) = JEVHelper::getYMD();
 
-		$uri  =& JURI::getInstance(JURI::base());
+		$uri  = JURI::getInstance(JURI::base());
 		if (JFactory::getApplication()->isAdmin()){
 			$root = $uri->toString( array('scheme', 'host', 'port', 'path') );
 			$root = str_replace("/administrator","",$root);
@@ -426,7 +294,7 @@ class JEV_CommonFunctions {
 		if ($authoremail == "") return;
 
 		// mail function
-		$mail =& JFactory::getMailer();
+		$mail = JFactory::getMailer();
 		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
 		$mail->addRecipient($authoremail);
 
@@ -436,7 +304,7 @@ class JEV_CommonFunctions {
 		$mail->send();
 	}
 
-	function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
+	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -453,7 +321,7 @@ class JEV_CommonFunctions {
 			$messagetemplate.=sprintf( JText::_('JEV_MANAGE_EVENTS'), "{MANAGEEVENTS}")."<br/>";
 		}
 
-		$uri  =& JURI::getInstance(JURI::base());
+		$uri  = JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 		$adminLink = $root.JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=admin.listevents&Itemid=".JEVHelper::getAdminItemid());
 		
@@ -469,7 +337,7 @@ class JEV_CommonFunctions {
 		$messagetemplate = str_replace("{MANAGEEVENTS}", $adminLink,$messagetemplate);
 		
 		// mail function
-		$mail =& JFactory::getMailer();
+		$mail = JFactory::getMailer();
 		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
 		$mail->addRecipient($adminEmail);
 
@@ -481,7 +349,7 @@ class JEV_CommonFunctions {
 		}
 
 		if ($event){
-			$dispatcher     =& JDispatcher::getInstance();
+			$dispatcher     = JDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onSendAdminMail' , array(&$mail, $event));
 		}

@@ -16,12 +16,12 @@ include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 class EventCalendarCell_alternative extends EventCalendarCell_default
 {
 
-	function calendarCell(&$currentDay, $year, $month, $i)
+	function calendarCell(&$currentDay, $year, $month, $i, $slot="")
 	{
 		// pass $data by reference in order to update countdisplay
 
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$Itemid = JEVHelper::getItemid();
 

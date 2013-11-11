@@ -22,7 +22,7 @@ class JEventsCategory extends JTableCategory {
 
 	// security check
 	function bind( $array ) {
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
 		
@@ -71,7 +71,7 @@ class JEventsCategory extends JTableCategory {
 		$success = parent::store();
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher	= JDispatcher::getInstance();
 			$set = $dispatcher->trigger('afterSaveCategory', array ($this));
 /*			
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
@@ -108,7 +108,7 @@ class JEventsCategory extends JTableCategory {
 
 	public static function categoriesTree() {
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '".JEV_COM_COMPONENT."' and published>=0";
 		$query.=" ORDER BY parent, lft";
 		$db->setQuery($query);

@@ -129,7 +129,7 @@ class AdminDefaultsController extends JControllerForm {
 		$this->populateLanguages();
 		
 		// get the view
-		$this->view = & $this->getView("defaults","html");
+		$this->view = $this->getView("defaults","html");
 
 		// Set the layout
 		$this->view->setLayout('overview');
@@ -145,7 +145,7 @@ class AdminDefaultsController extends JControllerForm {
 
 	function edit(){
 		// get the view
-		$this->view = & $this->getView("defaults","html");
+		$this->view = $this->getView("defaults","html");
 
 		// Set the layout
 		$this->view->setLayout('edit');

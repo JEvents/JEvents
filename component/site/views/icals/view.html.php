@@ -41,7 +41,7 @@ class ICalsViewIcals extends JEventsAbstractView
 			$description = $desc;
 
 		// wraplines	from vCard class
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		if ($cfg->get("outlook2003icalexport", 0))
 		{
 			return "DESCRIPTION:" . $this->wraplines($description, 76, false);

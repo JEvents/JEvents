@@ -13,7 +13,7 @@ class DefaultViewNavTableBarIconic {
 		$this->cat = $this->view->datamodel->getCatidsOutLink();
 		$this->task = $task;
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		
 		if (JRequest::getInt( 'pop', 0 )) return;
@@ -159,7 +159,7 @@ class DefaultViewNavTableBarIconic {
 	}
 
 	function _viewHiddenJumpto($this_date){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$hiddencat	= "";
 		if ($this->view->datamodel->catidsOut!=0){
 			$hiddencat = '<input type="hidden" name="catids" value="'.$this->view->datamodel->catidsOut.'"/>';

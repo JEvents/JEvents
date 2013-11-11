@@ -77,23 +77,23 @@ class DefaultModLatestView
 	{
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
-			$document = & JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addStyleSheet(JURI::base(true) . "/components/com_jevents/assets/css/jevcustom.css");
 		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
 
-		$jevents_config = & JEVConfig::getInstance();
+		$jevents_config = JEVConfig::getInstance();
 
 		$this->datamodel = new JEventsDataModel();
 		// find appropriate Itemid and setup catids for datamodel
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->modparams);
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
 
-		$user = & JFactory::getUser();
+		$user =  JFactory::getUser();
 		$this->aid = $user->aid;
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
-		$tmplang = & JFactory::getLanguage();
+		$tmplang = JFactory::getLanguage();
 		$this->langtag = $tmplang->getTag();
 
 		// get params exclusive to module
@@ -215,7 +215,7 @@ class DefaultModLatestView
 			$this->maxEvents = $limit;
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$t_datenow = JEVHelper::getNow();
 		$this->now = $t_datenow->toUnix(true);
@@ -314,7 +314,7 @@ class DefaultModLatestView
 		$periodStart = $beginDate; //substr($beginDate,0,10);
 		$periodEnd = $endDate; //substr($endDate,0,10);
 
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
 
 		//We get filter value to set it up again after getting the module data adn set the published_fv value to 0
@@ -343,7 +343,7 @@ class DefaultModLatestView
 		$reg->set("jev.modparams", false);
 
 		// Time limit plugin constraints
-		$reg = & JFactory::getConfig();
+		$reg =  JFactory::getConfig();
 		$pastdate = $reg->get("jev.timelimit.past", false);
 		$futuredate = $reg->get("jev.timelimit.future", false);
 		if ($pastdate)
@@ -636,7 +636,7 @@ class DefaultModLatestView
 
 	}
 
-	function _sortEventsByDate(&$a, &$b)
+	public static function _sortEventsByDate(&$a, &$b)
 	{
 		$adate = $a->_startrepeat;
 		$bdate = $b->_startrepeat;
@@ -644,7 +644,7 @@ class DefaultModLatestView
 
 	}
 
-	function _sortEventsByCreationDate(&$a, &$b)
+	public static function _sortEventsByCreationDate(&$a, &$b)
 	{
 		$adate = $a->created();
 		$bdate = $b->created();
@@ -653,7 +653,7 @@ class DefaultModLatestView
 
 	}
 
-	function _sortEventsByHits(&$a, &$b)
+	public static function _sortEventsByHits(&$a, &$b)
 	{
 		$ah = $a->hits();
 		$bh = $b->hits();
@@ -665,7 +665,7 @@ class DefaultModLatestView
 
 	}
 
-	function _sortEventsByTime(&$a, &$b)
+	public static function _sortEventsByTime(&$a, &$b)
 	{
 		// this custom sort compare function compares the start times of events that are referenced by the a & b vars
 		//if ($a->publish_up() == $b->publish_up()) return 0;
@@ -773,7 +773,7 @@ class DefaultModLatestView
 		// this will get the viewname based on which classes have been implemented
 		$viewname = $this->getTheme();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
 		$this->getLatestEventsData();
@@ -901,7 +901,7 @@ class DefaultModLatestView
 			function processMatch(&$content, $match, $dayEvent, $dateParm, $relDay)
 	{
 		$datenow = JEVHelper::getNow();
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1347,7 +1347,7 @@ class DefaultModLatestView
 	protected
 			function getCalendarLink()
 	{
-		$menu = & JApplication::getMenu('site');
+		$menu =  JFactory::getApplication()->getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{

@@ -27,10 +27,10 @@ class JElementJevmenu extends JElement
 	{
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// assemble menu items to the array
 		$options 	= array();
@@ -44,7 +44,7 @@ class JElementJevmenu extends JElement
 		$db->setQuery( $query );
 		$menuTypes = $db->loadObjectList();
 
-		$menu =& JApplication::getMenu('site');
+		$menu = JFactory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();		
 		foreach ($menuItems as &$item) {
 		 	
@@ -125,7 +125,7 @@ class JElementJevmenu extends JElement
 	function fetchElementOLD($name, $value, &$node, $control_name)
 	{
 		$options = array();
-		$menu =& JApplication::getMenu('site', $options);
+		$menu = JFactory::getApplication()->getMenu('site', $options);
 		$items = $menu->getMenu();		
 		
 		$items2 = $menu->getItems("component","com_jevents");

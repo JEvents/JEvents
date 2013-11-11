@@ -19,7 +19,7 @@ class jIcalEventDB extends jEventCal {
 
 	function jIcalEventDB($vevent) {
 		// get default value for multiday from params
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){
 			$this->_multiday=$cfg->get('multiday',1);
 		}
@@ -53,7 +53,8 @@ class jIcalEventDB extends jEventCal {
 		$this->_reccurday = "";
 		$this->_reccurweekdays = "";
 		$this->_reccurweeks = "";
-		$this->_alldayevent = 0;
+		// old events in the system do not have alldayevent set
+		$this->_alldayevent = isset($vevent->alldayevent)? $vevent->alldayevent : 0;
 		// when loaded from the database we have the startrepeat so can use it otherwise we don't
 		list($hs,$ms,$ss) = explode(":",JevDate::strftime( '%H:%M:%S',isset($this->_startrepeat)?$this->getUnixStartTime():$this->dtstart()));
 		list($he,$me,$se) = explode(":",JevDate::strftime( '%H:%M:%S',isset($this->_endrepeat)?$this->getUnixEndTime():$this->dtend()));
@@ -214,13 +215,13 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function starttime24(){
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		return JevDate::strftime("%H:%M",$this->dtstart());
 	}
 
 	function starttime($val=""){
 		if (strlen($val)==0) {
-			$cfg	 = & JEVConfig::getInstance();
+			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtstart());
 		}
@@ -230,7 +231,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function endtime24(){
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		// 23:59:59 is actually midnight since we don't record seconds elsewhere
 		if (JevDate::strftime("%H:%M:%S",$this->dtend())=="23:59:59"){
 			// If we set this time to 00 then event editing will so a zero time length event i.e. 00:00 is midnight at the start of the day
@@ -242,7 +243,7 @@ class jIcalEventDB extends jEventCal {
 
 	function endtime($val=""){
 		if (strlen($val)==0) {
-			$cfg	 = & JEVConfig::getInstance();
+			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtend());
 		}
@@ -311,7 +312,7 @@ class jIcalEventDB extends jEventCal {
 
 	function startWeekNo() {
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		// TODO get this to handle Saturday start!
 		$fmt = ($cfg->get("com_starday")==0)?"%U":"%W";
 		return JevDate::strftime($fmt,$this->dtstart());
@@ -481,7 +482,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function getCalendarName( ){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		static $arr_calids;
 
@@ -515,7 +516,7 @@ class jIcalEventDB extends jEventCal {
 
 	function repeatSummary(){
 		$sum = "";
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		// i.e. 1 = follow english word order by default
 		$grammar = intval(JText::_('JEV_REPEAT_GRAMMAR'));
@@ -623,7 +624,7 @@ class jIcalEventDB extends jEventCal {
 	// Gets repeats for this event from databases
 	function getFirstRepeat($allowexceptions=true){
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -652,7 +653,7 @@ class jIcalEventDB extends jEventCal {
 	// Gets repeats for this event from databases
 	function getLastRepeat($allowexceptions=true){
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -683,7 +684,7 @@ class jIcalEventDB extends jEventCal {
 
 		$t_datenow = JEVHelper::getNow();
 		$now = $t_datenow->toMysql();
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -739,12 +740,12 @@ class jIcalEventDB extends jEventCal {
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
 		$extrajoin = array();
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields , ev.state as state,  ev.state as published"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -767,7 +768,7 @@ class jIcalEventDB extends jEventCal {
 		// iCal agid uses GUID or UUID as identifier
 		if( $rows ){
 			$row = new jIcalEventRepeat($rows[0]);
-			$dispatcher =& JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger( 'onDisplayCustomFields', array( &$row ));
 		}
 		return $row;
@@ -786,7 +787,7 @@ class jIcalEventDB extends jEventCal {
 		}
 		$done[$this->evdet_id()]=1;
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Should this happen here?
 		$query = "UPDATE #__jevents_vevdetail SET hits=(hits+1) WHERE evdet_id='".$this->evdet_id()."'"	;
@@ -818,7 +819,7 @@ class jIcalEventDB extends jEventCal {
 		
 		$this->dtfixed = 1;
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// Now get the first repeat since dtstart may have been set in a different timezeone and since it is a unixdate it would then be wrong
 		if (strtolower($this->freq())=="none"){
@@ -837,7 +838,7 @@ class jIcalEventDB extends jEventCal {
 			}
 			else {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried
-				$jregistry	=& JRegistry::getInstance("jevents");
+				$jregistry	= JRegistry::getInstance("jevents");
 				// This is the server default timezone
 				$jtimezone = $jregistry->get("jevents.timezone", false);
 				if ($jtimezone){

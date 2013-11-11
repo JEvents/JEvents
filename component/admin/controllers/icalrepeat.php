@@ -28,7 +28,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->registerTask('list', 'overview');
 		$this->registerDefaultTask("overview");
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->_debug = $cfg->get('jev_debug', 0);
 
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
@@ -46,7 +46,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function overview()
 	{
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$publishedOnly = false;
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);
@@ -118,7 +118,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		// get the view
-		$this->view = & $this->getView("icalrepeat", "html");
+		$this->view = $this->getView("icalrepeat", "html");
 
 		// Set the layout
 		$this->view->setLayout('overview');
@@ -134,9 +134,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function edit()
 	{
 		// get the view
-		$this->view = & $this->getView("icalrepeat", "html");
+		$this->view = $this->getView("icalrepeat", "html");
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
@@ -155,7 +155,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$id = JRequest::getInt("evid", 0);
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT rpt.eventid"
 				. "\n FROM (#__jevents_vevent as ev, #__jevents_icsfile as icsf)"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -181,7 +181,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		/*
-		  $db =& JFactory::getDBO();
+		  $db = JFactory::getDBO();
 		  // get list of groups
 		  $query = "SELECT id AS value, name AS text"
 		  . "\n FROM #__groups"
@@ -312,7 +312,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		JRequest::checkToken('default') or jexit('Invalid Token');
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$publishedOnly = true;
 		$id = JRequest::getInt('evid', 0);
 
@@ -377,7 +377,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
 		// get the view
-		$this->view = & $this->getView("icalrepeat", "html");
+		$this->view = $this->getView("icalrepeat", "html");
 
 		// Set the layout
 		$this->view->setLayout('select');
@@ -399,7 +399,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$option = JEV_COM_COMPONENT;
@@ -420,7 +420,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$rpt = new iCalRepetition($db);
 		$rpt->load($rp_id);
 
@@ -531,7 +531,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt->store();
 
 		// I may also need to process repeat changes
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onStoreCustomRepeat' , array(&$rpt));
@@ -563,7 +563,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		echo "<pre>";
@@ -583,7 +583,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		// Change the underlying event repeat rule details  !!
 		$query = "SELECT * FROM #__jevents_rrule WHERE rr_id=" . $event->_rr_id;
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		$this->rrule = null;
 		$this->rrule = $db->loadObject();
@@ -674,7 +674,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function delete()
 	{
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		if (!JEVHelper::isEventCreator())
@@ -687,7 +687,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$cid = array(intval($cid));
 		JArrayHelper::toInteger($cid);
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($cid as $id)
 		{
 
@@ -719,7 +719,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->query();
 
 				// I also need to clean out associated custom data
-				$dispatcher = & JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
 				$res = $dispatcher->trigger('onDeleteEventDetails', array($data->eventdetail_id));
@@ -758,7 +758,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		if (!JEVHelper::isEventCreator())
@@ -789,7 +789,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$cid = array(intval($cid));
 		JArrayHelper::toInteger($cid);
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($cid as $id)
 		{
 
@@ -855,7 +855,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->query();
 
 				// I also need to clean out associated custom data
-				$dispatcher = & JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
 				$res = $dispatcher->trigger('onDeleteEventDetails', array(implode(",", $detailids)));
@@ -892,7 +892,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	private function targetMenu($itemid = 0, $name)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// assemble menu items to the array
 		$options = array();
@@ -906,7 +906,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$db->setQuery($query);
 		$menuTypes = $db->loadObjectList();
 
-		$menu = & JApplication::getMenu('site');
+		$menu =  JFactory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();
 		foreach ($menuItems as &$item)
 		{

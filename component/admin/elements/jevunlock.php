@@ -26,7 +26,7 @@ class JElementJevunlock extends JElementText
 	{
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$params = $this->_parent;

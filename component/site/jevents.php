@@ -15,11 +15,11 @@ jimport('joomla.filesystem.path');
 
 // For development performance testing only
 /*
-  $db	=& JFactory::getDBO();
+  $db	= JFactory::getDBO();
   $db->setQuery("SET SESSION query_cache_type = OFF");
   $db->query();
 
-  $cfg = & JEVConfig::getInstance();
+  $cfg = JEVConfig::getInstance();
   $cfg->set('jev_debug', 1);
  */
 
@@ -29,7 +29,7 @@ $isMobile = false;
 jimport("joomla.environment.browser");
 $browser = JBrowser::getInstance();
 
-$registry = & JRegistry::getInstance("jevents");
+$registry = JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
 
 $newparams = JFactory::getApplication('site')->getParams();
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	$newparams->set('com_cache', 0);
 }
 
-$component = & JComponentHelper::getComponent(JEV_COM_COMPONENT);
+$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
 $component->params = & $newparams;
 
 $isMobile = $browser->isMobile();
@@ -76,7 +76,7 @@ if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
 	}
 }
 
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV", "") == "smartphone")
 {
@@ -103,7 +103,7 @@ if ($tz != "" && is_callable("date_default_timezone_set"))
 }
 
 // Must also load backend language files
-$lang = & JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 
 // Load Site specific language overrides
@@ -212,7 +212,7 @@ else
 }
 
 // create live bookmark if requested
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 if ($cfg->get('com_rss_live_bookmarks'))
 {
 	$Itemid = JRequest::getInt('Itemid', 0);
@@ -239,7 +239,7 @@ if ($cfg->get('com_rss_live_bookmarks'))
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method
 // we rely on php efficiency to not create a copy
-$registry = & JRegistry::getInstance("jevents");
+$registry = JRegistry::getInstance("jevents");
 $registry->set("jevents.controller", $controller);
 // record what is running - used by the filters
 $registry->set("jevents.activeprocess", "component");

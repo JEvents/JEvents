@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewEventRowNew($view,$row,$args="") {
 
-	$cfg = & JEVConfig::getInstance();
+	$cfg = JEVConfig::getInstance();
 
 	$rowlink = $row->viewDetailLink($row->yup(),$row->mup(),$row->dup(),false);
 	$rowlink = JRoute::_($rowlink.$view->datamodel->getCatidsOutLink());

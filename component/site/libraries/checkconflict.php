@@ -154,17 +154,17 @@ function ProcessRequest(&$requestObject, $returnData)
 	$mainframe = JFactory::getApplication($client);
 	JFactory::getApplication()->initialise();
 	$option = "com_jevents";
-	// Not sure why this is needed but it is if (use use $mainframe =& JFactory::getApplication($client); )!!!
+	// Not sure why this is needed but it is if (use use $mainframe = JFactory::getApplication($client); )!!!
 	// needed for Joomla 1.5 plugins
 	$GLOBALS['mainframe'] = $mainframe;
 
-	$lang = & JFactory::getLanguage();
+	$lang = JFactory::getLanguage();
 	$lang->load("com_jevents", JPATH_SITE);
 	$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 	include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
-	$params = & JComponentHelper::getParams("com_jevents");
+	$params = JComponentHelper::getParams("com_jevents");
 	if (!$params->get("checkclashes", 0) && !$params->get("noclashes", 0))
 		return $returnData;
 
@@ -190,7 +190,7 @@ function ProcessRequest(&$requestObject, $returnData)
 		$timezone = date_default_timezone_get();
 		$tz = $params->get("icaltimezonelive", "");
 		date_default_timezone_set($tz);
-		$registry = & JRegistry::getInstance("jevents");
+		$registry = JRegistry::getInstance("jevents");
 		$registry->set("jevents.timezone", $timezone);
 	}
 
@@ -385,7 +385,7 @@ function simulateSaveRepeat($requestObject)
 		throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
-	$db = & JFactory::getDBO();
+	$db = JFactory::getDBO();
 	$rpt = new iCalRepetition($db);
 	$rpt->load($rp_id);
 
@@ -483,7 +483,7 @@ function valueIfExists($array, $key, $default)
 
 function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 {
-	$params = & JComponentHelper::getParams("com_jevents");
+	$params = JComponentHelper::getParams("com_jevents");
 	$db = JFactory::getDBO();
 	$overlaps = array();
 	if ($params->get("noclashes", 0))
@@ -619,7 +619,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		
 	}
 
-	$dispatcher = & JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
@@ -628,7 +628,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 
 function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 {
-	$params = & JComponentHelper::getParams("com_jevents");
+	$params = JComponentHelper::getParams("com_jevents");
 	$db = JFactory::getDBO();
 	$overlaps = array();
 	if ($params->get("noclashes", 0))
@@ -731,7 +731,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = & JDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
