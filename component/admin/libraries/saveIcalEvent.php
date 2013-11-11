@@ -37,6 +37,11 @@ class SaveIcalEvent {
 		$data["X-EXTRAINFO"]	= JArrayHelper::getValue( $array,  "extra_info","");
 		$data["LOCATION"]		= JArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= JArrayHelper::getValue( $array,  "allDayEvent","off");
+		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
+		if ($data["allDayEvent"]==1)
+		{
+			$data["allDayEvent"]="on";
+		}
 		$data["CONTACT"]		= JArrayHelper::getValue( $array,  "contact_info","");
 		$data["DESCRIPTION"]	= JArrayHelper::getValue( $array,  "jevcontent","");
 		$data["publish_down"]	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
