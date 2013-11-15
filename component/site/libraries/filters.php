@@ -158,7 +158,7 @@ class jevFilterProcessing
 
 		// get filter details
 		if (is_object($item)){
-			$filters = & $item->getFilters();
+			$filters = $item->getFilters();
 		}
 		else if (is_array($item)){
 			$filters = $item;

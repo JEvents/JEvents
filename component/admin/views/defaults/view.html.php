@@ -63,7 +63,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
 		$this->assign('filter_published', $filter_published);
 
-		$this->assignRef('user', JFactory::getUser());
+		$user = JFactory::getUser();
+		$this->assignRef('user', $user);
 		$this->assignRef('items', $items);
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
@@ -110,8 +111,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$uri =  JFactory::getURI();
 
 		// Get data from the model
-		$model = & $this->getModel();
-		$item = & $this->get('Data');
+		$model =  $this->getModel();
+		$item =  $this->get('Data');
 
 		if (strpos($item->name, "com_") === 0)
 		{

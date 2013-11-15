@@ -626,7 +626,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			{
 				if (is_callable("Sh404sefFactory::getConfig"))
 				{
-					$sefConfig = &Sh404sefFactory::getConfig();
+					$sefConfig = Sh404sefFactory::getConfig();
 					if (!$sefConfig->Enabled)
 					{
 						$app->version = $manifestdata["version"] . " (Disabled in SH404 settings)";
@@ -730,7 +730,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
-		$output .= "MySQL Version : " .mysql_get_server_info() . "\n";
+		$output .= "MySQL Version : " .JFactory::getDbo()->getVersion(). "\n";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";

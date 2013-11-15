@@ -51,8 +51,8 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 
-		$pagination = & $this->get('Pagination');
-		$users = &$this->get('users');
+		$pagination =  $this->get('Pagination');
+		$users = $this->get('users');
 
 		$this->assignRef('pagination', $pagination);
 		$this->assignRef('users', $users);
@@ -114,7 +114,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		{
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
-		$jevuser = &$this->get('user');
+		$jevuser = $this->get('user');
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'user_id', 'class="inputbox" size="1" ', 'value', 'text', $jevuser->user_id);
 
 		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");

@@ -36,7 +36,7 @@ if (!defined("JEVADPARMOD"))
 			{
 				$component = JEV_COM_COMPONENT;
 
-				$table = & JTable::getInstance('extension');
+				$table =  JTable::getInstance('extension');
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{

@@ -123,7 +123,7 @@ $jevplugins = JPluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
 	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
 		// At present ony customfields and rsvp pro support secondary tabs and special input formats
-		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags"))){
+		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser"))){
 			continue;
 		}
 		$classname = "plgJevents".ucfirst($jevplugin->name);

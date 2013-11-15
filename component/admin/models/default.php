@@ -93,7 +93,7 @@ class DefaultsModelDefault extends JModelLegacy
 			}
 		}
 
-		$row = & $this->getTable();
+		$row =  $this->getTable();
 
 		// Bind the form fields to the session table
 		if (!$row->bind($data)) {

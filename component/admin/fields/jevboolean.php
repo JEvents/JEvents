@@ -42,6 +42,11 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 	{
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if (!$params->get("bootstrapchosen", 1))
+		{
+			$x = 1;
+		}
 		return parent::getInput();
 
 	}

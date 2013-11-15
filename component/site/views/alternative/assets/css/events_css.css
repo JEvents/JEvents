@@ -521,7 +521,7 @@ a.addjevent {
 a.addjevent img {
 	border-width:0px!important;
 }
-td.showjevadd a.addjevent {
+td.showjevadd a.addjevent,.showjevadd a.addjevent  {
    	visibility:visible;
 }
 

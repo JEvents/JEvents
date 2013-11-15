@@ -123,7 +123,7 @@ class JEVHelper
 		else
 		{
 			$import = new iCalImport();
-			$instances[$index] = & $import->import($filename, $rawtext);
+			$instances[$index] =  $import->import($filename, $rawtext);
 
 			return $instances[$index];
 		}
@@ -570,7 +570,7 @@ class JEVHelper
 	 * 
 	 * @static
 	 */
-	public function loadOverlib()
+	public static function loadOverlib()
 	{
 
 		$cfg = JEVConfig::getInstance();

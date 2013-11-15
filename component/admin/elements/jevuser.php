@@ -30,7 +30,7 @@ class JElementJevuser extends JElement
 		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$class		= $node->attributes('class');
 		if (!$class) {
 			$class = "inputbox";

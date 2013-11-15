@@ -95,7 +95,7 @@ class iCalEventDetail extends JTable  {
 	 * @param iCal Event parsed from ICS file as an array $ice
 	 * @return n/a
 	 */
-	function iCalEventDetailFromData($ice){
+	public static function iCalEventDetailFromData($ice){
 		$db	= JFactory::getDBO();
 		$temp = new iCalEventDetail($db);
 		$temp->_data = $ice;
@@ -110,7 +110,7 @@ class iCalEventDetail extends JTable  {
 	 * @param iCal Event parsed from ICS file as an array $ice
 	 * @return n/a
 	 */
-	function iCalEventDetailFromDB($icalrowAsArray){
+	public static function iCalEventDetailFromDB($icalrowAsArray){
 		$db	= JFactory::getDBO();
 		$temp = new iCalEventDetail($db);
 		$temp->_data = $icalrowAsArray;

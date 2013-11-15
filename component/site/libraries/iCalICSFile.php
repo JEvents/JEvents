@@ -111,7 +111,7 @@ RAWTEXT;
 		return $temp;
 	}
 
-	function newICSFileFromURL($uploadURL,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
+	public static function newICSFileFromURL($uploadURL,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
@@ -152,7 +152,7 @@ RAWTEXT;
 		return $temp;
 	}
 
-	function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
+	public static function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);

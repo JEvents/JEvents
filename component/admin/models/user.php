@@ -46,7 +46,7 @@ class AdminUserModelUser extends JModelLegacy
 	function __construct() {
 		parent::__construct();
 		
-		$app	= &JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getVar('option', '');
 		// Get the pagination request variables
 		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
