@@ -27,7 +27,7 @@ class AdminUserViewUser extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// this already includes administrator
 		$livesite = JURI::base();
 
@@ -60,7 +60,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		if (JVersion::isCompatible("3.0")){
+		if (JevJoomlaVersion::isCompatible("3.0")){
 			$this->sidebar = JHtmlSidebar::render();					
 		}		
 	}
@@ -68,7 +68,7 @@ class AdminUserViewUser extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// this already includes administrator
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
@@ -82,9 +82,9 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$rules = JAccess::getAssetRules("com_jevents", true);
 		$data = $rules->getData();
 		$creatorgroups = $data["core.create"]->getData();

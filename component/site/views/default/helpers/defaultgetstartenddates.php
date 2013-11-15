@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function Defaultgetstartenddates($view){
 
-	$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+	$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 	$startdate = JRequest::getString("startdate","");
 	$enddate = JRequest::getString("enddate","");

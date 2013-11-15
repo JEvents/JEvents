@@ -35,7 +35,7 @@ class JEventsCategories extends JCategories
 	 */
 	protected function _load($id)
 	{
-		$registry = & JRegistry::getInstance("jevents");
+		$registry = JRegistry::getInstance("jevents");
 		// need both paths for Joomla 2.5 and 3.0
 		$puser = $registry->get("jevents.icaluser" , $registry->get("icaluser" , false));
 

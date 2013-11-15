@@ -9,7 +9,7 @@ class DefaultViewNavTableBar
 	function DefaultViewNavTableBar($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
 	{
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->view = $view;
 		$this->transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
 		$this->Itemid = JEVHelper::getItemid();
@@ -129,7 +129,7 @@ class DefaultViewNavTableBar
 
 	function _genericMonthNavigation($dates, $alts, $which, $icon)
 	{
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$task = $this->task;
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid . '&';
 

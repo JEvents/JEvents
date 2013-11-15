@@ -38,7 +38,7 @@ class JFormFieldJevextras extends JFormField
 	function __construct($form = null)
 	{
 		// Must load admin language files
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($form);
@@ -52,7 +52,7 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// load any custom fields
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
 		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
@@ -74,7 +74,7 @@ class JFormFieldJevextras extends JFormField
 			function getInput()
 	{
 		// load any custom fields
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
@@ -93,7 +93,7 @@ class JFormFieldJevextras extends JFormField
 	}
 
 	public
-			function setup(& $element, $value, $group = null)
+			function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		$success = parent:: setup($element, $value, $group);
 		if (!$success)
@@ -104,7 +104,7 @@ class JFormFieldJevextras extends JFormField
 		return true;
 
 		// load any custom fields
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = intval(str_replace("extras", "", $this->name));
 		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));

@@ -318,3 +318,8 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 	display:inline-block;
 	margin-right:6px;
 }
+table.settings_level {text-align:left;}
+table.settings_level .difficulty1 .paramlist_value {vertical-align: top;}
+table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:15px;}
+.nav.nav-list.config { width: 15%; float: left;}
+.jevconfig #myParamsTabsContent.tab-content  {width: 75%; float: left; margin-top:0px;}

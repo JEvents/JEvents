@@ -54,7 +54,7 @@ jimport("joomla.utilities.date");
 					{
 						$tz = self::$gmt;
 					}
-					elseif (is_numeric($tz) && !JVersion::isCompatible("3.0"))
+					elseif (is_numeric($tz) && !JevJoomlaVersion::isCompatible("3.0"))
 					{
 						// Translate from offset.
 						$tz = new DateTimeZone(self::$offsets[(string) $tz]);

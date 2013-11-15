@@ -24,7 +24,7 @@ class DefaultViewICalevent extends JEventsDefaultView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 						
@@ -35,7 +35,7 @@ class DefaultViewICalevent extends JEventsDefaultView
 
 		// Dynamic pathway
 		if (isset($this->data['row'])){
-			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway = JFactory::getApplication()->getPathway();
 
 			$pathway->addItem($this->data['row']->title() ,"");
 		}

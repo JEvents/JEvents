@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	 = & JEVConfig::getInstance();
+$cfg	 = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDataForAdmin( $this->creator_id, $this->limit, $this->limitstart );
 

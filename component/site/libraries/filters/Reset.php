@@ -21,7 +21,7 @@ class jevResetFilter extends jevFilter
 		parent::jevFilter($contentElement,"");
 	}
 
-	function _createFilter(){
+	function _createFilter($prefix = ""){
 		return "";
 	}
 

@@ -24,7 +24,7 @@ class DefaultViewYear extends JEventsDefaultView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
@@ -39,7 +39,7 @@ class DefaultViewYear extends JEventsDefaultView
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
 		
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$earliestyear =  JEVHelper::getMinYear();
 		$latestyear = JEVHelper::getMaxYear();
 		if ($year>$latestyear || $year<$earliestyear){

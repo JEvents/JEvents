@@ -15,21 +15,21 @@ if (defined("EDITING_JEVENT"))
 define("EDITING_JEVENT", 1);
 
 global $task, $catid;
-$db = & JFactory::getDBO();
-$editor = & JFactory::getEditor();
+$db = JFactory::getDBO();
+$editor =  JFactory::getEditor();
 if ($editor->get("_name")=="codemirror"){
 	$editor =  JFactory::getEditor("none");
 	JFactory::getApplication()->enqueueMessage("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR","WARNING");
 }
 
 // clean any existing cache files
-$cache = & JFactory::getCache(JEV_COM_COMPONENT);
+$cache =  JFactory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_( "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
 // load any custom fields
-$dispatcher = & JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 $customfields = array();
 $res = $dispatcher->trigger('onEditCustom', array(&$this->row, &$customfields));
 
@@ -66,7 +66,7 @@ if ($this->row->catids)
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"  >
 		<?php
 // get configuration object
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		JHTML::_('behavior.tooltip');
 		$document = JFactory::getDocument();
@@ -171,7 +171,7 @@ if ($this->editCopy)
 // in case editor is toggled off - needed for TinyMCE
 echo $editor->save('jevcontent');
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
@@ -251,7 +251,7 @@ else
 							<input class="inputbox" type="text" name="title" size="50" maxlength="255" value="<?php echo JEventsHtml::special($this->row->title()); ?>" />
 						</td>
 <?php
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $showpriority = $params->get("showpriority", 0);
 if ($this->setPriority && $showpriority)
 {
@@ -438,7 +438,7 @@ else
 }
 echo "<div id='jeveditor'>";
 // parameters : areaname, content, hidden field, width, height, rows, cols
-if (JVersion::isCompatible("1.6.0"))
+if (JevJoomlaVersion::isCompatible("1.6.0"))
 {
 	echo $editor->display('jevcontent', JEventsHtml::special($this->row->content()), "100%", 250, '70', '10', $t_buttons, 'jevcontent', JEV_COM_COMPONENT);
 }

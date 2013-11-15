@@ -25,14 +25,14 @@ class jevFilterProcessing
 	static public $visiblefilters;
 	static public $indexedvisiblefilters;
 
-	function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
+	public static function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
 
 		if ($uid == 0){
 			$uid ="";
 		}
 		if ($uid==""){
 			// find what is running - used by the filters
-			$registry	=& JRegistry::getInstance("jevents");
+			$registry	= JRegistry::getInstance("jevents");
 			$activeprocess = $registry->get("jevents.activeprocess","");
 			$moduleid = $registry->get("jevents.moduleid","");
 			$moduleparams = $registry->get("jevents.moduleparams", false);
@@ -123,7 +123,7 @@ class jevFilterProcessing
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
-			$registry	=& JRegistry::getInstance("jevents");
+			$registry	= JRegistry::getInstance("jevents");
 			$registry->set("indexedvisiblefilters",false);			
                         
 			foreach (self::$visiblefilters as $filtername) {
@@ -152,7 +152,7 @@ class jevFilterProcessing
 
 			}
 
-			$registry	=& JRegistry::getInstance("jevents");
+			$registry	= JRegistry::getInstance("jevents");
 			$registry->set("indexedvisiblefilters",self::$indexedvisiblefilters);
 		}
 
@@ -273,7 +273,7 @@ class jevFilter
 	function jevFilter($tablename, $filterfield, $isString=false){
 		
 
-		$registry	=& JRegistry::getInstance("jevents");
+		$registry	= JRegistry::getInstance("jevents");
 		$indexedvisiblefilters = $registry->get("indexedvisiblefilters",array());
 		if (!is_array($indexedvisiblefilters)) $indexedvisiblefilters = array();
 
@@ -281,7 +281,7 @@ class jevFilter
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
 
 		// If using caching should disable session filtering if not logged in
-		$cfg	 = & JEVConfig::getInstance();
+		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		

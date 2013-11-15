@@ -46,7 +46,7 @@ class AdminParamsController extends JControllerAdmin
 	{
 
 		// get the view
-		$this->view = & $this->getView("params", "html");
+		$this->view = $this->getView("params", "html");
 
 		//$model = $this->getModel('params');
 		$model = $this->getModel('component');

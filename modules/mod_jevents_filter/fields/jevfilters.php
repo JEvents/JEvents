@@ -27,7 +27,7 @@ class JFormFieldJevfilters extends JFormFieldText
 	function __construct($form = null)
 	{
 		// Must load admin language files
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($form);

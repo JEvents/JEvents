@@ -65,7 +65,7 @@ class iCalEvent extends JTable  {
 		$user = JFactory::getUser();
 
 		if ($this->ev_id==0){
-			$date =& JevDate::getDate("+0 seconds");
+			$date = JevDate::getDate("+0 seconds");
 			$this->created = $date->toMySQL();
 		}
 
@@ -106,7 +106,7 @@ class iCalEvent extends JTable  {
 		// place private reference to created_by in event detail in case needed by plugins
 		$this->_detail->_created_by = $this->created_by ;
 				
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$detailid = $this->_detail->store($updateNulls);
 		if (!$detailid){
 			JError::raiseError( 104, JText::_( 'PROBLEMS_STORING_EVENT_DETAIL' ));
@@ -148,7 +148,7 @@ class iCalEvent extends JTable  {
 		}
 		
 		// I also need to store custom data - when we need the event itself and not just the detail
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onStoreCustomEvent' , array(&$this));
@@ -202,7 +202,7 @@ class iCalEvent extends JTable  {
 	 * @return n/a
 	 */
 	function iCalEventFromData($ice){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = new iCalEvent($db);
 		$temp->data = $ice;
 		if (array_key_exists("RRULE",$temp->data)){
@@ -222,7 +222,7 @@ class iCalEvent extends JTable  {
 	 * @return n/a
 	 */
 	function iCalEventFromDB($icalrowAsArray){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = new iCalEvent($db);
 		foreach ($icalrowAsArray as $key=>$val) {
 			$temp->$key = $val;
@@ -345,7 +345,7 @@ else $this->_detail = false;
 		}
 		// if no rrule then only one instance
 		if (!isset($this->rrule)  || $this->rrule->freq=="none" ){
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
 			$repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
@@ -374,7 +374,7 @@ else $this->_detail = false;
 
 		// TODO if I implement this outsite of upload I need to clean the detail table too
 		$duplicatecheck = md5($eventid . $start);
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$sql = "DELETE FROM #__jevents_repetition WHERE duplicatecheck='".$duplicatecheck."'";
 		$db->setQuery($sql);
 		return $db->query();
@@ -397,7 +397,7 @@ else $this->_detail = false;
 		$duplicatecheck = md5($eventid . $start );
 
 		// find the existing repetition in order to get the detailid
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$sql = "SELECT * FROM #__jevents_repetition WHERE duplicatecheck='$duplicatecheck'";
 		$db->setQuery($sql);
 		$matchingRepetition=$db->loadObject();
@@ -434,7 +434,7 @@ else $this->_detail = false;
 		}
 
 		$duplicatecheck = md5($eventid . $start );
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$sql = "UPDATE #__jevents_repetition SET eventdetail_id=".$newDetail->evdet_id
 		.", startrepeat='".$start."'"
 		.", endrepeat='".$end."'"
@@ -448,7 +448,7 @@ else $this->_detail = false;
 	function storeRepetitions() {
 		if (!isset($this->_repetitions)) $this->getRepetitions(true);
 		if (count($this->_repetitions)==0) return false;
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		// I must delete the eventdetails for repetitions not matching the global event detail
 		// these will be recreated later to match the new adjusted repetitions
 
@@ -465,7 +465,7 @@ else $this->_detail = false;
 			$db->query();
 
 			// I also need to clean out associated custom data
-			$dispatcher	=& JDispatcher::getInstance();
+			$dispatcher	= JDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($idlist));

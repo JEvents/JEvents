@@ -12,7 +12,7 @@ $view->loadHelper("JevViewCopyright");
 JevViewCopyright(); ?>
 </div>
 <?php
-	$dispatcher	=& JDispatcher::getInstance();
+	$dispatcher	= JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsFooter');
 
 	$task = JRequest::getString("jevtask");

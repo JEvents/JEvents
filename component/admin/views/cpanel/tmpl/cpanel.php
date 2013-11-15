@@ -123,7 +123,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			?>                                    
 		</div>
 		<?php
-		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && JFactory::getLanguage()->getTag() != "en-GB")
+		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" &&  JFactory::getLanguage()->getTag() != "en-GB")
 		{
 			?>
 			<div class="span12 center">

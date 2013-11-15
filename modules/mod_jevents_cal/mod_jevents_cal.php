@@ -20,7 +20,7 @@ $jevhelper = new modJeventsCalHelper();
 JPluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","mod_jevents_cal");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);

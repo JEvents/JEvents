@@ -14,13 +14,13 @@ class JElementJevUserGroup extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		// TODO 1.6 ACL VERSION OF THIS
 		return "";
 				
-		$acl	=& JFactory::getACL();
+		$acl	= JFactory::getACL();
 		$gtree	= $acl->get_group_children_tree( null, 'USERS', false );
 		foreach ($gtree as &$item) {
 			if ($item->value>25) $item->disable=true;

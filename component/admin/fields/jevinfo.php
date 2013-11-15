@@ -19,7 +19,7 @@ jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('spacer');
 
 // Must load admin language files
-$lang = & JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 /**
@@ -50,7 +50,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	{
 
 		// Must load admin language files
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$node = $this->element;
@@ -74,7 +74,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 			{
 				$help = $helps[$key];
 				list($helpfile, $varname, $part) = explode("::", $help);
-				$lang = & JFactory::getLanguage();
+				$lang = JFactory::getLanguage();
 				$langtag = $lang->getTag();
 				if (file_exists(JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/' . $helpfile))
 				{

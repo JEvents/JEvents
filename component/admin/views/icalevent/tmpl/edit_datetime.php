@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // get configuration object
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 if ($this->editCopy || $this->repeatId == 0)
 {
 	$repeatStyle = " class='jeveditrepeats jevdatetime ' ";
@@ -22,7 +22,7 @@ else
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled
-$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 {
 	$repeatStyle = "style='display:none;' class='jeveditrepeats' ";
@@ -116,7 +116,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo JText::_('YEARLY'); ?>
 			</label>
 			<?php
-			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("dayselect", 0))
 			{
 				?>
@@ -143,7 +143,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			<fieldset style="background-color:#dddddd">
 				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php
-				$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear = JEVHelper::getMinYear();
 				$maxyear = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");

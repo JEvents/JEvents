@@ -23,7 +23,7 @@ class AdminController extends JControllerLegacy   {
 		//		$this->registerTask( 'show',  'showContent' );
 
 		// Load abstract "view" class
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
 		$this->_basePath = $this->basePath;
@@ -48,7 +48,7 @@ class AdminController extends JControllerLegacy   {
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
 		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
 		
-		$params =& JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
 
 		$Itemid	= JEVHelper::getItemid();
@@ -66,15 +66,15 @@ class AdminController extends JControllerLegacy   {
 
 		// get the view
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "admin";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = & $this->getView($view,$viewType, $theme."View",
+		$this->view = $this->getView($view,$viewType, $theme."View",
 		array( 'base_path'=>$this->_basePath,
 		"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 		"name"=>$theme.'/'.$view));

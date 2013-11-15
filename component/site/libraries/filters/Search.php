@@ -22,7 +22,7 @@ class jevSearchFilter extends jevFilter
 		$this->filterNullValue="";
 		parent::__construct($tablename,$filterfield, true);
 		// Should these be ignored?
-		$reg =& JFactory::getConfig();
+		$reg = JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams",false);
 		if ($modparams && $modparams->get("ignorefiltermodule",false)){
 			$this->filter_value = $this->filterNullValue;

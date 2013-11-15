@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$db	=& JFactory::getDBO();
+$db	= JFactory::getDBO();
 $user = JFactory::getUser();
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm">

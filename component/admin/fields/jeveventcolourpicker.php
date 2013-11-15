@@ -26,7 +26,7 @@ class JFormFieldJeveventcolourpicker extends JFormField
 	 */
 	protected function getInput()
 	{
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		$hideColour = false;
 		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))

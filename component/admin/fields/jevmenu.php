@@ -37,13 +37,13 @@ class JFormFieldJEVmenu extends JFormFieldList
 		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components. 
 		if (JRequest::getString("option") =="com_config"){
 			$redirect_url  =  "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
-			$app  = & JFactory::getApplication();
+			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url); //redirect 
 			exit();
 		}
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$node = $this->element;
@@ -51,7 +51,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$name = $this->name;
 		$control_name = $this->type;
 		
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// assemble menu items to the array
 		$options 	= array();
@@ -65,7 +65,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$db->setQuery( $query );
 		$menuTypes = $db->loadObjectList();
 
-		$menu =& JApplication::getMenu('site');
+		$menu = JFactory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();		
 		foreach ($menuItems as &$item) {
 		 	

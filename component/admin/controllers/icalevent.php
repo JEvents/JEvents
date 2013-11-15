@@ -32,7 +32,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->registerTask('unpublish', 'unpublish');
 		$this->registerDefaultTask("overview");
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$this->_debug = $cfg->get('jev_debug', 0);
 
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
@@ -50,7 +50,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function overview()
 	{
 		// get the view
-		$this->view = & $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html");
 
 		$this->_checkValidCategories();
 
@@ -59,7 +59,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -80,12 +80,12 @@ class AdminIcaleventController extends JControllerAdmin
 		$db->setQuery($query);
 		$totalrepeats = $db->loadResult();
 		$this->_largeDataSet = 0;
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		if ($totalrepeats > $cfg->get('largeDataSetLimit', 100000))
 		{
 			$this->_largeDataSet = 1;
 		}
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$cfg->set('largeDataSet', $this->_largeDataSet);
 
 		$where = array();
@@ -97,7 +97,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
 			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
 			jimport("joomla.filesystem.folder");
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && JComponentHelper::getComponent("com_jevlocations", true)->enabled)
+			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") & JComponentHelper::getComponent("com_jevlocations", true)->enabled)
 			{
 				$join[] = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
 				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
@@ -127,7 +127,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$db->setQuery("SELECT * FROM #__categories where id = " . intval($catid));
 		$filtercat = $db->loadObject();
 
-		$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 0);
 		$cats = $user->getAuthorisedCategories('com_jevents', 'core.create');
 		if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly)
@@ -231,7 +231,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$hidepast = intval(JFactory::getApplication()->getUserStateFromRequest("hidepast", "hidepast", 1));
 		if ($hidepast)
 		{
-			$datenow = & JevDate::getDate("-1 day");
+			$datenow = JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet)
 			{
 				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
@@ -396,7 +396,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function edit()
 	{
 		// get the view
-		$this->view = & $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html");
 
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);
@@ -481,7 +481,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		/*
-		  $db =& JFactory::getDBO();
+		  $db = JFactory::getDBO();
 		  // get list of groups
 		  $query = "SELECT id AS value, name AS text"
 		  . "\n FROM #__groups"
@@ -498,7 +498,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 
 		// Strip this list down based on user permissions
-		$jevuser = & JEVHelper::getAuthorisedUser();
+		$jevuser =  JEVHelper::getAuthorisedUser();
 		if ($jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
 		{
 			$cals = array_keys($nativeCals);
@@ -777,13 +777,13 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// get the view
-		$this->view = & $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html");
 
 		// get all the raw native calendars
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 
 		// Strip this list down based on user permissions
-		$jevuser = & JEVHelper::getAuthorisedUser();
+		$jevuser =  JEVHelper::getAuthorisedUser();
 		if ($jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
 		{
 			$cals = array_keys($nativeCals);
@@ -823,7 +823,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// JREQUEST_ALLOWHTML requires at least Joomla 1.5 svn9979 (past 1.5 stable)
@@ -948,7 +948,7 @@ class AdminIcaleventController extends JControllerAdmin
 	protected function toggleICalEventPublish($cid, $newstate)
 	{
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Must be at least an event creator to publish events
@@ -972,7 +972,7 @@ class AdminIcaleventController extends JControllerAdmin
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($cid as $id)
 		{
 
@@ -999,7 +999,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// I also need to trigger any onpublish event triggers
-		$dispatcher = & JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
@@ -1023,7 +1023,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function delete()
 	{
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		/*
@@ -1041,7 +1041,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$cid = array(JRequest::getInt("evid", 0));
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		foreach ($cid as $key => $id)
 		{
@@ -1088,7 +1088,7 @@ class AdminIcaleventController extends JControllerAdmin
 				$db->query();
 
 				// I also need to clean out associated custom data
-				$dispatcher = & JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
 				$res = $dispatcher->trigger('onDeleteEventDetails', array($detailidstring));
@@ -1099,7 +1099,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->query();
 
 			// I also need to delete custom data
-			$dispatcher = & JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
@@ -1138,7 +1138,7 @@ class AdminIcaleventController extends JControllerAdmin
 		// TODO switch this after migration
 		$component_name = "com_jevents";
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
@@ -1157,14 +1157,14 @@ class AdminIcaleventController extends JControllerAdmin
 		JRequest::checkToken('default') or jexit('Invalid Token');
 
 		// get the view
-		$this->view = & $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html");
 
 		$this->_checkValidCategories();
 
 		$showUnpublishedICS = false;
 		$showUnpublishedCategories = false;
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -1185,12 +1185,12 @@ class AdminIcaleventController extends JControllerAdmin
 		$db->setQuery($query);
 		$totalrepeats = $db->loadResult();
 		$this->_largeDataSet = 0;
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		if ($totalrepeats > $cfg->get('largeDataSetLimit', 100000))
 		{
 			$this->_largeDataSet = 1;
 		}
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$cfg->set('largeDataSet', $this->_largeDataSet);
 
 		$where = array();
@@ -1269,7 +1269,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$hidepast = intval(JFactory::getApplication()->getUserStateFromRequest("hidepast", "hidepast", 1));
 		if ($hidepast)
 		{
-			$datenow = & JevDate::getDate("-1 day");
+			$datenow = JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet)
 			{
 				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
@@ -1402,7 +1402,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		// get list of creators
 		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 		$userOptions = array();
@@ -1442,7 +1442,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	private function targetMenu($itemid = 0, $name)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// assemble menu items to the array
 		$options = array();
@@ -1456,7 +1456,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$db->setQuery($query);
 		$menuTypes = $db->loadObjectList();
 
-		$menu = & JApplication::getMenu('site');
+		$menu =  JFactory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();
 		foreach ($menuItems as &$item)
 		{

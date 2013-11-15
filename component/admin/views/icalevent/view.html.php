@@ -23,7 +23,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
@@ -44,7 +44,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$db = JFactory::getDbo();
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 
 			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
@@ -76,7 +76,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			// get list of creators
 			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
 			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$db->setQuery($sql);
 			$users = $db->loadObjectList();
 			$userOptions = array();
@@ -127,7 +127,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			// get list of creators
 			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
 			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$db->setQuery($sql);
 			$users = $db->loadObjectList();
 			$userOptions = array();
@@ -153,7 +153,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function edit($tpl = null)
 	{
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		include(JEV_ADMINLIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
@@ -176,7 +176,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->id > 0)
 		{
 			if ($this->editCopy)
@@ -208,7 +208,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
 
-		if (JVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->setLayout("edit");
 		}
@@ -224,7 +224,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function csvimport($tpl = null)
 	{
 
-		$document = & JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('CSV_IMPORT'));
 
 		// Set toolbar items for the page
@@ -252,7 +252,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$db = JFactory::getDBO();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
-			$params = & JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 0);
 			// if authorised only then load from database
 			if ($authorisedonly)
@@ -311,7 +311,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");

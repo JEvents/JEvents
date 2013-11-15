@@ -22,7 +22,7 @@ class ExtViewYear extends JEventsExtView
 	function listevents($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
-		$document =& JFactory::getDocument();						
+		$document = JFactory::getDocument();						
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	}	

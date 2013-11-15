@@ -18,10 +18,10 @@ class GeraintModLatestView extends DefaultModLatestView
 	
 	function displayLatestEvents(){
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 	
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();

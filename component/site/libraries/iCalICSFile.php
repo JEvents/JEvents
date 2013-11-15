@@ -70,7 +70,7 @@ class iCalICSFile extends JTable  {
 	}
 
 	function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state);
 		$temp->filename="_from_scratch_";
@@ -112,7 +112,7 @@ RAWTEXT;
 	}
 
 	function newICSFileFromURL($uploadURL,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		if ($access==0){
@@ -142,7 +142,7 @@ RAWTEXT;
 		$temp->srcURL =  $uploadURL;
 
 		// Store the ical in the registry so we can retrieve the access level
-		$registry = & JRegistry::getInstance("jevents");
+		$registry = JRegistry::getInstance("jevents");
 		$registry->set("jevents.icsfile", $temp);
 
 		if (false === ($temp->_icalInfo =& JEVHelper::iCalInstance($uploadURL)) ) {
@@ -153,7 +153,7 @@ RAWTEXT;
 	}
 
 	function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		if ($access==0){
@@ -177,7 +177,7 @@ RAWTEXT;
 	 * Used to create Ical from raw strring
 	 */
 	function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$temp = null;
 		$temp = new iCalICSFile($db);
 		if ($icsid>0){
@@ -206,7 +206,7 @@ RAWTEXT;
 	function updateDetails(){
 		if (parent::store() && $this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
 			$db->query();
@@ -221,13 +221,13 @@ RAWTEXT;
 	function store($catid=false , $cleanup=true , $flush =true) {
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 		
 		static $categories;
 		if (is_null($categories)){
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}
@@ -247,14 +247,14 @@ RAWTEXT;
 		}
 		else if ($this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
 			$db->query();
 		}
 
 		// find the full set of ids currently in the calendar so taht we can remove cancelled ones
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$sql = "SELECT ev_id, uid, lockevent FROM #__jevents_vevent WHERE icsid=".$this->ics_id ;//. " AND catid=".$catid;
 		$db->setQuery($sql);
 		$existingevents = $db->loadObjectList('ev_id');
@@ -351,7 +351,7 @@ RAWTEXT;
 				}
 
 				// trigger post save plugins e.g. AutoTweet
-				$dispatcher     =& JDispatcher::getInstance();
+				$dispatcher     = JDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				if ($matchingEvent) {
 					JRequest::setVar("evid", $vevent->ev_id);
@@ -506,13 +506,13 @@ RAWTEXT;
 	function storeEvents($catid=false , $flush =true) {
 
 		// clean out the cache
-		$cache = &JFactory::getCache('com_jevents');
+		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		
 		static $categories;
 		if (is_null($categories)){
-			$db	=& JFactory::getDBO();
+			$db	= JFactory::getDBO();
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
@@ -558,7 +558,7 @@ RAWTEXT;
 					$db->query();
 
 					// I also need to clean out associated custom data
-					$dispatcher	=& JDispatcher::getInstance();
+					$dispatcher	= JDispatcher::getInstance();
 					// just incase we don't have jevents plugins registered yet
 					JPluginHelper::importPlugin("jevents");
 					$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($detailidstring));

@@ -40,7 +40,7 @@ class JElementJevkey extends JElementText
 	function fetchTooltip($label, $description, &$xmlElement, $control_name='', $name='') {
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$params = $this->_parent;

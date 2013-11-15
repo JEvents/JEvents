@@ -24,7 +24,7 @@ if (file_exists($file) ) {
 }
 
 // record what is running - used by the filters
-$registry	=& JRegistry::getInstance("jevents");
+$registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","mod_jevents_switchview");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
@@ -33,7 +33,7 @@ $registry->set("jevents.moduleparams", $params);
 JEVHelper::loadLanguage('modswitchview');
 
 // existing values
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 // priority of view setting is url, cookie, config, 
 $jEventsView = $cfg->get('com_calViewName',"default");
 

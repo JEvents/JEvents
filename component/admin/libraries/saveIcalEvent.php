@@ -16,12 +16,12 @@ class SaveIcalEvent {
 	// we can use dry run to create the event data without saving it!
 	function save($array, &$queryModel, $rrule, $dryrun = false){
 
-		$cfg = & JEVConfig::getInstance();
-		$db	=& JFactory::getDBO();
+		$cfg = JEVConfig::getInstance();
+		$db	= JFactory::getDBO();
 		$user = JFactory::getUser();
 
 		// Allow plugins to check data validity
-		$dispatcher     =& JDispatcher::getInstance();
+		$dispatcher     = JDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 
@@ -37,6 +37,11 @@ class SaveIcalEvent {
 		$data["X-EXTRAINFO"]	= JArrayHelper::getValue( $array,  "extra_info","");
 		$data["LOCATION"]		= JArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= JArrayHelper::getValue( $array,  "allDayEvent","off");
+		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
+		if ($data["allDayEvent"]==1)
+		{
+			$data["allDayEvent"]="on";
+		}
 		$data["CONTACT"]		= JArrayHelper::getValue( $array,  "contact_info","");
 		$data["DESCRIPTION"]	= JArrayHelper::getValue( $array,  "jevcontent","");
 		$data["publish_down"]	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
@@ -161,7 +166,7 @@ class SaveIcalEvent {
 			}
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
@@ -214,7 +219,7 @@ class SaveIcalEvent {
 
 			list($year,$month,$day) = JEVHelper::getYMD();
 			//http://joomlacode1.5svn/index.php?option=com_jevents&task=icalevent.edit&evid=1&Itemid=68&rp_id=72&year=2008&month=09&day=10&lang=cy
-			$uri  =& JURI::getInstance(JURI::base());
+			$uri  = JURI::getInstance(JURI::base());
 			$root = $uri->toString( array('scheme', 'host', 'port') );
 
 			if ($testevent){

@@ -24,7 +24,7 @@ class DefaultViewDay extends JEventsDefaultView
 	{
 		JEVHelper::componentStylesheet($this);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 						

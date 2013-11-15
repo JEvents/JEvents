@@ -31,7 +31,7 @@ class JElementJevinfo extends JElement
 	{
 
 		// Must load admin language files
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$help = $node->attributes('help');
@@ -47,7 +47,7 @@ class JElementJevinfo extends JElement
 				$help = $helps[$key];	
 				list($helpfile,$varname,$part) = explode("::",$help);
 				JEVHelper::loadOverlib();
-				$lang =& JFactory::getLanguage();
+				$lang = JFactory::getLanguage();
 				$langtag  = $lang->getTag();
 				if( file_exists( JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/'.$helpfile )){
 					$jeventHelpPopup =  JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/'.$helpfile ;

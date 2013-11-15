@@ -46,7 +46,7 @@ class JFormFieldJEVuser extends JFormFieldList
 	{
 		$params = JComponentHelper::getParams("com_jevents");
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$rules = JAccess::getAssetRules("com_jevents", true);
 		$creatorgroups = $rules->getData();

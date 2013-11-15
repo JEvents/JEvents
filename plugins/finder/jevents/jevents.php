@@ -257,7 +257,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		if (JVersion::isCompatible("3.0.0")){
+		if (JevJoomlaVersion::isCompatible("3.0.0")){
 			$this->indexer->index($item);
 		}
 		else {
@@ -290,7 +290,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 *
 	 * @since   2.5
 	 */
-	protected function getListQuery()
+	protected function getListQuery($query = NULL)
 	{
 		$db = JFactory::getDbo();
 		// Check if we can use the supplied SQL query.

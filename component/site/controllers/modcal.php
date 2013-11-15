@@ -65,7 +65,7 @@ class ModCalController extends JControllerLegacy   {
 		// TODO get this from config
 		$this->registerDefaultTask( 'calendar' );
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
 		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
 
@@ -95,7 +95,7 @@ class ModCalController extends JControllerLegacy   {
 		. "\n AND m.id = ". $modid
 		. "\n AND m.access IN (" .  JEVHelper::getAid($user, 'string') . ")"
 		. "\n AND m.client_id != 1";
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$db->setQuery( $query );
 		$modules = $db->loadObjectList();
 		if (count($modules)<=0){
@@ -106,7 +106,7 @@ class ModCalController extends JControllerLegacy   {
 		}
 		$params = new JRegistry( $modules[0]->params );
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$comptheme = $params->get("com_calViewName","global");
 		$theme = ($comptheme=="global")?$theme : $comptheme;
@@ -148,7 +148,7 @@ class ModCalController extends JControllerLegacy   {
 
 
 	function getViewName(){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		return $theme;
 	}
@@ -164,17 +164,17 @@ class ModCalController extends JControllerLegacy   {
 		
 		$user = JFactory::getUser();
 
-		$cfg = & JEVConfig::getInstance();
-		$db	=& JFactory::getDBO();
+		$cfg = JEVConfig::getInstance();
+		$db	= JFactory::getDBO();
 
 		$this->datamodel =new JEventsDataModel();
 
 		// component config object
-		$jevents_config		= & JEVConfig::getInstance();
+		$jevents_config		= JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
 		$this->aid			= JEVHelper::getAid($user, 'string');   // RSH modified getAid to handle different return types 10/26/10
-		$tmplang			=& JFactory::getLanguage();
+		$tmplang			= JFactory::getLanguage();
 
 		// get params exclusive to module
 		$this->inc_ec_css			= $this->modparams->get('inc_ec_css', 0);

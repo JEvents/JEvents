@@ -12,11 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 
 
 global $task,$catid;
-$db	=& JFactory::getDBO();
-$editor =& JFactory::getEditor();
+$db	= JFactory::getDBO();
+$editor = JFactory::getEditor();
 
 // clean any existing cache files
-$cache =& JFactory::getCache(JEV_COM_COMPONENT);
+$cache = JFactory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
 $action = JFactory::getApplication()->isAdmin()?"index.php":"index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 ?>

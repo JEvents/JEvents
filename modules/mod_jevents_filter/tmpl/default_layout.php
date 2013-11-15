@@ -13,7 +13,7 @@
 defined('_JEXEC') or die();
 if (count($filterHTML) > 0)
 {
-	if (JVersion::isCompatible("3.0") && $params->get("enablebootstrap", 1))
+	if (JevJoomlaVersion::isCompatible("3.0") && $params->get("enablebootstrap", 1))
 	{
 		// Load Bookstrap
 		JHtml::_('bootstrap.framework');

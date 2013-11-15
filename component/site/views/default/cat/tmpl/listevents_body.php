@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-$cfg	 = & JEVConfig::getInstance();
+$cfg	 = JEVConfig::getInstance();
 $data = $this->datamodel->getCatData( $this->catids,$cfg->get('com_showrepeats',0), $this->limit, $this->limitstart);
 $this->data = $data;
 $Itemid = JEVHelper::getItemid();

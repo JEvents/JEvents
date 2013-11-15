@@ -16,7 +16,7 @@ $db = JFactory::getDBO();
 $user = JFactory::getUser();
 
 // get configuration object
-$cfg = & JEVConfig::getInstance();
+$cfg = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
 $order = JRequest::getCmd("filter_order", 'start');
