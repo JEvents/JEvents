@@ -39,7 +39,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				if ($field->fieldname == "com_difficulty")
 				{
 					?>
-					<table style="text-align:left;">
+					<table class="settings_level">
 						<tr class=" difficulty1" >
 							<?php
 								echo  '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
@@ -56,7 +56,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 			<?php echo JText::_('JEV_EVENTS_CONFIG'); ?>
 		</legend>	
 
-		<ul class="nav nav-tabs" id="myParamsTabs">
+		<ul class="nav nav-list config" id="myParamsTabs">
 			<?php
 			$fieldSets = $this->form->getFieldsets();
 			$first = true;
