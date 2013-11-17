@@ -97,6 +97,7 @@ class Pkg_JeventsInstallerScript
 						<li><a href='http://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
 						<li><a href='http://www.jevents.net/jevents-15-topmenu/documentation' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
 					</ul>
+				</div>
 		</div>";
 
 		
