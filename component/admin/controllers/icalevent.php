@@ -393,7 +393,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
-	function edit()
+	function edit($key = NULL, $urlVar = NULL)
 	{
 		// get the view
 		$this->view = $this->getView("icalevent", "html");
@@ -604,7 +604,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
-	function save()
+	function save($key = NULL, $urlVar = NULL)
 	{
 
 		$msg = "";

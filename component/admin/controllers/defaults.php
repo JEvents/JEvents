@@ -135,7 +135,7 @@ class AdminDefaultsController extends JControllerForm {
 		$this->view->setLayout('overview');
 
 		// Get/Create the model
-		if ($model = & $this->getModel("defaults", "defaultsModel")) {
+		if ($model =  $this->getModel("defaults", "defaultsModel")) {
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
 		}
@@ -143,7 +143,7 @@ class AdminDefaultsController extends JControllerForm {
 		$this->view->overview();
 	}
 
-	function edit(){
+	function edit($key = NULL, $urlVar = NULL){
 		// get the view
 		$this->view = $this->getView("defaults","html");
 
@@ -151,7 +151,7 @@ class AdminDefaultsController extends JControllerForm {
 		$this->view->setLayout('edit');
 
 		// Get/Create the model
-		if ($model = & $this->getModel("default", "defaultsModel")) {
+		if ($model =  $this->getModel("default", "defaultsModel")) {
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
 		}
@@ -160,7 +160,7 @@ class AdminDefaultsController extends JControllerForm {
 
 	} // editdefaults()
 
-	function cancel(){
+	function cancel($key = NULL){
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 	}
 
@@ -198,14 +198,14 @@ class AdminDefaultsController extends JControllerForm {
 	/**
 	* Saves the Session Record
 	*/
-	function save() {
+	function save($key = NULL, $urlVar = NULL) {
 
 
 		$id = JRequest::getInt("id",0);
 		if ($id >0 ){
 
 			// Get/Create the model
-			if ($model = & $this->getModel("default", "defaultsModel")) {
+			if ($model =  $this->getModel("default", "defaultsModel")) {
 				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
 					if (JRequest::getCmd("task")=="defaults.apply"){
 						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));

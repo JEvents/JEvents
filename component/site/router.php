@@ -17,9 +17,6 @@ JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
 
 function JEventsBuildRoute(&$query)
 {
-	if (count($query)==2  && $query["Itemid"]==1117){
-		$x = 1;
-	}
 	$params = JComponentHelper::getParams("com_jevents");
 	// Must also load backend language files
 	$lang = JFactory::getLanguage();
@@ -376,7 +373,7 @@ function JEventsParseRoute($segments)
 
 	//Get the active menu item
 	$menu =  JFactory::getApplication()->getMenu();
-	$item = & $menu->getActive();
+	$item = $menu->getActive();
 
 	// Count route segments
 	$count = count($segments);

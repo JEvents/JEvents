@@ -575,7 +575,7 @@ class iCalImport
 	}
 
 	// function to convert windows timezone IDs into Olsen equivalent
-	function convertWindowsTzid($wtzid){
+	public static function convertWindowsTzid($wtzid){
 		$wtzdata = array();
 		$wtzdata["Midway Island, Samoa"] = "Pacific/Midway";
 		$wtzdata["Hawaii-Aleutian"] = "America/Adak";
@@ -699,7 +699,7 @@ class iCalImport
 				$parts = explode(";",$key);
 				if (count($parts)>=2 && JString::strpos($parts[1],"TZID=")!==false){
 					$tz = str_replace("TZID=", "",$parts[1]);
-					$tz = $this->convertWindowsTzid($tz);
+					$tz = iCalImport::convertWindowsTzid($tz);
 				}
 			}
 			$value = $this->unixTime($value, $tz);

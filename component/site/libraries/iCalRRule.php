@@ -90,7 +90,7 @@ class iCalRRule extends JTable  {
 	 * @param iCal Entry parsed from ICS file as an array $ice
 	 * @return n/a
 	 */
-	function iCalRRuleFromData($rrule){
+	public static  function iCalRRuleFromData($rrule){
 		$db	= JFactory::getDBO();
 		$temp = new iCalRRule($db);
 
@@ -152,7 +152,9 @@ class iCalRRule extends JTable  {
 		list ($h,$m,$s) = explode(":",JevDate::strftime("%H:%M:%S",$end));
 		if (($h+$m+$s)==0) {
 			//			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',($end-86400));
-			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',$end);
+			$duration = $end-$start;
+			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$start+$duration-1);
+			//$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',$end);
 		}
 		else {
 			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$end);

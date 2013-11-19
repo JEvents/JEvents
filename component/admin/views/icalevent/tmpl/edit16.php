@@ -449,4 +449,5 @@ $editpagecode = ob_get_clean();
 //$editpagecode = str_replace(" btn-group","",$editpagecode);
 //$editpagecode = str_replace(" btn-success","",$editpagecode);
 //$editpagecode = str_replace(" btn","",$editpagecode);
+//$editpagecode = str_replace("btn ","",$editpagecode);
 echo $editpagecode;

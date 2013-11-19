@@ -23,7 +23,7 @@ class jevCategoryFilter extends jevFilter
 		if (file_exists($file) ) {
 			include_once($file);
 		}
-		$reg = & JevRegistry::getInstance("jevents");
+		$reg = JevRegistry::getInstance("jevents");
 		$this->datamodel = $reg->getReference("jevents.datamodel",false);		
 		if (!$this->datamodel){
 			$this->datamodel = new JEventsDataModel();

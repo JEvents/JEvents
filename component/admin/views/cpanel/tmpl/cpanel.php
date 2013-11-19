@@ -134,7 +134,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		?>
 		<div class="span12 center">
 			<a href="<?php
-		$version = & JEventsVersion::getInstance();
+		$version = JEventsVersion::getInstance();
 		echo $version->getUrl();
 		?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
 			&nbsp;

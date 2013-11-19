@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class SaveIcalEvent {
 
 	// we can use dry run to create the event data without saving it!
-	function save($array, &$queryModel, $rrule, $dryrun = false){
+	public static function save($array, &$queryModel, $rrule, $dryrun = false){
 
 		$cfg = JEVConfig::getInstance();
 		$db	= JFactory::getDBO();
@@ -254,7 +254,7 @@ class SaveIcalEvent {
 		return $success;
 }
 
-function generateRRule($array){
+public static function generateRRule($array){
 	//static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 	static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
 

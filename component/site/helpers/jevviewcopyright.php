@@ -19,7 +19,7 @@ function JevViewCopyright() {
 
 	$cfg	 = JEVConfig::getInstance();
 
-	$version = & JEventsVersion::getInstance();
+	$version = JEventsVersion::getInstance();
 
 	if ($cfg->get('com_copyright', 1) == 1) {
 ?>

@@ -51,7 +51,7 @@ class AdminUserController extends JControllerLegacy   {
 	function showUsers() {
 		//JLoader::import( 'models.user',JPATH_COMPONENT_ADMINISTRATOR);
 
-		$model	=& $this->getModel( 'user' );	
+		$model	= $this->getModel( 'user' );	
 		$this->view->setModel($model,true);
 
 		// Set the layout
@@ -71,7 +71,7 @@ class AdminUserController extends JControllerLegacy   {
 			return;
 		}
 
-		$model	=& $this->getModel( 'user' );	
+		$model	= $this->getModel( 'user' );	
 		$this->view->setModel($model,true);
 		
 		// Set the layout
