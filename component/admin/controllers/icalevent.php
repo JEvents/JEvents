@@ -114,7 +114,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
 		if ($params->get("multicategory", 0))
 		{
-			$join[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$join[] = $this->_largeDataSet ? "\n #__jevents_catmap as catmap ON catmap.evid = ev.ev_id" : "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$where[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
 			$where[] = " catmap.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";

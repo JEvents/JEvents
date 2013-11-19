@@ -131,6 +131,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$modids = $specialmodules->get("modid", array());
 		if (count($modids)>0){
 			$modvals = $specialmodules->get("modval", array());
+			// not sure how this can arise :(
+			if (is_object($modvals)){
+				$modvals = get_object_vars($modvals);
+			}
 			for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
 				$template_value .= "{{MODULESTART#".$modids[$count]."}}";
 				$template_value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
@@ -1029,6 +1033,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			}
 		}
 
+		// Date/time formats etc.
+		for ($s = 0; $s < count($search); $s++)
+		{
+			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0)
+			{
+				global $tempreplace, $tempevent, $tempsearch;
+				$tempreplace = $replace[$s];
+				$tempsearch = str_replace("}}",";.*?}}",$search[$s]);
+				$tempevent = $event;
+				$template_value = preg_replace_callback("|$tempsearch|", 'jevSpecialDateFormatting', $template_value);
+			}
+		}
+
 		for ($s = 0; $s < count($search); $s++)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -1185,6 +1202,25 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		else if (count($matches) == 1)
 			return $matches[0];
 
+	}
+
+	function jevSpecialDateFormatting($matches){
+		if (count($matches) == 1 && strpos($matches[0], ";") > 0)
+		{
+			global $tempreplace, $tempevent, $tempsearch;
+			$parts = explode(";", $matches[0]);
+			if (count($parts) == 2)
+			{
+				$fmt = str_replace("}}", "", $parts[1]);
+				return strftime($fmt, strtotime(strip_tags($tempreplace)));
+			}
+			else
+			{
+				return $matches[0];
+			}
+		}
+		else if (count($matches) == 1)
+			return $matches[0];
 	}
 
 	function jevSpecialHandling2($matches)

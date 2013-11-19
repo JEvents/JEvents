@@ -107,7 +107,7 @@ class ICalEventController extends AdminIcaleventController   {
 		}
 	}
 	
-	function edit(){
+	function edit($key = NULL, $urlVar = NULL){
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
@@ -146,7 +146,7 @@ class ICalEventController extends AdminIcaleventController   {
 	}
 
 
-	function save(){
+	function save($key = NULL, $urlVar = NULL){
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){

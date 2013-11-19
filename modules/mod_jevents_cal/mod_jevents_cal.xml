@@ -24,7 +24,7 @@
 				<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />                         
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="JEV_LATEST_USE_SETTINGS_DESC">
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
@@ -64,7 +64,7 @@
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispLastMonthDays" type="text" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1" />
+				<field name="modcal_DispLastMonthDays" type="jevtext" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1" />
 				<field name="modcal_DispNextMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" conditional="modcal_useLocalParam" conditions="1" >
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
@@ -72,7 +72,7 @@
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam" conditions="1" />
+				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam" conditions="1" />
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
