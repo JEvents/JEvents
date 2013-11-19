@@ -294,3 +294,5 @@ fieldset.checkboxes li {
     margin-right: 5px;
    margin-top:5px;
 }
+/** Tabs fix for event editting pages **/
+#adminForm .adminform #tabs h3{line-height:16px; font-size:16px;margin:5px 5px;}
