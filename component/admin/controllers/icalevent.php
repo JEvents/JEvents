@@ -97,7 +97,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
 			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
 			jimport("joomla.filesystem.folder");
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") & JComponentHelper::getComponent("com_jevlocations", true)->enabled)
+			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && JComponentHelper::getComponent("com_jevlocations", true)->enabled)
 			{
 				$join[] = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
 				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
