@@ -894,36 +894,41 @@ class JEVHelper
 				{
 					$juser = JFactory::getUser();
 					$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-					// this is too heavy on database queries
-					/*
-					  if (!$isEventCreator){
-					  $cats =  JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-					  if (count($cats) > 0)
-					  {
-					  $isEventCreator = true;
-					  }
-					  }
-					 */
-					if ($isEventCreator)
+					// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+					if (false)
 					{
-						$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-						if (count($okcats) > 0)
+						if (!$isEventCreator)
 						{
-							$juser = JFactory::getUser();
-							$dataModel = new JEventsDataModel();
-							$dataModel->setupComponentCatids();
+							$cats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							if (count($cats) > 0)
+							{
+								$isEventCreator = true;
+							}
+						}
+					}
+					else
+					{
+						if ($isEventCreator)
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							if (count($okcats) > 0)
+							{
+								$juser = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
 
-							$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-							$intersect = array_intersect($okcats, $allowedcats);
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
 
-							if (count($intersect) == 0)
+								if (count($intersect) == 0)
+								{
+									$isEventCreator = false;
+								}
+							}
+							else
 							{
 								$isEventCreator = false;
 							}
-						}
-						else
-						{
-							$isEventCreator = false;
 						}
 					}
 				}

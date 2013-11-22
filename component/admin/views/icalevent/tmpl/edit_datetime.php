@@ -30,7 +30,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 ?>
 <div style="clear:both;" class="jevdatetime">
 	<fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration"); ?></legend>
-		<div  class="control-group form-inline">
+		<div  class="control-group form-inline allDayEvent">
 			<?php echo $this->form->getLabel("allDayEvent"); ?>
 			<span>
 				<?php echo $this->form->getInput("allDayEvent"); ?>

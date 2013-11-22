@@ -172,6 +172,10 @@ fieldset.checkboxes li {
 }
 
 /* Editing styles */
+#jevents .control-group > label {
+    float: left;
+}
+
 td.r1, span.r1 {
 	background-color:#eeeeee!important;
 	padding:5px 5px 0px 0px;

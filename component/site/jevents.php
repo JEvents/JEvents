@@ -361,7 +361,9 @@ elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
 elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
 	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 }
-JFactory::getDocument()->SetTitle($title);
+if (JRequest::getCmd("format")!="feed"){
+	JFactory::getDocument()->SetTitle($title);
+}
 
 // Redirect if set by the controller
 $controller->redirect();

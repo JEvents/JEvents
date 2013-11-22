@@ -280,7 +280,7 @@ else
 				echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
 			}
 			?>
-			<div class="control-group">
+			<div class="control-group jevtitle">
 				<?php echo $this->form->getLabel("title"); ?>
 				<div class="controls">
 					<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
@@ -290,7 +290,7 @@ else
 			if ($this->form->getInput("priority"))
 			{
 				?>
-				<div class="control-group">
+				<div class="control-group jevpriority">
 					<?php echo $this->form->getLabel("priority"); ?>
 					<div class="controls">
 						<?php echo $this->form->getInput("priority"); ?>
@@ -315,7 +315,7 @@ else
 			if ($this->form->getInput("ics_id"))
 			{
 				?>
-				<div class="control-group">
+				<div class="control-group jevcalendar">
 					<?php echo $this->form->getLabel("ics_id"); ?>
 					<div class="controls">
 						<?php echo $this->form->getInput("ics_id"); ?>
@@ -336,7 +336,7 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("catid") || $this->form->getLabel("access"))
+			if ($this->form->getLabel("catid"))
 			{
 				?>
 				<div class="control-group  jevcategory">
@@ -351,8 +351,14 @@ else
 						</div>
 						<?php
 					}
-
-
+					?>
+				</div>
+				<?php
+			}
+			if (  $this->form->getLabel("access") ){
+				?>
+				<div class="control-group  jevaccess">
+					<?php
 					if ($this->form->getLabel("access"))
 					{
 						echo $this->form->getLabel("access");
