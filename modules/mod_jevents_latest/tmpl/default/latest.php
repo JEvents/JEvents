@@ -198,7 +198,12 @@ class DefaultModLatestView
 		}
 		else
 		{
-			return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
+			if (strpos($link, "tmpl=component")){
+				return '<a href="' . $link . '" ' . $class . '  >' . $text . '</a>';
+			}
+			else {
+				return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
+			}
 		}
 
 	}

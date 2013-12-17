@@ -269,6 +269,10 @@ class iCalImport
 					//$vevent["DTEND"] += 86400;
 					$vevent["NOENDTIME"]  = 1;
 				}
+				// some imports do not have UID set
+				if (!isset($vevent["UID"])){
+					$vevent["UID"] = md5(uniqid(rand(), true));
+				}
 				$this->vevents[] = iCalEvent::iCalEventFromData($vevent);
 			}
 		}

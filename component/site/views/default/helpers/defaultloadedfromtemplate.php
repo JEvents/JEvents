@@ -45,6 +45,31 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
 				return false;
 
+			if (isset($templates[$template_name]->params))
+			{
+				$templates[$template_name]->params = new JRegistry($templates[$template_name]->params);
+				$specialmodules = $templates[$template_name]->params;
+			}
+			// Adjust template_value to include dynamic module output then strip it out afterwards
+			if ($specialmodules)
+			{
+				$modids = $specialmodules->get("modid", array());
+				if (count($modids)>0){
+					$modvals = $specialmodules->get("modval", array());
+					// not sure how this can arise :(
+					if (is_object($modvals)){
+						$modvals = get_object_vars($modvals);
+					}
+					for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
+						$templates[$template_name]->value .= "{{module start:MODULESTART#".$modids[$count]."}}";
+						// cleaned later!
+						//$templates[$template_name]->value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
+						$templates[$template_name]->value .= $modvals[$count];
+						$templates[$template_name]->value .= "{{module end:MODULEEND}}";
+					}
+				}
+			}
+
 			// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
 			$templates[$template_name]->value = str_replace("\r", '', $templates[$template_name]->value);
 			$templates[$template_name]->value = str_replace("\n", '', $templates[$template_name]->value);
@@ -53,26 +78,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			$matchesarray = array();
 			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
-
-			if (isset($templates[$template_name]->params))
-			{
-				$templates[$template_name]->params = new JRegistry($templates[$template_name]->params);
-
-				// must populate matches array from module output too since it may otherwise be skipped!
-				$modval = $templates[$template_name]->params->get("modval");
-				if ($modval && is_array($modval)){
-					foreach ($modval as $mv){
-						if (trim($mv)!=""){
-							$mv = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $mv);
-							$mvmatchesarray = array();
-							preg_match_all('|{{.*?}}|', $mv, $mvmatchesarray);
-							if (isset($matchesarray[0]) && isset($mvmatchesarray[0])){
-								$matchesarray[0] = array_merge($matchesarray[0], $mvmatchesarray[0]);
-							}
-						}
-					}
-				}
-			}
 
 			$templates[$template_name]->matchesarray = $matchesarray;
 
@@ -104,6 +109,26 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$event = $pluginscalled[$event->rp_id()];
 		}
 
+		// Adjust template_value to include dynamic module output then strip it out afterwards
+		if ($specialmodules)
+		{
+			$modids = $specialmodules->get("modid", array());
+			if (count($modids)>0){
+				$modvals = $specialmodules->get("modval", array());
+				// not sure how this can arise :(
+				if (is_object($modvals)){
+					$modvals = get_object_vars($modvals);
+				}
+				for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
+					$template_value .= "{{module start:MODULESTART#".$modids[$count]."}}";
+					// cleaned later!
+					//$template_value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
+					$template_value .= $modvals[$count];
+					$template_value .= "{{module end:MODULEEND}}";
+				}
+			}
+		}
+
 		// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
 		$template_value = str_replace("\r", '', $template_value);
 		$template_value = str_replace("\n", '', $template_value);
@@ -122,26 +147,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$search = array();
 	$replace = array();
 	$blank = array();
+	$rawreplace = array();
 
 	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
-
-	// Adjust template_value to include dynamic module output then strip it out afterwards
-	if ($specialmodules)
-	{
-		$modids = $specialmodules->get("modid", array());
-		if (count($modids)>0){
-			$modvals = $specialmodules->get("modval", array());
-			// not sure how this can arise :(
-			if (is_object($modvals)){
-				$modvals = get_object_vars($modvals);
-			}
-			for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
-				$template_value .= "{{MODULESTART#".$modids[$count]."}}";
-				$template_value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
-				$template_value .= "{{MODULEEND}}";
-			}
-		}
-	}
 
 	for ($i = 0; $i < count($matchesarray[0]); $i++)
 	{
@@ -573,6 +581,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ENDTIME}}";
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
+
+						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
+						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
+						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
+						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
+
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
 						$blank[] = "";
@@ -612,6 +626,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{MULTIENDDATE}}";
 						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
 						$blank[] = "";
+
+						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
+						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
+						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
+						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 
 						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
 						{
@@ -1038,8 +1057,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		{
 			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0)
 			{
+				if (!isset($rawreplace[$search[$s]])){
+					continue;
+				}
 				global $tempreplace, $tempevent, $tempsearch;
-				$tempreplace = $replace[$s];
+				$tempreplace = $rawreplace[$search[$s]];
 				$tempsearch = str_replace("}}",";.*?}}",$search[$s]);
 				$tempevent = $event;
 				$template_value = preg_replace_callback("|$tempsearch|", 'jevSpecialDateFormatting', $template_value);
@@ -1212,7 +1234,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			if (count($parts) == 2)
 			{
 				$fmt = str_replace("}}", "", $parts[1]);
-				return strftime($fmt, strtotime(strip_tags($tempreplace)));
+				//return strftime($fmt, strtotime(strip_tags($tempreplace)));
+				return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
 			}
 			else
 			{

@@ -9,6 +9,7 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 // TODO replace with JevDate
 

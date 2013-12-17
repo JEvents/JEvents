@@ -14,6 +14,7 @@ jimport('joomla.application.component.helper');
 
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 /**
  * Finder adapter for com_jevents.

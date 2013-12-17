@@ -212,6 +212,9 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+	if (JEVHelper::getItemid()>0){
+		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
+	}
 	?>
 						// reformat start and end dates  to Y-m-d format
 						reformatStartEndDates();

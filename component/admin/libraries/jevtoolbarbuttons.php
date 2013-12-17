@@ -13,7 +13,7 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('cms.toolbar.button');
-	
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 /* 
  * 
  * Joomla 3.0 version
