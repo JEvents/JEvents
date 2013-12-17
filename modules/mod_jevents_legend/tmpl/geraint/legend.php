@@ -85,9 +85,9 @@ class GeraintModLegendView extends DefaultModLegendView{
 				$c++;
 			}
 		}
-
+		$jevleghelper = new modJeventsLegendHelper();
 		if ($catidList == "" && $params->get("catid0", "xxx") == "xxx") {
-			modJeventsLegendHelper::getAllCats($this->_params,$catids,$catidList);
+			$jevleghelper->getAllCats($this->_params,$catids,$catidList);
 		}
 
 		$separator = $params->get("catseparator","|");
