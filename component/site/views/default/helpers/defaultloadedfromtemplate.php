@@ -1134,6 +1134,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// non greedy replacement - because of the ?
 		$template_value = preg_replace_callback('|{{.*?}}|', 'cleanUnpublished', $template_value);
 
+		// replace [[ with { to that other content plugins can work ok - but not for calendar cell or tooltip since we use [[ there already!
+		if ($template_name!="month.calendar_cell" && $template_name!="month.calendar_tip"){
+			$template_value = str_replace(array("[[","]]"), array("{","}"), $template_value);
+		}
+		
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
 		$template_value = str_replace("@", "@£@", $template_value);
 		$params = new JRegistry(null);

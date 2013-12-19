@@ -734,6 +734,17 @@ class JEventsAbstractView extends JViewLegacy
 		ob_start();
 		foreach ($this->customfields as $key => $val)
 		{
+			/*
+			static $firstperson = false;
+			if (!$firstperson && strpos($key, "people") && $key!=$people && isset($this->customfields["people"])){
+				$this->customfields[$key]["input"] = $this->customfields["people"]["label"] . $this->customfields[$key]["input"];
+				$firstperson = true;
+			}
+			 */
+			// not ideal it creates duplicate ULS - but if we don't duplicate they may not show
+			if (strpos($key, "people")===0 && $key!="people" && isset($this->customfields["people"])){
+				//$this->customfields[$key]["input"] = $this->customfields["people"]["input"] . $this->customfields[$key]["input"];
+			}
 			$this->searchtags[] = '{{' . $key . '}}';
 			$this->replacetags[] = $this->customfields[$key]["input"];
 			$this->blanktags[] = "";

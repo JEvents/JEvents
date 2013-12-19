@@ -48,6 +48,16 @@ if (JevJoomlaVersion::isCompatible("1.6.0")){
 }
 */
 // See http://www.php.net/manual/en/timezones.php
+
+// If progressive caching is enabled then remove the component params from the cache!
+/* Bug fixed in Joomla 3.2.1 ??
+$joomlaconfig = JFactory::getConfig();
+if ($joomlaconfig->get("caching",0)==2){
+	$cacheController = JFactory::getCache('_system', 'callback');
+	$cacheController->cache->remove("com_jevents");
+}
+ *
+ */
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 	$timezone= date_default_timezone_get();
