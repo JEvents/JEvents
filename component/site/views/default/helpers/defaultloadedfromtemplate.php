@@ -153,7 +153,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	for ($i = 0; $i < count($matchesarray[0]); $i++)
 	{
-		$strippedmatch = preg_replace('/(#|:)+[^}]*/', '', $matchesarray[0][$i]);
+		$strippedmatch = preg_replace('/(#|:|;)+[^}]*/', '', $matchesarray[0][$i]);
 
 		if (in_array($strippedmatch, $search))
 		{

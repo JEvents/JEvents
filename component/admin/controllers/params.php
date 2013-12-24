@@ -171,7 +171,15 @@ class AdminParamsController extends JControllerAdmin
 		
 		// Clear cache of com_config component.
 		$this->cleanCache('_system');
-		
+
+		// If caching is enabled then remove the component params from the cache!
+		// Bug fixed in Joomla 3.2.1 ??
+		$joomlaconfig = JFactory::getConfig();
+		if ($joomlaconfig->get("caching",0)){
+			$cacheController = JFactory::getCache('_system', 'callback');
+			$cacheController->cache->remove("com_jevents");
+		}
+
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':

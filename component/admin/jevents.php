@@ -73,6 +73,24 @@ if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
 
+// Backend of JEvents needs Boostrap and jQuery
+/*
+if (JevJoomlaVersion::isCompatible("3.0")){
+	JHtml::_('jquery.framework');
+	JHtml::_('behavior.framework', true);
+	JHtml::_('bootstrap.framework');
+	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+}
+else {
+	// Make loading this conditional on config option
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/jQnc.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/bootstrap.min.js");
+	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+}
+
+ */
+
 // Must also load frontend language files
 $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
