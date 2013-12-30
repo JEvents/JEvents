@@ -621,7 +621,7 @@ class JEventsHTML
 			}
 			else
 			{
-				$dayname = '<span>'. JEVHelper::getDayName($i) . '</span>';
+				$dayname = JEVHelper::getDayName($i);
 			}
 			return $dayname;
 
