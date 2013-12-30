@@ -31,6 +31,28 @@ $browser = JBrowser::getInstance();
 
 $registry = JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
+/*
+if (JevJoomlaVersion::isCompatible("3.0")){
+	JHtml::_('jquery.framework');
+	JHtml::_('behavior.framework', true);
+	JHtml::_('bootstrap.framework');
+}
+else {
+	// Make loading this conditional on config option
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/jQnc.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/bootstrap.min.js");
+	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+}
+ */
+/*
+ * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
+$jevversion = JEventsVersion::getInstance();
+AkeebaStrapper::$tag = $jevversion->getShortVersion();
+AkeebaStrapper::bootstrap();
+AkeebaStrapper::jQueryUI();
+ * 
+ */
 
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,
