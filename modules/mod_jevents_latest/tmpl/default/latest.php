@@ -198,7 +198,12 @@ class DefaultModLatestView
 		}
 		else
 		{
-			return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
+			if (strpos($link, "tmpl=component")){
+				return '<a href="' . $link . '" ' . $class . '  >' . $text . '</a>';
+			}
+			else {
+				return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
+			}
 		}
 
 	}
@@ -459,7 +464,12 @@ class DefaultModLatestView
 									foreach ($ebrd as $evt)
 									{
 										// could test on devent detail but would need another config option
-										if ($row->ev_id() == $evt->ev_id())
+										if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+										{
+											$eventAlreadyAdded = true;
+											break;
+										}
+										else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
 										{
 											$eventAlreadyAdded = true;
 											break;
@@ -548,7 +558,12 @@ class DefaultModLatestView
 										foreach ($ebrd as $evt)
 										{
 											// could test on devent detail but would need another config option
-											if ($row->ev_id() == $evt->ev_id())
+											if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+											{
+												$eventAlreadyAdded = true;
+												break;
+											}
+											else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
 											{
 												$eventAlreadyAdded = true;
 												break;
@@ -564,7 +579,12 @@ class DefaultModLatestView
 										foreach ($eventsThisDay as $evt)
 										{
 											// could test on devent detail but would need another config option
-											if ($row->ev_id() == $evt->ev_id())
+											if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+											{
+												$eventAlreadyAdded = true;
+												break;
+											}
+											else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
 											{
 												$eventAlreadyAdded = true;
 												break;

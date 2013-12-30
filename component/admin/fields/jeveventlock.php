@@ -3,6 +3,7 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 class JFormFieldJeveventlock extends JFormField
 {

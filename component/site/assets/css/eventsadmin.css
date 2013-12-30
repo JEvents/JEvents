@@ -104,16 +104,9 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	-webkit-transition-property:
-		background-position,
-		-webkit-border-bottom-left-radius,
-		-webkit-box-shadow;
-	-moz-transition-property:
-		background-position,
-		-moz-border-radius-bottomleft,
-		-moz-box-shadow;
 	-webkit-transition-duration: 0.8s;
 	-moz-transition-duration: 0.8s;
+	transition-duration: 0.8s;
 }
 
 #cpanel div.icon a:hover,
@@ -292,6 +285,16 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 
 .hiddenDifficulty  {
 	display: none;
+}
+
+#myParamsTabs {
+    background-color: #FFFFFF;
+    border-bottom-left-radius: 5px;
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-top-left-radius: 5px;
+    border-width: 1px 0 1px 1px;
+    margin-right: -1px;
 }
 #myParamsTabsContent table.paramlist {
     width: 100%;

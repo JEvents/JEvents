@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 class modDetailHelper
 {
 
-	function getDetailBody($modid)
+	public static function getDetailBody($modid)
 	{
 		if (trim($modid)=="") {
 			return false;

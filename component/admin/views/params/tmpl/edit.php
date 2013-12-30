@@ -269,6 +269,15 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					$layoutform = JForm::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
 					$layoutform->bind($this->component->params);
 
+					if (JFile::exists(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml")){
+						$xml = simplexml_load_file(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml");
+						$layoutname = (string) $xml->name;
+						$langfile = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
+						$lang = JFactory::getLanguage();
+						$source = $path;
+						 $lang->load($langfile , JPATH_SITE, null, false, true);
+					}
+
 					$fieldSets = $layoutform->getFieldsets();
 					$html = array();
 					$hasconfig = false;

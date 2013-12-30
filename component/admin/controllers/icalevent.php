@@ -647,7 +647,7 @@ class AdminIcaleventController extends JControllerAdmin
 				else
 				{
 					if (JFactory::getUser()->id>0){
-						JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
+						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
 					}
 					else {
 						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);

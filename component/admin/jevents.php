@@ -48,6 +48,16 @@ if (JevJoomlaVersion::isCompatible("1.6.0")){
 }
 */
 // See http://www.php.net/manual/en/timezones.php
+
+// If progressive caching is enabled then remove the component params from the cache!
+/* Bug fixed in Joomla 3.2.1 ??
+$joomlaconfig = JFactory::getConfig();
+if ($joomlaconfig->get("caching",0)==2){
+	$cacheController = JFactory::getCache('_system', 'callback');
+	$cacheController->cache->remove("com_jevents");
+}
+ *
+ */
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 	$timezone= date_default_timezone_get();
@@ -62,6 +72,24 @@ $user      = JFactory::getUser();
 if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
+
+// Backend of JEvents needs Boostrap and jQuery
+/*
+if (JevJoomlaVersion::isCompatible("3.0")){
+	JHtml::_('jquery.framework');
+	JHtml::_('behavior.framework', true);
+	JHtml::_('bootstrap.framework');
+	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+}
+else {
+	// Make loading this conditional on config option
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/jQnc.js");
+	JFactory::getDocument()->addScript("components/com_jevents/assets/js/bootstrap.min.js");
+	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+}
+
+ */
 
 // Must also load frontend language files
 $lang = JFactory::getLanguage();

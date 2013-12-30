@@ -2,6 +2,7 @@
 
 // No direct access
 defined('JPATH_BASE') or die;
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 // Class to fix Joomla 1.6 date class bugs
 jimport("joomla.utilities.date");

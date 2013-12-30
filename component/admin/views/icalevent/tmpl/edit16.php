@@ -194,6 +194,10 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+	if (JEVHelper::getItemid()>0){
+		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
+	}
+
 	?>
 					// reformat start and end dates  to Y-m-d format
 					reformatStartEndDates();
@@ -442,12 +446,14 @@ else
 
 <?php
 $editpagecode = ob_get_clean();
+if (!JFactory::getApplication()->isAdmin()) {
 // fix for bad HTML in tabs!
-//$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
-//$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
+	$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
+	$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
 // Remove chosen/bootstrap styling if required
-//$editpagecode = str_replace(" btn-group","",$editpagecode);
-//$editpagecode = str_replace(" btn-success","",$editpagecode);
-//$editpagecode = str_replace(" btn","",$editpagecode);
-//$editpagecode = str_replace("btn ","",$editpagecode);
+	$editpagecode = str_replace(" btn-group", "", $editpagecode);
+	$editpagecode = str_replace(" btn-success", "", $editpagecode);
+	$editpagecode = str_replace(" btn", "", $editpagecode);
+	$editpagecode = str_replace("btn ", "", $editpagecode);
+}
 echo $editpagecode;

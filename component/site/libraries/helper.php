@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.access.access');
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 /**
  * Helper class with common functions for the component and modules
