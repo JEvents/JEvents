@@ -89,7 +89,7 @@ else {
 	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
 }
 
- */
+*/
 
 // Must also load frontend language files
 $lang = JFactory::getLanguage();

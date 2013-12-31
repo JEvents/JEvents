@@ -364,10 +364,21 @@ class JEventsDBModel
 				// published state is now handled by filter
 				//. "\n AND ev.state=1"
 				. ($needsgroup ? $groupby : "");
-		$query .= " ORDER BY ev.created DESC ";
+		$query .= " ORDER BY ev.created DESC , rpt.startrepeat ASC ";
 		//echo str_replace("#__", 'jos_', $query);
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
+
+		// make sure we have the first repeat in each instance
+		foreach ($rows as &$row){
+			if (strtolower($row->freq())!="none" && $noRepeats){
+				$repeat = $row->getFirstRepeat();
+				if ($repeat->rp_id() != $row->rp_id()){
+					$row = $this->listEventsById($repeat->rp_id());
+				}
+			}
+		}
+		unset($row);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
