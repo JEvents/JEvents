@@ -150,7 +150,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                     {
                             foreach ($this->requiredtags as $tag)
                             {
-                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});";
+                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});\n";
                             }
                     }
                     ?>
@@ -169,13 +169,12 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				var editorElement = $('jevcontent');
 				if (editorElement)
 				{
-<?php echo $this->editor->save('jevcontent'); ?>
+					<?php
+					echo $this->editor->save('jevcontent');
+					?>
 				}
-
 				try {
-                                    
-                                    
-if (!JevStdRequiredFields.verify(document.adminForm)) {
+					if (!JevStdRequiredFields.verify(document.adminForm)){
 						return;
 					}
 					if (!JevrRequiredFields.verify(document.adminForm)) {

@@ -144,11 +144,10 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                     {
                             foreach ($this->requiredtags as $tag)
                             {
-                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});";
+                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});\n";
                             }
                     }
                     ?>
-			<!--
 			Joomla.submitbutton = function (pressbutton) {
 
 				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
@@ -161,13 +160,13 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-<?php echo $this->editor->save('jevcontent'); ?>
-		
+				<?php
+				echo $this->editor->save('jevcontent');
+				?>
 		try {
-                                    
-                                                      if (!JevStdRequiredFields.verify(document.adminForm)) {
-						return;
-					}
+			if (!JevStdRequiredFields.verify(document.adminForm)){
+				return;
+			}
 			if (!JevrRequiredFields.verify(document.adminForm)){
 				return;
 			}

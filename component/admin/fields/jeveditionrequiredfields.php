@@ -34,6 +34,8 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 		//we dinamically get the size of the select box
 		$size = 5;
 		//$options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
+		// title is always required
+		//$options['TITLE'] = JText::_("JEV_FIELD_TITLE",true);
 		$options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION",true);
 		$options['LOCN'] = JText::_("JEV_FIELD_LOCATION",true);
 		$options['CONTACT'] = JText::_("JEV_FIELD_CONTACT",true);
