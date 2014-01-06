@@ -786,17 +786,18 @@ div.new-navigation {margin:auto auto;display:inline-block; width:100%;}
 .nav-items {margin-left:auto;margin-right:auto;text-align:center; display:inline-block;width:93%; }
 #jevents_body .nav-items div.active a, .jev_header2 .active a {background-color:#ff3b30; color:#FFF;}
 #jevents_body .nav-items div.active a:hover, .jev_header2 .active a:hover {background-color:#FFF; border-left: 1px solid #ff3b30;}
-.nav-items > div {margin-left:-4px;display:inline-block;padding:8px 0px 8px 0px;vertical-align:middle;border:1px solid #ff3b30;border-left:0px; }
+.nav-items > div {margin-left:-4px;display:inline-block;padding: 3px 0px 2px 0px;line-height:23px;vertical-align:middle;border:1px solid #ff3b30;border-left:0px; }
 .nav-items > div a {padding:8px 12px 8px 12px;}
 #jevents_body .nav-items > div a:hover {padding:8px 12px 8px 12px;background-color:#CCC;border-left:1px solid #ff3b30;color:#000;}
 .nav-items > div:first-child {border-radius:5px 0 0 5px;border-left:1px solid #ff3b30;}
 .nav-items > div:last-child {border-radius:0 5px 5px 0;border-right:1px solid #ff3b30;}
 .nav-items > div:first-child a:hover {border-radius:5px 0 0 5px;}
 .nav-items > div:last-child a:hover {border-radius:0 5px 5px 0;}
-.new-navigation #nav-search {display:inline-block; float:right;}
-.month_date {min-height:25px;display:inline-block;width:20%;padding-left:10px;vertical-align:top;}
-.month_date h3, .month_date h2 {display:inline-block;}
-.month_date h3 {padding-left:6px;}
+.new-navigation #nav-search {display:inline-block; float:right;padding-right:10px;}
+.month_date {min-height:25px;display:inline-block;width:20%;padding-left:10px;vertical-align:top;margin-bottom:5px;}
+.month_title_year, .month_date, .month_title {display:inline-block;}
+.month_title_year {padding-left:6px;font-size:1.5em;}
+.month_title {font-size:2em;}
 
 #jevents_body .jev_daynum_today span{margin-top:5px;}
 #jevents_body .jev_daynum_today span a {background-color:#ff3b30; padding:4px;border-radius:10px;color:#FFFFFF;}
@@ -849,3 +850,6 @@ border-radius: 4px;
 #jevents_body div.list_no_e {padding:15px;text-align:center; font-size:14px;}
 #jevents_body .jev_daysnames.category {margin-top:0px !important;padding-left:5px ;padding-right:5px ;padding-top:5px;}
 #jev_maincal.jev_listview.category .jev_listrow:first-child {border-bottom:0px;}
+
+#jevents_body .jev_daysnames.category select {background: none;height: 18px;width: 110px;border:1px solid #ddd;font-size:11px;}
+#jevents_body .jev_pagination select#limit.inputbox {width:60px;}

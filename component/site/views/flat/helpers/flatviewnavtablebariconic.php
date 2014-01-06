@@ -32,7 +32,7 @@ class FlatViewNavTableBarIconic
 		$month_date = $view_date->year . "-" . $view_date->month . "-" . $view_date->day;
 		
 		?>
-<div class="month_date"><?php if ($task == "month.calendar") { echo "<h2 class='month_title'>" . date("F", strtotime($month_date)) . ", </h2><h3>  " . date(" Y ", strtotime($month_date)) ."</h3>"; } ?></div>
+<div class="month_date"><?php if ($task == "month.calendar") { echo "<div class='month_title'>" . date("F", strtotime($month_date)) . ", </div><div class='month_title_year'>  " . date(" Y ", strtotime($month_date)) ."</div>"; } ?></div>
 		<div class="new-navigation">
 			<div class="nav-items">
 				<?php if (in_array("byyear", $this->iconstoshow))
