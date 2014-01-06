@@ -210,47 +210,9 @@ class FlatModCalView extends DefaultModCalView {
 			
 		}
 		$content .= "</table>\n";
-		$content .= "</td></tr><tr class='full_cal_link'><td>".$this->getCalendarLink()."</td</tr></table></div>\n";
+		$content .= "</td></tr><tr class='full_cal_link'><td> </td></tr></table></div>\n";
 		
 		return $content;
 	}
 	
-	protected function getCalendarLink()
-	{
-		$menu =  JFactory::getApplication()->getMenu('site');
-		$menuItem = $menu->getItem($this->myItemid);
-		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
-		{
-			$viewlayout = isset($menuItem->query["view"]) ? ($menuItem->query["view"] . "." . $menuItem->query["layout"]) : "calendar.month";
-			$task = isset($menuItem->query["task"]) ? $menuItem->query["task"] : ($menuItem->query["view"] . "." . $menuItem->query["layout"]);
-		}
-		else
-		{
-			$task = "month.calendar";
-		}
-		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
-	
-	}
-	function _htmlLinkCloaking($url = '', $text = '', $class = '')
-	{
-	
-		//$link = JRoute::_($url);
-		// sef already should be already called below
-		$link = $url;
-	
-		if ($this->linkCloaking)
-		{
-			return '<a href="#" onclick="window.location.href=\'' . $link . '\'; return false;" ' . $class . ' >' . $text . '</a>';
-		}
-		else
-		{
-			if (strpos($link, "tmpl=component")){
-				return '<a href="' . $link . '" ' . $class . '  >' . $text . '</a>';
-			}
-			else {
-				return '<a href="' . $link . '" ' . $class . ' target="_top" >' . $text . '</a>';
-			}
-		}
-	
-	}
 }

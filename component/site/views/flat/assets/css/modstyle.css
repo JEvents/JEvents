@@ -120,3 +120,4 @@ table.flatcal_main_t {margin:auto auto;border: 1px solid #DDD; border-radius:8px
 .flatcal_navbar .link_next {padding-right:5px;margin: 0 auto; min-width: 4px;vertical-align:middle;height:18px;text-align:center;}
 .flatcal_navbar .link_prev {padding-left:5px;vertical-align:middle;height:18px;text-align:center;}
 #flatcal_minical .full_cal_link td {padding:3px;text-align:center;font-size:10px; background-color:#F7F7F7;border-top: 1px solid #ddd;}
+.full_cal_link  {height:17px;}
