@@ -1,0 +1,181 @@
+div.ev_navigation , #jevents_body, #jevents_header, .ev_table{
+	width:560px!important;
+}
+#jevents_body table.jevicons {
+	width:557px;
+}
+.jev_toprow .jev_header {
+	width:553px;
+}
+.jev_toprow .jev_header2 {
+	width:555px;
+}
+#jevents_body .jev_toprow h2 {
+    width:260px;
+}
+#jevents_body .jev_toprow div.today {
+    width:220px;
+}
+.jev_toprow div.previousmonth , .jev_toprow div.nextmonth {  
+    width:152px;
+}
+.jev_toprow div.currentmonth{ 
+   width:228px;
+}
+
+.jev_listview div.currentmonth{ 
+   width:250px;
+}
+
+.jev_toprow {
+	width:555px;
+}
+.jev_topleft {
+	width:23px;
+}
+.jev_daysnames {
+    width:76px;
+}
+ .jev_pagination {
+	width:555px;
+}
+.jev_listview .jev_daysnames{
+	width:545px;
+}
+
+.jev_listview .jev_listrow {
+	width:555px;
+}
+
+table.jev_row {
+   	background:url(../images/back555g.jpg) repeat-y transparent top left;
+}
+.jeventsdark table.jev_row {
+   	background:url(../images/back555d.png) repeat-y transparent top left;
+}
+table.jev_row td {
+	border-spacing:0px;
+}
+table.jev_eventsrow td {
+	width:75px;
+}
+
+table.jev_eventsrow .jev_weeknum{
+	width:23px;
+}
+#jevents_body .event_legend_container {
+	width:555px;
+}
+
+td.jevdaydata {
+	width:532px;
+}
+div.eventfull div{
+	width:64px;
+}
+
+div.jev_dayoutofmonth {
+	width:75px;
+}
+div.jev_lastday {
+	width:74px;
+	border-right-width:0px;
+}
+div.jev_lastdaynum {
+	width:73px!important;
+	border-right-width:0px;
+}
+
+div.jev_daynum {
+	width:74px;
+}
+
+div.jevblocks0 {
+	width:0px!important;
+}
+div.jevblocks0 div.eventfull {
+}
+
+div.jevblocks1{
+	width:76px!important;
+	min-height:1px;
+}
+div.jevblocks1 div.eventfull{
+	width:72px!important;
+}
+
+div.jevblocks2 {
+	width:151px!important;
+}
+div.jevblocks2 div.eventfull{
+	width:148px!important;
+}
+div.jevblocks2 div.eventfull div{
+	width:140px;
+}
+
+div.jevblocks3 {
+	width:227px!important;
+}
+div.jevblocks3 div.eventfull{
+	width:224px!important;
+}
+div.jevblocks3 div.eventfull div{
+	width:216px;
+}
+
+div.jevblocks4 {
+	width:303px!important;
+}
+div.jevblocks4 div.eventfull{
+	width:300px!important;
+}
+div.jevblocks4 div.eventfull div{
+	width:292px;
+}
+
+div.jevblocks5 {
+	width:379px!important;
+}
+div.jevblocks5 div.eventfull{
+	width:376px!important;
+}
+div.jevblocks5 div.eventfull div{
+	width:368px;
+}
+
+div.jevblocks6 {
+	width:455px!important;
+}
+div.jevblocks6 div.eventfull{
+	width:452px!important;
+}
+div.jevblocks6 div.eventfull div{
+	width:444px;
+}
+
+div.jevblocks7 {
+	width:528px!important;
+}
+div.jevblocks7 div.eventfull{
+	width:528px!important;
+}
+div.jevblocks7 div.eventfull div{
+	width:520px;
+}
+
+
+/* RTL changes */
+table.jevrtl table.jev_row {
+   	background:url(../images/back555r.jpg) repeat-y transparent top left;
+}
+
+table.jevrtl div.jev_daynum {
+	width:74px;
+}
+table.jevrtl div.jev_lastday {
+	width:76px;
+}
+table.jevrtl div.jev_lastdaynum {
+	width:73px;
+}
