@@ -26,7 +26,7 @@
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
-				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX" description="JEV_LATEST_MODULE_CLASS_SUFFIX_DESC" />
+				<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 				<field name="ignorecatfilter" type="radio" class="btn-group" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP">
