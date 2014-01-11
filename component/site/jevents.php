@@ -50,8 +50,7 @@ else {
                 . "// dynamicJQueryLoader();"
                 . "checkJQ();");
 }
-*/
-/*
+ /*
  * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
 $jevversion = JEventsVersion::getInstance();
 AkeebaStrapper::$tag = $jevversion->getShortVersion();
