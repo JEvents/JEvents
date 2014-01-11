@@ -23,6 +23,13 @@ class AdminParamsViewParams extends JEventsAbstractView
 	function edit()
 	{
 
+		$this->editor =  JFactory::getEditor();
+		if ($this->editor->get("_name") == "codemirror")
+		{
+			$this->editor = JFactory::getEditor("none");
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+		}
+
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));
 
