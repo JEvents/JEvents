@@ -18,7 +18,6 @@ var jevjq;
 function checkJQ() {
     //alert(typeof $);
     if (window.jQuery && jQuery.fn) {
-        alert('needed');
         jevjq = jQuery.noConflict();
     }
 }
@@ -26,7 +25,6 @@ checkJQ();
 /*
 function dynamicallyLoadJQuery(){
     if (window.jQuery && jQuery.fn) {
-        alert('needed');
         jevjq = jQuery.noConflict();
     }
     else {
