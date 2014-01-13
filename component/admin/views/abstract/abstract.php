@@ -619,7 +619,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->setValue("jevcontent", null, $this->row->content());
 		if ($params->get('com_show_editor_buttons'))
 		{
-			$this->form->setFieldAttribute("jevcontent", "buttons", $params->get('com_editor_button_exceptions'));
+			$this->form->setFieldAttribute("jevcontent", "hide", $params->get('com_editor_button_exceptions'));
 		}
 		else
 		{

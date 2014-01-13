@@ -31,7 +31,7 @@ $browser = JBrowser::getInstance();
 
 $registry = JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
-/*
+
 if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
 	JHtml::_('behavior.framework', true);
@@ -40,12 +40,17 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 else {
 	// Make loading this conditional on config option
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
-	JFactory::getDocument()->addScript("components/com_jevents/assets/js/jQnc.js");
-	JFactory::getDocument()->addScript("components/com_jevents/assets/js/bootstrap.min.js");
-	JFactory::getDocument()->addStylesheet("components/com_jevents/assets/css/bootstrap.css");
+        //JFactory::getDocument()->addScript("//www.google.com/jsapi");
+	JFactory::getDocument()->addScript("/components/com_jevents/assets/js/jQnc.js");
+	//JFactory::getDocument()->addScript("/components/com_jevents/assets/js/bootstrap.min.js");
+	//JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
+        // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+        JFactory::getDocument()->addScriptDeclaration(""
+                . "// Dynamic loading version"
+                . "// dynamicJQueryLoader();"
+                . "checkJQ();");
 }
- */
-/*
+ /*
  * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
 $jevversion = JEventsVersion::getInstance();
 AkeebaStrapper::$tag = $jevversion->getShortVersion();
@@ -234,30 +239,9 @@ else
 }
 
 // create live bookmark if requested
+JEVHelper::processLiveBookmmarks();
+
 $cfg = JEVConfig::getInstance();
-if ($cfg->get('com_rss_live_bookmarks'))
-{
-	$Itemid = JRequest::getInt('Itemid', 0);
-	$rssmodid = $cfg->get('com_rss_modid', 0);
-	// do not use JRoute since this creates .rss link which normal sef can't deal with
-	$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
-	$rssLink = JUri::root() . $rssLink;
-
-	if (method_exists(JFactory::getDocument(), "addHeadLink"))
-	{
-		$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
-	}
-
-	$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=atom&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
-	$rssLink = JUri::root() . $rssLink;
-	//$rssLink = JRoute::_($rssLink);
-	if (method_exists(JFactory::getDocument(), "addHeadLink"))
-	{
-		$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-		JFactory::getDocument()->addHeadLink($rssLink, 'alternate', 'rel', $attribs);
-	}
-}
 
 // Add reference for constructor in registry - unfortunately there is no add by reference method
 // we rely on php efficiency to not create a copy
@@ -278,87 +262,10 @@ if ($tz && is_callable("date_default_timezone_set"))
 	date_default_timezone_set($timezone);
 }
 
+JEVHelper::getFilterValues();
 
 // If Joomla caching is enabled then we have to manage progressive caching and ensure that session data is taken into account.
-$conf = JFactory::getConfig();
-if ($conf->get('caching', 1))
-{
-	// Joomla  3.0 safe cache parameters
-	$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT');
-	$app = JFactory::getApplication();
-
-	$filtervars = JRequest::get();
-	if (is_array($filtervars))
-	{
-		foreach ($filtervars as $fvk => $fvv)
-		{
-			if (strpos($fvk, "_fv") > 0)
-			{
-				if (is_array($fvv))
-				{
-					$safeurlparams[$fvk] = "ARRAY";
-				}
-				else
-				{
-					$safeurlparams[$fvk] = "STRING";
-					//echo $fvk."= ".$fvv."<br/>";;
-				}
-			}
-		}
-	}
-
-	$session = JFactory::getSession();
-	$sessionregistry = $session->get('registry');
-	$sessionArray = isset($sessionregistry) ? $sessionregistry->toArray(): false;
-	$sessionArrayData = array();
-	if (is_array($sessionArray))
-	{
-		$specialcount = 0;
-		foreach ($sessionArray as $sak => $sav)
-		{
-			if (strpos($sak, "_fv_ses") > 0)
-			{
-				$sessionArrayData[$sak] = $sav;
-				$specialcount += (($sak == "published_fv_ses" || $sak == "justmine_fv_ses") &&  $sav==0) ? 1 : 0;
-			}
-		}
-		// special case when published and justmine the only filters and these are the default values
-		if (count($sessionArrayData) == 2 && $specialcount == 2)
-		{
-			$sessionArrayData = array();
-		}
-	}
-	if ($sessionArrayData > 0)
-	{
-		$safeurlparams["sessionArray"] = "STRING";
-		//var_dump($sessionArrayData);	
-		JRequest::setVar("sessionArray", md5(serialize($sessionArrayData)));
-
-		// if we have session data then stock progressive caching
-		if ($conf->get('caching', 1) == 2)
-		{
-			$conf->set('caching', 1);
-		}
-	}
-
-	if (!empty($app->registeredurlparams))
-	{
-		$registeredurlparams = $app->registeredurlparams;
-	}
-	else
-	{
-		$registeredurlparams = new stdClass;
-	}
-
-	foreach ($safeurlparams as $key => $value)
-	{
-		// Add your safe url parameters with variable type as value {@see JFilterInput::clean()}.
-		$registeredurlparams->$key = $value;
-	}
-
-	$app->registeredurlparams = $registeredurlparams;
-	
-}
+JEVHelper::parameteriseJoomlaCache();
 
 //list ($usec, $sec) = explode(" ", microtime());
 //$time_end = (float) $usec + (float) $sec;

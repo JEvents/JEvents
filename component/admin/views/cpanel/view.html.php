@@ -787,6 +787,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
+                if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=1000){
+                    JError::raiseNotice(234,JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")));
+                }
+                
+
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
@@ -852,6 +857,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"jevcustomfields","name"=>"jevcustomfields","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - Dynamic legend
 			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
+			// Silver - Calendar Plus
+			array("element"=>"mod_jevents_calendarplus","name"=>"mod_jevents_calendarplus","type"=>"module"),
 			// Silver - facebook
 			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - featured
