@@ -13,6 +13,17 @@
 defined('_JEXEC') or die();
 if (count($filterHTML) > 0)
 {
+	if (version_compare(JVERSION, '3.0.0', ">="))
+	{
+		if ($params->get("bootstrapchosen", 1))
+		{
+			JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		}
+		if ($params->get("bootstrapcss", 1))
+		{
+			JHtmlBootstrap::loadCss();
+		}
+	}
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", true);
 	?>
