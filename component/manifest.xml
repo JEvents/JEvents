@@ -26,6 +26,7 @@
 		<folder>views/day</folder>
 		<folder>views/default</folder>
 		<folder>views/ext</folder>
+		<folder>views/flat</folder>
 		<folder>views/geraint</folder>
 		<folder>views/icalevent</folder>
 		<folder>views/icalrepeat</folder>
