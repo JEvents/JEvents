@@ -1,0 +1,123 @@
+#flatcal_minical table tr,#flatcal_minical table td{
+	border:none;
+}
+#flatcal_minical .flatcal_navbar {
+	background-color:#f7f7f7;
+	border-bottom: 1px solid #DDD;
+}
+#flatcal_minical .flatcal_tiny_add_event_link {
+	font-family: Verdana;
+	font-size: 9px;
+	font-weight: normal;
+	color:#575767;
+	text-decoration: none;
+}
+#flatcal_minical TABLE.flatcal_weekdays {
+	border-top: 1px solid #FFFFFF;
+	width:135px;
+	border-collapse:collapse;
+	border-spacing:0px;
+	border-width:0px;
+	text-align:center;
+}
+#flatcal_minical TD.flatcal_weekdays {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: normal;
+	color: #333333;
+	text-decoration: none;
+	padding-top: 4px;
+	vertical-align:top;
+	height:24px;
+	text-align:center;
+}
+#flatcal_minical .flatcal_small {
+	font-family: Verdana;
+	font-size: 9px;
+	color:#575767;
+	text-decoration: none;
+}
+#flatcal_minical .flatcal_small:link,#flatcal_minical .flatcal_small:visited {
+	text-decoration: none;
+}
+#flatcal_minical .flatcal_small:hover {
+	text-decoration: underline;
+}
+
+#flatcal_minical .flatcal_daycell,#flatcal_minical .flatcal_todaycell,
+#flatcal_minical .flatcal_sundaycell,#flatcal_minical .flatcal_othermonth {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: bold;
+	font-style: normal;
+	text-decoration: none;
+	color:#555555;
+	background-repeat: no-repeat;
+	background-position: center center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+#flatcal_minical .flatcal_todaycell {
+	color:#99AAAA;
+}
+
+#flatcal_minical .flatcal_sundaycell {
+	color:#99AAAA;
+}
+
+#flatcal_minical .flatcal_othermonth {
+	color:#99AAAA;
+}
+
+#flatcal_minical .flatcal_daylink, #flatcal_minical .flatcal_sundaylink,
+#flatcal_minical .flatcal_busylink  {
+	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	font-size: 9px;
+	font-weight: bold;
+	font-style: normal;
+	text-decoration: none;
+}
+
+#flatcal_minical .flatcal_daylink:link,#flatcal_minical .flatcal_daylink:visited {
+	color:#555555;
+}
+
+#flatcal_minical .flatcal_busylink:link,#flatcal_minical .flatcal_busylink:visited { 
+	color:#2266EE;
+	text-decoration: none; 
+}
+
+#flatcal_minical .flatcal_sundaylink:link,#flatcal_minical .flatcal_sundaylink:visited {
+	color:#99AAAA;
+}
+
+#flatcal_minical .flatcal_month_label {
+	width:98%;
+	font-size: 10px;
+	font-weight: bold;
+	color: #565666;
+	vertical-align:middle;
+	height:18px;
+	text-align:center;
+}
+#flatcal_minical .flatcal_picture 
+#flatcal_minical .flatcal_weekcell {
+  margin: 0px;
+  padding: 0px;
+  text-align:center;
+}
+
+#flatcal_minical a {background-color: transparent;}
+.mod_events_link {
+	cursor:pointer;
+}
+#flatcal_minical .flatcal_todaycell a{color:#fff !important; padding:3px;border: 1px solid #ff3b30; background-color:#ff3b30;border-radius:20px;}
+#flatcal_minical .flatcal_todaycell a:hover{color:#555555 !important; border: 1px solid #ff3b30; background-color:#fff;}
+table.flatcal_main_t {margin:auto auto;border: 1px solid #DDD; border-radius:8px; background-color: rgb(255, 255, 255);}
+.flatcal_navbar .link_next {padding-right:5px;margin: 0 auto; min-width: 4px;vertical-align:middle;height:18px;text-align:center;}
+.flatcal_navbar .link_prev {padding-left:5px;vertical-align:middle;height:18px;text-align:center;}
+#flatcal_minical .full_cal_link td {padding:3px;text-align:center;font-size:10px; background-color:#F7F7F7;border-top: 1px solid #ddd;}
+.full_cal_link  {height:17px;}

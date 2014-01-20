@@ -15,7 +15,6 @@ if (version_compare(phpversion(), '5.0.0', '<')===true) {
 	echo  '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">'.JText::_("JEV_INVALID_PHP1").'</h3></div>'.JText::_("JEV_INVALID_PHP2").'</div>';
 	return;
 }
-
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
 if (JFile::exists(JPATH_COMPONENT_SITE.'/'."metadata.xml")){
@@ -50,14 +49,13 @@ if (JevJoomlaVersion::isCompatible("1.6.0")){
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
-/* Bug fixed in Joomla 3.2.1 ??
+/* Bug fixed in Joomla 3.2.1 ?? - not always it appears */
 $joomlaconfig = JFactory::getConfig();
-if ($joomlaconfig->get("caching",0)==2){
+if ($joomlaconfig->get("caching",0)){
 	$cacheController = JFactory::getCache('_system', 'callback');
 	$cacheController->cache->remove("com_jevents");
 }
- *
- */
+
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
 	$timezone= date_default_timezone_get();
