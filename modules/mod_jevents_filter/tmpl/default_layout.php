@@ -13,12 +13,6 @@
 defined('_JEXEC') or die();
 if (count($filterHTML) > 0)
 {
-	if (JevJoomlaVersion::isCompatible("3.0") && $params->get("enablebootstrap", 1))
-	{
-		// Load Bookstrap
-		JHtml::_('bootstrap.framework');
-		JHtml::_('formbehavior.chosen', '.jevfiltermodule select');
-	}
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", true);
 	?>

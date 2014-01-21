@@ -2381,6 +2381,8 @@ SCRIPT;
 	public static
 			function getFilterValues()
 	{
+		// This is new experimental code that is disabled for the time being
+		return;
 		$fid = JFactory::getApplication()->input->getInt("jfilter", 0);
 		if ($fid > 0)
 		{
