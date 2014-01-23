@@ -25,6 +25,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function __construct($config = array())
 	{
+		
 		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 		parent::__construct($config);
 
@@ -32,7 +33,11 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$this->jevlayout = "default";
 		$this->addHelperPath(realpath(dirname(__FILE__) . "/../default/helpers"));
 		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
-
+		// stop crawler and set meta tag.
+		JEVHelper::checkRobotsMetaTag();
+		
+		// Call the MetaTag setter function.
+		JEVHelper::SetMetaTags();
 	}
 
 	function edit($tpl = null)
