@@ -81,7 +81,7 @@ class GetjsonController extends JControllerLegacy   {
 		{
 			foreach($day_index['events'] as $event)
 			{
-				$eventArray['date'] = $day_index['year'] ." - ".$day_index['month']." - ".$day_index['d0']. " " .date("G:i",$event->getUnixStartTime());
+				$eventArray['date'] = $day_index['year'] ." - ".$day_index['month']." - ".$day_index['d0']. " " .date("H:i",$event->getUnixStartTime());
 				$eventArray['title'] = $event->title();
 				$link = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid);
 				$eventArray['link'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
