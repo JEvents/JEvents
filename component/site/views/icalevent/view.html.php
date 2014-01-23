@@ -47,17 +47,17 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		if ($this->row->title() <= "")
 		{
-			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
-
 			// Set toolbar items for the page
 			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+
+			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
 		}
 		else
 		{
-			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
-
 			// Set toolbar items for the page
 			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+
+			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 		}
 
 		$bar =  JToolBar::getInstance('toolbar');
