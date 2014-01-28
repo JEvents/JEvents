@@ -123,7 +123,8 @@ div#jevents div.current dd {
 
 /** header icons **/
 div.icon-48-jevents {
-	background: url('../images/logo.gif') transparent no-repeat;
+	background: url('../images/JeventsTransparent.png') transparent no-repeat;
+	background-size: 220px 48px;
 	padding-left:265px!important;
 	line-height:48px;
 }
