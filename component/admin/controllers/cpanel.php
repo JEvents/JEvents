@@ -550,7 +550,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery($sql);			
 		$parent = $db->loadResult();
 
-		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
+		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(alias)="jevents-tags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
 		$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
 			
 		// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them
@@ -618,7 +618,24 @@ class AdminCpanelController extends JControllerAdmin
 			$table->setLocation(1, "last-child");
 			$table->store();
 			}					
-		
+
+		// Fix Tags menu item title if needed
+		$sql = 'UPDATE  #__menu
+		set title = "COM_JEVENTSTAGS"
+		where client_id=1 AND alias="jevents-tags"';
+
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
+		// Fix Managed People menu item if needed
+		$sql = 'UPDATE  #__menu
+		set menutype = "main" where client_id=1 AND menutype="" AND alias="com-jevpeople"';
+
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
 		$updatemenus = false;			
 		if ($params->get("mergemenus", 1)){
 											

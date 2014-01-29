@@ -828,7 +828,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations", "type"=>"package"),
 			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople", "type"=>"package"),
 			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro", "type"=>"package"),
-			array("element"=>"pkg_jevtags","name"=>"com_jevtags", "type"=>"package"),
+			array("element"=>"pkg_jeventstags","name"=>"com_jeventstags", "type"=>"package"),
 
 			// Silver - AnonUsers
 			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.1.15" client="site" method="upgrade">
+<extension type="module" version="3.1.16" client="site" method="upgrade">
 	<name>JEvents CustomModule</name>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2013 GWE Systems Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.1.15</version>
+	<version>3.1.16</version>
 	<description>Displays data from customised event detail or event list layouts</description>
 	<files>
 		<filename>mod_jevents_custom.xml</filename>
