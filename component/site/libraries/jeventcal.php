@@ -352,6 +352,31 @@ class jEventCal {
 		}
 		return "";
 	}
+	function getCategoryImageUrl($multiple=false){
+		$data = $this->getCategoryData();
+		if ($multiple){
+			if (is_array($data)) {
+				$output = "";
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){
+						$output .= JURI::root().$params->image;
+					}
+				}
+				return $output;
+			}
+		}
+		if (is_array($data)) {
+			$data = $data[0];
+		}
+		if ($data){
+			$params = json_decode($data->params);
+			if (isset($params->image) && $params->image!=""){
+				return JURI::root().$params->image;
+			}
+		}
+		return "";
+	}
 	
 	function getCategoryDescription( ){
 		$data = $this->getCategoryData();
