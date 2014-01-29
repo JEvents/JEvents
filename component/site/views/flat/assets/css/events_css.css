@@ -853,3 +853,5 @@ border-radius: 4px;
 
 #jevents_body .jev_daysnames.category select {background: none;height: 18px;width: 110px;border:1px solid #ddd;font-size:11px;}
 #jevents_body .jev_pagination select#limit.inputbox {width:60px;}
+.event_details {padding:10px;}
+#jevents_body #jevcatbar {border:0px;border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;border-radius: 3px 3px 0px 0px;}
