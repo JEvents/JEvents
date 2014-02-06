@@ -1,0 +1,311 @@
+div.ev_navigation , #jevents_body, #jevents_header, .ev_table{
+	width:100%!important;
+}
+#jevents_body table.jevicons {
+	width:100%;
+}
+.jev_toprow .jev_header {
+	width:100%;
+}
+.jev_toprow .jev_header2 {
+	width:100%;
+}
+#jevents_body .jev_toprow h2 {
+    width:auto;
+}
+#jevents_body .jev_toprow div.today {
+    width:auto;
+}
+.jev_toprow div.previousmonth , .jev_toprow div.nextmonth {  
+    width:25%;
+}
+.jev_toprow div.previousmonth {
+	margin-left:1%;
+} 
+.jev_toprow div.nextmonth {
+	margin-right:1%;
+}
+.jev_toprow div.currentmonth{ 
+	width:47%;
+}
+.jev_listview div.currentmonth{ 
+	width:47%;
+}
+
+.jev_toprow {
+	width:100%;
+}
+div.jev_topleft {
+	width:22px !important;
+	background-size: 100% 50% !important;
+}
+.jev_pagination {
+	width:100%;
+}
+.jev_pagination li{
+	margin-right:0px !important;
+}
+.jev_listview .jev_daysnames{
+	width:100%;
+}
+
+.jev_listview .jev_listrow {
+	width:100%;
+}
+
+table.jev_row {
+    width:100%;
+}
+.jeventsdark table.jev_row {
+    width:100%;
+}
+table.jev_row td {
+	border-spacing:0px;
+}
+div.jevdaydata{
+    width:96.6%
+}
+table.jev_row .jev_weeknum{
+    width:23px;
+	background-size:100% !important;
+}
+#jevents_body .event_legend_container {
+	width:100%;
+}
+
+td.jevdaydata div.jevdaydata {
+	width:100%;
+	z-index: 4;
+	position: relative;
+}
+
+div.jev_dayoutofmonth {
+	width: 14.285%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+div.jev_lastday {
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	width: 14.285%;
+	border-right-width:0px;
+}
+div.jev_lastdaynum {
+	padding-left:1% !important;
+    width: 13.285%;
+	border-right-width:0px;
+}
+
+div.jevdaydata div.jev_daynum {
+	padding-left:1% !important;
+    width: 13.285%;
+}
+div.jevdaydata div.jev_daynum span {
+	border:none !important;
+}
+div.jevblocks0 {
+	width:0px!important;
+}
+div.jevblocks0 div.eventfull {
+}
+div.jeveventrow {
+    width:100%;
+    position: relative;
+	z-index: 4;
+}
+div.eventfull{
+    overflow:hidden;
+}
+
+div.jeveventrow  div.jevblocks1 {
+	width:14.285% !important;
+}
+#jevents_body div.jevblocks1 div.eventfull{
+	width:93%!important;
+	padding-left:3% !important;
+	background-color: transparent !important;
+}
+#jevents_body div.jevblocks1 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:#F7F7F7;
+	overflow:hidden;
+}
+/**/
+div.jevblocks2 {
+	width:28.57%!important;
+}
+#jevents_body div.jevblocks2 div.eventfull{
+	width:96.5%!important;
+	padding-left:1.5%;
+	background-color: transparent !important;
+}
+div.jevblocks2 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+div.jevblocks3 {
+	width:42.855%!important;
+}
+#jevents_body div.jevblocks3 div.eventfull{
+	width:97.6%!important;
+	padding-left:1%;
+	background-color: transparent !important;
+}
+div.jevblocks3 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+
+div.jevblocks4 {
+	width:57.14%!important;
+}
+#jevents_body div.jevblocks4 div.eventfull{
+	width:98.2%!important;
+	padding-left:0.75%;
+	background-color: transparent !important;
+}
+div.jevblocks4 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+
+div.jevblocks5 {
+	width:71.425%!important;
+}
+#jevents_body div.jevblocks5 div.eventfull{
+	width:98.6%!important;
+	padding-left:0.6%;
+	background-color: transparent !important;
+}
+div.jevblocks5 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+
+div.jevblocks6 {
+	width:85.71%!important;
+}
+#jevents_body div.jevblocks6 div.eventfull{
+	width:98.8%!important;
+	padding-left:0.5%;
+	background-color: transparent !important;
+}
+div.jevblocks6 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+
+div.jevblocks7 {
+	width:100%!important;
+}
+#jevents_body div.jevblocks7 div.eventfull{
+	width:98.97%!important;
+	padding-left:0.42857142857142857%;
+	background-color: transparent !important;
+}
+div.jevblocks7 div.eventfull div{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-color:rgb(228, 232, 232) !important;
+	overflow:hidden;
+}
+
+table.jevrtl div.jev_daynum {
+	padding-left:1% !important;
+    width: 13.285%;
+}
+table.jevrtl div.jev_lastday {
+	padding-left:1% !important;
+    width: 13.285%;
+}
+table.jevrtl div.jev_lastdaynum {
+	padding-left:1% !important;
+    width: 13.285%;
+}
+div.jev_header2_container{
+	width:100%;
+	float:left;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+span.hiddentime{display:none;}
+/* underlay */
+td.jevdaydata{
+    position:relative;
+    display:inline-block;
+    width:100%;
+    min-height: 81px;
+}
+
+#jevents_body .jev_underlay{
+	position:absolute;
+	width:100%;
+	height:100%;
+	border: solid 1px #ddd;
+	background-color:#FFF;
+}
+
+#jevents_body .jev_underlay .jev_underlay_daynum {
+	float:left;
+	width: 14.285%;
+	position:relative;
+	height:100%;
+}
+#jevents_body .jev_underlay .jev_underlay_daynum > div {
+	border-style:solid;
+	border-width:0px 1px 1px 0px;
+	border-color:#EEF0EF;
+	height:100%;
+}
+
+
+#jevents_body .jev_underlay .jev_underlay_firstdaynum > div {
+	border-width:0px 1px 1px 0px!important;
+	margin:0px 0px 0px 1px;
+}
+.jev_underlay_daynum.jev_underlay_lastdaynum div {
+	border-right-width: 0px!important;
+}
+#jevents_body .jev_underlay .jev_underlay_daynum_today div 
+{
+	background-color: #FFF;
+}
+
+#jevents_body .jev_underlay .jev_underlay_outofmonth_start div
+{
+	background-color: #d4d8d8;
+}
+#jevents_body .jev_underlay .jev_underlay_outofmonth_end div  {
+	background-color: #d4d8d8;
+}
+
+div.jev_daysnames span span{border-width:0px !important;}
