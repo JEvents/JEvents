@@ -142,14 +142,14 @@ class ExtModCalView extends DefaultModCalView
                 
 		$content = <<<START
 <div id="extcal_minical">
-	<table cellspacing="1" cellpadding="0" border="0" align="center" style="border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
+	<table cellspacing="1" cellpadding="0" style="width:$width; text-align:center;border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
 		<tr>
 			<td style="vertical-align: top;">
 START;
 		if( $this->minical_showlink ){
 		$content .= <<<START
 			
-				<table style="width:100%;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
+				<table style="width:$width;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
 					<tr>
 						<td valign="middle" height="18" align="center">
 							$linkprevious
@@ -165,7 +165,7 @@ START;
 START;
 }
 		$content .= <<<START
-				<table style="width:100%; " class="extcal_weekdays">
+				<table style="width:$width;height:$height; " class="extcal_weekdays">
 START;
 		$lf="\n";
 
