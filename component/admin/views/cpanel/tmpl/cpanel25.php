@@ -84,34 +84,41 @@ defined('_JEXEC') or die('Restricted access');
 					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("showPanelNews", 1))
 					{
-						echo JHtml::_('sliders.start', 'cpanel-sliders');
-						echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
-						?>
-						<div style="width: 100%;">
-							<?php echo $this->renderJEventsNews(); ?>
-						</div>
-						<?php
-						$needsupdate = false;
-						$clubnews = $this->renderVersionStatusReport($needsupdate);
-						if ($needsupdate)
-						{
-							$label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
-							$repid = 'updateavailable';
-						}
-						else
-						{
-							$label = JText::_("JEV_VERSION_STATUS_REPORT");
-							$repid = 'statusreport';
-						}
-						if ($clubnews)
-						{
-							echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
+						try {
+
+							echo JHtml::_('sliders.start', 'cpanel-sliders');
+							echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
 							?>
 							<div style="width: 100%;">
-								<?php echo $clubnews; ?>
-							</div> <?php
-					}
-					echo JHtml::_('sliders.end');
+								<?php echo $this->renderJEventsNews(); ?>
+							</div>
+							<?php
+							$needsupdate = false;
+							$clubnews = $this->renderVersionStatusReport($needsupdate);
+							if ($needsupdate)
+							{
+								$label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
+								$repid = 'updateavailable';
+							}
+							else
+							{
+								$label = JText::_("JEV_VERSION_STATUS_REPORT");
+								$repid = 'statusreport';
+							}
+							if ($clubnews)
+							{
+								echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
+								?>
+								<div style="width: 100%;">
+									<?php echo $clubnews; ?>
+								</div> <?php
+							}
+							echo JHtml::_('sliders.end');
+						}
+						catch (Exception $exc) {
+							echo $exc->getMessage();
+						}
+
 				}
 				?>                                    
 				</td>
