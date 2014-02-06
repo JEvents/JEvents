@@ -1,5 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+jimport( 'joomla.application.module.helper' );
 
 function DefaultViewHelperHeader16($view){
 

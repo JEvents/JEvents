@@ -32,7 +32,7 @@ function FlatViewHelperFooter16($view)
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-	if (($params->get('flatscalable', 0) == 1 || $params->get("flatwidth", 905) == "scalable") && (($task == "month.calendar" && !$params->get('flatlistmonth', 0)) || ($task == "week.listevents" && $params->get('flattabularweek', 0)) ))
+	if (($params->get('flatplusscalable', 0) == 1 || $params->get("flatpluswidth", 905) == "scalable") && (($task == "month.calendar" && !$params->get('flatpluslistmonth', 0)) || ($task == "week.listevents" && $params->get('flatplustabularweek', 0)) ))
 	{
 		$baseurl = JURI::root();
 		?>        
@@ -47,17 +47,17 @@ function FlatViewHelperFooter16($view)
 						var narrow = false;
 						if (!myCSS) {
 							if (size.x < 485) {
-								myCSS = Asset.css('<?php echo $baseurl;?>components/com_jevents/views/flat/assets/css/narrowscalable.css', {id: 'myStyle', title: 'myStyle'});
+								myCSS = Asset.css('<?php echo $baseurl;?>components/com_jevents/views/flatplus/assets/css/narrowscalable.css', {id: 'myStyle', title: 'myStyle'});
 								narrow = true;
 							}
 						}
 						else {
 							if (size.x < 485) {
-								myCSS.href = '<?php echo $baseurl;?>components/com_jevents/views/flat/assets/css/narrowscalable.css';
+								myCSS.href = '<?php echo $baseurl;?>components/com_jevents/views/flatplus/assets/css/narrowscalable.css';
 								narrow = true;
 							}
 							else {
-								myCSS.href = '<?php echo $baseurl;?>components/com_jevents/views/flat/assets/css/scalable.css';
+								myCSS.href = '<?php echo $baseurl;?>components/com_jevents/views/flatplus/assets/css/scalable.css';
 								narrow = false;
 							}
 						}

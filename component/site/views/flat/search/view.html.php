@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class FlatViewSearch extends JEventsFlatView 
+class flatViewSearch extends JEventsflatView 
 {
 	
 	function form($tpl = null)

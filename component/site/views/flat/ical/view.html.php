@@ -12,16 +12,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class flatViewICalevent extends JEventsflatView 
+class flatViewIcal extends JEventsflatView 
 {
 	
-	function detail($tpl = null)
-	{
+	function ical($tpl = null)
+	{		
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
@@ -31,13 +32,20 @@ class flatViewICalevent extends JEventsflatView
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 		
-		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day, $this->uid );
-
-		// Dynamic pathway
-		if (isset($this->data['row'])){
-			$pathway = JFactory::getApplication()->getPathway();
-
-			$pathway->addItem($this->data['row']->title() ,"");
-		}
-	}	
+		$this->data = $this->datamodel->getCalendarData($this->year, $this->month, $this->day );
+		
+		// for adding events in day cell
+        $this->popup=false;
+        if ($params->get("editpopup",0)){
+        	JHTML::_('behavior.modal');
+			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+        	$this->popup=true;
+        	$this->popupw = $params->get("popupw",800);
+        	$this->popuph = $params->get("popuph",600);
+        }
+        
+        $this->is_event_creator = JEVHelper::isEventCreator();
+		
+	}
+	
 }
