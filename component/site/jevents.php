@@ -41,14 +41,11 @@ else {
 	// Make loading this conditional on config option
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
         //JFactory::getDocument()->addScript("//www.google.com/jsapi");
-	JFactory::getDocument()->addScript("" .JURI::base() ."/components/com_jevents/assets/js/jQnc.js");
+	JFactory::getDocument()->addScript("" .JURI::base() ."components/com_jevents/assets/js/jQnc.js");
 	//JFactory::getDocument()->addScript("/components/com_jevents/assets/js/bootstrap.min.js");
 	//JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
         // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-        JFactory::getDocument()->addScriptDeclaration(""
-                . "// Dynamic loading version"
-                . "// dynamicJQueryLoader();"
-                . "checkJQ();");
+        JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 }
  /*
  * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
