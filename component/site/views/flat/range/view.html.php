@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class FlatViewRange extends JEventsFlatView 
+class flatViewRange extends JEventsflatView 
 {
 	
 	function listevents($tpl = null)

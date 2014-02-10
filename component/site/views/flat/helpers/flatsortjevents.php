@@ -1,7 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-function Flatsortjevents($view, $a,$b){
+function flatsortjevents($view, $a,$b){
 	if ($a->_publish_up == $b->_publish_up) {
 		return 0;
 	}
