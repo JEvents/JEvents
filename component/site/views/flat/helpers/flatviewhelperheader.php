@@ -122,10 +122,11 @@ function FlatViewHelperHeader($view){
 	?>
 	</tr>
 </table>
-<?php 
+<div class="jev_month_premods"><?php 
 	$view->loadModules("jevprejevents2");
 	$view->loadModules("jevprejevents2_".$task);
-?>
+?></div>
+
 <table class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  echo $params->get("darktemplate",0)?" jeventsdark":"jeventslight "; echo $lang->isRTL()?" jevrtl":" ";?>" id="jevents_body">
 	<tr>
 	<td width="100%">

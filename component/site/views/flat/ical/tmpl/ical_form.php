@@ -5,10 +5,63 @@ $cfg = JEVConfig::getInstance();
 
 $view = $this->getViewName();
 
-echo $this->ExportScript();
+$script = <<<SCRIPT
+function clearIcalCategories(allcats){
+	if(allcats.checked){
+		document.getElements('input[name=categories[]]:checked').each (function(el){
+			if (el.value!=0){
+				el.checked=false;
+			}
+		});
+		$('othercats').style.display='none';
+	}
+	else {
+		document.getElements('input[name=categories[]]').each (function(el){
+			if (el.value!=0 && el.checked==false){
+				el.checked=true;
+			}
+		});
+		$('othercats').style.display='block';		
+	}
+}
+function clearAllIcalCategories(){
+		document.getElements('input[name=categories[]]:checked').each (function(el){
+			if (el.value==0){
+				el.checked=false;
+			}
+		});
+}
+function clearIcalYears(allyears){
+	if(allyears.checked){
+		document.getElements('input[name=years[]]:checked').each (function(el){
+			if (el.value!=0){
+				el.checked=false;
+			}
+		});
+		$('otheryears').style.display='none';		
+	}
+	else {
+		document.getElements('input[name=years[]]').each (function(el){
+			if (el.value!=0 && el.checked==false){
+				el.checked=true;
+			}
+		});
+		$('otheryears').style.display='block';				
+	}
+}
+function clearAllIcalYears(){
+		document.getElements('input[name=years[]]:checked').each (function(el){
+			if (el.value==0){
+				el.checked=false;
+			}
+		});
+}
+
+SCRIPT;
+$doc = JFactory::getDocument();
+$doc->addScriptDeclaration($script);
 	
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
-
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
@@ -59,43 +112,27 @@ if (JRequest::getString("submit","")!="")
 	if ($user->id != 0)
 	{
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
-	} else {
-		$privatelink = "";
-	}
-		
-	echo "<h2 class='ical_generated'>" . JText::_("JEV_ICAL_GENERATED") . "</h2>";
-	
-	echo "<h3 class='export_pub'>" . JText::_("JEV_PUBLIC_EVENTS") . "</h3>";
-	if ($user->id != 0)
-	{
-		echo "<h3 class='export_priv'>" . JText::_("JEV_PUBLIC_AND_PRIVATE_EVENTS") . "</h3>";
-	}
-	
-	if ($cfg->get("show_webcal_url", 0) == 1){
-		echo $this->ExportWebCal($publiclink, $privatelink);
-	}
-	
-	if ($cfg->get("show_ical_download", 1) == 1){
-		echo $this->ExportIcalDownload($publiclink, $privatelink);
 	}
 
-	if ($cfg->get("outlook2003icalexport", 0) == 1)
+	echo "<p><a href='$publiclink'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+	if ($user->id != 0)
 	{
-		echo $this->ExportOutlook2003($publiclink, $privatelink);
+		echo "<p><a href='$privatelink'>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
 	}
-	
-	// New ICAL Export Options for Google,
-	if ($cfg->get("show_webcal_google", 0) == 1){
-		echo $this->ExportGoogle($publiclink, $privatelink);
+
+	if ($cfg->get("outlook2003icalexport", 0))
+	{
+		echo "<p>" . JText::_('Outlook 2003 specific links') . "</p>";
+		echo "<p><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></p>";
+		if ($user->id != 0)
+		{
+			echo "<p><a href='$privatelink&outlook2003='>" . JText::_('JEV_REP_ICAL_PRIVATE') . "</a></p>";
+		}
 	}
 }
-if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download", 1) == 0 && $cfg->get("show_webcal_url", 0) == 0 && $cfg->get("show_webcal_google", 0) && $cfg->get("outlook2003icalexport", 0)) {
-	//If non are enabled we don't want to have user thinking the script is buggy as nothing is produced. 
-	echo "<div style='margin:15px;font-weight:bold;'>" . JText::_("JEV_ICAL_ALL_DISABLED") . "</div>";
-} else {
 ?>
-<div class="export_form">
-<form id="ical" name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
+
+<form name="ical" method="post" class="<?php isset($_POST['submit']) ? 'icalexportresults' : ''; ?>">
 	<?php
 	$categories = JEV_CommonFunctions::getCategoryData();
 
@@ -116,7 +153,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			$cb = $cb . " CHECKED";
 			$checked = true;
 		}
-		echo $cb . " /><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
+		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
 		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
 			<?php
@@ -134,7 +171,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					$cb = $cb . " CHECKED";
 				}
-				$cb = $cb . " /><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level - 1) . $c->title . "<br/>\n";
+				$cb = $cb . "><span style=\"background:" . $c->color . "\">&nbsp;&nbsp;&nbsp;&nbsp;</span> " . str_repeat(" - ", $c->level - 1) . $c->title . "<br/>\n";
 				echo $cb;
 			}
 			?>
@@ -157,7 +194,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			$yt = $yt . " CHECKED";
 			$checked = true;
 		}
-		$yt = $yt . " /><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
+		$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 		echo $yt;
 		?>
 		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
@@ -182,25 +219,21 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					$yt = $yt . " CHECKED";
 				}
-				$yt = $yt . " />" . $y . "<br/>\n";
+				$yt = $yt . ">" . $y . "<br/>\n";
 				echo $yt;
 			}
 			?>
 		</div>
 	</div>
 	<?php
-	
 	echo "<div class='icalformat' style='clear:left; padding-top:5px;'>";
-	if ($params->get("icalformatted", 1) == 1){
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
-	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
-<?php } 
-	echo "</div>";
-?>
-
-<input id="submit" class="ical_submit" type="submit" name="submit" value="<?php echo JText::_('JEV_GENERATE_ICALS'); ?>" />
-</form>
+	<label><input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
+	<br/>
+	<br/>
 </div>
-<?php } ?>
+
+<input type="submit" name="submit" value="<?php echo JText::_('JEV_SELECT'); ?>" />
+</form>
+
