@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="library" method="upgrade">
+	<name>googl Shortener</name>
+	<libraryname>googl</libraryname>
+	<description>Googl Shortener library created by Sebastian Wyder (https://github.com/sebi/googl-php) and package by Carlos Cámara (http://www.jevents.net)</description>
+	<author>Sebastian Wyder package by Carlos Camara</author>
+	<creationDate>Februrary 2014</creationDate>
+	<copyright>(C) 2010-2014 GWE Systems Ltd. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>carcam@jevents.net</authorEmail>
+	<packager>JEvents</packager>
+	<authorUrl>www.gwesystems.com</authorUrl>
+	<version>3.1.17</version>
+	<description>PLG_FINDER_JEVENTS_XML_DESCRIPTION</description>
+	<files folder="googl">
+		<file>api.php</file>
+		<file>index.html</file>
+	</files>
+</extension>
