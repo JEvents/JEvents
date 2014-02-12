@@ -24,5 +24,6 @@
 		 <file type="module" id="mod_jevents_switchview" client="site">mod_jevents_switchview.zip</file>
 		 <file type="plugin" id="jevents" group="finder">finder.zip</file>
 		 <file type="plugin" id="eventsearch" group="search">search.zip</file>
+		 <file type="library" id="googl">googl.zip</file>
 	</files>
 </extension>
