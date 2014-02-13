@@ -433,7 +433,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 				}
 				else {
 					$bground =  "#000000";
-					$fground =   "#ffffff";
+					$fground =  "#474747";
 
 				}
 

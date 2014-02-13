@@ -857,9 +857,9 @@ div.new-navigation {margin:auto auto;margin-bottom:20px;display:inline-block; wi
 .month_title_year {padding-left:6px;font-size:1.5em;}
 .month_title {font-size:2em;}
 
-#jevents_body .cal_today a{margin-top:5px;}
-#jevents_body .cal_today a {background-color:#ff3b30; padding:4px;border-radius:10px;color:#FFFFFF;}
-#jevents_body .cal_today a:hover {border-left: 1px solid #ff3b30;background-color:#fff; border:1px solid #ff3b30; padding:4px;border-radius:10px;color:#ff3b30;}
+#jevents_body .cal_today a.cal_daylink {margin-top:5px;}
+#jevents_body .cal_today a.cal_daylink {background-color:#ff3b30; padding:4px;border-radius:10px;color:#FFFFFF;}
+#jevents_body .cal_today a.cal_daylink:hover {border-left: 1px solid #ff3b30;background-color:#fff; border:1px solid #ff3b30; padding:4px;border-radius:10px;color:#ff3b30;}
 
 .saturday, .sunday { color: #ADADAD;}
 #jev_maincal {margin:15px -1px 15px -1px;background-color:#FCFCFC;border:1px solid #ddd;}
