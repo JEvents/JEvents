@@ -681,7 +681,7 @@ class iCalImport
 		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
 		$wtzdata["Mountain Standard Time"] = "America/Denver";
 		$wtzdata["Romance Standard Time"] = "Europe/Brussels";
-                $wtzdata["GMT Standard Time"] = "UTC";
+		$wtzdata["GMT Standard Time"] = "UTC";
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;

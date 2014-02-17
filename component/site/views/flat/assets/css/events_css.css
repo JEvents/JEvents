@@ -1,844 +1,902 @@
-/* Joomla 1.6 changes */
-
-#jevents_header tr, #jevents_header td, #jevents_body tr, #jevents_body td {border:none;	line-height:1.65em;}
-
-#jevents_body .jevicons table,#jevents_body .jevicons  td,#jevents_body .jevicons tr,#jevents_body .jevicons p, #jevents_body .jevicons div {
-	border:none;
-	line-height:1.5em;
+/* 
+* Component Styling 
+*/
+#jevents_body{
+    width:100% !important;
+    border:1px solid #DDD;
+    background-color:#F7F7F7;
+    border-radius:8px;
+    padding-top:10px;
+    padding-bottom:10px;
 }
-
-/* Overall Style */
-#jevents_body .maintable {
-	border: 1px solid #99a0aa;
-	margin-top: 0px;
-	margin-bottom: 0px;
+#jevents_header{
+    width:100%!important;
+    border:none;
 }
-#jevents_body {
-	font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	background-color:#f7f7f7;
-	border: 1px solid #ddd;
-	border-radius:8px;
+#jevents_header td, #jevents_header tr, div.ev_navigation tr, div.ev_navigation td{
+    border:none;
+}
+#jevents_body .contentpaneopen  table,#jevents_body .contentpaneopen  td,#jevents_body .contentpaneopen tr,#jevents_body .contentpaneopen p, #jevents_body .contentpaneopen div {
+    border:none;	
+    line-height:1.5em;
 }
 .jeventslight{
-	color:#000000;
-}
-#jevents_body a {
-	color: #606F79;
-	text-decoration: none;
-}
-#jevents_body .jeventrow a {
-	display:block;
-}
-#jevents_body .jeventrow a.cal_titlelink {
-	display: block;
-}
-.jev_clear {
-	clear:both;
-}
-/* Header */
-#jevents_body .tableh1 {
-	color:#606F79;
-	font-size: 11px;
-	height: 26px;
-	background-position: top;
-	background-repeat: repeat-x;
-	padding: 8px 12px;
-	border-left: 1px solid #FFFFFF;
-	border-right: 1px solid #FFFFFF;
-	border-bottom: 1px solid #CED2D6;
-}
-#jevents_body .tableh1 td.buttontext {
-	padding-left:25px;
-	vertical-align:middle;
-	text-align:center;
-}
-#jevents_body .buttontext a {
-	font-size: 9px;
-	color: #606F79;
-	text-decoration: none;
-}
-#jevents_body .buttontext img {
-	border:none;
-}
-#jevents_body .buttontext a:hover {
-	color: #8090A3;
-}
-#jevents_body .today {
-	font-size: 9px;
-	color: #606F79;
-	font-weight: bold;
+    color:#000000;
 }
 
-/* Second block - ruthin style*/
+/*********************
+* Calendar style
+**********************/
+#jevents_body .cal_table {
+    border: 1px solid #DDD;
+    width:100.3%;
+    margin-left:-1px;
+    padding-top:20px;
+    padding-bottom:20px;
+    background-color:#CCC;
+}
+#cal_title {
+    margin:0.5em auto;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    text-align:center;
+}
+#jevents_body .cal_daysnames {
+    width:14px;
+    background-color:#fff;
+    border:0px solid;
+    height:22px;
+    line-height:22px;
+    color:#474747;
+    font-weight:bold;
+    text-align:left;
+}
+.cal_daysnames {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+.cal_daysoutofmonth {
+    background-color: #d4d8d8;
+    padding:4px;
+}
+.cal_daysoutofmonth {
+    font-family:  Arial;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+#jevents_body .cal_today {
+    background-color:#FFF;
+    padding:5px 0px 0px 0px;
+    height:80px;
+    vertical-align:top;
+    width:14%;
+}
+#jevents_body .cal_daysnoevents {
+    background-color: #FFF;
+    padding:4px;
+    height:80px;
+    vertical-align:top;
+    width:14%;
+}
+#jevents_body .cal_dayshasevents {
+    background-color: #FFF;
+    padding:4px;
+    vertical-algin:top;
+    height:80px;
+    width:14%;
+}
+a.cal_daylink:link {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+a.cal_daylink:visited{
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+a.cal_daylink:hover{
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    color: Red;
+    text-decoration: none;
+}
+#jevents_body a.cal_titlelink:link, #jevents_bodya.cal_titlelink:visited, #jevents_body a.cal_titlelink:hover {
+    font-size:10px;
+    line-height:14px;
+    font-weight: normal;
+    text-decoration: none;
+    color:#474747;
+    display:block;
+    margin-bottom:1px;
+    padding:2px;
+}
+#jevents_body a.cal_titlelink:hover {
+    background-color:#F7F7F7;
+}
+#jevents_body .month_cell_st {padding:0px;background-color:#E4E8E8;}
+.cal_cell_rows {height:80px; vertical-align:top;}
 
-.jev_toprow {
-	border:0px;
-	margin-top:25px; 
+#jevents_body .cal_top_day_names {width:100%;min-width:395px;}
+#jevents_body .cal_top_day_names tr {border:0px solid;}
+#jevents_body .cal_top_day_names td {width:12%;padding-left:3px;}
+/***************************
+* Detail View 
+***************************/
+.ev_prevrepeat {
+    line-height:20px;
+    float:left;
+    margin-right:30px;
 }
-.jev_listview .jev_toprowcat {
-	height:34px;
+.ev_prevrepeat a {
+    background-repeat: no-repeat; 
+    background-position: center left;
+    padding-left:20px;
 }
-.jev_toprow .jev_header, .jev_toprow .jev_headercat {
-	color:#606F79;
-	font-size: 11px;
-	height: 34px;
-	padding: 0px;
-	border-left: 1px solid #FFFFFF;
-	border-right: 1px solid #FFFFFF;
-	border-bottom: 1px solid #CED2D6;
+.ev_prevrepeat a.blue {
+    background-image: url("../images/g_blue.gif");
 }
-#jevents_body .jev_toprow h2 {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	background-image :   url(../images/box_left_icon.gif);
-	background-repeat : no-repeat;
-	background-position : left;
-	padding: 0px 0px 0px 13px;
-	font-size: 11px;
-	margin: 0px;
-	color : #606F79;
-	float:left;
-	line-height:34px;
-	margin-left:12px;
+.ev_prevrepeat a.gray {
+    background-image: url("../images/g_gray.gif");
 }
-.jev_toprow .jev_headercat select {
-	margin:5px 12px 0px 0px;
-	float:right;
-	text-align:left;
-	height:24px;
+.ev_prevrepeat a.green {
+    background-image: url("../images/g_green.gif");
 }
-#jevents_body .jev_toprow div.today {
-	margin:0px 12px 0px 0px;
-	line-height:34px;
-    float:right;
-    text-align:right;
+.ev_prevrepeat a.orange {
+    background-image: url("../images/g_orange.gif");
 }
-.jev_toprow .jev_header2 {
-    margin:0px;
+.ev_prevrepeat a.red {
+    background-image: url("../images/g_red.gif");
+}
+.ev_prevrepeat a.yellow {
+    background-image: url("../images/g_yellow.gif");
+}
+.ev_nextrepeat {
+    line-height:20px;
+    float:left;
+    margin-left:0px;
+}
+.ev_nextrepeat a {
+    background-repeat: no-repeat; 
+    background-position: center right;
+    padding-right:20px;
+}
+.ev_nextrepeat a.blue {
+    background-image: url("../images/d_blue.gif");
+}
+.ev_nextrepeat a.gray {
+    background-image: url("../images/d_gray.gif");
+}
+.ev_nextrepeat a.green {
+    background-image: url("../images/d_green.gif");
+}
+.ev_nextrepeat a.orange {
+    background-image: url("../images/d_orange.gif");
+}
+.ev_nextrepeat a.red {
+    background-image: url("../images/d_red.gif");
+}
+.ev_nextrepeat a.yellow {
+    background-image: url("../images/d_yellow.gif");
+}
+
+/***************************
+* List style
+**************************/
+ul.ev_ul {
+    list-style:none;
     padding:0px;
-	border:none;
-	height:23px;
+    margin:5px;
 }
-.jev_listview .jev_header2 {
-	height:23px;
+#jevents_body  ul.ev_ul li.ev_td_li {
+    border-style:solid;
+    border-width:0 0 0 5px;
+    margin-bottom:1px;
+    padding-left:2px;
+    background-image:none
 }
-#jevents_body .jev_topleft {
-	background-color: #708088;
-	border:none;
-	height:46px;
-	float:left;
-	margin:0px;
-	padding:0px;
+a.ev_link_cat:link {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
 }
-.jev_listview .jev_topleft {
-	height:23px;
-	display:none;
+a.ev_link_cat:visited  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
 }
-.jev_listview .jev_listrow {
-	float:left;
-	border-color:#ddd;
-	border-style: solid;
-	border-width:0px 0px 1px 0px;
-	margin-bottom:-1px;
+a.ev_link_cat:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Black;
 }
-.jev_pagination {
-	clear:left;
-	border-color:#95A5AD;
-	border-style: solid;
-	border-width:0px;
-	text-align:center!important;
-	padding-top:5px;
-}
-.jev_pagination div {
-	text-align:center!important;
-}
-.jev_pagination ul, .jev_pagination ul.pagination {
-	margin:0px;
-	padding:2px;
-	background:none;
-}
-.jev_pagination li {
-	display:inline;
-	margin-right:3px;
-}
-.ev_adminpanel {
-	clear:left;
-}
-.jev_listview .jev_listrow ul {
-	padding:0px;
-}
-#jevents_body .jev_listview .jev_listrow li {
-	background:none;
-	padding-left:10px;
-	margin:3px 10px;
-	border-style: solid;
-	border-width:0px 0px 1px 4px!important;
-	list-style-type:none;
-}
-
-#jevents_body .jev_month .jev_daysnames {
-    height:23px;
-    line-height:23px;
-    color:#474747 ; 
-	font-size: 12px;
+a.ev_link_row:link, a.ev_link_row:visited, a.ev_link_row:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
     font-weight:normal;
-    text-align:left;
-	float:left;
-	margin:0px;
-	padding:0px 0px 0px 5px;
-	width:13.5%;
-	overflow:hidden;
 }
-#jev_maincal.jev_listview div:first-child {margin-top:-1px;}
-#jevents_body .jev_daysnames span {
-	display:block;
-	border:0px;
-	font-size:14px;
+a.ev_link_row:hover  {
+    text-decoration:inherit;
+    color: Black;
 }
-#jevents_body .jev_daysnames a {
-    
+a.ev_link_unpublished {
+    color:red;
+    text-decoration:none;
 }
-#jevents_body #jev_maincal.jev_listview .jev_daysnames {
-	background-color:#F7F7F7;
-	border-width:1px 1px 1px 0px;
-	border-style: solid ;
-	border-color: #DDD;
-	padding-left:10px;
-	height:23px;
-    line-height:23px;
-    color:#474747 ; 
-	font-size: 12px;
-    font-weight:normal;
-    text-align:left;
-	float:left;
-	width:110px;
-	max-width:100%;
-	overflow:hidden;
+a.ev_link_weekday:link {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
 }
-
-.jev_toprow div.previousmonth, .jev_toprow div.currentmonth, .jev_toprow div.nextmonth {  
-	float:left;
-    height:23px;
-    line-height:23px;
-    text-align:center!important;
-	color: #606F79!important;
-	font-weight:bold;
+a.ev_link_weekday:visited  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Gray;
+    text-decoration:none;
 }
-.jev_toprow div.previousmonth span, .jev_toprow div.currentmonth span, .jev_toprow div.nextmonth span{  
-	display:block;
-	border-color:#95A5AD;
-	border-style: solid;
-	border-width:0px 0px 0px 1px;
+a.ev_link_weekday:hover  {
+    font-size:12px;
+    font-family: Verdana;
+    color: Black;
+}
+.ev_fieldset {
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    /* color: black; */
 }
 .jev_catdesc {
-	margin:5px;
+    margin-bottom:4px;
+}
+#jevents_body  .ev_table {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.ev_table td {
+    padding:5px;
+}
+#jevents_body .ev_td_right {
+    /*background-color: #FFDEAD;*/
+    border-top: 1px solid #000000;
+}
+#jevents_body .ev_td_left {
+    background-color: #c5d5e5;
+    border-right: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: black;
+    text-align : left;
+    vertical-align: top;
+    width:100px!important;
+}
+#jevents_body .ev_td_today {
+    background-color: #E9B4A1;
+    border-right: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: black;
 }
 
-/* Second block */
-
-#jevents_body td.previousday, #jevents_body td.previousweek {
-	font-size: 10px;
-	color: #606F79;
-	text-decoration: none;
-	font-weight: bold;
-	border-left: 1px solid #FFFFFF;
-	border-top: 1px solid #FFFFFF;
-
-	background-color: #d8e0e4!important;
-	padding: 3px  10px 3px 10px;
-	vertical-align:middle;
-	height:22px;
-	text-align:center;
-	width:33%;
-}
-
-#jevents_body td.previousday a:hover, #jevents_body td.previousweek a:hover {
-	color: #8090A3;
-	text-decoration: underline;
-}
-
-#jevents_body td.nextday, #jevents_body td.nextweek {
-	font-size: 10px;
-	color: #606F79;
-	text-decoration: none;
-	font-weight: bold;
-	border-left: 1px solid #FFFFFF;
-	border-right: 1px solid #FFFFFF;
-	border-top: 1px solid #FFFFFF;
-
-	background-color: #d8e0e4!important;
-	padding: 3px  10px 3px 10px;
-	height:22px;
-	text-align:center;
-	width:33%;
-
-}
-#jevents_body td.nextday a:hover, #jevents_body td.nextweek a:hover {
-	color: #8090A3;
-	text-decoration: underline;
-}
-#jevents_body td.currentday, #jevents_body td.currentweek {
-	font-size: 12px;
-	color: #606F79;
-	text-decoration: none;
-	font-weight: bold;
-	border-left: 1px solid #FFFFFF;
-	border-top: 1px solid #FFFFFF;
-
-	background-color: #d8e0e4!important;
-	padding: 3px  10px 3px 10px;	
-	text-align:center;
-	height:22px;
-	vertical-align:middle;
-}
-
-
-/* Main block - Ruthin Style */
-td.jev_weeknum{
-    background-color: #708088 !important;
-	border-style:solid;
-	border-color:#999999;
-	border-width:1px 1px 0px 1px;
-	width:23px;
-	text-align:center;
-	padding:0px!important;
-	vertical-align:top;
-}
-td.jev_weeknum a {
-    font-size:10px;
-    font-weight: bold;
-    font-family: Verdana;
-    text-decoration: none;
-    color:#ffffff!important;
-    margin-top:5px;
-    padding:0px;
-}
-
-div.jev_daynum {
-	float:left;
-	height:20px;
-	padding-left:2px!important;
-} 
-div.jev_daynum span {
-	border-style:solid;
-	border-color:#ffffff;
-	border-width:1px 1px 0px 0px!important; 	
-	border-right-color:#ffffff;
-	display:block;
-}
-img.jevspacer {
-	width:1px;
-	height:81px;
-    display:inline;
-    border:0px;
-    margin:0px;
-    padding:0px;
-    float:left;
-}
-td.jevdaydata {
-	vertical-align:top;
-    padding:0px!important;
-    margin-left:-1px;
-}
-div.jevdaydata {
-	float:left;
-	margin:0px;
-	padding:0px;
-}
-
-div.jeveventrow, div.jeveventrow div {
-	float:left;
-}
-table.jev_eventsrow td.jevdaydata {
-	border-width:0px;
-}
-div.jev_daynum_outofmonth, div.jev_dayoutofmonth{
-	background-color:#e4e8e8!important;
-	color:#cccccc!important;
-	border-right-color:#ffffff;
-}
-div.jev_dayoutofmonth{
-    border-style:solid;
-    border-color:#ffffff;
-    border-width:0px 1px 0px 0px;
-}
-
-div.jev_daynoevents{
-}
-
-div.jev_lastday , div.jev_lastdaynum {
-    border-right-color:transparent;
-}
-
-/* add an event */
-#jevents_body a.addjevent:hover {background-color: transparent!important;}
-a.addjevent {
-	width:16px;
-	height:16px;
-	margin-right:2px;
-	float:right;
-	background-image: url("../images/add.png")!important;
-   	background-repeat: no-repeat; 
-   	background-position: top left;
-   	visibility:hidden;
-}
-a.addjevent img {
-	border-width:0px!important;
-}
-.showjevadd a.addjevent {
-	visibility:visible;
-}
-
-/* Monthly View classes */
-#jevents_body .eventfull {
-	margin:2px;
-	background-color: #E4E8E8!important;
-	cursor: pointer;
-}
-#jevents_body .eventstyle {
-	font-size: 9px;
-	line-height: 14px;
-	padding: 3px;
-	margin:0px;
-	border-color:#D0D4D4 #FFFFFF #FFFFFF #D0D4D4;
-	border-style:solid;
-	border-width:1px;
-	border-bottom: 2px solid #555555;
-	text-align: left;
-}
-#jevents_body .eventstyle a {
-	display: block;
-}
-
-#jevents_body .imagecell {    
-	background-color: #C8D2D8!important;
-	padding: 8px;
-}
-#jevents_body .imagecell img {    
-	border: 1px solid;
-	border-top-color: #FFFFFF;
-	border-left-color: #FFFFFF;
-	border-right-color: #C0C6C6;
-	border-bottom-color: #C0C6C6;
-	cursor: pointer;
-}
-
-/* Event Legend Module Styling */
-.moduletable div.event_legend_container {
-	color:black;
-	padding:0px;
-	font-size:0.9em;
-}
-ul.event_legend_list{
-	list-style:none !important;
-	padding:0px;
-	margin:5px;
-}
-ul.event_legend_list li {
-	list-style:none !important;
-	border:solid black 1px;
-	background-image:none !important;
-	padding-left:0px;
-}
-div.event_legend_name {
-	font-size:1em;
-	padding:3px;
-	font-weight:bold;
-}
-div.event_legend_name a{
-	display:block;
-	text-decoration:none;
-   	background-color:inherit;
-   	color:black;
-}
-
-div.event_legend_desc {
-	background-color:white;
-	color:black;
-	padding:3px 3px 3px 10px;
-
-}
-
-/* Component Legend Styling
-   float div to get table like view 
-   border-color is set to category color by code */
-#jevents_body .event_legend_container {
-	background-color:rgb(230,230,230);
-	border:solid 1px #99a0aa;
-}
-#jevents_body  div.event_legend_item {
-	float:left;
-	border-left-width:0px;
-	border-left-style:solid;
-	padding-left:4px;
-	margin-top:5px;
-	margin-left:0px;
-	margin-bottom:4px;
-	min-width:80px;
-	white-space:nowrap;
-	overflow:hidden;
-}
-#jevents_body div.event_legend_name {
-	border-left-width:8px;
-	border-left-style:solid;
-	padding: 0px 0px 0px 4px;
-}
-#jevents_body div.event_legend_desc {
-	border-left-width:8px;
-	border-left-style:solid;
-	padding: 0px 0px 0px 4px;
-	display:none;
-}
-/* end component legend */
-
-div.jev_adminfilter {
-	text-align:center;
-	font-weight:bold;
-	margin:5px auto 10px auto; 
-}
-
-/***************************************
-* Mootools ToolTips for JEvents Calendar
-****************************************/
-.jevtip-tip, .jevtip{
-	float: left;
-	background: #f5f5f5;
-	border: 1px solid #D4D5AA;
-	padding: 0px;
-	max-width: 400px;
-	z-index:99;
-}
-
-.jevtip-text  , .jevtip .tip{
-	padding: 0;
-	margin: 0;
-	font-size: 10px;
-	line-height: 13px;
-	text-align:left;
-}
-
-div.jevtt_title {
-	font-weight: bold;
-	font-size: 1.2em;
-	padding:2px;
-	width:196px;
-}
-div.jevtt_text,  .jevtip .tip-text{
-	padding:2px;
-	width:196px;
-	line-height: 1.3em;
+.ev_repeatexception{
+    font-weight:bold;
+    color:black;
+    background-color:yellow;
 }
 
 table.jev_row {
-	margin:0px;
-	font-size:inherit;
+    margin:0px;
+    font-size:inherit;
 }
 
 .jev_toprow div.previousmonth , .jev_toprow div.nextmonth {  
-	background-color: #ff3b30;
-	border:1px solid #ff3b30;
+    background-color: #ff3b30;
+    border:1px solid #ff3b30;
 }
 .jev_toprow div.previousmonth {
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .jev_toprow div.nextmonth {
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 #jevents_body .jev_toprow div.previousmonth a {
-	font-size:12px;
-	font-weight:normal;
+    font-size:12px;
+    font-weight:normal;
     padding-left:10px;
     color:#FFF;
-	background:url(../images/mini_arrowleft.gif) no-repeat center left !important;
+    background:url(../images/mini_arrowleft.gif) no-repeat center left !important;
+    text-decoration:none;
 }
 .jev_toprow div.currentmonth{ 
-	border-top:1px solid #ff3b30 ;
-	border-bottom: 1px solid #ff3b30 ;
-	margin-bottom:-1px;
+    border-top:1px solid #ff3b30 ;
+    border-bottom: 1px solid #ff3b30 ;
+    margin-bottom:-1px;
 }
 #jevents_body .jev_toprow div.nextmonth a {
     padding-right:10px;
     color:#FFF;
     font-size:12px;
-	font-weight:normal;
-	background:url(../images/mini_arrowright.gif) no-repeat center right !important;
+    font-weight:normal;
+    background:url(../images/mini_arrowright.gif) no-repeat center right !important;
+    text-decoration:none;
+}
+.jev_toprow div.previousmonth, .jev_toprow div.currentmonth, .jev_toprow div.nextmonth {
+    float: left;
+    height: 23px;
+    line-height: 23px;
+    text-align: center!important;
+    color: #606F79!important;
+    font-weight: bold;
+}
+.jev_toprow div.previousmonth, .jev_toprow div.nextmonth {
+    width: 25%;
+}
+.jev_toprow div.currentmonth {
+    width: 47%;
+}
+div.previousmonth {
+    margin-left:1%;
+}
+#jevents_body #jev_maincal.jev_listview .jev_daysnames {
+    background-color: #F7F7F7;
+    border-width: 1px 1px 1px 0px;
+    border-style: solid;
+    border-color: #DDD;
+    padding-left: 10px;
+    height: 23px;
+    line-height: 23px;
+    color: #474747;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: left;
+    float: left;
+    width: 110px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
-/* used to track media type */
-#jevents_body {
-	z-index:1;
+/**********************
+* Form style
+**********************/
+/* Styles for dhtml tabbed-pages */
+.ontab {
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    background-color: ThreedShadow;
+    border-left: outset 1px #ff9900;
+    border-right: outset 1px #808080;
+    border-top: outset 1px #ff9900;
+    border-bottom: solid 1px #d5d5d5;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    /* color: #FFFFFF; */
+}
+.offtab {
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    background-color: #EEEEEE;
+    border-left: outset 1px #E0E0E0;
+    border-right: outset 1px #E0E0E0;
+    border-top: outset 1px #E0E0E0;
+    border-bottom: solid 1px #d5d5d5;
+    text-align: center;
+    cursor: pointer;
+    font-weight: normal;
+}
+.tabpadding {
+    border-bottom: solid 0px #777777;
+}
+.tabheading {
+    background-color: #ffae00;
+    border-left: solid 1px #777777;
+    border-right: solid 1px #777777;
+    /* color: #FFFFFF; */
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    text-align: left;
+}
+.tabcontent {
+    /* background-color: ThreedFace; */
+    border-top: solid 1px #777777;
+    border-left: solid 1px #777777;
+    border-right: solid 1px #777777;
+    border-bottom: solid 1px #777777;
+    /* color: #FFFFFF; */
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size: 16pt;
+    text-align: left;
+}
+.pagetext {
+    visibility: hidden;
+    display: none;
+    position: relative;
+    top: 0;
+}
+.frm_td_bydays {
+    background-color: #FFF8DC;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_byweeks {
+    background-color: #FFF0F5;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_bymonth {
+    background-color: #FDF5E6;
+    font-size: 12px;
+    color: black;
+}
+.frm_td_byyear {
+    background-color: #F0F8FF;
+    font-size: 12px;
+    color: black;
+}
+/* Calendar navigaton area */
+div.ev_navigation a:hover{
+    background:transparent!important;
 }
 
+div.ev_navigation table{
+    margin: 0px auto;
+}
+/* Calendar admin panel */
+div.ev_adminpanel {
+}
+div.ev_adminpanel form div:nth-child(odd) {
+    float:left;
+}
+div.ev_adminpanel form div {
+    padding:5px 10px 5px 5px;
+}
+/**********************
+* Nav bar style
+**********************/
+a.nav_bar_link:link {
+    font-size: 10px;
+    font-family: Verdana;
+    color: Green;
+}
+a.nav_bar_link:visited  {
+    font-size:10px;
+    font-family: Verdana;
+    color: Teal;
+}
+a.nav_bar_link:hover  {
+    font-size:10px;
+    font-family: Verdana;
+    color: Lime;
+}
+.nav_bar_cell  {
+    background-color: #ECECEC;
+}
 
-div.event_legend_container td.legend {
-	width:100px;
-	margin-right:2px
+/****************************
+* Iconic calendar navigation
+****************************/
+
+td.iconic_td {
+    width:60px!important;
+    margin:0px;
+    padding:0px;
 }
-div.event_legend_container tr {
-	float:left;
+div.nav_bar_cal{
+    margin:0px;
+    padding:0px;
+    width:50px;
+}
+div.nav_bar_cal img, div.nav_bar_cal a{
+    height:31px;
+    width:50px;
+    border:0;
+}
+tr.icon_labels{
+    font-size:7pt;
+    margin:0px;
+    padding:0px;
+}
+div#ev_icon_yearly {
+    background-image: url("../images/cal5x.jpg")!important;
+    background-repeat: no-repeat;
+}
+div#ev_icon_monthly {
+    background-image: url("../images/cal1x.jpg")!important;
+    background-repeat: no-repeat;
+}
+div#ev_icon_weekly{
+    background-image: url("../images/cal2x.jpg")!important;
+    background-repeat: no-repeat;
+}
+div#ev_icon_daily{
+    background-image: url("../images/cal3x.jpg")!important;
+    background-repeat: no-repeat;
+}
+div#ev_icon_search{
+    background-image: url("../images/cal8x.jpg")!important;
+    background-repeat: no-repeat;
+}
+div#ev_icon_jumpto{
+    background-image: url("../images/cal9x.jpg")!important;
+    background-repeat: no-repeat;
 }
 
-/* RTL changes */
-.jevrtl .jev_topleft,
-.jevrtl .jev_daysnames,
-.jevrtl .jev_daynum,
-.jevrtl div.jeveventrow,
-.jevrtl div.jeveventrow div ,
-.jevrtl .jevdaydata {
-	float:right;
+div.jev_pagination {
+    width:100%;
+    text-align:center;
+}
+.jev_pagination li {
+    display:inline;
+    margin-right:3px;
 }
 
-.jevrtl div#jev_maincal .jev_toprow h2 {
-	background-position:right center;
-	margin:0px 12px 0px 0px;
-	padding:0px 13px 0px 0px;
-	float:right;
+/* Event Legend Module Styling */
+.moduletable div.event_legend_container {
+    border:solid black 1px;
+    background-color: #FFDEAD;
+    color:black;
+    padding:3px;
+    font-size:0.9em;
 }
-.jevrtl .jev_daysnames span {
-	border-width:0px;
+ul.event_legend_list{
+    list-style:none !important;
+    padding:0px;
+    margin:5px;
 }
-.jevrtl .jev_toprow div.previousmonth span,
-.jevrtl .jev_toprow div.currentmonth span,
-.jevrtl .jev_toprow div.nextmonth span{
-	border-width:0px 1px 0px 0px;
+ul.event_legend_list li {
+    list-style:none !important;
+    border:solid black 1px;
+    background-image:none !important;
+    padding-left:0px;
 }
-.jevrtl div.jev_daynum {
-	border-width:1px 0px 0px 0px;
-	padding:0px 2px 0px 0px;
+div.event_legend_name {
+    padding:3px;
+    font-weight:bold;
 }
-.jevrtl div.jev_lastdaynum {
-	border-width:1px 0px 0px 0px;
+div.event_legend_name a{
+    display:block;
+    text-decoration:none;
+    background-color:inherit;
+    color:black;
 }
-.jevrtl a.addjevent {
-	float:left;
+
+div.event_legend_desc {
+    background-color:white;
+    color:black;
+    padding:3px 3px 3px 20px;
+
 }
-.jevrtl td.jev_weeknum {
-	border-width:1px 0px 0px 1px;
+
+tr.dialogs, tr.dialogs td, tr.dialogs div{
+    z-index:9999;
 }
-.jevrtl div.jevdaydata div.jev_daynum_outofmonth,
-.jevrtl  div.jevdaydata  div.jev_dayoutofmonth {
-	border-width:1px 0px 0px 1px;
+/* Component Legend Styling
+   float div to get table like view 
+   border-color is set to category color by code */
+#jevents_body .event_legend_container {
+    border: none;
 }
-.jevrtl div.jev_dayoutofmonth{
-    border-color:#ffffff;
-    border-width:0px 0px 0px 1px;
+#jevents_body  div.event_legend_item {
+    float:left;
+    border-left-width:0px;
+    border-left-style:solid;
+    padding-left:4px;
+    margin-top:5px;
+    margin-left:0px;
+    margin-bottom:4px;
+    /*	width:90px;*/
+    min-width:90px;
+    white-space:nowrap;
+    overflow:hidden;
 }
-.jevrtl div.jev_daynum span {
-	border-width:1px 0px 0px 1px; 	
+#jevents_body div.event_legend_name {
+    border-left-width:8px;
+    border-left-style:solid;
+    padding: 0px 0px 0px 4px;
+}
+#jevents_body div.event_legend_desc {
+    border-left-width:8px;
+    border-left-style:solid;
+    padding: 0px 0px 0px 4px;
+    display:none;
+}
+/* end component legend */
+
+div.jev_adminfilter {
+    text-align:center;
+    font-weight:bold;
+    margin:5px auto 10px auto; 
+}
+
+#jevents_body a.addjevent:hover {background-color: transparent;}
+a.addjevent {
+    width:16px;
+    height:16px;
+    margin-right:2px;
+    float:right;
+    background-image: url("../images/add.png")!important;
+    background-repeat: no-repeat; 
+    background-position: top left;
+    visibility:hidden;
+}
+a.addjevent img {
+    border-width:0px!important;
+}
+td.showjevadd a.addjevent {
+    visibility:visible;
+}
+.jev_clear {
+    clear: both;
+}
+/***************************************
+* Mootools ToolTips for JEvents Calendar
+****************************************/
+.jevtip-tip, .jevtip {
+    float: left;
+    background: #f5f5f5;
+    border: 1px solid #D4D5AA;
+    padding: 0px;
+    max-width: 400px;
+    z-index:99;
+    font-size:10pt;
+} 
+.jevtip-text {
+    padding: 0;
+    margin: 0;
+    font-size: 0.8em;
+}
+
+div.jevtt_title{
+    font-weight: bold;
+    font-size: 1.2em;
+    padding:2px;
+    width:196px;
+}
+div.jevtt_text{
+    padding:2px;
+    width:196px;
+    line-height: 1.3em;
+
 }
 
 /* Joomla 1.6 changes */
 #action_dialog {
-	text-align: left;
-	position:absolute;
-	right:0px;
-	background-color:#dedede;
-	border:solid 1px #000000;
-	width:200px;
-	padding:10px;
-	visibility:hidden;
-	z-index:999;
+    text-align: left;
+    position:absolute;
+    right:0px;
+    background-color:#dedede;
+    border:solid 1px #000000;
+    width:200px;
+    padding:10px;
+    visibility:hidden;
+    z-index:999;
 }
 #action_dialog div {
-	width:12px!important;
-	position:absolute;
-	right:0px;
-	top:0px;
-	background-color:#ffffff;
-	border:solid #000000;
-	border-width:0 0 1px 1px;
-	text-align:center;
+    width:12px!important;
+    position:absolute;
+    right:0px;
+    top:0px;
+    background-color:#ffffff;
+    border:solid #000000;
+    border-width:0 0 1px 1px;
+    text-align:center;
 }
 #action_dialog a{
-	display:block;
-	margin:0px 2px;
+    display:block;
+    margin:0px 2px;
 }
 #jevents_header {position:relative;}
 #jevents_header ul.actions {
-	list-style-image: none;
-	position:absolute;
-	right:0px;
-	top:0px;
-	list-style-type: none;
-	list-style-image: none;
-	width:auto!important;	
+    list-style-image: none;
+    position:absolute;
+    right:0px;
+    top:0px;
+    list-style-type: none;
+    list-style-image: none;
+    width:auto!important;	
 }
 #jevents_header ul.actions li {
-	line-height:14px!important;	
-	background-image:none!important;
-	padding-left:0px!important;
-	overflow:visible!important;
-	float:left;
-	margin-left:3px;
+    line-height:14px!important;	
+    background-image:none!important;
+    padding-left:0px!important;
+    overflow:visible!important;
+    float:left;
+    margin-left:3px;
 }
+
 /* Print version */
 @media print {
-	@page {
-		size:landscape;
-	}
-
-	body.contentpane {
-		filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3); 
-	}
-	div.ev_navigation {
-		display:none;
-	}
-	div.ev_adminpanel {
-		display:none;
-	}
-	.ev_noprint {
-		display:none;
-	}
-
-	/* used to track media type */
-	#jevents_body {
-		z-index:2;
-	}
-	div.jev_daynoevents{
-		background-color:transparent;
-	}
-
+    @page {
+        size:landscape;
+    }
+    body.contentpane {
+        filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=3); 
+    }
+    table.contentpaneopen {
+        background-image:none!important;
+        background-color:white!important;
+    }
+    div.ev_navigation {
+        display:none;
+    }
+    div.ev_adminpanel {
+        display:none;
+    }
+    .ev_noprint {
+        display:none;
+    }
 }
 
 /* ICAL Export style */
 div.ical_form_button.export_public a{
-	float:left;
-	margin-bottom:5px;
-	margin-right: 2%;
-	width:45%;
-	clear:both;
+    float:left;
+    margin-bottom:5px;
+    margin-right: 2%;
+    width:45%;
+    clear:both;
 }
 div.ical_form_button.export_private a {
-	float:right;
-	margin-bottom:5px;
-	margin-left:2%;
-	width:45%;
-	text-align:right;
+    float:right;
+    margin-bottom:5px;
+    margin-left:2%;
+    width:45%;
+    text-align:right;
 }
 div.ical_form_button a{
-	border: 1px solid rgb(202, 202, 202);
-	padding: 6px;
-	border-radius: 4px;
-	background-color: rgb(247, 247, 247);
-	color: rgb(107, 121, 107);
-	line-height:2.6;
+    border: 1px solid rgb(202, 202, 202);
+    padding: 6px;
+    border-radius: 4px;
+    background-color: rgb(247, 247, 247);
+    color: rgb(107, 121, 107);
+    line-height:2.6;
 }
 div.ical_form_button a:hover {
 
 }
 .ical_submit {
-	padding:5px;
+    padding:5px;
 }
 
 .jev_google_export {
-	float:left;
-	width:100%;   
+    float:left;
+    width:100%;   
 }
 .jev_google_export img{
     display:block;
     margin-top:5px;
 }
 .jev_google_export_pub {
-	float:left;
-	margin:5px;
+    float:left;
+    margin:5px;
 }
 .jev_google_export_priv {
-	float:right;
-	margin:5px;
+    float:right;
+    margin:5px;
 }
 h3.export_pub {
-	float:left;
-	width:50%;
-	text-align:left;
+    float:left;
+    width:50%;
+    text-align:left;
 }
 h3.export_priv {
-	float:right;
-	width:50%;
-	text-align:right;
+    float:right;
+    width:50%;
+    text-align:right;
 }
 .ical_form_button.export_public h3 {
-	text-align:center;
+    text-align:center;
 }
 h2.ical_generated {
-	text-align:center;
+    text-align:center;
 }
 input.ical_submit {
-	margin:10px 0 10px 0;
-	display:block;
+    margin:10px 0 10px 0;
+    display:block;
 }
 .icalformat label {
-	display:inline-block;
+    display:inline-block;
 }
 div.export_form {
-	background-color:#cfcfcf;
-	display:inline-block;  
-	width:97%;
-	border-radius:5px; 
-	background-color: #f5f5f5;
-	border: 1px solid #e3e3e3;
-	padding:10px;
+    background-color:#cfcfcf;
+    display:inline-block;  
+    width:97%;
+    border-radius:5px; 
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    padding:10px;
 }
-
-/* Flat design enhancments */
-div.new-navigation {margin:auto auto;display:inline-block; width:100%;}
+/* flat design enhancments */
+div.new-navigation {margin:auto auto;margin-bottom:20px;display:inline-block; width:100%;}
 .nav-items {margin-left:auto;margin-right:auto;text-align:center; display:inline-block;width:93%; }
-#jevents_body .nav-items div.active a, .jev_header2 .active a {background-color:#ff3b30; color:#FFF;}
+#jevents_body .nav-items div.active a, .jev_header2 .active a {background-color:#ff3b30; color:#FFF; }
 #jevents_body .nav-items div.active a:hover, .jev_header2 .active a:hover {background-color:#FFF; border-left: 1px solid #ff3b30;}
-.nav-items > div {margin-left:-4px;display:inline-block;padding: 3px 0px 2px 0px;line-height:23px;vertical-align:middle;border:1px solid #ff3b30;border-left:0px; }
-.nav-items > div a {padding:8px 12px 8px 12px;}
-#jevents_body .nav-items > div a:hover {padding:8px 12px 8px 12px;background-color:#CCC;border-left:1px solid #ff3b30;color:#000;}
+.nav-items > div {margin-left:-5px;display:inline-block;padding: 3px 0px 2px 0px;line-height:23px;vertical-align:middle;border:1px solid #ff3b30;border-left:0px; }
+.nav-items > div a {padding:8px 12px 7px 12px;text-decoration:none;color: #474747;}
+#jevents_body .nav-items > div a:hover {padding:7px 12px 7px 12px;background-color:#CCC;border-left:1px solid #ff3b30;color:#000;}
 .nav-items > div:first-child {border-radius:5px 0 0 5px;border-left:1px solid #ff3b30;}
 .nav-items > div:last-child {border-radius:0 5px 5px 0;border-right:1px solid #ff3b30;}
-.nav-items > div:first-child a:hover {border-radius:5px 0 0 5px;}
+.nav-items > div:first-child a:hover {border-radius:5px 0 0 5px; margin-left:-1px;}
 .nav-items > div:last-child a:hover {border-radius:0 5px 5px 0;}
 .new-navigation #nav-search {display:inline-block; float:right;padding-right:10px;}
-.month_date {min-height:25px;display:inline-block;width:20%;padding-left:10px;vertical-align:top;margin-bottom:5px;}
+.month_date {min-height:25px;display:inline-block;width:100%;padding-left:10px;vertical-align:top;margin-bottom:5px;}
 .month_title_year, .month_date, .month_title {display:inline-block;}
 .month_title_year {padding-left:6px;font-size:1.5em;}
 .month_title {font-size:2em;}
 
-#jevents_body .jev_daynum_today span{margin-top:5px;}
-#jevents_body .jev_daynum_today span a {background-color:#ff3b30; padding:4px;border-radius:10px;color:#FFFFFF;}
-#jevents_body .jev_daynum_today span a:hover {border-left: 1px solid #ff3b30;background-color:#fff; border:1px solid #ff3b30; padding:4px;border-radius:10px;color:#ff3b30;}
+#jevents_body .cal_today a.cal_daylink {margin-top:5px;}
+#jevents_body .cal_today a.cal_daylink {background-color:#ff3b30; padding:4px;border-radius:10px;color:#FFFFFF;}
+#jevents_body .cal_today a.cal_daylink:hover {border-left: 1px solid #ff3b30;background-color:#fff; border:1px solid #ff3b30; padding:4px;border-radius:10px;color:#ff3b30;}
 
 .saturday, .sunday { color: #ADADAD;}
 #jev_maincal {margin:15px -1px 15px -1px;background-color:#FCFCFC;border:1px solid #ddd;}
 div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 #jevents_body #jumpto form select{
-	font-size:12px;	
-	line-height: 20px;
-	border: 1px solid #bbb;
-	border-bottom-color: #a2a2a2;
-	border-radius: 4px;
-	vertical-align: middle;
+    font-size:12px;	
+    line-height: 20px;
+    border: 1px solid #bbb;
+    border-bottom-color: #a2a2a2;
+    border-radius: 4px;
+    vertical-align: middle;
 }
 #jevents_body #jumpto form button  {display: inline-block;
-padding: 0px 14px;
-margin-bottom: 0;
-font-size: 12px;
-line-height: 20px;
-text-align: center;
-vertical-align: middle;
-cursor: pointer;
-color: #333;
-text-shadow: 0 1px 1px rgba(255,255,255,0.75);
-background-color: #f5f5f5;
-background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
-background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
-background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
-background-image: -o-linear-gradient(top,#fff,#e6e6e6);
-background-image: linear-gradient(to bottom,#fff,#e6e6e6);
-background-repeat: repeat-x;
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe5e5e5', GradientType=0);
-border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-border: 1px solid #bbb;
-border-bottom-color: #a2a2a2;
-border-radius: 4px;
-}}
+                                    padding: 0px 14px;
+                                    margin-bottom: 0;
+                                    font-size: 12px;
+                                    line-height: 20px;
+                                    text-align: center;
+                                    vertical-align: middle;
+                                    cursor: pointer;
+                                    color: #333;
+                                    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+                                    background-color: #f5f5f5;
+                                    background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+                                    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+                                    background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+                                    background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+                                    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
+                                    background-repeat: repeat-x;
+                                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe5e5e5', GradientType=0);
+                                    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+                                    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+                                    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+                                    border: 1px solid #bbb;
+                                    border-bottom-color: #a2a2a2;
+                                    border-radius: 4px;
+}
 
 #jevents_body div.event_details {padding:10px;}
 #jevents_body div.event_details_m > div {vertical-align:top;}
@@ -853,3 +911,41 @@ border-radius: 4px;
 
 #jevents_body .jev_daysnames.category select {background: none;height: 18px;width: 110px;border:1px solid #ddd;font-size:11px;}
 #jevents_body .jev_pagination select#limit.inputbox {width:60px;}
+.event_details {padding:10px;}
+#jevents_body #jevcatbar {border:0px;border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;border-radius: 3px 3px 0px 0px;}
+#jevents_body .event_div_1 {border-left:3px;margin:7px 0px 6px 0px ;}
+#jevents_body .event_div_2 {float:left;}
+.jev_listview .jev_listrow {
+    float: left;
+    border-color: #ddd;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    margin-bottom: -1px;
+}
+.jev_listview .jev_listrow {
+    width: 100%;
+}
+#main ul {
+    list-style-position: outside;
+    list-style-type: square;
+    padding: 0 0 0 15px;
+    margin: 10px 0 10px 0px;
+}
+#jevents_body .jev_listview .jev_listrow li {
+    background: none;
+    padding-left: 10px;
+    margin: 3px 10px;
+    border-style: solid;
+    border-width: 0px 0px 1px 4px!important;
+    list-style-type: none;
+}
+.jev_toprow .jev_header2 {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    height: 23px;
+}
+.jev_toprow .jev_header2 {
+    width: 100%;
+}
+

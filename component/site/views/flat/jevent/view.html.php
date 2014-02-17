@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id: view.html.php 1406 2009-04-04 09:54:18Z geraint $
+ * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,7 +20,7 @@ include_once(dirname(__FILE__)."/../icalevent/view.html.php");
  *
  * @static
  */
-class DefaultViewJevent extends DefaultICalEvent 
+class flatViewJevent extends flatICalEvent 
 {
 	function __construct($config = null)
 	{		

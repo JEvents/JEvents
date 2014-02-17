@@ -168,7 +168,7 @@ if( array_key_exists('row',$this->data) ){
 
 	if(!($mask & MASK_BACKTOLIST)) { ?>
 		<p align="center">
-			<a href="javascript:window.history.go(-1);" class="jev_back" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
+			<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
 		</p>
 		<?php
 	}

@@ -165,17 +165,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 //consturc years array, easy to add own kind of selection
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$year = array();
-			if(method_exists("JEVHelper", "getMinYear"))
-			{
-				$minyear =  JEVHelper::getMinYear();
-				$maxyear = JEVHelper::getMaxYear();
-			}
-			else
-			{
-				$minyear = $params->get("com_earliestyear", 1970);
-				$maxyear = $params->get("com_latestyear", 2150);
-			}
-			for ($y = $minyear; $y <= $maxyear; $y++)
+			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
 			{
 				if (!in_array($y, $year))
 					$year[] = $y;

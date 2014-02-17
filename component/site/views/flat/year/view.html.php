@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class FlatViewYear extends JEventsFlatView 
+class flatViewYear extends JEventsflatView 
 {
 	function listevents($tpl = null)
 	{
