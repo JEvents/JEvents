@@ -121,12 +121,12 @@ a.cal_daylink:hover{
     color: Red;
     text-decoration: none;
 }
-#jevents_body a.cal_titlelink:link, #jevents_bodya.cal_titlelink:visited, #jevents_body a.cal_titlelink:hover {
+#jevents_body a.cal_titlelink:link, #jevents_body a.cal_titlelink:visited, #jevents_body a.cal_titlelink:hover {
     font-size:10px;
     line-height:14px;
     font-weight: normal;
     text-decoration: none;
-    color:#474747;
+    color:#474747 ;
     display:block;
     margin-bottom:1px;
     padding:2px;
