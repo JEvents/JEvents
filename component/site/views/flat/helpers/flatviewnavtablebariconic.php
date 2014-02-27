@@ -13,7 +13,9 @@ class FlatViewNavTableBarIconic
 
 		if (JRequest::getInt('pop', 0))
 			return;
-
+                //Lets not show the nav on event details 
+                
+                if ($task == "icalrepeat.detail") { return;}
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
