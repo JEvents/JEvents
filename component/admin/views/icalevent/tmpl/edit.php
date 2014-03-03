@@ -444,6 +444,11 @@ else
 			<?php
 			foreach ($this->customfields as $key => $val)
 			{
+                                // skip custom fields that are already displayed on other tabs
+                                if (isset($val["group"]) && $val["group"]!="default"){
+                                    continue;
+                                }
+                            
 				?>
 				<div class="control-group jevplugin_<?php echo $key; ?>">
 					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
