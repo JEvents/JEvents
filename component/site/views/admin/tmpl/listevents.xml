@@ -47,7 +47,7 @@
 			<field name="catid10" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
 			//-->
 
-			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+			<field name="showyearpast" type="radio" class="btn-group" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
