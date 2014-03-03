@@ -734,6 +734,10 @@ class JEventsAbstractView extends JViewLegacy
 		ob_start();
 		foreach ($this->customfields as $key => $val)
 		{
+                    // skip custom fields that are already displayed on other tabs
+                    if (isset($val["group"]) && $val["group"]!="default"){
+                        continue;
+                    }
 			/*
 			static $firstperson = false;
 			if (!$firstperson && strpos($key, "people") && $key!=$people && isset($this->customfields["people"])){

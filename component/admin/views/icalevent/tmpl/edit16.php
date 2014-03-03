@@ -376,6 +376,11 @@ else
 				<?php
 				foreach ($this->customfields as $key => $val)
 				{
+                                        // skip custom fields that are already displayed on other tabs
+                                        if (isset($val["group"]) && $val["group"]!="default"){
+                                            continue;
+                                        }
+
 					?>
 					<tr class="jevplugin_<?php echo $key; ?>">
 						<td valign="top"  width="130" align="left">
