@@ -347,7 +347,8 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		$cellStyle .= 'border-bottom:1px solid ' . $this->event->bgcolor() . ';border-left:3px solid ' . $this->event->bgcolor() . ';color:'.$this->event->fgcolor() . ';' ;
 
 		// MSIE ignores "inherit" color for links - stupid Microsoft!!! :-)
-		$linkStyle = 'style="color:'.$this->event->fgcolor() . ';"';
+                // So lets set a defined color as we have defined background color :)
+		$linkStyle = 'style="color:#474747;"';
 
 		// The title is printed as a link to the event's detail page
 		$link = $this->event->viewDetailLink($year,$month,$currentDay['d0'],false);
@@ -395,7 +396,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 				$title_event_link = $this->loadOverride("cellcontent");
 				// allow fallback to old method
 				if ($title_event_link==""){
-					$title_event_link = '<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
+					$title_event_link = '<a class="cal_titlelink" href="' . $link . '">'
 					. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
 				}
 				$cellStyle .= ' width:100%;';
@@ -404,7 +405,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 			$eventIMG	= '<img align="left" style="border:1px solid white;" src="' . JURI::root()
 			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" height="12" width="8" alt=""' . ' />';
 
-			$title_event_link = '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
+			$title_event_link = '<a class="cal_titlelink">' . $eventIMG . '</a>' . "\n";
 			$cellStyle .= ' float:left;width:10px;';
 		}
 		
@@ -433,7 +434,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 				}
 				else {
 					$bground =  "#000000";
-					$fground =   "#ffffff";
+					$fground =  "#474747";
 
 				}
 

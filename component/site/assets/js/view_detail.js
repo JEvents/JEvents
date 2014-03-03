@@ -214,8 +214,8 @@ function jevSetupAddLink(){
 		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
 		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
 	}
-
-	// flat layout
+        
+        // flat layout
 	var tds = $$("td.cal_today");
 	for (var i=0; i<tds.length; i++)
 	{
@@ -237,8 +237,6 @@ function jevSetupAddLink(){
 		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
 		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
 	}
-
-	
 }
 
 window.addEvent('domready',function(){jevSetupAddLink();});

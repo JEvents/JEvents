@@ -730,7 +730,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$timedelta = $row->noendtime() ? "" : $row->getUnixEndTime() - $row->getUnixStartTime();
 					if ($row->alldayevent())
 					{
-						$timedelta = $row->getUnixEndDate() - $row->getUnixStartDate();
+						$timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
 					}
 					$fieldval = JText::_("JEV_DURATION_FORMAT");
 					$shownsign = false;
