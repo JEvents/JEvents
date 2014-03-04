@@ -18,7 +18,7 @@ $eventCellClass = "EventCalendarCell_".$view;
 					$cleaned_day = strip_tags($dayname, '');?>
 					<td class="cal_daysnames">
 						<span class="<?php echo strtolower($cleaned_day); ?>">
-							<?php echo substr($cleaned_day, 0, 3);?>
+							<?php echo mb_substr($cleaned_day, 0, 3);?>
 						</span>
 					</td>
                     <?php

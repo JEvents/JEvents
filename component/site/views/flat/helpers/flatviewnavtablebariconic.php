@@ -31,10 +31,10 @@ class FlatViewNavTableBarIconic
 		}
 
 		$link = 'index.php?option=' . $option . '&task=' . $task . $cat . '&Itemid=' . $Itemid . '&';
-		$month_date = $view_date->year . "-" . $view_date->month . "-" . $view_date->day;
-		
-		?>
-<?php if ($task == "month.calendar") { echo "<div class='month_date'><div class='month_title'>" . date("F", strtotime($month_date)) . ", </div><div class='month_title_year'>  " . date(" Y ", strtotime($month_date)) ."</div></div>"; } ?>
+$month_date = ( JevDate::mktime(0, 0, 0, $view_date->month,$view_date->day,$view_date->year));
+      
+      ?>
+<?php if ($task == "month.calendar") { echo "<div class='month_date'><div class='month_title'>" . JEV_CommonFunctions::jev_strftime("%B", $month_date) . ", </div><div class='month_title_year'>  " . JEV_CommonFunctions::jev_strftime("%Y", $month_date) ."</div></div>"; } ?>
 		<div class="new-navigation">
 			<div class="nav-items">
 				<?php if (in_array("byyear", $this->iconstoshow))
