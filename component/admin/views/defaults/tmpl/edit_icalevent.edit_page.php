@@ -122,8 +122,8 @@ Joomla.submitbutton = function (pressbutton){
 $jevplugins = JPluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
 	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
-		// At present ony customfields and rsvp pro support secondary tabs and special input formats
-		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser"))){
+		// At present only some plugins support secondary tabs and special input formats
+		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser", "jevrsvp"))){
 			continue;
 		}
 		$classname = "plgJevents".ucfirst($jevplugin->name);
