@@ -37,7 +37,7 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('behavior.framework', true);
 	JHtml::_('bootstrap.framework');
 }
-else {
+else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 	// Make loading this conditional on config option
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
         //JFactory::getDocument()->addScript("//www.google.com/jsapi");

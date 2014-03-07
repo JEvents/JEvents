@@ -10,9 +10,7 @@ $Itemid = JEVHelper::getItemid();
 		<div class="jev_header">
 			<h2><?php echo JText::_("JEV_DATE_RANGE_VIEW"); ?></h2>
 			<div class="today" >
-				<?php echo JEventsHTML::getDateFormat($this->startyear, $this->startmonth, $this->startday, 1); ?>
-				&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-				<?php echo JEventsHTML::getDateFormat($this->endyear, $this->endmonth, $this->endday, 1); ?>
+				<?php echo $this->dateFormattedDateRange();?>
 			</div>
 		</div>
 		<div class="jev_header2">
@@ -20,9 +18,7 @@ $Itemid = JEVHelper::getItemid();
 			<div class="previousmonth" >
 			</div>
 			<div class="currentmonth">
-				<?php echo JEventsHTML::getDateFormat($this->startyear, $this->startmonth, $this->startday, 1); ?>
-				&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-				<?php echo JEventsHTML::getDateFormat($this->endyear, $this->endmonth, $this->endday, 1); ?>
+				<?php echo $this->dateFormattedDateRange();?>
 			</div>
 			<div class="nextmonth">
 			</div>

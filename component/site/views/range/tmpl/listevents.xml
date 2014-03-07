@@ -11,46 +11,21 @@
 		</message>
 	</layout>
 
-	<state>
-		<name>JEvents</name>
-		<description>Date Range List of Events</description>
-		<params  addpath="/administrator/components/com_jevents/elements/">
-			<param name="relative" type="radio" default='ABS'  label="Relative/Absolute Date Range" description="Should date range be relative to today of absolute dates.  You can also specify dates using the php function strtotime">
-				<option value="abs">Absolute</option>
-				<option value="rel">Relative</option>
-				<option value="strtotime">strtotime</option>
-			</param>
-			<param name="@spacer" type="jevinfo" default='ABSOLUTE_DATE_RANGE'    label="" description="" />
-			<param name='absstart' type='jevdate' default="" label='ABSOLUTE_START_DATE'  description="" />
-			<param name='absend' type='jevdate' default="" label='ABSOLUTE_END_DATE'  description="" />
-
-			<param name="@spacer" type="jevinfo" default='RELATIVE_DATE_RANGE'    label="" description="" />
-			<param name='relstart' type='text' default="-1w" label='START_RELATIVE_TO_TODAY'  description="JEV_RELSTART_DESC" />
-			<param name='relend' type='text' default="+1m" label='END_RELATIVE_TO_TODAY'  description="JEV_RELEND_DESC" />
-
-			<param name="@spacer" type="jevinfo" default='STRTOTIME_DATE_RANGE'    label="" description="" />
-			<param name='strstart' type='text' default='YESTERDAY'  label='STRTOTIME_START_DATE'  description="" />
-			<param name='strend' type='text' default='TOMORROW'  label='STRTOTIME_END_DATE'  description="" />
-
-			<param name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
-				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
-				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
-			</param>
-
-			<param name="@spacer" type="spacer" default=""   label="" description="" />
-		</params>
-	</state>
-
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params" >
 
 		<fieldset name="rangedatetime"  addfieldpath="/administrator/components/com_jevents/fields/" >
-			<field name="relative" type="radio" default='ABS'  label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
+			<field name="relative" type="radio"  class="btn-group" default='ABS'  label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
 				<option value="abs">COM_JEVENTS_DATE_RANGE_RELATIVE_ABS</option>
 				<option value="rel">COM_JEVENTS_DATE_RANGE_RELATIVE_REL</option>
 				<option value="strtotime">COM_JEVENTS_DATE_RANGE_RELATIVE_STR</option>
 			</field>
+			<field name="usedates" type="list"  class="btn-group" default='both'  label="COM_JEVENTS_DATE_RANGE_TO_USE" description="COM_JEVENTS_DATE_RANGE_TO_USE_DESC">
+				<option value="both">COM_JEVENTS_DATE_RANGE_BOTH</option>
+				<option value="start">COM_JEVENTS_DATE_RANGE_START</option>
+				<option value="end">COM_JEVENTS_DATE_RANGE_END</option>
+			</field>
+
 			<field name="@spacer1a" type="jevinfo" default="" label="" description="" />
 			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description="" />
 			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL" description="" format="%Y-%m-%d" />
@@ -63,19 +38,21 @@
 			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" />
 			<field name='strstart' type='text' default='YESTERDAY'  label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" />
 			<field name='strend' type='text' default='TOMORROW'  label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" />
-			
+
 			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
 				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
 			</field>
 
+			<field name='daterangeformat' type='text' default='{START(%d %B %Y)} - {END(%d %B %Y)}'  size="30" label="COM_JEVENTS_DATE_RANGE_FORMAT" description="COM_JEVENTS_DATE_RANGE_FORMAT_DESC" />
+
 		</fieldset>
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
 
 			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-			<field name="darktemplate" type="jevboolean" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
+			<field name="darktemplate" type="jevboolean"  class="btn-group" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
 				<option value="0">JEV_NO</option>
