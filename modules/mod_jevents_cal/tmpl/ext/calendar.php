@@ -70,7 +70,12 @@ class ExtModCalView extends DefaultModCalView
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
-		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		if ($this->hasTooltips) {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+		}
+		else {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		}
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","135px");
                 $height = $this->modparams->get("mod_cal_height","auto");
@@ -209,7 +214,13 @@ START;
 							$linkclass = "extcal_busylink";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array("class"=>$linkclass,"title"=>JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						if ($tooltip) {
+							$content .= $tooltip;
+						}
+						else {
+							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						}
 
 						$content .="</td>\n";
 						break;
