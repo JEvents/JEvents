@@ -172,7 +172,8 @@
 		</field>
 		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
 		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
-	</fieldset>
+		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>		
+        </fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">
 		<field name="@spacer_mv1" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
