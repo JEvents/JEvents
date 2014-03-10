@@ -25,7 +25,9 @@ class AlternativeViewNavTableBarIconic
 
 		$cfg = JEVConfig::getInstance();
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
-
+                //Lets check if we should show the nav on event details 
+                if ($task == "icalrepeat.detail" && $cfg->get('shownavbar_detail', 1) == 0) { return;}
+		
 		$monthSelect = $view->buildMonthSelect($link, $view_date->month, $view_date->year);
 
 		$transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $view->getViewName() . "/assets/images/transp.gif";
