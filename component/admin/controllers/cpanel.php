@@ -713,4 +713,56 @@ class AdminCpanelController extends JControllerAdmin
 				$menu->rebuild();
 			}		
 	}
+
+	public function fixcollations(){
+
+		if (!JEVHelper::isAdminUser())
+		{
+			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		$db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev_%'");
+		$alltables = $db->loadResultArray();
+
+		// find collation for com_content
+		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
+		$contentdata = $db->loadObjectList('Field');
+		$collation = $contentdata['title']->Collation;
+
+		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
+		$tables = $db->loadObjectList('Name');
+
+		if (JRequest::getInt("ft",0)){
+			foreach ($tables as $tablename=>$table){
+				if ($table->Collation != $collation){
+					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");
+					$db->query();
+				}
+			}
+		}
+
+		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
+		$tables = $db->loadObjectList('Name');
+
+		$fixtables = false;
+		foreach ($tables as $tablename=>$table){
+			if ($table->Collation != $collation){
+				echo "Table $tablename has collation ".$table->Collation." it should probably be ".$collation."<Br/>";
+				$fixtables = true;
+			}
+			$db->setQuery("SHOW FULL COLUMNS FROM $tablename");
+			$columndata = $db->loadObjectList('Field');
+			foreach ($columndata  as $columnname => $columndata){
+				if ($columndata->Collation && $columndata->Collation!=$collation){
+					echo "Column $columnname in Table $tablename has collation ".$columndata->Collation." it should probably be ".$collation."<Br/>";
+				}
+			}
+		}
+		if ($fixtables){
+			echo  "<hr/><br/><strong><a href='".JURI::root()."/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1"."'>Click here to fix these tables</a></strong>
+				<h2>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
+		}
+	}
 }

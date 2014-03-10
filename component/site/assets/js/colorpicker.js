@@ -1,4 +1,5 @@
-// BASED ON:
+// No Mootools used
+// // BASED ON:
 //---------------------------------------------------------
 // Color Picker Script from Flooble.com
 // For more information, visit

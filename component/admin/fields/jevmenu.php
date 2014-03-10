@@ -67,7 +67,10 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 		$menu = JFactory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();
-		$extension = (string) $node->attributes()->extension;
+		$extension = "com_jevents";
+		if ($node){
+			$extension = (string) $node->attributes()->extension;
+		}
 		if (!$extension) {
 			$extension = "com_jevents";
 		}

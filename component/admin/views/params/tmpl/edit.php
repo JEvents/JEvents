@@ -68,7 +68,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				$label = empty($fieldSet->label) ? $name : $fieldSet->label;
 
-				$class = isset($field->class) ? $field->class : "";
+				$class = isset($fieldSet->class) ? $fieldSet->class : "";
 				if (!empty($fieldSet->difficulty))
 				{
 					$difficultySetClass = "difficulty" . $fieldSet->difficulty;
@@ -158,6 +158,11 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					continue;
 				}
 
+				$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+					continue;
+				}
+				
 				// Hide club update field if no club addons are installed
 				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
 					// disable if no club addons are installed
@@ -296,6 +301,12 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							{
 								continue;
 							}
+
+							$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+							if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+								continue;
+							}
+
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 

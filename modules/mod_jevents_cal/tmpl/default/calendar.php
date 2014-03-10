@@ -54,6 +54,9 @@ class DefaultModCalView
 	// data model for module
 	var $datamodel				= null;
 
+	// flag to say if we want to load tooltips
+	protected $hasTooltips	 = false;
+
 	function DefaultModCalView($params, $modid){
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
@@ -267,7 +270,12 @@ class DefaultModCalView
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
-		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		if ($this->hasTooltips) {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+		}
+		else {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		}
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","140px");
                 $height = $this->modparams->get("mod_cal_height","");
@@ -381,7 +389,13 @@ class DefaultModCalView
 							$class = ($currentDay["cellDate"] == $today) ? "mod_events_td_todaynoevents" : "mod_events_td_daynoevents";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						if ($tooltip) {
+							$content .= $tooltip;
+						}
+						else {
+							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						}
 						$content .="</td>\n";
 
 						break;
@@ -509,4 +523,7 @@ class DefaultModCalView
 		return $content;
 	} // function getSpecificCal
 
+	 protected function getTooltip($currentDay, $linkattr) {
+		return "";
+	 }
 }

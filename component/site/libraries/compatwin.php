@@ -19,7 +19,7 @@ class JEV_CompatWin {
 	 * Add unsupported parameters for Windows to strftime()
 	 *
 	 */
-	function win_strftime($format='', $timestamp=null) {
+	public static function  win_strftime($format='', $timestamp=null) {
 
 		if (!$timestamp) $timestamp = time();
 
@@ -45,7 +45,7 @@ class JEV_CompatWin {
 	 * @static
 	 * @param mixed $pattern	array() search pattern or int date
 	 */
-	function  _cb_strftime($pattern) {
+	public static  function  _cb_strftime($pattern) {
 
 		// timestamp used during callback
 		$registry = JRegistry::getInstance('jevents');
@@ -76,7 +76,7 @@ class JEV_CompatWin {
 	 * @param int $date date
 	 * @return int date
 	 */
-	function _getThursdayOfWeek($date) {
+	public static function _getThursdayOfWeek($date) {
 
 		$dayofweek = JevDate::strftime('%w', $date);
 		if ($dayofweek == 0) $dayofweek =7;
@@ -96,7 +96,7 @@ class JEV_CompatWin {
 	 * @param int $date date
 	 * @return int weeknumber
 	 */
-	function _getWeekNumberISO8601($date) {
+	public static function _getWeekNumberISO8601($date) {
 
 		$thursday	= JEV_CompatWin::_getThursdayOfWeek($date);
 		$thursday_Y	= JevDate::strftime('%Y', $thursday);
@@ -105,4 +105,3 @@ class JEV_CompatWin {
 
 	}
 }
-?>
