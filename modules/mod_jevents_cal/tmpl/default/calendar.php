@@ -390,7 +390,7 @@ class DefaultModCalView
 							$class = ($currentDay["cellDate"] == $today) ? "mod_events_td_todaynoevents" : "mod_events_td_daynoevents";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$tooltip = $this->getTooltip($currentDay, array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>"mod_events_daylink"));
 						if ($tooltip) {
 							$content .= $tooltip;
 						}

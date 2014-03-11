@@ -202,7 +202,7 @@ class FlatModCalView extends DefaultModCalView {
 							$linkclass = "flatcal_busylink";
 						}
 						$content .= "<td class='" . $class . "'>\n";
-						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass));
 						if ($tooltip) {
 							$content .= $tooltip;
 						}
