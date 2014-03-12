@@ -245,7 +245,7 @@ class SaveIcalEvent {
 				}
 			}
 
-			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $created_by, JURI::root(), $modifylink, $viewlink , $testevent);
+			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent);
 
 		}
 		if ($success){
