@@ -626,7 +626,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			{
 				if (is_callable("Sh404sefFactory::getConfig"))
 				{
-					$sefConfig = &Sh404sefFactory::getConfig();
+					$sefConfig = Sh404sefFactory::getConfig();
 					if (!$sefConfig->Enabled)
 					{
 						$app->version = $manifestdata["version"] . " (Disabled in SH404 settings)";
@@ -730,7 +730,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
-		$output .= "MySQL Version : " .mysql_get_server_info() . "\n";
+		$output .= "MySQL Version : " .JFactory::getDbo()->getVersion(). "\n";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
@@ -787,6 +787,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
+                if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=1000){
+                    JError::raiseNotice(234,JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")));
+                }
+                
+
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
@@ -823,7 +828,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"pkg_jevlocations","name"=>"com_jevlocations", "type"=>"package"),
 			array("element"=>"pkg_jevpeople","name"=>"com_jevpeople", "type"=>"package"),
 			array("element"=>"pkg_rsvppro","name"=>"com_rsvppro", "type"=>"package"),
-			array("element"=>"pkg_jevtags","name"=>"com_jevtags", "type"=>"package"),
+			array("element"=>"pkg_jeventstags","name"=>"com_jeventstags", "type"=>"package"),
 
 			// Silver - AnonUsers
 			array("element"=>"jevanonuser","name"=>"jevanonuser","folder"=>"jevents", "type"=>"plugin"),
@@ -852,6 +857,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"jevcustomfields","name"=>"jevcustomfields","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - Dynamic legend
 			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
+			// Silver - Calendar Plus
+			array("element"=>"mod_jevents_calendarplus","name"=>"mod_jevents_calendarplus","type"=>"module"),
 			// Silver - facebook
 			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - featured

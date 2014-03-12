@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 				</table>             
 				<p align="center">
-					<a href="<?php $version = & JEventsVersion::getInstance();
+					<a href="<?php $version = JEventsVersion::getInstance();
 							echo $version->getUrl();
 							?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
 					&nbsp;

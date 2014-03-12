@@ -4,7 +4,7 @@
  *
  * @version     $Id: getJSON.php 3549 2013-10-25 09:26:21Z carcam $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2013 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2014 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -81,7 +81,7 @@ class GetjsonController extends JControllerLegacy   {
 		{
 			foreach($day_index['events'] as $event)
 			{
-				$eventArray['date'] = $day_index['year'] ." - ".$day_index['month']." - ".$day_index['d0']. " " .date("G:i",$event->getUnixStartTime());
+				$eventArray['date'] = $day_index['year'] ."-".$day_index['month']."-".$day_index['d0']. " " .date("H:i",$event->getUnixStartTime());
 				$eventArray['title'] = $event->title();
 				$link = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid);
 				$eventArray['link'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());

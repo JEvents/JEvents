@@ -67,7 +67,7 @@ class TableUser extends JTable
 		parent::__construct('#__jev_users', 'id', $db);
 	}
 
-	function checkTable(){
+	public static function checkTable(){
 		$db = JFactory::getDBO();
 	}
 
@@ -83,7 +83,7 @@ class TableUser extends JTable
 		return true;
 	}
 
-	function getUsers($ids=array()){
+	public static function getUsers($ids=array()){
 
 		$where = array();
 		$join = array();
@@ -128,7 +128,7 @@ class TableUser extends JTable
 		$total = count($users);
 
 		$option = JEV_COM_COMPONENT;
-		$app	= &JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
 
@@ -158,7 +158,7 @@ class TableUser extends JTable
 		return $users;
 	}
 
-	function getUserCount() {
+	public static function getUserCount() {
 
 		JPluginHelper::importPlugin("jevents");
 		$dispatcher	= JDispatcher::getInstance();
@@ -180,7 +180,7 @@ class TableUser extends JTable
 
 	}
 
-	function getUsersByUserid($userid,$index="id"){
+	public static function getUsersByUserid($userid,$index="id"){
 		if (is_array($userid)){
 			JArrayHelper::toInteger($userid);
 			$userids = implode(",",$userid);

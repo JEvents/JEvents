@@ -144,11 +144,10 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                     {
                             foreach ($this->requiredtags as $tag)
                             {
-                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});";
+                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});\n";
                             }
                     }
                     ?>
-			<!--
 			Joomla.submitbutton = function (pressbutton) {
 
 				if (pressbutton.substr(0, 6) == 'cancel' || !(pressbutton == 'icalevent.save' || pressbutton == 'icalrepeat.save' || pressbutton == 'icalevent.savenew' || pressbutton == 'icalrepeat.savenew'   || pressbutton == 'icalevent.apply'  || pressbutton == 'icalrepeat.apply')) {
@@ -161,13 +160,13 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-<?php echo $this->editor->save('jevcontent'); ?>
-		
+				<?php
+				echo $this->editor->save('jevcontent');
+				?>
 		try {
-                                    
-                                                      if (!JevStdRequiredFields.verify(document.adminForm)) {
-						return;
-					}
+			if (!JevStdRequiredFields.verify(document.adminForm)){
+				return;
+			}
 			if (!JevrRequiredFields.verify(document.adminForm)){
 				return;
 			}
@@ -194,6 +193,10 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+	if (JEVHelper::getItemid()>0){
+		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
+	}
+
 	?>
 					// reformat start and end dates  to Y-m-d format
 					reformatStartEndDates();
@@ -373,6 +376,11 @@ else
 				<?php
 				foreach ($this->customfields as $key => $val)
 				{
+                                        // skip custom fields that are already displayed on other tabs
+                                        if (isset($val["group"]) && $val["group"]!="default"){
+                                            continue;
+                                        }
+
 					?>
 					<tr class="jevplugin_<?php echo $key; ?>">
 						<td valign="top"  width="130" align="left">
@@ -442,11 +450,14 @@ else
 
 <?php
 $editpagecode = ob_get_clean();
+if (!JFactory::getApplication()->isAdmin()) {
 // fix for bad HTML in tabs!
-//$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
-//$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
+	$editpagecode = str_replace("<span><h3>", "<span><strong>", $editpagecode);
+	$editpagecode = str_replace("</h3></span>", "</strong></span>", $editpagecode);
 // Remove chosen/bootstrap styling if required
-//$editpagecode = str_replace(" btn-group","",$editpagecode);
-//$editpagecode = str_replace(" btn-success","",$editpagecode);
-//$editpagecode = str_replace(" btn","",$editpagecode);
+	$editpagecode = str_replace(" btn-group", "", $editpagecode);
+	$editpagecode = str_replace(" btn-success", "", $editpagecode);
+	$editpagecode = str_replace(" btn", "", $editpagecode);
+	$editpagecode = str_replace("btn ", "", $editpagecode);
+}
 echo $editpagecode;

@@ -550,7 +550,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery($sql);			
 		$parent = $db->loadResult();
 
-		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
+		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(alias)="jevents-tags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
 		$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
 			
 		// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them
@@ -618,7 +618,24 @@ class AdminCpanelController extends JControllerAdmin
 			$table->setLocation(1, "last-child");
 			$table->store();
 			}					
-		
+
+		// Fix Tags menu item title if needed
+		$sql = 'UPDATE  #__menu
+		set title = "COM_JEVENTSTAGS"
+		where client_id=1 AND alias="jevents-tags"';
+
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
+		// Fix Managed People menu item if needed
+		$sql = 'UPDATE  #__menu
+		set menutype = "main" where client_id=1 AND menutype="" AND alias="com-jevpeople"';
+
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
 		$updatemenus = false;			
 		if ($params->get("mergemenus", 1)){
 											
@@ -695,5 +712,57 @@ class AdminCpanelController extends JControllerAdmin
 				$menu = JTable::getInstance('Menu');
 				$menu->rebuild();
 			}		
+	}
+
+	public function fixcollations(){
+
+		if (!JEVHelper::isAdminUser())
+		{
+			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		$db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev_%'");
+		$alltables = $db->loadResultArray();
+
+		// find collation for com_content
+		$db->setQuery("SHOW FULL COLUMNS FROM #__content");
+		$contentdata = $db->loadObjectList('Field');
+		$collation = $contentdata['title']->Collation;
+
+		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
+		$tables = $db->loadObjectList('Name');
+
+		if (JRequest::getInt("ft",0)){
+			foreach ($tables as $tablename=>$table){
+				if ($table->Collation != $collation){
+					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");
+					$db->query();
+				}
+			}
+		}
+
+		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
+		$tables = $db->loadObjectList('Name');
+
+		$fixtables = false;
+		foreach ($tables as $tablename=>$table){
+			if ($table->Collation != $collation){
+				echo "Table $tablename has collation ".$table->Collation." it should probably be ".$collation."<Br/>";
+				$fixtables = true;
+			}
+			$db->setQuery("SHOW FULL COLUMNS FROM $tablename");
+			$columndata = $db->loadObjectList('Field');
+			foreach ($columndata  as $columnname => $columndata){
+				if ($columndata->Collation && $columndata->Collation!=$collation){
+					echo "Column $columnname in Table $tablename has collation ".$columndata->Collation." it should probably be ".$collation."<Br/>";
+				}
+			}
+		}
+		if ($fixtables){
+			echo  "<hr/><br/><strong><a href='".JURI::root()."/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1"."'>Click here to fix these tables</a></strong>
+				<h2>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
+		}
 	}
 }

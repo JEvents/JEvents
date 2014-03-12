@@ -1,0 +1,112 @@
+div#jevcatbar {
+	border:none!important;
+}
+
+div.ev_navigation , #jevents_body, table.ev_table, #jevents_body table.jevicons , .jev_listview .jev_listrow {
+	width:100%;
+}
+.jev_toprow div.previousmonth , .jev_toprow div.nextmonth {  
+    width:30%;
+}
+.jev_toprow div.currentmonth, .jev_listview div.currentmonth{ 
+	width:40%;
+}
+
+.jev_topleft {
+	display:none;
+}
+
+.jev_pagination {
+	width:100%;
+}
+
+.jev_weeknum{
+	display:none;
+}
+#jevents_body .event_legend_container {
+	width:100%;
+}
+
+
+/* Month calendar layout */
+.jev_row, .jev_daysnames {
+	display:none;
+}
+div.jev_listview div.jev_daysnames{
+    display:block !important;
+}
+.jev_toprow {
+	height:58px!important;
+}
+#jevents_body .jev_toprow h2, #jevents_body .jev_toprow div.today {
+	width:auto!important;
+}
+
+.jev_listrowblock .jev_listrow {
+	clear:left;
+	margin-top:10px;
+	padding-left:10px;
+}
+.jev_listrow .jevdateicon{
+	float:left;
+	margin-right:10px;
+}
+.jev_listrow  .jev_daywithevents {
+	float:left;
+}
+#jevents_body .jev_listrow  .eventfull {
+	background-color:transparent;
+	margin-top:20px;
+}
+#jevents_body .jev_listrow  .jevdateicon {
+	margin-bottom: 0px;
+}
+/* facebook plugin*/
+.facebook iframe {
+	width:auto!important;
+}
+
+
+div.jev_header2_container{
+	padding-left: 0px !important;
+	border:none;
+}
+
+#jevents_body .hiddendayname {
+    width:100%!important;
+    padding-right: 1px !important;
+	border-width: 0px 1px 0px 0px;
+	border-style: solid;
+	border-color: #999;
+    float: none;
+}
+
+div.jev_daywithevents{
+    width: 80%;
+	margin-left: 5%;
+}
+
+div.jev_listrow > a{
+    float:left;
+    margin-top:21px;
+	background-color: #EEE;
+	padding: 1px 3px;
+	border-color: #D0D4D4 #FFFFFF #FFFFFF #D0D4D4;
+	border-style: solid !important;
+	border-width: 1px;
+	font-size: 9px;
+}
+
+.jev_toprow .jev_header2_container div.currentmonth {color: transparent!important;}
+div.previousmonth span, .jev_toprow div.nextmonth span{
+    border:none !important;
+}
+.jev_toprow div.currentmonth span{
+    border-width:0px 1px !important;
+}
+table.jevicons table.tableh1{
+    width:100%;
+}
+#jevents_body .tableh1 td.buttontext {
+    padding-left:5px !important;
+}

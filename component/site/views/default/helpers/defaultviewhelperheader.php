@@ -12,7 +12,7 @@ function DefaultViewHelperHeader($view){
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();
-	$version	= & JEventsVersion::getInstance();
+	$version	= JEventsVersion::getInstance();
 	$jevtype	= JRequest::getVar('jevtype');
 	$evid		= JRequest::getInt('evid');
 	$pop		= JRequest::getInt('pop', 0);

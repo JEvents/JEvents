@@ -131,7 +131,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	}
 
-	function edit()
+	function edit($key = NULL, $urlVar = NULL)
 	{
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -243,7 +243,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	}
 
-	function save()
+	function save($key = NULL, $urlVar = NULL)
 	{
 
 		$msg = "";

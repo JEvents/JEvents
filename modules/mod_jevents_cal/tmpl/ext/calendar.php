@@ -70,7 +70,13 @@ class ExtModCalView extends DefaultModCalView
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
-		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		if ($this->modparams->get("showtooltips",0)) {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+			$this->hasTooltips	 = true;
+		}
+		else {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		}
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","135px");
                 $height = $this->modparams->get("mod_cal_height","auto");
@@ -142,14 +148,14 @@ class ExtModCalView extends DefaultModCalView
                 
 		$content = <<<START
 <div id="extcal_minical">
-	<table cellspacing="1" cellpadding="0" border="0" align="center" style="border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
+	<table cellspacing="1" cellpadding="0" style="width:$width; text-align:center;border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
 		<tr>
 			<td style="vertical-align: top;">
 START;
 		if( $this->minical_showlink ){
 		$content .= <<<START
 			
-				<table style="width:100%;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
+				<table style="width:$width;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
 					<tr>
 						<td valign="middle" height="18" align="center">
 							$linkprevious
@@ -165,7 +171,7 @@ START;
 START;
 }
 		$content .= <<<START
-				<table style="width:100%; " class="extcal_weekdays">
+				<table style="width:$width;height:$height; " class="extcal_weekdays">
 START;
 		$lf="\n";
 
@@ -209,7 +215,13 @@ START;
 							$linkclass = "extcal_busylink";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array("class"=>$linkclass,"title"=>JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass));
+						if ($tooltip) {
+							$content .= $tooltip;
+						}
+						else {
+							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						}
 
 						$content .="</td>\n";
 						break;

@@ -619,7 +619,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->setValue("jevcontent", null, $this->row->content());
 		if ($params->get('com_show_editor_buttons'))
 		{
-			$this->form->setFieldAttribute("jevcontent", "buttons", $params->get('com_editor_button_exceptions'));
+			$this->form->setFieldAttribute("jevcontent", "hide", $params->get('com_editor_button_exceptions'));
 		}
 		else
 		{
@@ -734,6 +734,21 @@ class JEventsAbstractView extends JViewLegacy
 		ob_start();
 		foreach ($this->customfields as $key => $val)
 		{
+                    // skip custom fields that are already displayed on other tabs
+                    if (isset($val["group"]) && $val["group"]!="default"){
+                        continue;
+                    }
+			/*
+			static $firstperson = false;
+			if (!$firstperson && strpos($key, "people") && $key!=$people && isset($this->customfields["people"])){
+				$this->customfields[$key]["input"] = $this->customfields["people"]["label"] . $this->customfields[$key]["input"];
+				$firstperson = true;
+			}
+			 */
+			// not ideal it creates duplicate ULS - but if we don't duplicate they may not show
+			if (strpos($key, "people")===0 && $key!="people" && isset($this->customfields["people"])){
+				//$this->customfields[$key]["input"] = $this->customfields["people"]["input"] . $this->customfields[$key]["input"];
+			}
 			$this->searchtags[] = '{{' . $key . '}}';
 			$this->replacetags[] = $this->customfields[$key]["input"];
 			$this->blanktags[] = "";

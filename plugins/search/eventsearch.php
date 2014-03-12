@@ -92,7 +92,7 @@ class plgSearchEventsearch extends JPlugin
 	function onContentSearchAreas()
 	{
 		return array(
-			'events' => JText::_('JEV_EVENTS_SEARCH')
+			'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
 		);
 	}
 

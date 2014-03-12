@@ -57,7 +57,7 @@ class JEventsDefaultView extends JEventsAbstractView
 		$this->datamodel  =  new JEventsDataModel();
 		$this->datamodel->setupComponentCatids();
 		
-		$reg = & JevRegistry::getInstance("jevents");
+		$reg = JevRegistry::getInstance("jevents");
 		$reg->setReference("jevents.datamodel",$this->datamodel);		
 
 	}

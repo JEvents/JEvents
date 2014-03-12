@@ -2,3 +2,6 @@
 /nbproject/
 .DS_Store
 /component/site/assets/css/jevcustom.css
+/modules/mod_jevents_latest/tmpl/verna
+/modules/mod_jevents_cal/tmpl/verna
+/modules/mod_jevents_legend/tmpl/verna

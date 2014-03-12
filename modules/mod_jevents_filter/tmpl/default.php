@@ -6,7 +6,7 @@
  * @version     $Id: default.php 3323 2012-03-08 13:37:46Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module JEvents Filter
- * @copyright   Copyright (C) 2008-2013 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2014 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.gwesystems.com
  */
@@ -29,7 +29,8 @@ else
 }
 
 // if always to target then set it here
-if ($params->get("target_itemid", 0) && $params->get("alwaystarget", 0)) {
+if ($params->get("target_itemid", 0) && $params->get("alwaystarget", 0))
+{
 	$myItemid = $params->get("target_itemid", 0);
 }
 
@@ -41,14 +42,15 @@ if ($myItemid == 0)
 $form_link = "";
 if ($myItemid > 0)
 {
-	$menu =  JFactory::getApplication()->getMenu();
+	$menu = JFactory::getApplication()->getMenu();
 	$menuitem = $menu->getItem($myItemid);
 	// if on a detail page or not already on a jevents component page then pick up the default task
 	if ($menuitem && (!$jevtask || strpos($jevtask, "detail") !== false))
 	{
 		$form_link = $menuitem->link . "&Itemid=" . $myItemid;
 	}
-	else if ($menuitem && $params->get("alwaystarget", 0)){
+	else if ($menuitem && $params->get("alwaystarget", 0))
+	{
 		$form_link = $menuitem->link . "&Itemid=" . $myItemid;
 	}
 }
@@ -71,9 +73,6 @@ if ($form_link == "")
 $form_link = JRoute::_($form_link
 				. ($evid ? '&evid=' . $evid : '')
 				. ($jevtype ? '&jevtype=' . $jevtype : '')
-				. ($year ? '&year=' . $year : '')
-				. ($month ? '&month=' . $month : '')
-				. ($day ? '&day=' . $day : '')
 				, false);
 
 $filters = $jevhelper->getFilters();
@@ -88,13 +87,22 @@ if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $op
 //Check if in event details
 //We never need filters in an edit page, this could cause user issues, so if there remove to.
 if (
-		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalevent.detail" ) && $params->get('showindetails', 0) == 0)
-		|| JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit" || JRequest::getCmd("task") == "icalevent.edit")
+		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalevent.detail" ) && $params->get('showindetails', 0) == 0) || JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit" || JRequest::getCmd("task") == "icalevent.edit")
 {
 	return;
 }
 
 $filterHTML = $filters->getFilterHTML();
 
+if (JevJoomlaVersion::isCompatible("3.0") && $params->get("bootstrapchosen", 1))
+{
+	// Load Bookstrap
+	JHtml::_('bootstrap.framework');
+	JHtml::_('formbehavior.chosen', '.jevfiltermodule select');
+	require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_chosenlayout'));
+}
+else
+{
 //Check if creating / editing an event
-require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
+	require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
+}

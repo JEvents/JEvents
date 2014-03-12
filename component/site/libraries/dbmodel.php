@@ -364,10 +364,21 @@ class JEventsDBModel
 				// published state is now handled by filter
 				//. "\n AND ev.state=1"
 				. ($needsgroup ? $groupby : "");
-		$query .= " ORDER BY ev.created DESC ";
+		$query .= " ORDER BY ev.created DESC , rpt.startrepeat ASC ";
 		//echo str_replace("#__", 'jos_', $query);
 		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
+
+		// make sure we have the first repeat in each instance
+		foreach ($rows as &$row){
+			if (strtolower($row->freq())!="none" && $noRepeats){
+				$repeat = $row->getFirstRepeat();
+				if ($repeat->rp_id() != $row->rp_id()){
+					$row = $this->listEventsById($repeat->rp_id());
+				}
+			}
+		}
+		unset($row);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
@@ -2385,6 +2396,26 @@ class JEventsDBModel
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
+		// Do we want to only use start or end dates in the range?
+		$usedates = $params->get("usedates","both");
+		if ($usedates=="both")
+		{
+			$daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+			// Must suppress multiday events that have already started
+			$multidate =  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+		}
+		else if ($usedates=="start")
+		{
+			$daterange =  "\n AND rpt.endrepeat >= '$startdate' ";
+			// Must suppress multiday events that have already started
+			$multidate =  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+		}
+		else if ($usedates=="end")
+		{
+			$daterange =  "\n AND rpt.startrepeat <= '$enddate' ";
+			// Must suppress multiday events that haven't already ended
+			$multidate =  "\n AND NOT (rpt.endrepeat > '$enddate' AND det.multiday=0) ";
+		}
 		// This version picks the details from the details table
 		if ($count)
 		{
@@ -2405,10 +2436,8 @@ class JEventsDBModel
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-
-				// Must suppress multiday events that have already started
-				. "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) "
+				. $daterange
+				. $multidate
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"

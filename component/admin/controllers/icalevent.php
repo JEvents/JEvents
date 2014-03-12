@@ -97,7 +97,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
 			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
 			jimport("joomla.filesystem.folder");
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") & JComponentHelper::getComponent("com_jevlocations", true)->enabled)
+			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && JComponentHelper::getComponent("com_jevlocations", true)->enabled)
 			{
 				$join[] = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
 				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
@@ -114,7 +114,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
 		if ($params->get("multicategory", 0))
 		{
-			$join[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$join[] =  "\n #__jevents_catmap as catmap ON catmap.evid = ev.ev_id" ;
 			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$where[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
 			$where[] = " catmap.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
@@ -247,7 +247,17 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// get the total number of records
-		$query = "SELECT count(distinct rpt.eventid)"
+		if ($this->_largeDataSet){
+			$query = "SELECT count(distinct ev.ev_id)"
+				. "\n FROM #__jevents_vevent AS ev "
+				. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+				//. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
+				. ( count($join) ? "\n LEFT JOIN  " . implode(' LEFT JOIN ', $join) : '' )
+				. ( count($where) ? "\n WHERE " . implode(' AND ', $where) : '' );
+		}
+		else {
+			$query = "SELECT count(distinct rpt.eventid)"
 				. "\n FROM #__jevents_vevent AS ev "
 				. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
@@ -255,8 +265,9 @@ class AdminIcaleventController extends JControllerAdmin
 				//. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
 				. ( count($join) ? "\n LEFT JOIN  " . implode(' LEFT JOIN ', $join) : '' )
 				. ( count($where) ? "\n WHERE " . implode(' AND ', $where) : '' );
+		}
 		$db->setQuery($query);
-		//echo $db->_sql;
+		//echo $db->getQuery()."<br/><br/>";
 		$total = $db->loadResult();
 		echo $db->getErrorMsg();
 		if ($limit > $total)
@@ -286,19 +297,19 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if ($order == 'start' || $order == 'starttime')
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY detail.dtstart $dir" : "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat $dir");
+			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.dtstart $dir" : "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat $dir");
 		}
 		else if ($order == 'created')
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY ev.created $dir" : "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
+			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir" : "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
 		}
 		else if ($order == 'modified')
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY modified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
+			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY modified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
 		}
 		else
 		{
-			$order = ($this->_largeDataSet ? "\n ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
+			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
 		}
 		$query = "SELECT ev.*, ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields
 				. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
@@ -325,6 +336,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		//echo $db->explain();
 		$rows = $db->loadObjectList();
+		//echo $db->getQuery()."<br/>";
 		foreach ($rows as $key => $val)
 		{
 			// set state variable to the event value not the event detail value
@@ -393,7 +405,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
-	function edit()
+	function edit($key = NULL, $urlVar = NULL)
 	{
 		// get the view
 		$this->view = $this->getView("icalevent", "html");
@@ -604,7 +616,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
-	function save()
+	function save($key = NULL, $urlVar = NULL)
 	{
 
 		$msg = "";
@@ -635,7 +647,7 @@ class AdminIcaleventController extends JControllerAdmin
 				else
 				{
 					if (JFactory::getUser()->id>0){
-						JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
+						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
 					}
 					else {
 						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);

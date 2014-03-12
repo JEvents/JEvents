@@ -123,9 +123,10 @@ div#jevents div.current dd {
 
 /** header icons **/
 div.icon-48-jevents {
-	background: url('../images/logo.gif') transparent no-repeat;
-	padding-left:265px!important;
+	background: url('../images/JeventsTransparent.png') transparent no-repeat;
+	background-size: 220px 48px;
 	line-height:48px;
+	padding: 0px 16px 32px 265px !important;
 }
 
 div.pagetitle {
@@ -293,4 +294,20 @@ fieldset.checkboxes li {
     float: left;
     margin-right: 5px;
    margin-top:5px;
+}
+/** Tabs fix for event editting pages **/
+#adminForm .adminform #tabs h3{line-height:16px; font-size:16px;margin:5px 5px;}
+/* CSS Modifications for Event Edit Page */
+.jeventslight #toolbar-box, .jeventsdark #toolbar-box {
+	height:90px;	
+	clear:both;
+}
+.jeventslight div.toolbar-list a, .jeventsdark div.toolbar-list a {
+	border:0px solid;
+}
+.jeventslight div.toolbar-list li.button, .jeventsdark div.toolbar-list li.button {
+	margin-left:10px;
+}
+.icon-32-save {
+background-image: inheirt !important;
 }

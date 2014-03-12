@@ -223,7 +223,7 @@ class DefaultModLegendView
 					$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
 					$registry = JRegistry::getInstance("jevents");
-					$controller = & $registry->get("jevents.controller", null);
+					$controller =  $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
 

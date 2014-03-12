@@ -61,6 +61,8 @@
 		</field>
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"  difficulty="1"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"  difficulty="1"/>
+		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />
+	<!--	<field name="usejquery" type="jevboolean" class="btn-group" default="1" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />//-->
 		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description=""  difficulty="2"/>
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" difficulty="2"/>
 
@@ -172,7 +174,8 @@
 		</field>
 		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
 		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
-	</fieldset>
+		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>		
+        </fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">
 		<field name="@spacer_mv1" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	

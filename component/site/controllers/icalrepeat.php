@@ -52,6 +52,39 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$evid =JRequest::getInt("evid",0);
 			// In this case I do not have a repeat id so I 
 		}
+
+		// special case where loading a direct menu item to an event with nextrepeat specified
+		/*
+		 * This is problematic since it will affect direct links to a specific repeat e.g. from latest events module on this menu item
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$Itemid = JRequest::getInt("Itemid");
+		if ($params->get("nextrepeat", 0) && $Itemid>0 )
+		{
+			$menu = JFactory::getApplication()->getMenu();
+			$menuitem = $menu->getItem($Itemid);
+			if (!is_null($menuitem) && isset($menuitem->query["layout"]) && isset($menuitem->query["view"]) && isset($menuitem->query["rp_id"]))
+			{
+				// we put the xml file in the wrong folder - stupid.  Hard to move now!
+				if ($menuitem->query["view"] == "icalrepeat" || $menuitem->query["view"] == "icalevent") {
+					if (intval($menuitem->query["rp_id"]) == $evid ){
+						$this->datamodel  =  new JEventsDataModel();
+						$this->datamodel->setupComponentCatids();
+						list($year,$month,$day) = JEVHelper::getYMD();
+						$uid = urldecode((JRequest::getVar( 'uid', "" )));
+						$eventdata = $this->datamodel->getEventData( $evid, "icaldb", $year, $month, $day, $uid );
+						if ($eventdata && isset($eventdata["row"])){
+							$nextrepeat = $eventdata["row"]->getNextRepeat();
+							if ($nextrepeat){
+								//$evid = $nextrepeat->rp_id();
+							}
+						}
+					}
+				}
+			}			
+		}
+		 *
+		 */
+
 		// if cancelling from save of copy and edit use the old event id
 		if ($evid==0){
 			$evid =JRequest::getInt("old_evid",0);
@@ -100,7 +133,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 	}
 
-	function edit(){
+	function edit($key = NULL, $urlVar = NULL){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
 			$user = JFactory::getUser();
@@ -121,7 +154,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		parent::edit();
 	}
 	
-	function save(){
+	function save($key = NULL, $urlVar = NULL){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
 			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );

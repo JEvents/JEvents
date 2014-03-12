@@ -13,7 +13,7 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('cms.toolbar.button');
-	
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 /* 
  * 
  * Joomla 3.0 version
@@ -45,6 +45,7 @@ class JToolbarButtonJev extends JToolbarButton
 			$btnClass = "btn btn-small";
 			$iconWhite = "";
 		}
+		$btnClass = JevJoomlaVersion::isCompatible("3.0")? $btnClass : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
 		$html .= "<i class=\"$class $iconWhite\">\n";
@@ -123,6 +124,7 @@ class JToolbarButtonJevlink extends JToolbarButton
 			$btnClass = "btn btn-small";
 			$iconWhite = "";
 		}
+		$btnClass = JevJoomlaVersion::isCompatible("3.0")? $btnClass : "";
 		
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
 		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
@@ -183,7 +185,9 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($msg, $name, $task, $list, $hideMenu,$jstestvar);
 
-		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"btn btn-small\">\n";
+		$btnClass = JevJoomlaVersion::isCompatible("3.0")? "btn btn-small" : "";
+
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"$btnClass\">\n";
 		$html .= "<span class=\"$class\">\n";
 		$html .= "</span>\n";
 		$html .= "$text\n";

@@ -31,7 +31,7 @@ class modJeventsLegendHelper
 		JEVHelper::loadLanguage('modcal');
 	}
 
-	function getAllCats($modparams,&$catids,&$catidList)
+	public static function getAllCats($modparams,&$catids,&$catidList)
 	{
 		
 		$catidList = "";

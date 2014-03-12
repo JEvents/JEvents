@@ -46,6 +46,7 @@ if (JRequest::getVar('save'))
 	ob_start();
 
 	$content = JFile::read($filepath);
+	$btnclass = JevJoomlaVersion::isCompatible("3.0")? "btn btn-success" : "";
 	?>
 
 	<form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post" name="custom_css_save" id="custom_css_save">
@@ -58,7 +59,7 @@ if (JRequest::getVar('save'))
 				<div id="j-main-container">
 <?php endif; ?>
 				<textarea rows="28" cols="93" name="content"><?php echo $content; ?></textarea>
-				<input type="submit" style="display:block;margin-left:2px;" name="save" class="btn btn-success" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
+				<input type="submit" style="display:block;margin-left:2px;" name="save" class="<?php echo $btnclass;?>" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
 				</form>
 				<?php
 				$html = ob_get_contents();

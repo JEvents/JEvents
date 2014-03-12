@@ -22,7 +22,7 @@ class Pkg_JeventsInstallerScript
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-		$is_enabled = $db->loadResult(); 
+                                 $is_enabled = $db->loadResult();   
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
 			return;
@@ -73,7 +73,7 @@ class Pkg_JeventsInstallerScript
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 0) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION_UPRG');}
+		if ($this->hasJEventsInst == 1) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION');}
 
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='http://www.jevents.net/images/JeventsTransparent.png' /></div>
@@ -97,7 +97,7 @@ class Pkg_JeventsInstallerScript
 						<li><a href='http://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
 						<li><a href='http://www.jevents.net/jevents-15-topmenu/documentation' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
 					</ul>
-		</div>";
+				</div>";
 
 		
 		if ($this->hasJEventsInst == 0)

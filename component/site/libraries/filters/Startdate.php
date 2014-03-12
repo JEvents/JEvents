@@ -10,6 +10,7 @@
  */
 
 defined('_VALID_MOS') or defined('_JEXEC') or die( 'No Direct Access' );
+JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 // Event repeat startdate fitler
 class jevStartdateFilter extends jevFilter

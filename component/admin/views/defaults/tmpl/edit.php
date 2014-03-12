@@ -111,6 +111,10 @@ echo $editor->save('value');
 					$params = new JRegistry($this->item->params);
 					$modids = $params->get("modid", array());
 					$modvals = $params->get("modval", array());
+					// not sure how this can arise :(
+					if (is_object($modvals)){
+						$modvals = get_object_vars($modvals);
+					}
 					$count = 0;
 					$conf = JFactory::getConfig();
 					$modeditor =  JFactory::getEditor($conf->get('editor'));

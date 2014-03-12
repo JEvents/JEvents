@@ -68,7 +68,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				$label = empty($fieldSet->label) ? $name : $fieldSet->label;
 
-				$class = isset($field->class) ? $field->class : "";
+				$class = isset($fieldSet->class) ? $fieldSet->class : "";
 				if (!empty($fieldSet->difficulty))
 				{
 					$difficultySetClass = "difficulty" . $fieldSet->difficulty;
@@ -158,6 +158,11 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					continue;
 				}
 
+				$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+					continue;
+				}
+				
 				// Hide club update field if no club addons are installed
 				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
 					// disable if no club addons are installed
@@ -269,6 +274,14 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					$layoutform = JForm::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
 					$layoutform->bind($this->component->params);
 
+					if (JFile::exists(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml")){
+						$xml = simplexml_load_file(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml");
+						$layoutname = (string) $xml->name;
+						$langfile = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
+						$lang = JFactory::getLanguage();
+						$lang->load($langfile , JPATH_SITE, null, false, true);
+					}
+
 					$fieldSets = $layoutform->getFieldsets();
 					$html = array();
 					$hasconfig = false;
@@ -288,6 +301,12 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							{
 								continue;
 							}
+
+							$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+							if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+								continue;
+							}
+
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 

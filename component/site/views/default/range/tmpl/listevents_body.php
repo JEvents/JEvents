@@ -11,9 +11,7 @@ echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
     <tr valign="top">
         <td colspan="2"  align="center" class="cal_td_daysnames">
            <!-- <div class="cal_daysnames"> -->
-            <?php echo JEventsHTML::getDateFormat( $this->startyear, $this->startmonth, $this->startday, 1 )  ;?>
-            &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-            <?php echo JEventsHTML::getDateFormat( $this->endyear, $this->endmonth, $this->endday, 1 ) ;?>
+			<?php echo $this->dateFormattedDateRange();?>
             <!-- </div> -->
         </td>
     </tr>

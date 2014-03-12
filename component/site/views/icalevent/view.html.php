@@ -25,6 +25,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function __construct($config = array())
 	{
+		
 		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 		parent::__construct($config);
 
@@ -32,7 +33,11 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$this->jevlayout = "default";
 		$this->addHelperPath(realpath(dirname(__FILE__) . "/../default/helpers"));
 		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
-
+		// stop crawler and set meta tag.
+		JEVHelper::checkRobotsMetaTag();
+		
+		// Call the MetaTag setter function.
+		JEVHelper::SetMetaTags();
 	}
 
 	function edit($tpl = null)
@@ -42,14 +47,22 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-                                    JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		//JEVHelper::script('toolbarfix.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+                  JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
-		
-		// reset the title because JToolbar messes is up in Joomla 3.0 in the frontend !!
-		$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
+		if ($this->row->title() <= "")
+		{
+			// Set toolbar items for the page
+			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+
+			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
+		}
+		else
+		{
+			// Set toolbar items for the page
+			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+
+			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
+		}
 
 		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->id > 0)

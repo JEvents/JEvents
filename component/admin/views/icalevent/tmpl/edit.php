@@ -150,7 +150,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                     {
                             foreach ($this->requiredtags as $tag)
                             {
-                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});";
+                                    echo "JevStdRequiredFields.fields.push({'name':'".$tag['id']."', 'default' :'".$tag['default_value']."' ,'reqmsg':'".$tag['alert_message']."'});\n";
                             }
                     }
                     ?>
@@ -169,13 +169,12 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				var editorElement = $('jevcontent');
 				if (editorElement)
 				{
-<?php echo $this->editor->save('jevcontent'); ?>
+					<?php
+					echo $this->editor->save('jevcontent');
+					?>
 				}
-
 				try {
-                                    
-                                    
-if (!JevStdRequiredFields.verify(document.adminForm)) {
+					if (!JevStdRequiredFields.verify(document.adminForm)){
 						return;
 					}
 					if (!JevrRequiredFields.verify(document.adminForm)) {
@@ -212,6 +211,9 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+	if (JEVHelper::getItemid()>0){
+		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
+	}
 	?>
 						// reformat start and end dates  to Y-m-d format
 						reformatStartEndDates();
@@ -280,7 +282,7 @@ else
 				echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
 			}
 			?>
-			<div class="control-group">
+			<div class="control-group jevtitle">
 				<?php echo $this->form->getLabel("title"); ?>
 				<div class="controls">
 					<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
@@ -290,7 +292,7 @@ else
 			if ($this->form->getInput("priority"))
 			{
 				?>
-				<div class="control-group">
+				<div class="control-group jevpriority">
 					<?php echo $this->form->getLabel("priority"); ?>
 					<div class="controls">
 						<?php echo $this->form->getInput("priority"); ?>
@@ -315,7 +317,7 @@ else
 			if ($this->form->getInput("ics_id"))
 			{
 				?>
-				<div class="control-group">
+				<div class="control-group jevcalendar">
 					<?php echo $this->form->getLabel("ics_id"); ?>
 					<div class="controls">
 						<?php echo $this->form->getInput("ics_id"); ?>
@@ -336,7 +338,7 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("catid") || $this->form->getLabel("access"))
+			if ($this->form->getLabel("catid"))
 			{
 				?>
 				<div class="control-group  jevcategory">
@@ -351,8 +353,14 @@ else
 						</div>
 						<?php
 					}
-
-
+					?>
+				</div>
+				<?php
+			}
+			if (  $this->form->getLabel("access") ){
+				?>
+				<div class="control-group  jevaccess">
+					<?php
 					if ($this->form->getLabel("access"))
 					{
 						echo $this->form->getLabel("access");
@@ -436,6 +444,11 @@ else
 			<?php
 			foreach ($this->customfields as $key => $val)
 			{
+                                // skip custom fields that are already displayed on other tabs
+                                if (isset($val["group"]) && $val["group"]!="default"){
+                                    continue;
+                                }
+                            
 				?>
 				<div class="control-group jevplugin_<?php echo $key; ?>">
 					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>

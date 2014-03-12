@@ -104,16 +104,9 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	-webkit-transition-property:
-		background-position,
-		-webkit-border-bottom-left-radius,
-		-webkit-box-shadow;
-	-moz-transition-property:
-		background-position,
-		-moz-border-radius-bottomleft,
-		-moz-box-shadow;
 	-webkit-transition-duration: 0.8s;
 	-moz-transition-duration: 0.8s;
+	transition-duration: 0.8s;
 }
 
 #cpanel div.icon a:hover,
@@ -172,6 +165,10 @@ fieldset.checkboxes li {
 }
 
 /* Editing styles */
+#jevents .control-group > label {
+    float: left;
+}
+
 td.r1, span.r1 {
 	background-color:#eeeeee!important;
 	padding:5px 5px 0px 0px;
@@ -289,6 +286,16 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .hiddenDifficulty  {
 	display: none;
 }
+
+#myParamsTabs {
+    background-color: #FFFFFF;
+    border-bottom-left-radius: 5px;
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-top-left-radius: 5px;
+    border-width: 1px 0 1px 1px;
+    margin-right: -1px;
+}
 #myParamsTabsContent table.paramlist {
     width: 100%;
 }
@@ -323,3 +330,13 @@ table.settings_level .difficulty1 .paramlist_value {vertical-align: top;}
 table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:15px;}
 .nav.nav-list.config { width: 15%; float: left;}
 .jevconfig #myParamsTabsContent.tab-content  {width: 75%; float: left; margin-top:0px;}
+
+/* We need to hide links from print views, it looks silly with so many events */
+@media print {
+	a[href]:after {
+		content:"" !important;
+	}
+    abbr[title]:after {
+		content: "" !important;
+	}
+}

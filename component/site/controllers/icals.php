@@ -25,7 +25,13 @@ class ICalsController extends AdminIcalsController
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get("disableicalexport", 0) && !$cfg->get("feimport", 0))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+	                 $query = "SELECT icsf.* FROM #__jevents_icsfile as icsf where icsf.autorefresh=1";
+			$db	= JFactory::getDBO();
+			$db->setQuery($query);
+			$allICS = $db->loadObjectList();
+			if (count($allICS)==0){
+				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			}
 		}
 
 		// Load abstract "view" class

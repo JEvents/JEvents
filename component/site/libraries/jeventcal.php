@@ -116,7 +116,15 @@ class jEventCal {
 	function color_bar() { return $this->_color_bar; }
 	function catid() { return $this->_catid; }
 	function created_by() { return $this->_created_by; }
-	function created_by_alias() { return $this->_created_by_alias; }
+	function created_by_alias() { 
+            if ($this->_created_by_alias != ""){
+                return $this->_created_by_alias; 
+            }
+            else {
+                $creator = jFactory::getUser($this->_created_by);
+                return $creator->name;
+            }            
+        }
 	function created() { return $this->_created; }
 	
 	function formattedCreationDate() { return $this->_created; }
@@ -349,6 +357,31 @@ class jEventCal {
 			if (isset($params->image) && $params->image!=""){ 
 				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
 			}		
+		}
+		return "";
+	}
+	function getCategoryImageUrl($multiple=false){
+		$data = $this->getCategoryData();
+		if ($multiple){
+			if (is_array($data)) {
+				$output = "";
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){
+						$output .= JURI::root().$params->image;
+					}
+				}
+				return $output;
+			}
+		}
+		if (is_array($data)) {
+			$data = $data[0];
+		}
+		if ($data){
+			$params = json_decode($data->params);
+			if (isset($params->image) && $params->image!=""){
+				return JURI::root().$params->image;
+			}
 		}
 		return "";
 	}

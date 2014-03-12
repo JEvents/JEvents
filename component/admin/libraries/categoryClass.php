@@ -21,7 +21,7 @@ class JEventsCategory extends JTableCategory {
 	var $catid 			= null;
 
 	// security check
-	function bind( $array ) {
+	function bind( $array , $ignore=array()) {
 		$cfg = JEVConfig::getInstance();
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
@@ -58,7 +58,7 @@ class JEventsCategory extends JTableCategory {
 		return true;
 	}
 
-	function load($oid=null){
+	function load($oid = NULL, $reset = true){
 		parent::load($oid);
 		$params = new JRegistry($this->params);
 		$this->color = $params->get("catcolour", "#000000");
@@ -67,7 +67,7 @@ class JEventsCategory extends JTableCategory {
 		$this->image = $params->get("image","");
 	}
 
-	function store(){
+	function store($updateNulls = false){
 		$success = parent::store();
 		if ($success){
 			JPluginHelper::importPlugin("jevents");

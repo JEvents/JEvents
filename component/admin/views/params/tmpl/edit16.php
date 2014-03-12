@@ -69,6 +69,11 @@ $version = JEventsVersion::getInstance();
 					}
 				}
 
+				$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+					continue;
+				}
+
 				$class = isset($field->class) ? $field->class : "";
 
 				if (strlen($class) > 0)
@@ -130,6 +135,16 @@ $version = JEventsVersion::getInstance();
 			{
 				$layoutform = JForm::getInstance("com_jevent.config.layouts.".$viewfile, $config, array('control'=>'jform', 'load_data'=>true), true,"/config");
 				$layoutform->bind($this->component->params);
+
+				if (JFile::exists(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml")){
+					$xml = simplexml_load_file(JPATH_ADMINISTRATOR."/manifests/files/$viewfile.xml");
+					$layoutname = (string) $xml->name;
+					$langfile = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
+					$lang = JFactory::getLanguage();
+					$source = $path;
+					 $lang->load($langfile , JPATH_SITE, null, false, true);
+				}
+
 				echo JHtml::_('tabs.panel', JText::_(ucfirst($viewfile)), 'config_' . str_replace(" ", "_", $viewfile));
 				
 				$fieldSets = $layoutform->getFieldsets();
@@ -151,6 +166,11 @@ $version = JEventsVersion::getInstance();
 						{
 							continue;
 						}
+						$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
+						if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+							continue;
+						}
+
 						$class = isset($field->class) ? $field->class : "";
 
 						if (strlen($class) > 0)
