@@ -282,7 +282,7 @@ class JEV_CommonFunctions {
 		$authorname = "";
 		$authoremail = "";
 		if ($event->created_by()>0){
-			$author = JFactory::getUser($event->created_by());
+			$author = JEVHelper::getUser($event->created_by());
 			if (!$author) return;
 			$authorname = $author->name;
 			$authoremail = $author->email;

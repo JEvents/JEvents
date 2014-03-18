@@ -121,6 +121,16 @@ class ExtModLatestView extends DefaultModLatestView
 			. '</div>';
 			$content .= $callink_HTML;
 		}
+
+		if ($this->modparams->get("contentplugins", 0)){
+			$dispatcher = JDispatcher::getInstance();
+			$eventdata = new stdClass();
+			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
+			$eventdata->text = $content;
+			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			 $content = $eventdata->text;
+		}
+
 		return $content;
 	} // end of function
 } // end of class

@@ -20,9 +20,32 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids");
 	?>
 	<div class="jev_pagination">
-	<form action="<?php echo $link;?>" method="post" xxx="1">
+	<form action="<?php echo $link;?>" method="post" xxx="1" name="adminForm" id="adminForm">
 	<?php
-	echo $pageNav->getListFooter(); 
+	if ($task!="crawler.listevents"){
+	echo $pageNav->getListFooter();
+	}
+	else {
+		// Allow to receive a null layout
+		$layoutId =  'pagination.crawlerlinks' ;
+
+		$app = JFactory::getApplication();
+
+		$list = array(
+			'prefix'       => $pageNav->prefix,
+			'limit'        => $pageNav->limit,
+			'limitstart'   => $pageNav->limitstart,
+			'total'        => $pageNav->total,
+			'limitfield'   => $pageNav->getLimitBox(),
+			'pagescounter' => $pageNav->getPagesCounter(),
+			'pages'        => $pageNav->getPaginationPages()
+		);
+
+		$options = array();
+		
+		echo  JLayoutHelper::render($layoutId, array('list' => $list, 'options' => $options));
+
+	}
 	?>
 	</form>
 	</div>

@@ -121,7 +121,7 @@ class jEventCal {
                 return $this->_created_by_alias; 
             }
             else {
-                $creator = jFactory::getUser($this->_created_by);
+                $creator = JEVHelper::getUser($this->_created_by);
                 return $creator->name;
             }            
         }

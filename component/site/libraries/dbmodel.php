@@ -536,7 +536,7 @@ class JEventsDBModel
 		}
 		else
 		{
-			$user = JFactory::getUser($userid);
+			$user = JEVHelper::getUser($userid);
 		}
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();

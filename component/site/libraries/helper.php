@@ -1719,13 +1719,13 @@ class JEVHelper
 				// this causes a problem in Joomla 2.5.1 on some servers
 				if (version_compare(JVERSION, '2.5', '>='))
 				{
-					$rows[$id] = JFactory::getUser($id);
+					$rows[$id] = JEVHelper::getUser($id);
 				}
 				else
 				{
 					$handlers = JError::getErrorHandling(2);
 					JError::setErrorHandling(2, "ignore");
-					$rows[$id] = JFactory::getUser($id);
+					$rows[$id] = JEVHelper::getUser($id);
 					foreach ($handlers as $handler)
 					{
 						if (!is_array($handler))
@@ -2548,6 +2548,48 @@ SCRIPT;
 		}
 
 	}
+
+	/**
+	 * Get an user object.
+	 *
+	 * JEvents version that doesn't throw error message when user doesn't exist
+	 * 
+	 * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
+	 *
+	 * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
+	 *
+	 * @return  JUser object
+	 *
+	 * @see     JUser
+	 * @since   11.1
+	 */
+	public static function getUser($id = null)
+	{
+		if (is_null($id))
+		{
+			return JFactory::getUser($id);
+		}
+		else
+		{
+			static $tested = array();
+			if (!isset($tested[$id])){
+				// Initialise some variables
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName('#__users'));
+				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+				$db->setQuery($query, 0, 1);
+				$tested[$id] = $db->loadResult();
+			}
+			if (!$tested[$id]) {
+				return false;
+			}
+			return JFactory::getUser($id);
+		}
+
+	}
+
 
 }
 

@@ -802,7 +802,7 @@ class jIcalEventDB extends jEventCal {
 
 	function creatorName(){
 		if (!isset($this->_creatorname)){
-			$user = JFactory::getUser($this->_created_by);
+			$user = JEVHelper::getUser($this->_created_by);
 			if ($user->id>0) $this->_creatorname = $user->username. "(".$user->name.")";
 			else if (isset($this->_anonname)) $this->_creatorname = $this->_anonname. "<br/>(".$this->_anonemail.")";
 			else  $this->_creatorname = "";
