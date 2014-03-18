@@ -270,8 +270,9 @@ class DefaultModCalView
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
-		if ($this->hasTooltips) {
+		if ($this->modparams->get("showtooltips",0)) {
 			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+			$this->hasTooltips	 = true;
 		}
 		else {
 			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
@@ -389,7 +390,7 @@ class DefaultModCalView
 							$class = ($currentDay["cellDate"] == $today) ? "mod_events_td_todaynoevents" : "mod_events_td_daynoevents";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$tooltip = $this->getTooltip($currentDay, array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>"mod_events_daylink"));
 						if ($tooltip) {
 							$content .= $tooltip;
 						}

@@ -70,8 +70,9 @@ class ExtModCalView extends DefaultModCalView
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
-		if ($this->hasTooltips) {
+		if ($this->modparams->get("showtooltips",0)) {
 			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+			$this->hasTooltips	 = true;
 		}
 		else {
 			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
@@ -214,7 +215,7 @@ START;
 							$linkclass = "extcal_busylink";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass));
 						if ($tooltip) {
 							$content .= $tooltip;
 						}

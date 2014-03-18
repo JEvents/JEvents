@@ -29,6 +29,7 @@
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
+				<field name="showtooltips" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_TOOLTIPS_CLUB_ONLY" description="JEV_SHOW_TOOLTIPS_CLUB_ONLY_DESC" conditional="modcal_useLocalParam" conditions="1" />
 				<field name="noeventcheck" type="jevmultilist" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP"  conditional="modcal_useLocalParam" conditions="1" >
 					<option value="0">Jev_no</option>										
 					<option value="1">Jev_yes</option>										

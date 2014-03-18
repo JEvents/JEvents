@@ -73,9 +73,6 @@ if ($form_link == "")
 $form_link = JRoute::_($form_link
 				. ($evid ? '&evid=' . $evid : '')
 				. ($jevtype ? '&jevtype=' . $jevtype : '')
-				. ($year ? '&year=' . $year : '')
-				. ($month ? '&month=' . $month : '')
-				. ($day ? '&day=' . $day : '')
 				, false);
 
 $filters = $jevhelper->getFilters();
