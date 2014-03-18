@@ -311,3 +311,21 @@ fieldset.checkboxes li {
 .icon-32-save {
 background-image: inheirt !important;
 }
+
+/** Default Event Details Custom Layout Control **/
+
+#jevents_body .jev_evdt {padding:10px;}
+.jev_evdt .jev_evdt_header {width:100%;max-width:100%;}
+.jev_evdt .jev_evdt_icons {float:right;height:26px;margin-top:-15px;}
+.jev_evdt .jev_evdt_icons a {display:inline-block;}
+.jev_evdt .jev_evdt_icons > div {display:inline-block; vertical-align:top;}
+.jev_evdt .jev_evdt_icons img {height:24px;vertical-align:top;}
+.jev_evdt .jev_evdt_title {font-size:160%;padding-bottom:10px;}
+
+.jev_evdt .jev_evdt_summary {width:75%;display:inline-block;}
+.jev_evdt .jev_eventdetails_body > div {padding-bottom:10px;}
+.jev_evdt .jev_evdt_hits {width:24%; display:inline-block;text-align:right;vertical-align:top;}
+.jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {display:inline-block;margin-right:25px;}
+.jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
+
+/** End of default event details custom layout control **/
