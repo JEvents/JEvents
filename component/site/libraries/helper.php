@@ -2565,7 +2565,7 @@ SCRIPT;
 	 */
 	public static function getUser($id = null)
 	{
-		if (is_null($id))
+		if (is_null($id) || $id==0)
 		{
 			return JFactory::getUser($id);
 		}

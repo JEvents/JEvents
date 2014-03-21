@@ -8,10 +8,11 @@
 var JevStdRequiredFields = {
 	fields: new Array(),
 	verify: function(form) {
+		valid = true;
+		
 		// make sure a MooTools item
 		form = $(form);
 		var messages = new Array();
-		valid = true;
 		JevStdRequiredFields.fields.each(function(item, i) {
 			name = item.name;
 			// should we skip this test because of category restrictions?

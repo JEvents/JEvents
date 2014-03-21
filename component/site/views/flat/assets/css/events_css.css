@@ -722,9 +722,9 @@ div.jevtt_text{
 #jevents_header {position:relative;}
 #jevents_header ul.actions {
     list-style-image: none;
-    position:absolute;
-    right:0px;
-    top:0px;
+    /* position:absolute;   right:0px;    top:0px;*/
+    float:right;
+    margin:5px 5px 2px 2px!important;
     list-style-type: none;
     list-style-image: none;
     width:auto!important;	

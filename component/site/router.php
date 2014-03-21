@@ -228,6 +228,10 @@ function JEventsBuildRoute(&$query)
 		case "icalevent.delete":
 		case "icalrepeat.delete":
 		case "icalrepeat.deletefuture":
+			JPluginHelper::importPlugin("jevents");
+			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher->trigger( 'onJEventsRoute');
+
 			$segments[] = $task;
 			if (isset($query['jevtype']))
 			{
@@ -759,6 +763,10 @@ function JEventsBuildRouteNew(&$query, $task)
 		case "icalevent.delete":
 		case "icalrepeat.delete":
 		case "icalrepeat.deletefuture":
+			JPluginHelper::importPlugin("jevents");
+			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher->trigger( 'onJEventsRoute');
+
 			$segments[] = $transtask;
 			if (isset($query['jevtype']))
 			{

@@ -187,6 +187,34 @@ class AdminDefaultsController extends JControllerForm {
 			return;
 		}
 		$name = $cid[0];
+
+		// Check if the layout is the same as the default value - if it is then do NOT publish it
+		$sql = "SELECT * FROM #__jev_defaults where id=".$db->Quote($name);
+		$db->setQuery($sql);
+		$value = $db->loadObject();
+
+		$defaultvalue = "";
+		$componentname = explode(".",$value->name ,2);
+		$componentname =  $componentname[0];
+
+		if (JevJoomlaVersion::isCompatible("3.0.0"))
+		{
+			if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html"))
+			{
+				$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html");
+			}
+		}
+		if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".html"))
+		{
+			$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".html");
+		}
+
+		if (str_replace(" ", "",$defaultvalue)==str_replace(" ","",$value->value) || $value->value=="") {
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
+			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+			return;
+		}
+		
 		$sql = "UPDATE #__jev_defaults SET state=1 where id=".$db->Quote($name);
 		$db->setQuery($sql);
 		$db->query();
