@@ -789,3 +789,21 @@ div.export_form {
 	border: 1px solid #e3e3e3;
 	padding:10px;
 }
+
+/* Media Queries for mobile and desktop displays */
+@media (max-width: 698px){
+	.jev-only-mobile{
+		display: block;
+	  }
+	.jev-only-desktop{
+		display: none;
+	 }
+}
+@media (min-width: 699px) {
+	.jev-only-mobile{
+		display: none;
+	  }
+	.jev-only-desktop{
+		display: block;
+	 }
+}
