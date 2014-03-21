@@ -952,6 +952,23 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
   width: 100% !important;
 }
 
+/* Media Queries for mobile and desktop displays */
+@media (max-width: 698px){
+	.jev-only-mobile{
+		display: block;
+	  }
+	.jev-only-desktop{
+		display: none;
+	 }
+}
+@media (min-width: 699px) {
+	.jev-only-mobile{
+		display: none;
+	  }
+	.jev-only-desktop{
+		display: block;
+	 }
+}
 .jev_toprow .jev_header2 > * {
   height: auto !important;
 }

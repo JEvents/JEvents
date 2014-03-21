@@ -873,3 +873,21 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 	vertical-align:middle!important;
     margin-bottom:1px;
 }
+
+/* Media Queries for mobile and desktop displays */
+@media (max-width: 698px){
+	.jev-only-mobile{
+		display: block;
+	  }
+	.jev-only-desktop{
+		display: none;
+	 }
+}
+@media (min-width: 699px) {
+	.jev-only-mobile{
+		display: none;
+	  }
+	.jev-only-desktop{
+		display: block;
+	 }
+}

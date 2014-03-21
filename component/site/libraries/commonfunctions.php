@@ -282,7 +282,7 @@ class JEV_CommonFunctions {
 		$authorname = "";
 		$authoremail = "";
 		if ($event->created_by()>0){
-			$author = JFactory::getUser($event->created_by());
+			$author = JEVHelper::getUser($event->created_by());
 			if (!$author) return;
 			$authorname = $author->name;
 			$authoremail = $author->email;
@@ -304,7 +304,7 @@ class JEV_CommonFunctions {
 		$mail->send();
 	}
 
-	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
+	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $day='', $month='', $year='', $start_time='', $end_time='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -332,6 +332,11 @@ class JEV_CommonFunctions {
 		}
 		$messagetemplate = str_replace("{LIVESITE}", $live_site,$messagetemplate);
 		$messagetemplate = str_replace("{AUTHOR}", $author,$messagetemplate);
+		$messagetemplate = str_replace("{DAY}", $day,$messagetemplate);
+		$messagetemplate = str_replace("{MONTH}", $month,$messagetemplate);
+		$messagetemplate = str_replace("{YEAR}", $year,$messagetemplate);
+		$messagetemplate = str_replace("{STARTTIME}", $start_time,$messagetemplate);
+		$messagetemplate = str_replace("{ENDTIME}", $end_time,$messagetemplate);
 		$messagetemplate = str_replace("{VIEWLINK}", $viewlink,$messagetemplate);
 		$messagetemplate = str_replace("{EDITLINK}", $modifylink,$messagetemplate);
 		$messagetemplate = str_replace("{MANAGEEVENTS}", $adminLink,$messagetemplate);

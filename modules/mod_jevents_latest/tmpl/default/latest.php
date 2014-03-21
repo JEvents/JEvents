@@ -911,6 +911,16 @@ class DefaultModLatestView
 					. '</div>';
 			$content .= $callink_HTML;
 		}
+
+		if ($this->modparams->get("contentplugins", 0)){
+			$dispatcher = JDispatcher::getInstance();
+			$eventdata = new stdClass();
+			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
+			$eventdata->text = $content;
+			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			 $content = $eventdata->text;
+		}
+
 		return $content;
 
 	}
@@ -1214,13 +1224,13 @@ class DefaultModLatestView
 				break;
 
 			case 'createdByUserName':
-				$catobj = JFactory::getUser($dayEvent->created_by());
+				$catobj = JEVHelper::getUser($dayEvent->created_by());
 				$content .= isset($catobj->username) ? $catobj->username : "";
 				break;
 
 			case 'createdByUserEmail':
 				// Note that users email address will NOT be available if they don't want to receive email
-				$catobj = JFactory::getUser($dayEvent->created_by());
+				$catobj = JEVHelper::getUser($dayEvent->created_by());
 				$content .= $catobj->sendEmail ? $catobj->email : '';
 				break;
 
@@ -1267,9 +1277,9 @@ class DefaultModLatestView
 						{
 							if (strpos($part, "}") !== false)
 							{
-
-								$subparts = explode("}", $part);
-
+								// limit to 2 because we may be using joomla content plugins
+								$subparts = explode("}", $part,2);
+								
 								if (strpos($subparts[0], "#") > 0)
 								{
 									$formattedparts = explode("#", $subparts[0]);
