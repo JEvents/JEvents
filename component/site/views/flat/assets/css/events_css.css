@@ -366,7 +366,7 @@ table.jev_row {
     width: 25%;
 }
 .jev_toprow div.currentmonth {
-    width: 47%;
+    width: 46.6%;
 }
 div.previousmonth {
     margin-left:1%;
@@ -948,6 +948,9 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 .jev_toprow .jev_header2 {
     width: 100%;
 }
+#jevents_body table {
+  width: 100% !important;
+}
 
 /* Media Queries for mobile and desktop displays */
 @media (max-width: 698px){
@@ -965,4 +968,7 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 	.jev-only-desktop{
 		display: block;
 	 }
+}
+.jev_toprow .jev_header2 > * {
+  height: auto !important;
 }

@@ -1,49 +1,15 @@
-<table class="contentpaneopen" style="border:0px">
-    <tr class="headingrow">
-        <td  width="100%" class="contentheading">
-        	{{JEV_FIELD_TITLE:TITLE}}
-        </td>
-        <td  width="20" class="buttonheading" align="right">
-	        {{JEV_FIELD_ICALBUTTON:ICALBUTTON}}
-		</td>
-        <td  width="20" class="buttonheading" align="right">
-         	{{JEV_FIELD_EDITBUTTON:EDITBUTTON}}
-		<td>
-    </tr>
-    <tr>
-        <td align="left" valign="top" colspan="4">
-            <table width="100%" style="border:0px">
-                <tr>
-                	<td>
-                		{{JEV_FIELD_REPEATSUMMARY:REPEATSUMMARY}}
-                		{{JEV_FIELD_PREVIOUSNEXT:PREVIOUSNEXT}}
-                	</td>
-                    <td class="ev_detail contact" >
-                    	{{JEV_FIELD_CREATOR:CREATOR}}
-                    </td>
-                   	<td class="ev_detail hits" >
-                   		{{JEV_FIELD_HITS:HITS}}
-                    <td/>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr align="left" valign="top">
-        <td colspan="4">{{JEV_FIELD_DESCRIPTION:DESCRIPTION}}</td>
-    </tr>
-     <tr>
-         <td class="ev_detail" align="left" valign="top" colspan="4">
-             <strong>{{JEV_FIELD_LOCATION_LABEL:LOCATION_LABEL}}</strong>{{JEV_FIELD_LOCATION:LOCATION}}
-         </td>
-     </tr>
-     <tr>
-         <td class="ev_detail" align="left" valign="top" colspan="4">
-             <strong>{{JEV_FIELD_CONTACT_LABEL:CONTACT_LABEL}}</strong>{{JEV_FIELD_CONTACT:CONTACT}}
-         </td>
-     </tr>
-     <tr>
-          <td class="ev_detail" align="left" valign="top" colspan="4">
-          	{{JEV_FIELD_EXTRAINFO:EXTRAINFO}}
-          </td>
-     </tr>
-</table>
+<div class="contentpaneopen jev_evdt">
+    <div class="jev_evdt_header">
+        <div class="jev_evdt_icons">{{JEV_FIELD_ICALBUTTON:ICALBUTTON}} {{JEV_FIELD_EDITBUTTON:EDITBUTTON}}</div>
+        <div class="jev_evdt_title">{{JEV_FIELD_TITLE:TITLE}}</div>
+    </div>
+    <div class="jev_eventdetails_body">
+        <div class="jev_evdt_summary">{{JEV_FIELD_REPEATSUMMARY:REPEATSUMMARY}} {{JEV_FIELD_PREVIOUSNEXT:PREVIOUSNEXT}}</div>
+        <div class="jev_evdt_hits">{{JEV_FIELD_HITS:HITS}}</div>
+        <div class="jev_evdt_creator"><span class="creator">{{JEV_FIELD_CREATOR:CREATOR_LABEL}} </span>{{Creator:CREATOR}}</div>
+        <div class="jev_evdt_contact"><span class="contact">{{JEV_FIELD_CONTACT_LABEL:CONTACT_LABEL}}</span>{{JEV_FIELD_CONTACT:CONTACT}}</div>
+        <div class="jev_evdt_desc">{{JEV_FIELD_DESCRIPTION:DESCRIPTION}}</div>
+        <div class="jev_evdt_location"><span class="location">{{JEV_FIELD_LOCATION_LABEL:LOCATION_LABEL}}</span>{{JEV_FIELD_LOCATION:LOCATION}}</div>
+        <div class="jev_evdt_extrainf">{{JEV_FIELD_EXTRAINFO:EXTRAINFO}}</div>
+    </div>
+</div>
