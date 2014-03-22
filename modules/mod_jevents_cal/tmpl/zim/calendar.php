@@ -58,20 +58,20 @@ class ZimModCalView
 
 		$this->_modid = $modid;
 
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$this->datamodel = new JEventsDataModel();
 
 		// component config object
-		$jevents_config		= & JEVConfig::getInstance();
+		$jevents_config		= JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
 		$this->aid			= $user->aid;
-		$tmplang			=& JFactory::getLanguage();
+		$tmplang			= JFactory::getLanguage();
 
 		// get params exclusive to module
 		$this->inc_ec_css			= $this->modparams->get('inc_ec_css', 1);
@@ -191,36 +191,8 @@ class ZimModCalView
 
 	}
 
-	function _navigationJS($modid){
-		static $included = false;
-		if ($included) return;
-		$included = true;
-?>
-	<script   type="text/javascript" ><!--
-	function navLoaded(elem, modid){
-		var myspan = document.getElementById("testspan"+modid);
-		var modbody = myspan.parentNode;
-		modbody.innerHTML=elem.innerHTML;
-	}
-	function callNavigation(link){
-		var body = document.getElementsByTagName('body')[0];
-		if (!document.getElementById('calnav')){
-			myiframe = document.createElement('iframe');
-			myiframe.setAttribute("name","calnav");
-			myiframe.setAttribute("id","calnav");
-			myiframe.style.display = "none";
-			body.appendChild(myiframe);
-		}
-		else {
-			myiframe = document.getElementById('calnav');
-		}
-		myiframe.setAttribute("src",link);
-	}
-	//--></script>
-	<?php }
-
 	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$adjDate = JevDate::strtotime($adj,$cal_today);
 		list($year,$month) = explode(":",JevDate::strftime("%Y:%m",$adjDate));
@@ -239,8 +211,8 @@ class ZimModCalView
 
 	function _displayCalendarMod($time, $startday, $linkString, $day_name, $monthMustHaveEvent=false, $basedate=false){
 
-		$db	=& JFactory::getDBO();
-		$cfg = & JEVConfig::getInstance();
+		$db	= JFactory::getDBO();
+		$cfg = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
 		//Width and height settings
 		$width				= "200px";
@@ -278,9 +250,15 @@ class ZimModCalView
 			$cal_month=date("m",$time);
 		}		
 
-		$reg =& JFactory::getConfig();
+		$reg = JFactory::getConfig();
 		$reg->setValue("jev.modparams",$this->modparams);
-		$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		if ($this->modparams->get("showtooltips",0)) {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,false, false);
+			$this->hasTooltips	 = true;
+		}
+		else {
+			$data = $this->datamodel->getCalendarData($cal_year,$cal_month,1,true, $this->modparams->get("noeventcheck",0));
+		}
 		$reg->setValue("jev.modparams",false);
 
 		$month_name = JEVHelper::getMonthName($cal_month);
@@ -288,7 +266,7 @@ class ZimModCalView
 		//$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
 		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 		
 		$view =  $this->getTheme();
@@ -399,7 +377,14 @@ class ZimModCalView
 							$class = ($currentDay["cellDate"] == $today) ? "mod_events_td_todaynoevents" : "mod_events_td_daynoevents";
 						}
 						$content .= "<td class='".$class."'>\n";
-						$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						$linkclass = "mod_events_daylink";
+						$tooltip = $this->getTooltip($currentDay, array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						if ($tooltip) {
+							$content .= $tooltip;
+						}
+						else {
+							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+						}
 						$content .="</td>\n";
 
 						break;
@@ -419,14 +404,14 @@ class ZimModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		// this will get the viewname based on which classes have been implemented
 		$viewname = $this->getTheme();
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
 		$viewpath = "components/".JEV_COM_COMPONENT."/views/".$viewname."/assets/css/";
@@ -475,16 +460,16 @@ class ZimModCalView
 		if ($modid!=0) {
 			$this->_modid=$modid;
 		}
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 
-		$db	=& JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		static $isloaded_css = false;
 		// this will get the viewname based on which classes have been implemented
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 		$viewname = ucfirst($cfg->get('com_calViewName',"default"));
 
-		$cfg = & JEVConfig::getInstance();
+		$cfg = JEVConfig::getInstance();
 
 		// get array
 		$day_name = JEVHelper::getWeekdayLetter(null, 1);
@@ -526,5 +511,46 @@ class ZimModCalView
 		
 		return $content;
 	} // function getSpecificCal
+
+	 protected function getTooltip($currentDay, $linkattr) {
+		$tooltip = "";
+		if (!isset($currentDay["events"]) || !is_array($currentDay["events"]) ||  count($currentDay["events"])==0){
+			return $tooltip;
+		}
+		// load core and extra mootools
+		JHTML::_('behavior.framework');
+		JHtmlBehavior::framework();
+		JHtmlBehavior::framework(true);
+
+		foreach ($currentDay["events"] as $event) {
+			$tooltip .= $event->title()."<br/>";
+		}
+		$tooltip .= "<hr/><small>".JText::_("JEV_EVENTS_CLICK_FOR_MORE_DETAILS",true)."</small>";
+
+		$tipTitle = '<div class="jevtt_title" >'.JText::_("JEV_EVENTS_THIS_DAY",true) .'</div>';
+		$tipText = '<div class="jevtt_text">'.$tooltip.'</div>';
+		$tooltip	= htmlspecialchars($tipTitle.$tipText,ENT_QUOTES);
+		$link = $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], $linkattr);
+		$tooltip = '<span class="editlinktip hasjevtip" title="'.$tooltip.'" >'.$link.'</span>';
+
+		static $script;
+		if (!isset($script	)){
+			$script = "
+			<script language='javascript'>
+			function setTooltips(){
+				if (window.parent){
+					var tipelems = parent.$$('.hasjevtip');
+					var JTooltips = new parent.Tips(parent.$$('.hasjevtip'), { maxTitleChars: 50, fixed: false});
+				}
+			}
+			//window.onload=setTooltips;
+			setTimeout(setTooltips,200);
+			</script>
+			";
+			$tooltip .= $script;
+		}
+
+		return $tooltip;
+	 }
 
 }
