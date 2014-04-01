@@ -1876,7 +1876,18 @@ class JEventsDBModel
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
 		}
-
+        
+        // Improve the where for the single day event pages to speed up the query
+        // Filter is taken from the iCalEvent::eventOnDate but for a db with a lot
+        // of events (> 2000 with repetition for 5 years) this had been a quick fixes.
+        // Can be better done.
+        $startday = explode(" ", $startdate);
+        $endday = explode(" ", $enddate);
+        $justToday = false;
+        if ($startday[0] == $endday[0]) {
+            $justToday = " AND multiday=0 AND '$startdate' < DATE_ADD(rpt.startrepeat, INTERVAL 1 DAY)";
+        }
+        
 		// process the new plugins
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
@@ -1962,7 +1973,7 @@ class JEventsDBModel
 					  WHERE  rbd.catid IN(".$this->accessibleCategoryList().")
 					  AND rbd.rptday >= '$startdate' AND rbd.rptday <= '$enddate' )"
 					 */
-					. $extrawhere
+					. $extrawhere . $justToday
 					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
 					. "\n GROUP BY rpt.rp_id" ;
