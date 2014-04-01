@@ -416,9 +416,9 @@ class JEVHelper
 
 		// force robots metatag
 		$cfg = JEVConfig::getInstance();
+		$document = JFactory::getDocument();
 		if ($cfg->get('com_blockRobots', 0) >= 1)
-		{
-			$document = JFactory::getDocument();
+		{			
 			// Allow on content pages
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
@@ -449,6 +449,11 @@ class JEVHelper
 				$document->setMetaData($name, $content);
 				return;
 			}
+		}
+		//If JEvents is not blocking robots we use menu item configuration
+		else
+		{
+			$document->setMetaData($name, $cfg->get('robots', $content));
 		}
 
 	}

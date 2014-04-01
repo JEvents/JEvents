@@ -271,7 +271,7 @@
 			<option value="2">JEV_YES_BY_USER_ACCESS_LEVEL</option>
 		</field>					
 		<field name="newsef" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
-		<field name="com_blockRobots" type="list" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="">
+		<field name="com_blockRobots" type="list" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
 			<option value="2">JEV_CONDITIONAL</option>
