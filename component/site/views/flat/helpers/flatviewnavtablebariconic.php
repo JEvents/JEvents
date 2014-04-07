@@ -89,12 +89,12 @@ $month_date = ( JevDate::mktime(0, 0, 0, $view_date->month,$view_date->day,$view
 				<?php if (in_array("search", $this->iconstoshow))
 				{
 					?>
-				</div>
 					<div  id="nav-search">
 						<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=search.form&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>" title="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>" >
 							<img src="<?php echo $viewimages; ?>/icon-search.gif" alt="Search" /></a>
 					</div>
 			<?php } ?>
+			</div>
 			<?php
 			if (in_array("bymonth", $this->iconstoshow))
 				echo $this->_viewHiddenJumpto($view_date, $view, $Itemid);

@@ -91,7 +91,7 @@ class DefaultModLatestView
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
 
 		$user =  JFactory::getUser();
-		$this->aid = $user->aid;
+		
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
 		$tmplang = JFactory::getLanguage();
 		$this->langtag = $tmplang->getTag();
