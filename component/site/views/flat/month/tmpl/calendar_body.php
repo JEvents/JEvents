@@ -10,7 +10,27 @@ if ($cfg->get("tooltiptype",'overlib')=='overlib'){
 $view =  $this->getViewName();
 echo $this->loadTemplate('cell' );
 $eventCellClass = "EventCalendarCell_".$view;
+
+// previous and following month names and links
+$followingMonth = $this->datamodel->getFollowingMonth($this->data);
+$precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
+
     ?>
+	<div class="jev_toprow jev_monthv">
+	    <div class="jev_header2">
+			<div class="previousmonth" >
+		      	<?php echo "<a href='".$precedingMonth["link"]."' title='".$precedingMonth['name']."' style='text-decoration:none;'>".$precedingMonth['name']."</a>";?>
+			</div>
+			<div class="currentmonth">
+				<?php echo $this->data['fieldsetText']; ?>
+			</div>
+			<div class="nextmonth">
+		      	<?php echo "<a href='".$followingMonth["link"]."' title='".$followingMonth['name']."' style='text-decoration:none;'>".$followingMonth['name']."</a>";?>
+			</div>
+			
+		</div>
+	</div>
+
             <table border="0" cellpadding="0" class="cal_top_day_names">
             <tr valign="top">
                 <?php 
