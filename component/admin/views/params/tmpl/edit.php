@@ -164,13 +164,13 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				}
 				
 				// Hide club update field if no club addons are installed
-				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
-					// disable if no club addons are installed
-					$plugins = JPluginHelper::getPlugin("jevents");
-					if (count($plugins)==0 && !$haslayouts){
-						continue;
-					}
-				}
+				//if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
+				//	// disable if no club addons are installed
+				//	$plugins = JPluginHelper::getPlugin("jevents");
+				//	if (count($plugins)==0 && !$haslayouts){
+				//		continue;
+				//	}
+				//}
 
 				$class = isset($field->class) ? $field->class : "";
 
