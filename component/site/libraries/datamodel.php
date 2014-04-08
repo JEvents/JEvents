@@ -701,6 +701,7 @@ class JEventsDataModel {
 		$pop = intval(JRequest::getVar( 'pop', 0 ));
 		$Itemid = JEVHelper::getItemid();
 		$db	= JFactory::getDBO();
+		$user= JFactory::getUser();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -708,7 +709,6 @@ class JEventsDataModel {
 
 		// if the event is not published then make sure the user can edit or publish it or created it before allowing it to be seen!
 		if ($row && !$row->published()) {
-			$user= JFactory::getUser();
 			if ($user->id!=$row->created_by() && !JEVHelper::canEditEvent($row)  && !JEVHelper::canPublishEvent($row)  && !JEVHelper::isAdminUser($user) ) {
 				$row=null;
 			}
@@ -721,6 +721,11 @@ class JEventsDataModel {
 			$rpid = $this->queryModel->findMatchingRepeat($uid, $year, $month, $day);
 			if (isset($rpid) && $rpid>0){
 				$row = $this->queryModel->listEventsById ($rpid, 1, $jevtype);  // include unpublished events for publishers and above
+				if ($row && !$row->published()) {					
+					if ($user->id!=$row->created_by() && !JEVHelper::canEditEvent($row)  && !JEVHelper::canPublishEvent($row)  && !JEVHelper::isAdminUser($user) ) {
+						$row=null;
+					}
+				}
 				$num_row = count($row);
 			}
 		}

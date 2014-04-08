@@ -195,6 +195,9 @@ class SaveIcalEvent {
 				}
 			}
 		}
+		
+		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
+		$vevent->published =  $vevent->state ;
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
