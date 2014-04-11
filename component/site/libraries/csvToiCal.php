@@ -170,6 +170,9 @@ class CsvToiCal
 				case "RRULE":
 					$dataLine->setRrule($data[$order]);					
 					break;
+				case "UID":
+					$dataLine->setUid($data[$order]);
+					break;
 				case "CATEGORIES":
 				case "SUMMARY":
 				case "DTSTART":

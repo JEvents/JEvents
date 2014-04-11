@@ -155,8 +155,12 @@
 		
                 
 		<field name="multicategory" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_MULTICATEGORY_EVENTS'  description='JEV_MULTICATEGORY_EVENTS_DESC' difficulty="2"/>
-		<field name="bootstrapcss" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2"/>
-		<field name="bootstrapchosen" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN" description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" difficulty="2"/>
+		<field name="bootstrapcss" type="list"  default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2" minjoomlaversion="3.0.0" >
+			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
+			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
+			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
+		</field>
+		<field name="bootstrapchosen" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN" description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" difficulty="2"  minjoomlaversion="3.0.0" />
 
 		<field name="allowraw" type="jevboolean" class="btn-group" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC" difficulty="2"/> 		
 		<field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />

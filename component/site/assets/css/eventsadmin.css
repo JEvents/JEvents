@@ -342,8 +342,15 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 }
 /** End of hiding links from print views **/
 
-/** Default Event Details Custom Layout Control **/
+/* Rockettheme workarounds */
+#jevents #adminForm  label {
+    width:auto;
+}
+.btn-group a {
+	color:#fff;
+}
 
+/** Default Event Details Custom Layout Control **/
 #jevents_body .jev_evdt {padding:10px;}
 .jev_evdt .jev_evdt_header {width:100%;max-width:100%;}
 .jev_evdt .jev_evdt_icons {float:right;height:26px;margin-top:-15px;}
@@ -358,5 +365,5 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 .jev_evdt .jev_evdt_hits {width:24%; display:inline-block;text-align:right;}
 .jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {display:inline-block;margin-right:25px;}
 .jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
-
+.jev_evdt .jev_evdt_summary .ev_prevrepeat,.jev_evdt .jev_evdt_summary  .ev_nextrepeat {  display: inline-block;  margin-right: 15px;}
 /** End of default event details custom layout control **/

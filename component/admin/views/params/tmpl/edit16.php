@@ -73,6 +73,10 @@ $version = JEventsVersion::getInstance();
 				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
 					continue;
 				}
+				$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+				if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
+					continue;
+				}
 
 				$class = isset($field->class) ? $field->class : "";
 
@@ -168,6 +172,10 @@ $version = JEventsVersion::getInstance();
 						}
 						$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
 						if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+							continue;
+						}
+						$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+						if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
 							continue;
 						}
 
