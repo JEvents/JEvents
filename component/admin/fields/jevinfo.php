@@ -145,7 +145,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 				. ' src="' . $imgpath . '/help_ques_inact.gif"'
 				//. ' onmouseover="this.src="' . $imgpath . '/help_ques.gif'.'" '
 				//. ' onmouseout="this.src="' . $imgpath . '/help_ques_inact.gif'.'" '
-				. ' onclick="' . $onclick_cmd . '" /><div style="display:none;"><div id="helpdiv'.$counthelps.'" >'.$help.'</div></div>';
+				. ' onclick="' . $onclick_cmd . '" /><div class="jev_none"><div id="helpdiv'.$counthelps.'" >'.$help.'</div></div>';
 
 		return $str;
 

@@ -146,7 +146,7 @@ class FlatViewNavTableBarIconic {
 
         $index = JRoute::_("index.php");
         ?>
-        <div id="jumpto"  style="display:none">
+        <div id="jumpto"  class="jev_none">
             <form name="BarNav" action="<?php echo $index; ?>" method="get">
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
                 <input type="hidden" name="task" value="month.calendar" />

@@ -367,3 +367,6 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 .jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
 .jev_evdt .jev_evdt_summary .ev_prevrepeat,.jev_evdt .jev_evdt_summary  .ev_nextrepeat {  display: inline-block;  margin-right: 15px;}
 /** End of default event details custom layout control **/
+
+.jev_none {display:none;}
+.jev_block {display:block;}

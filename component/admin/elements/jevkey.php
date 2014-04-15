@@ -31,9 +31,9 @@ class JElementJevkey extends JElementText
 
 		$params = $this->_parent;
 		$showcopy = $params->get("com_copyright",0);
-		$style=' style="display:none" ';
+		$style=' class="jev_none" ';
 		if (!$showcopy){
-			$style=' style="display:block" ';
+			$style=' class="jev_block" ';
 		}
 		return '<div '.$style.'><input type="hidden" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" />'.$value.'</div>';
 	}
@@ -45,9 +45,9 @@ class JElementJevkey extends JElementText
 
 		$params = $this->_parent;
 		$showcopy = $params->get("com_copyright",0);
-		$style=' style="display:none" ';
+		$style=' class="jev_none" ';
 		if (!$showcopy){
-			$style=' style="display:block" ';
+			$style=' class="jev_block" ';
 		}
 		return '<div '.$style.'>'.parent::fetchTooltip($label, $description, $xmlElement, $control_name, $name).'</div>';
 

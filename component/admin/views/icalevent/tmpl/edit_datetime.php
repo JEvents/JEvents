@@ -213,7 +213,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 		</div>
-		<div  style="display:none;" id="bysetpos">
+		<div  class="jev_none" id="bysetpos">
 			<fieldset><legend><?php echo "NOT YET SUPPORTED" ?></legend>
 			</fieldset>
 		</div>
