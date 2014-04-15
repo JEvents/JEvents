@@ -167,7 +167,6 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					echo $this->editor->save('jevcontent');
 					?>
 				}
-				?>
 		try {
 			if (!JevStdRequiredFields.verify(document.adminForm)){
 				return;

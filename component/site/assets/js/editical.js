@@ -321,7 +321,7 @@ function reformatStartEndDates() {
 	start_date = document.getElementById("publish_up");
 	start_date2 = document.getElementById("publish_up2");
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
 	start_date2.value = startDate.getFullYear()+"-"+(startDate.getMonth()+1)+"-"+startDate.getDate();
 	
 	end_date = document.getElementById("publish_down");
