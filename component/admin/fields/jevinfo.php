@@ -140,7 +140,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		}
 
 		// RSH 10/11/10 - Added float:none for 1.6 compatiblity - The default template was floating images to the left
-		$str = '<img border="0" style="float: none; vertical-align:bottom; cursor:help;" alt="' . JText::_('JEV_HELP') . '"'
+		$str = '<img border="0" class="jev_help" alt="' . JText::_('JEV_HELP') . '"'
 				. ' title="' . JText::_('JEV_HELP') . '"'
 				. ' src="' . $imgpath . '/help_ques_inact.gif"'
 				//. ' onmouseover="this.src="' . $imgpath . '/help_ques.gif'.'" '
