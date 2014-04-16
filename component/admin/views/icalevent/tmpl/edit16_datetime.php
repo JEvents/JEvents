@@ -61,10 +61,10 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
          </div>
          <div style="float:left;margin-left:20px!important;">
             <?php echo JText::_('JEV_EVENT_STARTTIME')."&nbsp;"; ?>
-			<span id="start_24h_area" style="display:inline">
+			<span id="start_24h_area" class="jev_inline">
             <input class="inputbox" type="text" name="start_time" id="start_time" size="8" <?php echo $this->row->alldayevent()?"disabled='disabled'":"";?> maxlength="8" value="<?php echo $this->row->starttime24();?>" onchange="checkTime(this);"/>
 			</span>
-			<span id="start_12h_area" style="display:inline">
+			<span id="start_12h_area" class="jev_inline">
            	<input class="inputbox" type="text" name="start_12h" id="start_12h" size="8" maxlength="8" <?php echo $this->row->alldayevent()?"disabled='disabled'":"";?> value="" onchange="check12hTime(this);" />
       		<input type="radio" name="start_ampm" id="startAM" value="none" checked="checked" onclick="toggleAMPM('startAM');" <?php echo $this->row->alldayevent()?"disabled='disabled'":"";?> /><?php echo JText::_( 'JEV_AM' );?>
       		<input type="radio" name="start_ampm" id="startPM" value="none" onclick="toggleAMPM('startPM');" <?php echo $this->row->alldayevent()?"disabled='disabled'":"";?> /><?php echo JText::_( 'JEV_PM' );?>
@@ -87,10 +87,10 @@ if ($params->get("disablerepeats",0) && !JEVHelper::isEventEditor() ){
          </div>
          <div style="float:left;margin-left:20px!important">
              <?php echo JText::_('JEV_EVENT_ENDTIME')."&nbsp;"; ?>
-			<span id="end_24h_area" style="display:inline">
+			<span id="end_24h_area" class="jev_inline">
            	<input class="inputbox" type="text" name="end_time" id="end_time" size="8" maxlength="8" <?php echo ($this->row->alldayevent() || $this->row->noendtime())?"disabled='disabled'":"";?> value="<?php echo $this->row->endtime24();?>" onchange="checkTime(this);" />
 			</span>
-			<span id="end_12h_area" style="display:inline">
+			<span id="end_12h_area" class="jev_inline">
            	<input class="inputbox" type="text" name="end_12h" id="end_12h" size="8" maxlength="8" <?php echo ($this->row->alldayevent() || $this->row->noendtime())?"disabled='disabled'":"";?> value="" onchange="check12hTime(this);" />
       		<input type="radio" name="end_ampm" id="endAM" value="none" checked="checked" onclick="toggleAMPM('endAM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime())?"disabled='disabled'":"";?> /><?php echo JText::_( 'JEV_AM' );?>
       		<input type="radio" name="end_ampm" id="endPM" value="none" onclick="toggleAMPM('endPM');" <?php echo ($this->row->alldayevent() || $this->row->noendtime())?"disabled='disabled'":"";?> /><?php echo JText::_( 'JEV_PM' );?>

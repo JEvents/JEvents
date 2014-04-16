@@ -95,12 +95,12 @@ class JElementJevinfo extends JElement
 			$help = str_replace("\n", " ", $help);
 
 			$ol_cmds = 'RIGHT, ABOVE, VAUTO, WRAP, STICKY, CLOSECLICK, CLOSECOLOR, "white"';
-			$ol_cmds .= ', CLOSETEXT, "<span style=\"border:solid white 1px;padding:0px;margin:1px;\"><b>X</b></span>"';
+			$ol_cmds .= ', CLOSETEXT, "<span style=\"jev_help_close\"><b>X</b></span>"';
 			$onclick_cmd = 'return overlib("'.$help.'", ' . $ol_cmds . ', CAPTION, "'.$caption.'")';
 		}
 
 		// RSH 10/11/10 - Added float:none for 1.6 compatiblity - The default template was floating images to the left
-		$str = '<img border="0" style="float: none; vertical-align:bottom; cursor:help;" alt="'. JText::_('JEV_HELP') . '"'
+		$str = '<img border="0" class="jev_help" alt="'. JText::_('JEV_HELP') . '"'
 		. ' title="' . JText::_('JEV_HELP') .'"'
 		. ' src="' . $imgpath . '/help_ques_inact.gif"'
 		. ' onmouseover=\'this.src="' . $imgpath . '/help_ques.gif"\''

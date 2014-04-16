@@ -35,10 +35,10 @@ class JElementJevboolmsg extends JElement
 		}
 		$value = intval($value);
 
-		$style=' style="display:none" ';
+		$style=' class="jev_none" ';
 		// if not showing copyright show message
 		if (!$value){
-			$style=' style="display:block" ';
+			$style=' class="jev_block" ';
 		}
 		
 		$options = array ();
