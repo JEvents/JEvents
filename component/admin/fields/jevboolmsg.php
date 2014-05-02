@@ -37,10 +37,10 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 
 	protected function getInput()
 	{
-		$style=' style="display:none" ';
+		$style=' class="jev_none" ';
 		// if not showing copyright show message
 		if (!$this->value){
-			$style=' style="display:block" ';
+			$style=' class="jev_block" ';
 		}
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");

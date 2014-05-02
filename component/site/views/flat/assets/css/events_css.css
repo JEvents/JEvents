@@ -364,6 +364,7 @@ table.jev_row {
 }
 .jev_toprow div.previousmonth, .jev_toprow div.nextmonth {
     width: 25%;
+    min-height:23px;
 }
 .jev_toprow div.currentmonth {
     width: 46.6%;
