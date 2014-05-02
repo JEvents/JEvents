@@ -1887,7 +1887,7 @@ class JEVHelper
 	static public
 			function getAid($user = null, $type = 'string')
 	{
-		if (is_null($user))
+		if (is_null($user) || !$user)
 		{
 			$user = JFactory::getUser();
 		}
@@ -1970,11 +1970,21 @@ class JEVHelper
 			function script($file, $path)
 	{
 
-		// Include mootools framework
-		JHtml::_('behavior.framework', true);
+		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",0)) {
+			// load jQuery versions
+			if (strpos($file, "JQ.js")==false) {
+				$file = str_replace(".js", "JQ.js", $file);
+				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+				JHTML::script($path . $file);
+			}
+		}
+		else {
+			// Include mootools framework
+			JHtml::_('behavior.framework', true);
 
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JHTML::script($path . $file);
+			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+			JHTML::script($path . $file);
+		}
 
 	}
 
