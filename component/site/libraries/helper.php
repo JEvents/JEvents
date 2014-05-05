@@ -411,7 +411,7 @@ class JEVHelper
 	 * @param string $content - metatag value
 	 */
 	public static
-			function checkRobotsMetaTag($name = "robots", $content = "noindex, nofollow")
+			function checkRobotsMetaTag($name = "robots", $content = "index, follow")
 	{
 
 		// force robots metatag

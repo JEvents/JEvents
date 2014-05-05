@@ -45,6 +45,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		$this->jevlayout="flat";	
 		
 		$this->addHelperPath(JEV_VIEWS."/flat/helpers");
+		$this->addHelperPath(JEV_VIEWS."/default/helpers");
 		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
 		// attach data model
