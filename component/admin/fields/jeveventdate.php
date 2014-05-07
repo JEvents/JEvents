@@ -14,7 +14,7 @@ class JFormFieldJeveventdate extends JFormField
 	 * @var		string
 	 * @since	1.6
 	 */
-	protected
+	public
 			$type = 'Jeveventdate';
 
 	/**

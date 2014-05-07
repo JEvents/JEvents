@@ -11,7 +11,7 @@ var JevStdRequiredFields = {
 		valid = true;
 		
 		// make sure a MooTools item
-		form = $(form);
+		form = jevjq(form);
 		var messages = new Array();
 		JevStdRequiredFields.fields.each(function(item, i) {
 			name = item.name;
@@ -19,8 +19,8 @@ var JevStdRequiredFields = {
 			if (typeof (JevrCategoryFields) != 'undefined' && JevrCategoryFields.skipVerify(name))
 				return;
 			var matches = new Array();
-			Array.from(form.elements).slice().each(function(testitem, testi) {
-				if (testitem.name == name || "custom_" + testitem.name == name || testitem.id == name || ("#" + testitem.id) == name || $(testitem).hasClass(name.substr(1))) {
+			form.serializeArray().forEach( function(  testitem, testi) {
+				if (testitem.name == name || "custom_" + testitem.name == name || (testitem.id && testitem.id == name) || ("#" + testitem.id) == name || jevjq(testitem).hasClass(name.substr(1))) {
 					matches.push(testitem);
 				}
 			});
@@ -30,7 +30,7 @@ var JevStdRequiredFields = {
 			}
 			// A set of radio checkboxes
 			else if (matches.length > 1) {
-				matches.each(function(match, index) {
+				matches.forEach(function(match, index) {
 					if (match.checked)
 						value = match.value;
 				});
@@ -46,7 +46,7 @@ var JevStdRequiredFields = {
 		});
 		if (!valid) {
 			message = "";
-			messages.each(function(msg, index) {
+			messages.forEach(function(msg, index) {
 				message += msg + "\n";
 			});
 			alert(message);
