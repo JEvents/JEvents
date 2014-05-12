@@ -363,6 +363,9 @@ RAWTEXT;
 				$repetitions = $vevent->getRepetitions(true);
 				$vevent->storeRepetitions();
 
+				if (isset($vevent->state) && !isset($vevent->published)) {
+					$vevent->published =  $vevent->state ;
+				}
 				// not a dry run of course!
 				$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, false));
 

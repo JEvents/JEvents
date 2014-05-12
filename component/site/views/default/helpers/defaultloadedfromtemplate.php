@@ -1280,7 +1280,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				
 				if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz"){
 					$user = JFactory::getUser();
-					$outputtz = $user->getParam("timezone", $jtz);
+					$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
 				}
 				$outputtz = new DateTimeZone($outputtz);
 

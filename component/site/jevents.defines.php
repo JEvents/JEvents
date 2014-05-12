@@ -27,45 +27,45 @@ if (!defined("JEV_LIBS")){
 }
 JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
 
-JLoader::register('JEVConfig',JEV_ADMINPATH."/libraries/config.php");
-JLoader::register('JevRegistry',JEV_PATH."/libraries/registry.php");
+JLoader::register('JEVConfig',JEV_ADMINPATH."libraries/config.php");
+JLoader::register('JevRegistry',JEV_PATH."libraries/registry.php");
 
 JLoader::register('SaveIcalEvent',JEV_ADMINLIBS."saveIcalEvent.php");
 
-JLoader::register('JEVHelper',JEV_PATH."/libraries/helper.php");
-JLoader::register('JevModuleHelper',JEV_PATH."/libraries/jevmodulehelper.php"); 
+JLoader::register('JEVHelper',JEV_PATH."libraries/helper.php");
+JLoader::register('JevModuleHelper',JEV_PATH."libraries/jevmodulehelper.php"); 
 
 // TODO replace with JDate
-JLoader::register('JEventDate',JEV_PATH."/libraries/jeventdate.php");
-JLoader::register('JevDate',JEV_PATH."/libraries/jevdate.php");
-JLoader::register('JEventsHTML',JEV_PATH."/libraries/jeventshtml.php");
+JLoader::register('JEventDate',JEV_PATH."libraries/jeventdate.php");
+JLoader::register('JevDate',JEV_PATH."libraries/jevdate.php");
+JLoader::register('JEventsHTML',JEV_PATH."libraries/jeventshtml.php");
 
-JLoader::register('JEventsVersion',JEV_ADMINPATH."/libraries/version.php");
+JLoader::register('JEventsVersion',JEV_ADMINPATH."libraries/version.php");
 JLoader::register('JevJoomlaVersion',JEV_ADMINLIBS."version.php");
 
-JLoader::register('catLegend',JEV_PATH."/libraries/catLegend.php");
+JLoader::register('catLegend',JEV_PATH."libraries/catLegend.php");
 
-JLoader::register('JEventsDBModel',JEV_PATH."/libraries/dbmodel.php");
-JLoader::register('JEventsDataModel',JEV_PATH."/libraries/datamodel.php");
+JLoader::register('JEventsDBModel',JEV_PATH."libraries/dbmodel.php");
+JLoader::register('JEventsDataModel',JEV_PATH."libraries/datamodel.php");
 
-JLoader::register('iCalImport',JEV_PATH."/libraries/iCalImport.php");
-JLoader::register('iCalRepetition',JEV_PATH."/libraries/iCalRepetition.php");
-JLoader::register('iCalException',JEV_PATH."/libraries/iCalException.php");
-JLoader::register('iCalRRule',JEV_PATH."/libraries/iCalRRule.php");
-JLoader::register('iCalEvent',JEV_PATH."/libraries/iCalEvent.php");
-JLoader::register('iCalEventDetail',JEV_PATH."/libraries/iCalEventDetail.php");
-JLoader::register('iCalICSFile',JEV_PATH."/libraries/iCalICSFile.php");
-JLoader::register('CsvToiCal',JEV_PATH."/libraries/csvToiCal.php");
+JLoader::register('iCalImport',JEV_PATH."libraries/iCalImport.php");
+JLoader::register('iCalRepetition',JEV_PATH."libraries/iCalRepetition.php");
+JLoader::register('iCalException',JEV_PATH."libraries/iCalException.php");
+JLoader::register('iCalRRule',JEV_PATH."libraries/iCalRRule.php");
+JLoader::register('iCalEvent',JEV_PATH."libraries/iCalEvent.php");
+JLoader::register('iCalEventDetail',JEV_PATH."libraries/iCalEventDetail.php");
+JLoader::register('iCalICSFile',JEV_PATH."libraries/iCalICSFile.php");
+JLoader::register('CsvToiCal',JEV_PATH."libraries/csvToiCal.php");
 
-JLoader::register('jEventCal',JEV_PATH."/libraries/jeventcal.php");
-JLoader::register('jIcal',JEV_PATH."/libraries/jical.php");
-JLoader::register('jIcalEventDB',JEV_PATH."/libraries/jicaleventdb.php");
-JLoader::register('jIcalEventRepeat',JEV_PATH."/libraries/jicaleventrepeat.php");
+JLoader::register('jEventCal',JEV_PATH."libraries/jeventcal.php");
+JLoader::register('jIcal',JEV_PATH."libraries/jical.php");
+JLoader::register('jIcalEventDB',JEV_PATH."libraries/jicaleventdb.php");
+JLoader::register('jIcalEventRepeat',JEV_PATH."libraries/jicaleventrepeat.php");
 
-JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
+JLoader::register('jevFilterProcessing',JEV_PATH."libraries/filters.php");
 
-JLoader::register('JEventsAbstractView',JEV_ADMINPATH."/views/abstract/abstract.php");
-JLoader::register('JEventsDefaultView',JEV_PATH."/views/default/abstract/abstract.php");
+JLoader::register('JEventsAbstractView',JEV_ADMINPATH."views/abstract/abstract.php");
+JLoader::register('JEventsDefaultView',JEV_PATH."views/default/abstract/abstract.php");
 
 // joomla 3.0
 JLoader::register('JToolbarButtonJev', JEV_ADMINPATH . "libraries/jevtoolbarbuttons.php");
@@ -78,7 +78,7 @@ JLoader::register('JButtonJevlink', JEV_ADMINPATH . "libraries/jevbuttons.php");
 JLoader::register('JButtonJevconfirm', JEV_ADMINPATH . "libraries/jevbuttons.php");
 
 // TODO retire this sometime?
-JLoader::register('JEV_CommonFunctions',JEV_PATH."/libraries/commonfunctions.php");
+JLoader::register('JEV_CommonFunctions',JEV_PATH."libraries/commonfunctions.php");
 
 jimport('joomla.filesystem.folder');
 
