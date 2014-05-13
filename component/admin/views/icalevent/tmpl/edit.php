@@ -29,10 +29,16 @@ if ($params->get("bootstrapchosen", 1))
 {
 	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 }
-if ($params->get("bootstrapcss", 1))
+if ($params->get("bootstrapcss", 1)==1)
+{
+	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
+	JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
+}
+else if ($params->get("bootstrapcss", 1)==2)
 {
 	JHtmlBootstrap::loadCss();
 }
+
 
 JHTML::_('behavior.tooltip');
 
@@ -41,8 +47,8 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index
 ?>
 <div id="jevents" <?php
 echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
-?>>
-	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal" >
+?> >
+	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal jevbootstrap" >
 		<?php
 		ob_start();
 

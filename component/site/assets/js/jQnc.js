@@ -1,18 +1,4 @@
 
-/*
- * var jevjq = {};
- 
- function checkJQ() {
- alert("window.jQuery "+window.jQuery);
- alert("window.$ "+window.$);
- alert("Mootools $ "+$);
- alert("jQuery.fn "+jQuery.fn);
- alert("jQuery.fn.jquery "+jQuery.fn.jquery);
- return window.jQuery && jQuery.fn && /^1\.[3-9]/.test(jQuery.fn.jquery);
- }
- 
- jevjq.jQuery = jQuery.noConflict();
- */
 
 var jevjq;
 function checkJQ() {
@@ -22,6 +8,30 @@ function checkJQ() {
     }
 }
 checkJQ();
+
+// Useful extensions to jQuery
+ // see http://davidwalsh.name/jquery-add-event
+
+if (typeof jevjq.fn.addEvent == "undefined"){
+	jevjq.fn.addEvent = jevjq.fn.bind;
+} 
+
+/*
+ * var jevjq = {};
+
+ function checkJQ() {
+ alert("window.jQuery "+window.jQuery);
+ alert("window.$ "+window.$);
+ alert("Mootools $ "+$);
+ alert("jQuery.fn "+jQuery.fn);
+ alert("jQuery.fn.jquery "+jQuery.fn.jquery);
+ return window.jQuery && jQuery.fn && /^1\.[3-9]/.test(jQuery.fn.jquery);
+ }
+
+ jevjq.jQuery = jQuery.noConflict();
+ */
+
+
 /*
 function dynamicallyLoadJQuery(){
     if (window.jQuery && jQuery.fn) {
@@ -40,6 +50,7 @@ function dynamicallyLoadJQuery(){
 // Note the dyamic load doesn't seem to work with jQuery 1.10.2 for some reason
 
 // Thanks to http://css-tricks.com/snippets/jquery/load-jquery-only-if-not-present/
+/*
 function dynamicJQueryLoader() {
 // Only do anything if jQuery isn't defined
     if (typeof jQuery == 'undefined') {
@@ -91,5 +102,6 @@ function dynamicJQueryLoader() {
         checkJQ();
     }
 }
+*/
 // Also see http://stackoverflow.com/questions/10113366/load-jquery-with-javascript-and-use-jquery
 // and https://developers.google.com/loader/

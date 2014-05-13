@@ -18,6 +18,8 @@ class com_jeventsInstallerScript
 	{
 		
 		$this->createTables();
+
+		$this->updateTables();
 		
 		return true;
 
@@ -298,6 +300,7 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	value text NOT NULL ,
 	state tinyint(3) NOT NULL default 1,
 	params text NOT NULL ,
+	language varchar(20) NOT NULL default '*',
 	PRIMARY KEY  (id),
 	INDEX (name)
 ) $charset;

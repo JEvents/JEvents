@@ -226,9 +226,12 @@ jimport("joomla.utilities.date");
 				$arg = func_get_args();
 
 				$name = "mktime";
-				if (is_callable($name))
+				if (is_callable($name) && count($arg)>0)
 				{
 					return call_user_func_array($name, $arg);
+				}
+				else {
+					return call_user_func_array("time", $arg);
 				}
 
 			}

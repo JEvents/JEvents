@@ -11,7 +11,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JLoader::register('JTableCategory', JPATH_PLATFORM . '/joomla/database/table/category.php');
+if (version_compare(JVERSION, "3.2.0", "lt")){
+	JLoader::register('JTableCategory', JPATH_PLATFORM . '/joomla/database/table/category.php');
+}
 
 class JEventsCategory extends JTableCategory {
 

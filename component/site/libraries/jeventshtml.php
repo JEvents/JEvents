@@ -538,7 +538,7 @@ class JEventsHTML
 						if (isset($userdet->slug) && $userdet->slug && $agenda_viewmail == '1')
 						{
 							$contactlink = JRoute::_('index.php?option=com_contact&view=contact&id=' . $userdet->slug . '&catid=' . $userdet->catslug);
-							$contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . ' target="_blank" >' . $userdet->contactname . '</a>';
+							$contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '" target="_blank" >' . $userdet->contactname . '</a>';
 						}
 						else if ($userdet->email && $agenda_viewmail == '1')
 						{

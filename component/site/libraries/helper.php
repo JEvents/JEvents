@@ -411,14 +411,14 @@ class JEVHelper
 	 * @param string $content - metatag value
 	 */
 	public static
-			function checkRobotsMetaTag($name = "robots", $content = "noindex, nofollow")
+			function checkRobotsMetaTag($name = "robots", $content = "index, follow")
 	{
 
 		// force robots metatag
 		$cfg = JEVConfig::getInstance();
+		$document = JFactory::getDocument();
 		if ($cfg->get('com_blockRobots', 0) >= 1)
-		{
-			$document = JFactory::getDocument();
+		{			
 			// Allow on content pages
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
@@ -449,6 +449,11 @@ class JEVHelper
 				$document->setMetaData($name, $content);
 				return;
 			}
+		}
+		//If JEvents is not blocking robots we use menu item configuration
+		else
+		{
+			$document->setMetaData($name, $cfg->get('robots', $content));
 		}
 
 	}
@@ -1707,6 +1712,7 @@ class JEVHelper
 					. "\n LEFT JOIN #__contact_details AS cd ON cd.user_id = ju.id "
 					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 					. "\n WHERE block ='0'"
+					. "\n AND cd.published =1 "
 					. "\n AND cd.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. "\n AND cat.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
 					. "\n AND ju.id = " . $id;
@@ -1881,7 +1887,7 @@ class JEVHelper
 	static public
 			function getAid($user = null, $type = 'string')
 	{
-		if (is_null($user))
+		if (is_null($user) || !$user)
 		{
 			$user = JFactory::getUser();
 		}
@@ -1964,11 +1970,21 @@ class JEVHelper
 			function script($file, $path)
 	{
 
-		// Include mootools framework
-		JHtml::_('behavior.framework', true);
+		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",0)) {
+			// load jQuery versions
+			if (strpos($file, "JQ.js")==false) {
+				$file = str_replace(".js", "JQ.js", $file);
+				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+				JHTML::script($path . $file);
+			}
+		}
+		else {
+			// Include mootools framework
+			JHtml::_('behavior.framework', true);
 
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JHTML::script($path . $file);
+			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+			JHTML::script($path . $file);
+		}
 
 	}
 

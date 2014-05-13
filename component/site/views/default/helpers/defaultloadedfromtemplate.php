@@ -541,6 +541,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ENDDATE}}":
 				case "{{STARTTIME}}":
 				case "{{ENDTIME}}":
+				case "{{STARTTZ}}":
+				case "{{ENDTZ}}":
 				case "{{ISOSTART}}":
 				case "{{ISOEND}}":
 				case "{{DURATION}}":
@@ -581,11 +583,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ENDTIME}}";
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
+						$search[] = "{{STARTTZ}}";
+						$replace[] = $row->alldayevent() ? "" : $start_time;
+						$blank[] = "";
+						$search[] = "{{ENDTZ}}";
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
+						$blank[] = "";
 
 						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
 						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
 						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
+						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
+						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
@@ -626,11 +636,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{MULTIENDDATE}}";
 						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
 						$blank[] = "";
+						$search[] = "{{STARTTZ}}";
+						$replace[] = $row->alldayevent() ? "" : $start_time;
+						$blank[] = "";
+						$search[] = "{{ENDTZ}}";
+						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
+						$blank[] = "";
 
 						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
 						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
 						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
+						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
+						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 
 						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
 						{
@@ -1059,7 +1077,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Date/time formats etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0)
+			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0)
 			{
 				if (!isset($rawreplace[$search[$s]])){
 					continue;
@@ -1245,6 +1263,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$fmt = str_replace("}}", "", $parts[1]);
 				//return strftime($fmt, strtotime(strip_tags($tempreplace)));
 				return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
+			}
+			// TZ specified
+			else if (count($parts) == 3)
+			{
+				$fmt = $parts[1];
+				
+				// Must get this each time otherwise modules can't set their own timezone
+				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$jtz = $compparams->get("icaltimezonelive", "");
+				if ($jtz != "")
+				{
+					$jtz = new DateTimeZone($jtz);
+				}
+				else
+				{
+					$jtz = new DateTimeZone(@date_default_timezone_get());					
+				}
+				$outputtz = str_replace("}}","",$parts[2]);
+				
+				if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz"){
+					$user = JFactory::getUser();
+					$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
+				}
+				$outputtz = new DateTimeZone($outputtz);
+
+				$indate = new DateTime($tempreplace, $jtz);
+				$offset1 = $indate->getOffset();
+
+				// set the new timezone
+				$indate->setTimezone($outputtz);				
+				$offset2 = $indate->getOffset();;
+
+				$indate = $indate->getTimestamp()+$offset2-$offset1;
+				return JEV_CommonFunctions::jev_strftime($fmt, $indate);
 			}
 			else
 			{

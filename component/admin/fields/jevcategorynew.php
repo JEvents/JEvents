@@ -12,7 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-include_once(JPATH_LIBRARIES.'/joomla/form/fields/list.php');
+jimport('joomla.form.helper');
+JFormHelper::loadFieldClass('list');
 
 class JFormFieldJevcategorynew extends JFormFieldList
 {

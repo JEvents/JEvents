@@ -519,7 +519,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		$catinfo = $dbModel->getCategoryInfo( $catids );
 		if ($catinfo && count($catinfo) >0)
 		{
-			for ($c=0;$c<count($catids);$c++){
+			foreach ($catids as $c => $specificCatid){
 				if (isset($catinfo[$catids[$c]])){
 					$cinfo = $catinfo[$catids[$c]];
 					$catparams = json_decode($cinfo->params);

@@ -162,15 +162,19 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
 					continue;
 				}
+				$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+				if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
+					continue;
+				}
 				
 				// Hide club update field if no club addons are installed
-				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
-					// disable if no club addons are installed
-					$plugins = JPluginHelper::getPlugin("jevents");
-					if (count($plugins)==0 && !$haslayouts){
-						continue;
-					}
-				}
+				//if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
+				//	// disable if no club addons are installed
+				//	$plugins = JPluginHelper::getPlugin("jevents");
+				//	if (count($plugins)==0 && !$haslayouts){
+				//		continue;
+				//	}
+				//}
 
 				$class = isset($field->class) ? $field->class : "";
 
@@ -304,6 +308,10 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 							$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
 							if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+								continue;
+							}
+							$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+							if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
 								continue;
 							}
 

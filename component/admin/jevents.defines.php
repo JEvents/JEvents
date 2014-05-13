@@ -41,7 +41,7 @@ if (!defined("JEV_LIBS")){
 	JLoader::register('JEVHelper',JEV_PATH."libraries/helper.php");
 	JLoader::register('JevModuleHelper',JEV_PATH."/libraries/jevmodulehelper.php"); 
 	
-	JLoader::register('JEventsAbstractView',JEV_VIEWS."/abstract/abstract.php");
+	JLoader::register('JEventsAbstractView',JEV_ADMINPATH."views/abstract/abstract.php");
 	
 	JLoader::register('jEventCal',JEV_PATH."libraries/jeventcal.php");
 	JLoader::register('jIcal',JEV_PATH."libraries/jical.php");

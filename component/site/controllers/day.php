@@ -34,7 +34,18 @@ class DayController extends JControllerLegacy   {
 
 	function listevents() {
 
-		list($year,$month,$day) = JEVHelper::getYMD();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$fixedDay = $params->get('fixedday','');
+		if($fixedDay)
+		{
+			$year = date('Y',strtotime($fixedDay));
+			$month = date('m',strtotime($fixedDay));
+			$day = date('d',strtotime($fixedDay));
+		}
+		else
+		{
+			list($year,$month,$day) = JEVHelper::getYMD();
+		}
 		$Itemid	= JEVHelper::getItemid();
 
 		// get the view

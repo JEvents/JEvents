@@ -11,8 +11,7 @@
 var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 
-Date.extend({
-	jeventsParseDate  : function (from ){
+Date.prototype.jeventsParseDate = function (from ){
 				
 		var keys = {
 			d: /[0-2]?[0-9]|3[01]/,
@@ -63,7 +62,7 @@ Date.extend({
 		return (bits) ? (parsed = handler(bits)) : false;		
 
 	}
-});
+
 
 Date.prototype.getYMD =  function()
 {
@@ -561,7 +560,7 @@ function toggleNoEndTime(){
 }
 
 function toggleCountUntil(cu){
-	inputtypes = new Array("cu_count","cu_until");
+	inputtypes = ["cu_count","cu_until"];
 	for (var i=0;i<inputtypes.length;i++) {
 		inputtype = inputtypes[i];
 		elem = document.getElementById(inputtype);
@@ -594,7 +593,7 @@ function toggleCountUntil(cu){
 
 function toggleWhichBy(wb)
 {
-	inputtypes = new Array("byyearday","byweekno","bymonthday","bymonth","byday");
+	inputtypes = ["byyearday","byweekno","bymonthday","bymonth","byday"];
 	for (var i=0;i<inputtypes.length;i++) {
 		inputtype = inputtypes[i];
 		elem = document.getElementById(inputtype);
@@ -867,8 +866,7 @@ function updateRepeatWarning(){
 
 /* Check for booking conflicts */
 
-Element.implement ({
-	formToJson: function(){
+Element.prototype.formToJson =  function(){
 		var json = {};
 		this.getElements('input, textarea, select').each(function(el){
 			var name = el.name;
@@ -897,10 +895,8 @@ Element.implement ({
 		return json;
 	}
 
-});
-
 function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect){
-	var requestObject = new Object();
+	var requestObject = {};
 	requestObject.error = false;
 	requestObject.client = client;
 	requestObject.token = jsontoken;
@@ -940,7 +936,7 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 					$('jevoverlapwarning').style.display='block';
 					var container = $('jevoverlaps');
 					container.innerHTML="";
-					// $A => Array.from(item).slice()
+					
 					Array.from(json.overlaps).slice().each (function(overlap){
 						var elem = new Element ("a", {
 							'href':overlap.url, 
@@ -968,47 +964,19 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-window.addEvent ('domready', function() {
+jevjq.ready(function() {
 	try {
 		if(Browser.firefox) {
-			$("adminForm").autocomplete='off';
+			jevjq("adminForm").autocomplete='off';
 		}
 	}
 	catch(e){	
 	}
 }); 
 
-/*
-window.addEvent("domready",function(){
-	var form =document.adminForm;
-	$(form).addEvent('submit',function(event){
-		if (form && form.task){
-			var task = form.task.value;
-			if ( task == 'icalevent.save' || task == 'icalrepeat.save' || task == 'icalevent.savenew' || task == 'icalrepeat.savenew'   || task == 'icalevent.apply'  || task == 'icalrepeat.apply'){
-				if ($('publish_up')) {
-					var now = new Date();
-
-					var start_time = document.getElementById("start_time");				
-					var starttimeparts = start_time.value.split(":");
-					var start_date = document.getElementById("publish_up");
-					var startdateparts = start_date.value.split("-");
-					var startDate = new Date(startdateparts[0],parseInt(startdateparts[1],10)-1,startdateparts[2],starttimeparts[0],starttimeparts[1],0);
-
-					if (now>startDate){
-						alert("Events cannot start in the past");
-						event = new Event(event); 
-						event.stopImmediatePropagation();
-					}
-				}
-			}
-		};
-	});
-});
-*/
-
-window.addEvent('domready',function(){
-	if ($('view12Hour')){
-		$('view12Hour').addEvent('click', function(){toggleView12Hour();});
+jevjq.ready(function(){
+	if (jevjq('view12Hour')){
+		jevjq('view12Hour').addEvent('click', function(){toggleView12Hour();});
 	}
 
 	hideEmptyJevTabs();

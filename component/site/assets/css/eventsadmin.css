@@ -342,8 +342,15 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 }
 /** End of hiding links from print views **/
 
-/** Default Event Details Custom Layout Control **/
+/* Rockettheme workarounds */
+#jevents #adminForm  label {
+    width:auto;
+}
+.btn-group a {
+	color:#fff;
+}
 
+/** Default Event Details Custom Layout Control **/
 #jevents_body .jev_evdt {padding:10px;}
 .jev_evdt .jev_evdt_header {width:100%;max-width:100%;}
 .jev_evdt .jev_evdt_icons {float:right;height:26px;margin-top:-15px;}
@@ -358,5 +365,14 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 .jev_evdt .jev_evdt_hits {width:24%; display:inline-block;text-align:right;}
 .jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {display:inline-block;margin-right:25px;}
 .jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
-
+.jev_evdt .jev_evdt_summary .ev_prevrepeat,.jev_evdt .jev_evdt_summary  .ev_nextrepeat {  display: inline-block;  margin-right: 15px;}
 /** End of default event details custom layout control **/
+
+.jev_none {display:none;}
+.jev_block {display:block;}
+.jev_inline {display:inline;}
+img.jev_help {float: none; vertical-align:bottom; cursor:help;}
+span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
+.jev_colour_picker_i {min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;}
+.jev_colour_picker_b {color:inherit;background-color:inherit;display:block;font-weight:bold;padding:3px;}
+.jev_ev_colour_picker_i {position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;}

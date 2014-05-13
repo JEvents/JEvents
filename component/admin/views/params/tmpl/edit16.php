@@ -61,16 +61,20 @@ $version = JEventsVersion::getInstance();
 				}
 
 				// Hide club update field if no club addons are installed
-				if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
-					// disable if no club addons are installed
-					$plugins = JPluginHelper::getPlugin("jevents");
-					if (count($plugins)==0 && !$haslayouts){
-						continue;
-					}
-				}
+				//if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
+				//	// disable if no club addons are installed
+				//	$plugins = JPluginHelper::getPlugin("jevents");
+				//	if (count($plugins)==0 && !$haslayouts){
+				//		continue;
+				//	}
+				//}
 
 				$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
 				if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+					continue;
+				}
+				$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+				if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
 					continue;
 				}
 
@@ -168,6 +172,10 @@ $version = JEventsVersion::getInstance();
 						}
 						$maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
 						if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
+							continue;
+						}
+						$minjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "minjoomlaversion", false);
+						if ( $minjoomlaversion && version_compare(JVERSION,$minjoomlaversion , "<")) {
 							continue;
 						}
 

@@ -22,7 +22,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	<div class="jev_pagination">
 	<form action="<?php echo $link;?>" method="post" xxx="1" name="adminForm" id="adminForm">
 	<?php
-	if ($task!="crawler.listevents"){
+	if ($task!="crawler.listevents" || version_compare(JVERSION, "3.0.0", 'lt') ){
 	echo $pageNav->getListFooter();
 	}
 	else {
@@ -38,7 +38,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 			'total'        => $pageNav->total,
 			'limitfield'   => $pageNav->getLimitBox(),
 			'pagescounter' => $pageNav->getPagesCounter(),
-			'pages'        => $pageNav->getPaginationPages()
+			'pages'        => $pageNav->getPaginationPages() 
 		);
 
 		$options = array();
