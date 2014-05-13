@@ -9,13 +9,6 @@ function checkJQ() {
 }
 checkJQ();
 
-// Useful extensions to jQuery
- // see http://davidwalsh.name/jquery-add-event
-
-if (typeof jevjq.fn.addEvent == "undefined"){
-	jevjq.fn.addEvent = jevjq.fn.bind;
-} 
-
 /*
  * var jevjq = {};
 

@@ -78,7 +78,8 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	var mydate = Date.jeventsParseDate(ymd);
+	var mydate = new Date();
+	mydate  = mydate.jeventsParseDate(ymd);
 	return mydate;
 };
 
@@ -817,33 +818,7 @@ function toggleWeekNums(newstate){
 	updateRepeatWarning();
 
 }
-/*
-function setupIE6(){
-if (window.ie6) {
-var adminForm = document.getElementById('jevadminform');
-adminForm.style.border="none";
-adminForm.style.borderSpacing="0px";
-var editor = document.getElementById('jeveditor');
-editor.style.overflow = 'auto';
-editor.style.width="550px";
-}
-}
 
-window.addEvent('domready',function(){setupIE6();});
- */
-/*
-if (window.webkit) {
-	window.addEvent('domready', function(){
-		setTimeout("fixTabbedWebkit()",100);
-	});
-}
-function fixTabbedWebkit(){
-	if (typeof(tinyMCE)!="undefined"){
-		tinyMCE.execCommand('mceRemoveControl', false, "jevcontent");
-		tinyMCE.execCommand('mceAddControl', false, "jevcontent");
-	}
-}
- */
 // sets the date for the page after save
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
@@ -964,19 +939,20 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-jevjq.ready(function() {
+jevjq(document).on('ready', function() {
 	try {
 		if(Browser.firefox) {
-			jevjq("adminForm").autocomplete='off';
+			jevjq("#adminForm").autocomplete='off';
 		}
 	}
 	catch(e){	
 	}
 }); 
 
-jevjq.ready(function(){
-	if (jevjq('view12Hour')){
-		jevjq('view12Hour').addEvent('click', function(){toggleView12Hour();});
+jevjq(document).on('ready', function(){
+
+	if (jevjq('#view12Hour')){
+		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
 	}
 
 	hideEmptyJevTabs();
@@ -984,9 +960,10 @@ jevjq.ready(function(){
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
-		var tabs = $$("#myEditTabsContent .tab-pane");
+		var tabs = jevjq("#myEditTabsContent .tab-pane");
 		if (tabs){
-			tabs.each(function(tab) {
+			tabs.each(function(index) {
+				tab = jevjq(this);
 				if (tab.children.length==0){
 					tab.style.display="none";
 					var tablink = document.getElement("#myEditTabs a[href='#"+tab.id+"']");
@@ -996,10 +973,11 @@ function hideEmptyJevTabs() {
 				}
 			})
 		}
-		tabs = $$(".adminform dd.tabs .jevextrablock");
+		tabs = jevjq(".adminform dd.tabs .jevextrablock");
 		if (tabs){
-			var tablinks = $$(".adminform dl dt.tabs");
-			tabs.each(function(tab) {
+			var tablinks = jevjq(".adminform dl dt.tabs");
+			tabs.each(function(index) {
+				tab = jevjq(this);
 				if (tab.children.length==0){
 					var classname = tab.getParent().className.clean().replace(" ","").replace("tabs","");
 					tab.innerHTML="xx";

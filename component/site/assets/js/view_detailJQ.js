@@ -113,130 +113,44 @@ function setupIE6(){
 		}
 	}
 }
-window.addEvent('domready',function(){setupIE6();});
+jevjq(document).on('ready', function() {setupIE6();});
 
 
-function jevSetupAddLink(){
-	var tds = $$("td.cal_td_today");
-	for (var i=0; i<tds.length; i++)
+function jevSetupAddLink() {
+	var classes = ["td.cal_td_today"
+				, "td.cal_td_today"
+				, "td.cal_td_daysnoevents"
+				, "td.cal_td_dayshasevents"
+				, "td.jev_daynoevents"
+				, "td.jev_today"
+				, "div.jev_daynum"
+				, "td.jev_daynum"
+				, "td.todayclr"
+				, "td.weekdayclr"
+				, "td.sundayclr"
+				, "td.sundayemptyclr"
+				, ".cal_div_daysnoevents"
+				, ".cal_div_today"
+				, "td.cal_today"
+				, "td.cal_daysnoevents"
+				, "td.cal_dayshasevents"];
+	
+	for (var ci = 0; ci < classes.length; ci++)
 	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_td_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_td_dayshasevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.jev_daynoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.jev_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
+		tds = jevjq(classes[ci]);
+		tds.each (function (index) {
+			element = jevjq(this);
+			element.on('mouseover', function() {
+				 jevjq(this).addClass('showjevadd');
+			});
+			element.on('mouseout', function() {
+				 jevjq(this).removeClass('showjevadd');
+			});
+		});
 	}
 
-	var tds = $$("div.jev_daynum");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-	var tds = $$("td.jev_daynum");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-// for ext layout
-	var tds = $$("td.todayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.weekdayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.sundayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.sundayemptyclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-	// for alternative layout
-	var tds = $$(".cal_div_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$(".cal_div_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-        
-        // flat layout
-	var tds = $$("td.cal_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_dayshasevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
 }
 
-window.addEvent('domready',function(){jevSetupAddLink();});
+jevjq(document).on('ready', function() {
+	jevSetupAddLink();
+});

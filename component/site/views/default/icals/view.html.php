@@ -55,7 +55,6 @@ class DefaultViewIcals extends JEventsDefaultView
 	
 	function importform($tpl = null) 
 	{
-		
 	}
 	
 }

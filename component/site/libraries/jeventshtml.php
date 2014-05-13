@@ -408,7 +408,7 @@ class JEventsHTML
 						$checked = ' checked="checked"';
 					}
 				}
-				if (JevJoomlaVersion::isCompatible("3.0")){
+				if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 					// bootstrap version
 					$tosend .= '' 
 							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
@@ -427,7 +427,7 @@ class JEventsHTML
 					;
 				}
 			}
-			if (JevJoomlaVersion::isCompatible("3.0")){
+			if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 				echo $tosend;
 			}
 			else {
@@ -475,7 +475,7 @@ class JEventsHTML
 					}
 				}
 
-				if (JevJoomlaVersion::isCompatible("3.0")){
+				if (JevJoomlaVersion::isCompatible("3.0")   ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 					// bootstrap version
 					$tosend .= '' 
 							. '<input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
@@ -493,7 +493,7 @@ class JEventsHTML
 					;
 				}
 			}
-			if (JevJoomlaVersion::isCompatible("3.0")){
+			if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 				echo $tosend;
 			}
 			else {

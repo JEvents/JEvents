@@ -419,7 +419,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		}
 
 		if( $cfg->get("com_enableToolTip",1)) {
-			if ($cfg->get("tooltiptype",'overlib')=='overlib'){
+			if ($cfg->get("tooltiptype",'joomla')=='overlib'){
 				$tooltip = $this->loadOverride("overlib");
 				// allow fallback to old method
 				if ($tooltip==""){

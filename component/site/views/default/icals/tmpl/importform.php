@@ -7,6 +7,7 @@ $view =  $this->getViewName();
 $this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 $this->queryModel = new JEventsDBModel($this->dataModel);
 
+JFactory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
 
 $action = JFactory::getApplication()->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 

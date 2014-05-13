@@ -39,8 +39,8 @@ class JFormFieldJeveventtime extends JFormField
 		else {
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup = JevJoomlaVersion::isCompatible("3.0")? "btn-group" : "";
-		$btn = JevJoomlaVersion::isCompatible("3.0")? "btn" : "";
+		$btngroup = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn-group" : "";
+		$btn = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn" : "";
 		?>
 		<div id="<?php echo $partname;?>_24h_area" class="jev_inline">
 			<input class="inputbox" type="text" name="<?php echo $partname;?>_time" id="<?php echo $name;?>" size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8" value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>

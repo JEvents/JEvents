@@ -1970,12 +1970,12 @@ class JEVHelper
 			function script($file, $path)
 	{
 
-		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",0)) {
+		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
 			// load jQuery versions
 			if (strpos($file, "JQ.js")==false) {
-				$file = str_replace(".js", "JQ.js", $file);
+				$jqfile = str_replace(".js", "JQ.js", $file);
 				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $file);
+				JHTML::script($path . $jqfile);				
 			}
 		}
 		else {

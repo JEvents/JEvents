@@ -264,7 +264,16 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 	padding:5px;
 	border-radius:10px;
 }
-#jevents fieldset legend input[type='radio'] {margin-right:10px}
+#jevents fieldset legend input[type='radio'] {margin-right:10px!important}
+
+#jevents .jevbootstrap input, #jevents .jevbootstrap textarea, #jevents .jevbootstrap .uneditable-input {
+    width: auto!important;
+}
+
+#jevents .jevdatetime label.btn {
+    padding-right: 10px!important;
+    padding-left: 10px!important;
+}
 
 .tip-wrap {
 	max-width:80%!important;

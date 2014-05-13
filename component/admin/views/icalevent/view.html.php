@@ -208,9 +208,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0")  )
 		{
 			$this->setLayout("edit");
+		}
+		else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
+			$this->setLayout("editjq");
 		}
 		else
 		{
