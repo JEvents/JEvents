@@ -815,28 +815,32 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					break;
 
-				case "{{FIRSTREPEAT}}":
-					static $dofirstrepeat;
-					if (!isset($dofirstrepeat))
-					{
-						$dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false);
-					}
-					if ($dofirstrepeat)
-					{
-						$search[] = "{{FIRSTREPEAT}}";
-						$firstrepeat = $event->getFirstRepeat();
-						if ($firstrepeat->rp_id() == $event->rp_id())
-						{
-							$replace[] = "";
-						}
-						else
-						{
-							$replace[] = "<a class='ev_firstrepeat' href='" . $firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true) . "' title='" . JText::_('JEV_FIRSTREPEAT') . "' >" . JText::_('JEV_FIRSTREPEAT') . "</a>";
-						}
-						$blank[] = "";
-					}
-					break;
+                                        case "{{FIRSTREPEAT}}":
+                                        case "{{FIRSTREPEATSTART}}":
+                                           static $dofirstrepeat;
+                                           if (!isset($dofirstrepeat))
+                                           {
+                                              $dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false || strpos($template_value, "{{FIRSTREPEATSTART}}") !== false);
+                                           }
+                                           if ($dofirstrepeat)
+                                           {
+                                              $search[] = "{{FIRSTREPEAT}}";
+                                              $firstrepeat = $event->getFirstRepeat();
+                                              if ($firstrepeat->rp_id() == $event->rp_id())
+                                              {
+                                                 $replace[] = "";
+                                              }
+                                              else
+                                              {
+                                                 $replace[] = "<a class='ev_firstrepeat' href='" . $firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true) . "' title='" . JText::_('JEV_FIRSTREPEAT') . "' >" . JText::_('JEV_FIRSTREPEAT') . "</a>";
+                                              }
+                                              $blank[] = "";
 
+                                              $search[] = "{{FIRSTREPEATSTART}}";
+                                              $replace[] = JEventsHTML::getDateFormat($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), 0);
+                                              $blank[] = "";
+                                           }
+                                           break;
 				case "{{LASTREPEAT}}":
 				case "{{LASTREPEATEND}}":
 					static $dolastrepeat;
