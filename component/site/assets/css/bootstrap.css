@@ -5695,6 +5695,11 @@
 	text-align: left;
 }
 
+/* Fix for event editing with Chosen enabled */
+#jevents .jevbootstrap ul.chzn-choices, #jevents .jevbootstrap ul.chzn-results{
+	margin-left:0px;
+}
+
 /* Outside JEvents id and jevbootstrap */
 .tooltip {
 	position: absolute;
