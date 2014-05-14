@@ -4,6 +4,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 $data = $this->data;
 
 $Itemid = JEVHelper::getItemid ();
+$hasevents = false;
 ?>
 <div class="jev_toprow">
 	<div class="jev_header2">
@@ -22,7 +23,7 @@ $Itemid = JEVHelper::getItemid ();
 	$num_events = count ( $data ['rows'] );
 	$chdate = "";
 	if ($num_events > 0) {
-		
+		$hasevents = true;
 		for($r = 0; $r < $num_events; $r ++) {
 			$row = $data ['rows'] [$r];
 			
@@ -53,7 +54,14 @@ $Itemid = JEVHelper::getItemid ();
 		<?php
 		}
 	}
+if (! $hasevents) {
+	echo '<div class="list_no_e">' . "\n";
+	echo JText::_ ( 'JEV_NO_EVENTS_FOUND' );
+	echo "</div>\n";
+}
+?>
 	?>
+    
 <div class="jev_clear"></div>
 
 </div>
