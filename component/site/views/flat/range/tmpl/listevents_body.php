@@ -60,7 +60,6 @@ if (! $hasevents) {
 	echo "</div>\n";
 }
 ?>
-	?>
     
 <div class="jev_clear"></div>
 
