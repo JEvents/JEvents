@@ -7,6 +7,7 @@ $this->data = $data = $this->datamodel->getWeekData($this->year, $this->month, $
 
 $option = JEV_COM_COMPONENT;
 $Itemid = JEVHelper::getItemid();
+$hasevents = false;
 
 echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_EVENTSFOR') . '&nbsp;' . JText::_('JEV_WEEK')
 . ' : </legend><br />' . "\n";
@@ -34,6 +35,7 @@ for( $d = 0; $d < 7; $d++ ){
 
 	$num_events		= count($data['days'][$d]['rows']);
 	if ($num_events>0) {
+            $hasevents = true;
 		echo "<ul class='ev_ul'>\n";
 
 		for( $r = 0; $r < $num_events; $r++ ){
@@ -52,6 +54,16 @@ for( $d = 0; $d < 7; $d++ ){
 	}
 	echo '</td></tr>' . "\n";
 } // end for days
+if (!$hasevents)
+{
+        echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
+        echo "<li class='ev_td_li' style='border:0px;'>\n";
+        echo JText::_('JEV_NO_EVENTS');
+        echo "</li>\n";
+        echo "</ul></td></tr>\n";
+}
 
 echo '</table><br />' . "\n";
 echo '</fieldset><br /><br />' . "\n";
+
+
