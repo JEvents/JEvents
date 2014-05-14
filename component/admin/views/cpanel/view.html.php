@@ -1049,7 +1049,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
 			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 		 */
 
@@ -1070,7 +1070,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			*/
 			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 		else {
 			$extensionname = str_replace(" ","_",$extension->element);
@@ -1079,13 +1079,13 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 			$id = $db->insertid();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 
 	}

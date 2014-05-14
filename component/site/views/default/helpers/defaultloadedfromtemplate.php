@@ -192,7 +192,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
 					ob_start();
 					?>
-					<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()); ?>">
+					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
 						<?php
 						$linkstart = ob_get_clean();
 					}

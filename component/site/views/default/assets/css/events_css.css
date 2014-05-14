@@ -220,18 +220,21 @@ a.ev_link_cat:hover  {
     color: Black;
 }
 a.ev_link_row:link {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:visited  {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:hover  {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Black;
