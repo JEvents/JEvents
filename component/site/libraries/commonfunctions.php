@@ -42,7 +42,7 @@ class JEV_CommonFunctions {
 		$jEventsView = JEV_CommonFunctions::getJEventsViewName();
 		$lang = JFactory::getLanguage();
 		$lang->load(JEV_COM_COMPONENT."_".$jEventsView);
-
+		$lang->load("files_jevents".$jEventsView."layout");
 	}
 
 	public static function getJEventsViewList($viewtype=null){
@@ -304,7 +304,7 @@ class JEV_CommonFunctions {
 		$mail->send();
 	}
 
-	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $day='', $month='', $year='', $start_time='', $end_time='', $author='', $live_site, $modifylink, $viewlink , $event=false) {
+	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $day='', $month='', $year='', $start_time='', $end_time='', $author='', $live_site, $modifylink, $viewlink , $event=false, $cc = "") {
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -361,6 +361,9 @@ class JEV_CommonFunctions {
 		
 		$mail->setSubject($subject);
 		$mail->setBody($messagetemplate);
+		if ($cc!=""){
+			$mail->addCC($cc);
+		}
 		$mail->IsHTML(true);
 		$mail->send();
 

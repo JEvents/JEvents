@@ -43,6 +43,8 @@ $this->replaceLabels($this->item->value);
 				<td>
 					<input type="hidden" name="name" value="<?php echo $this->item->name; ?>">
 					<input type="hidden" name="id" value="<?php echo $this->item->id; ?>">
+					<input type="hidden" name="language" value="<?php echo $this->item->language; ?>">
+					<input type="hidden" name="catid" value="<?php echo $this->item->catid; ?>">
 
 					<script type="text/javascript" >
 						<!--//
@@ -70,6 +72,12 @@ echo $editor->save('value');
 									<td align="left"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?>:</td>
 									<td colspan="2">
 										<?php echo $this->item->language == "*" ? JText::alt('JALL', 'language') : $this->item->language; ?>
+									</td>
+								</tr>
+								<tr>
+									<td align="left"><?php echo JText::_('JCATEGORY'); ?>:</td>
+									<td colspan="2">
+										<?php echo $this->item->catid == "0" ? JText::alt('JALL', 'language') : $this->item->category_title; ?>
 									</td>
 								</tr>
 								<tr>

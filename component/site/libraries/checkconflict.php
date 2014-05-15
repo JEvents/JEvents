@@ -493,7 +493,9 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 
 			$sql = "SELECT * FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
+			$sql .= " LEFT JOIN #__jevents_vevent as ev ON ev.ev_id=rpt.eventid ";
 			$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+			$sql .= " AND ev.state=1";
 			$sql .= " LIMIT 100";
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
@@ -566,6 +568,8 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				else {
 					$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
 				}
+				$sql .= " AND ev.state=1";
+
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
 				$conflicts = $db->loadObjectList();
@@ -602,6 +606,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
 				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
 				$sql .= " AND evt.icsid=" . $testevent->icsid() . " GROUP BY rpt.rp_id";
+				$sql .= " AND ev.state=1";
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
 				$conflicts = $db->loadObjectList();
@@ -635,7 +640,9 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 	{
 		$sql = "SELECT * FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
+		$sql .= " LEFT JOIN #__jevents_vevent as ev ON ev.ev_id=rpt.eventid ";
 		$sql .= " WHERE rpt.rp_id<>" . intval($repeat->rp_id) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+		$sql .= " AND ev.state=1";
 		$sql .= " LIMIT 100";
 
 		$db->setQuery($sql);
@@ -705,6 +712,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 			else {
 				$sql .= " AND (evt.catid=" . $repeat->event->catid() . ") GROUP BY rpt.rp_id";
 			}
+			$sql .= " AND ev.state=1";
 			$sql .= " LIMIT 100";
 			
 

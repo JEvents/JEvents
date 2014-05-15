@@ -127,6 +127,7 @@ class AdminDefaultsController extends JControllerForm {
 	function overview( )
 	{
 		$this->populateLanguages();
+		$this->populateCategories();
 		
 		// get the view
 		$this->view = $this->getView("defaults","html");
@@ -331,5 +332,138 @@ class AdminDefaultsController extends JControllerForm {
 		
 		//echo $db->getgetErrorMsg();
 	
+	}
+
+	private function populateCategories() {
+		$db = JFactory::getDBO();
+
+		// get the list of languages first
+		$query	= $db->getQuery(true);
+		$query->select("c.*");
+		$query->from("#__categories as c");
+		$query->where('extension="com_jevents"');
+		$query->where('published=1');
+		$query->order("c.title asc");
+
+		$db->setQuery($query);
+		$categories  = $db->loadObjectList('id');
+
+		// remove ones where the category is no longer installed
+		$query	= $db->getQuery(true);
+		$cats = array();
+		$cats[0] = $db->quote("0");
+		foreach ($categories as $cat){
+			$cats[$cat->id] = $db->quote($cat->id);
+		}
+		$incats =  implode(",",$cats);
+		$query->delete('#__jev_defaults')->where("catid NOT IN ($incats)");
+		$db->setQuery($query);
+		$db->query();
+
+		// not needed if only one language
+		if (count($cats )==1){
+			return;
+		}
+		$query	= $db->getQuery(true);
+		$query->select("def.*");
+		$query->from("#__jev_defaults as def");
+
+		//$query->where('def.language = "*"');
+		$query->where('def.catid = "0"');
+		$query->where('def.name NOT like ("com_jevpeople%") AND def.name NOT like ("com_jevlocations%")' );
+		$query->order("def.name asc");
+		$db->setQuery($query);
+		$tempdata = $db->loadObjectList();
+		$allCatidNames = array();
+		foreach ($tempdata as $td){
+			if (!isset($allCatidNames[$td->name])){
+				$allCatidNames[$td->name] = array();
+			}
+			$allCatidNames[$td->name][] = $td;
+		}
+
+		$query	= $db->getQuery(true);
+		$query->select("def.*");
+		$query->from("#__jev_defaults as def");
+
+		$query->where('def.catid<> "0"');
+		$query->where('def.name NOT like ("com_jevpeople%") AND def.name NOT like ("com_jevlocations%")' );
+		$query->order("def.name, catid asc");
+
+		$db->setQuery($query);
+		$catdata = $db->loadObjectList();
+		$specificCategoryNames = array();
+		foreach ($catdata as $cat){
+			if (!isset($specificCategoryNames[$cat->name])){
+				$specificCategoryNames[$cat->name] = array();
+			}
+			$specificCategoryNames[$cat->name][] = $cat;
+		}
+
+		$missingDefaults = array();
+		foreach ($allCatidNames as $name => $namedata){
+			// all language versions to check and populate
+			if (!isset($specificCategoryNames[$name])) {
+				foreach ($cats  as $catid=>$cat){
+					if ($catid==0) continue;
+					foreach ($namedata as $nd){
+						$missingDefaults[] = array("catid"=>$catid, "lang_code"=>$nd->language, "name"=>$nd);
+						//echo $nd->name." ".$catid." ".$nd->language."<Br/>";
+					}
+				}
+			}
+			else {
+				foreach ($namedata as $nd){
+					foreach ($cats  as $catid=>$cat){
+						if ($catid==0) continue;
+						$matched = false;
+						foreach ($specificCategoryNames[$name] as $sname){
+							if ($nd->name == $sname->name && $nd->language == $sname->language ){
+								$matched = true;
+								break;
+							}
+						}
+						if (!$matched){
+							$missingDefaults[] = array("catid"=>$catid, "lang_code"=>$nd->language, "name"=>$nd);
+							//echo $nd->name." ".$catid." ".$nd->language."<Br/>";
+						}
+					}
+				}
+
+			}
+		
+			/*
+					foreach ($namedata as $allcat){
+						if ( $catid == $sname->catid){
+							$matched = false;
+							foreach ($specificCategoryNames as $sname){
+								if ($name->name == $sname->name && $name->language == $sname->language ){
+									$matched = true;
+									$count++;
+									break;
+								}
+							}
+							if (!$matched){
+								$missingDefaults[] = array("catid"=>$catid, "lang_code"=>$name->language, "name"=>$name);
+							}
+						}
+					}
+				}
+			*/
+		}
+
+		if (count ($missingDefaults)>0){
+			$query	= $db->getQuery(true);
+			$query->insert("#__jev_defaults")->columns("title, name, subject,value,state,params,language, catid");
+			foreach ($missingDefaults as $md){
+				$values = array($db->quote($md["name"]->title), $db->quote($md["name"]->name), $db->quote($md["name"]->subject), $db->quote($md["name"]->value), 0, $db->quote($md["name"]->params), $db->quote($md["lang_code"]), $md["catid"]);
+				$query->values(implode(",",$values));
+			}
+			$db->setQuery($query);			
+			$db->query();
+		}
+
+		echo $db->getErrorMsg();
+
 	}
 }
