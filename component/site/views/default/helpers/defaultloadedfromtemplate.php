@@ -103,6 +103,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		}
 
+		if (is_null($templates[$template_name])){
+			return false;
+		}
+		
 		$catids = count($event->catids()) ? $event->catids() : array($event->catid());
 		$catids[]=0;
 
@@ -118,6 +122,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$template = false;
 		foreach ($catids as $catid){
+			// use the first matching non-empty layout
 			if ($templates[$template_name][$catid]->value!=""){
 				$template = $templates[$template_name][$catid];
 				break;

@@ -113,9 +113,17 @@ $pathIMG = JURI::root() . 'administrator/images/';
 						<td align="center"><?php echo $row->creatorName(); ?></td>
 						<td align="center">
 							<?php
-							$img = $row->state() ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							if ($row->state()==1){
+								$img = JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) ;
+							}
+							else  if ($row->state()==1){
+								$img =  JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true) ;
+							}
+							else {
+								$img =  JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true) ;
+							}
 							?>
-							<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro">
+							<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')" class="btn btn-micro" >
 							<?php echo $img; ?>
 							</a>
 						</td>
