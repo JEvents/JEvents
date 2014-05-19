@@ -86,6 +86,18 @@ echo $editor->save('value');
 										<?php echo htmlspecialchars($this->item->name, ENT_QUOTES, 'UTF-8'); ?>
 									</td>
 								</tr>
+								<tr class="jevpublished">
+									<td><?php echo JText::_("JSTATUS"); ?></td>
+									<td colspan="3">
+									<?php
+									$poptions = array();
+									$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
+									$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+									echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->item->state);
+									?>
+									</td>
+								</tr>
+
 								<tr>
 									<td valign="top" align="left">
 										<?php echo JText::_('JEV_LAYOUT'); ?>
