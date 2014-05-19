@@ -901,7 +901,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
 		{
 
-			$row = new jIcalEventDB($event);
+			$row = new jIcalEventRepeat($event);
 			if (JEVHelper::canPublishEvent($row))
 			{
 				$msg = JText::_("Event_Saved", true);

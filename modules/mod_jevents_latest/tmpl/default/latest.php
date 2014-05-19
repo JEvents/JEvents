@@ -78,7 +78,7 @@ class DefaultModLatestView
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
-			$document->addStyleSheet(JURI::base(true) . "/components/com_jevents/assets/css/jevcustom.css");
+			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
 		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
@@ -402,7 +402,7 @@ class DefaultModLatestView
 				}
 			}
 		}
-		if ($this->dispMode == 7)
+		else if ($this->dispMode == 7)
 		{
 			if (count($rows))
 			{

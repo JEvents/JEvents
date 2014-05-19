@@ -602,15 +602,15 @@ class JEVHelper
 			{
 				$document = JFactory::getDocument();
 				// RSH 10/11/10 - Check location of overlib files - j!1.6 doesn't include them!
-				$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_mini.js');
-				$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_hideform_mini.js');
+				JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/overlib_mini.js');
+				JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/overlib_hideform_mini.js');
 
 				// change state so it isnt loaded a second time
 				$cfg->set('loadOverlib', true);
 
 				if ($cfg->get("com_calTTShadow", 1) && !JFactory::getApplication()->isAdmin())
 				{
-					$document->addScript(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/js/overlib_shadow.js');
+					JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/overlib_shadow.js');
 				}
 				if (!JFactory::getApplication()->isAdmin())
 				{
