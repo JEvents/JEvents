@@ -116,7 +116,7 @@ $pathIMG = JURI::root() . 'administrator/images/';
 							if ($row->state()==1){
 								$img = JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) ;
 							}
-							else  if ($row->state()==1){
+							else  if ($row->state()==0){
 								$img =  JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true) ;
 							}
 							else {
