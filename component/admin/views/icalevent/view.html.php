@@ -34,7 +34,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
 		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
-		JToolBarHelper::deleteList('Delete Event and all repeats?', 'icalevent.delete');
+		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+		if ($state==-1){
+			JToolBarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
+		}
+		else {
+			JToolBarHelper::trash('icalevent.delete');
+		}
 		JToolBarHelper::spacer();
 		//JToolBarHelper::help( 'screen.ical', true);
 
@@ -69,6 +75,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$options = array();
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 			JHtmlSidebar::addFilter(
 					JText::_('ALL_EVENTS'), 'state', JHtml::_('select.options', $options, 'value', 'text', $state)
 			);
@@ -120,6 +127,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 
 			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
 			$this->assign('statelist', $statelist);

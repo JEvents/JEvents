@@ -43,6 +43,8 @@ $this->replaceLabels($this->item->value);
 				<td>
 					<input type="hidden" name="name" value="<?php echo $this->item->name; ?>">
 					<input type="hidden" name="id" value="<?php echo $this->item->id; ?>">
+					<input type="hidden" name="language" value="<?php echo $this->item->language; ?>">
+					<input type="hidden" name="catid" value="<?php echo $this->item->catid; ?>">
 
 					<script type="text/javascript" >
 						<!--//
@@ -73,11 +75,29 @@ echo $editor->save('value');
 									</td>
 								</tr>
 								<tr>
+									<td align="left"><?php echo JText::_('JCATEGORY'); ?>:</td>
+									<td colspan="2">
+										<?php echo $this->item->catid == "0" ? JText::alt('JALL', 'language') : $this->item->category_title; ?>
+									</td>
+								</tr>
+								<tr>
 									<td align="left"><?php echo JText::_('NAME'); ?>:</td>
 									<td colspan="2">
 										<?php echo htmlspecialchars($this->item->name, ENT_QUOTES, 'UTF-8'); ?>
 									</td>
 								</tr>
+								<tr class="jevpublished">
+									<td><?php echo JText::_("JSTATUS"); ?></td>
+									<td colspan="3">
+									<?php
+									$poptions = array();
+									$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
+									$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+									echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->item->state);
+									?>
+									</td>
+								</tr>
+
 								<tr>
 									<td valign="top" align="left">
 										<?php echo JText::_('JEV_LAYOUT'); ?>

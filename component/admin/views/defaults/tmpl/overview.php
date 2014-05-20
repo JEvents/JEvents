@@ -23,6 +23,13 @@ $pathIMG = JURI::root() . '/administrator/images/';
 						<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
 						</select>
 						<?php } ?>
+<?php if ($this->catids)
+{ ?>
+						<select name="filter_catid" class="inputbox" onchange="this.form.submit()">
+							<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY'); ?></option>
+<?php echo $this->catids; ?>
+						</select>
+						<?php } ?>
 					<select name="filter_layout_type" class="inputbox" onchange="this.form.submit()">
 <?php echo $this->addonoptions; ?>
 					</select>
@@ -56,6 +63,12 @@ $pathIMG = JURI::root() . '/administrator/images/';
 	<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
 								</th>
 <?php } ?>			
+								<?php if ($this->catids)
+								{ ?>
+								<th >
+	<?php echo JText::_('JCATEGORY'); ?>
+								</th>
+<?php } ?>
 							<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>			
 						</tr>
 					</thead>
@@ -101,6 +114,17 @@ $pathIMG = JURI::root() . '/administrator/images/';
 										<?php endif; ?>
 									</td>
 									<?php } ?>
+								<?php if ($this->catids)
+								{ ?>
+									<td class="center">
+										<?php if ($row->catid == '0'): ?>
+										<?php echo JText::alt('JALL', 'language'); ?>
+									<?php else: ?>
+											<?php echo $row->category_title ? $this->escape($row->category_title) : JText::_('JUNDEFINED'); ?>
+										<?php endif; ?>
+									</td>
+								<?php } ?>
+
 								<td align="center">
 	<?php
 	$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);

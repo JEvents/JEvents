@@ -245,6 +245,10 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$where[] = "\n ev.state=0";
 		}
+		else if ($state == -1)
+		{
+			$where[] = "\n ev.state=-1";
+		}
 
 		// get the total number of records
 		if ($this->_largeDataSet){
@@ -897,7 +901,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
 		{
 
-			$row = new jIcalEventDB($event);
+			$row = new jIcalEventRepeat($event);
 			if (JEVHelper::canPublishEvent($row))
 			{
 				$msg = JText::_("Event_Saved", true);
@@ -954,6 +958,64 @@ class AdminIcaleventController extends JControllerAdmin
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 0);
+	}
+
+	function delete()
+	{
+		// clean out the cache
+		$cache = JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+
+		$cid = JRequest::getVar('cid', array(0));
+		JArrayHelper::toInteger($cid);
+
+		// front end passes the id as evid
+		if (count($cid) == 1 && $cid[0] == 0)
+		{
+			$cid = array(JRequest::getInt("evid", 0));
+		}
+
+		$db = JFactory::getDBO();
+
+		foreach ($cid as $key => $id)
+		{
+			// I should be able to do this in one operation but that can come later
+			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
+			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
+			{
+				JError::raiseWarning(534, JText::_("JEV_NO_DELETE_ROW"));
+				unset($cid[$key]);
+			}
+		}
+
+		$newstate = -1;
+		foreach ($cid as $key => $id)
+		{
+			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
+			$db->setQuery($sql);
+			$db->query();
+
+		}
+
+		// I also need to trigger any onpublish event triggers
+		$dispatcher = JDispatcher::getInstance();
+		// just incase we don't have jevents plugins registered yet
+		JPluginHelper::importPlugin("jevents");
+		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
+
+		if (JFactory::getApplication()->isAdmin())
+		{
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', "IcalEvent  : New published state Saved");
+		}
+		else
+		{
+			$Itemid = JRequest::getInt("Itemid");
+			list($year, $month, $day) = JEVHelper::getYMD();
+			$rettask = JRequest::getString("rettask", "day.listevents");
+			// Don't return to the event detail since we may be filtering on published state!
+			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent  : New published state Saved");
+		}
 
 	}
 
@@ -1032,7 +1094,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
-	function delete()
+	function emptytrash()
 	{
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');

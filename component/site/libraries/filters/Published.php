@@ -60,7 +60,7 @@ class jevPublishedFilter extends jevFilter
 		}
 		
 		if (JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor()){
-			if ($this->filter_value==-1) return "";
+			if ($this->filter_value==-1) return "ev.state<>-1";
 			return "ev.state=0";
 		}
 		else if  (JEVHelper::isEventCreator()){

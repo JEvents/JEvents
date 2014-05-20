@@ -231,6 +231,24 @@ class SaveIcalEvent {
 				$viewlink = '<a href="' . $root . JRoute::_( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.detail&evid='.$rp_id. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day&login=1" ) . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
 				$title = $testevent->title();
 				$content = $testevent->content();
+				$catids = $testevent->catids() ? $testevent->catids() : array();
+				if (($key = array_search($testevent->catid() ,  $catids)) !== false) {
+					unset($catids[$key]);
+				}
+				$cc = "";
+				if (count($catids)>0){
+					$ccs = array();
+					foreach ($catids as $catid){
+						$cat->load($catid);
+						$catadminuser = $cat->getAdminUser();
+						if ($catadminuser->email!=$adminEmail && !in_array($catadminuser->email, $ccs)){
+							$ccs[]= $catadminuser->email;
+						}
+					}
+					if (count($ccs)>0){
+						$cc = implode(",",$ccs);
+					}
+				}
 			}
 			else {
 				$modifylink = '<a href="' . $root . JRoute::_( 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalevent.edit&evid='.$evid. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day" ) . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
@@ -238,6 +256,7 @@ class SaveIcalEvent {
 				$title = $data["SUMMARY"];
 				$content = $data["DESCRIPTION"]	;
 				$subject .= " PROBLEMS SAVING THIS EVENT";
+				$cc = "";
 			}
 
 			$created_by = $user->name;
@@ -248,7 +267,7 @@ class SaveIcalEvent {
 				}
 			}
 
-			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent);
+			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent, $cc);
 
 		}
 		if ($success){

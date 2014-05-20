@@ -45,10 +45,16 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$items = $this->get('Data');
 		$total = $this->get('Total');
 		$languages = $this->get('Languages');
+		$catids = $this->get('Categories');
 
 		$language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 		$this->assign('language', $language);
 		$this->assign('languages', $languages);
+
+		$catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
+		$catids = JHtml::_('select.options', $catids, 'value', 'text', $catid);
+		$this->assign('catid', $catid);
+		$this->assign('catids', $catids);
 
 		$layouttype = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
 		$addonoptions = array();
