@@ -66,7 +66,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$catid = intval(JFactory::getApplication()->getUserStateFromRequest("catidIcalEvents", 'catid', 0));
 		$catidtop = $catid;
 
-		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
 
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
@@ -248,7 +248,10 @@ class AdminIcaleventController extends JControllerAdmin
 		else if ($state == -1)
 		{
 			$where[] = "\n ev.state=-1";
-		}
+		} 
+                else if ($state == 3){
+                    $where[] = "\n ev.state=1 OR ev.state=0";
+                }
 
 		// get the total number of records
 		if ($this->_largeDataSet){

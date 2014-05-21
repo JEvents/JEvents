@@ -71,8 +71,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 					JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
 			);
 
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
 			$options = array();
+                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
 			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
@@ -122,11 +123,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
 			$this->assign('icsList', $icslist);
 
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
 			$options = array();
+                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));                    
 			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 
 			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);

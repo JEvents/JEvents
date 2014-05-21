@@ -304,7 +304,7 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	catid  int( 11 ) NOT NULL default '0',
 	PRIMARY KEY  (id),
 	INDEX (name),
-	langcodename (language, catid, name )
+	INDEX langcodename (language, catid, name )
 
 ) $charset;
 SQL;
@@ -653,7 +653,7 @@ SQL;
 
 		if (!array_key_exists("langcodename", $cols))
 		{
-			$sql = "alter table #__jevents_defaults add index langcodename (language, catid, title )";
+			$sql = "ALTER TABLE #__jev_defaults ADD INDEX langcodename (language, catid, name)";
 			$db->setQuery($sql);
 			@$db->query();
 		}
