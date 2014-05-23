@@ -385,6 +385,7 @@ if ($this->setPriority && $showpriority)
 						$poptions = array();
 						$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
 						$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+                                                $poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
 						?>
 						<tr class="jevpublished">
 							<td><?php echo JText::_("JSTATUS"); ?></td>
