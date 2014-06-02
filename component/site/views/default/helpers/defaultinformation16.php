@@ -8,6 +8,9 @@ function DefaultInformation16($view){
 		return;
 	}	
 	
+	// remove backlink completely
+	return;
+
 	echo '<li class="info-icon">';
 	echo '<a href="http://www.jevents.net" target="_blank" rel="nofollow">'
 	. "<img src=\"" . JURI::root() . "components/".JEV_COM_COMPONENT."/views/".$view->getViewName()."/assets/images/help.gif\" border=\"0\" alt=\"help\" class='jev_help' />"

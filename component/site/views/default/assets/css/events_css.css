@@ -190,8 +190,8 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 /***************************
 * List style
 **************************/
-ul.ev_ul {
-	list-style:none;
+#jevents_body  ul.ev_ul {
+	list-style:none!important;
 	padding:0px;
 	margin:5px;
 }
@@ -201,6 +201,11 @@ ul.ev_ul {
 	margin-bottom:1px;
 	padding-left:2px;
 	background-image:none
+}
+
+#jevents_body  ul.ev_ul li.ev_td_li_noevents
+{
+	border-width:0px;
 }
 a.ev_link_cat:link {
     font-size:12px;
@@ -676,12 +681,19 @@ div.jevtt_text{
 }
 
 /* ICAL Export style */
+
 div.ical_form_button.export_public a{
 	float:left;
 	margin-bottom:5px;
 	margin-right: 2%;
 	width:45%;
 	clear:both;
+}
+div.ical_form_button.clearleft{
+	clear:left;
+}
+div.ical_form_button.clearleft h3{
+	text-align:left;
 }
 div.ical_form_button.export_private a {
 	float:right;
