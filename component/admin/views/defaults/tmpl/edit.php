@@ -93,6 +93,7 @@ echo $editor->save('value');
 									$poptions = array();
 									$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
 									$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
+                                                                        $poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
 									echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->item->state);
 									?>
 									</td>
