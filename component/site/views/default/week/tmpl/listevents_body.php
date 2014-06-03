@@ -51,17 +51,21 @@ for( $d = 0; $d < 7; $d++ ){
 			echo "</li>\n";
 		}
 		echo "</ul>\n";
-	}
+	} else {
+            echo "<ul class='ev_ul'>\n";
+            echo "<li class='b0'>".JText::_('JEV_NOEVENT_ON_THIS_DATE')."</li>";
+            echo "</ul>\n";
+        }
 	echo '</td></tr>' . "\n";
 } // end for days
-if (!$hasevents)
-{
-        echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
-        echo "<li class='ev_td_li' style='border:0px;'>\n";
-        echo JText::_('JEV_NO_EVENTS');
-        echo "</li>\n";
-        echo "</ul></td></tr>\n";
-}
+//if (!$hasevents)
+//{
+//       echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
+//       echo "<li class='ev_td_li b0'>\n";
+//        echo JText::_('JEV_NO_EVENTS');
+//        echo "</li>\n";
+//        echo "</ul></td></tr>\n";
+//}
 
 echo '</table><br />' . "\n";
 echo '</fieldset><br /><br />' . "\n";

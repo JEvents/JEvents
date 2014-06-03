@@ -73,8 +73,8 @@ $hasevents = false;
 	}
 	if (!$hasevents)
 	{
-		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul" style="list-style: none;">' . "\n";
-		echo "<li class='ev_td_li' style='border:0px;'>\n";
+		echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
+		echo "<li class='ev_td_li'>\n";
 		echo JText::_('JEV_NO_EVENTS');
 		echo "</li>\n";
 		echo "</ul></td></tr>\n";

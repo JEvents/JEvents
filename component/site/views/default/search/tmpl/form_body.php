@@ -2,10 +2,10 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-	<tr>
-		<td align="center" width="100%">
-			<form action="<?php echo JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=search.results&Itemid=".$this->Itemid);?>" method="post" style="font-size:1;">
+<table cellpadding="0" cellspacing="0" class="w100 b0">
+	<tr class="b0">
+		<td align="center" class="w100 b0">
+			<form action="<?php echo JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=search.results&Itemid=".$this->Itemid);?>" method="post" class="search_form">
 				<input type="hidden" name="Itemid" value="<?php echo $this->Itemid;?>" />
 				<input type="hidden" name="task" value="search.results" />
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
