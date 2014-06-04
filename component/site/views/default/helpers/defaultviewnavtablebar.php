@@ -22,13 +22,13 @@ class DefaultViewNavTableBar
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		?>
-		<div class="ev_navigation" style="width:100%">
-			<table width="300" border="0" align="center" >
-				<tr align="center" valign="top">
-					<td height="1" width="100" align="right" valign="top">
+		<div class="ev_navigation">
+			<table class="ev_navtable" align="center">
+				<tr align="center">
+					<td align="right" class="h1 vtop">
 						<a href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>" title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><?php echo JText::_('JEV_VIEWTODAY'); ?></a>
 					</td>
-					<td height="1" align="center" valign="bottom">
+					<td align="center" class="h1 vbotom">
 						<form name="ViewSelect" action="<?php echo JURI::root() ."index.php"; ?>" method="get">
 							<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
@@ -75,14 +75,14 @@ class DefaultViewNavTableBar
 							</select>
 						</form>
 					</td>
-					<td height="1" width="100" align="left" valign="top">
+					<td align="left" class="w100 vtop h1">
 						<a href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>" title="<?php echo JText::_('JEV_VIEWTOCOME'); ?>">
 							<?php echo JText::_('JEV_VIEWTOCOME'); ?>
 						</a>
 					</td>
 				</tr>
 			</table>
-			<table width="300" border="0" align="center">
+			<table align="center" class="t300 b0">
 				<tr valign="top">
 					<?php
 					if (in_array("byyear", $iconstoshow))
@@ -94,7 +94,7 @@ class DefaultViewNavTableBar
 						echo $this->_lastMonthIcon($dates, $alts);
 					}
 					?>
-					<td align="center" valign="top">
+					<td align="center" class="vtop">
 						<form name="BarNav" action="index.php" method="get">
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 							<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -142,13 +142,13 @@ class DefaultViewNavTableBar
 		if ($dates[$which]->getYear() >= JEVHelper::getMinYear() && $dates[$which]->getYear() <= JEVHelper::getMaxYear())
 		{
 			?>
-			<td width="10" align="center" valign="middle"><?php echo $thelink; ?></td>
+			<td style="w10px vmiddle" align="center"><?php echo $thelink; ?></td>
 			<?php
 		}
 		else
 		{
 			?>
-			<td width="10" align="center" valign="middle"></td>
+			<td style="w10px vmiddle" align="center"></td>
 			<?php
 		}
 

@@ -83,7 +83,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$tmp_time_info = '<br />' . $this->start_time;
 				}
 
-				$publish_inform_overlay = '<table style="border:0px;height:100%">'
+				$publish_inform_overlay = '<table class="w100 b0">'
 				. '<tr><td nowrap=&quot;nowrap&quot;>' . $this->start_date
 				. $tmp_time_info
 				;
@@ -94,7 +94,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 				else if($this->start_time != $this->stop_time && !$this->event->alldayevent()){
 					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
 				}
-				$publish_inform_overlay = '<table style="border:0px;width:100%;height:100%">'
+				$publish_inform_overlay = '<table class="w100 b0 h100">'
 				. '<tr><td><b>' . JText::_('JEV_FROM') . ':&nbsp;</b>' . $this->start_date . '&nbsp;'
 				. '<br /><b>' . JText::_('JEV_TO') . ':&nbsp;</b>' . $this->stop_date
 				. $tmp_time_info
@@ -121,34 +121,34 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		if ($this->event->alldayevent() && $this->start_date==$this->stop_date){
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
+			. '<br /><span class="fwb">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
 		}
 		else if(( $cellDate == $this->stop_publish ) && ( $this->stop_publish == $this->start_publish )) {
 			// single day event
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
+			. '<br /><span class="fwb">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
 		}elseif( $cellDate == $this->start_publish ){
 			// first day of a multi-day event
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
 		}elseif( $cellDate == $this->stop_publish ){
 			// last day of a multi-day event
 			// enable an overlib popup
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
 		}elseif(( $cellDate < $this->stop_publish ) && ( $cellDate > $this->start_publish ) ) {
 			// middle day of a multi-day event
 			// enable the display of an overlib popup describing publish date
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
 		}else{
 			// this should never happen, but is here just in case...
-			$cellString =  $publish_inform_overlay.'<br /><small><div style="background-color:yellow;color:black;font-weight:bold">Problems - check event!</div></small>';
-			$title_event_link = "<div style='color:black!important;background-color:yellow!important;font-weight:bold'>Problems - check event!</div>";
+			$cellString =  $publish_inform_overlay.'<br /><small><div class="probs_check_ev">Problems - check event!</div></small>';
+			$title_event_link = "<div class='probs_check_ev'>Problems - check event!</div>";
 			$cellStart   = '';
-			$cellStyle   = '';
+			$cellClass   = '';
 			$cellEnd     = '';
 		}
 
@@ -278,32 +278,32 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		if ($this->event->alldayevent() && $this->start_date==$this->stop_date){
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
+			. '<br /><span class="fwb">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
 		}
 		else if(( $cellDate == $this->stop_publish ) && ( $this->stop_publish == $this->start_publish )) {
 			// single day event
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
+			. '<br /><span class="fwb">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
 		}elseif( $cellDate == $this->start_publish ){
 			// first day of a multi-day event
 			// just print the title
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
 		}elseif( $cellDate == $this->stop_publish ){
 			// last day of a multi-day event
 			// enable an overlib popup
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
 		}elseif(( $cellDate < $this->stop_publish ) && ( $cellDate > $this->start_publish ) ) {
 			// middle day of a multi-day event
 			// enable the display of an overlib popup describing publish date
 			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
+			. '<br /><span class="fwb">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
 		}else{
 			// this should never happen, but is here just in case...
-			$cellString =  $publish_inform_overlay.'<br /><small><div style="background-color:yellow;color:black;font-weight:bold">Problems - check event!</div></small>';
-			$title_event_link = "<div style='color:black!important;background-color:yellow!important;font-weight:bold'>Problems - check event!</div>";
+			$cellString =  $publish_inform_overlay.'<br /><small><div class="probs_check_ev">Problems - check event!</div></small>';
+			$title_event_link = "<div class='probs_check_ev'>Problems - check event!</div>";
 		}
 
 
@@ -340,7 +340,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 		// define start and end
 		$cellStart	= '<div';
-		$cellStyle	= 'padding:0;';
+		$cellClass	= ' p0';
 		$cellEnd		= '</div>' . "\n";
 
 		// add the event color as the column background color
@@ -398,14 +398,14 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$title_event_link = '<a class="cal_titlelink" href="' . $link . '" '.$linkStyle.'>'
 					. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
 				}
-				$cellStyle .= ' width:100%;';
+				$cellClass .= 'w100';
 			}
 		}else{
-			$eventIMG	= '<img align="left" style="border:1px solid white;" src="' . JURI::root()
-			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" height="12" width="8" alt=""' . ' />';
+			$eventIMG	= '<img align="left" class="b1sw" src="' . JURI::root()
+			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" class="h12px w8px" alt=""' . ' />';
 
 			$title_event_link = '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
-			$cellStyle .= ' float:left;width:10px;';
+			$cellClass .= ' fleft w10px';
 		}
 		
 		$cellString	= '';
@@ -463,7 +463,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					return  $templatedcell;
 				}
 
-				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
+				$html =  $cellStart . ' class="' . $cellClass . ' style="'.$cellStyle.'">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
 
 				return $html;
 			}
@@ -478,7 +478,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		}
 
 		// return the whole thing
-		return $cellStart . ' style="' . $cellStyle . '" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
+		return $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
 	}
 
 	function tooltip($tooltip,  $link)

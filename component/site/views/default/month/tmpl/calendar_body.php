@@ -29,7 +29,7 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
             $dn=0;
             for ($w=0;$w<6 && $dn<$datacount;$w++){
             ?>
-			<tr valign="top" style="height:80px;">
+			<tr class="vtop h80px">
                 <?php
                 echo "<td width='2%' class='cal_td_weeklink'>";
                 list($week,$link) = each($this->data['weeks']);
@@ -40,7 +40,7 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
                 		case "prior":
                 		case "following":
                 		?>
-                    <td width="14%" class="cal_td_daysoutofmonth" valign="top">
+                    <td class="cal_td_daysoutofmonth">
                         <?php echo $currentDay["d"]; ?>
                     </td>
                     	<?php
@@ -50,7 +50,7 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
                 			//$cellclass = $currentDay["today"]?'class="cal_td_today"':'class="cal_td_daysnoevents"';
 
 						?>
-                    <td <?php echo $cellclass;?> width="14%" valign="top" style="height:80px;">
+                    <td <?php echo $cellclass;?>>
                      <?php   $this->_datecellAddEvent($this->year, $this->month, $currentDay["d"]);?>
                     	<a class="cal_daylink" href="<?php echo $currentDay["link"]; ?>" title="<?php echo JText::_('JEV_CLICK_TOSWITCH_DAY'); ?>"><?php echo $currentDay['d']; ?></a>
                         <?php
@@ -58,10 +58,10 @@ echo "<div id='cal_title'>".$this->data['fieldsetText']."</div>\n";
                         if (count($currentDay["events"])>0){
                         	foreach ($currentDay["events"] as $key=>$val){
                         		if( $currentDay['countDisplay'] < $cfg->get('com_calMaxDisplay',5)) {
-                        			echo '<div style="border:0;width:100%;">';
+                        			echo '<div class="b0 w100">';
                         		} else {
                         			// float small icons left
-                        			echo '<div style="border:0;float:left;">';
+                        			echo '<div class="b0 fleft">';
                         		}
                         		echo "\n";
                         		$ecc = new $eventCellClass($val,$this->datamodel, $this);

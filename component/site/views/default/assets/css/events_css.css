@@ -59,6 +59,8 @@
 }
 .cal_td_daysoutofmonth {
     background-color: #B0C4DE;
+    width:14px;
+    vertical-align:top;
 }
 .cal_daysoutofmonth {
     font-family:  Arial;
@@ -76,10 +78,16 @@
 .cal_td_daysnoevents {
     background-color: #FFDEAD;
     padding:0px !important;
+    height:80px;
+    vertical-align:top;
+    width:14%;
 }
 .cal_td_dayshasevents {
     background-color: #FFDEAD;
     padding:0px !important;
+    height:80px;
+    vertical-align:top;
+    width:14%;
 }
 a.cal_daylink:link {
     font-family: Arial;
@@ -425,6 +433,7 @@ a.nav_bar_link:hover  {
 }
 .nav_bar_cell  {
     background-color: #ECECEC;
+    padding:10px;
 }
 
 /****************************
@@ -450,6 +459,7 @@ tr.icon_labels{
 	font-size:7pt;
 	margin:0px;
 	padding:0px;
+        vertical-align:top;
 }
 div#ev_icon_yearly {
 	background-image: url("../images/cal5x.jpg")!important;
@@ -613,12 +623,12 @@ div.jevtt_text{
 }
 
 /* Joomla 1.6 changes */
-#action_dialog {
+#jevents_body #action_dialog {
 	text-align: left;
 	 position:absolute;
 	 right:0px;
 	 background-color:#dedede;
-	 border:solid 1px #000000;
+	 border:1px solid #CCC;
 	 width:200px;
 	 padding:10px;
 	 visibility:hidden;
