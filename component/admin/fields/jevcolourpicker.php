@@ -61,6 +61,15 @@ SCRIPT;
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
+		if (JevJoomlaVersion::isCompatible("3.0"))
+		{
+			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+		else
+		{
+			JEVHelper::stylesheet('eventsadmin16.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+
 		return implode($html);
 	}
 

@@ -101,7 +101,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			if ($this->id > 0)
 			{
-				$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton("icalrepeat.detail", 'cancel', 'cancel', 'Cancel', false);
 			}
 			else
 			{

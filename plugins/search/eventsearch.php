@@ -312,7 +312,7 @@ class plgSearchEventsearch extends JPlugin
 			{
 
 				$user = JFactory::getUser();
-				$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.*, ev.created as created "
+				$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.*, ev.created as created, ex_id, exception_type "
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 						. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 						. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
@@ -321,6 +321,7 @@ class plgSearchEventsearch extends JPlugin
 						. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+						. "\n LEFT JOIN #__jevents_exception as ex ON det.evdet_id = ex.eventdetail_id"
 						. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
 						. "\n AND det.evdet_id = $id"
 						. "\n ORDER BY rpt.startrepeat ASC limit 1";
@@ -331,7 +332,10 @@ class plgSearchEventsearch extends JPlugin
 					continue;
 
 				$event = new jIcalEventRepeat($row);
-				$event = $event->getNextRepeat();
+				// only get the next repeat IF its not an exception
+				if (is_null($row->ex_id)){
+					$event = $event->getNextRepeat();
+				}
 
 				$startdate = new JevDate(strtotime($event->_startrepeat));
 				$item->title = $item->title . " (" . $startdate->toFormat($dateformat) . ")";

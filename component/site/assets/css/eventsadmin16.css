@@ -191,8 +191,17 @@ div.toolbar-list a:hover {
 	border-style:solid;
 	border-width:1px;
 	color:#0B55C4;
+	text-decoration:none!important;
+}
+div.toolbar-list a,
+div.toolbar-list a:hover,
+div.toolbar-list a:active,
+div.toolbar-list a:focus
+{
+	background:transparent;
 	text-decoration:none;
 }
+
 
 /* Editing styles */
 td.r1, span.r1 {
