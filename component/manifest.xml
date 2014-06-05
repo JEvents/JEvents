@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="component" version="2.5" method="upgrade">
 	<name>JEvents</name>
-	<creationDate>May 2014</creationDate>
+	<creationDate>June 2014</creationDate>
 	<author>GWE Systems Ltd </author>
 	<copyright>(C) 2009-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
