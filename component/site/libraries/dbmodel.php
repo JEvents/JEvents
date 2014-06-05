@@ -110,6 +110,19 @@ class JEventsDBModel
 				$isedit = true;
 			}
 
+			$query = "SELECT c.id"
+				. "\n FROM #__categories AS c"
+				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+				. $q_published
+				// language filter only applies when not editing
+				. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
+				. "\n AND c.extension = '" . $sectionname . "'"
+				. "\n " . $where
+				. "\n ORDER BY c.lft asc"  ;
+
+			$db->setQuery($query);
+			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
+			/*
 			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					// language filter only applies when not editing
@@ -122,6 +135,7 @@ class JEventsDBModel
 			->from('#__categories AS c')
 			->where($whereQuery)
 			->order('c.lft asc');
+			 */
 			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
