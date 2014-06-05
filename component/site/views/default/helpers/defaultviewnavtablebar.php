@@ -142,13 +142,13 @@ class DefaultViewNavTableBar
 		if ($dates[$which]->getYear() >= JEVHelper::getMinYear() && $dates[$which]->getYear() <= JEVHelper::getMaxYear())
 		{
 			?>
-			<td style="w10px vmiddle" align="center"><?php echo $thelink; ?></td>
+			<td class="w10px vmiddle" align="center"><?php echo $thelink; ?></td>
 			<?php
 		}
 		else
 		{
 			?>
-			<td style="w10px vmiddle" align="center"></td>
+			<td class="w10px vmiddle" align="center"></td>
 			<?php
 		}
 
