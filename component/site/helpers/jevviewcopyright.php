@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
 
 function JevViewCopyright() {
 
-	
+	return;
 
 	$cfg	 = JEVConfig::getInstance();
 
