@@ -40,11 +40,14 @@ for($month = 1; $month <= 12; $month++) {
 		echo "</ul>\n";
 		echo '</td></tr>' . "\n";
 	} else {
-                echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
-    echo "<li>\n";
-    echo JText::_('JEV_NO_EVENTS_FOUND');
-    echo "</li>\n";
-    echo "</ul></td></tr>\n";
+                echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
+                echo "<td class='ev_td_right'>\n";
+                echo "<ul class='ev_ul'>\n";
+                echo "<li>\n";
+                echo "<br />";
+                //echo JText::_('JEV_NO_EVENTS_FOUND');
+                echo "</li>\n";
+                echo "</ul></td></tr>\n";
         }
 
 }
