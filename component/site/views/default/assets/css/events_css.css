@@ -793,3 +793,5 @@ div.export_form {
 		display: block;
 	 }
 }
+
+.no_events_found {text-align:center;font-weight:bold;height:40px;}
