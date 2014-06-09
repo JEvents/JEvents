@@ -107,7 +107,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			return false;
 		}
 		
-		$catids = count($event->catids()) ? $event->catids() : array($event->catid());
+		$catids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
 		$catids[]=0;
 
 		// find the overlap

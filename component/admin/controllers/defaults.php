@@ -397,7 +397,7 @@ class AdminDefaultsController extends JControllerForm {
 			if (!isset($specificCategoryNames[$cat->name])){
 				$specificCategoryNames[$cat->name] = array();
 			}
-			$specificCategoryNames[$cat->name][] = $cat;
+			$specificCategoryNames[$cat->name][$cat->catid.".".$cat->language] = $cat;
 		}
 
 		$missingDefaults = array();
@@ -418,7 +418,7 @@ class AdminDefaultsController extends JControllerForm {
 						if ($catid==0) continue;
 						$matched = false;
 						foreach ($specificCategoryNames[$name] as $sname){
-							if ($nd->name == $sname->name && $nd->language == $sname->language ){
+							if ($nd->name == $sname->name && $nd->language == $sname->language && $sname->catid == $catid){
 								$matched = true;
 								break;
 							}
