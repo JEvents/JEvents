@@ -5,7 +5,7 @@ $cfg	 = JEVConfig::getInstance();
 
 // Note that using a $limit value of -1 the limit is ignored in the query
 $this->data = $data = $this->datamodel->getYearData($this->year,$this->limit, $this->limitstart);
-if (!$no_events_text) {$no_events_text = 0;}
+
 echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
 //echo '<fieldset id="ev_fieldset"><legend class="ev_fieldset">' . JText::_('JEV_ARCHIVE') . '</legend><br />' . "\n";
 ?>
@@ -40,7 +40,6 @@ for($month = 1; $month <= 12; $month++) {
 		echo "</ul>\n";
 		echo '</td></tr>' . "\n";
 	} else {
-                if ($no_events_text == 0) { echo "<tr><td class='no_events_found' colspan='2'>".JText::_('JEV_NO_EVENTS_FOUND')."</td></tr>";}
                 echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
                 echo "<td class='ev_td_right'>\n";
                 echo "<ul class='ev_ul'>\n";
@@ -49,7 +48,6 @@ for($month = 1; $month <= 12; $month++) {
                 //echo JText::_('JEV_NO_EVENTS_FOUND');
                 echo "</li>\n";
                 echo "</ul></td></tr>\n";
-                $no_events_text = 1;
         }
 
 }
