@@ -10,12 +10,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$document = JFactory::getDocument();
-$style = '.jev_none {'
-        . 'display:none;'
-        . '}'; 
-$document->addStyleDeclaration($style);
-
 // get configuration object
 $cfg = JEVConfig::getInstance();
 if ($this->editCopy || $this->repeatId == 0)
