@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: listevents.xml 3320 2012-03-08 10:11:31Z geraintedwards $ --> 
+<metadata>
+
+	<layout title="COM_JEVENTS_LIST_DEFAULT_TITLE">
+		<help
+			key = "COM_JEVENTS_LIST_HELP"
+		/>
+		<message>
+			<![CDATA[COM_JEVENTS_LIST_DEFAULT_DESC]]>
+		</message>
+	</layout>
+	
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params" >
+
+		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+
+			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+			<field name="darktemplate" type="jevboolean" class="btn-group" default="0"  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
+
+			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+				<option value="-1">HIDE_ALTOGETHER</option>
+				<option value="2">ICONS_WITHOUT_NAVIGATION</option>
+			</field>
+
+
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+
+			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+
+			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
+			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
+		</fieldset>
+	</fields>
+</metadata>
