@@ -568,7 +568,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				else {
 					$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
 				}
-				$sql .= " AND ev.state=1";
+				$sql .= " AND evt.state=1";
 
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
@@ -606,7 +606,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
 				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
 				$sql .= " AND evt.icsid=" . $testevent->icsid() . " GROUP BY rpt.rp_id";
-				$sql .= " AND ev.state=1";
+				$sql .= " AND evt.state=1";
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
 				$conflicts = $db->loadObjectList();
