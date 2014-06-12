@@ -702,6 +702,12 @@ class AdminIcalrepeatController extends JControllerLegacy
 				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			}
 
+			// May want to send notification messages etc.
+			$dispatcher = JDispatcher::getInstance();
+			// just incase we don't have jevents plugins registered yet
+			JPluginHelper::importPlugin("jevents");
+			$res = $dispatcher->trigger('onDeleteEventRepeat', array($id));
+
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
 			$data = null;
@@ -823,6 +829,17 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$query = "SELECT rp_id FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
 			$rp_ids = $db->loadColumn();
+
+
+			foreach ($rp_ids as $rp_id)
+			{
+				// May want to send notification messages etc.
+				$dispatcher = JDispatcher::getInstance();
+				// just incase we don't have jevents plugins registered yet
+				JPluginHelper::importPlugin("jevents");
+				$res = $dispatcher->trigger('onDeleteEventRepeat', array($rp_id));
+			}
+
 
 			// Change the underlying event repeat rule details  !!
 			$query = "SELECT * FROM #__jevents_rrule WHERE eventid=$repeatdata->eventid";
