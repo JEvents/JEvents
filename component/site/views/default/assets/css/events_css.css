@@ -59,6 +59,8 @@
 }
 .cal_td_daysoutofmonth {
     background-color: #B0C4DE;
+    width:14px;
+    vertical-align:top;
 }
 .cal_daysoutofmonth {
     font-family:  Arial;
@@ -76,10 +78,16 @@
 .cal_td_daysnoevents {
     background-color: #FFDEAD;
     padding:0px !important;
+    height:80px;
+    vertical-align:top;
+    width:14%;
 }
 .cal_td_dayshasevents {
     background-color: #FFDEAD;
     padding:0px !important;
+    height:80px;
+    vertical-align:top;
+    width:14%;
 }
 a.cal_daylink:link {
     font-family: Arial;
@@ -190,8 +198,8 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 /***************************
 * List style
 **************************/
-ul.ev_ul {
-	list-style:none;
+#jevents_body  ul.ev_ul {
+	list-style:none!important;
 	padding:0px;
 	margin:5px;
 }
@@ -201,6 +209,11 @@ ul.ev_ul {
 	margin-bottom:1px;
 	padding-left:2px;
 	background-image:none
+}
+
+#jevents_body  ul.ev_ul li.ev_td_li_noevents
+{
+	border-width:0px;
 }
 a.ev_link_cat:link {
     font-size:12px;
@@ -220,18 +233,21 @@ a.ev_link_cat:hover  {
     color: Black;
 }
 a.ev_link_row:link {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:visited  {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:hover  {
+    font-weight:bold;
     font-size:12px;
     font-family: Verdana;
     color: Black;
@@ -417,6 +433,7 @@ a.nav_bar_link:hover  {
 }
 .nav_bar_cell  {
     background-color: #ECECEC;
+    padding:10px;
 }
 
 /****************************
@@ -442,6 +459,7 @@ tr.icon_labels{
 	font-size:7pt;
 	margin:0px;
 	padding:0px;
+        vertical-align:top;
 }
 div#ev_icon_yearly {
 	background-image: url("../images/cal5x.jpg")!important;
@@ -605,12 +623,12 @@ div.jevtt_text{
 }
 
 /* Joomla 1.6 changes */
-#action_dialog {
+#jevents_body #action_dialog {
 	text-align: left;
 	 position:absolute;
 	 right:0px;
 	 background-color:#dedede;
-	 border:solid 1px #000000;
+	 border:1px solid #CCC;
 	 width:200px;
 	 padding:10px;
 	 visibility:hidden;
@@ -673,12 +691,19 @@ div.jevtt_text{
 }
 
 /* ICAL Export style */
+
 div.ical_form_button.export_public a{
 	float:left;
 	margin-bottom:5px;
 	margin-right: 2%;
 	width:45%;
 	clear:both;
+}
+div.ical_form_button.clearleft{
+	clear:left;
+}
+div.ical_form_button.clearleft h3{
+	text-align:left;
 }
 div.ical_form_button.export_private a {
 	float:right;

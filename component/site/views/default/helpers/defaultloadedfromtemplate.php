@@ -12,6 +12,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		$templates = array();
 		$fieldNameArray = array();
+		$rawtemplates = array();
 	}
 	$specialmodules = false;
 
@@ -19,8 +20,24 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		if (!array_key_exists($template_name, $templates))
 		{
+
 			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
-			$templates[$template_name] = $db->loadObjectList("language");
+			$rawtemplates = $db->loadObjectList();
+			$templates[$template_name] = array();
+			if ($rawtemplates){
+				foreach ($rawtemplates as $rt){
+					if (!isset($templates[$template_name][$rt->language])){
+						$templates[$template_name][$rt->language] = array();
+					}
+					$templates[$template_name][$rt->language][$rt->catid] = $rt;
+				}
+			}
+
+			if (count($templates[$template_name])==0) {
+				$templates[$template_name] = null;
+				return false;
+			}
+
 			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))
 			{
 				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
@@ -42,55 +59,83 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$templates[$template_name] = null;
 			}
 
-			if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-				return false;
+			$matched = false;
+			foreach ( array_keys($templates[$template_name]) as $catid){
+				if ( $templates[$template_name][$catid]->value != "") {
+					if (isset($templates[$template_name][$catid]->params))
+					{
+						$templates[$template_name][$catid]->params = new JRegistry($templates[$template_name][$catid]->params);
+						$specialmodules = $templates[$template_name][$catid]->params;
+					}
 
-			if (isset($templates[$template_name]->params))
-			{
-				$templates[$template_name]->params = new JRegistry($templates[$template_name]->params);
-				$specialmodules = $templates[$template_name]->params;
-			}
-			// Adjust template_value to include dynamic module output then strip it out afterwards
-			if ($specialmodules)
-			{
-				$modids = $specialmodules->get("modid", array());
-				if (count($modids)>0){
-					$modvals = $specialmodules->get("modval", array());
-					// not sure how this can arise :(
-					if (is_object($modvals)){
-						$modvals = get_object_vars($modvals);
+					// Adjust template_value to include dynamic module output then strip it out afterwards
+					if ($specialmodules)
+					{
+						$modids = $specialmodules->get("modid", array());
+						if (count($modids)>0){
+							$modvals = $specialmodules->get("modval", array());
+							// not sure how this can arise :(
+							if (is_object($modvals)){
+								$modvals = get_object_vars($modvals);
+							}
+							for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
+								$templates[$template_name][$catid]->value .= "{{module start:MODULESTART#".$modids[$count]."}}";
+								// cleaned later!
+								//$templates[$template_name][$catid]->value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
+								$templates[$template_name][$catid]->value .= $modvals[$count];
+								$templates[$template_name][$catid]->value .= "{{module end:MODULEEND}}";
+							}
+						}
 					}
-					for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
-						$templates[$template_name]->value .= "{{module start:MODULESTART#".$modids[$count]."}}";
-						// cleaned later!
-						//$templates[$template_name]->value .= preg_replace_callback('|{{.*?}}|', 'cleanLabels', $modvals[$count]);
-						$templates[$template_name]->value .= $modvals[$count];
-						$templates[$template_name]->value .= "{{module end:MODULEEND}}";
-					}
+
+					// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
+					$templates[$template_name][$catid]->value = str_replace("\r", '', $templates[$template_name][$catid]->value);
+					$templates[$template_name][$catid]->value = str_replace("\n", '', $templates[$template_name][$catid]->value);
+					// non greedy replacement - because of the ?
+					$templates[$template_name][$catid]->value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templates[$template_name][$catid]->value);
+
+					$matchesarray = array();
+					preg_match_all('|{{.*?}}|', $templates[$template_name][$catid]->value, $matchesarray);
+
+					$templates[$template_name][$catid]->matchesarray = $matchesarray;
 				}
 			}
 
-			// strip carriage returns other wise the preg replace doesn;y work - needed because wysiwyg editor may add the carriage return in the template field
-			$templates[$template_name]->value = str_replace("\r", '', $templates[$template_name]->value);
-			$templates[$template_name]->value = str_replace("\n", '', $templates[$template_name]->value);
-			// non greedy replacement - because of the ?
-			$templates[$template_name]->value = preg_replace_callback('|{{.*?}}|', 'cleanLabels', $templates[$template_name]->value);
-
-			$matchesarray = array();
-			preg_match_all('|{{.*?}}|', $templates[$template_name]->value, $matchesarray);
-
-			$templates[$template_name]->matchesarray = $matchesarray;
-
 		}
-		if (is_null($templates[$template_name]) || $templates[$template_name]->value == "")
-			return false;
 
-		$template = $templates[$template_name];
+		if (is_null($templates[$template_name])){
+			return false;
+		}
+		
+		$catids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+		$catids[]=0;
+
+		// find the overlap
+		$catids = array_intersect($catids, array_keys($templates[$template_name]));
+
+		// At present must be an EXACT category match - no inheriting allowed!
+		if (count($catids)==0){
+			if (!isset($templates[$template_name][0]) || $templates[$template_name][0]->value == ""){
+				return false;
+			}
+		}
+
+		$template = false;
+		foreach ($catids as $catid){
+			// use the first matching non-empty layout
+			if ($templates[$template_name][$catid]->value!=""){
+				$template = $templates[$template_name][$catid];
+				break;
+			}
+		}
+		if (!$template) {
+			return false;
+		}
 
 		$template_value = $template->value;
 		$specialmodules = $template->params;
 
-		$matchesarray = $templates[$template_name]->matchesarray;
+		$matchesarray = $template->matchesarray;
 	}
 	else
 	{
@@ -192,7 +237,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
 					ob_start();
 					?>
-					<a class="ev_link_row" href="<?php echo $rowlink; ?>" style="font-weight:bold;" title="<?php echo JEventsHTML::special($event->title()); ?>">
+					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
 						<?php
 						$linkstart = ob_get_clean();
 					}
@@ -437,7 +482,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						ob_start();
 						?>
 						<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
-							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" style="height:24px;" class="nothumb"/>
+							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" class="jev_ev_sml nothumb"/>
 						</a>
 						<div class="jevdialogs">
 						<?php

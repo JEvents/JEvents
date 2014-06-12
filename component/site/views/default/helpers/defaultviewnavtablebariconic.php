@@ -23,9 +23,9 @@ class DefaultViewNavTableBarIconic {
 		if (JRequest::getInt( 'pop', 0 )) return;
 				
     	?>
-    	<div class="ev_navigation" style="width:100%">
-    		<table  border="0" align="center" >
-    			<tr align="center" valign="top">
+    	<div class="ev_navigation">
+    		<table class="b0" align="center" >
+    			<tr align="center" class="vtop">
     	    		<?php 
     	    		if($cfg->get('com_calUseIconic', 1) != 2  && $task!="range.listevents"){
     	    			echo $this->_lastYearIcon($dates, $alts);
@@ -43,7 +43,7 @@ class DefaultViewNavTableBarIconic {
     	    		}
     	    		?>
                 </tr>
-    			<tr class="icon_labels" align="center" valign="top">
+    			<tr class="icon_labels" align="center">
     				<?php   if($cfg->get('com_calUseIconic', 1) != 2  && $task!="range.listevents"){ ?>
 	        		<td colspan="2"></td>
 	        		<?php } ?>
@@ -185,11 +185,11 @@ class DefaultViewNavTableBarIconic {
 				<?php
 				echo $hiddencat;
 				/*Day Select*/
-				// JEventsHTML::buildDaySelect( $this_date->getYear(1), $this_date->getMonth(1), $this_date->getDay(1), ' style="font-size:10px;"' );
+				// JEventsHTML::buildDaySelect( $this_date->getYear(1), $this_date->getMonth(1), $this_date->getDay(1), ' class="fs10px"' );
 				/*Month Select*/
-				JEventsHTML::buildMonthSelect( $this_date->getMonth(1), 'style="font-size:10px;"');
+				JEventsHTML::buildMonthSelect( $this_date->getMonth(1), 'class="fs10px"');
 				/*Year Select*/
-				JEventsHTML::buildYearSelect( $this_date->getYear(1), 'style="font-size:10px;"' ); ?>
+				JEventsHTML::buildYearSelect( $this_date->getYear(1), 'class="fs10px"' ); ?>
 				<button onclick="submit(this.form)"><?php echo   JText::_('JEV_JUMPTO');?></button>
 				<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>" />
 			</form>

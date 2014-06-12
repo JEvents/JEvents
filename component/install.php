@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2014 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -301,8 +301,11 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 	state tinyint(3) NOT NULL default 1,
 	params text NOT NULL ,
 	language varchar(20) NOT NULL default '*',
+	catid  int( 11 ) NOT NULL default '0',
 	PRIMARY KEY  (id),
-	INDEX (name)
+	INDEX (name),
+	INDEX langcodename (language, catid, name )
+
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -317,6 +320,22 @@ CREATE TABLE IF NOT EXISTS #__jevents_catmap(
 	catid int(11) NOT NULL default 1,
 	ordering int(5) unsigned NOT NULL default '0',
 	UNIQUE KEY `key_event_category` (`evid`,`catid`)
+) $charset;
+SQL;
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
+		// Filter module mapping table
+		// Maps filter values to URL keys
+		$sql = <<<SQL
+CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
+	fid int(12) NOT NULL auto_increment,
+	userid int(12) NOT NULL default 0,
+	filters TEXT NOT NULL,
+	md5 VARCHAR(255) NOT NULL,
+	PRIMARY KEY  (fid),
+	INDEX (md5)
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -621,6 +640,24 @@ SQL;
 			@$db->query();
 		}
 		
+		if (!array_key_exists("catid", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD catid  int( 11 ) NOT NULL default '0'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		$sql = "SHOW INDEX FROM #__jev_defaults";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("langcodename", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD INDEX langcodename (language, catid, name)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 		// fill this table if upgrading  and there are no mapped categories
 		$sql = "SELECT count(*) FROM #__jevents_catmap";
 		$db->setQuery($sql);

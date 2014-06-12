@@ -708,7 +708,7 @@ class JEventsDataModel {
 		$row = $this->queryModel->listEventsById ($rpid, 1, $jevtype);  // include unpublished events for publishers and above
 
 		// if the event is not published then make sure the user can edit or publish it or created it before allowing it to be seen!
-		if ($row && !$row->published()) {
+		if ($row && $row->published()!=1) {
 			if ($user->id!=$row->created_by() && !JEVHelper::canEditEvent($row)  && !JEVHelper::canPublishEvent($row)  && !JEVHelper::isAdminUser($user) ) {
 				$row=null;
 			}

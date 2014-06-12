@@ -44,13 +44,11 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 }
 else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 	// Make loading this conditional on config option
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js");
-	//JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.4/jquery-ui.min.js");
-	//JFactory::getDocument()->addStylesheet("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css");
-        
-	JFactory::getDocument()->addScript("components/com_jevents/assets/js/jQnc.js");
-	//JFactory::getDocument()->addScript("/components/com_jevents/assets/js/bootstrap.min.js");
-	//JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+        //JFactory::getDocument()->addScript("//www.google.com/jsapi");
+	JHTML::script("components/com_jevents/assets/js/jQnc.js");
+	//JHTML::script("components/com_jevents/assets/js/bootstrap.min.js");
+	//JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
         // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
         JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 }

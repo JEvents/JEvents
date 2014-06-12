@@ -155,7 +155,7 @@ if (JRequest::getString("submit","")!="")
 		}
 		echo $cb . "><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
-		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='othercats' <?php echo $checked ? '' : ''; ?> >
 			<?php
 			foreach ($categories AS $c)
 			{
@@ -177,7 +177,7 @@ if (JRequest::getString("submit","")!="")
 			?>
 		</div>
 	</div>
-	<div class='chooseyear' style='float:left;width:300px;'>
+	<div class='chooseyear'>
 		<?php
 		echo "<h3>" . JText::_('JEV_SELECT_REP_YEAR') . "</h3>\n";
 
@@ -197,7 +197,7 @@ if (JRequest::getString("submit","")!="")
 		$yt = $yt . "><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 		echo $yt;
 		?>
-		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='otheryears' <?php echo $checked ? '' : ''; ?> >
 			<?php
 //consturc years array, easy to add own kind of selection
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

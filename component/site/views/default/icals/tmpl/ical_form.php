@@ -118,7 +118,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 		}
 		echo $cb . " /><strong>" . JText::_("JEV_EVENT_ALLCAT") . "</strong><br/>\n";
 		?>
-		<div id='othercats' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='othercats' <?php echo $checked ? '' : ''; ?> >
 			<?php
 			foreach ($categories AS $c)
 			{
@@ -160,7 +160,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 		$yt = $yt . " /><strong>" . JText::_("JEV_EVENT_ALLYEARS") . "</strong><br/>\n";
 		echo $yt;
 		?>
-		<div id='otheryears' <?php echo $checked ? 'style="display:none;max-height:100px;overflow-y:auto;"' : ''; ?> >
+		<div id='otheryears' <?php echo $checked ? '' : ''; ?> >
 			<?php
 //consturc years array, easy to add own kind of selection
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

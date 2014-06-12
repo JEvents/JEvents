@@ -46,7 +46,7 @@ if( array_key_exists('row',$this->data) ){
 					JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 					?>
 					<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL');?>">
-						<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" style="height:24px;"/>
+						<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" class="h24px"/>
 					</a>
 				</td>
 				<?php
@@ -54,7 +54,7 @@ if( array_key_exists('row',$this->data) ){
                 if( $row->canUserEdit() && !( $mask & MASK_POPUP )) {
                 	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                     	?>
-                        <td  width="20" class="buttonheading" align="right">
+                        <td class="buttonheading" align="right">
                         <a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT');?>">
                            	<?php echo JEVHelper::imagesite( 'edit.png',JText::_('JEV_E_EDIT'));?>
                         </a>
@@ -64,15 +64,15 @@ if( array_key_exists('row',$this->data) ){
 					?>
             </tr>
             <tr class="dialogs">
-                <td align="left" valign="top" colspan="2">
-                <div style="position:relative;">
+                <td align="left" class="vtop" colspan="2">
+                <div class="pos_rel">
                 <?php
                 $this->eventIcalDialog($row, $mask);
                 ?>
                 </div>
                 </td>
-                <td align="left" valign="top" colspan="2">
-                <div style="position:relative;">
+                <td align="left" class="vtop" colspan="2">
+                <div class="pos_rel">
                 <?php
                 $this->eventManagementDialog($row, $mask);
                 ?>
@@ -80,8 +80,8 @@ if( array_key_exists('row',$this->data) ){
                 </td>
             </tr>
             <tr>
-                <td align="left" valign="top" colspan="4">
-                    <table width="100%" border="0">
+                <td align="left" class="vtop" colspan="4">
+                    <table class="w100 b0">
                         <tr>
                             <?php
                             $hastd = false;
@@ -112,13 +112,13 @@ if( array_key_exists('row',$this->data) ){
                     </table>
                 </td>
             </tr>
-            <tr align="left" valign="top">
+            <tr align="left" class="vtop">
                 <td colspan="4"><?php echo $row->content(); ?></td>
             </tr>
             <?php
             if ($row->hasLocation() || $row->hasContactInfo()) { ?>
                 <tr>
-                    <td class="ev_detail" align="left" valign="top" colspan="4">
+                    <td class="ev_detail vtop" align="left"  colspan="4">
                         <?php
                         if( $row->hasLocation() ){
                         	echo "<b>".JText::_('JEV_EVENT_ADRESSE')." : </b>". $row->location();
@@ -137,7 +137,7 @@ if( array_key_exists('row',$this->data) ){
 
             if( $row->hasExtraInfo()){ ?>
                 <tr>
-                    <td class="ev_detail" align="left" valign="top" colspan="4"><?php echo $row->extra_info(); ?></td>
+                    <td class="ev_detail vtop" align="left" colspan="4"><?php echo $row->extra_info(); ?></td>
                 </tr>
                 <?php
             } ?>
@@ -158,9 +158,9 @@ if( array_key_exists('row',$this->data) ){
         echo trim( implode( "\n", $results ) );
 
     } else { ?>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table class="w100" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td class="contentheading"  align="left" valign="top"><?php echo JText::_('JEV_REP_NOEVENTSELECTED'); ?></td>
+                <td class="contentheading vtop"  align="left"><?php echo JText::_('JEV_REP_NOEVENTSELECTED'); ?></td>
             </tr>
         </table>
         <?php

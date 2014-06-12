@@ -434,6 +434,7 @@ tr.icon_labels{
  font-size:8pt;
  margin:0px;
  padding:0px;
+ vertical-align:top;
 }
 div#ev_icon_yearly {
      background-image: url("../images/cal5x.jpg");

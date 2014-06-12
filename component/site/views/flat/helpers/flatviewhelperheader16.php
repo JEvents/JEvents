@@ -134,6 +134,7 @@ function FlatViewHelperHeader16($view){
 	}
 	?>
 </div>
+<div class="jev_clear"></div>
 <?php 
 	$view->loadModules("jevprejevents2");
 	$view->loadModules("jevprejevents2_".$task);

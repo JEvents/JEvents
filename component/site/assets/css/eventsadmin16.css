@@ -191,8 +191,17 @@ div.toolbar-list a:hover {
 	border-style:solid;
 	border-width:1px;
 	color:#0B55C4;
+	text-decoration:none!important;
+}
+div.toolbar-list a,
+div.toolbar-list a:hover,
+div.toolbar-list a:active,
+div.toolbar-list a:focus
+{
+	background:transparent;
 	text-decoration:none;
 }
+
 
 /* Editing styles */
 td.r1, span.r1 {
@@ -338,3 +347,54 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 .jev_colour_picker_i {min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;}
 .jev_colour_picker_b {color:inherit;background-color:inherit;display:block;font-weight:bold;padding:3px;}
 .jev_ev_colour_picker_i {position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;}
+
+/* Removed Inline CSS and added the below */
+
+form.search_form { padding:30px 0px;}
+td.ev_td_right ul.ev_ul {list-style: none;}
+#jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
+#ical_dialog {position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;}
+#ical_dialog a {text-decoration:none;}
+#ical_dialog img {border:0px;margin-right:1em;height:16px;}
+#ical_dialog .ical_dialog_close {width:12px!important;float:right;background-color:#ffffff;;border:solid #000000;border-width:0 0 1px 1px;text-align:center;margin:-10px;}
+#ical_dialog .ical_dialog_close a {font-weight:bold;text-decoration:none;color:#000000;}
+#ical_dialog #unstyledical {padding:0px;margin:0px;}
+#ical_dialog #styledical {padding:0px;margin:0px;display:none;}
+
+#action_dialog a {text-decoration:none;}
+#action_dialog .close_dialog a {font-weight:bold;color:#000000;}
+#action_dialog #publish_reccur img, #action_dialog #edit_reccur img, #action_dialog #edit_event img, #action_dialog #edit_eventcopy img, #action_dialog #delete_repeat img, #action_dialog #delete_eventfuture img, #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+img.jev_ev_sml {height:24px; text-align:center;}
+div.ev_navigation {width:100%;}
+table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
+table.ev_navtable tr {vertical-align:top; }
+.choosecat #othercats {display:none;max-height:100px;overflow-y:auto;}
+.choosecat .chooseyear {float:left;width:300px;}
+.choosecat #otheryear {display:none;max-height:100px;overflow-y:auto;}
+.buttonheading {height:24px;}
+#jumpto {margin: 10px 0;}
+/* global simple individual styles */
+.vtop {vertical-align:top;}
+.vmiddle {vertical-align:middle;}
+.vbottom {vertical-align:bottom;}
+.w100 {width:100%;}
+.w8px {width:8px;}
+.w10px {width:10px;}
+.t300 {width:300px;}
+.b0 {border:0px;}
+.b1sw {border:1px solid #FFF;}
+.p0 {padding:0;}
+.p10px {padding:10px;}
+.fs1px {font-size:1px;}
+.fs10px {font-size:10px;}
+.h100 {height:100%;}
+.h1 {height:1px;}
+.h12px {height:12px;}
+.h24px {height:24px;}
+.h80px {height:80px;}
+.pos_rel {position:relative;}
+.fleft {float:left;}
+.fwb {font-weight:bold;}
+.probs_check_ev {color:black!important;background-color:yellow!important;font-weight:bold}
+
+/* End of Inline CSS Removal. */

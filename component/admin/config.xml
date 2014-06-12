@@ -61,11 +61,11 @@
 		</field>
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"  difficulty="1"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"  difficulty="1"/>
-		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99" />				
-		<field name="usejquery" type="jevboolean" class="btn-group" default="1" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_DESC" difficulty="2" maxjoomlaversion="2.99.99" />
-		<field name="useboostrap" type="jevboolean" class="btn-group" default="1" label="JEV_USE_BOOTSTRAP" description="JEV_USE_BOOTSTRAP_DESC" difficulty="2" maxjoomlaversion="2.99.99" />
-
+		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99" />		
+		<!--
+		<field name="usejquery" type="jevboolean" class="btn-group" default="0" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />
 		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description=""  difficulty="2"/>
+		//-->
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" difficulty="2"/>
 
 		<field name="mergemenus" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_MERGE_MENUS" description="JEV_MERGE_MENUS_TIP" difficulty="2"/>

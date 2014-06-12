@@ -111,16 +111,31 @@ class JEventsDBModel
 			}
 
 			$query = "SELECT c.id"
-					. "\n FROM #__categories AS c"
-					. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+				. "\n FROM #__categories AS c"
+				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+				. $q_published
+				// language filter only applies when not editing
+				. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
+				. "\n AND c.extension = '" . $sectionname . "'"
+				. "\n " . $where
+				. "\n ORDER BY c.lft asc"  ;
+
+			$db->setQuery($query);
+			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
+			/*
+			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
 					. "\n AND c.extension = '" . $sectionname . "'"
-					. "\n " . $where
-					. "\n ORDER BY c.lft asc"  ;
+					. "\n " . $where;
 
-			$db->setQuery($query);
+			$query = $db->getQuery(true);
+			$query ->select('c.id')
+			->from('#__categories AS c')
+			->where($whereQuery)
+			->order('c.lft asc');
+			 */
 			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
@@ -2552,6 +2567,7 @@ class JEventsDBModel
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
 					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					." \n , ev.state as state "
 					. "\n FROM (#__jevents_vevent as ev $extratables)"
 					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
@@ -2607,7 +2623,7 @@ class JEventsDBModel
 	 * Get Event by ID (not repeat Id) result is based on first repeat
 	 *
 	 * @param event_id $evid
-	 * @param boolean $includeUnpublished
+	 * @param boolean $includeUnpublished (which also means trashed too!)
 	 * @param string $jevtype
 	 * @return jeventcal (or desencent)
 	 */

@@ -25,10 +25,12 @@ class DefaultsModelDefaults extends JModelLegacy
 			$query->select("def.*");
 			$query->from("#__jev_defaults as def");
 
-			// Join over the language
+			// Join over the language and category
 			$query->select('l.title AS language_title');
+			$query->select('c.title AS category_title');
 			// some servers have mixed collations
 			$query->join('LEFT', $db->quoteName('#__languages').' AS l ON BINARY l.lang_code = BINARY def.language');
+			$query->join('LEFT', $db->quoteName('#__categories').' AS c ON c.id = def.catid');
 			
 			$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 			if (count ($this->getLanguages())==1){
@@ -55,10 +57,25 @@ class DefaultsModelDefaults extends JModelLegacy
 					$query->where('def.name NOT like ("com_jevpeople%") AND def.name NOT like ("com_jevlocations%")' );
 				}
 			}
-			
+
+			$filter_catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "0");
+			if ($filter_catid != "0" && $layouttype=="jevents"){
+				$query->where('def.catid = '.intval($filter_catid));
+			}
+			else {
+				$query->where('def.catid = 0');
+			}
+
+			// Currently no option to customise event editing by category
+			if ($filter_catid != "0" && $filter_catid != "") {
+				$query->where('def.name <> "icalevent.edit_page"');
+			}
+
+
 			$query->order("def.title asc");
 			$db->setQuery($query);
-			$this->_data = $db->loadObjectList();		
+			$this->_data = $db->loadObjectList();
+			//echo $db->getQuery();
 			//var_dump($this->_data);
 		}
 		return $this->_data;
@@ -116,5 +133,21 @@ class DefaultsModelDefaults extends JModelLegacy
 			$languages  = $db->loadObjectList('lang_code');
 		}
 		return $languages;
+	}
+
+	function getCategories()
+	{
+		$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1");
+		if ($filter_published=="") {
+			$filter_published = "0,1";
+		}
+
+		// Do not filter on category being published or not!
+		$filter_published = "0,1";
+		//$filter_language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
+		//$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published), 'filter.language' => explode(',', $filter_language)));
+		$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published)));
+
+		return $options;
 	}
 }
