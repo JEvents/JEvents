@@ -2434,7 +2434,12 @@ class JEventsDBModel
 		// This version picks the details from the details table
 		if ($count)
 		{
-			$query = "SELECT count(distinct rpt.rp_id)";
+			if (!$showrepeats) {
+				$query = "SELECT count(distinct ev.ev_id)";
+			}
+			else {
+				$query = "SELECT count(distinct rpt.rp_id)";
+			}
 		}
 		else
 		{

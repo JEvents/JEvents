@@ -13,7 +13,7 @@ if (JevJoomlaVersion::isCompatible("3.0"))
 else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 {
 	// Make loading this conditional on config option
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
 	JHTML::script("components/com_jevents/assets/js/jQnc.js");
 	JHTML::script("components/com_jevents/assets/js/bootstrap.min.js");
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
