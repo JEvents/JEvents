@@ -27,8 +27,11 @@ class jevPublishedFilter extends jevFilter
 	const filterType = "published";
 
 	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
-		$this->filterType=self::filterType;
-		$this->filterNullValue="0";
+                $this->filterType=self::filterType;    
+                $task = JRequest::getVar( 'view', '') . '.' . JRequest::getVar( 'layout', '');
+                if ($task == "admin.listevents") { $default_filter = "-1"; } else { $default_filter = "0";}
+		
+		$this->filterNullValue= $default_filter;
 		$this->allLabel = JText::_( 'ALL' );
 		$this->yesLabel = JText::_($yesLabel);
 		$this->noLabel =  JText::_($noLabel);

@@ -18,35 +18,44 @@ echo "<div id='cal_title'>". JText::_('JEV_EVENTSFOR') ."</div>\n";
         </td>
     </tr>
 <?php
-for($month = 1; $month <= 12; $month++) {
-	$num_events = count($data["months"][$month]["rows"]);
-	if ($num_events>0){
-		echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
-		echo "<td class='ev_td_right'>\n";
-		echo "<ul class='ev_ul'>\n";
-		for ($r = 0; $r < $num_events; $r++) {
-			if (!isset($data["months"][$month]["rows"][$r])) continue;
-			$row =& $data["months"][$month]["rows"][$r];
-			$listyle = 'style="border-color:'.$row->bgcolor().';"';
+if ($data["total"] <= 0 && $cfg->get('year_show_noev_found', 0)) {
+        
+        echo '<tr><td colspan="2" class="no_events_found">'.JText::_('JEV_NO_EVENTS_FOUND').'</td></tr>';
+    
+} else {
+        for($month = 1; $month <= 12; $month++) {
+                $num_events = count($data["months"][$month]["rows"]);
+                if ($num_events>0){
+                        echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
+                        echo "<td class='ev_td_right'>\n";
+                        echo "<ul class='ev_ul'>\n";
+                        for ($r = 0; $r < $num_events; $r++) {
+                                if (!isset($data["months"][$month]["rows"][$r])) continue;
+                                $row =& $data["months"][$month]["rows"][$r];
+                                $listyle = 'style="border-color:'.$row->bgcolor().';"';
 
-			echo "<li class='ev_td_li' $listyle>\n";
-			if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
-				$this->viewEventRowNEW ($row);
-				echo "&nbsp;::&nbsp;";
-				$this->viewEventCatRowNEW ($row);
-			}
-			echo "</li>\n";
-		}
-		echo "</ul>\n";
-		echo '</td></tr>' . "\n";
-	} else {
-                echo '<tr><td class="ev_td_right" colspan="3"><ul class="ev_ul">' . "\n";
-    echo "<li>\n";
-    echo JText::_('JEV_NO_EVENTS_FOUND');
-    echo "</li>\n";
-    echo "</ul></td></tr>\n";
+                                echo "<li class='ev_td_li' $listyle>\n";
+                                if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
+                                        $this->viewEventRowNEW ($row);
+                                        echo "&nbsp;::&nbsp;";
+                                        $this->viewEventCatRowNEW ($row);
+                                }
+                                echo "</li>\n";
+                        }
+                        echo "</ul>\n";
+                        echo '</td></tr>' . "\n";
+                } else {
+                        echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
+                        echo "<td class='ev_td_right'>\n";
+                        echo "<ul class='ev_ul'>\n";
+                        echo "<li>\n";
+                        echo "<br />";
+                        //echo JText::_('JEV_NO_EVENTS_FOUND');
+                        echo "</li>\n";
+                        echo "</ul></td></tr>\n";
+                }
+
         }
-
 }
 echo '</table><br />' . "\n";
 //echo '</fieldset><br />' . "\n";
