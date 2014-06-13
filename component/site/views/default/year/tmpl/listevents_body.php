@@ -44,7 +44,9 @@ if ($data["total"] <= 0 && $cfg->get('year_show_noev_found', 0)) {
                         }
                         echo "</ul>\n";
                         echo '</td></tr>' . "\n";
-                } else {
+                }
+		/*
+		else {
                         echo "<tr><td class='ev_td_left'>".JEventsHTML::getDateFormat($this->year,$month,'',3)."</td>\n";
                         echo "<td class='ev_td_right'>\n";
                         echo "<ul class='ev_ul'>\n";
@@ -54,6 +56,7 @@ if ($data["total"] <= 0 && $cfg->get('year_show_noev_found', 0)) {
                         echo "</li>\n";
                         echo "</ul></td></tr>\n";
                 }
+		 */
 
         }
 }
