@@ -11,6 +11,7 @@ if (JRequest::getInt('pop', 0)) { ?>
 $view->loadHelper("JevViewCopyright");
 JevViewCopyright(); ?>
 </div>
+</div> <!-- close #jevents //-->
 <?php
 	$dispatcher	= JDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsFooter');

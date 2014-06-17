@@ -400,9 +400,9 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 #ical_dialog #unstyledical {padding:0px;margin:0px;}
 #ical_dialog #styledical {padding:0px;margin:0px;display:none;}
 
-#action_dialog a {text-decoration:none;}
-#action_dialog .close_dialog a {font-weight:bold;color:#000000;}
-#action_dialog #publish_reccur img, #action_dialog #edit_reccur img, #action_dialog #edit_event img, #action_dialog #edit_eventcopy img, #action_dialog #delete_repeat img, #action_dialog #delete_eventfuture img, #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+#action_dialogJQ a {text-decoration:none; line-height:28px;}
+#action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+#action_dialogJQ #publish_reccur img, #action_dialogJQ #edit_reccur img, #action_dialogJQ #edit_event img, #action_dialogJQ #edit_eventcopy img, #action_dialogJQ #delete_repeat img, #action_dialogJQ #delete_eventfuture img, #action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 img.jev_ev_sml {height:24px; text-align:center;}
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}

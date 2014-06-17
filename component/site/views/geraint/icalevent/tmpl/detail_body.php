@@ -55,11 +55,18 @@ if( array_key_exists('row',$this->data) ){
 	                if( $row->canUserEdit() && !( $mask & MASK_POPUP )) {
 	                	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                         	?>
-                            <td  width="20" class="buttonheading" align="right">
-                            <a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT');?>">
-                            	<?php echo JEVHelper::imagesite( 'edit.png',JText::_('JEV_E_EDIT'));?>
-                            </a>
-                            </td>
+			<td  width="20" class="buttonheading" align="right">
+				<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
+				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
+					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+				</a>
+				<?php }
+				else	{ ?>
+				<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
+					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+				</a>
+				<?php } ?>
+			</td>
                             <?php
 	                }
 						?>
