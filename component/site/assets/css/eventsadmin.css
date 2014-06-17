@@ -307,6 +307,10 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
     border-radius: 5px;
     border-top-left-radius: 0;
 }
+
+#myParamsTabsContent input, #myParamsTabsContent select, #myParamsTabsContent textarea {
+    width: auto;
+}
 .jev_config_version {
 	background-color: #ededed;
 	border:1px solid #ddd;
