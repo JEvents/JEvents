@@ -45,7 +45,7 @@ if( array_key_exists('row',$this->data) ){
 						<?php
 						JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 						?>
-						<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL');?>">
+						<a href="#myical-modal" data-target="#ical_dialogJQ" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL');?>">
 							<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" style="height:24px;"/>
 						</a>
 					</td>
@@ -55,9 +55,16 @@ if( array_key_exists('row',$this->data) ){
 	                	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                         	?>
                             <td  width="20" class="buttonheading" align="right">
-                            <a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT');?>">
-                            	<?php echo JEVHelper::imagesite( 'edit.png',JText::_('JEV_E_EDIT'));?>
-                            </a>
+				<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
+				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
+					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+				</a>
+				<?php }
+				else	{ ?>
+				<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
+					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+				</a>
+				<?php } ?>
                             </td>
                             <?php
 	                }

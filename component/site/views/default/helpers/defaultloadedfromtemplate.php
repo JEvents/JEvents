@@ -481,7 +481,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$cssloaded = true;
 						ob_start();
 						?>
-						<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
+						<a href="#myical-modal" data-target="#ical_dialogJQ" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
 							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" class="jev_ev_sml nothumb"/>
 						</a>
 						<div class="jevdialogs">
@@ -523,9 +523,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						ob_start();
 						?>
+						<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
+						<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
+							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
+						</a>
+						<?php }
+						else	{ ?>
 						<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
 							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 						</a>
+						<?php } ?>
 						<div class="jevdialogs">
 						<?php
 						$search[] = "{{EDITDIALOG}}";

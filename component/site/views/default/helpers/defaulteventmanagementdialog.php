@@ -85,9 +85,9 @@ function DefaultEventManagementDialog($view,$row, $mask){
 			return false;
 		}
 
-		JHtml::_('bootstrap.modal', "action_dialogJQ");
+		JHtml::_('bootstrap.modal', "action_dialogJQ".$row->rp_id());
             ?>
-		<div id="action_dialogJQ" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="action_dialogJQ<?php echo $row->rp_id();?>" class="action_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
