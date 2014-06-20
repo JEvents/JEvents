@@ -45,7 +45,7 @@ if( array_key_exists('row',$this->data) ){
 						<?php
 						JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
 						?>
-						<a href="#myical-modal" data-target="#ical_dialogJQ" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL');?>">
+						<a href="#myical-modal" data-target="#ical_dialogJQ<?php echo $row->rp_id();?>" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL');?>">
 							<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" style="height:24px;"/>
 						</a>
 					</td>

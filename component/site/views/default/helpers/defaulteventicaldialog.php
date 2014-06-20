@@ -9,9 +9,9 @@ function DefaultEventIcalDialog($view, $row, $mask)
 		return $view->eventIcalDialog16($row, $mask);
 	}
 
-	JHtml::_('bootstrap.modal', "ical_dialogJQ");
+	JHtml::_('bootstrap.modal', "ical_dialogJQ".$row->rp_id());
 	?>
-	<div id="ical_dialogJQ" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div id="ical_dialogJQ<?php echo $row->rp_id();?>" class="ical_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">

@@ -467,13 +467,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ICALBUTTON}}":
 				case "{{EDITDIALOG}}":
 				case "{{EDITBUTTON}}":
-					static $styledone = false;
-					if (!$styledone)
-					{
-						$document = JFactory::getDocument();
-						$document->addStyleDeclaration("div.jevdialogs {position:relative;margin-top:35px;text-align:left;}\n div.jevdialogs img{float:none!important;margin:0px}");
-						$styledone = true;
-					}
 
 					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0))
 					{
@@ -481,7 +474,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$cssloaded = true;
 						ob_start();
 						?>
-						<a href="#myical-modal" data-target="#ical_dialogJQ" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
+						<a href="#myical-modal" data-target="#ical_dialogJQ<?php echo $event->rp_id();?>" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
 							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" class="jev_ev_sml nothumb"/>
 						</a>
 						<div class="jevdialogs">

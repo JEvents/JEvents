@@ -392,15 +392,7 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
-#ical_dialog {position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;}
-#ical_dialog a {text-decoration:none;}
-#ical_dialog img {border:0px;margin-right:1em;height:16px;}
-#ical_dialog .ical_dialog_close {width:12px!important;float:right;background-color:#ffffff;;border:solid #000000;border-width:0 0 1px 1px;text-align:center;margin:-10px;}
-#ical_dialog .ical_dialog_close a {font-weight:bold;text-decoration:none;color:#000000;}
-#ical_dialog #unstyledical {padding:0px;margin:0px;}
-#ical_dialog #styledical {padding:0px;margin:0px;display:none;}
-#ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
-
+.ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 
 .action_dialogJQ a {text-decoration:none; line-height:28px;}
 .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
