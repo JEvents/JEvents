@@ -56,7 +56,7 @@ if( array_key_exists('row',$this->data) ){
                     	?>
                         <td class="buttonheading" align="right">
 				<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
-				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
+				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $row->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
 					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 				</a>
 				<?php }
