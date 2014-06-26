@@ -36,14 +36,6 @@ class RangeController extends JControllerLegacy   {
 
 		list($year,$month,$day) = JEVHelper::getYMD();
 
-		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
-		
-		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
-
-		$Itemid	= JEVHelper::getItemid();
-
 		// get the view
 
 		$document = JFactory::getDocument();
@@ -58,6 +50,14 @@ class RangeController extends JControllerLegacy   {
 			array( 'base_path'=>$this->_basePath, 
 				"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 				"name"=>$theme.'/'.$view));
+
+		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
+		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
+
+		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
+
+		$Itemid	= JEVHelper::getItemid();
 
 		// Set the layout
 		$this->view->setLayout('listevents');

@@ -859,6 +859,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
 			// Silver - Calendar Plus
 			array("element"=>"mod_jevents_calendarplus","name"=>"mod_jevents_calendarplus","type"=>"module"),
+			// Silver - Slideshow Module
+			array("element"=>"mod_jevents_slideshow","name"=>"mod_jevents_slideshow","type"=>"module"),
 			// Silver - facebook
 			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - featured
