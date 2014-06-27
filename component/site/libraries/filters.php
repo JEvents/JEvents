@@ -217,19 +217,24 @@ class jevFilterProcessing
 	}
 
 	function getFilterHTML(){
-		if (!isset($this->filterHTML)){
-			$this->filterHTML = array();
-			foreach ($this->filters as $filter) {
-				$filterHTML = $filter->_createfilterHTML();
-				if (!is_array($filterHTML)){
+		if (isset($this->filterHTML)){
+			return $this->filterHTML;
+		}
+
+		$this->filterHTML = array();
+		foreach ($this->filters as $filter) {
+			$filterHTML = $filter->_createfilterHTML();
+			if (!is_array($filterHTML)){
+				continue;
+			}
+			if (array_key_exists("merge",$filterHTML)){
+				$this->filterHTML = array_merge($this->filterHTML,$filterHTML["merge"]);
+			}
+			else {
+				if (!isset($filterHTML["title"]) || !isset($filterHTML["html"]) || ($filterHTML["title"]=="" && $filterHTML["html"]=="")){
 					continue;
 				}
-				if (array_key_exists("merge",$filterHTML)){
-					$this->filterHTML = array_merge($this->filterHTML,$filterHTML["merge"]);
-				}
-				else {
-					$this->filterHTML[] = $filterHTML;
-				}
+				$this->filterHTML[] = $filterHTML;
 			}
 		}
 		return $this->filterHTML;

@@ -99,6 +99,7 @@ function setupCustomColumnField(fieldid){
 	customfield.val( "");
 	var lis = jevjq("#columnmatches div");
 	lis.each(function( i){
+		if (!jevjq(this).prop("id")) return;
 		var item = jevjq(this).clone();
 		var input = item.find('input');
 		var value = input.val();
@@ -109,6 +110,6 @@ function setupCustomColumnField(fieldid){
 		}
 		// get the contained div
 		item = item.find("div");
-		customfield.val( customfield.val() +item.prop("id").replace("column","")+"|"+ item.html() +"|"+ value);
+		customfield.val( customfield.val() + jevjq(this).prop("id").replace("column","")+"|"+ item.html() +"|"+ value);
 	});
 }

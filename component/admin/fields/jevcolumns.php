@@ -37,7 +37,8 @@ class JFormFieldJevcolumns extends JFormFieldText
 			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 		}
 		else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
 			JHTML::script("components/com_jevents/assets/js/jQnc.js");
 			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
@@ -110,23 +111,28 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 
 		$invalue = array();
-		$ingroups = explode("||", $this->value);
 		$indexedgroups = array();
-		foreach ($ingroups as $group){
-			$group = explode("|", $group);
-			$invalue[]=$group[0];
+		if ($this->value!=""){
+			$ingroups = explode("||", $this->value);
+			foreach ($ingroups as $group){
+				$group = explode("|", $group);
+				if ($group[0]==""){
+					continue;
+				}
+				$invalue[]=$group[0];
 
-			if (count($group)<3){
-				$group[2] = $group[0];
+				if (count($group)<3){
+					$group[2] = $group[0];
+				}
+				list($id, $fieldlabel, $label) = $group;
+				$col = new stdClass();
+				$col->fieldlabel = $fieldlabel;
+				$col->id = $id;
+				$col->label = $label;
+				$col->raw = implode("|", $group);
+				$indexedgroups[$id]=$col;
+
 			}
-			list($id, $fieldlabel, $label) = $group;
-			$col = new stdClass();
-			$col->fieldlabel = $fieldlabel;
-			$col->id = $id;
-			$col->label = $label;
-			$col->raw = implode("|", $group);
-			$indexedgroups[$id]=$col;
-
 		}
 
 		$input = '<div style="clear:left"></div><table><tr valign="top">
@@ -166,7 +172,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 
 		$input .= '</div></td>
 		</tr></table>';
-		$input .= '<textarea style="display:none"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
+		$input .= '<textarea style="display:block"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 		
 		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';

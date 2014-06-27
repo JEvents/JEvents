@@ -31,10 +31,13 @@ class JFormFieldJevloadlang extends JFormFieldSpacer
 
 	public function getinput()
 	{
+		include_once (JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
 		$lang = jfactory::getLanguage();
-		
+
+		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 		$lang->load("mod_jevents_latest", JPATH_SITE);
-				
+		$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
+		
 		if (JText::_("JEV_LATEST_OVERRIDE_LAYOUT")=="JEV_LATEST_OVERRIDE_LAYOUT"){
 			$lang->load("mod_jevents_latest", JPATH_SITE, "en-GB");
 		}

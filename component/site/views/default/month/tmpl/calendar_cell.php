@@ -340,7 +340,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 		// define start and end
 		$cellStart	= '<div';
-		$cellClass	= ' p0';
+		$cellClass	= 'p0 ';
 		$cellEnd		= '</div>' . "\n";
 
 		// add the event color as the column background color
@@ -463,7 +463,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					return  $templatedcell;
 				}
 
-				$html =  $cellStart . ' class="' . $cellClass . ' style="'.$cellStyle.'">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
+				$html =  $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
 
 				return $html;
 			}

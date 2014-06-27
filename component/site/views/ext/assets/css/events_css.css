@@ -605,6 +605,10 @@ div.jev_pagination {
 /***************************
 * List View 
 ***************************/
+#jevents_body ul.ev_ul {
+	list-style:none;
+        list-style-type:none;
+}
 #jevents_body li.ev_td_li{ 
 	border-style:solid;
 	border-width:0px 0px 1px 5px;
@@ -841,3 +845,6 @@ div.export_form {
 		display: block;
 	 }
 }
+
+table.ev_table {margin:auto auto}
+#jevents_body td.no_events_found {height:35px;text-align:center;font-weight:bold;border:1px solid #CCC;}

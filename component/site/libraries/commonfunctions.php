@@ -132,6 +132,35 @@ class JEV_CommonFunctions {
 		return $color;
 	}
 
+	public static function setColours($row){
+
+		$cfg = JEVConfig::getInstance();
+		if (!$cfg->get("multicategory", 0)) {
+			return array(JEV_CommonFunctions::setColor($row));
+		}
+
+		static $catData;
+		if (!isset($catData))   $catData = JEV_CommonFunctions::getCategoryData();
+
+		$colours = array();
+
+		foreach ($row->catids() as $catid ){
+			if (is_object($row) && strtolower(get_class($row))!="stdclass"){
+				if( $cfg->get('com_calForceCatColorEventForm',2) == '2' ){
+					$colors[] = ($catid > 0 && isset($catData[$catid])) ? $catData[$catid]->color : '#333333';
+				}
+				else $colors[] = $row->useCatColor() ? ( $catid > 0  && isset($catData[$catid])) ? $catData[$catid]->color : '#333333' : $row->color_bar();
+			}
+			else {
+				if( $cfg->get('com_calForceCatColorEventForm',2) == '2' ){
+					$colors[] = ($row->catid > 0  && isset($catData[$catid])) ? $catData[$row->catid]->color : '#333333';
+				}
+				else $colors[] = $row->useCatColor ? ( $row->catid > 0  && isset($catData[$catid])) ? $catData[$row->catid]->color : '#333333' : $row->color_bar;
+			}
+		}
+		return $colors;
+	}
+
 	/**
  * Cloaks html link whith javascript
  *

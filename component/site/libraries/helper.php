@@ -2611,6 +2611,7 @@ SCRIPT;
 			$icalEvents = array($row);
 			if (ob_get_contents()) ob_end_clean();
 			$html = "";
+                        $params = JComponentHelper::getParams("com_jevents");
 			if ($params->get('outlook2003icalexport'))
 				$html .= "BEGIN:VCALENDAR\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 			else

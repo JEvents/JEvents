@@ -250,7 +250,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$where[] = "\n ev.state=-1";
 		} 
                 else if ($state == 3){
-                    $where[] = "\n ev.state=1 OR ev.state=0";
+                    $where[] = "\n (ev.state=1 OR ev.state=0)";
                 }
 
 		// get the total number of records

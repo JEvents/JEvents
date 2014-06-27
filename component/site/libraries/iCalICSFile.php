@@ -145,7 +145,7 @@ RAWTEXT;
 		$registry = JRegistry::getInstance("jevents");
 		$registry->set("jevents.icsfile", $temp);
 
-		if (false === ($temp->_icalInfo =& JEVHelper::iCalInstance($uploadURL)) ) {
+		if (false === ($temp->_icalInfo = JEVHelper::iCalInstance($uploadURL)) ) {
 			return false;
 		}
 

@@ -706,7 +706,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$dispatcher = JDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventRepeat', array($id));
+			$res = $dispatcher->trigger('onDeleteEventRepeat', $id);
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -837,7 +837,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$dispatcher = JDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventRepeat', array($rp_id));
+				$res = $dispatcher->trigger('onDeleteEventRepeat', $rp_id);
 			}
 
 

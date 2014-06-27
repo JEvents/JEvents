@@ -256,6 +256,7 @@ $registry->set("jevents.activeprocess", "component");
 if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
 {
 	JRequest::setVar("limit", 100);
+	JFactory::getApplication()->setUserState("limit", 100);
 }
 
 // Must reset the timezone back!!
