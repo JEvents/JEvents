@@ -37,6 +37,7 @@
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
 				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+				<option value="evt.created DESC" >JEV_MOST_RECENT</option>
 			</param>
 
 			<param name="@spacer" type="spacer" default=""   label="" description="" />	
