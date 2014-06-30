@@ -358,12 +358,12 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false)
+		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false && stripos($filecontent, "TechJoomla") === false && stripos($filecontent, "hikashop") === false )
 		{
 			return false;
 		}
 		// for JCE and Virtuemart only check component version number
-		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false)
+		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false || strpos($filecontent, "TechJoomla") !== false || strpos($filecontent, "hikashop") !== false)
 		{
 			if (strpos($filecontent, "type='component'") === false && strpos($filecontent, 'type="component"') === false)
 			{
@@ -374,7 +374,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false)
+		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false && strpos($manifestdata['author'], "TechJoomla") === false && strpos($manifestdata['name'], "HikaShop") === false)
 		{
 			return false;
 		}
@@ -610,8 +610,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$app->version = $version->getShortVersion();
 		$apps[$app->name] = $app;
 
-// components (including JEvents
-		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce.xml", true, true)
+// components (including JEvents)
+		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true)
 		);
 		foreach ($xmlfiles3 as $manifest)
 		{
