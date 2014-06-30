@@ -88,7 +88,7 @@ if (JRequest::getVar('save'))
 						$msgType = 'error';
 					}
 
-					$mainframe->enqueueMessage($msg);
+					$mainframe->enqueueMessage($msg, $msgType);
 					$mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css&msg=' . $msg . '&msgtype=' . $msgType . '');
 
 				}
