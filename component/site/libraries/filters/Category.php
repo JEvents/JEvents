@@ -98,11 +98,11 @@ class jevCategoryFilter extends jevFilter
 	}
 	*/
 
-	/**
- * Creates javascript session memory reset action
- *
- */
-	function _createfilterHTML(){
+ 	function _createfilterHTML(){
+		return $this->createfilterHTML(true);
+	}
+
+	function createfilterHTML($allowAutoSubmit = true){
 
 		if (!$this->filterField) return "";
 
@@ -117,7 +117,12 @@ class jevCategoryFilter extends jevFilter
 		$filterList=array();
 		$filterList["title"]=JText::_("Select_Category");
 
-		$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if ($(\'catidsfv\')) $(\'catidsfv\').value=this.value;submit(this.form)" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );		
+		if ($allowAutoSubmit){
+			$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if ($(\'catidsfv\')) $(\'catidsfv\').value=this.value;submit(this.form)" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );
+		}
+		else {
+			$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if ($(\'catidsfv\')) $(\'catidsfv\').value=this.value;" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );
+		}
 		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
