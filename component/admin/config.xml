@@ -194,24 +194,13 @@
 
 		<field name="com_enableToolTip" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" difficulty="1"/>
 
-		<field name="tooltiptype" type="jevmultilist" default='joomla'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
-			<option value="joomla">Joomla</option>
-			<option value="overlib">Overlib</option>
+		<field name="tooltiptype" type="jevmultilist" default='bootstrap'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
+			<option value="joomla">Mootools</option>
+			<option value="bootstrap">Bootstrap</option>
+<!--			<option value="overlib">Overlib</option> //-->
 		</field>
+
 		<field name="com_calTTBackground" type="jevboolean" class="btn-group jevp_tooltip" default="1" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" difficulty="2"   />
-		<field name="com_calTTPosX" type="jevmultilist" default='LEFT'  class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX" difficulty="2" conditional="tooltiptype" conditions="overlib">
-			<option value="LEFT">JEV_LEFT</option>
-			<option value="CENTER">JEV_CENTER</option>
-			<option value="RIGHT">JEV_RIGHT</option>
-		</field>
-		<!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
-		<field name="com_calTTPosY" type="jevmultilist" default='BELOW'   class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY" difficulty="2" conditional="tooltiptype" conditions="overlib">
-			<option value="BELOW">JEV_BELOW</option>
-			<option value="ABOVE">JEV_ABOVE</option>
-		</field>
-		<field name="com_calTTShadow" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOW" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
-		<field name="com_calTTShadowX" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOWX" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
-		<field name="com_calTTShadowY" type="jevboolean" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
 	</fieldset>
 	
 	<fieldset name="JEV_YEAR_CATEGORY_VIEW" difficulty="1">

@@ -439,8 +439,9 @@ class EventCalendarCell_flat  extends JEventsflatView {
 
 				}
 
-				$toolTipArray = array('className'=>'jevtip');
-				JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
+				JEVHelper::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
+				//$toolTipArray = array('className' => 'jevtip');
+				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method
@@ -460,12 +461,14 @@ class EventCalendarCell_flat  extends JEventsflatView {
 				
 				if ($templatedcell){
 					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
 					$time = $cfg->get('com_calDisplayStarttime')?$tmp_start_time:"";
 					$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
 					return  $templatedcell;
 				}
 
-				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
+				$html =  $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip( $title , $cellString, $title_event_link) . $cellEnd;
 
 				return $html;
 			}
@@ -473,7 +476,9 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		}
 		if ($templatedcell)
 		{
-			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title . $cellString, ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
 			$time = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
 			$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
 			return $templatedcell;

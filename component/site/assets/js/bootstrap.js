@@ -1021,7 +1021,7 @@
           this.$backdrop.addClass('in')
 
           if (!callback) return
-
+ 
           doAnimate ?
             this.$backdrop.one($.support.transition.end, callback) :
             callback()

@@ -56,7 +56,7 @@ if( array_key_exists('row',$this->data) ){
 	                	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                         	?>
 			<td  width="20" class="buttonheading" align="right">
-				<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
+				<?php if (version_compare(JVERSION, "3.2", "ge") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1) ){ ?>
 				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $row->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
 					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 				</a>

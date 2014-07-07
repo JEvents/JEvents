@@ -2334,7 +2334,7 @@ class JEVHelper
 							hiddencontrol.style.display = "none";
 						}
 						try {
-							jQuery(eventsno).trigger("liszt:updated");
+							jevjq(eventsno).trigger("liszt:updated");
 						}
 						catch (e) {
 						}
@@ -3224,6 +3224,115 @@ SCRIPT;
 
 	}
 
+	/**
+	 * Array containing information for loaded files
+	 *
+	 * @var    array
+	 * @since  2.5
+	 */
+	protected static $loaded = array();
+
+	/**
+	 * Add javascript support for Bootstrap modals
+	 *
+	 * @param   string  $selector  The ID selector for the modal.
+	 * @param   array   $params    An array of options for the modal.
+	 *                             Options for the modal can be:
+	 *                             - backdrop  boolean  Includes a modal-backdrop element.
+	 *                             - keyboard  boolean  Closes the modal when escape key is pressed.
+	 *                             - show      boolean  Shows the modal when initialized.
+	 *                             - remote    string   An optional remote URL to load
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function modal($selector = 'modal', $params = array())
+	{
+		$sig = md5(serialize(array($selector, $params)));
+
+		if (!isset(static::$loaded[__METHOD__][$sig]))
+		{
+			// Setup options object
+			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
+			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
+			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
+			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
+
+			$options = json_encode($opt); //JHtml::getJSObject($opt);
+
+			// Attach the modal to document
+			JFactory::getDocument()->addScriptDeclaration(
+				"(function($){
+					$('#$selector').modal($options);
+					})(jQuery);"
+			);
+
+			// Set static array
+			static::$loaded[__METHOD__][$sig] = true;
+		}
+
+		return;
+	}
+
+	/**
+	 * Add javascript support for Bootstrap popovers
+	 *
+	 * Use element's Title as popover content
+	 *
+	 * @param   string  $selector  Selector for the popover
+	 * @param   array   $params    An array of options for the popover.
+	 *                  Options for the popover can be:
+	 *                      animation  boolean          apply a css fade transition to the popover
+	 *                      html       boolean          Insert HTML into the popover. If false, jQuery's text method will be used to insert
+	 *                                                  content into the dom.
+	 *                      placement  string|function  how to position the popover - top | bottom | left | right
+	 *                      selector   string           If a selector is provided, popover objects will be delegated to the specified targets.
+	 *                      trigger    string           how popover is triggered - hover | focus | manual
+	 *                      title      string|function  default title value if `title` tag isn't present
+	 *                      content    string|function  default content value if `data-content` attribute isn't present
+	 *                      delay      number|object    delay showing and hiding the popover (ms) - does not apply to manual trigger type
+	 *                                                  If a number is supplied, delay is applied to both hide/show
+	 *                                                  Object structure is: delay: { show: 500, hide: 100 }
+	 *                      container  string|boolean   Appends the popover to a specific element: { container: 'body' }
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function popover($selector = '.hasPopover', $params = array())
+	{
+		// Only load once
+		if (isset(static::$loaded[__METHOD__][$selector]))
+		{
+			return;
+		}
+
+		$opt['animation'] = isset($params['animation']) ? $params['animation'] : null;
+		$opt['html']      = isset($params['html']) ? $params['html'] : true;
+		$opt['placement'] = isset($params['placement']) ? $params['placement'] : null;
+		$opt['selector']  = isset($params['selector']) ? $params['selector'] : null;
+		$opt['title']     = isset($params['title']) ? $params['title'] : null;
+		$opt['trigger']   = isset($params['trigger']) ? $params['trigger'] : 'hover focus';
+		$opt['content']   = isset($params['content']) ? $params['content'] : null;
+		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
+		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
+		$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+
+		$options = json_encode($opt); //JHtml::getJSObject($opt);
+
+		// Attach the popover to the document
+		JFactory::getDocument()->addScriptDeclaration(
+			"jQuery(document).ready(function()
+			{
+				jQuery('" . $selector . "').popover(" . $options . ");
+			});"
+		);
+
+		static::$loaded[__METHOD__][$selector] = true;
+
+		return;
+	}
 
 }
 

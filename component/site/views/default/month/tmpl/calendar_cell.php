@@ -344,7 +344,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$cellEnd		= '</div>' . "\n";
 
 		// add the event color as the column background color
-		$cellStyle .= ' background-color:' . $this->event->bgcolor() . ';color:'.$this->event->fgcolor() . ';' ;
+		$cellStyle = ' background-color:' . $this->event->bgcolor() . ';color:'.$this->event->fgcolor() . ';' ;
 
 		// MSIE ignores "inherit" color for links - stupid Microsoft!!!
 		$linkStyle = 'style="color:'.$this->event->fgcolor() . ';"';
@@ -437,8 +437,9 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 				}
 
-				$toolTipArray = array('className'=>'jevtip');
-				JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
+				JEVHelper::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
+				//$toolTipArray = array('className' => 'jevtip');
+				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method
@@ -458,12 +459,14 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 				
 				if ($templatedcell){
 					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
 					$time = $cfg->get('com_calDisplayStarttime')?$tmp_start_time:"";
 					$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
 					return  $templatedcell;
 				}
 
-				$html =  $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'">' . $this->tooltip( $title.$cellString, $title_event_link) . $cellEnd;
+				$html =  $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'">' . $this->tooltip( $title , $cellString, $title_event_link) . $cellEnd;
 
 				return $html;
 			}
@@ -471,7 +474,9 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		}
 		if ($templatedcell)
 		{
-			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title . $cellString, ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
 			$time = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
 			$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
 			return $templatedcell;
@@ -481,12 +486,13 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		return $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
 	}
 
-	function tooltip($tooltip,  $link)
+	function tooltip($tooltiptitle, $tooltipcontent, $link)
 	{
 		//$tooltip	= addslashes(htmlspecialchars($tooltip));
-		$tooltip	= htmlspecialchars($tooltip,ENT_QUOTES);
+		$tooltiptitle	= htmlspecialchars($tooltiptitle,ENT_QUOTES);
+		$tooltipcontent	= htmlspecialchars($tooltipcontent,ENT_QUOTES);
 
-		$tip = '<span class="editlinktip hasjevtip" title="'.$tooltip.'" rel=" ">'.$link.'</span>';
+		$tip = '<span class="editlinktip hasjevtip" title="'.$tooltiptitle.'" data-content="'.$tooltipcontent.'" >'.$link.'</span>';
 
 		return $tip;
 	}

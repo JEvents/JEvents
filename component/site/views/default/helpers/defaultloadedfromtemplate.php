@@ -380,9 +380,23 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				// deprecated
 				case "{{TOOLTIP}}":
 					$search[] = "{{TOOLTIP}}";
 					$replace[] = "[[TOOLTIP]]";
+					$blank[] = "";
+					break;
+
+				// new version for bootstrap
+				case "{{TOOLTIPTITLE}}":
+					$search[] = "{{TOOLTIPTITLE}}";
+					$replace[] = "[[TOOLTIPTITLE]]";
+					$blank[] = "";
+					break;
+
+				case "{{TOOLTIPCONTENT}}":
+					$search[] = "{{TOOLTIPCONTENT}}";
+					$replace[] = "[[TOOLTIPCONTENT]]";
 					$blank[] = "";
 					break;
 
@@ -516,7 +530,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						ob_start();
 						?>
-						<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
+						<?php if (version_compare(JVERSION, "3.2", "ge") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1) ){ ?>
 						<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
 							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 						</a>

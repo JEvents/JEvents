@@ -20,7 +20,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids");
 	?>
 	<div class="jev_pagination">
-	<form action="<?php echo $link;?>" method="post" xxx="1" name="adminForm" id="adminForm">
+	<form action="<?php echo $link;?>" method="post" name="adminForm" id="adminForm">
 	<?php
 	if ($task!="crawler.listevents" || version_compare(JVERSION, "3.0.0", 'lt') ){
 	echo $pageNav->getListFooter();

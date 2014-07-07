@@ -403,9 +403,9 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
-.ical_dialogJQ {max-width: 300px;}
-.ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
-.ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px;}
+#jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
+#jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
 
 .action_dialogJQ {   max-width: 300px; }
 .action_dialogJQ a {text-decoration:none; line-height:28px;}

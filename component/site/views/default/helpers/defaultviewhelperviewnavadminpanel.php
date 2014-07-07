@@ -44,7 +44,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 											. '&Itemid=' . $view->Itemid, true);
 							$popup = false;
 							$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-							if ($params->get("editpopup", 0))
+							if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 							{
 								JHTML::_('behavior.modal');
 								JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
