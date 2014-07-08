@@ -216,14 +216,19 @@ class jevFilterProcessing
 		return 	$this->needsgroupby;
 	}
 
-	function getFilterHTML(){
+	function getFilterHTML($allowAutoSubmit = true){
 		if (isset($this->filterHTML)){
 			return $this->filterHTML;
 		}
 
 		$this->filterHTML = array();
 		foreach ($this->filters as $filter) {
-			$filterHTML = $filter->_createfilterHTML();
+			if (method_exists($filter,"createfilterHTML")){
+				$filterHTML = $filter->createfilterHTML($allowAutoSubmit);
+			}
+			else {
+				$filterHTML = $filter->_createfilterHTML();
+			}
 			if (!is_array($filterHTML)){
 				continue;
 			}
