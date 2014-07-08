@@ -111,7 +111,7 @@ class FlatModCalView extends DefaultModCalView {
 		$jev_component_name = JEV_COM_COMPONENT;
 		$this->_navigationJS ( $this->_modid );
 		if ($this->minical_prevmonth) {
-			$linkprevious = htmlentities ( "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat );
+			$linkprevious = htmlentities ( JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat );
 			$linkprevious = '<img border="0" title="previous month" alt="' . JText::_ ( "JEV_LAST_MONTH" ) . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowleft.gif" onmousedown="callNavigation(\'' . $linkprevious . '\');" />';
 		} else {
 			$linkprevious = "";
@@ -133,7 +133,7 @@ class FlatModCalView extends DefaultModCalView {
 		 */
 		$this->_navigationJS ( $this->_modid );
 		if ($this->minical_nextmonth) {
-			$linknext = htmlentities ( "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat );
+			$linknext = htmlentities ( JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat );
 			$linknext = '<img border="0" title="next month" alt="' . JText::_ ( "JEV_NEXT_MONTH" ) . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowright.gif" onmousedown="callNavigation(\'' . $linknext . '\');" />';
 		} else {
 			$linknext = "";
