@@ -18,7 +18,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
 
-// Load Bookstrap
+// Load Bootstrap
 JHtml::_('behavior.framework', true);
 JHtml::_('bootstrap.framework');
 JHtml::_('behavior.keepalive');
@@ -38,9 +38,6 @@ else if ($params->get("bootstrapcss", 1)==2)
 {
 	JHtmlBootstrap::loadCss();
 }
-
-
-JHTML::_('behavior.tooltip');
 
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());

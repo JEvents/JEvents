@@ -647,6 +647,17 @@ class AdminIcaleventController extends JControllerAdmin
 				{
 					header('Content-Type:text/html;charset=utf-8');
 				}
+				if ($event && intval($event->rp_id())==0){
+					$event = $event->getFirstRepeat();
+				}
+				if ($event){
+					$year = $event->yup();
+					$month = $event->mup();
+					$day = $event->dup();
+					JRequest::setVar("year",$year);
+					JRequest::setVar("month", $month);
+					JRequest::setVar("day".$day);
+				}
 				if ($event && $event->state())
 				{
 					$link = $event->viewDetailLink($year, $month, $day, true , $Itemid);

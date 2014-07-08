@@ -40,7 +40,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))
 			{
-				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
+				$templateArray = $templates[$template_name][JFactory::getLanguage()->getTag()];
+				// We have the most specific by language now fill in the gaps
+				 if (isset($templates[$template_name]["*"]))
+				{
+					foreach ($templates[$template_name]["*"] as $cat => $cattemplates){
+						if (!isset($templateArray[$cat])){
+							$templateArray[$cat] = $cattemplates;
+						}
+					}
+				}
+				$templates[$template_name] = 	$templateArray;
 			}
 			else if (isset($templates[$template_name]["*"]))
 			{

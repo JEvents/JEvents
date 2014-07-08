@@ -99,7 +99,7 @@ STYLE;
 						</td>
 						<td >
 							<?php } ?>
-						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></td>
+						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" /></td>
 					</tr>
 				</table>
 				<?php
@@ -162,7 +162,7 @@ STYLE;
 						?>
 						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
 						<?php } ?>
-						<td ><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" /></td>
+						<td ><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" /></td>
 					</tr>
 				</table>
 
@@ -215,7 +215,7 @@ STYLE;
 						</div>
 						<div class="jevfilterinput">
 						<?php } ?>
-						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" />
+						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" />
 						</div>
 					</li>
 				</ul>
@@ -236,4 +236,7 @@ STYLE;
 		?>
 	</form>
 	<?php
+	if (JRequest::getCmd("jevents_filter_submit")=="ok") {
+	//	JFactory::getApplication()->enqueueMessage("Search Filters applied successfully");
+	}
 }
