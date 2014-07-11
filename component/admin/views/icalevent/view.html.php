@@ -222,12 +222,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			$this->setLayout("edit");
 		}
-		else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
+		else  {
 			$this->setLayout("editjq");
-		}
-		else
-		{
-			$this->setLayout("edit16");
 		}
 
 		$this->setupEditForm();

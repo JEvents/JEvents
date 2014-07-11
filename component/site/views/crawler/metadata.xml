@@ -13,11 +13,7 @@
 	<state>
 		<name>JEvents</name>
 		<description>JEV_CRAWLER_VIEW</description>
-		<params  addpath="/administrator/components/com_jevents/elements/">			
-			<param name="@spacer" type="jevinfo" default="JEV_CRAWLER_RESTRICT"   label="" description="" />	
-			<param name='relstart' type='text' default="-1w" label="JEV_CRAWLER_START" description="JEV_RELSTART_DESC" />
-			<param name='relend' type='text' default="+1m" label="JEV_CRAWLER_END" description="JEV_RELEND_DESC" />		
-			<param name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />			
+		<params >			
 		</params>
 	</state>
 </metadata>

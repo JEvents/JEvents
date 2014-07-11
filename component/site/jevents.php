@@ -43,9 +43,11 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 	}
 }
 else {
-	// Make loading this conditional on config option
+	// Make loading this conditional on config option ??
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	JHTML::script("components/com_jevents/assets/js/bootstrap.js");
+	// use bootstrap from CDN instead of our copy of it
+	JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+	//JHTML::script("components/com_jevents/assets/js/bootstrap.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
@@ -58,14 +60,6 @@ if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
 }
 
- /*
- * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
-$jevversion = JEventsVersion::getInstance();
-AkeebaStrapper::$tag = $jevversion->getShortVersion();
-AkeebaStrapper::bootstrap();
-AkeebaStrapper::jQueryUI();
- * 
- */
 
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,

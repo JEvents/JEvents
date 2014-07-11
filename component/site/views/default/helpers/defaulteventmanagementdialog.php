@@ -9,11 +9,6 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 function DefaultEventManagementDialog($view,$row, $mask){
 
-	if (version_compare(JVERSION, "3.2", "lt") && !JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1) )
-	{
-		return $view->eventManagementDialog16($row, $mask);
-	}
-
 	if (version_compare(JVERSION, "3.2", "ge")) {
 		JHtml::_('bootstrap.modal', "action_dialogJQ".$row->rp_id());
 	}

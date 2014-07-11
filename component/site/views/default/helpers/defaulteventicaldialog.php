@@ -4,11 +4,6 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultEventIcalDialog($view, $row, $mask)
 {
 
-	if (version_compare(JVERSION, "3.2", "lt") && !JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1) )
-	{
-		return $view->eventIcalDialog16($row, $mask);
-	}
-
 	if (version_compare(JVERSION, "3.2", "ge")) {
 		JHtml::_('bootstrap.modal', "ical_dialogJQ".$row->rp_id());
 	}

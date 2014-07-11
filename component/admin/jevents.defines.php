@@ -24,7 +24,6 @@ if (!defined("JEV_LIBS")){
 	define("JEV_HELPERS",JEV_ADMINPATH."helpers/");
 	define("JEV_CONFIG",JEV_ADMINPATH."config/");
 	define("JEV_FILTERS",JEV_ADMINPATH."filters/");
-	define("JEV_LAYOUTS",JEV_ADMINPATH."layouts/");
 	define("JEV_VIEWS",JEV_ADMINPATH."views");
 }
 	JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');

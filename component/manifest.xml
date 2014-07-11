@@ -57,9 +57,7 @@
 		<files folder="admin">
 			<folder>assets</folder>
 			<folder>controllers</folder>
-			<folder>elements</folder>
 			<folder>fields</folder>
-			<folder>help</folder>
 			<folder>helpers</folder>
 			<folder>libraries</folder>
 			<folder>models</folder>

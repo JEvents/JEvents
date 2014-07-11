@@ -540,16 +540,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						ob_start();
 						?>
-						<?php if (version_compare(JVERSION, "3.2", "ge") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1) ){ ?>
 						<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
 							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
 						</a>
-						<?php }
-						else	{ ?>
-						<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
-							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
-						</a>
-						<?php } ?>
 						<div class="jevdialogs">
 						<?php
 						$search[] = "{{EDITDIALOG}}";

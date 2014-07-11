@@ -125,12 +125,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			$this->setLayout("edit");
 		}
-		else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
+		else  {
 			$this->setLayout("editjq");
-		}
-		else
-		{
-			$this->setLayout("edit16");
 		}
 
 		JEVHelper::componentStylesheet($this, "editextra.css");		

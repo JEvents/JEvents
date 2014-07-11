@@ -5789,3 +5789,12 @@
 	border-bottom-color: #000000;
 	border-width: 0 5px 5px;
 }
+
+/* JEvents Specific overrides */
+#jevents .jevbootstrap .jev_pagination select {
+	width:auto;
+}
+#jevents .jevbootstrap .jev_pagination select > option {
+	-moz-padding-end: 3px;
+	-moz-padding-start: 3px;
+}

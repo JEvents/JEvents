@@ -1969,14 +1969,11 @@ class JEVHelper
 	static public
 			function script($file, $path)
 	{
-
-		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
-			// load jQuery versions
-			if (strpos($file, "JQ.js")==false) {
-				$jqfile = str_replace(".js", "JQ.js", $file);
-				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $jqfile);				
-			}
+		// load jQuery versions if present
+		if (strpos($file, "JQ.js")==false) {
+			$jqfile = str_replace(".js", "JQ.js", $file);
+			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+			JHTML::script($path . $jqfile);				
 		}
 		else {
 			// Include mootools framework
@@ -1985,7 +1982,6 @@ class JEVHelper
 			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 			JHTML::script($path . $file);
 		}
-
 	}
 
 	static public
