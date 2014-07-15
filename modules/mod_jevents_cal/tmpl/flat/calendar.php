@@ -112,7 +112,7 @@ class FlatModCalView extends DefaultModCalView {
 		$this->_navigationJS ( $this->_modid );
 		if ($this->minical_prevmonth) {
 			$linkprevious = htmlentities ( JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat );
-			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREV_MONTH") . '" alt="' . JText::_ ( "JEV_LAST_MONTH" ) . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowleft.gif" onmousedown="callNavigation(\'' . $linkprevious . '\');" />';
+			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="' . JText::_ ( "JEV_LAST_MONTH" ) . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowleft.gif" onmousedown="callNavigation(\'' . $linkprevious . '\');" />';
 		} else {
 			$linkprevious = "";
 		}
