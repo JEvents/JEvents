@@ -651,6 +651,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $stop_date : "";
 
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
@@ -659,7 +660,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
 						$blank[] = "";
 						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$replace[] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 						$blank[] = "";
 					}
 					else
@@ -704,6 +705,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
 						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
 						{
@@ -1132,9 +1134,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Date/time formats etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0)
+			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0 || strpos($search[$s], "MULTIENDDATE") > 0)
 			{
-				if (!isset($rawreplace[$search[$s]])){
+				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;
 				}
 				global $tempreplace, $tempevent, $tempsearch;

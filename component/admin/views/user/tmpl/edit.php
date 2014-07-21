@@ -156,7 +156,7 @@ if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 	<table class="admintable">
 		<tr>
 			<td width="50%">
-				<fieldset class="adminform">
+				<fieldset class="adminform useradminform">
 					<legend><?php echo JText::_( 'JEV_APPLICABLE_CATEGORIES' ); ?></legend>
 					<table class="admintable" cellspacing="1">
 					  <tr>
