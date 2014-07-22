@@ -67,14 +67,14 @@ if( array_key_exists('row',$this->data) ){
                 <td align="left" valign="top" colspan="2">
                 <div style="position:relative;">
                 <?php
-                $this->eventIcalDialog($row, $mask);
+                $this->eventIcalDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>
                 <td align="left" valign="top" colspan="2">
                 <div style="position:relative;">
                 <?php
-                $this->eventManagementDialog($row, $mask);
+                $this->eventManagementDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>

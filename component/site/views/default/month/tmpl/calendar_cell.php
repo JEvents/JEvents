@@ -332,12 +332,6 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 		$cfg = JEVConfig::getInstance();
 
-		// this file controls the events component month calendar display cell output.  It is separated from the
-		// showCalendar function in the events.php file to allow users to customize this portion of the code easier.
-		// The event information to be displayed within a month day on the calendar can be modified, as well as any
-		// overlay window information printed with a javascript mouseover event.  Each event prints as a separate table
-		// row with a single column, within the month table's cell.
-
 		// define start and end
 		$cellStart	= '<div';
 		$cellClass	= 'p0 ';
@@ -426,18 +420,8 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 				$cellString .= $tooltip;
 			}
 			else {
-				// TT background
-				if( $cfg->get('com_calTTBackground',1) == '1' ){
-					$bground =  $this->event->bgcolor();
-					$fground =  $this->event->fgcolor();
-				}
-				else {
-					$bground =  "#000000";
-					$fground =   "#ffffff";
 
-				}
-
-				JEVHelper::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
+				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
@@ -453,6 +437,15 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 					$cellString = "";
 				}
 				else {
+					// TT background
+					if( $cfg->get('com_calTTBackground',1) == '1' ){
+						$bground =  $this->event->bgcolor();
+						$fground =  $this->event->fgcolor();
+					}
+					else {
+						$bground =  "#000000";
+						$fground =   "#ffffff";
+					}
 					$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';
 					$title = '<div class="jevtt_title" style = "color:'.$fground.';background-color:'.$bground.'">'.$this->title.'</div>';
 				}
@@ -486,9 +479,14 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		return $cellStart . ' class="' . $cellClass . '" style="'.$cellStyle.'" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
 	}
 
-	function tooltip($tooltiptitle, $tooltipcontent, $link)
+	function tooltip($tooltiptitle, $tooltipcontent, $link = false)
 	{
-		//$tooltip	= addslashes(htmlspecialchars($tooltip));
+		// Backwards compatible version with only 2 arguments called
+		if (!$link){
+			$tooltip	= htmlspecialchars($tooltiptitle, ENT_QUOTES);
+			$tip = '<span class="editlinktip hasjevtip" title="'.$tooltip.'" rel=" ">'.$tooltipcontent.'</span>';
+			return $tip;
+		}
 		$tooltiptitle	= htmlspecialchars($tooltiptitle,ENT_QUOTES);
 		$tooltipcontent	= htmlspecialchars($tooltipcontent,ENT_QUOTES);
 

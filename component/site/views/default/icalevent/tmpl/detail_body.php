@@ -42,22 +42,18 @@ if( array_key_exists('row',$this->data) ){
                 if ($jevparams->get("showicalicon",0) &&  !$jevparams->get("disableicalexport",0) ){
                 ?>
                 <td  width="20" class="buttonheading" align="right">
-					<?php
-					JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
-					?>
-					<a href="#myical-modal" data-target="#ical_dialogJQ<?php echo $row->rp_id();?>" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL');?>">
-						<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" class="h24px"/>
-					</a>
-				</td>
-				<?php
+			<?php
+			$this->eventIcalButton($row);
+			?>
+		</td>
+		<?php
                 }
                 if( $row->canUserEdit() && !( $mask & MASK_POPUP )) {
-                	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                     	?>
                         <td class="buttonheading" align="right">
-				<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $row->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
-					<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
-				</a>
+				<?php
+				$this->eventManagementButton($row);
+				?>
                         </td>
                         <?php
                 }
@@ -67,14 +63,14 @@ if( array_key_exists('row',$this->data) ){
                 <td align="left" class="vtop" colspan="2">
                 <div class="pos_rel">
                 <?php
-                $this->eventIcalDialog($row, $mask);
+                $this->eventIcalDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>
                 <td align="left" class="vtop" colspan="2">
                 <div class="pos_rel">
                 <?php
-                $this->eventManagementDialog($row, $mask);
+                $this->eventManagementDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>

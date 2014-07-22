@@ -24,6 +24,12 @@ class JEVHelper
 {
 
 	/**
+	 * @var    array  Array containing information for loaded files
+	 * @since  3.0
+	 */
+	protected static $loaded = array();
+
+	/**
 	 * load language file
 	 *
 	 * @static
@@ -3220,115 +3226,105 @@ SCRIPT;
 
 	}
 
-	/**
-	 * Array containing information for loaded files
-	 *
-	 * @var    array
-	 * @since  2.5
-	 */
-	protected static $loaded = array();
 
 	/**
-	 * Add javascript support for Bootstrap modals
+	 * Add unobtrusive JavaScript support for modal links.
 	 *
-	 * @param   string  $selector  The ID selector for the modal.
-	 * @param   array   $params    An array of options for the modal.
-	 *                             Options for the modal can be:
-	 *                             - backdrop  boolean  Includes a modal-backdrop element.
-	 *                             - keyboard  boolean  Closes the modal when escape key is pressed.
-	 *                             - show      boolean  Shows the modal when initialized.
-	 *                             - remote    string   An optional remote URL to load
+	 * @param   string  $selector  The selector for which a modal behaviour is to be applied.
+	 * @param   array   $params    An array of parameters for the modal behaviour.
+	 *                             Options for the modal behaviour can be:
+	 *                            - ajaxOptions
+	 *                            - size
+	 *                            - shadow
+	 *                            - overlay
+	 *                            - onOpen
+	 *                            - onClose
+	 *                            - onUpdate
+	 *                            - onResize
+	 *                            - onShow
+	 *                            - onHide
 	 *
 	 * @return  void
 	 *
-	 * @since   3.0
+	 * @since   1.5
 	 */
-	public static function modal($selector = 'modal', $params = array())
+	public static function modal($selector = 'a.modal', $params = array())
 	{
-		$sig = md5(serialize(array($selector, $params)));
-
-		if (!isset(static::$loaded[__METHOD__][$sig]))
-		{
-			// Setup options object
-			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
-			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
-			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
-			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
-
-			$options = json_encode($opt); //JHtml::getJSObject($opt);
-
-			// Attach the modal to document
-			JFactory::getDocument()->addScriptDeclaration(
-				"(function($){
-					$('#$selector').modal($options);
-					})(jQuery);"
-			);
-
-			// Set static array
-			static::$loaded[__METHOD__][$sig] = true;
+		if (version_compare(JVERSION, "3.0", "ge")) {
+			// Load the code Joomla version
+			JHtml::_('behavior.modal', $selector, $params);
+			return;
 		}
 
+		JHtml::_('behavior.modal', $selector, $params);
 		return;
-	}
 
-	/**
-	 * Add javascript support for Bootstrap popovers
-	 *
-	 * Use element's Title as popover content
-	 *
-	 * @param   string  $selector  Selector for the popover
-	 * @param   array   $params    An array of options for the popover.
-	 *                  Options for the popover can be:
-	 *                      animation  boolean          apply a css fade transition to the popover
-	 *                      html       boolean          Insert HTML into the popover. If false, jQuery's text method will be used to insert
-	 *                                                  content into the dom.
-	 *                      placement  string|function  how to position the popover - top | bottom | left | right
-	 *                      selector   string           If a selector is provided, popover objects will be delegated to the specified targets.
-	 *                      trigger    string           how popover is triggered - hover | focus | manual
-	 *                      title      string|function  default title value if `title` tag isn't present
-	 *                      content    string|function  default content value if `data-content` attribute isn't present
-	 *                      delay      number|object    delay showing and hiding the popover (ms) - does not apply to manual trigger type
-	 *                                                  If a number is supplied, delay is applied to both hide/show
-	 *                                                  Object structure is: delay: { show: 500, hide: 100 }
-	 *                      container  string|boolean   Appends the popover to a specific element: { container: 'body' }
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function popover($selector = '.hasPopover', $params = array())
-	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__][$selector]))
+		// This may be needed in the future - not used at present
+		/*
+		$document = JFactory::getDocument();
+
+		// Load the necessary files if they haven't yet been loaded
+		if (!isset(static::$loaded[__METHOD__]))
+		{
+			// Include MooTools framework
+			JHtml::_('behavior.framework', true);
+
+			// Load the JavaScript and css
+			JHtml::_('script', 'system/modal.js', true, true);
+			JHtml::_('stylesheet', 'system/modal.css', array(), true);
+		}
+
+		$sig = md5(serialize(array($selector, $params)));
+
+		if (isset(static::$loaded[__METHOD__][$sig]))
 		{
 			return;
 		}
 
-		$opt['animation'] = isset($params['animation']) ? $params['animation'] : null;
-		$opt['html']      = isset($params['html']) ? $params['html'] : true;
-		$opt['placement'] = isset($params['placement']) ? $params['placement'] : null;
-		$opt['selector']  = isset($params['selector']) ? $params['selector'] : null;
-		$opt['title']     = isset($params['title']) ? $params['title'] : null;
-		$opt['trigger']   = isset($params['trigger']) ? $params['trigger'] : 'hover focus';
-		$opt['content']   = isset($params['content']) ? $params['content'] : null;
-		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
-		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
-		$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+		// Setup options object
+		$opt['ajaxOptions']   = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+		$opt['handler']       = (isset($params['handler'])) ? $params['handler'] : null;
+		$opt['parseSecure']   = (isset($params['parseSecure'])) ? (bool) $params['parseSecure'] : null;
+		$opt['closable']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
+		$opt['closeBtn']      = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
+		$opt['iframePreload'] = (isset($params['iframePreload'])) ? (bool) $params['iframePreload'] : null;
+		$opt['iframeOptions'] = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+		$opt['size']          = (isset($params['size']) && (is_array($params['size']))) ? $params['size'] : null;
+		$opt['shadow']        = (isset($params['shadow'])) ? $params['shadow'] : null;
+		$opt['overlay']       = (isset($params['overlay'])) ? $params['overlay'] : null;
+		$opt['onOpen']        = (isset($params['onOpen'])) ? $params['onOpen'] : null;
+		$opt['onClose']       = (isset($params['onClose'])) ? $params['onClose'] : null;
+		$opt['onUpdate']      = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
+		$opt['onResize']      = (isset($params['onResize'])) ? $params['onResize'] : null;
+		$opt['onMove']        = (isset($params['onMove'])) ? $params['onMove'] : null;
+		$opt['onShow']        = (isset($params['onShow'])) ? $params['onShow'] : null;
+		$opt['onHide']        = (isset($params['onHide'])) ? $params['onHide'] : null;
+
+		if (isset($params['fullScreen']) && (bool) $params['fullScreen'])
+		{
+			$opt['size']      = array('x' => '\\jQuery(window).width() - 80', 'y' => '\\jQuery(window).height() - 80');
+		}
 
 		$options = json_encode($opt); //JHtml::getJSObject($opt);
 
-		// Attach the popover to the document
-		JFactory::getDocument()->addScriptDeclaration(
-			"jQuery(document).ready(function()
-			{
-				jQuery('" . $selector . "').popover(" . $options . ");
-			});"
+		// Attach modal behavior to document
+		$document
+			->addScriptDeclaration(
+			"
+		jQuery(function($) {
+			SqueezeBox.initialize(" . $options . ");
+			SqueezeBox.assign($('" . $selector . "').get(), {
+				parse: 'rel'
+			});
+		});"
 		);
 
-		static::$loaded[__METHOD__][$selector] = true;
-
+		// Set static array
+		static::$loaded[__METHOD__][$sig] = true;
+		*/
 		return;
 	}
+
 
 }
 

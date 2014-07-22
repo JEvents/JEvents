@@ -45,9 +45,9 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 else {
 	// Make loading this conditional on config option ??
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	// use bootstrap from CDN instead of our copy of it
-	JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-	//JHTML::script("components/com_jevents/assets/js/bootstrap.js");
+	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
+	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+	JHTML::script("components/com_jevents/assets/js/bootstrap.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set

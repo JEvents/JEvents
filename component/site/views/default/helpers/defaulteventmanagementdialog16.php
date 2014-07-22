@@ -1,14 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-/**
-	 * Creates mini event dialog for view detail page etc.
-	 * note this must be contained in a position:relative block element in order to work
-	 *
-	 * @param Jevent or descendent $row
-	 */
-function DefaultEventManagementDialog16($view,$row, $mask){
-
+function DefaultEventManagementDialog16($view,$row, $mask, $bootstrap = false) {
 	$user = JFactory::getUser();
 	if ($user->get("id")==0) return "";
 	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row))  && !( $mask & MASK_POPUP )) {
@@ -130,4 +123,6 @@ function DefaultEventManagementDialog16($view,$row, $mask){
 	else {
 		return false;
 	}
+
+
 }

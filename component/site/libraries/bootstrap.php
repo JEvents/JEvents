@@ -243,20 +243,23 @@ class JevHtmlBootstrap
 	 */
 	public static function modal($selector = 'modal', $params = array())
 	{
+		if (version_compare(JVERSION, "3.0", "ge")) {
+			JHtml::_('bootstrap.modal', $selector, $params);
+			return;
+		}
+
+
 		$sig = md5(serialize(array($selector, $params)));
 
 		if (!isset(static::$loaded[__METHOD__][$sig]))
 		{
-			// Include Bootstrap framework
-			static::framework();
-
 			// Setup options object
 			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
 			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
 			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
 			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
 
-			$options = JHtml::getJSObject($opt);
+			$options = json_encode($opt); //JHtml::getJSObject($opt);
 
 			// Attach the modal to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -340,9 +343,6 @@ class JevHtmlBootstrap
 			return;
 		}
 
-		// Include Bootstrap framework
-		static::framework();
-
 		$opt['animation'] = isset($params['animation']) ? $params['animation'] : null;
 		$opt['html']      = isset($params['html']) ? $params['html'] : true;
 		$opt['placement'] = isset($params['placement']) ? $params['placement'] : null;
@@ -352,8 +352,9 @@ class JevHtmlBootstrap
 		$opt['content']   = isset($params['content']) ? $params['content'] : null;
 		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
+		//$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
 
-		$options = JHtml::getJSObject($opt);
+		$options = json_encode($opt); //JHtml::getJSObject($opt);
 
 		// Attach the popover to the document
 		JFactory::getDocument()->addScriptDeclaration(

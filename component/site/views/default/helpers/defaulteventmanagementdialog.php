@@ -7,14 +7,11 @@ defined('_JEXEC') or die('Restricted access');
 	 *
 	 * @param Jevent or descendent $row
 	 */
-function DefaultEventManagementDialog($view,$row, $mask){
-
-	if (version_compare(JVERSION, "3.2", "ge")) {
-		JHtml::_('bootstrap.modal', "action_dialogJQ".$row->rp_id());
+function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
+	if (!$bootstrap) {
+		return $view->eventManagementDialog16($row, $mask);
 	}
-	else {
-		JEVHelper::modal("action_dialogJQ".$row->rp_id());
-	}
+	JevHtmlBootstrap::modal("action_dialogJQ".$row->rp_id());
 
 	$user = JFactory::getUser();
 	if ($user->get("id")==0) return "";
@@ -24,7 +21,7 @@ function DefaultEventManagementDialog($view,$row, $mask){
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
-			JHTML::_('behavior.modal');
+			JEVHelper::modal();
 			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 			$popup=true;
 			$popupw = $params->get("popupw",800);

@@ -46,7 +46,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 							$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 							if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 							{
-								JHTML::_('behavior.modal');
+								JEVHelper::modal();
 								JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 								$popup = true;
 								$popupw = $params->get("popupw", 800);
@@ -63,7 +63,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 							{
 								$importLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
 												. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
-								JHTML::_('behavior.modal');
+								JEVHelper::modal();
 								JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 								$eventimport = "javascript:jevImportPopup('" . $importLink . "',400, 400);";
 								?>

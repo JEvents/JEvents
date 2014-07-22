@@ -1,8 +1,8 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultEventIcalDialog16($view,$row, $mask){
-
+function DefaultEventIcalDialog16($view, $row, $mask)
+{
         ?>
         <div id="ical_dialog">
         	<div class="ical_dialog_close">
@@ -57,8 +57,8 @@ function DefaultEventIcalDialog16($view,$row, $mask){
         	}
         	?>
 			<label><input name="icf" type="checkbox" value="1" onclick="if(this.checked){$('unstyledical').style.display='none';$('styledical').style.display='block';}else {$('styledical').style.display='none';$('unstyledical').style.display='block';}" /><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING");?></label>
-             
+
         </div>
         <?php
-}
 
+}
