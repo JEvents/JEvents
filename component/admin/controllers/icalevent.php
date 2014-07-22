@@ -673,7 +673,6 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo $link; ?>";
 				</script>
@@ -735,7 +734,6 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo $link; ?>";
 				</script>

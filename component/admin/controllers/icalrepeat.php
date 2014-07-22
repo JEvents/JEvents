@@ -264,7 +264,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 				ob_end_clean();
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", false); ?>";
 				</script>
