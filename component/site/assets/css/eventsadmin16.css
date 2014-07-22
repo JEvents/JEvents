@@ -389,8 +389,8 @@ table.ev_navtable tr {vertical-align:top; }
 .fs10px {font-size:10px;}
 .h100 {height:100%;}
 .h1 {height:1px;}
-.h12px {height:12px;}
-.h24px {height:24px;}
+#jevents img.h12px {height:12px;}
+#jevents img.h24px {height:24px;}
 .h80px {height:80px;}
 .pos_rel {position:relative;}
 .fleft {float:left;}
