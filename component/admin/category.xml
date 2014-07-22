@@ -20,6 +20,14 @@
 				label="JEV_BLOCK_OVERLAPS"
 				description="JEV_BLOCK_OVERLAPS"
 				/>
+			<!--//
+			<field
+				name="caticon"
+				type="jevfaicon"
+				label="JEV_CATEGORY_ICON"
+				description="JEV_CATEGORY_ICON_TIP"
+				/>
+				//-->
 			<!--
 			<field
 				name="targetmenuid"

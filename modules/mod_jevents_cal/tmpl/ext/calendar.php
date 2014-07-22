@@ -109,13 +109,13 @@ class ExtModCalView extends DefaultModCalView
 		/*
 		$linkprevious = $linkpref."month.calendar&day=$cal_day&month=$cal_prev_month&year=$cal_prev_month_year";
 		$linkprevious = JRoute::_($linkprevious);
-		$linkprevious = $this->htmlLinkCloaking($linkprevious, '<img border="0" title="previous month" alt="previous month" src="'.$viewimages.'/mini_arrowleft.gif"/>' );
+		$linkprevious = $this->htmlLinkCloaking($linkprevious, '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="' . JText::_("JEV_PREVIOUSMONTH") . '" src="'.$viewimages.'/mini_arrowleft.gif"/>' );
 		*/
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$this->_navigationJS($this->_modid);
 		if( $this->minical_prevmonth ){
 			$linkprevious = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component".$this->cat);
-			$linkprevious = '<img border="0" title="previous month" alt="'.JText::_("JEV_LAST_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowleft.gif" onmousedown="callNavigation(\''.$linkprevious.'\');" />';
+			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="'.JText::_("JEV_LAST_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowleft.gif" onmousedown="callNavigation(\''.$linkprevious.'\');" />';
 		}
 		else {
 			$linkprevious =  "";
@@ -135,12 +135,12 @@ class ExtModCalView extends DefaultModCalView
 		/*
 		$linknext = $linkpref."month.calendar&day=$cal_day&month=$cal_next_month&year=$cal_next_month_year";
 		$linknext = JRoute::_($linknext);
-		$linknext = $this->htmlLinkCloaking($linknext, '<img border="0" title="next month" alt="next month" src="'.$viewimages.'/mini_arrowright.gif"/>' );
+		$linknext = $this->htmlLinkCloaking($linknext, '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="' . JText::_("JEV_NEXT_MONTH") . '" src="'.$viewimages.'/mini_arrowright.gif"/>' );
 		*/
 		$this->_navigationJS($this->_modid);
 		if( $this->minical_nextmonth ){
 			$linknext = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component".$this->cat);
-			$linknext = '<img border="0" title="next month" alt="'.JText::_("JEV_NEXT_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowright.gif" onmousedown="callNavigation(\''.$linknext.'\');" />';
+			$linknext = '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="'.JText::_("JEV_NEXT_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowright.gif" onmousedown="callNavigation(\''.$linknext.'\');" />';
 		}
 		else {
 			$linknext ="";

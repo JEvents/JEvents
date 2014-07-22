@@ -629,7 +629,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$msg = "";
 		$event = $this->doSave($msg);
 
-
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', $msg);
@@ -639,6 +638,22 @@ class AdminIcaleventController extends JControllerAdmin
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 
+			// When editing an event from a specific repeat page we want to return to that specific repeat
+			if ($event && intval($event->rp_id())==0){
+				if (JRequest::getInt("rp_id",0)){
+					$tempevent = $this->dataModel->queryModel->listEventsById(JRequest::getInt("rp_id",0), true);
+					if ($tempevent){
+						$event = $tempevent;
+					}
+					else {
+						$event = $event->getFirstRepeat();
+					}
+				}
+				else {
+					$event = $event->getFirstRepeat();
+				}
+			}
+
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))
 			{
@@ -646,9 +661,6 @@ class AdminIcaleventController extends JControllerAdmin
 				if (!headers_sent())
 				{
 					header('Content-Type:text/html;charset=utf-8');
-				}
-				if ($event && intval($event->rp_id())==0){
-					$event = $event->getFirstRepeat();
 				}
 				if ($event){
 					$year = $event->yup();
@@ -912,7 +924,6 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
 		{
-
 			$row = new jIcalEventRepeat($event);
 			if (JEVHelper::canPublishEvent($row))
 			{

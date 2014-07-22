@@ -38,6 +38,12 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 	margin: 0;
 }
 
+/* Category Editing */
+
+#jform_params_caticon_chzn li {
+    font-family: FontAwesome;
+}
+
 /*Sliders color */
 .pane-sliders .title {
 	color: #2c2c2c;
