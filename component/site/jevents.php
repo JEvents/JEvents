@@ -299,3 +299,33 @@ if (JRequest::getCmd("format")!="feed"){
 
 // Redirect if set by the controller
 $controller->redirect();
+
+/*
+ // Experimental code for capturing out of memory problems
+ini_set('display_errors', false);
+error_reporting(-1);
+
+register_shutdown_function(function() {
+	$error = error_get_last();
+	if (null !== $error)
+	{
+		if (isset($error["message"]) && strpos($error["message"], "bytes exhausted") > 0)
+		{
+			echo "ran out of memory";
+		}
+		else
+		{
+			echo 'Caught at shutdown';
+		}
+	}
+	else
+		echo "normal shutdown";
+});
+
+	// Simulate memory overload
+   // while(true)
+    //{
+     //   $data .= str_repeat('#', PHP_INT_MAX);
+   // }
+
+*/

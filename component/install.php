@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	byhour  varchar(50) NOT NULL default "",
 	byday  varchar(50) NOT NULL default "",
 	bymonthday  varchar(50) NOT NULL default "",
-	byyearday  varchar(50) NOT NULL default "",
+	byyearday  varchar(100) NOT NULL default "",
 	byweekno  varchar(50) NOT NULL default "",
 	bymonth  varchar(50) NOT NULL default "",
 	bysetpos  varchar(50) NOT NULL default "",
@@ -454,6 +454,10 @@ SQL;
 			$db->setQuery($sql);
 			@$db->query();
 		}
+
+		$sql = "Alter table #__jevents_rrule  MODIFY COLUMN byyearday  varchar(100) NOT NULL default '' ";
+		$db->setQuery($sql);
+		$db->query();
 
 		$sql = "SHOW INDEX FROM #__jevents_repetition";
 		$db->setQuery($sql);

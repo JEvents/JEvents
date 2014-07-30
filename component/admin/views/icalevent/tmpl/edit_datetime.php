@@ -159,7 +159,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			<fieldset><legend><input type="radio" name="whichby" id="jevbyd" value="byd"  onclick="toggleWhichBy('byyearday');" /><?php echo JText::_('BY_YEAR_DAY'); ?></legend>
 				<div>					
 					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
-					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="50" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
+					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="100" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
 				</div>
 				<div class="countback">
 					<?php echo JText::_('COUNT_BACK_YEAR'); ?>
