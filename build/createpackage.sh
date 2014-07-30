@@ -1,7 +1,7 @@
 #!/bin/sh
 find ./ -type f -name *.zip | xargs rm -f
 VERSION=`xml_grep version ../pkg_jevents.xml --text`
-VERSION="3.2.0_jq3"
+
 rsync -av --progress ../ ./ --exclude build
 zip  -r com_jevents.zip component -x *.svn*
 cd plugins

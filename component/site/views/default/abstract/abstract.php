@@ -107,47 +107,7 @@ class JEventsDefaultView extends JEventsAbstractView
 		$this->loadHelper("DefaultViewDatecellAddEvent");
 		DefaultViewDatecellAddEvent($this,$year, $month,$day);
 	}
-/*
-	function viewNavTableBarIconic( $today_date, $this_date, $dates, $alts, $option, $task, $Itemid ){
-		$this->loadHelper("DefaultViewNavTableBarIconic");
-		$var = new DefaultViewNavTableBarIconic($this, $today_date, $this_date, $dates, $alts, $option, $task, $Itemid );
-	}
 
-	function viewNavTableBar( $today_date, $this_date, $dates, $alts, $option, $task, $Itemid ){
-		$this->loadHelper("DefaultViewNavTableBar");
-		$var = new DefaultViewNavTableBar($this, $today_date, $this_date, $dates, $alts, $option, $task, $Itemid );
-	}
-
-	function viewEventRowNew ( $row){
-		$this->loadHelper("DefaultViewEventRowNew");
-		DefaultViewEventRowNew($this, $row);
-	}
-
-	function viewEventCatRowNew ( $row){
-		$this->loadHelper("DefaultViewEventCatRowNew");
-		DefaultViewEventCatRowNew($this, $row);
-	}
-
-	function eventIcalDialog($row, $mask){
-		$this->loadHelper("DefaultEventIcalDialog");
-		DefaultEventIcalDialog($this,  $row, $mask);
-	}
-
-	function eventManagementDialog($row, $mask){
-		$this->loadHelper("DefaultEventManagementDialog");
-		return DefaultEventManagementDialog($this,  $row, $mask);
-	}
-
-	function viewEventRowAdmin($row){
-		$this->loadHelper("DefaultViewEventRowAdmin");
-		DefaultViewEventRowAdmin($this,  $row);
-	}
-
-	function viewNavCatText( $catid, $option, $task, $Itemid ){
-		$this->loadHelper("DefaultViewNavCatText");
-		DefaultViewNavCatText($this,$catid, $option, $task, $Itemid );		
-	}
-*/
 	// These don't follow argument pattern
 	function paginationForm($total, $limitstart, $limit){
 		if ($this->loadHelper("DefaultPaginationForm")){
