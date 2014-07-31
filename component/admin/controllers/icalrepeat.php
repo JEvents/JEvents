@@ -253,7 +253,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "ICal rpt and new details saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
 		}
 		else
 		{
@@ -271,7 +271,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				<?php
 				exit();
 			}
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "ICal rpt updated");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 
 	}
@@ -644,13 +644,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "ICal rpt and new details saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = JRequest::getString("rettask", "day.listevents");
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "ICal rpt updated");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 
 	}
