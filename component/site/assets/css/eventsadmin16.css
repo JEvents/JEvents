@@ -1,12 +1,12 @@
 tr.jevcreator_level, tr.jevpublish_level, tr.jeveditor_level {
 	display:none;
 }
-fieldset.adminform label {
+fieldset.useradminform label {
 	display:inline;
 	float:none!important;
 	margin-left:2px!important;
 }
-fieldset.adminform input, fieldset.adminform textarea, fieldset.adminform select, fieldset.adminform img, fieldset.adminform button {
+fieldset.useradminform input, fieldset.useradminform textarea, fieldset.useradminform select, fieldset.useradminform img, fieldset.useradminform button {
 	float:none!important;
 	margin-right:5px;
 }
@@ -228,9 +228,15 @@ div#jevoverlapwarning h4 {
 .jev_edit_event_notice {
 	width:500px;
 }
+
+label#pick1064797275 {
+	margin-right:10px;
+}
 a#colorPickButton {
 	text-decoration:none;
 	padding:5px;
+	display:inline-block;
+	width:100%;
 }
 .icon-32-save 			{ background-image: url('../images/icon-32-save.png'); }
 .icon-32-edit 			{ background-image: url('../images/icon-32-edit.png'); }
