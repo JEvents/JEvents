@@ -2611,7 +2611,7 @@ SCRIPT;
                                 $status = "CANCELLED";
                         }
                         if (JFile::exists(JPATH_SITE."/plugins/jevents/jevnotify/")) {
-                            //If using JEvents notify plugin we need to load it for the 
+                            //If using JEvents notify plugin we need to load it for the processing of data.
                                 JLoader::register('JEVNotifyHelper',JPATH_SITE."/plugins/jevents/jevnotify/helper.php");
                         }
                         
@@ -2934,6 +2934,8 @@ SCRIPT;
                                                     if (JPATH_SITE."/plugins/jevents/jevnotify/") {
                                                             $a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
                                                     } else {
+                                                            // No usage yet. 
+                                                            // Likely to update helper function when moving over RSVP Pro Generated iCals.
                                                             $a = $dataModal->getEventData($rpid, "icaldb", 0, 0, 0);
                                                     }
 
