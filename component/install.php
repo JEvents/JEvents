@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
 	icsid int(12) NOT NULL default 0,
 	catid int(11) NOT NULL default 1,
-	uid varchar(50) NOT NULL UNIQUE default "",
+	uid varchar(255) NOT NULL UNIQUE default "",
 	refreshed datetime  NOT NULL default '0000-00-00 00:00:00',
 	created datetime  NOT NULL default '0000-00-00 00:00:00',
 	created_by int(11) unsigned NOT NULL default '0',
@@ -372,6 +372,13 @@ SQL;
 		if (!array_key_exists("created", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevent ADD created datetime  NOT NULL default '0000-00-00 00:00:00'";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		if (array_key_exists("uid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) NOT NULL UNIQUE default '' ";
 			$db->setQuery($sql);
 			@$db->query();
 		}

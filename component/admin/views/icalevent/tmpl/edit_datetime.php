@@ -300,7 +300,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 				var input = $('#' + label.attr('for'));
 				if (!input.prop('checked') && !input.prop('disabled')) {
 					label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-					label.addClass('active btn-success');
+					if (input.prop('value')!=0){
+						label.addClass('active btn-success');
+					}
+					else {
+						label.addClass('active btn-danger');
+					}
 					input.prop('checked', true);
 				}
 			});
@@ -331,7 +336,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 					return;
 				}
 				if (!input.prop('checked')) {
-					label.addClass('active btn-success');
+					if (input.prop('value')!=0){
+						label.addClass('active btn-success');
+					}
+					else {
+						label.addClass('active btn-danger');
+					}
 				}
 				else {
 					label.removeClass('active btn-success btn-danger btn-primary');
@@ -366,7 +376,13 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 					return;
 				}
-				label.addClass('active btn-success');
+				if (elem.prop('value')!=0){
+					label.addClass('active btn-success');
+				}
+				else {
+					label.addClass('active btn-danger');
+				}
+
 			});
 			
 		})(jQuery);
