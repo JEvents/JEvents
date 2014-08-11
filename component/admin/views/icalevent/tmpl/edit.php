@@ -511,3 +511,13 @@ else
 
 	</form>
 </div>
+<?php
+$app = JFactory::getApplication();
+if ($app->isSite()) {
+    if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2 ) {
+        //Load the toolbar at the bottom!
+        $bar = JToolBar::getInstance('toolbar');
+        $barhtml = $bar->render();
+        echo $barhtml;
+    }
+}

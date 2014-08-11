@@ -62,7 +62,9 @@ classes which you can create in the template's css file.<br /><br />
 = [cond: string ]  allows a customized string as described above but only is displayed if the condition "cond" is true.<br /><br />
 	Available conditions:<br /><br />
 	<b>a</b>&nbsp;event is a all-day-event<br />
-	<b>!a</b>&nbsp;event is not a all-day-event<br /><br />
+	<b>!a</b>&nbsp;event is not a all-day-event<br />
+        <b>e</b> = Condition on events with no specified end time<br />
+        <b>m</b> = Condition on events multi day events<br /><br />
 
  Event fields available:
 \${startDate}, \${eventDate}, \${endDate}, \${title}, \${category}, \${contact}, \${content}, \${addressInfo},
