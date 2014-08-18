@@ -376,20 +376,28 @@ SQL;
 			@$db->query();
 		}
 
-		if (array_key_exists("uid", $cols))
+		$sql = "SHOW INDEX FROM #__jevents_vevent";
+		$db->setQuery($sql);
+		$icols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("stateidx", $icols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) NOT NULL UNIQUE default '' ";
+			$sql = "alter table #__jevents_vevent add index stateidx (state)";
 			$db->setQuery($sql);
 			@$db->query();
 		}
 
-		$sql = "SHOW INDEX FROM #__jevents_vevent";
-		$db->setQuery($sql);
-		$cols = @$db->loadObjectList("Key_name");
+		foreach ($icols as $index => $key) {
+			if (strpos($index, "uid")===0){
+				$sql = "alter table #__jevents_vevent drop index $index";
+				$db->setQuery($sql);
+				@$db->query();
+			}
+		}
 
-		if (!array_key_exists("stateidx", $cols))
+		if (array_key_exists("uid", $cols))
 		{
-			$sql = "alter table #__jevents_vevent add index stateidx (state)";
+			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);
 			@$db->query();
 		}
