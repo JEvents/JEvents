@@ -230,7 +230,7 @@ class DefaultModCalView
 		return $content;
 	}
 
-	function _displayCalendarMod($time, $startday, $linkString, $day_name, $monthMustHaveEvent=false, $basedate=false){
+	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
 
 		$db	= JFactory::getDBO();
 		$cfg = JEVConfig::getInstance();

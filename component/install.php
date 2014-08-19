@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
 	icsid int(12) NOT NULL default 0,
 	catid int(11) NOT NULL default 1,
-	uid varchar(50) NOT NULL UNIQUE default "",
+	uid varchar(255) NOT NULL UNIQUE default "",
 	refreshed datetime  NOT NULL default '0000-00-00 00:00:00',
 	created datetime  NOT NULL default '0000-00-00 00:00:00',
 	created_by int(11) unsigned NOT NULL default '0',
@@ -378,11 +378,26 @@ SQL;
 
 		$sql = "SHOW INDEX FROM #__jevents_vevent";
 		$db->setQuery($sql);
-		$cols = @$db->loadObjectList("Key_name");
+		$icols = @$db->loadObjectList("Key_name");
 
-		if (!array_key_exists("stateidx", $cols))
+		if (!array_key_exists("stateidx", $icols))
 		{
 			$sql = "alter table #__jevents_vevent add index stateidx (state)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
+		foreach ($icols as $index => $key) {
+			if (strpos($index, "uid")===0){
+				$sql = "alter table #__jevents_vevent drop index $index";
+				$db->setQuery($sql);
+				@$db->query();
+			}
+		}
+
+		if (array_key_exists("uid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);
 			@$db->query();
 		}

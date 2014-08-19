@@ -164,7 +164,14 @@
 		<field name="bootstrapchosen" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN" description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" difficulty="2"  minjoomlaversion="3.0.0" />
 
 		<field name="allowraw" type="jevboolean" class="btn-group" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC" difficulty="2"/> 		
-		<field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />
+		
+                <field name="com_edit_toolbar" type="list" default="0" menu="hide" label="JEV_EDIT_TOOLBAR_POSITION" description="JEV_EDIT_TOOLBAR_POSITION_DESC" difficulty="2">
+			<option value="0">JEV_EDIT_TOOLBAR_POSITION_TOP</option>
+			<!--<option value="1">JEV_EDIT_TOOLBAR_POSITION_BOTTOM</option>-->
+			<option value="2">JEV_EDIT_TOOLBAR_POSITION_TOP_AND_BOTTOM</option>
+		</field>
+                
+                <field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />
 	</fieldset>
 	
         

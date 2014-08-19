@@ -2608,18 +2608,30 @@ SCRIPT;
 
 	}
         // We use this for RSVP Pro Invites with iCal mail and New & Event change notifcations at present to avoid code duplication.
-        public static function iCalMailGenerator($row, $params, $dataModel ) {
-               			//Check if Freq is more than none, if not rename to Daily for single event.
+        public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH" ) {        
+                        if ($ics_method == "CANCEL") {
+                                $status = "CANCELLED";
+                        }
+                        if (JFile::exists(JPATH_SITE."/plugins/jevents/jevnotify/")) {
+                            //If using JEvents notify plugin we need to load it for the processing of data.
+                                JLoader::register('JEVNotifyHelper',JPATH_SITE."/plugins/jevents/jevnotify/helper.php");
+                        }
+                        
 			$icalEvents = array($row);
 			if (ob_get_contents()) ob_end_clean();
 			$html = "";
                         $params = JComponentHelper::getParams("com_jevents");
+                        
 			if ($params->get('outlook2003icalexport'))
 				$html .= "BEGIN:VCALENDAR\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 			else
 				$html .= "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 
-			$html .= "CALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+			$html .= "CALSCALE:GREGORIAN\r\nMETHOD:" . $ics_method . "\r\n";
+                        if (isset($status)) {
+                            $html .= "STATUS:" . $status . "\r\n";
+                            
+                        }
 			if (!empty($icalEvents))
 			{
 
@@ -2921,7 +2933,13 @@ SCRIPT;
 					{
 						foreach ($changed as $rpid)
 						{
-							$a = $dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    if (JPATH_SITE."/plugins/jevents/jevnotify/") {
+                                                            $a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    } else {
+                                                            // No usage yet. 
+                                                            // Likely to update helper function when moving over RSVP Pro Generated iCals.
+                                                            $a = $dataModal->getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    }
 
 							if ($a && isset($a["row"]))
 							{
@@ -3434,4 +3452,3 @@ SCRIPT;
 				});
 
  */
-
