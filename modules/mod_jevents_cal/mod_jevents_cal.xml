@@ -74,6 +74,7 @@
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam" conditions="1" />
+                                <field name="emptydaylinks" type="jevboolean" class="btn-group"  default="1" label="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS" description="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS_DESC" conditional="modcal_useLocalParam" conditions="1" />
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
