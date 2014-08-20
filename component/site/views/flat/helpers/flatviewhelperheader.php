@@ -76,13 +76,13 @@ function FlatViewHelperHeader($view){
 		$print_link = JRoute::_($print_link);
 
 		if ($pop) { ?>
-			<td width="20" class="buttonheading" align="right">
+			<td class="buttonheading" >
 			<a href="javascript:void(0);" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 				<?php echo JEVHelper::imagesite( 'printButton.png',JText::_('JEV_CMN_PRINT'));?>
 			</a>
 			</td> <?php
 		} else { ?>
-			<td  width="20" class="buttonheading" align="right">
+			<td class="buttonheading" >
 			<a href="javascript:void(0);" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 				<?php echo JEVHelper::imagesite( 'printButton.png',JText::_('JEV_CMN_PRINT'));?>
 			</a>
@@ -111,7 +111,7 @@ function FlatViewHelperHeader($view){
 		$path = version_compare(JVERSION, "1.6.0", 'ge')?"media/system/images":'/images/M_images/';
 
 		?>
-		<td width="20" class="buttonheading" align="right">
+		<td class="buttonheading" >
 			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
 				<?php echo JEVHelper::imagesite( 'emailButton.png',JText::_( 'EMAIL' ));?>
 			</a>

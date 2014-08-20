@@ -46,3 +46,9 @@ function jevSetupAddLink() {
 jevjq(document).on('ready', function() {
 	jevSetupAddLink();
 });
+
+// no-op backward compatible functions
+function clickIcalButton(){
+}
+function clickEditButton(){
+}

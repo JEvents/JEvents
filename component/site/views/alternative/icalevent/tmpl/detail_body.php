@@ -41,7 +41,7 @@ if( array_key_exists('row',$this->data) ){
 	                $jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	                if ($jevparams->get("showicalicon",0) &&  !$jevparams->get("disableicalexport",0) ){
 	                ?>
-	                <td  width="20" class="buttonheading" align="right">
+	                <td  class="buttonheading" >
 				<?php
 				$this->eventIcalButton($row);
 				?>
@@ -50,7 +50,7 @@ if( array_key_exists('row',$this->data) ){
 	                }
 	                if( $row->canUserEdit() && !( $mask & MASK_POPUP )) {
                         	?>
-                            <td  width="20" class="buttonheading xxx" align="right">
+                            <td  class="buttonheading">
 				<?php
 				$this->eventManagementButton($row);
 				?>

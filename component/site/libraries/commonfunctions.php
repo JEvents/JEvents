@@ -128,6 +128,9 @@ class JEV_CommonFunctions {
 
 		}
 
+		if ($color==""){
+			$color="#ccc";
+		}
 		//$color = $row->useCatColor ? ( $row->catid > 0 ) ? $catData[$row->catid]->color : '#333333' : $row->color_bar;
 		return $color;
 	}

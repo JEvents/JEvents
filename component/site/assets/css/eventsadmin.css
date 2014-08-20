@@ -412,13 +412,16 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents .jevbootstrap .ical_dialogJQ {max-width: 300px;}
 #jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 #jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+#jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
+#jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
 .action_dialogJQ {   max-width: 300px; }
 .action_dialogJQ a {text-decoration:none; line-height:28px;}
 .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
 .action_dialogJQ #publish_reccur img, .action_dialogJQ #edit_reccur img, .action_dialogJQ #edit_event img, .action_dialogJQ #edit_eventcopy img, .action_dialogJQ #delete_repeat img, .action_dialogJQ #delete_eventfuture img, .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
-img.jev_ev_sml {height:24px; text-align:center;}
+#jevents img.jev_ev_sml,  #jevents_body  img.jev_ev_sml {height:24px; text-align:center;}
 .action_dialogJQ .modal-body , .action_dialogJQ .modal-header {text-align: left;}
+#jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents_body .ical_dialogJQ, #jevents_body  .action_dialogJQ {  text-align: left;}
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
 table.ev_navtable tr {vertical-align:top; }
