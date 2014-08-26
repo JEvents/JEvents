@@ -56,8 +56,10 @@ else {
 }
 if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 {
-	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
+	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
 	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
+	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap-responsive.css");
 }
 
 
