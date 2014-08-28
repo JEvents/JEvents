@@ -24,6 +24,7 @@ function FlatViewHelperFooter16($view)
 	JevViewCopyright();
 	?>
 	</div>
+	</div>
 	<?php
 	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('onJEventsFooter');

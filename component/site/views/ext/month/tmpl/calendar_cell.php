@@ -158,7 +158,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 
 				}
 
-				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
+				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "hide"=> 150 )));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 

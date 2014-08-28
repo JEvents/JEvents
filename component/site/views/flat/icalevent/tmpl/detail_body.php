@@ -43,7 +43,7 @@ if( array_key_exists('row',$this->data) ){
                 ?>
                 <td  class="buttonheading" >
 			<?php
-			$this->eventIcalButton($event);
+			$this->eventIcalButton($row);
 			?>
 		</td>
 		<?php

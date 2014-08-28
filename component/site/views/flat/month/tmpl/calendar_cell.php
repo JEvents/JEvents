@@ -10,328 +10,20 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
-class EventCalendarCell_flat  extends JEventsflatView {
-	protected $_datamodel = null;
-	protected $_view = null;
-
-	function __construct($event, $datamodel, $view=false){
-		$cfg = JEVConfig::getInstance();
-		$this->event = $event;
-		$this->_datamodel = $datamodel;
-		$this->_view = $view;
-
-		$this->start_publish  = $this->event->getUnixStartDate();
-		$this->stop_publish  = $this->event->getUnixEndDate();
-		$this->title          = $this->event->title();
-
-		// On mouse over date formats
-		$this->start_date	= JEventsHTML::getDateFormat( $this->event->yup(), $this->event->mup(), $this->event->dup(), 0 );
-		//$this->start_time = $this->event->startTime()	;
-		$this->start_time = JEVHelper::getTime($this->event->getUnixStartTime(),$this->event->hup(),$this->event->minup());
-
-		$this->stop_date	= JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn(), 0 );
-		//$this->stop_time = $this->event->endTime()	;		
-		$this->stop_time  = JEVHelper::getTime($this->event->getUnixEndTime(),$this->event->hdn(),$this->event->mindn());
-		
-		$this->stop_time_midnightFix = $this->stop_time ;
-		$this->stop_date_midnightFix = $this->stop_date ;
-		if ($this->event->sdn() == 59 && $this->event->mindn()==59){
-			$this->stop_time_midnightFix = JEVHelper::getTime($this->event->getUnixEndTime()+1,0,0);
-			$this->stop_date_midnightFix = JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn()+1, 0 );
-		}
-		
-		// we only need the one helper so stick to flat layout here!
-		$this->jevlayout="flat";	
-		
-		$this->addHelperPath(JEV_VIEWS."/flat/helpers");
-		$this->addHelperPath(JEV_VIEWS."/default/helpers");
-		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
-
-		// attach data model
-		$reg = JevRegistry::getInstance("jevents");
-		$this->datamodel  =  $reg->getReference("jevents.datamodel");
-
-	}
-	
-	function calendarCell_popup($cellDate){
-		$cfg = JEVConfig::getInstance();
-
-		$publish_inform_title 	= htmlspecialchars( $this->title );
-		$publish_inform_overlay	= '';
-		$cellString="";
-		// The one overlay popup window defined for multi-day events.  Any number of different overlay windows
-		// can be defined here and used according to the event's repeat type, length, whatever.  Note that the
-		// definition of the overlib function call arguments is ( html_window_contents, extra optional paramenters ... )
-		// 'extra parameters' includes things like window positioning, display delays, window caption, etc.
-		// Documentation on the javascript overlib library can be found at: http://www.bosrup.com/web/overlib/
-		// or here for additional plugins (like shadow): http://overlib.boughner.us/ [mic]
-
-		// check this speeds up that thing [mic]		// TODO if $publish_inform_title  is blank we get problems
-		$tmp_time_info = '';
-		if( $publish_inform_title ){
-			if( $this->stop_publish == $this->start_publish ){
-				if ($this->event->noendtime()){
-					$tmp_time_info = '<br />' . $this->start_time;
-				}
-				else if ($this->event->alldayevent()){
-					$tmp_time_info = "";
-				}
-				else if($this->start_time != $this->stop_time ){
-					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time_midnightFix;
-				}
-				else {
-					$tmp_time_info = '<br />' . $this->start_time;
-				}
-
-				$publish_inform_overlay = '<table style="border:0px;height:100%">'
-				. '<tr><td nowrap=&quot;nowrap&quot;>' . $this->start_date
-				. $tmp_time_info
-				;
-			} else {
-				if ($this->event->noendtime()){
-					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time;
-				}
-				else if($this->start_time != $this->stop_time && !$this->event->alldayevent()){
-					$tmp_time_info = '<br /><b>' . JText::_('JEV_TIME') . ':&nbsp;</b>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
-				}
-				$publish_inform_overlay = '<table style="border:0px;width:100%;height:100%">'
-				. '<tr><td><b>' . JText::_('JEV_FROM') . ':&nbsp;</b>' . $this->start_date . '&nbsp;'
-				. '<br /><b>' . JText::_('JEV_TO') . ':&nbsp;</b>' . $this->stop_date
-				. $tmp_time_info
-				;
-			}
-		}
-
-		// Event Repeat Type Qualifier and Day Within Event Quailfiers:
-		// the if statements below basically will print different information for the event
-		// depending upon whether it is the start/stop day, repeat events type, or some date in between the
-		// start and the stop dates of a multi-day event.  This behavior can be modified at will here.
-		// Currently, an overlay window will only display on a mouseover if the event is a multi-day
-		// event (ie. every day repeat type) AND the month cell is a day WITHIN the event day range BUT NOT
-		// the start and stop days.  The overlay window displays the start and stop publish dates.  Different
-		// overlay windows can be displayed for the different states below by simply defining a new overlay
-		// window definition variable similar to the $publish_inform_overlay variable above and using it in the
-		// statements below.  Another possibility here is to control the max. length of any string used within the
-		// month cell to avoid calendar formatting issues.  Any string that exceeds this will get an overlay window
-		// in order to display the full length/width of the month cell.
-
-		// Note that we want multi-day events to display a titlelink for the first day only, but a popup for every day
-		// Fix this.
-
-		if ($this->event->alldayevent() && $this->start_date==$this->stop_date){
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
-		}
-		else if(( $cellDate == $this->stop_publish ) && ( $this->stop_publish == $this->start_publish )) {
-			// single day event
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
-		}elseif( $cellDate == $this->start_publish ){
-			// first day of a multi-day event
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
-		}elseif( $cellDate == $this->stop_publish ){
-			// last day of a multi-day event
-			// enable an overlib popup
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
-		}elseif(( $cellDate < $this->stop_publish ) && ( $cellDate > $this->start_publish ) ) {
-			// middle day of a multi-day event
-			// enable the display of an overlib popup describing publish date
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
-		}else{
-			// this should never happen, but is here just in case...
-			$cellString =  $publish_inform_overlay.'<br /><small><div style="background-color:yellow;color:black;font-weight:bold">Problems - check event!</div></small>';
-			$title_event_link = "<div style='color:black!important;background-color:yellow!important;font-weight:bold'>Problems - check event!</div>";
-			$cellStart   = '';
-			$cellStyle   = '';
-			$cellEnd     = '';
-		}
-
-		/**
- * defining the design of the tooltip
- * AUTOSTATUSCAP 	displays title in browsers statusbar (only IE)
- * if no vlaus are defined, the overlib standard values are used
- * TT backgrund	bool
- * TT posX		string	left, center, right (right = standard)
- * TT posY		string	above, below (below = standard)
- * shadow		bool
- * shadox posX	bool (standard = right)
- * shadow posY	bool (standard = below)
- * FGCOLOR		string	set here fix (could be also defined in config - later)
- * CAPCOLOR		string	set here fix (could be also defined in config - later)
- **/
-
-		// set standard values
-		$ttBGround 		= '';
-		$ttXPos 		= '';
-		$ttYPos 		= '';
-		$ttShadow 		= '';
-		$ttShadowColor  = '';
-		$ttShadowX      = '';
-		$ttShadowY      = '';
-
-		// TT background
-		if( $cfg->get('com_calTTBackground',1) == '1' ){
-			$ttBGround = ' BGCOLOR, \'' . $this->event->bgcolor() . '\',';
-			$ttFGround = ' CAPCOLOR, \'' . $this->event->fgcolor() . '\',';
-		}
-		else $ttFGround = ' CAPCOLOR, \'#000000\',';
-
-		// TT xpos
-		if( $cfg->get('com_calTTPosX') == 'CENTER' ){
-			$ttXPos = ' CENTER,';
-		}elseif( $cfg->get('com_calTTPosX') == 'LEFT' ){
-			$ttXPos = ' LEFT,';
-		}
-
-		// TT ypos
-		if( $cfg->get('com_calTTPosY') == 'ABOVE' ){
-			$ttYPos = ' ABOVE,';
-		}
-
-		/* TT shadow in inside the positions
-		* shadowX is fixec with 15px (above)
-		* shadowY is fixed with -10px (right)
-		* we also define here the shadow color (fix value - can overridden by the config later)
-		*/
-		if( $cfg->get('com_calTTShadow') == '1' ){
-			$ttShadow 		= ' SHADOW,';
-			$ttShadowColor 	= ' SHADOWCOLOR, \'#999999\',';
-
-			if( $cfg->get('com_calTTShadowX') == '1' ){
-				$ttShadowX = ' SHADOWX, -4,';
-			}
-
-			if( $cfg->get('com_calTTShadowY') == '1' ){
-				$ttShadowY = ' SHADOWY, -4,';
-			}
-		}
-
-		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
-		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
-
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
-		// Watch out for mambots !!
-		. '</td></tr></table>';
-
-		// harden the string for overlib
-		$cellString =  '\'' . addcslashes($cellString, '\'') . '\'';
-
-		// add more overlib parameters
-		$cellString .= ', CAPTION, \'' . addcslashes($publish_inform_title, '\'') . '\',' . $ttYPos . $ttXPos
-		. ' FGCOLOR, \'#FFFFE2\',' . $ttBGround. $ttFGround
-		. $ttShadow . $ttShadowY . $ttShadowX . $ttShadowColor . ' AUTOSTATUSCAP';
-
-		$cellString = ' onmouseover="return overlib('.htmlspecialchars($cellString).')"';
-		$cellString .=' onmouseout="return nd();"';
-		return $cellString;
-	}
-
-	function calendarCell_tooltip($cellDate){
-		$cfg = JEVConfig::getInstance();
-
-		$publish_inform_title 	= htmlspecialchars( $this->title );
-		$publish_inform_overlay	= '';
-		$cellString="";
-		// The one overlay popup window defined for multi-day events.  Any number of different overlay windows
-		// can be defined here and used according to the event's repeat type, length, whatever.  Note that the
-		$tmp_time_info = '';
-		if( $publish_inform_title ){
-			if( $this->stop_publish == $this->start_publish ){
-				if ($this->event->noendtime()){
-					$tmp_time_info = '<br />' . $this->start_time;
-				}
-				else if ($this->event->alldayevent()){
-					$tmp_time_info = "";
-				}
-				else if($this->start_time != $this->stop_time ){
-					$tmp_time_info = '<br />' . $this->start_time . ' - ' . $this->stop_time_midnightFix;
-				}
-				else {
-					$tmp_time_info = '<br />' . $this->start_time;
-				}
-
-				$publish_inform_overlay = $this->start_date	. $tmp_time_info
-				;
-			} else {
-				if ($this->event->noendtime()){
-					$tmp_time_info = '<br /><strong>' . JText::_('JEV_TIME') . ':&nbsp;</strong>' . $this->start_time;
-				}
-				else if($this->start_time != $this->stop_time && !$this->event->alldayevent()){
-					$tmp_time_info = '<br /><strong>' . JText::_('JEV_TIME') . ':&nbsp;</strong>' . $this->start_time . '&nbsp;-&nbsp;' . $this->stop_time_midnightFix;
-				}
-				$publish_inform_overlay =  '<strong>' . JText::_('JEV_FROM') . ':&nbsp;</strong>' . $this->start_date . '&nbsp;'
-				. '<br /><strong>' . JText::_('JEV_TO') . ':&nbsp;</strong>' . $this->stop_date
-				. $tmp_time_info
-				;
-			}
-		}
-
-		// Event Repeat Type Qualifier and Day Within Event Quailfiers:
-
-		if ($this->event->alldayevent() && $this->start_date==$this->stop_date){
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ). '</span>';
-		}
-		else if(( $cellDate == $this->stop_publish ) && ( $this->stop_publish == $this->start_publish )) {
-			// single day event
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . ($this->event->isRepeat()?JText::_("JEV_REPEATING_EVENT"):JText::_('JEV_FIRST_SINGLE_DAY_EVENT') ) . '</span>';
-		}elseif( $cellDate == $this->start_publish ){
-			// first day of a multi-day event
-			// just print the title
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_FIRST_DAY_OF_MULTIEVENT') . '</span>';
-		}elseif( $cellDate == $this->stop_publish ){
-			// last day of a multi-day event
-			// enable an overlib popup
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_LAST_DAY_OF_MULTIEVENT') . '</span>';
-		}elseif(( $cellDate < $this->stop_publish ) && ( $cellDate > $this->start_publish ) ) {
-			// middle day of a multi-day event
-			// enable the display of an overlib popup describing publish date
-			$cellString = $publish_inform_overlay
-			. '<br /><span style="font-weight:bold">' . JText::_('JEV_MULTIDAY_EVENT') . '</span>';
-		}else{
-			// this should never happen, but is here just in case...
-			$cellString =  $publish_inform_overlay.'<br /><small><div style="background-color:yellow;color:black;font-weight:bold">Problems - check event!</div></small>';
-			$title_event_link = "<div style='color:black!important;background-color:yellow!important;font-weight:bold'>Problems - check event!</div>";
-		}
-
-
-		ob_start();
-		$templated = $this->loadedFromTemplate('month.calendar_tip', $this->event, 0);
-		$res = ob_get_clean();
-		if ($templated){
-			$res = str_replace("[[TTTIME]]",$cellString, $res);
-			return "templated".$res;
-		}
-
-		//$cellString .= '<br />'.$this->event->content();
-		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
-		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
-
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';
-		return $cellString;
-
-		// harden the string for the tooltip
-		$cellString =  '\'' . addcslashes($cellString, '\'') . '\'';
-
-	}
+class EventCalendarCell_flat  extends EventCalendarCell_default {
 
 	function calendarCell(&$currentDay,$year,$month,$i, $slot=""){
 
 		$cfg = JEVConfig::getInstance();
+
+		$Itemid = JEVHelper::getItemid();
+
+		$event_day = $this->event->dup();
+		$event_month = $this->event->mup();
+
+		$id = $this->event->id();
 
 		// this file controls the events component month calendar display cell output.  It is separated from the
 		// showCalendar function in the events.php file to allow users to customize this portion of the code easier.
@@ -439,7 +131,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 
 				}
 
-				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body"));
+				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "hide"=> 150 )));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
@@ -487,7 +179,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		// return the whole thing
 		return $cellStart . ' style="' . $cellStyle . '" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
 	}
-
+/*
 	function tooltip($tooltip,  $link)
 	{
 		//$tooltip	= addslashes(htmlspecialchars($tooltip));
@@ -518,6 +210,7 @@ class EventCalendarCell_flat  extends JEventsflatView {
 		}
 		return $tooltip;
 	}
+*/
 	
 	protected function correctTooltipLanguage($tip){
 		return str_replace(JText::_("JEV_FIRST_DAY_OF_MULTIEVENT"), JText::_("JEV_MULTIDAY_EVENT"), $tip);

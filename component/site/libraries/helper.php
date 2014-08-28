@@ -1978,8 +1978,17 @@ class JEVHelper
 		// load jQuery versions if present
 		if (strpos($file, "JQ.js")==false) {
 			$jqfile = str_replace(".js", "JQ.js", $file);
-			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-			JHTML::script($path . $jqfile);				
+			if (JHTML::script($path . $jqfile, false, false, true)){
+				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+				JHTML::script($path . $jqfile);
+			}
+			else {
+				// Include mootools framework
+				JHtml::_('behavior.framework', true);
+
+				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+				JHTML::script($path . $file);
+			}
 		}
 		else {
 			// Include mootools framework
