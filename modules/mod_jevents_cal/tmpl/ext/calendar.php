@@ -220,7 +220,11 @@ START;
 							$content .= $tooltip;
 						}
 						else {
+                                                    if ($this->modparams->get("emptydaylinks", 1) || $currentDay["events"] || $this->modparams->get("noeventcheck",0)) {
 							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>$linkclass,'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+                                                    } else {
+                                                        $content .= $currentDay['d'];
+                                                    }
 						}
 
 						$content .="</td>\n";

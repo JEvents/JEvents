@@ -19,7 +19,7 @@ JLoader::register('DefaultViewAdmin',JEV_PATH."/views/default/admin/view.html.ph
  *
  * @static
  */
-class AlternativeViewAdmin extends DefaultViewAdmin 
+class AlternativeViewAdmin extends JEventsAlternativeView
 {
 	
 	function listevents($tpl = null)
