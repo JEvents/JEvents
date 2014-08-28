@@ -588,6 +588,10 @@ RAWTEXT;
 								$vevent->catid[] =  $categories[$ct]->id;
 							}							
 						}
+						if ($params->get("multicategory",0) && count($evcat)==1){
+							$vevent->catid = array();
+							$vevent->catid[] =  $categories[$evcat[0]]->id;
+						}
 						else {
 							$vevent->catid =  $categories[$evcat[0]]->id;							
 						}

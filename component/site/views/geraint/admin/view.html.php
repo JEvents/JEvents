@@ -19,7 +19,7 @@ JLoader::register('DefaultViewAdmin',JEV_PATH."/views/default/admin/view.html.ph
  *
  * @static
  */
-class GeraintViewAdmin extends DefaultViewAdmin 
+class GeraintViewAdmin extends JEventsGeraintView
 {
 	
 	function listevents($tpl = null)

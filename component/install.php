@@ -666,6 +666,13 @@ SQL;
 			@$db->query();
 		}
 
+		if (!array_key_exists("state", $cols))
+		{
+			$sql = "ALTER TABLE #__jev_defaults ADD state tinyint(3) NOT NULL default 1";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 		$sql = "SHOW INDEX FROM #__jev_defaults";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
