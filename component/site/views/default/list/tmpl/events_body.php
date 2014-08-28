@@ -20,6 +20,7 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
 JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
+JHTML::stylesheet("components/com_jevents/assets/css/bootstrap-responsive.css");
 JHTML::stylesheet("components/com_jevents/assets/css/jquery.resizableColumns.css");
 JHTML::script("components/com_jevents/assets/js/store.min.js");
 //JHTML::script("components/com_jevents/assets/js/jquery.resizableColumns.min.js");

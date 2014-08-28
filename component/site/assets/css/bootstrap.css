@@ -1,20 +1,18 @@
-#jevents .jevbootstrap {
-	/*!
-   * Bootstrap v2.3.2 - from Joomla 3.2.1
-   *
-   * Copyright 2012 Twitter, Inc
-   * Licensed under the Apache License v2.0
-   * http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Designed and built with all the love in the world @twitter by @mdo and @fat.
-   */
-	/* Allow for input prepend/append in search forms */
-	/* White icons with optional class, or on hover/focus/active states of certain elements */
-	/* move down carets for tabs */
-	/* Joomla JUI NOTE: Original .modal definition has to be commented in modals.less and responsive-767px-max.less */
-	/* Joomla JUI NOTE: Original .modal definition has to be commented */
-	/* Joomla JUI NOTE: Original .modal definition has to be commented */
-}
+/*!
+* Bootstrap v2.3.2 - from Joomla 3.2.1  - Namespaced version for JEvents
+*
+* Copyright 2012 Twitter, Inc
+* Licensed under the Apache License v2.0
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Designed and built with all the love in the world @twitter by @mdo and @fat.
+*/
+/* Allow for input prepend/append in search forms */
+/* White icons with optional class, or on hover/focus/active states of certain elements */
+/* move down carets for tabs */
+/* Joomla JUI NOTE: Original .modal definition has to be commented in modals.less and responsive-767px-max.less */
+/* Joomla JUI NOTE: Original .modal definition has to be commented */
+/* Joomla JUI NOTE: Original .modal definition has to be commented */
 #jevents .jevbootstrap .clearfix {
 	*zoom: 1;
 }
