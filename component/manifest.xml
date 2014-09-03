@@ -15,7 +15,7 @@
 	<files folder="site">
 		<folder>assets</folder>
 		<folder>controllers</folder>
-	<folder>help</folder>
+		<folder>help</folder>
 		<folder>helpers</folder>
 		<folder>images</folder>
 		<folder>layouts</folder>
@@ -45,7 +45,10 @@
 		<filename>mod.defines.php</filename>
 		<filename>router.php</filename>
 	</files>
-    
+    <media folder="media" destination="com_jevlocations">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB.com_jevents.ini</language>
 	</languages>
