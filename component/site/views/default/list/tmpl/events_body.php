@@ -19,8 +19,9 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
-JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-JHTML::stylesheet("components/com_jevents/assets/css/bootstrap-responsive.css");
+
+JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 JHTML::stylesheet("components/com_jevents/assets/css/jquery.resizableColumns.css");
 JHTML::script("components/com_jevents/assets/js/store.min.js");
 //JHTML::script("components/com_jevents/assets/js/jquery.resizableColumns.min.js");

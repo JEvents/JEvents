@@ -38,7 +38,7 @@ if ($params->get("bootstrapchosen", 1))
 if ($params->get("bootstrapcss", 1)==1 || $params->get("bootstrapcss", 1)==2)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 }
 
 

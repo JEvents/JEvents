@@ -47,7 +47,7 @@ else {
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
 	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
 	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-	JHtml::script("com_jevents/assets/js/bootstrap.js", false, true);
+	JHtml::script("com_jevents/bootstrap.js", false, true);
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
@@ -57,9 +57,9 @@ else {
 if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 {
 	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/assets/css/bootstrap.css", array(), true);
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap-responsive.css");
+	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 }
 
 
