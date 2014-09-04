@@ -498,7 +498,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						ob_start();
 						$view->eventIcalButton($event);
 						?>
-						<div class="jevdialogs">
+						<div class="jevdialogs" style="position:relative;">
 						<?php
 						$search[] = "{{ICALDIALOG}}";
 						if ($view)

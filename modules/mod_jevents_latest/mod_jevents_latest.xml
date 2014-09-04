@@ -37,7 +37,7 @@
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
-				<field name="ignorefiltermodule" type="radio" class="btn-group"  default="1" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP">
+				<field name="ignorefiltermodule" type="radio" class="btn-group"  default="0" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>

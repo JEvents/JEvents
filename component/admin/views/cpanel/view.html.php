@@ -1070,7 +1070,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
 			echo $db->getErrorMsg();
 		}

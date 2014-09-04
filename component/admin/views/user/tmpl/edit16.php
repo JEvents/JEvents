@@ -44,21 +44,21 @@ if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 		<tr>
 			<td><?php echo JText::_( 'USER_ENABLED' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 			echo JHTML::_("select.booleanlist", "published", null,$this->jevuser->published);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_CREATE_EVENTS' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 			echo JHTML::_("select.booleanlist", "cancreate", null,$this->jevuser->cancreate);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
@@ -70,91 +70,91 @@ if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 		<tr>
 			<td><?php echo JText::_( 'CAN_PUBLISH_OWN' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "canpublishown", null,$this->jevuser->canpublishown);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_DELETE_OWN_EVENTS' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "candeleteown", null,$this->jevuser->candeleteown);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_EDIT_EVENTS' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "canedit", null,$this->jevuser->canedit);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_PUBLISH_ALL' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "canpublishall", null,$this->jevuser->canpublishall);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_DELETE_ALL_EVENTS' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "candeleteall", null,$this->jevuser->candeleteall);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_( 'CAN_UPLOAD_IMAGES' );?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "canuploadimages", null,$this->jevuser->canuploadimages);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_("UPLOAD_FILES");?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "canuploadmovies", null,$this->jevuser->canuploadmovies);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_("CREATE_OWN_EXTRAS");?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "cancreateown", null,$this->jevuser->cancreateown);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo JText::_("CREATE_GLOBAL_EXTRAS");?></td>
 			<td>
-				<fieldset class="radio btn-group">
+				
 				<?php
 				echo JHTML::_("select.booleanlist", "cancreateglobal", null,$this->jevuser->cancreateglobal);
 				?>
-				</fieldset>
+				
 			</td>
 		</tr>
 		<tr>
@@ -221,7 +221,7 @@ if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 					<?php if ($this->jevuser->categories == 'all'  || $this->jevuser->categories == '') { ?>
 					<script type="text/javascript">allselections('categories');</script>
 					<?php } ?>
-				</fieldset>
+				
 			</td>
 			<td width="50%">
 		
@@ -257,7 +257,7 @@ if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 					<?php if ($this->jevuser->calendars == 'all'|| $this->jevuser->calendars == '') { ?>
 					<script type="text/javascript">allselections('calendars');</script>
 					<?php }  ?>
-				</fieldset>
+				
 			</td>
 		</tr>
 	</table>
