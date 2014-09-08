@@ -114,9 +114,9 @@ function DefaultViewHelperShowNavTableBar($view){
 			else $view->viewNavTableBar( $today_date, $this_date, $dates, $alts, JEV_COM_COMPONENT, "day.listevents", $view->Itemid );
 			break;
 	}
-	echo "<div class='jev_pretoolbar'>";
+	
 		$view->loadModules("jevposttoolbar");
 		$view->loadModules("jevposttoolbar_".$task);
-	echo "</div>";
+	
 }
 
