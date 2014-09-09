@@ -212,12 +212,12 @@
 	background-color: #ffffff;
 }
 #jevents .jevbootstrap a {
-	color: #0088cc;
+	color: inherit;
 	text-decoration: none;
 }
 #jevents .jevbootstrap a:hover,
 #jevents .jevbootstrap a:focus {
-	color: #005580;
+	color: inherit;
 	text-decoration: underline;
 }
 #jevents .jevbootstrap .img-rounded {
