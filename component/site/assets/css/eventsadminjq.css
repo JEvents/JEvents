@@ -461,6 +461,8 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents .jevbootstrap .ical_dialogJQ {max-width: 300px;}
 #jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 #jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+#jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
+#jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
 .action_dialogJQ {   max-width: 300px; }
 .action_dialogJQ a {text-decoration:none; line-height:28px;}
