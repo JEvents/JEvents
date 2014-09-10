@@ -652,6 +652,9 @@ div.jevtt_title{
 div.jevtt_text{
 	line-height: 1.3em;
 }
+span.hasjevtip {
+    display: block;
+}
 
 /* Joomla 1.6 changes */
 #action_dialog {
