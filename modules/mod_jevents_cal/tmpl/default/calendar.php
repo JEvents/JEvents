@@ -222,7 +222,7 @@ class DefaultModCalView
 		$content ="";
 		if (isset($this->_modid) && $this->_modid>0){
 			$this->_navigationJS($this->_modid);
-			$link = htmlentities("index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component".$this->cat);
+			$link = htmlentities(JURI::base()  . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component".$this->cat);
 			$content = '<td>';
 			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\''.$link.'\');">'.$symbol."</div>\n";
 			$content .= '</td>';
@@ -230,7 +230,7 @@ class DefaultModCalView
 		return $content;
 	}
 
-	function _displayCalendarMod($time, $startday, $linkString, $day_name, $monthMustHaveEvent=false, $basedate=false){
+	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
 
 		$db	= JFactory::getDBO();
 		$cfg = JEVConfig::getInstance();
@@ -395,7 +395,11 @@ class DefaultModCalView
 							$content .= $tooltip;
 						}
 						else {
+                                                    if ($this->modparams->get("emptydaylinks", 1) || $currentDay["events"] || $this->modparams->get("noeventcheck",0)) {
 							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
+                                                    } else {
+                                                        $content .= $currentDay['d'];
+                                                    }
 						}
 						$content .="</td>\n";
 

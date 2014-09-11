@@ -63,7 +63,6 @@
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"  difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99" />		
 		<!--
-		<field name="usejquery" type="jevboolean" class="btn-group" default="0" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />
 		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description=""  difficulty="2"/>
 		//-->
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" difficulty="2"/>
@@ -165,7 +164,14 @@
 		<field name="bootstrapchosen" type="jevboolean" class="btn-group" default="1" label="JEV_LOAD_BOOTSTRAP_CHOSEN" description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" difficulty="2"  minjoomlaversion="3.0.0" />
 
 		<field name="allowraw" type="jevboolean" class="btn-group" default="0" menu="hide"  label="JEV_ALLOW_RAW_DESCRIPTIONS" description="JEV_ALLOW_RAW_DESCRIPTIONS_DESC" difficulty="2"/> 		
-		<field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />
+		
+                <field name="com_edit_toolbar" type="list" default="0" menu="hide" label="JEV_EDIT_TOOLBAR_POSITION" description="JEV_EDIT_TOOLBAR_POSITION_DESC" difficulty="2">
+			<option value="0">JEV_EDIT_TOOLBAR_POSITION_TOP</option>
+			<!--<option value="1">JEV_EDIT_TOOLBAR_POSITION_BOTTOM</option>-->
+			<option value="2">JEV_EDIT_TOOLBAR_POSITION_TOP_AND_BOTTOM</option>
+		</field>
+                
+                <field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />
 	</fieldset>
 	
         
@@ -194,24 +200,12 @@
 
 		<field name="com_enableToolTip" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" difficulty="1"/>
 
-		<field name="tooltiptype" type="jevmultilist" default='joomla'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
-			<option value="joomla">Joomla</option>
-			<option value="overlib">Overlib</option>
+		<field name="tooltiptype" type="jevmultilist" default='bootstrap'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
+			<option value="joomla">Mootools</option>
+			<option value="bootstrap">Bootstrap</option>
 		</field>
+
 		<field name="com_calTTBackground" type="jevboolean" class="btn-group jevp_tooltip" default="1" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" difficulty="2"   />
-		<field name="com_calTTPosX" type="jevmultilist" default='LEFT'  class="jevp_tooltip" menu="hide" label="JEV_TT_POSX" description="JEV_TIP_TT_POSX" difficulty="2" conditional="tooltiptype" conditions="overlib">
-			<option value="LEFT">JEV_LEFT</option>
-			<option value="CENTER">JEV_CENTER</option>
-			<option value="RIGHT">JEV_RIGHT</option>
-		</field>
-		<!-- y-position of TT: above, below (NOTE: if above, HEIGHT MUST BE SET!) -->
-		<field name="com_calTTPosY" type="jevmultilist" default='BELOW'   class="jevp_tooltip"  menu="hide" label="JEV_TT_POSY" description="JEV_TIP_TT_POSY" difficulty="2" conditional="tooltiptype" conditions="overlib">
-			<option value="BELOW">JEV_BELOW</option>
-			<option value="ABOVE">JEV_ABOVE</option>
-		</field>
-		<field name="com_calTTShadow" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOW" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
-		<field name="com_calTTShadowX" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_TT_SHADOWX" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
-		<field name="com_calTTShadowY" type="jevboolean" class="btn-group" default="0"  menu="hide" label="JEV_TT_SHADOWY" description="" difficulty="2"  conditional="tooltiptype" conditions="overlib"/>
 	</fieldset>
 	
 	<fieldset name="JEV_YEAR_CATEGORY_VIEW" difficulty="1">
@@ -235,7 +229,9 @@
 		<field name="@spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
 		<field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="1"/>
 		<field name="showyeardate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" difficulty="1"/>
-	</fieldset>
+		<field name="year_show_noev_found" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_NO_EVENTS_FOUND" description="JEV_VIEW_SHOW_NO_EVENTS_FOUND_DESC" difficulty="1"/>
+
+        </fieldset>
         
 	<fieldset  name="JEV_ICAL_CALENDAR" difficulty="2">
 		<field name="@spacer_tzi" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" difficulty="3"/>
@@ -327,7 +323,7 @@
 	</fieldset>
 
 	<fieldset name="JEV_TAB_LATEST_MOD" difficulty="1">
-		<field name="@spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_main_help::Module" difficulty="1"/>	
+		<field name="@spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description="" difficulty="1"/>	
 		
 		<field name="modlatest_MaxEvents" type="text" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="1"/>
 
@@ -360,7 +356,7 @@
 		</field>		
 		<field name="modlatest_SortReverse" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="2"/>
 		<field name="modlatest_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3"/>
-		<field name="@spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_custformstr_help::Event Fields,mod_events_latest.php::_cal_lang_lev_date_help::date(),mod_events_latest.php::_cal_lang_lev_strftime_help::strftime()" difficulty="3"/>	
+		<field name="@spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" difficulty="3"/>	
 		<field name="modlatest_CustFmtStr" type="textarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3"/>
 		<field name="modlatest_RSS" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3"/>			
 		<field name="modlatest_contentplugins" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3"/>

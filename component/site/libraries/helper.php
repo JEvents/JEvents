@@ -24,6 +24,12 @@ class JEVHelper
 {
 
 	/**
+	 * @var    array  Array containing information for loaded files
+	 * @since  3.0
+	 */
+	protected static $loaded = array();
+
+	/**
 	 * load language file
 	 *
 	 * @static
@@ -1969,13 +1975,19 @@ class JEVHelper
 	static public
 			function script($file, $path)
 	{
-
-		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
-			// load jQuery versions
-			if (strpos($file, "JQ.js")==false) {
-				$jqfile = str_replace(".js", "JQ.js", $file);
+		// load jQuery versions if present
+		if (strpos($file, "JQ.js")==false) {
+			$jqfile = str_replace(".js", "JQ.js", $file);
+			if (JHTML::script($path . $jqfile, false, false, true)){
 				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $jqfile);				
+				JHTML::script($path . $jqfile);
+			}
+			else {
+				// Include mootools framework
+				JHtml::_('behavior.framework', true);
+
+				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+				JHTML::script($path . $file);
 			}
 		}
 		else {
@@ -1985,7 +1997,6 @@ class JEVHelper
 			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 			JHTML::script($path . $file);
 		}
-
 	}
 
 	static public
@@ -2334,7 +2345,7 @@ class JEVHelper
 							hiddencontrol.style.display = "none";
 						}
 						try {
-							jQuery(eventsno).trigger("liszt:updated");
+							jevjq(eventsno).trigger("liszt:updated");
 						}
 						catch (e) {
 						}
@@ -2606,17 +2617,30 @@ SCRIPT;
 
 	}
         // We use this for RSVP Pro Invites with iCal mail and New & Event change notifcations at present to avoid code duplication.
-        public static function iCalMailGenerator($row, $params, $dataModel ) {
-               			//Check if Freq is more than none, if not rename to Daily for single event.
+        public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH" ) {        
+                        if ($ics_method == "CANCEL") {
+                                $status = "CANCELLED";
+                        }
+                        if (JFile::exists(JPATH_SITE."/plugins/jevents/jevnotify/")) {
+                            //If using JEvents notify plugin we need to load it for the processing of data.
+                                JLoader::register('JEVNotifyHelper',JPATH_SITE."/plugins/jevents/jevnotify/helper.php");
+                        }
+                        
 			$icalEvents = array($row);
 			if (ob_get_contents()) ob_end_clean();
 			$html = "";
+                        $params = JComponentHelper::getParams("com_jevents");
+                        
 			if ($params->get('outlook2003icalexport'))
 				$html .= "BEGIN:VCALENDAR\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 			else
 				$html .= "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 
-			$html .= "CALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+			$html .= "CALSCALE:GREGORIAN\r\nMETHOD:" . $ics_method . "\r\n";
+                        if (isset($status)) {
+                            $html .= "STATUS:" . $status . "\r\n";
+                            
+                        }
 			if (!empty($icalEvents))
 			{
 
@@ -2918,7 +2942,13 @@ SCRIPT;
 					{
 						foreach ($changed as $rpid)
 						{
-							$a = $dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    if (JPATH_SITE."/plugins/jevents/jevnotify/") {
+                                                            $a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    } else {
+                                                            // No usage yet. 
+                                                            // Likely to update helper function when moving over RSVP Pro Generated iCals.
+                                                            $a = $dataModal->getEventData($rpid, "icaldb", 0, 0, 0);
+                                                    }
 
 							if ($a && isset($a["row"]))
 							{
@@ -3224,6 +3254,105 @@ SCRIPT;
 	}
 
 
+	/**
+	 * Add unobtrusive JavaScript support for modal links.
+	 *
+	 * @param   string  $selector  The selector for which a modal behaviour is to be applied.
+	 * @param   array   $params    An array of parameters for the modal behaviour.
+	 *                             Options for the modal behaviour can be:
+	 *                            - ajaxOptions
+	 *                            - size
+	 *                            - shadow
+	 *                            - overlay
+	 *                            - onOpen
+	 *                            - onClose
+	 *                            - onUpdate
+	 *                            - onResize
+	 *                            - onShow
+	 *                            - onHide
+	 *
+	 * @return  void
+	 *
+	 * @since   1.5
+	 */
+	public static function modal($selector = 'a.modal', $params = array())
+	{
+		if (version_compare(JVERSION, "3.0", "ge")) {
+			// Load the code Joomla version
+			JHtml::_('behavior.modal', $selector, $params);
+			return;
+		}
+
+		JHtml::_('behavior.modal', $selector, $params);
+		return;
+
+		// This may be needed in the future - not used at present
+		/*
+		$document = JFactory::getDocument();
+
+		// Load the necessary files if they haven't yet been loaded
+		if (!isset(static::$loaded[__METHOD__]))
+		{
+			// Include MooTools framework
+			JHtml::_('behavior.framework', true);
+
+			// Load the JavaScript and css
+			JHtml::_('script', 'system/modal.js', true, true);
+			JHtml::_('stylesheet', 'system/modal.css', array(), true);
+		}
+
+		$sig = md5(serialize(array($selector, $params)));
+
+		if (isset(static::$loaded[__METHOD__][$sig]))
+		{
+			return;
+		}
+
+		// Setup options object
+		$opt['ajaxOptions']   = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+		$opt['handler']       = (isset($params['handler'])) ? $params['handler'] : null;
+		$opt['parseSecure']   = (isset($params['parseSecure'])) ? (bool) $params['parseSecure'] : null;
+		$opt['closable']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
+		$opt['closeBtn']      = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
+		$opt['iframePreload'] = (isset($params['iframePreload'])) ? (bool) $params['iframePreload'] : null;
+		$opt['iframeOptions'] = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+		$opt['size']          = (isset($params['size']) && (is_array($params['size']))) ? $params['size'] : null;
+		$opt['shadow']        = (isset($params['shadow'])) ? $params['shadow'] : null;
+		$opt['overlay']       = (isset($params['overlay'])) ? $params['overlay'] : null;
+		$opt['onOpen']        = (isset($params['onOpen'])) ? $params['onOpen'] : null;
+		$opt['onClose']       = (isset($params['onClose'])) ? $params['onClose'] : null;
+		$opt['onUpdate']      = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
+		$opt['onResize']      = (isset($params['onResize'])) ? $params['onResize'] : null;
+		$opt['onMove']        = (isset($params['onMove'])) ? $params['onMove'] : null;
+		$opt['onShow']        = (isset($params['onShow'])) ? $params['onShow'] : null;
+		$opt['onHide']        = (isset($params['onHide'])) ? $params['onHide'] : null;
+
+		if (isset($params['fullScreen']) && (bool) $params['fullScreen'])
+		{
+			$opt['size']      = array('x' => '\\jQuery(window).width() - 80', 'y' => '\\jQuery(window).height() - 80');
+		}
+
+		$options = json_encode($opt); //JHtml::getJSObject($opt);
+
+		// Attach modal behavior to document
+		$document
+			->addScriptDeclaration(
+			"
+		jQuery(function($) {
+			SqueezeBox.initialize(" . $options . ");
+			SqueezeBox.assign($('" . $selector . "').get(), {
+				parse: 'rel'
+			});
+		});"
+		);
+
+		// Set static array
+		static::$loaded[__METHOD__][$sig] = true;
+		*/
+		return;
+	}
+
+
 }
 
 /* Keep this - just in case */
@@ -3332,4 +3461,3 @@ SCRIPT;
 				});
 
  */
-

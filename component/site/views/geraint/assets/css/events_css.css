@@ -16,6 +16,8 @@
 	line-height:1.5em;
 }
 
+/* Stop some templates messing with background colours on hover */
+#jevents #jevents_body a:hover {background-color: inherit;}
 /*********************
 * Calendar style
 **********************/
@@ -621,8 +623,11 @@ td.showjevadd a.addjevent {
 }
 
 /***************************************
-* Mootools ToolTips for JEvents Calendar
+* Boostrap ToolTips for JEvents Calendar
 ****************************************/
+#jevents .jevbootstrap  .top .popover-title {
+	padding:0px;
+}
 .jevtip-tip, .jevtip {
    float: left;
    background: #f5f5f5;
@@ -641,13 +646,14 @@ td.showjevadd a.addjevent {
 div.jevtt_title{
    font-weight: bold;
    font-size: 1.2em;
-	padding:2px;
-	width:196px;
+   padding:8px 14px;
+   border-radius:5px 5px 0px 0px;
 }
 div.jevtt_text{
-	padding:2px;
-	width:196px;
 	line-height: 1.3em;
+}
+span.hasjevtip {
+    display: block;
 }
 
 /* Joomla 1.6 changes */

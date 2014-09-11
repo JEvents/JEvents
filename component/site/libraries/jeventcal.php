@@ -253,7 +253,13 @@ class jEventCal {
 			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin, $this);
 		}
 		else $this->_contactLink=$val;
-		return $this->_contactLink;
+
+		// New Joomla code for mail cloak only works once on a page !!!
+		// Random number
+		$rand = rand(1, 100000);
+
+		return preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
+		//return $this->_contactLink;
 	}
 
 	function catname($val=""){

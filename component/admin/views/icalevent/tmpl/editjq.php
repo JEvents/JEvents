@@ -19,7 +19,6 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $cfg = JEVConfig::getInstance();
 
 // Already loaded Bootstrap
-include_once(JPATH_SITE."/components/com_jevents/libraries/bootstrap.php");
 JHtml::_('behavior.framework', true);
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');

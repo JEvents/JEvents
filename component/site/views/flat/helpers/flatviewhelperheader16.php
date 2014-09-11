@@ -33,7 +33,8 @@ function FlatViewHelperHeader16($view){
 
 	$lang = JFactory::getLanguage();	
 ?>
-<div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); echo $params->get("darktemplate",0)?" jeventsdark":" "; echo $lang->isRTL()?" jevrtl":" ";?>" id="jevents_header">
+<div id="jevents">
+<div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); echo $params->get("darktemplate",0)?" jeventsdark":" "; echo $lang->isRTL()?" jevrtl":" ";?>   jevbootstrap" id="jevents_header">
 	<?php if ($params->get('show_page_heading', 0)) : ?>
 	<h1>
 		<?php echo $view->escape($params->get('page_heading')); ?>
@@ -139,6 +140,6 @@ function FlatViewHelperHeader16($view){
 	$view->loadModules("jevprejevents2");
 	$view->loadModules("jevprejevents2_".$task);
 ?>
-<div class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  echo $params->get("darktemplate",0)?" jeventsdark":" "; echo $lang->isRTL()?" jevrtl":" ";?>" id="jevents_body">
+<div class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  echo $params->get("darktemplate",0)?" jeventsdark":" "; echo $lang->isRTL()?" jevrtl":" ";?> jevbootstrap" id="jevents_body">
 <?php
 }

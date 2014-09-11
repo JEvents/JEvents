@@ -130,7 +130,6 @@ class AdminParamsController extends JControllerAdmin
 		$id = $comp->id;
 		// Validate the posted data.
 		JForm::addFormPath(JPATH_COMPONENT);
-		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
 
 		$form = $model->getForm();
 		$return = $model->validate($form, $data);

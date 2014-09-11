@@ -253,7 +253,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "ICal rpt and new details saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
 		}
 		else
 		{
@@ -264,14 +264,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 				ob_end_clean();
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", false); ?>";
 				</script>
 				<?php
 				exit();
 			}
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "ICal rpt updated");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 
 	}
@@ -644,13 +643,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "ICal rpt and new details saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = JRequest::getString("rettask", "day.listevents");
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "ICal rpt updated");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}
 
 	}
@@ -706,7 +705,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$dispatcher = JDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventRepeat', array($id));
+			$res = $dispatcher->trigger('onDeleteEventRepeat', $id);
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -837,7 +836,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$dispatcher = JDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventRepeat', array($rp_id));
+				$res = $dispatcher->trigger('onDeleteEventRepeat', $rp_id);
 			}
 
 

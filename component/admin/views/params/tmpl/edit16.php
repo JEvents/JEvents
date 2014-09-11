@@ -145,7 +145,6 @@ $version = JEventsVersion::getInstance();
 					$layoutname = (string) $xml->name;
 					$langfile = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
 					$lang = JFactory::getLanguage();
-					$source = $path;
 					 $lang->load($langfile , JPATH_SITE, null, false, true);
 				}
 

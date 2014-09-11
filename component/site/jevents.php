@@ -42,24 +42,26 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}
 }
-else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-	// Make loading this conditional on config option
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
-        //JFactory::getDocument()->addScript("//www.google.com/jsapi");
-	JHTML::script("components/com_jevents/assets/js/jQnc.js");
-	//JHTML::script("components/com_jevents/assets/js/bootstrap.min.js");
-	//JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-        // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-        JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+else {
+	// Make loading this conditional on config option ??
+	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
+	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+	JHTML::script("components/com_jevents/assets/js/bootstrap.js");
+	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+		JHTML::script("components/com_jevents/assets/js/jQnc.js");
+		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	}
 }
- /*
- * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
-$jevversion = JEventsVersion::getInstance();
-AkeebaStrapper::$tag = $jevversion->getShortVersion();
-AkeebaStrapper::bootstrap();
-AkeebaStrapper::jQueryUI();
- * 
- */
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
+{
+	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
+	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap-responsive.css");
+}
+
 
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,
@@ -256,6 +258,7 @@ $registry->set("jevents.activeprocess", "component");
 if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
 {
 	JRequest::setVar("limit", 100);
+	JFactory::getApplication()->setUserState("limit", 100);
 }
 
 // Must reset the timezone back!!
@@ -298,3 +301,33 @@ if (JRequest::getCmd("format")!="feed"){
 
 // Redirect if set by the controller
 $controller->redirect();
+
+/*
+ // Experimental code for capturing out of memory problems
+ini_set('display_errors', false);
+error_reporting(-1);
+
+register_shutdown_function(function() {
+	$error = error_get_last();
+	if (null !== $error)
+	{
+		if (isset($error["message"]) && strpos($error["message"], "bytes exhausted") > 0)
+		{
+			echo "ran out of memory";
+		}
+		else
+		{
+			echo 'Caught at shutdown';
+		}
+	}
+	else
+		echo "normal shutdown";
+});
+
+	// Simulate memory overload
+   // while(true)
+    //{
+     //   $data .= str_repeat('#', PHP_INT_MAX);
+   // }
+
+*/

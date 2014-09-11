@@ -8,47 +8,47 @@
 			{{Title:TITLE}}
 		</div>
 	</div>
-	<div class="control-group jevpriority" {{Priority:PRIORITY# #class="jev_none"}}>
+	<div {{Priority:PRIORITY# class="control-group jevpriority" #class="control-group jevpriority jev_none"}}>
 		{{Priority Label:PRIORITY_LBL}} 	
 		{{Priority:PRIORITY#<div class="controls">%s</div>}}
 	</div>
-	<div class="control-group jevcreator" {{Creator:CREATOR# #class="jev_none"}}>
+	<div {{Creator:CREATOR# class="control-group jevcreator" #class="control-group jevcreator jev_none"}}>
 		{{Creator label:CREATOR_LBL}}
 		<div class="controls">
 			{{Creator:CREATOR}}
 		</div>
 	</div>			
-	<div class="control-group jevical"  {{Calendar:ICAL# #class="jev_none"}}>
+	<div {{Calendar:ICAL#class="control-group jevical" #class="control-group jevical jev_none"}}>
 		{{Calendar label:ICAL_LBL}}
 		<div class="controls">
 			{{Calendar:ICAL}}
 		</div>
 	</div>
-	<div class="control-group jevlock"  {{Lock Event:LOCK# #class="jev_none"}}>
+	<div {{Lock Event:LOCK#class="control-group jevlock" #class="control-group jevlock jev_none"}}>
 		{{Lock Event label:LOCK_LBL}}
 		<div class="controls">
 			{{Lock Event:LOCK}}
 		</div>
 	</div>
-	<div class="control-group jevcategory"  {{Category:CATEGORY# #class="jev_none"}}>
+	<div {{Category:CATEGORY# class="control-group jevcategory"#class="control-group jevcategory jev_none"}}>
 		{{Category label:CATEGORY_LBL}}
 		<div class="controls">
 			{{Category:CATEGORY}}
 		</div>
 	</div>
-	<div class="control-group jevaccess" {{Access:ACCESS# #class="jev_none"}} >
+	<div {{Access:ACCESS# class="control-group jevaccess" #class="control-group jevaccess jev_none"}} >
 		{{Access label:ACCESS_LBL}}
 		<div class="controls">
 			{{Access:ACCESS}}
 		</div>
 	</div>
-	<div class="control-group jevstate" {{State:STATE# #class="jev_none"}} >
+	<div {{State:STATE# class="control-group jevstate" #class="control-group jevstate jev_none"}} >
 		{{State label:STATE_LBL}}
 		<div class="controls">
 			{{State:STATE}}
 		</div>
 	</div>
-	<div class="control-group jevcolour" {{Event Colour:COLOUR# #class="jev_none"}} >
+	<div class="control-group jevcolour" {{Event Colour:COLOUR#class="control-group jevcolour"  #class=" control-group jevcolourjev_none"}} >
 		{{Colour label:COLOUR_LBL}}
 		<div class="controls">
 			{{Event Colour:COLOUR}}
@@ -102,13 +102,13 @@
 	{{Tab 2:CUSTOM_2}}
 
 	{{Tab Start:TABSTART#JEV_ATTENDANCE}}
-	{{Attendance Tab:JEV_ATTENDANCE}}
+	{{Attendance Tab:ATTENDANCE_OPTIONS}}
 
 	{{Tab Start:TABSTART#JEV_INVITATION_OPTIONS}}
-	{{Invitations Tab:JEV_INVITATION_OPTIONS}}
+	{{Invitations Tab:INVITATION_OPTIONS}}
 
 	{{Tab Start:TABSTART#JEV_REMINDER_OPTIONS}}
-	{{Reminder Tab:JEV_REMINDER_OPTIONS}}
+	{{Reminder Tab:EMAIL_REMINDER_OPTIONS}}
 
 	{{End Tabs:TABSEND}}
 </div>

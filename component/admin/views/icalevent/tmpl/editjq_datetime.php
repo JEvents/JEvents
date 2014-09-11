@@ -139,7 +139,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3" value="<?php echo $this->row->count(); ?>" onchange="checkInterval();" /><span id='count_label' style="margin-left:1em"><?php echo JText::_('REPEATS'); ?></span>
 			</fieldset>
 		</div>
-		<div style="float:left;margin-left:20px!important;" id="cu_until">
+		<div style="float:left;margin-left:20px!important;background-color:#dddddd;" id="cu_until">
 			<fieldset style="background-color:#dddddd">
 				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php

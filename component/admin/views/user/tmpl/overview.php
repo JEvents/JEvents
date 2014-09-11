@@ -317,7 +317,7 @@ $url = JRoute::_("index.php?option=" . $option);
 			</div>
 		</div>
 </form>
-<?php JEVHelper::loadOverlib(); ?>
+
 <script  type="text/javascript">
 	function submitbutton(pressbutton) {
 		var form = document.getElementsByName ('adminForm');

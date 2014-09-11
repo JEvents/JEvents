@@ -92,7 +92,8 @@ if (
 	return;
 }
 
-$filterHTML = $filters->getFilterHTML();
+$allowAutoSubmit = true;
+$filterHTML = $filters->getFilterHTML($allowAutoSubmit);
 
 if (JevJoomlaVersion::isCompatible("3.0") && $params->get("bootstrapchosen", 1))
 {

@@ -25,12 +25,8 @@ class JEventsAbstractView extends JViewLegacy
 		{
 			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
-		else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery",1)) {
+		else {
 			JEVHelper::stylesheet('eventsadminjq.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
-		else
-		{
-			JEVHelper::stylesheet('eventsadmin16.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');

@@ -7,11 +7,11 @@ defined('_JEXEC') or die('Restricted access');
 	 *
 	 * @param Jevent or descendent $row
 	 */
-function DefaultEventManagementDialog($view,$row, $mask){
-
-	if (version_compare(JVERSION, "3.2", "lt")){
+function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
+	if (!$bootstrap) {
 		return $view->eventManagementDialog16($row, $mask);
 	}
+	JevHtmlBootstrap::modal("action_dialogJQ".$row->rp_id());
 
 	$user = JFactory::getUser();
 	if ($user->get("id")==0) return "";
@@ -19,8 +19,9 @@ function DefaultEventManagementDialog($view,$row, $mask){
 
 		$popup=false;
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0)){
-			JHTML::_('behavior.modal');
+		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+		{
+			JEVHelper::modal();
 			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 			$popup=true;
 			$popupw = $params->get("popupw",800);
@@ -85,7 +86,6 @@ function DefaultEventManagementDialog($view,$row, $mask){
 			return false;
 		}
 
-		JHtml::_('bootstrap.modal', "action_dialogJQ".$row->rp_id());
             ?>
 		<div id="action_dialogJQ<?php echo $row->rp_id();?>" class="action_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">

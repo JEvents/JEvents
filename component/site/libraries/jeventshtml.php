@@ -568,7 +568,7 @@ class JEventsHTML
 					}
 					$arr_userids[$userid] = $contactlink;
 				}
-				return $arr_userids[$userid];
+				return  $arr_userids[$userid] ;
 			}
 			else
 			{
@@ -595,7 +595,7 @@ class JEventsHTML
 					}
 					$arr_evids[$evid] = $contactlink;
 				}
-				return $arr_evids[$evid];
+				return $arr_evids[$evid] ;
 			}
 
 			return '?';

@@ -250,7 +250,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$where[] = "\n ev.state=-1";
 		} 
                 else if ($state == 3){
-                    $where[] = "\n ev.state=1 OR ev.state=0";
+                    $where[] = "\n (ev.state=1 OR ev.state=0)";
                 }
 
 		// get the total number of records
@@ -629,7 +629,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$msg = "";
 		$event = $this->doSave($msg);
 
-
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', $msg);
@@ -639,6 +638,22 @@ class AdminIcaleventController extends JControllerAdmin
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 
+			// When editing an event from a specific repeat page we want to return to that specific repeat
+			if ($event && intval($event->rp_id())==0){
+				if (JRequest::getInt("rp_id",0)){
+					$tempevent = $this->dataModel->queryModel->listEventsById(JRequest::getInt("rp_id",0), true);
+					if ($tempevent){
+						$event = $tempevent;
+					}
+					else {
+						$event = $event->getFirstRepeat();
+					}
+				}
+				else {
+					$event = $event->getFirstRepeat();
+				}
+			}
+
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))
 			{
@@ -646,6 +661,14 @@ class AdminIcaleventController extends JControllerAdmin
 				if (!headers_sent())
 				{
 					header('Content-Type:text/html;charset=utf-8');
+				}
+				if ($event){
+					$year = $event->yup();
+					$month = $event->mup();
+					$day = $event->dup();
+					JRequest::setVar("year",$year);
+					JRequest::setVar("month", $month);
+					JRequest::setVar("day".$day);
 				}
 				if ($event && $event->state())
 				{
@@ -662,7 +685,6 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo $link; ?>";
 				</script>
@@ -724,7 +746,6 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				?>
 				<script type="text/javascript">
-					//window.parent.SqueezeBox.close();
 					window.parent.alert("<?php echo $msg; ?>");
 					window.parent.location="<?php echo $link; ?>";
 				</script>
@@ -903,7 +924,6 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
 		{
-
 			$row = new jIcalEventRepeat($event);
 			if (JEVHelper::canPublishEvent($row))
 			{

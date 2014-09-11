@@ -16,6 +16,8 @@
 	line-height:1.5em;
 
 }
+/* Stop some templates messing with background colours on hover */
+#jevents #jevents_body a:hover {background-color: inherit;}
 
 /*********************
 * Calendar style
@@ -126,8 +128,9 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 /***************************
 * List style
 **************************/
-ul.ev_ul {
+#jevents_body ul.ev_ul {
 	list-style:none;
+        list-style-type:none;
 	padding:0px;
 	margin:5px;
 }
@@ -527,32 +530,33 @@ td.showjevadd a.addjevent,.showjevadd a.addjevent  {
 }
 
 /***************************************
-* Mootools ToolTips for JEvents Calendar
+* Boostrap ToolTips for JEvents Calendar
 ****************************************/
+#jevents .jevbootstrap  .top .popover-title {
+	padding:0px;
+}
 .jevtip-tip, .jevtip {
-	float: left;
-	background: #f5f5f5;
-	border: 1px solid #D4D5AA;
-	padding: 0px;
-	max-width: 400px;
-	z-index:99;
-	font-size:10pt;
-} 
+   float: left;
+   background: #f5f5f5;
+   border: 1px solid #D4D5AA;
+   padding: 0px;
+   max-width: 400px;
+   z-index:99;
+   font-size:10pt;
+}
 .jevtip-text {
-	padding: 0;
-	margin: 0;
-	font-size: 0.8em;
+   padding: 0;
+   margin: 0;
+   font-size: 0.8em;
 }
 
 div.jevtt_title{
-	font-weight: bold;
-	font-size: 1.2em;
-	padding:2px;
-	width:196px;
+   font-weight: bold;
+   font-size: 1.2em;
+   padding:8px 14px;
+   border-radius:5px 5px 0px 0px;
 }
 div.jevtt_text{
-	padding:2px;
-	width:196px;
 	line-height: 1.3em;
 }
 
@@ -892,3 +896,5 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 		display: block;
 	 }
 }
+
+td.no_events_found {height:35px;text-align:center;font-weight:bold;}

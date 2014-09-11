@@ -462,7 +462,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// get the event ids first
 		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
@@ -625,7 +625,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// multiday condition
 		if ($multidayTreatment == 3)
@@ -1225,7 +1225,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// multiday condition
 		if ($multidayTreatment == 3)
@@ -2434,7 +2434,12 @@ class JEventsDBModel
 		// This version picks the details from the details table
 		if ($count)
 		{
-			$query = "SELECT count(distinct rpt.rp_id)";
+			if (!$showrepeats) {
+				$query = "SELECT count(distinct ev.ev_id)";
+			}
+			else {
+				$query = "SELECT count(distinct rpt.rp_id)";
+			}
 		}
 		else
 		{
@@ -3105,6 +3110,7 @@ class JEventsDBModel
 				. "\n FROM #__jevents_vevent as ev "
 				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. $extrajoin
 				. $catwhere
@@ -3494,7 +3500,7 @@ class JEventsDBModel
 		if (!JRequest::getInt('showpast', 0))
 		{
 			$datenow = JevDate::getDate("-12 hours");
-			$having = " AND rpt.endrepeat>'" . $datenow->toMysql() . "'";
+			$having = " AND rpt.endrepeat>'" . $datenow->toSql() . "'";
 		}
 
 		if (!$order)
@@ -3566,12 +3572,12 @@ class JEventsDBModel
 			// replace the ### placeholder with the keyword
 			$extraor = str_replace("###", $keyword, $extraor);
 
-			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' OR det.extra_info RLIKE '$keyword' $extraor)\n" :
+			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' OR det.location RLIKE '$keyword' OR det.extra_info RLIKE '$keyword' $extraor)\n" :
 					" (MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE) $extraor)\n";
 		}
 		else
 		{
-			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword'  OR det.extra_info RLIKE '$keyword')\n" :
+			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword'  OR det.location RLIKE '$keyword'  OR det.extra_info RLIKE '$keyword')\n" :
 					"MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE)\n";
 		}
 

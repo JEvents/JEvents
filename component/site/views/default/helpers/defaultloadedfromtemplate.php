@@ -40,7 +40,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))
 			{
-				$templates[$template_name] = $templates[$template_name][JFactory::getLanguage()->getTag()];
+				$templateArray = $templates[$template_name][JFactory::getLanguage()->getTag()];
+				// We have the most specific by language now fill in the gaps
+				 if (isset($templates[$template_name]["*"]))
+				{
+					foreach ($templates[$template_name]["*"] as $cat => $cattemplates){
+						if (!isset($templateArray[$cat])){
+							$templateArray[$cat] = $cattemplates;
+						}
+					}
+				}
+				$templates[$template_name] = 	$templateArray;
 			}
 			else if (isset($templates[$template_name]["*"]))
 			{
@@ -380,9 +390,23 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				// deprecated
 				case "{{TOOLTIP}}":
 					$search[] = "{{TOOLTIP}}";
 					$replace[] = "[[TOOLTIP]]";
+					$blank[] = "";
+					break;
+
+				// new version for bootstrap
+				case "{{TOOLTIPTITLE}}":
+					$search[] = "{{TOOLTIPTITLE}}";
+					$replace[] = "[[TOOLTIPTITLE]]";
+					$blank[] = "";
+					break;
+
+				case "{{TOOLTIPCONTENT}}":
+					$search[] = "{{TOOLTIPCONTENT}}";
+					$replace[] = "[[TOOLTIPCONTENT]]";
 					$blank[] = "";
 					break;
 
@@ -470,20 +494,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0))
 					{
-						JEVHelper::script('view_detail.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 						$cssloaded = true;
 						ob_start();
+						$view->eventIcalButton($event);
 						?>
-						<a href="#myical-modal" data-target="#ical_dialogJQ<?php echo $event->rp_id();?>" data-toggle="modal" title="<?php echo JText::_('JEV_SAVEICAL'); ?>">
-							<img src="<?php echo JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/jevents_event_sml.png' ?>" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL'); ?>" class="jev_ev_sml nothumb"/>
-						</a>
-						<div class="jevdialogs">
+						<div class="jevdialogs" style="position:relative;">
 						<?php
 						$search[] = "{{ICALDIALOG}}";
 						if ($view)
 						{
 							ob_start();
-							$view->eventIcalDialog($event, $mask);
+							$view->eventIcalDialog($event, $mask, true);
 							$dialog = ob_get_clean();
 							$replace[] = $dialog;
 						}
@@ -512,27 +533,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)) && !( $mask & MASK_POPUP ))
 					{
-						JEVHelper::script('view_detail.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
-
 						ob_start();
+						$view->eventManagementButton($event);
 						?>
-						<?php if (version_compare(JVERSION, "3.2", "ge")){ ?>
-						<a href="#my-modal" data-toggle="modal"  data-target="#action_dialogJQ<?php echo $event->rp_id();?>"  title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
-							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
-						</a>
-						<?php }
-						else	{ ?>
-						<a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT'); ?>">
-							<?php echo JEVHelper::imagesite('edit.png', JText::_('JEV_E_EDIT')); ?>
-						</a>
-						<?php } ?>
 						<div class="jevdialogs">
 						<?php
 						$search[] = "{{EDITDIALOG}}";
 						if ($view)
 						{
 							ob_start();
-							$view->eventManagementDialog($event, $mask);
+							$view->eventManagementDialog($event, $mask, true);
 							$dialog = ob_get_clean();
 							$replace[] = $dialog;
 						}
@@ -641,6 +651,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $stop_date : "";
 
 						$search[] = "{{ISOSTART}}";
 						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
@@ -649,7 +660,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
 						$blank[] = "";
 						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$replace[] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 						$blank[] = "";
 					}
 					else
@@ -694,6 +705,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
 						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
 						{
@@ -1122,9 +1134,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Date/time formats etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0)
+			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0 || strpos($search[$s], "MULTIENDDATE") > 0)
 			{
-				if (!isset($rawreplace[$search[$s]])){
+				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;
 				}
 				global $tempreplace, $tempevent, $tempsearch;
