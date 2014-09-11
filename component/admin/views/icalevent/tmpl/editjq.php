@@ -26,8 +26,8 @@ JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("useboostrap", 1))
 {
-	JFactory::getDocument()->addScript("/components/com_jevents/assets/js/bootstrap.js");
-	JFactory::getDocument()->addScript("/components/com_jevents/assets/js/jquery-migrate.min.js");
+	JHTML::script("components/com_jevents/assets/js/bootstrap.js");
+	JHTML::script("components/com_jevents/assets/js/jquery-migrate.min.js");
 }
 
 if ($params->get("bootstrapchosen", 1))
@@ -38,7 +38,7 @@ if ($params->get("bootstrapchosen", 1))
 if ($params->get("bootstrapcss", 1)==1 || $params->get("bootstrapcss", 1)==2)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JFactory::getDocument()->addStylesheet("/components/com_jevents/assets/css/bootstrap.css");
+	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
 }
 
 
