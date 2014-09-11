@@ -139,7 +139,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3" value="<?php echo $this->row->count(); ?>" onchange="checkInterval();" /><span id='count_label' style="margin-left:1em"><?php echo JText::_('REPEATS'); ?></span>
 			</fieldset>
 		</div>
-		<div style="float:left;margin-left:20px!important;" id="cu_until">
+		<div style="float:left;margin-left:20px!important;background-color:#dddddd;" id="cu_until">
 			<fieldset style="background-color:#dddddd">
 				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php
@@ -159,7 +159,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			<fieldset><legend><input type="radio" name="whichby" id="jevbyd" value="byd"  onclick="toggleWhichBy('byyearday');" /><?php echo JText::_('BY_YEAR_DAY'); ?></legend>
 				<div>					
 					<?php echo JText::_('COMMA_SEPARATED_LIST'); ?>
-					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="50" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
+					<input class="inputbox" type="text" name="byyearday" size="20" maxlength="100" value="<?php echo $this->row->byyearday(); ?>" onchange="checkInterval();" />
 				</div>
 				<div class="countback">
 					<?php echo JText::_('COUNT_BACK_YEAR'); ?>
@@ -300,7 +300,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 				var input = $('#' + label.attr('for'));
 				if (!input.prop('checked') && !input.prop('disabled')) {
 					label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
-					label.addClass('active btn-success');
+					if (input.prop('value')!=0){
+						label.addClass('active btn-success');
+					}
+					else {
+						label.addClass('active btn-danger');
+					}
 					input.prop('checked', true);
 				}
 			});
@@ -331,7 +336,12 @@ if ($this->row->id() != 0 && $this->row->freq())
 					return;
 				}
 				if (!input.prop('checked')) {
-					label.addClass('active btn-success');
+					if (input.prop('value')!=0){
+						label.addClass('active btn-success');
+					}
+					else {
+						label.addClass('active btn-danger');
+					}
 				}
 				else {
 					label.removeClass('active btn-success btn-danger btn-primary');
@@ -366,7 +376,13 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 					return;
 				}
-				label.addClass('active btn-success');
+				if (elem.prop('value')!=0){
+					label.addClass('active btn-success');
+				}
+				else {
+					label.addClass('active btn-danger');
+				}
+
 			});
 			
 		})(jQuery);

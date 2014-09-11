@@ -37,6 +37,11 @@ class ExtViewICalevent extends JEventsExtView
 			$pathway = JFactory::getApplication()->getPathway();
 
 			$pathway->addItem($this->data['row']->title() ,"");
+
+			// Set date in view for use in navigation icons
+			$this->year = $this->data['row']->yup();
+			$this->month = $this->data['row']->mup();
+			$this->day = $this->data['row']->dup();
 		}
 		
 	}	

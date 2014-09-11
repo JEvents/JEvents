@@ -34,7 +34,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
 		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
-		JToolBarHelper::deleteList('Delete Event and all repeats?', 'icalevent.delete');
+		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+		if ($state==-1){
+			JToolBarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
+		}
+		else {
+			JToolBarHelper::trash('icalevent.delete');
+		}
 		JToolBarHelper::spacer();
 		//JToolBarHelper::help( 'screen.ical', true);
 
@@ -65,10 +71,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 					JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
 			);
 
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
 			$options = array();
+                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 			JHtmlSidebar::addFilter(
 					JText::_('ALL_EVENTS'), 'state', JHtml::_('select.options', $options, 'value', 'text', $state)
 			);
@@ -115,11 +123,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
 			$this->assign('icsList', $icslist);
 
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
 			$options = array();
+                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));                    
+			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 
 			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
 			$this->assign('statelist', $statelist);
@@ -181,23 +191,23 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			if ($this->editCopy)
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'Jev_Apply', false);
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'Save', false);
-				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_copy_warning"), 'save', 'save', 'JEV_Save_New', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'SAVE', false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_copy_warning"), 'save', 'save', 'JEV_SAVE_NEW', false);
 			}
 			else
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'JEV_Apply', false);
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
-				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_Save_New', false);
+				$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'SAVE', false);
+				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_SAVE_NEW', false);
 			}
 		}
 		else
 		{
 			if (JEVHelper::isEventEditor())
-				JToolBarHelper::apply('icalevent.apply', "JEV_Apply");
+				JToolBarHelper::apply('icalevent.apply', "SAVE");
 			JToolBarHelper::save('icalevent.save');
-			JToolBarHelper::save2new('icalevent.savenew', "JEV_Save_New");
+			JToolBarHelper::save2new('icalevent.savenew', "JEV_SAVE_NEW");
 		}
 
 		JToolBarHelper::cancel('icalevent.list');

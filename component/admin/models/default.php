@@ -122,10 +122,12 @@ class DefaultsModelDefault extends JModelLegacy
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$query = 'SELECT * FROM #__jev_defaults' .
-			' WHERE id = '.$this->_db->Quote($this->_id);
+			$query = 'SELECT d.* , c.title as category_title FROM #__jev_defaults as d ' .
+			'LEFT JOIN #__categories as c on c.id = d.catid' .
+			' WHERE d.id = '.$this->_db->Quote($this->_id);
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
+			//echo $this->_db->getErrorMsg();
 			return (boolean) $this->_data;
 		}
 		return true;

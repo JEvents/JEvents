@@ -126,8 +126,9 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 /***************************
 * List style
 **************************/
-ul.ev_ul {
+#jevents_body ul.ev_ul {
 	list-style:none;
+        list-style-type:none;
 	padding:0px;
 	margin:5px;
 }
@@ -370,6 +371,7 @@ tr.icon_labels{
 	font-size:8pt;
 	margin:0px;
 	padding:0px;
+        vertical-align: top;
 }
 div#ev_icon_yearly {
 	background-image: url("../images/calyear.png")!important;
@@ -891,3 +893,5 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 		display: block;
 	 }
 }
+
+td.no_events_found {height:35px;text-align:center;font-weight:bold;}

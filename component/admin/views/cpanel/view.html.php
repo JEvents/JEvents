@@ -358,12 +358,12 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false)
+		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false && stripos($filecontent, "TechJoomla") === false && stripos($filecontent, "hikashop") === false )
 		{
 			return false;
 		}
 		// for JCE and Virtuemart only check component version number
-		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false)
+		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false || strpos($filecontent, "TechJoomla") !== false || strpos($filecontent, "hikashop") !== false)
 		{
 			if (strpos($filecontent, "type='component'") === false && strpos($filecontent, 'type="component"') === false)
 			{
@@ -374,7 +374,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false)
+		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false && strpos($manifestdata['author'], "TechJoomla") === false && strpos($manifestdata['name'], "HikaShop") === false)
 		{
 			return false;
 		}
@@ -610,8 +610,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$app->version = $version->getShortVersion();
 		$apps[$app->name] = $app;
 
-// components (including JEvents
-		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce.xml", true, true)
+// components (including JEvents)
+		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true)
 		);
 		foreach ($xmlfiles3 as $manifest)
 		{
@@ -859,6 +859,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"mod_jevents_dynamiclegend","name"=>"mod_jevents_dynamiclegend","type"=>"module"),
 			// Silver - Calendar Plus
 			array("element"=>"mod_jevents_calendarplus","name"=>"mod_jevents_calendarplus","type"=>"module"),
+			// Silver - Slideshow Module
+			array("element"=>"mod_jevents_slideshow","name"=>"mod_jevents_slideshow","type"=>"module"),
 			// Silver - facebook
 			array("element"=>"jevfacebook","name"=>"jevfacebook","folder"=>"jevents", "type"=>"plugin"),
 			// Silver - featured
@@ -1049,7 +1051,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
 			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 		 */
 
@@ -1068,9 +1070,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml")." WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 		else {
 			$extensionname = str_replace(" ","_",$extension->element);
@@ -1079,13 +1081,13 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 			$id = $db->insertid();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
 			$db->query();
-			echo $db->setErrorMsg();
+			echo $db->getErrorMsg();
 		}
 
 	}

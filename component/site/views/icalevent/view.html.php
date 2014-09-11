@@ -69,25 +69,28 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			if ($this->editCopy)
 			{
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'Save', false);
+				
 				if (JEVHelper::isEventEditor())
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'jev_Apply', false);
+					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_copy_warning"), 'apply', 'apply', 'SAVE', false);
 				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_copy_warning"), 'save', 'save', 'JEV_Save_New', false);
+                                $this->toolbarConfirmButton("icalevent.save", JText::_("save_copy_warning"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			}
 			else
 			{
-				$this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
-				if (JEVHelper::isEventEditor())
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'jev_Apply', false);
+                            if (JEVHelper::isEventEditor())
+					$this->toolbarConfirmButton("icalevent.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'SAVE', false);
 				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_Save_New', false);
+                            $this->toolbarConfirmButton("icalevent.save", JText::_("save_icalevent_warning"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				
 			}
 		}
 		else
 		{
-			$this->toolbarButton("icalevent.save", 'save', 'save', 'Save', false);
+			
 			if (JEVHelper::isEventEditor())
-				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'Apply', false);
+				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'SAVE', false);
 			//JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
+                        $this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -101,7 +104,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			if ($this->id > 0)
 			{
-				$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton("icalrepeat.detail", 'cancel', 'cancel', 'Cancel', false);
 			}
 			else
 			{

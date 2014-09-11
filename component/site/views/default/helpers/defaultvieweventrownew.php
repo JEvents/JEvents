@@ -81,7 +81,7 @@ function DefaultViewEventRowNew($view,$row,$args="") {
 
 	echo $times;
 		?>
-			<a class="ev_link_row" href="<?php echo $rowlink; ?>" <?php echo $args;?> style="font-weight:bold;color:<?php echo $fgcolor;?>;" title="<?php echo JEventsHTML::special($row->title()) ;?>"><?php echo $tmpTitle ;?></a>
+			<a class="ev_link_row" href="<?php echo $rowlink; ?>" <?php echo $args;?> style="color:<?php echo $fgcolor;?>;" title="<?php echo JEventsHTML::special($row->title()) ;?>"><?php echo $tmpTitle ;?></a>
 			<?php
 			if( $cfg->get('com_byview') == '1' ) {
 				echo JText::_('JEV_BY') . '&nbsp;<i>'. $row->contactlink() .'</i>';

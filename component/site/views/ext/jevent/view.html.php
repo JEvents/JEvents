@@ -40,6 +40,10 @@ class DefaultJevent extends DefaultICalEvent
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 		
+		// Set date in view for use in navigation icons
+		$this->year = $this->data['row']->yup();
+		$this->month = $this->data['row']->mup();
+		$this->day = $this->data['row']->dup();
 
 	}	
 }

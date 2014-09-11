@@ -111,16 +111,31 @@ class JEventsDBModel
 			}
 
 			$query = "SELECT c.id"
-					. "\n FROM #__categories AS c"
-					. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+				. "\n FROM #__categories AS c"
+				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+				. $q_published
+				// language filter only applies when not editing
+				. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
+				. "\n AND c.extension = '" . $sectionname . "'"
+				. "\n " . $where
+				. "\n ORDER BY c.lft asc"  ;
+
+			$db->setQuery($query);
+			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
+			/*
+			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
 					. "\n AND c.extension = '" . $sectionname . "'"
-					. "\n " . $where
-					. "\n ORDER BY c.lft asc"  ;
+					. "\n " . $where;
 
-			$db->setQuery($query);
+			$query = $db->getQuery(true);
+			$query ->select('c.id')
+			->from('#__categories AS c')
+			->where($whereQuery)
+			->order('c.lft asc');
+			 */
 			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
@@ -447,7 +462,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// get the event ids first
 		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
@@ -610,7 +625,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// multiday condition
 		if ($multidayTreatment == 3)
@@ -1210,7 +1225,7 @@ class JEventsDBModel
 
 		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
 		$t_datenow = JEVHelper::getNow();
-		$t_datenowSQL = $t_datenow->toMysql();
+		$t_datenowSQL = $t_datenow->toSql();
 
 		// multiday condition
 		if ($multidayTreatment == 3)
@@ -2419,7 +2434,12 @@ class JEventsDBModel
 		// This version picks the details from the details table
 		if ($count)
 		{
-			$query = "SELECT count(distinct rpt.rp_id)";
+			if (!$showrepeats) {
+				$query = "SELECT count(distinct ev.ev_id)";
+			}
+			else {
+				$query = "SELECT count(distinct rpt.rp_id)";
+			}
 		}
 		else
 		{
@@ -2552,6 +2572,7 @@ class JEventsDBModel
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
 					. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+					." \n , ev.state as state "
 					. "\n FROM (#__jevents_vevent as ev $extratables)"
 					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
@@ -2607,7 +2628,7 @@ class JEventsDBModel
 	 * Get Event by ID (not repeat Id) result is based on first repeat
 	 *
 	 * @param event_id $evid
-	 * @param boolean $includeUnpublished
+	 * @param boolean $includeUnpublished (which also means trashed too!)
 	 * @param string $jevtype
 	 * @return jeventcal (or desencent)
 	 */
@@ -3089,6 +3110,7 @@ class JEventsDBModel
 				. "\n FROM #__jevents_vevent as ev "
 				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. $extrajoin
 				. $catwhere
@@ -3478,7 +3500,7 @@ class JEventsDBModel
 		if (!JRequest::getInt('showpast', 0))
 		{
 			$datenow = JevDate::getDate("-12 hours");
-			$having = " AND rpt.endrepeat>'" . $datenow->toMysql() . "'";
+			$having = " AND rpt.endrepeat>'" . $datenow->toSql() . "'";
 		}
 
 		if (!$order)
@@ -3550,12 +3572,12 @@ class JEventsDBModel
 			// replace the ### placeholder with the keyword
 			$extraor = str_replace("###", $keyword, $extraor);
 
-			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' OR det.extra_info RLIKE '$keyword' $extraor)\n" :
+			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword' OR det.location RLIKE '$keyword' OR det.extra_info RLIKE '$keyword' $extraor)\n" :
 					" (MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE) $extraor)\n";
 		}
 		else
 		{
-			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword'  OR det.extra_info RLIKE '$keyword')\n" :
+			$searchpart = ( $useRegX ) ? "(det.summary RLIKE '$keyword' OR det.description RLIKE '$keyword'  OR det.location RLIKE '$keyword'  OR det.extra_info RLIKE '$keyword')\n" :
 					"MATCH (det.summary, det.description, det.extra_info) AGAINST ('$keyword' IN BOOLEAN MODE)\n";
 		}
 

@@ -216,20 +216,30 @@ class jevFilterProcessing
 		return 	$this->needsgroupby;
 	}
 
-	function getFilterHTML(){
-		if (!isset($this->filterHTML)){
-			$this->filterHTML = array();
-			foreach ($this->filters as $filter) {
+	function getFilterHTML($allowAutoSubmit = true){
+		if (isset($this->filterHTML)){
+			return $this->filterHTML;
+		}
+
+		$this->filterHTML = array();
+		foreach ($this->filters as $filter) {
+			if (method_exists($filter,"createfilterHTML")){
+				$filterHTML = $filter->createfilterHTML($allowAutoSubmit);
+			}
+			else {
 				$filterHTML = $filter->_createfilterHTML();
-				if (!is_array($filterHTML)){
+			}
+			if (!is_array($filterHTML)){
+				continue;
+			}
+			if (array_key_exists("merge",$filterHTML)){
+				$this->filterHTML = array_merge($this->filterHTML,$filterHTML["merge"]);
+			}
+			else {
+				if (!isset($filterHTML["title"]) || !isset($filterHTML["html"]) || ($filterHTML["title"]=="" && $filterHTML["html"]=="")){
 					continue;
 				}
-				if (array_key_exists("merge",$filterHTML)){
-					$this->filterHTML = array_merge($this->filterHTML,$filterHTML["merge"]);
-				}
-				else {
-					$this->filterHTML[] = $filterHTML;
-				}
+				$this->filterHTML[] = $filterHTML;
 			}
 		}
 		return $this->filterHTML;

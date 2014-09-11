@@ -491,9 +491,11 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		foreach ($testevent->repetitions as $repeat)
 		{
 
-			$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+			$sql = "SELECT *, ev.state FROM #__jevents_repetition as rpt ";
 			$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
+			$sql .= " LEFT JOIN #__jevents_vevent as ev ON ev.ev_id=rpt.eventid ";
 			$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+			$sql .= " AND ev.state=1";
 			$sql .= " LIMIT 100";
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
@@ -542,7 +544,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			foreach ($testevent->repetitions as $repeat)
 			{
 
-				$sql = "SELECT *, evt.catid ";
+				$sql = "SELECT *, evt.catid , evt.state";
 				if ($params->get("multicategory", 0))
 				{
 					$sql .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
@@ -558,6 +560,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				}
 
 				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+				$sql .= " AND evt.state=1";
 				if ($params->get("multicategory", 0))
 				{
 					 $sql .= " AND  catmap.catid IN(" . implode(",",$catids) . ") GROUP BY rpt.rp_id";
@@ -566,6 +569,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 				else {
 					$sql .= " AND (evt.catid=" . $testevent->catid() . ") GROUP BY rpt.rp_id";
 				}
+
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
 				$conflicts = $db->loadObjectList();
@@ -597,10 +601,11 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		{
 			foreach ($testevent->repetitions as $repeat)
 			{
-				$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+				$sql = "SELECT *, evt.state FROM #__jevents_repetition as rpt ";
 				$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
 				$sql .= " LEFT JOIN #__jevents_vevent as evt ON evt.ev_id=rpt.eventid ";
 				$sql .= " WHERE rpt.eventid<>" . intval($eventid) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+				$sql .= " AND evt.state=1";
 				$sql .= " AND evt.icsid=" . $testevent->icsid() . " GROUP BY rpt.rp_id";
 				$sql .= " LIMIT 100";
 				$db->setQuery($sql);
@@ -633,9 +638,11 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 	$overlaps = array();
 	if ($params->get("noclashes", 0))
 	{
-		$sql = "SELECT * FROM #__jevents_repetition as rpt ";
+		$sql = "SELECT *, ev.state  FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
+		$sql .= " LEFT JOIN #__jevents_vevent as ev ON ev.ev_id=rpt.eventid ";
 		$sql .= " WHERE rpt.rp_id<>" . intval($repeat->rp_id) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+		$sql .= " AND ev.state=1";
 		$sql .= " LIMIT 100";
 
 		$db->setQuery($sql);
@@ -684,7 +691,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 
 		if (!$skipCatTest)
 		{
-			$sql = "SELECT *, evt.catid ";
+			$sql = "SELECT *, evt.catid, evt.state ";
 			if ($params->get("multicategory", 0))
 			{
 				$sql .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
@@ -698,6 +705,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 				$sql .= " LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			}
 			$sql .= " WHERE rpt.rp_id<>" . intval($repeat->rp_id) . " AND rpt.startrepeat<" . $db->Quote($repeat->endrepeat) . " AND rpt.endrepeat>" . $db->Quote($repeat->startrepeat);
+			$sql .= " AND evt.state=1";
 			if ($params->get("multicategory", 0))
 			{
 				$sql .= " AND  catmap.catid IN(" . implode(",",$catids) . ") GROUP BY rpt.rp_id";

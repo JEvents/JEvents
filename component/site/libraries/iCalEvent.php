@@ -502,6 +502,9 @@ else $this->_detail = false;
 				if ($oldrepeat->startday == $repeat->startday){
 					$matched = true;
 					$repeat->old_rpid = $oldrepeat->rp_id;
+					if (is_null($repeat->rp_id)){
+						$repeat->rp_id = $repeat->old_rpid;
+					}
 					break;
 				}
 				if ($oldrepeat->startday > $repeat->startday){
@@ -516,6 +519,9 @@ else $this->_detail = false;
 		// if only one repeat in the past and in the future then reuse the same id
 		if (count($this->_repetitions)==1 && $oldrepeatcount==1){
 			$this->_repetitions[0]->old_rpid = $oldrepeats[0]->rp_id;
+			if (is_null($this->_repetitions[0]->rp_id)){
+				$this->_repetitions[0]->rp_id = $this->_repetitions[0]->old_rpid;
+			}
 		}
 
 		$sql = "REPLACE INTO #__jevents_repetition (rp_id,eventid,eventdetail_id,startrepeat,endrepeat,duplicatecheck) VALUES ";

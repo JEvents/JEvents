@@ -173,8 +173,9 @@ class CsvLine {
         $ical .= "UID:".$this->getUid()."\n"
                ."CATEGORIES:".$this->categories."\n"
                ."SUMMARY:".$this->summary."\n"
-               ."DTSTART".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtstart)."\n"
-               ."DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
+               ."DTSTART".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtstart)."\n";
+
+	if($this->dtend != "") $ical .= "DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
         if($this->dtstamp != "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
         if($this->location != "") $ical .= "LOCATION:".$this->location."\n";
         if($this->description != "") $ical .= "DESCRIPTION:".$this->description."\n";

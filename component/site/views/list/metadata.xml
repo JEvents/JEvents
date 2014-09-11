@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: metadata.xml 1255 2010-10-06 13:05:26Z royceharding $ --> 
+<metadata>
+	<view title="COM_JEVENTS_LIST_DEFAULT_TITLE">
+		<message><![CDATA[COM_JEVENTS_LIST_DEFAULT_TITLE]]></message>
+		<options var="layout" >
+			<option value='events' name="COM_JEVENTS_LIST_DEFAULT_TITLE" msg="COM_JEVENTS_LIST_DEFAULT_DESC" />
+		</options>		
+		<options var="task" >
+			<option value='list.events' name="COM_JEVENTS_LIST_DEFAULT_TITLE" msg="COM_JEVENTS_LIST_DEFAULT_DESC" />
+		</options>
+	</view>
+	<state>
+		<name>JEvents</name>
+		<description>JEvents List of Events</description>
+		<params>
+		</params>
+	</state>
+</metadata>

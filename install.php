@@ -3,12 +3,14 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     $Id: scriptfile.php 1430 2010-11-11 14:15:05Z royceharding $
+ * @version     3.1.30
+ * @releasedate August 2014
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 

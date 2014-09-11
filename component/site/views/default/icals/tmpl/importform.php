@@ -12,7 +12,7 @@ JFactory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
 $action = JFactory::getApplication()->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 
 ?>
-<div style="padding:10px;">
+<div class="p10px">
 <?php
 echo "<h3>".JText::_('JEV_IMPORT_ICALEVENT')."</h3>\n";
 

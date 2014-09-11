@@ -58,7 +58,7 @@ if (JRequest::getVar('save'))
 				<?php else : ?>
 				<div id="j-main-container">
 <?php endif; ?>
-				<textarea rows="28" cols="93" name="content"><?php echo $content; ?></textarea>
+				<textarea style="width:90%;height:650px;" name="content"><?php echo $content; ?></textarea>
 				<input type="submit" style="display:block;margin-left:2px;" name="save" class="<?php echo $btnclass;?>" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
 				</form>
 				<?php
@@ -88,7 +88,7 @@ if (JRequest::getVar('save'))
 						$msgType = 'error';
 					}
 
-					$mainframe->enqueueMessage($msg);
+					$mainframe->enqueueMessage($msg, $msgType);
 					$mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css&msg=' . $msg . '&msgtype=' . $msgType . '');
 
 				}

@@ -61,6 +61,15 @@ SCRIPT;
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
+		if (JevJoomlaVersion::isCompatible("3.0"))
+		{
+			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+		else
+		{
+			JEVHelper::stylesheet('eventsadmin16.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+
 		return implode($html);
 	}
 
@@ -72,7 +81,7 @@ SCRIPT;
 		$html[]  = '<label id="pick1064797275" for="'.$this->id.'" class="hasTip"  style="color:'.JevMapColor($this->value).';background-color:'.$this->value.';"		'
 		.' title="'.htmlspecialchars(trim(JText::_($text), ':').'::'
 		.	JText::_($this->description), ENT_COMPAT, 'UTF-8').'" >' ;
-		$html[]  = '<a id="colorPickButton"  href="javascript:void(0)"   class=".jev_colour_picker_b">'. JText::_('JEV_COLOR_PICKER').'</a>';
+		$html[]  = '<a id="colorPickButton"  href="javascript:void(0)"   class=".jev_colour_picker_b" style="color:'.JevMapColor($this->value).';background-color:'.$this->value.';">'. JText::_('JEV_COLOR_PICKER').'</a>';
 		$html[]  = '</label>';
 		return implode($html);
 

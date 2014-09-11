@@ -13,7 +13,7 @@ function DefaultExportOutlook2003($view, $publiclink, $privatelink)
 	{
 		echo "<div class='ical_form_button export_public'><h3>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</h3></div>";
 	} else {
-		echo "<div class='ical_form_button export_public' style='clear:left;'><h3 style='text-align:left;'>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</h3></div>";
+		echo "<div class='ical_form_button export_public clearleft' ><h3>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</h3></div>";
 	}
 	echo "<div class='ical_form_button export_public'><a href='$publiclink&outlook2003=1'>" . JText::_('JEV_REP_ICAL_PUBLIC') . "</a></div>";
 	

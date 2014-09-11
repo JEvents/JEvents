@@ -45,7 +45,7 @@ function DefaultViewEventRowAdmin($view,$row, $manage=false){
 		?>
 		
 		<li class="ev_td_li" style="<?php echo $border;?>">
-			<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" style="font-weight:bold;" href="<?php echo $eventlink; ?>" title="<?php echo JEventsHTML::special($row->title()) . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') );?>"><?php echo $row->title() . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') );?></a>
+			<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" href="<?php echo $eventlink; ?>" title="<?php echo JEventsHTML::special($row->title()) . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') );?>"><?php echo $row->title() . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') );?></a>
 			&nbsp;<?php echo JText::_('JEV_BY');?>
 			&nbsp;<i><?php echo $row->contactlink('',true);?></i>
 			&nbsp;&nbsp;<?php echo $deletelink;?>

@@ -145,7 +145,7 @@ RAWTEXT;
 		$registry = JRegistry::getInstance("jevents");
 		$registry->set("jevents.icsfile", $temp);
 
-		if (false === ($temp->_icalInfo =& JEVHelper::iCalInstance($uploadURL)) ) {
+		if (false === ($temp->_icalInfo = JEVHelper::iCalInstance($uploadURL)) ) {
 			return false;
 		}
 
@@ -587,6 +587,10 @@ RAWTEXT;
 							foreach ($evcat as $ct){
 								$vevent->catid[] =  $categories[$ct]->id;
 							}							
+						}
+						if ($params->get("multicategory",0) && count($evcat)==1){
+							$vevent->catid = array();
+							$vevent->catid[] =  $categories[$evcat[0]]->id;
 						}
 						else {
 							$vevent->catid =  $categories[$evcat[0]]->id;							

@@ -530,6 +530,7 @@ tr.icon_labels{
     font-size:7pt;
     margin:0px;
     padding:0px;
+    vertial-align:top;
 }
 div#ev_icon_yearly {
     background-image: url("../images/cal5x.jpg")!important;
