@@ -38,6 +38,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL",true)
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_LABEL",true);?>", "ICAL_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS",true);?>", "ACCESS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS_LABEL",true);?>", "ACCESS_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STATE",true);?>", "STATE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_STATE_LABEL",true);?>", "STATE_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCN");
