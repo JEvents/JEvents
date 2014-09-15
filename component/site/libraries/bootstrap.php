@@ -264,8 +264,10 @@ class JevHtmlBootstrap
 			// Attach the modal to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					$('#$selector').modal($options);
-					})(jQuery);"
+					if ($('#$selector') {
+						$('#$selector').modal($options);
+					}
+				})(jQuery);"
 			);
 
 			// Set static array
