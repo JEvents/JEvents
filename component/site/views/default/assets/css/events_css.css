@@ -800,3 +800,6 @@ div.export_form {
 	 }
 }
 td.no_events_found {height:35px;text-align:center;font-weight:bold;}
+
+/** Css for jQuery popups in calendar cells **/
+.popover div > div {color:inherit;}

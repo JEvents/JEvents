@@ -850,3 +850,6 @@ div.export_form {
 
 table.ev_table {margin:auto auto}
 #jevents_body td.no_events_found {height:35px;text-align:center;font-weight:bold;border:1px solid #CCC;}
+
+/** Css for jQuery popups in calendar cells **/
+.popover div > div {color:inherit;}
