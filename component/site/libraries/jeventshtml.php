@@ -568,12 +568,7 @@ class JEventsHTML
 					}
 					$arr_userids[$userid] = $contactlink;
 				}
-				// New Joomla code for mail cloak only works once on a page !!!
-				// Random number
-				$rand = rand(1, 100000);
-
-				$arr_userids[$userid] = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $arr_userids[$userid] );
-				return $arr_userids[$userid];
+				return  $arr_userids[$userid] ;
 			}
 			else
 			{
@@ -600,13 +595,7 @@ class JEventsHTML
 					}
 					$arr_evids[$evid] = $contactlink;
 				}
-				// New Joomla code for mail cloak only works once on a page !!!
-				// Random number
-				$rand = rand(1, 100000);
-
-				$arr_evids[$evid] = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $arr_evids[$evid] );
-
-				return $arr_evids[$evid];
+				return $arr_evids[$evid] ;
 			}
 
 			return '?';
