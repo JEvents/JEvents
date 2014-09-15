@@ -45,7 +45,7 @@
 		<filename>mod.defines.php</filename>
 		<filename>router.php</filename>
 	</files>
-    <media folder="media" destination="com_jevlocations">
+    <media folder="media" destination="com_jevents">
 		<folder>css</folder>
 		<folder>js</folder>
 	</media>
