@@ -58,8 +58,10 @@ class JevHtmlBootstrap
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					$('#$selector').affix($options);
-					})(jQuery);"
+					if ($('#$selector')){
+						$('#$selector').affix($options);
+					}
+				})(jQuery);"
 			);
 
 			// Set static array
@@ -92,8 +94,10 @@ class JevHtmlBootstrap
 		// Attach the alerts to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				$('.$selector').alert();
-				})(jQuery);"
+				if ($('#$selector')){
+					$('.$selector').alert();
+				}
+			})(jQuery);"
 		);
 
 		static::$loaded[__METHOD__][$selector] = true;
@@ -124,8 +128,10 @@ class JevHtmlBootstrap
 		// Attach the alerts to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				$('.$selector').button();
-				})(jQuery);"
+				if ($('#$selector')){
+					$('.$selector').button();
+				}
+			})(jQuery);"
 		);
 
 		static::$loaded[__METHOD__][$selector] = true;
@@ -166,8 +172,10 @@ class JevHtmlBootstrap
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					$('.$selector').carousel($options);
-					})(jQuery);"
+					if ($('#$selector')){
+						$('.$selector').carousel($options);
+					}
+				})(jQuery);"
 			);
 
 			// Set static array
@@ -200,8 +208,10 @@ class JevHtmlBootstrap
 		// Attach the dropdown to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				$('.$selector').dropdown();
-				})(jQuery);"
+				if ($('#$selector')){
+					$('.$selector').dropdown();
+				}
+			})(jQuery);"
 		);
 
 		static::$loaded[__METHOD__][$selector] = true;
@@ -264,8 +274,10 @@ class JevHtmlBootstrap
 			// Attach the modal to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					$('#$selector').modal($options);
-					})(jQuery);"
+					if ($('#$selector') {
+						$('#$selector').modal($options);
+					}
+				})(jQuery);"
 			);
 
 			// Set static array
@@ -360,7 +372,9 @@ class JevHtmlBootstrap
 		JFactory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
-				jQuery('" . $selector . "').popover(" . $options . ");
+				if (jQuery('#$selector')){
+					jQuery('" . $selector . "').popover(" . $options . ");
+				}
 			});"
 		);
 

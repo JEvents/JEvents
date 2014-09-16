@@ -37,6 +37,16 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		$startDate = $row->publish_up();
 		//$eventDate = JevDate::mktime(substr($startDate,11,2),substr($startDate,14,2), substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
 		$eventDate = JevDate::strtotime($startDate);
+		$datenow = JEVHelper::getNow();
+		if ($relDay > 0)
+		{
+			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $startDate) . " +$relDay days");
+		}
+		else
+		{
+			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $startDate) . " $relDay days");
+		}
+
 
 		$targetid = $this->modparams->get("target_itemid",0);
 		$link = $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
