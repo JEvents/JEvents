@@ -24,32 +24,64 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 					{
 						?>
 						<div id="unstyledical">
-							<a href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_All_Recurrences");
-								?>
-							</a><br/>
-							<a href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_Single_Recurrence");
-								?>
-							</a>
+							<div class="row-fluid">
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_Single_Recurrence");
+									?>
+								</a>
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_All_Recurrences");
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span6" href="<?php echo getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOGCAL") ?>" target="_blank" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_ADDTOGCAL") . '" />';
+									echo JText::_("JEV_Single_Recurrence");
+									?>
+								</a>
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_All_Recurrences");
+									?>
+								</a>
+							</div>
 						</div>
 						<div id="styledical">
-							<a href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_All_Recurrences");
-								?>
-							</a><br/>
-							<a href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_Single_Recurrence");
-								?>
-							</a>
+							<div class="row-fluid">
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_Single_Recurrence");
+									?>
+								</a>
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_All_Recurrences");
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_Single_Recurrence");
+									?>
+								</a>
+								<a class="span6" href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
+									echo JText::_("JEV_All_Recurrences");
+									?>
+								</a>
+							</div>
 						</div>
 						<?php
 					}
@@ -99,4 +131,27 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 	</script>
 	<?php
 
+}
+
+function getAddToGCal($row)
+{
+
+	$description = urlencode($row->title());
+	$dates = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime())."/".JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());
+	$location = urlencode("myaddress");
+	$siteName = urlencode("sitename");
+	$siteURL = urlencode("siteurl");
+	$details = urlencode($row->get('description'));
+
+	
+	$urlString['description'] = "text=$description";
+	$urlString['dates'] = "dates=$dates";
+	$urlString['location'] = "location=$location";
+	$urlString['trp'] = "trp=false";
+	$urlString['websiteName'] = "sprop=$siteName";
+	$urlString['websiteURL'] = "sprop=name:$siteURL";
+	$urlString['details'] = "details=$details";
+	$link = "http://www.google.com/calendar/event?action=TEMPLATE&".implode("&", $urlString);
+
+	return $link;
 }
