@@ -148,7 +148,7 @@
 		<field name="com_notifyauthor" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY_AUTHOR" description="JEV_NOTIFY_AUTHOR_TIP" difficulty="2"/>
 		<field name="showpriority" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" difficulty="2"/>
 
-		<field name="checkconflicts" type="list" default="2" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="1">
+		<field name="checkconflicts" type="list" default="0" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="1">
 			<option value="0">JEV_CHECK_CLASHES_OPTION_NOT</option>
 			<option value="1">JEV_CHECK_CLASHES_OPTION_SPECIFIC</option>
 			<option value="2">JEV_CHECK_CLASHES_OPTION_ANY</option>
