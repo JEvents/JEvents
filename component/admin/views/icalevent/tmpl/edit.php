@@ -32,7 +32,7 @@ if ($params->get("bootstrapchosen", 1))
 if ($params->get("bootstrapcss", 1)==1)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 }
 else if ($params->get("bootstrapcss", 1)==2)
 {
