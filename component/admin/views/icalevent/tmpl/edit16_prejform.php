@@ -177,7 +177,7 @@ if ($this->editCopy)
 echo $editor->save('jevcontent');
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+if (  $params->get("checkconflicts", 0)  || ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	?>
@@ -206,7 +206,7 @@ else
 
 			</script>
 				<?php
-				if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+				if (  $params->get("checkconflicts", 0)  || ($params->get("checkclashes", 0) || $params->get("noclashes", 0)) )
 				{
 					?>
 				<div id='jevoverlapwarning'>
