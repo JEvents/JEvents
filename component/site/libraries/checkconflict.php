@@ -166,21 +166,7 @@ function ProcessRequest(&$requestObject, $returnData)
 
 	$params = JComponentHelper::getParams("com_jevents");
 
-	//We need to know if old parameters are in place
-	$checkconflicts = $params->get("checkconflicts", "NO");
-	$checkclashes = $params->get("checkclashes", "NO");
-	$noclashes = $params->get("noclashes", "NO");
-
-	if($checkconflicts === "NO")
-	{
-		$condition = (!$params->get("checkclashes", 0) && !$params->get("noclashes", 0));
-	}
-	else
-	{
-		$condition = (!$params->get("checkconflicts", 0));
-	}
-
-	if ($condition)
+	if (!$params->get("checkconflicts", 0))
 		return $returnData;
 
 	// Enforce referrer
@@ -504,7 +490,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 
 
 
-	if ( ($params->get("checkconflicts", 0)==2) || $params->get("noclashes", 0))
+	if ( $params->get("checkconflicts", 0)==2 )
 	{
 		foreach ($testevent->repetitions as $repeat)
 		{
@@ -528,7 +514,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			}
 		}
 	}
-	else if ( ($params->get("checkconflicts", 0)==1) || $params->get("checkclashes", 0))
+	else if ( ($params->get("checkconflicts", 0)==1) )
 	{
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
@@ -654,7 +640,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 	$params = JComponentHelper::getParams("com_jevents");
 	$db = JFactory::getDBO();
 	$overlaps = array();
-	if (($params->get("checkconflicts", 0)==2) || $params->get("noclashes", 0))
+	if ( $params->get("checkconflicts", 0) == 2 )
 	{
 		$sql = "SELECT *, ev.state  FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
@@ -675,7 +661,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 			$overlaps = array_merge($overlaps, $conflicts);
 		}
 	}
-	else if (($params->get("checkconflicts", 0)==1) || $params->get("checkclashes", 0))
+	else if ( $params->get("checkconflicts", 0) == 1 )
 	{
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
