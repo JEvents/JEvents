@@ -979,3 +979,6 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 .jev_toprow .jev_header2 > * {
   height: auto !important;
 }
+
+/** Css for jQuery popups in calendar cells **/
+.popover div > div {color:inherit;}

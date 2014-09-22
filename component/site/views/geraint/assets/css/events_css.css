@@ -814,3 +814,6 @@ div.export_form {
 		display: block;
 	 }
 }
+
+/** Css for jQuery popups in calendar cells **/
+.popover div > div {color:inherit;}
