@@ -149,13 +149,10 @@
 		<field name="showpriority" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" difficulty="2"/>
 
 		<field name="checkconflicts" type="list" default="2" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="1">
-			<option value="0">JEV_NOT_CHECK_CLASHES</option>
-			<option value="1">JEV_CHECK_CLASHES</option>
-			<option value="2">JEV_ENSURE_NO_CLASHES</option>
+			<option value="0">JEV_CHECK_CLASHES_OPTION_NOT</option>
+			<option value="1">JEV_CHECK_CLASHES_OPTION_SPECIFIC</option>
+			<option value="2">JEV_CHECK_CLASHES_OPTION_ANY</option>
 		</field>
-
-		<field name="checkclashes" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="2"/>
-		<field name="noclashes" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ENSURE_NO_CLASHES" description="JEV_ENSURE_NO_CLASHES_TIP" difficulty="1"/>
 
 		
 		<field name="skipreferrer" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SKIP_REFERRER_CHECK" description="JEV_SKIP_REFERRER_CHECK_DESC" difficulty="2"/>
