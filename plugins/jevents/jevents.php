@@ -1,0 +1,109 @@
+<?php
+/**
+ * @copyright	Copyright (c) 2014 jevents. All rights reserved.
+ * @license	GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+
+jimport('joomla.plugin.plugin');
+
+/**
+ * content - JEvents Plugin
+ *
+ * @package		Joomla.Plugin
+ * @subpakage	jevents.JEvents
+ */
+class plgContentJEvents extends JPlugin {
+        public function onContentBeforeSave($context, $data) {
+                if ($context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 1) {
+                        // Get a db connection & new query object.
+                        $db = JFactory::getDbo();
+                        $query = $db->getQuery(true);
+
+                       // So lets see if there are any events in the categories selected
+                        $query->select($db->quoteName('catid'));
+                        $query->from($db->quoteName('#__jevents_vevent'));
+                        $query->where($db->quoteName('catid') . ' = (' . $data->id . ')');
+                        
+                        // Reset the query using our newly populated query object.
+                        $db->setQuery($query);
+
+                        // Load the results as a list of stdClass objects (see later for more options on retrieving data).
+                        $results = $db->loadResultArray();
+                        
+                        $result_count = count($results);
+                        
+                        if ($result_count >= 1) {
+                             JFactory::getApplication()->enqueueMessage('This category still contains events.', 'Error');
+                             JFactory::getApplication()->enqueueMessage('Please DELETE the events before unpublishing/deleting the category.', 'Error');   
+                             return false;   
+                        } else {
+                                return true;
+                        }
+                        
+                  
+                }
+        }
+        public function onCategoryChangeState($extension, $pks, $value) {
+                //We need to use on categoryChangeState
+                // Only run on JEvents
+                if ($extension == "com_jevents" && $value != 1) {
+                        //$value params
+                        // 1  = Published
+                        // 0  = Unpublished
+                        // 2  = Archived
+                        // -2 = Transhed
+                        
+                        $catids = implode(',', $pks);
+                        
+                        // Get a db connection & new query object.
+                        $db = JFactory::getDbo();
+                        $query = $db->getQuery(true);
+
+                       // So lets see if there are any events in the categories selected
+                        $query->select($db->quoteName('catid'));
+                        $query->from($db->quoteName('#__jevents_vevent'));
+                        $query->where($db->quoteName('catid') . ' IN (' . $catids . ')');
+                        
+                        // Reset the query using our newly populated query object.
+                        $db->setQuery($query);
+
+                        // Load the results as a list of stdClass objects (see later for more options on retrieving data).
+                        $results = $db->loadResultArray();
+                        
+                        
+                        if (count($results) >= 1) {
+                                
+                                // Ok so we are trying to change the published category that has events! STOP  
+                                $u_cats = implode(',', array_unique($results, SORT_REGULAR));  
+                                
+                                // Get database connection and lets re-enable these categories quickly 
+                                $db = JFactory::getDbo();
+
+                                // Create a new query object.
+                                $query = $db->getQuery(true);
+
+                                // Select all records from the user profile table where key begins with "custom.".
+                                // Order it by the ordering field.
+                                $query->update($db->quoteName('#__categories'));
+                                $query->set($db->quoteName('published') . ' = 1' );
+                                $query->where($db->quoteName('id') . ' IN (' . $u_cats . ')');
+                                
+                                // Reset the query using our newly populated query object.
+                                $db->setQuery($query);
+                                $db->loadObjectList();
+                                
+                                
+                                JFactory::getApplication()->enqueueMessage('Categories with the ID(s): ' . $u_cats . ' have been re-enabled as they still have events.', 'Warning');
+                                JFactory::getApplication()->enqueueMessage('Please DELETE the events before unpublishing/deleting the category.', 'Warning');
+
+                        }
+                        
+                        
+                }
+                
+        }
+	
+}
