@@ -5,7 +5,7 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 -->
-<extension type="plugin" version="3.0" group="content" method="upgrade">
+<extension type="plugin" version="2.5" group="content" method="upgrade">
 	<name>JEvents - Core Content Plugin</name>
 	<author>Tony Partridge</author>
 	<creationDate>September 2014</creationDate>

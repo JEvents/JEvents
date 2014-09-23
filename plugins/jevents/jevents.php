@@ -23,12 +23,11 @@ class plgContentJEvents extends JPlugin {
                         $query = $db->getQuery(true);
 
                        // So lets see if there are any events in the categories selected
-                        $query->select($db->quoteName('ev.ev_id', 'ev.catid'));
-                        $query->select($db->quoteName('map.evid', 'map.catid'));
+                        $query->select($db->quoteName('map.catid'));
                         $query->from($db->quoteName('#__jevents_vevent', 'ev'));                               
-                        $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON ' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . '');
+                        $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = '  . $db->quoteName('map.evid') . ' )');
                         $query->where($db->quoteName('map.catid') . ' = ' . $data->id . '');
-                        
+
                         // Reset the query using our newly populated query object.
                         $db->setQuery($query);
 
@@ -38,8 +37,8 @@ class plgContentJEvents extends JPlugin {
                         $result_count = count($results);
                         
                         if ($result_count >= 1) {
-                             JFactory::getApplication()->enqueueMessage('This category still contains events.', 'Error');
-                             JFactory::getApplication()->enqueueMessage('Please DELETE the events before unpublishing/deleting the category.', 'Error');   
+                             JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_CONTAINS'), 'Error');
+                             JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Error');   
                              return false;   
                         } else {
                                 return true;
@@ -65,11 +64,11 @@ class plgContentJEvents extends JPlugin {
                         $query = $db->getQuery(true);
 
                        // So lets see if there are any events in the categories selected
-                        $query->select($db->quoteName('ev.ev_id', 'ev.catid'));
-                        $query->select($db->quoteName('map.evid', 'map.catid'));
+                        $query->select($db->quoteName('map.catid'));
                         $query->from($db->quoteName('#__jevents_vevent', 'ev'));                               
-                        $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON ' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . '');
+                        $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = '  . $db->quoteName('map.evid') . ' )');
                         $query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
+                        
                         
                         // Reset the query using our newly populated query object.
                         $db->setQuery($query);
@@ -100,8 +99,8 @@ class plgContentJEvents extends JPlugin {
                                 $db->loadObjectList();
                                 
                                 JFactory::getApplication()->enqueueMessage($query, 'Error');
-                                JFactory::getApplication()->enqueueMessage('Categories with the IDs): ' . $u_cats . ' have been re-enabled as they still have events.', 'Warning');
-                                JFactory::getApplication()->enqueueMessage('Please DELETE the events before unpublishing/deleting the category.', 'Warning');
+                                JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_MAN_DELETE_WITH_IDS') . $u_cats . JText::_('JEV_CAT_MAN_DELETE_WITH_IDS_ENABLED'), 'Warning');
+                                JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
                         }
                         
