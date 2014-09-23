@@ -32,7 +32,7 @@ class com_jeventsInstallerScript
 
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JError::raiseWarning(500, 'Not a valid component');
+			JFactory::getApplication()->enqueueMessage('Not a valid component', 'error');
 			return false;
 		}
 
@@ -60,15 +60,14 @@ class com_jeventsInstallerScript
 		// pre-save checks
 		if (!$table->check())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
 			return false;
 		}
-
 
 		// save the changes
 		if (!$table->store())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
 			return false;
 		}
 
