@@ -898,3 +898,6 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 }
 
 td.no_events_found {height:35px;text-align:center;font-weight:bold;}
+
+/** Css for jQuery popups in calendar cells **/
+.popover div > div {color:inherit;}
