@@ -75,16 +75,14 @@ class plgContentJEvents extends JPlugin {
 
                         // Load the results as a list of stdClass objects (see later for more options on retrieving data).
                         $results = $db->loadResultArray();
-                        JFactory::getApplication()->enqueueMessage($query, 'Error');
+                        //Quick way to query debug without launching netbeans.
+                        //JFactory::getApplication()->enqueueMessage($query, 'Error');
                         
                         if (count($results) >= 1) {
                                 
                                 // Ok so we are trying to change the published category that has events! STOP  
                                 $u_cats = implode(',', array_unique($results, SORT_REGULAR));  
                                 
-                                // Get database connection and lets re-enable these categories quickly 
-                                $db = JFactory::getDbo();
-
                                 // Create a new query object.
                                 $query = $db->getQuery(true);
 
@@ -98,7 +96,9 @@ class plgContentJEvents extends JPlugin {
                                 $db->setQuery($query);
                                 $db->loadObjectList();
                                 
-                                JFactory::getApplication()->enqueueMessage($query, 'Error');
+                                //Quick way to query debug without launching netbeans.
+                                //JFactory::getApplication()->enqueueMessage($query, 'Error');
+                                
                                 JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_MAN_DELETE_WITH_IDS') . $u_cats . JText::_('JEV_CAT_MAN_DELETE_WITH_IDS_ENABLED'), 'Warning');
                                 JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
