@@ -25,6 +25,56 @@ class com_jeventsInstallerScript
 
 	}
 
+	public function postflight($action, $adapter)
+	{
+		$table =  JTable::getInstance('extension');
+		$component = "com_jevents";
+
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+		{
+			JError::raiseWarning(500, 'Not a valid component');
+			return false;
+		}
+
+		$params = JComponentHelper::getParams("com_jevents");
+
+		$checkClashes = $params->get("checkclashes", 0);
+
+		if($params->get("noclashes", 0))
+		{
+			$params->set("checkconflicts","2");
+		}
+		else if($params->get("checkclashes", 0))
+		{
+			$params->set("checkconflicts","1");
+		}
+		
+		$paramsArray = $params->toArray();
+		unset($paramsArray['checkclashes']);
+		unset($paramsArray['noclashes']);
+		$post['params'] = $paramsArray;
+		$post['option'] = $component;
+
+		$table->bind($post);
+
+		// pre-save checks
+		if (!$table->check())
+		{
+			JError::raiseWarning(500, $table->getError());
+			return false;
+		}
+
+
+		// save the changes
+		if (!$table->store())
+		{
+			JError::raiseWarning(500, $table->getError());
+			return false;
+		}
+
+		return true;
+	}
+
 	function uninstall($parent)
 	{
 		// No nothing for now
