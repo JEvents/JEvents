@@ -792,7 +792,7 @@ class JevHtmlBootstrap
 						jevjq(this).tab('show');
 						return false;
 					});
-				});"
+				});"				
 			);
 
 			// Set static array

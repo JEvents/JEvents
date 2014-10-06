@@ -27,7 +27,7 @@
 						
 		<!-- date time //-->
 		<field name="allDayEvent" type="checkbox" layoutfield="ALLDAYEVENT"  labelclass="" class="checkbox"  label="JEV_EVENT_ALLDAY" 
-			onclick="toggleAllDayEvent();"       description="JEV_EVENT_ALLDAY_TIP"  value="on" />
+			onclick="toggleAllDayEvent();"       description="JEV_EVENT_ALLDAY_TIP"  value="1" />
 		<field name="view12Hour" type="checkbox" layoutfield="VIEW12HOUR"  labelclass="" class="checkbox"  label="TWELVE_HOUR" description="TWELVE_HOUR_TIP" value="1" />
 
 		<field name="publish_up" type="jeveventdate" default="0"  layoutfield="STARTDATE"  labelclass=""
