@@ -94,7 +94,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+                $evedrd = $params->get("editreturnto", "day.listevents");
+		if ($params->get("editpopup", 0))
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'Cancel', false);
@@ -108,7 +109,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 			else
 			{
-				$this->toolbarButton("day.listevents", 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton($evedrd, 'cancel', 'cancel', 'Cancel', false);
 			}
 		}
 

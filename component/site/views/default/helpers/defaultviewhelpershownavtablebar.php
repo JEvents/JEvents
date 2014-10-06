@@ -24,10 +24,10 @@ function DefaultViewHelperShowNavTableBar($view){
 		// I think xdebug messes up this variable in the memory so when debugging this is helpful
 		$task = JRequest::getString("jevtask",JRequest::getString("task", JRequest::getString("view").".". JRequest::getString("layout")));	
 	}
-		
+	echo "<div class='jev_pretoolbar'>";	
 	$view->loadModules("jevpretoolbar");
 	$view->loadModules("jevpretoolbar_".$task);
-	
+	echo "</div>";
 	$prev_year = clone($this_date);
 	$prev_year->addMonths( -12 );
 	$next_year = clone($this_date);

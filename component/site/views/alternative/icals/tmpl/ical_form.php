@@ -32,7 +32,8 @@ if (JRequest::getString("submit","")!="")
 
 	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
-	$years = JEVHelper::forceIntegerArray(JRequest::getVar('years', array(0), 'POST'), true);
+        $jr_years = JRequest::getVar('years', array(0), 'POST');
+	$years = JEVHelper::forceIntegerArray($jr_years, true);
 	$cats = implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
