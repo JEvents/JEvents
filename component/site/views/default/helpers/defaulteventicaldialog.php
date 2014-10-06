@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+include_once JEV_HELPERS.'/jevExportHelper.php';
+
 function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 {
 	if (!$bootstrap) {
@@ -24,32 +26,56 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 					{
 						?>
 						<div id="unstyledical">
-							<a href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_All_Recurrences");
-								?>
-							</a><br/>
-							<a href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_Single_Recurrence");
-								?>
-							</a>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo JevExportHelper::getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL") ?>" target="_blank" >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/google.png',JText::_("JEV_ADDTOGCAL"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_GCAL")."</span>";
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo JevExportHelper::getAddToYahooCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOYAHOO") ?>" target="_blank" >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/yahoo.png',JText::_("JEV_SAVE_EVENT_IN_YAHOO"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_YAHOO")."</span>";
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL")."</span>";
+									?>
+								</a>
+							</div>
 						</div>
 						<div id="styledical">
-							<a href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_All_Recurrences");
-								?>
-							</a><br/>
-							<a href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-								<?php
-								echo '<img src="' . JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/save_f2.png" alt="' . JText::_("JEV_SAVEICAL") . '" />';
-								echo JText::_("JEV_Single_Recurrence");
-								?>
-							</a>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
+									?>
+								</a>
+							</div>
+							<div class="row-fluid">
+								<a class="span12" href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<?php
+									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
+									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL")."</span>";
+									?>
+								</a>
+							</div>
 						</div>
 						<?php
 					}
