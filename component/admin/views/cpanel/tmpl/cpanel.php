@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$version = JEventsVersion::getInstance();
 ?>
 <div id="jevents" class="span12">
 	<?php
@@ -32,7 +33,17 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		{
 			?>
 			<div id="j-sidebar-container" class="span2">
+                                
 			<?php echo $this->sidebar; ?>
+                                
+                                <?php 
+                                //Version Checking etc
+                                
+                                ?>
+                                <div class="jev_version">
+                                        <span class="update_text"><?php echo JText::_('JEV_CUR_VER'); ?></span>
+                                        <span class="update_cur_ver"><?php echo 'Version: ' .substr($version->getShortVersion(), 1); ?></span>
+                                </div>
 			</div>
 			<?php }
 			if ($params->get("showPanelNews", 1) == 1){
@@ -140,7 +151,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		?>
 		<div class="span12 center">
 			<a href="<?php
-		$version = JEventsVersion::getInstance();
+		
 		echo $version->getUrl();
 		?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
 			&nbsp;
