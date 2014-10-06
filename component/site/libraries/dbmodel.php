@@ -96,7 +96,7 @@ class JEventsDBModel
 			{
 				$where = "AND (" . implode(" OR ", $catwhere) . ")";
 			}
-			// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events 
+			// do we have a complete set of inaccessible or unpublished categories - if so then we must block all events
 			if ($hascatid && count($catwhere) == 0)
 			{
 				$where = " AND 0 ";
@@ -542,7 +542,7 @@ class JEventsDBModel
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
-            
+
 		$userid = JRequest::getVar('jev_userid',"0");
 
 		if($userid=="0")
@@ -591,7 +591,7 @@ class JEventsDBModel
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "post onListIcalEvents= ".round($time_end - $starttime, 4)."<br/>";
-		
+
 		// What if join multiplies the rows?
 		// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492
 		// concat with group
@@ -623,7 +623,7 @@ class JEventsDBModel
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
-		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
+		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before
 		$t_datenow = JEVHelper::getNow();
 		$t_datenowSQL = $t_datenow->toSql();
 
@@ -697,7 +697,7 @@ class JEventsDBModel
 					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  $multiday3)
 					)
 				$rptwhere
-			) 
+			)
 			GROUP BY ev.ev_id
 			ORDER BY rpt.startrepeat";
 
@@ -819,7 +819,7 @@ class JEventsDBModel
 					$rows[] = $val;
 				}
 			}
-			// past events 
+			// past events
 			foreach ($rows2 as $val)
 			{
 				if (!in_array($val->ev_id(), $events))
@@ -829,7 +829,7 @@ class JEventsDBModel
 					$rows[] = $val;
 				}
 			}
-			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";			
+			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";
 			unset($rows1);
 			unset($rows2);
 			unset($rows3);
@@ -840,7 +840,7 @@ class JEventsDBModel
 			//list ($usec, $sec) = explode(" ", microtime());
 			//$time_end = (float) $usec + (float) $sec;
 			//echo  "pre version= ".round($time_end - $starttime, 4)."<br/>";
-			
+
 			$version = JRequest::getCmd("version", "old");
 
 			if ($version == "new")
@@ -950,7 +950,7 @@ class JEventsDBModel
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
 				//echo  "after ids = ".round($time_end - $starttime, 4)."<br/>";
-				
+
 				$ids = array_merge($ids1, $ids2, $ids3);
 				if (count($ids) == 0)
 				{
@@ -981,7 +981,7 @@ class JEventsDBModel
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
 				//echo  "after rows = ".round($time_end - $starttime, 4)."<br/>";
-				
+
 			}
 			else
 			{
@@ -1097,7 +1097,7 @@ class JEventsDBModel
 					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
-				
+
 				// ensure specific repeat is not used more than once
 				$repeats = array();
 				$rows = array();
@@ -1119,7 +1119,7 @@ class JEventsDBModel
 						$rows[] = $val;
 					}
 				}
-				// past events 
+				// past events
 				foreach ($rows2 as $val)
 				{
 					if (!in_array($val->rp_id(), $repeats))
@@ -1138,11 +1138,11 @@ class JEventsDBModel
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
-		
+
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "listLatestIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
-		
+
 		return $rows;
 
 	}
@@ -1191,7 +1191,7 @@ class JEventsDBModel
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "post onListIcalEvents= ".round($time_end - $starttime, 4)."<br/>";
-		
+
 		// What if join multiplies the rows?
 		// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492
 		// concat with group
@@ -1223,7 +1223,7 @@ class JEventsDBModel
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
-		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before 
+		// get the event ids first - split into 2 queries to pick up the ones after now and the ones before
 		$t_datenow = JEVHelper::getNow();
 		$t_datenowSQL = $t_datenow->toSql();
 
@@ -1297,13 +1297,13 @@ class JEventsDBModel
 					OR (rpt2.startrepeat <= '$t_datenowSQL' AND rpt2.endrepeat  > '$t_datenowSQL'  $multiday3)
 					)
 				$rptwhere
-			) 
-                      
+			)
+
                         GROUP BY ev.ev_id
 			ORDER BY RAND()";
 
 				// This limit will always be enough
- 
+
 				$query .= " LIMIT " . $limit;
 
 				$cache = JFactory::getCache(JEV_COM_COMPONENT);
@@ -1421,7 +1421,7 @@ class JEventsDBModel
 					$rows[] = $val;
 				}
 			}
-			// past events 
+			// past events
 			foreach ($rows2 as $val)
 			{
 				if (!in_array($val->ev_id(), $events))
@@ -1431,7 +1431,7 @@ class JEventsDBModel
 					$rows[] = $val;
 				}
 			}
-			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";			
+			//echo "count rows ".count($rows1)." ".count($rows2)." ".count($rows3)." ".count($rows)."<br/>";
 			unset($rows1);
 			unset($rows2);
 			unset($rows3);
@@ -1442,7 +1442,7 @@ class JEventsDBModel
 			//list ($usec, $sec) = explode(" ", microtime());
 			//$time_end = (float) $usec + (float) $sec;
 			//echo  "pre version= ".round($time_end - $starttime, 4)."<br/>";
-			
+
 			$version = JRequest::getCmd("version", "old");
 
 			if ($version == "new")
@@ -1552,7 +1552,7 @@ class JEventsDBModel
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
 				//echo  "after ids = ".round($time_end - $starttime, 4)."<br/>";
-				
+
 				$ids = array_merge($ids1, $ids2, $ids3);
 				if (count($ids) == 0)
 				{
@@ -1583,7 +1583,7 @@ class JEventsDBModel
 				//list ($usec, $sec) = explode(" ", microtime());
 				//$time_end = (float) $usec + (float) $sec;
 				//echo  "after rows = ".round($time_end - $starttime, 4)."<br/>";
-				
+
 			}
 			else
 			{
@@ -1699,7 +1699,7 @@ class JEventsDBModel
 					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
-				
+
 				// ensure specific repeat is not used more than once
 				$repeats = array();
 				$rows = array();
@@ -1721,7 +1721,7 @@ class JEventsDBModel
 						$rows[] = $val;
 					}
 				}
-				// past events 
+				// past events
 				foreach ($rows2 as $val)
 				{
 					if (!in_array($val->rp_id(), $repeats))
@@ -1740,14 +1740,14 @@ class JEventsDBModel
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
-		
+
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "listLatestIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
-		
+
 		return $rows;
 
-	} 
+	}
 	// BAD VERSION - not used
 	function listPopularIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0)
 	{
@@ -1934,7 +1934,7 @@ class JEventsDBModel
 			$time_end = (float) $usec + (float) $sec;
 			echo  "after setup filters = ".round($time_end - $starttime, 4)."<br/>";
 		}
-		
+
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
@@ -1961,7 +1961,7 @@ class JEventsDBModel
 			}
 			$newextrajoin = ( count($newextrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $newextrajoin) : '' );
 			$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
-			
+
 			$query = "SELECT DISTINCT rpt.rp_id "
 					. "\n FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -2000,11 +2000,11 @@ class JEventsDBModel
 				$time_end = (float) $usec + (float) $sec;
 				echo  "after rptids  = ".round($time_end - $starttime, 4)."<br/>";
 			}
-			
+
 			if (count($rptids)>0){
 
 				$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
-				
+
 				$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* ,  ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 						. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -2041,7 +2041,7 @@ class JEventsDBModel
 		{
 			$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 			$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
-			
+
 			// This version picks the details from the details table
 			// ideally we should check if the event is a repeat but this involves extra queries unfortunately
 			$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* ,  ev.state as published, ev.created as created $extrafields"
@@ -2095,12 +2095,12 @@ class JEventsDBModel
 					// convert rows to jIcalEvents
 					$rows[$i] = new jIcalEventRepeat($rows[$i]);
 				}
-				
+
 			}
 			else {
 
 				// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
-				$rows = $this->_cachedlistIcalEvents($query, $langtag);			
+				$rows = $this->_cachedlistIcalEvents($query, $langtag);
 			}
 
 		}
@@ -2112,7 +2112,7 @@ class JEventsDBModel
 			$time_end = (float) $usec + (float) $sec;
 			echo  "listIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
 		}
-		
+
 		return $rows;
 
 	}
@@ -2146,13 +2146,13 @@ class JEventsDBModel
 			echo $db->getErrorMsg();
 		}
 		$icalcount = count($icalrows);
-		
+
 		if ($debuginfo){
 			list ($usec, $sec) = explode(" ", microtime());
 			$time_end = (float) $usec + (float) $sec;
 			echo  "pre converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
 		}
-		
+
 		$valid = true;
 		for ($i = 0; $i < $icalcount; $i++)
 		{
@@ -2176,7 +2176,7 @@ class JEventsDBModel
 			$time_end = (float) $usec + (float) $sec;
 			echo  "after converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
 		}
-		
+
 		return $icalrows;
 
 	}
@@ -2206,7 +2206,9 @@ class JEventsDBModel
 	{
 		$startdate = JevDate::mktime(0, 0, 0, $month, 1, $year);
 		$enddate = JevDate::mktime(23, 59, 59, $month, date('t', $startdate), $year);
-		return $this->listIcalEvents($startdate, $enddate, "");
+		$rows = $this->listIcalEvents($startdate, $enddate, "");
+    JEVHelper::onLoadEventsByMonth($rows, $year, $month);
+    return $rows;
 
 	}
 
@@ -2528,7 +2530,7 @@ class JEventsDBModel
 			$extratables = "";  // must have comma prefix
 			$extrawhere = array();
 			$extrajoin = array();
-			
+
 			if ($includeUnpublished){
 				$filterarray = array("justmine",  "search", "repeating");
 			}
@@ -2547,7 +2549,7 @@ class JEventsDBModel
 			$filters = jevFilterProcessing::getInstance($filterarray);
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
-			
+
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
@@ -2604,7 +2606,7 @@ class JEventsDBModel
 			  if (!$this->setMultiCategory($rows[0],$accessibleCategories)){
 			  return null;
 			  }
-			 * 
+			 *
 			 */
 			if (strtolower($jevtype) == "icaldb")
 			{
@@ -2647,7 +2649,7 @@ class JEventsDBModel
 			$extratables = "";  // must have comma prefix
 			$extrawhere = array();
 			$extrajoin = array();
-			
+
 			if ($includeUnpublished){
 				$filterarray = array("justmine",  "search", "repeating");
 			}
@@ -2666,7 +2668,7 @@ class JEventsDBModel
 			$filters = jevFilterProcessing::getInstance($filterarray);
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 			$needsgroup = $filters->needsGroupBy();
-			
+
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
@@ -2725,7 +2727,7 @@ class JEventsDBModel
 			  if (!$this->setMultiCategory($rows[0],$accessibleCategories)){
 			  return null;
 			  }
-			 * 
+			 *
 			 */
 
 			if (strtolower($jevtype) == "icaldb")
@@ -3132,7 +3134,7 @@ class JEventsDBModel
 
 		$extrawhere = array();
 		$extrajoin = array();
-		$extrafields = "";  // must have comma prefix		
+		$extrafields = "";  // must have comma prefix
 
 		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$params = JComponentHelper::getParams("com_jevents");
@@ -3480,7 +3482,7 @@ class JEventsDBModel
 		$user = JFactory::getUser();
 		$adminuser = JEVHelper::isAdminUser($user);
 		$db = JFactory::getDBO();
-		
+
 		$keyword = $db->escape($keyword, true) ;
 
 		$rows_per_page = $limit;
@@ -3526,7 +3528,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
-		$extrafields = "";  // must have comma prefix		
+		$extrafields = "";  // must have comma prefix
 		$needsgroup = false;
 
 		$filterarray = array("published");
@@ -3754,7 +3756,7 @@ class JEventsDBModel
 				return true;
 			}
 
-			// are there any catids not in list of accessible Categories 
+			// are there any catids not in list of accessible Categories
 			$inaccessiblecats = array_diff($catids, explode(",", $accessibleCategories));
 			if (count($inaccessiblecats))
 			{
