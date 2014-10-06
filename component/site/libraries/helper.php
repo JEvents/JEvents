@@ -1173,7 +1173,7 @@ class JEVHelper
 			if ($jevuser && $jevuser->published)
 			{
 				// creator can edit their own event
-				if ($jevuser->cancreate && $row->created_by() == $user->id)
+				if ($jevuser->cancreate && $row->created_by == $user->id)
 				{
 					return true;
 				}
