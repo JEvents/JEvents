@@ -56,9 +56,12 @@ sort( $darray );
 $onchange = "";
 if ($show_preview) {
 	$onchange = "showimage();";
+        ?>
+        <img src="<?php echo  JURI::root()."components/com_jevents/views/$cur_view/assets/images/view_thumbnail.png";?>" name="preview" border="1" width="<?php echo $preview_width;?>" height="<?php echo $preview_height;?>" alt="<?php echo $cur_view; ?>" />
+        <?php
+
 }
 ?>
-<img src="<?php echo  JURI::root()."components/com_jevents/views/$cur_view/assets/images/view_thumbnail.png";?>" name="preview" border="1" width="<?php echo $preview_width;?>" height="<?php echo $preview_height;?>" alt="<?php echo $cur_view; ?>" />
 <script  type='text/javascript'>
 <!--
 	function showimage() {
