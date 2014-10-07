@@ -8,7 +8,7 @@
 			>
 			<field
 				name="catcolour"
-				type="jevcolourpicker"
+				type="color"
 				label="JEV_COLOR_PICKER"
 				description="JEV_CHOOSE_CATEGORY_COLOUR"
 				/>
