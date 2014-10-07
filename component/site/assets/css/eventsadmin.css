@@ -278,7 +278,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 #jevents fieldset legend input[type='radio'] {margin-right:10px!important}
 
 #jevents .jevbootstrap input, #jevents .jevbootstrap textarea, #jevents .jevbootstrap .uneditable-input {
-    width: auto!important;
+    width: auto;
 }
 
 #jevents .jevdatetime label.btn {
@@ -404,6 +404,10 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 /* backend ical input box */
 #uploadURL {width:auto;}
 
+/* Location editing */
+#createlocationbutton .icon-edit:before {
+    color: inherit;
+}
 /* Removed Inline CSS and added the below */
 
 form.search_form { padding:30px 0px;}

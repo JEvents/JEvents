@@ -28,6 +28,25 @@ JHtml::_('behavior.calendar');
 if ($params->get("bootstrapchosen", 1))
 {
 	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	// Use this as a basis for setting the primary category
+	/*
+	JHtml::_('jquery.ui', array("core","sortable"));
+	$script = <<< SCRIPT
+window.setTimeout(function() {
+	jQuery("#catid").chosen().change(
+		function() {
+			if (jQuery("#catid_chzn li.search-choice")) {
+				jQuery("#catid_chzn li.search-choice").on('mousedown', function() {
+					alert(this);
+					return true;
+				});
+			}
+		}
+	);
+}, 1000);
+SCRIPT;
+	JFactory::getDocument()->addScriptDeclaration($script);
+	 */
 }
 if ($params->get("bootstrapcss", 1)==1)
 {

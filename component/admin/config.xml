@@ -178,7 +178,14 @@
 		</field>
                 
                 <field name="notifymessage" type="jevhtml" default="JEV_DEFAULT_NOTIFYMESSAGE" menu="hide"  label="JEV_NOTIFICATION_MESSAGE" description="JEV_NOTIFICATION_MESSAGE_DESC"     filter="safehtml" difficulty="2" />
-	</fieldset>
+		<field name="editreturnto" type="list" default="day.listevents" size="1" label="JEV_EVED_REDIRECT" description="JEV_EVED_REDIRECT_DESC" difficulty="1" conditions="1,2">
+			<option value="month.calendar">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
+			<option value="week.listevents">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
+			<option value="day.listevents">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
+			<option value="cat.listevents">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
+		</field>
+                
+        </fieldset>
 	
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
