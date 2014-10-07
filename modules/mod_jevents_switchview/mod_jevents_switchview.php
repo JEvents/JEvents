@@ -29,6 +29,10 @@ $registry->set("jevents.activeprocess","mod_jevents_switchview");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 
+$document = JFactory::getDocument();
+$style = "select#jos_change_view {width:100%;}";
+$document->addStyleDeclaration($style);
+
 // load language constants
 JEVHelper::loadLanguage('modswitchview');
 
