@@ -372,7 +372,7 @@ class JevHtmlBootstrap
 		JFactory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
-				if (jQuery('#$selector')){
+				if (jQuery('$selector')){
 					jQuery('" . $selector . "').popover(" . $options . ");
 				}
 			});"
