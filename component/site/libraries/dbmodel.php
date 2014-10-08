@@ -2206,9 +2206,7 @@ class JEventsDBModel
 	{
 		$startdate = JevDate::mktime(0, 0, 0, $month, 1, $year);
 		$enddate = JevDate::mktime(23, 59, 59, $month, date('t', $startdate), $year);
-		$rows = $this->listIcalEvents($startdate, $enddate, "");
-    JEVHelper::onLoadEventsByMonth($rows, $year, $month);
-    return $rows;
+		return $this->listIcalEvents($startdate, $enddate, "");
 
 	}
 

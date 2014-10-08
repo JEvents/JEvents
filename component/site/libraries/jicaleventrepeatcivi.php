@@ -26,7 +26,7 @@ class jIcalEventRepeatCivi extends jIcalEventRepeat
 	  if (property_exists($this, '_civicrm')) {
 	    // an example link, pointing to event 1 through menu item 117:
 	    // index.php?option=com_civicrm&task=civicrm/event/info&Itemid=117&reset=1&id=1
-	    $link = JArrayHelper::getValue($this->civicrm,'url','','string');
+	    $link = JArrayHelper::getValue($this->_civicrm,'url','','string');
 	    if (!$link) {
 	      $link = "index.php?option=com_civicrm&task=civicrm/event/info&reset=1&id=" .
 	              JArrayHelper::getValue($this->civicrm,'event_id','','integer');

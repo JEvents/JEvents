@@ -14,6 +14,15 @@
 	</files>
 	<config>
 		<fields name="params">
+		  <fieldset name="Options">
+		    <field name="catid" type="category"
+		      default=""
+		      size="10"
+		      extension="com_jevents"
+		      label="Event Category"
+		      description="Select or create a JEvents category to assign to CiviEvent entries"
+		      />
+      </fieldset>
 		</fields>
 	</config>
 </extension>

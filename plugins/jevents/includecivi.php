@@ -20,7 +20,7 @@ class PlgJeventsIncludeCivi extends JPlugin
     Loads events from CiviCRM based on 1st day of event being
     between $startdate and $enddate
   */
-  private function _loadCiviEvents($startdate, $enddate)
+  private static function _loadCiviEvents($startdate=NULL, $enddate=NULL)
   {
     // get the events
     $rows = CRM_Event_BAO_Event::getCompleteInfo($startdate, NULL, NULL, $enddate);
@@ -36,8 +36,7 @@ class PlgJeventsIncludeCivi extends JPlugin
     $config = CRM_Core_Config::singleton();
   }
 
-  public function onLoadEventsByMonth( &$list, $year = 0, $month = 0 )
-  {
+  public static function getCiviEvents($year = 0, $month = 0) {
     // date defaults to today
     list($tyear,$tmonth,$tday) = JEVHelper::getYMD();
     if ((int)$year) {
@@ -51,19 +50,19 @@ class PlgJeventsIncludeCivi extends JPlugin
 		$startdate = date("Ym01",$tstart);
 		$enddate = date("Ymt",$tstart);
 		// get the rows
-		$rows = $this->_loadCiviEvents($startdate);
-		// try to convert each row received
-		if (is_array($rows) && count($rows)) {
-		  foreach ($rows as $key=>$val) {
-		    $convert = &static::translateCiviToJEvent($val);
-		    // if it's good, add it to the list
-		    if ($convert) {
-		      $list[] = &$convert;
-		    }
-		    // need to unset so we don't accidentally overwrite previous converted events
-		    unset($convert);
-		  }
-		}
+		// We only pass the start date because of the weird Civi search logic.
+		// Passing the end date would require that the date range include any
+		// selected event's start AND end date.
+		$rows = static::_loadCiviEvents($startdate);
+		return $rows;
+  }
+
+  //public function onLoadEventsByMonth( &$list, $year = 0, $month = 0 )
+  public function onDisplayCustomFieldsMultiRowUncached( &$list, $year = 0, $month = 0 )
+  {
+    $rows = $this->getCiviEvents($year,$month);
+    $rows = $this->translateCiviEvents($rows);
+    $list = array_merge($list,$rows);
   }
 
   /*
@@ -75,12 +74,30 @@ class PlgJeventsIncludeCivi extends JPlugin
   }
 
   /*
+    Wrapper to translate an array of events
+  */
+  public function translateCiviEvents($rows) {
+    $list = array();
+		// try to convert each row received
+		if (is_array($rows) && count($rows)) {
+		  foreach ($rows as $key=>$val) {
+		    $convert = $this->translateCiviToJEvent($val);
+		    // if it's good, add it to the list
+		    if ($convert) {
+		      $list[] = $convert;
+		    }
+		  }
+		}
+		return $list;
+  }
+
+  /*
     Translate a CiviEvent database record into a jIcalEventRepeatCivi object.
     The translation is far from complete, and leaves a number of functionality
     holes to be resolved.  For now, this should only be used for calendar
     display.
   */
-  public static function &translateCiviToJEvent($row) {
+  public function translateCiviToJEvent($row) {
     // attempt to verify we have a CiviEvent record.  if we don't leave early returning NULL
     if (!(is_array($row) && substr(CRM_Utils_Array::value('uid',$row,''),0,15)=='CiviCRM_EventID')) {
       return NULL;
@@ -99,7 +116,7 @@ class PlgJeventsIncludeCivi extends JPlugin
                        'endrepeat' => $row['end_date'],
                        'ev_id' => '',
                        'icsid' => '',
-                       'catid' => '',
+                       'catid' => (string)((int)CRM_Utils_Array::value('catid',$this->params->toArray(),0)),
                        'uid' => $row['uid'],
                        'refreshed' => '0000-00-00 00:00:00',
                        'created' => '0000-00-00 00:00:00',
@@ -173,25 +190,3 @@ class PlgJeventsIncludeCivi extends JPlugin
     return $ret;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
