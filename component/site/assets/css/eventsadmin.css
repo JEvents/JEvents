@@ -474,3 +474,7 @@ table.ev_navtable tr {vertical-align:top; }
 #action_dialog #publish_reccur img, #action_dialog #edit_reccur img, #action_dialog #edit_event img, #action_dialog #edit_eventcopy img, #action_dialog #delete_repeat img, #action_dialog #delete_eventfuture img, #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 
 #jevents ul.actions li {list-style: none;float:right;}
+
+.jev_version {font-size:12px;border-top:1px dashed;margin-top:15px;text-align:center;padding-top:10px;}
+.jev_version .update_text {display:block;width:100%;}
+.jev_version .update_cur_ver {display:block; width:100%;}
