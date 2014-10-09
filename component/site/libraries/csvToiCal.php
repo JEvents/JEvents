@@ -181,6 +181,9 @@ class CsvToiCal
 				case "NOENDTIME":
 					$dataLine->setNoendtime($data[$order]);					
 					break;
+				case "MULTIDAY":
+					$dataLine->setMultiday($data[$order]);
+					break;
 				default:
 					$dataLine->customField($data[$order], $col);
 					break;

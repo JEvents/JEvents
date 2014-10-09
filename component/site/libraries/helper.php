@@ -1422,6 +1422,12 @@ class JEVHelper
 		{
 			if (!$jevuser)
 			{
+				// paid subs plugin may override this
+				if ($row->created_by() == $user->id && $user->id>0){
+					$frontendPublish = JEVHelper::isEventPublisher(false);
+					return $frontendPublish;
+				}
+
 				return false;
 			}
 
