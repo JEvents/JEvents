@@ -660,8 +660,10 @@ class DefaultModLatestView
 	{
 		$adate = $a->_startrepeat;
 		$bdate = $b->_startrepeat;
+		if ($adate === $bdate) {
+			return strcmp($a->_title, $b->_title);
+		}
 		return strcmp($adate, $bdate);
-
 	}
 
 	public static function _sortEventsByCreationDate(&$a, &$b)
