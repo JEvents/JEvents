@@ -9,8 +9,9 @@
 	<version>1.0.0</version>
 	<description>Include CiviEvent listings in JEvents views</description>
 	<files>
-		<filename plugin="includecivi">includecivi.php</filename>
 		<filename>index.html</filename>
+		<filename plugin="includecivi">includecivi.php</filename>
+		<filename>jicaleventrepeatcivi.php</filename>
 	</files>
 	<config>
 		<fields name="params">

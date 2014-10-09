@@ -14,6 +14,7 @@ class PlgJeventsIncludeCivi extends JPlugin
     static::registerClasses();
     static::bootstrapCivi();
     parent::__construct($subject,$config);
+
   }
 
   /*
@@ -70,7 +71,7 @@ class PlgJeventsIncludeCivi extends JPlugin
   */
   public static function registerClasses()
   {
-    JLoader::register('jIcalEventRepeatCivi',JEV_PATH."libraries/jicaleventrepeatcivi.php");
+    JLoader::register('jIcalEventRepeatCivi',dirname(__FILE__)."/jicaleventrepeatcivi.php");
   }
 
   /*
