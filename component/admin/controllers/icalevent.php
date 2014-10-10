@@ -780,7 +780,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$evid = intval($event->ev_id());
 		$testevent = $this->queryModel->getEventById($evid, 1, "icaldb");
 		$rp_id = $testevent->rp_id();
-
+		list($year, $month, $day) = JEVHelper::getYMD();
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -789,7 +789,6 @@ class AdminIcaleventController extends JControllerAdmin
 		else
 		{
 			$Itemid = JRequest::getInt("Itemid");
-			list($year, $month, $day) = JEVHelper::getYMD();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))

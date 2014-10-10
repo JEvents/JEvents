@@ -110,7 +110,7 @@ class iCalEvent extends JTable  {
 		$detailid = $this->_detail->store($updateNulls);
 		if (!$detailid){
 			JError::raiseError( 104, JText::_( 'PROBLEMS_STORING_EVENT_DETAIL' ));
-			echo $db->getErroMsg()."<br/>";
+			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}
 		$this->detail_id = $detailid;
