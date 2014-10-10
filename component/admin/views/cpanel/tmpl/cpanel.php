@@ -40,10 +40,9 @@ $version = JEventsVersion::getInstance();
                                 //Version Checking etc
                                 
                                 ?>
-                                <div class="jev_version">
-                                        <span class="update_text"><?php echo JText::_('JEV_CUR_VER'); ?></span>
-                                        <span class="update_cur_ver"><?php echo JText::_Sprintf('JEV_VER') .substr($version->getShortVersion(), 1); ?></span>
-                                </div>
+                                        <div class="jev_version">
+                                        <?php echo JText::sprintf('JEV_CURRENT_VERSION') .substr($version->getShortVersion(), 1); ?>
+                                        </div>                                </div>
 			</div>
 			<?php }
 			if ($params->get("showPanelNews", 1) == 1){
