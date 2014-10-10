@@ -42,7 +42,7 @@ $version = JEventsVersion::getInstance();
                                 ?>
                                 <div class="jev_version">
                                         <span class="update_text"><?php echo JText::_('JEV_CUR_VER'); ?></span>
-                                        <span class="update_cur_ver"><?php echo 'Version: ' .substr($version->getShortVersion(), 1); ?></span>
+                                        <span class="update_cur_ver"><?php echo JText::_Sprintf('JEV_VER') .substr($version->getShortVersion(), 1); ?></span>
                                 </div>
 			</div>
 			<?php }
