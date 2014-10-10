@@ -29,6 +29,11 @@ class JFormFieldJEVmenu extends JFormFieldList
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
+		if (!defined("JEV_COM_COMPONENT")){
+			define("JEV_COM_COMPONENT","com_jevents");
+			define("JEV_COMPONENT",str_replace("com_","",JEV_COM_COMPONENT));
+		}
+
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');

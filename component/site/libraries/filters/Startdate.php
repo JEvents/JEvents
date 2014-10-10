@@ -98,7 +98,7 @@ class jevStartdateFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		// only works on admin list events pages
-		if (JRequest::getCmd("task")!="admin.listevents"){
+		if (JRequest::getCmd("jevtask")!="admin.listevents"){
 			$filterList=array();
 			$filterList["title"]="";
 
