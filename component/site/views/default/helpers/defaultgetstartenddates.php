@@ -49,6 +49,12 @@ function Defaultgetstartenddates($view){
 			$enddate = $value->toFormat("%Y-%m-%d");
 		}
 	}
+	if ($enddate < $startdate) {
+		// default to 1 year when input dates are not valid!
+		$value = new JevDate($startdate);
+		$value->add(new DateInterval('P1Y'));
+		$enddate = $value->toFormat("%Y-%m-%d");
+	}
 	return array($startdate, $enddate);
 
 }

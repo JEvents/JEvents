@@ -282,6 +282,15 @@ class JEventsDBModel
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
 		}
 
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListRecentIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		if ($skipJEvents) {
+			return $rows;
+		}
+
 		// process the new plugins
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
@@ -417,6 +426,15 @@ class JEventsDBModel
 		{
 			$startdate = strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = strftime('%Y-%m-%d 23:59:59', $enddate);
+		}
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListPopularIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		if ($skipJEvents) {
+			return $rows;
 		}
 
 		// process the new plugins
@@ -560,6 +578,15 @@ class JEventsDBModel
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
+		}
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListLatestIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit, $noRepeats, $multidayTreatment ));
+		if ($skipJEvents) {
+			return $rows;
 		}
 
 		// process the new plugins
@@ -1160,6 +1187,15 @@ class JEventsDBModel
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
+		}
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListRandomIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats,$multidayTreatment));
+		if ($skipJEvents) {
+			return $rows;
 		}
 
 		// process the new plugins
@@ -1892,6 +1928,15 @@ class JEventsDBModel
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
 		}
 
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $order, $filters, $extrafields, $extratables, $limit));
+		if ($skipJEvents) {
+			return $rows;
+		}
+
 		// process the new plugins
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
@@ -2516,6 +2561,17 @@ class JEventsDBModel
 
 	function listEventsById($rpid, $includeUnpublished = 0, $jevtype = "icaldb")
 	{
+		// special case where the event is outside of JEvents - handled by a plugin
+		if ($rpid<0){
+			$rows = array();
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+			if (count($rows)==1) {
+				return $rows[0];
+			}
+			return array();
+		}
+
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 		$frontendPublish = JEVHelper::isEventPublisher();
@@ -2861,6 +2917,16 @@ class JEventsDBModel
 
 	function listIcalEventRepeatsByCreator($creator_id, $limitstart, $limit, $orderby = "rpt.startrepeat")
 	{
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListIcalEventRepeatsByCreator', array(&$skipJEvents, &$rows, $creator_id, $limitstart, $limit, $orderby ));
+		if ($skipJEvents) {
+			return $rows;
+		}
+
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 
@@ -3482,6 +3548,15 @@ class JEventsDBModel
 		$db = JFactory::getDBO();
 		
 		$keyword = $db->escape($keyword, true) ;
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('fetchListEventsByKeyword', array(&$skipJEvents, &$rows, $keyword, $order, &$limit, &$limitstart, &$total, $useRegX));
+		if ($skipJEvents) {
+			return $rows;
+		}
 
 		$rows_per_page = $limit;
 		if (empty($limitstart) || !$limitstart)

@@ -601,7 +601,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_icsfile WHERE ics_id = ".$testevent->icsid());		
 		$calinfo = $db->loadObject();
-		if ($calinfo && $calinfo->overlaps)
+		if ($calinfo && intval($calinfo->overlaps)==1)
 		{
 			foreach ($testevent->repetitions as $repeat)
 			{
