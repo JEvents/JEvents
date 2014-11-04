@@ -427,7 +427,7 @@ class DefaultModLatestView
 			if (count($rows))
 			{
 				// Timelimit plugin constraints
-				while ($date < $timeLimitNow)
+				while ($date < $timeLimitNow && $this->dispMode != 5)
 				{
 					$this->eventsByRelDay[$i] = array();
 					$date = JevDate::strtotime("+1 day", $date);
@@ -529,7 +529,7 @@ class DefaultModLatestView
 					$i = -1;
 
 					// Timelimit plugin constraints
-					while ($date > $timeLimitNow)
+					while ($date > $timeLimitNow && $this->dispMode != 5)
 					{
 						$this->eventsByRelDay[$i] = array();
 						$date = JevDate::strtotime("-1 day", $date);

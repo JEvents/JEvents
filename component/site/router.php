@@ -73,6 +73,10 @@ function JEventsBuildRoute(&$query)
 		unset($query['task']);
 	}
 
+	JPluginHelper::importPlugin("jevents");
+	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher->trigger( 'onJEventsRoute');
+
 	// Translatable URLs
 	if ($params->get("newsef", 0))
 	{
@@ -227,11 +231,7 @@ function JEventsBuildRoute(&$query)
 		case "jevent.delete":
 		case "icalevent.delete":
 		case "icalrepeat.delete":
-		case "icalrepeat.deletefuture":
-			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JDispatcher::getInstance();
-			$dispatcher->trigger( 'onJEventsRoute');
-
+		case "icalrepeat.deletefuture":			
 			$segments[] = $task;
 			if (isset($query['jevtype']))
 			{
@@ -763,9 +763,6 @@ function JEventsBuildRouteNew(&$query, $task)
 		case "icalevent.delete":
 		case "icalrepeat.delete":
 		case "icalrepeat.deletefuture":
-			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JDispatcher::getInstance();
-			$dispatcher->trigger( 'onJEventsRoute');
 
 			$segments[] = $transtask;
 			if (isset($query['jevtype']))
