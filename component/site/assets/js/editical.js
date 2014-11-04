@@ -863,6 +863,10 @@ function updateRepeatWarning(){
 	{
 		document.adminForm.updaterepeats.value = 1;
 	}
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
 }
 
 /* Check for booking conflicts */
