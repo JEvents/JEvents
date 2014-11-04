@@ -98,7 +98,8 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			?>
 		</div>
 		<?php
-		if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+
+		if (  $params->get("checkconflicts", 0))
 		{
 			?>
 			<div id='jevoverlapwarning'>
@@ -230,7 +231,7 @@ echo $this->editor->save('jevcontent');
 <?php
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	if (JEVHelper::getItemid()>0){
