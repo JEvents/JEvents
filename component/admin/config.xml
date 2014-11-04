@@ -147,9 +147,14 @@
 		<field name="com_notifyallevents" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFYALL" description="JEV_NOTIFYALL_TIP" difficulty="2"/>
 		<field name="com_notifyauthor" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY_AUTHOR" description="JEV_NOTIFY_AUTHOR_TIP" difficulty="2"/>
 		<field name="showpriority" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" difficulty="2"/>
-				
-		<field name="checkclashes" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="2"/>
-		<field name="noclashes" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ENSURE_NO_CLASHES" description="JEV_ENSURE_NO_CLASHES_TIP" difficulty="1"/>
+
+		<field name="checkconflicts" type="list" default="0" menu="hide" label="JEV_CHECK_CLASHES" description="JEV_CHECK_CLASHES_TIP" difficulty="1">
+			<option value="0">JEV_CHECK_CLASHES_OPTION_NOT</option>
+			<option value="1">JEV_CHECK_CLASHES_OPTION_SPECIFIC</option>
+			<option value="2">JEV_CHECK_CLASHES_OPTION_ANY</option>
+		</field>
+
+		
 		<field name="skipreferrer" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SKIP_REFERRER_CHECK" description="JEV_SKIP_REFERRER_CHECK_DESC" difficulty="2"/>
 
 		<field name="defaultstarttime" type="text" default="08:00" menu="hide" size="5" label="JEV_DEFAULT_STARTTIME" description="JEV_DEFAULT_STARTTIME_TIP" difficulty="1"/>
