@@ -257,7 +257,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
-		$access = $user->authorise('core.admin', 'com_jevents');
+		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
 		$db = JFactory::getDBO();
 		if (($jevuser && $jevuser->candeleteall) || $access)
