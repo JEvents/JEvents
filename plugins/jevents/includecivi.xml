@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="plugin" group="jevents">
+	<name>JEvents IncludeCivi</name>
+	<author>Steve Binkowski</author>
+	<creationDate>October 2014</creationDate>
+	<copyright>Copyright (C) 2014 Steve Binkowski. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<authorEmail>steve@binkcms.com</authorEmail>
+	<version>1.0.0</version>
+	<description>Include CiviEvent listings in JEvents views</description>
+	<files>
+		<filename>index.html</filename>
+		<filename plugin="includecivi">includecivi.php</filename>
+		<filename>jicaleventrepeatcivi.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+		  <fieldset name="Options">
+		    <field name="catid" type="category"
+		      default=""
+		      size="10"
+		      extension="com_jevents"
+		      label="Event Category"
+		      description="Select or create a JEvents category to assign to CiviEvent entries"
+		      />
+      </fieldset>
+		</fields>
+	</config>
+</extension>
