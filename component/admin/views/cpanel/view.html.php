@@ -932,7 +932,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$translations = $db->loadObjectList();
 		foreach ($translations  as $translation){
 			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
-			$updates[]= array("element"=>$translation->element,"name"=>$translation->name,"type"=>"file");
+			$elem = str_replace("_Addons", "Addons_", $translation->element);
+			$updates[]= array("element"=>$elem,"name"=>$translation->name,"type"=>"file");
 		}
 
 		foreach ($updates as $package)
