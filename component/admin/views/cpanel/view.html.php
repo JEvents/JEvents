@@ -48,8 +48,34 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$this->setLayout("cpanel25");
 		}
 
-		$this->setUpdateUrls();
+		$this->checkForAddons();
 
+		$this->setUpdateUrls();
+	}
+
+	protected function checkForAddons () {
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("clubcode", "") && strlen($params->get("clubcode", "")>20)){
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		// find list of installed addons
+		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
+		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" ';
+		// extend this list !!!
+		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
+		$sql = 'SELECT element,extension_id FROM #__extensions  where  (
+		'.$installed.'
+		)';
+		$db->setQuery($sql);
+		$installed  =  $db->loadObjectList();
+
+		if (count($installed)){
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_SET_UPDATER_CODE")."<br/><br/>".JText::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
+			return;
+		}
 	}
 
 	/**
