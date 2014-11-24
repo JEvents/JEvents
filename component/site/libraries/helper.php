@@ -1174,7 +1174,7 @@ class JEVHelper
 			if ($jevuser && $jevuser->published)
 			{
 				// creator can edit their own event
-				if ($jevuser->cancreate && $row->created_by() == $user->id)
+				if ($jevuser->cancreate && $row->_created_by == $user->id)
 				{
 					return true;
 				}
@@ -3022,7 +3022,7 @@ SCRIPT;
 			$html .= "END:VCALENDAR\r\n";
                         return $html;
         }
-        protected function vtimezone($icalEvents)
+        protected static function vtimezone($icalEvents)
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$tzid = "";
@@ -3142,7 +3142,7 @@ SCRIPT;
 
 	}
         // Special methods ONLY user for iCal invitations
-	protected function setDescription($desc)
+	protected static function setDescription($desc)
 	{
 		// TODO - run this through plugins first ?
 
@@ -3164,7 +3164,7 @@ SCRIPT;
 
 	}
 	}
-        	protected function wraplines($input, $line_max = 76, $quotedprintable = false)
+        	protected static function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
 		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		$eol 		= "\r\n";
@@ -3226,7 +3226,7 @@ SCRIPT;
 		return trim($output);
 
 	}
-        protected function replacetags($description)
+        protected static function replacetags($description)
 	{
 		$description = str_replace('<p>', '\n\n', $description);
 		$description = str_replace('<P>', '\n\n', $description);

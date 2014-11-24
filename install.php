@@ -130,6 +130,10 @@ class Pkg_JeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='search' and type='plugin' and element='eventsearch'";
 			$db->setQuery($query);
 			$db->query();
+                        
+                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
+			$db->setQuery($query);
+			$db->query();
 		}
 		echo "</div>";
 
