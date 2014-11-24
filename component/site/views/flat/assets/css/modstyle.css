@@ -15,7 +15,7 @@
 #flatcal_minical TABLE.flatcal_weekdays {
 	border-top: 1px solid #FFFFFF;
 	width:135px;
-	border-collapse:collapse;
+    border-collapse:collapse;
 	border-spacing:0px;
 	border-width:0px;
 	text-align:center;
