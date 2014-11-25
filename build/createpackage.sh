@@ -25,7 +25,7 @@ zip  -r --exclude=*.svn* ../mod_jevents_legend.zip mod_jevents_legend
 zip  -r --exclude=*.svn* ../mod_jevents_switchview.zip mod_jevents_switchview
 cd ../
 
-zip  -r --exclude=*.svn* "jevents_$VERSION.zip" install.php pkg_jevents.xml com_jevents.zip finder.zip search.zip googl.zip jevents.zip  mod_jevents_cal.zip mod_jevents_custom.zip mod_jevents_filter.zip   mod_jevents_latest.zip mod_jevents_legend.zip mod_jevents_switchview.zip
+zip  -r --exclude=*.svn* "jevents_$VERSION.zip" install.php pkg_jevents.xml com_jevents.zip language finder.zip search.zip googl.zip jevents.zip  mod_jevents_cal.zip mod_jevents_custom.zip mod_jevents_filter.zip   mod_jevents_latest.zip mod_jevents_legend.zip mod_jevents_switchview.zip
 
 
 pwd
