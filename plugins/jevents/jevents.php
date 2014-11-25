@@ -21,16 +21,23 @@ class plgContentJEvents extends JPlugin
 	public
 			function onContentBeforeSave($context, $data)
 	{
+		if (intval($data->id)==0){
+			return true;
+		}
+		
 		if ($context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 1 || $context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 0)
 		{
 			$lang = JFactory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
+			 $catids = $data->id;
 
 			// Get a db connection & new query object.
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
+			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
 			if ($params->get("multicategory", 0))
 			{
 				$query->select($db->quoteName('map.catid'));
