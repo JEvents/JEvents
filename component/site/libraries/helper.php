@@ -412,44 +412,54 @@ class JEVHelper
 	 * @param string $content - metatag value
 	 */
 	public static
-			function checkRobotsMetaTag($name = "robots", $content = "index, follow")
+			function checkRobotsMetaTag($name = "robots", $content = "index,follow")
 	{
 
 		// force robots metatag
 		$cfg = JEVConfig::getInstance();
 		$document = JFactory::getDocument();
+		// constrained in some way
 		if ($cfg->get('com_blockRobots', 0) >= 1)
 		{			
-			// Allow on content pages
+			// Allow on detail  pages - block otherwise unless crawler!
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
 				if (strpos(JRequest::getString("jevtask", ""), ".detail") > 0)
 				{
-					$document->setMetaData($name, "nofollow");
+					$document->setMetaData($name, "index,nofollow");
 					return;
 				}
-				$document->setMetaData($name, $content);
+				if (strpos(JRequest::getString("jevtask", ""), "crawler") !== false || $content != "index,follow"){
+					$document->setMetaData($name, $content);
+				}
+				else {
+					$document->setMetaData($name, "noindex,nofollow");
+				}
 				return;
 			}
+			// Always block Robots
 			if ($cfg->get('com_blockRobots', 0) == 1)
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name, "noindex,nofollow");
 				return;
 			}
+			// conditional on date
 			list($cyear, $cmonth, $cday) = JEVHelper::getYMD();
 			$cdate = JevDate::mktime(0, 0, 0, $cmonth, $cday, $cyear);
 			$prior = JevDate::strtotime($cfg->get('robotprior', "-1 day"));
 			if ($cdate < $prior && $cfg->get('com_blockRobots', 0))
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name,  "noindex,nofollow");
 				return;
 			}
 			$post = JevDate::strtotime($cfg->get('robotpost', "-1 day"));
 			if ($cdate > $post && $cfg->get('com_blockRobots', 0))
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name,  "noindex,nofollow");
 				return;
 			}
+			//If JEvents is not blocking robots we use menu item configuration
+			$document->setMetaData($name, $cfg->get('robots', $content));
 		}
 		//If JEvents is not blocking robots we use menu item configuration
 		else

@@ -3,8 +3,8 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.1.30
- * @releasedate August 2014
+ * @version     3.1.33
+ * @releasedate November 2014
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -135,6 +135,13 @@ class Pkg_JeventsInstallerScript
 			$db->setQuery($query);
 			$db->query();
 		}
+		else {
+			$db = JFactory::getDbo();
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
+			$db->setQuery($query);
+			$db->query();
+		}
+
 		echo "</div>";
 
 	}
