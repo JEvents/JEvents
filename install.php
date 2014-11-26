@@ -136,6 +136,13 @@ class Pkg_JeventsInstallerScript
  			$db->setQuery($query);
  			$db->query();
 		}
+		else {
+			$db = JFactory::getDbo();
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
+			$db->setQuery($query);
+			$db->query();
+		}
+
 		echo "</div>";
 
 	}

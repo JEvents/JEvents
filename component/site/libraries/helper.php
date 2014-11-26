@@ -79,8 +79,9 @@ class JEVHelper
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
+
 				// Load Site specific language overrides
-				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate());
+				$lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication('site')->getTemplate());
 
 				break;
 
@@ -417,44 +418,54 @@ class JEVHelper
 	 * @param string $content - metatag value
 	 */
 	public static
-			function checkRobotsMetaTag($name = "robots", $content = "index, follow")
+			function checkRobotsMetaTag($name = "robots", $content = "index,follow")
 	{
 
 		// force robots metatag
 		$cfg = JEVConfig::getInstance();
 		$document = JFactory::getDocument();
+		// constrained in some way
 		if ($cfg->get('com_blockRobots', 0) >= 1)
 		{			
-			// Allow on content pages
+			// Allow on detail  pages - block otherwise unless crawler!
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
 				if (strpos(JRequest::getString("jevtask", ""), ".detail") > 0)
 				{
-					$document->setMetaData($name, "nofollow");
+					$document->setMetaData($name, "index,nofollow");
 					return;
 				}
-				$document->setMetaData($name, $content);
+				if (strpos(JRequest::getString("jevtask", ""), "crawler") !== false || $content != "index,follow"){
+					$document->setMetaData($name, $content);
+				}
+				else {
+					$document->setMetaData($name, "noindex,nofollow");
+				}
 				return;
 			}
+			// Always block Robots
 			if ($cfg->get('com_blockRobots', 0) == 1)
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name, "noindex,nofollow");
 				return;
 			}
+			// conditional on date
 			list($cyear, $cmonth, $cday) = JEVHelper::getYMD();
 			$cdate = JevDate::mktime(0, 0, 0, $cmonth, $cday, $cyear);
 			$prior = JevDate::strtotime($cfg->get('robotprior', "-1 day"));
 			if ($cdate < $prior && $cfg->get('com_blockRobots', 0))
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name,  "noindex,nofollow");
 				return;
 			}
 			$post = JevDate::strtotime($cfg->get('robotpost', "-1 day"));
 			if ($cdate > $post && $cfg->get('com_blockRobots', 0))
 			{
-				$document->setMetaData($name, $content);
+				$document->setMetaData($name,  "noindex,nofollow");
 				return;
 			}
+			//If JEvents is not blocking robots we use menu item configuration
+			$document->setMetaData($name, $cfg->get('robots', $content));
 		}
 		//If JEvents is not blocking robots we use menu item configuration
 		else
@@ -1179,7 +1190,7 @@ class JEVHelper
 			if ($jevuser && $jevuser->published)
 			{
 				// creator can edit their own event
-				if ($jevuser->cancreate && $row->created_by == $user->id)
+				if ($jevuser->cancreate && $row->_created_by == $user->id)
 				{
 					return true;
 				}
@@ -3032,7 +3043,7 @@ SCRIPT;
 			$html .= "END:VCALENDAR\r\n";
                         return $html;
         }
-        protected function vtimezone($icalEvents)
+        protected static function vtimezone($icalEvents)
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$tzid = "";
@@ -3152,7 +3163,7 @@ SCRIPT;
 
 	}
         // Special methods ONLY user for iCal invitations
-	protected function setDescription($desc)
+	protected static function setDescription($desc)
 	{
 		// TODO - run this through plugins first ?
 
@@ -3174,7 +3185,7 @@ SCRIPT;
 
 	}
 	}
-        	protected function wraplines($input, $line_max = 76, $quotedprintable = false)
+        	protected static function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
 		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		$eol 		= "\r\n";
@@ -3236,7 +3247,7 @@ SCRIPT;
 		return trim($output);
 
 	}
-        protected function replacetags($description)
+        protected static function replacetags($description)
 	{
 		$description = str_replace('<p>', '\n\n', $description);
 		$description = str_replace('<P>', '\n\n', $description);

@@ -48,8 +48,34 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$this->setLayout("cpanel25");
 		}
 
-		$this->setUpdateUrls();
+		$this->checkForAddons();
 
+		$this->setUpdateUrls();
+	}
+
+	protected function checkForAddons () {
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("clubcode", "") && strlen($params->get("clubcode", "")>20)){
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		// find list of installed addons
+		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
+		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" ';
+		// extend this list !!!
+		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
+		$sql = 'SELECT element,extension_id FROM #__extensions  where  (
+		'.$installed.'
+		)';
+		$db->setQuery($sql);
+		$installed  =  $db->loadObjectList();
+
+		if (count($installed)){
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_SET_UPDATER_CODE")."<br/><br/>".JText::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
+			return;
+		}
 	}
 
 	/**
@@ -918,13 +944,23 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		);
 		// Do the language files for Joomla
 		$db = JFactory::getDbo();
-		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents'");
+		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' ");
 		$translations = $db->loadObjectList();
 		foreach ($translations  as $translation){
+			if ($translation->name==""){
+				$translation->name="JEvents Translation - ".$translation->element;
+			}
 			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
 			$updates[]= array("element"=>$translation->element,"name"=>$translation->name,"type"=>"file");
 		}
 
+		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents_Addons' ");
+		$translations = $db->loadObjectList();
+		foreach ($translations  as $translation){
+			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
+			$elem = str_replace("_Addons", "Addons_", $translation->element);
+			$updates[]= array("element"=>$elem,"name"=>$translation->name,"type"=>"file");
+		}
 
 		foreach ($updates as $package)
 		{
@@ -944,7 +980,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		// Process the package
 		$db = JFactory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		if ($folder=="") {
+		if ($folder=="" && $package['type']!="file") {
 			$this->removeComponentUpdate($com);
 		}
 
