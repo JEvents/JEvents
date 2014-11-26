@@ -32,6 +32,7 @@ class CsvLine {
     var $timezone;
     var $rrule;
     var $noendtime;
+    var $multiday;
     var $cf;
     /**
      * default constructor with manatory parameters
@@ -111,6 +112,14 @@ class CsvLine {
         $this->noendtime = intval($noendtime);
     }
 
+    public function getMultiday() {
+        return $this->multiday;
+    }
+
+    public function setMultiday($multiday) {
+        $this->multiday = intval($multiday);
+    }
+
 	public function Customfield($cf, $col) {
         $this->cf[$col] = $cf;
     }
@@ -183,6 +192,7 @@ class CsvLine {
         if($this->extraInfo != "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
         if($this->rrule != "") $ical .= "RRULE:".$this->rrule."\n";
         if($this->noendtime!= "") $ical .= "NOENDTIME:".$this->noendtime."\n";
+        if($this->multiday!= "") $ical .= "MULTIDAY:".$this->multiday."\n";
 
 	if (count($this->cf)>0){
 		foreach($this->cf as $key => $cf){
