@@ -274,7 +274,7 @@ class JevHtmlBootstrap
 			// Attach the modal to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					if ($('#$selector') {
+					if ($('#$selector')) {
 						$('#$selector').modal($options);
 					}
 				})(jQuery);"
