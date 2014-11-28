@@ -637,7 +637,8 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->setValue("catid", null, $this->catid);
 
 		$this->form->jevdata["creator"]["users"] = false;
-		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy")  && isset($this->users))
+		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy"
+				|| JRequest::getCmd("jevtask") == "icalevent.edit" || JRequest::getCmd("jevtask") == "icalevent.editcopy")  && isset($this->users))
 		{
 			$this->form->jevdata["creator"]["users"] = $this->users;
 		}
