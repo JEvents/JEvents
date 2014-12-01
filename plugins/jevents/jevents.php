@@ -21,6 +21,7 @@ class plgContentJEvents extends JPlugin
 	public
 			function onContentBeforeSave($context, $data)
 	{
+
 		if (intval($data->id)==0){
 			return true;
 		}
@@ -55,7 +56,7 @@ class plgContentJEvents extends JPlugin
 			$db->setQuery($query);
 
 			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
-			$results = $db->loadResultArray();
+			$results = $db->loadColumn();
 
 			$result_count = count($results);
 
@@ -116,7 +117,7 @@ class plgContentJEvents extends JPlugin
 			$db->setQuery($query);
 
 			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
-			$results = $db->loadResultArray();
+			$results = $db->loadColumn();
 			//Quick way to query debug without launching netbeans.
 			//JFactory::getApplication()->enqueueMessage($query, 'Error');
 
