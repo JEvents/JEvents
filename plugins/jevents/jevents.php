@@ -39,26 +39,28 @@ class plgContentJEvents extends JPlugin
 
 			// So lets see if there are any events in the categories selected
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
-			if ($params->get("multicategory", 0))
-			{
-				$query->select($db->quoteName('map.catid'));
-				$query->from($db->quoteName('#__jevents_vevent', 'ev'));
-				$query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
-				$query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
-			}
-			else {
-				$query->select($db->quoteName('ev.catid'));
-				$query->from($db->quoteName('#__jevents_vevent', 'ev'));
-				$query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
-			}
+            if ($data->published == "-2" || $data->published == "2") {
+                if ($params->get("multicategory", 0)) {
+                    $query->select($db->quoteName('map.catid'));
+                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
+                    $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
+                    $query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
+                } else {
+                    $query->select($db->quoteName('ev.catid'));
+                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
+                    $query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
+                }
 
-			// Reset the query using our newly populated query object.
-			$db->setQuery($query);
+                // Reset the query using our newly populated query object.
+                $db->setQuery($query);
 
-			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
-			$results = $db->loadColumn();
+                // Load the results as a list of stdClass objects (see later for more options on retrieving data).
+                $results = $db->loadColumn();
 
-			$result_count = count($results);
+                $result_count = count($results);
+            } else {
+                $result_count = 0;
+            }
 
 			if ($result_count >= 1)
 			{
