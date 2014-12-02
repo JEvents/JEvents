@@ -14,6 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.access.access');
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
+/** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
+include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+
 /**
  * Helper class with common functions for the component and modules
  *
