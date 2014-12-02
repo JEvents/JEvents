@@ -21,11 +21,12 @@ class plgContentJEvents extends JPlugin
 	public
 			function onContentBeforeSave($context, $data)
 	{
+
 		if (intval($data->id)==0){
 			return true;
 		}
 		
-		if ($context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 1 || $context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 0)
+		if ($context == "com_categories.category" && $data->extension == "com_jevents" && ( $data->published != 1 || $data->published != 0 ))
 		{
 			$lang = JFactory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
@@ -38,26 +39,28 @@ class plgContentJEvents extends JPlugin
 
 			// So lets see if there are any events in the categories selected
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
-			if ($params->get("multicategory", 0))
-			{
-				$query->select($db->quoteName('map.catid'));
-				$query->from($db->quoteName('#__jevents_vevent', 'ev'));
-				$query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
-				$query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
-			}
-			else {
-				$query->select($db->quoteName('ev.catid'));
-				$query->from($db->quoteName('#__jevents_vevent', 'ev'));
-				$query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
-			}
+            if ($data->published == "-2" || $data->published == "2") {
+                if ($params->get("multicategory", 0)) {
+                    $query->select($db->quoteName('map.catid'));
+                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
+                    $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
+                    $query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
+                } else {
+                    $query->select($db->quoteName('ev.catid'));
+                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
+                    $query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
+                }
 
-			// Reset the query using our newly populated query object.
-			$db->setQuery($query);
+                // Reset the query using our newly populated query object.
+                $db->setQuery($query);
 
-			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
-			$results = $db->loadResultArray();
+                // Load the results as a list of stdClass objects (see later for more options on retrieving data).
+                $results = $db->loadColumn();
 
-			$result_count = count($results);
+                $result_count = count($results);
+            } else {
+                $result_count = 0;
+            }
 
 			if ($result_count >= 1)
 			{
@@ -79,7 +82,7 @@ class plgContentJEvents extends JPlugin
 	{
 		//We need to use on categoryChangeState
 		// Only run on JEvents
-		if ($extension == "com_jevents" && $value != 1)
+		if ($extension == "com_jevents" && ($value == "-2" || $value == "2"))
 		{
 			//$value params
 			// 1  = Published
@@ -116,7 +119,7 @@ class plgContentJEvents extends JPlugin
 			$db->setQuery($query);
 
 			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
-			$results = $db->loadResultArray();
+			$results = $db->loadColumn();
 			//Quick way to query debug without launching netbeans.
 			//JFactory::getApplication()->enqueueMessage($query, 'Error');
 

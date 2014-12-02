@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.2.0" client="site" method="upgrade">
 	<name>JEvents CustomModule</name>
-	<creationDate>November 2014</creationDate>
+	<creationDate>December 2014</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2013-2014 GWE Systems Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>

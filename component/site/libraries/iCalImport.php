@@ -683,6 +683,7 @@ class iCalImport
 		$wtzdata["Mountain Standard Time"] = "America/Denver";
 		$wtzdata["Romance Standard Time"] = "Europe/Brussels";
 		$wtzdata["GMT Standard Time"] = "UTC";
+		$wtzdata["Tasmania Standard Time"] = "Australia/Hobart";
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
