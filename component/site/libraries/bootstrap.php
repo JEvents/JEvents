@@ -257,7 +257,7 @@ class JevHtmlBootstrap
 			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
 		}
 */
-			JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
+			JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
 		static::$loaded[__METHOD__] = true;
 
 		return;
@@ -890,8 +890,8 @@ class JevHtmlBootstrap
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			JHtml::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap.css', $attribs, false);
-			JHtml::_('stylesheet', 'libraries/jevents/bootstrap/css/bootstrap-responsive.css', $attribs, false);
+			JHtml::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
+			JHtml::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
 			//JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
 		}
 
