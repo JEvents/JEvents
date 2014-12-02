@@ -94,7 +94,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$Itemid	= JEVHelper::getItemid();
 
 		$uid = urldecode((JRequest::getVar( 'uid', "" )));
-		
+
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		

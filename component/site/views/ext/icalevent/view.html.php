@@ -42,6 +42,10 @@ class ExtViewICalevent extends JEventsExtView
 			$this->year = $this->data['row']->yup();
 			$this->month = $this->data['row']->mup();
 			$this->day = $this->data['row']->dup();
+
+			// seth month and year to be used by mini-calendar if needed
+			if (!JRequest::getVar("month",0)) JRequest::setVar("month",$this->month);
+			if (!JRequest::getVar("year",0)) JRequest::setVar("year",$this->year);
 		}
 		
 	}	
