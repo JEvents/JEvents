@@ -26,7 +26,7 @@ class plgContentJEvents extends JPlugin
 			return true;
 		}
 		
-		if ($context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 1 || $context == "com_categories.category" && $data->extension == "com_jevents" && $data->published != 0)
+		if ($context == "com_categories.category" && $data->extension == "com_jevents" && ( $data->published != 1 || $data->published != 0 ))
 		{
 			$lang = JFactory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
@@ -82,7 +82,7 @@ class plgContentJEvents extends JPlugin
 	{
 		//We need to use on categoryChangeState
 		// Only run on JEvents
-		if ($extension == "com_jevents" && $value == "-2" || $extension == "com_jevents" && $value == "2")
+		if ($extension == "com_jevents" && ($value == "-2" || $value == "2"))
 		{
 			//$value params
 			// 1  = Published
