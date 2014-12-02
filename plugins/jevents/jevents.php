@@ -82,7 +82,7 @@ class plgContentJEvents extends JPlugin
 	{
 		//We need to use on categoryChangeState
 		// Only run on JEvents
-		if ($extension == "com_jevents" && $value != 1)
+		if ($extension == "com_jevents" && $value == "-2" || $extension == "com_jevents" && $value == "2")
 		{
 			//$value params
 			// 1  = Published
