@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.2.0
+ * @version     3.2.1
  * @releasedate November 2014
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
