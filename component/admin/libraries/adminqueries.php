@@ -75,7 +75,21 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				if (count($inaccessiblecats )){
 					$inaccessiblecats[] = -1;
 					$inaccessiblecats = implode(",",$inaccessiblecats);
-					$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+
+					$jevtask = JRequest::getString("jevtask");
+					$isedit = false;
+					// not only for edit pages but for all backend changes we ignore the language filter on categories
+					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || !$user->get("isRoot"))
+					{
+						$isedit = true;
+					}
+					if ($isedit){
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)"
+								. "\n AND access NOT IN (" . JEVHelper::getAid($user) . ')');
+					}
+					else {
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+					}
 					$realcatids = $db->loadColumn();
 					if (count ($realcatids) ){
 						return null;						
