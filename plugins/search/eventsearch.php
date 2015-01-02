@@ -83,7 +83,7 @@ class plgSearchEventsearch extends JPlugin
 			$this->_plugin =  JPluginHelper::getPlugin('search', 'eventsearch');
 			$this->_params = new JRegistry($this->_plugin->params);
 		}
-
+		$this->loadLanguage( 'plg_search_eventsearch' );
 	}
 
 	/**
