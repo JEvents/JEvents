@@ -88,7 +88,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// Add a standard button
 		//$bar->appendButton( 'Standard', $icon, $alt, $task, $listSelect, $x );
 
-		$buttontext = JText::_('SAVE');
+		$buttontext = JText::_('JEV_SAVE');
 		$buttonhtml = '<a href="#" onclick="javascript:return clickIcalSaveButton();" class="toolbar">
 		<span class="icon-32-save" title="' . $buttontext . '"></span>' . $buttontext . '</a><div style="position:relative;clear:both;">';
 		$submitbutton = "Joomla.submitbutton";
@@ -101,21 +101,21 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 			</div>
 
 			<?php
-			$buttontext = JText::_('SAVE_THIS');
+			$buttontext = JText::_('JEV_SAVE_THIS');
 			$buttontask = "icalrepeat.save";
 			?>
 			<div><a href="#" onclick="javascript:<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext); ?>"></span><?php echo $buttontext; ?></a></div>
 
 			<?php
 			/*
-			  $buttontext = JText::_( 'SAVE_FUTURE' );
+			  $buttontext = JText::_( 'JEV_SAVE_FUTURE' );
 			  $buttontask = "icalrepeat.savefuture";
 			  <div><a href="#" onclick="javascript:return submitbutton('<?php echo $buttontask;?>')" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext);?>"></span><?php echo $buttontext;?></a></div>
 			 */
 			?>
 
 			<?php
-			$buttontext = JText::_('SAVE_ALL');
+			$buttontext = JText::_('JEV_SAVE_ALL');
 			$buttontask = "icalevent.save";
 			?>
 			<div><a href="#" onclick="javascript:<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;" class="toolbar"><span class="icon-32-save" style='margin:0px' title="<?php echo strip_tags($buttontext); ?>"></span><?php echo $buttontext; ?></a></div>
@@ -134,7 +134,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 		$toolbar =  JToolBar::getInstance('toolbar');
 		$submitbutton = "Joomla.submitbutton";
-		$html = '<a class="toolbar" onclick="javascript: '.$submitbutton.'(\'icalrepeat.detail\');return false;" href="#"><span class="icon-32-cancel" title="Cancel"> </span>' . JText::_('CANCEL') . '</a>';
+		$html = '<a class="toolbar" onclick="javascript: '.$submitbutton.'(\'icalrepeat.detail\');return false;" href="#"><span class="icon-32-cancel" title="Cancel"> </span>' . JText::_('JEV_CANCEL') . '</a>';
 		$toolbar->appendButton('Custom', $html, "customcancel");
 
 	}
