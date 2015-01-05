@@ -49,9 +49,9 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 	
 		$bar =  JToolBar::getInstance('toolbar');
-		$this->toolbarConfirmButton("icalrepeat.save", JText::_("save_icalevent_warning"), 'save', 'save', 'Save', false);
+		$this->toolbarConfirmButton("icalrepeat.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'Save', false);
 		if (JEVHelper::isEventEditor())
-			$this->toolbarConfirmButton("icalrepeat.apply", JText::_("save_icalevent_warning"), 'apply', 'apply', 'jev_Apply', false);
+			$this->toolbarConfirmButton("icalrepeat.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'jev_Apply', false);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0))
