@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevinfo.php 1277 2010-10-11 22:04:39Z royceharding $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
