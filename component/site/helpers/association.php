@@ -60,7 +60,7 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 		if ($view == 'category' || $view == 'categories')
 		{
-			return self::getCategoryAssociations($id, 'com_content');
+			return self::getCategoryAssociations($id, 'com_jevents');
 		}
 
 		return array();
