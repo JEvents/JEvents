@@ -701,6 +701,17 @@ SQL;
 			$db->query();					
 		}
 
+		$sql = "SHOW INDEX FROM #__jev_defaults";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("key_evid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_catmap ADD INDEX key_evid ( evid)";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 	}
 
 }

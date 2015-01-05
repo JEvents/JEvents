@@ -236,6 +236,14 @@ class JEventsHTML
 		ob_start();
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 		$options = JHtml::_('category.options', $sectionname);
+		/* hide second level categories
+		for ($i=0;$i<count($options);$i++){
+			if (strpos($options[$i]->text,"-")!==false){
+				unset($options[$i]);
+			}
+		}
+		$options = array_values($options);
+		 */
 		if ($catidList != null)
 		{
 			$cats = explode(',', $catidList);

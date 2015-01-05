@@ -84,15 +84,23 @@ class JEventsAdminDBModel extends JEventsDBModel {
 						$isedit = true;
 					}
 					if ($isedit){
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+						/*
+						 * See http://www.jevents.net/forum/viewtopic.php?f=24&t=26928&p=142283#p142283
 						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)"
 								. "\n AND access NOT IN (" . JEVHelper::getAid($user) . ')');
+						 */
 					}
 					else {
 						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
 					}
 					$realcatids = $db->loadColumn();
 					if (count ($realcatids) ){
-						return null;						
+						if ($isedit && !JFactory::getApplication()->isAdmin() ){
+							$Itemid = JRequest::getInt("Itemid");
+							JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
+						}
+						return null;
 					}
 					else {
 						$catids = array_intersect($catids, explode(",",$accessibleCategories));

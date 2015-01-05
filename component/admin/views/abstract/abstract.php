@@ -545,11 +545,16 @@ class JEventsAbstractView extends JViewLegacy
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Prepare the data
-		// Experiment in the use of JForm
+		// Experiment in the use of JForm and template override for forms and fields
 		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = JFactory::getApplication()->getTemplate();
+		JForm::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
+		//JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+
 		$xpath = false;
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
+		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 
 		$rowdata = array();
 		foreach ($this->row as $k => $v)

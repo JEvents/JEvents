@@ -35,7 +35,7 @@ class JElementJevunlock extends JElementText
 		if (!$showcopy){
 			$style=' class="jev_block" ';
 		}
-		return '<div '.$style.'>'.JText::_("Please visit the <a href='http://www.jevents.net/hidecopyright?tmpl=component&template=beez' rel=”nofollow” title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a> for your free code to hide the copyright message")."<br/>".parent::fetchElement($name, $value, $node, $control_name).'</div>';
+		return '<div '.$style.'>'.JText::_("Please visit the <a href='https://www.jevents.net/hidecopyright?tmpl=component&template=beez_20' rel=”nofollow” title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a> for your free code to hide the copyright message")."<br/>".parent::fetchElement($name, $value, $node, $control_name).'</div>';
 	}
 	
 	function fetchTooltip($label, $description, &$xmlElement, $control_name='', $name='') {
