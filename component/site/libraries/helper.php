@@ -2956,12 +2956,13 @@ SCRIPT;
 
 					if (count($changed) > 0 && $changed[0] != 0) {
 						foreach ($changed as $rpid) {
+							$helper = new JEVNotifyHelper;
 							if (JPATH_SITE . "/plugins/jevents/jevnotify/") {
-								$a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+								$a = $helper->getEventData($rpid, "icaldb", 0, 0, 0, $a->uid());
 							} else {
 								// No usage yet.
 								// Likely to update helper function when moving over RSVP Pro Generated iCals.
-								$a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+								$a = $helper->getEventData($rpid, "icaldb", 0, 0, 0, $a->uid());
 							}
 
 							if ($a && isset($a["row"])) {
