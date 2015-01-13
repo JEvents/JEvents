@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevboolean.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -46,7 +46,7 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
-		return parent::getInput().'<div id="jevcopymsg" '.$style.'>'.JText::_("Before removing the copyright footer please read this important message at the <a href='http://www.jevents.net/hidecopyright?tmpl=component&template=beez' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.").'</div>';
+		return parent::getInput().'<div id="jevcopymsg" '.$style.'>'.JText::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component&template=beez_20' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.").'</div>';
 	}
 	
 	/**

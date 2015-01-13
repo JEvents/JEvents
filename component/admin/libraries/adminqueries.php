@@ -4,7 +4,7 @@
  *
  * @version     $Id: adminqueries.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */ 
@@ -75,10 +75,32 @@ class JEventsAdminDBModel extends JEventsDBModel {
 				if (count($inaccessiblecats )){
 					$inaccessiblecats[] = -1;
 					$inaccessiblecats = implode(",",$inaccessiblecats);
-					$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+
+					$jevtask = JRequest::getString("jevtask");
+					$isedit = false;
+					// not only for edit pages but for all backend changes we ignore the language filter on categories
+					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || !$user->get("isRoot"))
+					{
+						$isedit = true;
+					}
+					if ($isedit){
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+						/*
+						 * See http://www.jevents.net/forum/viewtopic.php?f=24&t=26928&p=142283#p142283
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)"
+								. "\n AND access NOT IN (" . JEVHelper::getAid($user) . ')');
+						 */
+					}
+					else {
+						$db->setQuery("SELECT id FROM #__categories WHERE extension='com_jevents' and id in($inaccessiblecats)");
+					}
 					$realcatids = $db->loadColumn();
 					if (count ($realcatids) ){
-						return null;						
+						if ($isedit && !JFactory::getApplication()->isAdmin() ){
+							$Itemid = JRequest::getInt("Itemid");
+							JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
+						}
+						return null;
 					}
 					else {
 						$catids = array_intersect($catids, explode(",",$accessibleCategories));

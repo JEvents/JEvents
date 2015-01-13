@@ -74,7 +74,7 @@ $version = JEventsVersion::getInstance();
 <h1>JEvents - Termine und Veranstaltungen leicht gemacht</h1>
 <div class="text">
 	<ul>
-		<li>Version <?php echo $version->getShortVersion();?> - <a href="http://www.jevents.net/" target="_blank" title="Projektseite">Projektseite</a></li>
+		<li>Version <?php echo $version->getShortVersion();?> - <a href="https://www.jevents.net/" target="_blank" title="Projektseite">Projektseite</a></li>
 		<li><?php echo $version->getLongCopyright();?></li>
 		<li>Copyright (C) 2000 - 2003 Eric Lamette, Dave McDonnell</li>
 		<li>Voraussetzung: <a href="http://www.joomla.org" target="_blank" title="Joomla">Joomla</a> 1.x</li>

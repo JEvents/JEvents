@@ -193,6 +193,13 @@ jimport("joomla.utilities.date");
 
 			}
 
+			// Timezone aware version!!
+			public function toSql($local = false, JDatabaseDriver $db = NULL)
+			{
+				return $this->toFormat('%Y-%m-%d %H:%M:%S', $local);
+
+			}
+
 			public static function strtotime($time, $now=null)
 			{
 				static $date;

@@ -2,11 +2,11 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEvents Package</name>
 	<packagename>jevents</packagename>
-	<version>3.1.34</version>
+	<version>3.1.35</version>
 	<url>http://www.jevents.net</url>
-	<creationDate>December 2014</creationDate>
+	<creationDate>January 2015</creationDate>
 	<author>Geraint Edwards</author>
-	<copyright>(C) 2012-2014 GWE Systems Ltd</copyright>
+	<copyright>(C) 2012-2015 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>

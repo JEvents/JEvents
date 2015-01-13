@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!

@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevboolmsg.php 2256 2011-06-29 08:29:20Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -47,6 +47,6 @@ class JElementJevboolmsg extends JElement
 
 		$radio =  JHTML::_('select.radiolist', $options, ''.$control_name.'['.$name.']', ' onclick="if(this.value==0) document.getElementById(\'jevcopymsg\').style.display=\'block\';  else document.getElementById(\'jevcopymsg\').style.display=\'none\';" ', 'value', 'text', $value, $control_name.$name );
 		
-		return $radio.'<div id="jevcopymsg" '.$style.'>'.JText::_("Before removing the copyright footer please read this important message at the <a href='http://www.jevents.net/hidecopyright?tmpl=component&template=beez' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.").'</div>';
+		return $radio.'<div id="jevcopymsg" '.$style.'>'.JText::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component&template=beez_20' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.").'</div>';
 	}
 }
