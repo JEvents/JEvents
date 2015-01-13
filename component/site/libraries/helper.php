@@ -165,7 +165,7 @@ class JEVHelper
 
 	/**
 	 * Returns the Max year to display from Config
-	 * 
+	 *
 	 * @static
 	 * @access public
 	 * @return	string				integer with the max year to show in the calendar
@@ -190,7 +190,7 @@ class JEVHelper
 
 	/**
 	 * Returns the full month name
-	 * 
+	 *
 	 * @static
 	 * @access public
 	 * @param	string	$month		numeric month
@@ -220,7 +220,7 @@ class JEVHelper
 
 	/**
 	 * Return the short month name
-	 * 
+	 *
 	 * @static
 	 * @access public
 	 * @param	string	$month		numeric month
@@ -423,7 +423,7 @@ class JEVHelper
 		$document = JFactory::getDocument();
 		// constrained in some way
 		if ($cfg->get('com_blockRobots', 0) >= 1)
-		{			
+		{
 			// Allow on detail  pages - block otherwise unless crawler!
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
@@ -516,7 +516,7 @@ class JEVHelper
 
 	/**
 	 * Loads all necessary files for and creats popup calendar link
-	 * 
+	 *
 	 * @static
 	 */
 	public static
@@ -542,7 +542,7 @@ class JEVHelper
 				new NewCalendar(
 					{ ' . $fieldid . ' :  "' . $format . '"},
 					{
-					direction:0, 
+					direction:0,
 					classes: ["dashboard"],
 					draggable:true,
 					navigation:2,
@@ -600,7 +600,7 @@ class JEVHelper
 
 	/**
 	 * Loads all necessary files for JS Overlib tooltips
-	 * 
+	 *
 	 * @static
 	 */
 	public static
@@ -1784,7 +1784,7 @@ class JEVHelper
 	 * Get user details for authorisation testing
 	 *
 	 * @param int $id Joomla user id
-	 * @return array TableUser  
+	 * @return array TableUser
 	 */
 	public static
 			function getAuthorisedUser($id = null)
@@ -1889,9 +1889,9 @@ class JEVHelper
 	}
 
 	/**
-	 * 
+	 *
 	 * Joomla 1.6 compatability functions
-	 * 
+	 *
 	 */
 	static public
 			function getGid($user = null)
@@ -2126,7 +2126,7 @@ class JEVHelper
 		}
 		$user = JFactory::getUser();
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		// only unlogged in users and not logged in OR all visitors grouped by access level 
+		// only unlogged in users and not logged in OR all visitors grouped by access level
 		if (($params->get("com_cache", 1) == 1 && $user->id == 0) || $params->get("com_cache", 1) == 2)
 		{
 
@@ -2186,7 +2186,7 @@ class JEVHelper
 			}
 			//list ($usec, $sec) = explode(" ", microtime());
 			//$time_end = (float) $usec + (float) $sec;
-			//echo  "onDisplayCustomFieldsMultiRow  = ".round($time_end - $starttime, 4)."<br/>";		
+			//echo  "onDisplayCustomFieldsMultiRow  = ".round($time_end - $starttime, 4)."<br/>";
 
 			$cachecontroller->cache->setCaching($oldcaching);
 		}
@@ -2589,7 +2589,7 @@ SCRIPT;
 	 * Get an user object.
 	 *
 	 * JEvents version that doesn't throw error message when user doesn't exist
-	 * 
+	 *
 	 * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
 	 *
 	 * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
@@ -2626,7 +2626,7 @@ SCRIPT;
 
 	}
         // We use this for RSVP Pro Invites with iCal mail and New & Event change notifcations at present to avoid code duplication.
-        public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH" ) {        
+        public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH" ) {
                         if ($ics_method == "CANCEL") {
                                 $status = "CANCELLED";
                         }
@@ -2634,12 +2634,12 @@ SCRIPT;
                             //If using JEvents notify plugin we need to load it for the processing of data.
                                 JLoader::register('JEVNotifyHelper',JPATH_SITE."/plugins/jevents/jevnotify/helper.php");
                         }
-                        
+
 			$icalEvents = array($row);
 			if (ob_get_contents()) ob_end_clean();
 			$html = "";
                         $params = JComponentHelper::getParams("com_jevents");
-                        
+
 			if ($params->get('outlook2003icalexport'))
 				$html .= "BEGIN:VCALENDAR\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
 			else
@@ -2648,7 +2648,7 @@ SCRIPT;
 			$html .= "CALSCALE:GREGORIAN\r\nMETHOD:" . $ics_method . "\r\n";
                         if (isset($status)) {
                             $html .= "STATUS:" . $status . "\r\n";
-                            
+
                         }
 			if (!empty($icalEvents))
 			{
@@ -2713,6 +2713,7 @@ SCRIPT;
 					}
 					if (!$a)
 						continue;
+
 					$html .= "BEGIN:VEVENT\r\n";
 					$html .= "UID:" . $a->uid() . "\r\n";
 					$html .= "CATEGORIES:" . $a->catname() . "\r\n";
@@ -2743,7 +2744,7 @@ SCRIPT;
 					if ($a->hasExtraInfo())
 						$html .= "X-EXTRAINFO:" . self::wraplines(self::replacetags($a->_extra_info)) . "\r\n";
                                         $user = JFactory::getUser($a->created_by());
-                                                        
+
                                         $html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
 					$alldayprefix = "";
 					// No doing true timezones!
@@ -2945,22 +2946,25 @@ SCRIPT;
 					$html .= "TRANSP:OPAQUE\r\n";
 					$html .= "END:VEVENT\r\n";
 
+					// Ok if it's a request, then it's a change. No need the include the master event for the iCal
+					// Simple lets, clear her.
+					if ($ics_method != "REQUEST" && $a->hasrepetition()) {
+						$html = "";
+					}
+
 					$changedrows = array();
 
-					if (count($changed) > 0 && $changed[0] != 0)
-					{
-						foreach ($changed as $rpid)
-						{
-                                                    if (JPATH_SITE."/plugins/jevents/jevnotify/") {
-                                                            $a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
-                                                    } else {
-                                                            // No usage yet. 
-                                                            // Likely to update helper function when moving over RSVP Pro Generated iCals.
-                                                            $a = $dataModal->getEventData($rpid, "icaldb", 0, 0, 0);
-                                                    }
+					if (count($changed) > 0 && $changed[0] != 0) {
+						foreach ($changed as $rpid) {
+							if (JPATH_SITE . "/plugins/jevents/jevnotify/") {
+								$a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+							} else {
+								// No usage yet.
+								// Likely to update helper function when moving over RSVP Pro Generated iCals.
+								$a = JEVNotifyHelper::getEventData($rpid, "icaldb", 0, 0, 0);
+							}
 
-							if ($a && isset($a["row"]))
-							{
+							if ($a && isset($a["row"])) {
 								$a = $a["row"];
 								$changedrows[] = $a;
 							}
@@ -2985,11 +2989,11 @@ SCRIPT;
 
 							if ($a->hasContactInfo())
 								$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
-                                                                
+
 							if ($a->hasExtraInfo())
 								$html .= "X-EXTRAINFO:" . self::wraplines(self::replacetags($a->_extra_info)); $html .= "\r\n";
                                                         $user = JFactory::getUser($a->created_by());
-                                                        
+
                                                         $html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
 							$exception = $changedexceptions[$rpid];
 							$originalstart = JevDate::strtotime($exception->oldstartrepeat);
