@@ -139,7 +139,6 @@ class JEventsDBModel
 			$db->setQuery($query);
 
 			$catlist = $db->loadColumn();
-			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
 
