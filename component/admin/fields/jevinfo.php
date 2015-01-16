@@ -135,7 +135,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 			//$help = str_replace('&quot;', '\&quot;', $help);
 			$help = addslashes(str_replace("\n", " ", $help));
 
-			$onclick_cmd = "SqueezeBox.initialize({});SqueezeBox.setOptions(SqueezeBox.presets,{'handler': 'iframe','size': {'x': 400, 'y': 500},'closeWithOverlay': 0, 'closable': false});SqueezeBox.setContent('clone', $('helpdiv".$counthelps."'));";
+			$onclick_cmd = "SqueezeBox.initialize({});SqueezeBox.setOptions(SqueezeBox.presets,{'handler': 'iframe','size': {'x': 400, 'y': 500},'closeWithOverlay': 0, 'onOpen' : function(){SqueezeBox.overlay['removeEvent']('click', SqueezeBox.bound.close)}});SqueezeBox.setContent('clone', $('helpdiv".$counthelps."'));";
 
 		}
 
