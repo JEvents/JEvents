@@ -162,7 +162,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -176,7 +176,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JFilterOutput::stringURLSafe($query['title']);
+						  $segments[] = JApplication::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -208,7 +208,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +253,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -727,7 +727,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else

@@ -636,6 +636,11 @@ class AdminCpanelController extends JControllerAdmin
 		$db->query();
 		echo $db->getErrorMsg();
 
+		// Is the JEvents menu item completely missing or corrupted - if so then skip the rest
+		if (!$parent) {
+			return;
+		}
+
 		$updatemenus = false;			
 		if ($params->get("mergemenus", 1)){
 											
@@ -654,7 +659,7 @@ class AdminCpanelController extends JControllerAdmin
 				$db->setQuery($sql);			
 				$tomerge = $db->loadObjectList();
 
-                                $sql = 'SELECT * FROM #__menu 
+	                           $sql = 'SELECT * FROM #__menu
 				where client_id=1 AND parent_id='.$parent.'  AND (
 					'.$tochange.'
 				)';

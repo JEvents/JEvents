@@ -2603,7 +2603,8 @@ SCRIPT;
 	{
 		if (is_null($id) || $id==0)
 		{
-			return JFactory::getUser($id);
+			// CB sometimes messes up with the session data when logging out - so this is a safe workaround!
+			return JUser::getInstance();
 		}
 		else
 		{

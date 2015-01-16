@@ -50,6 +50,15 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
+<?php
+$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($jevparams->get("showpriority", 0)){
+	?>
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
+	<?php
+}
+?>
 //
 Joomla.submitbutton = function (pressbutton){
 

@@ -301,7 +301,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 					}
 				}
-				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
+				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
 				$db->setQuery($sql);
 				$users = $db->loadObjectList();
 			}
