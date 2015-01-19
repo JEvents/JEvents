@@ -3180,9 +3180,9 @@ SCRIPT;
 		{
 			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
 
+		}
 	}
-	}
-        	protected static function wraplines($input, $line_max = 76, $quotedprintable = false)
+    protected static function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
 		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		$eol 		= "\r\n";
@@ -3190,7 +3190,6 @@ SCRIPT;
 		$input = str_replace($eol, "", $input);
 
 		// new version
-
 		$output = '';
 		while (JString::strlen($input)>=$line_max){
 			$output .= JString::substr($input,0,$line_max-1);
