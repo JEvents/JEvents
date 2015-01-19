@@ -502,7 +502,7 @@ RAWTEXT;
 
 	// find if icsFile already imported
 	function isDuplicate(){
-		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = '" . addcslashes($this->label, '\'') . "'";
+		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = " . $this->_db->quote($this->label) ;
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
 		if (count($matches)>0 && isset($matches[0]->ics_id)) {
