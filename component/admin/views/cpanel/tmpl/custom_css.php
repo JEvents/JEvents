@@ -9,89 +9,107 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
-if (JRequest::getVar('save'))
-{
-	customCssSave();
+
+$mainframe = JFactory::getApplication();
+
+//Hold on... Are you a super user?
+$user = JFactory::getUser();
+
+if (!$user->authorise('core.admin')) {
+    $msg = JTExt::_('JEV_ERROR_NOT_AUTH');
+    $msgType = 'Error';
+    $mainframe->enqueueMessage($msg, $msgType);
+    $mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
+    return;
+}
+
+// Check if we are saving here.
+if (JRequest::getVar('save')) {
+    customCssSave();
 }
 ?>
 <div id="jevents">
-	<?php
-	if (isset($this->warning))
-	{
-		?>
-		<dl id="system-message">
-			<dt class="notice">Message</dt>
-			<dd class="notice fade">
-				<ul>
-					<li><?php echo $this->warning; ?></li>
-				</ul>
-			</dd>
-		</dl>   	
-		<?php
-	}
+    <?php
+    if (isset($this->warning)) {
+        ?>
+        <dl id="system-message">
+            <dt class="notice">Message</dt>
+            <dd class="notice fade">
+                <ul>
+                    <li><?php echo $this->warning; ?></li>
+                </ul>
+            </dd>
+        </dl>
+    <?php
+    }
 
-	$file = 'jevcustom.css';
-	$srcfile = 'jevcustom.css.new';
-	$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
-	$srcfilepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
-	if (!JFile::exists($filepath))
-	{
-		$filepath = $srcfilepath;
-	}
-	$content = '';
-	$html = '';
-	$msg = JRequest::getVar('msg', '', 'GET');
-	$msgType = JRequest::getVar('msgtype', '', 'GET');
+    $file = 'jevcustom.css';
+    $srcfile = 'jevcustom.css.new';
+    $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
+    $srcfilepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
+    if (!JFile::exists($filepath)) {
+        $filepath = $srcfilepath;
+    }
+    $content = '';
+    $html = '';
+    $msg = JRequest::getVar('msg', '', 'GET');
+    $msgType = JRequest::getVar('msgtype', '', 'GET');
 
-	ob_start();
+    ob_start();
 
-	$content = JFile::read($filepath);
-	$btnclass = JevJoomlaVersion::isCompatible("3.0")? "btn btn-success" : "";
-	?>
+    $content = JFile::read($filepath);
+    $btnclass = JevJoomlaVersion::isCompatible("3.0") ? "btn btn-success" : "";
+    ?>
 
-	<form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post" name="custom_css_save" id="custom_css_save">
-			<?php if (!empty($this->sidebar)) : ?>
-			<div id="j-sidebar-container" class="span2">
-				<?php echo $this->sidebar; ?>
-			</div>
-			<div id="j-main-container" class="span10">
-				<?php else : ?>
-				<div id="j-main-container">
-<?php endif; ?>
-				<textarea style="width:90%;height:650px;" name="content"><?php echo $content; ?></textarea>
-				<input type="submit" style="display:block;margin-left:2px;" name="save" class="<?php echo $btnclass;?>" value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
-				</form>
-				<?php
-				$html = ob_get_contents();
-				@ob_end_clean();
+    <form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post"
+          name="custom_css_save" id="custom_css_save">
+        <?php echo JHtml::_( 'form.token' ); ?>
+        <?php if (!empty($this->sidebar)) : ?>
+        <div id="j-sidebar-container" class="span2">
+            <?php echo $this->sidebar; ?>
+        </div>
+        <div id="j-main-container" class="span10">
+            <?php else : ?>
+            <div id="j-main-container">
+                <?php endif; ?>
+                <textarea style="width:90%;height:650px;" name="content"><?php echo $content; ?></textarea>
+                <input type="submit" style="display:block;margin-left:2px;" name="save" class="<?php echo $btnclass; ?>"
+                       value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
+    </form>
+    <?php
+    $html = ob_get_contents();
+    @ob_end_clean();
 
-				echo $html;
+    echo $html;
 
-				function customCssSave()
-				{
-					$mainframe = JFactory::getApplication();
-					$file = 'jevcustom.css';
-					$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
-					$content = JRequest::getVar('content', '', 'POST', '', JREQUEST_ALLOWRAW);
-					$msg = '';
-					$msgType = '';
+    function customCssSave()
+    {
+        //Check for request forgeries
+        JSession::checkToken() or die( 'Invalid Token' );
+        $mainframe = JFactory::getApplication();
 
-					$status = JFile::write($filepath, $content);
-					if (!empty($status))
-					{
-						$msg = JText::_('JEV_CUSTOM_CSS_SUCCESS');
-						$msgType = 'info';
-					}
-					else
-					{
-						$msg = JText::_('JEV_CUSTOM_CSS_ERROR');
-						$msgType = 'error';
-					}
+        $file = 'jevcustom.css';
+        $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
+        $jinput = JFactory::getApplication()->input;
+        $content = $jinput->get('content', '', 'POST', '', RAW);
 
-					$mainframe->enqueueMessage($msg, $msgType);
-					$mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css&msg=' . $msg . '&msgtype=' . $msgType . '');
+        $msg = '';
+        $msgType = '';
 
-				}
-				?>
+        $status = JFile::write($filepath, $content);
+        if (!empty($status)) {
+            $msg = JText::_('JEV_CUSTOM_CSS_SUCCESS');
+            $msgType = 'info';
+        } else {
+            $msg = JText::_('JEV_CUSTOM_CSS_ERROR');
+            $msgType = 'error';
+        }
 
-			</div>
+        $mainframe->enqueueMessage($msg, $msgType);
+        $mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css&msg=' . $msg . '&msgtype=' . $msgType . '');
+
+    }
+
+    ?>
+
+</div>
