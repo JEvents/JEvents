@@ -210,6 +210,7 @@ echo JEventsHTML::buildScriptTag('end');
 </table>
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="task" value="icals.edit" />
+<?php echo JHtml::_('form.token'); ?>
 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
 </form>
 </div>

@@ -207,6 +207,9 @@ class AdminIcalsController extends JControllerForm {
         } 
 	function save($key = null, $urlVar = null){
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		$authorised = false;
 		
 		if (JFactory::getApplication()->isAdmin()){
@@ -358,7 +361,10 @@ class AdminIcalsController extends JControllerForm {
 	 */
 	function savedetails(){
 		$authorised = false;
-		
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
 		}
@@ -536,6 +542,9 @@ class AdminIcalsController extends JControllerForm {
  	*/
 	function newical() {
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		// include ical files
 		$catid = intval(JRequest::getVar('catid',0));
 		// Should come from the form or existing item
@@ -559,6 +568,10 @@ class AdminIcalsController extends JControllerForm {
 
 
 	function delete(){
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		$cid	= JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
