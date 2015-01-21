@@ -396,15 +396,23 @@ class JEventsDBModel
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		// make sure we have the first repeat in each instance
-		foreach ($rows as &$row){
+		// do not use foreach incase time limit plugin removes one of the repeats
+		for ($i=0;$i<count($rows); $i++) {
+			$row = $rows[$i];
 			if (strtolower($row->freq())!="none" && $noRepeats){
 				$repeat = $row->getFirstRepeat();
 				if ($repeat->rp_id() != $row->rp_id()){
 					$row = $this->listEventsById($repeat->rp_id());
+					if (is_null($row)){
+						unset($rows[$i]);
+					}
+					else {
+						$rows[$i] = $row;
+					}
 				}
 			}
 		}
-		unset($row);
+		$rows = array_values($rows);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));

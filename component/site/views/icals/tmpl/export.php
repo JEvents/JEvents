@@ -16,7 +16,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 @ob_end_clean();
 
 // Define the file as an iCalendar file
-header('Content-Type: application/octet-stream; charset=UTF-8');
+header('Content-Type: text/calendar; charset=UTF-8');
 // Give the file a name and force download
 header('Content-Disposition: attachment; filename=calendar.ics');
 
