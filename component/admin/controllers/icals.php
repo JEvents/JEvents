@@ -208,7 +208,7 @@ class AdminIcalsController extends JControllerForm {
 	function save($key = null, $urlVar = null){
 
 		// Check for request forgeries
-		if (JRequest::getCmd("task") != "icals.reload"){
+		if (JRequest::getCmd("task") != "icals.reload" && JRequest::getCmd("task") != "icals.reloadall"){
 			JRequest::checkToken() or jexit( 'Invalid Token' );
 		}
 
