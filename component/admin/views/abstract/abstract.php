@@ -543,6 +543,19 @@ class JEventsAbstractView extends JViewLegacy
 		$cache =  JFactory::getCache(JEV_COM_COMPONENT);
 		$cache->clean(JEV_COM_COMPONENT);
 
+		/*
+		// Get/Create the model
+		if ($model =  $this->getModel("icalevent", "icaleventsModel")) {
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+		 */
+
+		// Get the form
+		$this->form = $this->get('Form');
+
+		/*
+		 * Moved to special model
 		// Prepare the data
 		// Experiment in the use of JForm and template override for forms and fields
 		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
@@ -554,7 +567,8 @@ class JEventsAbstractView extends JViewLegacy
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
 		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
-
+		*/
+		
 		$rowdata = array();
 		foreach ($this->row as $k => $v)
 		{

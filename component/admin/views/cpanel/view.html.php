@@ -151,10 +151,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				$k = 0;
 				for ($j = 0; $j < $numItems; $j++)
 				{
-					$item = $items[$j];
-					if (!$item) {
+					if (!isset($items[$j])) {
 						break;
 					}
+					$item = @$items[$j];
 					$output .= '<tr><td class="row' . $k . '">';
 					$output .= '<a href="' . $item->uri . '" target="_blank">' . $item->title . '</a>';
 					if ($item->content)

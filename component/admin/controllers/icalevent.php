@@ -27,6 +27,8 @@ class AdminIcaleventController extends JControllerAdmin
 	 */
 	function __construct($config = array())
 	{
+		$config["name"]="icalevent";
+		//$config["default_view"]="AdminIcalevent";
 		parent::__construct($config);
 		$this->registerTask('list', 'overview');
 		$this->registerTask('unpublish', 'unpublish');
@@ -415,7 +417,19 @@ class AdminIcaleventController extends JControllerAdmin
 	function edit($key = NULL, $urlVar = NULL)
 	{
 		// get the view
-		$this->view = $this->getView("icalevent", "html");
+		if (JFactory::getApplication()->isAdmin()){
+			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
+		}
+		else {
+			$this->view = $this->getView("icalevent", "html");
+		}
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
 
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);

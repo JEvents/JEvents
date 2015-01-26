@@ -17,6 +17,7 @@ define("EDITING_JEVENT", 1);
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
+$assoc = JLanguageAssociations::isEnabled();
 
 // Load Bootstrap
 JHtml::_('behavior.framework', true);
@@ -297,6 +298,11 @@ else
 							}
 						}
 					}
+					if ($assoc){
+						?>
+						<li ><a data-toggle="tab" href="#associations"><?php echo JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS', true); ?></a></li>
+						<?php
+					}
 					?>
 				</ul>
 				<?php
@@ -514,8 +520,15 @@ else
 				}
 			}
 
+
 			if (!$cfg->get('com_single_pane_edit', 0))
 			{
+				echo JHtml::_('bootstrap.endPanel');
+				if ($assoc){
+					echo JHtml::_('bootstrap.addPanel', "myEditTabs", "associations");
+					echo $this->loadTemplate('associations');
+				}
+
 				echo JHtml::_('bootstrap.endPanel');
 				echo JHtml::_('bootstrap.endPane', 'myEditTabs');
 			}
