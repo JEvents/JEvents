@@ -10,19 +10,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$mainframe = JFactory::getApplication();
-
-//Hold on... Are you a super user?
-$user = JFactory::getUser();
-
-if (!$user->authorise('core.admin')) {
-    $msg = JTExt::_('JEV_ERROR_NOT_AUTH');
-    $msgType = 'Error';
-    $mainframe->enqueueMessage($msg, $msgType);
-    $mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
-    return;
-}
-
 // Check if we are saving here.
 if (JRequest::getVar('save')) {
     customCssSave();
@@ -52,9 +39,7 @@ if (JRequest::getVar('save')) {
     }
     $content = '';
     $html = '';
-    $msg = JRequest::getVar('msg', '', 'GET');
-    $msgType = JRequest::getVar('msgtype', '', 'GET');
-
+    
     ob_start();
 
     $content = JFile::read($filepath);
