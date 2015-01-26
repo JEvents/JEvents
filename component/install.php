@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2014 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2015 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -748,6 +748,17 @@ SQL;
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
 			$db->query();					
+		}
+
+		$sql = "SHOW INDEX FROM #__jev_defaults";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Key_name");
+
+		if (!array_key_exists("key_evid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_catmap ADD INDEX key_evid ( evid)";
+			$db->setQuery($sql);
+			@$db->query();
 		}
 
 	}

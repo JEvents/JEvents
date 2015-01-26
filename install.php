@@ -6,7 +6,7 @@
  * @version     3.2.1
  * @releasedate November 2014
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2012 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -96,8 +96,8 @@ class Pkg_JeventsInstallerScript
 				<div class='proceed'> 
 					<ul>
 						<li><a href='index.php?option=com_jevents&task=params.edit' alt='JEvents Configuration'><img src='components/com_jevents/assets/images/jevents_config_sml.png' alt='Configuration Page' /><br/> Configuration</a><br/></li>
-						<li><a href='http://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
-						<li><a href='http://www.jevents.net/jevents-15-topmenu/documentation' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
+						<li><a href='https://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
+						<li><a href='https://www.jevents.net/docs/jevents' alt='JEvents Documentation'><img src='components/com_jevents/assets/images/documentation.jpg' alt='JEvents Documentation' /><br/>Documentation</a></li>
 					</ul>
 				</div>";
 

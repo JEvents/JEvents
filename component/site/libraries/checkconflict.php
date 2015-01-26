@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright	Copyright (C) 2008 GWE Systems Ltd. All rights reserved.
+ * @copyright	Copyright (C) 2008-2015 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
  */
 ini_set("display_errors", 0);

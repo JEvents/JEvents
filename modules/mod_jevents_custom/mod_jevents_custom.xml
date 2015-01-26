@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.0" client="site" method="upgrade">
 	<name>JEvents CustomModule</name>
-	<creationDate>December 2014</creationDate>
+	<creationDate>January 2015</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2013-2014 GWE Systems Ltd</copyright>
+	<copyright>(C) 2013-2015 GWE Systems Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>

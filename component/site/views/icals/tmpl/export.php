@@ -5,14 +5,15 @@
  *
  * @version     $Id: modlatest.php 1142 2010-09-08 10:10:52Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
-ob_end_clean();
+@ob_end_clean();
+@ob_end_clean();
 
 // Define the file as an iCalendar file
 header('Content-Type: application/octet-stream; charset=UTF-8');

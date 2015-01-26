@@ -4,7 +4,7 @@
  *
  * @version     $Id: abstract.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -544,11 +544,16 @@ class JEventsAbstractView extends JViewLegacy
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Prepare the data
-		// Experiment in the use of JForm
+		// Experiment in the use of JForm and template override for forms and fields
 		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = JFactory::getApplication()->getTemplate();
+		JForm::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
+		//JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+
 		$xpath = false;
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
+		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 
 		$rowdata = array();
 		foreach ($this->row as $k => $v)
