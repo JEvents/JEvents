@@ -25,7 +25,10 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	if (JRequest::getInt("month",0)>0){
 		$month = "&month=".JRequest::getInt("month",0);
 	}
-	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids$year$month");
+	if ($keyword !=""){
+		$keyword = "&keyword=".urlencode($keyword)."&showpast=".JRequest::getInt("showpast",0);
+	}
+	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids$year$month$keyword");
 	?>
 	<div class="jev_pagination">
 	<form action="<?php echo $link;?>" method="post" name="adminForm" id="adminForm">

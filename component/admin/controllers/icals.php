@@ -207,6 +207,11 @@ class AdminIcalsController extends JControllerForm {
         } 
 	function save($key = null, $urlVar = null){
 
+		// Check for request forgeries
+		if (JRequest::getCmd("task") != "icals.reload" && JRequest::getCmd("task") != "icals.reloadall"){
+			JRequest::checkToken() or jexit( 'Invalid Token' );
+		}
+
 		$authorised = false;
 		
 		if (JFactory::getApplication()->isAdmin()){
@@ -277,8 +282,8 @@ class AdminIcalsController extends JControllerForm {
 				$access = intval($currentICS->access);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if ($icsLabel=="" && strlen($currentICS->icsLabel)>=0){
-				$icsLabel = $currentICS->icsLabel;
+			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && strlen($currentICS->label)>=0){
+				$icsLabel = $currentICS->label;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
 			$overlaps = JRequest::getInt('overlaps',$currentICS->overlaps);
@@ -315,7 +320,7 @@ class AdminIcalsController extends JControllerForm {
 			$access = JRequest::getInt('access',0);
 			$state = 1;
 			$uploadURL = JRequest::getVar('uploadURL','' );
-			$icsLabel = JRequest::getVar('icsLabel','' );
+			$icsLabel = JRequest::getString('icsLabel','' );
 		}
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
@@ -358,7 +363,10 @@ class AdminIcalsController extends JControllerForm {
 	 */
 	function savedetails(){
 		$authorised = false;
-		
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
 		}
@@ -536,6 +544,9 @@ class AdminIcalsController extends JControllerForm {
  	*/
 	function newical() {
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		// include ical files
 		$catid = intval(JRequest::getVar('catid',0));
 		// Should come from the form or existing item
@@ -559,6 +570,10 @@ class AdminIcalsController extends JControllerForm {
 
 
 	function delete(){
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		$cid	= JRequest::getVar(	'cid',	array(0) );
 		JArrayHelper::toInteger($cid);
 
