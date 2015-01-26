@@ -61,7 +61,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 		// Association content items
 		$app = JFactory::getApplication();
-		$assoc = JLanguageAssociations::isEnabled();
+		$assoc = false &&  JLanguageAssociations::isEnabled() && JFactory::getApplication()->isAdmin();
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');
@@ -70,7 +70,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 			$fields->addAttribute('name', 'associations');
 			$fieldset = $fields->addChild('fieldset');
 			$fieldset->addAttribute('name', 'item_associations');
-			$fieldset->addAttribute('description', 'COM_CONTENT_ITEM_ASSOCIATIONS_FIELDSET_DESC');
+			$fieldset->addAttribute('description', 'COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_DESC');
 			$add = false;
 			foreach ($languages as $tag => $language)
 			{

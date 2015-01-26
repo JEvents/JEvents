@@ -30,25 +30,26 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 
 		$hasrepeat = false;
 		$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';
-		$editImg = $pathIMG."/edit_f2.png";
+		$editImg = JHtml::image('com_jevents/icons-32/edit.png',JText::_("EDIT_EVENT"),null,true);
 		$editLink = $row->editLink();
 		$editLink = $popup?"javascript:jevEditPopup('".$editLink."',$popupw, $popuph);":$editLink;
-		$editCopyImg = $pathIMG."/copy_f2.png";
+		$editCopyImg = JHtml::image('com_jevents/icons-32/copy.png',JText::_("COPY_AND_EDIT_EVENT"),null,true);
 		$editCopyLink = $row->editCopyLink();
 		$editCopyLink = $popup?"javascript:jevEditPopup('".$editCopyLink."',$popupw, $popuph);":$editCopyLink;
-		$deleteImg = $pathIMG."/delete_f2.png";
+		$deleteImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_EVENT"),null,true);
 		$deleteLink = $row->deleteLink();
 		if ($row->until()!=$row->dtstart() || $row->count()>1){
 
 			$hasrepeat = true;
 
-			$editRepeatImg = $pathIMG."/edit_f2.png";
+			$editRepeatImg = JHtml::image('com_jevents/icons-32/edit.png',JText::_("EDIT_REPEAT"),null,true);
 			$editRepeatLink = $row->editRepeatLink();
 			$editRepeatLink = $popup?"javascript:jevEditPopup('".$editRepeatLink."',$popupw, $popuph);":$editRepeatLink;
-			$deleteRepeatImg = $pathIMG."/delete_f2.png";
+			$deleteRepeatImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_THIS_REPEAT"),null,true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
-			$deleteFutureImg = $pathIMG."/delete_f2.png";
+			$deleteFutureImg = JHtml::image('com_jevents/icons-32/discards.png',JText::_("JEV_DELETE_FUTURE_REPEATS"),null,true);
 			$deleteFutureLink = $row->deleteFutureLink();
+			$deleteImg = JHtml::image('com_jevents/icons-32/discards.png',JText::_("DELETE_ALL_REPEATS"),null,true);
 		}
 		else {
 			$editRepeatLink ="";
@@ -71,12 +72,12 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 		$publishLink = "";
 		if (JEVHelper::canPublishEvent($row)){
 			if ($row->published()>0){
-				$publishImg =  $pathIMG."/publish_r.png";
+				$publishImg =  JHtml::image('com_jevents/icons-32/cancel.png',JText::_("UNPUBLISH_EVENT"),null,true);
 				$publishLink = $row->unpublishLink();
 				$publishText = JText::_( 'UNPUBLISH_EVENT' );
 			}
 			else {
-				$publishImg =  $pathIMG."/publish_g.png";
+				$publishImg =  JHtml::image('com_jevents/icons-32/accept.png',JText::_("PUBLISH_EVENT"),null,true);
 				$publishLink = $row->publishLink();
 				$publishText = JText::_( 'PUBLISH_EVENT' );
 			}
@@ -98,35 +99,35 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 						<?php
 						if ($publishLink!=""){
 						?>
-						<a href="<?php echo $publishLink;?>" id="publish_reccur"  title="<?php echo $publishText;?>" ><img src="<?php echo $publishImg; ?>" alt="" /><?php echo $publishText;?></a><br/>
+						<a href="<?php echo $publishLink;?>" id="publish_reccur"  title="<?php echo $publishText;?>" ><?php echo $publishImg; ?><?php echo $publishText;?></a><br/>
 						<?php
 						}
 						?>
 						<?php
 						if ($editRepeatLink!=""){
 						?>
-						<a href="<?php echo $editRepeatLink;?>" id="edit_reccur"  title="edit event" ><img src="<?php echo $editRepeatImg; ?>" alt="" /><?php echo JText::_( 'EDIT_REPEAT' );?></a><br/>
+						<a href="<?php echo $editRepeatLink;?>" id="edit_reccur"  title="edit event" ><?php echo $editRepeatImg; ?><?php echo JText::_( 'EDIT_REPEAT' );?></a><br/>
 						<?php
 						}
 						if ($editLink!=""){
 						?>
-					   <a href="<?php echo $editLink;?>"  id="edit_event" title="edit event" ><img src="<?php echo $editImg; ?>" alt="" /><?php echo JText::_( 'EDIT_EVENT' );?></a><br/>
-					   <a href="<?php echo $editCopyLink;?>" id="edit_eventcopy" title="edit event" ><img src="<?php echo $editCopyImg; ?>" alt="" /><?php echo JText::_( 'COPY_AND_EDIT_EVENT' );?></a><br/>
+					   <a href="<?php echo $editLink;?>"  id="edit_event" title="edit event" ><?php echo $editImg; ?><?php echo JText::_( 'EDIT_EVENT' );?></a><br/>
+					   <a href="<?php echo $editCopyLink;?>" id="edit_eventcopy" title="edit event" ><?php echo $editCopyImg; ?><?php echo JText::_( 'COPY_AND_EDIT_EVENT' );?></a><br/>
 						<?php
 						}
 						if ($deleteRepeatLink!=""){
 						?>
-						<a href="<?php echo $deleteRepeatLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true );?>')" id="delete_repeat"  title="delete repeat" ><img src="<?php echo $deleteRepeatImg; ?>" alt="" /><?php echo JText::_( 'DELETE_THIS_REPEAT' );?></a><br/>
+						<a href="<?php echo $deleteRepeatLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECURRENCE', true );?>')" id="delete_repeat"  title="delete repeat" ><?php echo $deleteRepeatImg; ?><?php echo JText::_( 'DELETE_THIS_REPEAT' );?></a><br/>
 						<?php
 						}
 						if ($deleteLink!=""){
 						?>
-						<a href="<?php echo $deleteLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_($hasrepeat?'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT':'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true);?>')" id="delete_event"  title="delete event" ><img src="<?php echo $deleteImg; ?>" alt="" /><?php echo JText::_($hasrepeat?"DELETE_ALL_REPEATS":"DELETE_EVENT");?></a><br/>
+						<a href="<?php echo $deleteLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_($hasrepeat?'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT_AND_ALL_ITS_REPEAT':'ARE_YOU_SURE_YOU_WISH_TO_DELETE_THIS_EVENT', true);?>')" id="delete_event"  title="delete event" ><?php echo $deleteImg; ?><?php echo JText::_($hasrepeat?"DELETE_ALL_REPEATS":"DELETE_EVENT");?></a><br/>
 					   <?php
 						}
 						if ($deleteFutureLink!=""){
 						?>
-						<a href="<?php echo $deleteFutureLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true )?>')" id="delete_eventfuture"  title="delete event" ><img src="<?php echo $deleteFutureImg; ?>" alt="" /><?php echo JText::_( 'JEV_DELETE_FUTURE_REPEATS' );?></a><br/>
+						<a href="<?php echo $deleteFutureLink;?>" data-dismiss="modal"  onclick="return confirm('<?php echo JText::_( 'ARE_YOU_SURE_YOU_WITH_TO_DELETE_THIS_EVENT_AND_ALL_FUTURE_REPEATS', true )?>')" id="delete_eventfuture"  title="delete event" ><?php echo $deleteFutureImg; ?><?php echo JText::_( 'JEV_DELETE_FUTURE_REPEATS' );?></a><br/>
 				   <?php
 
 						}

@@ -17,7 +17,7 @@ define("EDITING_JEVENT", 1);
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
-$assoc = JLanguageAssociations::isEnabled();
+$assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
 JHtml::_('behavior.framework', true);
@@ -300,7 +300,7 @@ else
 					}
 					if ($assoc){
 						?>
-						<li ><a data-toggle="tab" href="#associations"><?php echo JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS', true); ?></a></li>
+						<li ><a data-toggle="tab" href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a></li>
 						<?php
 					}
 					?>

@@ -52,7 +52,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function overview()
 	{
 		// get the view
-		$this->view = $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html","AdminIcaleventView");
 
 		$this->_checkValidCategories();
 

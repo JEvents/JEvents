@@ -26,12 +26,12 @@ class JEV_CommonFunctions {
 		if (!isset($jEventsView)){
 			$cfg = JEVConfig::getInstance();
 			// priority of view setting is url, cookie, config,
-			$jEventsView = $cfg->get('com_calViewName',"geraint");
+			$jEventsView = $cfg->get('com_calViewName',"flat");
 			$jEventsView = JRequest::getString("jevents_view",$jEventsView,"cookie");
 			$jEventsView = JRequest::getString("jEV",$jEventsView);
 			// security check
 			if (!in_array($jEventsView, JEV_CommonFunctions::getJEventsViewList() )){
-				$jEventsView = "geraint";
+				$jEventsView = "flat";
 			}
 		}
 		return $jEventsView ;
