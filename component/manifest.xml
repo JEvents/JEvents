@@ -20,6 +20,7 @@
 		<folder>images</folder>
 		<folder>layouts</folder>
 		<folder>libraries</folder>
+		<folder>models</folder>
 		<folder>views/admin</folder>
 		<folder>views/alternative</folder>
 		<folder>views/cat</folder>
