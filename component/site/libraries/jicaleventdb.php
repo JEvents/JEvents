@@ -739,6 +739,7 @@ class jIcalEventDB extends jEventCal {
 		$extrafields = "";  // must have comma prefix
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
+		$extrajoin =array();
 		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
