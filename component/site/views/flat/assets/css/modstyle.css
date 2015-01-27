@@ -6,7 +6,7 @@
 	border-bottom: 1px solid #DDD;
 }
 #flatcal_minical .flatcal_tiny_add_event_link {
-	font-family: Verdana;
+	
 	font-size: 9px;
 	font-weight: normal;
 	color:#575767;
@@ -21,7 +21,7 @@
 	text-align:center;
 }
 #flatcal_minical TD.flatcal_weekdays {
-	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	
 	font-size: 9px;
 	font-weight: normal;
 	color: #333333;
@@ -32,7 +32,7 @@
 	text-align:center;
 }
 #flatcal_minical .flatcal_small {
-	font-family: Verdana;
+	
 	font-size: 9px;
 	color:#575767;
 	text-decoration: none;
@@ -46,7 +46,7 @@
 
 #flatcal_minical .flatcal_daycell,#flatcal_minical .flatcal_todaycell,
 #flatcal_minical .flatcal_sundaycell,#flatcal_minical .flatcal_othermonth {
-	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	
 	font-size: 9px;
 	font-weight: bold;
 	font-style: normal;
@@ -74,7 +74,7 @@
 
 #flatcal_minical .flatcal_daylink, #flatcal_minical .flatcal_sundaylink,
 #flatcal_minical .flatcal_busylink  {
-	font-family: "Trebuchet MS", Verdana, Arial, "Microsoft Sans Serif"; 
+	
 	font-size: 9px;
 	font-weight: bold;
 	font-style: normal;

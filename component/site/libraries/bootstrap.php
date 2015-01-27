@@ -239,7 +239,7 @@ class JevHtmlBootstrap
 	}
 
 		// Load jQuery
-		JevHtmlJquery::framework();
+		//JevHtmlJquery::framework();
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
