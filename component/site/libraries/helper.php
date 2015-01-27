@@ -2714,208 +2714,171 @@ SCRIPT;
 				}
 				if (!$a)
 					continue;
+				if ($ics_method == "REQUEST" && $a->hasrepetition()) { } else {
 
-				$html .= "BEGIN:VEVENT\r\n";
-				$html .= "UID:" . $a->uid() . "\r\n";
-				$html .= "CATEGORIES:" . $a->catname() . "\r\n";
-				if (!empty($a->_class))
-					$html .= "CLASS:" . $a->_class . "\r\n";
-				$html .= "SUMMARY:" . $a->title() . "\r\n";
-				if ($a->location() != "")
-				{
-					if (!is_numeric($a->location()))
-					{
-						$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
+					$html .= "BEGIN:VEVENT\r\n";
+					$html .= "UID:" . $a->uid() . "\r\n";
+					$html .= "CATEGORIES:" . $a->catname() . "\r\n";
+					if (!empty($a->_class))
+						$html .= "CLASS:" . $a->_class . "\r\n";
+					$html .= "SUMMARY:" . $a->title() . "\r\n";
+					if ($a->location() != "") {
+						if (!is_numeric($a->location())) {
+							$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
+						} else if (isset($a->_loc_title)) {
+							$html .= "LOCATION:" . self::wraplines(self::replacetags($a->_loc_title)) . "\r\n";
+						} else {
+							$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
+						}
 					}
-					else if (isset($a->_loc_title))
-					{
-						$html .= "LOCATION:" . self::wraplines(self::replacetags($a->_loc_title)) . "\r\n";
-					}
-					else
-					{
-						$html .= "LOCATION:" . self::wraplines(self::replacetags($a->location())) . "\r\n";
-					}
-				}
-				// We Need to wrap this according to the specs
-				/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
-				$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
+					// We Need to wrap this according to the specs
+					/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
+					$html .= self::setDescription(strip_tags($a->content())) . "\r\n";
 
-				if ($a->hasContactInfo())
-					$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
-				if ($a->hasExtraInfo())
-					$html .= "X-EXTRAINFO:" . self::wraplines(self::replacetags($a->_extra_info)) . "\r\n";
-				$user = JFactory::getUser($a->created_by());
+					if ($a->hasContactInfo())
+						$html .= "CONTACT:" . self::replacetags($a->contact_info()) . "\r\n";
+					if ($a->hasExtraInfo())
+						$html .= "X-EXTRAINFO:" . self::wraplines(self::replacetags($a->_extra_info)) . "\r\n";
+					$user = JFactory::getUser($a->created_by());
 
-				$html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
-				$alldayprefix = "";
-				// No doing true timezones!
-				if ($tzid == "" && is_callable("date_default_timezone_set"))
-				{
-					// UTC!
-					$start = $a->getUnixStartTime();
-					$end = $a->getUnixEndTime();
+					$html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
+					$alldayprefix = "";
+					// No doing true timezones!
+					if ($tzid == "" && is_callable("date_default_timezone_set")) {
+						// UTC!
+						$start = $a->getUnixStartTime();
+						$end = $a->getUnixEndTime();
 
-					// in case the first repeat has been changed
-					if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
-					{
-						$start = JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
-					}
+						// in case the first repeat has been changed
+						if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid])) {
+							$start = JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat);
+						}
 
-					// Change timezone to UTC
-					$current_timezone = date_default_timezone_get();
+						// Change timezone to UTC
+						$current_timezone = date_default_timezone_get();
 
-					// If all day event then don't show the start time or end time either
-					if ($a->alldayevent())
-					{
-						$alldayprefix = ";VALUE=DATE";
-						$startformat = "%Y%m%d";
-						$endformat = "%Y%m%d";
+						// If all day event then don't show the start time or end time either
+						if ($a->alldayevent()) {
+							$alldayprefix = ";VALUE=DATE";
+							$startformat = "%Y%m%d";
+							$endformat = "%Y%m%d";
 
-						// add 10 seconds to make sure its not midnight the previous night
-						$start += 10;
-						$end += 10;
-					}
-					else
-					{
-						date_default_timezone_set("UTC");
+							// add 10 seconds to make sure its not midnight the previous night
+							$start += 10;
+							$end += 10;
+						} else {
+							date_default_timezone_set("UTC");
 
-						$startformat = "%Y%m%dT%H%M%SZ";
-						$endformat = "%Y%m%dT%H%M%SZ";
-					}
+							$startformat = "%Y%m%dT%H%M%SZ";
+							$endformat = "%Y%m%dT%H%M%SZ";
+						}
 
-					// Do not use JevDate version since this sets timezone to config value!
-					$start = strftime($startformat, $start);
-					$end = strftime($endformat, $end);
+						// Do not use JevDate version since this sets timezone to config value!
+						$start = strftime($startformat, $start);
+						$end = strftime($endformat, $end);
 
-					$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+						$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
 
-					// Change back
-					date_default_timezone_set($current_timezone);
-				}
-				else
-				{
-					$start = $a->getUnixStartTime();
-					$end = $a->getUnixEndTime();
-
-					// If all day event then don't show the start time or end time either
-					if ($a->alldayevent())
-					{
-						$alldayprefix = ";VALUE=DATE";
-						$startformat = "%Y%m%d";
-						$endformat = "%Y%m%d";
-
-						// add 10 seconds to make sure its not midnight the previous night
-						$start += 10;
-						$end += 10;
-					}
-					else
-					{
-						$startformat = "%Y%m%dT%H%M%S";
-						$endformat = "%Y%m%dT%H%M%S";
-					}
-
-					$start = JevDate::strftime($startformat, $start);
-					$end = JevDate::strftime($endformat, $end);
-
-					if (is_callable("date_default_timezone_set"))
-					{
-						date_default_timezone_set("UTC");
-						$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 						// Change back
 						date_default_timezone_set($current_timezone);
-					}
-					else
-					{
-						$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
-					}
+					} else {
+						$start = $a->getUnixStartTime();
+						$end = $a->getUnixEndTime();
 
-					// in case the first repeat is changed
-					if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid]))
-					{
-						$start = JevDate::strftime($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
-					}
-				}
+						// If all day event then don't show the start time or end time either
+						if ($a->alldayevent()) {
+							$alldayprefix = ";VALUE=DATE";
+							$startformat = "%Y%m%d";
+							$endformat = "%Y%m%d";
 
-				$html .= "DTSTAMP:" . $stamptime . "\r\n";
-				$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
-				// events with no end time don't give a DTEND
-				if (!$a->noendtime())
-				{
-					$html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
-				}
-				$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
-				if ($a->hasrepetition())
-				{
-					$html .= 'RRULE:';
-
-					// TODO MAKE SURE COMPAIBLE COMBINATIONS
-					$html .= 'FREQ=' . $a->_freq;
-					if ($a->_until != "" && $a->_until != 0)
-					{
-						// Do not use JevDate version since this sets timezone to config value!
-						// GOOGLE HAS A PROBLEM WITH 235959!!!
-						//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
-						$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until + 86400);
-					}
-					else if ($a->_count != "")
-					{
-						$html .= ';COUNT=' . $a->_count;
-					}
-					if ($a->_rinterval != "")
-						$html .= ';INTERVAL=' . $a->_rinterval;
-					if ($a->_freq == "DAILY")
-					{
-
-					}
-					else if ($a->_freq == "WEEKLY")
-					{
-						if ($a->_byday != "")
-							$html .= ';BYDAY=' . $a->_byday;
-					}
-					else if ($a->_freq == "MONTHLY")
-					{
-						if ($a->_bymonthday != "")
-						{
-							$html .= ';BYMONTHDAY=' . $a->_bymonthday;
-							if ($a->_byweekno != "")
-								$html .= ';BYWEEKNO=' . $a->_byweekno;
+							// add 10 seconds to make sure its not midnight the previous night
+							$start += 10;
+							$end += 10;
+						} else {
+							$startformat = "%Y%m%dT%H%M%S";
+							$endformat = "%Y%m%dT%H%M%S";
 						}
-						else if ($a->_byday != "")
-						{
-							$html .= ';BYDAY=' . $a->_byday;
-							if ($a->_byweekno != "")
-								$html .= ';BYWEEKNO=' . $a->_byweekno;
+
+						$start = JevDate::strftime($startformat, $start);
+						$end = JevDate::strftime($endformat, $end);
+
+						if (is_callable("date_default_timezone_set")) {
+							date_default_timezone_set("UTC");
+							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+							// Change back
+							date_default_timezone_set($current_timezone);
+						} else {
+							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+						}
+
+						// in case the first repeat is changed
+						if (array_key_exists($a->_eventid, $exceptiondata) && array_key_exists($a->rp_id(), $exceptiondata[$a->_eventid])) {
+							$start = JevDate::strftime($startformat, JevDate::strtotime($exceptiondata[$a->_eventid][$a->rp_id()]->oldstartrepeat));
 						}
 					}
-					else if ($a->_freq == "YEARLY")
-					{
-						if ($a->_byyearday != "")
-							$html .= ';BYYEARDAY=' . $a->_byyearday;
-					}
-					$html .= "\r\n";
-				}
 
+					$html .= "DTSTAMP:" . $stamptime . "\r\n";
+					$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+					// events with no end time don't give a DTEND
+					if (!$a->noendtime()) {
+						$html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
+					}
+					$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
+					if ($a->hasrepetition()) {
+						$html .= 'RRULE:';
+
+						// TODO MAKE SURE COMPAIBLE COMBINATIONS
+						$html .= 'FREQ=' . $a->_freq;
+						if ($a->_until != "" && $a->_until != 0) {
+							// Do not use JevDate version since this sets timezone to config value!
+							// GOOGLE HAS A PROBLEM WITH 235959!!!
+							//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
+							$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until + 86400);
+						} else if ($a->_count != "") {
+							$html .= ';COUNT=' . $a->_count;
+						}
+						if ($a->_rinterval != "")
+							$html .= ';INTERVAL=' . $a->_rinterval;
+						if ($a->_freq == "DAILY") {
+
+						} else if ($a->_freq == "WEEKLY") {
+							if ($a->_byday != "")
+								$html .= ';BYDAY=' . $a->_byday;
+						} else if ($a->_freq == "MONTHLY") {
+							if ($a->_bymonthday != "") {
+								$html .= ';BYMONTHDAY=' . $a->_bymonthday;
+								if ($a->_byweekno != "")
+									$html .= ';BYWEEKNO=' . $a->_byweekno;
+							} else if ($a->_byday != "") {
+								$html .= ';BYDAY=' . $a->_byday;
+								if ($a->_byweekno != "")
+									$html .= ';BYWEEKNO=' . $a->_byweekno;
+							}
+						} else if ($a->_freq == "YEARLY") {
+							if ($a->_byyearday != "")
+								$html .= ';BYYEARDAY=' . $a->_byyearday;
+						}
+						$html .= "\r\n";
+					}
+
+
+				}
 				// Now handle Exceptions
 				$exceptions = array();
-				if (array_key_exists($a->ev_id(), $exceptiondata))
-				{
+				if (array_key_exists($a->ev_id(), $exceptiondata)) {
 					$exceptions = $exceptiondata[$a->ev_id()];
 				}
 
 				$deletes = array();
 				$changed = array();
 				$changedexceptions = array();
-				if (count($exceptions) > 0)
-				{
-					foreach ($exceptions as $exception)
-					{
-						if ($exception->exception_type == 0)
-						{
+				if (count($exceptions) > 0) {
+					foreach ($exceptions as $exception) {
+						if ($exception->exception_type == 0) {
 							$exceptiondate = JevDate::strtotime($exception->startrepeat);
 
 							// No doing true timezones!
-							if ($tzid == "" && is_callable("date_default_timezone_set"))
-							{
+							if ($tzid == "" && is_callable("date_default_timezone_set")) {
 
 								// Change timezone to UTC
 								$current_timezone = date_default_timezone_get();
@@ -2926,32 +2889,24 @@ SCRIPT;
 
 								// Change back
 								date_default_timezone_set($current_timezone);
-							}
-							else
-							{
+							} else {
 								$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
 							}
-						}
-						else
-						{
+						} else {
 							$changed[] = $exception->rp_id;
 							$changedexceptions[$exception->rp_id] = $exception;
 						}
 					}
-					if (count($deletes) > 0)
-					{
+					if (count($deletes) > 0) {
 						$html .= "EXDATE$tzid:" . self::wraplines(implode(",", $deletes)) . "\r\n";
 					}
 				}
 
-				$html .= "TRANSP:OPAQUE\r\n";
-				$html .= "END:VEVENT\r\n";
+				//$html .= "TRANSP:OPAQUE\r\n";
+				//$html .= "END:VEVENT\r\n";
 
 				// Ok if it's a request, then it's a change. No need the include the master event for the iCal
 				// Simple lets, clear her.
-				if ($ics_method != "REQUEST" && $a->hasrepetition()) {
-					$html = "";
-				}
 
 				$changedrows = array();
 
