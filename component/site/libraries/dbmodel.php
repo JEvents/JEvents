@@ -110,7 +110,7 @@ class JEventsDBModel
 				$isedit = true;
 			}
 
-			$query = "SELECT c.id"
+			/*$query = "SELECT c.id"
 				. "\n FROM #__categories AS c"
 				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 				. $q_published
@@ -120,9 +120,9 @@ class JEventsDBModel
 				. "\n " . $where
 				. "\n ORDER BY c.lft asc"  ;
 
-			$db->setQuery($query);
+			$db->setQuery($query);*/
 			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
-			/*
+
 			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					// language filter only applies when not editing
@@ -135,7 +135,9 @@ class JEventsDBModel
 			->from('#__categories AS c')
 			->where($whereQuery)
 			->order('c.lft asc');
-			 */
+
+			$db->setQuery($query);
+
 			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
@@ -394,15 +396,23 @@ class JEventsDBModel
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		// make sure we have the first repeat in each instance
-		foreach ($rows as &$row){
+		// do not use foreach incase time limit plugin removes one of the repeats
+		for ($i=0;$i<count($rows); $i++) {
+			$row = $rows[$i];
 			if (strtolower($row->freq())!="none" && $noRepeats){
 				$repeat = $row->getFirstRepeat();
 				if ($repeat->rp_id() != $row->rp_id()){
 					$row = $this->listEventsById($repeat->rp_id());
+					if (is_null($row)){
+						unset($rows[$i]);
+					}
+					else {
+						$rows[$i] = $row;
+					}
 				}
 			}
 		}
-		unset($row);
+		$rows = array_values($rows);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));

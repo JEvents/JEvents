@@ -141,6 +141,19 @@ class AdminCpanelController extends JControllerAdmin
 	
 	function custom_css()
 	{
+		$mainframe = JFactory::getApplication();
+
+		//Hold on... Are you a super user?
+		$user = JFactory::getUser();
+
+		if (!$user->authorise('core.admin')) {
+			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
+			$msgType = 'Error';
+			$mainframe->enqueueMessage($msg, $msgType);
+			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
+			return;
+		}
+
 		//Get the view
 		$this->view = $this->getView("cpanel", "html");
 		
@@ -636,6 +649,11 @@ class AdminCpanelController extends JControllerAdmin
 		$db->query();
 		echo $db->getErrorMsg();
 
+		// Is the JEvents menu item completely missing or corrupted - if so then skip the rest
+		if (!$parent) {
+			return;
+		}
+
 		$updatemenus = false;			
 		if ($params->get("mergemenus", 1)){
 											
@@ -654,7 +672,7 @@ class AdminCpanelController extends JControllerAdmin
 				$db->setQuery($sql);			
 				$tomerge = $db->loadObjectList();
 
-                                $sql = 'SELECT * FROM #__menu 
+	                           $sql = 'SELECT * FROM #__menu
 				where client_id=1 AND parent_id='.$parent.'  AND (
 					'.$tochange.'
 				)';

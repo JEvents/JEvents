@@ -701,7 +701,7 @@ SQL;
 			$db->query();					
 		}
 
-		$sql = "SHOW INDEX FROM #__jev_defaults";
+		$sql = "SHOW INDEX FROM #__jevents_catmap";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
 

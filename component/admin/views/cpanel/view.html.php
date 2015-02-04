@@ -65,7 +65,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
 		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" ';
 		// extend this list !!!
-		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
+		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevrsvp','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
 		$sql = 'SELECT element,extension_id FROM #__extensions  where  (
 		'.$installed.'
 		)';
@@ -151,10 +151,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				$k = 0;
 				for ($j = 0; $j < $numItems; $j++)
 				{
-					$item = $items[$j];
-					if (!$item) {
+					if (!isset($items[$j])) {
 						break;
 					}
+					$item = @$items[$j];
 					$output .= '<tr><td class="row' . $k . '">';
 					$output .= '<a href="' . $item->uri . '" target="_blank">' . $item->title . '</a>';
 					if ($item->content)
@@ -1192,6 +1192,18 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($extension->folder){
 				$extensionname = "plg_".$extension->folder."_".$extensionname;
 			}
+
+			// Check data integrity and clean up if necessary
+			$db->setQuery("SELECT count(update_site_id) FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id");
+			if ($db->loadResult()>0){
+
+				$db->setQuery("DELETE FROM #__update_sites  WHERE update_site_id in (SELECT update_site_id FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id )");
+				$db->query();
+
+				$db->setQuery("DELETE FROM #__update_sites_extensions  WHERE extension_id = $pkgupdate->extension_id ");
+				$db->query();
+			}
+
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->getErrorMsg();

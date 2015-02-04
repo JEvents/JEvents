@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JEvents Component for Joomla
  *
@@ -8,33 +9,91 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-
-defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controller');
 
-class GetjsonController extends JControllerLegacy   {
+class GetjsonController extends JControllerLegacy
+{
 
-	var $datamodel		= null;
-	
+	var
+			$datamodel = null;
+
 	function __construct($config = array())
 	{
-		if (!isset($config['base_path'])){
-			$config['base_path']=JEV_PATH;
+		if (!isset($config['base_path']))
+		{
+			$config['base_path'] = JEV_PATH;
 		}
 		parent::__construct($config);
 		// TODO get this from config
-		$this->registerDefaultTask( 'monthEvents' );
+		$this->registerDefaultTask('monthEvents');
 
 		$cfg = JEVConfig::getInstance();
 		$theme = ucfirst(JEV_CommonFunctions::getJEventsViewName());
-		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/".$theme."/abstract/abstract.php");
+		JLoader::register('JEvents' . ucfirst($theme) . 'View', JEV_VIEWS . "/" . $theme . "/abstract/abstract.php");
 
-		include_once(JEV_LIBS."/modfunctions.php");
-		if (!isset($this->_basePath)){
+		include_once(JEV_LIBS . "/modfunctions.php");
+		if (!isset($this->_basePath))
+		{
 			$this->_basePath = $this->basePath;
 			$this->_task = $this->task;
 		}
+
+	}
+
+	function eventdata()
+	{
+
+		$this->datamodel = new JEventsDataModel();
+
+		list($year, $month, $day) = JEVHelper::getYMD();
+		$start = JRequest::getVar('start', "$year-$month-$day");
+		$end = JRequest::getVar('end', "$year-$month-$day");
+		$limitstart = 0;
+		$limit = 0;
+
+		$myItemid = JEVHelper::getItemid();
+
+		// Force repeats to show
+		$cfg = JEVConfig::getInstance();
+		$cfg->set("com_showrepeats", true);
+
+		// TODO Check for sanity of $start and $end
+		$this->datamodel = new JEventsDataModel();
+		$data = $this->datamodel->getRangeData($start, $end, $limitstart, $limit);
+
+		$events = array();
+		foreach ($data['rows'] as $event)
+		{
+			$eventArray = array();
+			$eventArray['title'] = $event->title();
+			$eventArray['start'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . " " . date("H:i", $event->getUnixStartTime());
+			$eventArray['end'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . " " . date("H:i", $event->getUnixStartTime());
+			$eventArray['textcolor'] = $event->fgcolor();
+			$eventArray['backgroundColor'] = $event->bgcolor();
+			$link = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
+			$eventArray['url'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+			if ($event->hasrepetition()){
+				$eventArray['id'] = $event->ev_id();
+			}
+			$events[] = $eventArray;
+		}
+
+		// Get the document object.
+		$document = & JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
+
+		// Output the JSON data.
+		echo json_encode($events);
+
+		exit();
+
 	}
 
 	function monthEvents()
@@ -43,45 +102,49 @@ class GetjsonController extends JControllerLegacy   {
 
 		$user = JFactory::getUser();
 		$query = "SELECT id, params"
-		. "\n FROM #__modules AS m"
-		. "\n WHERE m.published = 1"
-		. "\n AND m.id = ". $modid
-		. "\n AND m.access IN (" .  JEVHelper::getAid($user, 'string') . ")"
-		. "\n AND m.client_id != 1";
-		$db	= JFactory::getDBO();
-		$db->setQuery( $query );
+				. "\n FROM #__modules AS m"
+				. "\n WHERE m.published = 1"
+				. "\n AND m.id = " . $modid
+				. "\n AND m.access IN (" . JEVHelper::getAid($user, 'string') . ")"
+				. "\n AND m.client_id != 1";
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
 		$modules = $db->loadObjectList();
-		if (count($modules)<=0){
-			if (!$modid<=0){return  new JResponseJson(array());}
+		if (count($modules) <= 0)
+		{
+			if (!$modid <= 0)
+			{
+				return new JResponseJson(array());
+			}
 		}
-		$params = new JRegistry( $modules[0]->params );
+		$params = new JRegistry($modules[0]->params);
 
 		$reg = JFactory::getConfig();
-		$reg->set("jev.modparams",$params);
+		$reg->set("jev.modparams", $params);
 
 		$this->datamodel = new JEventsDataModel();
 		$myItemid = $this->datamodel->setupModuleCatids($params);
 
-		$year = JRequest::getVar( 'jev_current_year', 0 );
-		$month = JRequest::getVar( 'jev_current_month', 0 );
+		$year = JRequest::getVar('jev_current_year', 0);
+		$month = JRequest::getVar('jev_current_month', 0);
 
-		if($year==0)
+		if ($year == 0)
 		{
 			$year = date("Y");
 		}
-		if($month==0)
+		if ($month == 0)
 		{
 			$month = date("m");
 		}
 
-		$data = $this->datamodel->getCalendarData($year,$month,1,false, 0);
+		$data = $this->datamodel->getCalendarData($year, $month, 1, false, 0);
 
 		$events = array();
 		foreach ($data['dates'] as $day_index)
 		{
-			foreach($day_index['events'] as $event)
+			foreach ($day_index['events'] as $event)
 			{
-				$eventArray['date'] = $day_index['year'] ."-".$day_index['month']."-".$day_index['d0']. " " .date("H:i",$event->getUnixStartTime());
+				$eventArray['date'] = $day_index['year'] . "-" . $day_index['month'] . "-" . $day_index['d0'] . " " . date("H:i", $event->getUnixStartTime());
 				$eventArray['title'] = $event->title();
 				$link = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid);
 				$eventArray['link'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
@@ -92,5 +155,7 @@ class GetjsonController extends JControllerLegacy   {
 		$result = new JResponseJson($events);
 
 		echo $result;
+
 	}
+
 }

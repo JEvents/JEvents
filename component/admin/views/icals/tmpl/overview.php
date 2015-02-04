@@ -162,6 +162,7 @@ $cfg = JEVConfig::getInstance();
 					<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
 				</tr>
 			</table>
+			<?php echo JHtml::_('form.token'); ?>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="icals.list" />
 			<input type="hidden" name="boxchecked" value="0" />

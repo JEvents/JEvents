@@ -48,6 +48,13 @@ class ICalsController extends AdminIcalsController
 	// Thanks to HiFi
 	function ical()
 	{
+		// Ensure authorised to do this
+		$cfg = JEVConfig::getInstance();
+		if ($cfg->get("disableicalexport", 0))
+		{
+			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+		}
+
 		// Include mootools framework
 		JHtml::_('behavior.framework', true);
 
@@ -98,10 +105,6 @@ class ICalsController extends AdminIcalsController
 	function export()
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("disableicalexport", 0))
-		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
-		}
 
 		$years = JRequest::getVar('years', 'NONE');
 		$cats = JRequest::getVar('catids', 'NONE');
@@ -139,6 +142,11 @@ class ICalsController extends AdminIcalsController
 		}
 		else if ($k != "NONE")
 		{
+			if ($params->get("disableicalexport", 0))
+			{
+				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			}
+
 			$key = md5($icalkey . $cats . $years);
 			if ($key != $k)
 				JError::raiseError(403, "JEV_ERROR");

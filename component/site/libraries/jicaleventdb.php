@@ -739,9 +739,17 @@ class jIcalEventDB extends jEventCal {
 		$extrafields = "";  // must have comma prefix
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
-		$extrajoin = array();
+		$extrajoin =array();
 		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+
+		$params = JComponentHelper::getParams("com_jevents");
+		if ($params->get("multicategory", 0))
+		{
+			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+		}
+		
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
