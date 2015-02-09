@@ -252,7 +252,6 @@
 		<field name="year_show_noev_found" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_NO_EVENTS_FOUND" description="JEV_VIEW_SHOW_NO_EVENTS_FOUND_DESC" difficulty="1"/>
 
         </fieldset>
-        
 	<fieldset  name="JEV_ICAL_CALENDAR" difficulty="2">
 		<field name="@spacer_tzi" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
@@ -318,8 +317,8 @@
 		<field name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP"/>
 		
 	</fieldset>
-	
-	<fieldset name="JEV_TAB_CAL_MOD" difficulty="2">
+	<fieldset  name="JEV_MODULE_CONFIG" difficulty="2">
+		<field name="@spacer_cm0" type="jevinfo" default="JEV_TAB_CAL_MOD"  menu="hide" label="" description="" difficulty="2"/>
 		<field name="@spacer_cm1" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD"  menu="hide" label="" description="" difficulty="2"/>	
 		
 		<field name="modcal_DispLastMonth" type="list" default='NO'  menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="" difficulty="2">
@@ -340,9 +339,8 @@
 		</field>
 		<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" difficulty="2"/>
 		<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" difficulty="3"/>
-	</fieldset>
 
-	<fieldset name="JEV_TAB_LATEST_MOD" difficulty="1">
+		<field name="@spacer_le0" type="jevinfo" default="JEV_TAB_LATEST_MOD"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_main_help::Module" difficulty="1"/>
 		<field name="@spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description="" help="mod_events_latest.php::_cal_lang_lev_main_help::Module" difficulty="1"/>	
 		
 		<field name="modlatest_MaxEvents" type="text" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="1"/>
