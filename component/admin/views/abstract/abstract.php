@@ -137,6 +137,43 @@ class JEventsAbstractView extends JViewLegacy
 		<?php
 
 	}
+	function _quickiconButtonWHover($link, $image, $image_hover, $text, $path = '/administrator/images/', $target = '', $onclick = '')
+	{
+		if ($target != '')
+		{
+			$target = 'target="' . $target . '"';
+		}
+		if ($onclick != '')
+		{
+			$onclick = 'onclick="' . $onclick . '"';
+		}
+		if ($path === null || $path === '')
+		{
+			$path = '/administrator/images/';
+		}
+		$alttext = str_replace("<br/>", " ", $text);
+		?>
+		<div id="cp_icon_container">
+			<div class="cp_icon">
+				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?> title="<?php echo $alttext; ?>">
+					<?php
+					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text );
+					if (strpos($path, '/') === 0)
+					{
+						$path = substr($path, 1);
+					}
+					$atributes = array('title' => $alttext, 'onmouseover' => 'this.src=\'../' . $path . $image_hover . '\'', 'onmouseout' => 'this.src=\'../' . $path . $image . '\'' );
+
+					echo JHTML::_('image', $path . $image, $alttext, $atributes, false);
+					//JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true)
+					?>
+					<span><?php echo $text; ?></span>
+				</a>
+			</div>
+		</div>
+	<?php
+
+	}
 
 	/**
 	 * Creates label and tool tip window as onmouseover event
