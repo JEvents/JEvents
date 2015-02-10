@@ -2627,7 +2627,9 @@ SCRIPT;
 
 	}
 	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifcations at present to avoid code duplication.
-	public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH" ) {
+	public static function iCalMailGenerator($row, $params, $ics_method = "PUBLISH", $master_ev = 0) {
+
+
 		if ($ics_method == "CANCEL") {
 			$status = "CANCELLED";
 		}
@@ -2905,9 +2907,26 @@ SCRIPT;
 				//$html .= "TRANSP:OPAQUE\r\n";
 				//$html .= "END:VEVENT\r\n";
 
-				// Ok if it's a request, then it's a change. No need the include the master event for the iCal
-				// Simple lets, clear her.
+				// Ok if it's a request and not the master event then it's a change. No need the include the master event for the iCal emails
 
+				if ($ics_method == "REQUEST" || $ics_method == "CANCEL" && $a->hasrepetition() && $master_ev == 1) {
+					// Simple lets, clear her.
+					$html = "";
+					//Now re-add standard params.
+					if ($params->get('outlook2003icalexport')) {
+						$html .= "BEGIN:VCALENDAR\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
+					} else {
+						$html .= "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:JEvents 3.1 for Joomla//EN\r\n";
+					}
+
+					$html .= "CALSCALE:GREGORIAN\r\nMETHOD:" . $ics_method . "\r\n";
+
+					if (isset($status)) {
+						$html .= "STATUS:" . $status . "\r\n";
+
+					}
+				}
+				//Lets get the changes
 				$changedrows = array();
 
 				if (count($changed) > 0 && $changed[0] != 0) {
@@ -2933,7 +2952,10 @@ SCRIPT;
 
 					foreach ($changedrows as $a)
 					{
-						$html .= "BEGIN:VEVENT\r\n";
+						//Ok we only need to get the repeat for the one event. So lets just continue past the repeats that don't match up.
+						if ($ics_method == "REQUEST" || $ics_method == "CANCEL" && $a->hasrepetition() && $master_ev == 0 && $row->rp_id != $a->rp_id()) {continue;}
+
+							$html .= "BEGIN:VEVENT\r\n";
 						$html .= "UID:" . $a->uid() . "\r\n";
 						$html .= "CATEGORIES:" . $a->catname() . "\r\n";
 						if (!empty($a->_class))
