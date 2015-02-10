@@ -40,11 +40,11 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		$datenow = JEVHelper::getNow();
 		if ($relDay > 0)
 		{
-			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $startDate) . " +$relDay days");
+			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $eventDate) . " +$relDay days");
 		}
 		else
 		{
-			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $startDate) . " $relDay days");
+			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $eventDate) . " $relDay days");
 		}
 
 

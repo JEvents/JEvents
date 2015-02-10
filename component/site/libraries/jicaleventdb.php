@@ -549,20 +549,20 @@ class jIcalEventDB extends jEventCal {
 		// if starttime and end time the same then show no times!
 		else if( $this->start_date == $this->stop_date ){
 			if ($this->noendtime()){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time . '<br/>';
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time . '<br/>';
 			}
 			else if (($this->start_time != $this->stop_time) && !($this->alldayevent())){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time
 				. '&nbsp;-&nbsp;' . $this->stop_time_midnightFix . '<br/>';
 			} else if (($this->start_time == $this->stop_time) && !($this->alldayevent())){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time. '<br/>';
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time. '<br/>';
 			} else {
 				$sum.= $this->start_date . '<br/>';
 			}
 		} else {
 			// recurring events should have time related to recurrance not range of dates
 			if ($this->noendtime() && !($this->reccurtype() > 0)){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time . '<br/>'
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time . '<br/>'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 			else if ($this->start_time != $this->stop_time && !($this->reccurtype() > 0)) {

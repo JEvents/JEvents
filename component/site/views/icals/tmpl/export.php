@@ -351,7 +351,7 @@ if (!empty($this->icalEvents))
 				if ($a->hasExtraInfo())
 					$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\r\n";
 
-				$exception = $changedexceptions[$rpid];
+				$exception = $changedexceptions[$a->rp_id()];
 				$originalstart = JevDate::strtotime($exception->oldstartrepeat);
 				$chstart = $a->getUnixStartTime();
 				$chend = $a->getUnixEndTime();
