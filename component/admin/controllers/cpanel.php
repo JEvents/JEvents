@@ -887,7 +887,7 @@ WHERE ics.ics_id is null
 
 		if (!$ics || is_null($ics) || $ics == 0)
 		{
-			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Orphans','Initial ICS File',2,1,1,$catid,1)";
+			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Orphans','Orphan ICS File',2,0,1,$catid,0)";
 			$db->setQuery($sql);
 			$db->query();
 
@@ -910,7 +910,7 @@ WHERE ics.ics_id is null
 		if (!$catid) {
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
-			$cat->bind(array("title"=>"Orphans", "published"=>1, "color"=>"#CCCCFF", "access"=>1));
+			$cat->bind(array("title"=>"Orphans", "published"=>0, "color"=>"#CCCCFF", "access"=>1));
 			$cat->store();
 			$catid=$cat->id;
 		}
