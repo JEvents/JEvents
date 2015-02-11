@@ -2519,7 +2519,7 @@ SCRIPT;
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING');
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING');
 			$app = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
@@ -2563,17 +2563,35 @@ SCRIPT;
 					$sessionArrayData = array();
 				}
 			}
-			if ($sessionArrayData > 0)
+			if (count($sessionArrayData) > 0)
 			{
 				$safeurlparams["sessionArray"] = "STRING";
 				//var_dump($sessionArrayData);
 				JRequest::setVar("sessionArray", md5(serialize($sessionArrayData)));
 
-				// if we have session data then stock progressive caching
+				// if we have session data then stop progressive caching
 				if ($conf->get('caching', 1) == 2)
 				{
 					$conf->set('caching', 1);
 				}
+
+				// If we have session data then need to block page caching too!!
+				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
+				$cache_plg = JPluginHelper::getPlugin('system','cache');
+				$dispatcher = JDispatcher::getInstance();
+				$observers = @$dispatcher->get("_observers");
+				if ($observers && is_array($observers)){
+					foreach ($observers as $observer){
+						if (is_object($observer) && get_class($observer)=="plgSystemCache"){
+							$pagecache = @$observer->get("_cache");
+							if ($pagecache){
+								$pagecache->setCaching(false);
+							}
+							break;
+						}
+					}
+				}
+
 			}
 
 			if (!empty($app->registeredurlparams))

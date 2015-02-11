@@ -27,7 +27,7 @@ class jevFilterProcessing
 
 	public static function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
 
-		if ($uid == 0){
+		if (is_numeric($uid) && $uid == 0){
 			$uid ="";
 		}
 		if ($uid==""){

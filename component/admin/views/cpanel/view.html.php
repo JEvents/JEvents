@@ -607,6 +607,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"layout_extplus" => 3,
 			"layout_iconic" => 3,
 			"layout_ruthin" => 3,
+			"layout_flatplus" => 3,
 			"layout_smartphone" => 3,
 			"layout_map" => 3,
 			"plugin_acymailing_tagjevents" => 41,
@@ -976,6 +977,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			// Silver - layouts
 			array("element"=>"extplus","name"=>"extplus","type"=>"file"),
 			array("element"=>"ruthin","name"=>"ruthin","type"=>"file"),
+			array("element"=>"flatplus","name"=>"flatplus","type"=>"file"),
 			array("element"=>"iconic","name"=>"iconic","type"=>"file"),
 			array("element"=>"map","name"=>"map","type"=>"file"),
 			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),

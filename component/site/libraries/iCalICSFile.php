@@ -289,7 +289,7 @@ RAWTEXT;
 							}
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";						
+						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
@@ -301,7 +301,7 @@ RAWTEXT;
 							}							
 						}
 						else {
-							$vevent->catid =  $categories[$evcat[0]]->id;							
+							$vevent->catid =  $categories[trim($evcat[0])]->id;
 						}
 					}
 				}

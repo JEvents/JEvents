@@ -15,7 +15,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 
 	$user = JFactory::getUser();
 	if ($user->get("id")==0) return "";
-	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row))  && !( $mask & MASK_POPUP )) {
+	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row)) ) { //&& !( $mask & MASK_POPUP )) {
 
 		$popup=false;
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
