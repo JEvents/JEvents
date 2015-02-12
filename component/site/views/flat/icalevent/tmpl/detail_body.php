@@ -51,7 +51,7 @@ if( array_key_exists('row',$this->data) ){
 				</td>
 				<?php
                 }
-                if( $row->canUserEdit() && !( $mask & MASK_POPUP )) {
+                if( $row->canUserEdit()) {
                 	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                     	?>
                         <td  width="20" class="buttonheading" align="right">
