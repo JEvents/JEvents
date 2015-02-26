@@ -193,6 +193,9 @@ class iCalImport
 		$skipuntil = null;
 		foreach ($this->rawData as $vcLine) {
 			//$vcLine = trim($vcLine); // trim one line
+			if (empty($vcLine)){
+				continue;
+			}
 			if (!empty($vcLine))
 			{
 				// skip unhandled block

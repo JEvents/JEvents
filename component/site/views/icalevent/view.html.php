@@ -88,7 +88,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			
 			if (JEVHelper::isEventEditor())
-				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'SAVE', false);
+				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			//JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
                         $this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
 		}

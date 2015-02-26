@@ -11,11 +11,11 @@ function DefaultEventManagementDialog($view,$row, $mask){
 
 	$user = JFactory::getUser();
 	if ($user->get("id")==0) return "";
-	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row))  && !( $mask & MASK_POPUP )) {
+	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row)) ) { 
 
 		$popup=false;
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0)){
+		if ($params->get("editpopup",0) && !( $mask & MASK_POPUP )){
 			JHTML::_('behavior.modal');
 			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 			$popup=true;

@@ -344,7 +344,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$cellEnd		= '</div>' . "\n";
 
 		// add the event color as the column background color
-		$cellStyle .= ' background-color:' . $this->event->bgcolor() . ';color:'.$this->event->fgcolor() . ';' ;
+		$cellStyle = ' background-color:' . $this->event->bgcolor() . ';color:'.$this->event->fgcolor() . ';' ;
 
 		// MSIE ignores "inherit" color for links - stupid Microsoft!!!
 		$linkStyle = 'style="color:'.$this->event->fgcolor() . ';"';
