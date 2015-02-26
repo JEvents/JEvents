@@ -635,6 +635,21 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else
 		{
+			$popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+			if ($popupdetail) {
+				$pluginparams = new JRegistry($popupdetail->params);
+				$popupdetail = $pluginparams->get("detailinpopup",1);
+				if ($popupdetail) {
+					$popupdetail = "&pop=1&tmpl=component";
+				}
+				else {
+					$popupdetail = "";
+				}
+			}
+			else {
+				$popupdetail = "";
+			}
+
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 
@@ -658,7 +673,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($params->get("editpopup", 0))
 			{
 				ob_end_clean();
-				if (!headers_sent())
+				if (!headers_sent() && $popupdetail=="")
 				{
 					header('Content-Type:text/html;charset=utf-8');
 				}
@@ -672,17 +687,23 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				if ($event && $event->state())
 				{
-					$link = $event->viewDetailLink($year, $month, $day, true , $Itemid);
+					$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1$popupdetail");
 				}
 				else
 				{
 					if (JFactory::getUser()->id>0){
-						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
+						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1$popupdetail");
 					}
 					else {
-						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);
+						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid$popupdetail", false);
 					}
 				}
+				if ($popupdetail!=""){
+					// redirect to event detail page within popup window
+					$this->setRedirect($link, $msg);
+					return;
+				}
+				else {
 				?>
 				<script type="text/javascript">
 					//window.parent.SqueezeBox.close();
@@ -691,6 +712,7 @@ class AdminIcaleventController extends JControllerAdmin
 				</script>
 				<?php
 				exit();
+				}
 			}
 
 			// if the event is published then return to the event
