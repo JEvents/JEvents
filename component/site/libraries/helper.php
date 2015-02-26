@@ -341,11 +341,11 @@ class JEVHelper
 			if ($h >= 0 && $m >= 0)
 			{
 				$time = JevDate::mktime($h, $m);
-				return JEV_CommonFunctions::jev_strftime(JText::_("TIME_FORMAT"), $time);
+				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $time);
 			}
 			else
 			{
-				return JEV_CommonFunctions::jev_strftime(JText::_("TIME_FORMAT"), $date);
+				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $date);
 			}
 		}
 
