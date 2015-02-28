@@ -94,8 +94,8 @@ if (JRequest::getVar('save')) {
             $msgType = 'Error';
         }
 
-        JFactory::getApplication()->enqueueMessage($msg, $msgType);
-        JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+        $mainframe->enqueueMessage($msg, $msgType);
+        $mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
 
     }
 
