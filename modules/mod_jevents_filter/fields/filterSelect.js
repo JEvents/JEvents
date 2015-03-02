@@ -67,6 +67,6 @@ function setupCustomFilterField(){
 	});
 }
 
-window.addEvent("domready",  function() {
+window.addEvent("load",  function() {
 	setupFilterChoices(true);setupFilterLis(true);
 });
