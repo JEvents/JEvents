@@ -74,14 +74,14 @@ class AdminParamsController extends JControllerAdmin
                         $manifest = new JRegistry($jevcomponent->manifest_cache);
                         $version = $manifest->get("version", "0.0.1");
                         if (version_compare($version, $maxversion,"lt")){
-                            // remove the older version
-                            $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
-                            $db->query();
-
                             // reset component id in any menu items and link to the old one
                             $db->setQuery("UPDATE #__menu set component_id=".$validExtensionId." WHERE component_id=".$jevcomponent->extension_id);
                             $db->query();
                             
+                            // remove the older version
+                            $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
+                            $db->query();
+
                         }
                     }
                 }
