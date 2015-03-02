@@ -169,6 +169,11 @@ class AdminParamsController extends JControllerAdmin
 		);
 		$return = $model->saveRules($data);
 		
+//                $db = JFactory::getDbo();
+//                $db->setQuery("Select * from #__extensions where element='com_jevents' and type='component'");
+//                $jevcomp = $db->loadObjectList();
+//               var_dump($jevcomp);exit();
+                
 		// Clear cache of com_config component.
 		$this->cleanCache('_system');
 

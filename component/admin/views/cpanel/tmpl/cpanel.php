@@ -36,8 +36,8 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			</div>
 			<?php }
 			if ($params->get("showPanelNews", 1) == 1){
-				$mainspan = 5;
-				$fullspan = 7;
+				$mainspan = 10; //5;
+				$fullspan = 12; //7;
 			} else {
 				$mainspan = 10;
 				$fullspan = 12;
@@ -85,49 +85,49 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				?>
 				<div class="clear"></div>
 			</div>
-		</div>
-		<div class="span5">
-			<?php
-			
-			if ($params->get("showPanelNews", 1))
-			{
-				try {
-					echo JHtml::_('sliders.start', 'cpanel-sliders');
-					echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
-					?>
-					<div class="well well-small ">
-					<?php echo $this->renderJEventsNews(); ?>
-					</div>
-					<?php
-					$needsupdate = false;
-					$clubnews = $this->renderVersionStatusReport($needsupdate);
-					if ($needsupdate)
-					{
-						$label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
-						$repid = 'updateavailable';
-					}
-					else
-					{
-						$label = JText::_("JEV_VERSION_STATUS_REPORT");
-						$repid = 'statusreport';
-					}
-					if ($clubnews)
-					{
-						echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
-						?>
-						<div  class="well well-small "  style="overflow:auto">
-						<?php echo $clubnews; ?>
-						</div> <?php
-					}
-					echo JHtml::_('sliders.end');
-				}
-				catch (Exception $exc) {
-					echo $exc->getMessage();
-				}
+                        <div class="well well-small clearfix ">
+                            <?php
 
-			}
-			?>                                    
-		</div>
+                            if ($params->get("showPanelNews", 1))
+                            {
+                                    try {
+                                            echo JHtml::_('sliders.start', 'cpanel-sliders');
+                                            echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
+                                            ?>
+                                            <div class="well well-small ">
+                                            <?php echo $this->renderJEventsNews(); ?>
+                                            </div>
+                                            <?php
+                                            $needsupdate = false;
+                                            $clubnews = $this->renderVersionStatusReport($needsupdate);
+                                            if ($needsupdate)
+                                            {
+                                                    $label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
+                                                    $repid = 'updateavailable';
+                                            }
+                                            else
+                                            {
+                                                    $label = JText::_("JEV_VERSION_STATUS_REPORT");
+                                                    $repid = 'statusreport';
+                                            }
+                                            if ($clubnews)
+                                            {
+                                                    echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
+                                                    ?>
+                                                    <div  class="well well-small "  style="overflow:auto">
+                                                    <?php echo $clubnews; ?>
+                                                    </div> <?php
+                                            }
+                                            echo JHtml::_('sliders.end');
+                                    }
+                                    catch (Exception $exc) {
+                                            echo $exc->getMessage();
+                                    }
+
+                            }
+                            ?>                                    
+                    </div>
+                </div>
 		<?php
 		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" &&  JFactory::getLanguage()->getTag() != "en-GB")
 		{
