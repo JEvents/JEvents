@@ -122,7 +122,6 @@ class JFormFieldJevfilters extends JFormFieldText
 			</tr></table>';
 
 
-        JHtml::_('behavior.core');
 		JHTML::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		
 		// Initialize some field attributes.
