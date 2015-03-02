@@ -48,14 +48,37 @@ class AdminParamsController extends JControllerAdmin
 		// get the view
 		$this->view = $this->getView("params", "html");
 
-		//$model = $this->getModel('params');
-		$model = $this->getModel('component');
+                $model = $this->getModel('component');
 		$table =  JTable::getInstance('extension');
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
 			JError::raiseWarning(500, 'Not a valid component');
 			return false;
 		}
+                // Sort out sites with more than one entry in the extensions table
+                $db = JFactory::getDbo();
+                $db->setQuery("SELECT * FROM #__extensions WHERE element='com_jevents' and type='component' ORDER BY extension_id ASC");
+		$jevcomponents = $db->loadObjectList();
+                if (count($jevcomponents)>1) {
+                    $maxversion = "0.0.1";
+                    foreach ($jevcomponents as $jevcomponent){
+                        $manifest = new JRegistry($jevcomponent->manifest_cache);
+                        $version = $manifest->get("version", "0.0.1");
+                        if (version_compare($version, $maxversion)){
+                            $maxversion = $version;
+                        }
+                    }
+                    foreach ($jevcomponents as $jevcomponent){
+                        $manifest = new JRegistry($jevcomponent->manifest_cache);
+                        $version = $manifest->get("version", "0.0.1");
+                        if (version_compare($version, $maxversion,"lt")){
+                            // remove the older version
+                            $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
+                            $db->query();
+                        }
+                    }
+                }
+                
 		// Backwards compatatbility
 		$table->id = $table->extension_id;
 		$table->option = $table->element;
@@ -88,7 +111,6 @@ class AdminParamsController extends JControllerAdmin
 			JError::raiseWarning(500, 'Not a valid component');
 			return false;
 		}
-		
 
 		$post = JRequest::get('post');
 		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
