@@ -335,19 +335,19 @@ class JEVHelper
             $format_type = $cfg->get('com_dateformat');
         }
 
-        // if date format is from langauge file then do this first
-        if ($format_type == 3)
-        {
-            if ($h >= 0 && $m >= 0)
-            {
-                $time = JevDate::mktime($h, $m);
-                return JEV_CommonFunctions::jev_strftime(JText::_("TIME_FORMAT"), $time);
-            }
-            else
-            {
-                return JEV_CommonFunctions::jev_strftime(JText::_("TIME_FORMAT"), $date);
-            }
-        }
+		// if date format is from langauge file then do this first
+		if ($format_type == 3)
+		{
+			if ($h >= 0 && $m >= 0)
+			{
+				$time = JevDate::mktime($h, $m);
+				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $time);
+			}
+			else
+			{
+				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $date);
+			}
+		}
 
         if ($cfg->get('com_calUseStdTime') == '0')
         {
