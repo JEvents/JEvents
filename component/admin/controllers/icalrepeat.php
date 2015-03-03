@@ -135,6 +135,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
+ 
+                // Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
 
 		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid', array(0));
