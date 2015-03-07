@@ -36,8 +36,9 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
 	JHtml::_('behavior.framework', true);
 	JHtml::_('bootstrap.framework');
+        // jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
+        JHTML::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}
