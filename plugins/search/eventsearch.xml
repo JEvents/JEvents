@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>Search - JEvents</name>
-	<creationDate>February 2015</creationDate>
+	<creationDate>March 2015</creationDate>
 	<author>JEvents Project Group</author>
 	<copyright>(C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>

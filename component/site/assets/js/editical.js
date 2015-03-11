@@ -670,6 +670,8 @@ function toggleFreq(freq , setup)
 				byweekno.style.display="none";
 				bymonthday.style.display="none";
 				byday.style.display="none";
+
+				fixRepeatDates(true);
 			}
 			break;
 		case "MONTHLY":
@@ -741,13 +743,22 @@ function toggleFreq(freq , setup)
 	}
 }
 
-function fixRepeatDates(){
+function fixRepeatDates(checkYearDay){
 	start_time = document.getElementById("start_time");
 	starttimeparts = start_time.value.split(":");
 	start_date = document.getElementById("publish_up");
 	startDate = new Date();
 	startDate = startDate.dateFromYMD(start_date.value);	
 	
+	// special case where we first press yearly repeat - should check for 28 Feb
+	if (checkYearDay) {
+		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
+		days = ((startDate-yearStart)/(24*60*60*1000));
+		if (days>60){
+			byddir = document.adminForm.byd_direction;
+			byddir.checked = true;
+		}
+	}
 	bmd = document.adminForm.bymonthday;
 	if (bmd.value.indexOf(",")<=0) {
 		//bmd.value = parseInt(startdateparts[2],10);
@@ -794,6 +805,7 @@ function fixRepeatDates(){
 	}
 	bd[startDate.getDay()].checked=true;
 
+	end_date = document.getElementById("publish_down");
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 

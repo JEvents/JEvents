@@ -38,7 +38,7 @@ class JFormFieldJevfilters extends JFormFieldText
 			function getInput()
 	{
 		jimport('joomla.filesystem.folder');
-		
+
 		$invalue = str_replace(" ","",$this->value);
 		$invalue = explode(",",$invalue);
 
@@ -121,7 +121,12 @@ class JFormFieldJevfilters extends JFormFieldText
 		$input .= '</div></td>
 			</tr></table>';
 
-		JEVHelper::script('modules/mod_jevents_filter/fields/filterSelect.js' );
+        // load core and extra mootools
+        JHTML::_('behavior.framework');
+        JHtmlBehavior::framework();
+        JHtmlBehavior::framework(true);
+
+		JHTML::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		
 		// Initialize some field attributes.
 		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';

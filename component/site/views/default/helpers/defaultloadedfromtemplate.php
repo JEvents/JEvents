@@ -531,7 +531,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = "";
 						$blank[] = "";
 					}
-					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)) && !( $mask & MASK_POPUP ))
+					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)) )
 					{
 						ob_start();
 						$view->eventManagementButton($event);

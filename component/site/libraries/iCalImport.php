@@ -361,7 +361,7 @@ class iCalImport
 				// convert URLs to links but NOT in uid field!!
 				//$value = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]","<a href=\"\\0\">\\0</a>", $value);
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
-				if (is_string($value) && $key!="UID"){
+				if (is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
 					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false){
 						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\-.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $value);
 					}
