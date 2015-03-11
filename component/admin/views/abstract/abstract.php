@@ -33,26 +33,27 @@ class JEventsAbstractView extends JViewLegacy
 		// note that the name config variable is ignored in the parent construct!
 		if (JevJoomlaVersion::isCompatible("2.5"))
 		{
-            // Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
+			// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
 
-            $app = JFactory::getApplication();
-            // Get current template style ID
-            $page_template_id = $app->getMenu()->getActive()->template_style_id;
+			$app = JFactory::getApplication();
+			// Get current template style ID
+			$page_template_id = $app->isAdmin() ? 0 : $app->getMenu()->getActive()->template_style_id;
 
-            // Check it's a valid style with simple check
-            if ($page_template_id != "" || $page_template_id != "0") {
-                // Load the valid style:
-                $db = JFactory::getDbo();
-                $query = $db->getQuery(true)
-                    ->select('template')
-                    ->from('#__template_styles')
-                    ->where('id =' . $db->quote($page_template_id) . '');
-                $db->setQuery($query);
-                $template = $db->loadResult();
+			// Check it's a valid style with simple check
+			if (! ($page_template_id == "" || $page_template_id == "0")) {
+				// Load the valid style:
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select('template')
+					->from('#__template_styles')
+					->where('id =' . $db->quote($page_template_id) . '');
+				$db->setQuery($query);
+				$template = $db->loadResult();
 
-            } else {
-                $template = JFactory::getApplication()->getTemplate();
-            }
+			} else {
+				$template = JFactory::getApplication()->getTemplate();
+			}
+
 			$theme = JEV_CommonFunctions::getJEventsViewName();
 			$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $this->getName());
 
