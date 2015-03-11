@@ -1984,39 +1984,88 @@ class JEVHelper
 	}
 
 	static public
-			function stylesheet($file, $path)
+			function stylesheet($file, $path="")
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		// JHTML::stylesheet($path . $file);
 
-		JHTML::stylesheet($path . $file);
+		//stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
+		// no need to find browser specific versions
+		$includes = JHTML::stylesheet($path . $file, array(), false, true, false);
+		if (!$includes){
+			return;
+		}
+		if (!is_array($includes)) {
+			$includes = array($includes);
+		}
+
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+
+		$document = JFactory::getDocument();
+
+		foreach ($includes as $include)
+		{
+			if (JevJoomlaVersion::isCompatible("3.3")) {
+				$document->addStyleSheetVersion($include,$release, 'text/css', null, array());
+			}
+			else {
+				$document->addStyleSheet($include."?".$release, 'text/css', null, array());
+			}
+		}
+		
 
 	}
 
 	static public
-			function script($file, $path)
+			function script($file, $path="" , $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
+		$includes = null;
 		// load jQuery versions if present
 		if (strpos($file, "JQ.js")==false) {
 			$jqfile = str_replace(".js", "JQ.js", $file);
 			if (JHTML::script($path . $jqfile, false, false, true)){
-				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $jqfile);
+				$file = $jqfile;
 			}
 			else {
 				// Include mootools framework
 				JHtml::_('behavior.framework', true);
-
-				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $file);
 			}
 		}
 		else {
 			// Include mootools framework
 			JHtml::_('behavior.framework', true);
-
-			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-			JHTML::script($path . $file);
 		}
+
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		//JHTML::script($path . $file);
+
+		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
+		// no need to find browser specific versions
+		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser);
+		if (!$includes){
+			return;
+		}
+		if (!is_array($includes)) {
+			$includes = array($includes);
+		}
+
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+
+		$document = JFactory::getDocument();
+
+		foreach ($includes as $include)
+		{
+			if (JevJoomlaVersion::isCompatible("3.3")) {
+				$document->addScriptVersion($include,$release);
+			}
+			else {
+				$document->addScript($include."?".$release);
+			}
+
+		}
+
 	}
 
 	static public

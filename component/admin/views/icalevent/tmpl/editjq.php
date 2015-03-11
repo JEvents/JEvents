@@ -26,8 +26,8 @@ JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("useboostrap", 1))
 {
-	JHTML::script("com_jevents/bootstrap.js", false, true);
-	JHTML::script("components/com_jevents/assets/js/jquery-migrate.min.js");
+	JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
+	JEVHelper::script("components/com_jevents/assets/js/jquery-migrate.min.js");
 }
 
 if ($params->get("bootstrapchosen", 1))
