@@ -168,6 +168,11 @@ function ProcessRequest(&$requestObject, $returnData)
 	if (!$params->get("checkclashes", 0) && !$params->get("noclashes", 0))
 		return $returnData;
 
+	// Do we ignore overlaps
+	if (JEVHelper::isEventDeletor(true) && isset($requestObject->formdata->overlapoverride) && $requestObject->formdata->overlapoverride==1){
+		return $returnData;
+	}
+	
 	// Enforce referrer
 	if (!$params->get("skipreferrer", 0))
 	{
