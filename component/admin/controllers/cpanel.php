@@ -5,7 +5,7 @@
  *
  * @version     $Id: cpanel.php 3546 2012-04-20 09:08:44Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -58,7 +58,7 @@ class AdminCpanelController extends JControllerAdmin
 			echo $db->getErrorMsg();
 		}
 		
-		if (file_exists(JEV_ADMINPATH."install.php")){
+		if (false && file_exists(JEV_ADMINPATH."install.php")){
 			include_once(JEV_ADMINPATH."install.php");
 			$installer = new com_jeventsInstallerScript();
 			$installer->update(false);
@@ -119,6 +119,9 @@ class AdminCpanelController extends JControllerAdmin
 			$this->checkLanguagePackages();
 		}
 
+		// Check for orphan events and correct this
+		$this->fixOrphanEvents();
+
 		// Set the layout
 		$this->view->setLayout('cpanel');
 		$this->view->assign('title', JText::_('CONTROL_PANEL'));
@@ -141,6 +144,19 @@ class AdminCpanelController extends JControllerAdmin
 	
 	function custom_css()
 	{
+		$mainframe = JFactory::getApplication();
+
+		//Hold on... Are you a super user?
+		$user = JFactory::getUser();
+
+		if (!$user->authorise('core.admin')) {
+			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
+			$msgType = 'Error';
+			$mainframe->enqueueMessage($msg, $msgType);
+			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
+			return;
+		}
+
 		//Get the view
 		$this->view = $this->getView("cpanel", "html");
 		
@@ -636,6 +652,11 @@ class AdminCpanelController extends JControllerAdmin
 		$db->query();
 		echo $db->getErrorMsg();
 
+		// Is the JEvents menu item completely missing or corrupted - if so then skip the rest
+		if (!$parent) {
+			return;
+		}
+
 		$updatemenus = false;			
 		if ($params->get("mergemenus", 1)){
 											
@@ -654,7 +675,7 @@ class AdminCpanelController extends JControllerAdmin
 				$db->setQuery($sql);			
 				$tomerge = $db->loadObjectList();
 
-                                $sql = 'SELECT * FROM #__menu 
+	                           $sql = 'SELECT * FROM #__menu
 				where client_id=1 AND parent_id='.$parent.'  AND (
 					'.$tochange.'
 				)';
@@ -764,5 +785,137 @@ class AdminCpanelController extends JControllerAdmin
 			echo  "<hr/><br/><strong><a href='".JURI::root()."/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1"."'>Click here to fix these tables</a></strong>
 				<h2>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
 		}
+	}
+
+	private function fixOrphanEvents() {
+		$db = JFactory::getDBO();
+		$hasOrphans = false;
+
+		$sql = "SELECT ev.ev_id from #__jevents_vevent as ev
+LEFT JOIN #__categories as cat on cat.id=ev.catid AND extension='com_jevents'
+WHERE cat.id is null
+";
+		$db->setQuery($sql);
+		$orphans =$db->loadColumn();
+
+		if ($orphans && count($orphans)>0){
+			$catid=$this->createOrphanCategory();
+			if ($catid){
+				$sql = "UPDATE #__jevents_vevent SET catid=$catid where ev_id IN (".implode(",", $orphans).")";
+				$db->setQuery($sql);
+				$db->query();
+				$hasOrphans  = true;
+			}
+		}
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$multicategory = $params->get("multicategory",0);
+		if ($multicategory) {
+			// Do the bad category Ids first
+			$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap 
+	LEFT JOIN #__categories as cat on cat.id=catmap.catid AND extension='com_jevents'
+	WHERE cat.id is null
+	";
+			$db->setQuery($sql);
+			$orphans =$db->loadObjectList("evid");
+
+			if ($orphans && count($orphans)>0){
+				$catid=$this->createOrphanCategory();
+				if ($catid){
+					foreach ($orphans as $orphan){
+						$sql = "UPDATE #__jevents_catmap SET catid=$catid where evid=".$orphan->evid." AND catid=".$orphan->catid;
+						$db->setQuery($sql);
+						$db->query();
+						$hasOrphans  = true;
+					}
+				}
+			}
+			// Now do the missing category mappings!
+			$sql = "SELECT ev.ev_id from #__jevents_vevent as ev
+	LEFT JOIN  #__jevents_catmap as catmap on ev.ev_id=catmap.evid
+	LEFT JOIN #__categories as cat on cat.id=catmap.catid AND extension='com_jevents'
+	WHERE cat.id is null
+	";
+			$db->setQuery($sql);
+			$orphans =$db->loadColumn();
+
+			if ($orphans && count($orphans)>0){
+				$catid=$this->createOrphanCategory();
+				if ($catid){
+					foreach ($orphans as $orphan){
+						$sql = "REPLACE INTO #__jevents_catmap (evid, catid) VALUES($orphan, $catid)";
+						$db->setQuery($sql);
+						$db->query();
+						$hasOrphans  = true;
+					}
+				}
+			}
+		}
+
+		$sql = "SELECT ev.ev_id from #__jevents_vevent as ev
+LEFT JOIN #__jevents_icsfile as ics on ics.ics_id=ev.icsid
+WHERE ics.ics_id is null
+";
+		$db->setQuery($sql);
+		$orphans =$db->loadColumn();
+
+		if ($orphans && count($orphans)>0){
+			$icsid=$this->createOrphanCalendar();
+			if ($icsid){
+				$sql = "UPDATE #__jevents_vevent SET icsid=$icsid where ev_id IN (".implode(",", $orphans).")";
+				$db->setQuery($sql);
+				$db->query();
+				$hasOrphans  = true;
+			}
+		}
+
+
+		if ($hasOrphans){
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_ORPHAN_EVENTS_DETECTED_AND_PLACED_IN_SPECIAL_ORPHAN_EVENT_CATEGORY_OR_CALENDAR"));
+		}
+
+
+	}
+
+	private function createOrphanCalendar() {
+		$catid=$this->createOrphanCategory();
+		$db = JFactory::getDBO();
+		// Add orphan native calendar by default if none exist already
+		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2 and label='Orphans'";
+		$db->setQuery($sql);
+		$ics = $db->loadResult();
+
+		if (!$ics || is_null($ics) || $ics == 0)
+		{
+			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Orphans','Orphan ICS File',2,0,1,$catid,0)";
+			$db->setQuery($sql);
+			$db->query();
+
+			$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2 and label='Orphans'";
+			$db->setQuery($sql);
+			$ics = $db->loadResult();
+		}
+		return $ics;
+	}
+
+
+	private function createOrphanCategory() {
+		$db = JFactory::getDBO();
+
+		$sql = "SELECT id from #__categories where extension='com_jevents' AND title='Orphans'";
+		$db->setQuery($sql);
+		$catid = $db->loadResult();
+
+		// Add orphan category if none exist already
+		if (!$catid) {
+			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
+			$cat = new JEventsCategory($db);
+			$cat->bind(array("title"=>"Orphans", "published"=>0, "color"=>"#CCCCFF", "access"=>1));
+			$cat->store();
+			$catid=$cat->id;
+		}
+
+		return $catid;
+
 	}
 }

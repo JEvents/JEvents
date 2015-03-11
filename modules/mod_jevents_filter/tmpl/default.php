@@ -6,7 +6,7 @@
  * @version     $Id: default.php 3323 2012-03-08 13:37:46Z geraintedwards $
  * @package     JEvents
  * @subpackage  Module JEvents Filter
- * @copyright   Copyright (C) 2008-2014 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.gwesystems.com
  */
@@ -68,6 +68,8 @@ if ($form_link == "")
 {
 	$form_link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . JRequest::getVar("jevtask", "cat.listevents") . "&Itemid=" . $myItemid;
 }
+
+$form_link .= "&year=$year&month=$month&day=$day";
 
 // category ID gets picked up by POST results!
 $form_link = JRoute::_($form_link

@@ -4,7 +4,7 @@
  *
  * @version     $Id: overview.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -162,6 +162,7 @@ $cfg = JEVConfig::getInstance();
 					<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
 				</tr>
 			</table>
+			<?php echo JHtml::_('form.token'); ?>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="icals.list" />
 			<input type="hidden" name="boxchecked" value="0" />

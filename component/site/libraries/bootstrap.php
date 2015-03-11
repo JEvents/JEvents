@@ -232,8 +232,35 @@ class JevHtmlBootstrap
 	 */
 	public static function framework($debug = null)
 	{
-		// JEvents has already loaded this
-		// return;
+		// Only load once
+		if (!empty(static::$loaded[__METHOD__]))
+		{
+			return;
+	}
+
+		// Load jQuery
+		//JevHtmlJquery::framework();
+
+		// If no debugging value is set, use the configuration setting
+		if ($debug === null)
+		{
+			$config = JFactory::getConfig();
+			$debug = (boolean) $config->get('debug');
+		}
+/*
+		if(!JHtml::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
+		{
+			JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
+		}
+		else
+		{
+			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
+		}
+*/
+			JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
+		static::$loaded[__METHOD__] = true;
+
+		return;
 	}
 
 	/**
@@ -863,9 +890,9 @@ class JevHtmlBootstrap
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			JHtml::_('stylesheet', 'jui/bootstrap.min.css', $attribs, true);
-			JHtml::_('stylesheet', 'jui/bootstrap-responsive.min.css', $attribs, true);
-			JHtml::_('stylesheet', 'jui/bootstrap-extended.css', $attribs, true);
+			JHtml::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
+			JHtml::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
+			//JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
 		}
 
 		// Load Bootstrap RTL CSS

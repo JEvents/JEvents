@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -71,6 +71,20 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			?>
 			<div id='jevoverlapwarning'>
 				<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
+				<?php
+				// event deletors get the right to override this
+				if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
+					?>
+				<div>
+					<strong>
+						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+							<input type="checkbox"  name="overlapoverride" value="1" />
+						</label>
+					</strong>
+				</div>
+					<?php
+				}
+				?>
 				<div id="jevoverlaps"></div>
 			</div>
 			<?php

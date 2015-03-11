@@ -4,13 +4,17 @@
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
+
+JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+
+
 ?>
 <div id="jevents" class="span12">
 	<?php
@@ -33,30 +37,20 @@ $version = JEventsVersion::getInstance();
 		{
 			?>
 			<div id="j-sidebar-container" class="span2">
-                                
 			<?php echo $this->sidebar; ?>
-                                
-                                <?php 
-                                //Version Checking etc
-                                
-                                ?>
-                                        <div class="jev_version">
-                                        <?php
-                                        echo JText::sprintf('JEV_CURRENT_VERSION', substr($version->getShortVersion(), 1)); ?>
-                                        </div>                         
 			</div>
 			<?php }
 			if ($params->get("showPanelNews", 1) == 1){
-				$mainspan = 5;
-				$fullspan = 7;
+				$mainspan = 6;
+				$fullspan = 8;
 			} else {
 				$mainspan = 10;
 				$fullspan = 12;
 			}
-			
+
 		?>
-		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-			<div id="cpanel" class="well well-small clearfix ">
+		<div id="j-main-container" class="span10 ">
+			<div id="cpanel" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  well well-small clearfix ">
 				<?php
 				if (JEVHelper::isAdminUser())
 				{
@@ -96,48 +90,53 @@ $version = JEventsVersion::getInstance();
 				?>
 				<div class="clear"></div>
 			</div>
-		</div>
-		<div class="span5">
-			<?php
-			
-			if ($params->get("showPanelNews", 1))
-			{
-				try {
-					echo JHtml::_('sliders.start', 'cpanel-sliders');
-					echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
-					?>
-					<div class="well well-small ">
-					<?php echo $this->renderJEventsNews(); ?>
-					</div>
-					<?php
-					$needsupdate = false;
-					$clubnews = $this->renderVersionStatusReport($needsupdate);
-					if ($needsupdate)
-					{
-						$label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
-						$repid = 'updateavailable';
-					}
-					else
-					{
-						$label = JText::_("JEV_VERSION_STATUS_REPORT");
-						$repid = 'statusreport';
-					}
-					if ($clubnews)
-					{
-						echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
-						?>
-						<div  class="well well-small "  style="overflow:auto">
-						<?php echo $clubnews; ?>
-						</div> <?php
-					}
-					echo JHtml::_('sliders.end');
-				}
-				catch (Exception $exc) {
-					echo $exc->getMessage();
-				}
+            <?PHP
+            if ($params->get("showPanelNews", 1))
+            {
+            ?>
+            <div class="span6">
+                <?php
 
-			}
-			?>                                    
+                    try {
+                        echo JHtml::_('sliders.start', 'cpanel-sliders');
+                        echo JHtml::_('sliders.panel', JText::_("JEV_News"), 'cpanelnews');
+                        ?>
+                        <div class="well well-small ">
+                            <?php echo $this->renderJEventsNews(); ?>
+                        </div>
+                        <?php
+                        $needsupdate = false;
+                        $clubnews = $this->renderVersionStatusReport($needsupdate);
+                        if ($needsupdate)
+                        {
+                            $label = JText::_("JEV_VERSION_STATUS_NEEDSUPDATE");
+                            $repid = 'updateavailable';
+                        }
+                        else
+                        {
+                            $label = JText::_("JEV_VERSION_STATUS_REPORT");
+                            $repid = 'statusreport';
+                        }
+                        if ($clubnews)
+                        {
+                            echo JHtml::_('sliders.panel', $label, 'cpanelstatus');
+                            ?>
+                            <div  class="well well-small "  style="overflow:auto">
+                                <?php echo $clubnews; ?>
+                            </div> <?php
+                        }
+                        echo JHtml::_('sliders.end');
+                    }
+                    catch (Exception $exc) {
+                        echo $exc->getMessage();
+                    }
+
+
+                ?>
+            </div>
+            <?PHP
+            }
+            ?>
 		</div>
 		<?php
 		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" &&  JFactory::getLanguage()->getTag() != "en-GB")
@@ -151,7 +150,7 @@ $version = JEventsVersion::getInstance();
 		?>
 		<div class="span12 center">
 			<a href="<?php
-		
+		$version = JEventsVersion::getInstance();
 		echo $version->getUrl();
 		?>" target="_blank" style="font-size:xx-small;" title="Events Website"><?php echo $version->getLongVersion(); ?></a>
 			&nbsp;

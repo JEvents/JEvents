@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalICSFile.php 3474 2012-04-03 13:40:53Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -289,7 +289,7 @@ RAWTEXT;
 							}
 						}
 						// must reset  the list of categories now
-						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";						
+						$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
@@ -301,7 +301,7 @@ RAWTEXT;
 							}							
 						}
 						else {
-							$vevent->catid =  $categories[$evcat[0]]->id;							
+							$vevent->catid =  $categories[trim($evcat[0])]->id;
 						}
 					}
 				}
@@ -502,7 +502,7 @@ RAWTEXT;
 
 	// find if icsFile already imported
 	function isDuplicate(){
-		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = '" . addcslashes($this->label, '\'') . "'";
+		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = " . $this->_db->quote($this->label) ;
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
 		if (count($matches)>0 && isset($matches[0]->ics_id)) {

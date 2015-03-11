@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevextras.php 1785 2011-03-14 14:28:17Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2014 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -38,7 +38,7 @@ class JFormFieldJevfilters extends JFormFieldText
 			function getInput()
 	{
 		jimport('joomla.filesystem.folder');
-		
+
 		$invalue = str_replace(" ","",$this->value);
 		$invalue = explode(",",$invalue);
 
@@ -120,6 +120,11 @@ class JFormFieldJevfilters extends JFormFieldText
 
 		$input .= '</div></td>
 			</tr></table>';
+
+        // load core and extra mootools
+        JHTML::_('behavior.framework');
+        JHtmlBehavior::framework();
+        JHtmlBehavior::framework(true);
 
 		JHTML::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		

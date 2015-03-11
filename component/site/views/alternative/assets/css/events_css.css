@@ -37,7 +37,7 @@
     text-align:center !important;
 }
 .cal_daysnames {
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: bold;
@@ -50,7 +50,7 @@
 	border:solid 1px rgb(207,207,207);
 }
 .cal_daysoutofmonth {
-    font-family:  Arial;
+    
     font-size: 12px;
     font-style: normal;
     line-height: normal;
@@ -68,7 +68,7 @@
     padding:0px !important;
 }
 a.cal_daylink:link {
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: bold;
@@ -76,7 +76,7 @@ a.cal_daylink:link {
     text-decoration: none;
 }
 a.cal_daylink:visited{
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: bold;
@@ -84,7 +84,7 @@ a.cal_daylink:visited{
     text-decoration: none;
 }
 a.cal_daylink:hover{
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: bold;
@@ -94,7 +94,7 @@ a.cal_daylink:hover{
 a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
     font-size:10px;
     font-weight: bold;
-    font-family: Verdana;
+    
     text-decoration: none;
     color:inherit!important;
 	vertical-align:middle!important;
@@ -108,7 +108,7 @@ a.cal_titlelink:link, a.cal_titlelink:visited, a.cal_titlelink:hover {
 .cal_td_weeklink a {
     font-size:10px;
     font-weight: bold;
-    font-family: Verdana;
+    
     text-decoration: none;
     color:inherit!important;
 }
@@ -143,36 +143,36 @@ ul.ev_ul li.ev_td_li {
 }
 a.ev_link_cat:link {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_cat:visited  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_cat:hover  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Black;
 }
 a.ev_link_row:link {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:visited  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_row:hover  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Black;
 }
 a.ev_link_unpublished {
@@ -181,23 +181,23 @@ a.ev_link_unpublished {
 }
 a.ev_link_weekday:link {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_weekday:visited  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Gray;
     text-decoration:none;
 }
 a.ev_link_weekday:hover  {
     font-size:12px;
-    font-family: Verdana;
+    
     color: Black;
 }
 .ev_fieldset {
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: bold;
@@ -224,7 +224,7 @@ a.ev_link_weekday:hover  {
     background-color: #c5d5e5;
     border-right: 1px solid #000000;
     border-top: 1px solid #000000;
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: normal;
@@ -236,7 +236,7 @@ a.ev_link_weekday:hover  {
     background-color: #E9B4A1;
     border-right: 1px solid #000000;
     border-top: 1px solid #000000;
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     font-weight: normal;
@@ -248,7 +248,7 @@ a.ev_link_weekday:hover  {
 **********************/
 /* Styles for dhtml tabbed-pages */
 .ontab {
-    font-family : Verdana, Arial, Helvetica, sans-serif;
+    
     font-size: 10px;
     background-color: ThreedShadow;
     border-left: outset 1px #ff9900;
@@ -261,7 +261,7 @@ a.ev_link_weekday:hover  {
     /* color: #FFFFFF; */
 }
 .offtab {
-	font-family : Verdana, Arial, Helvetica, sans-serif;
+	
 	font-size: 10px;
 	background-color: #EEEEEE;
 	border-left: outset 1px #E0E0E0;
@@ -280,7 +280,7 @@ a.ev_link_weekday:hover  {
 	border-left: solid 1px #777777;
 	border-right: solid 1px #777777;
 	/* color: #FFFFFF; */
-	font-family : Verdana, Arial, Helvetica, sans-serif;
+	
 	font-size: 10pt;
 	text-align: left;
 }
@@ -291,7 +291,7 @@ a.ev_link_weekday:hover  {
     border-right: solid 1px #777777;
     border-bottom: solid 1px #777777;
     /* color: #FFFFFF; */
-    font-family : Verdana, Arial, Helvetica, sans-serif;
+    
     font-size: 16pt;
     text-align: left;
 }
@@ -333,21 +333,24 @@ div.ev_adminpanel {
 **********************/
 a.nav_bar_link:link {
     font-size: 10px;
-    font-family: Verdana;
+    
     color: Green;
 }
 a.nav_bar_link:visited  {
     font-size:10px;
-    font-family: Verdana;
+    
     color: Teal;
 }
 a.nav_bar_link:hover  {
     font-size:10px;
-    font-family: Verdana;
+    
     color: Lime;
 }
 .nav_bar_cell  {
     background-color: #ECECEC;
+}
+.nav_bar_cell  form  div {
+	margin-bottom:5px;
 }
 
 /****************************
@@ -800,7 +803,7 @@ div.export_form {
 .cal_div_weeklink a {
     font-size:10px;
     font-weight: bold;
-    font-family: Verdana;
+    
     text-decoration: none;
     color:inherit!important;
 }
@@ -826,7 +829,7 @@ div.export_form {
 
 }
 .cal_daysoutofmonth {
-    font-family:  Arial;
+    
     font-size: 12px;
     font-style: normal;
     line-height: normal;

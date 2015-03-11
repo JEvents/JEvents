@@ -6,7 +6,7 @@
  * @version     $Id: eventsearch.php 3588 2012-05-02 10:40:19Z geraintedwards $
  * @package     Events
  * @subpackage  Mambot Events Calendar
- * @copyright   Copyright (C) 2008-2011 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @copyright   Copyright (C) 2006-2007 JEvents Project Group
  * @copyright   Copyright (C) 2000 - 2003 Eric Lamette, Dave McDonnell
  * @licence     http://www.gnu.org/copyleft/gpl.html
@@ -83,7 +83,7 @@ class plgSearchEventsearch extends JPlugin
 			$this->_plugin =  JPluginHelper::getPlugin('search', 'eventsearch');
 			$this->_params = new JRegistry($this->_plugin->params);
 		}
-
+		$this->loadLanguage( 'plg_search_eventsearch' );
 	}
 
 	/**
@@ -161,7 +161,17 @@ class plgSearchEventsearch extends JPlugin
 		$filterarray = array("published");
 
 		$dataModel = new JEventsDataModel();
-		$catwhere = "\n AND ev.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,$allLanguages) . ")";
+		$compparams = JComponentHelper::getParams("com_jevents");
+		if ($compparams->get("multicategory",0)){
+			$catwhere = "\n AND catmap.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,$allLanguages) . ")";
+			$catjoin = "\n LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$catjoin .= "\n LEFT JOIN #__categories AS b ON catmap.catid = b.id";
+
+		}
+		else {
+			$catwhere = "\n AND ev.catid IN(" . $dataModel->accessibleCategoryList(null,null,null,$allLanguages) . ")";
+			$catjoin =  "\n INNER JOIN #__categories AS b ON b.id = ev.catid";
+		}
 
 		// If there are extra filters from the module then apply them now
 		$reg =  JFactory::getConfig();
@@ -182,6 +192,7 @@ class plgSearchEventsearch extends JPlugin
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
 		$extrasearchfields = array();
+                // NB extrajoin is a string from now on
 		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
 
 		$wheres = array();
@@ -283,8 +294,8 @@ class plgSearchEventsearch extends JPlugin
 				. "\n '2' AS browsernav ,"
 				. "\n rpt.startrepeat, rpt.rp_id "
 				. "\n FROM (#__jevents_vevent as ev)"
-				. "\n INNER JOIN #__categories AS b ON b.id = ev.catid"
 				. "\n LEFT  JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+				. $catjoin
 				. "\n LEFT  JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 				. "\n LEFT  JOIN #__jevents_icsfile as icsf ON icsf.ics_id = ev.icsid"
 				. $extrajoin

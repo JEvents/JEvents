@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.feed.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -100,7 +100,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$info['limit_text']		= $cfg->get( 'com_rss_limit_text', 1 );
 		$info['text_length']	= $cfg->get( 'com_rss_text_length', 20 );
 
-		// include the appropraite VIEW - this should be based on config and/or URL?
+		// include the appropriate VIEW - this should be based on config and/or URL?
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$viewclass = ucfirst($theme)."ModLatestView";

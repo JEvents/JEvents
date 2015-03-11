@@ -5,7 +5,7 @@
  *
  * @version     $Id: router.php 3578 2012-05-01 14:25:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -162,7 +162,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -176,7 +176,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JFilterOutput::stringURLSafe($query['title']);
+						  $segments[] = JApplication::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -208,7 +208,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +253,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -727,7 +727,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JFilterOutput::stringURLSafe($query['title']), 0, 150);
+							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else

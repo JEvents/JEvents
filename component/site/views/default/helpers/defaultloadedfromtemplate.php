@@ -531,7 +531,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$replace[] = "";
 						$blank[] = "";
 					}
-					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)) && !( $mask & MASK_POPUP ))
+					if ((JEVHelper::canEditEvent($event) || JEVHelper::canPublishEvent($event) || JEVHelper::canDeleteEvent($event)) )
 					{
 						ob_start();
 						$view->eventManagementButton($event);
@@ -892,30 +892,38 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
                                         case "{{FIRSTREPEAT}}":
                                         case "{{FIRSTREPEATSTART}}":
-                                           static $dofirstrepeat;
-                                           if (!isset($dofirstrepeat))
-                                           {
-                                              $dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false || strpos($template_value, "{{FIRSTREPEATSTART}}") !== false);
-                                           }
-                                           if ($dofirstrepeat)
-                                           {
-                                              $search[] = "{{FIRSTREPEAT}}";
-                                              $firstrepeat = $event->getFirstRepeat();
-                                              if ($firstrepeat->rp_id() == $event->rp_id())
-                                              {
-                                                 $replace[] = "";
-                                              }
-                                              else
-                                              {
-                                                 $replace[] = "<a class='ev_firstrepeat' href='" . $firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true) . "' title='" . JText::_('JEV_FIRSTREPEAT') . "' >" . JText::_('JEV_FIRSTREPEAT') . "</a>";
-                                              }
-                                              $blank[] = "";
+					static $dofirstrepeat;
+					if (!isset($dofirstrepeat))
+					{
+						$dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false || strpos($template_value, "{{FIRSTREPEATSTART}}") !== false);
+					}
+					if ($dofirstrepeat)
+					{
+						$search[] = "{{FIRSTREPEAT}}";
+						$firstrepeat = $event->getFirstRepeat();
+						if ($firstrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
+						}
+						else
+						{
+							$replace[] = "<a class='ev_firstrepeat' href='" . $firstrepeat->viewDetailLink($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), true) . "' title='" . JText::_('JEV_FIRSTREPEAT') . "' >" . JText::_('JEV_FIRSTREPEAT') . "</a>";
+						}
+						$blank[] = "";
 
-                                              $search[] = "{{FIRSTREPEATSTART}}";
-                                              $replace[] = JEventsHTML::getDateFormat($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), 0);
-                                              $blank[] = "";
-                                           }
-                                           break;
+						$search[] = "{{FIRSTREPEATSTART}}";
+						if ($firstrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
+						}
+						else
+						{
+							$replace[] = JEventsHTML::getDateFormat($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), 0);
+							$rawreplace[] = $firstrepeat->yup() . "-" . $firstrepeat->mup() . "-" . $firstrepeat->dup() . " " . $firstrepeat->hup() . ":" . $firstrepeat->minup() . ":" . $firstrepeat->sup();
+						}
+						$blank[] = "";
+					}
+					break;
 				case "{{LASTREPEAT}}":
 				case "{{LASTREPEATEND}}":
 					static $dolastrepeat;
@@ -938,7 +946,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 
 						$search[] = "{{LASTREPEATEND}}";
-						$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
+						if ($lastrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
+							$rawreplace[] =  $lastrepeat->ydn()."-".$lastrepeat->mdn()."-".$lastrepeat->ddn()." ".$lastrepeat->hdn().":".$lastrepeat->mindn().":".$lastrepeat->sdn();
+						}
+						else {
+							$replace[] = "";
+						}
 						$blank[] = "";
 					}
 					break;
@@ -1134,7 +1149,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Date/time formats etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0  || strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0 || strpos($search[$s], "MULTIENDDATE") > 0)
+			if (strpos($search[$s], "STARTDATE") > 0 || strpos($search[$s], "STARTTIME") > 0 || strpos($search[$s], "ENDDATE") > 0 || strpos($search[$s], "ENDTIME") > 0
+				|| strpos($search[$s], "ENDTZ") > 0 || strpos($search[$s], "STARTTZ") > 0 || strpos($search[$s], "MULTIENDDATE") > 0
+				|| strpos($search[$s], "FIRSTREPEATSTART") > 0 || strpos($search[$s], "LASTREPEATEND") > 0)
 			{
 				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;

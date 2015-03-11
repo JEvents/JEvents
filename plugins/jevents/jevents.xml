@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /**
- * @copyright	Copyright (c) 2014 jevents. All rights reserved.
+ * @copyright	Copyright (c) 2014-2015 GWE Systems Ltd. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 -->
 <extension type="plugin" version="2.5" group="content" method="upgrade">
 	<name>JEvents - Core Content Plugin</name>
 	<author>Tony Partridge</author>
-	<creationDate>September 2014</creationDate>
-	<copyright>(C) 2012-2014 GWE Systems Ltd</copyright>
+	<creationDate>January 2015</creationDate>
+	<copyright>(C) 2012-2015 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>
 	<packagerurl>http://www.jevents.net</packagerurl>
 	<description>JEvents Plugin - Events, Meetings, Calendars and More</description>
-	<version>3.2.1</version>
+	<version>3.2.3</version>
 	<description>
 	<![CDATA[
 		This is a JEvents Core plugin.

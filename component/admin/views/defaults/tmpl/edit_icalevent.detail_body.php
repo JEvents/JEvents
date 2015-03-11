@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_icalevent.detail_body.php 3333 2012-03-12 09:36:35Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -44,7 +44,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEX
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_FIRSTREPEAT",true);?>", "FIRSTREPEAT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LASTREPEAT",true);?>", "LASTREPEAT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_FIRSTREPEATSTART",true);?>", "FIRSTREPEATSTART");
-defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LASTREPEATENDß",true);?>", "LASTREPEATEND");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LASTREPEATEND",true);?>", "LASTREPEATEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXTEVENT",true);?>", "PREVIOUSNEXTEVENT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");

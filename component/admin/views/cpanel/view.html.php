@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -32,7 +32,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-		// Set toolbar items for the page
+        // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
@@ -65,7 +65,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
 		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" ';
 		// extend this list !!!
-		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
+		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevrsvp','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
 		$sql = 'SELECT element,extension_id FROM #__extensions  where  (
 		'.$installed.'
 		)';
@@ -94,8 +94,12 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app->registeredurlparams = new stdClass();
 		}
 
-		$cache->get($this, 'renderJEventsNewsCached');
-
+		if (!JevJoomlaVersion::isCompatible("3.0")) {
+			$cache->get($this, 'renderJEventsNewsCached25');
+		}
+		else {
+			$cache->get($this, 'renderJEventsNewsCached');
+		}
 	}
 
 	function renderJEventsNewsCached()
@@ -104,8 +108,81 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$output = '';
 
 		//  get RSS parsed object
+
+		try
+		{
+			$feed = new JFeedFactory;
+			$rssDoc = $feed->getFeed('https://www.jevents.net/jevnews?format=feed&type=rss');
+		}
+		catch (InvalidArgumentException $e)
+		{
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+		}
+		catch (RunTimeException $e)
+		{
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+		}
+		catch (LogicException $e)
+		{
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+		}
+
+		if (empty($rssDoc))
+		{
+			return JText::_('MOD_FEED_ERR_FEED_NOT_RETRIEVED');
+		}
+		else
+		{
+// channel header and link
+			$title = str_replace(" ", "_", $rssDoc->title);
+			$link = $rssDoc->uri;
+
+			$output = '<table class="adminlist   table table-striped">';
+			$output .= '<tr><th><a href="' . $link . '" target="_blank">' . JText::_($title) . '</th></tr>';
+
+			$items = $rssDoc;
+			$numItems = 3;
+			if ($numItems == 0)
+			{
+				$output .= '<tr><th>' . JText::_('JEV_No_news') . '</th></tr>';
+			}
+			else
+			{
+				$k = 0;
+				for ($j = 0; $j < $numItems; $j++)
+				{
+					if (!isset($items[$j])) {
+						break;
+					}
+					$item = @$items[$j];
+					$output .= '<tr><td class="row' . $k . '">';
+					$output .= '<a href="' . $item->uri . '" target="_blank">' . $item->title . '</a>';
+					if ($item->content)
+					{
+						$description = $this->limitText($item->content, 50);
+						$output .= '<br />' . $description;
+					}
+					$output .= '</td></tr>';
+					$k = 1 - $k;
+				}
+			}
+
+			$output .= '</table>';
+		}
+		// do not return the output because of differences between J15 and J17
+		echo $output;
+
+	}
+
+
+	function renderJEventsNewsCached25()
+	{
+
+		$output = '';
+
+		//  get RSS parsed object
 		$options = array();
-		$options['rssUrl'] = 'http://www.jevents.net/jevnews?format=feed&type=rss';
+		$options['rssUrl'] = 'https://www.jevents.net/jevnews?format=feed&type=rss';
 		$options['cache_time'] = 0;
 
 		error_reporting(0);
@@ -170,11 +247,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			// point Joomla 2.5+ users towards the new versions of everything
 			if (JevJoomlaVersion::isCompatible("2.5"))
 			{
-				$rssUrl = 'http://www.jevents.net/versions30.xml';
+				$rssUrl = 'https://www.jevents.net/versions30.xml';
 			}
 			else
 			{
-				$rssUrl = 'http://www.jevents.net/versions.xml';
+				$rssUrl = 'https://www.jevents.net/versions.xml';
 			}
 			$cache_time = 86400;
 
@@ -530,6 +607,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"layout_extplus" => 3,
 			"layout_iconic" => 3,
 			"layout_ruthin" => 3,
+			"layout_flatplus" => 3,
 			"layout_smartphone" => 3,
 			"layout_map" => 3,
 			"plugin_acymailing_tagjevents" => 41,
@@ -605,7 +683,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			{
 				$row->criticalversion = $criticals[$appname];
 			}
-			$row->link = array_key_exists($appname, $catmapping) ? "http://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
+			$row->link = array_key_exists($appname, $catmapping) ? "https://www.jevents.net/downloads/category/" . $catmapping[$appname] : "";
 			if ($row->link == "")
 				continue;
 			$output .= "<item>\n<title>$appname</title>\n<description><![CDATA[" . json_encode($row) . "]]></description>\n</item>\n";
@@ -834,7 +912,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
-		JEventsHelper::addSubmenu();
+        JToolBarHelper::apply('cpanel.custom_css');
+        JToolBarHelper::cancel('cpanel.cpanel');
+
+     //   jimport('joomla.form.form');
+
+
+        JEventsHelper::addSubmenu();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -899,6 +983,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			// Silver - layouts
 			array("element"=>"extplus","name"=>"extplus","type"=>"file"),
 			array("element"=>"ruthin","name"=>"ruthin","type"=>"file"),
+			array("element"=>"flatplus","name"=>"flatplus","type"=>"file"),
 			array("element"=>"iconic","name"=>"iconic","type"=>"file"),
 			array("element"=>"map","name"=>"map","type"=>"file"),
 			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
@@ -1106,7 +1191,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
+			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
 			$db->query();
 			echo $db->getErrorMsg();
 		}
@@ -1115,7 +1200,19 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($extension->folder){
 				$extensionname = "plg_".$extension->folder."_".$extensionname;
 			}
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("http://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
+
+			// Check data integrity and clean up if necessary
+			$db->setQuery("SELECT count(update_site_id) FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id");
+			if ($db->loadResult()>0){
+
+				$db->setQuery("DELETE FROM #__update_sites  WHERE update_site_id in (SELECT update_site_id FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id )");
+				$db->query();
+
+				$db->setQuery("DELETE FROM #__update_sites_extensions  WHERE extension_id = $pkgupdate->extension_id ");
+				$db->query();
+			}
+
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->query();
 			echo $db->getErrorMsg();
 			$id = $db->insertid();

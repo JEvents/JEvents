@@ -5,7 +5,7 @@
  *
  * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -110,7 +110,7 @@ class JEventsDBModel
 				$isedit = true;
 			}
 
-			$query = "SELECT c.id"
+			/*$query = "SELECT c.id"
 				. "\n FROM #__categories AS c"
 				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 				. $q_published
@@ -120,9 +120,9 @@ class JEventsDBModel
 				. "\n " . $where
 				. "\n ORDER BY c.lft asc"  ;
 
-			$db->setQuery($query);
+			$db->setQuery($query);*/
 			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
-			/*
+
 			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
 					. $q_published
 					// language filter only applies when not editing
@@ -135,7 +135,9 @@ class JEventsDBModel
 			->from('#__categories AS c')
 			->where($whereQuery)
 			->order('c.lft asc');
-			 */
+
+			$db->setQuery($query);
+
 			$catlist = $db->loadColumn();
 
 			$instances[$index] = implode(',', array_merge(array(-1), $catlist));
@@ -394,15 +396,23 @@ class JEventsDBModel
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		// make sure we have the first repeat in each instance
-		foreach ($rows as &$row){
+		// do not use foreach incase time limit plugin removes one of the repeats
+		for ($i=0;$i<count($rows); $i++) {
+			$row = $rows[$i];
 			if (strtolower($row->freq())!="none" && $noRepeats){
 				$repeat = $row->getFirstRepeat();
 				if ($repeat->rp_id() != $row->rp_id()){
 					$row = $this->listEventsById($repeat->rp_id());
+					if (is_null($row)){
+						unset($rows[$i]);
+					}
+					else {
+						$rows[$i] = $row;
+					}
 				}
 			}
 		}
-		unset($row);
+		$rows = array_values($rows);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
@@ -3541,6 +3551,7 @@ class JEventsDBModel
 
 	}
 
+	// NB $order is no longer used
 	function listEventsByKeyword($keyword, $order, &$limit, &$limitstart, &$total, $useRegX = false)
 	{
 		$user = JFactory::getUser();
@@ -3577,23 +3588,6 @@ class JEventsDBModel
 			$datenow = JevDate::getDate("-12 hours");
 			$having = " AND rpt.endrepeat>'" . $datenow->toSql() . "'";
 		}
-
-		if (!$order)
-		{
-			$order = 'publish_up asc, rpt.endrepeat asc ';
-		}
-
-		$order = preg_replace("/[\t ]+/", '', $order);
-		$orders = explode(",", $order);
-
-		// this function adds #__events. to the beginning of each ordering field
-		function app_db($strng)
-		{
-			return '#__events.' . $strng;
-
-		}
-
-		$order = implode(',', array_map('app_db', $orders));
 
 		$total = 0;
 
@@ -3636,9 +3630,11 @@ class JEventsDBModel
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
-
+                
+                // NB extrajoin is a string from now on
 		$extrasearchfields = array();
 		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
+
 
 		if (count($extrasearchfields) > 0)
 		{

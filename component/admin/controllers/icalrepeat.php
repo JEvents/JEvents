@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalrepeat.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd,2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd,2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -135,6 +135,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
+ 
+                // Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
 
 		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid', array(0));
@@ -257,18 +264,43 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 		else
 		{
+			$popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+			if ($popupdetail) {
+				$pluginparams = new JRegistry($popupdetail->params);
+				$popupdetail = $pluginparams->get("detailinpopup",1);
+				if ($popupdetail) {
+					$popupdetail = "&pop=1&tmpl=component";
+				}
+				else {
+					$popupdetail = "";
+				}
+			}
+			else {
+				$popupdetail = "";
+			}
+                    
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))
 			{
-				ob_end_clean();
-				?>
-				<script type="text/javascript">
-					window.parent.alert("<?php echo $msg; ?>");
-					window.parent.location="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", false); ?>";
-				</script>
-				<?php
-				exit();
+                            $link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
+                            $msg = JText::_("JEV_ICAL_RPT_UPDATED",true );    
+                            if ($popupdetail!=""){
+                                    // redirect to event detail page within popup window
+                                    $this->setRedirect($link, $msg);
+                                    return;
+                            }
+                            else {
+                                ob_end_clean();
+                                ?>
+                                <script type="text/javascript">
+                                        //window.parent.SqueezeBox.close();
+                                        window.parent.alert("<?php echo $msg; ?>");
+                                        window.parent.location="<?php echo $link; ?>";
+                                </script>
+                                <?php
+                                exit();
+                            }
 			}
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 		}

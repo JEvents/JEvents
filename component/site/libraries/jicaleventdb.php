@@ -4,7 +4,7 @@
  *
  * @version     $Id: jicaleventdb.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -549,20 +549,20 @@ class jIcalEventDB extends jEventCal {
 		// if starttime and end time the same then show no times!
 		else if( $this->start_date == $this->stop_date ){
 			if ($this->noendtime()){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time . '<br/>';
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time . '<br/>';
 			}
 			else if (($this->start_time != $this->stop_time) && !($this->alldayevent())){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time
 				. '&nbsp;-&nbsp;' . $this->stop_time_midnightFix . '<br/>';
 			} else if (($this->start_time == $this->stop_time) && !($this->alldayevent())){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time. '<br/>';
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time. '<br/>';
 			} else {
 				$sum.= $this->start_date . '<br/>';
 			}
 		} else {
 			// recurring events should have time related to recurrance not range of dates
 			if ($this->noendtime() && !($this->reccurtype() > 0)){
-				$sum.= $this->start_date . ',&nbsp;' . $this->start_time . '<br/>'
+				$sum.= $this->start_date . '&nbsp;' . $this->start_time . '<br/>'
 				. JText::_('JEV_TO') . '&nbsp;' . $this->stop_date . '<br/>';
 			}
 			else if ($this->start_time != $this->stop_time && !($this->reccurtype() > 0)) {
@@ -739,9 +739,17 @@ class jIcalEventDB extends jEventCal {
 		$extrafields = "";  // must have comma prefix
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
-		$extrajoin = array();
+		$extrajoin =array();
 		$dispatcher	= JDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
+
+		$params = JComponentHelper::getParams("com_jevents");
+		if ($params->get("multicategory", 0))
+		{
+			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+		}
+		
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 

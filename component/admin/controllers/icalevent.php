@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalevent.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -27,6 +27,8 @@ class AdminIcaleventController extends JControllerAdmin
 	 */
 	function __construct($config = array())
 	{
+		$config["name"]="icalevent";
+		//$config["default_view"]="AdminIcalevent";
 		parent::__construct($config);
 		$this->registerTask('list', 'overview');
 		$this->registerTask('unpublish', 'unpublish');
@@ -50,7 +52,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function overview()
 	{
 		// get the view
-		$this->view = $this->getView("icalevent", "html");
+		$this->view = $this->getView("icalevent", "html","AdminIcaleventView");
 
 		$this->_checkValidCategories();
 
@@ -415,7 +417,19 @@ class AdminIcaleventController extends JControllerAdmin
 	function edit($key = NULL, $urlVar = NULL)
 	{
 		// get the view
-		$this->view = $this->getView("icalevent", "html");
+		if (JFactory::getApplication()->isAdmin()){
+			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
+		}
+		else {
+			$this->view = $this->getView("icalevent", "html");
+		}
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
 
 		$cid = JRequest::getVar('cid', array(0));
 		JArrayHelper::toInteger($cid);
@@ -635,6 +649,21 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else
 		{
+			$popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+			if ($popupdetail) {
+				$pluginparams = new JRegistry($popupdetail->params);
+				$popupdetail = $pluginparams->get("detailinpopup",1);
+				if ($popupdetail) {
+					$popupdetail = "&pop=1&tmpl=component";
+				}
+				else {
+					$popupdetail = "";
+				}
+			}
+			else {
+				$popupdetail = "";
+			}
+
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 
@@ -658,7 +687,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($params->get("editpopup", 0))
 			{
 				ob_end_clean();
-				if (!headers_sent())
+				if (!headers_sent() && $popupdetail=="")
 				{
 					header('Content-Type:text/html;charset=utf-8');
 				}
@@ -672,17 +701,23 @@ class AdminIcaleventController extends JControllerAdmin
 				}
 				if ($event && $event->state())
 				{
-					$link = $event->viewDetailLink($year, $month, $day, true , $Itemid);
+					$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1$popupdetail");
 				}
 				else
 				{
 					if (JFactory::getUser()->id>0){
-						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1");
+						$link = JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1$popupdetail");
 					}
 					else {
-						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false);
+						$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid$popupdetail", false);
 					}
 				}
+				if ($popupdetail!=""){
+					// redirect to event detail page within popup window
+					$this->setRedirect($link, $msg);
+					return;
+				}
+				else {
 				?>
 				<script type="text/javascript">
 					window.parent.alert("<?php echo $msg; ?>");
@@ -690,6 +725,7 @@ class AdminIcaleventController extends JControllerAdmin
 				</script>
 				<?php
 				exit();
+				}
 			}
 
 			// if the event is published then return to the event
@@ -1036,7 +1072,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$rettask = JRequest::getString("rettask", "day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent  : New published state Saved");
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_DELETE_STATE_SAVED'));
 		}
 
 	}
@@ -1102,7 +1138,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', "IcalEvent  : New published state Saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 		}
 		else
 		{
@@ -1111,7 +1147,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$rettask = JRequest::getString("rettask", "day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent  : New published state Saved");
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 		}
 
 	}

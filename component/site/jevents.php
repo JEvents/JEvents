@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevents.php 3551 2012-04-20 09:41:37Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,8 +36,9 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
 	JHtml::_('behavior.framework', true);
 	JHtml::_('bootstrap.framework');
+        // jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
+        JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}
@@ -47,9 +48,9 @@ else {
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
 	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
 	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-	JHtml::script("com_jevents/bootstrap.js", false, true);
+	 JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		JHTML::script("components/com_jevents/assets/js/jQnc.js");
+		JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}

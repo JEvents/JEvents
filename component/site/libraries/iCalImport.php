@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalImport.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -193,6 +193,9 @@ class iCalImport
 		$skipuntil = null;
 		foreach ($this->rawData as $vcLine) {
 			//$vcLine = trim($vcLine); // trim one line
+			if (empty($vcLine)){
+				continue;
+			}
 			if (!empty($vcLine))
 			{
 				// skip unhandled block
@@ -358,7 +361,7 @@ class iCalImport
 				// convert URLs to links but NOT in uid field!!
 				//$value = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]","<a href=\"\\0\">\\0</a>", $value);
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
-				if (is_string($value) && $key!="UID"){
+				if (is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
 					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false){
 						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\-.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $value);
 					}

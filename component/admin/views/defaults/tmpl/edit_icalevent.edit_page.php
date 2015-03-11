@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_icalevent.edit_page.php 2091 2011-05-16 09:12:40Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -50,6 +50,15 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO_LABEL",true);?>", "EXTRAINFO_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS",true);?>", "CUSTOMFIELDS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CALTAB",true);?>", "CALTAB");
+<?php
+$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+if ($jevparams->get("showpriority", 0)){
+	?>
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
+	<?php
+}
+?>
 //
 Joomla.submitbutton = function (pressbutton){
 

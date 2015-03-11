@@ -5,17 +5,18 @@
  *
  * @version     $Id: modlatest.php 1142 2010-09-08 10:10:52Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
-ob_end_clean();
+@ob_end_clean();
+@ob_end_clean();
 
 // Define the file as an iCalendar file
-header('Content-Type: application/octet-stream; charset=UTF-8');
+header('Content-Type: text/calendar; charset=UTF-8');
 // Give the file a name and force download
 header('Content-Disposition: attachment; filename=calendar.ics');
 
@@ -350,7 +351,7 @@ if (!empty($this->icalEvents))
 				if ($a->hasExtraInfo())
 					$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\r\n";
 
-				$exception = $changedexceptions[$rpid];
+				$exception = $changedexceptions[$a->rp_id()];
 				$originalstart = JevDate::strtotime($exception->oldstartrepeat);
 				$chstart = $a->getUnixStartTime();
 				$chend = $a->getUnixEndTime();

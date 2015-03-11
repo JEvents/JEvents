@@ -64,7 +64,7 @@ abstract class JevHtmlFormbehavior
 		// Options array to json options string
 		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));
 
-		JHTML::script("components/com_jevents/assets/js/chosen.jquery.js");
+		JEVHelper::script("components/com_jevents/assets/js/chosen.jquery.js");
 		JHTML::stylesheet("components/com_jevents/assets/css/chosen.css");
 
 		//JHtml::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);

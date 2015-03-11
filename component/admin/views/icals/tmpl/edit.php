@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -259,7 +259,7 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
         echo JHtml::_('bootstrap.endPane', 'myicalTabs');
         ?>
         <input type="hidden" name="icsid" id="icsid"  <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
-
+	<?php echo JHtml::_('form.token'); ?>
         <input type="hidden" name="boxchecked" value="0" />
         <input type="hidden" name="task" value="icals.edit" />
         <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />

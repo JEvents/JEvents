@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2009 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,6 +17,7 @@ define("EDITING_JEVENT", 1);
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
+$assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
 JHtml::_('behavior.framework', true);
@@ -104,6 +105,20 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			?>
 			<div id='jevoverlapwarning'>
 				<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
+				<?php
+				// event deletors get the right to override this
+				if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
+					?>
+				<div>
+					<strong>
+						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+							<input type="checkbox" checked="false" name="overlapoverride" value="1" />
+						</label>
+					</strong>
+				</div>
+					<?php
+				}
+				?>
 				<div id="jevoverlaps"></div>
 			</div>
 			<?php
@@ -296,6 +311,11 @@ else
 								<?php
 							}
 						}
+					}
+					if ($assoc){
+						?>
+						<li ><a data-toggle="tab" href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a></li>
+						<?php
 					}
 					?>
 				</ul>
@@ -514,8 +534,15 @@ else
 				}
 			}
 
+
 			if (!$cfg->get('com_single_pane_edit', 0))
 			{
+				echo JHtml::_('bootstrap.endPanel');
+				if ($assoc){
+					echo JHtml::_('bootstrap.addPanel', "myEditTabs", "associations");
+					echo $this->loadTemplate('associations');
+				}
+
 				echo JHtml::_('bootstrap.endPanel');
 				echo JHtml::_('bootstrap.endPane', 'myEditTabs');
 			}
