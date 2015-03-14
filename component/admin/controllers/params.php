@@ -204,7 +204,8 @@ class AdminParamsController extends JControllerAdmin
 //               var_dump($jevcomp);exit();
                 
 		// Clear cache of com_config component.
-		$this->cleanCache('_system');
+		$this->cleanCache('_system', 1); // admin
+		$this->cleanCache('_system', 0); // site
 
 		// If caching is enabled then remove the component params from the cache!
 		// Bug fixed in Joomla 3.2.1 ??
@@ -213,7 +214,7 @@ class AdminParamsController extends JControllerAdmin
 			$cacheController = JFactory::getCache('_system', 'callback');
 			$cacheController->cache->remove("com_jevents");
 		}
-
+		
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -224,99 +225,6 @@ class AdminParamsController extends JControllerAdmin
 				break;
 		}
 		//$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'CONFIG_SAVED' ) );
-		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
-		//$this->edit();
-
-	}
-
-	/**
-	 * Apply the configuration
-	 */
-	function apply()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$component = JEV_COM_COMPONENT;
-
-		$model = $this->getModel('params');
-		$table =  JTable::getInstance('extension');
-		//if (!$table->loadByOption( $component ))
-		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
-		{
-			JError::raiseWarning(500, 'Not a valid component');
-			return false;
-		}
-		
-
-		$post = JRequest::get('post');
-		$post['option'] = $component;
-		$table->bind($post);
-
-		// pre-save checks
-		if (!$table->check())
-		{
-			JError::raiseWarning(500, $table->getError());
-			return false;
-		}
-
-		// save the changes
-		if (!$table->store())
-		{
-			JError::raiseWarning(500, $table->getError());
-			return false;
-		}
-
-		// Now save the form permissions data
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
-		$option = JEV_COM_COMPONENT;
-		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-		$id = $comp->id;
-		// Validate the posted data.
-		JForm::addFormPath(JPATH_COMPONENT);
-		JForm::addFieldPath(JPATH_COMPONENT . '/elements');
-		$form = $model->getForm();
-		$return = $model->validate($form, $data);
-
-		// Check for validation errors.
-		if ($return === false)
-		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
-
-			$app = JFactory::getApplication();
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
-			{
-				if (JError::isError($errors[$i]))
-				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
-				}
-				else
-				{
-					$app->enqueueMessage($errors[$i], 'notice');
-				}
-			}
-
-			// Save the data in the session.
-			$app->setUserState('com_config.config.global.data', $data);
-			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
-			return false;
-		}
-
-		// Attempt to save the configuration.
-		$data = array(
-			'params' => $return,
-			'id' => $id,
-			'option' => $option
-		);
-		$return = $model->saveRules($data);
-		
-		// Clear cache of com_config component.
-		$this->cleanCache('_system');
-				
-		$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=params.edit", JText::_('CONFIG_SAVED'));
 		//$this->setMessage(JText::_( 'CONFIG_SAVED' ));
 		//$this->edit();
 

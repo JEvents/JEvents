@@ -946,7 +946,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$blank[] = "";
 
 						$search[] = "{{LASTREPEATEND}}";
-						if ($lastrepeat->rp_id() == $event->rp_id())
+						if ($lastrepeat->rp_id() != $event->rp_id())
 						{
 							$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
 							$rawreplace[] =  $lastrepeat->ydn()."-".$lastrepeat->mdn()."-".$lastrepeat->ddn()." ".$lastrepeat->hdn().":".$lastrepeat->mindn().":".$lastrepeat->sdn();
