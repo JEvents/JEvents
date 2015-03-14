@@ -126,7 +126,7 @@ class JFormFieldJevfilters extends JFormFieldText
         JHtmlBehavior::framework();
         JHtmlBehavior::framework(true);
 
-		JHTML::script('modules/mod_jevents_filter/fields/filterSelect.js' );
+		JEVHelper::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		
 		// Initialize some field attributes.
 		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
