@@ -982,6 +982,16 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"map","name"=>"map","type"=>"file"),
 			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
 			array("element"=>"zim","name"=>"zim","type"=>"file"),
+
+			// These have been renamed in the XML file - need to be careful doing that!!!
+			array("element"=>"JEventsExtplusLayout","name"=>"extplus","type"=>"file"),
+			array("element"=>"JEventsRuthinLayout","name"=>"ruthin","type"=>"file"),
+			array("element"=>"JEventsFltplusLayout","name"=>"flatplus","type"=>"file"),
+			array("element"=>"JEventsIconicLayout","name"=>"iconic","type"=>"file"),
+			array("element"=>"JEventsMapLayout","name"=>"map","type"=>"file"),
+			array("element"=>"JEventsSmartphoneLayout","name"=>"smartphone","type"=>"file"),
+			array("element"=>"JEventsZimLayout","name"=>"zim","type"=>"file"),
+
 			// Silver - Jevents Categories
 			array("element"=>"mod_jevents_categories","name"=>"mod_jevents_categories","type"=>"module"),
 			// Silver - Newsletters - some TODO
