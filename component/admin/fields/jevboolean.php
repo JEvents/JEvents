@@ -101,8 +101,10 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 	 *
 	 * @since   11.1
 	 */
+	/*
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		return parent::setup($element, $value, $group);
 	}
+	 */
 }
