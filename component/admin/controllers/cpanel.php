@@ -114,10 +114,12 @@ class AdminCpanelController extends JControllerAdmin
 			JError::raiseWarning("100", JText::_('CALENDARS_NOT_SETUP_PROPERLY'));
 		}
 
-		if (JEVHelper::isAdminUser())
+		/*
+		 * We disable this check as in Joomla 3.4 they changed the way packages names are stored in DB and it's no longer necessary.
+		 if (JEVHelper::isAdminUser())
 		{
 			$this->checkLanguagePackages();
-		}
+		}*/
 
 		// Check for orphan events and correct this
 		$this->fixOrphanEvents();
