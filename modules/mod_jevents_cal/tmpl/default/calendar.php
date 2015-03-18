@@ -78,7 +78,7 @@ class DefaultModCalView
 		$jevents_config		= JEVConfig::getInstance();
 
 		$this->modparams	= & $params;
-		$this->aid			= $user->aid;
+		$this->aid			= isset($user->aid) ? $user->aid : 0;
 		$tmplang			= JFactory::getLanguage();
 
 		// get params exclusive to module

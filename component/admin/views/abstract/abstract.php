@@ -37,10 +37,10 @@ class JEventsAbstractView extends JViewLegacy
 
 			$app = JFactory::getApplication();
 			// Get current template style ID
-			$page_template_id = $app->isAdmin() ? 0 : $app->getMenu()->getActive()->template_style_id;
+			$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
 
 			// Check it's a valid style with simple check
-			if (! ($page_template_id == "" || $page_template_id == "0")) {
+			if (!($page_template_id == "" || $page_template_id == "0")) {
 				// Load the valid style:
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
