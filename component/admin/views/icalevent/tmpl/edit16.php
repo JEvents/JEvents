@@ -71,6 +71,20 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			?>
 			<div id='jevoverlapwarning'>
 				<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
+				<?php
+				// event deletors get the right to override this
+				if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
+					?>
+				<div>
+					<strong>
+						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+							<input type="checkbox"  name="overlapoverride" value="1" />
+						</label>
+					</strong>
+				</div>
+					<?php
+				}
+				?>
 				<div id="jevoverlaps"></div>
 			</div>
 			<?php

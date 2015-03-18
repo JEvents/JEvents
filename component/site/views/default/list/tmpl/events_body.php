@@ -6,7 +6,7 @@ if (JevJoomlaVersion::isCompatible("3.0"))
 	JHtml::_('jquery.framework');
 	JHtml::_('behavior.framework', true);
 	JHtml::_('bootstrap.framework');
-	JHTML::script("components/com_jevents/assets/js/jQnc.js");
+	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
@@ -14,8 +14,8 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 {
 	// Make loading this conditional on config option
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	JHTML::script("components/com_jevents/assets/js/jQnc.js");
-	JHTML::script("components/com_jevents/assets/js/bootstrap.min.js");
+	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+	JEVHelper::script("components/com_jevents/assets/js/bootstrap.min.js");
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
@@ -23,9 +23,9 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 JHTML::stylesheet("components/com_jevents/assets/css/jquery.resizableColumns.css");
-JHTML::script("components/com_jevents/assets/js/store.min.js");
-//JHTML::script("components/com_jevents/assets/js/jquery.resizableColumns.min.js");
-JHTML::script("components/com_jevents/assets/js/jquery.resizableColumns.js");
+JEVHelper::script("components/com_jevents/assets/js/store.min.js");
+//JEVHelper::script("components/com_jevents/assets/js/jquery.resizableColumns.min.js");
+JEVHelper::script("components/com_jevents/assets/js/jquery.resizableColumns.js");
 
 $data = $this->data;
 

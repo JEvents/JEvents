@@ -35,40 +35,44 @@ class DefaultViewNavTableBar
 							<input type="hidden" name="year" value="<?php echo $year; ?>" />
 							<input type="hidden" name="month" value="<?php echo $month; ?>" />
 							<input type="hidden" name="day" value="<?php echo $day; ?>" />
-							<select name="task" id="task" onchange="submit(this.form);">
+                            <?php
+                            $jinput = JFactory::getApplication()->input;
+                            $v = $jinput->get('task', 'none');
+?>
+                            <select name="task" id="task" onchange="submit(this.form);">
 								<?php if (in_array("byday", $iconstoshow))
 								{ ?>
-									<option value="day.listevents"><?php echo JText::_('JEV_VIEWBYDAY'); ?></option>
+									<option value="day.listevents" <?php if ($v == "day.listevents") { echo "selected";}?>><?php echo JText::_('JEV_VIEWBYDAY'); ?></option>
 									<?php
 								}
 								if (in_array("byweek", $iconstoshow))
 								{
 									?>
-									<option value="week.listevents"><?php echo JText::_('JEV_VIEWBYWEEK'); ?></option>
+									<option value="week.listevents"<?php if ($v == "week.listevents") { echo "selected";}?>><?php echo JText::_('JEV_VIEWBYWEEK'); ?></option>
 									<?php
 								}
 								if (in_array("bymonth", $iconstoshow))
 								{
 									?>
-									<option value="month.calendar"><?php echo JText::_('JEV_VIEWBYMONTH'); ?></option>
+									<option value="month.calendar"<?php if ($v == "month.calendar") { echo "selected";}?>><?php echo JText::_('JEV_VIEWBYMONTH'); ?></option>
 									<?php
 								}
 								if (in_array("byyear", $iconstoshow))
 								{
 									?>
-									<option value="year.listevents"><?php echo JText::_('JEV_VIEWBYYEAR'); ?></option>
+									<option value="year.listevents"<?php if ($v == "year.listevents") { echo "selected";}?>><?php echo JText::_('JEV_VIEWBYYEAR'); ?></option>
 									<?php
 								}
 								if (in_array("search", $iconstoshow))
 								{
 									?>
-									<option value="search.form"><?php echo JText::_('JEV_SEARCH_TITLE'); ?></option>
+									<option value="search.form"<?php if ($v == "search.form") { echo "selected";}?>><?php echo JText::_('JEV_SEARCH_TITLE'); ?></option>
 									<?php
 								}
 								if (in_array("bycat", $iconstoshow))
 								{
 									?>
-									<option value="cat.listevents"><?php echo JText::_('JEV_VIEWBYCAT'); ?></option>
+									<option value="cat.listevents"<?php if ($v == "cat.listevents") { echo "selected";}?>><?php echo JText::_('JEV_VIEWBYCAT'); ?></option>
 									<?php
 								}
 								?>

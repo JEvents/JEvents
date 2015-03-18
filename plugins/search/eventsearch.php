@@ -192,6 +192,7 @@ class plgSearchEventsearch extends JPlugin
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
 		$extrasearchfields = array();
+                // NB extrajoin is a string from now on
 		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
 
 		$wheres = array();

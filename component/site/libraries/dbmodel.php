@@ -3551,6 +3551,7 @@ class JEventsDBModel
 
 	}
 
+	// NB $order is no longer used
 	function listEventsByKeyword($keyword, $order, &$limit, &$limitstart, &$total, $useRegX = false)
 	{
 		$user = JFactory::getUser();
@@ -3587,23 +3588,6 @@ class JEventsDBModel
 			$datenow = JevDate::getDate("-12 hours");
 			$having = " AND rpt.endrepeat>'" . $datenow->toSql() . "'";
 		}
-
-		if (!$order)
-		{
-			$order = 'publish_up asc, rpt.endrepeat asc ';
-		}
-
-		$order = preg_replace("/[\t ]+/", '', $order);
-		$orders = explode(",", $order);
-
-		// this function adds #__events. to the beginning of each ordering field
-		function app_db($strng)
-		{
-			return '#__events.' . $strng;
-
-		}
-
-		$order = implode(',', array_map('app_db', $orders));
 
 		$total = 0;
 
@@ -3644,11 +3628,13 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
-        $extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
-        $extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
-
+		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
+		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
+                
+                // NB extrajoin is a string from now on
 		$extrasearchfields = array();
 		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
+
 
 		if (count($extrasearchfields) > 0)
 		{

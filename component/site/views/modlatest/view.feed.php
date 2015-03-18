@@ -100,7 +100,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$info['limit_text']		= $cfg->get( 'com_rss_limit_text', 1 );
 		$info['text_length']	= $cfg->get( 'com_rss_text_length', 20 );
 
-		// include the appropraite VIEW - this should be based on config and/or URL?
+		// include the appropriate VIEW - this should be based on config and/or URL?
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$viewclass = ucfirst($theme)."ModLatestView";
