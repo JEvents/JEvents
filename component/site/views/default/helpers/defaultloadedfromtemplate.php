@@ -1248,7 +1248,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = str_replace("@£@", "@", $template_value);
 
 		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
-		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*?\s*>)+?@i","$1\n",$template_value);
+		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)\s*>)+?@i","$1\n",$template_value);
 		echo $template_value;
 		return true;
 
