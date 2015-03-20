@@ -56,7 +56,9 @@ class JEventsAbstractView extends JViewLegacy
 			}
 
 			$theme = JEV_CommonFunctions::getJEventsViewName();
-			$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $this->getName());
+			$name = $this->getName();
+			$name = str_replace($theme."/", "", $name);
+			$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $name);
 
 			// or could have used 
 			//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
