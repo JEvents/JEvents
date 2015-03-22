@@ -15,22 +15,15 @@ if (JRequest::getVar('save')) {
     customCssSave();
 }
 ?>
+<?php if (!empty($this->sidebar)) : ?>
+<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+</div>
+ <?php endif; ?>
 <div id="jevents">
     <?php
-    if (isset($this->warning)) {
-        ?>
-        <dl id="system-message">
-            <dt class="notice">Message</dt>
-            <dd class="notice fade">
-                <ul>
-                    <li><?php echo $this->warning; ?></li>
-                </ul>
-            </dd>
-        </dl>
-    <?php
-    }
 
-    $file = 'jevcustom.css';
+	$file = 'jevcustom.css';
     $srcfile = 'jevcustom.css.new';
     $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
     $srcfilepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
@@ -44,19 +37,14 @@ if (JRequest::getVar('save')) {
 
     $content = JFile::read($filepath);
     $btnclass = JevJoomlaVersion::isCompatible("3.0") ? "btn btn-success" : "";
-    ?>
+    $mainspan = 10;
+    $fullspan = 12;
 
+    ?>
     <form action="index.php?option=com_jevents" method="post"
           name="admin" id="adminForm">
         <?php echo JHtml::_( 'form.token' ); ?>
-        <?php if (!empty($this->sidebar)) : ?>
-        <div id="j-sidebar-container" class="span2">
-            <?php echo $this->sidebar; ?>
-        </div>
-        <div id="j-main-container" class="span10">
-            <?php else : ?>
-            <div id="j-main-container">
-                <?php endif; ?>
+        <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
                 <textarea style="width:60%;height:550px;" name="content"><?php echo $content; ?></textarea>
                 <input type="hidden" name="controller" value="component" />
                 <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />

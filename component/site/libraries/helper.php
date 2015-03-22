@@ -2034,16 +2034,6 @@ class JEVHelper
 			{
 				$file = $jqfile;
 			}
-			else
-			{
-				// Include mootools framework
-				JHtml::_('behavior.framework', true);
-			}
-		}
-		else
-		{
-			// Include mootools framework
-			JHtml::_('behavior.framework', true);
 		}
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
@@ -3489,34 +3479,18 @@ SCRIPT;
 	}
 
 	/**
-	 * Add unobtrusive JavaScript support for modal links.
-	 *
-	 * @param   string  $selector  The selector for which a modal behaviour is to be applied.
-	 * @param   array   $params    An array of parameters for the modal behaviour.
-	 *                             Options for the modal behaviour can be:
-	 *                            - ajaxOptions
-	 *                            - size
-	 *                            - shadow
-	 *                            - overlay
-	 *                            - onOpen
-	 *                            - onClose
-	 *                            - onUpdate
-	 *                            - onResize
-	 *                            - onShow
-	 *                            - onHide
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
+	 * DEPRECATED use JevHtmlBootstrap::modal instead
 	 */
 	public static
 			function modal($selector = 'a.modal', $params = array())
 	{
+		
 		if (version_compare(JVERSION, "3.0", "ge"))
 		{
 			// Load the code Joomla version
-			JHtml::_('behavior.modal', $selector, $params);
-			return;
+		//	JHtml::_('jquery.framework');
+		//	JHtml::_('bootstrap.modal');
+		//	return;
 		}
 
 		JHtml::_('behavior.modal', $selector, $params);
@@ -3529,8 +3503,6 @@ SCRIPT;
 		  // Load the necessary files if they haven't yet been loaded
 		  if (!isset(static::$loaded[__METHOD__]))
 		  {
-		  // Include MooTools framework
-		  JHtml::_('behavior.framework', true);
 
 		  // Load the JavaScript and css
 		  JHtml::_('script', 'system/modal.js', true, true);

@@ -21,7 +21,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
-			JEVHelper::modal();
+			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 			$popup=true;
 			$popupw = $params->get("popupw",800);
@@ -32,10 +32,10 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 		$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';
 		$editImg = JHtml::image('com_jevents/icons-32/edit.png',JText::_("EDIT_EVENT"),null,true);
 		$editLink = $row->editLink();
-		$editLink = $popup?"javascript:jevEditPopup('".$editLink."',$popupw, $popuph);":$editLink;
+		$editLink = $popup?"javascript:jevEditPopupNoHeader('".$editLink."');":$editLink;
 		$editCopyImg = JHtml::image('com_jevents/icons-32/copy.png',JText::_("COPY_AND_EDIT_EVENT"),null,true);
 		$editCopyLink = $row->editCopyLink();
-		$editCopyLink = $popup?"javascript:jevEditPopup('".$editCopyLink."',$popupw, $popuph);":$editCopyLink;
+		$editCopyLink = $popup?"javascript:jevEditPopupNoHeader('".$editCopyLink."');":$editCopyLink;
 		$deleteImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_EVENT"),null,true);
 		$deleteLink = $row->deleteLink();
 		if ($row->until()!=$row->dtstart() || $row->count()>1){
@@ -44,7 +44,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 
 			$editRepeatImg = JHtml::image('com_jevents/icons-32/edit.png',JText::_("EDIT_REPEAT"),null,true);
 			$editRepeatLink = $row->editRepeatLink();
-			$editRepeatLink = $popup?"javascript:jevEditPopup('".$editRepeatLink."',$popupw, $popuph);":$editRepeatLink;
+			$editRepeatLink = $popup?"javascript:jevEditPopupNoHeader('".$editRepeatLink."');":$editRepeatLink;
 			$deleteRepeatImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_THIS_REPEAT"),null,true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
 			$deleteFutureImg = JHtml::image('com_jevents/icons-32/discards.png',JText::_("JEV_DELETE_FUTURE_REPEATS"),null,true);

@@ -453,6 +453,126 @@ div#jevents .form-inline  #start_ampm label, div#jevents .form-inline  #end_ampm
 }
 */
 
+/* Modal event editing  and CSV import*/
+
+#myEditModal {
+	bottom:5%;
+	position:fixed;
+}
+#myImportModal {
+	left: 50%;
+	margin-left: -280px;
+	width:560px;
+}
+#myEditModal .close , #myImportModal .close {
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	color: #000000;
+	text-shadow: 0 1px 0 #ffffff;
+	opacity: 0.2;
+	filter: alpha(opacity=20);
+}
+#myEditModal  .close:hover,
+#myEditModal  .close:focus,
+#myImportModal  .close:hover,
+#myImportModal  .close:focus{
+	color: #000000;
+	text-decoration: none;
+	cursor: pointer;
+	opacity: 0.4;
+	filter: alpha(opacity=40);
+}
+#myEditModal   button.close , #myImportModal   button.close {
+	padding: 0;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	-webkit-appearance: none;
+}
+
+#myEditModal  .modal-header .close , #myImportModal  .modal-header .close {
+	margin-top: 2px;
+}
+
+#myEditModal .modal-footer, #myImportModal .modal-footer {
+	padding: 14px 15px 15px;
+	margin-bottom: 0;
+	text-align: right;
+	background-color: #f5f5f5;
+	border-top: 1px solid #ddd;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius: 0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+	*zoom: 1;
+	-webkit-box-shadow: inset 0 1px 0 #ffffff;
+	-moz-box-shadow: inset 0 1px 0 #ffffff;
+	box-shadow: inset 0 1px 0 #ffffff;
+}
+#myEditModal .modal-footer:before,
+#myEditModal .modal-footer:after,
+#myImporttModal .modal-footer:before,
+#myImportModal .modal-footer:after{
+	display: table;
+	line-height: 0;
+	content: "";
+}
+#myEditModal .modal-footer:after , #myImportModal .modal-footer:after {
+	clear: both;
+}
+ #myEditModal .modal-footer .btn + .btn , #myImpoirtModal .modal-footer .btn + .btn {
+	margin-bottom: 0;
+	margin-left: 5px;
+}
+#myEditModal .modal-footer .btn-group .btn + .btn, #myImportModal .modal-footer .btn-group .btn + .btn { 
+	margin-left: -1px;
+}
+ #myEditModal .modal-footer .btn-block + .btn-block , #myImportModal .modal-footer .btn-block + .btn-block{
+	margin-left: 0;
+}
+#myEditModal .modal-header, #myImportModal .modal-header {
+    float: none;
+    height: 35px;
+    left: 0;
+    position: relative;
+    right: 0;
+    padding: 9px 15px;
+    border-bottom: 1px solid #eee;
+}
+#myEditModal h4, #myImportModal h4  {
+	margin: 0px;
+	font-family: inherit;
+	font-weight: bold;
+	font-size: 17.5px;
+	line-height: 20px;
+	color: inherit;
+	text-rendering: optimizelegibility;
+}
+#myEditModal .modal-body, #myImportModal .modal-body  {
+    position:absolute;
+    left :0px;
+    right:0px;
+    bottom:10px;
+    top: 54px;
+    overflow-y: auto;
+}
+#myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
+	width:99.5%;
+	border:none;
+	height:100%;
+}
+#myEditModal .modal-dialog, #myImportModal .modal-dialog  {
+    height: 100%;
+}
+#myImportModal .modal-content, #myEditModal .modal-content {
+    box-sizing: border-box;
+    height: 100%;
+    margin: 5px;
+    position: relative;
+}
+
+
 /* Removed Inline CSS and added the below */
 
 form.search_form { padding:30px 0px;}
