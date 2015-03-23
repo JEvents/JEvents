@@ -19,7 +19,6 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $cfg = JEVConfig::getInstance();
 
 // Already loaded Bootstrap
-JHtml::_('behavior.framework', true);
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');

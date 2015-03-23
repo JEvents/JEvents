@@ -60,12 +60,13 @@ class AdminParamsController extends JControllerAdmin
                 $db->setQuery("SELECT * FROM #__extensions WHERE element='com_jevents' and type='component' ORDER BY extension_id ASC");
 		$jevcomponents = $db->loadObjectList();
                 if (count($jevcomponents)>1) {
+		 JError::raiseWarning(106, 'We have duplicate entries in the extensions table.  These are being cleaned up.  <br/><br/><strong>Please check your configuration settings and save them</strong>');
                     $maxversion = "0.0.1";
                     $validExtensionId = 0;
                     foreach ($jevcomponents as $jevcomponent){
                         $manifest = new JRegistry($jevcomponent->manifest_cache);
                         $version = $manifest->get("version", "0.0.1");
-                        if (version_compare($version, $maxversion)){
+                        if (version_compare($version, $maxversion, "gt")){
                             $maxversion = $version;
                             $validExtensionId = $jevcomponent->extension_id;
                         }

@@ -10,7 +10,6 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 	}
 
 	JevHtmlBootstrap::modal("ical_dialogJQ".$row->rp_id());
-
 	?>
 	<div id="ical_dialogJQ<?php echo $row->rp_id();?>" class="ical_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">

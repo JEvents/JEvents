@@ -805,6 +805,7 @@ function fixRepeatDates(checkYearDay){
 	}
 	bd[startDate.getDay()].checked=true;
 
+	end_date = document.getElementById("publish_down");
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 

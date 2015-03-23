@@ -38,7 +38,6 @@ function DefaultViewHelperViewNavAdminPanel($view)
 				// Load Bootstrap
 				if (JevJoomlaVersion::isCompatible("3.0")  )
 				{
-					JHtml::_('behavior.framework', true);
 					JHtml::_('bootstrap.framework');
 
 					JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
@@ -58,6 +57,9 @@ function DefaultViewHelperViewNavAdminPanel($view)
 			{
 				JHtmlBootstrap::loadCss();
 			}
+			// Load event adding language string
+			JText::script('JEV_ADD_EVENT');
+			JText::script('JEV_IMPORT_ICALEVENT');
 			?>
 			<div class="ev_adminpanel">
 				<div align="left" class="nav_bar_cell">
@@ -69,13 +71,13 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 					{
-						JEVHelper::modal();
+						JevHtmlBootstrap::modal();
 						JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 						$popup = true;
 						$popupw = $params->get("popupw", 800);
 						$popuph = $params->get("popuph", 600);
 					}
-					$eventlinkadd = $popup ? "javascript:jevEditPopup('" . $editLink . "',$popupw, $popuph);" : $editLink;
+					$eventlinkadd = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 					?>
 					<a href="<?php echo $eventlinkadd; ?>" title="<?php echo JText::_('JEV_ADDEVENT'); ?>">
 						<b><?php echo JText::_('JEV_ADDEVENT'); ?></b>
@@ -86,9 +88,9 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					{
 						$importLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
 										. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
-						JEVHelper::modal();
+						JevHtmlBootstrap::modal();
 						JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-						$eventimport = "javascript:jevImportPopup('" . $importLink . "',400, 400);";
+						$eventimport = "javascript:jevImportPopup('" . $importLink . "');";
 						?>
 						<br/><a href="<?php echo $eventimport; ?>" title="<?php echo JText::_('JEV_IMPORT_ICALEVENT', true); ?>">
 							<b><?php echo JText::_('JEV_IMPORT_ICALEVENT'); ?></b>
