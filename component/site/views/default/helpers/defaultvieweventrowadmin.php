@@ -8,7 +8,7 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 	{
-		JEVHelper::modal();
+		JevHtmlBootstrap::modal();
 		JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		$popup = true;
 		$popupw = $params->get("popupw", 800);
@@ -16,7 +16,7 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	}
 
 	$editLink = $row->editLink(true);
-	$editLink = $popup ? "javascript:jevEditPopup('" . $editLink . "',$popupw, $popuph);" : $editLink;
+	$editLink = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 
 	$modifylink = "";
 	if (!$manage && JEVHelper::canEditEvent($row))

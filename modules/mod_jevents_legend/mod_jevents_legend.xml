@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.2.4</version>
+	<version>3.2.5</version>
 	<description>Shows legend for JEvents categories</description>
 	<files>
 		<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>

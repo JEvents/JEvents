@@ -14,44 +14,28 @@ $version = JEventsVersion::getInstance();
 
 JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
-
+ if (!empty($this->sidebar)) {
 ?>
+<div id="j-sidebar-container" class="span2">
+
+	<?php echo $this->sidebar; ?>
+
+	<?php
+	//Version Checking etc
+
+	?>
+	<div class="jev_version">
+		<?php
+		echo JText::sprintf('JEV_CURRENT_VERSION', substr($version->getShortVersion(), 1)); ?>
+	</div>
+</div>
+<?php }
+$mainspan = 10;
+$fullspan = 12;
+?>
+
 <div id="jevents" class="span12">
-    <?php
-    if (isset($this->warning)) {
-        ?>
-        <dl id="system-message">
-            <dt class="notice">Message</dt>
-            <dd class="notice">
-                <ul>
-                    <li><?php echo $this->warning; ?></li>
-                </ul>
-            </dd>
-        </dl>
-    <?php
-    }
-    ?>
     <form action="index.php" method="post" name="adminForm" id="adminForm">
-        <?php if (!empty($this->sidebar)) {
-            ?>
-            <div id="j-sidebar-container" class="span2">
-
-                <?php echo $this->sidebar; ?>
-
-                <?php
-                //Version Checking etc
-
-                ?>
-                <div class="jev_version">
-                    <?php
-                    echo JText::sprintf('JEV_CURRENT_VERSION', substr($version->getShortVersion(), 1)); ?>
-                </div>
-            </div>
-        <?php }
-        $mainspan = 10;
-        $fullspan = 12;
-
-        ?>
         <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
             <div id="cpanel" class="well well-small clearfix ">
                 <?php

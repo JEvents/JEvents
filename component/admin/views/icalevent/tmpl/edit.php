@@ -20,7 +20,6 @@ $cfg = JEVConfig::getInstance();
 $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
-JHtml::_('behavior.framework', true);
 JHtml::_('bootstrap.framework');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');

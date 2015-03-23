@@ -40,7 +40,7 @@ class ExtViewNavTableBarIconic
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
-			JEVHelper::modal();
+			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 			$view->popup = true;
 			$view->popupw = $params->get("popupw", 800);
@@ -61,7 +61,7 @@ class ExtViewNavTableBarIconic
 							{
 								list($year, $month, $day) = JEVHelper::getYMD();
 								$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day . '&Itemid=' . $view->Itemid, true);
-								$eventlinkadd = $view->popup ? "javascript:jevEditPopup('" . $editLink . "',$view->popupw, $view->popuph);" : $editLink;
+								$eventlinkadd = $view->popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 								?>
 										<td><img name="spacer" src="<?php echo $viewimages; ?>/spacer.gif"  alt="" border="0" height="25" width="10"/></td>
 										<td class="buttontext" align="center" nowrap="nowrap" valign="middle">

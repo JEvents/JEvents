@@ -82,7 +82,10 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
                 } else {
                     $jeventHelpPopup = JPATH_COMPONENT_ADMINISTRATOR . '/help/en-GB/' . $helpfile;
                 }
-                include($jeventHelpPopup);
+		if (!file_exists($jeventHelpPopup)){
+			return "";
+		}
+		include($jeventHelpPopup);
                 $help = $this->help($$varname, $part);
                 $parts[$key] = JText::_($valuepart) . $help;
             }

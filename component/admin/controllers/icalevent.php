@@ -992,7 +992,14 @@ class AdminIcaleventController extends JControllerAdmin
 		ob_end_clean();
 		?>
 		<script type="text/javascript">
-			window.parent.SqueezeBox.close();
+			try {
+				window.parent.jQuery('#myEditModal').modal('hide');
+			}
+			catch (e){}
+			try {
+				window.parent.SqueezeBox.close();
+			}
+			catch (e){}
 			try {
 				window.parent.closedialog();
 			}

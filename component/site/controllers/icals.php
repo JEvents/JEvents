@@ -55,9 +55,6 @@ class ICalsController extends AdminIcalsController
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 		}
 
-		// Include mootools framework
-		JHtml::_('behavior.framework', true);
-
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$Itemid = JEVHelper::getItemid();
 

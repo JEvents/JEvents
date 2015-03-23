@@ -38,7 +38,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		}
 
 		// Load the modal behavior script.
-		JEVHelper::modal('a.modal');
+		JevHtmlBootstrap::modal('a.modal');
 
 		$js = "
 		function jSelectEvent_".$this->id."(link, title, Itemid, evid, rpid) {
