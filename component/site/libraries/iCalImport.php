@@ -124,8 +124,8 @@ class iCalImport
 							return false;
 						} else {
 							$fsock_path = ((array_key_exists('path', $parsed_url)) ? $parsed_url['path'] : '')
-							. ((array_key_exists('query', $parsed_url)) ? $parsed_url['query'] : '')
-							. ((array_key_exists('fragment', $parsed_url)) ? $parsed_url['fragment'] : '');
+							. ((array_key_exists('query', $parsed_url)) ? '?' . $parsed_url['query'] : '')
+							. ((array_key_exists('fragment', $parsed_url)) ? '#' . $parsed_url['fragment'] : '');
 							fputs($fh, "GET $fsock_path HTTP/1.0\r\n");
 							fputs($fh, "Host: ".$parsed_url['host']."\r\n\r\n");
 							while(!feof($fh)) {

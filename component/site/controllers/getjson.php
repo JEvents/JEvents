@@ -117,7 +117,7 @@ class GetjsonController extends JControllerLegacy
 				return new JResponseJson(array());
 			}
 		}
-		$params = new JRegistry($modules[0]->params);
+		$params = new JRegistry(isset($modules[0]->params)?$modules[0]->params:null);
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams", $params);

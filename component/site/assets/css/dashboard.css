@@ -32,6 +32,10 @@ div.dashboard * {
 	margin: 0;
 	padding: 0;
 }
+/* Some bootstrap implementations mess the layout up! */
+.dashboard, .dashboard * {
+    box-sizing: initial;
+}
 div.dashboard div {
 	background: none !important;
 	cursor: move;
