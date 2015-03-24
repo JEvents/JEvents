@@ -57,8 +57,8 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
 
+		JToolBarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		$this->addSaveToolBarButton();
-		JToolBarHelper::apply('icalrepeat.apply', "Apply");
 		//$this->addCancelToolBarButton();
 
 		JToolBarHelper::cancel('icalrepeat.list');
@@ -88,7 +88,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// Add a standard button
 		//$bar->appendButton( 'Standard', $icon, $alt, $task, $listSelect, $x );
 
-		$buttontext = JText::_('JEV_SAVE');
+		$buttontext = JText::_('JEV_SAVE_CLOSE');
 		$buttonhtml = '<a href="#" onclick="javascript:return clickIcalSaveButton();" class="toolbar">
 		<span class="icon-32-save" title="' . $buttontext . '"></span>' . $buttontext . '</a><div style="position:relative;clear:both;">';
 		$submitbutton = "Joomla.submitbutton";

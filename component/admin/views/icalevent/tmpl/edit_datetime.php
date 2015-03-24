@@ -36,10 +36,10 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo $this->form->getInput("allDayEvent"); ?>
 			</span>
 
-			<span style="margin-left:20px" class='checkbox12h'>
+			<div style="margin-left:20px;display:inline;" class='checkbox12h'>
 				<?php echo $this->form->getLabel("view12Hour"); ?>
 				<?php echo $this->form->getInput("view12Hour"); ?>
-			</span>
+			</div>
 		</div>
 
 		<div  class="control-group  form-inline">
@@ -48,10 +48,10 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo $this->form->getInput("publish_up"); ?>
 			</span>
 
-			<span style="margin-left:20px" class='jevstarttime'>
+			<div style="margin-left:20px;display:inline;" class='jevstarttime'>
 				<?php echo $this->form->getLabel("start_time"); ?>
 				<?php echo $this->form->getInput("start_time"); ?>
-			</span>
+			</div>
 		</div>
 
 		<div  class="control-group  form-inline">
@@ -60,15 +60,15 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo $this->form->getInput("publish_down"); ?>
 			</span>
 
-			<span style="margin-left:20px" class='jevendtime'>
+			<div style="margin-left:20px;display:inline;" class='jevendtime'>
 				<?php echo $this->form->getLabel("end_time"); ?>
 				<?php echo $this->form->getInput("end_time"); ?>
-			</span>
+			</div>
 
-			<span style="margin-left:20px" class='jevnoendtime'>
+			<div style="margin-left:20px;display:inline;" class='jevnoendtime'>
 				<?php echo $this->form->getLabel("noendtime"); ?>
 				<?php echo $this->form->getInput("noendtime"); ?>
-			</span>
+			</div>
 
 		</div>
 		

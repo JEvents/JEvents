@@ -816,8 +816,7 @@ WHERE cat.id is null
 			// Do the bad category Ids first
 			$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap 
 	LEFT JOIN #__categories as cat on cat.id=catmap.catid AND extension='com_jevents'
-	WHERE cat.id is null
-	";
+	WHERE cat.id is null	";
 			$db->setQuery($sql);
 			$orphans =$db->loadObjectList("evid");
 
@@ -825,9 +824,19 @@ WHERE cat.id is null
 				$catid=$this->createOrphanCategory();
 				if ($catid){
 					foreach ($orphans as $orphan){
-						$sql = "UPDATE #__jevents_catmap SET catid=$catid where evid=".$orphan->evid." AND catid=".$orphan->catid;
+						// should not set multiple copies of this
+						$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap  where evid=".$orphan->evid." AND catid=".$catid;
 						$db->setQuery($sql);
-						$db->query();
+						if ($db->loadObject()){
+							$sql = "DELETE FROM #__jevents_catmap where evid=".$orphan->evid." AND catid=".$orphan->catid;
+							$db->setQuery($sql);
+							$db->query();
+						}
+						else {
+							$sql = "UPDATE #__jevents_catmap SET catid=$catid where evid=".$orphan->evid." AND catid=".$orphan->catid;
+							$db->setQuery($sql);
+							$db->query();
+						}
 						$hasOrphans  = true;
 					}
 				}

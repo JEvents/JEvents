@@ -540,9 +540,9 @@ else
 				if ($assoc){
 					echo JHtml::_('bootstrap.addPanel', "myEditTabs", "associations");
 					echo $this->loadTemplate('associations');
+					echo JHtml::_('bootstrap.endPanel');
 				}
 
-				echo JHtml::_('bootstrap.endPanel');
 				echo JHtml::_('bootstrap.endPane', 'myEditTabs');
 			}
 			?>

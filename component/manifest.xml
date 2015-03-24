@@ -49,6 +49,7 @@
     <media folder="media" destination="com_jevents">
 		<folder>css</folder>
 		<folder>js</folder>
+		<folder>images</folder>
 	</media>
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB.com_jevents.ini</language>
