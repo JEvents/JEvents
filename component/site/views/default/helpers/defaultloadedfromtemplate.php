@@ -1011,7 +1011,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 							if (strpos($event->contact_info(), '<a href=') === false && $event->contact_info() != "")
 							{
-								$event->contact_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
+								$event->contact_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 							}
 							// NO need to call conContentPrepate since its called on the template value below here
 						}
@@ -1040,10 +1040,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$dispatcher = JDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 
-						$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
+						$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
 						if (strpos($event->extra_info(), '<a href=') === false)
 						{
-							$event->extra_info(preg_replace('#(http://)(' . $pattern . '*)#i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
+							$event->extra_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
 						//$row->extra_info(eregi_replace('[^(href=|href="|href=\')](((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1', $row->extra_info()));
 						// NO need to call conContentPrepate since its called on the template value below here
@@ -1247,6 +1247,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = $tmprow->text;
 		$template_value = str_replace("@£@", "@", $template_value);
 
+		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
+		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
 		echo $template_value;
 		return true;
 
