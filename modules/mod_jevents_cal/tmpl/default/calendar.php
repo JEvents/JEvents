@@ -166,10 +166,14 @@ class DefaultModCalView
 
 	}
 
-	function getTheme(){	
-		$theme = JEV_CommonFunctions::getJEventsViewName();
-		return $theme;
+	function getTheme(){
+		$modtheme = $this->modparams->get("com_calViewName", "flat");
+		if ($modtheme == "" || $modtheme == "global")
+		{
+			$modtheme = JEV_CommonFunctions::getJEventsViewName();
+		}
 
+		return $modtheme;
 	}
 
 	/**
