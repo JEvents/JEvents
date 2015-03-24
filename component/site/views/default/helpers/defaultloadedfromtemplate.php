@@ -1235,6 +1235,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$template_value = str_replace(array("[[","]]"), array("{","}"), $template_value);
 		}
 		
+		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
+		// do this before calling content plugins in case these add javascript etc. to layout
+		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
+
 		// Call content plugins - BUT because emailcloak doesn't identify emails in input fields to a text substitution
 		$template_value = str_replace("@", "@£@", $template_value);
 		$params = new JRegistry(null);
@@ -1247,8 +1251,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = $tmprow->text;
 		$template_value = str_replace("@£@", "@", $template_value);
 
-		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
-		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
 		echo $template_value;
 		return true;
 

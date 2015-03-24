@@ -140,6 +140,34 @@ function checkValidTime(time){
 	parts[0] = parts[0].substring(parts[0].length-2);
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
+	if (document.adminForm.view12Hour.checked){
+		if (time.id=="end_time"){
+			pm   = document.getElementById("endPM");
+			am   = document.getElementById("endAM");
+			el = jevjq("#end_ampm");
+		}
+		else {
+			pm   = document.getElementById("startPM");
+			am   = document.getElementById("startAM");
+			el = jevjq("#start_ampm");
+		}
+
+		var hour = parseInt(parts[0]);
+		if (hour>12){
+			//hour -= 12;
+			//pm.checked = true;
+		}
+		else {
+			//am.checked = true;
+		}
+		//el.trigger("chosen:updated");
+		//time.value = hour+":"+parts[1];
+		time.value = parts[0]+":"+parts[1];
+	}
+	else {
+		time.value = parts[0]+":"+parts[1];
+	}
+
 	return true;
 }
 
@@ -193,7 +221,7 @@ function set12hTime(time24h){
 	}
 	if (hour == 0) hour = 12;
 
-	if (hour < 10) hour = "0"+hour;
+	//if (hour < 10) hour = "0"+hour;
 	if (min  < 10) min  = "0"+min;
 	time.value = hour+":"+min;
 	ampm.checked = true;
