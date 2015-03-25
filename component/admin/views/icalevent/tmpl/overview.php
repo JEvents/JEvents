@@ -24,13 +24,13 @@ $pathIMG = JURI::root() . 'administrator/images/';
 $mainspan = 10;
  $fullspan = 12;
 ?>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php if (!empty($this->sidebar)) : ?>
 <div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
 </div>
  <?php endif; ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<table cellpadding="4" cellspacing="0" border="0" >
 				<tr>

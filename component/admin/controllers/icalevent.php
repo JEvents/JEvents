@@ -1296,7 +1296,12 @@ class AdminIcaleventController extends JControllerAdmin
 		JRequest::checkToken('default') or jexit('Invalid Token');
 
 		// get the view
-		$this->view = $this->getView("icalevent", "html");
+		if (JFactory::getApplication()->isAdmin()){
+			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
+		}
+		else {
+			$this->view = $this->getView("icalevent", "html");
+		}
 
 		$this->_checkValidCategories();
 
