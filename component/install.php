@@ -94,9 +94,14 @@ class com_jeventsInstallerScript
 
 		$db = JFactory::getDBO();
 		$db->setDebug(0);
-		
-		$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-		$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		if (version_compare(JVERSION, "3.3", 'ge')){
+			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+		}
+		else {
+			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		}
 
  		/**
 		 * create table if it doesn't exit
@@ -398,8 +403,15 @@ SQL;
 
 		$db = JFactory::getDBO();
 		$db->setDebug(0);
-		
-		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
+
+		if (version_compare(JVERSION, "3.3", 'ge')){
+			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+		}
+		else {
+			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		}
 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevent";
 		$db->setQuery($sql);
@@ -447,7 +459,6 @@ SQL;
 
 		if (array_key_exists("uid", $cols))
 		{
-			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
 			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);
 			@$db->query();
