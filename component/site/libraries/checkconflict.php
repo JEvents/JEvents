@@ -49,7 +49,20 @@ else
 
 			if (is_array($requestData))
 			{
-				$requestObject = $requestData;
+				// convert to an object
+				$requestObject = new stdClass();
+				foreach ($requestData as $key => $value)
+				{
+					if ($value == "false"){
+						$requestObject->$key = false;
+					}
+					else if ($value == "false"){
+						$requestObject->$key = true;
+					}
+					else {
+						$requestObject->$key = $value;
+					}
+				}
 			}
 			else
 			{
@@ -201,7 +214,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	}
 
 	$token = JSession::getFormToken();
-	if (!isset($requestObject->token) || $requestObject->token != $token)
+	if (!isset($requestObject->token) || strcmp($requestObject->token, $token)!==0)
 	{
 		throwerror("There was an error - bad token.  Please refresh the page and try again.");
 	}

@@ -915,10 +915,10 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 .ev_prevrepeat, .ev_nextrepeat {display:inline-block;}
 .ev_nextrepeat {margin-left:15px;}
 #jevents_body div.list_no_e {padding:15px;text-align:center; font-size:14px;}
-#jevents_body .jev_daysnames.category {margin-top:0px !important;padding-left:5px ;padding-right:5px ;padding-top:5px;}
+#jevents_body .jev_daysnames.category {margin-top:0px !important;padding-left:5px ;padding-right:5px ;padding-top:5px;min-width:110px;min-height: 33px;}
 #jev_maincal.jev_listview.category .jev_listrow:first-child {border-bottom:0px;}
 
-#jevents_body .jev_daysnames.category select {background: none;height: 18px;width: 110px;border:1px solid #ddd;font-size:11px;}
+#jevents_body .jev_daysnames.category select {background: none;height: 25px;width: 110px;border:1px solid #ddd;font-size:11px;}
 #jevents_body .jev_pagination select#limit.inputbox {width:60px;}
 .event_details {padding:10px;}
 #jevents_body #jevcatbar {border:0px;border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;border-radius: 3px 3px 0px 0px;}
