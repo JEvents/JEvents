@@ -10,7 +10,6 @@ function DefaultEventManagementDialog16($view,$row, $mask, $bootstrap = false) {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
-			JHTML::_('behavior.modal');
 			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 			$popup=true;
 			$popupw = $params->get("popupw",800);

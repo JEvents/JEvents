@@ -76,6 +76,8 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
+			// load Joomla javascript classes
+			JHTML::_('behavior.core');
 			$this->setLayout("edit");
 		}
 		else

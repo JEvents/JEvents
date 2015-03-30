@@ -22,7 +22,6 @@ $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplicatio
 // Load Bootstrap
 JHtml::_('bootstrap.framework');
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
@@ -111,7 +110,8 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<div>
 					<strong>
 						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
-							<input type="checkbox" checked="false" name="overlapoverride" value="1" />
+							<!-- not checked by default !!! //-->
+							<input type="checkbox" name="overlapoverride" value="1" />
 						</label>
 					</strong>
 				</div>
@@ -203,7 +203,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-				var editorElement = $('jevcontent');
+				var editorElement = jevjq('jevcontent');
 				if (editorElement)
 				{
 					<?php

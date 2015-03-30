@@ -156,7 +156,7 @@ class DefaultViewNavTableBarIconic {
 	function _viewJumptoIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
-			<div id="ev_icon_jumpto" class="nav_bar_cal"><a href="#" onclick="if ($('jumpto').hasClass('jev_none')) {$('jumpto').removeClass('jev_none');} else {$('jumpto').addClass('jev_none')};return false;" title="<?php echo   JText::_('JEV_JUMPTO');?>"><img src="<?php echo $this->transparentGif;?>" alt="<?php echo  JText::_('JEV_JUMPTO');?>"/></a>
+			<div id="ev_icon_jumpto" class="nav_bar_cal"><a href="#" onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;" title="<?php echo   JText::_('JEV_JUMPTO');?>"><img src="<?php echo $this->transparentGif;?>" alt="<?php echo  JText::_('JEV_JUMPTO');?>"/></a>
 			</div>
         </td>                
         <?php
