@@ -101,11 +101,11 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 					}
 					?>
 					<label><input name="icf" type="checkbox" value="1" onclick="if (this.checked) {
-									$('unstyledical').style.display = 'none';
-									$('styledical').style.display = 'block';
+									jevjq('#unstyledical').css('display',  'none');
+									jevjq('#styledical').css('display',  'block');
 								} else {
-									$('styledical').style.display = 'none';
-									$('unstyledical').style.display = 'block';
+									jevjq('#styledical').css('display',  'none');
+									jevjq('#unstyledical').css('display',  'block');
 								}" /><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
 
 				</div>

@@ -539,70 +539,32 @@ class JEVHelper
 		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
-		$calendar = (JevJoomlaVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js';
-		JEVHelper::script($calendar, "components/" . $component . "/assets/js/", true);
-		JEVHelper::stylesheet("dashboard.css", "components/" . $component . "/assets/css/", true);
-		$script = '
-				var field' . $fieldid . '=false;
-				window.addEvent(\'domready\', function() {
-				if (field' . $fieldid . ') return;
-				field' . $fieldid . '=true;
-				new NewCalendar(
-					{ ' . $fieldid . ' :  "' . $format . '"},
-					{
-					direction:0,
-					classes: ["dashboard"],
-					draggable:true,
-					navigation:2,
-					tweak:{x:0,y:-75},
-					offset:' . $offset . ',
-					range:{min:' . $minyear . ',max:' . $maxyear . '},
-					readonly:' . $forcepopupcalendar . ',
-					months:["' . JText::_("JEV_JANUARY") . '",
-					"' . JText::_("JEV_FEBRUARY") . '",
-					"' . JText::_("JEV_MARCH") . '",
-					"' . JText::_("JEV_APRIL") . '",
-					"' . JText::_("JEV_MAY") . '",
-					"' . JText::_("JEV_JUNE") . '",
-					"' . JText::_("JEV_JULY") . '",
-					"' . JText::_("JEV_AUGUST") . '",
-					"' . JText::_("JEV_SEPTEMBER") . '",
-					"' . JText::_("JEV_OCTOBER") . '",
-					"' . JText::_("JEV_NOVEMBER") . '",
-					"' . JText::_("JEV_DECEMBER") . '"
-					],
-					days :["' . JText::_("JEV_SUNDAY") . '",
-					"' . JText::_("JEV_MONDAY") . '",
-					"' . JText::_("JEV_TUESDAY") . '",
-					"' . JText::_("JEV_WEDNESDAY") . '",
-					"' . JText::_("JEV_THURSDAY") . '",
-					"' . JText::_("JEV_FRIDAY") . '",
-					"' . JText::_("JEV_SATURDAY") . '"
-					]
-					';
-		if ($onhidestart != "")
-		{
-			$script.=',
-					onHideStart : function () { ' . $onhidestart . '; },
-					onHideComplete :function () { ' . $onchange . '; }';
-		}
-		$script.='}
-				);
-			});';
+		// Build the attributes array.
+		$attributes = array();
+		empty($onchange)  ? null : $attributes['onchange'] = $onchange;
+		//$attributes['onselect']="function{this.hide();}";
+		/*
+		empty($this->size)      ? null : $attributes['size'] = $this->size;
+		empty($this->maxlength) ? null : $attributes['maxlength'] = $this->maxlength;
+		empty($this->class)     ? null : $attributes['class'] = $this->class;
+		!$this->readonly        ? null : $attributes['readonly'] = 'readonly';
+		!$this->disabled        ? null : $attributes['disabled'] = 'disabled';
+		empty($hint)            ? null : $attributes['placeholder'] = $hint;
+		$this->autocomplete     ? null : $attributes['autocomplete'] = 'off';
+		!$this->autofocus       ? null : $attributes['autofocus'] = '';
 
-		// stop same field script being loaded multiple times
-		static $processedfields = array();
-		if (!in_array($fieldname, $processedfields))
+		if ($this->required)
 		{
-			$document->addScriptDeclaration($script);
+			$attributes['required'] = '';
+			$attributes['aria-required'] = 'true';
 		}
-		$processedfields[] = $fieldname;
-
-		if ($onchange != "")
-		{
-			$onchange = 'onchange="' . $onchange . '"';
+*/
+		// switch back to strftime format to use Joomla calendar tool
+		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
+		if ($value == "" ) {
+			$this->value = strftime($format);
 		}
-		echo '<input type="text" name="' . $fieldname . '" id="' . $fieldid . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" maxlength="10" ' . $onchange . ' size="12"  />';
+		echo JHtml::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
 
 	}
 

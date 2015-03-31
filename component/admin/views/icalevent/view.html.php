@@ -213,13 +213,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::cancel('icalevent.list');
 		//JToolBarHelper::help( 'screen.icalevent.edit', true);
 
-		JHTML::_('behavior.tooltip');
-
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
 
 		if (JevJoomlaVersion::isCompatible("3.0")  )
 		{
+			// load Joomla javascript classes
+			JHTML::_('behavior.core');
 			$this->setLayout("edit");
 		}
 		else  {

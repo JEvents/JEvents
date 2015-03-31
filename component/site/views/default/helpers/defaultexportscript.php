@@ -10,24 +10,24 @@ function DefaultExportScript () {
 $script = <<<SCRIPT
 function clearIcalCategories(allcats){
 	if(allcats.checked){
-		document.getElements('input[name=categories[]]:checked').each (function(el){
+		jevjq('input[name="categories[]"]:checked').each (function(el){
 			if (el.value!=0){
 				el.checked=false;
 			}
 		});
-		$('othercats').style.display='none';
+		jevjq('#othercats').css('display','none');
 	}
 	else {
-		document.getElements('input[name=categories[]]').each (function(el){
+		jevjq('input[name="categories[]"]').each (function(el){
 			if (el.value!=0 && el.checked==false){
 				el.checked=true;
 			}
 		});
-		$('othercats').style.display='block';		
+		jevjq('#othercats').css('display','block');
 	}
 }
 function clearAllIcalCategories(){
-		document.getElements('input[name=categories[]]:checked').each (function(el){
+		jevjq('input[name="categories[]"]:checked').each (function(el){
 			if (el.value==0){
 				el.checked=false;
 			}
@@ -35,24 +35,24 @@ function clearAllIcalCategories(){
 }
 function clearIcalYears(allyears){
 	if(allyears.checked){
-		document.getElements('input[name=years[]]:checked').each (function(el){
+		jevjq('input[name="years[]"]:checked').each (function(el){
 			if (el.value!=0){
 				el.checked=false;
 			}
 		});
-		$('otheryears').style.display='none';		
+		jevjq('#otheryears').css('display','none');
 	}
 	else {
-		document.getElements('input[name=years[]]').each (function(el){
+		jevjq('input[name="years[]"]').each (function(el){
 			if (el.value!=0 && el.checked==false){
 				el.checked=true;
 			}
 		});
-		$('otheryears').style.display='block';				
+		jevjq('#otheryears').css('display','block');
 	}
 }
 function clearAllIcalYears(){
-		document.getElements('input[name=years[]]:checked').each (function(el){
+		jevjq('input[name="years[]"]:checked').each (function(el){
 			if (el.value==0){
 				el.checked=false;
 			}

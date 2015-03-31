@@ -8,6 +8,28 @@
  * @link        http://www.jevents.net
  */
 
+// Methods missing in jQuery
+// See http://stackoverflow.com/questions/23908283/jquery-associate-two-arrays-key-value-into-one-array
+Array.prototype.associate = function (keys) {
+  var result = {};
+
+  this.forEach(function (el, i) {
+    result[keys[i]] = el;
+  });
+
+  return result;
+};
+// from Mootools
+// 
+// my version
+Date.prototype.clearTime =  function(){
+	this.setHours(0);
+	this.setMinutes(0);
+	this.setSeconds(0);
+	return this;
+};
+
+
 var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 
@@ -50,10 +72,10 @@ Date.prototype.jeventsParseDate = function (from ){
 			date.setHours(6);
 			year = bits.y || bits.Y;
 			// set month to January  to ensure we can set days to 31 first!!!
-			date.set('month', 0); 
-			if (year != null) date.set('year', year); 
-			if ('d' in bits) date.set('date', bits.d); 
-			if ('m' in bits || bits.b || bits.B) date.set('month', bits.m-1); 
+			date.setMonth( 0);
+			if (year != null) date.setYear( year);
+			if ('d' in bits) date.setDate( bits.d);
+			if ('m' in bits || bits.b || bits.B) date.setMonth( bits.m-1);
 
 			return date;
 		}
@@ -96,6 +118,15 @@ function normaliseElem(elem) {
 
 function checkTimeFormat(time){
 	if (time.value.indexOf(":")>0){
+		/*
+		parts = time.value.split(":");
+		parts[0] = parseInt(parts[0],10);
+		parts[1] = parseInt(parts[1],10);
+		if (parts[0]>12){
+			parts[0]-=12;
+		}
+		time.value = parts[0]+":"+parts[1];
+		*/
 		normaliseElem(time);
 		return true;
 	}
@@ -141,7 +172,8 @@ function checkValidTime(time){
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
 	if (document.adminForm.view12Hour.checked){
-		if (time.id=="end_time"){
+		/*
+		if (time.id=="end_time" || time.id=="end_12h"){
 			pm   = document.getElementById("endPM");
 			am   = document.getElementById("endAM");
 			el = jevjq("#end_ampm");
@@ -154,14 +186,15 @@ function checkValidTime(time){
 
 		var hour = parseInt(parts[0]);
 		if (hour>12){
-			//hour -= 12;
-			//pm.checked = true;
+			hour -= 12;
+			pm.checked = true;
 		}
 		else {
-			//am.checked = true;
+			am.checked = true;
 		}
-		//el.trigger("chosen:updated");
-		//time.value = hour+":"+parts[1];
+		el.trigger("chosen:updated");
+		time.value = hour+":"+parts[1];
+		*/
 		time.value = parts[0]+":"+parts[1];
 	}
 	else {
@@ -400,10 +433,10 @@ function setEndDateWhenNotRepeating(){
 
 function forceValidDate(elem){
 	oldDate = new Date();
-	oldDate = oldDate.dateFromYMD(elem.value);
+	oldDate = oldDate.dateFromYMD(elem.val());
 	newDate = oldDate.getYMD();
-	if (newDate!=elem.value) {
-		elem.value = newDate;
+	if (newDate!=elem.val()) {
+		elem.val(newDate);
 		alert(invalidcorrected);
 	}
 }
@@ -588,6 +621,25 @@ function toggleNoEndTime(){
 	updateRepeatWarning();
 }
 
+function toggleGreyBackground(inputtype,inputelem, tomatch) {
+	if (inputtype==tomatch){
+		inputelem.disabled = false;
+		inputelem.parent()[0].style.backgroundColor="#ffffff";
+		if (inputelem.parent('fieldset').find('legend')){
+			inputelem.parent('fieldset').find('legend').css("background-color","#ffffff");
+			jevjq("#"+inputtype).css("background-color","#ffffff");
+		}
+	}
+	else {
+		inputelem.disabled = true;
+		inputelem.parent()[0].style.backgroundColor="#dddddd";
+		if (inputelem.parent('fieldset').find('legend')){
+			inputelem.parent('fieldset').find('legend').css("background-color","#dddddd");
+			jevjq("#"+inputtype).css("background-color","#dddddd");
+		}
+	}
+}
+
 function toggleCountUntil(cu){
 	inputtypes = ["cu_count","cu_until"];
 	for (var i=0;i<inputtypes.length;i++) {
@@ -595,24 +647,9 @@ function toggleCountUntil(cu){
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = $(inputs[e]);
+			inputelem = jevjq(inputs[e]);
 			if (inputelem.name!="countuntil"){
-				if (inputtype==cu){
-					inputelem.disabled = false;
-					inputelem.parentNode.style.backgroundColor="#ffffff";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
-					}
-				}
-				else {
-					inputelem.disabled = true;
-					inputelem.parentNode.style.backgroundColor="#dddddd";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
-					}
-				}
+				toggleGreyBackground(inputtype,inputelem,cu);
 			}
 		}
 	}
@@ -628,26 +665,10 @@ function toggleWhichBy(wb)
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = $(inputs[e]);
+			inputelem = jevjq(inputs[e]);
 			if (inputelem.name!="whichby"){
-				if (inputtype==wb){
-					inputelem.disabled = false;
-					inputelem.parentNode.style.backgroundColor="#ffffff";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
-					}					
-				}
-				else {
-					inputelem.disabled = true;
-					inputelem.parentNode.style.backgroundColor="#dddddd";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
-					}
-				}
+				toggleGreyBackground(inputtype, inputelem,wb);
 			}
-
 		}
 	}
 	updateRepeatWarning();
@@ -660,7 +681,7 @@ function toggleWhichBy(wb)
 
 function toggleFreq(freq , setup)
 {
-	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
+	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
 	
 	var myDiv = document.getElementById('interval_div');
 	var byyearday = document.getElementById('byyearday');
@@ -727,7 +748,7 @@ function toggleFreq(freq , setup)
 				bymonthday.style.display="none";
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
-				toggleWhichBy("byday");
+				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
 				// always set week nums false for weekly events
 				toggleWeekNums(false);
@@ -872,7 +893,7 @@ function resetYMD(){
 
 
 function updateRepeatWarning(){
-	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
+	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
 	if (document.adminForm.updaterepeats && currentFreq!="NONE")
 	{
 		document.adminForm.updaterepeats.value = 1;
@@ -881,17 +902,17 @@ function updateRepeatWarning(){
 
 /* Check for booking conflicts */
 
-Element.prototype.formToJson =  function(){
+jQuery.fn.formToJson =  function(){
 		var json = {};
-		this.getElements('input, textarea, select').each(function(el){
+		jevjq(this).find('input, textarea, select').each(function(index,el){
 			var name = el.name;
-			var value = el.get('value');
+			var value = el.value;
 			if (value === false || !name || el.disabled) return;
 			// multi selects
-			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.get('multiple')==true){
+			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
 				name = name.substr(0,name.length-2);
 				if (!json[name]) json[name] = [];
-				el.getElements('option').each(function(opt){
+				jevjq(el).find('option').each(function(eldx, opt){
 					if (opt.selected ==true) json[name].push(opt.value);
 				});
 			}
@@ -917,64 +938,55 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 	requestObject.token = jsontoken;
 	requestObject.pressbutton = pressbutton;
 	requestObject.repeatid = repeatid;
-	requestObject.formdata = $(document.adminForm).formToJson();
+	requestObject.formdata = jevjq(document.adminForm).formToJson();
 
 	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;
 	
 	requestObject.redirect = doRedirect;
 	var hasConflicts = false;
 
-	var jSonRequest = new Request.JSON({
-		'url':url,
-		onSuccess: function(json, responsetext){
-			if (!json){
-				alert('could not check conflicts');
-				$('jevoverlapwarning').style.display='none';
-				if (doRedirect) submit2(pressbutton);
-				else hasConflicts = true;
+	// see http://stackoverflow.com/questions/26620/how-to-set-encoding-in-getjson-jquery
+	jevjq.ajaxSetup({ scriptCharset: "utf-8" , contentType: "application/json; charset=utf-8"});
+
+	var jSonRequest = jevjq.getJSON(url, {'json':JSON.stringify(requestObject)})
+		.done(function(json){
+		if (!json){
+			alert('could not check conflicts');
+			jevjq('#jevoverlapwarning').css("display",'none');
+			if (doRedirect) submit2(pressbutton);
+			else hasConflicts = true;
+		}
+		if (json.error){
+			try {
+				eval(json.error);
 			}
-			if (json.error){
-				try {
-					eval(json.error);
-				}
-				catch (e){
-					alert('could not process error handler');
-				}
+			catch (e){
+				alert('could not process error handler');
+			}
+		}
+		else {
+			if (json.allclear){
+				jevjq('#jevoverlapwarning').css("display",'none');
+				if (doRedirect) submit2(pressbutton);
+				else hasConflicts = false;
 			}
 			else {
-				if (json.allclear){
-					$('jevoverlapwarning').style.display='none';
-					if (doRedirect) submit2(pressbutton);
-					else hasConflicts = false;
-				}
-				else {
-					$('jevoverlapwarning').style.display='block';
-					var container = $('jevoverlaps');
-					container.innerHTML="";
-					
-					Array.from(json.overlaps).slice().each (function(overlap){
-						var elem = new Element ("a", {
-							'href':overlap.url, 
-							'target':'_blank'
-						});
-						elem.inject(container,'bottom');
-						//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
-						elem.appendText (overlap.conflictMessage);
-						var br = new Element ("br");
-						br.inject(container,'bottom');
-					});
-					hasConflicts = true;
-				}
+				jevjq('#jevoverlapwarning').css("display",'block');
+				var container = jevjq('#jevoverlaps');
+				container.html("");
+				jevjq(json.overlaps).each (function(index, overlap){
+					//var elem = jevjq("<a href='"+overlap.url+"' target='_blank>"+overlap.conflictMessage+"</a><br/>");
+					//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
+					container.append("<a href='"+overlap.url+"' target='_blank'>"+overlap.conflictMessage+"</a><br/>")
+				});
+				hasConflicts = true;
 			}
-		},
-		onFailure: function(x){
-			alert('Something went wrong...'+x);
-			hasConflicts = true;
 		}
-	}).post({
-		'json':JSON.encode(requestObject)
+	})
+	.fail( function( jqxhr, textStatus, error){
+		alert(textStatus + ", " + error);
+		hasConflicts = true;
 	});
-	return hasConflicts;
 }
 
 // fix for auto-rotating radio boxes in firefox !!!
@@ -1006,7 +1018,7 @@ function hideEmptyJevTabs() {
 				tab = jevjq(this);
 				if (tab.children.length==0){
 					tab.style.display="none";
-					var tablink = document.getElement("#myEditTabs a[href='#"+tab.id+"']");
+					var tablink = jevjq("#myEditTabs a[href='#"+tab.id+"']");
 					if (tablink){
 						tablink.getParent().style.display="none";
 					}
@@ -1022,7 +1034,7 @@ function hideEmptyJevTabs() {
 					var classname = tab.getParent().className.clean().replace(" ","").replace("tabs","");
 					tab.innerHTML="xx";
 					//tab.style.display="none";
-					var tablink = document.getElement(".adminform #"+classname);
+					var tablink = jevjq(".adminform #"+classname);
 					if (tablink){
 						tablink.style.display="none";
 					}

@@ -564,6 +564,7 @@ table.ev_navtable tr {vertical-align:top; }
     bottom:10px;
     top: 54px;
     overflow-y: auto;
+    max-height:none;
 }
 #myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
 	width:99.5%;
