@@ -118,6 +118,15 @@ function normaliseElem(elem) {
 
 function checkTimeFormat(time){
 	if (time.value.indexOf(":")>0){
+		/*
+		parts = time.value.split(":");
+		parts[0] = parseInt(parts[0],10);
+		parts[1] = parseInt(parts[1],10);
+		if (parts[0]>12){
+			parts[0]-=12;
+		}
+		time.value = parts[0]+":"+parts[1];
+		*/
 		normaliseElem(time);
 		return true;
 	}
@@ -163,7 +172,8 @@ function checkValidTime(time){
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
 	if (document.adminForm.view12Hour.checked){
-		if (time.id=="end_time"){
+		/*
+		if (time.id=="end_time" || time.id=="end_12h"){
 			pm   = document.getElementById("endPM");
 			am   = document.getElementById("endAM");
 			el = jevjq("#end_ampm");
@@ -176,14 +186,15 @@ function checkValidTime(time){
 
 		var hour = parseInt(parts[0]);
 		if (hour>12){
-			//hour -= 12;
-			//pm.checked = true;
+			hour -= 12;
+			pm.checked = true;
 		}
 		else {
-			//am.checked = true;
+			am.checked = true;
 		}
-		//el.trigger("chosen:updated");
-		//time.value = hour+":"+parts[1];
+		el.trigger("chosen:updated");
+		time.value = hour+":"+parts[1];
+		*/
 		time.value = parts[0]+":"+parts[1];
 	}
 	else {
