@@ -2921,6 +2921,9 @@ class JEventsDBModel
 			// convert rows to jIcalEvents
 			$icalrows[$i] = new jIcalEventDB($icalrows[$i]);
 		}
+		
+		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
+
 		return $icalrows;
 
 	}
@@ -3117,6 +3120,9 @@ class JEventsDBModel
 			// convert rows to jIcalEvents
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
+
+		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
+
 		return $icalrows;
 
 	}
