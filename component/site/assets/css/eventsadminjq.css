@@ -381,9 +381,11 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 #jevents .jevdatetime label.btn {
     padding-right: 10px!important;
     padding-left: 10px!important;
+    min-width: 30px;
 }
-
-
+#jevents .jevdatetime label {
+    min-width: 30px;
+}
 .tip-wrap {
 	max-width:80%!important;
 	text-align: left!important;
@@ -571,7 +573,11 @@ div#jevents .form-inline  #start_ampm label, div#jevents .form-inline  #end_ampm
     margin: 5px;
     position: relative;
 }
-
+/*popup calendar icon*/
+.jevdatetime .calendar {
+    float: none;
+    margin-left: 10px;
+}
 
 /* Removed Inline CSS and added the below */
 
