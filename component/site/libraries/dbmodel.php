@@ -2922,7 +2922,7 @@ class JEventsDBModel
 			$icalrows[$i] = new jIcalEventDB($icalrows[$i]);
 		}
 		
-		$this->addCustomFields($icalrows);
+		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
 		return $icalrows;
 
@@ -3121,7 +3121,7 @@ class JEventsDBModel
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 
-		$this->addCustomFields($icalrows);
+		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
 		return $icalrows;
 
@@ -3771,12 +3771,6 @@ class JEventsDBModel
 			return 0;
 		return ($adatetime > $bdatetime) ? -1 : 1;
 
-	}
-
-	function addCustomFields(&$rows)
-	{
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
 	}
 
 	function findMatchingRepeat($uid, $year, $month, $day)
