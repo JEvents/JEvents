@@ -91,7 +91,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<div>
 					<strong>
 						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
-							<input type="checkbox" checked="false" name="overlapoverride" value="1" />
+							<input type="checkbox" name="overlapoverride" value="1" />
 						</label>
 					</strong>
 				</div>

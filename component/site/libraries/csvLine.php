@@ -234,8 +234,13 @@ class CsvLine {
      * @return converted datetime in iCal format
      */
     private function datetimeToIcsFormat($datetime) {
-		$datetime = JevDate::strtotime($datetime);
-        return date("Ymd", $datetime)."T".date("His", $datetime);
+		$newdatetime = JevDate::strtotime($datetime);
+		$tempdate = new JevDate($newdatetime);
+	if (strlen($datetime)<=10 && $tempdate->toFormat("%H:%M:%S")=="00:00:00"){
+		// in this case we have not time element so don't set it otherwise iCal import will think a time is actually set and not process all day or no end time events correctly
+		return date("Ymd", $newdatetime);
+	}
+        return date("Ymd", $newdatetime)."T".date("His", $newdatetime);
     }
 
 	private function timezoneoutput(){
