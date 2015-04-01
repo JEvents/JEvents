@@ -536,6 +536,10 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset = $params->get("com_starday", 1);
 
+		if ($value == "" ) {
+			$value = strftime("%Y-%m-%d");
+		}
+
 		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
@@ -561,10 +565,8 @@ class JEVHelper
 */
 		// switch back to strftime format to use Joomla calendar tool
 		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
-		if ($value == "" ) {
-			$this->value = strftime($format);
-		}
-		echo JHtml::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+
+		echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
 
 	}
 
