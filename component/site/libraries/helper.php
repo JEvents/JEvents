@@ -566,7 +566,12 @@ class JEVHelper
 		// switch back to strftime format to use Joomla calendar tool
 		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
 
-		echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
+		if (JevJoomlaVersion::isCompatible("3.0")){
+			echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
+		}
+		else {
+			echo JHtml::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+		}
 
 	}
 
