@@ -214,7 +214,8 @@ class iCalEventDetail extends JTable  {
 		else if ($this->dtend==0){
 			// if no dtend or duration (e.g. from imported iCal) - set no end time
 			$this->noendtime = 1;
-			$this->dtend = iCalImport::unixTime($this->dtstartraw);
+			$icimport = new iCalImport();
+			$this->dtend = $icimport->unixTime($this->dtstartraw);
 			// an all day event
 			if ($this->dtend==$this->dtstart && strlen($this->dtstartraw)==8){
 				// convert to JEvents all day event mode!
