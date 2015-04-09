@@ -27,6 +27,10 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 			$popupw = $params->get("popupw",800);
 			$popuph = $params->get("popuph",600);
 		}
+		if (JRequest::getInt("pop",0)){
+			// do not call the modal scripts if already in a popup window!
+			$popup=false;
+		}
 
 		$hasrepeat = false;
 		$pathIMG = JURI::root() . 'components/'.JEV_COM_COMPONENT.'/assets/images';

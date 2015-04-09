@@ -460,7 +460,14 @@ class ICalsController extends AdminIcalsController
 		?>
 		<script type="text/javascript">
 			window.alert("<?php echo JText::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
-			window.parent.SqueezeBox.close();
+			try {
+				window.parent.jQuery('#myImportModal').modal('hide');
+			}
+			catch (e){}
+			try {
+				window.parent.SqueezeBox.close();
+			}
+			catch (e){}
 			//window.parent.location.reload();
 		</script>
 		<?php

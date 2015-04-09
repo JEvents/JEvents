@@ -961,6 +961,10 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
   width: 100% !important;
 }
 
+/* Removing inline styles in tables */
+#jevents_body table.contentpaneopen {width:100%;}
+#jevents_body td.contentheading {width:auto;}
+
 /* Media Queries for mobile and desktop displays */
 @media (max-width: 698px){
 	.jev-only-mobile{

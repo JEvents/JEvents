@@ -827,6 +827,10 @@ div.export_form {
 	padding:10px;
 }
 
+/* Removing inline styles in tables */
+#jevents_body table.contentpaneopen {width:100%;}
+#jevents_body td.contentheading {width:auto;}
+
 /* Media Queries for mobile and desktop displays */
 @media (max-width: 698px){
 	.jev-only-mobile{

@@ -36,7 +36,7 @@ if( array_key_exists('row',$this->data) ){
         <!-- <div name="events">  -->
         <table class="contentpaneopen" border="0">
             <tr class="headingrow">
-                <td  width="100%" class="contentheading"><h2 class="contentheading"><?php echo $row->title(); ?></h2></td>
+                <td   class="contentheading"><h2 class="contentheading"><?php echo $row->title(); ?></h2></td>
                 <?php
                 $jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
                 if ($jevparams->get("showicalicon",0) &&  !$jevparams->get("disableicalexport",0) ){

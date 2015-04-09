@@ -294,7 +294,6 @@ class AdminIcalrepeatController extends JControllerLegacy
                                 ob_end_clean();
                                 ?>
                                 <script type="text/javascript">
-                                        //window.parent.SqueezeBox.close();
                                         window.parent.alert("<?php echo $msg; ?>");
                                         window.parent.location="<?php echo $link; ?>";
                                 </script>
@@ -691,7 +690,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		ob_end_clean();
 		?>
 		<script type="text/javascript">
-			window.parent.SqueezeBox.close();
+			try {
+				window.parent.jQuery('#myEditModal').modal('hide');
+			}
+			catch (e){}
+			try {
+				window.parent.SqueezeBox.close();
+			}
+			catch (e){}
 			try {
 				window.parent.closedialog();
 			}

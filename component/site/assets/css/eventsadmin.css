@@ -413,13 +413,13 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
-#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px;}
+#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto;padding-right: 0px!important;}
 #jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 #jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
 #jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
 #jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
-.action_dialogJQ {   max-width: 300px; }
+.action_dialogJQ {   max-width: 300px; bottom:auto;;padding-right: 0px!important;}
 .action_dialogJQ a {text-decoration:none; line-height:28px;}
 .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
 .action_dialogJQ #publish_reccur img, .action_dialogJQ #edit_reccur img, .action_dialogJQ #edit_event img, .action_dialogJQ #edit_eventcopy img, .action_dialogJQ #delete_repeat img, .action_dialogJQ #delete_eventfuture img, .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
@@ -465,12 +465,14 @@ table.ev_navtable tr {vertical-align:top; }
 #myEditModal {
 	bottom:5%;
 	position:fixed;
+	overflow: hidden;
 }
 #myImportModal {
 	left: 50%;
 	margin-left: -280px;
 	width:560px;
 	height:500px;
+	overflow:hidden;
 }
 #myEditModal .close , #myImportModal .close {
 	float: right;
@@ -529,7 +531,7 @@ table.ev_navtable tr {vertical-align:top; }
 #myEditModal .modal-footer:after , #myImportModal .modal-footer:after {
 	clear: both;
 }
- #myEditModal .modal-footer .btn + .btn , #myImpoirtModal .modal-footer .btn + .btn {
+ #myEditModal .modal-footer .btn + .btn , #myImportModal .modal-footer .btn + .btn {
 	margin-bottom: 0;
 	margin-left: 5px;
 }
@@ -565,20 +567,34 @@ table.ev_navtable tr {vertical-align:top; }
     top: 54px;
     overflow-y: auto;
     max-height:none;
+    padding:10px 0px 5px 0px;
+   width:100%;
 }
 #myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
 	width:99.5%;
 	border:none;
 	height:100%;
 }
-#myEditModal .modal-dialog, #myImportModal .modal-dialog  {
+#myEditModal .modal-dialog {
     height: 100%;
+   width:auto;
+   margin:0px;
+}
+ #myImportModal .modal-dialog {
+	 height: 100%;
+   width:auto;
+ }
+.action_dialogJQ .modal-dialog, .ical_dialogJQ .modal-dialog {
+   width:auto;
+   margin:0px;
 }
 #myImportModal .modal-content, #myEditModal .modal-content {
     box-sizing: border-box;
     height: 100%;
     margin: 5px;
     position: relative;
+	box-shadow: none;
+	border:none;
 }
 
 
