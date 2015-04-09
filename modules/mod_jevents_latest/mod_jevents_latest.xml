@@ -53,9 +53,6 @@
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
 				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_templatetop" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_TOP" description="JEV_LEV_TEMPLATE_TOP_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_templaterow" type="jevtextarea" filter="raw" cols="50" rows="3"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_ROW" description="JEV_LEV_TEMPLATE_ROW_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_templatebottom" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_BOTTOM" description="JEV_LEV_TEMPLATE_BOTTOM_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" conditional="modlatest_useLocalParam" conditions="1" >
 					<option value="0">JEV_LATEST_DISPLAY_MODE_0</option>
@@ -134,6 +131,9 @@
 					   label="JEV_RSS_DESCRIPTION"
 					   description="JEV_LATEST_RSS_DESCRIPTION_DESC" conditional="modlatest_useLocalParam" conditions="1" />
 				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
+				<field name="modlatest_templatetop" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_TOP" description="JEV_LEV_TEMPLATE_TOP_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_templaterow" type="jevtextarea" filter="raw" cols="50" rows="3"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_ROW" description="JEV_LEV_TEMPLATE_ROW_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_templatebottom" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_BOTTOM" description="JEV_LEV_TEMPLATE_BOTTOM_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">

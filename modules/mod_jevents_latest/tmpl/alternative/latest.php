@@ -55,9 +55,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 				// get all of the events for this day
 				foreach($daysEvents as $dayEvent){
 
-					$dst = "border-color:".$dayEvent->bgcolor();
-					if($firstTime) $content .= '<tr><td class="mod_events_latest_first" style="'.$dst.'">';
-					else $content .= '<tr><td class="mod_events_latest" style="'.$dst.'">';
+					$eventcontent = "";
 
 					// generate output according custom string
 					foreach($this->splitCustomFormat as $condtoken) {
@@ -83,15 +81,22 @@ class AlternativeModLatestView extends DefaultModLatestView
 								$match = $token;
 							}
 							else {
-								$content .= $token;
+								$eventcontent .= $token;
 								continue;
 							}
 
-							$this->processMatch($content, $match, $dayEvent, $dateParm, $relDay);
+							$this->processMatch($eventcontent, $match, $dayEvent, $dateParm, $relDay);
 
 							} // end of foreach
 					} // end of foreach
-					$content .= "</td></tr>\n";
+
+					$dst = "border-color:".$dayEvent->bgcolor();
+					if($firstTime) $eventrow = '<tr><td class="mod_events_latest_first" style="'.$dst.'">%s'."</td></tr>\n";
+					else $eventrow = '<tr><td class="mod_events_latest" style="'.$dst.'">%s'."</td></tr>\n";
+
+					$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : $eventrow;
+					$content .= str_replace("%s", $eventcontent , $templaterow);
+
 					$firstTime=false;
 				} // end of foreach
 			} // end of foreach
@@ -99,8 +104,8 @@ class AlternativeModLatestView extends DefaultModLatestView
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1)){
 			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
-			$templatetrow = $this->modparams->get("modlatest_templatetrow") ? $this->modparams->get("modlatest_templatetrow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
-			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templatetrow);
+			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
+			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
 			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 
