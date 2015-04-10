@@ -408,12 +408,12 @@ class jEventCal {
 		if (is_array($data)){
 			$res = array();
 			foreach ($data  as $cat){
-				$res[] = $cat->name;
+				$res[] = strpos($cat->name,"JEV_")===0 ? JText::_($cat->name) : $cat->name;
 			}
 			return implode(", ", $res);
 		}
 		if ($data) {
-			return $data->name;
+			return strpos($data->name,"JEV_")===0 ? JText::_($data->name) : $data->name;
 		}
 		return "";
 	}
