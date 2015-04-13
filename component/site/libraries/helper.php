@@ -910,21 +910,35 @@ class JEVHelper
 				if (!$authorisedonly)
 				{
 					$juser = JFactory::getUser();
-					$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-					// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
-					if (false)
-					{
-						if (!$isEventCreator)
-						{
-							$cats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-							if (count($cats) > 0)
-							{
-								$isEventCreator = true;
+
+					if ($params->get("category_allow_deny",1)==0){
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id")){
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							$juser = JFactory::getUser();
+							if (count($okcats)){
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventCreator = true;
+								}
 							}
 						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+						//echo "time taken = ". round($time_end -  $time_start, 4)."<Br/>";
+						//if ($isEventCreator) return $isEventCreator;
 					}
 					else
 					{
+						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
 						if ($isEventCreator)
 						{
 							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
@@ -994,6 +1008,8 @@ class JEVHelper
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}
+		if (is_null($isEventCreator)) $isEventCreator = false;
+
 		return $isEventCreator;
 
 	}
