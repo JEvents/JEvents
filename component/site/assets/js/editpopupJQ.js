@@ -62,6 +62,8 @@ function jevEditPopupNoTitle(url){
 }
 
 function launchModal(selector, url) {
+	// clear existing frame first
+	jQuery('iframe').attr("src","about:blank");
 	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (bootstrap3_enabled){
