@@ -617,3 +617,13 @@ table.ev_navtable tr {vertical-align:top; }
 .jev_version .update_text {display:block;width:100%;}
 .jev_version .update_cur_ver {display:block; width:100%;}
 
+/* Only for sites that want a max size for the popup! */
+
+@media (min-width: 1200px){
+	#myEditModal.modal {
+		left: 50%;
+		margin-left: -550px;
+		max-width: 1100px;
+	}
+}
+
