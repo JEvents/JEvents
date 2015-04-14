@@ -46,16 +46,14 @@
 		<filename>mod.defines.php</filename>
 		<filename>router.php</filename>
 	</files>
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB.com_jevents.ini</language>
+    </languages>
     <media folder="media" destination="com_jevents">
 		<folder>css</folder>
+        <folder>images</folder>
 		<folder>js</folder>
-		<folder>images</folder>
 	</media>
-	<languages folder="site/language">
-		<language tag="en-GB">en-GB.com_jevents.ini</language>
-	</languages>
-	<media />
-
 	<administration>
 		<menu>com_jevents</menu>
 
