@@ -16,7 +16,12 @@ class com_jeventsInstallerScript
 	
 	function install($parent)
 	{
-		
+		if (version_compare(PHP_VERSION, '5.3.10', '<'))
+		{
+			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			return false;
+		}
+
 		$this->createTables();
 
 		$this->updateTables();
@@ -82,6 +87,12 @@ class com_jeventsInstallerScript
 
 	function update($parent)
 	{
+		if (version_compare(PHP_VERSION, '5.3.10', '<'))
+		{
+			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			return false;
+		}
+
 		$this->createTables();
 		
 		$this->updateTables();

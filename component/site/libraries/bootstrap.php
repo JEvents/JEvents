@@ -280,11 +280,11 @@ class JevHtmlBootstrap
 	 */
 	public static function modal($selector = 'modal', $params = array())
 	{
-		if (version_compare(JVERSION, "3.0", "ge")) {
+		// Core Joomla modal doesn't handle the grey background problem so we don't use it !!
+		if (false && version_compare(JVERSION, "3.0", "ge")) {
 			JHtml::_('bootstrap.modal', $selector, $params);
 			return;
 		}
-
 
 		$sig = md5(serialize(array($selector, $params)));
 
@@ -299,12 +299,18 @@ class JevHtmlBootstrap
 			$options = json_encode($opt); //JHtml::getJSObject($opt);
 
 			// Attach the modal to document
+			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
 			JFactory::getDocument()->addScriptDeclaration(
-				"(function($){
+				"jQuery(document).ready(function($) {
 					if ($('#$selector')) {
-						$('#$selector').modal($options);
+						// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
+							$('#$selector').removeClass('hide');
+						}
+						//$('#$selector').appendTo('body').modal($options);
 					}
-				})(jQuery);"
+				});"
 			);
 
 			// Set static array
