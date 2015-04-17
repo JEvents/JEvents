@@ -20,7 +20,9 @@ $cfg = JEVConfig::getInstance();
 $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
-JHtml::_('bootstrap.framework');
+if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
+	JHtml::_('bootstrap.framework');
+}
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');

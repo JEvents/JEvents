@@ -413,18 +413,18 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
-#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto;padding-right: 0px!important;}
+#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;}
 #jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 #jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
 #jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
 #jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
-.action_dialogJQ {   max-width: 300px; bottom:auto;;padding-right: 0px!important;}
-.action_dialogJQ a {text-decoration:none; line-height:28px;}
-.action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
-.action_dialogJQ #publish_reccur img, .action_dialogJQ #edit_reccur img, .action_dialogJQ #edit_event img, .action_dialogJQ #edit_eventcopy img, .action_dialogJQ #delete_repeat img, .action_dialogJQ #delete_eventfuture img, .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+#jevents_body .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;}
+#jevents_body .action_dialogJQ a {text-decoration:none; line-height:28px;}
+#jevents_body .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+#jevents_body .action_dialogJQ #publish_reccur img, #jevents_body .action_dialogJQ #edit_reccur img, #jevents_body .action_dialogJQ #edit_event img, #jevents_body .action_dialogJQ #edit_eventcopy img, #jevents_body .action_dialogJQ #delete_repeat img, #jevents_body .action_dialogJQ #delete_eventfuture img, #jevents_body .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 #jevents img.jev_ev_sml,  #jevents_body  img.jev_ev_sml {height:24px; text-align:center;}
-.action_dialogJQ .modal-body , .action_dialogJQ .modal-header {text-align: left;}
+#jevents_body .action_dialogJQ .modal-body , #jevents_body .action_dialogJQ .modal-header {text-align: left;}
 #jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents_body .ical_dialogJQ, #jevents_body  .action_dialogJQ {  text-align: left;}
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
@@ -574,6 +574,7 @@ table.ev_navtable tr {vertical-align:top; }
 	width:99.5%;
 	border:none;
 	height:100%;
+	max-height:100%;
 }
 #myEditModal .modal-dialog {
     height: 100%;
@@ -584,7 +585,7 @@ table.ev_navtable tr {vertical-align:top; }
 	 height: 100%;
    width:auto;
  }
-.action_dialogJQ .modal-dialog, .ical_dialogJQ .modal-dialog {
+#jevents_body .action_dialogJQ .modal-dialog, #jevents_body .ical_dialogJQ .modal-dialog {
    width:auto;
    margin:0px;
 }
@@ -599,17 +600,17 @@ table.ev_navtable tr {vertical-align:top; }
 
 
 /* Backwards compatible CSS for old club layouts */
-#ical_dialog {position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;}
-#ical_dialog a {text-decoration:none;}
-#ical_dialog img {border:0px;margin-right:1em;height:16px;}
-#ical_dialog .ical_dialog_close {width:12px!important;float:right;background-color:#ffffff;;border:solid #000000;border-width:0 0 1px 1px;text-align:center;margin:-10px;}
-#ical_dialog .ical_dialog_close a {font-weight:bold;text-decoration:none;color:#000000;}
-#ical_dialog #unstyledical {padding:0px;margin:0px;}
-#ical_dialog #styledical {padding:0px;margin:0px;display:none;}
+#jevents_body #ical_dialog {position:absolute;right:0px;background-color:#dedede;border:solid 1px #000000;width:200px;padding:10px;visibility:hidden;z-index:999;}
+#jevents_body #ical_dialog a {text-decoration:none;}
+#jevents_body #ical_dialog img {border:0px;margin-right:1em;height:16px;}
+#jevents_body #ical_dialog .ical_dialog_close {width:12px!important;float:right;background-color:#ffffff;;border:solid #000000;border-width:0 0 1px 1px;text-align:center;margin:-10px;}
+#jevents_body #ical_dialog .ical_dialog_close a {font-weight:bold;text-decoration:none;color:#000000;}
+#jevents_body #ical_dialog #unstyledical {padding:0px;margin:0px;}
+#jevents_body #ical_dialog #styledical {padding:0px;margin:0px;display:none;}
 
-#action_dialog a {text-decoration:none;}
-#action_dialog .close_dialog a {font-weight:bold;color:#000000;}
-#action_dialog #publish_reccur img, #action_dialog #edit_reccur img, #action_dialog #edit_event img, #action_dialog #edit_eventcopy img, #action_dialog #delete_repeat img, #action_dialog #delete_eventfuture img, #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+#jevents_body #action_dialog a {text-decoration:none;}
+#jevents_body #action_dialog .close_dialog a {font-weight:bold;color:#000000;}
+#jevents_body #action_dialog #publish_reccur img, #jevents_body #action_dialog #edit_reccur img, #jevents_body  #action_dialog #edit_event img, #jevents_body  #action_dialog #edit_eventcopy img, #jevents_body #action_dialog #delete_repeat img, #jevents_body #action_dialog #delete_eventfuture img, #jevents_body #action_dialog #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 
 #jevents ul.actions li {list-style: none;float:right;}
 

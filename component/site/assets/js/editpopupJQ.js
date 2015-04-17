@@ -4,12 +4,10 @@ function jevEditPopup(url){
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
-		
 	}
 	addEditModalHtml();
 	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
 	jQuery('#myEditModal .modal-header').css({  'display':'block'});
-
 	jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"))
 	//jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'});
 	launchModal('#myEditModal',url);
@@ -24,7 +22,6 @@ function jevEditPopupNoHeader(url){
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
-
 	}
 	addEditModalHtml();
 
@@ -44,12 +41,8 @@ function jevEditPopupNoTitle(url){
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
-
 	}
 	addEditModalHtml();
-
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 
 	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
 	jQuery('#myEditModal .modal-body').css({  'top':'5px'});
@@ -62,8 +55,6 @@ function jevEditPopupNoTitle(url){
 }
 
 function launchModal(selector, url) {
-	// clear existing frame first
-	jQuery('iframe').attr("src","about:blank");
 	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (bootstrap3_enabled){
@@ -84,7 +75,7 @@ function launchModal(selector, url) {
 
 function addEditModalHtml (){
 	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');	
+	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (!document.getElementById("myEditModal")){
 		if (bootstrap3_enabled){
 			myEditModal = '<div class="modal   fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
@@ -127,7 +118,7 @@ function jevImportPopup(url){
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
-		
+
 	}
 	addImportPopupHtml();
 
@@ -136,7 +127,7 @@ function jevImportPopup(url){
 	//jQuery('#myImportModal .modal-header').css({  'display':'block'});
 
 	launchModal('#myImportModal',url);
-	
+
 	return;
 }
 

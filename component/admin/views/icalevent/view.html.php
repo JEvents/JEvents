@@ -305,6 +305,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				$users = $db->loadObjectList();
 			}
 
+			// get list of creators - if fewer than 200
+			if (count($users)>200) {
+				return null;
+			}
+
 			$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
 			foreach ($users as $user)
 			{

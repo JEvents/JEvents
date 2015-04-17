@@ -38,8 +38,9 @@ function DefaultViewHelperViewNavAdminPanel($view)
 				// Load Bootstrap
 				if (JevJoomlaVersion::isCompatible("3.0")  )
 				{
-					JHtml::_('bootstrap.framework');
-
+					if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
+						JHtml::_('bootstrap.framework');
+					}
 					JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 				}
 				else {
