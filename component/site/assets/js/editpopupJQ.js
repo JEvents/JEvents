@@ -59,14 +59,14 @@ function launchModal(selector, url) {
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (bootstrap3_enabled){
 		jQuery(selector).on('shown.bs.modal', function () {
-			jQuery('iframe').attr("src","about:blank");
-			jQuery('iframe').attr("src",url);
+			jQuery(selector+' iframe').attr("src","about:blank");
+			jQuery(selector+' iframe').attr("src",url);
 		});
 	}
 	else {
 		jQuery(selector).on('shown', function () {
-			jQuery('iframe').attr("src","about:blank");
-			jQuery('iframe').attr("src",url);
+			jQuery(selector+' iframe').attr("src","about:blank");
+			jQuery(selector+' iframe').attr("src",url);
 		});
 	}
 	jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
