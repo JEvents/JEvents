@@ -99,19 +99,19 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
 
         <div class="control-group">
             <div class="control-label">
-                <?php echo JText::_("Select_Default_Category"); ?>
+                <?php echo JText::_('JEV_EVENT_ACCESSLEVEL'); ?>
             </div>
             <div class="controls">
-                <?php echo JEventsHTML::buildCategorySelect($catid, "", null, $this->with_unpublished_cat, true, 0, 'catid'); ?>
+                <?php echo $glist; ?>
             </div>
         </div>
 
         <div class="control-group">
             <div class="control-label">
-                <?php echo JText::_('JEV_EVENT_ACCESSLEVEL'); ?>
+                <?php echo JText::_("JEV_FALLBACK_CATEGORY"); ?>
             </div>
             <div class="controls">
-                <?php echo $glist; ?>
+                <?php echo JEventsHTML::buildCategorySelect($catid, "", null, $this->with_unpublished_cat, true, 0, 'catid'); ?>
             </div>
         </div>
 
