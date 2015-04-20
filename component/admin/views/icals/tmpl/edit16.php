@@ -88,7 +88,7 @@ echo JEventsHTML::buildScriptTag('end');
         <td><?php echo $this->users;?>        </td>
 	</tr>
 	<tr>
-    	<td style="font-weight:bold" >        <?php echo JText::_("Select_Default_Category");?></td>
+    	<td style="font-weight:bold" >        <?php echo JText::_("JEV_FALLBACK_CATEGORY");?></td>
         <td><?php echo JEventsHTML::buildCategorySelect($catid ,"", null, $this->with_unpublished_cat, true,0,'catid'); ?>        </td>
 	</tr>
 	<tr>

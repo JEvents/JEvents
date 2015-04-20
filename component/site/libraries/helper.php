@@ -570,7 +570,60 @@ class JEVHelper
 			echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
 		}
 		else {
-			echo JHtml::_('calendar', $value, $fieldname, $fieldid, $format, $attributes);
+			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
+			// Joomla 2.5 can't cope with d/m/y format !!!
+			static $done;
+
+			if ($done === null)
+			{
+				$done = array();
+			}
+
+			$readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
+			$disabled = isset($attributes['disabled']) && $attributes['disabled'] == 'disabled';
+
+			$attributes = JArrayHelper::toString($attributes);
+
+			if (!$readonly && !$disabled)
+			{
+				// Load the calendar behavior
+				JHtml::_('behavior.calendar');
+				JHtml::_('behavior.tooltip');
+
+
+				// Only display the triggers once for each control.
+				if (!in_array($fieldid, $done))
+				{
+					$document = JFactory::getDocument();
+					$document
+						->addScriptDeclaration(
+						'window.addEvent(\'domready\', function() {Calendar.setup({
+					// Id of the input field
+					inputField: "' . $fieldid . '",
+					// Format of the input field
+					ifFormat: "' . $format . '",
+					// Trigger for the calendar (button ID)
+					button: "' . $fieldid . '_img",
+					// Alignment (defaults to "Bl")
+					align: "Tl",
+					singleClick: true,
+					firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+					});});'
+					);
+					$done[] = $fieldid;
+				}
+				echo  '<input type="text" title="' .  $value. '" name="' . $fieldname . '" id="' . $fieldid
+					. '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $attributes . ' />'
+					. JHtml::_('image', 'system/calendar.png', JText::_('JLIB_HTML_CALENDAR'), array('class' => 'calendar', 'id' => $fieldid . '_img'), true);
+			}
+			else
+			{
+				echo  '<input type="text" title="' . $value 
+					. '" value="' . $value  . '" ' . $attributes
+					. ' /><input type="hidden" name="' . $fieldname . '" id="' . $fieldid . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" />';
+			}
+
+			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
 		}
 
 	}
@@ -910,21 +963,35 @@ class JEVHelper
 				if (!$authorisedonly)
 				{
 					$juser = JFactory::getUser();
-					$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-					// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
-					if (false)
-					{
-						if (!$isEventCreator)
-						{
-							$cats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-							if (count($cats) > 0)
-							{
-								$isEventCreator = true;
+
+					if ($params->get("category_allow_deny",1)==0){
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id")){
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							$juser = JFactory::getUser();
+							if (count($okcats)){
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventCreator = true;
+								}
 							}
 						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+						//echo "time taken = ". round($time_end -  $time_start, 4)."<Br/>";
+						//if ($isEventCreator) return $isEventCreator;
 					}
 					else
 					{
+						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
 						if ($isEventCreator)
 						{
 							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
@@ -994,6 +1061,8 @@ class JEVHelper
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}
+		if (is_null($isEventCreator)) $isEventCreator = false;
+
 		return $isEventCreator;
 
 	}
@@ -1020,6 +1089,23 @@ class JEVHelper
 			if ($user->authorise('core.create', 'com_jevents'))
 				return true;
 			$allowedcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.create');
+
+			// anon user event creation
+			if ($user->id == 0 && count($allowedcats)==0){
+				$jevtask = JRequest::getString("task");
+				// This allows savenew through too!
+				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
+				{
+					JRequest::setVar("task", "icalevent.edit");
+					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
+					$catids = implode(",", $catids);
+					$dispatcher = JDispatcher::getInstance();
+					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
+					$allowedcats = explode(",", $catids);
+					JRequest::setVar("task", $jevtask);
+				}
+			}
+
 			if (!in_array($row->_catid, $allowedcats))
 			{
 				return false;

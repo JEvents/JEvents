@@ -34,7 +34,9 @@ $registry = JRegistry::getInstance("jevents");
 
 if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
-	JHtml::_('bootstrap.framework');
+	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
+		JHtml::_('bootstrap.framework');
+	}
         // jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
         JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){

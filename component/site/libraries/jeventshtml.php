@@ -257,6 +257,14 @@ class JEventsHTML
 			}
 			$options = array_values($options);
 		}
+
+		// translate where appropriate
+		$count = count($options);
+		for ($o = 0; $o < $count; $o++)
+		{
+			$options[$o]->text = strpos($options[$o]->text,"JEV_")===0 ? JText::_($options[$o]->text) : $options[$o]->text;
+		}
+
 		// Thanks to ssobada
 		// when editing events we restrict the available list!
 		$jevtask = JRequest::getString("jevtask");
@@ -337,7 +345,7 @@ class JEventsHTML
 			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
 
 			// allow anon-user event creation through
-			if (isset($user->id))
+			if (isset($user->id) && $user->id>0)
 			{
 				$count = count($options);
 				for ($o = 0; $o < $count; $o++)

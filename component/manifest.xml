@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.2.9</version>
+	<version>3.2.10</version>
 	<description>Events, meetings and more</description>
 
 	<scriptfile>install.php</scriptfile>
@@ -46,16 +46,14 @@
 		<filename>mod.defines.php</filename>
 		<filename>router.php</filename>
 	</files>
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB.com_jevents.ini</language>
+    </languages>
     <media folder="media" destination="com_jevents">
 		<folder>css</folder>
+        <folder>images</folder>
 		<folder>js</folder>
-		<folder>images</folder>
 	</media>
-	<languages folder="site/language">
-		<language tag="en-GB">en-GB.com_jevents.ini</language>
-	</languages>
-	<media />
-
 	<administration>
 		<menu>com_jevents</menu>
 
