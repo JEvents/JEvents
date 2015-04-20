@@ -345,7 +345,7 @@ class JEventsHTML
 			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
 
 			// allow anon-user event creation through
-			if (isset($user->id))
+			if (isset($user->id) && $user->id>0)
 			{
 				$count = count($options);
 				for ($o = 0; $o < $count; $o++)

@@ -80,7 +80,7 @@ $fullspan = 12;
 				$db = JFactory::getDbo ();
 				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' " );
 				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
+				if (false && $is_enabled) {
 					$link = "index.php?option=com_jevlocations&task=cpanel.cpanel";
 					JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
 
