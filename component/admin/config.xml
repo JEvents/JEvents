@@ -109,6 +109,10 @@
 
 		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC' difficulty="1"/>
 		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="1"/>
+		<field name="category_allow_deny" type="list" default="1" menu="hide" label='CATEGORY_PERMISSION_MODEL'  description='CATEGORY_PERMISSION_MODEL_DESC' difficulty="3">
+			<option value="1">JEV_ALLOW_OVERALL_BLOCK_BY_CATEGORY</option>
+			<option value="0">JEV_INHERIT_OVERALL_ALLOW_BY_CATEGORY</option>
+		</field>
 	</fieldset>
 		
 	

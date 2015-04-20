@@ -396,7 +396,7 @@ if (!empty($this->icalEvents))
 $html .= "END:VCALENDAR";
 
 // clear out any rubbish
-ob_end_clean();
+@ob_end_clean();
 echo $html;
 
 exit();
