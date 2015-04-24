@@ -42,6 +42,22 @@ class JEventsHelper
 						. '}';
 			}
 			$doc->addStyleDeclaration($hide_options);
+			// Category styling 
+			$style = <<<STYLE
+#categoryList td.center a {
+    border:none;
+}
+STYLE;
+			JFactory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
+			$categories = JFactory::getDbo()->loadObjectList('id');
+			foreach ($categories as $cat){
+				$catparams = new JRegistry($cat->params);
+				if ($catparams->get("catcolour")) {
+					$style .=  "tr[item-id='$cat->id'] a {  border-left:solid 3px  ".$catparams->get("catcolour").";padding-left:5px;}\n";
+				}
+			}
+
+			$doc->addStyleDeclaration($style);
 		}
 
 		if ($vName == "")

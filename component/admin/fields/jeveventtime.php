@@ -49,7 +49,7 @@ class JFormFieldJeveventtime extends JFormField
 		</div>
 		<div  id="<?php echo $partname;?>_12h_area"  class="jev_inline">
 			<input class="inputbox" type="text" name="<?php echo $partname;?>_12h" id="<?php echo $partname;?>_12h" size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value="" onchange="check12hTime(this);" />
-			<div class="radio <?php echo $btngroup;?> " id="<?php echo $partname;?>_ampm"  style="display:inline;">
+			<div class="radio <?php echo $btngroup;?> " id="<?php echo $partname;?>_ampm" >
 				<label for="<?php echo $partname;?>AM" class="radio <?php echo $btn;?>">
 					<input type="radio" name="<?php echo $partname;?>_ampm" id="<?php echo $partname;?>AM" value="none" <?php echo $h<=12?'checked="checked"':'';?> onclick="toggleAMPM('<?php echo $partname;?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo JText::_('JEV_AM'); ?>

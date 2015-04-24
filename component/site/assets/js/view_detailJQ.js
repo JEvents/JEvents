@@ -45,6 +45,9 @@ function jevSetupAddLink() {
 
 jevjq(document).on('ready', function() {
 	jevSetupAddLink();
+	// move dialog to main body because some template wrap it in a relative positioned element
+	jQuery(".action_dialogJQ").appendTo("body");
+	jQuery(".ical_dialogJQ").appendTo("body");
 });
 
 
