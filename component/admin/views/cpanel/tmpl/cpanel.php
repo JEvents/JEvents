@@ -71,6 +71,9 @@ $fullspan = 12;
 					// Support Info
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
 					$this->_quickiconButtonWHover($link, "cpanel/SupportCool.png", "cpanel/SupportHot.png", JText::_('SUPPORT_INFO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					//Manage Addons
+					//$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.addons";
+					//$this->_quickiconButtonWHover($link, "cpanel/JEventsAddonsCool.png", "cpanel/JEventsAddonsHot.png", JText::_('JEV_MANAGE_ADDONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');
 					//Project News
 					$link = "https://www.jevents.net/news";
 					$this->_quickiconButtonWHover($link, "cpanel/NewsCool.png", "cpanel/NewsHot.png", JText::_('JEV_NEWS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/", '_blank');

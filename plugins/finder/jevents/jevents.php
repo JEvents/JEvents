@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright   copyright (C) 2012-2015 GWE Systems Ltd - All rights reserved
- * 
+ *
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -79,22 +79,37 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$this->loadLanguage();
 	}
 
-	
+	/*
 	public function onStoreCustomDetails($evdetail)
 	{
+		// Only use this method when editing and saving a specific repeat
+		if (JRequest::getCmd("task")!="icalrepeat.save" && JRequest::getCmd("task")!="icalrepeat.apply" ){
+			return true;
+		}
 		$detailid = $evdetail->evdet_id;
 
 		// Reindex the item
 		$this->reindex($detailid);
 		return true;
-
 	}
-	
+	 */
+
+	public function onAfterSaveEvent (&$vevent, $dryrun) {
+		if ($dryrun || !isset($vevent->detail_id) || $vevent->detail_id==0){
+			return;
+		}
+		$detailid = $vevent->detail_id;
+
+		// Reindex the item
+		$this->reindex($detailid);
+		return true;
+	}
+
 	private function findEventFromDetail($evdetail)
 	{
-		
+
 	}
-	
+
 	/**
 	 * Method to remove the link information for items that have been deleted.
 	 *
@@ -230,8 +245,11 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$itemid= $this->params->get("target_itemid",0);
 		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;//$this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;
-		
+
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
+
+		$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;
+		$item->publish_end_date	= "2099-12-31 00:00:00" ;
 
 		// title is already set
 		//$item->title;
@@ -302,15 +320,15 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->select('evt.catid, evt.icsid, evt.created_by, evt.access ');
 		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 		$sql->select('u.name AS author');
-		
+
 		$sql->from('#__jevents_vevdetail AS det');
 		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
-		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');	
-		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');	
+		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
+		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
 		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
 		return $sql;
 	}
-	
+
 	/**
 	 * Method to get a event item to index.
 	 *
@@ -332,7 +350,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// Get the item to index.
 		$this->db->setQuery($sql);
 		$row = $this->db->loadAssoc();
-
+		$query = (string)$this->db->getQuery();
 		// Check for a database error.
 		if ($this->db->getErrorNum())
 		{
@@ -351,8 +369,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		return $item;
 	}
-	
-	
+
+
 	/**
 	 * Method to get a SQL query to load the published and access states for
 	 * an article and category.
@@ -377,5 +395,5 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		return $sql;
 	}
-	
+
 }

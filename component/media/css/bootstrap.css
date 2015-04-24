@@ -912,7 +912,7 @@
 #jevents .jevbootstrap input[type="color"],
 #jevents .jevbootstrap .uneditable-input {
 	display: inline-block;
-	height: 20px;
+	height: 21px;
 	padding: 4px 6px;
 	margin-bottom: 10px;
 	font-size: 14px;
@@ -922,6 +922,7 @@
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+	box-sizing: content-box;
 }
 #jevents .jevbootstrap input,
 #jevents .jevbootstrap textarea,
