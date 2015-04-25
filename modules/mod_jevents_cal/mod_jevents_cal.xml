@@ -63,7 +63,7 @@
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
-					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispLastMonthDays" type="jevtext" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1" />
 				<field name="modcal_DispNextMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" conditional="modcal_useLocalParam" conditions="1" >
@@ -71,7 +71,7 @@
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
-					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
+					<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
 				</field>
 				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam" conditions="1" />
                                 <field name="emptydaylinks" type="jevboolean" class="btn-group"  default="1" label="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS" description="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS_DESC" conditional="modcal_useLocalParam" conditions="1" />
