@@ -45,9 +45,13 @@ function jevSetupAddLink() {
 
 jevjq(document).on('ready', function() {
 	jevSetupAddLink();
-	// move dialog to main body because some template wrap it in a relative positioned element
-	jQuery(".action_dialogJQ").appendTo("body");
-	jQuery(".ical_dialogJQ").appendTo("body");
+	// move dialog to main body because some template wrap it in a relative positioned element - wrapped to ensure our namespaced bootstrap picks it up!
+	var wrap = jQuery("<div>", {id:"jevents"});
+	wrap.appendTo("body");
+	var subwrap = jQuery("<div>", {class:"jevbootstrap"});
+	subwrap.appendTo(wrap);
+	jQuery(".action_dialogJQ").appendTo(subwrap);
+	jQuery(".ical_dialogJQ").appendTo(subwrap);
 });
 
 

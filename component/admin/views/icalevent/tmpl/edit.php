@@ -205,11 +205,24 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-				var editorElement = jevjq('jevcontent');
-				if (editorElement)
+				var editorElement = jevjq('#jevcontent');
+				if (editorElement.length)
 				{
 					<?php
-					echo $this->editor->save('jevcontent');
+					$editorcontent = $this->editor->save('jevcontent');
+					if (!$editorcontent ) {
+						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
+						$editorcontent = $this->editor->getContent('jevcontent');
+						echo "var editorcontent =".$editorcontent."\n";
+						?>
+						try {
+							jevjq('#jevcontent').html(editorcontent);
+						}
+						catch (e) {
+						}
+						<?php 
+					}
+					echo $editorcontent;
 					?>
 				}
 				try {
@@ -233,11 +246,9 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				else if (form.valid_dates.value == "0") {
 					alert("<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
 				}
+				 else {
 
-
- else {
-
-					if (editorElement)
+					if (editorElement.length)
 					{
 <?php
 // in case editor is toggled off - needed for TinyMCE
