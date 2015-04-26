@@ -439,7 +439,7 @@ table.ev_navtable tr {vertical-align:top; }
 .choosecat #othercats {display:none;max-height:100px;overflow-y:auto;}
 .choosecat .chooseyear {float:left;width:300px;}
 .choosecat #otheryear {display:none;max-height:100px;overflow-y:auto;}
-.buttonheading {height:24px;display:inline-block;}
+.buttonheading {width:24px;height:24px;display:inline-block;}
 #jumpto {margin: 10px 0;}
 /* global simple individual styles */
 .vtop {vertical-align:top;}
