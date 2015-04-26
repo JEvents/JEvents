@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	description longtext NOT NULL ,
 	geolon float NOT NULL default 0,
 	geolat float NOT NULL default 0,
-	location VARCHAR(120) NOT NULL default "",
+	location VARCHAR(500) NOT NULL default "",
 	priority tinyint unsigned NOT NULL default 0,
 	status varchar(20) NOT NULL default "",
 	summary longtext NOT NULL ,

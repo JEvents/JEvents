@@ -479,7 +479,7 @@ echo "</div>";
 				if (count($res) == 0 || !$res[0])
 				{
 					?>
-								<input class="inputbox" type="text" name="location" size="80" maxlength="120" value="<?php echo JEventsHtml::special($this->row->location()); ?>" />
+								<input class="inputbox" type="text" name="location" size="80" maxlength="500" value="<?php echo JEventsHtml::special($this->row->location()); ?>" />
 					<?php
 				}
 				?>
