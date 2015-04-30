@@ -103,6 +103,21 @@
   text-align:center;
 }
 
+/* Latest Events */
+.jevbootstrap .mod_events_latest_date , .jevbootstrap .mod_events_latest_content {
+	line-height:14px;
+	margin-top: 1px;
+	vertical-align: text-top;
+}
+.jevbootstrap [class^="icon-"], .jevbootstrap [class*=" icon-"] {
+	margin-right:3px;
+}
 .mod_events_link {
 	cursor:pointer;
+}
+.mod_events_latest_table tr {
+    border-bottom: 1px solid #ccc;
+}
+.mod_events_latest_table td {
+    padding: 3px 0;
 }

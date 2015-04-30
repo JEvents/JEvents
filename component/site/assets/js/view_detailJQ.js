@@ -50,8 +50,8 @@ jevjq(document).on('ready', function() {
 	wrap.appendTo("body");
 	var subwrap = jQuery("<div>", {class:"jevbootstrap"});
 	subwrap.appendTo(wrap);
-	jQuery(".action_dialogJQ").appendTo(subwrap);
-	jQuery(".ical_dialogJQ").appendTo(subwrap);
+	if (jQuery(".action_dialogJQ").length) jQuery(".action_dialogJQ").appendTo(subwrap);
+	if (jQuery(".ical_dialogJQ").length) jQuery(".ical_dialogJQ").appendTo(subwrap);
 });
 
 

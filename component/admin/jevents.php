@@ -40,21 +40,23 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
 	JHtml::_('behavior.framework', true);
 	JHtml::_('bootstrap.framework');
+	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}
 }
-else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-	// Make loading this conditional on config option
+else {
+	// Make loading this conditional on config option ??
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	//JFactory::getDocument()->addScript("//www.google.com/jsapi");
+	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
+	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+	 JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
 	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	//JEVHelper::script("components/com_jevents/assets/js/bootstrap.min.js");
-	//JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	}
 }
 
 $registry	= JRegistry::getInstance("jevents");
