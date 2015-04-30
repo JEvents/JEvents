@@ -9,34 +9,35 @@ function checkJQ() {
 }
 checkJQ();
 
-// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-
 // workaround for tooltips and popovers failing when MooTools is enabled with Bootstrap 3
 // See http://www.mintjoomla.com/support/community-forum/user-item/1833-braza/48-cobalt-8/2429.html?start=20
-if(window.MooTools && bootstrap3_enabled) {
-	var mHide = Element.prototype.hide;
-	var mSlide = Element.prototype.slide;
+jQuery(document).on('ready', function() {
+	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 
-	Element.implement({
+	if(window.MooTools && bootstrap3_enabled) {
+		var mHide = Element.prototype.hide;
+		var mSlide = Element.prototype.slide;
+
+		Element.implement({
+
+			hide: function () {
+				if (this.is("[rel=tooltip]")) {
+					return this;
+				}
+				mHide.apply(this, arguments);
+			},
 
 
-		hide: function () {
-			if (this.is("[rel=tooltip]")) {
-				return this;
+			slide: function (v) {
+				if (this.hasClass("carousel")) {
+					return this;
+				}
+				mSlide.apply(this, v);
 			}
-			mHide.apply(this, arguments);
-		},
-
-
-		slide: function (v) {
-			if (this.hasClass("carousel")) {
-				return this;
-			}
-			mSlide.apply(this, v);
-		}
-	});
-}
+		});
+	}
+});
 /*
  * var jevjq = {};
 

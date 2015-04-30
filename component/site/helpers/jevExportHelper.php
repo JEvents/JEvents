@@ -53,7 +53,14 @@ class JevExportHelper {
 	static function getEventStringArray($row)
 	{
 		$urlString['title'] = urlencode($row->title());
-		$urlString['dates'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime())."/".JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$tz = $params->get("icaltimezonelive", "");
+		if ($tz){
+			$urlString['dates'] = JevDate::strftime("%Y%m%dT%H%M%S",$row->getUnixStartTime())."/".JevDate::strftime("%Y%m%dT%H%M%S",$row->getUnixEndTime())."&ctz=".$tz;		
+		}
+		else {
+			$urlString['dates'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime())."/".JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());		
+		}
 		$urlString['st'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime());
 		$urlString['et'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());
 		$urlString['duration'] = (int)$row->getUnixEndTime() - (int)$row->getUnixStartTime();
