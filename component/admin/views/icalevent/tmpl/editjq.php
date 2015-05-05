@@ -176,9 +176,22 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				var editorElement = $('jevcontent');
 				if (editorElement)
 				{
-					<?php
-					echo $this->editor->save('jevcontent');
-					?>
+				   <?php
+				   $editorcontent = $this->editor->save('jevcontent');
+				   if (!$editorcontent ) {
+					  // These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
+					  $editorcontent = $this->editor->getContent('jevcontent');
+					  echo "var editorcontent =".$editorcontent."\n";
+					  ?>
+					  try {
+						 jQuery('#jevcontent').html(editorcontent);
+					  }
+					  catch (e) {
+					  }
+					  <?php
+				   }
+				   echo $editorcontent;
+				   ?>
 				}
 				try {
 					if (!JevStdRequiredFields.verify(document.adminForm)){
