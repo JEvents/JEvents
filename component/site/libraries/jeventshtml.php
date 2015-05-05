@@ -357,6 +357,19 @@ class JEventsHTML
 				}
 				$options = array_values($options);
 			}
+
+			// Do we disable top level categories
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("blocktoplevelcategories",0)){
+				$count = count($options);
+				for ($o = 0; $o < $count; $o++)
+				{
+					if (strpos($options[$o]->text, "-")!==0)
+					{
+						$options[$o]->disable = true;
+					}
+				}
+			}
 		}
 		else
 		{
