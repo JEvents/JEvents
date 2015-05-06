@@ -16,6 +16,7 @@
 }
 .pane-sliders .adminlist td {
 	border: 0 none;
+
 }
 h3.pane-toggler-down a:focus,
 h3.pane-toggler a:focus {
@@ -249,7 +250,10 @@ div.icon-48-jevents { height: 45px; width:170px; }
 	width:100%;
 	margin-top:10px;
 }
-
+.adminlist.table.table-striped tr:first-child {
+    border-left:1px solid #DDD;
+    border-right: 1px solid #DDD;
+}
 table.versionstatuslist tr:nth-child(odd)		{ background-color:#f5f5f5;}
 table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }
 table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
