@@ -94,7 +94,7 @@ class JevHtmlBootstrap
 		// Attach the alerts to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				if ($('#$selector')){
+				if ($('#$selector').length){
 					$('.$selector').alert();
 				}
 			})(jQuery);"
@@ -128,7 +128,7 @@ class JevHtmlBootstrap
 		// Attach the alerts to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				if ($('#$selector')){
+				if ($('#$selector').length){
 					$('.$selector').button();
 				}
 			})(jQuery);"
@@ -172,7 +172,7 @@ class JevHtmlBootstrap
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
 				"(function($){
-					if ($('#$selector')){
+					if ($('#$selector').length){
 						$('.$selector').carousel($options);
 					}
 				})(jQuery);"
@@ -208,7 +208,7 @@ class JevHtmlBootstrap
 		// Attach the dropdown to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"(function($){
-				if ($('#$selector')){
+				if ($('#$selector').length){
 					$('.$selector').dropdown();
 				}
 			})(jQuery);"
@@ -232,14 +232,15 @@ class JevHtmlBootstrap
 	 */
 	public static function framework($debug = null)
 	{
+		if (JevJoomlaVersion::isCompatible("3.0")){
+			JHtmlBootstrap::framework($debug);
+			return;
+		}
 		// Only load once
 		if (!empty(static::$loaded[__METHOD__]))
 		{
 			return;
-	}
-
-		// Load jQuery
-		//JevHtmlJquery::framework();
+		}
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -257,7 +258,16 @@ class JevHtmlBootstrap
 			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
 		}
 */
-			JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
+		// Make loading this conditional on config option ??
+		JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+
+		//JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
+
+		// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
+		//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+
+		JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
+		
 		static::$loaded[__METHOD__] = true;
 
 		return;
@@ -302,7 +312,7 @@ class JevHtmlBootstrap
 			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
 			JFactory::getDocument()->addScriptDeclaration(
 				"jQuery(document).ready(function($) {
-					if ($('#$selector')) {
+					if ($('#$selector').length) {
 						// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
 						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
@@ -405,7 +415,7 @@ class JevHtmlBootstrap
 		JFactory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
-				if (jQuery('$selector')){
+				if (jQuery('$selector').length){
 					jQuery('" . $selector . "').popover(" . $options . ");
 				}
 			});"

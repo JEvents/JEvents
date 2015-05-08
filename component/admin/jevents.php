@@ -38,8 +38,9 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
 if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
+	// AIM TO REMOVE THIS - loading of MooTools should not be necessary !!!
 	JHtml::_('behavior.framework', true);
-	JHtml::_('bootstrap.framework');
+	JevHtmlBootstrap::framework();
 	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
@@ -49,9 +50,7 @@ if (JevJoomlaVersion::isCompatible("3.0")){
 else {
 	// Make loading this conditional on config option ??
 	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
-	//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-	 JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
+	JevHtmlBootstrap::framework();
 	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
@@ -60,15 +59,7 @@ else {
 }
 
 $registry	= JRegistry::getInstance("jevents");
-/*
- * frontend only!
-// In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
-if (JevJoomlaVersion::isCompatible("1.6.0")){
-	$newparams	= JFactory::getApplication()->getParams();
-	$component = JComponentHelper::getComponent(JEV_COM_COMPONENT);
-	$component->params =& $newparams;
-}
-*/
+
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
@@ -93,24 +84,6 @@ $user      = JFactory::getUser();
 if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
-
-// Backend of JEvents needs Boostrap and jQuery
-/*
-if (JevJoomlaVersion::isCompatible("3.0")){
-	JHtml::_('jquery.framework');
-	JHtml::_('behavior.framework', true);
-	JHtml::_('bootstrap.framework');
-	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-}
-else {
-	// Make loading this conditional on config option
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	JEVHelper::script("components/com_jevents/assets/js/bootstrap.min.js");
-	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-}
-
-*/
 
 // Must also load frontend language files
 $lang = JFactory::getLanguage();

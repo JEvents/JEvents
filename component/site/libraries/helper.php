@@ -2333,7 +2333,7 @@ class JEVHelper
 		{
 			$conditional = "evlocation";
 		}
-		if (strpos("@", $conditional) >= 0)
+		if (strpos("@", $conditional) !== false)
 		{
 			$conditional = str_replace("@", "_", $conditional);
 		}
