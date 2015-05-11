@@ -509,6 +509,8 @@ function toggleAllDayEvent()
 		sam.disabled=true;
 		spm.disabled=true;
 
+		jQuery('.jevstarttime').css('display','none');
+
 		var sd = temp.getYMD();
 		temp = temp.dateFromYMD(enddate.value);
 		var ed = temp.getYMD();
@@ -524,6 +526,9 @@ function toggleAllDayEvent()
 
 			eam.disabled=true;
 			epm.disabled=true;
+
+			jQuery('.jevendtime').css('display','none');
+
 		}
 	}
 	else {
@@ -535,6 +540,8 @@ function toggleAllDayEvent()
 
 		sam.disabled=false;
 		spm.disabled=false;
+
+		jQuery('.jevstarttime').css('display','inline');
 
 		if (!noendchecked){
 			hide_end.disabled=false;
@@ -550,6 +557,9 @@ function toggleAllDayEvent()
 
 			eam.disabled=false;
 			epm.disabled=false;
+
+			jQuery('.jevendtime').css('display','inline');
+
 		}
 		else {
 			endtime.value=starttime.value;
@@ -563,6 +573,11 @@ function toggleAllDayEvent()
 		set12hTime(endtime);
 	}
 	updateRepeatWarning();
+
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
 
 }
 
@@ -599,6 +614,8 @@ function toggleNoEndTime(){
 		eam.disabled=true;
 		epm.disabled=true;
 
+		jQuery('.jevendtime').css('display','none');
+
 		checkTime(endtime);
 	}
 	else {
@@ -611,6 +628,8 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
+		jQuery('.jevendtime').css('display','inline');
+
 	}
 
 	if (document.adminForm.start_12h){
@@ -619,6 +638,12 @@ function toggleNoEndTime(){
 	}
 
 	updateRepeatWarning();
+
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
+
 }
 
 function toggleGreyBackground(inputtype,inputelem, tomatch) {
@@ -893,10 +918,12 @@ function resetYMD(){
 
 
 function updateRepeatWarning(){
-	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
-	if (document.adminForm.updaterepeats && currentFreq!="NONE")
-	{
-		document.adminForm.updaterepeats.value = 1;
+	if (jevjq("input[name=freq]:checked").length){
+		var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
+		if (document.adminForm.updaterepeats && currentFreq!="NONE")
+		{
+			document.adminForm.updaterepeats.value = 1;
+		}
 	}
 }
 
@@ -931,7 +958,7 @@ jQuery.fn.formToJson =  function(){
 		return json;
 	}
 
-function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect){
+function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redirect){
 	var requestObject = {};
 	requestObject.error = false;
 	requestObject.client = client;
@@ -946,9 +973,18 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 	var hasConflicts = false;
 
 	// see http://stackoverflow.com/questions/26620/how-to-set-encoding-in-getjson-jquery
-	jevjq.ajaxSetup({ scriptCharset: "utf-8" , contentType: "application/json; charset=utf-8"});
+	//jevjq.ajaxSetup({ scriptCharset: "utf-8" , contentType: "application/json; charset=utf-8"});
 
-	var jSonRequest = jevjq.getJSON(url, {'json':JSON.stringify(requestObject)})
+	//var jSonRequest = jevjq.getJSON(checkurl, {'json':JSON.stringify(requestObject)})
+
+	var jSonRequest = jevjq.ajax({
+			type : 'POST',
+			dataType : 'json',
+			url : checkurl,
+			data : {'json':JSON.stringify(requestObject)},
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			scriptCharset: "utf-8"
+			})
 		.done(function(json){
 		if (!json){
 			alert('could not check conflicts');
@@ -1008,6 +1044,11 @@ jevjq(document).on('ready', function(){
 	}
 
 	hideEmptyJevTabs();
+});
+
+jevjq(document).on('ready', function(){
+	toggleAllDayEvent();
+	toggleNoEndTime();
 });
 
 // Hide empty tabs and their links
