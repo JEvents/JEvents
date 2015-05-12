@@ -83,11 +83,28 @@ $fullspan = 12;
 				$db = JFactory::getDbo ();
 				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' " );
 				$is_enabled = $db->loadResult ();
-				if (false && $is_enabled) {
-					$link = "index.php?option=com_jevlocations&task=cpanel.cpanel";
+				if ($is_enabled) {
+					$link = "index.php?option=com_jevlocations";
 					JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
-
-					$this->_quickiconButtonWHover($link, "LocationsCool.png", "LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/com_jevlocations/assets/images/");
+					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				}
+				// Managed People
+				$db = JFactory::getDbo ();
+				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' " );
+				$is_enabled = $db->loadResult ();
+				if ($is_enabled) {
+					$link = "index.php?option=com_jevpeople";
+					JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", JText::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				}
+				// RSVP Pro
+				$db = JFactory::getDbo ();
+				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' " );
+				$is_enabled = $db->loadResult ();
+				if ($is_enabled) {
+					$link = "index.php?option=com_rsvppro";
+					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				?>
                 <div class="clear"></div>

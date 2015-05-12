@@ -2919,7 +2919,7 @@ class JEventsDBModel
 		for ($i = 0; $i < $icalcount; $i++)
 		{
 			// convert rows to jIcalEvents
-			$icalrows[$i] = new jIcalEventDB($icalrows[$i]);
+			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 		
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);

@@ -357,6 +357,27 @@ class JEventsHTML
 				}
 				$options = array_values($options);
 			}
+
+			// Do we disable top level categories
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("blocktoplevelcategories",0)){
+				$count = count($options);
+				for ($o = 0; $o < $count; $o++)
+				{
+					if (strpos($options[$o]->text, "-")!==0)
+					{
+						// Do not block if there is a child!  This is a crude test of this
+						if (array_key_exists($o+1, $options) && strpos($options[$o+1]->text, "-")!==0 ){
+							continue;
+						}
+						// If its the last one then it also has no children
+						if (!array_key_exists($o+1, $options)){
+							continue;
+						}
+						$options[$o]->disable = true;
+					}
+				}
+			}
 		}
 		else
 		{

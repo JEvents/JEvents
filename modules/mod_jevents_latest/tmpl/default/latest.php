@@ -73,13 +73,8 @@ class DefaultModLatestView
 	var
 			$catout = null;
 
-	function DefaultModLatestView($params, $modid)
+	function __construct($params, $modid)
 	{
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
-		{
-			$document = JFactory::getDocument();
-			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
-		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
 
@@ -148,6 +143,20 @@ class DefaultModLatestView
 		$this->customFormatStr = $myparam->get('modlatest_CustFmtStr', '');
 		$this->displayRSS = intval($myparam->get('modlatest_RSS', 0));
 		$this->sortReverse = intval($myparam->get('modlatest_SortReverse', 0));
+
+		if ($myparam->get("bootstrapcss", 1)==1)
+		{
+			// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+			JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+			// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+			JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+		}
+
+		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		{
+			$document = JFactory::getDocument();
+			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
+		}
 
 		if ($this->dispMode > 7)
 			$this->dispMode = 0;
@@ -798,14 +807,19 @@ class DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
+		// override global start now setting so that timelimit plugin can use it!
+		$compparams =& JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$startnow = $compparams->get("startnow",0);
+		$compparams->set("startnow",$this->modparams->get("startnow",0));
 		$this->getLatestEventsData();
+		$compparams->set("startnow",$startnow);
 
 		$content = "";
 
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -893,7 +907,7 @@ class DefaultModLatestView
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
 			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
 			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
@@ -1306,7 +1320,7 @@ class DefaultModLatestView
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 									}
-									else
+									else if (isset($formattedparts[2]))
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 									}
@@ -1318,7 +1332,7 @@ class DefaultModLatestView
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 									}
-									else
+									else if (isset($formattedparts[2]))
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 									}
@@ -1350,7 +1364,7 @@ class DefaultModLatestView
 														{
 															$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 														}
-														else
+														else if (isset($formattedparts[2]))
 														{
 															$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 														}

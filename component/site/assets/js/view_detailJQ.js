@@ -50,8 +50,19 @@ jevjq(document).on('ready', function() {
 	wrap.appendTo("body");
 	var subwrap = jQuery("<div>", {class:"jevbootstrap"});
 	subwrap.appendTo(wrap);
-	jQuery(".action_dialogJQ").appendTo(subwrap);
-	jQuery(".ical_dialogJQ").appendTo(subwrap);
+	if (jQuery(".action_dialogJQ").length) {
+		jQuery(".action_dialogJQ").appendTo(subwrap);
+		var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+		if (bootstrap3_enabled && jQuery(".action_dialogJQ").hasClass('hide')){
+			jQuery(".action_dialogJQ").removeClass('hide');
+		}
+	}
+	if (jQuery(".ical_dialogJQ").length) {
+		jQuery(".ical_dialogJQ").appendTo(subwrap);
+		if (bootstrap3_enabled && jQuery(".ical_dialogJQ").hasClass('hide')){
+			jQuery(".ical_dialogJQ").removeClass('hide');
+		}
+	}
 });
 
 

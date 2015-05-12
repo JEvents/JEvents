@@ -23,11 +23,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
-if ($params->get("useboostrap", 1))
-{
-	JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
-	JEVHelper::script("components/com_jevents/assets/js/jquery-migrate.min.js");
-}
+JevHtmlBootstrap::framework();
 
 if ($params->get("bootstrapchosen", 1))
 {
@@ -176,9 +172,22 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				var editorElement = $('jevcontent');
 				if (editorElement)
 				{
-					<?php
-					echo $this->editor->save('jevcontent');
-					?>
+				   <?php
+				   $editorcontent = $this->editor->save('jevcontent');
+				   if (!$editorcontent ) {
+					  // These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
+					  $editorcontent = $this->editor->getContent('jevcontent');
+					  echo "var editorcontent =".$editorcontent."\n";
+					  ?>
+					  try {
+						 jQuery('#jevcontent').html(editorcontent);
+					  }
+					  catch (e) {
+					  }
+					  <?php
+				   }
+				   echo $editorcontent;
+				   ?>
 				}
 				try {
 					if (!JevStdRequiredFields.verify(document.adminForm)){

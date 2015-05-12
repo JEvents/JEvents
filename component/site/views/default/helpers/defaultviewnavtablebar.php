@@ -99,7 +99,7 @@ class DefaultViewNavTableBar
 					}
 					?>
 					<td align="center" class="vtop">
-						<form name="BarNav" action="index.php" method="get">
+						<form name="BarNav" action="<?php echo JURI::root() ."index.php"; ?>" method="get">
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 							<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 							<?php

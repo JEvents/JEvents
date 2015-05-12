@@ -100,9 +100,7 @@ $filterHTML = $filters->getFilterHTML($allowAutoSubmit);
 if (JevJoomlaVersion::isCompatible("3.0") && $params->get("bootstrapchosen", 1))
 {
 	// Load Bookstrap
-	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
-		JHtml::_('bootstrap.framework');
-	}
+	JevHtmlBootstrap::framework();
 	JHtml::_('formbehavior.chosen', '.jevfiltermodule select');
 	require(JModuleHelper::getLayoutPath('mod_jevents_filter', 'default_chosenlayout'));
 }
