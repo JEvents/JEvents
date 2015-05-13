@@ -58,8 +58,9 @@ function launchModal(selector, url) {
 	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (bootstrap3_enabled){
+		jQuery(selector+' iframe').attr("src","about:blank");
 		jQuery(selector).on('shown.bs.modal', function () {
-			jQuery(selector+' iframe').attr("src","about:blank");
+			//jQuery(selector+' iframe').attr("src","about:blank");
 			jQuery(selector+' iframe').attr("src",url);
 		});
 	}

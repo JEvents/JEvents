@@ -386,6 +386,12 @@ class JEV_CommonFunctions {
 			}
 		}
 
+		/**
+		 *
+		 * TODO - pass message through layout template processor
+		 *
+		 */
+
 		if ($event){
 			$dispatcher     = JDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");

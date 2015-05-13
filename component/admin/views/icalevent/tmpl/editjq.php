@@ -23,11 +23,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
-if ($params->get("useboostrap", 1))
-{
-	JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
-	JEVHelper::script("components/com_jevents/assets/js/jquery-migrate.min.js");
-}
+JevHtmlBootstrap::framework();
 
 if ($params->get("bootstrapchosen", 1))
 {

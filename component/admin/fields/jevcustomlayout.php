@@ -35,17 +35,20 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		if (!JevJoomlaVersion::isCompatible("3.4")){
 			return "";
 		}
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$layouttype = $this->getAttribute("layouttype");
 		$target = $this->getAttribute("target");
+		$csstarget = $this->getAttribute("csstarget");
 		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
-		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target');});</script>";
+		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
 		$html .= <<<DROPDOWN
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="true">
+<div class="dropdown btn-group">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">
     Select Layout
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown$target" id="dropdownUL_$target">
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown$target" id="dropdownUL_$target" role="menu">
     <li role="presentation"><a role="menuitem" class="dropdownpopover" href="#" data-title="Current Customised Value" data-content="Custom Format String customised by you">Current Value</a></li>
     </ul>
 </div>
