@@ -158,6 +158,10 @@ class DefaultModLatestView
 			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
 		}
 
+		if ($myparam->get("modlatest_customcss", false)){
+			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
+		}
+
 		if ($this->dispMode > 7)
 			$this->dispMode = 0;
 
@@ -1339,7 +1343,7 @@ class DefaultModLatestView
 								}
 								else
 								{
-
+									$matchedByPlugin = false;
 									$layout = "list";
 									static $fieldNameArrays = array();
 									$jevplugins = JPluginHelper::getPlugin("jevents");
@@ -1356,6 +1360,7 @@ class DefaultModLatestView
 											{
 												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]))
 												{
+													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent != 3)
 													{
@@ -1372,6 +1377,11 @@ class DefaultModLatestView
 												}
 											}
 										}
+									}
+									// none of the plugins has replaced the output so we now replace the blank formatted part!
+									if (!$matchedByPlugin && isset($formattedparts[2]))
+									{
+										$tempstr .= str_replace("%s", "", $formattedparts[2]);
 									}
 									//$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
 								}

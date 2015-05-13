@@ -39,8 +39,9 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$layouttype = $this->getAttribute("layouttype");
 		$target = $this->getAttribute("target");
+		$csstarget = $this->getAttribute("csstarget");
 		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
-		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target');});</script>";
+		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
 		$html .= <<<DROPDOWN
 <div class="dropdown btn-group">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">
