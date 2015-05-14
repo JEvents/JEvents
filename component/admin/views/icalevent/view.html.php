@@ -260,6 +260,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->form->setValue("trans_language",null,  $lang);
 		$this->form->setValue("language",null,  $lang);
 		$this->form->setValue("trans_evdet_id", null, $this->original["evdet_id"]);
+		$this->form->setValue("ev_id", null, JRequest::getInt("ev_id", 0));
 
 		// Event editing buttons
 		if ($params->get('com_show_editor_buttons'))

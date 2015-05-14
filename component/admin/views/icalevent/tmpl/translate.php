@@ -29,6 +29,7 @@ echo JToolbar::getInstance('toolbar')->render('toolbar');
 				<div class="row-fluid form-horizontal-desktop">
 					<div class="span6">
 						<?php echo $this->form->renderField('evdet_id'); ?>
+						<?php echo $this->form->renderField('ev_id'); ?>
 					</div>
 					<div class="span6">
 						<?php echo $this->form->renderField('language'); ?>

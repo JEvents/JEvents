@@ -3,6 +3,7 @@
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
 
 		<field name="evdet_id" type="text" default="0" disabled="1"  label="JEV_EVENT_DETAIL_ID" description="JEV_EVENT_DETAIL_ID_TIP" />
+		<field name="ev_id" type="hidden" default="0"   />
 		<field name="summary" type="jeveventtext" default="" size="60" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
 		<field name="description" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250"  layoutfield="DESCRIPTION" labelclass="control-label jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
 		<field name="location" type="text" default=""   layoutfield="LOCN" labelclass="control-label "   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
