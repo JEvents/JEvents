@@ -34,10 +34,9 @@ defaultsEditorPlugin = {
 		// reset the selected element back to 'Select...'
 		jevjq(pluginNode).selectedIndex = 0;
 		// needed for MSIE 9 bug - see jevjq(pluginNode)
-                                    for (var i=0; i<sel.length; i++){
-                                        sel.options[i].selected = false;
-                                    }
-                                    var test = jevjq(pluginNode).options;
+                  sel.each (function(index, selel) {
+			jQuery(selel).attr('selected', false);
+		}) ;
 		return false;
 	}
 }

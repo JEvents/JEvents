@@ -2224,6 +2224,36 @@ class JEventsDBModel
 		if (!$valid)
 			return $icalrows;
 
+		// Do we need to translate this data
+		$languages = JLanguageHelper::getLanguages('lang_code');
+		if (count($languages)>1){
+			$lang = JFactory::getLanguage();
+			$langtag = $lang->getTag();
+			$translationids = array();
+			for ($i = 0; $i < $icalcount; $i++)
+			{
+				$translationids[] = $icalrows[$i]->_evdet_id;
+			}
+		}
+		if (count($translationids)>0){
+			$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
+			$translations = $db->loadObjectList("evdet_id");
+
+			if ($translations) {
+				for ($i = 0; $i < $icalcount; $i++)
+				{
+					if (array_key_exists($icalrows[$i]->_evdet_id, $translations)){
+						foreach (get_object_vars($translations[$icalrows[$i]->_evdet_id]) as $k=>$v){
+							$k = "_".$k;
+							if ($v !="" && isset($icalrows[$i]->$k)){
+								$icalrows[$i]->$k = $v;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
 		if ($debuginfo){
@@ -2680,6 +2710,31 @@ class JEventsDBModel
 			{
 				$row = new jEventCal($rows[0]);
 			}
+
+			// Do we need to translate this data
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			if (count($languages)>1){
+				$lang = JFactory::getLanguage();
+				$langtag = $lang->getTag();
+				$translationids = array();
+				$translationids[] = $row->_evdet_id;
+			}
+			if (count($translationids)>0){
+				$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
+				$translations = $db->loadObjectList("evdet_id");
+
+				if ($translations) {
+					if (array_key_exists($row->_evdet_id, $translations)){
+						foreach (get_object_vars($translations[$row->_evdet_id]) as $k=>$v){
+							$k = "_".$k;
+							if ($v !="" && isset($row->$k)){
+								$row->$k = $v;
+							}
+						}
+					}
+				}
+			}
+
 		}
 		else
 		{
@@ -2802,6 +2857,30 @@ class JEventsDBModel
 			{
 				$row = new jEventCal($rows[0]);
 			}
+			// Do we need to translate this data
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			if (count($languages)>1){
+				$lang = JFactory::getLanguage();
+				$langtag = $lang->getTag();
+				$translationids = array();
+				$translationids[] = $row->_evdet_id;
+			}
+			if (count($translationids)>0){
+				$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
+				$translations = $db->loadObjectList("evdet_id");
+
+				if ($translations) {
+					if (array_key_exists($row->_evdet_id, $translations)){
+						foreach (get_object_vars($translations[$row->_evdet_id]) as $k=>$v){
+							$k = "_".$k;
+							if ($v !="" && isset($row->$k)){
+								$row->$k = $v;
+							}
+						}
+					}
+				}
+			}
+
 		}
 		else
 		{

@@ -386,6 +386,12 @@ class AdminIcaleventController extends JControllerAdmin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
+		// Get/Create the model
+		if ($model =  $this->getModel("icalevent", "icaleventsModel")) {
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+
 		// Set the layout
 		$this->view->setLayout('overview');
 
@@ -634,6 +640,95 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$this->view->display();
+
+	}
+
+	function translate()
+	{
+		// Must be at least an event creator to edit or create events
+		$is_event_editor = JEVHelper::isEventCreator();
+		if (!$is_event_editor)
+		{
+			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+		}
+
+		// get the view
+		if (JFactory::getApplication()->isAdmin()){
+			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
+		}
+		else {
+			$this->view = $this->getView("icalevent", "html");
+		}
+
+		$ev_id = JRequest::getInt("ev_id", 0);
+		$evdet_id = JRequest::getInt("evdet_id", 0);
+
+		// check editing permission
+		if ($ev_id > 0 && $evdet_id >0)
+		{
+			// this version gives us a repeat not an event so
+			$vevent = $this->dataModel->queryModel->getVEventById($ev_id);
+			if (!$vevent)
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+			}
+
+			$row = new jIcalEventDB($vevent);
+
+			if (!JEVHelper::canEditEvent($row))
+			{
+				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			}
+
+		}
+		else {
+			JError::raiseError(403, "No event details passed in to translation script");
+		}
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+
+		// Set the layout
+		$this->view->setLayout('translate');
+
+		$this->view->display();
+
+	}
+
+	function savetranslation ()
+	{
+		if (!JEVHelper::isEventCreator())
+		{
+			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+		}
+
+		// clean out the cache
+		$cache = JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			$model->saveTranslation();
+		}
+
+		ob_end_clean();
+		if (!headers_sent())
+		{
+			header('Content-Type:text/html;charset=utf-8');
+		}
+		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.list", false);
+		?>
+		<script type="text/javascript">
+			window.parent.location="<?php echo $link; ?>";
+		</script>
+		<?php
+		exit();
 
 	}
 

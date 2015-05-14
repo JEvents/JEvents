@@ -481,6 +481,44 @@ table.ev_navtable tr {vertical-align:top; }
 	height:500px;
 	overflow:hidden;
 }
+#myEditModal.modal {
+	position: fixed;
+	bottom: 5%;
+	top: 5%;
+	left: 5%;
+	margin:0px;
+	z-index: 1050;
+	width: 90%;
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	*border: 1px solid #999;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	text-align: left;
+}
+ #myEditModal.modal.fade {
+	top: -25%;
+	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-o-transition: opacity 0.3s linear, top 0.3s ease-out;
+	transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+#myEditModal.modal.fade.in {
+	top: 5%;
+}
+#myEditModal body.modal {
+	padding-top: 0;
+}
+
 #myEditModal .close , #myImportModal .close {
 	float: right;
 	font-size: 20px;
@@ -571,7 +609,7 @@ table.ev_navtable tr {vertical-align:top; }
     left :0px;
     right:0px;
     bottom:10px;
-    top: 54px;
+    top: 36px;
     overflow-y: auto;
     max-height:none;
     padding:10px 0px 5px 0px;
@@ -624,6 +662,9 @@ table.ev_navtable tr {vertical-align:top; }
 .jev_version {font-size:12px;border-top:1px dashed;margin-top:15px;text-align:center;padding-top:10px;}
 .jev_version .update_text {display:block;width:100%;}
 .jev_version .update_cur_ver {display:block; width:100%;}
+
+/* Backend translation links */
+span.hastranslation {background-color:#55aa55;}
 
 /* Only for sites that want a max size for the popup! */
 
