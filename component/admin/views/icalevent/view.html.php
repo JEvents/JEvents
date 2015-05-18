@@ -165,6 +165,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if (JevJoomlaVersion::isCompatible("3.4")){
 			$this->languages = $this->get('Languages');
 		}
+		else {
+			$this->languages = null;
+		}
 
 	}
 

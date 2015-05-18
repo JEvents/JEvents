@@ -414,6 +414,8 @@ class JEventsDBModel
 		}
 		$rows = array_values($rows);
 
+		JEventsDBModel::translateEvents($rows);
+
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
@@ -1172,6 +1174,8 @@ class JEventsDBModel
 			}
 		}
 		//echo "count rows = ".count($rows)."<Br/>";
+
+		JEventsDBModel::translateEvents($rows);
 
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
@@ -2150,7 +2154,8 @@ class JEventsDBModel
 					// convert rows to jIcalEvents
 					$rows[$i] = new jIcalEventRepeat($rows[$i]);
 				}
-				
+
+				JEventsDBModel::translateEvents($rows);
 			}
 			else {
 
@@ -2224,6 +2229,27 @@ class JEventsDBModel
 		if (!$valid)
 			return $icalrows;
 
+		JEventsDBModel::translateEvents($icalrows);
+
+		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
+
+		if ($debuginfo){
+			list ($usec, $sec) = explode(" ", microtime());
+			$time_end = (float) $usec + (float) $sec;
+			echo  "after converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
+		}
+		
+		return $icalrows;
+
+	}
+
+	public static function translateEvents(&$icalrows) {
+		$is_array = true;
+		if (!is_array($icalrows)){
+			$is_array = false;
+			$icalrows = array($icalrows);
+		}
+		$icalcount = count($icalrows);
 		// Do we need to translate this data
 		$languages = JLanguageHelper::getLanguages('lang_code');
 		if (count($languages)>1){
@@ -2236,7 +2262,8 @@ class JEventsDBModel
 			}
 		}
 		if (count($translationids)>0){
-			$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
+			$db = JFactory::getDbo();
+			$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
 			$translations = $db->loadObjectList("evdet_id");
 
 			if ($translations) {
@@ -2253,17 +2280,9 @@ class JEventsDBModel
 				}
 			}
 		}
-
-		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
-
-		if ($debuginfo){
-			list ($usec, $sec) = explode(" ", microtime());
-			$time_end = (float) $usec + (float) $sec;
-			echo  "after converting (".$icalcount.")= ".round($time_end - $starttime, 4)."<br/>";
+		if (!$is_array) {
+			$icalrows = $icalrows[0];
 		}
-		
-		return $icalrows;
-
 	}
 
 	function listIcalEventsByDay($targetdate)
@@ -2711,29 +2730,7 @@ class JEventsDBModel
 				$row = new jEventCal($rows[0]);
 			}
 
-			// Do we need to translate this data
-			$languages = JLanguageHelper::getLanguages('lang_code');
-			if (count($languages)>1){
-				$lang = JFactory::getLanguage();
-				$langtag = $lang->getTag();
-				$translationids = array();
-				$translationids[] = $row->_evdet_id;
-			}
-			if (count($translationids)>0){
-				$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
-				$translations = $db->loadObjectList("evdet_id");
-
-				if ($translations) {
-					if (array_key_exists($row->_evdet_id, $translations)){
-						foreach (get_object_vars($translations[$row->_evdet_id]) as $k=>$v){
-							$k = "_".$k;
-							if ($v !="" && isset($row->$k)){
-								$row->$k = $v;
-							}
-						}
-					}
-				}
-			}
+			JEventsDBModel::translateEvents($row);
 
 		}
 		else
@@ -2857,29 +2854,8 @@ class JEventsDBModel
 			{
 				$row = new jEventCal($rows[0]);
 			}
-			// Do we need to translate this data
-			$languages = JLanguageHelper::getLanguages('lang_code');
-			if (count($languages)>1){
-				$lang = JFactory::getLanguage();
-				$langtag = $lang->getTag();
-				$translationids = array();
-				$translationids[] = $row->_evdet_id;
-			}
-			if (count($translationids)>0){
-				$db->setQuery("SELECT *, summary as title FROM #__jevents_translation WHERE evdet_id IN(".implode(",",$translationids). ") AND language=".$db->quote($langtag) );
-				$translations = $db->loadObjectList("evdet_id");
 
-				if ($translations) {
-					if (array_key_exists($row->_evdet_id, $translations)){
-						foreach (get_object_vars($translations[$row->_evdet_id]) as $k=>$v){
-							$k = "_".$k;
-							if ($v !="" && isset($row->$k)){
-								$row->$k = $v;
-							}
-						}
-					}
-				}
-			}
+			JEventsDBModel::translateEvents($row);
 
 		}
 		else
@@ -3199,6 +3175,8 @@ class JEventsDBModel
 			// convert rows to jIcalEvents
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
+
+		JEventsDBModel::translateEvents($icalrows);
 
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 
@@ -3823,6 +3801,8 @@ class JEventsDBModel
 			// convert rows to jevents
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
+
+		JEventsDBModel::translateEvents($icalrows);
 
 		JEVHelper::onDisplayCustomFieldsMultiRow($icalrows);
 

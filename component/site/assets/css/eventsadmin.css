@@ -432,7 +432,7 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 #jevents img.jev_ev_sml,  #jevents  img.jev_ev_sml {height:24px; text-align:center;}
 #jevents .action_dialogJQ .modal-body , #jevents .action_dialogJQ .modal-header {text-align: left;}
-#jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents .ical_dialogJQ, #jevents  .action_dialogJQ {  text-align: left;}
+#jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents .ical_dialogJQ, #jevents  .action_dialogJQ {  text-align: left;left:25%;}
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
 table.ev_navtable tr {vertical-align:top; }
