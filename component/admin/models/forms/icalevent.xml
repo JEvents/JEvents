@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
 <form>
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
-				
-				
+								
 		<field name="title" type="jeveventtext" default="" size="40" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
 		<field name="catid" type="jeveventcategory" default="0"  layoutfield="CATEGORY" labelclass="control-label"  label="JEV_EVENT_CATEGORY" description="JEV_EVENT_CATEGORY_TIP" />
 		<field name="priority" type="jeveventpriorities" default="0"  layoutfield="PRIORITY"  labelclass="control-label" label="JEV_EVENT_PRIORITY" description="JEV_EVENT_PRIORITY_TIP" />

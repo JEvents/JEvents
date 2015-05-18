@@ -121,7 +121,8 @@ if (strpos($cmd, '.') != false) {
 	if (file_exists($controllerPath)) {
 		require_once($controllerPath);
 	} else {
-		JError::raiseError(500, 'Invalid Controller');
+		throw new Exception(  'Invalid Controller', 500);
+		return false;
 	}
 } else {
 	// Base controller, just set the task
@@ -145,7 +146,8 @@ $controllerClass = ucfirst($controllerName).'Controller';
 if (class_exists($controllerClass)) {
 	$controller = new $controllerClass();
 } else {
-	JError::raiseError(500, 'Invalid Controller Class - '.$controllerClass );
+	throw new Exception(  'Invalid Controller Class - '.$controllerClass , 500);
+	return false;
 }
 
 // record what is running - used by the filters

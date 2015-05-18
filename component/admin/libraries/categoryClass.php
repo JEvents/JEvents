@@ -79,7 +79,7 @@ class JEventsCategory extends JTableCategory {
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
 			if (!$table->rebuild())
 			{
-				echo JError::raiseError(500, $table->getError());
+				throw new Exception( $table->getError(), 500);
 			}
 */			
 		}
