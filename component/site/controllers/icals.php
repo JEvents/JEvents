@@ -511,6 +511,7 @@ class ICalsController extends AdminIcalsController
 			// just incase we don't have jevents plugins registered yet
 			//JPluginHelper::importPlugin("jevents");
 			//$dispatcher->trigger('onExportRow', array(&$row));
+			$icalEvents = array();
 			$icalEvents[$a->ev_id()] = $a;
 
 			// get the view
@@ -519,6 +520,7 @@ class ICalsController extends AdminIcalsController
 			$this->view->assign("dataModel",$this->dataModel) ;
 			$this->view->assign("outlook2003icalexport", false);
 			$this->view->assign("icalEvents", $icalEvents);
+			$this->view->assign("withrepeats", $withrepeats);
 
 			$this->view->export();
 			return;			
