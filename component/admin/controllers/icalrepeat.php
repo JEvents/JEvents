@@ -777,6 +777,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$exception->bind(get_object_vars($data));
 			}
 			$exception->exception_type = 0; // deleted
+            $exception->oldstartrepeat = $data->startrepeat;
 			$exception->store();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE rp_id=$id";
@@ -930,7 +931,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 					$exception->bind(get_object_vars($data));
 				}
 				$exception->exception_type = 0; // deleted
-				$exception->store();
+                $exception->oldstartrepeat = $data->startrepeat;
+                $exception->store();
 			}
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
