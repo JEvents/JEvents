@@ -277,7 +277,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 }
 #jevents fieldset legend input[type='radio'] {margin-right:10px!important}
 
-#jevents .jevbootstrap input, #jevents .jevbootstrap textarea, #jevents .jevbootstrap .uneditable-input {
+.jevbootstrap input, .jevbootstrap textarea, .jevbootstrap .uneditable-input {
     width: auto;
 }
 
@@ -417,22 +417,29 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
-#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
-#jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
-#jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
-#jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
-#jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
-#jevents .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
-#jevents .action_dialogJQ a {text-decoration:none; line-height:28px;}
-#jevents .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
-#jevents .action_dialogJQ #publish_reccur img, #jevents .action_dialogJQ #edit_reccur img,
-#jevents .action_dialogJQ #edit_event img, #jevents .action_dialogJQ #edit_eventcopy img,
-#jevents .action_dialogJQ #delete_repeat img, #jevents .action_dialogJQ #delete_eventfuture img,
-#jevents .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
-#jevents img.jev_ev_sml,  #jevents  img.jev_ev_sml {height:24px; text-align:center;}
-#jevents .action_dialogJQ .modal-body , #jevents .action_dialogJQ .modal-header {text-align: left;}
-#jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents .ical_dialogJQ, #jevents  .action_dialogJQ {  text-align: left;left:25%;}
+.jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
+.jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+.jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
+.jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
+
+.jevbootstrap .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .action_dialogJQ a {text-decoration:none; line-height:28px;}
+.jevbootstrap .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+.jevbootstrap .action_dialogJQ #publish_reccur img, .jevbootstrap .action_dialogJQ #edit_reccur img,
+.jevbootstrap .action_dialogJQ #edit_event img, .jevbootstrap .action_dialogJQ #edit_eventcopy img,
+.jevbootstrap .action_dialogJQ #delete_repeat img, .jevbootstrap .action_dialogJQ #delete_eventfuture img,
+.jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+.jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
+.jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
+.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ, .jevbootstrap .ical_dialogJQ, .jevbootstrap  .action_dialogJQ {  text-align: left;left:50%;}
+
+.jevbootstrap .action_dialogJQ .modal-dialog, jevbootstratp .ical_dialogJQ .modal-dialog {
+   width:auto;
+   margin:0px;
+}
+
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
 table.ev_navtable tr {vertical-align:top; }
@@ -630,10 +637,6 @@ table.ev_navtable tr {vertical-align:top; }
 	 height: 100%;
    width:auto;
  }
-#jevents .action_dialogJQ .modal-dialog, #jevents .ical_dialogJQ .modal-dialog {
-   width:auto;
-   margin:0px;
-}
 #myImportModal .modal-content, #myEditModal .modal-content {
     box-sizing: border-box;
     height: 100%;
