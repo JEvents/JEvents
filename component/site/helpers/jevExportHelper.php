@@ -64,11 +64,15 @@ class JevExportHelper {
 		$urlString['st'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime());
 		$urlString['et'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());
 		$urlString['duration'] = (int)$row->getUnixEndTime() - (int)$row->getUnixStartTime();
-		$urlString['location'] = urlencode("myaddress");
-		$urlString['sitename'] = urlencode("sitename");
-		$urlString['siteurl'] = urlencode("siteurl");
+		$urlString['location'] = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
+		$urlString['sitename'] = urlencode(JFactory::getApplication()->get('sitename'));
+		$urlString['siteurl'] = urlencode(JUri::root());
 		$urlString['rawdetails'] = urlencode($row->get('description'));
-		$urlString['details'] = urlencode(strip_tags($row->get('description')));
+		$urlString['details'] = strip_tags($row->get('description'));
+		if (strlen($urlString['details'])>100) {
+			$urlString['details'] = JString::substr( $urlString['details'], 0, 100 ) . ' ...';
+		}
+		$urlString['details'] = urlencode($urlString['details']);
 
 		return $urlString;
 	}
