@@ -2252,10 +2252,10 @@ class JEventsDBModel
 		$icalcount = count($icalrows);
 		// Do we need to translate this data
 		$languages = JLanguageHelper::getLanguages('lang_code');
+		$translationids = array();
 		if (count($languages)>1){
 			$lang = JFactory::getLanguage();
 			$langtag = $lang->getTag();
-			$translationids = array();
 			for ($i = 0; $i < $icalcount; $i++)
 			{
 				$translationids[] = $icalrows[$i]->_evdet_id;

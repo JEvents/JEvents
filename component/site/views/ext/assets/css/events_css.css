@@ -656,6 +656,7 @@ td.showjevadd a.addjevent {
 ****************************************/
 #jevents .jevbootstrap  .top .popover-title {
 	padding:0px;
+	margin:0px;
 }
 .jevtip-tip, .jevtip {
    float: left;
