@@ -758,13 +758,15 @@ class AdminIcalrepeatController extends JControllerLegacy
 			// create exception based on deleted repetition
 			$rp_id = $id;
 			$exception = iCalException::loadByRepeatId($rp_id);
+
 			if (!$exception)
 			{
 				$exception = new iCalException($db);
 				$exception->bind(get_object_vars($data));
 			}
 			$exception->exception_type = 0; // deleted
-			$exception->store();
+            $exception->oldstartrepeat = $data->startrepeat;
+            $exception->store();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -917,7 +919,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 					$exception->bind(get_object_vars($data));
 				}
 				$exception->exception_type = 0; // deleted
-				$exception->store();
+                $exception->oldstartrepeat = $data->startrepeat;
+
+                $exception->store();
 			}
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
