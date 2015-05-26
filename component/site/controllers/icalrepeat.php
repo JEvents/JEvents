@@ -139,7 +139,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$user = JFactory::getUser();
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
-				//JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
 				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
@@ -157,7 +157,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function save($key = NULL, $urlVar = NULL){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		parent::save();
 	}
@@ -166,7 +167,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		parent::apply();
 	}
@@ -174,7 +176,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function delete(){
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		parent::delete();		
 	}
@@ -182,7 +185,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	function deletefuture(){
 		$is_event_editor = JEVHelper::isEventDeletor();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		parent::deletefuture();		
 	}
@@ -195,7 +199,8 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 	protected  function toggleICalEventPublish($cid,$newstate) {
 		$is_event_editor = JEVHelper::isEventPublisher();
 		if (!$is_event_editor){
-			JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		parent::toggleICalEventPublish($cid,$newstate);		
 	}

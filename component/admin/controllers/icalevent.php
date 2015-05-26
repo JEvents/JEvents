@@ -386,6 +386,12 @@ class AdminIcaleventController extends JControllerAdmin
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
 
+		// Get/Create the model
+		if ($model =  $this->getModel("icalevent", "icaleventsModel")) {
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+
 		// Set the layout
 		$this->view->setLayout('overview');
 
@@ -407,7 +413,8 @@ class AdminIcaleventController extends JControllerAdmin
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 		$this->editCopy = true;
 		$this->edit();
@@ -446,7 +453,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$repeatId = 0;
@@ -483,7 +491,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 			if (!JEVHelper::canEditEvent($row))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 		}
 		else
@@ -634,6 +643,128 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$this->view->display();
+
+	}
+
+	function translate()
+	{
+		// Must be at least an event creator to edit or create events
+		$is_event_editor = JEVHelper::isEventCreator();
+		if (!$is_event_editor)
+		{
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
+		}
+
+		// get the view
+		if (JFactory::getApplication()->isAdmin()){
+			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
+		}
+		else {
+			$this->view = $this->getView("icalevent", "html");
+		}
+
+		$ev_id = JRequest::getInt("ev_id", 0);
+		$evdet_id = JRequest::getInt("evdet_id",  JRequest::getInt("trans_evdet_id",0));
+
+		// check editing permission
+		if ($ev_id > 0 && $evdet_id >0)
+		{
+			// this version gives us a repeat not an event so
+			$vevent = $this->dataModel->queryModel->getVEventById($ev_id);
+			if (!$vevent)
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+			}
+
+			$row = new jIcalEventDB($vevent);
+
+			if (!JEVHelper::canEditEvent($row))
+			{
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
+			}
+
+		}
+		else {
+			throw new Exception(  "No event details passed in to translation script", 403);
+			return false;
+		}
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+
+		// Set the layout
+		$this->view->setLayout('translate');
+
+		$this->view->display();
+
+	}
+
+	function savetranslation ()
+	{
+		JRequest::checkToken('default') or jexit('Invalid Token');
+
+		if (!JEVHelper::isEventCreator())
+		{
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
+		}
+
+		$ev_id = JRequest::getInt("ev_id", 0);
+		$evdet_id = JRequest::getInt("evdet_id",  JRequest::getInt("trans_evdet_id",0));
+
+		// check editing permission
+		if ($ev_id > 0 && $evdet_id >0)
+		{
+			// this version gives us a repeat not an event so
+			$vevent = $this->dataModel->queryModel->getVEventById($ev_id);
+			if (!$vevent)
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+			}
+
+			$row = new jIcalEventDB($vevent);
+
+			if (!JEVHelper::canEditEvent($row))
+			{
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
+			}
+		}
+		else {
+			throw new Exception( "No event details passed in to translation script", 500);
+			return false;
+		}
+
+		// clean out the cache
+		$cache = JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			$model->saveTranslation();
+		}
+
+		ob_end_clean();
+		if (!headers_sent())
+		{
+			header('Content-Type:text/html;charset=utf-8');
+		}
+		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.list", false);
+		?>
+		<script type="text/javascript">
+			window.parent.location="<?php echo $link; ?>";
+		</script>
+		<?php
+		exit();
 
 	}
 
@@ -848,7 +979,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if (!JFactory::getApplication()->isAdmin())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		// get the view
@@ -894,7 +1026,8 @@ class AdminIcaleventController extends JControllerAdmin
 	{
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		// clean out the cache
@@ -935,7 +1068,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if (!JEVHelper::canCreateEvent($eventobj))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$rrule = SaveIcalEvent::generateRRule($array);
@@ -946,7 +1080,8 @@ class AdminIcaleventController extends JControllerAdmin
 			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 			if (!$event || !JEVHelper::canEditEvent($event))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 		}
 
@@ -1100,7 +1235,8 @@ class AdminIcaleventController extends JControllerAdmin
 				{
 					if (!JEVHelper::canPublishOwnEvents($id))
 					{
-						JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+						throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+						return false;
 					}
 				}
 			}
@@ -1108,7 +1244,8 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		if (!$is_event_editor)
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$db = JFactory::getDBO();
@@ -1119,7 +1256,8 @@ class AdminIcaleventController extends JControllerAdmin
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
 			if (is_null($event) || !JEVHelper::canPublishEvent($event))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
@@ -1168,7 +1306,8 @@ class AdminIcaleventController extends JControllerAdmin
 		/*
 		  // This is covered by canDeleteEvent below
 		  if (!JEVHelper::isEventDeletor()){
-		  JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+		  throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		 return false;
 		  }
 		 */
 		$cid = JRequest::getVar('cid', array(0));

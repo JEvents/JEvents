@@ -1378,6 +1378,19 @@ class DefaultModLatestView
 											}
 										}
 									}
+									if (!$matchedByPlugin) {
+										// Layout editor code
+										include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
+										ob_start();
+										// false at the end to stop it running through the plugins
+										$part = "{{Dummy Label:".implode("#", $formattedparts)."}}";
+										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part,  false);
+										$newpart = ob_get_clean();
+										if ($newpart != $part) {
+											$tempstr .= $newpart;
+											$matchedByPlugin = true;
+										}
+									}
 									// none of the plugins has replaced the output so we now replace the blank formatted part!
 									if (!$matchedByPlugin && isset($formattedparts[2]))
 									{
@@ -1394,8 +1407,9 @@ class DefaultModLatestView
 						}
 						$content .= $tempstr;
 					}
-					else if ($match)
+					else if ($match) {
 						$content .= $match;
+					}
 				}
 				catch (Exception $e) {
 					if ($match)

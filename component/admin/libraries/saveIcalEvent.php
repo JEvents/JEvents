@@ -162,7 +162,8 @@ class SaveIcalEvent {
 			// I should be able to do this in one operation but that can come later
 			$testevent = $queryModel->listEventsById( intval($rp_id), 1, "icaldb" );
 			if (!JEVHelper::canEditEvent($testevent)){
-				JError::raiseError( 403, JText::_( 'ALERTNOTAUTH' ) );
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 		}
 

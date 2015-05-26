@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false)
+function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
 
 	$db = JFactory::getDBO();
@@ -149,19 +149,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	else
 	{
-		// This is a special scenario where we call this function externally e.g. from RSVP Pro messages 
-		// In this scenario we have not gone through the displaycustomfields plugin
-		static $pluginscalled = array();
-		if (!isset($pluginscalled[$event->rp_id()]))
-		{
-			$dispatcher = JDispatcher::getInstance();
-			JPluginHelper::importPlugin("jevents");
-			$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
-			$pluginscalled[$event->rp_id()] = $event;
-		}
-		else
-		{
-			$event = $pluginscalled[$event->rp_id()];
+		if ($runplugins){
+			// This is a special scenario where we call this function externally e.g. from RSVP Pro messages
+			// In this scenario we have not gone through the displaycustomfields plugin
+			static $pluginscalled = array();
+			if (!isset($pluginscalled[$event->rp_id()]))
+			{
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin("jevents");
+				$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
+				$pluginscalled[$event->rp_id()] = $event;
+			}
+			else
+			{
+				$event = $pluginscalled[$event->rp_id()];
+			}
 		}
 
 		// Adjust template_value to include dynamic module output then strip it out afterwards
@@ -1077,56 +1079,58 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		$layout = ($template_name == "icalevent.list_row" || $template_name == "month.calendar_cell" || $template_name == "month.calendar_tip") ? "list" : "detail";
 
-		$jevplugins = JPluginHelper::getPlugin("jevents");
+		if ($runplugins){
+			$jevplugins = JPluginHelper::getPlugin("jevents");
 
-		foreach ($jevplugins as $jevplugin)
-		{
-			$classname = "plgJevents" . ucfirst($jevplugin->name);
-			if (is_callable(array($classname, "substitutefield")))
+			foreach ($jevplugins as $jevplugin)
 			{
-
-				if (!isset($fieldNameArray[$classname]))
-				{
-					$fieldNameArray[$classname] = array();
-				}
-				if (!isset($fieldNameArray[$classname][$layout]))
+				$classname = "plgJevents" . ucfirst($jevplugin->name);
+				if (is_callable(array($classname, "substitutefield")))
 				{
 
-					//list($usec, $sec) = explode(" ", microtime());
-					//$starttime = (float) $usec + (float) $sec;
-
-					$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
-
-					//list ($usec, $sec) = explode(" ", microtime());
-					//$time_end = (float) $usec + (float) $sec;
-					//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
-				}
-				if (isset($fieldNameArray[$classname][$layout]["values"]))
-				{
-					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
+					if (!isset($fieldNameArray[$classname]))
 					{
-						if (!strpos($template_value, $fieldname) !== false)
+						$fieldNameArray[$classname] = array();
+					}
+					if (!isset($fieldNameArray[$classname][$layout]))
+					{
+
+						//list($usec, $sec) = explode(" ", microtime());
+						//$starttime = (float) $usec + (float) $sec;
+
+						$fieldNameArray[$classname][$layout] = call_user_func(array($classname, "fieldNameArray"), $layout);
+
+						//list ($usec, $sec) = explode(" ", microtime());
+						//$time_end = (float) $usec + (float) $sec;
+						//echo  "$classname::fieldNameArray = ".round($time_end - $starttime, 4)."<br/>";
+					}
+					if (isset($fieldNameArray[$classname][$layout]["values"]))
+					{
+						foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 						{
-							continue;
-						}
-						$search[] = "{{" . $fieldname . "}}";
-						// is the event detail hidden - if so then hide any custom fields too!
-						if (!isset($event->_privateevent) || $event->_privateevent != 3)
-						{
-							$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
-							if (is_callable(array($classname, "blankfield")))
+							if (!strpos($template_value, $fieldname) !== false)
 							{
-								$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
+								continue;
+							}
+							$search[] = "{{" . $fieldname . "}}";
+							// is the event detail hidden - if so then hide any custom fields too!
+							if (!isset($event->_privateevent) || $event->_privateevent != 3)
+							{
+								$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
+								if (is_callable(array($classname, "blankfield")))
+								{
+									$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
+								}
+								else
+								{
+									$blank[] = "";
+								}
 							}
 							else
 							{
 								$blank[] = "";
+								$replace[] = "";
 							}
-						}
-						else
-						{
-							$blank[] = "";
-							$replace[] = "";
 						}
 					}
 				}

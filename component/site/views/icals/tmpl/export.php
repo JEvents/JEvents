@@ -84,7 +84,7 @@ if (!empty($this->icalEvents))
 	foreach ($this->icalEvents as $a)
 	{
 		// if event has repetitions I must find the first one to confirm the dates
-		if ($a->hasrepetition())
+		if ($a->hasrepetition()  && $this->withrepeats)
 		{
 			$a = $a->getOriginalFirstRepeat();
 		}
@@ -212,7 +212,7 @@ if (!empty($this->icalEvents))
 			$html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
 		}
 		$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
-		if ($a->hasrepetition())
+		if ($a->hasrepetition() && $this->withrepeats)
 		{
 			$html .= 'RRULE:';
 
@@ -261,54 +261,54 @@ if (!empty($this->icalEvents))
 					$html .= ';BYYEARDAY=' . $a->_byyearday;
 			}
 			$html .= "\r\n";
-		}
 
-		// Now handle Exceptions
-		$exceptions = array();
-		if (array_key_exists($a->ev_id(), $exceptiondata))
-		{
-			$exceptions = $exceptiondata[$a->ev_id()];
-		}
-
-		$deletes = array();
-		$changed = array();
-		$changedexceptions = array();
-		if (count($exceptions) > 0)
-		{
-			foreach ($exceptions as $exception)
+			// Now handle Exceptions
+			$exceptions = array();
+			if (array_key_exists($a->ev_id(), $exceptiondata))
 			{
-				if ($exception->exception_type == 0)
+				$exceptions = $exceptiondata[$a->ev_id()];
+			}
+
+			$deletes = array();
+			$changed = array();
+			$changedexceptions = array();
+			if (count($exceptions) > 0)
+			{
+				foreach ($exceptions as $exception)
 				{
-					$exceptiondate = JevDate::strtotime($exception->startrepeat);
-
-					// No doing true timezones!
-					if ($tzid == "" && is_callable("date_default_timezone_set"))
+					if ($exception->exception_type == 0)
 					{
+						$exceptiondate = JevDate::strtotime($exception->startrepeat);
 
-						// Change timezone to UTC
-						$current_timezone = date_default_timezone_get();
-						date_default_timezone_set("UTC");
+						// No doing true timezones!
+						if ($tzid == "" && is_callable("date_default_timezone_set"))
+						{
 
-						// Do not use JevDate version since this sets timezone to config value!
-						$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+							// Change timezone to UTC
+							$current_timezone = date_default_timezone_get();
+							date_default_timezone_set("UTC");
 
-						// Change back
-						date_default_timezone_set($current_timezone);
+							// Do not use JevDate version since this sets timezone to config value!
+							$deletes[] = strftime("%Y%m%dT%H%M%SZ", $exceptiondate);
+
+							// Change back
+							date_default_timezone_set($current_timezone);
+						}
+						else
+						{
+							$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
+						}
 					}
 					else
 					{
-						$deletes[] = JevDate::strftime("%Y%m%dT%H%M%S", $exceptiondate);
+						$changed[] = $exception->rp_id;
+						$changedexceptions[$exception->rp_id] = $exception;
 					}
 				}
-				else
+				if (count($deletes) > 0)
 				{
-					$changed[] = $exception->rp_id;
-					$changedexceptions[$exception->rp_id] = $exception;
+					$html .= "EXDATE$tzid:" . $this->wraplines(implode(",", $deletes)) . "\r\n";
 				}
-			}
-			if (count($deletes) > 0)
-			{
-				$html .= "EXDATE$tzid:" . $this->wraplines(implode(",", $deletes)) . "\r\n";
 			}
 		}
 
@@ -317,7 +317,7 @@ if (!empty($this->icalEvents))
 
 		$changedrows = array();
 		
-		if (count($changed) > 0 && $changed[0]!=0)
+		if (isset($changed) && count($changed) > 0 && $changed[0]!=0)
 		{
 			foreach ($changed as $rpid)
 			{
