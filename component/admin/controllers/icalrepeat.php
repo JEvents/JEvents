@@ -758,7 +758,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 			// create exception based on deleted repetition
 			$rp_id = $id;
 			$exception = iCalException::loadByRepeatId($rp_id);
-
 			if (!$exception)
 			{
 				$exception = new iCalException($db);
