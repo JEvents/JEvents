@@ -532,10 +532,13 @@ function toggleAllDayEvent()
 		}
 	}
 	else {
+            var was24h = starttime.value=="00:00" && endtime.value=="23:59";
 		// set 24h fields
 		hide_start.disabled=false;
 		hide_start12.disabled=false;
-		starttime.value="08:00";
+		if (was24h) {
+                    starttime.value="08:00";
+                }
 		starttime.disabled=false;
 
 		sam.disabled=false;
@@ -546,7 +549,9 @@ function toggleAllDayEvent()
 		if (!noendchecked){
 			hide_end.disabled=false;
 			hide_end12.disabled=false;
-			endtime.value="17:00";
+        		if (was24h) {
+                            endtime.value="17:00";
+                        }
 			endtime.disabled=false;
 			var sd = temp.getYMD();
 			temp = temp.dateFromYMD(enddate.value);
