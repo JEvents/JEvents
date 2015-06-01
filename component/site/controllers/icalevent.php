@@ -69,7 +69,7 @@ class ICalEventController extends AdminIcaleventController   {
 		$Itemid	= JEVHelper::getItemid();
 
 		// seth month and year to be used by mini-calendar if needed
-		if ($repeat) {
+		if (isset($repeat)) {
 			if (!JRequest::getVar("month",0)) JRequest::setVar("month",$repeat->mup());
 			if (!JRequest::getVar("year",0)) JRequest::setVar("year",$repeat->yup());
 		}

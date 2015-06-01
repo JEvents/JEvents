@@ -641,7 +641,20 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 .jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 .jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
 .jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
-.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  text-align: left;left:50%;position:fixed;z-index:1050;right:0px;}
+.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  
+    text-align: left;
+    left:50%;
+    position:fixed;
+    z-index:1050;
+    right:0px;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    margin-left: -40%;
+    outline: medium none;
+}
 
 .jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
    width:auto;
