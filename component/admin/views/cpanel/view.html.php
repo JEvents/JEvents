@@ -837,6 +837,19 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
 		$output .= "MySQL Version : " .JFactory::getDbo()->getVersion(). "\n";
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("fixjquery", -1)==-1){
+			$output .= "*** CONFIG NOT SAVED*** \n";
+		}
+		$output .= "Fix jQuery? : " . ($params->get("fixjquery", 1)?"Yes":"No"). "\n";
+		$output .= "Load JEvents Bootstrap CSS? : " . ($params->get("bootstrapcss", 1)?"Yes":"No"). "\n";
+		$output .= "Load JEvents Bootstrap JS? : " . ($params->get("bootstrapjs", 1)?"Yes":"No"). "\n";
+		if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=10000){
+			$output .= "Max Input Vars ? : " . ini_get("max_input_vars"). "\n";
+		}
+		$output .= "Club code set? : ".($params->get("clubcode", false) ? "Yes": "No")."  \n";
+
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
