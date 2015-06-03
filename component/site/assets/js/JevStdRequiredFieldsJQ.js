@@ -10,9 +10,9 @@ var JevStdRequiredFields = {
 	verify: function(form) {
 		valid = true;
 		
-		// make sure a MooTools item
 		form = jevjq(form);
 		var messages = new Array();
+		// This is a Javascript each over an array !
 		JevStdRequiredFields.fields.each(function(item, i) {
 			name = item.name;
 			// should we skip this test because of category restrictions?

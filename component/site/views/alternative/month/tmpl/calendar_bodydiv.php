@@ -129,48 +129,39 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 $this->eventsLegend();
 
 $script = <<<SCRIPT
-window.addEvent('domready', function(){
-	$$(".cal_div_weekrow").each(
-	function(el){
-		var rowheight = el.getSize().y;
-		el.getElements('div.cal_div_weeklink > span').each (
-			function (subel){
-				subel.style.height=rowheight+"px";
-				subel.style.lineHeight=rowheight+"px";
+jQuery(document).ready(function(){
+	jQuery(".cal_div_weekrow").each(
+	function(idx, el){
+		var rowheight = jQuery(el).height();
+		jQuery(el).find('div.cal_div_weeklink > span').each (
+			function (is, subel){
+				jQuery(subel).css("height", rowheight+"px");
+				jQuery(subel).css("line-height", rowheight+"px");
 			}
 		);
-		el.getElements('div.cal_div_daysoutofmonth > span').each (
-			function (subel){
-				subel.style.height=rowheight+"px";
-				subel.style.lineHeight=rowheight+"px";
+		jQuery(el).find('div.cal_div_daysoutofmonth > span').each (
+			function (is, subel){
+				jQuery(subel).css("height", rowheight+"px");
+				jQuery(subel).css("line-height", rowheight+"px");
 			}
 		);
-		el.getElements('div.cal_div_daysnoevents > span').each (
-			function (subel){
-				subel.style.height=rowheight+"px";
+		jQuery(el).find('div.cal_div_daysnoevents > span').each (
+			function (is, subel){
+				jQuery(subel).css("height", rowheight+"px");
 			}
 		);
-		el.getElements('div.cal_div_today> span').each (
-			function (subel){
-				subel.style.height=rowheight+"px";
+		jQuery(el).find('div.cal_div_today> span').each (
+			function (is, subel){
+				jQuery(subel).css("height", rowheight+"px");
 			}
 		);
-		el.getElements('div.cal_div_dayshasevents > span').each (
-			function (subel){
-				subel.style.height=rowheight+"px";
+		jQuery(el).find('div.cal_div_dayshasevents > span').each (
+			function (is,subel){
+				jQuery(subel).css("height", rowheight+"px");
 			}
 		);
 
-		/*
-		if (el.getParent().hasClass("slots1")){
-			el.style.height = "81px";
-		}
-		else {
-			var psize = el.getParent().getSize();
-			el.style.height=psize.y+"px";
-		}
-		*/
-	},this);
+	});
 
 });
 SCRIPT;

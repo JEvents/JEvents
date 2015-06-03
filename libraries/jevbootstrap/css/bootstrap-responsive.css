@@ -1,0 +1,1090 @@
+/*!
+ * Bootstrap Responsive v2.3.2 - Namespaced version for JEvents
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+
+#jevents .jevbootstrap .clearfix {
+  *zoom: 1;
+}
+
+#jevents .jevbootstrap .clearfix:before,
+#jevents .jevbootstrap .clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+#jevents .jevbootstrap .clearfix:after {
+  clear: both;
+}
+
+#jevents .jevbootstrap .hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+#jevents .jevbootstrap .input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+#jevents .jevbootstrap .hidden {
+  display: none;
+  visibility: hidden;
+}
+
+#jevents .jevbootstrap .visible-phone {
+  display: none !important;
+}
+
+#jevents .jevbootstrap .visible-tablet {
+  display: none !important;
+}
+
+#jevents .jevbootstrap .hidden-desktop {
+  display: none !important;
+}
+
+#jevents .jevbootstrap .visible-desktop {
+  display: inherit !important;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+#jevents .jevbootstrap .hidden-desktop {
+    display: inherit !important;
+  }
+#jevents .jevbootstrap .visible-desktop {
+    display: none !important ;
+  }
+#jevents .jevbootstrap .visible-tablet {
+    display: inherit !important;
+  }
+#jevents .jevbootstrap .hidden-tablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+#jevents .jevbootstrap .hidden-desktop {
+    display: inherit !important;
+  }
+#jevents .jevbootstrap .visible-desktop {
+    display: none !important;
+  }
+#jevents .jevbootstrap .visible-phone {
+    display: inherit !important;
+  }
+#jevents .jevbootstrap .hidden-phone {
+    display: none !important;
+  }
+}
+
+#jevents .jevbootstrap .visible-print {
+  display: none !important;
+}
+
+@media print {
+#jevents .jevbootstrap .visible-print {
+    display: inherit !important;
+  }
+#jevents .jevbootstrap .hidden-print {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+#jevents .jevbootstrap .row {
+    margin-left: -30px;
+    *zoom: 1;
+  }
+#jevents .jevbootstrap .row:before,
+#jevents .jevbootstrap .row:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+#jevents .jevbootstrap .row:after {
+    clear: both;
+  }
+  [class*="span"] {
+    float: left;
+    min-height: 1px;
+    margin-left: 30px;
+  }
+#jevents .jevbootstrap .container,
+#jevents .jevbootstrap .navbar-static-top .container,
+#jevents .jevbootstrap .navbar-fixed-top .container,
+#jevents .jevbootstrap .navbar-fixed-bottom .container {
+    width: 1170px;
+  }
+#jevents .jevbootstrap .span12 {
+    width: 1170px;
+  }
+#jevents .jevbootstrap .span11 {
+    width: 1070px;
+  }
+#jevents .jevbootstrap .span10 {
+    width: 970px;
+  }
+#jevents .jevbootstrap .span9 {
+    width: 870px;
+  }
+#jevents .jevbootstrap .span8 {
+    width: 770px;
+  }
+#jevents .jevbootstrap .span7 {
+    width: 670px;
+  }
+#jevents .jevbootstrap .span6 {
+    width: 570px;
+  }
+#jevents .jevbootstrap .span5 {
+    width: 470px;
+  }
+#jevents .jevbootstrap .span4 {
+    width: 370px;
+  }
+#jevents .jevbootstrap .span3 {
+    width: 270px;
+  }
+#jevents .jevbootstrap .span2 {
+    width: 170px;
+  }
+#jevents .jevbootstrap .span1 {
+    width: 70px;
+  }
+#jevents .jevbootstrap .offset12 {
+    margin-left: 1230px;
+  }
+#jevents .jevbootstrap .offset11 {
+    margin-left: 1130px;
+  }
+#jevents .jevbootstrap .offset10 {
+    margin-left: 1030px;
+  }
+#jevents .jevbootstrap .offset9 {
+    margin-left: 930px;
+  }
+#jevents .jevbootstrap .offset8 {
+    margin-left: 830px;
+  }
+#jevents .jevbootstrap .offset7 {
+    margin-left: 730px;
+  }
+#jevents .jevbootstrap .offset6 {
+    margin-left: 630px;
+  }
+#jevents .jevbootstrap .offset5 {
+    margin-left: 530px;
+  }
+#jevents .jevbootstrap .offset4 {
+    margin-left: 430px;
+  }
+#jevents .jevbootstrap .offset3 {
+    margin-left: 330px;
+  }
+#jevents .jevbootstrap .offset2 {
+    margin-left: 230px;
+  }
+#jevents .jevbootstrap .offset1 {
+    margin-left: 130px;
+  }
+#jevents .jevbootstrap .row-fluid {
+    width: 100%;
+    *zoom: 1;
+  }
+#jevents .jevbootstrap .row-fluid:before,
+#jevents .jevbootstrap .row-fluid:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+#jevents .jevbootstrap .row-fluid:after {
+    clear: both;
+  }
+#jevents .jevbootstrap .row-fluid [class*="span"] {
+    display: block;
+    float: left;
+    width: 100%;
+    min-height: 30px;
+    margin-left: 2.564102564102564%;
+    *margin-left: 2.5109110747408616%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+#jevents .jevbootstrap .row-fluid [class*="span"]:first-child {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .row-fluid .controls-row [class*="span"] + [class*="span"] {
+    margin-left: 2.564102564102564%;
+  }
+#jevents .jevbootstrap .row-fluid .span12 {
+    width: 100%;
+    *width: 99.94680851063829%;
+  }
+#jevents .jevbootstrap .row-fluid .span11 {
+    width: 91.45299145299145%;
+    *width: 91.39979996362975%;
+  }
+#jevents .jevbootstrap .row-fluid .span10 {
+    width: 82.90598290598291%;
+    *width: 82.8527914166212%;
+  }
+#jevents .jevbootstrap .row-fluid .span9 {
+    width: 74.35897435897436%;
+    *width: 74.30578286961266%;
+  }
+#jevents .jevbootstrap .row-fluid .span8 {
+    width: 65.81196581196582%;
+    *width: 65.75877432260411%;
+  }
+#jevents .jevbootstrap .row-fluid .span7 {
+    width: 57.26495726495726%;
+    *width: 57.21176577559556%;
+  }
+#jevents .jevbootstrap .row-fluid .span6 {
+    width: 48.717948717948715%;
+    *width: 48.664757228587014%;
+  }
+#jevents .jevbootstrap .row-fluid .span5 {
+    width: 40.17094017094017%;
+    *width: 40.11774868157847%;
+  }
+#jevents .jevbootstrap .row-fluid .span4 {
+    width: 31.623931623931625%;
+    *width: 31.570740134569924%;
+  }
+#jevents .jevbootstrap .row-fluid .span3 {
+    width: 23.076923076923077%;
+    *width: 23.023731587561375%;
+  }
+#jevents .jevbootstrap .row-fluid .span2 {
+    width: 14.52991452991453%;
+    *width: 14.476723040552828%;
+  }
+#jevents .jevbootstrap .row-fluid .span1 {
+    width: 5.982905982905983%;
+    *width: 5.929714493544281%;
+  }
+#jevents .jevbootstrap .row-fluid .offset12 {
+    margin-left: 105.12820512820512%;
+    *margin-left: 105.02182214948171%;
+  }
+#jevents .jevbootstrap .row-fluid .offset12:first-child {
+    margin-left: 102.56410256410257%;
+    *margin-left: 102.45771958537915%;
+  }
+#jevents .jevbootstrap .row-fluid .offset11 {
+    margin-left: 96.58119658119658%;
+    *margin-left: 96.47481360247316%;
+  }
+#jevents .jevbootstrap .row-fluid .offset11:first-child {
+    margin-left: 94.01709401709402%;
+    *margin-left: 93.91071103837061%;
+  }
+#jevents .jevbootstrap .row-fluid .offset10 {
+    margin-left: 88.03418803418803%;
+    *margin-left: 87.92780505546462%;
+  }
+#jevents .jevbootstrap .row-fluid .offset10:first-child {
+    margin-left: 85.47008547008548%;
+    *margin-left: 85.36370249136206%;
+  }
+#jevents .jevbootstrap .row-fluid .offset9 {
+    margin-left: 79.48717948717949%;
+    *margin-left: 79.38079650845607%;
+  }
+#jevents .jevbootstrap .row-fluid .offset9:first-child {
+    margin-left: 76.92307692307693%;
+    *margin-left: 76.81669394435352%;
+  }
+#jevents .jevbootstrap .row-fluid .offset8 {
+    margin-left: 70.94017094017094%;
+    *margin-left: 70.83378796144753%;
+  }
+#jevents .jevbootstrap .row-fluid .offset8:first-child {
+    margin-left: 68.37606837606839%;
+    *margin-left: 68.26968539734497%;
+  }
+#jevents .jevbootstrap .row-fluid .offset7 {
+    margin-left: 62.393162393162385%;
+    *margin-left: 62.28677941443899%;
+  }
+#jevents .jevbootstrap .row-fluid .offset7:first-child {
+    margin-left: 59.82905982905982%;
+    *margin-left: 59.72267685033642%;
+  }
+#jevents .jevbootstrap .row-fluid .offset6 {
+    margin-left: 53.84615384615384%;
+    *margin-left: 53.739770867430444%;
+  }
+#jevents .jevbootstrap .row-fluid .offset6:first-child {
+    margin-left: 51.28205128205128%;
+    *margin-left: 51.175668303327875%;
+  }
+#jevents .jevbootstrap .row-fluid .offset5 {
+    margin-left: 45.299145299145295%;
+    *margin-left: 45.1927623204219%;
+  }
+#jevents .jevbootstrap .row-fluid .offset5:first-child {
+    margin-left: 42.73504273504273%;
+    *margin-left: 42.62865975631933%;
+  }
+#jevents .jevbootstrap .row-fluid .offset4 {
+    margin-left: 36.75213675213675%;
+    *margin-left: 36.645753773413354%;
+  }
+#jevents .jevbootstrap .row-fluid .offset4:first-child {
+    margin-left: 34.18803418803419%;
+    *margin-left: 34.081651209310785%;
+  }
+#jevents .jevbootstrap .row-fluid .offset3 {
+    margin-left: 28.205128205128204%;
+    *margin-left: 28.0987452264048%;
+  }
+#jevents .jevbootstrap .row-fluid .offset3:first-child {
+    margin-left: 25.641025641025642%;
+    *margin-left: 25.53464266230224%;
+  }
+#jevents .jevbootstrap .row-fluid .offset2 {
+    margin-left: 19.65811965811966%;
+    *margin-left: 19.551736679396257%;
+  }
+#jevents .jevbootstrap .row-fluid .offset2:first-child {
+    margin-left: 17.094017094017094%;
+    *margin-left: 16.98763411529369%;
+  }
+#jevents .jevbootstrap .row-fluid .offset1 {
+    margin-left: 11.11111111111111%;
+    *margin-left: 11.004728132387708%;
+  }
+#jevents .jevbootstrap .row-fluid .offset1:first-child {
+    margin-left: 8.547008547008547%;
+    *margin-left: 8.440625568285142%;
+  }
+#jevents .jevbootstrap input,
+#jevents .jevbootstrap textarea,
+#jevents .jevbootstrap .uneditable-input {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .controls-row [class*="span"] + [class*="span"] {
+    margin-left: 30px;
+  }
+#jevents .jevbootstrap input.span12,
+#jevents .jevbootstrap textarea.span12,
+#jevents .jevbootstrap .uneditable-input.span12 {
+    width: 1156px;
+  }
+#jevents .jevbootstrap input.span11,
+#jevents .jevbootstrap textarea.span11,
+#jevents .jevbootstrap .uneditable-input.span11 {
+    width: 1056px;
+  }
+#jevents .jevbootstrap input.span10,
+#jevents .jevbootstrap textarea.span10,
+#jevents .jevbootstrap .uneditable-input.span10 {
+    width: 956px;
+  }
+#jevents .jevbootstrap input.span9,
+#jevents .jevbootstrap textarea.span9,
+#jevents .jevbootstrap .uneditable-input.span9 {
+    width: 856px;
+  }
+#jevents .jevbootstrap input.span8,
+#jevents .jevbootstrap textarea.span8,
+#jevents .jevbootstrap .uneditable-input.span8 {
+    width: 756px;
+  }
+#jevents .jevbootstrap input.span7,
+#jevents .jevbootstrap textarea.span7,
+#jevents .jevbootstrap .uneditable-input.span7 {
+    width: 656px;
+  }
+#jevents .jevbootstrap input.span6,
+#jevents .jevbootstrap textarea.span6,
+#jevents .jevbootstrap .uneditable-input.span6 {
+    width: 556px;
+  }
+#jevents .jevbootstrap input.span5,
+#jevents .jevbootstrap textarea.span5,
+#jevents .jevbootstrap .uneditable-input.span5 {
+    width: 456px;
+  }
+#jevents .jevbootstrap input.span4,
+#jevents .jevbootstrap textarea.span4,
+#jevents .jevbootstrap .uneditable-input.span4 {
+    width: 356px;
+  }
+#jevents .jevbootstrap input.span3,
+#jevents .jevbootstrap textarea.span3,
+#jevents .jevbootstrap .uneditable-input.span3 {
+    width: 256px;
+  }
+#jevents .jevbootstrap input.span2,
+#jevents .jevbootstrap textarea.span2,
+#jevents .jevbootstrap .uneditable-input.span2 {
+    width: 156px;
+  }
+#jevents .jevbootstrap input.span1,
+#jevents .jevbootstrap textarea.span1,
+#jevents .jevbootstrap .uneditable-input.span1 {
+    width: 56px;
+  }
+#jevents .jevbootstrap .thumbnails {
+    margin-left: -30px;
+  }
+#jevents .jevbootstrap .thumbnails > li {
+    margin-left: 30px;
+  }
+#jevents .jevbootstrap .row-fluid .thumbnails {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+#jevents .jevbootstrap .row {
+    margin-left: -20px;
+    *zoom: 1;
+  }
+#jevents .jevbootstrap .row:before,
+#jevents .jevbootstrap .row:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+#jevents .jevbootstrap .row:after {
+    clear: both;
+  }
+  [class*="span"] {
+    float: left;
+    min-height: 1px;
+    margin-left: 20px;
+  }
+#jevents .jevbootstrap .container,
+#jevents .jevbootstrap .navbar-static-top .container,
+#jevents .jevbootstrap .navbar-fixed-top .container,
+#jevents .jevbootstrap .navbar-fixed-bottom .container {
+    width: 724px;
+  }
+#jevents .jevbootstrap .span12 {
+    width: 724px;
+  }
+#jevents .jevbootstrap .span11 {
+    width: 662px;
+  }
+#jevents .jevbootstrap .span10 {
+    width: 600px;
+  }
+#jevents .jevbootstrap .span9 {
+    width: 538px;
+  }
+#jevents .jevbootstrap .span8 {
+    width: 476px;
+  }
+#jevents .jevbootstrap .span7 {
+    width: 414px;
+  }
+#jevents .jevbootstrap .span6 {
+    width: 352px;
+  }
+#jevents .jevbootstrap .span5 {
+    width: 290px;
+  }
+#jevents .jevbootstrap .span4 {
+    width: 228px;
+  }
+#jevents .jevbootstrap .span3 {
+    width: 166px;
+  }
+#jevents .jevbootstrap .span2 {
+    width: 104px;
+  }
+#jevents .jevbootstrap .span1 {
+    width: 42px;
+  }
+#jevents .jevbootstrap .offset12 {
+    margin-left: 764px;
+  }
+#jevents .jevbootstrap .offset11 {
+    margin-left: 702px;
+  }
+#jevents .jevbootstrap .offset10 {
+    margin-left: 640px;
+  }
+#jevents .jevbootstrap .offset9 {
+    margin-left: 578px;
+  }
+#jevents .jevbootstrap .offset8 {
+    margin-left: 516px;
+  }
+#jevents .jevbootstrap .offset7 {
+    margin-left: 454px;
+  }
+#jevents .jevbootstrap .offset6 {
+    margin-left: 392px;
+  }
+#jevents .jevbootstrap .offset5 {
+    margin-left: 330px;
+  }
+#jevents .jevbootstrap .offset4 {
+    margin-left: 268px;
+  }
+#jevents .jevbootstrap .offset3 {
+    margin-left: 206px;
+  }
+#jevents .jevbootstrap .offset2 {
+    margin-left: 144px;
+  }
+#jevents .jevbootstrap .offset1 {
+    margin-left: 82px;
+  }
+#jevents .jevbootstrap .row-fluid {
+    width: 100%;
+    *zoom: 1;
+  }
+#jevents .jevbootstrap .row-fluid:before,
+#jevents .jevbootstrap .row-fluid:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+#jevents .jevbootstrap .row-fluid:after {
+    clear: both;
+  }
+#jevents .jevbootstrap .row-fluid [class*="span"] {
+    display: block;
+    float: left;
+    width: 100%;
+    min-height: 30px;
+    margin-left: 2.7624309392265194%;
+    *margin-left: 2.709239449864817%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+#jevents .jevbootstrap .row-fluid [class*="span"]:first-child {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .row-fluid .controls-row [class*="span"] + [class*="span"] {
+    margin-left: 2.7624309392265194%;
+  }
+#jevents .jevbootstrap .row-fluid .span12 {
+    width: 100%;
+    *width: 99.94680851063829%;
+  }
+#jevents .jevbootstrap .row-fluid .span11 {
+    width: 91.43646408839778%;
+    *width: 91.38327259903608%;
+  }
+#jevents .jevbootstrap .row-fluid .span10 {
+    width: 82.87292817679558%;
+    *width: 82.81973668743387%;
+  }
+#jevents .jevbootstrap .row-fluid .span9 {
+    width: 74.30939226519337%;
+    *width: 74.25620077583166%;
+  }
+#jevents .jevbootstrap .row-fluid .span8 {
+    width: 65.74585635359117%;
+    *width: 65.69266486422946%;
+  }
+#jevents .jevbootstrap .row-fluid .span7 {
+    width: 57.18232044198895%;
+    *width: 57.12912895262725%;
+  }
+#jevents .jevbootstrap .row-fluid .span6 {
+    width: 48.61878453038674%;
+    *width: 48.56559304102504%;
+  }
+#jevents .jevbootstrap .row-fluid .span5 {
+    width: 40.05524861878453%;
+    *width: 40.00205712942283%;
+  }
+#jevents .jevbootstrap .row-fluid .span4 {
+    width: 31.491712707182323%;
+    *width: 31.43852121782062%;
+  }
+#jevents .jevbootstrap .row-fluid .span3 {
+    width: 22.92817679558011%;
+    *width: 22.87498530621841%;
+  }
+#jevents .jevbootstrap .row-fluid .span2 {
+    width: 14.3646408839779%;
+    *width: 14.311449394616199%;
+  }
+#jevents .jevbootstrap .row-fluid .span1 {
+    width: 5.801104972375691%;
+    *width: 5.747913483013988%;
+  }
+#jevents .jevbootstrap .row-fluid .offset12 {
+    margin-left: 105.52486187845304%;
+    *margin-left: 105.41847889972962%;
+  }
+#jevents .jevbootstrap .row-fluid .offset12:first-child {
+    margin-left: 102.76243093922652%;
+    *margin-left: 102.6560479605031%;
+  }
+#jevents .jevbootstrap .row-fluid .offset11 {
+    margin-left: 96.96132596685082%;
+    *margin-left: 96.8549429881274%;
+  }
+#jevents .jevbootstrap .row-fluid .offset11:first-child {
+    margin-left: 94.1988950276243%;
+    *margin-left: 94.09251204890089%;
+  }
+#jevents .jevbootstrap .row-fluid .offset10 {
+    margin-left: 88.39779005524862%;
+    *margin-left: 88.2914070765252%;
+  }
+#jevents .jevbootstrap .row-fluid .offset10:first-child {
+    margin-left: 85.6353591160221%;
+    *margin-left: 85.52897613729868%;
+  }
+#jevents .jevbootstrap .row-fluid .offset9 {
+    margin-left: 79.8342541436464%;
+    *margin-left: 79.72787116492299%;
+  }
+#jevents .jevbootstrap .row-fluid .offset9:first-child {
+    margin-left: 77.07182320441989%;
+    *margin-left: 76.96544022569647%;
+  }
+#jevents .jevbootstrap .row-fluid .offset8 {
+    margin-left: 71.2707182320442%;
+    *margin-left: 71.16433525332079%;
+  }
+#jevents .jevbootstrap .row-fluid .offset8:first-child {
+    margin-left: 68.50828729281768%;
+    *margin-left: 68.40190431409427%;
+  }
+#jevents .jevbootstrap .row-fluid .offset7 {
+    margin-left: 62.70718232044199%;
+    *margin-left: 62.600799341718584%;
+  }
+#jevents .jevbootstrap .row-fluid .offset7:first-child {
+    margin-left: 59.94475138121547%;
+    *margin-left: 59.838368402492065%;
+  }
+#jevents .jevbootstrap .row-fluid .offset6 {
+    margin-left: 54.14364640883978%;
+    *margin-left: 54.037263430116376%;
+  }
+#jevents .jevbootstrap .row-fluid .offset6:first-child {
+    margin-left: 51.38121546961326%;
+    *margin-left: 51.27483249088986%;
+  }
+#jevents .jevbootstrap .row-fluid .offset5 {
+    margin-left: 45.58011049723757%;
+    *margin-left: 45.47372751851417%;
+  }
+#jevents .jevbootstrap .row-fluid .offset5:first-child {
+    margin-left: 42.81767955801105%;
+    *margin-left: 42.71129657928765%;
+  }
+#jevents .jevbootstrap .row-fluid .offset4 {
+    margin-left: 37.01657458563536%;
+    *margin-left: 36.91019160691196%;
+  }
+#jevents .jevbootstrap .row-fluid .offset4:first-child {
+    margin-left: 34.25414364640884%;
+    *margin-left: 34.14776066768544%;
+  }
+#jevents .jevbootstrap .row-fluid .offset3 {
+    margin-left: 28.45303867403315%;
+    *margin-left: 28.346655695309746%;
+  }
+#jevents .jevbootstrap .row-fluid .offset3:first-child {
+    margin-left: 25.69060773480663%;
+    *margin-left: 25.584224756083227%;
+  }
+#jevents .jevbootstrap .row-fluid .offset2 {
+    margin-left: 19.88950276243094%;
+    *margin-left: 19.783119783707537%;
+  }
+#jevents .jevbootstrap .row-fluid .offset2:first-child {
+    margin-left: 17.12707182320442%;
+    *margin-left: 17.02068884448102%;
+  }
+#jevents .jevbootstrap .row-fluid .offset1 {
+    margin-left: 11.32596685082873%;
+    *margin-left: 11.219583872105325%;
+  }
+#jevents .jevbootstrap .row-fluid .offset1:first-child {
+    margin-left: 8.56353591160221%;
+    *margin-left: 8.457152932878806%;
+  }
+#jevents .jevbootstrap input,
+#jevents .jevbootstrap textarea,
+#jevents .jevbootstrap .uneditable-input {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .controls-row [class*="span"] + [class*="span"] {
+    margin-left: 20px;
+  }
+#jevents .jevbootstrap input.span12,
+#jevents .jevbootstrap textarea.span12,
+#jevents .jevbootstrap .uneditable-input.span12 {
+    width: 710px;
+  }
+#jevents .jevbootstrap input.span11,
+#jevents .jevbootstrap textarea.span11,
+#jevents .jevbootstrap .uneditable-input.span11 {
+    width: 648px;
+  }
+#jevents .jevbootstrap input.span10,
+#jevents .jevbootstrap textarea.span10,
+#jevents .jevbootstrap .uneditable-input.span10 {
+    width: 586px;
+  }
+#jevents .jevbootstrap input.span9,
+#jevents .jevbootstrap textarea.span9,
+#jevents .jevbootstrap .uneditable-input.span9 {
+    width: 524px;
+  }
+#jevents .jevbootstrap input.span8,
+#jevents .jevbootstrap textarea.span8,
+#jevents .jevbootstrap .uneditable-input.span8 {
+    width: 462px;
+  }
+#jevents .jevbootstrap input.span7,
+#jevents .jevbootstrap textarea.span7,
+#jevents .jevbootstrap .uneditable-input.span7 {
+    width: 400px;
+  }
+#jevents .jevbootstrap input.span6,
+#jevents .jevbootstrap textarea.span6,
+#jevents .jevbootstrap .uneditable-input.span6 {
+    width: 338px;
+  }
+#jevents .jevbootstrap input.span5,
+#jevents .jevbootstrap textarea.span5,
+#jevents .jevbootstrap .uneditable-input.span5 {
+    width: 276px;
+  }
+#jevents .jevbootstrap input.span4,
+#jevents .jevbootstrap textarea.span4,
+#jevents .jevbootstrap .uneditable-input.span4 {
+    width: 214px;
+  }
+#jevents .jevbootstrap input.span3,
+#jevents .jevbootstrap textarea.span3,
+#jevents .jevbootstrap .uneditable-input.span3 {
+    width: 152px;
+  }
+#jevents .jevbootstrap input.span2,
+#jevents .jevbootstrap textarea.span2,
+#jevents .jevbootstrap .uneditable-input.span2 {
+    width: 90px;
+  }
+#jevents .jevbootstrap input.span1,
+#jevents .jevbootstrap textarea.span1,
+#jevents .jevbootstrap .uneditable-input.span1 {
+    width: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+#jevents .jevbootstrap .navbar-fixed-top,
+#jevents .jevbootstrap .navbar-fixed-bottom,
+#jevents .jevbootstrap .navbar-static-top {
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+#jevents .jevbootstrap .container-fluid {
+    padding: 0;
+  }
+#jevents .jevbootstrap .dl-horizontal dt {
+    float: none;
+    width: auto;
+    clear: none;
+    text-align: left;
+  }
+#jevents .jevbootstrap .dl-horizontal dd {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .container {
+    width: auto;
+  }
+#jevents .jevbootstrap .row-fluid {
+    width: 100%;
+  }
+#jevents .jevbootstrap .row,
+#jevents .jevbootstrap .thumbnails {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .thumbnails > li {
+    float: none;
+    margin-left: 0;
+  }
+#jevents .jevbootstrap [class*="span"],
+#jevents .jevbootstrap .uneditable-input[class*="span"],
+#jevents .jevbootstrap .row-fluid [class*="span"] {
+    display: block;
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+#jevents .jevbootstrap .span12,
+#jevents .jevbootstrap .row-fluid .span12 {
+    width: 100%;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+#jevents .jevbootstrap .row-fluid [class*="offset"]:first-child {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .input-large,
+#jevents .jevbootstrap .input-xlarge,
+#jevents .jevbootstrap .input-xxlarge,
+#jevents .jevbootstrap input[class*="span"],
+#jevents .jevbootstrap select[class*="span"],
+#jevents .jevbootstrap textarea[class*="span"],
+#jevents .jevbootstrap .uneditable-input {
+    display: block;
+    width: 100%;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+#jevents .jevbootstrap .input-prepend input,
+#jevents .jevbootstrap .input-append input,
+#jevents .jevbootstrap .input-prepend input[class*="span"],
+#jevents .jevbootstrap .input-append input[class*="span"] {
+    display: inline-block;
+    width: auto;
+  }
+#jevents .jevbootstrap .controls-row [class*="span"] + [class*="span"] {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+#jevents .jevbootstrap .nav-collapse {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+#jevents .jevbootstrap .page-header h1 small {
+    display: block;
+    line-height: 20px;
+  }
+#jevents .jevbootstrap input[type="checkbox"],
+#jevents .jevbootstrap input[type="radio"] {
+    border: 1px solid #ccc;
+  }
+#jevents .jevbootstrap .form-horizontal .control-label {
+    float: none;
+    width: auto;
+    padding-top: 0;
+    text-align: left;
+  }
+#jevents .jevbootstrap .form-horizontal .controls {
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .form-horizontal .control-list {
+    padding-top: 0;
+  }
+#jevents .jevbootstrap .form-horizontal .form-actions {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+#jevents .jevbootstrap .media .pull-left,
+#jevents .jevbootstrap .media .pull-right {
+    display: block;
+    float: none;
+    margin-bottom: 10px;
+  }
+#jevents .jevbootstrap .media-object {
+    margin-right: 0;
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .modal-header .close {
+    padding: 10px;
+    margin: -10px;
+  }
+#jevents .jevbootstrap .carousel-caption {
+    position: static;
+  }
+}
+
+@media (max-width: 979px) {
+  #jevents .jevbootstrap body {
+    padding-top: 0;
+  }
+#jevents .jevbootstrap .navbar-fixed-top,
+#jevents .jevbootstrap .navbar-fixed-bottom {
+    position: static;
+  }
+#jevents .jevbootstrap .navbar-fixed-top {
+    margin-bottom: 20px;
+  }
+#jevents .jevbootstrap .navbar-fixed-bottom {
+    margin-top: 20px;
+  }
+#jevents .jevbootstrap .navbar-fixed-top .navbar-inner,
+#jevents .jevbootstrap .navbar-fixed-bottom .navbar-inner {
+    padding: 5px;
+  }
+#jevents .jevbootstrap .navbar .container {
+    width: auto;
+    padding: 0;
+  }
+#jevents .jevbootstrap .navbar .brand {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 0 0 0 -5px;
+  }
+#jevents .jevbootstrap .nav-collapse {
+    clear: both;
+  }
+#jevents .jevbootstrap .nav-collapse .nav {
+    float: none;
+    margin: 0 0 10px;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > li {
+    float: none;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > li > a {
+    margin-bottom: 2px;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > .divider-vertical {
+    display: none;
+  }
+#jevents .jevbootstrap .nav-collapse .nav .nav-header {
+    color: #777777;
+    text-shadow: none;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > li > a,
+#jevents .jevbootstrap .nav-collapse .dropdown-menu a {
+    padding: 9px 15px;
+    font-weight: bold;
+    color: #777777;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+  }
+#jevents .jevbootstrap .nav-collapse .btn {
+    padding: 4px 10px 4px;
+    font-weight: normal;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+  }
+#jevents .jevbootstrap .nav-collapse .dropdown-menu li + li a {
+    margin-bottom: 2px;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > li > a:hover,
+#jevents .jevbootstrap .nav-collapse .nav > li > a:focus,
+#jevents .jevbootstrap .nav-collapse .dropdown-menu a:hover,
+#jevents .jevbootstrap .nav-collapse .dropdown-menu a:focus {
+    background-color: #f2f2f2;
+  }
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .nav > li > a,
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .dropdown-menu a {
+    color: #999999;
+  }
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .nav > li > a:hover,
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .nav > li > a:focus,
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .dropdown-menu a:hover,
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .dropdown-menu a:focus {
+    background-color: #111111;
+  }
+#jevents .jevbootstrap .nav-collapse.in .btn-group {
+    padding: 0;
+    margin-top: 5px;
+  }
+#jevents .jevbootstrap .nav-collapse .dropdown-menu {
+    position: static;
+    top: auto;
+    left: auto;
+    display: none;
+    float: none;
+    max-width: none;
+    padding: 0;
+    margin: 0 15px;
+    background-color: transparent;
+    border: none;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+  }
+#jevents .jevbootstrap .nav-collapse .open > .dropdown-menu {
+    display: block;
+  }
+#jevents .jevbootstrap .nav-collapse .dropdown-menu:before,
+#jevents .jevbootstrap .nav-collapse .dropdown-menu:after {
+    display: none;
+  }
+#jevents .jevbootstrap .nav-collapse .dropdown-menu .divider {
+    display: none;
+  }
+#jevents .jevbootstrap .nav-collapse .nav > li > .dropdown-menu:before,
+#jevents .jevbootstrap .nav-collapse .nav > li > .dropdown-menu:after {
+    display: none;
+  }
+#jevents .jevbootstrap .nav-collapse .navbar-form,
+#jevents .jevbootstrap .nav-collapse .navbar-search {
+    float: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+       -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .navbar-form,
+#jevents .jevbootstrap .navbar-inverse .nav-collapse .navbar-search {
+    border-top-color: #111111;
+    border-bottom-color: #111111;
+  }
+#jevents .jevbootstrap .navbar .nav-collapse .nav.pull-right {
+    float: none;
+    margin-left: 0;
+  }
+#jevents .jevbootstrap .nav-collapse,
+#jevents .jevbootstrap .nav-collapse.collapse {
+    height: 0;
+    overflow: hidden;
+  }
+#jevents .jevbootstrap .navbar .btn-navbar {
+    display: block;
+  }
+#jevents .jevbootstrap .navbar-static .navbar-inner {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (min-width: 980px) {
+  #jevents .jevbootstrap .nav-collapse.collapse {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}

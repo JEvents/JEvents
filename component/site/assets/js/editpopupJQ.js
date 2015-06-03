@@ -100,7 +100,7 @@ function addEditModalHtml (){
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (!jQuery("#myEditModal").length){
 		if (bootstrap3_enabled){
-			myEditModal = '<div class="modal   fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
+			myEditModal = '<div class="jevbootstrap"><div class="modal   fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-lg">'
 					+'<div class="modal-content">'
 						+'<div class="modal-header">'
@@ -113,9 +113,10 @@ function addEditModalHtml (){
 					+'</div>'
 				+'</div>'
 			+'</div>';
-		}
+		+'</div>';
+	}
 		else {
-			myEditModal = '<div class="modal  hide fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
+			myEditModal = '<div class="jevbootstrap"><div class="modal  hide fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-lg">'
 					+'<div class="modal-content">'
 						+'<div class="modal-header">'
@@ -128,6 +129,7 @@ function addEditModalHtml (){
 					+'</div>'
 				+'</div>'
 			+'</div>';
+		+'</div>';
 		}
 		// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
 		jQuery(myEditModal).appendTo("body");
@@ -159,7 +161,7 @@ function addImportPopupHtml (){
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (!document.getElementById("myImportModal")){
 		if (bootstrap3_enabled){
-			myImportModal = '<div class="modal  fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
+			myImportModal = '<div class="jevbootstrap"><div class="modal  fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-sm">'
 					+'<div class="modal-content">'
 						+'<div class="modal-header">'
@@ -172,9 +174,10 @@ function addImportPopupHtml (){
 					+'</div>'
 				+'</div>'
 			+'</div>';
+		+'</div>';
 		}
 		else {
-			myImportModal = '<div class="modal  hide fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
+			myImportModal = '<div class="jevbootstrap"><div class="modal  hide fade" id="myImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-sm">'
 					+'<div class="modal-content">'
 						+'<div class="modal-header">'
@@ -187,6 +190,7 @@ function addImportPopupHtml (){
 					+'</div>'
 				+'</div>'
 			+'</div>';
+		+'</div>';
 		}
 
 		jQuery(myImportModal).appendTo("body");

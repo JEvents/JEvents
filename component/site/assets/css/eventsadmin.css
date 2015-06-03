@@ -418,7 +418,26 @@ form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
 
-.jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap div.modal {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    outline: medium none;
+    top:5%;
+    left:50%;
+    position:fixed!important;
+    z-index: 1050;
+    text-align: left;
+}
+
+.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {
+    right:0px;
+    margin-left: -40%;
+}
+
+.jevbootstrap .ical_dialogJQ {max-width: 600px; bottom:auto!important;padding-right: 0px!important;margin-left:-300px!important;}
 .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
 .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
@@ -433,20 +452,6 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 .jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
 .jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
 .jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
-.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  
-    text-align: left;
-    left:50%;
-    position:fixed;
-    z-index:1050;
-    right:0px;
-    background-clip: padding-box;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-    margin-left: -40%;
-    outline: medium none;
-}
 
 .jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
    width:auto;
@@ -495,11 +500,27 @@ table.ev_navtable tr {vertical-align:top; }
 	overflow: hidden;
 }
 #myImportModal {
-	left: 50%;
 	margin-left: -280px;
 	width:560px;
 	height:500px;
 	overflow:hidden;
+	position: fixed;
+	z-index: 1050;
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	*border: 1px solid #999;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	text-align: left;
 }
 #myEditModal.modal {
 	position: fixed;
