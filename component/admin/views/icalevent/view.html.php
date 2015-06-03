@@ -130,7 +130,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
                         $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));                    
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
 			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 
 			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
@@ -411,7 +411,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			?>
 			<ul class="item-associations">
 			<?php foreach ($this->languages as $id => $item) :
-			
+
 				$text = strtoupper($item->sef);
 				$url = JRoute::_('index.php?option=com_jevents&task=icalevent.translate&evdet_id='.$row->evdet_id.'&ev_id='.$row->ev_id.'&pop=1&tmpl=component&lang=' . $item->lang_code);
 				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
@@ -433,5 +433,5 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		<?php
 		}
 	}
-	
+
 }

@@ -34,7 +34,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	{
 		if (!array_key_exists("HTTP_REFERER", $_SERVER))
 		{
-			throwerror("There was an error - no referrer info available");
+			PlgSystemGwejson::throwerror("There was an error - no referrer info available");
 		}
 
 		$live_site = $_SERVER['HTTP_HOST'];
@@ -42,7 +42,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 
 		if (!isset($ref_parts["host"]) || ($ref_parts["host"] . (isset($ref_parts["port"]) ? ':' . $ref_parts["port"] : '')) != $live_site)
 		{
-			throwerror("There was an error - missing host in referrer");
+			PlgSystemGwejson::throwerror("There was an error - missing host in referrer");
 		}
 	}
 
@@ -58,13 +58,13 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	$token = JSession::getFormToken();
 	if (!isset($requestObject->token) || strcmp($requestObject->token, $token)!==0)
 	{
-		throwerror("There was an error - bad token.  Please refresh the page and try again.");
+		PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 	}
 
 	$user = JFactory::getUser();
 	if (!JEVHelper::isEventCreator())
 	{
-		throwerror("There was an error - not an event creator");
+		PlgSystemGwejson::throwerror("There was an error - not an event creator");
 	}
 
 	if (intval($requestObject->formdata->evid) > 0)
@@ -77,7 +77,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 		//	$event = $db->loadObject();
 		if (!$event || (!JEVHelper::canEditEvent($event) ))
 		{
-			throwerror("There was an error - cannot edit this event");
+			PlgSystemGwejson::throwerror("There was an error - cannot edit this event");
 		}
 	}
 
@@ -133,29 +133,12 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 
 }
 
-function throwerror($msg)
-{
-	$data = new stdClass();
-	//"document.getElementById('products').innerHTML='There was an error - no valid argument'");
-	$data->error = "alert('" . $msg . "')";
-	$data->result = "ERROR";
-	$data->user = "";
-
-	header("Content-Type: application/x-javascript");
-	require 'jsonwrapper.php';
-	// Must suppress any error messages
-	@ob_end_clean();
-	echo json_encode($data);
-	exit();
-
-}
-
 function simulateSaveEvent($requestObject)
 {
 
 	if (!JEVHelper::isEventCreator())
 	{
-		throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
 	// Convert formdata to array
@@ -183,7 +166,7 @@ function simulateSaveEvent($requestObject)
 		$event = $queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 		if (!JEVHelper::canEditEvent($event))
 		{
-			throwerror(JText::_('ALERTNOTAUTH'));
+			PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 		}
 	}
 	$row = false;
@@ -201,7 +184,7 @@ function simulateSaveEvent($requestObject)
 	}
 	else
 	{
-		throwerror(JText::_('EVENT_NOT_SAVED'));
+		PlgSystemGwejson::throwerror(JText::_('EVENT_NOT_SAVED'));
 	}
 
 
@@ -215,7 +198,7 @@ function simulateSaveRepeat($requestObject)
 
 	if (!JEVHelper::isEventCreator())
 	{
-		throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
 	// Convert formdata to array
@@ -231,7 +214,7 @@ function simulateSaveRepeat($requestObject)
 
 	if (!array_key_exists("rp_id", $array) || intval($array["rp_id"]) <= 0)
 	{
-		throwerror(JText::_("Not a repeat", true));
+		PlgSystemGwejson::throwerror(JText::_("Not a repeat", true));
 	}
 
 	$rp_id = intval($array["rp_id"]);
@@ -243,7 +226,7 @@ function simulateSaveRepeat($requestObject)
 	$event = $queryModel->listEventsById(intval($rp_id), 1, "icaldb");
 	if (!JEVHelper::canEditEvent($event))
 	{
-		throwerror(JText::_('ALERTNOTAUTH'));
+		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
 	$db = JFactory::getDBO();

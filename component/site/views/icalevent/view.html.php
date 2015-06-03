@@ -116,8 +116,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
 		$this->assign("rp_id", JRequest::getInt("rp_id", 0));
 
-		$this->setCreatorLookup();
-
 		$this->_adminStart();
 
 		if (JevJoomlaVersion::isCompatible("3.0")  )

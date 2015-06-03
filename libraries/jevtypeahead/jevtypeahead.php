@@ -144,7 +144,7 @@ class JevTypeahead
                 settings.url = settings.url.replace(settings.wildcard, encodeURIComponent(query));
                 settings.dataType = 'json';
                 settings.type = 'POST';
-                settings.data = {json:" .$opt['json']. ", typeahead:query};
+                settings.data = {json:" .$opt['json']. ", typeahead:query, token:".JSession::getFormToken()."};
                 return settings;
             },
 ";

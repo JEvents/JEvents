@@ -31,37 +31,36 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
 		// note that the name config variable is ignored in the parent construct!
-		if (JevJoomlaVersion::isCompatible("2.5"))
-		{
-			// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
 
-			$app = JFactory::getApplication();
-			// Get current template style ID
-			$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
+		// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
 
-			// Check it's a valid style with simple check
-			if (!($page_template_id == "" || $page_template_id == "0")) {
-				// Load the valid style:
-				$db = JFactory::getDbo();
-				$query = $db->getQuery(true)
-					->select('template')
-					->from('#__template_styles')
-					->where('id =' . $db->quote($page_template_id) . '');
-				$db->setQuery($query);
-				$template = $db->loadResult();
+		$app = JFactory::getApplication();
+		// Get current template style ID
+		$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
 
-			} else {
-				$template = JFactory::getApplication()->getTemplate();
-			}
+		// Check it's a valid style with simple check
+		if (!($page_template_id == "" || $page_template_id == "0")) {
+			// Load the valid style:
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('template')
+				->from('#__template_styles')
+				->where('id =' . $db->quote($page_template_id) . '');
+			$db->setQuery($query);
+			$template = $db->loadResult();
 
-			$theme = JEV_CommonFunctions::getJEventsViewName();
-			$name = $this->getName();
-			$name = str_replace($theme."/", "", $name);
-			$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $name);
-
-			// or could have used 
-			//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
+		} else {
+			$template = JFactory::getApplication()->getTemplate();
 		}
+
+		$theme = JEV_CommonFunctions::getJEventsViewName();
+		$name = $this->getName();
+		$name = str_replace($theme."/", "", $name);
+		$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $name);
+
+		// or could have used
+		//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
+		
 
 	}
 
@@ -646,6 +645,9 @@ class JEventsAbstractView extends JViewLegacy
 		// some variables have fieldnames with camel case names in the form
 		$rowdata["allDayEvent"] = $rowdata["alldayevent"];
 		$rowdata["contact_info"] = $rowdata["contact"];
+
+		// set creator based on created_by input
+		$rowdata["creator"] = $rowdata["created_by"];
 
 		$this->form->bind($rowdata);
 

@@ -45,7 +45,7 @@ class PlgSystemGwejson extends JPlugin
 
 		$token = JSession::getFormToken();;
 		if ($token != $input->get('token', '', 'string')){
-			throwerror("There was an error - bad token.  Please refresh the page and try again.");
+			PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 		}
 
 		$file = $input->get('file', '', 'cmd');
