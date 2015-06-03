@@ -17,7 +17,7 @@ define(''/'', DIRECTORY_SEPARATOR);
 $x = realpath(dirname(__FILE__) . '/' . ".." . '/' . ".." . '/' . ".." . '/');
 if (!file_exists($x . '/' . "configuration.php") && isset($_SERVER['SCRIPT_FILENAME']))
 {
-	$x = str_replace('/' . 'components' . '/' . 'com_jevents' . '/' . 'libraries' . '/' . 'checkconflict.php', '', $_SERVER['SCRIPT_FILENAME']);
+	$x = str_replace('/components/com_jevents/libraries/checkconflict.php', '', $_SERVER['SCRIPT_FILENAME']);
 }
 define('JPATH_BASE', $x);
 
@@ -123,7 +123,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	define("RETURNDATA", serialize($returnData));
 
 	// Do this ourselves to avoid Joomla 3.0 template path issues
-	// require_once JPATH_BASE . '/' . 'includes' . '/' . 'defines.php';
+	// require_once JPATH_BASE . '/includes/defines.php';
 	
 	//Global definitions.
 	//Joomla framework path definitions.
@@ -150,7 +150,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	define('JPATH_CACHE',         JPATH_ROOT . '/cache');
 	define('JPATH_MANIFESTS',     JPATH_ADMINISTRATOR . '/manifests');
 	
-	require_once JPATH_BASE . '/' . 'includes' . '/' . 'framework.php';
+	require_once JPATH_BASE . '/includes/framework.php';
 
 	$requestObject = unserialize(REQUESTOBJECT);
 	$returnData = unserialize(RETURNDATA);
