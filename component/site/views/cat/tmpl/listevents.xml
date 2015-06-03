@@ -17,13 +17,13 @@
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
 
 			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-			<field name="darktemplate" type="jevboolean" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
+			<field name="darktemplate" class="btn-group" type="jevboolean" default=""  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 
-			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
-				<option value="0">JEV_NO</option>
-				<option value="1">JEV_YES</option>
+			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="" difficulty="2">
+				<option value="1">JEV_NAVIGATION_ICONS</option>
 				<option value="-1">HIDE_ALTOGETHER</option>
 				<option value="2">ICONS_WITHOUT_NAVIGATION</option>
+				<option value="0">JEV_OLD_STYLE_NAVIGATION</option>
 			</field>
 
 			<field name="iconstoshow" type="jevmultilist" mulitple="multiple" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC">
@@ -50,11 +50,11 @@
 			<field name="catid10" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
 			//-->
 
-			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+			<field name="showyearpast" type="radio" class="btn-group" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
-			<field name="com_showrepeats" type="jevboolean" default="0" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />			
+			<field name="com_showrepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
 			
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
@@ -73,7 +73,7 @@
 			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 
-			<field name="showyearpast" type="radio" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
+			<field name="showyearpast" type="radio" class="btn-group" default="1" label="JEV_SHOW_YEARPAST" description="JEV_SHOW_YEARPAST_TIP">
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>

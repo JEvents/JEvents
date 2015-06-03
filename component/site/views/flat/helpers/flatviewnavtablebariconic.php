@@ -130,7 +130,7 @@ class FlatViewNavTableBarIconic {
     function _viewJumptoIcon($today_date, $viewimages) {
         ?>
         <div   id="nav-jumpto">
-            <a href="#" onclick="if ($('jumpto').hasClass('jev_none')) {$('jumpto').removeClass('jev_none');} else {$('jumpto').addClass('jev_none')};return false;" title="<?php echo   JText::_('JEV_JUMPTO');?>">
+            <a href="#" onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;" title="<?php echo   JText::_('JEV_JUMPTO');?>">
 			<?php echo JText::_('JEV_JUMPTO'); ?>
 		</a>
 		</div>

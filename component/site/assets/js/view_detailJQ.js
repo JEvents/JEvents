@@ -8,235 +8,74 @@
  * @link        http://www.jevents.net
  */
 
-var myFaderTimeout=null;
-var interval=10000;
-if (myFaderTimeout) clearTimeout(myFaderTimeout);
-
-var opacities = new Array();
-var increments = 10;
-var pause = 50;
-var currentOpacity = 0;
-
-for (var i=0;i<=increments ;i++){
-	opacities[i] = (i*1.0)/(increments*1.0);
-}
-
-function closeAllDialogs(){
-	currentOpacity=0;
-	if (myFaderTimeout) clearTimeout(myFaderTimeout);
-	var myDiv = document.getElementById("action_dialog");
-	if (myDiv) myDiv.style.visibility="hidden";
-	var myDiv = document.getElementById("ical_dialog");
-	if (myDiv) myDiv.style.visibility="hidden";	
-}
-
-function clickEditButton(){
-	if (window.ie6) {
-		var action = document.getElementById('action_dialog');
-		action.style.display="block";
-		return;
+function jevSetupAddLink() {
+	var classes = ["td.cal_td_today"
+				, "td.cal_td_today"
+				, "td.cal_td_daysnoevents"
+				, "td.cal_td_dayshasevents"
+				, "td.jev_daynoevents"
+				, "td.jev_today"
+				, "div.jev_daynum"
+				, "td.jev_daynum"
+				, "td.todayclr"
+				, "td.weekdayclr"
+				, "td.sundayclr"
+				, "td.sundayemptyclr"
+				, ".cal_div_daysnoevents"
+				, ".cal_div_today"
+				, "td.cal_today"
+				, "td.cal_daysnoevents"
+				, "td.cal_dayshasevents"];
+	
+	for (var ci = 0; ci < classes.length; ci++)
+	{
+		tds = jevjq(classes[ci]);
+		tds.each (function (index) {
+			element = jevjq(this);
+			element.on('mouseover', function() {
+				 jevjq(this).addClass('showjevadd');
+			});
+			element.on('mouseout', function() {
+				 jevjq(this).removeClass('showjevadd');
+			});
+		});
 	}
 
-	closeAllDialogs();
-	if (currentOpacity<0) currentOpacity = 0;
-	jevFadeIn("action_dialog");
+}
+
+jevjq(document).on('ready', function() {
+	jevSetupAddLink();
+	// move dialog to main body because some template wrap it in a relative positioned element - wrapped to ensure our namespaced bootstrap picks it up!
+	var subwrap = jQuery("<div>", {class:"jevbootstrap"});
+	subwrap.appendTo("body");
+	if (jQuery(".action_dialogJQ").length) {
+		jQuery(".action_dialogJQ").appendTo(subwrap);
+		var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+		if (bootstrap3_enabled && jQuery(".action_dialogJQ").hasClass('hide')){
+			jQuery(".action_dialogJQ").removeClass('hide');
+		}
+	}
+	if (jQuery(".ical_dialogJQ").length) {
+		jQuery(".ical_dialogJQ").appendTo(subwrap);
+		if (bootstrap3_enabled && jQuery(".ical_dialogJQ").hasClass('hide')){
+			jQuery(".ical_dialogJQ").removeClass('hide');
+		}
+	}
+});
+
+
+function clickEditButton(){
 }
 
 function clickIcalSaveButton(){
-	closeAllDialogs();
-	if (currentOpacity<0) currentOpacity = 0;
-	jevFadeIn("action_dialog");
-	return false;
 }
 
 function closedialog() {
-	if (window.ie6) {
-		var action = document.getElementById('action_dialog');
-		action.style.display="none";
-		return;
-	}
-
-	if (currentOpacity>opacities.length) currentOpacity =opacities.length;
-	jevFadeOut("action_dialog");
 }
 
 function clickIcalButton(){
-	closeAllDialogs();
-	if (currentOpacity<0) currentOpacity = 0;
-	jevFadeIn("ical_dialog");
-}
+	}
 
 function closeical() {
-	if (currentOpacity>opacities.length) currentOpacity =opacities.length;
-	jevFadeOut("ical_dialog");
 }
 
-function jevFadeIn(dlg) {
-	var myDiv = document.getElementById(dlg);
-	currentOpacity++;
-	if (currentOpacity>=opacities.length){
-		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-	}
-	else {
-		//window.status=opacities[currentOpacity];
-		myDiv.style.opacity=opacities[currentOpacity];
-		myDiv.style.filter="alpha(opacity="+(100*opacities[currentOpacity])+")";
-		myDiv.style.visibility="visible";	
-		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-		myFaderTimeout = setTimeout("jevFadeIn('"+dlg+"')",pause);
-	}
-}
-
-function jevFadeOut(dlg) {
-	var myDiv = document.getElementById(dlg);
-	if (!myDiv) return;
-	currentOpacity--;
-	if (currentOpacity<=0){
-		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-		myDiv.style.visibility="hidden";
-	}
-	else {
-		myDiv.style.opacity=opacities[currentOpacity];
-		//window.status = opacities[currentOpacity];
-		myDiv.style.filter="alpha(opacity="+(100*opacities[currentOpacity])+")";
-		if (myFaderTimeout) clearTimeout(myFaderTimeout);
-		myFaderTimeout = setTimeout("jevFadeOut('"+dlg+"')",pause);
-	}
-}
-
-function setupIE6(){
-	if (window.ie6) {
-		var action = document.getElementById('action_dialog');	
-		if(action){
-			action.style.visibility="visible";
-			action.style.display="none";
-		}
-	}
-}
-window.addEvent('domready',function(){setupIE6();});
-
-
-function jevSetupAddLink(){
-	var tds = $$("td.cal_td_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_td_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_td_dayshasevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.jev_daynoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.jev_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-	var tds = $$("div.jev_daynum");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-	var tds = $$("td.jev_daynum");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-// for ext layout
-	var tds = $$("td.todayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.weekdayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.sundayclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.sundayemptyclr");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-
-	// for alternative layout
-	var tds = $$(".cal_div_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$(".cal_div_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-        
-        // flat layout
-	var tds = $$("td.cal_today");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_daysnoevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-	var tds = $$("td.cal_dayshasevents");
-	for (var i=0; i<tds.length; i++)
-	{
-		element = tds[i];
-		element.addEvent('mouseover', function(){ this.addClass('showjevadd'); });
-		element.addEvent('mouseout', function(){ this.removeClass('showjevadd'); });
-	}
-}
-
-window.addEvent('domready',function(){jevSetupAddLink();});

@@ -18,7 +18,7 @@
 	<state>
 		<name>JEvents</name>
 		<description>Monthly Calendar Layout</description>
-		<params addpath="/administrator/components/com_jevents/elements/" >
+		<params >
 		</params>
 	</state>
 

@@ -25,9 +25,8 @@ class JEventsAbstractView extends JViewLegacy
 		{
 			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
-		else
-		{
-			JEVHelper::stylesheet('eventsadmin16.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		else {
+			JEVHelper::stylesheet('eventsadminjq.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
@@ -159,6 +158,43 @@ class JEventsAbstractView extends JViewLegacy
 			</div>
 		</div>
 		<?php
+
+	}
+	function _quickiconButtonWHover($link, $image, $image_hover, $text, $path = '/administrator/images/', $target = '', $onclick = '')
+	{
+		if ($target != '')
+		{
+			$target = 'target="' . $target . '"';
+		}
+		if ($onclick != '')
+		{
+			$onclick = 'onclick="' . $onclick . '"';
+		}
+		if ($path === null || $path === '')
+		{
+			$path = '/administrator/images/';
+		}
+		$alttext = str_replace("<br/>", " ", $text);
+		?>
+		<div id="cp_icon_container">
+			<div class="cp_icon">
+				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?> title="<?php echo $alttext; ?>">
+					<?php
+					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text );
+					if (strpos($path, '/') === 0)
+					{
+						$path = substr($path, 1);
+					}
+					$atributes = array('title' => $alttext, 'onmouseover' => 'this.src=\'../' . $path . $image_hover . '\'', 'onmouseout' => 'this.src=\'../' . $path . $image . '\'' );
+
+					echo JHTML::_('image', $path . $image, $alttext, $atributes, false);
+					//JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true)
+					?>
+					<span><?php echo $text; ?></span>
+				</a>
+			</div>
+		</div>
+	<?php
 
 	}
 
@@ -567,6 +603,19 @@ class JEventsAbstractView extends JViewLegacy
 		$cache =  JFactory::getCache(JEV_COM_COMPONENT);
 		$cache->clean(JEV_COM_COMPONENT);
 
+		/*
+		// Get/Create the model
+		if ($model =  $this->getModel("icalevent", "icaleventsModel")) {
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
+		 */
+
+		// Get the form
+		$this->form = $this->get('Form');
+
+		/*
+		 * Moved to special model
 		// Prepare the data
 		// Experiment in the use of JForm and template override for forms and fields
 		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
@@ -578,7 +627,8 @@ class JEventsAbstractView extends JViewLegacy
 		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
 		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
-
+		*/
+		
 		$rowdata = array();
 		foreach ($this->row as $k => $v)
 		{

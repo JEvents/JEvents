@@ -5,8 +5,7 @@
 {
 	border: 1px solid #222222;
 	text-align: center;
-	font-family: Arial;
-	font-size: 12px;
+	
 	font-style: normal;
 	text-decoration: none;
 	margin: 0px auto 0.25em auto;	
@@ -146,42 +145,27 @@ table.mod_events_latest_table {
 }
 
 .mod_events_latest {
-	font-size: 10px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	
 	border-top: solid 1px red;
 	height: 30px;
 	}
 
 .mod_events_latest_first {
-	font-size: 10px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	
 	height: 30px;
 	}
 
-.mod_events_latest_date {
-	font-size: 9px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color:gray;
-	}
-
-
-.mod_events_latest_content a:link {
-	font-size: 10px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color:gray;
-	}
-
-.mod_events_latest_content a:visited {
-	font-size: 10px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color:gray;
-	}
-
-.mod_events_latest_content a:hover {
-	font-size: 10px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color:#c0c0c0;
-	}
+.jevbootstrap .mod_events_latest_date , .jevbootstrap .mod_events_latest_content {
+	line-height:14px;
+	margin-top: 1px;
+	vertical-align: text-top;
+}
+.jevbootstrap [class^="icon-"], .jevbootstrap [class*=" icon-"] {
+	margin-right:3px;
+}
+.jevbootstrap [class^="icon-"], .jevbootstrap [class*=" icon-"] {
+	margin-right:3px;
+}
 
 div.mod_events_latest_callink {
 	margin-top: 8px;

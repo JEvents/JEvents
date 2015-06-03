@@ -209,10 +209,10 @@ class DefaultModCalView
 		$included = true;
 		$viewname = $this->getTheme();
 		if (file_exists(JPATH_SITE."/modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js")){
-			JHtml::script("modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js");
+			JEVHelper::script("modules/mod_jevents_cal/tmpl/$viewname/assets/js/calnav.js");
 		}
 		else {
-			JHtml::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
+			JEVHelper::script("modules/mod_jevents_cal/tmpl/default/assets/js/calnav.js");
 		}
 	}
 

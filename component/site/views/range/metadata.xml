@@ -13,38 +13,7 @@
 	<state>
 		<name>JEvents</name>
 		<description>Date Range List of Events</description>
-		<params  addpath="/administrator/components/com_jevents/elements/">
-			<param name="relative" type="radio" default='ABS'  label="Relative/Absolute Date Range" description="Should date range be relative to today of absolute dates.  You can also specify dates using the php function strtotime">
-				<option value="abs">Absolute</option>
-				<option value="rel">Relative</option>
-				<option value="strtotime">strtotime</option>
-			</param>
-			<param name="@spacer" type="jevinfo" default='ABSOLUTE_DATE_RANGE'    label="" description="" />	
-			<param name='absstart' type='jevdate' default="" label='ABSOLUTE_START_DATE'  description="" />
-			<param name='absend' type='jevdate' default="" label='ABSOLUTE_END_DATE'  description="" />
-			
-			<param name="@spacer" type="jevinfo" default='RELATIVE_DATE_RANGE'    label="" description="" />	
-			<param name='relstart' type='text' default="-1w" label='START_RELATIVE_TO_TODAY'  description="JEV_RELSTART_DESC" />
-			<param name='relend' type='text' default="+1m" label='END_RELATIVE_TO_TODAY'  description="JEV_RELEND_DESC" />		
-
-			<param name="@spacer" type="jevinfo" default='STRTOTIME_DATE_RANGE'    label="" description="" />	
-			<param name='strstart' type='text' default='YESTERDAY'  label='STRTOTIME_START_DATE'  description="" />
-			<param name='strend' type='text' default='TOMORROW'  label='STRTOTIME_END_DATE'  description="" />
-
-			<param name="com_showrepeats" type="jevboolean" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
-			
-			<param name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
-				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
-				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
-				<option value="evt.created DESC" >JEV_MOST_RECENT</option>
-			</param>
-
-			<param name="@spacer" type="spacer" default=""   label="" description="" />	
-			
+		<params >
 		</params>
-		
-		
 	</state>
-
 </metadata>

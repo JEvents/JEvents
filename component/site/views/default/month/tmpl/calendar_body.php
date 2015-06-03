@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	 = JEVConfig::getInstance();
 
-if ($cfg->get("tooltiptype",'overlib')=='overlib'){
+if ($cfg->get("tooltiptype",'joomla')=='overlib'){
 	JEVHelper::loadOverlib();
 }
 

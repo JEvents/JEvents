@@ -21,18 +21,17 @@ $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 $order = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
 $pathIMG = JURI::root() . 'administrator/images/';
+$mainspan = 10;
+ $fullspan = 12;
 ?>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php if (!empty($this->sidebar)) : ?>
-		<div id="j-sidebar-container" class="span2">
+<?php if (!empty($this->sidebar)) : ?>
+<div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
-		</div>
-		<div id="j-main-container" class="span10">
-			<?php else : ?>
-			<div id="j-main-container">
-	<?php endif; ?>
+</div>
+ <?php endif; ?>
 
+	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<table cellpadding="4" cellspacing="0" border="0" >
 				<tr>
 <?php if (!$this->_largeDataSet)
@@ -71,6 +70,12 @@ $pathIMG = JURI::root() . 'administrator/images/';
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+					<?php
+					if (count($this->languages)>1) {
+					?>
+					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+					<?php }
+					?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 					<th width="15%" nowrap="nowrap">
 <?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
@@ -111,6 +116,9 @@ $pathIMG = JURI::root() . 'administrator/images/';
 								<?php } ?>
 						</td>
 						<td align="center"><?php echo $row->creatorName(); ?></td>
+						<?php  if (count($this->languages)>1) { ?>
+						<td align="center"><?php	 echo $this->translationLinks($row); ?>	</td>
+						<?php } ?>
 						<td align="center">
 							<?php
 							if ($row->state()==1){

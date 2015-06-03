@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
 <form>
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
-				
-				
+								
 		<field name="title" type="jeveventtext" default="" size="40" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
-		<field name="catid" type="jeveventcategory" default="0"   layoutfield="CATEGORY" labelclass="control-label"  label="JEV_EVENT_CATEGORY" description="JEV_EVENT_CATEGORY_TIP" />
+		<field name="catid" type="jeveventcategory" default="0"  layoutfield="CATEGORY" labelclass="control-label"  label="JEV_EVENT_CATEGORY" description="JEV_EVENT_CATEGORY_TIP" />
 		<field name="priority" type="jeveventpriorities" default="0"  layoutfield="PRIORITY"  labelclass="control-label" label="JEV_EVENT_PRIORITY" description="JEV_EVENT_PRIORITY_TIP" />
 		<field name="creator" type="jeveventcreator" default="0"  layoutfield="CREATOR"  labelclass="control-label" label="JEV_EVENT_CREATOR" description="JEV_EVENT_CREATOR_TIP" />
 		<!--
@@ -27,7 +26,7 @@
 						
 		<!-- date time //-->
 		<field name="allDayEvent" type="checkbox" layoutfield="ALLDAYEVENT"  labelclass="" class="checkbox"  label="JEV_EVENT_ALLDAY" 
-			onclick="toggleAllDayEvent();"       description="JEV_EVENT_ALLDAY_TIP"  value="on" />
+			onclick="toggleAllDayEvent();"       description="JEV_EVENT_ALLDAY_TIP"  value="1" />
 		<field name="view12Hour" type="checkbox" layoutfield="VIEW12HOUR"  labelclass="" class="checkbox"  label="TWELVE_HOUR" description="TWELVE_HOUR_TIP" value="1" />
 
 		<field name="publish_up" type="jeveventdate" default="0"  layoutfield="STARTDATE"  labelclass=""

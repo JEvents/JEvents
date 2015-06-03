@@ -34,7 +34,7 @@ if (JRequest::getString("submit","")!="")
 	//$cats = implode("|",$cats);
         $jr_years = JRequest::getVar('years', array(0), 'POST');
 	$years = JEVHelper::forceIntegerArray($jr_years, true);
-	$cats = implode(",", $cats);
+        $cats = implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (count($cats) > 0)

@@ -30,7 +30,8 @@ class ICalsController extends AdminIcalsController
 			$db->setQuery($query);
 			$allICS = $db->loadObjectList();
 			if (count($allICS)==0){
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 		}
 
@@ -52,11 +53,9 @@ class ICalsController extends AdminIcalsController
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get("disableicalexport", 0))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
-
-		// Include mootools framework
-		JHtml::_('behavior.framework', true);
 
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$Itemid = JEVHelper::getItemid();
@@ -124,14 +123,18 @@ class ICalsController extends AdminIcalsController
 		$userid = JRequest::getInt("i", 0);
 		if ($pk != "NONE")
 		{
-			if (!$userid)
-				JError::raiseError(403, "JEV_ERROR");
+			if (!$userid) {
+				throw new Exception( JText::_('JEV_ERROR'), 403);
+				return false;
+			}
 			$privatecalendar = true;
 			$puser = JUser::getInstance($userid);
 			$key = md5($icalkey . $cats . $years . $puser->password . $puser->username . $puser->id);
 
-			if ($key != $pk)
-				JError::raiseError(403, "JEV_ERROR");
+			if ($key != $pk) {
+				throw new Exception( JText::_('JEV_ERROR'), 403);
+				return false;
+			}
 
 			// ensure "user" can access non-public categories etc.
 			$this->dataModel->aid = JEVHelper::getAid($puser);
@@ -144,16 +147,20 @@ class ICalsController extends AdminIcalsController
 		{
 			if ($params->get("disableicalexport", 0))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 
 			$key = md5($icalkey . $cats . $years);
-			if ($key != $k)
-				JError::raiseError(403, "JEV_ERROR");
+			if ($key != $k) {
+				throw new Exception( JText::_('JEV_ERROR'), 403);
+				return false;
+			}
 		}
 		else
 		{
-			JError::raiseError(403, "JEV_ERROR");
+			throw new Exception( JText::_('JEV_ERROR'), 403);
+			return false;
 		}
 
 		// Fix the cats
@@ -463,7 +470,14 @@ class ICalsController extends AdminIcalsController
 		?>
 		<script type="text/javascript">
 			window.alert("<?php echo JText::sprintf("JEV_EVENTS_IMPORTED", $count); ?>");
-			window.parent.SqueezeBox.close();
+			try {
+				window.parent.jQuery('#myImportModal').modal('hide');
+			}
+			catch (e){}
+			try {
+				window.parent.SqueezeBox.close();
+			}
+			catch (e){}
 			//window.parent.location.reload();
 		</script>
 		<?php
@@ -497,6 +511,7 @@ class ICalsController extends AdminIcalsController
 			// just incase we don't have jevents plugins registered yet
 			//JPluginHelper::importPlugin("jevents");
 			//$dispatcher->trigger('onExportRow', array(&$row));
+			$icalEvents = array();
 			$icalEvents[$a->ev_id()] = $a;
 
 			// get the view
@@ -505,6 +520,7 @@ class ICalsController extends AdminIcalsController
 			$this->view->assign("dataModel",$this->dataModel) ;
 			$this->view->assign("outlook2003icalexport", false);
 			$this->view->assign("icalEvents", $icalEvents);
+			$this->view->assign("withrepeats", $withrepeats);
 
 			$this->view->export();
 			return;			

@@ -15,22 +15,15 @@ if (JRequest::getVar('save')) {
     customCssSave();
 }
 ?>
+<?php if (!empty($this->sidebar)) : ?>
+<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+</div>
+ <?php endif; ?>
 <div id="jevents">
     <?php
-    if (isset($this->warning)) {
-        ?>
-        <dl id="system-message">
-            <dt class="notice">Message</dt>
-            <dd class="notice fade">
-                <ul>
-                    <li><?php echo $this->warning; ?></li>
-                </ul>
-            </dd>
-        </dl>
-    <?php
-    }
 
-    $file = 'jevcustom.css';
+	$file = 'jevcustom.css';
     $srcfile = 'jevcustom.css.new';
     $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
     $srcfilepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
@@ -39,27 +32,26 @@ if (JRequest::getVar('save')) {
     }
     $content = '';
     $html = '';
-    
+
     ob_start();
 
     $content = JFile::read($filepath);
     $btnclass = JevJoomlaVersion::isCompatible("3.0") ? "btn btn-success" : "";
-    ?>
+    $mainspan = 10;
+    $fullspan = 12;
 
-    <form action="index.php?option=com_jevents&task=cpanel.custom_css&save=custom_css_save" method="post"
-          name="custom_css_save" id="custom_css_save">
+    ?>
+    <form action="index.php?option=com_jevents" method="post"
+          name="admin" id="adminForm">
         <?php echo JHtml::_( 'form.token' ); ?>
-        <?php if (!empty($this->sidebar)) : ?>
-        <div id="j-sidebar-container" class="span2">
-            <?php echo $this->sidebar; ?>
+        <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
+                <textarea style="width:60%;height:550px;" name="content"><?php echo $content; ?></textarea>
+                <input type="hidden" name="controller" value="component" />
+                <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
+                <input type="hidden" name="task" value="" />
+                <input type="hidden" name="save" value="custom_css_save" />
+            </div>
         </div>
-        <div id="j-main-container" class="span10">
-            <?php else : ?>
-            <div id="j-main-container">
-                <?php endif; ?>
-                <textarea style="width:90%;height:650px;" name="content"><?php echo $content; ?></textarea>
-                <input type="submit" style="display:block;margin-left:2px;" name="save" class="<?php echo $btnclass; ?>"
-                       value="<?php echo JText::_('JEV_CSS_SAVE'); ?>">
     </form>
     <?php
     $html = ob_get_contents();
@@ -76,7 +68,7 @@ if (JRequest::getVar('save')) {
         $file = 'jevcustom.css';
         $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
         $jinput = JFactory::getApplication()->input;
-        $content = $jinput->get('content', '', 'POST', '', RAW);
+        $content = $jinput->get('content', '', 'POST', '', 'RAW');
 
         $msg = '';
         $msgType = '';
@@ -84,14 +76,14 @@ if (JRequest::getVar('save')) {
         $status = JFile::write($filepath, $content);
         if (!empty($status)) {
             $msg = JText::_('JEV_CUSTOM_CSS_SUCCESS');
-            $msgType = 'info';
+            $msgType = 'Info';
         } else {
             $msg = JText::_('JEV_CUSTOM_CSS_ERROR');
-            $msgType = 'error';
+            $msgType = 'Error';
         }
 
         $mainframe->enqueueMessage($msg, $msgType);
-        $mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css&msg=' . $msg . '&msgtype=' . $msgType . '');
+        $mainframe->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
 
     }
 

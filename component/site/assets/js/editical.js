@@ -984,7 +984,7 @@ function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect)
 
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-window.addEvent ('domready', function() {
+window.addEvent ('load', function() {
 	try {
 		if(Browser.firefox) {
 			$("adminForm").autocomplete='off';
@@ -1022,7 +1022,7 @@ window.addEvent("domready",function(){
 });
 */
 
-window.addEvent('domready',function(){
+window.addEvent('load',function(){
 	if ($('view12Hour')){
 		$('view12Hour').addEvent('click', function(){toggleView12Hour();});
 	}

@@ -33,16 +33,16 @@
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
 
-			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="">
-				<option value="0">JEV_NO</option>
-				<option value="1">JEV_YES</option>
+			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="" difficulty="2">
+				<option value="1">JEV_NAVIGATION_ICONS</option>
 				<option value="-1">HIDE_ALTOGETHER</option>
 				<option value="2">ICONS_WITHOUT_NAVIGATION</option>
+				<option value="0">JEV_OLD_STYLE_NAVIGATION</option>
 			</field>
 
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 
-			<field name="nextrepeat" type="jevboolean" default="1"  label="COM_JEVENTS_NEXT_REPEAT" description="COM_JEVENTS_NEXT_REPEAT_DESC"/>
+			<field name="nextrepeat" type="jevboolean" class="btn-group" default="1"  label="COM_JEVENTS_NEXT_REPEAT" description="COM_JEVENTS_NEXT_REPEAT_DESC"/>
 
 		</fieldset>
 	</fields>

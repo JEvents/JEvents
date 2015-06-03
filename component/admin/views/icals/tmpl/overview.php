@@ -26,18 +26,17 @@ JHTML::_('behavior.tooltip');
 
 // get configuration object
 $cfg = JEVConfig::getInstance();
+$mainspan = 10;
+ $fullspan = 12;
 ?>
+<?php if (!empty($this->sidebar)) : ?>
+<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+</div>
+ <?php endif; ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php if (!empty($this->sidebar)) : ?>
-		<div id="j-sidebar-container" class="span2">
-			<?php echo $this->sidebar; ?>
-		</div>
-		<div id="j-main-container" class="span10">
-		<?php else : ?>
-			<div id="j-main-container">
-			<?php endif; ?>
-
+	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<table cellpadding="4" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td width="100%">

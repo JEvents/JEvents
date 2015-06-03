@@ -32,19 +32,19 @@ class JFormFieldJevcolumns extends JFormFieldText
 			JHtml::_('jquery.framework');
 			JHtml::_('jquery.ui', array("core","sortable"));
 			JHtml::_('bootstrap.framework');
-			JHTML::script("components/com_jevents/assets/js/jQnc.js");
+			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 		}
 		else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
 			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
 			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
-			JHTML::script("components/com_jevents/assets/js/jQnc.js");
+			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 		}
 
-		JHTML::script('administrator/components/com_jevents/assets/js/columns.js');
+		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
 
 		$user = JFactory::getUser();
 

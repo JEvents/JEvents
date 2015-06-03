@@ -113,8 +113,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 		}
 
-		JHTML::_('behavior.tooltip');
-
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
 		$this->assign("rp_id", JRequest::getInt("rp_id", 0));
 
@@ -122,13 +120,14 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		$this->_adminStart();
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
+		if (JevJoomlaVersion::isCompatible("3.0")  )
 		{
+			// load Joomla javascript classes
+			JHTML::_('behavior.core');
 			$this->setLayout("edit");
 		}
-		else
-		{
-			$this->setLayout("edit16");
+		else  {
+			$this->setLayout("editjq");
 		}
 
 		JEVHelper::componentStylesheet($this, "editextra.css");		

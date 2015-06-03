@@ -36,10 +36,12 @@ class JFormFieldJeveventdate extends JFormField
 		static $firsttime;
 		if (!defined($firsttime)){
 			$document = JFactory::getDocument();
-			$js = "\neventEditDateFormat='$inputdateformat';Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
+			$js = "\neventEditDateFormat='$inputdateformat';//Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
 			$document->addScriptDeclaration($js);
+			$firsttime = false;
 		}
-		JEVHelper::loadCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem = $("'.$this->name.'");'.$this->element['onhidestart'], "elem = $('".$this->name."');".$this->element['onchange'], $inputdateformat);
+		$cal = JEVHelper::loadCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat);
+		echo $cal;
 		?>
 		<input type="hidden"  name="<?php echo $this->name;?>2" id="<?php echo $this->name;?>2" value="" />
 		<?php

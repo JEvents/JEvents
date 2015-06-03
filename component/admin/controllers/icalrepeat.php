@@ -135,6 +135,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
+ 
+                // Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+		}
 
 		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid', array(0));
@@ -146,7 +153,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		// front end passes the id as evid
@@ -177,7 +185,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (!JEVHelper::canEditEvent($row))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		/*
@@ -287,7 +296,6 @@ class AdminIcalrepeatController extends JControllerLegacy
                                 ob_end_clean();
                                 ?>
                                 <script type="text/javascript">
-                                        //window.parent.SqueezeBox.close();
                                         window.parent.alert("<?php echo $msg; ?>");
                                         window.parent.location="<?php echo $link; ?>";
                                 </script>
@@ -419,7 +427,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		// clean out the cache
@@ -441,7 +450,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$event = $this->queryModel->listEventsById(intval($rp_id), 1, "icaldb");
 		if (!JEVHelper::canEditEvent($event))
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$db = JFactory::getDBO();
@@ -579,11 +589,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function savefuture()
 	{
 		// experimentaal code disabled for count (startthe time being
-		JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+		throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		return false;
 
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		// clean out the cache
@@ -684,7 +696,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		ob_end_clean();
 		?>
 		<script type="text/javascript">
-			window.parent.SqueezeBox.close();
+			try {
+				window.parent.jQuery('#myEditModal').modal('hide');
+			}
+			catch (e){}
+			try {
+				window.parent.SqueezeBox.close();
+			}
+			catch (e){}
 			try {
 				window.parent.closedialog();
 			}
@@ -703,7 +722,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$cid = JRequest::getVar('cid', array(0));
@@ -723,7 +743,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$event = $this->queryModel->listEventsById(intval($id), 1, "icaldb");
 			if (!JEVHelper::canDeleteEvent($event))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 
 			// May want to send notification messages etc.
@@ -793,7 +814,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (!JEVHelper::isEventCreator())
 		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
 
 		$this->_deleteFuture();
@@ -827,7 +849,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$event = $this->queryModel->listEventsById(intval($id), 1, "icaldb");
 			if (!JEVHelper::canDeleteEvent($event))
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
 			}
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
@@ -836,7 +859,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$repeatdata = $db->loadObject();
 			if (is_null($repeatdata))
 			{
-				JError::raiseError(4777, JText::_('NO_SUCH_EVENT'));
+				throw new Exception( JText::_('NO_SUCH_EVENT'), 4777);
 				return;
 			}
 
