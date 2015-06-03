@@ -1058,32 +1058,30 @@ jevjq(document).on('ready', function(){
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
-		var tabs = jevjq("#myEditTabsContent .tab-pane");
-		if (tabs){
+		// empty tabs - hide the tab link
+		var tabs = jQuery("#myEditTabsContent .tab-pane");
+		if (tabs.length){
 			tabs.each(function(index) {
-				tab = jevjq(this);
-				if (tab.children.length==0){
-					tab.style.display="none";
-					var tablink = jevjq("#myEditTabs a[href='#"+tab.id+"']");
+				tab = jQuery(this);
+				if (tab.children().length==0){
+					tab.css("display","none");
+					var tablink = jQuery("#myEditTabs a[href='#"+tab.prop('id')+"']");
 					if (tablink){
-						tablink.getParent().style.display="none";
+						tablink.parent().css("display","none");
 					}
 				}
 			})
 		}
-		tabs = jevjq(".adminform dd.tabs .jevextrablock");
-		if (tabs){
-			var tablinks = jevjq(".adminform dl dt.tabs");
-			tabs.each(function(index) {
-				tab = jevjq(this);
-				if (tab.children.length==0){
-					var classname = tab.getParent().className.clean().replace(" ","").replace("tabs","");
-					tab.innerHTML="xx";
-					//tab.style.display="none";
-					var tablink = jevjq(".adminform #"+classname);
-					if (tablink){
-						tablink.style.display="none";
-					}
+		// tab link with no matching tab - hide the link
+		var tablinks = jevjq("#myEditTabs.nav-tabs li a");
+		if (tablinks.length){
+			tablinks.each(function(index, tablink) {
+				var href = jQuery(tablink).prop('href');
+				href = href.substr(href.indexOf('#'));
+				var tab = jevjq("#myEditTabsContent "+href);
+				if (!tab.length) {
+					tablink.innerHTML="xx";
+					jQuery(tablink).css("display","none");
 				}
 			})
 		}

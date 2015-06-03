@@ -389,6 +389,9 @@ class JEventsHTML
 			$catid = current($options)->value;
 		}
 
+		// sort categories alphabetically
+		//usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
+
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
 		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
