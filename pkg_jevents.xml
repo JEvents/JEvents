@@ -26,7 +26,6 @@
 		<file type="plugin" id="eventsearch" group="search">search.zip</file>
 		<file type="plugin" id="jevents" group="content">jevents.zip</file>
 		<file type="library" id="googl">googl.zip</file>
-		<file type="library" id="jevbootstrap">jevbootstrap.zip</file>
 		<file type="library" id="jevmodal">jevmodal.zip</file>
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
