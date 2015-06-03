@@ -136,6 +136,12 @@ class Pkg_JeventsInstallerScript
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
  			$db->setQuery($query);
  			$db->query();
+
+                        // Enable JSON Plugin
+                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+ 			$db->setQuery($query);
+ 			$db->query();
+
 		}
 		else {
 			jimport( 'joomla.filesystem.file' );
@@ -147,6 +153,9 @@ class Pkg_JeventsInstallerScript
 			if (JFile::exists($file1)) JFile::delete($file1);
 			if (JFile::exists($file2)) JFile::delete($file2);
 			if (JFile::exists($file3)) JFile::delete($file3);
+
+			$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
+			if (JFile::exists($file4)) JFile::delete($file4);
 
 			// Lets make sure our Core plugin is enabled..
 			$db = JFactory::getDbo();

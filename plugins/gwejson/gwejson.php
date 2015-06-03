@@ -121,7 +121,7 @@ class PlgSystemGwejson extends JPlugin
 			$data->result = "ERROR";
 			$data->user = "";
 
-			$requestData =  $input->get('task', '', 'raw');
+			$requestData =  $input->get('json', '', 'raw');
 
 			if (isset($requestData))
 			{
