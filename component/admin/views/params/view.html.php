@@ -86,7 +86,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 			JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 		else {
-			JEVHelper::stylesheet( 'eventsadmin16.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
+			JEVHelper::stylesheet( 'eventsadminjq.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 		}
 
 		$document = JFactory::getDocument();

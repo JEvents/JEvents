@@ -39,21 +39,23 @@ class JFormFieldJeveventtime extends JFormField
 		else {
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup = JevJoomlaVersion::isCompatible("3.0")? "btn-group" : "";
-		$btn = JevJoomlaVersion::isCompatible("3.0")? "btn" : "";
+		$btngroup = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn-group" : "";
+		$btn = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn" : "";
+		$timevalue = $event->$time24function();
+		list($h,$m) = explode(":", $timevalue);
 		?>
 		<div id="<?php echo $partname;?>_24h_area" class="jev_inline">
 			<input class="inputbox" type="text" name="<?php echo $partname;?>_time" id="<?php echo $name;?>" size="8" <?php echo $test ? "disabled='disabled'" : ""; ?> maxlength="8" value="<?php echo $event->$time24function(); ?>" onchange="checkTime(this);"/>
 		</div>
 		<div  id="<?php echo $partname;?>_12h_area"  class="jev_inline">
 			<input class="inputbox" type="text" name="<?php echo $partname;?>_12h" id="<?php echo $partname;?>_12h" size="8" maxlength="8" <?php echo $test ? "disabled='disabled'" : ""; ?> value="" onchange="check12hTime(this);" />
-			<div class="radio <?php echo $btngroup;?> " id="<?php echo $partname;?>_ampm"  style="display:inline;">
+			<div class="radio <?php echo $btngroup;?> " id="<?php echo $partname;?>_ampm" >
 				<label for="<?php echo $partname;?>AM" class="radio <?php echo $btn;?>">
-					<input type="radio" name="<?php echo $partname;?>_ampm" id="<?php echo $partname;?>AM" value="none" checked="checked" onclick="toggleAMPM('<?php echo $partname;?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+					<input type="radio" name="<?php echo $partname;?>_ampm" id="<?php echo $partname;?>AM" value="none" <?php echo $h<=12?'checked="checked"':'';?> onclick="toggleAMPM('<?php echo $partname;?>AM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo JText::_('JEV_AM'); ?>
 				</label>
 				<label for="<?php echo $partname;?>PM" class="radio <?php echo $btn;?>">
-					<input type="radio" name="<?php echo $partname;?>_ampm" id="<?php echo $partname;?>PM" value="none" onclick="toggleAMPM('<?php echo $partname;?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
+					<input type="radio" name="<?php echo $partname;?>_ampm" id="<?php echo $partname;?>PM" value="none" <?php echo $h>12?'checked="checked"':'';?> onclick="toggleAMPM('<?php echo $partname;?>PM');" <?php echo $test ? "disabled='disabled'" : ""; ?> />
 					<?php echo JText::_('JEV_PM'); ?>
 				</label>
 			</div>

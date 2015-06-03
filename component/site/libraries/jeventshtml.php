@@ -345,7 +345,7 @@ class JEventsHTML
 			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
 
 			// allow anon-user event creation through
-			if (isset($user->id))
+			if (isset($user->id) && $user->id>0)
 			{
 				$count = count($options);
 				for ($o = 0; $o < $count; $o++)
@@ -356,6 +356,27 @@ class JEventsHTML
 					}
 				}
 				$options = array_values($options);
+			}
+
+			// Do we disable top level categories
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if ($params->get("blocktoplevelcategories",0)){
+				$count = count($options);
+				for ($o = 0; $o < $count; $o++)
+				{
+					if (strpos($options[$o]->text, "-")!==0)
+					{
+						// Do not block if there is a child!  This is a crude test of this
+						if (array_key_exists($o+1, $options) && strpos($options[$o+1]->text, "-")!==0 ){
+							continue;
+						}
+						// If its the last one then it also has no children
+						if (!array_key_exists($o+1, $options)){
+							continue;
+						}
+						$options[$o]->disable = true;
+					}
+				}
 			}
 		}
 		else
@@ -424,7 +445,7 @@ class JEventsHTML
 						$checked = ' checked="checked"';
 					}
 				}
-				if (JevJoomlaVersion::isCompatible("3.0")){
+				if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 					// bootstrap version
 					$tosend .= '' 
 							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
@@ -443,7 +464,7 @@ class JEventsHTML
 					;
 				}
 			}
-			if (JevJoomlaVersion::isCompatible("3.0")){
+			if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 				echo $tosend;
 			}
 			else {
@@ -491,7 +512,7 @@ class JEventsHTML
 					}
 				}
 
-				if (JevJoomlaVersion::isCompatible("3.0")){
+				if (JevJoomlaVersion::isCompatible("3.0")   ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 					// bootstrap version
 					$tosend .= '' 
 							. '<input type="checkbox" id="cb_wn' . $a . '" name="' . $name . '[]" value="'
@@ -509,7 +530,7 @@ class JEventsHTML
 					;
 				}
 			}
-			if (JevJoomlaVersion::isCompatible("3.0")){
+			if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
 				echo $tosend;
 			}
 			else {

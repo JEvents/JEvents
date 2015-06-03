@@ -17,22 +17,40 @@ define("EDITING_JEVENT", 1);
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
+$assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
-JHtml::_('behavior.framework', true);
-JHtml::_('bootstrap.framework');
+JevHtmlBootstrap::framework();
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
 	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	// Use this as a basis for setting the primary category
+	/*
+	JHtml::_('jquery.ui', array("core","sortable"));
+	$script = <<< SCRIPT
+window.setTimeout(function() {
+	jQuery("#catid").chosen().change(
+		function() {
+			if (jQuery("#catid_chzn li.search-choice")) {
+				jQuery("#catid_chzn li.search-choice").on('mousedown', function() {
+					alert(this);
+					return true;
+				});
+			}
+		}
+	);
+}, 1000);
+SCRIPT;
+	JFactory::getDocument()->addScriptDeclaration($script);
+	 */
 }
 if ($params->get("bootstrapcss", 1)==1)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 }
 else if ($params->get("bootstrapcss", 1)==2)
 {
@@ -79,7 +97,8 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 			?>
 		</div>
 		<?php
-		if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+
+		if (  $params->get("checkconflicts", 0))
 		{
 			?>
 			<div id='jevoverlapwarning'>
@@ -91,6 +110,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<div>
 					<strong>
 						<label><?php echo  JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE"); ?>
+							<!-- not checked by default !!! //-->
 							<input type="checkbox" name="overlapoverride" value="1" />
 						</label>
 					</strong>
@@ -183,11 +203,24 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					return;
 				}
 				var form = document.adminForm;
-				var editorElement = $('jevcontent');
-				if (editorElement)
+				var editorElement = jevjq('#jevcontent');
+				if (editorElement.length)
 				{
 					<?php
-					echo $this->editor->save('jevcontent');
+					$editorcontent = $this->editor->save('jevcontent');
+					if (!$editorcontent ) {
+						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
+						$editorcontent = $this->editor->getContent('jevcontent');
+						echo "var editorcontent =".$editorcontent."\n";
+						?>
+						try {
+							jevjq('#jevcontent').html(editorcontent);
+						}
+						catch (e) {
+						}
+						<?php 
+					}
+					echo $editorcontent;
 					?>
 				}
 				try {
@@ -211,11 +244,9 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				else if (form.valid_dates.value == "0") {
 					alert("<?php echo JText::_("JEV_INVALID_DATES", true); ?>");
 				}
+				 else {
 
-
- else {
-
-					if (editorElement)
+					if (editorElement.length)
 					{
 <?php
 // in case editor is toggled off - needed for TinyMCE
@@ -225,7 +256,7 @@ echo $this->editor->save('jevcontent');
 <?php
 // Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($params->get("checkclashes", 0) || $params->get("noclashes", 0))
+if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	if (JEVHelper::getItemid()>0){
@@ -290,6 +321,11 @@ else
 								<?php
 							}
 						}
+					}
+					if ($assoc){
+						?>
+						<li ><a data-toggle="tab" href="#associations"><?php echo JText::_('COM_JEVENTS_ITEM_ASSOCIATIONS_FIELDSET_LABEL', true); ?></a></li>
+						<?php
 					}
 					?>
 				</ul>
@@ -508,9 +544,16 @@ else
 				}
 			}
 
+
 			if (!$cfg->get('com_single_pane_edit', 0))
 			{
 				echo JHtml::_('bootstrap.endPanel');
+				if ($assoc){
+					echo JHtml::_('bootstrap.addPanel', "myEditTabs", "associations");
+					echo $this->loadTemplate('associations');
+					echo JHtml::_('bootstrap.endPanel');
+				}
+
 				echo JHtml::_('bootstrap.endPane', 'myEditTabs');
 			}
 			?>

@@ -33,33 +33,33 @@ $registry = JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
 
 if (JevJoomlaVersion::isCompatible("3.0")){
-	JHtml::_('jquery.framework');
-	JHtml::_('behavior.framework', true);
-	JHtml::_('bootstrap.framework');
+	// This loads jQuery too!
+	JevHtmlBootstrap::framework();
+
+	// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
+        JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		JHTML::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
 		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 	}
 }
-else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-	// Make loading this conditional on config option
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
-        //JFactory::getDocument()->addScript("//www.google.com/jsapi");
-	JHTML::script("components/com_jevents/assets/js/jQnc.js");
-	//JHTML::script("components/com_jevents/assets/js/bootstrap.min.js");
-	//JHTML::stylesheet("components/com_jevents/assets/css/bootstrap.css");
-        // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-        JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+else {
+	// This loads jQuery too!
+	JevHtmlBootstrap::framework();
+	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	}
 }
- /*
- * include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
-$jevversion = JEventsVersion::getInstance();
-AkeebaStrapper::$tag = $jevversion->getShortVersion();
-AkeebaStrapper::bootstrap();
-AkeebaStrapper::jQueryUI();
- * 
- */
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
+{
+	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+}
+
 
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,

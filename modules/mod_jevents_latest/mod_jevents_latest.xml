@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" method="upgrade" client="site">
 	<name>JEvents Latest Events</name>
-	<creationDate>March 2015</creationDate>
+	<creationDate>May 2015</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.1.45</version>
+	<version>3.2.15</version>
 	<description>Show latest events for Events component</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
@@ -52,7 +52,9 @@
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
-				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="CustomFromTemplate" type="jevcustomlayout" layouttype="LatestEvents"  default='1'  target='jform_params_modlatest_CustFmtStr'  csstarget='jform_params_modlatest_customcss'  label="JEV_LEV_CUSTOM_LAYOUT_IMPORT" description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)}\n&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]\n&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_customcss" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default=''  label="JEV_LEV_CUSTOM_CSS" description="JEV_LEV_CUSTOM_CSS_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" conditional="modlatest_useLocalParam" conditions="1" >
 					<option value="0">JEV_LATEST_DISPLAY_MODE_0</option>
@@ -131,6 +133,14 @@
 					   label="JEV_RSS_DESCRIPTION"
 					   description="JEV_LATEST_RSS_DESCRIPTION_DESC" conditional="modlatest_useLocalParam" conditions="1" />
 				<!--<field name="@spacer" type="spacer" default="" label="Advanced Settings" description="The following settings are for advanced users only"/>//-->
+				<field name="modlatest_templatetop" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_TOP" description="JEV_LEV_TEMPLATE_TOP_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_templaterow" type="jevtextarea" filter="raw" cols="50" rows="3"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_ROW" description="JEV_LEV_TEMPLATE_ROW_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_templatebottom" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_BOTTOM" description="JEV_LEV_TEMPLATE_BOTTOM_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="bootstrapcss" type="list"  default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" conditional="modlatest_useLocalParam" conditions="1" >
+					<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
+					<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
+					<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
+				</field>
 
 			</fieldset>
 			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">

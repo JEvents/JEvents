@@ -1,0 +1,706 @@
+tr.jevcreator_level, tr.jevpublish_level, tr.jeveditor_level {
+	display:none;
+}
+fieldset.adminform label {
+	display:inline;
+	float:none!important;
+	margin-left:2px!important;
+}
+fieldset.adminform input, fieldset.adminform textarea, fieldset.adminform select, fieldset.adminform img, fieldset.adminform button {
+	float:none!important;
+	margin-right:5px;
+}
+
+div#jevents div.current{max-width: none!important;}
+.jeventslight div#jevents div.current {background-color:#fff;}
+div#jevents tr, div#jevents td {border-width:0px;}
+
+div#jevents table.adminform {
+	background-color:#FFFFFF;
+	border:1px solid #D5D5D5;
+	border-collapse:collapse;
+	margin:8px 0 15px;
+	width:100%;
+}
+div#jevents table.adminform tr.row0 {
+	background-color:#F9F9F9;
+}
+div#jevents table.adminform tr.row1 {
+	background-color:#EEEEEE;
+}
+div#jevents table.adminform th {
+	background-repeat:repeat;
+	color:#000000;
+	font-size:1.091em;
+	height:25px;
+	padding:6px 2px 4px 4px;
+	text-align:left;
+}
+div#jevents table.adminform td {
+	font-size:1.091em;
+	padding:5px;
+	text-align:left;
+}
+div#jevents table.adminform td.r1, div#jevents table.adminform td.r2 {
+	padding-right:9px!important;
+}
+div#jevents table.adminform td.filter {
+	text-align:left;
+}
+div#jevents table.adminform td.helpMenu {
+	text-align:right;
+}
+
+textarea#extra_info {
+	width:100%;
+	padding:0px!important;
+	margin:0px;
+	height:auto!important;
+}
+
+div#jevents fieldset {
+	border:solid 1px #cccccc;
+	margin-bottom:5px;
+	display:block;
+	padding:5px 0px;
+	background:none;
+}
+div#jevents fieldset {
+	margin:5px;
+	padding:5px;
+}
+div#jevents fieldset legend {
+	padding:0px 10px;
+	color:#146295;
+	font-weight:bold;
+	font-size:1em;
+}
+div#jevents table#jevadminform {
+	font-size:1em;
+	margin:0px 5px 5px 5px;
+}
+div#jevents table#jevadminform td {
+	padding:3px;
+}
+div#jevents table#jevadminform table td {
+	padding:0px;
+}
+
+div#jevents fieldset table {
+	margin:0px;
+}
+
+div#jevents dl.tabs {
+	float:left;
+	margin:10px 0 -1px;
+	z-index:50;
+}
+div#jevents dl.tabs dt {
+	background:none repeat scroll 0 0 #F0F0F0;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
+	border-top:1px solid #CCCCCC;
+	color:#666666;
+	float:left;
+	margin-left:3px;
+	padding:4px 10px;
+}
+div#jevents dl.tabs dt.open {
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-bottom:1px solid #F9F9F9;
+	color:#000000;
+	z-index:100;
+}
+div#jevents div.current {
+	border:1px solid #CCCCCC;
+	clear:both;
+	padding:10px;
+}
+div#jevents div.current dd {
+	margin:0;
+	padding:0;
+}
+
+/** header icons **/
+div.icon-48-jevents {
+	background: url('../images/JeventsTransparent.png') transparent no-repeat;
+	background-size: 220px 48px;
+	line-height:48px;
+	padding: 0px 16px 32px 265px !important;
+}
+
+div.pagetitle {
+	background-repeat:no-repeat;
+	margin-left:10px;
+	padding-left:60px;
+}
+div.pagetitle h2 {
+	color:#146295;
+	font-size:2em;
+	font-weight:bold;
+	line-height:48px;
+	margin:0;
+	padding:0;
+}
+div.pagetitle span {
+	color:#666666;
+}
+div.toolbar-list {
+	float:right;
+	padding:0;
+	text-align:right;
+}
+div.toolbar-list ul {
+	margin:0;
+	padding:0;
+}
+div.toolbar-list li {
+	color:#666666;
+	float:left;
+	height:48px;
+	list-style:none outside none;
+	padding:1px 1px 3px 4px;
+	text-align:center;
+	background:none!important;
+}
+div.toolbar-list li.spacer {
+	width:10px;
+}
+div.toolbar-list li.divider {
+	border-right:1px solid #C7C7C7;
+	width:2px;
+}
+div.toolbar-list span {
+	display:block;
+	float:none;
+	height:32px;
+	margin:0 auto;
+	width:32px;
+}
+div.toolbar-list a {
+	border:1px solid #F4F4F4;
+	cursor:pointer;
+	display:block;
+	float:left;
+	padding:1px 5px;
+	white-space:nowrap;
+	text-decoration: none;
+}
+div.toolbar-list a:hover {
+	border-color:#EEEEEE #CCCCCC #CCCCCC #EEEEEE;
+	border-left:1px solid #EEEEEE;
+	border-style:solid;
+	border-width:1px;
+	color:#0B55C4;
+	text-decoration:none;
+}
+
+/* Editing styles */
+td.r1, span.r1 {
+	background-color:#eeeeee!important;
+	padding:5px 5px 0px 0px;
+}
+td.r2, span.r2 {
+	padding-right:5px;
+}
+div#jevents .form-inline  input,div#jevents .form-inline textarea,div#jevents .form-inline inputbox,
+div#jevents .form-horizontal #rinterval , div#jevents .form-horizontal #count , div#jevents .form-horizontal #until{
+	padding:3px 5px;
+	width: auto;
+}
+div#jevents .form-inline select {
+	padding:3px 5px;
+}
+div#jevents .form-inline  .countback {
+	margin-top:10px;
+}
+
+div#jevoverlapwarning {
+	border:solid 1px red;
+	padding:5px;
+	display:none;
+}
+div#jevoverlapwarning h4 {
+	font-weight:bold;
+	margin:5px 0px;
+}
+
+.jev_edit_event_notice {
+	width:500px;
+}
+a#colorPickButton {
+	text-decoration:none;
+	padding:5px;
+}
+.icon-32-save 		{ background-image: url('../images/icon-32-save.png')!important; }
+.icon-32-edit 		{ background-image: url('../images/icon-32-edit.png')!important; }
+.icon-32-cancel 		{ background-image: url('../images/icon-32-cancel.png')!important; }
+.icon-32-apply 		{ background-image: url('../images/icon-32-apply.png')!important; }
+
+#jevents label {display:inline;}
+#jevents .jeveditrepeats ul {list-style-type: none;}
+#jevents .jeveditrepeats li {display:inline;}
+/* Joomla 1.6 */
+.jevconfig .current{
+	width:inherit;
+}
+
+.jevconfig div.current input, .jevconfig  div.current textarea, .jevconfig  div.current select,
+#jevents div.current input, #jevents  div.current textarea, #jevents  div.current select,
+#jevents #jevadminform input, #jevents  #jevadminform textarea, #jevents  #jevadminform select,
+#jevents .jevdatetime input, #jevents .jevdatetime textarea, #jevents .jevdatetime select,
+#jevents .jevextrablock input, #jevents .jevextrablock textarea, #jevents .jevextrablock select
+{
+	margin-bottom:inherit;
+	float:none;
+}
+.jevconfig .current label,
+#jevents .current label ,
+#jevents #jevadminform label ,
+#jevents .jevdatetime label,
+#jevents .jevextrablock label
+{
+	float:none;
+	display:inline;
+}
+.jevconfig .current td.paramlist_key, .jevconfig .current td.paramlist_value {
+	border-bottom:1px solid #ddd;
+	padding:4px 5px 4px 0px;
+}
+.jevconfig .current td.paramlist_key {
+	color:#666;
+	text-align:right;
+	font-weight:bold;
+	width:300px;
+}
+
+/* JForm event editing */
+fieldset.checkboxes li {
+	float:left;
+}
+
+/* Fix for bad templates that leave default modal class unchanged in bootstrap */
+#jevents a.modal {
+	position:static;
+}
+
+/* Round the Panel Corners */
+.pane-sliders .panel {
+	margin-bottom: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.jevdate_labels {
+	float:left;
+}
+.jevdate_date {
+	float:left;
+	margin-left:20px!important;
+}
+
+.button2-left {
+    float: left;
+    margin-right: 5px;
+   margin-top:5px;
+}
+/** Tabs fix for event editting pages **/
+#adminForm .adminform #tabs h3{line-height:16px; font-size:16px;margin:5px 5px;}
+/* CSS Modifications for Event Edit Page */
+.jeventslight #toolbar-box, .jeventsdark #toolbar-box {
+	height:90px;
+	clear:both;
+}
+.jeventslight div.toolbar-list a, .jeventsdark div.toolbar-list a {
+	border:0px solid;
+}
+.jeventslight div.toolbar-list li.button, .jeventsdark div.toolbar-list li.button {
+	margin-left:10px;
+}
+.icon-32-save {
+background-image: inheirt !important;
+}
+/** Default Event Details Custom Layout Control **/
+
+#jevents_body .jev_evdt {padding:10px;}
+.jev_evdt .jev_evdt_header {width:100%;max-width:100%;}
+.jev_evdt .jev_evdt_icons {float:right;height:26px;margin-top:-15px;}
+.jev_evdt .jev_evdt_icons a {display:inline-block;}
+.jev_evdt .jev_evdt_icons > div {display:inline-block; vertical-align:top;}
+.jev_evdt .jev_evdt_icons img {height:24px;vertical-align:top;}
+.jev_evdt .jev_evdt_title {font-size:160%;padding-bottom:10px;}
+.jev_evdt_contact span.contact {padding:0 0 0 0;}
+
+.jev_evdt .jev_evdt_summary {width:75%;display:inline-block;}
+.jev_evdt .jev_eventdetails_body > div {padding-bottom:10px;vertical-align:top;}
+.jev_evdt .jev_evdt_hits {width:24%; display:inline-block;text-align:right;}
+.jev_evdt .jev_evdt_creator, .jev_evdt .jev_evdt_contact {display:inline-block;margin-right:25px;}
+.jev_evdt span.creator, .jev_evdt span.contact {font-weight:bold;}
+.jev_evdt .jev_evdt_summary .ev_prevrepeat,.jev_evdt .jev_evdt_summary  .ev_nextrepeat {  display: inline-block;  margin-right: 15px;}
+/** End of default event details custom layout control **/
+
+.jev_none {display:none;}
+.jev_block {display:block;}
+.jev_inline {display:inline;}
+img.jev_help {float: none; vertical-align:bottom; cursor:help;}
+span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
+.jev_colour_picker_i {min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;}
+.jev_colour_picker_b {color:inherit;background-color:inherit;display:block;font-weight:bold;padding:3px;}
+.jev_ev_colour_picker_i {position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;}
+
+/* Bootstrap styling - ensure minimal width for list! */
+/*#jevents .jevminwidth { width:250px;}*/
+
+/* Fix for bad templates that leave default modal class unchanged in bootstrap */
+#jevents a.modal {
+	position:static;
+}
+.radio.btn > input[type="radio"] {
+    display: none;
+}
+
+.form-inline #publish_up-lbl, .form-inline #publish_down-lbl  {
+	width:100px;
+}
+.form-inline #start_time-lbl, .form-inline #end_time-lbl  {
+	width:80px;
+}
+#cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
+	padding:5px;
+	border-radius:10px;
+}
+#interval_div ,#byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
+	display:none;
+}
+#jevents fieldset legend input[type='radio'] {margin-right:10px!important;}
+
+.jevbootstrap input, .jevbootstrap textarea, .jevbootstrap .uneditable-input {
+    width: auto!important;
+    max-width: 100%;
+}
+.jevbootstrap textarea#jevcontent {
+    width: 95% !important;
+}
+#jevents .jevdatetime label.btn {
+    padding-right: 10px!important;
+    padding-left: 10px!important;
+    min-width: 30px;
+}
+#jevents .jevdatetime label {
+    min-width: 30px;
+}
+.tip-wrap {
+	max-width:80%!important;
+	text-align: left!important;
+}
+
+.jevdate_labels {
+	float:left;
+	min-width:80px
+}
+.jevdate_date {
+	float:left;
+}
+
+#selectlocationbutton {
+	margin-left: 5px;
+}
+
+.hiddenDifficulty  {
+	display: none;
+}
+
+#myParamsTabs {
+    background-color: #FFFFFF;
+    border-bottom-left-radius: 5px;
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-top-left-radius: 5px;
+    border-width: 1px 0 1px 1px;
+    margin-right: -1px;
+}
+#myParamsTabsContent table.paramlist {
+    width: 100%;
+}
+#myParamsTabsContent {
+	border:1px solid #ddd;
+	margin-top:-19px;
+	padding: 15px;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+}
+#myParamsTabsContent input, #myParamsTabsContent select, #myParamsTabsContent textarea {
+    width: auto;
+}
+
+.jev_config_version {
+	background-color: #ededed;
+	border:1px solid #ddd;
+	border-radius: 3px;
+	float:right;
+	margin-top:-20px;
+	padding:2px 5px 2px 5px;
+}
+div#jevents .form-inline  #start_ampm label, div#jevents .form-inline  #end_ampm label {
+    padding-left:8px;
+    padding-right: 8px;
+}
+.jeveditrepeats {margin-bottom:12px;}
+
+/* backend ical input box */
+#uploadURL {width:auto;}
+
+/* Squeezebox background in Joomla 2.5 
+#sbox-overlay {
+	width:100%;
+	height:100%;
+	display:block;
+}
+*/
+
+/* Modal event editing  and CSV import*/
+
+#myEditModal {
+	bottom:5%;
+	position:fixed;
+}
+#myImportModal {
+	left: 50%;
+	margin-left: -280px;
+	width:560px;
+}
+#myEditModal.modal {
+	position: fixed;
+	bottom: 5%;
+	top: 5%;
+	left: 5%;
+	margin:0px;
+	z-index: 1050;
+	width: 90%;
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	*border: 1px solid #999;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	text-align: left;
+}
+ #myEditModal.modal.fade {
+	top: -25%;
+	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-o-transition: opacity 0.3s linear, top 0.3s ease-out;
+	transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+#myEditModal.modal.fade.in {
+	top: 5%;
+}
+#myEditModal body.modal {
+	padding-top: 0;
+}
+
+#myEditModal .close , #myImportModal .close {
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	color: #000000;
+	text-shadow: 0 1px 0 #ffffff;
+	opacity: 0.2;
+	filter: alpha(opacity=20);
+}
+#myEditModal  .close:hover,
+#myEditModal  .close:focus,
+#myImportModal  .close:hover,
+#myImportModal  .close:focus{
+	color: #000000;
+	text-decoration: none;
+	cursor: pointer;
+	opacity: 0.4;
+	filter: alpha(opacity=40);
+}
+#myEditModal   button.close , #myImportModal   button.close {
+	padding: 0;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	-webkit-appearance: none;
+}
+
+#myEditModal  .modal-header .close , #myImportModal  .modal-header .close {
+	margin-top: 2px;
+}
+
+#myEditModal .modal-footer, #myImportModal .modal-footer {
+	padding: 14px 15px 15px;
+	margin-bottom: 0;
+	text-align: right;
+	background-color: #f5f5f5;
+	border-top: 1px solid #ddd;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius: 0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+	*zoom: 1;
+	-webkit-box-shadow: inset 0 1px 0 #ffffff;
+	-moz-box-shadow: inset 0 1px 0 #ffffff;
+	box-shadow: inset 0 1px 0 #ffffff;
+}
+#myEditModal .modal-footer:before,
+#myEditModal .modal-footer:after,
+#myImporttModal .modal-footer:before,
+#myImportModal .modal-footer:after{
+	display: table;
+	line-height: 0;
+	content: "";
+}
+#myEditModal .modal-footer:after , #myImportModal .modal-footer:after {
+	clear: both;
+}
+ #myEditModal .modal-footer .btn + .btn , #myImpoirtModal .modal-footer .btn + .btn {
+	margin-bottom: 0;
+	margin-left: 5px;
+}
+#myEditModal .modal-footer .btn-group .btn + .btn, #myImportModal .modal-footer .btn-group .btn + .btn { 
+	margin-left: -1px;
+}
+ #myEditModal .modal-footer .btn-block + .btn-block , #myImportModal .modal-footer .btn-block + .btn-block{
+	margin-left: 0;
+}
+#myEditModal .modal-header, #myImportModal .modal-header {
+    float: none;
+    height: 35px;
+    left: 0;
+    position: relative;
+    right: 0;
+    padding: 9px 15px;
+    border-bottom: 1px solid #eee;
+}
+#myEditModal h4, #myImportModal h4  {
+	margin: 0px;
+	font-family: inherit;
+	font-weight: bold;
+	font-size: 17.5px;
+	line-height: 20px;
+	color: inherit;
+	text-rendering: optimizelegibility;
+}
+#myEditModal .modal-body, #myImportModal .modal-body  {
+    position:absolute;
+    left :0px;
+    right:0px;
+    bottom:10px;
+    top: 54px;
+    overflow-y: auto;
+}
+#myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
+	width:99.5%;
+	border:none;
+	height:100%;
+}
+#myEditModal .modal-dialog, #myImportModal .modal-dialog  {
+    height: 100%;
+}
+#myImportModal .modal-content, #myEditModal .modal-content {
+    box-sizing: border-box;
+    height: 100%;
+    margin: 5px;
+    position: relative;
+}
+/*popup calendar icon*/
+.jevdatetime .calendar {
+    float: none;
+    margin-left: 10px;
+}
+
+/* Removed Inline CSS and added the below */
+
+form.search_form { padding:30px 0px;}
+td.ev_td_right ul.ev_ul {list-style: none;}
+#jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
+
+.jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
+.jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+.jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
+.jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
+
+.jevbootstrap .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .action_dialogJQ a {text-decoration:none; line-height:28px;}
+.jevbootstrap .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+.jevbootstrap .action_dialogJQ #publish_reccur img, .jevbootstrap .action_dialogJQ #edit_reccur img,
+.jevbootstrap .action_dialogJQ #edit_event img, .jevbootstrap .action_dialogJQ #edit_eventcopy img,
+.jevbootstrap .action_dialogJQ #delete_repeat img, .jevbootstrap .action_dialogJQ #delete_eventfuture img,
+.jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+.jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
+.jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
+.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  
+    text-align: left;
+    left:50%;
+    position:fixed;
+    z-index:1050;
+    right:0px;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    margin-left: -40%;
+    outline: medium none;
+}
+
+.jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
+   width:auto;
+   margin:0px;
+}
+
+.jevbootstrap div.modal {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    outline: medium none;
+    position: fixed;
+    z-index: 1050;
+}
+div.ev_navigation {width:100%;}
+table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
+table.ev_navtable tr {vertical-align:top; }
+.choosecat #othercats {display:none;max-height:100px;overflow-y:auto;}
+.choosecat .chooseyear {float:left;width:300px;}
+.choosecat #otheryear {display:none;max-height:100px;overflow-y:auto;}
+.buttonheading {height:24px;display:inline-block;}
+#jumpto {margin: 10px 0;}
+/* global simple individual styles */
+.vtop {vertical-align:top;}
+.vmiddle {vertical-align:middle;}
+.vbottom {vertical-align:bottom;}
+.w100 {width:100%;}
+.w8px {width:8px;}
+.w10px {width:10px;}
+.t300 {width:300px;}
+.b0 {border:0px;}
+.b1sw {border:1px solid #FFF;}
+.p0 {padding:0;}
+.p10px {padding:10px;}
+.fs1px {font-size:1px;}
+.fs10px {font-size:10px;}
+.h100 {height:100%;}
+.h1 {height:1px;}
+.h12px {height:12px;}
+.jevbootstrap .h24px {height:24px;}
+.h80px {height:80px;}
+.pos_rel {position:relative;}
+.fleft {float:left;}
+.fwb {font-weight:bold;}
+.probs_check_ev {color:black!important;background-color:yellow!important;font-weight:bold}
+
+/* End of Inline CSS Removal. */

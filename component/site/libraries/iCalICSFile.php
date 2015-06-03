@@ -226,7 +226,9 @@ RAWTEXT;
 	 * @param int $catid - forced category for the underlying events
 	 */
 	function store($catid=false , $cleanup=true , $flush =true) {
-
+		@ini_set("memory_limit","256M");
+		@ini_set("max_execution_time","300");
+		
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -268,7 +270,7 @@ RAWTEXT;
 
 		// insert the data - this will need to deal with multiple rrule values
 		foreach ($this->_icalInfo->vevents as & $vevent) {
-			
+
 			if (!$vevent->isCancelled() && !$vevent->isRecurrence()){
 				// if existing category then use it
 				if (!$this->ignoreembedcat && strlen($vevent->_detail->categories)>0){

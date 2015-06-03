@@ -49,7 +49,20 @@ else
 
 			if (is_array($requestData))
 			{
-				$requestObject = $requestData;
+				// convert to an object
+				$requestObject = new stdClass();
+				foreach ($requestData as $key => $value)
+				{
+					if ($value == "false"){
+						$requestObject->$key = false;
+					}
+					else if ($value == "false"){
+						$requestObject->$key = true;
+					}
+					else {
+						$requestObject->$key = $value;
+					}
+				}
 			}
 			else
 			{
@@ -165,7 +178,8 @@ function ProcessRequest(&$requestObject, $returnData)
 	include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
 	$params = JComponentHelper::getParams("com_jevents");
-	if (!$params->get("checkclashes", 0) && !$params->get("noclashes", 0))
+
+	if (!$params->get("checkconflicts", 0))
 		return $returnData;
 
 	// Do we ignore overlaps
@@ -200,7 +214,7 @@ function ProcessRequest(&$requestObject, $returnData)
 	}
 
 	$token = JSession::getFormToken();
-	if (!isset($requestObject->token) || $requestObject->token != $token)
+	if (!isset($requestObject->token) || strcmp($requestObject->token, $token)!==0)
 	{
 		throwerror("There was an error - bad token.  Please refresh the page and try again.");
 	}
@@ -491,7 +505,10 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 	$params = JComponentHelper::getParams("com_jevents");
 	$db = JFactory::getDBO();
 	$overlaps = array();
-	if ($params->get("noclashes", 0))
+
+
+
+	if ( $params->get("checkconflicts", 0)==2 )
 	{
 		foreach ($testevent->repetitions as $repeat)
 		{
@@ -515,7 +532,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 			}
 		}
 	}
-	else if ($params->get("checkclashes", 0))
+	else if ( ($params->get("checkconflicts", 0)==1) )
 	{
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);
@@ -641,7 +658,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 	$params = JComponentHelper::getParams("com_jevents");
 	$db = JFactory::getDBO();
 	$overlaps = array();
-	if ($params->get("noclashes", 0))
+	if ( $params->get("checkconflicts", 0) == 2 )
 	{
 		$sql = "SELECT *, ev.state  FROM #__jevents_repetition as rpt ";
 		$sql .= " LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id=rpt.eventdetail_id ";
@@ -662,7 +679,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 			$overlaps = array_merge($overlaps, $conflicts);
 		}
 	}
-	else if ($params->get("checkclashes", 0))
+	else if ( $params->get("checkconflicts", 0) == 1 )
 	{
 		$dataModel = new JEventsDataModel();
 		$dbModel = new JEventsDBModel($dataModel);

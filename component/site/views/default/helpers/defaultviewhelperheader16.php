@@ -32,7 +32,8 @@ function DefaultViewHelperHeader16($view){
 	
 	$lang = JFactory::getLanguage();
 ?>
-<div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>" id="jevents_header">
+<div id="jevents">
+<div class="contentpaneopen jeventpage<?php echo $params->get( 'pageclass_sfx' ); ?>  jevbootstrap" id="jevents_header">
 	<?php if ($params->get('show_page_heading', 0)) : ?>
 	<h1>
 		<?php echo $view->escape($params->get('page_heading')); ?>
@@ -139,6 +140,6 @@ function DefaultViewHelperHeader16($view){
 	$view->loadModules("jevprejevents2");
 	$view->loadModules("jevprejevents2_".$task);
 ?>
-<div class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  ?>" id="jevents_body">
+<div class="contentpaneopen  jeventpage<?php echo $params->get( 'pageclass_sfx' );  ?>  jevbootstrap" id="jevents_body">
 <?php
 }

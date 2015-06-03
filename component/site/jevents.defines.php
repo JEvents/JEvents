@@ -34,6 +34,7 @@ JLoader::register('SaveIcalEvent',JEV_ADMINLIBS."saveIcalEvent.php");
 
 JLoader::register('JEVHelper',JEV_PATH."libraries/helper.php");
 JLoader::register('JevModuleHelper',JEV_PATH."libraries/jevmodulehelper.php"); 
+JLoader::register('JevHtmlBootstrap',JEV_PATH."libraries/bootstrap.php");
 
 // TODO replace with JDate
 JLoader::register('JEventDate',JEV_PATH."libraries/jeventdate.php");

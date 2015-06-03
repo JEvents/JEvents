@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><!-- $Id: config.xml 3576 2012-05-01 14:11:04Z geraintedwards $ -->
+<form>
+	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/">
+
+		<field name="evdet_id" type="text" default="0" disabled="1"  label="JEV_EVENT_DETAIL_ID" description="JEV_EVENT_DETAIL_ID_TIP" />
+		<field name="ev_id" type="hidden" default="0"   />
+		<field name="summary" type="jeveventtext" default="" size="60" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
+		<field name="description" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250"  layoutfield="DESCRIPTION" labelclass="control-label jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
+		<field name="location" type="text" default=""   layoutfield="LOCN" labelclass="control-label "   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
+		<field name="contact_info" type="text" default=""  size="60" maxlength="120" layoutfield="CONTACT" labelclass="control-label"  class="inputbox"    label="JEV_EVENT_CONTACT" description="JEV_EVENT_CONTACT_TIP" />
+		<field name="extra_info" type="textarea" default=""  rows="5" cols="60" layoutfield="EXTRA"  labelclass="control-label" class="text_area"  label="JEV_EVENT_EXTRA" description="JEV_EVENT_EXTRA_TIP" />
+
+		<field name="language" type="text" default="" size="10" disabled="1" label="JEV_EVENT_TRANSLATION_LANGUAGE" />
+		<field name="trans_language" type="hidden" default="" />
+		<field name="trans_evdet_id" type="hidden" default="0" />
+		
+		<field name="trans_translation_id" type="hidden" default="0" />
+		<field name="trans_summary" type="jeveventtext" default="" size="60" layoutfield="TITLE" placeholder="JEV_EVENT_TITLE" maxlength="255" class="inputbox" labelclass="control-label"  label="JEV_EVENT_TITLE" description="JEV_EVENT_TITLE_TIP" />
+		<field name="trans_description" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250"  layoutfield="DESCRIPTION" labelclass="control-label jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
+		<field name="trans_location" type="text" default=""   layoutfield="LOCN" labelclass="control-label "   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
+		<field name="trans_contact_info" type="text" default=""  size="60" maxlength="120" layoutfield="CONTACT" labelclass="control-label"  class="inputbox"    label="JEV_EVENT_CONTACT" description="JEV_EVENT_CONTACT_TIP" />
+		<field name="trans_extra_info" type="textarea" default=""  rows="5" cols="60" layoutfield="EXTRA"  labelclass="control-label" class="text_area"  label="JEV_EVENT_EXTRA" description="JEV_EVENT_EXTRA_TIP" />
+
+	</fieldset>
+</form>

@@ -8,6 +8,28 @@
  * @link        http://www.jevents.net
  */
 
+// Methods missing in jQuery
+// See http://stackoverflow.com/questions/23908283/jquery-associate-two-arrays-key-value-into-one-array
+Array.prototype.associate = function (keys) {
+  var result = {};
+
+  this.forEach(function (el, i) {
+    result[keys[i]] = el;
+  });
+
+  return result;
+};
+// from Mootools
+// 
+// my version
+Date.prototype.clearTime =  function(){
+	this.setHours(0);
+	this.setMinutes(0);
+	this.setSeconds(0);
+	return this;
+};
+
+
 var eventEditDateFormat = "Y-m-d";
 //Date.defineParser(eventEditDateFormat.replace("d","%d").replace("m","%m").replace("Y","%Y"));
 
@@ -50,10 +72,10 @@ Date.prototype.jeventsParseDate = function (from ){
 			date.setHours(6);
 			year = bits.y || bits.Y;
 			// set month to January  to ensure we can set days to 31 first!!!
-			date.set('month', 0); 
-			if (year != null) date.set('year', year); 
-			if ('d' in bits) date.set('date', bits.d); 
-			if ('m' in bits || bits.b || bits.B) date.set('month', bits.m-1); 
+			date.setMonth( 0);
+			if (year != null) date.setYear( year);
+			if ('d' in bits) date.setDate( bits.d);
+			if ('m' in bits || bits.b || bits.B) date.setMonth( bits.m-1);
 
 			return date;
 		}
@@ -78,7 +100,8 @@ Date.prototype.addDays = function(days)
 	return new Date(this.getTime() + days*24*60*60*1000);
 };
 Date.prototype.dateFromYMD = function(ymd){
-	var mydate = Date.jeventsParseDate(ymd);
+	var mydate = new Date();
+	mydate  = mydate.jeventsParseDate(ymd);
 	return mydate;
 };
 
@@ -95,6 +118,15 @@ function normaliseElem(elem) {
 
 function checkTimeFormat(time){
 	if (time.value.indexOf(":")>0){
+		/*
+		parts = time.value.split(":");
+		parts[0] = parseInt(parts[0],10);
+		parts[1] = parseInt(parts[1],10);
+		if (parts[0]>12){
+			parts[0]-=12;
+		}
+		time.value = parts[0]+":"+parts[1];
+		*/
 		normaliseElem(time);
 		return true;
 	}
@@ -139,6 +171,36 @@ function checkValidTime(time){
 	parts[0] = parts[0].substring(parts[0].length-2);
 	parts[1] = parts[1].substring(parts[1].length-2);
 	time.value = parts[0]+":"+parts[1];
+	if (document.adminForm.view12Hour.checked){
+		/*
+		if (time.id=="end_time" || time.id=="end_12h"){
+			pm   = document.getElementById("endPM");
+			am   = document.getElementById("endAM");
+			el = jevjq("#end_ampm");
+		}
+		else {
+			pm   = document.getElementById("startPM");
+			am   = document.getElementById("startAM");
+			el = jevjq("#start_ampm");
+		}
+
+		var hour = parseInt(parts[0]);
+		if (hour>12){
+			hour -= 12;
+			pm.checked = true;
+		}
+		else {
+			am.checked = true;
+		}
+		el.trigger("chosen:updated");
+		time.value = hour+":"+parts[1];
+		*/
+		time.value = parts[0]+":"+parts[1];
+	}
+	else {
+		time.value = parts[0]+":"+parts[1];
+	}
+
 	return true;
 }
 
@@ -192,7 +254,7 @@ function set12hTime(time24h){
 	}
 	if (hour == 0) hour = 12;
 
-	if (hour < 10) hour = "0"+hour;
+	//if (hour < 10) hour = "0"+hour;
 	if (min  < 10) min  = "0"+min;
 	time.value = hour+":"+min;
 	ampm.checked = true;
@@ -371,10 +433,10 @@ function setEndDateWhenNotRepeating(){
 
 function forceValidDate(elem){
 	oldDate = new Date();
-	oldDate = oldDate.dateFromYMD(elem.value);
+	oldDate = oldDate.dateFromYMD(elem.val());
 	newDate = oldDate.getYMD();
-	if (newDate!=elem.value) {
-		elem.value = newDate;
+	if (newDate!=elem.val()) {
+		elem.val(newDate);
 		alert(invalidcorrected);
 	}
 }
@@ -447,6 +509,8 @@ function toggleAllDayEvent()
 		sam.disabled=true;
 		spm.disabled=true;
 
+		jQuery('.jevstarttime').css('display','none');
+
 		var sd = temp.getYMD();
 		temp = temp.dateFromYMD(enddate.value);
 		var ed = temp.getYMD();
@@ -462,22 +526,32 @@ function toggleAllDayEvent()
 
 			eam.disabled=true;
 			epm.disabled=true;
+
+			jQuery('.jevendtime').css('display','none');
+
 		}
 	}
 	else {
+            var was24h = starttime.value=="00:00" && endtime.value=="23:59";
 		// set 24h fields
 		hide_start.disabled=false;
 		hide_start12.disabled=false;
-		starttime.value="08:00";
+		if (was24h) {
+                    starttime.value="08:00";
+                }
 		starttime.disabled=false;
 
 		sam.disabled=false;
 		spm.disabled=false;
 
+		jQuery('.jevstarttime').css('display','inline');
+
 		if (!noendchecked){
 			hide_end.disabled=false;
 			hide_end12.disabled=false;
-			endtime.value="17:00";
+        		if (was24h) {
+                            endtime.value="17:00";
+                        }
 			endtime.disabled=false;
 			var sd = temp.getYMD();
 			temp = temp.dateFromYMD(enddate.value);
@@ -488,6 +562,9 @@ function toggleAllDayEvent()
 
 			eam.disabled=false;
 			epm.disabled=false;
+
+			jQuery('.jevendtime').css('display','inline');
+
 		}
 		else {
 			endtime.value=starttime.value;
@@ -501,6 +578,11 @@ function toggleAllDayEvent()
 		set12hTime(endtime);
 	}
 	updateRepeatWarning();
+
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
 
 }
 
@@ -537,6 +619,8 @@ function toggleNoEndTime(){
 		eam.disabled=true;
 		epm.disabled=true;
 
+		jQuery('.jevendtime').css('display','none');
+
 		checkTime(endtime);
 	}
 	else {
@@ -549,6 +633,8 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
+		jQuery('.jevendtime').css('display','inline');
+
 	}
 
 	if (document.adminForm.start_12h){
@@ -557,6 +643,31 @@ function toggleNoEndTime(){
 	}
 
 	updateRepeatWarning();
+
+	try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
+
+}
+
+function toggleGreyBackground(inputtype,inputelem, tomatch) {
+	if (inputtype==tomatch){
+		inputelem.disabled = false;
+		inputelem.parent()[0].style.backgroundColor="#ffffff";
+		if (inputelem.parent('fieldset').find('legend')){
+			inputelem.parent('fieldset').find('legend').css("background-color","#ffffff");
+			jevjq("#"+inputtype).css("background-color","#ffffff");
+		}
+	}
+	else {
+		inputelem.disabled = true;
+		inputelem.parent()[0].style.backgroundColor="#dddddd";
+		if (inputelem.parent('fieldset').find('legend')){
+			inputelem.parent('fieldset').find('legend').css("background-color","#dddddd");
+			jevjq("#"+inputtype).css("background-color","#dddddd");
+		}
+	}
 }
 
 function toggleCountUntil(cu){
@@ -566,24 +677,9 @@ function toggleCountUntil(cu){
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = $(inputs[e]);
+			inputelem = jevjq(inputs[e]);
 			if (inputelem.name!="countuntil"){
-				if (inputtype==cu){
-					inputelem.disabled = false;
-					inputelem.parentNode.style.backgroundColor="#ffffff";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
-					}
-				}
-				else {
-					inputelem.disabled = true;
-					inputelem.parentNode.style.backgroundColor="#dddddd";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
-					}
-				}
+				toggleGreyBackground(inputtype,inputelem,cu);
 			}
 		}
 	}
@@ -599,26 +695,10 @@ function toggleWhichBy(wb)
 		elem = document.getElementById(inputtype);
 		inputs = elem.getElementsByTagName('input');
 		for (var e=0;e<inputs.length;e++){
-			inputelem = $(inputs[e]);
+			inputelem = jevjq(inputs[e]);
 			if (inputelem.name!="whichby"){
-				if (inputtype==wb){
-					inputelem.disabled = false;
-					inputelem.parentNode.style.backgroundColor="#ffffff";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#ffffff";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#ffffff";
-					}					
-				}
-				else {
-					inputelem.disabled = true;
-					inputelem.parentNode.style.backgroundColor="#dddddd";
-					if (inputelem.getParent('fieldset').getElement('legend')){
-						inputelem.getParent('fieldset').getElement('legend').style.backgroundColor="#dddddd";
-						inputelem.getParent('fieldset').getParent().style.backgroundColor="#dddddd";
-					}
-				}
+				toggleGreyBackground(inputtype, inputelem,wb);
 			}
-
 		}
 	}
 	updateRepeatWarning();
@@ -631,7 +711,7 @@ function toggleWhichBy(wb)
 
 function toggleFreq(freq , setup)
 {
-	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
+	var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
 	
 	var myDiv = document.getElementById('interval_div');
 	var byyearday = document.getElementById('byyearday');
@@ -698,7 +778,7 @@ function toggleFreq(freq , setup)
 				bymonthday.style.display="none";
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
-				toggleWhichBy("byday");
+				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
 				// always set week nums false for weekly events
 				toggleWeekNums(false);
@@ -804,6 +884,7 @@ function fixRepeatDates(checkYearDay){
 	}
 	bd[startDate.getDay()].checked=true;
 
+	end_date = document.getElementById("publish_down");
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);
 
@@ -828,33 +909,7 @@ function toggleWeekNums(newstate){
 	updateRepeatWarning();
 
 }
-/*
-function setupIE6(){
-if (window.ie6) {
-var adminForm = document.getElementById('jevadminform');
-adminForm.style.border="none";
-adminForm.style.borderSpacing="0px";
-var editor = document.getElementById('jeveditor');
-editor.style.overflow = 'auto';
-editor.style.width="550px";
-}
-}
 
-window.addEvent('domready',function(){setupIE6();});
- */
-/*
-if (window.webkit) {
-	window.addEvent('domready', function(){
-		setTimeout("fixTabbedWebkit()",100);
-	});
-}
-function fixTabbedWebkit(){
-	if (typeof(tinyMCE)!="undefined"){
-		tinyMCE.execCommand('mceRemoveControl', false, "jevcontent");
-		tinyMCE.execCommand('mceAddControl', false, "jevcontent");
-	}
-}
- */
 // sets the date for the page after save
 function resetYMD(){
 	start_date = document.getElementById("publish_up");
@@ -868,26 +923,28 @@ function resetYMD(){
 
 
 function updateRepeatWarning(){
-	var currentFreq = document.getElement("input[name=freq]:checked").value.toUpperCase();
-	if (document.adminForm.updaterepeats && currentFreq!="NONE")
-	{
-		document.adminForm.updaterepeats.value = 1;
+	if (jevjq("input[name=freq]:checked").length){
+		var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
+		if (document.adminForm.updaterepeats && currentFreq!="NONE")
+		{
+			document.adminForm.updaterepeats.value = 1;
+		}
 	}
 }
 
 /* Check for booking conflicts */
 
-Element.prototype.formToJson =  function(){
+jQuery.fn.formToJson =  function(){
 		var json = {};
-		this.getElements('input, textarea, select').each(function(el){
+		jevjq(this).find('input, textarea, select').each(function(index,el){
 			var name = el.name;
-			var value = el.get('value');
+			var value = el.value;
 			if (value === false || !name || el.disabled) return;
 			// multi selects
-			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.get('multiple')==true){
+			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
 				name = name.substr(0,name.length-2);
 				if (!json[name]) json[name] = [];
-				el.getElements('option').each(function(opt){
+				jevjq(el).find('option').each(function(eldx, opt){
 					if (opt.selected ==true) json[name].push(opt.value);
 				});
 			}
@@ -906,116 +963,124 @@ Element.prototype.formToJson =  function(){
 		return json;
 	}
 
-function checkConflict(url, pressbutton, jsontoken, client, repeatid,  redirect){
+function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redirect){
 	var requestObject = {};
 	requestObject.error = false;
 	requestObject.client = client;
 	requestObject.token = jsontoken;
 	requestObject.pressbutton = pressbutton;
 	requestObject.repeatid = repeatid;
-	requestObject.formdata = $(document.adminForm).formToJson();
+	requestObject.formdata = jevjq(document.adminForm).formToJson();
 
 	var doRedirect = (typeof redirect =='undefined') ?  1 : redirect;
 	
 	requestObject.redirect = doRedirect;
 	var hasConflicts = false;
 
-	var jSonRequest = new Request.JSON({
-		'url':url,
-		onSuccess: function(json, responsetext){
-			if (!json){
-				alert('could not check conflicts');
-				$('jevoverlapwarning').style.display='none';
-				if (doRedirect) submit2(pressbutton);
-				else hasConflicts = true;
+	// see http://stackoverflow.com/questions/26620/how-to-set-encoding-in-getjson-jquery
+	//jevjq.ajaxSetup({ scriptCharset: "utf-8" , contentType: "application/json; charset=utf-8"});
+
+	//var jSonRequest = jevjq.getJSON(checkurl, {'json':JSON.stringify(requestObject)})
+
+	var jSonRequest = jevjq.ajax({
+			type : 'POST',
+			dataType : 'json',
+			url : checkurl,
+			data : {'json':JSON.stringify(requestObject)},
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			scriptCharset: "utf-8"
+			})
+		.done(function(json){
+		if (!json){
+			alert('could not check conflicts');
+			jevjq('#jevoverlapwarning').css("display",'none');
+			if (doRedirect) submit2(pressbutton);
+			else hasConflicts = true;
+		}
+		if (json.error){
+			try {
+				eval(json.error);
 			}
-			if (json.error){
-				try {
-					eval(json.error);
-				}
-				catch (e){
-					alert('could not process error handler');
-				}
+			catch (e){
+				alert('could not process error handler');
+			}
+		}
+		else {
+			if (json.allclear){
+				jevjq('#jevoverlapwarning').css("display",'none');
+				if (doRedirect) submit2(pressbutton);
+				else hasConflicts = false;
 			}
 			else {
-				if (json.allclear){
-					$('jevoverlapwarning').style.display='none';
-					if (doRedirect) submit2(pressbutton);
-					else hasConflicts = false;
-				}
-				else {
-					$('jevoverlapwarning').style.display='block';
-					var container = $('jevoverlaps');
-					container.innerHTML="";
-					
-					Array.from(json.overlaps).slice().each (function(overlap){
-						var elem = new Element ("a", {
-							'href':overlap.url, 
-							'target':'_blank'
-						});
-						elem.inject(container,'bottom');
-						//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
-						elem.appendText (overlap.conflictMessage);
-						var br = new Element ("br");
-						br.inject(container,'bottom');
-					});
-					hasConflicts = true;
-				}
+				jevjq('#jevoverlapwarning').css("display",'block');
+				var container = jevjq('#jevoverlaps');
+				container.html("");
+				jevjq(json.overlaps).each (function(index, overlap){
+					//var elem = jevjq("<a href='"+overlap.url+"' target='_blank>"+overlap.conflictMessage+"</a><br/>");
+					//elem.appendText (overlap.summary+ " ( "+overlap.startrepeat+" - "+overlap.endrepeat+")");
+					container.append("<a href='"+overlap.url+"' target='_blank'>"+overlap.conflictMessage+"</a><br/>")
+				});
+				hasConflicts = true;
 			}
-		},
-		onFailure: function(x){
-			alert('Something went wrong...'+x);
-			hasConflicts = true;
 		}
-	}).post({
-		'json':JSON.encode(requestObject)
+	})
+	.fail( function( jqxhr, textStatus, error){
+		alert(textStatus + ", " + error);
+		hasConflicts = true;
 	});
-	return hasConflicts;
 }
 
 // fix for auto-rotating radio boxes in firefox !!!
 // see http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
-jevjq.ready(function() {
+jevjq(document).on('ready', function() {
 	try {
 		if(Browser.firefox) {
-			jevjq("adminForm").autocomplete='off';
+			jevjq("#adminForm").autocomplete='off';
 		}
 	}
 	catch(e){	
 	}
 }); 
 
-jevjq.ready(function(){
-	if (jevjq('view12Hour')){
-		jevjq('view12Hour').addEvent('click', function(){toggleView12Hour();});
+jevjq(document).on('ready', function(){
+
+	if (jevjq('#view12Hour')){
+		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
 	}
 
 	hideEmptyJevTabs();
 });
 
+jevjq(document).on('ready', function(){
+	toggleAllDayEvent();
+	toggleNoEndTime();
+});
+
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
-		var tabs = $$("#myEditTabsContent .tab-pane");
+		var tabs = jevjq("#myEditTabsContent .tab-pane");
 		if (tabs){
-			tabs.each(function(tab) {
+			tabs.each(function(index) {
+				tab = jevjq(this);
 				if (tab.children.length==0){
 					tab.style.display="none";
-					var tablink = document.getElement("#myEditTabs a[href='#"+tab.id+"']");
+					var tablink = jevjq("#myEditTabs a[href='#"+tab.id+"']");
 					if (tablink){
 						tablink.getParent().style.display="none";
 					}
 				}
 			})
 		}
-		tabs = $$(".adminform dd.tabs .jevextrablock");
+		tabs = jevjq(".adminform dd.tabs .jevextrablock");
 		if (tabs){
-			var tablinks = $$(".adminform dl dt.tabs");
-			tabs.each(function(tab) {
+			var tablinks = jevjq(".adminform dl dt.tabs");
+			tabs.each(function(index) {
+				tab = jevjq(this);
 				if (tab.children.length==0){
 					var classname = tab.getParent().className.clean().replace(" ","").replace("tabs","");
 					tab.innerHTML="xx";
 					//tab.style.display="none";
-					var tablink = document.getElement(".adminform #"+classname);
+					var tablink = jevjq(".adminform #"+classname);
 					if (tablink){
 						tablink.style.display="none";
 					}

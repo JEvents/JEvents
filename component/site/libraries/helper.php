@@ -27,6 +27,13 @@ class JEVHelper
 {
 
 	/**
+	 * @var    array  Array containing information for loaded files
+	 * @since  3.0
+	 */
+	protected static
+			$loaded = array();
+
+	/**
 	 * load language file
 	 *
 	 * @static
@@ -529,73 +536,95 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset = $params->get("com_starday", 1);
 
+		if ($value == "" ) {
+			$value = strftime("%Y-%m-%d");
+		}
+
 		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
-		$calendar = (JevJoomlaVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js';
-		JEVHelper::script($calendar, "components/" . $component . "/assets/js/", true);
-		JEVHelper::stylesheet("dashboard.css", "components/" . $component . "/assets/css/", true);
-		$script = '
-				var field' . $fieldid . '=false;
-				window.addEvent(\'domready\', function() {
-				if (field' . $fieldid . ') return;
-				field' . $fieldid . '=true;
-				new NewCalendar(
-					{ ' . $fieldid . ' :  "' . $format . '"},
-					{
-					direction:0,
-					classes: ["dashboard"],
-					draggable:true,
-					navigation:2,
-					tweak:{x:0,y:-75},
-					offset:' . $offset . ',
-					range:{min:' . $minyear . ',max:' . $maxyear . '},
-					readonly:' . $forcepopupcalendar . ',
-					months:["' . JText::_("JEV_JANUARY") . '",
-					"' . JText::_("JEV_FEBRUARY") . '",
-					"' . JText::_("JEV_MARCH") . '",
-					"' . JText::_("JEV_APRIL") . '",
-					"' . JText::_("JEV_MAY") . '",
-					"' . JText::_("JEV_JUNE") . '",
-					"' . JText::_("JEV_JULY") . '",
-					"' . JText::_("JEV_AUGUST") . '",
-					"' . JText::_("JEV_SEPTEMBER") . '",
-					"' . JText::_("JEV_OCTOBER") . '",
-					"' . JText::_("JEV_NOVEMBER") . '",
-					"' . JText::_("JEV_DECEMBER") . '"
-					],
-					days :["' . JText::_("JEV_SUNDAY") . '",
-					"' . JText::_("JEV_MONDAY") . '",
-					"' . JText::_("JEV_TUESDAY") . '",
-					"' . JText::_("JEV_WEDNESDAY") . '",
-					"' . JText::_("JEV_THURSDAY") . '",
-					"' . JText::_("JEV_FRIDAY") . '",
-					"' . JText::_("JEV_SATURDAY") . '"
-					]
-					';
-		if ($onhidestart != "")
-		{
-			$script.=',
-					onHideStart : function () { ' . $onhidestart . '; },
-					onHideComplete :function () { ' . $onchange . '; }';
-		}
-		$script.='}
-				);
-			});';
+		// Build the attributes array.
+		$attributes = array();
+		empty($onchange)  ? null : $attributes['onchange'] = $onchange;
+		//$attributes['onselect']="function{this.hide();}";
+		/*
+		empty($this->size)      ? null : $attributes['size'] = $this->size;
+		empty($this->maxlength) ? null : $attributes['maxlength'] = $this->maxlength;
+		empty($this->class)     ? null : $attributes['class'] = $this->class;
+		!$this->readonly        ? null : $attributes['readonly'] = 'readonly';
+		!$this->disabled        ? null : $attributes['disabled'] = 'disabled';
+		empty($hint)            ? null : $attributes['placeholder'] = $hint;
+		$this->autocomplete     ? null : $attributes['autocomplete'] = 'off';
+		!$this->autofocus       ? null : $attributes['autofocus'] = '';
 
-		// stop same field script being loaded multiple times
-		static $processedfields = array();
-		if (!in_array($fieldname, $processedfields))
+		if ($this->required)
 		{
-			$document->addScriptDeclaration($script);
+			$attributes['required'] = '';
+			$attributes['aria-required'] = 'true';
 		}
-		$processedfields[] = $fieldname;
+*/
+		// switch back to strftime format to use Joomla calendar tool
+		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
 
-		if ($onchange != "")
-		{
-			$onchange = 'onchange="' . $onchange . '"';
+		if (JevJoomlaVersion::isCompatible("3.0")){
+			echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
 		}
-		echo '<input type="text" name="' . $fieldname . '" id="' . $fieldid . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" maxlength="10" ' . $onchange . ' size="12"  />';
+		else {
+			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
+			// Joomla 2.5 can't cope with d/m/y format !!!
+			static $done;
+
+			if ($done === null)
+			{
+				$done = array();
+			}
+
+			$readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
+			$disabled = isset($attributes['disabled']) && $attributes['disabled'] == 'disabled';
+
+			$attributes = JArrayHelper::toString($attributes);
+
+			if (!$readonly && !$disabled)
+			{
+				// Load the calendar behavior
+				JHtml::_('behavior.calendar');
+				JHtml::_('behavior.tooltip');
+
+
+				// Only display the triggers once for each control.
+				if (!in_array($fieldid, $done))
+				{
+					$document = JFactory::getDocument();
+					$document
+						->addScriptDeclaration(
+						'window.addEvent(\'domready\', function() {Calendar.setup({
+					// Id of the input field
+					inputField: "' . $fieldid . '",
+					// Format of the input field
+					ifFormat: "' . $format . '",
+					// Trigger for the calendar (button ID)
+					button: "' . $fieldid . '_img",
+					// Alignment (defaults to "Bl")
+					align: "Tl",
+					singleClick: true,
+					firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+					});});'
+					);
+					$done[] = $fieldid;
+				}
+				echo  '<input type="text" title="' .  $value. '" name="' . $fieldname . '" id="' . $fieldid
+					. '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $attributes . ' />'
+					. JHtml::_('image', 'system/calendar.png', JText::_('JLIB_HTML_CALENDAR'), array('class' => 'calendar', 'id' => $fieldid . '_img'), true);
+			}
+			else
+			{
+				echo  '<input type="text" title="' . $value 
+					. '" value="' . $value  . '" ' . $attributes
+					. ' /><input type="hidden" name="' . $fieldname . '" id="' . $fieldid . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" />';
+			}
+
+			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
+		}
 
 	}
 
@@ -930,10 +959,10 @@ class JEVHelper
 			if (is_null($user))
 			{
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$juser = JFactory::getUser();
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-					$juser = JFactory::getUser();
 
 					if ($params->get("category_allow_deny",1)==0){
 						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
@@ -986,6 +1015,9 @@ class JEVHelper
 							}
 						}
 					}
+				}
+				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
+					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
 				}
 			}
 			else if ($user->cancreate)
@@ -1060,6 +1092,23 @@ class JEVHelper
 			if ($user->authorise('core.create', 'com_jevents'))
 				return true;
 			$allowedcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.create');
+
+			// anon user event creation
+			if ($user->id == 0 && count($allowedcats)==0){
+				$jevtask = JRequest::getString("task");
+				// This allows savenew through too!
+				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
+				{
+					JRequest::setVar("task", "icalevent.edit");
+					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
+					$catids = implode(",", $catids);
+					$dispatcher = JDispatcher::getInstance();
+					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
+					$allowedcats = explode(",", $catids);
+					JRequest::setVar("task", $jevtask);
+				}
+			}
+
 			if (!in_array($row->_catid, $allowedcats))
 			{
 				return false;
@@ -1996,35 +2045,84 @@ class JEVHelper
 	}
 
 	static public
-			function stylesheet($file, $path)
+			function stylesheet($file, $path = "")
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		// JHTML::stylesheet($path . $file);
+		//stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
+		// no need to find browser specific versions
+		$includes = JHTML::stylesheet($path . $file, array(), false, true, false);
+		if (!$includes)
+		{
+			return;
+		}
+		if (!is_array($includes))
+		{
+			$includes = array($includes);
+		}
 
-		JHTML::stylesheet($path . $file);
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+
+		$document = JFactory::getDocument();
+
+		foreach ($includes as $include)
+		{
+			if (JevJoomlaVersion::isCompatible("3.3"))
+			{
+				$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
+			}
+			else
+			{
+				$document->addStyleSheet($include . "?" . $release, 'text/css', null, array());
+			}
+		}
 
 	}
 
 	static public
-			function script($file, $path)
+			function script($file, $path = "", $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
-
-		if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("usejquery", 0))
+		$includes = null;
+		// load jQuery versions if present
+		if (strpos($file, "JQ.js") == false)
 		{
-			// load jQuery versions
-			if (strpos($file, "JQ.js") == false)
+			$jqfile = str_replace(".js", "JQ.js", $file);
+			if (JHTML::script($path . $jqfile, false, false, true))
 			{
-				$file = str_replace(".js", "JQ.js", $file);
-				// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-				JHTML::script($path . $file);
+				$file = $jqfile;
 			}
 		}
-		else
-		{
-			// Include mootools framework
-			JHtml::_('behavior.framework', true);
 
-			// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-			JHTML::script($path . $file);
+		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
+		//JHTML::script($path . $file);
+		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
+		// no need to find browser specific versions
+		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser);
+		if (!$includes)
+		{
+			return;
+		}
+		if (!is_array($includes))
+		{
+			$includes = array($includes);
+		}
+
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+
+		$document = JFactory::getDocument();
+
+		foreach ($includes as $include)
+		{
+			if (JevJoomlaVersion::isCompatible("3.3"))
+			{
+				$document->addScriptVersion($include, $release);
+			}
+			else
+			{
+				$document->addScript($include . "?" . $release);
+			}
 		}
 
 	}
@@ -2238,7 +2336,7 @@ class JEVHelper
 		{
 			$conditional = "evlocation";
 		}
-		if (strpos("@", $conditional) >= 0)
+		if (strpos("@", $conditional) !== false)
 		{
 			$conditional = str_replace("@", "_", $conditional);
 		}
@@ -2335,8 +2433,8 @@ class JEVHelper
 									conditionsarray[0] = condition.value;
 							}
 						}
-						
-						var checkboxElements = condition.type=="checkbox"? new Array(condition) : condition.getElements('input[type=checkbox]');				
+
+						var checkboxElements = condition.type=="checkbox"? new Array(condition) : condition.getElements('input[type=checkbox]');
 						if (checkboxElements.length>0) {
 							condition.value = new Array();
 							for (var i = 0; i < checkboxElements.length; i++) {
@@ -2375,7 +2473,7 @@ class JEVHelper
 							hiddencontrol.style.display = "none";
 						}
 						try {
-							jQuery(eventsno).trigger("liszt:updated");
+							jevjq(eventsno).trigger("liszt:updated");
 						}
 						catch (e) {
 						}
@@ -2526,7 +2624,7 @@ SCRIPT;
 			function parameteriseJoomlaCache()
 	{
 
-// If Joomla caching is enabled then we have to manage progressive caching and ensure that session data is taken into account.
+// If Joomla! caching is enabled then we have to manage progressive caching and ensure that session data is taken into account.
 		$conf = JFactory::getConfig();
 		if ($conf->get('caching', 1))
 		{
@@ -2674,7 +2772,7 @@ SCRIPT;
 
 	}
 
-	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifcations at present to avoid code duplication.
+	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifications at present to avoid code duplication.
 	public static
 			function iCalMailGenerator($row, $n_extras, $ics_method = "PUBLISH")
 	{
@@ -2929,7 +3027,7 @@ SCRIPT;
 							$html .= ';INTERVAL=' . $row->_rinterval;
 						if ($row->_freq == "DAILY")
 						{
-
+							
 						}
 						else if ($row->_freq == "WEEKLY")
 						{
@@ -3436,6 +3534,27 @@ SCRIPT;
 		//$description 	= preg_replace( "/&#([0-9]+);/me","chr('\\1')", $description );
 		return $description;
 
+	}
+
+	/**
+	 * DEPRECATED use JevHtmlBootstrap::modal instead
+	 */
+	public static
+			function modal($selector = 'a.modal', $params = array())
+	{
+		
+		if (version_compare(JVERSION, "3.0", "ge"))
+		{
+			// Load the code Joomla version
+		//	JHtml::_('jquery.framework');
+		//	JHtml::_('bootstrap.modal');
+		//	return;
+		}
+
+		JHtml::_('behavior.modal', $selector, $params);
+		return;
+
+		return;
 	}
 
 }

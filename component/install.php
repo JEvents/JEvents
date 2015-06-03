@@ -16,13 +16,67 @@ class com_jeventsInstallerScript
 	
 	function install($parent)
 	{
-		
+		if (version_compare(PHP_VERSION, '5.3.10', '<'))
+		{
+			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			return false;
+		}
+
 		$this->createTables();
 
 		$this->updateTables();
 		
 		return true;
 
+	}
+
+	public function postflight($action, $adapter)
+	{
+		$table =  JTable::getInstance('extension');
+		$component = "com_jevents";
+
+		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
+		{
+			JFactory::getApplication()->enqueueMessage('Not a valid component', 'error');
+			return false;
+		}
+
+		$params = JComponentHelper::getParams("com_jevents");
+
+		$checkClashes = $params->get("checkclashes", 0);
+
+		if($params->get("noclashes", 0))
+		{
+			$params->set("checkconflicts","2");
+		}
+		else if($params->get("checkclashes", 0))
+		{
+			$params->set("checkconflicts","1");
+		}
+		
+		$paramsArray = $params->toArray();
+		unset($paramsArray['checkclashes']);
+		unset($paramsArray['noclashes']);
+		$post['params'] = $paramsArray;
+		$post['option'] = $component;
+
+		$table->bind($post);
+
+		// pre-save checks
+		if (!$table->check())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
+			return false;
+		}
+
+		// save the changes
+		if (!$table->store())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
+			return false;
+		}
+
+		return true;
 	}
 
 	function uninstall($parent)
@@ -33,6 +87,12 @@ class com_jeventsInstallerScript
 
 	function update($parent)
 	{
+		if (version_compare(PHP_VERSION, '5.3.10', '<'))
+		{
+			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			return false;
+		}
+
 		$this->createTables();
 		
 		$this->updateTables();
@@ -45,8 +105,14 @@ class com_jeventsInstallerScript
 
 		$db = JFactory::getDBO();
 		$db->setDebug(0);
-		
-		$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+		if (version_compare(JVERSION, "3.3", 'ge')){
+			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+		}
+		else {
+			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		}
 
  		/**
 		 * create table if it doesn't exit
@@ -62,7 +128,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	ev_id int(12) NOT NULL auto_increment,
 	icsid int(12) NOT NULL default 0,
 	catid int(11) NOT NULL default 1,
-	uid varchar(255) NOT NULL UNIQUE default "",
+	uid varchar(255) $rowcharset NOT NULL UNIQUE default "",
 	refreshed datetime  NOT NULL default '0000-00-00 00:00:00',
 	created datetime  NOT NULL default '0000-00-00 00:00:00',
 	created_by int(11) unsigned NOT NULL default '0',
@@ -123,7 +189,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	contact VARCHAR(120) NOT NULL default "",
 	organizer VARCHAR(120) NOT NULL default "",
 	url text NOT NULL ,
-	extra_info text NOT NULL DEFAULT '',
+	extra_info text NOT NULL,
 	created varchar(30) NOT NULL default "",
 	sequence int(11) NOT NULL default 1,
 	state tinyint(3) NOT NULL default 1,
@@ -342,14 +408,51 @@ SQL;
 		$db->query();
 		echo $db->getErrorMsg();
 
+		/**
+		 * create table if it doesn't exit
+		 *
+		 * For now :
+		 *
+		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
+		 *
+		 * Separate tables for rrule and exrule
+		 */
+		$sql = <<<SQL
+CREATE TABLE IF NOT EXISTS #__jevents_translation (
+	translation_id int(12) NOT NULL auto_increment,
+	evdet_id int(12) NOT NULL default 0,
+
+	description longtext NOT NULL ,
+	location VARCHAR(120) NOT NULL default "",
+	summary longtext NOT NULL ,
+	contact VARCHAR(120) NOT NULL default "",
+	extra_info text NOT NULL ,
+	language varchar(20) NOT NULL default '*',
+
+	PRIMARY KEY  (translation_id),
+	INDEX (evdet_id),
+	INDEX langdetail (evdet_id, language)
+) $charset;
+SQL;
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
 	}
 		
 	private function updateTables() {
 
 		$db = JFactory::getDBO();
 		$db->setDebug(0);
-		
-		$charset = ($db->hasUTF()) ? 'DEFAULT CHARACTER SET `utf8`' : '';
+
+		if (version_compare(JVERSION, "3.3", 'ge')){
+			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
+		}
+		else {
+			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
+		}
 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevent";
 		$db->setQuery($sql);
@@ -397,7 +500,7 @@ SQL;
 
 		if (array_key_exists("uid", $cols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) NOT NULL default '' UNIQUE";
+			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);
 			@$db->query();
 		}

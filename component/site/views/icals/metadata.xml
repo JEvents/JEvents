@@ -13,8 +13,7 @@
 	<state>
 		<name>ICal Export</name>
 		<description>ICal Export Layout</description>
-		<params addpath="/administrator/components/com_jevents/elements/" >
-			<param name='icalcache' type='text' default="1440" label="JEV_ICALCACHE" description="JEV_ICALCACHE_DESC" />
+		<params >
 		</params>
 	</state>
 </metadata>

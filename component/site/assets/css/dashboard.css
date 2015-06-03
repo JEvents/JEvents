@@ -6,15 +6,15 @@ select.dashboard {
 /*	width: 149px;*/
 }
 
-button.dashboard {
+#jevents button.dashboard , #jevents .jevbootstrap button.dashboard{
 	background: url('../images/dashboard-icon.gif');
 	border: 0;
 	cursor: pointer;
 	height: 20px;
-	margin-right: 10px;
 	width: 20px;
-	margin:0px;
+	margin:0px 10px 0px 5px;;
 	padding:0px;
+	float:none;
 }
 button.dashboard:hover,
 button.dashboard.active {

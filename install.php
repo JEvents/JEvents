@@ -3,8 +3,8 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.1.45
- * @releasedate March 2015
+ * @version     3.2.15
+ * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,7 +24,8 @@ class Pkg_JeventsInstallerScript
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-                                 $is_enabled = $db->loadResult();   
+        $is_enabled = $db->loadResult();
+
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
 			return;
@@ -131,11 +132,23 @@ class Pkg_JeventsInstallerScript
 			$db->setQuery($query);
 			$db->query();
                         
+                        // Enable new JEvents Plugin
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
-			$db->setQuery($query);
-			$db->query();
+ 			$db->setQuery($query);
+ 			$db->query();
 		}
 		else {
+			jimport( 'joomla.filesystem.file' );
+			// Ok Flatplus clean up to remove helpers
+			$file1 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatplusloadedfromtemplate.php';
+			$file2 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatpluseventmanagementdialog.php';
+			$file3 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatplusicaldialog.php';
+
+			if (JFile::exists($file1)) JFile::delete($file1);
+			if (JFile::exists($file2)) JFile::delete($file2);
+			if (JFile::exists($file3)) JFile::delete($file3);
+
+			// Lets make sure our Core plugin is enabled..
 			$db = JFactory::getDbo();
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);

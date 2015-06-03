@@ -73,13 +73,8 @@ class DefaultModLatestView
 	var
 			$catout = null;
 
-	function DefaultModLatestView($params, $modid)
+	function __construct($params, $modid)
 	{
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
-		{
-			$document = JFactory::getDocument();
-			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
-		} 
 		$this->_modid = $modid;
 		$this->modparams = & $params;
 
@@ -148,6 +143,24 @@ class DefaultModLatestView
 		$this->customFormatStr = $myparam->get('modlatest_CustFmtStr', '');
 		$this->displayRSS = intval($myparam->get('modlatest_RSS', 0));
 		$this->sortReverse = intval($myparam->get('modlatest_SortReverse', 0));
+
+		if ($myparam->get("bootstrapcss", 1)==1)
+		{
+			// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+			JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+			// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+			JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+		}
+
+		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		{
+			$document = JFactory::getDocument();
+			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
+		}
+
+		if ($myparam->get("modlatest_customcss", false)){
+			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
+		}
 
 		if ($this->dispMode > 7)
 			$this->dispMode = 0;
@@ -798,14 +811,19 @@ class DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
+		// override global start now setting so that timelimit plugin can use it!
+		$compparams =& JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$startnow = $compparams->get("startnow",0);
+		$compparams->set("startnow",$this->modparams->get("startnow",0));
 		$this->getLatestEventsData();
+		$compparams->set("startnow",$startnow);
 
 		$content = "";
 
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -830,10 +848,7 @@ class DefaultModLatestView
 				foreach ($daysEvents as $dayEvent)
 				{
 
-					if ($firstTime)
-						$content .= '<tr class="jevrow' . $k . '"><td class="mod_events_latest_first">';
-					else
-						$content .= '<tr class="jevrow' . $k . '"><td class="mod_events_latest">';
+					$eventcontent = "";
 
 					// generate output according custom string
 					foreach ($this->splitCustomFormat as $condtoken)
@@ -871,26 +886,35 @@ class DefaultModLatestView
 							}
 							else
 							{
-								$content .= $token;
+								$eventcontent .= $token;
 								continue;
 							}
 
-							$this->processMatch($content, $match, $dayEvent, $dateParm, $relDay);
+							$this->processMatch($eventcontent, $match, $dayEvent, $dateParm, $relDay);
 						} // end of foreach
 					} // end of foreach
-					$content .= "</td></tr>\n";
+					
+					if ($firstTime)
+						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest_first">%s'."</td></tr>\n";
+					else
+						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest">%s'."</td></tr>\n";
+					
+					$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : $eventrow;
+					$content .= str_replace("%s", $eventcontent , $templaterow);
+
 					$firstTime = false;
 				} // end of foreach
 				$k++;
 				$k %=2;
 			} // end of foreach
-			$content .="</table>\n";
+			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
-			$content .= '<table class="mod_events_latest_table" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
-			$content .= '<tr class="jevrow' . $k . '"><td class="mod_events_latest_noevents">' . JText::_('JEV_NO_EVENTS') . '</td></tr>' . "\n";
-			$content .="</table>\n";
+			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
+			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
+			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 
 		$callink_HTML = '<div class="mod_events_latest_callink">'
@@ -1300,7 +1324,7 @@ class DefaultModLatestView
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 									}
-									else
+									else if (isset($formattedparts[2]))
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 									}
@@ -1312,14 +1336,14 @@ class DefaultModLatestView
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 									}
-									else
+									else if (isset($formattedparts[2]))
 									{
 										$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 									}
 								}
 								else
 								{
-
+									$matchedByPlugin = false;
 									$layout = "list";
 									static $fieldNameArrays = array();
 									$jevplugins = JPluginHelper::getPlugin("jevents");
@@ -1336,6 +1360,7 @@ class DefaultModLatestView
 											{
 												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]))
 												{
+													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent != 3)
 													{
@@ -1344,7 +1369,7 @@ class DefaultModLatestView
 														{
 															$tempstr .= str_replace("%s", $temp, $formattedparts[1]);
 														}
-														else
+														else if (isset($formattedparts[2]))
 														{
 															$tempstr .= str_replace("%s", $temp, $formattedparts[2]);
 														}
@@ -1352,6 +1377,24 @@ class DefaultModLatestView
 												}
 											}
 										}
+									}
+									if (!$matchedByPlugin) {
+										// Layout editor code
+										include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
+										ob_start();
+										// false at the end to stop it running through the plugins
+										$part = "{{Dummy Label:".implode("#", $formattedparts)."}}";
+										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part,  false);
+										$newpart = ob_get_clean();
+										if ($newpart != $part) {
+											$tempstr .= $newpart;
+											$matchedByPlugin = true;
+										}
+									}
+									// none of the plugins has replaced the output so we now replace the blank formatted part!
+									if (!$matchedByPlugin && isset($formattedparts[2]))
+									{
+										$tempstr .= str_replace("%s", "", $formattedparts[2]);
 									}
 									//$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
 								}
@@ -1364,8 +1407,9 @@ class DefaultModLatestView
 						}
 						$content .= $tempstr;
 					}
-					else if ($match)
+					else if ($match) {
 						$content .= $match;
+					}
 				}
 				catch (Exception $e) {
 					if ($match)

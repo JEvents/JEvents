@@ -31,7 +31,7 @@
     border-color:#000000;
     border-width:1px 1px 1px 1px;
     text-align: center;
-    font-family: Arial;
+    
     font-size: 12px;
     font-style: normal;
     text-decoration: none;
@@ -120,11 +120,20 @@ a.mod_events_link:hover
     color:yellow;
 }
 
-
-td.mod_events_latest_first, td.mod_events_latest 
+/* Latest Events */
+td.mod_events_latest_first, td.mod_events_latest
 {
     background-color:#ffffff;
     border-style:solid;
     border-width:0px 0px 1px 8px;
     padding:0px 0px 2px 2px;
+}
+
+.jevbootstrap .mod_events_latest_date , .jevbootstrap .mod_events_latest_content {
+	line-height:14px;
+	margin-top: 1px;
+	vertical-align: text-top;
+}
+.jevbootstrap [class^="icon-"], .jevbootstrap [class*=" icon-"] {
+	margin-right:3px;
 }

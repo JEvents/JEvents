@@ -10,6 +10,7 @@ function FlatViewHelperFooter16($view)
 				<a href="#close" onclick="if (window.parent == window) {
 									self.close();
 								} else
+									try {window.parent.jQuery('#myEditModal').modal('hide');}catch (e){}
 									try {
 										window.parent.SqueezeBox.close();
 										return false;
@@ -23,6 +24,7 @@ function FlatViewHelperFooter16($view)
 	$view->loadHelper("JevViewCopyright");
 	JevViewCopyright();
 	?>
+	</div>
 	</div>
 	<?php
 	$dispatcher = JDispatcher::getInstance();

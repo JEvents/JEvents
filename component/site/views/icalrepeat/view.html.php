@@ -54,7 +54,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			$this->toolbarConfirmButton("icalrepeat.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'jev_Apply', false);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup", 0))
+		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'Cancel', false);
@@ -76,6 +76,8 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
+			// load Joomla javascript classes
+			JHTML::_('behavior.core');
 			$this->setLayout("edit");
 		}
 		else

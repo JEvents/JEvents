@@ -21,7 +21,7 @@ function JEventsBuildRoute(&$query)
 	// Must also load backend language files
 	$lang = JFactory::getLanguage();
 	$lang->load("com_jevents", JPATH_SITE);
-	
+
 	$segments = array();
 
 	// sometimes the task is not set but view and layout are so tackle this!
@@ -29,7 +29,7 @@ function JEventsBuildRoute(&$query)
 	{
 		$query['task'] = $query['view'] . "." . $query['layout'];
 	}
-	
+
 	// We don't need the view - its only used to manipulate parameters
 	if (isset($query['view']))
 	{
@@ -166,10 +166,10 @@ function JEventsBuildRoute(&$query)
 									}
 								}
 								else {
-									$segments[] = "0";									
+									$segments[] = "0";
 								}
 							}
-							else {							
+							else {
 								$segments[] = "0";
 							}
 						}
@@ -231,7 +231,7 @@ function JEventsBuildRoute(&$query)
 		case "jevent.delete":
 		case "icalevent.delete":
 		case "icalrepeat.delete":
-		case "icalrepeat.deletefuture":			
+		case "icalrepeat.deletefuture":
 			$segments[] = $task;
 			if (isset($query['jevtype']))
 			{
@@ -257,10 +257,10 @@ function JEventsBuildRoute(&$query)
 						}
 					}
 					else {
-						$segments[] = "0";									
+						$segments[] = "0";
 					}
 				}
-				else {							
+				else {
 					$segments[] = "0";
 				}
 			}
@@ -387,7 +387,7 @@ function JEventsParseRoute($segments)
 		// task
 		$task = $segments[0];
 		if (translatetask("icalrepeat.detail")==""  && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks)){
-			//array_unshift($segments, "icalrepeat.detail");			
+			//array_unshift($segments, "icalrepeat.detail");
 			array_unshift($segments, "");
 			if (count($segments)==3){
 				$title = $segments[1];
@@ -547,7 +547,7 @@ function JEventsParseRoute($segments)
 
 function JEventsBuildRouteNew(&$query, $task)
 {
-	$transtask = translatetask($task);
+	$transtask = translatetask($task, $query);
 
 	$params = JComponentHelper::getParams("com_jevents");
 
@@ -563,11 +563,11 @@ function JEventsBuildRouteNew(&$query, $task)
 		$menuItem = $menu->getItem($query['Itemid']);
 		$menuItemGiven = true;
 	}
-	
+
 	$cfg = JEVConfig::getInstance();
 	$segments = array();
 
-	if (count($query)==2 && isset($query['Itemid'])  && isset($query['option'])){
+	if ((count($query)==2 && isset($query['Itemid'])  && isset($query['option'])) || (count($query)==3 && isset($query['Itemid'])  && isset($query['lang'])  && isset($query['option']))){
 
 		// special case where we do not need any information since its a menu item
 		// as long as the task matches up!
@@ -575,18 +575,20 @@ function JEventsBuildRouteNew(&$query, $task)
 		$menuitem = $menu->getItem($query["Itemid"]);
 		if (!is_null($menuitem) && (isset($menuitem->query["task"]) || (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]))))
 		{
-			if (isset($menuitem->query["task"]) && $task == $menuitem->query["task"]){
-				return $segments;
+			if (!isset($query['lang']) ||  $menuitem->language==$query['lang'] || $menuitem->language=="*" ){
+				if (isset($menuitem->query["task"]) && $task == $menuitem->query["task"]){
+					return $segments;
+				}
+				else if (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]) && $task == $menuitem->query["view"].".".$menuitem->query["layout"]){
+					return $segments;
+				}
+				else {
+					 $segments[] = $transtask;
+				}
 			}
-			else if (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]) && $task == $menuitem->query["view"].".".$menuitem->query["layout"]){
-				return $segments;
-			}
-			else {
-				 $segments[] = $transtask;
-			}
-		}				
+		}
 	}
-	
+
 	switch ($task) {
 		case "year.listevents":
 		case "month.calendar":
@@ -689,7 +691,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						{
 							unset($query['jevtype']);
 						}
-						if ($transtask!=""){						
+						if ($transtask!=""){
 							if (isset($query['evid']))
 							{
 								$segments[] = $query['evid'];
@@ -745,7 +747,7 @@ function JEventsBuildRouteNew(&$query, $task)
 								$segments[] = "0";
 							}
 						}
-						
+
 
 						break;
 					default:
@@ -989,7 +991,7 @@ function JEventsParseRouteNew(&$segments, $task)
 
 }
 
-function translatetask($task)
+function translatetask($task, $query = false)
 {
 	$tasks = array(
 		"year.listevents",
@@ -1023,6 +1025,20 @@ function translatetask($task)
 	// if not translated then just drop the . and use _ instead
 	$task = str_replace(".", "_", $task);
 	$transtask = JText::_("JEV_SEF_" . $task);
+
+	// does it need a translated task in another language
+	$lang = JFactory::getLanguage();
+	if ($query && isset($query["lang"]) && $lang->get("tag")!=$query["lang"])
+	{
+		$sefs 	= JLanguageHelper::getLanguages('sef');
+		$lang_code = $query["lang"];
+		if (array_key_exists($query["lang"], $sefs)){
+			$lang_code = $sefs[$query["lang"]]->lang_code;
+		}
+		$newlang = JLanguage::getInstance($lang_code);
+		$newlang->load("com_jevents", JPATH_SITE);
+		$transtask = $newlang->_("JEV_SEF_" . $task);
+	}
 	$transtask = strpos($transtask, "JEV_SEF_") === 0 ? $task : $transtask;
 	return $transtask;
 

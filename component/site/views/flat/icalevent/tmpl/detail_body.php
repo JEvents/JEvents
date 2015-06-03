@@ -36,28 +36,25 @@ if( array_key_exists('row',$this->data) ){
         <!-- <div name="events">  -->
         <table class="contentpaneopen" border="0">
             <tr class="headingrow">
-                <td  width="100%" class="contentheading"><h2 class="contentheading"><?php echo $row->title(); ?></h2></td>
+                <td   class="contentheading"><h2 class="contentheading"><?php echo $row->title(); ?></h2></td>
                 <?php
                 $jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
                 if ($jevparams->get("showicalicon",0) &&  !$jevparams->get("disableicalexport",0) ){
                 ?>
-                <td  width="20" class="buttonheading" align="right">
-					<?php
-					JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
-					?>
-					<a href="javascript:void(0)" onclick='clickIcalButton()' title="<?php echo JText::_('JEV_SAVEICAL');?>">
-						<img src="<?php echo JURI::root().'components/'.JEV_COM_COMPONENT.'/assets/images/jevents_event_sml.png'?>" align="middle" name="image"  alt="<?php echo JText::_('JEV_SAVEICAL');?>" style="height:24px;"/>
-					</a>
-				</td>
-				<?php
+                <td  class="buttonheading" >
+			<?php
+			$this->eventIcalButton($row);
+			?>
+		</td>
+		<?php
                 }
                 if( $row->canUserEdit()) {
                 	JEVHelper::script( 'view_detail.js', 'components/'.JEV_COM_COMPONENT."/assets/js/" );
                     	?>
-                        <td  width="20" class="buttonheading" align="right">
-                        <a href="javascript:void(0)" onclick='clickEditButton()' title="<?php echo JText::_('JEV_E_EDIT');?>">
-                           	<?php echo JEVHelper::imagesite( 'edit.png',JText::_('JEV_E_EDIT'));?>
-                        </a>
+                        <td  class="buttonheading" >
+				<?php
+				$this->eventManagementButton($row);
+				?>
                         </td>
                         <?php
                 }
@@ -67,14 +64,14 @@ if( array_key_exists('row',$this->data) ){
                 <td align="left" valign="top" colspan="2">
                 <div style="position:relative;">
                 <?php
-                $this->eventIcalDialog($row, $mask);
+                $this->eventIcalDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>
                 <td align="left" valign="top" colspan="2">
                 <div style="position:relative;">
                 <?php
-                $this->eventManagementDialog($row, $mask);
+                $this->eventManagementDialog($row, $mask, true);
                 ?>
                 </div>
                 </td>
