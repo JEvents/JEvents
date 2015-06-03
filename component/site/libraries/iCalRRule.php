@@ -115,6 +115,7 @@ class iCalRRule extends JTable  {
 			else {
 				$cfg = JEVConfig::getInstance();
 				$temp->processField("until",JevDate::mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
+				$temp->processField("count",9999);
 			}
 		}
 		$temp->processField("untilraw","");

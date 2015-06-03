@@ -940,7 +940,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 					$exception->bind(get_object_vars($data));
 				}
 				$exception->exception_type = 0; // deleted
-				$exception->store();
+                $exception->store();
 			}
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);

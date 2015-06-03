@@ -626,6 +626,17 @@ form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
 
+.jevbootstrap div.modal {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    outline: medium none;
+    left:50%;
+    position:fixed!important;
+    z-index: 1050;
+}
 .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
 .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
 .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
@@ -643,17 +654,8 @@ td.ev_td_right ul.ev_ul {list-style: none;}
 .jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  
     text-align: left;
-    left:50%;
-    position:fixed;
-    z-index:1050;
     right:0px;
-    background-clip: padding-box;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     margin-left: -40%;
-    outline: medium none;
 }
 
 .jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
@@ -661,16 +663,6 @@ td.ev_td_right ul.ev_ul {list-style: none;}
    margin:0px;
 }
 
-.jevbootstrap div.modal {
-    background-clip: padding-box;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-    outline: medium none;
-    position: fixed;
-    z-index: 1050;
-}
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
 table.ev_navtable tr {vertical-align:top; }

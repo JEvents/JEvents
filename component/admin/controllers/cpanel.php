@@ -169,6 +169,7 @@ class AdminCpanelController extends JControllerAdmin
 		$this->view->display();
 	}
 
+
 	function fixExceptions()
 	{
 

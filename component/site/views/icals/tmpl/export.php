@@ -207,10 +207,21 @@ if (!empty($this->icalEvents))
 		$html .= "DTSTAMP:" . $stamptime . "\r\n";
 		$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
 		// events with no end time don't give a DTEND
-		if (!$a->noendtime())
+		if ($a->noendtime())
 		{
+			// special case for no-end time over multiple days
+			if ($a->start_date != $a->stop_date) {
+				$alldayprefix = ";VALUE=DATE";
+				$endformat = "%Y%m%d";
+				// add 10 seconds to make sure its not midnight the previous night
+				$end = JevDate::strftime($endformat, $a->getUnixEndTime() + 10);
+				$html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
+			}
+		}
+		else {
 			$html .= "DTEND$tzid$alldayprefix:" . $end . "\r\n";
 		}
+
 		$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
 		if ($a->hasrepetition() && $this->withrepeats)
 		{

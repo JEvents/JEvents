@@ -4402,6 +4402,9 @@
 	margin: 0;
 	line-height: 30px;
 }
+.jevbootstrap .modal-dialog {
+	margin: 0;
+}
 .jevbootstrap .modal-body{
 	position: relative;
 	max-height: 400px;
