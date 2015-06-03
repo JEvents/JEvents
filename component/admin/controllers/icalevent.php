@@ -1205,7 +1205,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', "IcalEvent  : New published state Saved");
+			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_EVENT_STATE_CHANGED"));
 		}
 		else
 		{
@@ -1384,14 +1384,14 @@ class AdminIcaleventController extends JControllerAdmin
 
 			if (JFactory::getApplication()->isAdmin())
 			{
-				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", "ICal Event(s) deleted");
+				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", JTEXT::_("ICAL_EVENTS_DELETED"));
 			}
 			else
 			{
 				$Itemid = JRequest::getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = JRequest::getString("rettask", "day.listevents");
-				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "IcalEvent Deleted");
+				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
 			}
 		}
 		else

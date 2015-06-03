@@ -34,7 +34,7 @@ class iCalException extends JTable  {
 		parent::__construct( '#__jevents_exception', 'ex_id', $db );
 	}
 
-	function loadByRepeatId($rp_id){
+	public static function loadByRepeatId($rp_id){
 		
 		$db = JFactory::getDBO();
 		$sql = "SELECT * FROM #__jevents_exception WHERE rp_id=".intval($rp_id);

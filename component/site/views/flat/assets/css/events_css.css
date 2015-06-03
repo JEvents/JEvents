@@ -988,3 +988,15 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 
 /** Css for jQuery popups in calendar cells **/
 .popover div > div {color:inherit;}
+
+/** JEvents jQuery adjustments **/
+.jev_daysnames.category  {
+    width:200px !important;
+    height:auto !important;
+}
+.jev_daysnames.category .chzn-container.chzn-container-single {
+    position: absolute !important;
+    width: 195px !important;
+    text-align: left;
+    display: block;
+}
