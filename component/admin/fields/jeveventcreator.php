@@ -124,8 +124,8 @@ class JFormFieldJeveventcreator extends JFormField
 					</div>
 					<?php
 					JLoader::register('JevTypeahead', JPATH_LIBRARIES . "/jevents/jevtypeahead/jevtypeahead.php");
-					$datapath = JRoute::_("index.php?option=com_jevents&typeaheadtask=gwejson&file=findcreator", false);
-					//$prefetchdatapath = JRoute::_("index.php?option=com_jevents&typeaheadtask=gwejson&file=findcreator&prefetch=1", false);
+					$datapath = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator", false);
+					//$prefetchdatapath = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator&prefetch=1", false);
 					JevTypeahead::typeahead('#ta_creatorid', array('remote' => $datapath,
 						//'prefetch'=>  $prefetchdatapath,
 						'data_value' => 'title',

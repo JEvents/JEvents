@@ -37,7 +37,7 @@ class PlgSystemGwejson extends JPlugin
 	{
 
 		$input = JFactory::getApplication()->input;
-		$task = $input->get('typeaheadtask', '', 'cmd');
+		$task = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 		// in frontend SEF
 		if ($task != "gwejson")
 		{
@@ -77,7 +77,7 @@ class PlgSystemGwejson extends JPlugin
 		}
 		else
 		{
-			$extension = $input->get('option', '', 'cmd');
+			$extension = $input->get('option', $input->get('ttoption', '', 'cmd'), 'cmd');
 			if ($extension == "")
 			{
 				return true;

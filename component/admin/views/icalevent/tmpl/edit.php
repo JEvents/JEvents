@@ -259,7 +259,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
-	$checkURL = JRoute::_("index.php?option=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken(), false);
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken(), false);
 	if (JEVHelper::getItemid()>0){
 		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
 	}
