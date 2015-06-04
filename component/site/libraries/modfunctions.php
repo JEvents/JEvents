@@ -43,7 +43,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		$menuitems = array();
 	}
 	$activeMenu = $menu->getActive();
-
+	
 	if (isset($modparams->target_itemid) && $modparams->target_itemid != '' && intval($modparams->target_itemid)>0){
 		$targetid = intval($modparams->target_itemid);
 
@@ -72,7 +72,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 			$menuitems = array();
 		}
 	}
-	
+
 	// put the best guess first for checking category selections
 	if ($myItemid>0){
 		$newmenuitems =array();

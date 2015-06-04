@@ -237,6 +237,47 @@ class jIcalEventRepeat extends jIcalEventDB
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
 		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+
+		static $menuitems = false;
+		if (!$menuitems){
+			$menu = JFactory::getApplication()->getMenu();
+			$menuitems = $menu->getItems("component",JEV_COM_COMPONENT);
+			$user = JFactory::getUser();
+			
+			// restrict this list to those accessible by the user
+			if (!is_null($menuitems)){
+				$lang = JFactory::getLanguage();
+				foreach ($menuitems as $index=>$menuitem) {
+					if ( !in_array($menuitem->access,JEVHelper::getAid($user, 'array'))){
+						unset($menuitems[$index]);
+					}
+					// also drop admin functions
+					else if (array_key_exists("task",$menuitem->query) && strpos($menuitem->query['task'],'admin')===0){
+						unset($menuitems[$index]);
+					}
+					else if ($menuitem->language !="*" && $menuitem->language !=$lang->getTag()){
+						unset($menuitems[$index]);
+					}
+					else if (!(array_key_exists("layout",$menuitem->query) && array_key_exists("view",$menuitem->query) && $menuitem->query['view'].".".$menuitem->query['layout']=='icalrepeat.detail')){
+						unset($menuitems[$index]);
+					}
+
+				}
+			}
+			else {
+				$menuitems = array();
+			}
+		}
+		// Is there a specific menu item for this ONE event - this overrides everything (if in the same language!)
+		foreach ($menuitems as $index=>$menuitem) {
+			if (array_key_exists("layout",$menuitem->query) && array_key_exists("view",$menuitem->query) && $menuitem->query['view'].".".$menuitem->query['layout']=='icalrepeat.detail'){
+				if (isset($menuitem->query["evid"]) && $menuitem->query["evid"]==$this->ev_id()){
+					$Itemid = $menuitem->id;
+					break;
+				}
+			}
+		}
+
 		// uid = event series unique id i.e. the actual event
 		$title = JApplication::stringURLSafe($this->title());
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->rp_id() . '&Itemid=' . $Itemid
