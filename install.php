@@ -24,13 +24,17 @@ class Pkg_JeventsInstallerScript
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-        $is_enabled = $db->loadResult();
+	        $is_enabled = $db->loadResult();
 
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
 			return;
 		} else {
 			$this->hasJEventsInst = 1;
+			if (version_compare(JVERSION, '3.0', '<')){
+				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.0 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+				return false;
+			}
 			return;
 		}
 	}
