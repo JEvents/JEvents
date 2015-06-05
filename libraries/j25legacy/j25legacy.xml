@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="library" method="upgrade">
+	<name>JEvents 2.5 Legacy Library</name>
+	<libraryname>jevents/j25legacy</libraryname>
+	<description>JEvents Joomla 2.5 Legacy Library namespaced to correctly work with JEvents</description>
+	<author>JEvents</author>
+	<creationDate>June 2015</creationDate>
+	<copyright>(C) 2010-2015 GWE Systems Ltd. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>carcam@jevents.net</authorEmail>
+	<packager>JEvents</packager>
+	<authorUrl>www.gwesystems.com</authorUrl>
+	<version>3.4.0</version>
+	<files>
+		<folder>jlayouts</folder>
+	</files>
+	<media folder="icomoon" destination="lib_j25legacy/icomoon">
+		<folder>css</folder>
+		<folder>fonts</folder>
+	</media>
+</extension>

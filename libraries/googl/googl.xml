@@ -10,7 +10,7 @@
 	<authorEmail>carcam@jevents.net</authorEmail>
 	<packager>JEvents</packager>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.2.12</version>	
+	<version>3.4.0</version>	
 	<files folder="googl">
 		<file>api.php</file>
 		<file>index.html</file>

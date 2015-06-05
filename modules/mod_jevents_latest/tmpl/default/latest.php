@@ -158,6 +158,10 @@ class DefaultModLatestView
 			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
 		}
 
+		if ($myparam->get("modlatest_customcss", false)){
+			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
+		}
+
 		if ($this->dispMode > 7)
 			$this->dispMode = 0;
 
@@ -807,7 +811,12 @@ class DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
+		// override global start now setting so that timelimit plugin can use it!
+		$compparams =& JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$startnow = $compparams->get("startnow",0);
+		$compparams->set("startnow",$this->modparams->get("startnow",0));
 		$this->getLatestEventsData();
+		$compparams->set("startnow",$startnow);
 
 		$content = "";
 
@@ -1334,7 +1343,7 @@ class DefaultModLatestView
 								}
 								else
 								{
-
+									$matchedByPlugin = false;
 									$layout = "list";
 									static $fieldNameArrays = array();
 									$jevplugins = JPluginHelper::getPlugin("jevents");
@@ -1351,6 +1360,7 @@ class DefaultModLatestView
 											{
 												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]))
 												{
+													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
 													if (!isset($event->_privateevent) || $event->_privateevent != 3)
 													{
@@ -1368,6 +1378,24 @@ class DefaultModLatestView
 											}
 										}
 									}
+									if (!$matchedByPlugin) {
+										// Layout editor code
+										include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
+										ob_start();
+										// false at the end to stop it running through the plugins
+										$part = "{{Dummy Label:".implode("#", $formattedparts)."}}";
+										DefaultLoadedFromTemplate(false, false, $dayEvent, 0, $part,  false);
+										$newpart = ob_get_clean();
+										if ($newpart != $part) {
+											$tempstr .= $newpart;
+											$matchedByPlugin = true;
+										}
+									}
+									// none of the plugins has replaced the output so we now replace the blank formatted part!
+									if (!$matchedByPlugin && isset($formattedparts[2]))
+									{
+										$tempstr .= str_replace("%s", "", $formattedparts[2]);
+									}
 									//$dispatcher->trigger( 'onLatestEventsField', array( &$dayEvent, $subparts[0], &$tempstr));
 								}
 								$tempstr .= $subparts[1];
@@ -1379,8 +1407,9 @@ class DefaultModLatestView
 						}
 						$content .= $tempstr;
 					}
-					else if ($match)
+					else if ($match) {
 						$content .= $match;
+					}
 				}
 				catch (Exception $e) {
 					if ($match)

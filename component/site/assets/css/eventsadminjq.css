@@ -374,11 +374,11 @@ span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
 }
 #jevents fieldset legend input[type='radio'] {margin-right:10px!important;}
 
-#jevents .jevbootstrap input, #jevents .jevbootstrap textarea, #jevents .jevbootstrap .uneditable-input {
+.jevbootstrap input, .jevbootstrap textarea, .jevbootstrap .uneditable-input {
     width: auto!important;
     max-width: 100%;
 }
-#jevents .jevbootstrap textarea#jevcontent {
+.jevbootstrap textarea#jevcontent {
     width: 95% !important;
 }
 #jevents .jevdatetime label.btn {
@@ -469,6 +469,44 @@ div#jevents .form-inline  #start_ampm label, div#jevents .form-inline  #end_ampm
 	margin-left: -280px;
 	width:560px;
 }
+#myEditModal.modal {
+	position: fixed;
+	bottom: 5%;
+	top: 5%;
+	left: 5%;
+	margin:0px;
+	z-index: 1050;
+	width: 90%;
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	*border: 1px solid #999;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	outline: none;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	text-align: left;
+}
+ #myEditModal.modal.fade {
+	top: -25%;
+	-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+	-o-transition: opacity 0.3s linear, top 0.3s ease-out;
+	transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+#myEditModal.modal.fade.in {
+	top: 5%;
+}
+#myEditModal body.modal {
+	padding-top: 0;
+}
+
 #myEditModal .close , #myImportModal .close {
 	float: right;
 	font-size: 20px;
@@ -588,22 +626,42 @@ form.search_form { padding:30px 0px;}
 td.ev_td_right ul.ev_ul {list-style: none;}
 #jevents_body ul.ev_ul li.ev_td_li {margin-bottom:10px;}
 
-#jevents .jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;}
-#jevents .jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
-#jevents .jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
-#jevents .jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
-#jevents .jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
+.jevbootstrap div.modal {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    outline: medium none;
+    left:50%;
+    position:fixed!important;
+    z-index: 1050;
+}
+.jevbootstrap .ical_dialogJQ {max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .ical_dialogJQ img {   height: 16px;margin-right:1em;margin-bottom:7px;}
+.jevbootstrap .ical_dialogJQ input[type="checkbox"] {   margin-right: 10px;}
+.jevbootstrap .ical_dialogJQ #unstyledical {padding:0px;margin:0px;}
+.jevbootstrap .ical_dialogJQ #styledical {padding:0px;margin:0px;display:none;}
 
-#jevents .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;}
-#jevents .action_dialogJQ a {text-decoration:none; line-height:28px;}
-#jevents .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
-#jevents .action_dialogJQ #publish_reccur img, #jevents .action_dialogJQ #edit_reccur img,
-#jevents .action_dialogJQ #edit_event img, #jevents .action_dialogJQ #edit_eventcopy img,
-#jevents .action_dialogJQ #delete_repeat img, #jevents .action_dialogJQ #delete_eventfuture img,
-#jevents .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
-#jevents img.jev_ev_sml,  #jevents  img.jev_ev_sml {height:24px; text-align:center;}
-#jevents .action_dialogJQ .modal-body , #jevents .action_dialogJQ .modal-header {text-align: left;}
-#jevents .jevbootstrap .ical_dialogJQ, #jevents .jevbootstrap .action_dialogJQ, #jevents .ical_dialogJQ, #jevents  .action_dialogJQ {  text-align: left;}
+.jevbootstrap .action_dialogJQ {   max-width: 300px; bottom:auto!important;padding-right: 0px!important;margin-left:-150px!important;}
+.jevbootstrap .action_dialogJQ a {text-decoration:none; line-height:28px;}
+.jevbootstrap .action_dialogJQ .close_dialog a {font-weight:bold;color:#000000;}
+.jevbootstrap .action_dialogJQ #publish_reccur img, .jevbootstrap .action_dialogJQ #edit_reccur img,
+.jevbootstrap .action_dialogJQ #edit_event img, .jevbootstrap .action_dialogJQ #edit_eventcopy img,
+.jevbootstrap .action_dialogJQ #delete_repeat img, .jevbootstrap .action_dialogJQ #delete_eventfuture img,
+.jevbootstrap .action_dialogJQ #delete_event img {width:20px;height:20px;border:0px;margin-right:1em;vertical-align:middle;}
+.jevbootstrap img.jev_ev_sml,  .jevbootstrap  img.jev_ev_sml {height:24px; text-align:center;}
+.jevbootstrap .action_dialogJQ .modal-body , .jevbootstrap .action_dialogJQ .modal-header {text-align: left;}
+.jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {  
+    text-align: left;
+    right:0px;
+    margin-left: -40%;
+}
+
+.jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
+   width:auto;
+   margin:0px;
+}
 
 div.ev_navigation {width:100%;}
 table.ev_navtable {width:300px; border:0px; text-align:center;margin: auto auto}
@@ -630,7 +688,7 @@ table.ev_navtable tr {vertical-align:top; }
 .h100 {height:100%;}
 .h1 {height:1px;}
 .h12px {height:12px;}
-#jevents .jevbootstrap .h24px {height:24px;}
+.jevbootstrap .h24px {height:24px;}
 .h80px {height:80px;}
 .pos_rel {position:relative;}
 .fleft {float:left;}

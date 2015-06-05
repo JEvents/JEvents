@@ -2,9 +2,9 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEvents Package</name>
 	<packagename>jevents</packagename>
-	<version>3.2.12</version>
+	<version>3.4.0</version>
 	<url>http://www.jevents.net</url>
-	<creationDate>April 2015</creationDate>
+	<creationDate>May 2015</creationDate>
 	<author>Geraint Edwards</author>
 	<copyright>(C) 2012-2015 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
@@ -26,5 +26,7 @@
 		<file type="plugin" id="eventsearch" group="search">search.zip</file>
 		<file type="plugin" id="jevents" group="content">jevents.zip</file>
 		<file type="library" id="googl">googl.zip</file>
+		<file type="library" id="jevmodal">jevmodal.zip</file>
+		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 </extension>

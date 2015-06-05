@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	contact VARCHAR(120) NOT NULL default "",
 	organizer VARCHAR(120) NOT NULL default "",
 	url text NOT NULL ,
-	extra_info text NOT NULL DEFAULT '',
+	extra_info text NOT NULL,
 	created varchar(30) NOT NULL default "",
 	sequence int(11) NOT NULL default 1,
 	state tinyint(3) NOT NULL default 1,
@@ -402,6 +402,36 @@ CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 	md5 VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (fid),
 	INDEX (md5)
+) $charset;
+SQL;
+		$db->setQuery($sql);
+		$db->query();
+		echo $db->getErrorMsg();
+
+		/**
+		 * create table if it doesn't exit
+		 *
+		 * For now :
+		 *
+		 * I'm ignoring attach,comment, resources, transp, attendee, related to, rdate, request-status
+		 *
+		 * Separate tables for rrule and exrule
+		 */
+		$sql = <<<SQL
+CREATE TABLE IF NOT EXISTS #__jevents_translation (
+	translation_id int(12) NOT NULL auto_increment,
+	evdet_id int(12) NOT NULL default 0,
+
+	description longtext NOT NULL ,
+	location VARCHAR(120) NOT NULL default "",
+	summary longtext NOT NULL ,
+	contact VARCHAR(120) NOT NULL default "",
+	extra_info text NOT NULL ,
+	language varchar(20) NOT NULL default '*',
+
+	PRIMARY KEY  (translation_id),
+	INDEX (evdet_id),
+	INDEX langdetail (evdet_id, language)
 ) $charset;
 SQL;
 		$db->setQuery($sql);

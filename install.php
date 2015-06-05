@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.2.12
+ * @version     3.4.0
  * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -24,13 +24,17 @@ class Pkg_JeventsInstallerScript
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-        $is_enabled = $db->loadResult();
+	        $is_enabled = $db->loadResult();
 
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
 			return;
 		} else {
 			$this->hasJEventsInst = 1;
+			if (version_compare(JVERSION, '3.0', '<')){
+				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.0 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+				return false;
+			}
 			return;
 		}
 	}
@@ -136,6 +140,12 @@ class Pkg_JeventsInstallerScript
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
  			$db->setQuery($query);
  			$db->query();
+
+                        // Enable JSON Plugin
+                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+ 			$db->setQuery($query);
+ 			$db->query();
+
 		}
 		else {
 			jimport( 'joomla.filesystem.file' );
@@ -147,6 +157,9 @@ class Pkg_JeventsInstallerScript
 			if (JFile::exists($file1)) JFile::delete($file1);
 			if (JFile::exists($file2)) JFile::delete($file2);
 			if (JFile::exists($file3)) JFile::delete($file3);
+
+			$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
+			if (JFile::exists($file4)) JFile::delete($file4);
 
 			// Lets make sure our Core plugin is enabled..
 			$db = JFactory::getDbo();

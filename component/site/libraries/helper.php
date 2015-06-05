@@ -959,10 +959,10 @@ class JEVHelper
 			if (is_null($user))
 			{
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$juser = JFactory::getUser();
 				$authorisedonly = $params->get("authorisedonly", 0);
 				if (!$authorisedonly)
 				{
-					$juser = JFactory::getUser();
 
 					if ($params->get("category_allow_deny",1)==0){
 						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
@@ -1015,6 +1015,9 @@ class JEVHelper
 							}
 						}
 					}
+				}
+				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
+					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
 				}
 			}
 			else if ($user->cancreate)
@@ -2333,7 +2336,7 @@ class JEVHelper
 		{
 			$conditional = "evlocation";
 		}
-		if (strpos("@", $conditional) >= 0)
+		if (strpos("@", $conditional) !== false)
 		{
 			$conditional = str_replace("@", "_", $conditional);
 		}

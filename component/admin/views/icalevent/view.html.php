@@ -22,6 +22,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
+		// Get data from the model
+		$model = $this->getModel();
 
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
@@ -128,7 +130,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
                         $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
 			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));                    
+			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
 			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
 
 			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
@@ -158,6 +160,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
+
+		// Only offer translations in latest version of Joomla
+		if (JevJoomlaVersion::isCompatible("3.4")){
+			$this->languages = $this->get('Languages');
+		}
+		else {
+			$this->languages = null;
+		}
 
 	}
 
@@ -229,7 +239,61 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->setupEditForm();
 
 	}
-	
+
+	function translate($tpl = null)
+	{
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		$this->editor =  JFactory::getEditor();
+		if ($this->editor->get("_name") == "codemirror")
+		{
+			$this->editor = JFactory::getEditor("none");
+			JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+		}
+
+		// Get the form && data
+		$this->form = $this->get('TranslateForm');
+		$this->original = $this->get("Original");
+		$this->translation = $this->get("Translation");
+		$lang = JRequest::getString("lang", "");
+
+		$this->form->bind($this->original);
+		$this->form->bind($this->translation);
+
+		$this->form->setValue("trans_language",null,  $lang);
+		$this->form->setValue("language",null,  $lang);
+		$this->form->setValue("trans_evdet_id", null, $this->original["evdet_id"]);
+		$this->form->setValue("ev_id", null, JRequest::getInt("ev_id", 0));
+
+		// Event editing buttons
+		if ($params->get('com_show_editor_buttons'))
+		{
+			$this->form->setFieldAttribute("trans_description", "hide", $params->get('com_editor_button_exceptions'));
+		}
+		else
+		{
+			$this->form->setFieldAttribute("trans_description", "buttons", "false");
+		}
+		$this->form->setFieldAttribute("description", "buttons", "false");
+
+		$this->addTranslationToolbar();
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function addTranslationToolbar()
+	{
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+
+		JToolbarHelper::save('icalevent.savetranslation');
+		JToolbarHelper::cancel('icalevent.close');
+	}
+
 	function csvimport($tpl = null)
 	{
 
@@ -330,6 +394,44 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// Add a standard button
 		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
 
+	}
+
+	protected function translationLinks ($row) {
+		if ($this->languages)
+		{
+			JevHtmlBootstrap::modal();
+			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+
+			// Any existing translations ?
+			$db = JFactory::getDbo();
+			$db->setQuery("SELECT language FROM #__jevents_translation where evdet_id= ".$row->evdet_id);
+			$translations = $db->loadColumn();
+			// test styling for existing translation
+			//$translations[] = "cy-GB";
+			?>
+			<ul class="item-associations">
+			<?php foreach ($this->languages as $id => $item) :
+
+				$text = strtoupper($item->sef);
+				$url = JRoute::_('index.php?option=com_jevents&task=icalevent.translate&evdet_id='.$row->evdet_id.'&ev_id='.$row->ev_id.'&pop=1&tmpl=component&lang=' . $item->lang_code);
+				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
+						$item->title,
+						array('title' => $item->title),
+						true
+					);
+				$url  = "javascript:jevEditTranslation('".$url ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+				$tooltipParts = array( 	$img,  $item->title);
+				$item->link = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
+				?>
+				<li>
+				<?php
+				echo $item->link;
+				?>
+				</li>
+			<?php endforeach; ?>
+			</ul>
+		<?php
+		}
 	}
 
 }

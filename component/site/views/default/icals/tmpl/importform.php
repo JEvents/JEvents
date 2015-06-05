@@ -94,9 +94,8 @@ function submitbutton() {
 <?php
 /*
 // Load Bootstrap
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
-	JHtml::_('bootstrap.framework');
- * }
+JevHtmlBootstrap::framework();
+
 //JHtml::_('behavior.formvalidation');
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("bootstrapchosen", 1))

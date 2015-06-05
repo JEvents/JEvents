@@ -20,9 +20,7 @@ $cfg = JEVConfig::getInstance();
 $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
 
 // Load Bootstrap
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapjs",1)){
-	JHtml::_('bootstrap.framework');
-}
+JevHtmlBootstrap::framework();
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
@@ -261,6 +259,7 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken(), false);
 	if (JEVHelper::getItemid()>0){
 		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
 	}

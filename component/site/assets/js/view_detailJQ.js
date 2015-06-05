@@ -45,14 +45,12 @@ function jevSetupAddLink() {
 
 jevjq(document).on('ready', function() {
 	jevSetupAddLink();
+	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	// move dialog to main body because some template wrap it in a relative positioned element - wrapped to ensure our namespaced bootstrap picks it up!
-	var wrap = jQuery("<div>", {id:"jevents"});
-	wrap.appendTo("body");
 	var subwrap = jQuery("<div>", {class:"jevbootstrap"});
-	subwrap.appendTo(wrap);
+	subwrap.appendTo("body");
 	if (jQuery(".action_dialogJQ").length) {
 		jQuery(".action_dialogJQ").appendTo(subwrap);
-		var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 		if (bootstrap3_enabled && jQuery(".action_dialogJQ").hasClass('hide')){
 			jQuery(".action_dialogJQ").removeClass('hide');
 		}

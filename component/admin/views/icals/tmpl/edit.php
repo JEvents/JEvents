@@ -138,13 +138,14 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
             </div>
         </div>
 
+        <?php if ($id==0) { ?>
         <ul class="nav nav-tabs" id="myicalTabs">
             <li  class="active"><a data-toggle="tab" href="#from_scratch"><?php echo JText::_("FROM_SCRATCH"); ?></a></li>
             <li ><a data-toggle="tab" href="#from_file"><?php echo JText::_("FROM_FILE"); ?></a></li>
             <li ><a data-toggle="tab" href="#from_url"><?php echo JText::_("FROM_URL"); ?></a></li>
         </ul>
-          
         <?php
+        }
         // Tabs
         echo JHtml::_('bootstrap.startPane', 'myicalTabs', array('active' => 'from_scratch'));
 

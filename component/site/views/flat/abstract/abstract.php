@@ -36,26 +36,8 @@ class JEventsFlatView extends JEventsDefaultView
 		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 		$document = JFactory::getDocument();
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("flatscalable", "1") == "1" || $params->get("flatwidth", 905) == "scalable")
-		{
-			jimport('joomla.environment.browser');
-			$browser = JBrowser::getInstance();
-			$browserType = $browser->getBrowser();
-			$browserVersion = $browser->getMajor();
-			if (($browserType == 'msie') && ($browserVersion < 9))
-			{
-				JEVHelper::componentStylesheet($this, "scalable_ie8.css");
-			}
-			else {
-				JEVHelper::componentStylesheet($this, "scalable.css");
-			}
-			JEVHelper::componentStylesheet($this);
-		}
-		else
-		{
-			JEVHelper::componentStylesheet($this);
-			JEVHelper::componentStylesheet($this, "w" . $params->get("flatwidth", 905) . ".css");
-		}
+		JEVHelper::componentStylesheet($this);
+
 		if ($params->get("darktemplate", 0))
 			JEVHelper::componentStylesheet($this, "dark.css");
 

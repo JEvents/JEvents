@@ -34,7 +34,7 @@ class JFormFieldJEVselectEvent extends JFormField
 			} else {
 				$value = (int)$this->value;
 			}
-			return  '<input type="text" id="selectedrepeat"   name="'.$this->name.'" value="'.$value.'" />';
+			return  '<input type="hidden" id="selectedrepeat"   name="'.$this->name.'" value="'.$value.'" />';
 		}
 
 		// Load the modal behavior script.
