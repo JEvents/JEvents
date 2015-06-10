@@ -1,19 +1,26 @@
-function navLoaded(elem, modid) {
-	var myspan = document.getElementById("testspan" + modid);
-	var modbody = myspan.parentNode;
-	modbody.innerHTML = elem.innerHTML;
-}
+
 function callNavigation(link) {
-	var body = document.getElementsByTagName('body')[0];
-	if (!document.getElementById('calnav')) {
-		myiframe = document.createElement('iframe');
-		myiframe.setAttribute("name", "calnav");
-		myiframe.setAttribute("id", "calnav");
-		myiframe.style.display = "none";
-		body.appendChild(myiframe);
-	}
-	else {
-		myiframe = document.getElementById('calnav');
-	}
-	myiframe.setAttribute("src", link);
+	link += "&json=1";
+	//link += "&XDEBUG_SESSION_START=netbeans-xdebug";
+	var jSonRequest = jQuery.ajax({
+			type : 'GET',
+			// use JSONP to allow cross-domain calling of this data!
+			dataType : 'jsonp',
+			url : link,
+			contentType: "application/json; charset=utf-8",
+			scriptCharset: "utf-8"
+			})
+	.done(function(json){
+		if (!json || !json.data){
+			alert('could not get calendar');
+			return;
+		}
+		var myspan = document.getElementById("testspan" + json.modid);
+		var modbody = myspan.parentNode;
+		modbody.innerHTML = json.data;
+
+	})
+	.fail( function( jqxhr, textStatus, error){
+		alert(textStatus + ", " + error);
+	});
 }

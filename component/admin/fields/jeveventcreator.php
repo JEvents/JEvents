@@ -130,7 +130,7 @@ class JFormFieldJeveventcreator extends JFormField
 						//'prefetch'=>  $prefetchdatapath,
 						'data_value' => 'title',
 						'data_id' => 'creator_id',
-						'field_selector' => '#jev_creator_id',
+						'field_selector' => '#jev_creatorid',
 						'minLength' => 2,
 						'limit' => 10,
 						'scrollable' => 1,));
