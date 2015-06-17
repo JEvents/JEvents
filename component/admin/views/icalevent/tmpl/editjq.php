@@ -226,10 +226,8 @@ echo $this->editor->save('jevcontent');
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if ( $params->get("checkconflicts", 0) )
 {
-	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
-	if (JEVHelper::getItemid()>0){
-		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
-	}
+	$urlitemid = JEVHelper::getItemid()>0 ?  "?Itemid=".JEVHelper::getItemid() : "";
+	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php".$urlitemid;
 	?>
 						// reformat start and end dates  to Y-m-d format
 						reformatStartEndDates();

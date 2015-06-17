@@ -843,7 +843,7 @@ class JEventsAbstractView extends JViewLegacy
 				{
 					$requiredTags['default_value'] = $this->customfields[$key]["default_value"];
 					$requiredTags['id'] = $this->customfields[$key]["id_to_check"];
-					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ".$requiredTags['id'];
+					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ".JText::_($requiredTags['id']);
 				}
 /*				else
 				{
