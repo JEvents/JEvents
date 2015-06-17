@@ -239,8 +239,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolbarHelper::save('icalevent.savetranslation');
 		JToolbarHelper::cancel('icalevent.close');
-	}
 
+		$bar =  JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jevconfirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false, false, 1);
+		
+	}
+	
 	function csvimport($tpl = null)
 	{
 
