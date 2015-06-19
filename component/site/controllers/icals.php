@@ -247,6 +247,7 @@ class ICalsController extends AdminIcalsController
 		$this->view->assign("dataModel",$this->dataModel) ;
 		$this->view->assign("outlook2003icalexport", $outlook2003icalexport);
 		$this->view->assign("icalEvents", $icalEvents);
+		$this->view->assign("withrepeats", true);
 
 		$this->view->export();
 		return;
