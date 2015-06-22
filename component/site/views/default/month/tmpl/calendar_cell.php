@@ -215,8 +215,8 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
+		$cellString .= '<hr   class="jev-click-to-open"/>'
+		. '<small class="jev-click-to-open"><a href="'.$link.'"   title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
 		// Watch out for mambots !!
 		. '</td></tr></table>';
 
@@ -319,8 +319,8 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';
+		$cellString .= '<hr   class="jev-click-to-open"/>'
+		. '<small   class="jev-click-to-open"><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';
 		return $cellString;
 
 		// harden the string for the tooltip

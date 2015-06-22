@@ -173,15 +173,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
 
-		if (JevJoomlaVersion::isCompatible("3.0")  )
-		{
-			// load Joomla javascript classes
-			JHTML::_('behavior.core');
-			$this->setLayout("edit");
-		}
-		else  {
-			$this->setLayout("editjq");
-		}
+		// load Joomla javascript classes
+		JHTML::_('behavior.core');
+		$this->setLayout("edit");
 
 		$this->setupEditForm();
 
@@ -243,7 +237,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$bar =  JToolBar::getInstance('toolbar');
 
 		// Add a standard button
-		$bar->appendButton('Jevconfirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false, false, 1);
+		$bar->appendButton('confirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
 		
 	}
 	

@@ -445,11 +445,11 @@ function toggleView12Hour(){
 	if (document.adminForm.view12Hour.checked) {
 		document.getElementById('start_24h_area').style.display="none";
 		document.getElementById('end_24h_area').style.display="none";
-		document.getElementById('start_12h_area').style.display="inline";
-		document.getElementById('end_12h_area').style.display="inline";
+		document.getElementById('start_12h_area').style.display="inline-block";
+		document.getElementById('end_12h_area').style.display="inline-block";
 	} else {
-		document.getElementById('start_24h_area').style.display="inline";
-		document.getElementById('end_24h_area').style.display="inline";
+		document.getElementById('start_24h_area').style.display="inline-block";
+		document.getElementById('end_24h_area').style.display="inline-block";
 		document.getElementById('start_12h_area').style.display="none";
 		document.getElementById('end_12h_area').style.display="none";
 	}
@@ -544,7 +544,7 @@ function toggleAllDayEvent()
 		sam.disabled=false;
 		spm.disabled=false;
 
-		jQuery('.jevstarttime').css('display','inline');
+		jQuery('.jevstarttime').css('display','inline-block');
 
 		if (!noendchecked){
 			hide_end.disabled=false;
@@ -563,7 +563,7 @@ function toggleAllDayEvent()
 			eam.disabled=false;
 			epm.disabled=false;
 
-			jQuery('.jevendtime').css('display','inline');
+			jQuery('.jevendtime').css('display','inline-block');
 
 		}
 		else {
@@ -633,7 +633,7 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
-		jQuery('.jevendtime').css('display','inline');
+		jQuery('.jevendtime').css('display','inline-block');
 
 	}
 
