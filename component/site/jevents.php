@@ -32,6 +32,9 @@ $browser = JBrowser::getInstance();
 $registry = JRegistry::getInstance("jevents");
 // In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
 
+// Load Joomla Core scripts for sites that don't load MooTools;
+JHtml::_('behavior.core', true);
+
 if (JevJoomlaVersion::isCompatible("3.0")){
 	// This loads jQuery too!
 	JevHtmlBootstrap::framework();

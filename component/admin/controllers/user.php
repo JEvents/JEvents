@@ -67,7 +67,8 @@ class AdminUserController extends JControllerLegacy   {
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
-			$this->setRedirect($link, $msg);		
+			$this->setRedirect($link, $msg);
+			$this->redirect();
 			return;
 		}
 
@@ -87,7 +88,8 @@ class AdminUserController extends JControllerLegacy   {
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
-			$this->setRedirect($link, $msg);		
+			$this->setRedirect($link, $msg);
+			$this->redirect();
 			return;
 		}
 		
@@ -105,6 +107,7 @@ class AdminUserController extends JControllerLegacy   {
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);
 		$this->setRedirect($link, $msg);
+		$this->redirect();
 		
 	}
 
@@ -115,7 +118,8 @@ class AdminUserController extends JControllerLegacy   {
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
-			$this->setRedirect($link, $msg);		
+			$this->setRedirect($link, $msg);
+			$this->redirect();
 			return;
 		}
 		
@@ -134,6 +138,7 @@ class AdminUserController extends JControllerLegacy   {
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);
 		$this->setRedirect($link, $msg);
+		$this->redirect();
 		
 	}
 	
@@ -236,7 +241,8 @@ class AdminUserController extends JControllerLegacy   {
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
 			$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);		
-			$this->setRedirect($link, $msg);		
+			$this->setRedirect($link, $msg);
+			$this->redirect();
 			return;
 		}
 		
@@ -250,8 +256,8 @@ class AdminUserController extends JControllerLegacy   {
 		}
 
 		$link = JRoute::_('index.php?option='.JEV_COM_COMPONENT.'&task=user.list',false);
-		$this->setRedirect($link, $msg);		
-		
+		$this->setRedirect($link, $msg);
+		$this->redirect();
 	}
 	
 }

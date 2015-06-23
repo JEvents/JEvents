@@ -44,6 +44,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
 			$link = JRoute::_($link, false);
 			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
+			$this->redirect();
 			return;
 		}
 		
@@ -139,11 +140,13 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			$user = JFactory::getUser();
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
 				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}

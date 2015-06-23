@@ -148,6 +148,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -204,6 +205,7 @@ class AdminIcalsController extends JControllerForm {
                    }
                 $message = JText::_( 'ICS_ALL_FILES_IMPORTED' );
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
+		$this->redirect();
         } 
 	function save($key = null, $urlVar = null){
 
@@ -240,6 +242,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();				
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 		$cid	= JRequest::getVar(	'cid',	array(0) );
@@ -355,6 +358,7 @@ class AdminIcalsController extends JControllerForm {
 		}
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
+		$this->redirect();
 	}
 
 	/**
@@ -377,6 +381,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -467,6 +472,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -477,6 +483,7 @@ class AdminIcalsController extends JControllerForm {
 			$db->query();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	function autorefresh(){
@@ -495,6 +502,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -505,6 +513,7 @@ class AdminIcalsController extends JControllerForm {
 			$db->query();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	function isdefault(){
@@ -523,6 +532,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -537,6 +547,7 @@ class AdminIcalsController extends JControllerForm {
 		$db->setQuery($sql);
 		$db->query();
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	/**
@@ -566,6 +577,7 @@ class AdminIcalsController extends JControllerForm {
 		$icsFileid = $icsFile->store();
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_( 'ICAL_FILE_CREATED' ));
+		$this->redirect();
 	}
 
 
@@ -585,6 +597,7 @@ class AdminIcalsController extends JControllerForm {
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_("DELETE_CREATES_ORPHAN_EVENTS") );
+			$this->redirect();
 			return;
 		}
 
@@ -594,6 +607,7 @@ class AdminIcalsController extends JControllerForm {
 		$db->query();
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", "ICal deleted" );
+		$this->redirect();
 	}
 
 	function _deleteICal($cid){

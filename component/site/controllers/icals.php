@@ -247,6 +247,7 @@ class ICalsController extends AdminIcalsController
 		$this->view->assign("dataModel",$this->dataModel) ;
 		$this->view->assign("outlook2003icalexport", $outlook2003icalexport);
 		$this->view->assign("icalEvents", $icalEvents);
+		$this->view->assign("withrepeats", true);
 
 		$this->view->export();
 		return;
@@ -276,11 +277,13 @@ class ICalsController extends AdminIcalsController
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}
@@ -405,11 +408,13 @@ class ICalsController extends AdminIcalsController
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}

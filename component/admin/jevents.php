@@ -36,6 +36,9 @@ define("JEV_COMPONENT",str_replace("com_","",$option));
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
+// Load Joomla Core scripts for sites that don't load MooTools;
+JHtml::_('behavior.core', true);
+
 if (JevJoomlaVersion::isCompatible("3.0")){
 	JHtml::_('jquery.framework');
 	// AIM TO REMOVE THIS - loading of MooTools should not be necessary !!!

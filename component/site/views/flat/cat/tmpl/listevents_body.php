@@ -43,9 +43,7 @@ $Itemid = JEVHelper::getItemid();
 
                 $listyle = 'style="border-color:' . $row->bgcolor() . ';"';
                 echo "<li class='ev_td_li' $listyle>\n";
-                if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)) {
-                    $this->viewEventRowNew($row, 'view_detail', JEV_COM_COMPONENT, $Itemid);
-                }
+                $this->loadedFromTemplate('icalevent.list_row', $row, 0);
                 echo "</li>\n";
 
                 $chdate = $event_day_month_year;

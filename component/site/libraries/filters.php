@@ -306,7 +306,8 @@ class jevFilter
 			if ($modparams->get("resetfilters")=="nonjevents" && $option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
 				JRequest::setVar('filter_reset',1);
 			}
-			else if ($modparams->get("resetfilters")=="newmenu") {
+			// DO NOT RESET if posting a filter form!
+			else if ($modparams->get("resetfilters")=="newmenu" && !JRequest::getCmd("jevents_filter_submit", false,"POST")) {
 				// Must use JRequest::getInt("Itemid") since missing event finder resets active menu item!
 				if (JRequest::getInt("Itemid",0) && JRequest::getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
 					JRequest::setVar('filter_reset',1);

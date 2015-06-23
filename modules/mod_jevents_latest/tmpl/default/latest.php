@@ -812,7 +812,7 @@ class DefaultModLatestView
 		$compname = JEV_COM_COMPONENT;
 
 		// override global start now setting so that timelimit plugin can use it!
-		$compparams =& JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$startnow = $compparams->get("startnow",0);
 		$compparams->set("startnow",$this->modparams->get("startnow",0));
 		$this->getLatestEventsData();

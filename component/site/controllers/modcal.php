@@ -122,7 +122,28 @@ class ModCalController extends JControllerLegacy   {
 		$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal',$theme.'/'."calendar", $params);
 		
 		$modview = new $viewclass($params, $modid);
-		$modview->jevlayout = $theme;	
+		$modview->jevlayout = $theme;
+		$content = $modview->getAjaxCal($modid,$month,$year);
+		$content = str_replace("<script style='text/javascript'>xyz=1;", "XYZ", $content);
+		$content = str_replace("zyx=1;</script>", "ZYX", $content);
+		preg_match("/XYZ(.*)ZYX/s", $content, $match);
+		$script = "";
+		if (isset($match[1])){
+			$script = $match[1];
+			$content = str_replace($match[0],"", $content);
+		}
+		$json = array("data" => $content, "modid"=>$modid, "script"=>$script);
+		ob_end_clean();
+		ob_end_flush();
+		if (JRequest::getCmd("callback", 0)){
+			echo JRequest::getCmd("callback", 0)."(". json_encode($json),");";
+			exit();
+		}
+		else if (JRequest::getInt("json")==1){
+			echo json_encode($json);
+			exit();
+		}
+		else {
 		?>
 		<script type="text/javascript">
 		var doitdone = false;
@@ -143,6 +164,7 @@ class ModCalController extends JControllerLegacy   {
 		doit();
 		</script>
 		<?php
+		}
 	}
 
 
