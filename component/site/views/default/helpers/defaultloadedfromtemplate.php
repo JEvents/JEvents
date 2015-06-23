@@ -3,7 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
-
 	$db = JFactory::getDBO();
 	// find published template
 	static $templates;
@@ -33,9 +32,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 			}
 
-			if (count($templates[$template_name])==0) {
-				$templates[$template_name] = null;
-				return false;
+			if (!isset($templates[$template_name]['*'][0])) {
+				try {
+					$viewname = $view->getViewName();
+				}
+				catch (Exception $e){
+					$viewname = "default";
+				}
+				$templatefile = JEV_VIEWS."/$viewname/defaults/$template_name.html";
+				if (!JFile::exists($templatefile)){
+					$templatefile = JEV_ADMINPATH."views/defaults/tmpl/$template_name.html";
+				}
+				// Fall back to html version
+				if (JFile::exists($templatefile))
+				{
+					$templates[$template_name]['*'] = array();
+					$templates[$template_name]['*'][0] =new stdClass();
+					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
+					$templates[$template_name]['*'][0]->params = null;
+				}
+				else {
+					return false;
+				}
 			}
 
 			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))

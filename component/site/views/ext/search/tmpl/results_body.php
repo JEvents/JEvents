@@ -39,10 +39,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 
 			$listyle = 'style="border-color:'.$row->bgcolor().';"';
 			echo "<li class='ev_td_li' $listyle>\n";
-			if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
-				$this->viewEventRowNew ( $row);
-				$this->viewEventCatRowNew($row);
-			}
+			$this->loadedFromTemplate('icalevent.list_row', $row, 0);
 			echo "</li>\n";
 
 			$chdate = $event_day_month_year;

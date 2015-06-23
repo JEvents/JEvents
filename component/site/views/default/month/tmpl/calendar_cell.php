@@ -41,8 +41,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 			$this->stop_date_midnightFix = JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn()+1, 0 );
 		}
 		
-		// we only need the one helper so stick to default layout here!
-		$this->jevlayout="default";	
+		$this->jevlayout=isset($view->jevlayout) ? $view->jevlayout : "default";
 		
 		$this->addHelperPath(JEV_VIEWS."/default/helpers");
 		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
