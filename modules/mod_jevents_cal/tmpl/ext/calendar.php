@@ -113,8 +113,10 @@ class ExtModCalView extends DefaultModCalView
 		*/
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$this->_navigationJS($this->_modid);
+		$scriptlinks = "";
 		if( $this->minical_prevmonth ){
 			$linkprevious = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component".$this->cat);
+			$scriptlinks .= "linkprevious = '".$linkprevious."';\n";
 			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="'.JText::_("JEV_LAST_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowleft.gif" onmousedown="callNavigation(\''.$linkprevious.'\');" />';
 		}
 		else {
@@ -140,12 +142,13 @@ class ExtModCalView extends DefaultModCalView
 		$this->_navigationJS($this->_modid);
 		if( $this->minical_nextmonth ){
 			$linknext = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component".$this->cat);
+			$scriptlinks .= "linknext = '".$linknext."';\n";
 			$linknext = '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="'.JText::_("JEV_NEXT_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowright.gif" onmousedown="callNavigation(\''.$linknext.'\');" />';
 		}
 		else {
 			$linknext ="";
 		}
-                
+
 		$content = <<<START
 <div id="extcal_minical">
 	<table cellspacing="1" cellpadding="0" style="width:$width; text-align:center;border: 1px solid rgb(190, 194, 195); background-color: rgb(255, 255, 255);">
@@ -154,7 +157,7 @@ class ExtModCalView extends DefaultModCalView
 START;
 		if( $this->minical_showlink ){
 		$content .= <<<START
-			
+
 				<table style="width:$width;" cellspacing="0" cellpadding="2" border="0" class="extcal_navbar">
 					<tr>
 						<td valign="middle" height="18" align="center">
@@ -237,6 +240,10 @@ START;
 		}
 		$content .= "</table>\n";
 		$content .= "</td></tr></table></div>\n";
+
+		if ($scriptlinks!=""){
+			$content .= "<script style='text/javascript'>xyz=1;".$scriptlinks."zyx=1;</script>";
+		}
 
 		// Now check to see if this month needs to have at least 1 event in order to display
 		//			if (!$monthMustHaveEvent || $monthHasEvent) return $content;
