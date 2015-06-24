@@ -31,7 +31,20 @@ if( array_key_exists('row',$this->data) ){
 
 	if (isset($row)) {
 		$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
-		$this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
+		$loadedFromFile = $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
+		if ($loadedFromFile && count($customresults)>0){
+			?>
+			<div class="jev_evdt">
+			<?php
+			foreach ($customresults as $result) {
+				if (is_string($result) && strlen($result)>0){
+					echo "<div>".$result."</div>";
+				}
+			}
+			?>
+				</div>
+			<?php
+		}
         $results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
         echo trim( implode( "\n", $results ) );
 

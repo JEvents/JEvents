@@ -335,10 +335,10 @@ else
 			}
 			?>
 			<div class="row jevtitle">
-				<div class="span3">
+				<div class="span2">
 					<?php echo $this->form->getLabel("title"); ?>
 				</div>
-				<div class="span9">
+				<div class="span10">
 					<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
 				</div>
 			</div>
@@ -347,10 +347,10 @@ else
 			{
 				?>
 				<div class="row jevpriority">
-					<div class="span3">
+					<div class="span2">
 						<?php echo $this->form->getLabel("priority"); ?>
 					</div>
-					<div class="span9">
+					<div class="span10">
 						<?php echo $this->form->getInput("priority"); ?>
 					</div>
 				</div>
@@ -362,38 +362,42 @@ else
 			{
 				?>
 				<div class="row jevcreator">
-					<div class="span3">
+					<div class="span2">
 						<?php echo $this->form->getLabel("creator"); ?>
 					</div>
-					<div class="span9">
+					<div class="span10">
 						<?php echo $this->form->getInput("creator"); ?>
 					</div>
 				</div>
 				<?php
 			}
 
-			if ($this->form->getInput("ics_id") && $this->form->getLabel("ics_id"))
+			// This could be hidden!
+			if ($this->form->getLabel("ics_id"))
 			{
 				?>
 				<div class="row jevcalendar">
-					<div class="span3">					
+					<div class="span2">
 						<?php echo $this->form->getLabel("ics_id"); ?>
 					</div>
-					<div class="span9">
+					<div class="span10">
 						<?php echo $this->form->getInput("ics_id"); ?>
 					</div>
 				</div>
 				<?php
+			}
+			else {
+				echo $this->form->getInput("ics_id");
 			}
 
 			if ($this->form->getInput("lockevent"))
 			{
 				?>
 				<div class="row jevlockevent">
-					<div class="span3">					
+					<div class="span2">
 						<?php echo $this->form->getLabel("lockevent"); ?>
 					</div>
-					<div class="span9 radio btn-group">
+					<div class="span10 radio btn-group">
 						<?php echo $this->form->getInput("lockevent"); ?>
 					</div>
 				</div>
@@ -408,12 +412,12 @@ else
 					if ($this->form->getLabel("catid"))
 					{
 						?>
-						<div class="span3">
+						<div class="span2">
 							<?php
 							echo $this->form->getLabel("catid");
 							?>
 						</div>
-						<div class="span9 jevcategory">
+						<div class="span10 jevcategory">
 							<?php echo $this->form->getInput("catid"); ?>
 						</div>
 						<?php
@@ -429,12 +433,12 @@ else
 					if ($this->form->getLabel("access"))
 					{
 						?>
-						<div class="span3">
+						<div class="span2">
 							<?php
 							echo $this->form->getLabel("access");
 							?>
 						</div>
-						<div class="span9 accesslevel ">
+						<div class="span10 accesslevel ">
 							<?php echo $this->form->getInput("access"); ?>
 						</div>
 						<?php
@@ -448,10 +452,10 @@ else
 			{
 				?>
 				<div class="row jevpublished">
-					<div class="span3">
+					<div class="span2">
 						<?php echo $this->form->getLabel("state"); ?>
 					</div>
-					<div class="span9">
+					<div class="span10">
 						<?php echo $this->form->getInput("state"); ?>
 					</div>
 				</div>
@@ -467,10 +471,10 @@ else
 			{
 				?>
 				<div class="row jevcolour">
-					<div class="span3">
+					<div class="span2">
 						<?php echo $this->form->getLabel("color"); ?>
 					</div>
-					<div class="span9">
+					<div class="span10">
 						<?php echo $this->form->getInput("color"); ?>
 					</div>
 				</div>
@@ -490,34 +494,34 @@ else
 			?>
 
 			<div class="row jev_description">
-				<div class="span3">
+				<div class="span2">
 					<?php echo $this->form->getLabel("jevcontent"); ?>
 				</div>
-				<div class="span9" id='jeveditor' >
+				<div class="span10" id='jeveditor' >
 					<?php echo $this->form->getInput("jevcontent"); ?>
 				</div>
 			</div>
 			<div class="row jeveditlocation" id="jeveditlocation">
-				<div class="span3">
+				<div class="span2">
 					<?php echo $this->form->getLabel("location"); ?>
 				</div>
-				<div class="span9" >
+				<div class="span10" >
 					<?php echo $this->form->getInput("location"); ?>
 				</div>
 			</div>
 			<div class="row jev_contact">
-				<div class="span3">
+				<div class="span2">
 					<?php echo $this->form->getLabel("contact_info"); ?>
 				</div>
-				<div class="span9" >
+				<div class="span10" >
 					<?php echo $this->form->getInput("contact_info"); ?>
 				</div>
 			</div>
 			<div class="row jev_extrainfo">
-				<div class="span3">
+				<div class="span2">
 					<?php echo $this->form->getLabel("extra_info"); ?>
 				</div>
-				<div class="span9" >
+				<div class="span10" >
 					<?php echo $this->form->getInput("extra_info"); ?>
 				</div>
 			</div>
@@ -532,10 +536,10 @@ else
                             
 				?>
 				<div class="row jevplugin_<?php echo $key; ?>">
-					<div class="span3">
+					<div class="span2">
 						<label ><?php echo $this->customfields[$key]["label"]; ?></label>
 					</div>
-					<div class="span9" >
+					<div class="span10" >
 						<?php echo $this->customfields[$key]["input"]; ?>
 					</div>
 				</div>

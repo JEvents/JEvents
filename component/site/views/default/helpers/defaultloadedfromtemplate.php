@@ -15,6 +15,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	$specialmodules = false;
 
+	$loadedFromFile = false;
+
 	if (!$template_value)
 	{
 		if (!array_key_exists($template_name, $templates))
@@ -46,6 +48,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				// Fall back to html version
 				if (JFile::exists($templatefile))
 				{
+					$loadedFromFile = true;
 					$templates[$template_name]['*'] = array();
 					$templates[$template_name]['*'][0] =new stdClass();
 					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
@@ -1274,7 +1277,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = str_replace("@£@", "@", $template_value);
 
 		echo $template_value;
-		return true;
+		return $loadedFromFile;
 
 	}
 
