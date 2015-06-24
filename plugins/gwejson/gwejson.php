@@ -44,11 +44,6 @@ class PlgSystemGwejson extends JPlugin
 			return true;
 		}
 
-		$token = JSession::getFormToken();;
-		if ($token != $input->get('token', '', 'string')){
-			PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
-		}
-
 		$file = $input->get('file', '', 'cmd');
 		// Library file MUST start with "gwejson_" for security reasons to stop other files being included maliciously
 		if ($file == "")
@@ -92,7 +87,14 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		include_once ($path . $file . ".php");
-		
+
+		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken()){
+			$token = JSession::getFormToken();;
+			if ($token != $input->get('token', '', 'string')){
+				PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
+			}
+		}
+
 		// we don't want any modules etc.
 		$input->set('tmpl', 'component');
 

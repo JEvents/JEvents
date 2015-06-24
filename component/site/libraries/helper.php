@@ -1978,6 +1978,12 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
+		$registry = JRegistry::getInstance("jevents");
+		$adminuser = $registry->get("jevents.icaluser", false);
+		if ($adminuser){
+			$user = $adminuser;
+		}
+
 		$root = $user->get("isRoot");
 		if ($root)
 		{

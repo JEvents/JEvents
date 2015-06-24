@@ -378,6 +378,7 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 /* Rockettheme workarounds */
 #jevents #adminForm  label {
     width:auto;
+    padding-left:15px;
 }
 .btn-group a {
 	color:#fff;
