@@ -366,10 +366,10 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 
 /* We need to hide links from print views, it looks silly with so many events */
 @media print {
-	a[href]:after {
+	#jevents a[href]:after {
 		content:"" !important;
 	}
-    abbr[title]:after {
+    #jevents abbr[title]:after {
 		content: "" !important;
 	}
 }
@@ -380,9 +380,11 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
     width:auto;
     padding-left:15px;
 }
-.btn-group a {
+/* Can't be universal since it affects event editing and normal Joomla buttons!
+#jevents .btn-group a {
 	color:#fff;
 }
+*/
 
 /** Default Event Details Custom Layout Control **/
 #jevents_body .jev_evdt {padding:10px;}

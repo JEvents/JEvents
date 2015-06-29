@@ -315,6 +315,9 @@ else
 						{
 							foreach ($this->extraTabs as $extraTab)
 							{
+								if (trim($extraTab['content'])=="") {
+									continue;
+								}
 								?>
 								<li ><a data-toggle="tab" href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a></li>
 								<?php
@@ -567,6 +570,10 @@ else
 			{
 				foreach ($this->extraTabs as $extraTab)
 				{
+					if (trim($extraTab['content'])=="") {
+						continue;
+					}
+
 					if (!$cfg->get('com_single_pane_edit', 0))
 					{
 						echo JHtml::_('bootstrap.endPanel');

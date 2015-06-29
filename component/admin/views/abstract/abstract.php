@@ -350,93 +350,54 @@ class JEventsAbstractView extends JViewLegacy
 			 */
 		}
 
-
 		// Close all the tabs in Joomla > 3.0
-		if (JevJoomlaVersion::isCompatible("3.0"))
+		$tabstartarray = array();
+		preg_match_all('|{{TABSTART#(.*?)}}|', $template_value, $tabstartarray);
+		if ($tabstartarray && count($tabstartarray) == 2)
 		{
-			$tabstartarray = array();
-			preg_match_all('|{{TABSTART#(.*?)}}|', $template_value, $tabstartarray);
-			if ($tabstartarray && count($tabstartarray) == 2)
+			$tabstartarray0Count = count($tabstartarray[0]);
+			if ($tabstartarray0Count > 0)
 			{
-				$tabstartarray0Count = count($tabstartarray[0]);
-				if ($tabstartarray0Count > 0)
-				{
-					//We get and add all the tabs
-					$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
-					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
-					{
-						$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
-						$tablabel = ($paneid == JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
-						if ($tab == 0)
-						{
-							$tabreplace .= '<li class="active"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
-						}
-						else
-						{
-							$tabreplace .= '<li ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
-						}
-					}
-					$tabreplace.= "</ul>\n";
-					$tabreplace = $tabreplace . $tabstartarray[0][0];
-					$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
-				}
-			}
-			// Create the tabs content
-			if (isset($tabstartarray[0]) && $tabstartarray0Count > 0)
-			{
+				//We get and add all the tabs
+				$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
 				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 				{
 					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+					$tablabel = ($paneid == JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
 					if ($tab == 0)
 					{
-						$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+						$tabreplace .= '<li class="active" id="tab'.$paneid.'" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 					}
 					else
 					{
-						$tabcode = JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+						$tabreplace .= '<li  id="tab'.$paneid.'"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 					}
-					$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 				}
-				// Manually close the tabs
-				$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
+				$tabreplace.= "</ul>\n";
+				$tabreplace = $tabreplace . $tabstartarray[0][0];
+				$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
 			}
 		}
-		else
+		// Create the tabs content
+		if (isset($tabstartarray[0]) && $tabstartarray0Count > 0)
 		{
-			// TABLINKS are not relevant before Joomla 3.0
-			// non greedy replacement - because of the ?
-			$template_value = preg_replace_callback('|{{TABLINK.*?}}|', array($this, 'cleanUnpublished'), $template_value);
-
-			$tabstartarray = array();
-			preg_match_all('|{{TABSTART#.*?}}|', $template_value, $tabstartarray);
-			if (isset($tabstartarray[0]))
+			for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 			{
-				$tabstartarray0Count = count($tabstartarray[0]);
-				if ($tabstartarray0Count > 0)
+				$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+				if ($tab == 0)
 				{
-					for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
-					{
-						$title = str_replace(array("{{TABSTART#", "}}"), "", $tabstartarray[0][$tab]);
-						$paneid = str_replace("=", "", base64_encode($title));
-						$tabContent = '<dt class="tabs" id="' . $paneid . '"><span><h3><a href="javascript:void(0);">' . JText::_($title) . '</a></h3></span></dt><dd class="tabs ' . $paneid . '">' . "\n";
-						$tabContent .= "<div class='jevextrablock'>" . "\n";
-						if ($tab == 0)
-						{
-							$tabcode = JHtml::_('tabs.start', 'tabs') . $tabContent;
-						}
-						else
-						{
-							$tabcode = "</div></dd>" . "\n" . $tabContent;
-						}
-
-						$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
-					}
-					// Manually close the tabs
-					$template_value = str_replace("{{TABSEND}}", "</div></dd></dl>", $template_value);
-					//$template_value .= "</div></dd></dl>" . "\n";
+					$tabcode = JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => $paneid)) . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
 				}
+				else
+				{
+					$tabcode = JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.addPanel', "myEditTabs", $paneid);
+				}
+				$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 			}
+			// Manually close the tabs
+			$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
 		}
+	
 
 		// Now do the plugins
 		// get list of enabled plugins
@@ -790,6 +751,10 @@ class JEventsAbstractView extends JViewLegacy
 
 		foreach ($this->extraTabs as $extraTab)
 		{
+			if (trim($extraTab['content'])=="") {
+				continue;
+			}
+
 			$extraTab['title'] = str_replace(" ", "_", strtoupper($extraTab['title']));
 			$this->searchtags[] = "{{" . $extraTab['title'] . "}}";
 			$this->replacetags[] = $extraTab['content'];

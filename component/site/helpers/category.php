@@ -19,7 +19,8 @@ class JEventsCategories extends JCategories
 {
 	public function __construct($options = array())
 	{
-		$options['table'] = '#__jevents';
+		$options['table'] = '#__jevents_vevent';
+		$options['field'] = 'catid';
 		$options['extension'] = 'com_jevents';
 		parent::__construct($options);
 	}
