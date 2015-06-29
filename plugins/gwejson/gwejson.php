@@ -55,20 +55,27 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		$path = $input->get('path', 'site', 'cmd');
-		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins");
+		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules");
 		if (!in_array($path, array_keys($paths)))
 		{
 			return true;
 		}
+		$folder = $input->get('folder', '', 'string');
 		if ($path == "plugin")
 		{
-			$folder = $input->get('folder', '', 'cmd');
 			$plugin = $input->get('plugin', '', 'cmd');
 			if ($folder == "" || $plugin == "")
 			{
 				return true;
 			}
 			$path = $paths[$path] . "/$folder/$plugin/";
+		}
+		else if ($path == "module") {
+			if ($folder == "" )
+			{
+				return true;
+			}
+			$path = $paths[$path] . "/$folder/";
 		}
 		else
 		{

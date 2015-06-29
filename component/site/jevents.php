@@ -35,26 +35,16 @@ $registry = JRegistry::getInstance("jevents");
 // Load Joomla Core scripts for sites that don't load MooTools;
 JHtml::_('behavior.core', true);
 
-if (JevJoomlaVersion::isCompatible("3.0")){
-	// This loads jQuery too!
-	JevHtmlBootstrap::framework();
+// This loads jQuery too!
+JevHtmlBootstrap::framework();
 
-	// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
-        JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-	}
-}
-else {
-	// This loads jQuery too!
-	JevHtmlBootstrap::framework();
+// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
 	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-	}
+if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 }
+
 if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 {
 	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
