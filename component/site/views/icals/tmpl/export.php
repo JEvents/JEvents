@@ -89,6 +89,24 @@ if (!empty($this->icalEvents))
 			$a = $a->getOriginalFirstRepeat();
 		}
 		if (!$a) continue;
+
+		// Fix for end time of first repeat if its an exception
+		if (array_key_exists($a->ev_id(), $exceptiondata) && array_key_exists($a->rp_id(),$exceptiondata[$a->ev_id()]))
+		{
+			$exception = $exceptiondata[$a->ev_id()][$a->rp_id()];
+			// if its the first repeat that has had its end time changes we have not stored this data so need to determine it again
+			if ($exception->startrepeat ==  $exception->oldstartrepeat && $exception->exception_type==1) {
+				// look for repeats that are not exceptions
+				$testrepeat = $a->getFirstRepeat(false);
+				if ($testrepeat){
+					$enddatetime = $a->getUnixStartTime() + ($testrepeat->getUnixEndTime() - $testrepeat->getUnixStartTime());
+					$a->_endrepeat =  JevDate::strftime("%Y-%m-%d %H:%M:%S", $enddatetime);
+					$a->_dtend = $enddatetime;
+					$a->_unixendtime = $enddatetime;
+				}
+			}
+		}
+
 		$html .= "BEGIN:VEVENT\r\n";
 		$html .= "UID:" . $a->uid() . "\r\n";
 		$html .= "CATEGORIES:" . $a->catname() . "\r\n";
