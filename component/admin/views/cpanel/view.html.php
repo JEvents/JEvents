@@ -1189,13 +1189,16 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$release = $version->get("RELEASE");
 
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		$db->setQuery("select * from #__extensions as exn
-	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
-	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-	where exn.type='component'
-	and exn.element='$com'
-	");
-		$cpupdate = $db->loadObject();
+		static $comdata = false;
+		if (!$comdata){
+				$db->setQuery("select * , exn.element as element from #__extensions as exn
+			LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+			LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
+			where exn.type='component'
+			");
+			$comdata = $db->loadObjectList('element');
+		}
+		$cpupdate = isset($comdata[$com]) ? $comdata[$com] : false;
 		if ($cpupdate && $cpupdate->update_site_id)
 		{
 			$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
@@ -1227,8 +1230,17 @@ and exn.element='$pkg' and exn.folder='$folder'
 		//$domain = "ubu.jev20j16.com";
 		$domain = "www.jevents.net";
 
-		$extension  = JTable::getInstance("Extension");
-		$extension->load($pkgupdate->extension_id);
+		//$extension  = JTable::getInstance("Extension");
+		//$extension->load($pkgupdate->extension_id);
+
+		// Save DB queries!
+		static $extensiondata = false;
+		if (!$extensiondata ) {
+			$db->setQuery("Select * from #__extensions");
+			$extensiondata  = $db->loadObjectList('extension_id');
+		}
+
+		$extension = isset($extensiondata[$pkgupdate->extension_id]) ? $extensiondata[$pkgupdate->extension_id] : null;
 
 		// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
 		/*

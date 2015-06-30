@@ -5,10 +5,6 @@ include_once JEV_HELPERS.'/jevExportHelper.php';
 
 function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 {
-	if (!$bootstrap) {
-		return $view->eventIcalDialog16($row, $mask);
-	}
-
 	JevHtmlBootstrap::modal("ical_dialogJQ".$row->rp_id());
 	?>
 	<div id="ical_dialogJQ<?php echo $row->rp_id();?>" class="ical_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

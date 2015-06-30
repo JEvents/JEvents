@@ -56,7 +56,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 	<table  class="adminlist   table table-striped">
 		<thead>
 			<tr>
-				<th class="title" width="50%" nowrap="nowrap">
+				<th class="title" width="40%" nowrap="nowrap">
 <?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -113,7 +113,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 						{
 							if (JFactory::getApplication()->isAdmin())
 							{
-								$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
+								$img ='<span class="icon-list"> </span>';
 							}
 							else
 							{

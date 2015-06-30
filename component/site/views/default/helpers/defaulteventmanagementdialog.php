@@ -8,9 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 	 * @param Jevent or descendent $row
 	 */
 function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
-	if (!$bootstrap) {
-		return $view->eventManagementDialog16($row, $mask);
-	}
+
 	JevHtmlBootstrap::modal("action_dialogJQ".$row->rp_id());
 
 	$user = JFactory::getUser();

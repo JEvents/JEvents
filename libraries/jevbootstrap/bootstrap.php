@@ -406,12 +406,18 @@ class JevLibHtmlBootstrap
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		//$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
 
+		// Custom option to control display on touch devices
+		$opt['mouseonly'] = isset($params['mouseonly']) ? $params['mouseonly'] : false;
+
 		$options = json_encode($opt); //json_encode($opt);
 
 		// Attach the popover to the document
 		JFactory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
+				if (".$options.".mouseonly && 'ontouchstart' in document.documentElement) {
+					return;
+				}
 				if (jQuery('$selector')){
 					jQuery('" . $selector . "').popover(" . $options . ");
 				}

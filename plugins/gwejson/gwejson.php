@@ -63,7 +63,7 @@ class PlgSystemGwejson extends JPlugin
 		$folder = $input->get('folder', '', 'string');
 		if ($path == "plugin")
 		{
-			$plugin = $input->get('plugin', '', 'cmd');
+			$plugin = $input->get('plugin', '', 'string');
 			if ($folder == "" || $plugin == "")
 			{
 				return true;

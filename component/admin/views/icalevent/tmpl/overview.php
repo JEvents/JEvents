@@ -66,7 +66,7 @@ $mainspan = 10;
 					<th width="20" nowrap="nowrap">
 						<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->rows) . ")"; ?>" />
 					</th>
-					<th class="title" width="50%" nowrap="nowrap">
+					<th class="title" width="40%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -77,7 +77,7 @@ $mainspan = 10;
 					<?php }
 					?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-					<th width="15%" nowrap="nowrap">
+					<th width="20%" nowrap="nowrap">
 <?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 					</th>
 					<th width="20%" nowrap="nowrap">
@@ -108,10 +108,9 @@ $mainspan = 10;
 							<?php
 							if ($row->hasrepetition())
 							{
-								$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
 								?>
 								<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')" class="btn btn-micro">
-								<?php echo $img; ?>
+									<span class="icon-list"> </span>
 								</a>
 								<?php } ?>
 						</td>
