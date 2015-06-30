@@ -72,8 +72,6 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						//JevHtmlBootstrap::modal();
 						JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 						$popup = true;
-						$popupw = $params->get("popupw", 800);
-						$popuph = $params->get("popuph", 600);
 					}
 					$eventlinkadd = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 					?>

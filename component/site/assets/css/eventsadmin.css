@@ -660,12 +660,16 @@ table.ev_navtable tr {vertical-align:top; }
     max-height:none;
     padding:10px 0px 5px 0px;
    width:100%;
+   /*	http://dev.magnolia-cms.com/blog/2012/05/strategies-for-the-iframe-on-the-ipad-problem/ */
+   -webkit-overflow-scrolling: touch;
 }
 #myEditModal .modal-body iframe, #myImportModal .modal-body iframe  {
 	width:99.5%;
 	border:none;
 	height:100%;
 	max-height:100%;
+	/* See http://stackoverflow.com/questions/9129182/iframe-100-height-causes-vertical-scrollbar */
+	display:block;
 }
 #myEditModal .modal-dialog {
     height: 100%;

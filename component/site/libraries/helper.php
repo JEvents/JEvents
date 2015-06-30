@@ -3027,7 +3027,12 @@ SCRIPT;
 					}
 
 					$html .= "DTSTAMP:" . $stamptime . "\r\n";
-					$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+					if ($row->alldayevent()) {
+						$html .= "DTSTART$alldayprefix:" . $start . "\r\n";
+					}
+					else {
+						$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+					}
 					// events with no end time don't give a DTEND
 					if (!$a->noendtime())
 					{
