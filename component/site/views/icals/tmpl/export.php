@@ -105,6 +105,18 @@ if (!empty($this->icalEvents))
 					$a->_unixendtime = $enddatetime;
 				}
 			}
+			// If start AND end date/times have changed
+			elseif ($exception->exception_type==1)  {
+				// look for repeats that are not exceptions
+				$testrepeat = $a->getFirstRepeat(false);
+				if ($testrepeat){
+					$oldstart = strtotime($exception->oldstartrepeat);
+					$enddatetime = $oldstart + ($testrepeat->getUnixEndTime() - $testrepeat->getUnixStartTime());
+					$a->_endrepeat =  JevDate::strftime("%Y-%m-%d %H:%M:%S", $enddatetime);
+					$a->_dtend = $enddatetime;
+					$a->_unixendtime = $enddatetime;
+				}
+			}
 		}
 
 		$html .= "BEGIN:VEVENT\r\n";
@@ -241,6 +253,9 @@ if (!empty($this->icalEvents))
 		}
 
 		$html .= "SEQUENCE:" . $a->_sequence . "\r\n";
+		$deletes = array();
+		$changed = array();
+		$changedexceptions = array();
 		if ($a->hasrepetition() && $this->withrepeats)
 		{
 			$html .= 'RRULE:';
@@ -298,9 +313,6 @@ if (!empty($this->icalEvents))
 				$exceptions = $exceptiondata[$a->ev_id()];
 			}
 
-			$deletes = array();
-			$changed = array();
-			$changedexceptions = array();
 			if (count($exceptions) > 0)
 			{
 				foreach ($exceptions as $exception)
