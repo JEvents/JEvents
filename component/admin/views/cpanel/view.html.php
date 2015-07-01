@@ -58,7 +58,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$db = JFactory::getDbo();
 		// find list of installed addons
 		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
-		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" ';
+		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" OR element="float"';
 		// extend this list !!!
 		$installed .= " OR element in ('agendaminutes','jevcustomfields','jevfiles','jevhiddendetail','jevlocations','jevmetatags','jevnotify','jevpeople','jevrsvppro','jevrsvp','jevtags','jevtimelimit','jevusers','jevvalidgroups') " ;
 		$sql = 'SELECT element,extension_id FROM #__extensions  where  (
@@ -605,6 +605,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"layout_flatplus" => 3,
 			"layout_smartphone" => 3,
 			"layout_map" => 3,
+            "layout_float" => 3,
 			"plugin_acymailing_tagjevents" => 41,
 			"plugin_community_jevents" => 7,
 			"plugin_content_jevcreator" => 34,
@@ -996,6 +997,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"map","name"=>"map","type"=>"file"),
 			array("element"=>"smartphone","name"=>"smartphone","type"=>"file"),
 			array("element"=>"zim","name"=>"zim","type"=>"file"),
+            array("element"=>"float","name"=>"float","type"=>"file"),
 
 			// These have been renamed in the XML file - need to be careful doing that!!!
 			array("element"=>"JEventsExtplusLayout","name"=>"extplus","type"=>"file"),
@@ -1005,6 +1007,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			array("element"=>"JEventsMapLayout","name"=>"map","type"=>"file"),
 			array("element"=>"JEventsSmartphoneLayout","name"=>"smartphone","type"=>"file"),
 			array("element"=>"JEventsZimLayout","name"=>"zim","type"=>"file"),
+            array("element"=>"JEventsFloatLayout","name"=>"float","type"=>"file"),
 
 			// Silver - Jevents Categories
 			array("element"=>"mod_jevents_categories","name"=>"mod_jevents_categories","type"=>"module"),
