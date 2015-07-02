@@ -38,6 +38,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		JEventsHelper::addSubmenu();
 
 		JHTML::_('behavior.tooltip');
+		if (JevJoomlaVersion::isCompatible("3.4")) {
+			JError::raiseNotice(340, JText::_("JEV_UPDATE_TO_JEVENTS32"));
+		}
+		else {
+			JError::raiseNotice(250, JText::_("JEV_VERSION_NO_LONGER_DEVELOPED32"));
+		}
+
 /*
 		if (JevJoomlaVersion::isCompatible("3.4")) {
 			JError::raiseNotice(340, JText::_("JEV_UPDATE_TO_JEVENTS34"));
