@@ -41,13 +41,7 @@ class JevModal
 		}
 
 		// Load jQuery
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtml::_('jquery.framework');
-		}
-		else {
-			JLoader::register("JevHtmlJquery", JPATH_LIBRARIES."/jevents/bootstrap/jquery.php");
-			JevHtmlJquery::framework();
-		}
+		JHtml::_('jquery.framework');
 		
 		JHtml::stylesheet('lib_jevmodal/jevmodal.css',array(),true);
 		JHtml::script('lib_jevmodal/jevmodal.js',false,true,false,false,true);

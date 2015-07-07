@@ -46,13 +46,7 @@ class JevTypeahead
 		}
 
 		// Load jQuery
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtml::_('jquery.framework');
-		}
-		else {
-			JLoader::register("JevHtmlJquery", JPATH_LIBRARIES."/jevents/bootstrap/jquery.php");
-			JevHtmlJquery::framework();
-		}
+		JHtml::_('jquery.framework');
 		JHtml::stylesheet('lib_jevtypeahead/jevtypeahead.css',array(),true);
 		JHtml::script('lib_jevtypeahead/typeahead.bundle.min.js',false,true,false,false,true);
 

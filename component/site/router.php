@@ -703,6 +703,11 @@ function JEventsBuildRouteNew(&$query, $task)
 							}
 						}
 
+						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && strlen($query['catids']) > 0)
+						{
+							unset($query['catids']);
+						}
+
 						break;
 					default:
 						break;
@@ -715,7 +720,9 @@ function JEventsBuildRouteNew(&$query, $task)
 				else
 				{
 					if ($transtask!=""){
-						$segments[] = "-";
+						if (!$params->get("nocatindetaillink", 0)){
+							$segments[] = "-";
+						}
 					}
 				}
 
@@ -847,6 +854,7 @@ function JEventsParseRouteNew(&$segments, $task)
 	$vars = array();
 
 	$vars["task"] = $task;
+	$params = JComponentHelper::getParams("com_jevents");
 
 	// Count route segments
 	$count = count($segments);
@@ -908,10 +916,12 @@ function JEventsParseRouteNew(&$segments, $task)
 					case "icalevent.detail":
 					case "icalrepeat.detail":
 						$vars['evid'] = $segments[$slugcount];
-						// note that URI decoding swaps /-/ for :
-						if (count($segments) > $slugcount + 1 && $segments[$slugcount + 1] != ":")
-						{
-							$vars['catids'] = $segments[$slugcount + 1];
+						if (!$params->get("nocatindetaillink", 0)){
+							// note that URI decoding swaps /-/ for :
+							if (count($segments) > $slugcount + 1 && $segments[$slugcount + 1] != ":")
+							{
+								$vars['catids'] = $segments[$slugcount + 1];
+							}
 						}
 						break;
 					default:
