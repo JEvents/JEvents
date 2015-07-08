@@ -2315,117 +2315,147 @@ class JEVHelper
 		$fielddefaultarray = "'" . (string) str_replace(",", "','", $fielddefault) . "'";
 
 		$script = <<<SCRIPT
-			var jevConditional = {
-					setupJevConditions: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
-						var condition = $(condparam+ conditions);
-						var radioElements = condition.getElements('input[type=radio]');
-						if (radioElements.length > 0) {
-							for (var i = 0; i < radioElements.length; i++) {
-								// Need both for Chosen replacements
-								radioElements[i].addEvent("click", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-								radioElements[i].addEvent("change", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-							}
-						}
-						else if (condition.tagName == "SELECT") {
-							if ($(condition.id + "_chzn")) {
-								var condition_chzn = $(condition.id + "_chzn");
-								for (var i = 0; i < condition_chzn.childNodes.length; i++) {
-									condition_chzn.childNodes[i].addEvent("click", function() {
-										jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-									});
-								}
-							}
-							else
-								condition.addEvent("change", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-						}
-						else {
-							condition.addEvent("change", function() {
-								jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-							});
-						}
+var jevConditional = {
+	setupJevConditions: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
+		var condition = jQuery("#"+condparam+ conditions);
+		var radioElements = condition.find('input[type=radio]');
+				alert('setup');
+		if (radioElements.length)
+		{
+			radioElements.each(function (i ,  re)
+			{
+				// Need both for Chosen replacements
+				jQuery(re).on("click", function() {
+					jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+				});
+				jQuery(re).on("change", function() {
+					jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+				});
+			});
+		}
+		else if (condition.prop("tagName") == "SELECT") {
+			var condition_chzn = jQuery("#"+condition.attr("id") + "_chzn");
+			if (condition_chzn.length) {
+				condition_chzn.each (function (i, cc)
+				{
+					jQuery(cc).on("click", function() {
 						jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-					},
-					jevCondition: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
-						var condition = $(condparam + conditions);
-						var eventsno = $(fieldparam+conditional);
-						if (!condition || !eventsno){
-							return;
-						}
-						// Joomla 3.x named element is inside control and also control-group elements
-						var hiddencontrol = eventsno.parentNode.parentNode;
-						// Joomla 2.5
-						if (hiddencontrol.tagName=="UL"){
-							hiddencontrol = eventsno.parentNode;
-						}
-						var conditionsarray = new Array(condarray);
-						if (condition.type == "checkbox") {
-							condition.value = condition.checked;
-						}
-						var radioElements = condition.getElements('input[type=radio]');
-						if (radioElements.length>0) {
-							for (var i = 0; i < radioElements.length; i++) {
-								if (radioElements[i].checked)
-									condition.value = radioElements[i].value;
-							}
-						}
-						if (condition.multiple && condition.tagName == "SELECT") {
-							for (var i = 0; i < condition.options.length; i++) {
-								if (condition.options[i].selected && conditionsarray.indexOf(condition.options[i].value) >= 0)
-									conditionsarray[0] = condition.value;
-							}
-						}
+					});
+				});
+			}
+			else
+				condition.on("change", function() {
+					jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+				});
+		}
+		else {
+			condition.on("change", function() {
+				jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+			});
+		}
+		jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
+	},
+	jevCondition: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
+		var condition = jQuery('#'+condparam + conditions);
+		var eventsno = jQuery('#'+fieldparam+conditional);
+		if (!condition.length || !eventsno.length)
+		{
+			return;
+		}
+		// Joomla 3.x named element is inside control and also control-group elements
+		var hiddencontrol = eventsno.parent().parent();
+		// Joomla 2.5
+		if (hiddencontrol.prop("tagName")=="UL")
+		{
+			hiddencontrol = eventsno.parent();
+		}
+		
+		var conditionsarray = condarray;
+		if (condition.prop('type') == "checkbox")
+		{
+			condition.val(condition.prop('checked') ? 1 : 0);
+		}
 
-						var checkboxElements = condition.type=="checkbox"? new Array(condition) : condition.getElements('input[type=checkbox]');
-						if (checkboxElements.length>0) {
-							condition.value = new Array();
-							for (var i = 0; i < checkboxElements.length; i++) {
-								if (checkboxElements[i].checked && conditionsarray.indexOf(checkboxElements[i].value) >= 0) {
-									condition.value = conditionsarray[0];
-								}
-							}
-						}
-						// If condition is valid then show the row
-						if (conditionsarray.indexOf(condition.value) >= 0) {
-							if (hiddencontrol.tagName == "TR") {
-								hiddencontrol.style.display = "table-row";
-							}
-							else if (hiddencontrol.tagName == "SPAN"){
-								hiddencontrol.style.display = "inline";
-							}
-							else
-								hiddencontrol.style.display = "block";
-						}
-						// else hide the row and revert the value to its default
-						else {
-							// Is the dependent field is a select list, or radio list
-							if (eventsno && eventsno.options){
-								var defaultarray = new Array(fielddefaultarray);
-								for (var i = 0; i < eventsno.options.length; i++) {
-									if (defaultarray.indexOf(eventsno.options[i].value) >= 0) {
-										eventsno.options[i].selected = true;
-									}
-									else
-										eventsno.options[i].selected = false;
-								}
-							}
-							else {
-								eventsno.value = fielddefault;
-							}
-							hiddencontrol.style.display = "none";
-						}
-						try {
-							jevjq(eventsno).trigger("liszt:updated");
-						}
-						catch (e) {
-						}
-					}
+		var radioElements = condition.find('input[type=radio]');
+		radioElements.each (function(i, re) {
+			if (jQuery(re).prop('checked'))
+			{
+				condition.val(jQuery(re).val());
+			}
+		});
+				
+		if (condition.prop('multiple') && condition.prop("tagName") == "SELECT")
+		{
+			condition.find('option:selected').each (function(i, co)
+			{
+				if (conditionsarray.indexOf(co.val() ) >= 0)
+				{
+					conditionsarray.push( co.val());
 				}
+			});
+		}
+
+		var checkboxElements = condition.prop('type')=="checkbox"? new Array(condition) : condition.find('input[type=checkbox]');
+		if (checkboxElements.length>0)
+		{
+			condition.val( new Array());
+			checkboxElements.each (function (i, cbe)
+			{
+				if (jQuery(cbe).prop('checked') && conditionsarray.indexOf(jQuery(cbe).val()) >= 0)
+				{
+					condition.val( conditionsarray[jQuery(cbe).val()]);
+				}
+			});
+		}
+
+		// If condition is valid then show the row
+		if (conditionsarray.indexOf(condition.val()) >= 0)
+		{
+			if (hiddencontrol.prop("tagName") == "TR")
+			{
+				hiddencontrol.css("display", "table-row");
+			}
+			else if (hiddencontrol.prop("tagName") == "SPAN")
+			{
+				hiddencontrol.css("display", "inline");
+			}
+			else
+			{
+				hiddencontrol.css("display", "block");
+			}
+		}
+		// else hide the row and revert the value to its default
+		else
+		{
+			// Is the dependent field is a select list, or radio list
+			if (eventsno.find('option').length)
+			{
+				var defaultarray = fielddefaultarray;
+				eventsno.find('option').each (function (i, eno)
+				{
+					if (defaultarray.indexOf(jQuery(eno).val()) >= 0)
+					{
+						jQuery(eno).prop('selected', true);
+					}
+					else
+					{
+						jQuery(eno).prop('selected', false);
+					}
+				});
+			}
+			else
+			{
+				eventsno.val( fielddefault);
+			}
+			hiddencontrol.css("display", "none");
+		}
+		try {
+			jevjq(eventsno).trigger("liszt:updated");
+		}
+		catch (e) {
+		}
+	}
+}
 SCRIPT;
 		$document = JFactory::getDocument();
 		static $loadedScript = false;
@@ -2436,9 +2466,9 @@ SCRIPT;
 		}
 
 		$script = <<<SCRIPT
-				window.addEvent('load', function() {
-					jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', $condarray, $fielddefaultarray);
-				});
+	jQuery(document).on('ready', function() {
+		jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', "Array($condarray)", "Array($fielddefaultarray)");
+	});
 SCRIPT;
 
 		$document = JFactory::getDocument();
@@ -3533,110 +3563,3 @@ SCRIPT;
 	}
 
 }
-
-/* Keep this - just in case */
-/*
- 				var jevConditional_$conditional = {
-					setupJevConditions: function() {
-						var condition = $("$condparam$conditions");
-						if (condition.className.indexOf("radio") >= 0) {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].type == "radio") {
-									condition.childNodes[i].addEvent("click", function() {
-										jevConditional_$conditional.jevCondition()
-									});
-								}
-							}
-						}
-						else if (condition.tagName == "SELECT") {
-							if ($(condition.id + "_chzn")) {
-								var condition_chzn = $(condition.id + "_chzn");
-								for (var i = 0; i < condition_chzn.childNodes.length; i++) {
-									condition_chzn.childNodes[i].addEvent("click", function() {
-										jevConditional_$conditional.jevCondition()
-									});
-								}
-							}
-							else
-								condition.addEvent("change", function() {
-									jevConditional_$conditional.jevCondition()
-								});
-						}
-						else {
-							condition.addEvent("change", function() {
-								jevConditional_$conditional.jevCondition()
-							});
-						}
-						jevConditional_$conditional.jevCondition();
-					},
-					jevCondition: function() {
-						var condition = $("$condparam$conditions");
-						var eventsno = $("$fieldparam$conditional");
-						var hiddencontrol = eventsno.parentNode.parentNode;
-						var conditionsarray = new Array($condarray);
-						if (condition.type == "checkbox")
-							condition.value = condition.checked;
-						if (condition.childNodes[0] && condition.childNodes[0].type == "radio") {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].checked)
-									condition.value = condition.childNodes[i].value;
-							}
-						}
-						if (condition.multiple && condition.tagName == "SELECT") {
-							for (var i = 0; i < condition.options.length; i++) {
-								if (condition.options[i].selected && conditionsarray.indexOf(condition.options[i].value) >= 0)
-									conditionsarray[0] = condition.value;
-							}
-						}
-						if (condition.childNodes[0] && condition.childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0].type == "checkbox") {
-							condition.value = new Array();
-							for (var i = 0; i < condition.childNodes[0].childNodes.length; i++) {
-								if (condition.childNodes[0].childNodes[i].childNodes[0].checked && conditionsarray.indexOf(condition.childNodes[0].childNodes[i].childNodes[0].value) >= 0) {
-									condition.value = conditionsarray[0];
-								}
-							}
-						}
-						// If condition is valid then show the row
-						if (conditionsarray.indexOf(condition.value) >= 0) {
-							if (hiddencontrol.tagName == "TR") {
-								hiddencontrol.style.display = "table-row";
-							}
-							else if (hiddencontrol.tagName == "SPAN"){
-								hiddencontrol.style.display = "inline";
-							}
-							else
-								hiddencontrol.style.display = "block";
-						}
-						// else hide the row and revert the value to its default
-						else {
-							// Is the dependent field is a select list, or radio list
-							if (eventsno && eventsno.options){
-								var defaultarray = new Array($fielddefaultarray);
-								for (var i = 0; i < eventsno.options.length; i++) {
-									if (defaultarray.indexOf(eventsno.options[i].value) >= 0) {
-										eventsno.options[i].selected = true;
-									}
-									else
-										eventsno.options[i].selected = false;
-								}
-							}
-							// this should be not dependent on language!
-							else if ("$condlabel" == "Specified Person?" || "$condlabel" == "Specified Location?")
-								$conditional.Delete();
-							else {
-								eventsno.value = "$fielddefault";
-							}
-							hiddencontrol.style.display = "none";
-						}
-						try {
-							jQuery(eventsno).trigger("liszt:updated");
-						}
-						catch (e) {
-						}
-					}
-				}
-				window.addEvent('load', function() {
-					jevConditional_$conditional.setupJevConditions();
-				});
-
- */

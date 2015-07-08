@@ -35,7 +35,7 @@
 			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 			<option value="0">JEV_OLD_STYLE_NAVIGATION</option>
 		</field>
-		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="1" conditional="com_calUseIconic" conditions="1,2">
+		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="2" conditional="com_calUseIconic" conditions="1,2">
 			<option value="byyear">JEVENTS_LIST_YEAR_DEFAULT_TITLE</option>
 			<option value="bymonth">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
 			<option value="byweek">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
