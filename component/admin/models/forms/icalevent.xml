@@ -18,7 +18,7 @@
 		layoutfield="DESCRIPTION" labelclass="jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
 		<field name="location" type="jeveventlocation" default=""   layoutfield="LOCN" labelclass=""   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
 				
-		<field name="color" type="jeveventcolourpicker" default=""  layoutfield="COLOUR"   label="JEV_EVENT_COLOR" description="JEV_EVENT_COLOR_TIP" />
+		<field name="color" type="jevcolor" default=""  layoutfield="COLOUR"   label="JEV_EVENT_COLOR" size="30" description="JEV_EVENT_COLOR_TIP" />
 
 		<field name="contact_info" type="text" default=""  size="60" maxlength="120" layoutfield="CONTACT"  class="inputbox" 
 			   label="JEV_EVENT_CONTACT" description="JEV_EVENT_CONTACT_TIP" />

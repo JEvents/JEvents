@@ -409,9 +409,6 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
 .jev_inline {display:inline;}
 img.jev_help {float: none; vertical-align:bottom; cursor:help;}
 span.jev_help_close {border:solid white 1px;padding:0px;margin:1px;}
-.jev_colour_picker_i {min-height:250px!important;height:250px;min-width:300px!important;width:300px;z-index:9999;right:0px;top:0px;overflow:visible!important;}
-.jev_colour_picker_b {color:inherit;background-color:inherit;display:block;font-weight:bold;padding:3px;}
-.jev_ev_colour_picker_i {position:absolute;width:300px!important;max-width:300px!important;height:250px!important;visibility:hidden;z-index:9999;left:20px;top:-60px;overflow:visible!important;border:none!important;}
 
 /* backend ical input box */
 #uploadURL {width:auto;}
@@ -711,6 +708,16 @@ table.ev_navtable tr {vertical-align:top; }
 
 /* Backend translation links */
 span.hastranslation {background-color:#55aa55;}
+
+/* colour picker */
+div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    font-size: 14px;
+    height: 19px;
+    margin: 0;
+    padding: 4px 6px 4px 30px;
+    width: 65px;
+}
 
 /* Only for sites that want a max size for the popup! */
 

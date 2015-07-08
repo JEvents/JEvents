@@ -4,11 +4,11 @@
 	<fieldset  name="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" difficulty="1">
        
 		<field name="com_difficulty" type="radio" default="1"  class="btn-group" label="JEV_CONFIG_OPTIONS_TO_SHOW" description="JEV_CONFIG_OPTIONS_TO_SHOW_DESC" difficulty="1">
-			<option value="1" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});">JEV_BASIC</option>
-			<option value="2" onclick="$$('.difficulty3').each(function(elem){elem.addClass('hiddenDifficulty');});
-                                                        $$('.difficulty2').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE
+			<option value="1" onclick="jQuery('.difficulty2 , .difficulty3').each(function(idx, elem){jQuery(elem).addClass('hiddenDifficulty');});">JEV_BASIC</option>
+			<option value="2" onclick="jQuery('.difficulty3').each(function(idx, elem){jQuery(elem).addClass('hiddenDifficulty');});
+                                                        jQuery('.difficulty2').each(function(idx,elem){jQuery(elem).removeClass('hiddenDifficulty');});">JEV_INTERMEDIATE
 			</option>
-			<option value="3" onclick="$$('.difficulty2 , .difficulty3').each(function(elem){elem.removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
+			<option value="3" onclick="jQuery('.difficulty2 , .difficulty3').each(function(idx,elem){jQuery(elem).removeClass('hiddenDifficulty');});">JEV_ADVANCED</option>
 		</field>
 
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO'   menu="hide" label="" description="" difficulty="1" />
@@ -35,7 +35,7 @@
 			<option value="2">ICONS_WITHOUT_NAVIGATION</option>
 			<option value="0">JEV_OLD_STYLE_NAVIGATION</option>
 		</field>
-		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="1" conditional="com_calUseIconic" conditions="1,2">
+		<field name="iconstoshow" type="jevmultilist" default="byyear,bymonth,byweek,byday,search" multiple="multiple" size="6" label="JEV_ICONS_TO_SHOW" description="JEV_ICONS_TO_SHOW_DESC" difficulty="2" conditional="com_calUseIconic" conditions="1,2">
 			<option value="byyear">JEVENTS_LIST_YEAR_DEFAULT_TITLE</option>
 			<option value="bymonth">JEVENTS_MONTH_VIEW_DEFAULT_TITLE</option>
 			<option value="byweek">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
@@ -294,6 +294,7 @@
 			<option value="2">JEV_YES_BY_USER_ACCESS_LEVEL</option>
 		</field>					
 		<field name="newsef" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
+		<field name="nocatindetaillink" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS" description="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS_DESC" conditional="newsef" conditions="1"/>
 		<field name="com_blockRobots" type="list" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>

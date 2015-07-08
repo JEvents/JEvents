@@ -253,6 +253,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->title();
 				$blank[] = "";
 				break;
+			case "{{TRUNCATED_TITLE}}":
+				$search[] = "{{TRUNCATED_TITLE:.*?}}";
+				$replace[] = $event->title();
+				$blank[] = "";
+				break;
 			case "{{PRIORITY}}":
 				$search[] = "{{PRIORITY}}";
 				$replace[] = $event->priority();
@@ -1161,7 +1166,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// word counts etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "TRUNCATED_DESC:") > 0)
+			if (strpos($search[$s], "TRUNCATED_DESC:") > 0 || strpos($search[$s], "TRUNCATED_TITLE:") > 0)
 			{
 				global $tempreplace, $tempevent, $tempsearch;
 				$tempreplace = $replace[$s];

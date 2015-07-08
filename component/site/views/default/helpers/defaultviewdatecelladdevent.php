@@ -5,7 +5,7 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 {
 	if (JEVHelper::isEventCreator())
 	{
-		JEVHelper::script('view_detail.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
+		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 		// no events on Saturday or Sunday!
 		//if (date("N",mktime(0,0,0,$month,$day, $year))>5) return;
 		$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT

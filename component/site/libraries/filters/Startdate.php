@@ -124,7 +124,7 @@ class jevStartdateFilter extends jevFilter
 			$maxyear = JEVHelper::getMaxYear();
 			$document = JFactory::getDocument();
 			
-			$calendar = (JevJoomlaVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 
+			$calendar = 'calendar14.js' ;
 		
 			JEVHelper::script($calendar, "components/".JEV_COM_COMPONENT."/assets/js/",true); 
 			JEVHelper::stylesheet("dashboard.css",  "components/".JEV_COM_COMPONENT."/assets/css/",true);  

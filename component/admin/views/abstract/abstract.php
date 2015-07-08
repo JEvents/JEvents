@@ -21,13 +21,7 @@ class JEventsAbstractView extends JViewLegacy
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
-		else {
-			JEVHelper::stylesheet('eventsadminjq.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
+		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
 		// note that the name config variable is ignored in the parent construct!
@@ -110,11 +104,7 @@ class JEventsAbstractView extends JViewLegacy
 	function _hideSubmenu()
 	{
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		if (!JevJoomlaVersion::isCompatible("3.0"))
-			JHTML::stylesheet('administrator/components/' . JEV_COM_COMPONENT . '/assets/css/hidesubmenu16.css');
-		else
-			JHTML::stylesheet('hidesubmenu.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
-
+		JHTML::stylesheet('hidesubmenu.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
 
 	/**

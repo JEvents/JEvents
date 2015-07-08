@@ -834,6 +834,8 @@ class jIcalEventDB extends jEventCal {
 			$repeat = $this->getFirstRepeat();
 			$this->dtstart($repeat->getUnixStartTime());
 			$this->dtend( $repeat->getUnixEndTime());
+			list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
+			list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
 		}
 		else {
 			$repeat = $this->getFirstRepeat();
@@ -843,6 +845,8 @@ class jIcalEventDB extends jEventCal {
 			if (!$exception){
 				$this->dtstart($repeat->getUnixStartTime());
 				$this->dtend( $repeat->getUnixEndTime());
+				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
 			}
 			else {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried

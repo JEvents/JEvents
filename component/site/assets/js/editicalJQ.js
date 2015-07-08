@@ -1,7 +1,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id: editical.js 3576 2012-05-01 14:11:04Z geraintedwards $
+ * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -941,14 +941,14 @@ jQuery.fn.formToJson =  function(){
 			var value = el.value;
 			if (value === false || !name || el.disabled) return;
 			// multi selects
-			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
+			if (name.indexOf('[]')>=0 && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
 				name = name.substr(0,name.length-2);
 				if (!json[name]) json[name] = [];
 				jevjq(el).find('option').each(function(eldx, opt){
 					if (opt.selected ==true) json[name].push(opt.value);
 				});
 			}
-			else if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
+			else if (name.indexOf('[]')>=0 && (el.type=='radio' || el.type=='checkbox') ){
 				if (!json[name]) json[name] = [];
 				if (el.checked==true) json[name].push(value);
 			}

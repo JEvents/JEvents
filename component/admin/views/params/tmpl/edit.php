@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
+//JHtml::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
+
 $version = JEventsVersion::getInstance();
 
 $haslayouts = false;
