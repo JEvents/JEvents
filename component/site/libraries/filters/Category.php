@@ -123,11 +123,9 @@ class jevCategoryFilter extends jevFilter
 		else {
 			$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );
 		}
-		//$script = "function reset".$this->filterType."_fvs(){document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
-		//$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		// try/catch  incase this is called without a filter module!
 		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:0});} catch (e) {}\n";
-		$script .= "function reset".$this->filterType."_fvs(){if (document.getElementById('catidsfv')) document.getElementById('catidsfv').value=0;document.getElements('option',\$('".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
+		$script .= "function reset".$this->filterType."_fvs(){if (document.getElementById('catidsfv')) document.getElementById('catidsfv').value=0;document.getElements('option',jQuery('#".$this->filterType."_fv')).each(function(item){item.selected=(item.value==0)?true:false;})};\n";
 		$script .= "try {JeventsFilters.filters.push({action:'reset".$this->filterType."_fvs()',id:'".$this->filterType."_fv',value:".$this->filterNullValue."});} catch (e) {}\n";
 		
 		$document = JFactory::getDocument();

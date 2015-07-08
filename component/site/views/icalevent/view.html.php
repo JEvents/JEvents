@@ -46,8 +46,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
-		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-                  JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+                  JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() <= "")
 		{

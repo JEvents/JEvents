@@ -49,6 +49,7 @@ class JFormFieldJevcolourpicker extends JFormField
 		// add script to auto open the basic options tab!
 		$doc = JFactory::getDocument();
 		$script = <<<SCRIPT
+				alert(0);
 window.addEvent('load', function() {
 	var basicoptions = document.getElement('#basic-options')
 	if (basicoptions && !basicoptions.hasClass('pane-toggler-down')) {
@@ -61,14 +62,7 @@ SCRIPT;
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
-		else
-		{
-			JEVHelper::stylesheet('eventsadmin16.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
-		}
+		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		return implode($html);
 	}

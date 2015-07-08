@@ -22,9 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <script type="text/javascript">
-defaultsEditorPlugin.node($('jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
+defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
-var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
+var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TAB_START",true);?>", "TABSTART#name");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_END_TABS",true);?>", "TABSEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_MESSAGE",true);?>", "MESSAGE");
@@ -96,13 +96,14 @@ Joomla.submitbutton = function (pressbutton){
                 {
                     missingFields.push('TABSEND');
                 }
+		//  Native Javascript array
                 requiredFields.each(function(requiredField, index){
                     var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";                    
                     if(!defaultsLayout.test(requiredFieldRE))
                     {
-			 var options = Array.from($('jevdefaults').options);
-			 options.each (function(opt){
-				 if ((opt.value+"}}").contains(":"+requiredField+"}}")){
+			 var options = jQuery('#jevdefaults option');
+			 options.each (function(idx, opt){
+				 if ((opt.value+"}}").indexOf(":"+requiredField+"}}")>=0){
 					 missingFields.push(opt.value);
 				 }
 			 })
@@ -111,6 +112,7 @@ Joomla.submitbutton = function (pressbutton){
                 });
                     if (missingFields.length >0){
 			var message = '<?php echo JText::_("JEV_LAYOUT_MISSING_FIELD",true);?>'+'\n';
+			// native array!
 			missingFields.each (function (msg, index){
 				message +=  msg +'\n';
 			});
@@ -144,7 +146,7 @@ foreach ($jevplugins as $jevplugin){
 			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"), "edit");
 			if (!isset($fieldNameArray['labels'])) continue;
 			?>
-			optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , '<?php echo $fieldNameArray["group"];?>');
+			optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , '<?php echo $fieldNameArray["group"];?>');
 			<?php
 			for ($i=0;$i<count($fieldNameArray['labels']);$i++) {
 				if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;
