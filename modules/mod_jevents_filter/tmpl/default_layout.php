@@ -35,6 +35,7 @@ if (count($filterHTML) > 0)
 .jevfilterlist, .jevfilterfloatlist {
 	list-style-type: none;
 	display:block;
+	margin-left:0px
 }
 .jevfilterfloatlist li {
 	float:left;

@@ -234,7 +234,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 <script type="text/javascript" >
 	// make the correct frequency visible
 	function setupRepeats(){	
-	hideEmptyJevTabs()
+	hideEmptyJevTabs();
 <?php
 if ($this->row->id() != 0 && $this->row->freq())
 {
@@ -282,6 +282,8 @@ if ($this->row->id() != 0 && $this->row->freq())
 
 				// Now reset the repeats warning so we can track any changes
 				document.adminForm.updaterepeats.value = 0;
+				// Now sort out the count back!
+				fixRepeatDates(true);
 	<?php
 }
 ?>

@@ -15,7 +15,7 @@
 		<file>jevtypeahead.php</file>
 		<file>index.html</file>
 	</files>
-	<media folder="media" destination="lib_jevtypeahead">
+	<media folder="media" destination="com_jevents/lib_jevtypeahead">
 		<folder>css</folder>
 		<folder>js</folder>
 	</media>

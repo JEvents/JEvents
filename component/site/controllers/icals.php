@@ -207,6 +207,10 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// Lockin hte categories from the URL
+		$Itemid = JRequest::getInt("Itemid",0);
+		if (!$Itemid){
+			JRequest::setVar("Itemid",1);
+		}
 		$this->dataModel->setupComponentCatids();
 
 		$dispatcher = JDispatcher::getInstance();

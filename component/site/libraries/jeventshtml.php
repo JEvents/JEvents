@@ -225,14 +225,8 @@ class JEventsHTML
 	public static  function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false)
 	{
 		// need to declare this because of bug in Joomla JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			include_once(JPATH_SITE . "/libraries/cms/html/category.php");
-		}
-		else
-		{
-			include_once(JPATH_SITE . "/libraries/joomla/html/html/category.php");
-		}
+		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
+
 		ob_start();
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 		$options = JHtml::_('category.options', $sectionname);
@@ -399,26 +393,26 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
-			<select name="<?php echo $fieldname; ?>[]" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
+			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?> <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 				<?php
-			}
-			else
-			{
-				?>
-				<select name="<?php echo $fieldname; ?>" <?php echo $args; ?> >
-					<option value="0"><?php echo $t_first_entry; ?></option>
-					<?php
-				}
-				?>
-				<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
-			</select>
-			<?php
-			return ob_get_clean();
-
 		}
-
-		public static function buildWeekDaysCheck($reccurweekdays, $args, $name = "reccurweekdays")
+		else
 		{
+			?>
+			<select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
+				<option value="0"><?php echo $t_first_entry; ?></option>
+			<?php
+		}
+		?>
+		<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
+		</select>
+		<?php
+		return ob_get_clean();
+
+	}
+
+	public static function buildWeekDaysCheck($reccurweekdays, $args, $name = "reccurweekdays")
+	{
 
 			// get array
 			$day_name = JEVHelper::getWeekdayLetter(null, 1);

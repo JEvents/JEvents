@@ -59,9 +59,14 @@ else if ($params->get("bootstrapcss", 1)==2)
 
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
+
+$user = JFactory::getUser();
+$accesslevels = $user->getAuthorisedViewLevels();
+$accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
+
 ?>
 <div id="jevents" <?php
-echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
+echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 ?> >
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal jevbootstrap" >
 		<?php

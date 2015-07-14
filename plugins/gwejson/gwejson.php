@@ -84,7 +84,13 @@ class PlgSystemGwejson extends JPlugin
 			{
 				return true;
 			}
-			$path = $paths[$path] . "/components/$extension/libraries/";
+			if ($folder == "" )
+			{
+				$path = $paths[$path] . "/components/$extension/libraries/";
+			}
+			else {
+				$path = $paths[$path] . "/components/$extension/$folder/";
+			}
 		}
 
 		jimport('joomla.filesystem.file');

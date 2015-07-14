@@ -21,9 +21,9 @@ $lang->load("mod_jevents_detail", JPATH_SITE);
 </table>
 
 <script type="text/javascript">
-defaultsEditorPlugin.node('#jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
+defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
-var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
+var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALBUTTON",true);?>", "ICALBUTTON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALDIALOG",true);?>", "ICALDIALOG");

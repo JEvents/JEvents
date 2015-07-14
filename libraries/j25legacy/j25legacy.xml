@@ -14,7 +14,7 @@
 	<files>
 		<folder>jlayouts</folder>
 	</files>
-	<media folder="icomoon" destination="lib_j25legacy/icomoon">
+	<media folder="icomoon" destination="com_jevents/lib_j25legacy/icomoon">
 		<folder>css</folder>
 		<folder>fonts</folder>
 	</media>

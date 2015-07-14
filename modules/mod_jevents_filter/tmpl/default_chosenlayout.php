@@ -46,8 +46,12 @@ if (count($filterHTML) > 0)
 .jevfilterlist, .jevfilterfloatlist {
 	list-style-type: none;
 	display:block;
+	margin-left:0px
 }
-.jevfilterfloatlist li {
+.jevfilterlist .jevfilterinput .chzn-container, .jevfilterlist .jevfilterinput input {
+	max-width:100%;
+}
+   .jevfilterfloatlist li {
 	float:left;
 	margin-right:5px;
 }
