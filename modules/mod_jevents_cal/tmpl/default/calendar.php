@@ -61,7 +61,7 @@ class DefaultModCalView
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
-			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
+			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		$this->_modid = $modid;

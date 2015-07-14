@@ -5,16 +5,16 @@ function setupFilterChoices(){
 		opt.style.cursor="pointer";
 		jQuery(opt).on("click",function(event){
 			var span = jQuery(opt).find('span');
-			var id = span[0].innerHTML;
-			span[0].parentNode.removeChild(span[0]); 
+			var id = span.html();
+			span.remove();
 			// remove html entities so use firstChild.nodeValue instead of innerHTML
 			var text = opt.firstChild.nodeValue;
-			opt.parentNode.removeChild(opt);
+			jQuery(opt).remove();
 
 			var uls = jQuery("#filtermatches");
 			var li = jQuery("<div>",{id:"filter"+id});
 			li.append(text);
-			if (uls){
+			if (uls.length){
 				uls.append(li);
 				setupFilterLis();
 			};
@@ -54,7 +54,7 @@ function setupCustomFilterField(){
 	// setup custom field
 	var customfield = jQuery(fieldid);
 	if (!customfield.length) return;
-	customfield.value = "";
+	customfield.val("");
 	var lis = jQuery("#filtermatches div");
 	lis.each(function(i, item){
 		if (customfield.val() != ""){

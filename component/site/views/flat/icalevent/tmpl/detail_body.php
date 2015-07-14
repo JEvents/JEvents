@@ -31,8 +31,8 @@ if( array_key_exists('row',$this->data) ){
 
 	if (isset($row)) {
 		$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
-		$loadedFromFile = $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
-		if ($loadedFromFile && count($customresults)>0){
+		$templated =  $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
+		if (!$templated && count($customresults)>0){
 			?>
 			<div class="jev_evdt">
 			<?php
@@ -45,10 +45,10 @@ if( array_key_exists('row',$this->data) ){
 				</div>
 			<?php
 		}
-        $results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
-        echo trim( implode( "\n", $results ) );
-
-    } else { ?>
+		$results = $dispatcher->trigger( 'onAfterDisplayContent', array( &$row, &$params, $page ) );
+		echo trim( implode( "\n", $results ) );
+	}
+	else { ?>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td class="contentheading"  align="left" valign="top"><?php echo JText::_('JEV_REP_NOEVENTSELECTED'); ?></td>

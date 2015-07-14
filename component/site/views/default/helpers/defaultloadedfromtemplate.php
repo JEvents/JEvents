@@ -666,6 +666,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ENDTIME}}";
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
+						$search[] = "{{MULTIENDDATE}}";
+						$replace[]  = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$blank[] = "";
 						$search[] = "{{STARTTZ}}";
 						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
@@ -679,17 +682,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
-						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
-						$search[] = "{{ISOSTART}}";
-						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
-						$blank[] = "";
-						$search[] = "{{ISOEND}}";
-						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
-						$blank[] = "";
-						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
-						$blank[] = "";
+						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
+						{
+							$search[] = "{{ISOSTART}}";
+							$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
+							$blank[] = "";
+							$search[] = "{{ISOEND}}";
+							$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
+							$blank[] = "";
+						}
 					}
 					else
 					{
@@ -1282,7 +1285,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = str_replace("@£@", "@", $template_value);
 
 		echo $template_value;
-		return $loadedFromFile;
+		return !$loadedFromFile;
 
 	}
 
@@ -1404,7 +1407,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$offset2 = $indate->getOffset();;
 
 				$indate = $indate->getTimestamp()+$offset2-$offset1;
-				return JEV_CommonFunctions::jev_strftime($fmt, $indate);
+				return JEV_CommonFunctions::jev_strftime($fmt, intval($indate));
 			}
 			else
 			{

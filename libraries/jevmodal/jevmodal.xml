@@ -15,7 +15,7 @@
 		<file>jevmodal.php</file>
 		<file>index.html</file>
 	</files>
-	<media folder="media" destination="lib_jevmodal">
+	<media folder="media" destination="com_jevents/lib_jevmodal">
 		<folder>css</folder>
 		<folder>js</folder>
 	</media>

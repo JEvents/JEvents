@@ -47,8 +47,8 @@ class JevTypeahead
 
 		// Load jQuery
 		JHtml::_('jquery.framework');
-		JHtml::stylesheet('lib_jevtypeahead/jevtypeahead.css',array(),true);
-		JHtml::script('lib_jevtypeahead/typeahead.bundle.min.js',false,true,false,false,true);
+		JHtml::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css',array(),true);
+		JHtml::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js',false,true,false,false,true);
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)

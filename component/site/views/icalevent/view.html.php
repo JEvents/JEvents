@@ -118,15 +118,9 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		$this->_adminStart();
 
-		if (JevJoomlaVersion::isCompatible("3.0")  )
-		{
-			// load Joomla javascript classes
-			JHTML::_('behavior.core');
-			$this->setLayout("edit");
-		}
-		else  {
-			$this->setLayout("editjq");
-		}
+		// load Joomla javascript classes
+		JHTML::_('behavior.core');
+		$this->setLayout("edit");
 
 		JEVHelper::componentStylesheet($this, "editextra.css");		
 		jimport('joomla.filesystem.file');

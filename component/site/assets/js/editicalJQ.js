@@ -750,7 +750,7 @@ function toggleFreq(freq , setup)
 				bymonthday.style.display="none";
 				byday.style.display="none";
 
-				fixRepeatDates(true);
+				if (!setup) fixRepeatDates(true);
 			}
 			break;
 		case "MONTHLY":
@@ -830,7 +830,7 @@ function fixRepeatDates(checkYearDay){
 	startDate = startDate.dateFromYMD(start_date.value);	
 	
 	// special case where we first press yearly repeat - should check for 28 Feb
-	if (checkYearDay) {
+	if (checkYearDay && (document.adminForm.evid.value==0 || document.adminForm.updaterepeats.value==1)) {
 		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
 		days = ((startDate-yearStart)/(24*60*60*1000));
 		if (days>60){
