@@ -18,7 +18,7 @@ $index=JRoute::_("index.php");
 <script type="text/javascript" >
 	<!--
 		Joomla.submitbutton = function (pressbutton) {
-if (pressbutton.JString::substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
+if (pressbutton.substr(0, 6) == 'cancel' || (pressbutton == 'user.overview')) {
 		submitform( pressbutton );
 		return;
 	}
