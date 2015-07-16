@@ -38,7 +38,7 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 					$cleaned_day = strip_tags($dayname, '');?>
 					<td class="cal_daysnames">
 						<span class="<?php echo strtolower($cleaned_day); ?>">
-							<?php echo extension_loaded('mbstring') ? mb_substr($cleaned_day, 0, 3) : substr($cleaned_day, 0, 3);?>
+							<?php echo extension_loaded('mbstring') ? mb_JString::substr($cleaned_day, 0, 3) : JString::substr($cleaned_day, 0, 3);?>
 						</span>
 					</td>
                     <?php

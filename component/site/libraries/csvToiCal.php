@@ -84,7 +84,7 @@ class CsvToiCal
 	 */
 	public function getConvertedTempFile()
 	{
-		$file = array("name" => substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
+		$file = array("name" => JString::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
 			"tmp_name" => $this->tmpFileName);
 		return $file;
 

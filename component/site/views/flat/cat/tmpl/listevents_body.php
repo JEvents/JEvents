@@ -19,7 +19,7 @@ $Itemid = JEVHelper::getItemid();
             ?>
         </div>
         <?php
-        if (strlen($data ['catdesc']) > 0) {
+        if (JString::strlen($data ['catdesc']) > 0) {
             echo "<div class='jev_catdesc'>" . $data ['catdesc'] . "</div>";
         }
         echo "</div>";

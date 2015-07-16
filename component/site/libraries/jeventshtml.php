@@ -720,9 +720,9 @@ class JEventsHTML
 						// BAR COLOR GENERATION
 						//$start_publish = JevDate::mktime (0, 0, 0, date("m"),date("d"),date("Y"));
 						//$colorgenerate = intval(($start_publish/$event_id));
-						//$bg1color = substr($colorgenerate, 5, 1);
-						//$bg2color = substr($colorgenerate, 3, 1);
-						//$bg3color = substr($colorgenerate, 7, 1);
+						//$bg1color = JString::substr($colorgenerate, 5, 1);
+						//$bg2color = JString::substr($colorgenerate, 3, 1);
+						//$bg3color = JString::substr($colorgenerate, 7, 1);
 						$bg1color = rand(0, 9);
 						$bg2color = rand(0, 9);
 						$bg3color = rand(0, 9);

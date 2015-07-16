@@ -96,9 +96,9 @@ function JevMapColor($background) {
 
 	// see http://24ways.org/2010/calculating-color-contrast/
 	$hexcolor = str_replace("#", "", $background);
-	$r = hexdec(substr($hexcolor,0,2));
-	$g = hexdec(substr($hexcolor,2,2));
-	$b = hexdec(substr($hexcolor,4,2));
+	$r = hexdec(JString::substr($hexcolor,0,2));
+	$g = hexdec(JString::substr($hexcolor,2,2));
+	$b = hexdec(JString::substr($hexcolor,4,2));
 	$yiq = (($r*299)+($g*587)+($b*114))/1000;
 	return ($yiq >= 128) ? '#000':'#fff';
 

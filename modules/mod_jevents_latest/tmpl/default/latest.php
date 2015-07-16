@@ -146,10 +146,18 @@ class DefaultModLatestView
 
 		if ($myparam->get("bootstrapcss", 1)==1)
 		{
-			// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-			JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
-			// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-			JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+			$cfg = JEVConfig::getInstance();
+			if ($cfg->get("bootstrapcss", 1)==1)
+			{
+				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
+				JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+				// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+				JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+			}
+			else if ($cfg->get("bootstrapcss", 1)==2)
+			{
+				JHtmlBootstrap::loadCss();
+			}
 		}
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
@@ -329,8 +337,8 @@ class DefaultModLatestView
 			}
 		}
 
-		$periodStart = $beginDate; //substr($beginDate,0,10);
-		$periodEnd = $endDate; //substr($endDate,0,10);
+		$periodStart = $beginDate; //JString::substr($beginDate,0,10);
+		$periodEnd = $endDate; //JString::substr($endDate,0,10);
 
 		$reg =  JFactory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
@@ -373,7 +381,7 @@ class DefaultModLatestView
 			$endDate = $futuredate < $endDate ? $futuredate : $endDate;
 		}
 		$timeLimitNow = $todayBegin < $beginDate ? $beginDate : $todayBegin;
-		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(substr($timeLimitNow, 5, 2)), intval(substr($timeLimitNow, 8, 2)), intval(substr($timeLimitNow, 0, 4)));
+		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(JString::substr($timeLimitNow, 5, 2)), intval(JString::substr($timeLimitNow, 8, 2)), intval(JString::substr($timeLimitNow, 0, 4)));
 
 		// determine the events that occur each day within our range
 
@@ -381,7 +389,7 @@ class DefaultModLatestView
 		// I need the date not the time of day !!
 		//$date = $this->now;
 		$date = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d, $this->now_Y);
-		$lastDate = JevDate::mktime(0, 0, 0, intval(substr($endDate, 5, 2)), intval(substr($endDate, 8, 2)), intval(substr($endDate, 0, 4)));
+		$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($endDate, 5, 2)), intval(JString::substr($endDate, 8, 2)), intval(JString::substr($endDate, 0, 4)));
 		$i = 0;
 
 		$seenThisEvent = array();
@@ -538,7 +546,7 @@ class DefaultModLatestView
 					// start from yesterday
 					// I need the date not the time of day !!
 					$date = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - 1, $this->now_Y);
-					$lastDate = JevDate::mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
+					$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($beginDate, 5, 2)), intval(JString::substr($beginDate, 8, 2)), intval(JString::substr($beginDate, 0, 4)));
 					$i = -1;
 
 					// Timelimit plugin constraints
@@ -665,7 +673,7 @@ class DefaultModLatestView
 
 	function checkCreateDay($date, $row)
 	{
-		return (JevDate::strftime("%Y-%m-%d", $date) == substr($row->created(), 0, 10));
+		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->created(), 0, 10));
 
 	}
 
@@ -1044,9 +1052,9 @@ class DefaultModLatestView
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && strlen($title) > intval($parts[0]))
+					if (count($parts) > 0 && JString::strlen($title) > intval($parts[0]))
 					{
-						$title = substr($title, 0, intval($parts[0]));
+						$title = JString::substr($title, 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$title .= $parts[1];
@@ -1109,9 +1117,9 @@ class DefaultModLatestView
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
+					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
 					{
-						$dayEvent->data->text = substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
+						$dayEvent->data->text = JString::substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$dayEvent->data->text .= $parts[1];
@@ -1120,7 +1128,7 @@ class DefaultModLatestView
 				}
 
 				$dayEvent->content($dayEvent->data->text);
-				//$content .= substr($dayEvent->content, 0, 150);
+				//$content .= JString::substr($dayEvent->content, 0, 150);
 				$content .= $dayEvent->content();
 				break;
 

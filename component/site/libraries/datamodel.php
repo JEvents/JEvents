@@ -238,7 +238,7 @@ class JEventsDataModel {
 		}
 		$rowcount = count( $rows );
 
-		if (strlen($this->catidsOut)>0) {
+		if (JString::strlen($this->catidsOut)>0) {
 			$cat = "&catids=$this->catidsOut";
 		} else {
 			$cat="";
@@ -717,7 +717,7 @@ class JEventsDataModel {
 		$num_row = count($row);
 
 		// No matching rows - use uid as alternative
-		if ($num_row==0 && strlen($uid)>0){
+		if ($num_row==0 && JString::strlen($uid)>0){
 			$rpid = $this->queryModel->findMatchingRepeat($uid, $year, $month, $day);
 			if (isset($rpid) && $rpid>0){
 				$row = $this->queryModel->listEventsById ($rpid, 1, $jevtype);  // include unpublished events for publishers and above

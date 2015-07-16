@@ -247,7 +247,7 @@ function replaceLabelsCallback($matches)
 {
 	if (count($matches) == 1)
 	{
-		return "{{" . JText::_(substr($matches[0], 2, strlen($matches[0]) - 3)) . ":";
+		return "{{" . JText::_(JString::substr($matches[0], 2, JString::strlen($matches[0]) - 3)) . ":";
 	}
 	return "";
 

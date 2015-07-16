@@ -8,7 +8,7 @@ $Itemid = JEVHelper::getItemid();
 ?>
 <div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
 
-if (strlen($data['catdesc'])>0){
+if (JString::strlen($data['catdesc'])>0){
 	echo "<div class='jev_catdesc'>".$data['catdesc']."</div>";
 }
 ?>

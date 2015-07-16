@@ -143,8 +143,8 @@ $mainspan = 10;
 							else
 							{
 								$times = '<table style="border: 1px solid #666666; width:100%;">';
-								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? substr($row->publish_up(), 0, 10) : substr($row->publish_up(),0,16)) . '</td></tr>';
-								$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? substr($row->publish_down(), 0, 10) : substr($row->publish_down(),0,16)) . '</td></tr>';
+								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+								$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
 								$times .="</table>";
 								echo $times;
 							}

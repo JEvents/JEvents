@@ -70,7 +70,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		{
 			if (is_object($help))
 				$help = (string) $help;
-			$help = ((isset($help)) && (strlen($help) <= 0)) ? null : $help;
+			$help = ((isset($help)) && (JString::strlen($help) <= 0)) ? null : $help;
 		}
 		if (!is_null($help))
 		{
@@ -132,7 +132,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		static $counthelps = 0;
 		$counthelps++;
 
-		if (substr($help, 0, 7) == 'http://' || substr($help, 0, 8) == 'https://')
+		if (JString::substr($help, 0, 7) == 'http://' || JString::substr($help, 0, 8) == 'https://')
 		{
 			//help text is url, open new window
 			$onclick_cmd = "window.open(\"$help\", \"help\", \"height=700,width=800,resizable=yes,scrollbars\");return false";

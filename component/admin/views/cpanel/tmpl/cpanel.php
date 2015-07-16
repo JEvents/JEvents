@@ -25,7 +25,7 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', substr($version->getShortVersion(), 1)); ?>
+			<?php echo JText::sprintf('JEV_CURRENT_VERSION', JString::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
 <?php
