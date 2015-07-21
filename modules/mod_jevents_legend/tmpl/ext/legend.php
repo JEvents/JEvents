@@ -68,7 +68,7 @@ class ExtModLegendView extends DefaultModLegendView{
 				if (!in_array($newcat, $catids))
 				{
 					$catids[] = $newcat;
-					$catidList .= (strlen($catidList) > 0 ? "," : "") . $newcat;
+					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
 				}
 			}
 		}
@@ -79,7 +79,7 @@ class ExtModLegendView extends DefaultModLegendView{
 				if (!in_array($nextCatId, $catids))
 				{
 					$catids[] = $nextCatId;
-					$catidList .= (strlen($catidList) > 0 ? "," : "") . $nextCatId;
+					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
 				}
 				$c++;
 			}
@@ -103,7 +103,7 @@ class ExtModLegendView extends DefaultModLegendView{
 		// This is the full set of top level catids
 		$availableCatsIds="";
 		foreach ($allrows as $row){
-			$availableCatsIds.=(strlen($availableCatsIds)>0?$separator:"").$row->id;
+			$availableCatsIds.=(JString::strlen($availableCatsIds)>0?$separator:"").$row->id;
 		}
 
 		$allcats = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'),"#d3d3d3",JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
@@ -223,7 +223,7 @@ class ExtModLegendView extends DefaultModLegendView{
 		. '<a href="'.JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk").'" title="'.JEventsHTML::special($row->name).'">'
 		. JEventsHTML::special($row->name).'</a>';
 		$content .= '</div>'."\n";
-		if (strlen($row->description)>0) {
+		if (JString::strlen($row->description)>0) {
 			$content .='<div class="event_legend_desc"  style="border-color:'.$row->color.'">'.$row->description.'</div>';
 		}
 		$content .= '</div>'."\n";

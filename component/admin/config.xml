@@ -17,7 +17,7 @@
 		<field name="com_calViewName" type="jevview" default='flat'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC" difficulty="1"/>
 		
-		<field name="com_dateformat" type="jevlist" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC" difficulty="1"  conditional="darktemplate" conditions="1">
+		<field name="com_dateformat" type="jevlist" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC" difficulty="1"  >
 			<option value="0">JEV_FRENCH_ENGLISH</option>
 			<option value="1">JEV_US</option>
 			<option value="2">JEV_CONTINENTAL_GERMAN</option>

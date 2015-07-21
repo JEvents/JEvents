@@ -37,16 +37,9 @@ function DefaultViewHelperViewNavAdminPanel($view)
 			{
 				// Load Bootstrap
 				JevHtmlBootstrap::framework();
-				if (JevJoomlaVersion::isCompatible("3.0")  )
-				{
-					JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
-				}
-				else {
-					include_once(JPATH_SITE."/components/com_jevents/libraries/formbehavior.php");
-					JevHtmlFormbehavior::chosen('#jevents select:not(.notchosen)');
-				}
+				JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 			}
-			if ($cfg->get("bootstrapcss", 1)==1 || ($cfg->get("bootstrapcss", 1)==2 && !JevJoomlaVersion::isCompatible("3.0") ))
+			if ($cfg->get("bootstrapcss", 1)==1)
 			{
 				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
 				JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);

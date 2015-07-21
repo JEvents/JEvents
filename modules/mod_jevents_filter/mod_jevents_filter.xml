@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.4.0RC2</version>
+	<version>3.4.0RC3</version>
 	<description>Shows JEvents Filter</description>
 	<files>
 		<filename module="mod_jevents_filter">mod_jevents_filter.php</filename>
@@ -51,9 +51,13 @@
 					label="JEV_FILTER_ENABLE_BOOSTRAP"
 					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
 					//-->
-				<field name="bootstrapcss" type="jevboolean" class="btn-group"
+				<field name="bootstrapcss" type="radio" class="btn-group"
 					   default="-1" default25="0" default30="1" label="JEV_LOAD_BOOTSTRAP_CSS"
-					   description="JEV_LOAD_BOOTSTRAP_CSS_DESC" />
+					   description="JEV_LOAD_BOOTSTRAP_CSS_DESC" >
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JNO</option>
+					<option value="2">JYES</option>
+				</field>
 				<field name="bootstrapchosen" type="jevboolean" class="btn-group"
 					   default="-1" default25="0" default30="1"  label="JEV_LOAD_BOOTSTRAP_CHOSEN"
 					   description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" />

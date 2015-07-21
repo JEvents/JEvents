@@ -186,7 +186,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
-				if (strlen($class) > 0)
+				if (JString::strlen($class) > 0)
 				{
 					$class = " class='$class $difficultyClass'";
 				}
@@ -216,7 +216,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 				{
 					$class = isset($field->class) ? $field->class : "";
 
-					if (strlen($class) > 0)
+					if (JString::strlen($class) > 0)
 					{
 						$class = " class='$class'";
 					}
@@ -320,7 +320,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 
-							if (strlen($class) > 0)
+							if (JString::strlen($class) > 0)
 							{
 								$class = " class='$class'";
 							}

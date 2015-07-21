@@ -241,7 +241,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (strpos($strippedmatch, "{{_") === 0 && strpos($strippedmatch, " ") === false)
 		{
 			$search[] = $strippedmatch;
-			$strippedmatch = substr($strippedmatch, 3, strlen($strippedmatch) - 5);
+			$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
 			$replace[] = JText::_($strippedmatch);
 			$blank[] = "";
 			continue;
@@ -477,7 +477,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 							$eventlink.= $key . "=" . $val . "&";
 						}
-						$eventlink = substr($eventlink, 0, strlen($eventlink) - 1);
+						$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
 						$eventlink = JRoute::_($eventlink);
 
 						$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
@@ -1221,9 +1221,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (strpos($part, "{{MODULEEND}}") === false)
 				{
 					// strip out BAD HTML tags left by WYSIWYG editors
-					if (substr($part, strlen($part) - 3) == "<p>")
+					if (JString::substr($part, JString::strlen($part) - 3) == "<p>")
 					{
-						$template_value = substr($part, 0, strlen($part) - 3);
+						$template_value = JString::substr($part, 0, JString::strlen($part) - 3);
 					}
 					else
 					{
@@ -1232,15 +1232,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					continue;
 				}
 				// start with module name
-				$modname = substr($part, 0, strpos($part, "}}"));
-				$modulecontent = substr($part, strpos($part, "}}") + 2);
-				$modulecontent = substr($modulecontent, 0, strpos($modulecontent, "{{MODULEEND}}"));
+				$modname = JString::substr($part, 0, strpos($part, "}}"));
+				$modulecontent = JString::substr($part, strpos($part, "}}") + 2);
+				$modulecontent = JString::substr($modulecontent, 0, strpos($modulecontent, "{{MODULEEND}}"));
 				// strip out BAD HTML tags left by WYSIWYG editors
 				if (strpos($modulecontent, "</p>") === 0)
 				{
 					$modulecontent = "<p>x@#" . $modulecontent;
 				}
-				if (substr($modulecontent, strlen($modulecontent) - 3) == "<p>")
+				if (JString::substr($modulecontent, JString::strlen($modulecontent) - 3) == "<p>")
 				{
 					$modulecontent .= "x@#</p>";
 				}
@@ -1348,9 +1348,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$words[] = " ...";
 					return implode(" ", $words);
 				}
-				if ($charcount > 0 && strlen($value) > $charcount)
+				if ($charcount > 0 && JString::strlen($value) > $charcount)
 				{
-					return substr($value, 0, $charcount) . " ...";
+					return JString::substr($value, 0, $charcount) . " ...";
 				}
 				return implode(" ", $words);
 			}

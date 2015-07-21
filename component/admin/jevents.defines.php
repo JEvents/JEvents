@@ -78,4 +78,4 @@ if (!defined("JEV_LIBS")){
 	//JLoader::register('JButtonJev', JEV_ADMINPATH . "libraries/jevbuttons.php");
 	//JLoader::register('JButtonJevlink', JEV_ADMINPATH . "libraries/jevbuttons.php");
 	//JLoader::register('JButtonJevconfirm', JEV_ADMINPATH . "libraries/jevbuttons.php");
-	
+

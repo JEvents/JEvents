@@ -285,7 +285,7 @@ class AdminIcalsController extends JControllerForm {
 				$access = intval($currentICS->access);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && strlen($currentICS->label)>=0){
+			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && JString::strlen($currentICS->label)>=0){
 				$icsLabel = $currentICS->label;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
@@ -309,7 +309,7 @@ class AdminIcalsController extends JControllerForm {
 			}
 
 			$state = 1;
-			if (strlen($currentICS->srcURL)==0) {
+			if (JString::strlen($currentICS->srcURL)==0) {
 				echo "Can only reload URL based subscriptions";
 				return;
 			}
@@ -334,7 +334,7 @@ class AdminIcalsController extends JControllerForm {
 		}
 
 		// I need a better check and expiry information etc.
-		if (strlen($uploadURL)>0){
+		if (JString::strlen($uploadURL)>0){
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL,$icsid,$catid,$access,$state,$icsLabel, $autorefresh, $ignoreembedcat);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']) ) {
@@ -425,11 +425,11 @@ class AdminIcalsController extends JControllerForm {
 				$state = intval($currentICS->state);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if ($icsLabel=="" && strlen($currentICS->icsLabel)>=0){
+			if ($icsLabel=="" && JString::strlen($currentICS->icsLabel)>=0){
 				$icsLabel = $currentICS->icsLabel;
 			}
 			$uploadURL = JRequest::getVar('uploadURL',$currentICS->srcURL );
-			if ($uploadURL=="" && strlen($currentICS->srcURL)>=0){
+			if ($uploadURL=="" && JString::strlen($currentICS->srcURL)>=0){
 				$uploadURL = $currentICS->srcURL;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);

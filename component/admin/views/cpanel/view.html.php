@@ -51,7 +51,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	protected function checkForAddons () {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && strlen($params->get("clubcode", "")>20)){
+		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", "")>20)){
 			return;
 		}
 
@@ -585,7 +585,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		  {
 		  $output .='"' . $appname . '"=> 0,' . "\n";
 		  }
-		  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
+		  $output = JString::substr($output, 0, JString::strlen($output) - 2) . ");\n\n";
 		 */
 		$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
 		$criticaldata = explode("\n", $criticaldata);
@@ -843,7 +843,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$output .= "Max Input Vars ? : " . ini_get("max_input_vars"). "\n";
 		}
 		$output .= "Club code set? : ".($params->get("clubcode", false) ? "Yes": "No")."  \n";
-
+		$server = new JInput($_SERVER);
+		$useragent = $server->get('HTTP_USER_AGENT',false,"string");
+		$output .= $useragent ? "User Agent : ".$useragent."  \n" : "";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";

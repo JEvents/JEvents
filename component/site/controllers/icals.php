@@ -449,7 +449,7 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// I need a better check and expiry information etc.
-		if (strlen($uploadURL) > 0)
+		if (JString::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -597,12 +597,12 @@ class ICalsController extends AdminIcalsController
 		{
 			$output .= JString::substr($input, 0, $line_max - 1);
 			$input = JString::substr($input, $line_max - 1);
-			if (strlen($input) > 0)
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -632,7 +632,7 @@ class ICalsController extends AdminIcalsController
 			  }
 			  }
 			 */
-			if ((strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

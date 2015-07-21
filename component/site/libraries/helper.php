@@ -789,20 +789,20 @@ class JEVHelper
 	{
 		$datenow = JEVHelper::getNow();
 		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = substr($year, 0, 1);
+		$firstpos = JString::substr($year, 0, 1);
 
 		if ($firstpos == "+")
 		{
-			$year = substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow + $year;
 		}
 		else if ($firstpos == "-")
 		{
-			$year = substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow - $year;
 		}
 		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (strlen($year) < 4)
+		else if (JString::strlen($year) < 4)
 		{
 			$cuenta = count($year);
 			$year = $yearnow + $year;
@@ -3321,12 +3321,12 @@ SCRIPT;
 		{
 			$output .= JString::substr($input, 0, $line_max - 1);
 			$input = JString::substr($input, $line_max - 1);
-			if (strlen($input) > 0)
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -3356,7 +3356,7 @@ SCRIPT;
 			  }
 			  }
 			 */
-			if ((strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

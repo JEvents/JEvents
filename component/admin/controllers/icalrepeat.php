@@ -615,7 +615,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[substr($key, 1)] = $val;
+				$data[JString::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);

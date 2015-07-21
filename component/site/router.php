@@ -162,7 +162,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -188,7 +188,7 @@ function JEventsBuildRoute(&$query)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && strlen($query['catids']) > 0)
+				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -208,7 +208,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +253,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -703,7 +703,7 @@ function JEventsBuildRouteNew(&$query, $task)
 							}
 						}
 
-						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && strlen($query['catids']) > 0)
+						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && JString::strlen($query['catids']) > 0)
 						{
 							unset($query['catids']);
 						}
@@ -712,7 +712,7 @@ function JEventsBuildRouteNew(&$query, $task)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && strlen($query['catids']) > 0)
+				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -736,7 +736,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
