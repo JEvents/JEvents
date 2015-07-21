@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.utilities.string' );
+
 $cfg	 = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype",'joomla')=='overlib'){
@@ -38,8 +38,8 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 					$cleaned_day = strip_tags($dayname, '');?>
 					<td class="cal_daysnames">
 						<span class="<?php echo strtolower($cleaned_day); ?>">
-							<?php echo JString::substr($cleaned_day, 0, 3);?>
-						</span>
+                            <?php echo JString::substr($cleaned_day, 0, 3);?>
+                        </span>
 					</td>
                     <?php
                 } ?>
