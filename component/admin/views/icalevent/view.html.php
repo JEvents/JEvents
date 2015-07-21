@@ -369,8 +369,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				$users = $db->loadObjectList();
 			}
 
-			// get list of creators - if fewer than 200
-			if (count($users)>200) {
+			// get list of creators - if fewer than 500
+			if (count($users)>500) {
 				return null;
 			}
 

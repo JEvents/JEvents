@@ -2707,6 +2707,29 @@ SCRIPT;
 				}
 			}
 
+			 if (JRequest::getCmd("em") || JRequest::getCmd("em2")){
+				// If we have RSVP PRo data then need to block page caching too!!
+				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
+				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
+				$dispatcher = JDispatcher::getInstance();
+				$observers = @$dispatcher->get("_observers");
+				if ($observers && is_array($observers))
+				{
+					foreach ($observers as $observer)
+					{
+						if (is_object($observer) && get_class($observer) == "plgSystemCache")
+						{
+							$pagecache = @$observer->get("_cache");
+							if ($pagecache)
+							{
+								$pagecache->setCaching(false);
+							}
+							break;
+						}
+					}
+				}
+			 }
+
 			if (!empty($app->registeredurlparams))
 			{
 				$registeredurlparams = $app->registeredurlparams;
