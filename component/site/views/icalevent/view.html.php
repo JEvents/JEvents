@@ -46,8 +46,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
-		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-                  JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+                  JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() <= "")
 		{
@@ -118,15 +118,9 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		$this->_adminStart();
 
-		if (JevJoomlaVersion::isCompatible("3.0")  )
-		{
-			// load Joomla javascript classes
-			JHTML::_('behavior.core');
-			$this->setLayout("edit");
-		}
-		else  {
-			$this->setLayout("editjq");
-		}
+		// load Joomla javascript classes
+		JHTML::_('behavior.core');
+		$this->setLayout("edit");
 
 		JEVHelper::componentStylesheet($this, "editextra.css");		
 		jimport('joomla.filesystem.file');
@@ -225,7 +219,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	{
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(substr($name, 1));
+			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

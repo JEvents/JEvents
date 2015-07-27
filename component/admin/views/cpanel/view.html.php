@@ -39,14 +39,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
-		else
-		{
-			$this->setLayout("cpanel25");
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		$this->checkForAddons();
 
@@ -58,7 +51,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	protected function checkForAddons () {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && strlen($params->get("clubcode", "")>20)){
+		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", "")>20)){
 			return;
 		}
 
@@ -592,7 +585,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		  {
 		  $output .='"' . $appname . '"=> 0,' . "\n";
 		  }
-		  $output = substr($output, 0, strlen($output) - 2) . ");\n\n";
+		  $output = JString::substr($output, 0, JString::strlen($output) - 2) . ");\n\n";
 		 */
 		$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
 		$criticaldata = explode("\n", $criticaldata);
@@ -849,7 +842,9 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$output .= "Max Input Vars ? : " . ini_get("max_input_vars"). "\n";
 		}
 		$output .= "Club code set? : ".($params->get("clubcode", false) ? "Yes": "No")."  \n";
-
+		$server = new JInput($_SERVER);
+		$useragent = $server->get('HTTP_USER_AGENT',false,"string");
+		$output .= $useragent ? "User Agent : ".$useragent."  \n" : "";
 		foreach ($apps as $appname => $app)
 		{
 			$output .= "$appname : $app->version\n";
@@ -1090,19 +1085,35 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		// Process the package
 		$db = JFactory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		if ($folder=="" && $package['type']!="file") {
+		if ($folder=="" && $package['type']!="file"  && $package['type']!="module"  && $package['type']!="plugin")  {
 			$this->removeComponentUpdate($com);
 		}
 
+		static $extensiondata = false;
+		if (!$extensiondata){
+			$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type, exn.element as extension_element, exn.folder as extension_folder  from #__extensions as exn
+	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id");
+			$extensiondata = $db->loadObjectList('extension_id');
+		}
+
 		// Now check and setup the package update URL
-		$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type from #__extensions as exn
+		/*
+		$db->setQuery("select *, exn.extension_id as extension_id , exn.type as extension_type  from #__extensions as exn
 LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
 where exn.type='$type'
 and exn.element='$pkg' and exn.folder='$folder'
 ");
-
 		$pkgupdate = $db->loadObject();
+		*/
+		$pkgupdate = false;
+		foreach ($extensiondata as $ed){
+			if ($ed->extension_type==$type && $ed->extension_element==$pkg && $ed->extension_folder==$folder){
+				$pkgupdate =  $ed;
+			}
+		}
+
 		// we have a package and an update record
 		if ($pkgupdate && $pkgupdate->update_site_id)
 		{
@@ -1120,6 +1131,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			// No package installed so fall back to component and set it to update using the package URL :)
 
 			// Do we already have a record for the update URL for the component - we should remove this
+			/*
 			$db->setQuery("select *, exn.extension_id as extension_id  from #__extensions as exn
 	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
 	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
@@ -1127,6 +1139,15 @@ and exn.element='$pkg' and exn.folder='$folder'
 	and exn.element='$com'
 	");
 			$cpupdate = $db->loadObject();
+			*/
+			
+			$cpupdate = false;
+			foreach ($extensiondata as $ed){
+				if ($ed->extension_type=='component'  && $ed->extension_element==$com ){
+					$cpupdate =  $ed;
+				}
+			}
+
 			if ($cpupdate && $cpupdate->update_site_id)
 			{
 				$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
@@ -1170,13 +1191,16 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$release = $version->get("RELEASE");
 
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
-		$db->setQuery("select * from #__extensions as exn
-	LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
-	LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
-	where exn.type='component'
-	and exn.element='$com'
-	");
-		$cpupdate = $db->loadObject();
+		static $comdata = false;
+		if (!$comdata){
+				$db->setQuery("select * , exn.element as element from #__extensions as exn
+			LEFT JOIN #__update_sites_extensions as map on map.extension_id=exn.extension_id
+			LEFT JOIN #__update_sites as us on us.update_site_id=map.update_site_id
+			where exn.type='component'
+			");
+			$comdata = $db->loadObjectList('element');
+		}
+		$cpupdate = isset($comdata[$com]) ? $comdata[$com] : false;
 		if ($cpupdate && $cpupdate->update_site_id)
 		{
 			$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
@@ -1208,8 +1232,17 @@ and exn.element='$pkg' and exn.folder='$folder'
 		//$domain = "ubu.jev20j16.com";
 		$domain = "www.jevents.net";
 
-		$extension  = JTable::getInstance("Extension");
-		$extension->load($pkgupdate->extension_id);
+		//$extension  = JTable::getInstance("Extension");
+		//$extension->load($pkgupdate->extension_id);
+
+		// Save DB queries!
+		static $extensiondata = false;
+		if (!$extensiondata ) {
+			$db->setQuery("Select * from #__extensions");
+			$extensiondata  = $db->loadObjectList('extension_id');
+		}
+
+		$extension = isset($extensiondata[$pkgupdate->extension_id]) ? $extensiondata[$pkgupdate->extension_id] : null;
 
 		// Packages are installed with client_id = 0 which stops the update from taking place to we update the extension to client_id=1
 		/*
@@ -1235,9 +1268,11 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
-			$db->query();
-			echo $db->getErrorMsg();
+			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "https://$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
+				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
+				$db->query();
+				echo $db->getErrorMsg();
+			}
 		}
 		else {
 			$extensionname = str_replace(" ","_",$extension->element);

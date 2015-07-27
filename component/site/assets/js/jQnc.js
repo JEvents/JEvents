@@ -9,6 +9,7 @@ checkJQ();
 
 // workaround for tooltips and popovers failing when MooTools is enabled with Bootstrap 3
 // See http://www.mintjoomla.com/support/community-forum/user-item/1833-braza/48-cobalt-8/2429.html?start=20
+
 jQuery(document).on('ready', function() {
 	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
@@ -57,4 +58,16 @@ jQuery(document).on('ready', function() {
 			}
 		});
 	}
+});
+
+// disable click event in popover for non-touch devices
+jQuery(document).on('ready', function() {
+	 if (!('ontouchstart' in document.documentElement)) {
+		//alert('non-touch');
+		jQuery("<style>" ).prop("type" , "text/css").html(" .jev-click-to-open {display:none;}").appendTo("head");
+	 }
+	 else {
+		 //alert('has-touch');
+		// jQuery("<style>" ).prop("type" , "text/css").html(" .jev-click-to-open {display:none;}").appendTo("head");
+	 }
 });

@@ -25,7 +25,7 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', substr($version->getShortVersion(), 1)); ?>
+			<?php echo JText::sprintf('JEV_CURRENT_VERSION', JString::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
 <?php
@@ -106,6 +106,18 @@ $fullspan = 12;
 					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
+				// Custom Fields
+				/*
+				$db = JFactory::getDbo ();
+				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
+				$is_enabled = $db->loadResult ();
+				if ($is_enabled) {
+					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
+					JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+					$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				}
+				 *
+				 */
 				?>
                 <div class="clear"></div>
             </div>

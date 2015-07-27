@@ -55,7 +55,7 @@ class jevStartdateFilter extends jevFilter
 			$this->filter_values[0]=1;
 			// default scenario is only events starting after 2 weeeks ago			
 			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("-2 weeks"));
-			$this->filter_values[1]=substr($fulldate,0,10);
+			$this->filter_values[1]=JString::substr($fulldate,0,10);
 			$this->filter_values[2]=1;
 			return  $this->dmap.".startrepeat>='$fulldate'";
 		}
@@ -65,12 +65,12 @@ class jevStartdateFilter extends jevFilter
 		}
 		else if ($this->filter_values[0]==-1 && $this->filter_values[1]==""){
 			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("+2 weeks"));
-			$this->filter_values[1]=substr($fulldate,0,10);
+			$this->filter_values[1]=JString::substr($fulldate,0,10);
 			$this->_date = $this->filter_values[1];
 		}
 		else if ($this->filter_values[0]==1 && $this->filter_values[1]==""){
 			$fulldate = date( 'Y-m-d H:i:s',JevDate::strtotime("-2 weeks"));
-			$this->filter_values[1]=substr($fulldate,0,10);
+			$this->filter_values[1]=JString::substr($fulldate,0,10);
 			$this->_date = $this->filter_values[1];
 		}
 		$filter="";
@@ -124,7 +124,7 @@ class jevStartdateFilter extends jevFilter
 			$maxyear = JEVHelper::getMaxYear();
 			$document = JFactory::getDocument();
 			
-			$calendar = (JevJoomlaVersion::isCompatible("3.0")) ? 'calendar14.js' : 'calendar12.js'; 
+			$calendar = 'calendar14.js' ;
 		
 			JEVHelper::script($calendar, "components/".JEV_COM_COMPONENT."/assets/js/",true); 
 			JEVHelper::stylesheet("dashboard.css",  "components/".JEV_COM_COMPONENT."/assets/css/",true);  

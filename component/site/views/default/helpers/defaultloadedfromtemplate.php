@@ -3,7 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
-
 	$db = JFactory::getDBO();
 	// find published template
 	static $templates;
@@ -15,6 +14,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$rawtemplates = array();
 	}
 	$specialmodules = false;
+
+	$loadedFromFile = false;
 
 	if (!$template_value)
 	{
@@ -33,9 +34,29 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 			}
 
-			if (count($templates[$template_name])==0) {
-				$templates[$template_name] = null;
-				return false;
+			if (!isset($templates[$template_name]['*'][0])) {
+				try {
+					$viewname = $view->getViewName();
+				}
+				catch (Exception $e){
+					$viewname = "default";
+				}
+				$templatefile = JEV_VIEWS."/$viewname/defaults/$template_name.html";
+				if (!JFile::exists($templatefile)){
+					$templatefile = JEV_ADMINPATH."views/defaults/tmpl/$template_name.html";
+				}
+				// Fall back to html version
+				if (JFile::exists($templatefile))
+				{
+					$loadedFromFile = true;
+					$templates[$template_name]['*'] = array();
+					$templates[$template_name]['*'][0] =new stdClass();
+					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
+					$templates[$template_name]['*'][0]->params = null;
+				}
+				else {
+					return false;
+				}
 			}
 
 			if (isset($templates[$template_name][JFactory::getLanguage()->getTag()]))
@@ -220,7 +241,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (strpos($strippedmatch, "{{_") === 0 && strpos($strippedmatch, " ") === false)
 		{
 			$search[] = $strippedmatch;
-			$strippedmatch = substr($strippedmatch, 3, strlen($strippedmatch) - 5);
+			$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
 			$replace[] = JText::_($strippedmatch);
 			$blank[] = "";
 			continue;
@@ -229,6 +250,11 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		switch ($strippedmatch) {
 			case "{{TITLE}}":
 				$search[] = "{{TITLE}}";
+				$replace[] = $event->title();
+				$blank[] = "";
+				break;
+			case "{{TRUNCATED_TITLE}}":
+				$search[] = "{{TRUNCATED_TITLE:.*?}}";
 				$replace[] = $event->title();
 				$blank[] = "";
 				break;
@@ -451,7 +477,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 							$eventlink.= $key . "=" . $val . "&";
 						}
-						$eventlink = substr($eventlink, 0, strlen($eventlink) - 1);
+						$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
 						$eventlink = JRoute::_($eventlink);
 
 						$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
@@ -640,6 +666,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$search[] = "{{ENDTIME}}";
 						$replace[] = ($row->noendtime() || $row->alldayevent()) ? "" : $stop_time_midnightFix;
 						$blank[] = "";
+						$search[] = "{{MULTIENDDATE}}";
+						$replace[]  = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$blank[] = "";
 						$search[] = "{{STARTTZ}}";
 						$replace[] = $row->alldayevent() ? "" : $start_time;
 						$blank[] = "";
@@ -653,17 +682,17 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
-						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $stop_date : "";
+						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
-						$search[] = "{{ISOSTART}}";
-						$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
-						$blank[] = "";
-						$search[] = "{{ISOEND}}";
-						$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
-						$blank[] = "";
-						$search[] = "{{MULTIENDDATE}}";
-						$replace[] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
-						$blank[] = "";
+						if (strpos($template_value, "{{ISOSTART}}") !== false || strpos($template_value, "{{ISOEND}}") !== false)
+						{
+							$search[] = "{{ISOSTART}}";
+							$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
+							$blank[] = "";
+							$search[] = "{{ISOEND}}";
+							$replace[] = JEventsHTML::getDateFormat($row->ydn(), $row->mdn(), $row->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hdn(), $row->mindn());
+							$blank[] = "";
+						}
 					}
 					else
 					{
@@ -1140,7 +1169,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// word counts etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (strpos($search[$s], "TRUNCATED_DESC:") > 0)
+			if (strpos($search[$s], "TRUNCATED_DESC:") > 0 || strpos($search[$s], "TRUNCATED_TITLE:") > 0)
 			{
 				global $tempreplace, $tempevent, $tempsearch;
 				$tempreplace = $replace[$s];
@@ -1192,9 +1221,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (strpos($part, "{{MODULEEND}}") === false)
 				{
 					// strip out BAD HTML tags left by WYSIWYG editors
-					if (substr($part, strlen($part) - 3) == "<p>")
+					if (JString::substr($part, JString::strlen($part) - 3) == "<p>")
 					{
-						$template_value = substr($part, 0, strlen($part) - 3);
+						$template_value = JString::substr($part, 0, JString::strlen($part) - 3);
 					}
 					else
 					{
@@ -1203,15 +1232,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					continue;
 				}
 				// start with module name
-				$modname = substr($part, 0, strpos($part, "}}"));
-				$modulecontent = substr($part, strpos($part, "}}") + 2);
-				$modulecontent = substr($modulecontent, 0, strpos($modulecontent, "{{MODULEEND}}"));
+				$modname = JString::substr($part, 0, strpos($part, "}}"));
+				$modulecontent = JString::substr($part, strpos($part, "}}") + 2);
+				$modulecontent = JString::substr($modulecontent, 0, strpos($modulecontent, "{{MODULEEND}}"));
 				// strip out BAD HTML tags left by WYSIWYG editors
 				if (strpos($modulecontent, "</p>") === 0)
 				{
 					$modulecontent = "<p>x@#" . $modulecontent;
 				}
-				if (substr($modulecontent, strlen($modulecontent) - 3) == "<p>")
+				if (JString::substr($modulecontent, JString::strlen($modulecontent) - 3) == "<p>")
 				{
 					$modulecontent .= "x@#</p>";
 				}
@@ -1256,7 +1285,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$template_value = str_replace("@£@", "@", $template_value);
 
 		echo $template_value;
-		return true;
+		return !$loadedFromFile;
 
 	}
 
@@ -1319,9 +1348,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$words[] = " ...";
 					return implode(" ", $words);
 				}
-				if ($charcount > 0 && strlen($value) > $charcount)
+				if ($charcount > 0 && JString::strlen($value) > $charcount)
 				{
-					return substr($value, 0, $charcount) . " ...";
+					return JString::substr($value, 0, $charcount) . " ...";
 				}
 				return implode(" ", $words);
 			}
@@ -1378,7 +1407,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$offset2 = $indate->getOffset();;
 
 				$indate = $indate->getTimestamp()+$offset2-$offset1;
-				return JEV_CommonFunctions::jev_strftime($fmt, $indate);
+				return JEV_CommonFunctions::jev_strftime($fmt, intval($indate));
 			}
 			else
 			{

@@ -1,7 +1,7 @@
 /**
  * JEvents Component for Joomla 1.5.x
  *
- * @version     $Id: editical.js 3576 2012-05-01 14:11:04Z geraintedwards $
+ * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -445,11 +445,11 @@ function toggleView12Hour(){
 	if (document.adminForm.view12Hour.checked) {
 		document.getElementById('start_24h_area').style.display="none";
 		document.getElementById('end_24h_area').style.display="none";
-		document.getElementById('start_12h_area').style.display="inline";
-		document.getElementById('end_12h_area').style.display="inline";
+		document.getElementById('start_12h_area').style.display="inline-block";
+		document.getElementById('end_12h_area').style.display="inline-block";
 	} else {
-		document.getElementById('start_24h_area').style.display="inline";
-		document.getElementById('end_24h_area').style.display="inline";
+		document.getElementById('start_24h_area').style.display="inline-block";
+		document.getElementById('end_24h_area').style.display="inline-block";
 		document.getElementById('start_12h_area').style.display="none";
 		document.getElementById('end_12h_area').style.display="none";
 	}
@@ -544,7 +544,7 @@ function toggleAllDayEvent()
 		sam.disabled=false;
 		spm.disabled=false;
 
-		jQuery('.jevstarttime').css('display','inline');
+		jQuery('.jevstarttime').css('display','inline-block');
 
 		if (!noendchecked){
 			hide_end.disabled=false;
@@ -563,7 +563,7 @@ function toggleAllDayEvent()
 			eam.disabled=false;
 			epm.disabled=false;
 
-			jQuery('.jevendtime').css('display','inline');
+			jQuery('.jevendtime').css('display','inline-block');
 
 		}
 		else {
@@ -633,7 +633,7 @@ function toggleNoEndTime(){
 		eam.disabled=false;
 		epm.disabled=false;
 
-		jQuery('.jevendtime').css('display','inline');
+		jQuery('.jevendtime').css('display','inline-block');
 
 	}
 
@@ -750,7 +750,7 @@ function toggleFreq(freq , setup)
 				bymonthday.style.display="none";
 				byday.style.display="none";
 
-				fixRepeatDates(true);
+				if (!setup) fixRepeatDates(true);
 			}
 			break;
 		case "MONTHLY":
@@ -830,7 +830,7 @@ function fixRepeatDates(checkYearDay){
 	startDate = startDate.dateFromYMD(start_date.value);	
 	
 	// special case where we first press yearly repeat - should check for 28 Feb
-	if (checkYearDay) {
+	if (checkYearDay && (document.adminForm.evid.value==0 || document.adminForm.updaterepeats.value==1)) {
 		yearStart = new Date(startDate.getFullYear(),0,0,0,0,0,0);
 		days = ((startDate-yearStart)/(24*60*60*1000));
 		if (days>60){
@@ -941,14 +941,14 @@ jQuery.fn.formToJson =  function(){
 			var value = el.value;
 			if (value === false || !name || el.disabled) return;
 			// multi selects
-			if (name.contains('[]') && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
+			if (name.indexOf('[]')>=0 && (el.tagName.toLowerCase() =='select' ) && el.multiple==true){
 				name = name.substr(0,name.length-2);
 				if (!json[name]) json[name] = [];
 				jevjq(el).find('option').each(function(eldx, opt){
 					if (opt.selected ==true) json[name].push(opt.value);
 				});
 			}
-			else if (name.contains('[]') && (el.type=='radio' || el.type=='checkbox') ){
+			else if (name.indexOf('[]')>=0 && (el.type=='radio' || el.type=='checkbox') ){
 				if (!json[name]) json[name] = [];
 				if (el.checked==true) json[name].push(value);
 			}

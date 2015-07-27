@@ -1,8 +1,8 @@
 function setupColumnChoices(){
-	var columnchoices = jevjq("#columnchoices");
-	var options = jevjq('#columnchoices div');
+	var columnchoices = jQuery("#columnchoices");
+	var options = jQuery('#columnchoices div');
 	options.each(function(index){
-		opt = jevjq(this);
+		opt = jQuery(this);
 		// remove event handlers
 		opt.off("click");
 		// This is a disabled group label
@@ -12,15 +12,16 @@ function setupColumnChoices(){
 		}
 		opt.css('cursor',"pointer");
 		opt.on("click",function(event){
-			var span = jevjq(this).find('span:first-child');
+			var span = jQuery(this).find('span:first-child');
 			var id = span.html();
+
 			//span.parent().removeChild(span);
 			span.detach();
 			// remove html entities so use firstChild.nodeValue instead of innerHTML
-			var text =  jevjq(this).html();
-			jevjq(this).remove();
+			var text =  jQuery(this).html();
+			jQuery(this).remove();
 
-			var uls = jevjq("#columnmatches");
+			var uls = jQuery("#columnmatches");
 			if (uls){
 				uls.append("<div id='column"+id+"'>"
 						+"<div style='width:200px;display:inline-block;'>"+text+"</div>"
@@ -37,7 +38,7 @@ function setupColumnChoices(){
 var colsbeingsorted = false;
 function setupColumnLis(){
 
-	jevjq("#columnmatches").sortable({
+	jQuery("#columnmatches").sortable({
 		start: function(event, ui) {
 			colsbeingsorted=true;
 		},
@@ -51,10 +52,10 @@ function setupColumnLis(){
 		}
 	});
 
-	var lis = jevjq("#columnmatches div");
+	var lis = jQuery("#columnmatches > div");
 	
 	lis.each(function(i){
-		item = jevjq(this);
+		item = jQuery(this);
 		item.css("cursor","pointer");
 		// remove event handlers
 		item.off("click");
@@ -69,14 +70,14 @@ function setupColumnLis(){
 			}
 
 			// remove label input
-			jevjq(this).find('input').remove();
-			var text = jevjq(this).html(); 
-			var id = jevjq(this).prop("id").replace("column","");
-			jevjq(this).remove()
+			var text = jQuery(this).find("input").val();
+			jQuery(this).find('input').remove();
+			var id = jQuery(this).prop("id").replace("column","");
 
-			var sel = jevjq("#columnchoices");
+			jQuery(this).remove()
+			var sel = jQuery("#columnchoices");
 			if (sel){
-				sel.append("<div>"+text+"<span style='display:none'>"+id+"</span><div>");
+				sel.append("<div>"+text+"<span style='display:none'>"+id+"</span></div>");
 
 				setupColumnChoices();
 			};
@@ -94,13 +95,13 @@ function setupColumnLis(){
 
 function setupCustomColumnField(fieldid){
 	// setup custom field
-	var customfield = jevjq(fieldid);
+	var customfield = jQuery(fieldid);
 	if (!customfield) return;
 	customfield.val( "");
-	var lis = jevjq("#columnmatches div");
+	var lis = jQuery("#columnmatches div");
 	lis.each(function( i){
-		if (!jevjq(this).prop("id")) return;
-		var item = jevjq(this).clone();
+		if (!jQuery(this).prop("id")) return;
+		var item = jQuery(this).clone();
 		var input = item.find('input');
 		var value = input.val();
 		// now remove the input element to just get the field label
@@ -110,6 +111,6 @@ function setupCustomColumnField(fieldid){
 		}
 		// get the contained div
 		item = item.find("div");
-		customfield.val( customfield.val() + jevjq(this).prop("id").replace("column","")+"|"+ item.html() +"|"+ value);
+		customfield.val( customfield.val() + jQuery(this).prop("id").replace("column","")+"|"+ item.html() +"|"+ value);
 	});
 }

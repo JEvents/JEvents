@@ -528,7 +528,7 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-			function loadCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d')
+			function loadCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attributes = array())
 	{
 		$document = JFactory::getDocument();
 		$component = "com_jevents";
@@ -544,7 +544,6 @@ class JEVHelper
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
 		// Build the attributes array.
-		$attributes = array();
 		empty($onchange)  ? null : $attributes['onchange'] = $onchange;
 		//$attributes['onselect']="function{this.hide();}";
 		/*
@@ -566,65 +565,7 @@ class JEVHelper
 		// switch back to strftime format to use Joomla calendar tool
 		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
 
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
-		}
-		else {
-			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
-			// Joomla 2.5 can't cope with d/m/y format !!!
-			static $done;
-
-			if ($done === null)
-			{
-				$done = array();
-			}
-
-			$readonly = isset($attributes['readonly']) && $attributes['readonly'] == 'readonly';
-			$disabled = isset($attributes['disabled']) && $attributes['disabled'] == 'disabled';
-
-			$attributes = JArrayHelper::toString($attributes);
-
-			if (!$readonly && !$disabled)
-			{
-				// Load the calendar behavior
-				JHtml::_('behavior.calendar');
-				JHtml::_('behavior.tooltip');
-
-
-				// Only display the triggers once for each control.
-				if (!in_array($fieldid, $done))
-				{
-					$document = JFactory::getDocument();
-					$document
-						->addScriptDeclaration(
-						'window.addEvent(\'domready\', function() {Calendar.setup({
-					// Id of the input field
-					inputField: "' . $fieldid . '",
-					// Format of the input field
-					ifFormat: "' . $format . '",
-					// Trigger for the calendar (button ID)
-					button: "' . $fieldid . '_img",
-					// Alignment (defaults to "Bl")
-					align: "Tl",
-					singleClick: true,
-					firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
-					});});'
-					);
-					$done[] = $fieldid;
-				}
-				echo  '<input type="text" title="' .  $value. '" name="' . $fieldname . '" id="' . $fieldid
-					. '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" ' . $attributes . ' />'
-					. JHtml::_('image', 'system/calendar.png', JText::_('JLIB_HTML_CALENDAR'), array('class' => 'calendar', 'id' => $fieldid . '_img'), true);
-			}
-			else
-			{
-				echo  '<input type="text" title="' . $value 
-					. '" value="' . $value  . '" ' . $attributes
-					. ' /><input type="hidden" name="' . $fieldname . '" id="' . $fieldid . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '" />';
-			}
-
-			//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart,  $fieldname, $fieldid, $format, $attributes);
-		}
+		echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
 
 	}
 
@@ -722,14 +663,19 @@ class JEVHelper
 			}
 			else
 			{
-				$jevitems = $menu->getItems("component", JEV_COM_COMPONENT);
+				$registry = JRegistry::getInstance("jevents");
+				$user = $registry->get("jevents.icaluser", false);
+				if (!$user) {
+					$user = JFactory::getUser();
+				}
+				$accesslevels = $user->getAuthorisedViewLevels();
+				$jevitems = $menu->getItems(array("component","access"),array( JEV_COM_COMPONENT, $accesslevels));
 				// TODO second level Check on enclosing categories and other constraints
 				if (count($jevitems) > 0)
 				{
-					$user = JFactory::getUser();
 					foreach ($jevitems as $jevitem)
 					{
-						if (version_compare(JVERSION, '1.6.0', '>=') ? in_array($jevitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) >= $jevitem->access)
+						if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
 						{
 							$jevitemid[$evid] = $jevitem->id;
 
@@ -843,20 +789,20 @@ class JEVHelper
 	{
 		$datenow = JEVHelper::getNow();
 		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = substr($year, 0, 1);
+		$firstpos = JString::substr($year, 0, 1);
 
 		if ($firstpos == "+")
 		{
-			$year = substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow + $year;
 		}
 		else if ($firstpos == "-")
 		{
-			$year = substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow - $year;
 		}
 		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (strlen($year) < 4)
+		else if (JString::strlen($year) < 4)
 		{
 			$cuenta = count($year);
 			$year = $yearnow + $year;
@@ -1978,6 +1924,12 @@ class JEVHelper
 		{
 			$user = JFactory::getUser();
 		}
+		$registry = JRegistry::getInstance("jevents");
+		$adminuser = $registry->get("jevents.icaluser", false);
+		if ($adminuser){
+			$user = $adminuser;
+		}
+
 		$root = $user->get("isRoot");
 		if ($root)
 		{
@@ -2367,131 +2319,12 @@ class JEVHelper
 		$condarray = "'" . (string) implode("','", $conditionarray) . "'";
 		$fielddefaultarray = "'" . (string) str_replace(",", "','", $fielddefault) . "'";
 
-		$script = <<<SCRIPT
-			var jevConditional = {
-					setupJevConditions: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
-						var condition = $(condparam+ conditions);
-						var radioElements = condition.getElements('input[type=radio]');
-						if (radioElements.length > 0) {
-							for (var i = 0; i < radioElements.length; i++) {
-								// Need both for Chosen replacements
-								radioElements[i].addEvent("click", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-								radioElements[i].addEvent("change", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-							}
-						}
-						else if (condition.tagName == "SELECT") {
-							if ($(condition.id + "_chzn")) {
-								var condition_chzn = $(condition.id + "_chzn");
-								for (var i = 0; i < condition_chzn.childNodes.length; i++) {
-									condition_chzn.childNodes[i].addEvent("click", function() {
-										jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-									});
-								}
-							}
-							else
-								condition.addEvent("change", function() {
-									jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-								});
-						}
-						else {
-							condition.addEvent("change", function() {
-								jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-							});
-						}
-						jevConditional.jevCondition(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray)
-					},
-					jevCondition: function(conditional,fielddefault,condlabel ,condparam, conditions, fieldparam,condarray,fielddefaultarray) {
-						var condition = $(condparam + conditions);
-						var eventsno = $(fieldparam+conditional);
-						if (!condition || !eventsno){
-							return;
-						}
-						// Joomla 3.x named element is inside control and also control-group elements
-						var hiddencontrol = eventsno.parentNode.parentNode;
-						// Joomla 2.5
-						if (hiddencontrol.tagName=="UL"){
-							hiddencontrol = eventsno.parentNode;
-						}
-						var conditionsarray = new Array(condarray);
-						if (condition.type == "checkbox") {
-							condition.value = condition.checked;
-						}
-						var radioElements = condition.getElements('input[type=radio]');
-						if (radioElements.length>0) {
-							for (var i = 0; i < radioElements.length; i++) {
-								if (radioElements[i].checked)
-									condition.value = radioElements[i].value;
-							}
-						}
-						if (condition.multiple && condition.tagName == "SELECT") {
-							for (var i = 0; i < condition.options.length; i++) {
-								if (condition.options[i].selected && conditionsarray.indexOf(condition.options[i].value) >= 0)
-									conditionsarray[0] = condition.value;
-							}
-						}
-
-						var checkboxElements = condition.type=="checkbox"? new Array(condition) : condition.getElements('input[type=checkbox]');
-						if (checkboxElements.length>0) {
-							condition.value = new Array();
-							for (var i = 0; i < checkboxElements.length; i++) {
-								if (checkboxElements[i].checked && conditionsarray.indexOf(checkboxElements[i].value) >= 0) {
-									condition.value = conditionsarray[0];
-								}
-							}
-						}
-						// If condition is valid then show the row
-						if (conditionsarray.indexOf(condition.value) >= 0) {
-							if (hiddencontrol.tagName == "TR") {
-								hiddencontrol.style.display = "table-row";
-							}
-							else if (hiddencontrol.tagName == "SPAN"){
-								hiddencontrol.style.display = "inline";
-							}
-							else
-								hiddencontrol.style.display = "block";
-						}
-						// else hide the row and revert the value to its default
-						else {
-							// Is the dependent field is a select list, or radio list
-							if (eventsno && eventsno.options){
-								var defaultarray = new Array(fielddefaultarray);
-								for (var i = 0; i < eventsno.options.length; i++) {
-									if (defaultarray.indexOf(eventsno.options[i].value) >= 0) {
-										eventsno.options[i].selected = true;
-									}
-									else
-										eventsno.options[i].selected = false;
-								}
-							}
-							else {
-								eventsno.value = fielddefault;
-							}
-							hiddencontrol.style.display = "none";
-						}
-						try {
-							jevjq(eventsno).trigger("liszt:updated");
-						}
-						catch (e) {
-						}
-					}
-				}
-SCRIPT;
-		$document = JFactory::getDocument();
-		static $loadedScript = false;
-		if (!$loadedScript)
-		{
-			$document->addScriptDeclaration($script);
-			$loadedScript = true;
-		}
+		JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/conditionalfields.js');
 
 		$script = <<<SCRIPT
-				window.addEvent('load', function() {
-					jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', $condarray, $fielddefaultarray);
-				});
+	jQuery(document).on('ready', function() {
+		jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', "Array($condarray)", "Array($fielddefaultarray)");
+	});
 SCRIPT;
 
 		$document = JFactory::getDocument();
@@ -2706,6 +2539,29 @@ SCRIPT;
 					}
 				}
 			}
+
+			 if (JRequest::getCmd("em") || JRequest::getCmd("em2")){
+				// If we have RSVP PRo data then need to block page caching too!!
+				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
+				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
+				$dispatcher = JDispatcher::getInstance();
+				$observers = @$dispatcher->get("_observers");
+				if ($observers && is_array($observers))
+				{
+					foreach ($observers as $observer)
+					{
+						if (is_object($observer) && get_class($observer) == "plgSystemCache")
+						{
+							$pagecache = @$observer->get("_cache");
+							if ($pagecache)
+							{
+								$pagecache->setCaching(false);
+							}
+							break;
+						}
+					}
+				}
+			 }
 
 			if (!empty($app->registeredurlparams))
 			{
@@ -2998,7 +2854,12 @@ SCRIPT;
 					}
 
 					$html .= "DTSTAMP:" . $stamptime . "\r\n";
-					$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+					if ($row->alldayevent()) {
+						$html .= "DTSTART$alldayprefix:" . $start . "\r\n";
+					}
+					else {
+						$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
+					}
 					// events with no end time don't give a DTEND
 					if (!$a->noendtime())
 					{
@@ -3460,12 +3321,12 @@ SCRIPT;
 		{
 			$output .= JString::substr($input, 0, $line_max - 1);
 			$input = JString::substr($input, $line_max - 1);
-			if (strlen($input) > 0)
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -3495,7 +3356,7 @@ SCRIPT;
 			  }
 			  }
 			 */
-			if ((strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;
@@ -3558,110 +3419,3 @@ SCRIPT;
 	}
 
 }
-
-/* Keep this - just in case */
-/*
- 				var jevConditional_$conditional = {
-					setupJevConditions: function() {
-						var condition = $("$condparam$conditions");
-						if (condition.className.indexOf("radio") >= 0) {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].type == "radio") {
-									condition.childNodes[i].addEvent("click", function() {
-										jevConditional_$conditional.jevCondition()
-									});
-								}
-							}
-						}
-						else if (condition.tagName == "SELECT") {
-							if ($(condition.id + "_chzn")) {
-								var condition_chzn = $(condition.id + "_chzn");
-								for (var i = 0; i < condition_chzn.childNodes.length; i++) {
-									condition_chzn.childNodes[i].addEvent("click", function() {
-										jevConditional_$conditional.jevCondition()
-									});
-								}
-							}
-							else
-								condition.addEvent("change", function() {
-									jevConditional_$conditional.jevCondition()
-								});
-						}
-						else {
-							condition.addEvent("change", function() {
-								jevConditional_$conditional.jevCondition()
-							});
-						}
-						jevConditional_$conditional.jevCondition();
-					},
-					jevCondition: function() {
-						var condition = $("$condparam$conditions");
-						var eventsno = $("$fieldparam$conditional");
-						var hiddencontrol = eventsno.parentNode.parentNode;
-						var conditionsarray = new Array($condarray);
-						if (condition.type == "checkbox")
-							condition.value = condition.checked;
-						if (condition.childNodes[0] && condition.childNodes[0].type == "radio") {
-							for (var i = 0; i < condition.childNodes.length; i++) {
-								if (condition.childNodes[i].checked)
-									condition.value = condition.childNodes[i].value;
-							}
-						}
-						if (condition.multiple && condition.tagName == "SELECT") {
-							for (var i = 0; i < condition.options.length; i++) {
-								if (condition.options[i].selected && conditionsarray.indexOf(condition.options[i].value) >= 0)
-									conditionsarray[0] = condition.value;
-							}
-						}
-						if (condition.childNodes[0] && condition.childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0] && condition.childNodes[0].childNodes[0].childNodes[0].type == "checkbox") {
-							condition.value = new Array();
-							for (var i = 0; i < condition.childNodes[0].childNodes.length; i++) {
-								if (condition.childNodes[0].childNodes[i].childNodes[0].checked && conditionsarray.indexOf(condition.childNodes[0].childNodes[i].childNodes[0].value) >= 0) {
-									condition.value = conditionsarray[0];
-								}
-							}
-						}
-						// If condition is valid then show the row
-						if (conditionsarray.indexOf(condition.value) >= 0) {
-							if (hiddencontrol.tagName == "TR") {
-								hiddencontrol.style.display = "table-row";
-							}
-							else if (hiddencontrol.tagName == "SPAN"){
-								hiddencontrol.style.display = "inline";
-							}
-							else
-								hiddencontrol.style.display = "block";
-						}
-						// else hide the row and revert the value to its default
-						else {
-							// Is the dependent field is a select list, or radio list
-							if (eventsno && eventsno.options){
-								var defaultarray = new Array($fielddefaultarray);
-								for (var i = 0; i < eventsno.options.length; i++) {
-									if (defaultarray.indexOf(eventsno.options[i].value) >= 0) {
-										eventsno.options[i].selected = true;
-									}
-									else
-										eventsno.options[i].selected = false;
-								}
-							}
-							// this should be not dependent on language!
-							else if ("$condlabel" == "Specified Person?" || "$condlabel" == "Specified Location?")
-								$conditional.Delete();
-							else {
-								eventsno.value = "$fielddefault";
-							}
-							hiddencontrol.style.display = "none";
-						}
-						try {
-							jQuery(eventsno).trigger("liszt:updated");
-						}
-						catch (e) {
-						}
-					}
-				}
-				window.addEvent('load', function() {
-					jevConditional_$conditional.setupJevConditions();
-				});
-
- */

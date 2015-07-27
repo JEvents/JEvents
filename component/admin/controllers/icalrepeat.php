@@ -263,6 +263,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
+			$this->redirect();
 		}
 		else
 		{
@@ -290,6 +291,7 @@ class AdminIcalrepeatController extends JControllerLegacy
                             if ($popupdetail!=""){
                                     // redirect to event detail page within popup window
                                     $this->setRedirect($link, $msg);
+				$this->redirect();
                                     return;
                             }
                             else {
@@ -304,6 +306,7 @@ class AdminIcalrepeatController extends JControllerLegacy
                             }
 			}
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
+			$this->redirect();
 		}
 
 	}
@@ -318,6 +321,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid(), $msg);
+			$this->redirect();
 		}
 		else
 		{
@@ -336,6 +340,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			}
 			// return to the event repeat
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false), $msg);
+			$this->redirect();
 		}
 
 	}
@@ -610,7 +615,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[substr($key, 1)] = $val;
+				$data[JString::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);
@@ -681,12 +686,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_UPDATED")."");
+			$this->redirect();
 		}
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = JRequest::getString("rettask", "day.listevents");
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "".JText::_("JEV_ICAL_RPT_UPDATED")."");
+			$this->redirect();
 		}
 
 	}
@@ -795,12 +802,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, "ICal Repeat deleted");
+			$this->redirect();
 		}
 		else
 		{
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "ICal Repeat deleted");
+			$this->redirect();
 		}
 
 	}
@@ -824,12 +833,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $repeatdata->eventid, "ICal Repeats deleted");
+			$this->redirect();
 		}
 		else
 		{
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), "Ical Repeats Deleted");
+			$this->redirect();
 		}
 
 	}

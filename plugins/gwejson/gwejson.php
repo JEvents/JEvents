@@ -44,11 +44,6 @@ class PlgSystemGwejson extends JPlugin
 			return true;
 		}
 
-		$token = JSession::getFormToken();;
-		if ($token != $input->get('token', '', 'string')){
-			PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
-		}
-
 		$file = $input->get('file', '', 'cmd');
 		// Library file MUST start with "gwejson_" for security reasons to stop other files being included maliciously
 		if ($file == "")
@@ -60,20 +55,27 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		$path = $input->get('path', 'site', 'cmd');
-		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins");
+		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules");
 		if (!in_array($path, array_keys($paths)))
 		{
 			return true;
 		}
+		$folder = $input->get('folder', '', 'string');
 		if ($path == "plugin")
 		{
-			$folder = $input->get('folder', '', 'cmd');
-			$plugin = $input->get('plugin', '', 'cmd');
+			$plugin = $input->get('plugin', '', 'string');
 			if ($folder == "" || $plugin == "")
 			{
 				return true;
 			}
 			$path = $paths[$path] . "/$folder/$plugin/";
+		}
+		else if ($path == "module") {
+			if ($folder == "" )
+			{
+				return true;
+			}
+			$path = $paths[$path] . "/$folder/";
 		}
 		else
 		{
@@ -82,7 +84,13 @@ class PlgSystemGwejson extends JPlugin
 			{
 				return true;
 			}
-			$path = $paths[$path] . "/components/$extension/libraries/";
+			if ($folder == "" )
+			{
+				$path = $paths[$path] . "/components/$extension/libraries/";
+			}
+			else {
+				$path = $paths[$path] . "/components/$extension/$folder/";
+			}
 		}
 
 		jimport('joomla.filesystem.file');
@@ -92,7 +100,14 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		include_once ($path . $file . ".php");
-		
+
+		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken()){
+			$token = JSession::getFormToken();;
+			if ($token != $input->get('token', '', 'string')){
+				PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
+			}
+		}
+
 		// we don't want any modules etc.
 		$input->set('tmpl', 'component');
 

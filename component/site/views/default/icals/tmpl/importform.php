@@ -31,11 +31,13 @@ function submitbutton() {
 	}
 	else {
 		submitform();
+		return true;
 	}
+	return false;
 }
 </script>
 
-<form name="ical" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="submitbutton()" class="adminform">
+<form name="ical" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return submitbutton()" class="adminform">
 
 	<div>
 		<strong><?php echo JText::_("JEV_FROM_FILE");?></strong><br/>

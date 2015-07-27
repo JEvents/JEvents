@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.0
+ * @version     3.4.0RC3
  * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -166,6 +166,12 @@ class Pkg_JeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);
 			$db->query();
+
+                        // Enable JSON Plugin
+                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+ 			$db->setQuery($query);
+ 			$db->query();
+
 		}
 
 		echo "</div>";

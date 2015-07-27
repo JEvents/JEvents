@@ -193,7 +193,7 @@ class JEV_CommonFunctions {
 	}
 
 	public static function jEventsDoLink($url="",$alt="alt",$attr=array()){
-		if (strlen($url)==0) $url="javascript:void(0)";
+		if (JString::strlen($url)==0) $url="javascript:void(0)";
 		$link = "<a href='".$url."' ";
 		if (count($attr)>0) {
 			foreach ($attr as $key=>$val){
