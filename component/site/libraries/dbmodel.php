@@ -2263,8 +2263,14 @@ class JEventsDBModel
 		}
 		if (count($translationids)>0){
 			$db = JFactory::getDbo();
-			$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(".$db->quote(implode(",",$translationids)). ") AND language=".$db->quote($langtag) );
-			$translations = $db->loadObjectList("evdet_id");
+			$translationids = implode(",",$translationids);
+			if (trim($translationids) != ""){
+				$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(".$translationids. ") AND language=".$db->quote($langtag) );
+				$translations = $db->loadObjectList("evdet_id");
+			}
+			else {
+				$translations = false;
+			}
 
 			if ($translations) {
 				for ($i = 0; $i < $icalcount; $i++)
