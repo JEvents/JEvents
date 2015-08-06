@@ -442,31 +442,16 @@ class JEventsHTML
 						$checked = ' checked="checked"';
 					}
 				}
-				if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
-					// bootstrap version
-					$tosend .= '' 
-							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
-							. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox btn" />'
-							.'<label for="cb_wd' . $a . '" class="checkbox btn">'
-							.  $day_name[$a] 
-							. '</label>' . "\n"
-					;
-				}
-				else {
-					$tosend .= '<li  class="r' . ($a % 2 + 1) . '" >'
-							. '<label for="cb_wd' . $a . '">'
-							. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
-							. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />&nbsp;' . "\n"
-							. $day_name[$a] . '</label></li>' . "\n"
-					;
-				}
+				// bootstrap version
+				$tosend .= '' 
+						.'<label for="cb_wd' . $a . '" class="checkbox btn">'
+						. '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
+						. $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
+						.  $day_name[$a] 
+						. '</label>' . "\n"
+				;
 			}
-			if (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)){
-				echo $tosend;
-			}
-			else {
-				echo "<ul>\n" . $tosend . "\n</ul>\n";
-			}
+			echo $tosend;
 
 		}
 

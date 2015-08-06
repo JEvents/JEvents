@@ -179,6 +179,10 @@ fieldset.checkboxes li {
 #jevents .adminform .row {
     min-height: 40px;
 }
+#jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div,adminform .row {
+    margin-left: 0;
+    padding-bottom: 10px;
+}
 
 td.r1, span.r1 {
 	background-color:#eeeeee!important;
@@ -285,8 +289,8 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .jevbootstrap input, .jevbootstrap textarea, .jevbootstrap .uneditable-input {
     width: auto;
 }
-
-#jevents .jevdatetime label.btn {
+/* chosen button styling !!  */
+#jevents  label.btn {
     padding-right: 10px!important;
     padding-left: 10px!important;
 }
@@ -380,6 +384,14 @@ table.settings_level label#jform_com_difficulty-lbl {width:150px;margin-bottom:1
     width:auto;
     font-weight:bold;
     padding-left:0px;
+}
+/* Rockettheme messes up padding on chosen radio/checkbox replacements so need padding left 15px */
+#jevents #adminForm  .controls label {
+	padding-left:15px;
+}
+/* Editor needs extra space after it! */
+#jevents #jeveditor {
+margin-bottom:10px;
 }
 /* Can't be universal since it affects event editing and normal Joomla buttons!
 #jevents .btn-group a {

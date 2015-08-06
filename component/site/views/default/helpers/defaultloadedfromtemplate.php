@@ -638,7 +638,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						{
 							$repeatsummary = $event->repeatSummary();
 						}
-						$replace[] = $repeatsummary;
+						if ($jevparams->get("com_repeatview",1)) {
+							$replace[] = $repeatsummary;
+						}
+						else {
+							$replace[] = "";
+						}
 						//$replace[] = $event->repeatSummary();
 						$blank[] = "";
 						$row = $event;
@@ -991,19 +996,34 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{CREATOR_LABEL}}":
 					$search[] = "{{CREATOR_LABEL}}";
-					$replace[] = JText::_('JEV_BY');
+					if ($jevparams->get("com_byview",1) || $template_name!="icalevent.detail_body") {
+						$replace[] = JText::_('JEV_BY');
+					}
+					else {
+						$replace[] = "";
+					}
 					$blank[] = "";
 					break;
 
 				case "{{CREATOR}}":
 					$search[] = "{{CREATOR}}";
-					$replace[] = $event->contactlink();
+					if ($jevparams->get("com_byview",1) || $template_name!="icalevent.detail_body") {
+						$replace[] = $event->contactlink();
+					}
+					else {
+						$replace[] = "";
+					}
 					$blank[] = "";
 					break;
 
 				case "{{HITS}}":
 					$search[] = "{{HITS}}";
-					$replace[] = "<span class='hitslabel'>" . JText::_('JEV_EVENT_HITS') . '</span> : ' . $event->hits();
+					if ($jevparams->get("com_hitsview",1) || $template_name!="icalevent.detail_body") {
+						$replace[] = "<span class='hitslabel'>" . JText::_('JEV_EVENT_HITS') . '</span> : ' . $event->hits();
+					}
+					else {
+						$replace[] = "";
+					}
 					$blank[] = "";
 					break;
 
