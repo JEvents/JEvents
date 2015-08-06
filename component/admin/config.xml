@@ -192,6 +192,7 @@
 			<option value="week.listevents">JEVENTS_LIST_WEEK_DEFAULT_TITLE</option>
 			<option value="day.listevents">JEVENTS_LIST_DAY_DEFAULT_TITLE</option>
 			<option value="cat.listevents">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
+            <option value="admin.listevents">JEV_INSTAL_MANAGE</option>
 		</field>
                 
         </fieldset>
