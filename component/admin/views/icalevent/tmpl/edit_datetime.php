@@ -284,10 +284,13 @@ if ($this->row->id() != 0 && $this->row->freq())
 				document.adminForm.updaterepeats.value = 0;
 				// Now sort out the count back!
 				fixRepeatDates(true);
+				// Finally release the check on changed repeats
+				setupRepeatsRun = true;
+
 	<?php
 }
 ?>
-		setupJEventsBootstrap();
+				setupJEventsBootstrap();
 	}
 	//if (window.attachEvent) window.attachEvent("onload",setupRepeats);
 	//else window.onload=setupRepeats;
@@ -368,15 +371,20 @@ if ($this->row->id() != 0 && $this->row->freq())
 				input.css('display','none');
 			});		
 		})(jQuery);
-		
+
 		initialiseBootstrapButtons();
 	}
 	
 	function initialiseBootstrapButtons(){
-		(function($){	
+		(function($){
 			// this doesn't seem to find just the checked ones!'
 			//$(".btn-group input[checked=checked]").each(function() {
-			$(".btn-group input").each(function() {
+			var clickelems = $(".btn-group input[type=checkbox] , .btn-group input[type=radio]");
+
+			clickelems.each(function(idx, val) {
+				if (!$(this).attr('id')){
+					return;
+				}
 				var label = $("label[for=" + $(this).attr('id') + "]");
 				var elem = $(this);
 				if (elem.prop('disabled')) {
@@ -389,7 +397,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 					return;
 				}
-				if (elem.prop('value')!=0){
+				if (elem.val()!=0){
 					label.addClass('active btn-success');
 				}
 				else {

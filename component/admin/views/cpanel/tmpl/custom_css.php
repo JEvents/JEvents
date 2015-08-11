@@ -36,7 +36,7 @@ if (JRequest::getVar('save')) {
     ob_start();
 
     $content = JFile::read($filepath);
-    $btnclass = JevJoomlaVersion::isCompatible("3.0") ? "btn btn-success" : "";
+    $btnclass = "btn btn-success" ;
     $mainspan = 10;
     $fullspan = 12;
 

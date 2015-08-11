@@ -45,6 +45,7 @@ var jevConditional = {
 		var eventsno = jQuery('#'+fieldparam+conditional);
 		if (!condition.length || !eventsno.length)
 		{
+			//alert('no match ' +  '#'+condparam + conditions + " " +condition.length +" " + '#'+fieldparam+conditional + " "+eventsno.length);
 			return;
 		}
 		// Joomla 3.x named element is inside control and also control-group elements

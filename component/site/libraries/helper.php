@@ -2323,7 +2323,7 @@ class JEVHelper
 
 		$script = <<<SCRIPT
 	jQuery(document).on('ready', function() {
-		jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', "Array($condarray)", "Array($fielddefaultarray)");
+		jevConditional.setupJevConditions('$conditional','$fielddefault', '$condlabel' ,'$condparam', '$conditions', '$fieldparam', Array($condarray), Array($fielddefaultarray));
 	});
 SCRIPT;
 

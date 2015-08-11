@@ -528,6 +528,7 @@ function toggleAllDayEvent()
 			epm.disabled=true;
 
 			jQuery('.jevendtime').css('display','none');
+            jQuery('.jevnoeendtime').css('display', 'none');
 
 		}
 	}
@@ -654,17 +655,19 @@ function toggleNoEndTime(){
 function toggleGreyBackground(inputtype,inputelem, tomatch) {
 	if (inputtype==tomatch){
 		inputelem.disabled = false;
-		inputelem.parent()[0].style.backgroundColor="#ffffff";
-		if (inputelem.parent('fieldset').find('legend')){
-			inputelem.parent('fieldset').find('legend').css("background-color","#ffffff");
+		inputelem.closest('fieldset').css("background-color","#ffffff");
+		inputelem.closest('fieldset').css("opacity","1");
+		if (inputelem.closest('fieldset').find('legend')){
+			inputelem.closest('fieldset').find('legend').css("background-color","#ffffff");
 			jevjq("#"+inputtype).css("background-color","#ffffff");
 		}
 	}
 	else {
 		inputelem.disabled = true;
-		inputelem.parent()[0].style.backgroundColor="#dddddd";
-		if (inputelem.parent('fieldset').find('legend')){
-			inputelem.parent('fieldset').find('legend').css("background-color","#dddddd");
+		inputelem.closest('fieldset').css("background-color","#dddddd");
+		inputelem.closest('fieldset').css("opacity","0.7");
+		if (inputelem.closest('fieldset').find('legend')){
+			inputelem.closest('fieldset').find('legend').css("background-color","#dddddd");
 			jevjq("#"+inputtype).css("background-color","#dddddd");
 		}
 	}
@@ -778,6 +781,12 @@ function toggleFreq(freq , setup)
 				bymonthday.style.display="none";
 				byday.style.display="block";
 				document.getElementById('jevbd').checked="checked";
+				// needed for after switching to month repeat and then toi wekely
+				jQuery("#jevbd").closest('fieldset').css("background-color","#ffffff");
+				jQuery("#jevbd").parent().css("background-color","#ffffff");
+				jQuery("#byday").css("background-color","#ffffff");
+				jQuery("#jevbd").closest('fieldset').css("opacity","1");
+
 				//toggleWhichBy("byday");
 				weekofmonth.style.display="none";
 				// always set week nums false for weekly events
@@ -880,7 +889,9 @@ function fixRepeatDates(checkYearDay){
 	// variable bd is reserved in MSIE 8 ?
 	var bd = document.adminForm["weekdays[]"];
 	for(var day=0;day<bd.length;day++){
-		bd[day].checked=false;
+		if (parseInt(jQuery("#evid").val())==0) {
+			bd[day].checked=false;
+		}
 	}
 	bd[startDate.getDay()].checked=true;
 
@@ -921,8 +932,13 @@ function resetYMD(){
 	document.adminForm.day.value = startDate.getDate();
 }
 
-
+// This variable blocks this check until an edited repeat/event has been fully loaded
+var setupRepeatsRun = false;
+var AllDayNoEndTimeSetup = false;
 function updateRepeatWarning(){
+	if (!setupRepeatsRun || !AllDayNoEndTimeSetup) {
+		return;
+	}
 	if (jevjq("input[name=freq]:checked").length){
 		var currentFreq = jevjq("input[name=freq]:checked").val().toUpperCase();
 		if (document.adminForm.updaterepeats && currentFreq!="NONE")
@@ -1040,21 +1056,33 @@ jevjq(document).on('ready', function() {
 	}
 	catch(e){	
 	}
-}); 
-
-jevjq(document).on('ready', function(){
 
 	if (jevjq('#view12Hour')){
 		jevjq('#view12Hour').on('click', function(){toggleView12Hour();});
 	}
 
 	hideEmptyJevTabs();
-});
 
-jevjq(document).on('ready', function(){
 	toggleAllDayEvent();
 	toggleNoEndTime();
+	AllDayNoEndTimeSetup = true;
+
+	// get the count until box to trigger the switch if the date field is touched!
+	jevjq('#cu_until').on('click', function(){enableRepeatUntil();});
+	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
+	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
+	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
 });
+
+function enableRepeatUntil() {
+	jevjq("#cuu").prop("checked", 1);
+	toggleCountUntil('cu_until');
+}
+
+function enableRepeatCount() {
+	jevjq("#cuc").prop("checked", 1);
+	toggleCountUntil('cu_count');
+}
 
 // Hide empty tabs and their links
 function hideEmptyJevTabs() {
