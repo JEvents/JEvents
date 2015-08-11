@@ -55,6 +55,7 @@
 }
 .jevmodal-full.modal.fade.in {
 	top: 5%;
+	display: block!important
 }
 .jevmodal-full body.modal {
 	padding-top: 0;
