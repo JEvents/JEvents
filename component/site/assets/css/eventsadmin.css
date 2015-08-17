@@ -231,7 +231,8 @@ a#colorPickButton {
 	clear:both;
 	display:none;
 }
-#byyearday,#bymonth,#byweekno,#bymonthday,#byday {
+#byyearday,#bymonth,#byweekno,#bymonthday,#byday,#byirregular
+ {
 	float:left;
 	display:none;
 	margin-right:1em;
@@ -280,7 +281,7 @@ table.versionstatuslist a {color: #08c;font-weight:bolder; font-size: 12px;}
 .adminform#start_time-lbl, .adminform#end_time-lbl  {
 	width:80px;
 }
-#cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos{
+#cu_until,#cu_count , #interval_div > div, #byyearday, #bymonth,#bymonthday,#byweekno, #byday, #bysetpos, #byirregular {
 	padding:5px;
 	border-radius:10px;
 }

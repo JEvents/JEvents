@@ -1133,7 +1133,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$eventobj->$newkey = $val;
 		}
 		$eventobj->_icsid = $eventobj->_ics_id;
-		if (is_array($eventobj->_catid))
+		if (isset($eventobj->_catid) && is_array($eventobj->_catid))
 		{
 			$eventobj->_catid = current($eventobj->_catid);
 		}
