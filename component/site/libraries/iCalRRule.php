@@ -76,6 +76,7 @@ class iCalRRule extends JTable  {
 		$temp->processField2("byweekno","");
 		$temp->processField2("bymonth","");
 		$temp->processField2("bysetpos","");
+		$temp->processField2("irregulardates","");
 		$temp->processField2("wkst","");
 		return $temp;
 	}
@@ -128,6 +129,7 @@ class iCalRRule extends JTable  {
 		$temp->processField("byweekno","");
 		$temp->processField("bymonth","");
 		$temp->processField("bysetpos","");
+		$temp->processField("irregulardates","");
 		$temp->processField("wkst","");
 		return $temp;
 	}
@@ -776,6 +778,21 @@ class iCalRRule extends JTable  {
 				return $this->_repetitions;
 				break;
 			case "DAILY":
+				$start = $dtstart;
+				$end = $dtend;
+				$countRepeats = 0;
+
+				$startYear = JevDate::strftime("%Y",$start);
+				while ($startYear<2027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
+				//while ($startYear<5027 && $countRepeats < $this->count && !$this->_afterUntil($start)) {
+					$countRepeats+=$this->_makeRepeat($start,$end);
+					$start = JevDate::strtotime("+".$this->rinterval." days",$start);
+					$end = JevDate::strtotime("+".$this->rinterval." days",$end);
+					$startYear = JevDate::strftime("%Y",$start);
+				}
+				return $this->_repetitions;
+				break;
+			case "IRREGULAR":
 				$start = $dtstart;
 				$end = $dtend;
 				$countRepeats = 0;

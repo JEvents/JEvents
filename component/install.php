@@ -225,6 +225,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	bymonth  varchar(50) NOT NULL default "",
 	bysetpos  varchar(50) NOT NULL default "",
 	wkst  varchar(50) NOT NULL default "",
+	irregulardates text NOT NULL
 	PRIMARY KEY  (rr_id),
 	INDEX (eventid)
 ) $charset;
@@ -562,6 +563,17 @@ SQL;
 			@$db->query();
 		}
 */
+		$sql = "SHOW COLUMNS FROM #__jevents_rrule";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
+
+		if (!array_key_exists("irregulardates", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_rrule ADD irregulardates text NOT NULL ";
+			$db->setQuery($sql);
+			@$db->query();
+		}
+
 		$sql = "SHOW INDEX FROM #__jevents_rrule";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");

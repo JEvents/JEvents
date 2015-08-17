@@ -570,6 +570,110 @@ class JEVHelper
 	}
 
 	/**
+	 * Loads all necessary files for and creats popup calendar link
+	 *
+	 * @static
+	 */
+	public static
+			function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array())
+	{
+		$document = JFactory::getDocument();
+		$component = "com_jevents";
+		$params = JComponentHelper::getParams($component);
+		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
+		$offset = $params->get("com_starday", 1);
+
+		if ($value == "" ) {
+			$value = strftime("%Y-%m-%d");
+		}
+
+		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+
+		// Build the attributes array.
+		empty($onchange)  ? null : $attribs['onchange'] = $onchange;
+
+		// switch back to strftime format to use Joomla calendar tool
+		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
+
+		//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
+		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
+		$value = $yearpart."-".$monthpart."-".$daypart;
+		$name =  $fieldname;
+		
+		static $done;
+
+		if ($done === null)
+		{
+			$done = array();
+		}
+
+		$readonly = isset($attribs['readonly']) && $attribs['readonly'] == 'readonly';
+		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
+
+		if (is_array($attribs))
+		{
+			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
+			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
+
+			$attribs = JArrayHelper::toString($attribs);
+		}
+
+		JHtml::_('bootstrap.tooltip');
+
+		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
+		if ((int) $value && $value != JFactory::getDbo()->getNullDate())
+		{
+			$tz = date_default_timezone_get();
+			date_default_timezone_set('UTC');
+			$inputvalue = strftime($format, strtotime($value));
+			date_default_timezone_set($tz);
+		}
+		else
+		{
+			$inputvalue = '';
+		}
+
+		// Load the calendar behavior
+		JHtml::_('behavior.calendar');
+
+		// Only display the triggers once for each control.
+		if (!in_array($fieldid, $done))
+		{
+			$document = JFactory::getDocument();
+			$document
+				->addScriptDeclaration(
+				'jQuery(document).ready(function($) {Calendar.setup({
+			// Id of the input field
+			inputField: "' . $fieldid . '",
+			// Format of the input field
+			ifFormat: "' . $format . '",
+			// Trigger for the calendar (button ID)
+			button: "' . $fieldid . '_img",
+			// Alignment (defaults to "Bl")
+			align: "Tl",
+			// electric false means field update ONLY when a day cell is clicked
+			electric:false,
+			singleClick: true,
+			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+			});});'
+			);
+			$done[] = $fieldid;
+		}
+
+		// Hide button using inline styles for readonly/disabled fields
+		$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
+		$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+
+		echo  '<div' . $div_class . '>'
+				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
+				. '" name="' . $name . '" id="' . $fieldid . '" value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
+				. '<button type="button" class="btn" id="' . $fieldid . '_img"' . $btn_style . '><span class="icon-calendar"></span></button>'
+			. '</div>';
+
+	}
+
+	/**
 	 * Loads all necessary files for JS Overlib tooltips
 	 *
 	 * @static

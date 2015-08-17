@@ -224,6 +224,23 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				</div>
 			</fieldset>
 		</div>
+		<div id="byirregular">
+			<fieldset >
+				<legend><?php echo JText::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
+				<div class="irregularDateSelector">
+				<?php
+					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$minyear = JEVHelper::getMinYear();
+					$maxyear = JEVHelper::getMaxYear();
+					$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
+					JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();", $inputdateformat, array("style"=>"display:none;"));
+				?>
+				</div>
+				<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" >
+
+				</select>				
+			</fieldset>
+		</div>
 		<div  class="jev_none" id="bysetpos">
 			<fieldset><legend><?php echo "NOT YET SUPPORTED" ?></legend>
 			</fieldset>
