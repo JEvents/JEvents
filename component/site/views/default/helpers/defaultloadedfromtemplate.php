@@ -41,7 +41,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				catch (Exception $e){
 					$viewname = "default";
 				}
-				$templatefile = JEV_VIEWS."/$viewname/defaults/$template_name.html";
+				$templatefile = JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT ."/$viewname/defaults/$template_name.html";
+				if (!JFile::exists($templatefile)){
+					$templatefile = JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT ."/defaults/$template_name.html";
+				}
+				if (!JFile::exists($templatefile)){
+					$templatefile = JEV_VIEWS."/$viewname/defaults/$template_name.html";
+				}
 				if (!JFile::exists($templatefile)){
 					$templatefile = JEV_ADMINPATH."views/defaults/tmpl/$template_name.html";
 				}
@@ -616,6 +622,20 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{ACCESS}}":
 					$search[] = "{{ACCESS}}";
 					$replace[] = $event->getAccessName();
+					$blank[] = "";
+					break;
+
+				case "{{JEVSTARTED}}":
+				case "{{JEVENDED}}":
+					$search[] = "{{JEVSTARTED}}";
+
+					$now = new JevDate("+0 seconds");
+					$now = $now->toFormat("%Y-%m-%d %H:%M:%S");
+
+					$replace[] = $event->publish_up() < $now ? JText::_("JEV_EVENT_STARTED") : "";
+					$blank[] = "";
+					$search[] = "{{JEVENDED}}";
+					$replace[] = $event->publish_down() < $now ? JText::_("JEV_EVENT_ENDED") : "";
 					$blank[] = "";
 					break;
 

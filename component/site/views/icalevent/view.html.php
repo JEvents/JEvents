@@ -70,14 +70,14 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			if ($this->editCopy)
 			{
 				
-				if (JEVHelper::isEventEditor())
+				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
                                 $this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			}
 			else
 			{
-                            if (JEVHelper::isEventEditor())
+                            if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
                             $this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
@@ -85,9 +85,14 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 		}
 		else
-		{
-			
-			if (JEVHelper::isEventEditor())
+		{	
+			$canEditOwn = false;
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if (!$params->get("authorisedonly", 0)){
+				$juser = JFactory::getUser();
+				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
+			}
+			if (JEVHelper::isEventEditor() || $canEditOwn)
 				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			//JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
                         $this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);

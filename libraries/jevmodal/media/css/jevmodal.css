@@ -170,7 +170,7 @@
 .jevmodal .modal-content{
     box-sizing: border-box;
     height: 100%;
-    margin: 5px;
+    margin-left: 5px;
     position: relative;
     box-shadow: none;
     border:none;

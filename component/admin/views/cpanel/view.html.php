@@ -710,9 +710,16 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$app->version = $version->getShortVersion();
 		$apps[$app->name] = $app;
 
-// components (including JEvents)
-		$xmlfiles3 = array_merge(JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true), JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true)
-		);
+		// TODO :  Can we do this from the database???
+		// components (including JEvents)
+		$xmlfiles3 = array_merge(
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "manifest\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true));
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
