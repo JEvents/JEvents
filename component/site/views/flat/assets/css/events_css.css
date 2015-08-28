@@ -934,12 +934,12 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 .jev_listview .jev_listrow {
     width: 100%;
 }
-#main ul {
+/**#main ul {
     list-style-position: outside;
     list-style-type: square;
     padding: 0 0 0 15px;
     margin: 10px 0 10px 0px;
-}
+}**/
 #jevents_body .jev_listview .jev_listrow li {
     background: none;
     padding-left: 10px;
