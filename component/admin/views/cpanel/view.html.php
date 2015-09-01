@@ -239,15 +239,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 //  get RSS parsed object
 			$options = array();
-			// point Joomla 2.5+ users towards the new versions of everything
-			if (JevJoomlaVersion::isCompatible("2.5"))
-			{
-				$rssUrl = 'https://www.jevents.net/versions30.xml';
-			}
-			else
-			{
-				$rssUrl = 'https://www.jevents.net/versions.xml';
-			}
+			$rssUrl = 'https://www.jevents.net/versions30.xml';
 			$cache_time = 86400;
 
 			error_reporting(0);
