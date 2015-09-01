@@ -239,8 +239,14 @@ class jIcalEventRepeat extends jIcalEventDB
 		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
 		// uid = event series unique id i.e. the actual event
 		$title = JApplication::stringURLSafe($this->title());
-		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->rp_id() . '&Itemid=' . $Itemid
+                if ($this->rp_id()){
+                    $link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->rp_id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
+                }
+                else {
+                    $link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.detail&evid=" . $this->ev_id() . '&Itemid=' . $Itemid
+				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
+                }
 		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("option", "") != "com_search" && JRequest::getCmd("jevtask", "") != "crawler.listevents")
 		{
 			$link .= "&tmpl=component";
