@@ -40,7 +40,7 @@ foreach ($infields as $infield)
 }
 ?>
 
-<form action="<?php echo JRoute::_("index.php?option=com_jevlocations&task=locations.locations&layout=locations&Itemid=$Itemid"); ?>" method="post" name="adminForm" id="adminForm" >
+<form action="<?php echo JRoute::_("index.php?option=com_jevents&view=list&layout=events&Itemid=$Itemid"); ?>" method="post" name="adminForm" id="adminForm" >
 
 	<div id="eventlist">
 		<table class="eventlist table table-bordered" data-resizable-columns-id="demo-table">
