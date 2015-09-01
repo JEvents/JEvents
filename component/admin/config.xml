@@ -117,7 +117,7 @@
 	
 
 	<fieldset name="JEV_EVENT_EDITING" difficulty="1">
-		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="" difficulty="1"/>
+		<field name="com_calUseStdTime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_TIME_FORMAT_12" description="JEV_TIME_FORMAT_12_DESC" difficulty="1"/>
 		<!--//<field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>//-->
                 <field name="com_jeveditionrequiredfields" type="Jeveditionrequiredfields" default="" size="6" label="JEV_REQUIRED_FIELDS_SELECT" multiple="multiple" description="JEV_REQUIRED_FIELDS_SELECT_DESC" difficulty="3"/>
 		<field name="com_editdateformat" 
@@ -199,6 +199,7 @@
 	
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
+		<field name="@spacer_evd1" type="jevinfo" default='SETTINGS_RELATED_TO_DETAIL_VIEW'   menu="hide" label="" description="" difficulty="1"/>
 		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>
 		<field name="com_mailview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" difficulty="1"/>
 		<field name="com_hitsview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_HITS" description="" difficulty="1"/>
