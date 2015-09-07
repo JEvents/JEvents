@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 	bymonth  varchar(50) NOT NULL default "",
 	bysetpos  varchar(50) NOT NULL default "",
 	wkst  varchar(50) NOT NULL default "",
-	irregulardates text NOT NULL
+	irregulardates text NOT NULL,
 	PRIMARY KEY  (rr_id),
 	INDEX (eventid)
 ) $charset;

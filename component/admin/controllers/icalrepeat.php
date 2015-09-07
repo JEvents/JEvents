@@ -189,19 +189,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		/*
-		  $db = JFactory::getDBO();
-		  // get list of groups
-		  $query = "SELECT id AS value, name AS text"
-		  . "\n FROM #__groups"
-		  . "\n ORDER BY id"	;
-		  $db->setQuery( $query );
-		  $groups = $db->loadObjectList();
-
-		  // build the html select list
-		  $glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',
-		  'value', 'text', intval( $row->access() ) );
-		 */
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		// For repeats don't offer choice of ical or category
@@ -472,6 +459,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$data["X-EXTRAINFO"] = JRequest::getVar("extra_info", "");
 		$data["LOCATION"] = JRequest::getVar("location", "");
 		$data["allDayEvent"] = JRequest::getVar("allDayEvent", "off");
+                if ($data["allDayEvent"]==1){
+                    $data["allDayEvent"] = "on";
+                }
 		$data["CONTACT"] = JRequest::getVar("contact_info", "");
 		// allow raw HTML (mask =2)
 		$data["DESCRIPTION"] = JRequest::getVar("jevcontent", "", 'request', 'html', 2);

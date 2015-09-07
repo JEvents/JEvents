@@ -977,6 +977,21 @@ class JEventsHTML
 
 		public static function buildAccessSelect($access, $attribs = 'class="inputbox" onchange="this.form.submit()"', $text = "", $fieldname = "access")
 		{
+			$assetGroups = JHtml::_('access.assetgroups');
+			// only offer access levels the user has access to
+			$user = JFactory::getUser();
+			if (!$user->get("isRoot",0)){
+				$viewlevels = $user->getAuthorisedViewLevels();
+				foreach ($assetGroups as $i => $level){
+					if (!in_array($level->value ,$viewlevels )){
+						unset($assetGroups[$i]);
+					}
+				}
+				$assetGroups = array_values($assetGroups);
+			}
+			if (count($assetGroups)==1) {
+				return "<input type='hidden' name='".$fieldname. "' value='".$assetGroups[0]->value."'/>"  ;
+			}
 			ob_start();
 			?>
 			<select name="<?php echo $fieldname; ?>" <?php echo $attribs; ?> id="<?php echo $fieldname; ?>" >
@@ -986,18 +1001,6 @@ class JEventsHTML
 					?>
 					<option value=""><?php echo $text; ?></option>
 				<?php } 
-				$assetGroups = JHtml::_('access.assetgroups');
-				// only offer access levels the user has access to
-				$user = JFactory::getUser();
-				if (!$user->get("isRoot",0)){
-					$viewlevels = $user->getAuthorisedViewLevels();
-					foreach ($assetGroups as $i => $level){
-						if (!in_array($level->value ,$viewlevels )){
-							unset($assetGroups[$i]);
-						}
-					}
-					$assetGroups = array_values($assetGroups);
-				}
 				echo JHtml::_('select.options',$assetGroups , 'value', 'text', $access); ?>
 			</select>
 			<?php
