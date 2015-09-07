@@ -65,8 +65,8 @@ class iCalEvent extends JTable  {
 		$user = JFactory::getUser();
 
 		$jinput = JFactory::getApplication()->input;
-		$curr_task = $jinput->get('task');
-		$ical_access = $jinput->get('access');
+		$curr_task = $jinput->getCmd('task');
+		$ical_access = $jinput->getInt('access');
 
 		if ($curr_task == "icals.save") {
 			$this->access = $ical_access;
