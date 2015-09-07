@@ -64,6 +64,13 @@ class iCalEvent extends JTable  {
 	function store($updateNulls=false , $overwriteCreator = false) {
 		$user = JFactory::getUser();
 
+		$jinput = JFactory::getApplication()->input;
+		$curr_task = $jinput->get('task');
+		$ical_access = $jinput->get('access');
+
+		if ($curr_task == "icals.save") {
+			$this->access = $ical_access;
+		}
 		if ($this->ev_id==0){
 			$date = JevDate::getDate("+0 seconds");
 			$this->created = $date->toMySQL();
@@ -73,6 +80,8 @@ class iCalEvent extends JTable  {
 			$this->created_by		= $user->id;
 		}
 		$this->modified_by		= $user->id;
+
+
 		if (!isset($this->created_by_alias) || is_null($this->created_by_alias) || $this->created_by_alias==""){
 			$this->created_by_alias		= "";
 		}
