@@ -39,12 +39,11 @@ class JFormFieldJeveventaccess extends JFormField
 	protected function getLabel()
 	{
 		$glist = $this->form->jevdata[$this->name]["glist"];
-		if ($this->getInput() && $glist)
+		if ($this->getInput() && $glist && strpos($glist, "<input ")===false)
 		{
 			return parent::getLabel();
 		}
 		return "";
-
 	}
 
 }
