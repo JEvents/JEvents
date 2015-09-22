@@ -1000,3 +1000,6 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
     text-align: left;
     display: block;
 }
+
+/** Make sure choosen list is under input **/
+#jevents .chzn-container.chzn-container-single .chzn-results {clear:both;}

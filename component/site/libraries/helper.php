@@ -2135,6 +2135,18 @@ class JEVHelper
 		}
 
 	}
+	/*
+	 * Load JEvents Custom CSS file if any
+	 */
+	static public
+			function loadCustomCSS()
+	{
+		//Check for JEvents Custom CSS file
+		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		{
+			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+	}
 
 	static public
 			function script($file, $path = "", $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
