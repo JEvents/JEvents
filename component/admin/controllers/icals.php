@@ -568,7 +568,9 @@ class AdminIcalsController extends JControllerForm {
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
 			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT') );
-			
+
+			// Set option variable.
+			$option = JEV_COM_COMPONENT;
 			JFactory::getApplication()->redirect( 'index.php?option=' . $option);
 			return;
 		}
