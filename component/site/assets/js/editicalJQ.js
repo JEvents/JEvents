@@ -1044,6 +1044,10 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 					container.append("<a href='"+overlap.url+"' target='_blank'>"+overlap.conflictMessage+"</a><br/>")
 				});
 				hasConflicts = true;
+				// Make sure the message is visible
+				//jQuery("#jevoverlapwarning").get(0).scrollIntoView();
+				//jQuery('html, body').animate({	scrollTop: jQuery("#jevoverlapwarning").offset().top	}, 200);
+				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top	}, 200);
 			}
 		}
 	})

@@ -40,7 +40,7 @@ class JFormFieldJeveventdate extends JFormField
 			$document->addScriptDeclaration($js);
 			$firsttime = false;
 		}
-		$cal = JEVHelper::loadCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat);
+		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat);
 		echo $cal;
 		?>
 		<input type="hidden"  name="<?php echo $this->name;?>2" id="<?php echo $this->name;?>2" value="" />

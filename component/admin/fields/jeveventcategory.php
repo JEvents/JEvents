@@ -28,7 +28,7 @@ class JFormFieldJeveventcategory extends JFormField
 				 $this->form->jevdata[$this->name]["excats"] = false;
 			}
 			$selectSomeCategories = JText::_("JEV_SELECT_SOME_CATEGORIES", true);
-			$input = JEventsHTML::buildCategorySelect($this->value, 'id="catid" data-placeholder="'.$selectSomeCategories.'" ', $this->form->jevdata[$this->name]["dataModel"]->accessibleCategoryList(),
+			$input = JEventsHTML::buildCategorySelect($this->value, 'data-placeholder="'.$selectSomeCategories.'" ', $this->form->jevdata[$this->name]["dataModel"]->accessibleCategoryList(),
 				$this->form->jevdata[$this->name]["with_unpublished_cat"], true, 0, 'catid', JEV_COM_COMPONENT, $this->form->jevdata[$this->name]["excats"], "ordering", true);
 		}
 		else {

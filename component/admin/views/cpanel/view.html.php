@@ -830,6 +830,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
 		$output .= "MySQL Version : " .JFactory::getDbo()->getVersion(). "\n";
+		$output .= "Server Information : " . php_uname() . "\n";
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("fixjquery", -1)==-1){

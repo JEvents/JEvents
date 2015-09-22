@@ -430,7 +430,8 @@ class iCalRRule extends JTable  {
 
 						$currentYear = JevDate::strftime("%Y",$start);
 						list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
-						if (($currentYear+$this->rinterval)>=2037) break;
+						$maxyear  = (PHP_INT_SIZE === 8) ? 2999 : 2037;
+						if (($currentYear+$this->rinterval)>=$maxyear) break;
 						$start = JevDate::strtotime("+".$this->rinterval." years",$start);
 						$end = JevDate::strtotime("+".$this->rinterval." years",$end);
 					}

@@ -274,37 +274,33 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			case "{{LINKSTART}}":
 			case "{{LINKEND}}":
 			case "{{TITLE_LINK}}":
+				// Title link
+				$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
 				if ($view)
 				{
-					// Title link
-					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
 					$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
-					ob_start();
+				}
+				ob_start();
 					?>
 					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
-						<?php
-						$linkstart = ob_get_clean();
-					}
-					else
-					{
-						$rowlink = $linkstart = "";
-					}
-					$search[] = "{{LINK}}";
-					$replace[] = $rowlink;
-					$blank[] = "";
-					$search[] = "{{LINKSTART}}";
-					$replace[] = $linkstart;
-					$blank[] = "";
-					$search[] = "{{LINKEND}}";
-					$replace[] = "</a>";
-					$blank[] = "";
+					<?php
+				$linkstart = ob_get_clean();
+				$search[] = "{{LINK}}";
+				$replace[] = $rowlink;
+				$blank[] = "";
+				$search[] = "{{LINKSTART}}";
+				$replace[] = $linkstart;
+				$blank[] = "";
+				$search[] = "{{LINKEND}}";
+				$replace[] = "</a>";
+				$blank[] = "";
 
-					$fulllink = $linkstart . $event->title() . '</a>';
-					$search[] = "{{TITLE_LINK}}";
-					$replace[] = $fulllink;
-					$blank[] = "";
+				$fulllink = $linkstart . $event->title() . '</a>';
+				$search[] = "{{TITLE_LINK}}";
+				$replace[] = $fulllink;
+				$blank[] = "";
 
-					break;
+				break;
 
 				case "{{TRUNCTITLE}}":
 
@@ -703,8 +699,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
 						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
-						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
-						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
+						$rawreplace["{{STARTTIME}}"] = $row->alldayevent() ? "" : $row->getUnixStartTime();
+						$rawreplace["{{ENDTIME}}"] =  ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
@@ -757,8 +753,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						$rawreplace["{{STARTDATE}}"]= $row->getUnixStartDate();
 						$rawreplace["{{ENDDATE}}"]= $row->getUnixEndDate();
-						$rawreplace["{{STARTTIME}}"] = $row->getUnixStartTime();
-						$rawreplace["{{ENDTIME}}"] = $row->getUnixEndTime();
+						$rawreplace["{{STARTTIME}}"] = $row->alldayevent() ? "" : $row->getUnixStartTime();
+						$rawreplace["{{ENDTIME}}"] =  ($row->noendtime() || $row->alldayevent()) ? "" : $row->getUnixEndTime();
 						$rawreplace["{{STARTTZ}}"] = $row->yup()."-".$row->mup()."-".$row->dup()." ".$row->hup().":".$row->minup().":".$row->sup();
 						$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 						$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
@@ -948,10 +944,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
                                         case "{{FIRSTREPEAT}}":
                                         case "{{FIRSTREPEATSTART}}":
+                                        case "{{JEVAGE}}":
 					static $dofirstrepeat;
 					if (!isset($dofirstrepeat))
 					{
-						$dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false || strpos($template_value, "{{FIRSTREPEATSTART}}") !== false);
+						$dofirstrepeat = (strpos($template_value, "{{FIRSTREPEAT}}") !== false
+								|| strpos($template_value, "{{FIRSTREPEATSTART}}") !== false
+								 || strpos($template_value, "{{JEVAGE}}") !== false);
 					}
 					if ($dofirstrepeat)
 					{
@@ -975,9 +974,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						else
 						{
 							$replace[] = JEventsHTML::getDateFormat($firstrepeat->yup(), $firstrepeat->mup(), $firstrepeat->dup(), 0);
-							$rawreplace[] = $firstrepeat->yup() . "-" . $firstrepeat->mup() . "-" . $firstrepeat->dup() . " " . $firstrepeat->hup() . ":" . $firstrepeat->minup() . ":" . $firstrepeat->sup();
+							$rawreplace["{{FIRSTREPEATSTART}}"] = $firstrepeat->yup() . "-" . $firstrepeat->mup() . "-" . $firstrepeat->dup() . " " . $firstrepeat->hup() . ":" . $firstrepeat->minup() . ":" . $firstrepeat->sup();
 						}
 						$blank[] = "";
+
+						$search[] = "{{JEVAGE}}";
+						if ($firstrepeat->rp_id() == $event->rp_id())
+						{
+							$replace[] = "";
+						}
+						else
+						{
+							$replace[] = ($event->yup()>$firstrepeat->yup() && $event->mup()==$firstrepeat->mup()  && $event->dup()==$firstrepeat->dup() )   ?  $event->yup()-$firstrepeat->yup() : "";
+						}
+						$blank[] = "";
+
 					}
 					break;
 				case "{{LASTREPEAT}}":
@@ -1005,7 +1016,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						if ($lastrepeat->rp_id() != $event->rp_id())
 						{
 							$replace[] = JEventsHTML::getDateFormat($lastrepeat->ydn(), $lastrepeat->mdn(), $lastrepeat->ddn(), 0);
-							$rawreplace[] =  $lastrepeat->ydn()."-".$lastrepeat->mdn()."-".$lastrepeat->ddn()." ".$lastrepeat->hdn().":".$lastrepeat->mindn().":".$lastrepeat->sdn();
+							$rawreplace["{{LASTREPEATEND}}"] =  $lastrepeat->ydn()."-".$lastrepeat->mdn()."-".$lastrepeat->ddn()." ".$lastrepeat->hdn().":".$lastrepeat->mindn().":".$lastrepeat->sdn();
 						}
 						else {
 							$replace[] = "";
