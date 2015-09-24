@@ -49,6 +49,15 @@ class jIcalEventDB extends jEventCal {
 			$this->_publish_up = JevDate::strftime( '%Y-%m-%d %H:%M:%S',@$this->dtstart());
 		}
 
+		if (isset($vevent->irregulardates) &&  is_string($vevent->irregulardates) && $vevent->irregulardates!=""){
+			$this->_irregulardates = @json_decode($vevent->irregulardates);
+		}
+		else {
+			$this->_irregulardates = array();
+		}
+		if (!is_array($this->_irregulardates)){
+			$this->_irregulardates = array();
+		}
 		$this->_reccurtype = 0;
 		$this->_reccurday = "";
 		$this->_reccurweekdays = "";
