@@ -31,6 +31,6 @@
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 	<updateservers>
-		<server type="extension" name="JEvents - Core Package Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.0RC6.xml</server>
+		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.0RC6.xml</server>
 	</updateservers>
 </extension>

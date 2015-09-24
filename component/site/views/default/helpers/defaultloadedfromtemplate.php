@@ -115,6 +115,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							if (is_object($modvals)){
 								$modvals = get_object_vars($modvals);
 							}
+							$modids = array_values($modids);
+							$modvals = array_values($modvals);
+
 							for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
 								$templates[$template_name][$catid]->value .= "{{module start:MODULESTART#".$modids[$count]."}}";
 								// cleaned later!
@@ -203,6 +206,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (is_object($modvals)){
 					$modvals = get_object_vars($modvals);
 				}
+				$modids = array_values($modids);
+				$modvals = array_values($modvals);
+
 				for ($count=0;$count<count($modids) && $count<count($modvals) && trim($modids[$count])!="";$count++) {
 					$template_value .= "{{module start:MODULESTART#".$modids[$count]."}}";
 					// cleaned later!
