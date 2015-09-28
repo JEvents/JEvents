@@ -59,9 +59,14 @@ else if ($params->get("bootstrapcss", 1)==2)
 
 // use JRoute to preseve language selection
 $action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
+
+$user = JFactory::getUser();
+$accesslevels = $user->getAuthorisedViewLevels();
+$accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
+
 ?>
 <div id="jevents" <?php
-echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "";
+echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 ?> >
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal jevbootstrap" >
 		<?php
@@ -259,9 +264,8 @@ $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
-	if (JEVHelper::getItemid()>0){
-		$checkURL .=  "?Itemid=".JEVHelper::getItemid();
-	}
+	$urlitemid = JEVHelper::getItemid()>0 ?  "&Itemid=".JEVHelper::getItemid() : "";
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid, false);
 	?>
 						// reformat start and end dates  to Y-m-d format
 						reformatStartEndDates();
@@ -296,7 +300,7 @@ else
 		$this->blanktags[] = "";
 		?>
 
-		<div class="adminform form-horizontal" >
+		<div class="adminform" >
 			<?php
 			if (!$cfg->get('com_single_pane_edit', 0))
 			{
@@ -316,6 +320,9 @@ else
 						{
 							foreach ($this->extraTabs as $extraTab)
 							{
+								if (trim($extraTab['content'])=="") {
+									continue;
+								}
 								?>
 								<li ><a data-toggle="tab" href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a></li>
 								<?php
@@ -335,9 +342,11 @@ else
 				echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
 			}
 			?>
-			<div class="control-group jevtitle">
-				<?php echo $this->form->getLabel("title"); ?>
-				<div class="controls">
+			<div class="row jevtitle">
+				<div class="span2">
+					<?php echo $this->form->getLabel("title"); ?>
+				</div>
+				<div class="span10">
 					<?php echo str_replace("/>", " data-placeholder='xx' />", $this->form->getInput("title")); ?>
 				</div>
 			</div>
@@ -345,9 +354,11 @@ else
 			if ($this->form->getInput("priority"))
 			{
 				?>
-				<div class="control-group jevpriority">
-					<?php echo $this->form->getLabel("priority"); ?>
-					<div class="controls">
+				<div class="row jevpriority">
+					<div class="span2">
+						<?php echo $this->form->getLabel("priority"); ?>
+					</div>
+					<div class="span10">
 						<?php echo $this->form->getInput("priority"); ?>
 					</div>
 				</div>
@@ -358,33 +369,43 @@ else
 			if ($this->form->getInput("creator"))
 			{
 				?>
-				<div class="control-group jevcreator">
-					<?php echo $this->form->getLabel("creator"); ?>
-					<div class="controls">
+				<div class="row jevcreator">
+					<div class="span2">
+						<?php echo $this->form->getLabel("creator"); ?>
+					</div>
+					<div class="span10">
 						<?php echo $this->form->getInput("creator"); ?>
 					</div>
 				</div>
 				<?php
 			}
 
-			if ($this->form->getInput("ics_id"))
+			// This could be hidden!
+			if ($this->form->getLabel("ics_id"))
 			{
 				?>
-				<div class="control-group jevcalendar">
-					<?php echo $this->form->getLabel("ics_id"); ?>
-					<div class="controls">
+				<div class="row jevcalendar">
+					<div class="span2">
+						<?php echo $this->form->getLabel("ics_id"); ?>
+					</div>
+					<div class="span10">
 						<?php echo $this->form->getInput("ics_id"); ?>
 					</div>
 				</div>
 				<?php
 			}
+			else {
+				echo $this->form->getInput("ics_id");
+			}
 
 			if ($this->form->getInput("lockevent"))
 			{
 				?>
-				<div class="control-group jevlockevent">
-					<?php echo $this->form->getLabel("lockevent"); ?>
-					<div class="controls radio btn-group">
+				<div class="row jevlockevent">
+					<div class="span2">
+						<?php echo $this->form->getLabel("lockevent"); ?>
+					</div>
+					<div class="span10 radio btn-group">
 						<?php echo $this->form->getInput("lockevent"); ?>
 					</div>
 				</div>
@@ -394,14 +415,17 @@ else
 			if ($this->form->getLabel("catid"))
 			{
 				?>
-				<div class="control-group  jevcategory">
+				<div class="row  jevcategory">
 					<?php
 					if ($this->form->getLabel("catid"))
 					{
-						echo $this->form->getLabel("catid");
 						?>
-
-						<div class="controls jevcategory">
+						<div class="span2">
+							<?php
+							echo $this->form->getLabel("catid");
+							?>
+						</div>
+						<div class="span10 jevcategory">
 							<?php echo $this->form->getInput("catid"); ?>
 						</div>
 						<?php
@@ -412,13 +436,17 @@ else
 			}
 			if (  $this->form->getLabel("access") ){
 				?>
-				<div class="control-group  jevaccess">
+				<div class="row  jevaccess">
 					<?php
 					if ($this->form->getLabel("access"))
 					{
-						echo $this->form->getLabel("access");
 						?>
-						<div class="controls accesslevel ">
+						<div class="span2">
+							<?php
+							echo $this->form->getLabel("access");
+							?>
+						</div>
+						<div class="span10 accesslevel ">
 							<?php echo $this->form->getInput("access"); ?>
 						</div>
 						<?php
@@ -431,9 +459,11 @@ else
 			if ($this->form->getLabel("state"))
 			{
 				?>
-				<div class="control-group jevpublished">
-					<?php echo $this->form->getLabel("state"); ?>
-					<div class="controls">
+				<div class="row jevpublished">
+					<div class="span2">
+						<?php echo $this->form->getLabel("state"); ?>
+					</div>
+					<div class="span10">
 						<?php echo $this->form->getInput("state"); ?>
 					</div>
 				</div>
@@ -448,9 +478,11 @@ else
 			if ($this->form->getInput("color"))
 			{
 				?>
-				<div class="control-group jevcolour">
-					<?php echo $this->form->getLabel("color"); ?>
-					<div class="controls">
+				<div class="row jevcolour">
+					<div class="span2">
+						<?php echo $this->form->getLabel("color"); ?>
+					</div>
+					<div class="span10">
 						<?php echo $this->form->getInput("color"); ?>
 					</div>
 				</div>
@@ -469,27 +501,35 @@ else
 			}
 			?>
 
-			<div class="control-group jev_description">
-				<?php echo $this->form->getLabel("jevcontent"); ?>
-				<div class="controls" id='jeveditor' >
+			<div class="row jev_description">
+				<div class="span2">
+					<?php echo $this->form->getLabel("jevcontent"); ?>
+				</div>
+				<div class="span10" id='jeveditor' >
 					<?php echo $this->form->getInput("jevcontent"); ?>
 				</div>
 			</div>
-			<div class="control-group jeveditlocation" id="jeveditlocation">
-				<?php echo $this->form->getLabel("location"); ?>
-				<div class="controls" >
+			<div class="row jeveditlocation" id="jeveditlocation">
+				<div class="span2">
+					<?php echo $this->form->getLabel("location"); ?>
+				</div>
+				<div class="span10" >
 					<?php echo $this->form->getInput("location"); ?>
 				</div>
 			</div>
-			<div class="control-group jev_contact">
-				<?php echo $this->form->getLabel("contact_info"); ?>
-				<div class="controls" >
+			<div class="row jev_contact">
+				<div class="span2">
+					<?php echo $this->form->getLabel("contact_info"); ?>
+				</div>
+				<div class="span10" >
 					<?php echo $this->form->getInput("contact_info"); ?>
 				</div>
 			</div>
-			<div class="control-group jev_extrainfo">
-				<?php echo $this->form->getLabel("extra_info"); ?>
-				<div class="controls" >
+			<div class="row jev_extrainfo">
+				<div class="span2">
+					<?php echo $this->form->getLabel("extra_info"); ?>
+				</div>
+				<div class="span10" >
 					<?php echo $this->form->getInput("extra_info"); ?>
 				</div>
 			</div>
@@ -503,9 +543,11 @@ else
                                 }
                             
 				?>
-				<div class="control-group jevplugin_<?php echo $key; ?>">
-					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-					<div class="controls" >
+				<div class="row jevplugin_<?php echo $key; ?>">
+					<div class="span2">
+						<label ><?php echo $this->customfields[$key]["label"]; ?></label>
+					</div>
+					<div class="span10" >
 						<?php echo $this->customfields[$key]["input"]; ?>
 					</div>
 				</div>
@@ -533,6 +575,10 @@ else
 			{
 				foreach ($this->extraTabs as $extraTab)
 				{
+					if (trim($extraTab['content'])=="") {
+						continue;
+					}
+
 					if (!$cfg->get('com_single_pane_edit', 0))
 					{
 						echo JHtml::_('bootstrap.endPanel');

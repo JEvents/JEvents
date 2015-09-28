@@ -143,7 +143,7 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 				$tooltip = $this->correctTooltipLanguage($tooltip);
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = substr($tooltip,9);
+					$title = JString::substr($tooltip,9);
 					$cellString = "";
 				}
 				else {

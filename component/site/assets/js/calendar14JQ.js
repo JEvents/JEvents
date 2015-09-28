@@ -8,7 +8,7 @@ Function.implement({
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != null) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			args = (args != null) ? jQuery.makeArray(args) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args = [event || window.event].append(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);

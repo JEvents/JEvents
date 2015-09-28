@@ -42,8 +42,9 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		$csstarget = $this->getAttribute("csstarget");
 		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
 		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
+		$id = $this->id;
 		$html .= <<<DROPDOWN
-<div class="dropdown btn-group">
+<div class="dropdown btn-group" id="$id">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">
     Select Layout
     <span class="caret"></span>

@@ -1,35 +1,29 @@
 var JeventsFilters = {
 	filters: new Array(),
 	reset:function (form){
+		// native array
 		JeventsFilters.filters.each(function (item,i) {
 			if (item.action){
 				eval(item.action);
 			}
 			else {
-				var elem = $(item.id);
-				if (!elem && form[item.id]){
-					elem = form[item.id];
-					elem = $(elem);
+				var elem = jQuery("#"+item.id);
+				if (!elem.length && form[item.id]){
+					elem = jQuery(form[item.id]);
 				}
 				if (elem) {
-					try {
-						var tag = elem.get('tag');
-					}
-					catch (e) {
-						var tag = elem.getTag();
-					}
-					if (tag =='select'){
-						elem.getElements('option').each(
-							function(selitem){
+					var tag = elem.prop('tagName');
+					if (tag.toLowerCase() == 'select'  ){
+						elem.find('option').each(
+							function(idx, selitem){
 								selitem.selected=(selitem.value==item.value)?true:false;
 							}
 						);
 					}
 					else {
-						elem.value = item.value;
+						elem.val( item.value);
 					}
 				}
-
 			}
 		});
 		if (form.filter_reset){

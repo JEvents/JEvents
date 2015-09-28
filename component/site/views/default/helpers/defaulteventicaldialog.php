@@ -5,10 +5,6 @@ include_once JEV_HELPERS.'/jevExportHelper.php';
 
 function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 {
-	if (!$bootstrap) {
-		return $view->eventIcalDialog16($row, $mask);
-	}
-
 	JevHtmlBootstrap::modal("ical_dialogJQ".$row->rp_id());
 	?>
 	<div id="ical_dialogJQ<?php echo $row->rp_id();?>" class="ical_dialogJQ modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -25,54 +21,42 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 					{
 						?>
 						<div id="unstyledical">
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, true); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AS_ICAL");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo JevExportHelper::getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL") ?>" target="_blank" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/google.png',JText::_("JEV_ADDTOGCAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_GCAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo JevExportHelper::getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL") ?>" target="_blank" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/google.png',JText::_("JEV_ADDTOGCAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo JevExportHelper::getAddToYahooCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOYAHOO") ?>" target="_blank" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/yahoo.png',JText::_("JEV_SAVE_EVENT_IN_YAHOO"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_YAHOO")."</span>";
-									?>
+							<div>
+								<a href="<?php echo JevExportHelper::getAddToYahooCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOYAHOO") ?>" target="_blank" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/yahoo.png',JText::_("JEV_SAVE_EVENT_IN_YAHOO"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_IN_YAHOO");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL");?></span>
 								</a>
 							</div>
 						</div>
 						<div id="styledical">
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, true) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AS_ICAL");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>"  >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/ical_repeats.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AND_ALL_RECURRENCES_AS_ICAL");?></span>
 								</a>
 							</div>
 						</div>
@@ -82,51 +66,46 @@ function DefaultEventIcalDialog($view, $row, $mask, $bootstrap = false)
 					{
 						?>
 						<div id="unstyledical">
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, false); ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AS_ICAL");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo JevExportHelper::getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL") ?>" target="_blank" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/google.png',JText::_("JEV_ADDTOGCAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_GCAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo JevExportHelper::getAddToGCal($row); ?>" title="<?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL") ?>" target="_blank" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/google.png',JText::_("JEV_ADDTOGCAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_IN_GCAL");?></span>
 								</a>
 							</div>
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo JevExportHelper::getAddToYahooCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOYAHOO") ?>" target="_blank" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/yahoo.png',JText::_("JEV_SAVE_EVENT_IN_YAHOO"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_IN_YAHOO")."</span>";
-									?>
+							<div>
+								<a href="<?php echo JevExportHelper::getAddToYahooCal($row); ?>" title="<?php echo JText::_("JEV_ADDTOYAHOO") ?>" target="_blank" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/yahoo.png',JText::_("JEV_SAVE_EVENT_IN_YAHOO"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_IN_YAHOO");?></span>
 								</a>
 							</div>
 						</div>
 						<div id="styledical">
-							<div class="row-fluid">
-								<a class="span12" href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
-									<?php
-									echo "<span class='span2 text-center'>".JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true)."</span>";
-									echo "<span class='span10'>".JText::_("JEV_SAVE_EVENT_AS_ICAL")."</span>";
-									?>
+							<div>
+								<a href="<?php echo $row->vCalExportLink(false, false) . "&icf=1"; ?>" title="<?php echo JText::_("JEV_SAVEICAL") ?>" >
+									<span style="display:inline-block;width:24px;;"><?php echo JHtml::image('com_jevents/icons-32/save.png',JText::_("JEV_SAVEICAL"),null,true);?></span>
+									<span style="display:inline-block;"><?php echo JText::_("JEV_SAVE_EVENT_AS_ICAL");?></span>
 								</a>
 							</div>
 						</div>
 						<?php
 					}
 					?>
-					<label><input name="icf" type="checkbox" value="1" onclick="if (this.checked) {
-									jevjq('#unstyledical').css('display',  'none');
-									jevjq('#styledical').css('display',  'block');
-								} else {
-									jevjq('#styledical').css('display',  'none');
-									jevjq('#unstyledical').css('display',  'block');
-								}" /><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?></label>
+					<label style="display:inline;">
+						<input name="icf" type="checkbox" value="1" onclick="if (this.checked) {
+								jevjq('#unstyledical').css('display',  'none');
+								jevjq('#styledical').css('display',  'block');
+							} else {
+								jevjq('#styledical').css('display',  'none');
+								jevjq('#unstyledical').css('display',  'block');
+							}" />
+						<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
+					</label>
 
 				</div>
 				<div class="modal-footer">

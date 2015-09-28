@@ -99,7 +99,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		foreach ($newcats as $newcat){
 			if ( !in_array( $newcat,$modcatids )){
 				$modcatids[]=$newcat;
-				$catidList .= (strlen($catidList)>0?",":"").$newcat;
+				$catidList .= (JString::strlen($catidList)>0?",":"").$newcat;
 			}
 		}				
 	}
@@ -110,7 +110,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 			if (!isset($modparams->$nextCID)) break;
 			if ($modparams->$nextCID>0 && !in_array($modparams->$nextCID,$modcatids)){
 				$modcatids[]=$modparams->$nextCID;
-				$catidList .= (strlen($catidList)>0?",":"").$modparams->$nextCID;
+				$catidList .= (JString::strlen($catidList)>0?",":"").$modparams->$nextCID;
 			}
 		}
 	}
@@ -129,7 +129,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// if ignoring catid filter then force to blank
 	if ($ignorecatfilter) $catidsin = "";
 	
-	if (strlen($catidsin)>0){
+	if (JString::strlen($catidsin)>0){
 		$catidsin = explode("|",$catidsin);
 		JArrayHelper::toInteger($catidsin);
 	}

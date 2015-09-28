@@ -4,7 +4,7 @@
 	<libraryname>jevents/j25legacy</libraryname>
 	<description>JEvents Joomla 2.5 Legacy Library namespaced to correctly work with JEvents</description>
 	<author>JEvents</author>
-	<creationDate>June 2015</creationDate>
+	<creationDate>September 2015</creationDate>
 	<copyright>(C) 2010-2015 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>carcam@jevents.net</authorEmail>
@@ -14,7 +14,7 @@
 	<files>
 		<folder>jlayouts</folder>
 	</files>
-	<media folder="icomoon" destination="lib_j25legacy/icomoon">
+	<media folder="icomoon" destination="com_jevents/lib_j25legacy/icomoon">
 		<folder>css</folder>
 		<folder>fonts</folder>
 	</media>

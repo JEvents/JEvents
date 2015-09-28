@@ -50,7 +50,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 
-		JEVHelper::script('editical.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+		JEVHelper::script('editicalJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_( 'EDIT_ICS' ));

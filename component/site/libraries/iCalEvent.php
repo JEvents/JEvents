@@ -64,6 +64,13 @@ class iCalEvent extends JTable  {
 	function store($updateNulls=false , $overwriteCreator = false) {
 		$user = JFactory::getUser();
 
+		$jinput = JFactory::getApplication()->input;
+		$curr_task = $jinput->getCmd('task');
+		$ical_access = $jinput->getInt('access');
+
+		if ($curr_task == "icals.save") {
+			$this->access = $ical_access;
+		}
 		if ($this->ev_id==0){
 			$date = JevDate::getDate("+0 seconds");
 			$this->created = $date->toMySQL();
@@ -73,6 +80,8 @@ class iCalEvent extends JTable  {
 			$this->created_by		= $user->id;
 		}
 		$this->modified_by		= $user->id;
+
+
 		if (!isset($this->created_by_alias) || is_null($this->created_by_alias) || $this->created_by_alias==""){
 			$this->created_by_alias		= "";
 		}
@@ -479,7 +488,7 @@ else $this->_detail = false;
 		$oldrepeatcount = count($oldrepeats);
 		foreach ($oldrepeats as &$oldrepeat) {
 			// find matching day
-			$oldrepeat->startday = substr($oldrepeat->startrepeat,0,10);
+			$oldrepeat->startday = JString::substr($oldrepeat->startrepeat,0,10);
 			// free the reference
 			unset($oldrepeat);
 		}
@@ -496,7 +505,7 @@ else $this->_detail = false;
 		for ($r = 0;$r<count($this->_repetitions);$r++){
 			$repeat =& $this->_repetitions[$r];
 			// find matching day and only one!!
-			$repeat->startday = substr($repeat->startrepeat,0,10);
+			$repeat->startday = JString::substr($repeat->startrepeat,0,10);
 			$matched = false;
 			foreach ($oldrepeats as $oldrepeat) {
 				if ($oldrepeat->startday == $repeat->startday){

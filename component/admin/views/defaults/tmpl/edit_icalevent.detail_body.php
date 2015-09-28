@@ -21,9 +21,9 @@ $lang->load("mod_jevents_detail", JPATH_SITE);
 </table>
 
 <script type="text/javascript">
-defaultsEditorPlugin.node($('jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
+defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
-var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
+var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TITLE",true);?>", "TITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALBUTTON",true);?>", "ICALBUTTON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALDIALOG",true);?>", "ICALDIALOG");
@@ -69,6 +69,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATIONDAT
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ADMIN_PANEL",true);?>", "MANAGEMENT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_ACCESS_LEVEL",true);?>", "ACCESS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_STARTED",true);?>", "JEVSTARTED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_ENDED",true);?>", "JEVENDED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "JEVAGE");
 //defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_MODULE_START",true);?>", "MODULESTART#modulename");
 //defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_MODULE_END",true);?>", "MODULEEND");
 
@@ -84,7 +87,7 @@ foreach ($jevplugins as $jevplugin){
 			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"));
 			if (!isset($fieldNameArray['labels'])) continue;
 			?>
-			optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , '<?php echo $fieldNameArray["group"];?>');
+			optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , '<?php echo $fieldNameArray["group"];?>');
 			<?php
 			for ($i=0;$i<count($fieldNameArray['labels']);$i++) {
 				if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;

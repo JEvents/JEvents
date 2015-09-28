@@ -52,109 +52,56 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$db = JFactory::getDbo();
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
+		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
+
+		// get list of ics Files
+		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
+		if (!$showUnpublishedICS)
 		{
-
-			JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
-
-			// get list of ics Files
-			$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
-			if (!$showUnpublishedICS)
-			{
-				$query .= " WHERE ics.state=1";
-			}
-			$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
-
-			$db->setQuery($query);
-			$icsfiles = $db->loadObjectList();
-			$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
-
-			JHtmlSidebar::addFilter(
-					JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
-			);
-
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
-			$options = array();
-                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
-			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
-			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
-			JHtmlSidebar::addFilter(
-					JText::_('ALL_EVENTS'), 'state', JHtml::_('select.options', $options, 'value', 'text', $state)
-			);
-
-			// get list of creators
-			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
-			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-			$db = JFactory::getDBO();
-			$db->setQuery($sql);
-			$users = $db->loadObjectList();
-			$userOptions = array();
-			foreach ($users as $user)
-			{
-				if (!$user->id)
-				{
-					$user->id = 0;
-				}
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
-			}
-
-			JHtmlSidebar::addFilter(
-					JText::_('JEV_EVENT_CREATOR'), 'created_by', JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
-			);
-
-			$this->sidebar = JHtmlSidebar::render();
+			$query .= " WHERE ics.state=1";
 		}
-		else
+		$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
+
+		$db->setQuery($query);
+		$icsfiles = $db->loadObjectList();
+		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
+
+		JHtmlSidebar::addFilter(
+				JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
+		);
+
+		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
+		$options = array();
+					$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
+		$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
+		$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
+		$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
+		JHtmlSidebar::addFilter(
+				JText::_('ALL_EVENTS'), 'state', JHtml::_('select.options', $options, 'value', 'text', $state)
+		);
+
+		// get list of creators
+		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
+		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
+		$db = JFactory::getDBO();
+		$db->setQuery($sql);
+		$users = $db->loadObjectList();
+		$userOptions = array();
+		foreach ($users as $user)
 		{
-
-			// get list of ics Files
-			$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
-			if (!$showUnpublishedICS)
+			if (!$user->id)
 			{
-				$query .= " WHERE ics.state=1";
+				$user->id = 0;
 			}
-			$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
-
-			$db->setQuery($query);
-			$result = $db->loadObjectList();
-
-			$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
-			$icsfiles[] = JHTML::_('select.option', '-1', JText::_('ALL_ICS_FILES'));
-			$icsfiles = array_merge($icsfiles, $result);
-			$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
-			$this->assign('icsList', $icslist);
-
-			$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
-			$options = array();
-                        $options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
-			$options[] = JHTML::_('select.option', '0', JText::_('ALL_EVENTS'));
-			$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-			$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));                    
-			$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
-
-			$statelist = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $state);
-			$this->assign('statelist', $statelist);
-
-			// get list of creators
-			$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
-			$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-			$db = JFactory::getDBO();
-			$db->setQuery($sql);
-			$users = $db->loadObjectList();
-			$userOptions = array();
-			$userOptions[] = JHTML::_('select.option', "", JText::_("JEV_EVENT_CREATOR"));
-			foreach ($users as $user)
-			{
-				if (!$user->id)
-				{
-					$user->id = 0;
-				}
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
-			}
-			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
-			$this->assign('userlist', $userlist);
+			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
+
+		JHtmlSidebar::addFilter(
+				JText::_('JEV_EVENT_CREATOR'), 'created_by', JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
+		);
+
+		$this->sidebar = JHtmlSidebar::render();
+		
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
@@ -178,8 +125,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->addScriptDeclaration($editStrings);
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JEVHelper::script('editical.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-                                    JEVHelper::script('JevStdRequiredFields.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+                  JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() <= "")
 		{
@@ -226,15 +173,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
 
-		if (JevJoomlaVersion::isCompatible("3.0")  )
-		{
-			// load Joomla javascript classes
-			JHTML::_('behavior.core');
-			$this->setLayout("edit");
-		}
-		else  {
-			$this->setLayout("editjq");
-		}
+		// load Joomla javascript classes
+		JHTML::_('behavior.core');
+		$this->setLayout("edit");
 
 		$this->setupEditForm();
 
@@ -292,8 +233,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolbarHelper::save('icalevent.savetranslation');
 		JToolbarHelper::cancel('icalevent.close');
-	}
 
+		$bar =  JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('confirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
+		
+	}
+	
 	function csvimport($tpl = null)
 	{
 
@@ -400,7 +347,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if ($this->languages)
 		{
 			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopup.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
+			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
 			// Any existing translations ?
 			$db = JFactory::getDbo();
@@ -411,7 +358,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			?>
 			<ul class="item-associations">
 			<?php foreach ($this->languages as $id => $item) :
-			
+
 				$text = strtoupper($item->sef);
 				$url = JRoute::_('index.php?option=com_jevents&task=icalevent.translate&evdet_id='.$row->evdet_id.'&ev_id='.$row->ev_id.'&pop=1&tmpl=component&lang=' . $item->lang_code);
 				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
@@ -433,5 +380,5 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		<?php
 		}
 	}
-	
+
 }

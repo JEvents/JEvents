@@ -19,9 +19,9 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <script type="text/javascript">
-defaultsEditorPlugin.node($('jevdefaults'),"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
+defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");
 // built in group
-var optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
+var optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , "<?php echo JText::_("JEV_CORE_DATA",true);?>");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINK",true);?>", "LINK");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TOOLTIP_TITLE",true);?>", "TOOLTIPTITLE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TOOLTIP_CONTENT",true);?>", "TOOLTIPCONTENT");
@@ -62,6 +62,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINKSTART",
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LINKEND",true);?>", "LINKEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_URL",true);?>", "URL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY",true);?>", "PRIORITY");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_STARTED",true);?>", "JEVSTARTED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_ENDED",true);?>", "JEVENDED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "JEVAGE");
 
 <?php
 // get list of enabled plugins
@@ -75,7 +78,7 @@ foreach ($jevplugins as $jevplugin){
 			$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),'list');
 			if (!isset($fieldNameArray['labels'])) continue;
 			?>
-			optgroup = defaultsEditorPlugin.optgroup($('jevdefaults') , '<?php echo $fieldNameArray["group"];?>');
+			optgroup = defaultsEditorPlugin.optgroup('#jevdefaults' , '<?php echo $fieldNameArray["group"];?>');
 			<?php
 			for ($i=0;$i<count($fieldNameArray['labels']);$i++) {
 				if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;

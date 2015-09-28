@@ -304,6 +304,10 @@ public static function generateRRule($array){
 			
 		}
 		$rrule["INTERVAL"] = $interval;
+		$rrule["IRREGULARDATES"] =  JArrayHelper::getValue( $array,  "irregularDates",array(),"ARRAY");
+		array_walk($rrule["IRREGULARDATES"], function(& $item, $index ){
+			$item = JevDate::strtotime($item." 00:00:00");
+			});
 	}
 
 	$whichby			= JArrayHelper::getValue( $array,  "whichby","bd");
@@ -337,13 +341,13 @@ public static function generateRRule($array){
 			if (count($weeknums)==0){
 				// special case for weekly repeats which don't specify eeek of a month
 				foreach ($weekdays as $wd) {
-					if (strlen($byday)>0) $byday.=",";
+					if (JString::strlen($byday)>0) $byday.=",";
 					$byday .= $weekdayReverseMap[$wd];
 				}
 			}
 			foreach ($weeknums as $week){
 				foreach ($weekdays as $wd) {
-					if (strlen($byday)>0) $byday.=",";
+					if (JString::strlen($byday)>0) $byday.=",";
 					$byday .= $bd_direction.$week.$weekdayReverseMap[$wd];
 				}
 			}

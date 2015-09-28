@@ -148,6 +148,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser()){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -204,6 +205,7 @@ class AdminIcalsController extends JControllerForm {
                    }
                 $message = JText::_( 'ICS_ALL_FILES_IMPORTED' );
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
+		$this->redirect();
         } 
 	function save($key = null, $urlVar = null){
 
@@ -240,6 +242,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();				
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 		$cid	= JRequest::getVar(	'cid',	array(0) );
@@ -282,7 +285,7 @@ class AdminIcalsController extends JControllerForm {
 				$access = intval($currentICS->access);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && strlen($currentICS->label)>=0){
+			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && JString::strlen($currentICS->label)>=0){
 				$icsLabel = $currentICS->label;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
@@ -306,7 +309,7 @@ class AdminIcalsController extends JControllerForm {
 			}
 
 			$state = 1;
-			if (strlen($currentICS->srcURL)==0) {
+			if (JString::strlen($currentICS->srcURL)==0) {
 				echo "Can only reload URL based subscriptions";
 				return;
 			}
@@ -331,7 +334,7 @@ class AdminIcalsController extends JControllerForm {
 		}
 
 		// I need a better check and expiry information etc.
-		if (strlen($uploadURL)>0){
+		if (JString::strlen($uploadURL)>0){
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL,$icsid,$catid,$access,$state,$icsLabel, $autorefresh, $ignoreembedcat);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']) ) {
@@ -355,6 +358,7 @@ class AdminIcalsController extends JControllerForm {
 		}
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
+		$this->redirect();
 	}
 
 	/**
@@ -377,6 +381,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -420,11 +425,11 @@ class AdminIcalsController extends JControllerForm {
 				$state = intval($currentICS->state);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if ($icsLabel=="" && strlen($currentICS->icsLabel)>=0){
+			if ($icsLabel=="" && JString::strlen($currentICS->icsLabel)>=0){
 				$icsLabel = $currentICS->icsLabel;
 			}
 			$uploadURL = JRequest::getVar('uploadURL',$currentICS->srcURL );
-			if ($uploadURL=="" && strlen($currentICS->srcURL)>=0){
+			if ($uploadURL=="" && JString::strlen($currentICS->srcURL)>=0){
 				$uploadURL = $currentICS->srcURL;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
@@ -467,6 +472,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -477,6 +483,7 @@ class AdminIcalsController extends JControllerForm {
 			$db->query();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	function autorefresh(){
@@ -495,6 +502,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -505,6 +513,7 @@ class AdminIcalsController extends JControllerForm {
 			$db->query();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	function isdefault(){
@@ -523,6 +532,7 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser($user)) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=cpanel.cpanel", "Not Authorised - must be super admin" );
+			$this->redirect();
 			return;
 		}
 
@@ -537,6 +547,7 @@ class AdminIcalsController extends JControllerForm {
 		$db->setQuery($sql);
 		$db->query();
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
+		$this->redirect();
 	}
 
 	/**
@@ -557,7 +568,9 @@ class AdminIcalsController extends JControllerForm {
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
 			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT') );
-			
+
+			// Set option variable.
+			$option = JEV_COM_COMPONENT;
 			JFactory::getApplication()->redirect( 'index.php?option=' . $option);
 			return;
 		}
@@ -566,6 +579,7 @@ class AdminIcalsController extends JControllerForm {
 		$icsFileid = $icsFile->store();
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_( 'ICAL_FILE_CREATED' ));
+		$this->redirect();
 	}
 
 
@@ -585,6 +599,7 @@ class AdminIcalsController extends JControllerForm {
 		$kids = $db->loadObjectList();
 		if (count($kids)>0){
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_("DELETE_CREATES_ORPHAN_EVENTS") );
+			$this->redirect();
 			return;
 		}
 
@@ -594,6 +609,7 @@ class AdminIcalsController extends JControllerForm {
 		$db->query();
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", "ICal deleted" );
+		$this->redirect();
 	}
 
 	function _deleteICal($cid){

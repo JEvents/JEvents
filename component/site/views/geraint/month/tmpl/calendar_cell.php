@@ -155,7 +155,7 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 				}
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = substr($tooltip,9);
+					$title = JString::substr($tooltip,9);
 					$cellString = "";
 				}
 				else {
