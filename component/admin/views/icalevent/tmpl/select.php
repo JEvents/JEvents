@@ -56,7 +56,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 	<table  class="adminlist   table table-striped">
 		<thead>
 			<tr>
-				<th class="title" width="50%" nowrap="nowrap">
+				<th class="title" width="40%" nowrap="nowrap">
 <?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -105,7 +105,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 				?>
 				<tr class="row<?php echo $k; ?>">
 					<td >
-						<a href="#select" onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , ($('Itemid')?$('Itemid').value:0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>)" title="<?php echo JText::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
+						<a href="#select" onclick="return window.parent.<?php echo $function; ?>('<?php echo $link; ?>','<?php echo addslashes(htmlspecialchars($repeat->title())); ?>' , (jQuery('#Itemid').length?jQuery('#Itemid').val():0) , <?php echo $repeat->ev_id(); ?>, <?php echo $repeat->rp_id(); ?>)" title="<?php echo JText::_('JEV_SELECT_EVENT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
 					<td align="center">
 						<?php
@@ -113,7 +113,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 						{
 							if (JFactory::getApplication()->isAdmin())
 							{
-								$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
+								$img ='<span class="icon-list"> </span>';
 							}
 							else
 							{
@@ -144,8 +144,8 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
 							$times .="</table>";
 							echo $times;
 						}

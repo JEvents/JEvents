@@ -1,5 +1,5 @@
 /* 
- * Filename: JevStdRequiredFields.js
+ * Filename: JevStdRequiredFieldsJQ.js
  * Class: jevstdrequiredfields
  * Author: Carlos M. Cámara from JEvents.net
  * Use: Check required fields

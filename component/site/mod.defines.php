@@ -57,5 +57,3 @@ if (!defined("JEV_LIBS")){
 	
 	// TODO retire this sometime?
 	JLoader::register('JEV_CommonFunctions',JEV_PATH."/libraries/commonfunctions.php");
-
-

@@ -51,11 +51,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$this->assign('language', $language);
 		$this->assign('languages', $languages);
 
-		$catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
-		$catids = JHtml::_('select.options', $catids, 'value', 'text', $catid);
-		$this->assign('catid', $catid);
-		$this->assign('catids', $catids);
-
 		$layouttype = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
 		$addonoptions = array();
 		$addonoptions[] = JHTML::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
@@ -65,6 +60,17 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		$addonoptions = JHtml::_('select.options', $addonoptions, 'value', 'text', $layouttype);
 		$this->assign('addonoptions', $addonoptions);
+
+		if ($layouttype=="jevents"){
+			$catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
+			$catids = JHtml::_('select.options', $catids, 'value', 'text', $catid);
+		}
+		else {
+			$catid = 0;
+			$catids = "";
+		}
+		$this->assign('catid', $catid);
+		$this->assign('catids', $catids);
 
 		$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
 		$this->assign('filter_published', $filter_published);
@@ -193,13 +199,55 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 	}
 
+	protected function translationLinks ($row) {
+		if ($this->languages)
+		{
+			// Any existing translations ?
+			$db = JFactory::getDbo();
+			$db->setQuery("SELECT id, language, value, state FROM #__jev_defaults where catid=".$row->catid. " and title=".$db->quote($row->title));
+			$translations = $db->loadObjectList("language");
+
+			?>
+			<ul class="item-associations">
+			<?php foreach ($this->languages as $id => $item) :
+
+				$text = strtoupper($item->sef);
+				$hasTranslation = false;
+				$translationid = 0;
+				if (isset($translations[$id])){
+					$translationid = $translations[$id]->id;
+					if ($translations[$id]->value !="" && $translations[$id]->state){
+						$hasTranslation = true;
+					}
+				}
+				$url = JRoute::_('index.php?option=com_jevents&task=defaults.edit&id='.$translationid, false);
+				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
+						$item->title,
+						array('title' => $item->title),
+						true
+					);
+				$url  = $url;// ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+				$tooltipParts = array( 	$img,  addslashes($item->title));
+				$item->link = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( $hasTranslation ?" hastranslation":"" ));
+				?>
+				<li>
+				<?php
+				echo $item->link;
+				?>
+				</li>
+			<?php endforeach; ?>
+			</ul>
+		<?php
+		}
+	}
+
 }
 
 function replaceLabelsCallback($matches)
 {
 	if (count($matches) == 1)
 	{
-		return "{{" . JText::_(substr($matches[0], 2, strlen($matches[0]) - 3)) . ":";
+		return "{{" . JText::_(JString::substr($matches[0], 2, JString::strlen($matches[0]) - 3)) . ":";
 	}
 	return "";
 

@@ -69,7 +69,7 @@ class JevExportHelper {
 		$urlString['siteurl'] = urlencode(JUri::root());
 		$urlString['rawdetails'] = urlencode($row->get('description'));
 		$urlString['details'] = strip_tags($row->get('description'));
-		if (strlen($urlString['details'])>100) {
+		if (JString::strlen($urlString['details'])>100) {
 			$urlString['details'] = JString::substr( $urlString['details'], 0, 100 ) . ' ...';
 		}
 		$urlString['details'] = urlencode($urlString['details']);

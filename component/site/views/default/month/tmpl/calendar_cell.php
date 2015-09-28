@@ -41,8 +41,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 			$this->stop_date_midnightFix = JEventsHTML::getDateFormat(  $this->event->ydn(), $this->event->mdn(), $this->event->ddn()+1, 0 );
 		}
 		
-		// we only need the one helper so stick to default layout here!
-		$this->jevlayout="default";	
+		$this->jevlayout=isset($view->jevlayout) ? $view->jevlayout : "default";
 		
 		$this->addHelperPath(JEV_VIEWS."/default/helpers");
 		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
@@ -215,8 +214,8 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
+		$cellString .= '<hr   class="jev-click-to-open"/>'
+		. '<small class="jev-click-to-open"><a href="'.$link.'"   title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
 		// Watch out for mambots !!
 		. '</td></tr></table>';
 
@@ -319,8 +318,8 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 		$link = $this->event->viewDetailLink($this->event->yup(),$this->event->mup(),$this->event->dup(),false);
 		$link = JRoute::_($link.$this->_datamodel->getCatidsOutLink());
 
-		$cellString .= '<hr />'
-		. '<small><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';
+		$cellString .= '<hr   class="jev-click-to-open"/>'
+		. '<small   class="jev-click-to-open"><a href="'.$link.'" title="'. JText::_('JEV_CLICK_TO_OPEN_EVENT', true).'" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';
 		return $cellString;
 
 		// harden the string for the tooltip
@@ -433,7 +432,7 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 				$tooltip = $this->correctTooltipLanguage($tooltip);
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = substr($tooltip,9);
+					$title = JString::substr($tooltip,9);
 					$cellString = "";
 				}
 				else {

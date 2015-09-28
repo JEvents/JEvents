@@ -80,7 +80,7 @@ $version = JEventsVersion::getInstance();
 
 				$class = isset($field->class) ? $field->class : "";
 
-				if (strlen($class) > 0)
+				if (JString::strlen($class) > 0)
 				{
 					$class = " class='$class'";
 				}
@@ -105,7 +105,7 @@ $version = JEventsVersion::getInstance();
 				{
 					$class = isset($field->class) ? $field->class : "";
 
-					if (strlen($class) > 0)
+					if (JString::strlen($class) > 0)
 					{
 						$class = " class='$class'";
 					}
@@ -180,7 +180,7 @@ $version = JEventsVersion::getInstance();
 
 						$class = isset($field->class) ? $field->class : "";
 
-						if (strlen($class) > 0)
+						if (JString::strlen($class) > 0)
 						{
 							$class = " class='$class'";
 						}

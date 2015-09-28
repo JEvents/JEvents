@@ -37,7 +37,7 @@ if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->ite
 $this->replaceLabels($this->item->value);
 ?>		
 <div id="jevents">
-	<form action="index.php" method="post" name="adminForm" >
+	<form action="index.php" method="post" name="adminForm" id="adminForm" >
 		<table width="90%" border="0" cellpadding="2" cellspacing="2" class="adminform" >
 			<tr>
 				<td>
@@ -136,6 +136,9 @@ echo $editor->save('value');
 					if (is_object($modvals)){
 						$modvals = get_object_vars($modvals);
 					}
+					$modids = array_values($modids);
+					$modvals = array_values($modvals);
+
 					$count = 0;
 					$conf = JFactory::getConfig();
 					$modeditor =  JFactory::getEditor($conf->get('editor'));

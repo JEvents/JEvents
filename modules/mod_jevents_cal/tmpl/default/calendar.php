@@ -61,7 +61,7 @@ class DefaultModCalView
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
-			JHTML::stylesheet( "components/com_jevents/assets/css/jevcustom.css");
+			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		$this->_modid = $modid;
@@ -244,11 +244,24 @@ class DefaultModCalView
 		$cal_month=date("m",$time);
 		// do not use $cal_day since it's not reliable due to month offset calculation
 		//$cal_day=date("d",$time);
-		
+
 		if (!$basedate) $basedate=$time;
 		$base_year = date("Y",$basedate);
 		$base_month = date("m",$basedate);
 		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
+
+		$base_prev_month 	= $base_month - 1;
+		$base_next_month 	= $base_month + 1;
+		$base_next_month_year	= $base_year;
+		$base_prev_month_year	= $base_year;
+		if( $base_prev_month == 0 ) {
+			$base_prev_month 	= 12;
+			$base_prev_month_year 	-=1;
+		}
+		if( $base_next_month == 13 ) {
+			$base_next_month 	= 1;
+			$base_next_month_year 	+=1;
+		}
 
 		$requestYear = JRequest::getInt("year",0);
 		$requestMonth = JRequest::getInt("month",0);
@@ -259,7 +272,7 @@ class DefaultModCalView
 			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
 			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
-	
+
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
@@ -270,7 +283,7 @@ class DefaultModCalView
 		else {
 			$cal_year=date("Y",$time);
 			$cal_month=date("m",$time);
-		}		
+		}
 
 		$reg = JFactory::getConfig();
 		$reg->set("jev.modparams",$this->modparams);
@@ -284,7 +297,7 @@ class DefaultModCalView
 		$reg->set("jev.modparams",false);
                 $width = $this->modparams->get("mod_cal_width","140px");
                 $height = $this->modparams->get("mod_cal_height","");
-		
+
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
@@ -292,12 +305,13 @@ class DefaultModCalView
 		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
 
 		$content    = '';
-		
+
 		if( $this->minical_showlink ){
 
 			$content .= "\n".'<table style="width:'.$width.';" cellpadding="0" cellspacing="0" align="center" class="mod_events_monthyear" >' . "\n"
 			. '<tr >' . "\n";
 
+			$scriptlinks = "";
 			if( $this->minical_showlink == 1 ){
 
 				if( $this->minical_prevyear ){
@@ -305,6 +319,8 @@ class DefaultModCalView
 				}
 
 				if( $this->minical_prevmonth ){
+					$linkprevious = htmlentities(JURI::base()  . "index.php?option=$option&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component".$this->cat);
+					$scriptlinks .= "linkprevious = '".$linkprevious."';\n";
 					$content .= $this->monthYearNavigation($basefirst_of_month,"-1 month",'&lt;',JText::_('JEV_CLICK_TOSWITCH_PM'));
 				}
 
@@ -336,6 +352,8 @@ class DefaultModCalView
 				}
 
 				if( $this->minical_nextmonth ){
+					$linknext = htmlentities(JURI::base()  . "index.php?option=$$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component".$this->cat);
+					$scriptlinks .= "linknext = '".$linknext."';\n";
 					$content .= $this->monthYearNavigation($basefirst_of_month,"+1 month",'&gt;',JText::_('JEV_CLICK_TOSWITCH_NM'));
 				}
 
@@ -416,6 +434,10 @@ class DefaultModCalView
 
 		$content .= '</table>'.$lf;
 
+		if ($scriptlinks!=""){
+			$content .= "<script style='text/javascript'>xyz=1;".$scriptlinks."zyx=1;</script>";
+		}
+
 		return $content;
 	}
 
@@ -442,7 +464,7 @@ class DefaultModCalView
 		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
 
 		$content    = '<div style="margin:0px;padding:0px;border-width:0px;">';
-		
+
 		if ($this->inc_ec_css){
 			JEVHelper::componentStylesheet($this,"modstyle.css");
 		}
@@ -457,7 +479,7 @@ class DefaultModCalView
 			$mod = 'id="modid_'.$this->_modid.'" ';
 			$content  .= "<span id='testspan".$this->_modid."' style='display:none'></span>\n";
 		}
-		
+
 		if($this->disp_lastMonth && (!$this->disp_lastMonthDays || $thisDayOfMonth <= $this->disp_lastMonthDays))
 		$content .= $this->_displayCalendarMod(JevDate::strtotime("-1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_LAST_MONTH'),	$day_name, $this->disp_lastMonth == 2, $this->timeWithOffset);
@@ -468,9 +490,9 @@ class DefaultModCalView
 		if($this->disp_nextMonth && (!$this->disp_nextMonthDays || $daysLeftInMonth <= $this->disp_nextMonthDays))
 		$content .= $this->_displayCalendarMod(JevDate::strtotime("+1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_NEXT_MONTH'),$day_name, $this->disp_nextMonth == 2, $this->timeWithOffset);
-		
+
 		$content .= '</div>';
-		
+
 		return $content;
 	} // function getCal
 
@@ -503,7 +525,7 @@ class DefaultModCalView
 			$content  .= "<span id='testspan".$this->_modid."' style='display:none'></span>\n";
 		}
 
-		
+
 		$temptime = JevDate::mktime(12,0,0,$month,15,$year);
 
 		//$content .= $this->_displayCalendarMod($temptime,$this->com_starday, JText::_('JEV_THIS_MONTH'),$day_name, false);
@@ -516,7 +538,7 @@ class DefaultModCalView
 		$base_year = date("Y",$temptime);
 		$base_month = date("m",$temptime);
 		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
-		
+
 		if($this->disp_lastMonth && (!$this->disp_lastMonthDays || $thisDayOfMonth <= $this->disp_lastMonthDays))
 		$content .= $this->_displayCalendarMod(JevDate::strtotime("-1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_LAST_MONTH'),	$day_name, $this->disp_lastMonth == 2,  $first_of_current_month);
@@ -527,8 +549,8 @@ class DefaultModCalView
 		if($this->disp_nextMonth && (!$this->disp_nextMonthDays || $daysLeftInMonth <= $this->disp_nextMonthDays))
 		$content .= $this->_displayCalendarMod(JevDate::strtotime("+1 month", $first_of_current_month),
 		$this->com_starday, JText::_('JEV_NEXT_MONTH'),$day_name, $this->disp_nextMonth == 2,  $first_of_current_month);
-		
-		
+
+
 		return $content;
 	} // function getSpecificCal
 

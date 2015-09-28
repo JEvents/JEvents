@@ -61,19 +61,19 @@ $mainspan = 10;
               	</td>
               	<td width="40%">
               	<?php
-              	$times = '<table style="border: 1px solid #666666; width:100%;">';
-              	$times .= '<tr><td>Start : '. $row->publish_up().'</td></tr>';
-              	$times .= '<tr><td>End : ' . $row->publish_down(). '</td></tr>';
-              	$times .="</table>";
-              	echo $times;
-				?>
+                $times = '<table style="border: 1px solid #666666; width:100%;">';
+                $times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+                $times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
+                $times .="</table>";
+                echo $times;
+                ?>
               	</td>
             </tr>
             <?php
             $k = 1 - $k;
         } ?>
     	<tr>
-    		<th align="center" colspan="9"><?php echo $this->pageNav->getListFooter(); ?></th>
+    		<th align="center" colspan="3"><?php echo $this->pageNav->getListFooter(); ?></th>
     	</tr>
     </table>
     <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
@@ -85,37 +85,5 @@ $mainspan = 10;
 </form>
 
 <br />
-<table cellspacing="0" cellpadding="4" border="0" align="center">
-	<tr align="center">
-		<td>
-			<img src="<?php echo $pathIMG; ?>publish_y.png" width="12" height="12"  alt="<?php echo JText::_('JEV_TIT_PENDING'); ?>" title="<?php echo JText::_('JEV_TIT_PENDING'); ?>" />
-		</td>
-		<td>
-			<?php echo JText::_('JEV_PUB_BUT_COMING'); ?>
-			&nbsp;|
-		</td>
-		<td>
-			<img src="<?php echo $pathIMG; ?>publish_g.png" width="12" height="12"  alt="Visible" />
-		</td>
-		<td>
-			<?php echo JText::_('JEV_PUB_ACTUAL'); ?>
-			&nbsp;|
-		</td>
-		<td>
-			<img src="<?php echo $pathIMG; ?>publish_r.png" width="12" height="12"  alt="Finished" />
-		</td>
-		<td>
-			<?php echo JText::_('JEV_PUB_FINISHED'); ?>
-			&nbsp;|
-		</td>
-		<td>
-			<img src="<?php echo $pathIMG; ?>publish_x.png" width="12" height="12"  alt="Finished" />
-		</td>
-		<td><?php echo JText::_('JEV_NOT_PUBLISHED'); ?></td>
-	</tr>
-	<tr>
-		<td colspan="8" align="center"><?php echo JText::_('JEV_CLICK_TO_CHANGE_STATUS'); ?></td>
-	</tr>
-</table>
 <?php		
 

@@ -64,9 +64,9 @@ $mainspan = 10;
 			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 				<tr>
 					<th width="20" nowrap="nowrap">
-						<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->rows) . ")"; ?>" />
+						<input type="checkbox" name="toggle" value="" onclick=Joomla.checkAll(this);"  />
 					</th>
-					<th class="title" width="50%" nowrap="nowrap">
+					<th class="title" width="40%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -77,7 +77,7 @@ $mainspan = 10;
 					<?php }
 					?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-					<th width="15%" nowrap="nowrap">
+					<th width="20%" nowrap="nowrap">
 <?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 					</th>
 					<th width="20%" nowrap="nowrap">
@@ -108,10 +108,9 @@ $mainspan = 10;
 							<?php
 							if ($row->hasrepetition())
 							{
-								$img = JHTML::_('image', 'admin/featured.png', '', array('title' => ''), true);
 								?>
 								<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')" class="btn btn-micro">
-								<?php echo $img; ?>
+									<span class="icon-list"> </span>
 								</a>
 								<?php } ?>
 						</td>
@@ -144,8 +143,8 @@ $mainspan = 10;
 							else
 							{
 								$times = '<table style="border: 1px solid #666666; width:100%;">';
-								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? substr($row->publish_up(), 0, 10) : substr($row->publish_up(),0,16)) . '</td></tr>';
-								$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? substr($row->publish_down(), 0, 10) : substr($row->publish_down(),0,16)) . '</td></tr>';
+								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+								$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
 								$times .="</table>";
 								echo $times;
 							}

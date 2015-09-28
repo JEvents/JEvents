@@ -163,6 +163,7 @@ class AdminDefaultsController extends JControllerForm {
 
 	function cancel($key = NULL){
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+		$this->redirect();
 	}
 
 	function unpublish(){
@@ -170,6 +171,7 @@ class AdminDefaultsController extends JControllerForm {
 		$cid = JRequest::getVar("cid",array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+			$this->redirect();
 			return;
 		}
 		$name = $cid[0];
@@ -178,6 +180,7 @@ class AdminDefaultsController extends JControllerForm {
 		$db->query();
 
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+		$this->redirect();
 	}
 
 	function publish(){
@@ -185,6 +188,7 @@ class AdminDefaultsController extends JControllerForm {
 		$cid = JRequest::getVar("cid",array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+			$this->redirect();
 			return;
 		}
 		$name = $cid[0];
@@ -213,6 +217,7 @@ class AdminDefaultsController extends JControllerForm {
 		if (str_replace(" ", "",$defaultvalue)==str_replace(" ","",$value->value) || $value->value=="") {
 			JFactory::getApplication()->enqueueMessage(JText::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+			$this->redirect();
 			return;
 		}
 		
@@ -221,6 +226,7 @@ class AdminDefaultsController extends JControllerForm {
 		$db->query();
 
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
+		$this->redirect();
 	}
 
 
@@ -238,9 +244,11 @@ class AdminDefaultsController extends JControllerForm {
 				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
 					if (JRequest::getCmd("task")=="defaults.apply"){
 						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));
+						$this->redirect();
 						return;
 					}					
 					$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",JText::_("JEV_TEMPLATE_SAVED"));
+					$this->redirect();
 					return;
 				}
 				else {
