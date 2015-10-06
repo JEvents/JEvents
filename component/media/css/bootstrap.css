@@ -4410,6 +4410,8 @@
 	max-height: 400px;
 	padding: 15px;
 	overflow-y: auto;
+	box-sizing:padding-box;
+	width:100%;
 }
 .jevbootstrap .modal-form {
 	margin-bottom: 0;

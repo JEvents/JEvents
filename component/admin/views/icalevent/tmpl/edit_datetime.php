@@ -158,7 +158,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				$minyear = JEVHelper::getMinYear();
 				$maxyear = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
-				JEVHelper::loadCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat);
+				JEVHelper::loadElectricCalendar("until", "until", JevDate::strftime("%Y-%m-%d", $this->row->until()), $minyear, $maxyear, 'updateRepeatWarning();', "checkUntil();updateRepeatWarning();", $inputdateformat);
 				?>
 				<input type="hidden"  name="until2" id="until2" value="" />
 
@@ -233,12 +233,24 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					$minyear = JEVHelper::getMinYear();
 					$maxyear = JEVHelper::getMaxYear();
 					$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
-					JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();", $inputdateformat, array("style"=>"display:none;"));
+					$inputdateformat2 = str_replace(array("Y","m", "d"), array("%Y","%m", "%d"),$inputdateformat);
+					JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();updateRepeatWarning();", $inputdateformat, array("style"=>"display:none;"));
 				?>
 				</div>
-				<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" >
-
-				</select>				
+				<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" onchange="updateRepeatWarning()">
+					<?php 
+					sort($this->row->_irregulardates);
+					array_unique($this->row->_irregulardates);
+					foreach ($this->row->_irregulardates as $irregulardate){
+						 $irregulardateval = JevDate::strftime('%Y-%m-%d',$irregulardate);
+						 $irregulardatetext = JevDate::strftime($inputdateformat2,$irregulardate);
+						?>
+					<option value="<?php echo$irregulardateval;?>" selected="selected"><?php echo $irregulardatetext;?></option>
+						<?php
+					}
+					?>
+				</select>
+				<strong><?php echo JText::_("JEV_IRREGULAR_REPEATS_CANNOT_BE_EXPORTED_AT_PRESENT");?></strong>
 			</fieldset>
 		</div>
 		<div  class="jev_none" id="bysetpos">

@@ -830,6 +830,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
 		$output .= "MySQL Version : " .JFactory::getDbo()->getVersion(). "\n";
+		$output .= "Server Information : " . php_uname() . "\n";
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("fixjquery", -1)==-1){
@@ -1178,11 +1179,36 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$db->setQuery("SELECT * FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
 		$strays = $db->loadObjectList('update_site_id');
 		if (count($strays)>0){
-			$db->setQuery("DELETE  FROM #__update_sites_extensions where 'update_site_id' IN (".implode(",", array_keys($strays)).")");
+			$db->setQuery("DELETE  FROM #__update_sites_extensions where update_site_id IN (".implode(", ", array_keys($strays)).")");
 			$db->query();
 			$db->setQuery("DELETE FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
 			$db->query();
 		}
+
+		// remove duplicate entries created by Joomla installer that assumes the updateserver will not change
+		//$db->setQuery('SELECT * FROM #__update_sites where location like "%www.jevents.net%/%/'.$package['element'].'-update-%.xml" ');
+		$db = JFactory::getDbo();
+		$db->setQuery('SELECT * FROM #__update_sites where location like "%www.jevents.net%/%/%-update-%.xml" order by update_site_id asc');
+		$cleanupRows = $db->loadObjectList('update_site_id');
+		if (count($cleanupRows)>1){
+			$strays = array();
+			$processed = array();
+			foreach ($cleanupRows as $update_site_id => $site){
+				$pgk = substr($site->location,  strrpos($site->location, "/")+1);
+				$pgk = substr($pgk,0,strrpos($pgk, "-update-"));
+				if (in_array($pgk, $processed)){
+					$strays[$update_site_id] = $pgk;
+				}
+				$processed[] = $pgk;
+			}
+			if (count($strays)>0){
+				$db->setQuery("DELETE  FROM #__update_sites_extensions where update_site_id IN (".implode(", ", array_keys($strays)).")");
+				$db->query();
+				$db->setQuery("DELETE FROM #__update_sites where location like '%jevents.net%' and update_site_id IN (".implode(", ", array_keys($strays)).")");
+				$db->query();
+			}
+		}
+
 	}
 
 	private

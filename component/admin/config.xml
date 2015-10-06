@@ -131,7 +131,7 @@
 			<option value="d/m/Y">JEV_EVENT_EDIT_DATEFORMAT_DMY_VALUE</option>
 			<option value="d.m.Y">JEV_EVENT_EDIT_DATEFORMAT_EUROPEAN_VALUE</option>
 		</field>
-		<!--<field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC'/> //-->
+		<!--<field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC' difficulty="3"/>//-->
 		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
 		<field name="defaultcat" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_Use_Default_Cat" description="JEV_Use_Default_Cat_tip" difficulty="2"/>
 		<field name="forcepopupcalendar" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" difficulty="2"/>
@@ -223,6 +223,13 @@
 		<field name="@spacer_mv2" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" difficulty="1"/>
 
 		<field name="com_enableToolTip" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" difficulty="1"/>
+		<!--
+		<field name="com_enableToolTip" type="radio" class="btn-group" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" difficulty="1">
+			<option value="0">JEV_NONE</option>
+			<option value="1">JEV_NONTOUCH</option>
+			<option value="2">JEV_ALLDEVICES</option>
+		</field>
+		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
 			<option value="joomla">Mootools</option>
