@@ -2581,6 +2581,19 @@ class JEventsDBModel
 			$query .="\n GROUP BY rpt.rp_id";
 		}
 
+		//Dirty hack to include locations categories grouping
+		if(strpos($query, "loccatmap"))
+		{
+			if(strpos($query, 'GROUP BY'))
+			{
+				$query .= ", loc.loc_id";
+			}
+			else
+			{
+				$query .= "GROUP BY loc.loc_id";
+			}
+		}
+
 		if ($order != "")
 		{
 			$query .= " ORDER BY " . $order;
