@@ -116,7 +116,7 @@ class DefaultModLegendView
 				if (!in_array($newcat, $catids))
 				{
 					$catids[] = $newcat;
-					$catidList .= (strlen($catidList) > 0 ? "," : "") . $newcat;
+					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
 				}
 			}
 		}
@@ -127,7 +127,7 @@ class DefaultModLegendView
 				if (!in_array($nextCatId, $catids))
 				{
 					$catids[] = $nextCatId;
-					$catidList .= ( strlen($catidList) > 0 ? "," : "") . $nextCatId;
+					$catidList .= ( JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
 				}
 				$c++;
 			}
@@ -156,7 +156,7 @@ class DefaultModLegendView
 		$availableCatsIds = "";
 		foreach ($allrows as $row)
 		{
-			$availableCatsIds.= ( strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
+			$availableCatsIds.= ( JString::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
 		}
 
 		$allcats = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
@@ -277,14 +277,14 @@ class DefaultModLegendView
 		$clonedCatList = unserialize(serialize($catlist));
 
 		$validcats = array();
-		if (strlen($catidsGPList) > 0)
+		if (JString::strlen($catidsGPList) > 0)
 			$validcats = array_merge($validcats, explode(",", $catidsGPList));
 
 		// convert to a tree
 		$cattree = $this->mapTree($catlist, $validcats);
 
 		// constrain tree by component or module paramaters
-		if (strlen($catidList) > 0)
+		if (JString::strlen($catidList) > 0)
 		{
 			$validcats = array();
 			$validcats = array_merge($validcats, explode(",", $catidList));
@@ -396,7 +396,7 @@ class DefaultModLegendView
 				//."$row->name ($row->id)</div>"
 				. "<a href='" . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "' style='color:inherit'>"
 				. JEventsHTML::special($row->name) . "</a></div>";
-		if (strlen($row->description) > 0)
+		if (JString::strlen($row->description) > 0)
 		{
 			$content .="<div class='event_legend_desc'>$row->description</div>";
 		}
@@ -442,7 +442,7 @@ class DefaultModLegendView
 				. '<a href="' . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
 				. JEventsHTML::special($row->name) . '</a>';
 		$content .= '</div>' . "\n";
-		if (strlen($row->description) > 0)
+		if (JString::strlen($row->description) > 0)
 		{
 			$content .='<div class="event_legend_desc"  style="border-color:' . $row->color . '">' . $row->description . '</div>';
 		}

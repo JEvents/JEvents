@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="system" method="upgrade">
+	<name>plg_system_gwejson</name>
+	<author>Geraint Edwards</author>
+	<creationDate>September 2015</creationDate>
+	<copyright>(C) 2015 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
+	<authorEmail>via website</authorEmail>
+	<authorUrl>www.gwesystems.com</authorUrl>
+	<version>3.4.0</version>
+	<description>PLG_SYSTEM_JSON_EXECUTION_WRAPPER</description>
+	<files>
+		<filename plugin="gwejson">gwejson.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_gwejson.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_gwejson.sys.ini</language>
+	</languages>
+</extension>

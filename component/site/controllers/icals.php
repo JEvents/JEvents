@@ -207,6 +207,10 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// Lockin hte categories from the URL
+		$Itemid = JRequest::getInt("Itemid",0);
+		if (!$Itemid){
+			JRequest::setVar("Itemid",1);
+		}
 		$this->dataModel->setupComponentCatids();
 
 		$dispatcher = JDispatcher::getInstance();
@@ -247,6 +251,7 @@ class ICalsController extends AdminIcalsController
 		$this->view->assign("dataModel",$this->dataModel) ;
 		$this->view->assign("outlook2003icalexport", $outlook2003icalexport);
 		$this->view->assign("icalEvents", $icalEvents);
+		$this->view->assign("withrepeats", true);
 
 		$this->view->export();
 		return;
@@ -276,11 +281,13 @@ class ICalsController extends AdminIcalsController
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}
@@ -405,11 +412,13 @@ class ICalsController extends AdminIcalsController
 			if ($user->id)
 			{
 				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}
@@ -433,6 +442,8 @@ class ICalsController extends AdminIcalsController
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
+			// Just load the ical event list on redirect for now.
+			$redirect_task = "icalevent.list";
 			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT'));
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
 			$this->redirect();
@@ -440,7 +451,7 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// I need a better check and expiry information etc.
-		if (strlen($uploadURL) > 0)
+		if (JString::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -588,12 +599,12 @@ class ICalsController extends AdminIcalsController
 		{
 			$output .= JString::substr($input, 0, $line_max - 1);
 			$input = JString::substr($input, $line_max - 1);
-			if (strlen($input) > 0)
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -623,7 +634,7 @@ class ICalsController extends AdminIcalsController
 			  }
 			  }
 			 */
-			if ((strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

@@ -124,7 +124,7 @@ class JEventsDefaultView extends JEventsAbstractView
 	// This handles all methods where the view is passed as the first argument
 	function __call($name, $arguments){
 		if (strpos($name,"_")===0){
-			$name="ViewHelper".ucfirst(substr($name,1));
+			$name="ViewHelper".ucfirst(JString::substr($name,1));
 		}
 		$helper = ucfirst($this->jevlayout).ucfirst($name);
 		if (!$this->loadHelper($helper)){

@@ -8,7 +8,7 @@ $Itemid = JEVHelper::getItemid();
 ?>
 <div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
 
-if (strlen($data['catdesc'])>0){
+if (JString::strlen($data['catdesc'])>0){
 	echo "<div class='jev_catdesc'>".$data['catdesc']."</div>";
 }
 ?>
@@ -34,9 +34,7 @@ if( $num_events > 0 ){
 
 		$listyle = 'style="border-color:'.$row->bgcolor().';"';
 		echo "<li class='ev_td_li' $listyle>\n";
-		if (!$this->loadedFromTemplate('icalevent.list_row', $row, 0)){
-			$this->viewEventRowNew ( $row,'view_detail',JEV_COM_COMPONENT, $Itemid);
-		}
+		$this->loadedFromTemplate('icalevent.list_row', $row, 0);
 		echo "</li>\n";
 
 		$chdate = $event_day_month_year;

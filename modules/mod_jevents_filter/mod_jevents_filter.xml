@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>JEvents Filter</name>
-	<creationDate>May 2015</creationDate>
+	<creationDate>September 2015</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2015 GWE Systems Ltd</copyright>	  
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
@@ -51,9 +51,13 @@
 					label="JEV_FILTER_ENABLE_BOOSTRAP"
 					description="JEV_FILTER_ENABLE_BOOSTRAP_DESC" />
 					//-->
-				<field name="bootstrapcss" type="jevboolean" class="btn-group"
+				<field name="bootstrapcss" type="radio" class="btn-group"
 					   default="-1" default25="0" default30="1" label="JEV_LOAD_BOOTSTRAP_CSS"
-					   description="JEV_LOAD_BOOTSTRAP_CSS_DESC" />
+					   description="JEV_LOAD_BOOTSTRAP_CSS_DESC" >
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JNO</option>
+					<option value="2">JYES</option>
+				</field>
 				<field name="bootstrapchosen" type="jevboolean" class="btn-group"
 					   default="-1" default25="0" default30="1"  label="JEV_LOAD_BOOTSTRAP_CHOSEN"
 					   description="JEV_LOAD_BOOTSTRAP_CHOSEN_DESC" />

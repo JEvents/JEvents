@@ -1,7 +1,9 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.core');
+JHtml::_('bootstrap.tooltip');
+
 $pathIMG = JURI::root() . '/administrator/images/';
 $mainspan = 10;
  $fullspan = 12;
@@ -16,14 +18,19 @@ $mainspan = 10;
 <form action="index.php" method="post"  name="adminForm" id="adminForm">		
 		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
 			<fieldset id="filter-bar">
-				<div class="filter-select fltrt">	
-<?php if (count($this->languages) > 1)
+				<div class="filter-select fltrt">
+<?php 
+/*
+if (count($this->languages) > 1)
 { ?>
 						<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 							<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
 						<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
 						</select>
-						<?php } ?>
+						<?php
+} 
+ */
+?>
 <?php if ($this->catids)
 { ?>
 						<select name="filter_catid" class="inputbox" onchange="this.form.submit()">
@@ -58,13 +65,15 @@ $mainspan = 10;
 							<th class="title">
 							<?php echo JText::_('NAME'); ?>
 							</th>
-								<?php if (count($this->languages) > 1)
+								<?php 
+								if (count($this->languages) > 1)
 								{ ?>
 								<th >
 	<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
 								</th>
-<?php } ?>			
-								<?php if ($this->catids)
+								<?php
+								  } 
+								 if ($this->catids)
 								{ ?>
 								<th >
 	<?php echo JText::_('JCATEGORY'); ?>
@@ -105,14 +114,19 @@ $mainspan = 10;
 								<?php echo $this->escape($row->name); ?>
 
 								</td>
-									<?php if (count($this->languages) > 1)
+									<?php
+									if (count($this->languages) > 1)
 									{ ?>
 									<td class="center">
-										<?php if ($row->language == '*'): ?>
-										<?php echo JText::alt('JALL', 'language'); ?>
-									<?php else: ?>
-											<?php echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED'); ?>
-										<?php endif; ?>
+										<?php echo $this->translationLinks($row);
+										/*
+										if ($row->language == '*'): 
+											 echo JText::alt('JALL', 'language');
+										else:
+											echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED'); 
+										endif; 
+										 */
+										?>
 									</td>
 									<?php } ?>
 								<?php if ($this->catids)

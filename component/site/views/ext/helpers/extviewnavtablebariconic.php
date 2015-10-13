@@ -41,7 +41,7 @@ class ExtViewNavTableBarIconic
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			JevHtmlBootstrap::modal();
-			JEVHelper::script('editpopup.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 			$view->popup = true;
 			$view->popupw = $params->get("popupw", 800);
 			$view->popuph = $params->get("popuph", 600);

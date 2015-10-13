@@ -16,7 +16,7 @@ function DefaultViewEventCatRowNew($view,$row,$args="") {
 	foreach ($vars as $key=>$val) {
 		$eventlink.= $key."=".$val."&";
 	}
-	$eventlink = substr($eventlink,0,strlen($eventlink)-1);
+	$eventlink = JString::substr($eventlink,0,JString::strlen($eventlink)-1);
 	$eventlink = JRoute::_($eventlink);
 		?>
 		<a class="ev_link_cat" href="<?php echo $eventlink; ?>"  style="color:<?php echo $fgcolor;?>;" title="<?php echo JEventsHTML::special($row->catname());?>"><?php echo $row->catname();?></a>

@@ -36,26 +36,17 @@ define("JEV_COMPONENT",str_replace("com_","",$option));
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
-if (JevJoomlaVersion::isCompatible("3.0")){
-	JHtml::_('jquery.framework');
-	// AIM TO REMOVE THIS - loading of MooTools should not be necessary !!!
-	JHtml::_('behavior.framework', true);
-	JevHtmlBootstrap::framework();
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-	}
-}
-else {
-	// Make loading this conditional on config option ??
-	JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-	JevHtmlBootstrap::framework();
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-	if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-	}
+// Load Joomla Core scripts for sites that don't load MooTools;
+JHtml::_('behavior.core', true);
+
+JHtml::_('jquery.framework');
+// AIM TO REMOVE THIS - loading of MooTools should not be necessary !!!
+JHtml::_('behavior.framework', true);
+JevHtmlBootstrap::framework();
+JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 }
 
 $registry	= JRegistry::getInstance("jevents");

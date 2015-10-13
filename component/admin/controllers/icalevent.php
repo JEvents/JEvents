@@ -522,18 +522,6 @@ class AdminIcaleventController extends JControllerAdmin
 			$row->endtime($defaultendtime);
 		}
 
-		/*
-		  $db = JFactory::getDBO();
-		  // get list of groups
-		  $query = "SELECT id AS value, name AS text"
-		  . "\n FROM #__groups"
-		  . "\n ORDER BY id"	;
-		  $db->setQuery( $query );
-		  $groups = $db->loadObjectList();
-
-		  // build the html select list
-		  $glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',	'value', 'text', intval( $row->access() ) );
-		 */
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		// get all the raw native calendars
@@ -768,6 +756,68 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
+	function deletetranslation ()
+	{
+		JRequest::checkToken('default') or jexit('Invalid Token');
+
+		if (!JEVHelper::isEventCreator())
+		{
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
+		}
+
+		$ev_id = JRequest::getInt("ev_id", 0);
+		$evdet_id = JRequest::getInt("evdet_id",  JRequest::getInt("trans_evdet_id",0));
+
+		// check editing permission
+		if ($ev_id > 0 && $evdet_id >0)
+		{
+			// this version gives us a repeat not an event so
+			$vevent = $this->dataModel->queryModel->getVEventById($ev_id);
+			if (!$vevent)
+			{
+				$Itemid = JRequest::getInt("Itemid");
+				JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+			}
+
+			$row = new jIcalEventDB($vevent);
+
+			if (!JEVHelper::canEditEvent($row))
+			{
+				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+				return false;
+			}
+		}
+		else {
+			throw new Exception( "No event details passed in to translation script", 500);
+			return false;
+		}
+
+		// clean out the cache
+		$cache = JFactory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+
+		// Get/Create the model
+		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		{
+			$model->deleteTranslation();
+		}
+
+		ob_end_clean();
+		if (!headers_sent())
+		{
+			header('Content-Type:text/html;charset=utf-8');
+		}
+		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.list", false);
+		?>
+		<script type="text/javascript">
+			window.parent.location="<?php echo $link; ?>";
+		</script>
+		<?php
+		exit();
+
+	}
+
 	function save($key = NULL, $urlVar = NULL)
 	{
 
@@ -777,6 +827,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', $msg);
+			$this->redirect();
 		}
 		else
 		{
@@ -846,6 +897,7 @@ class AdminIcaleventController extends JControllerAdmin
 				if ($popupdetail!=""){
 					// redirect to event detail page within popup window
 					$this->setRedirect($link, $msg);
+					$this->redirect();
 					return;
 				}
 				else {
@@ -864,15 +916,18 @@ class AdminIcaleventController extends JControllerAdmin
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$this->setRedirect($event->viewDetailLink($year, $month, $day, false, $Itemid), $msg);
+				$this->redirect();
 			}
 			else
 			{
 				if (JFactory::getUser()->id>0){
 					$this->setRedirect(JRoute::_($event->viewDetailLink($year, $month, $day, false , $Itemid)."&published_fv=-1"), $msg);
+					$this->redirect();
 				}
 				else {
 					// I can't go back to the same repetition since its id has been lost
 					$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), $msg);
+					$this->redirect();
 				}
 			}
 		}
@@ -889,6 +944,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit', $msg);
+			$this->redirect();
 		}
 		else
 		{
@@ -925,11 +981,13 @@ class AdminIcaleventController extends JControllerAdmin
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$this->setRedirect($event->viewDetailLink($year, $month, $day, false, $Itemid), $msg);
+				$this->redirect();
 			}
 			else
 			{
 				// I can't go back to the same repetition since its id has been lost
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), $msg);
+				$this->redirect();
 			}
 		}
 
@@ -950,6 +1008,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day", $msg);
+			$this->redirect();
 		}
 		else
 		{
@@ -970,6 +1029,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			// return to the event
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day&Itemid=$Itemid", false), $msg);
+			$this->redirect();
 		}
 
 	}
@@ -1061,7 +1121,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$eventobj->$newkey = $val;
 		}
 		$eventobj->_icsid = $eventobj->_ics_id;
-		if (is_array($eventobj->_catid))
+		if (isset($eventobj->_catid) && is_array($eventobj->_catid))
 		{
 			$eventobj->_catid = current($eventobj->_catid);
 		}
@@ -1075,7 +1135,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$rrule = SaveIcalEvent::generateRRule($array);
 
 		// ensure authorised
-		if (isset($array["evid"]) && $array["evid"] > 0)
+		if (isset($array["evid"]) && intval($array["evid"]) > 0)
 		{
 			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 			if (!$event || !JEVHelper::canEditEvent($event))
@@ -1087,7 +1147,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$clearout = false;
 		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && $array["evid"] > 0 && JRequest::getInt("updaterepeats", 1))
+		if (isset($array["evid"]) && intval($array["evid"])> 0 && JRequest::getInt("updaterepeats", 1))
 		{
 			$clearout = true;
 		}
@@ -1106,7 +1166,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($clearout)
 			{
 				$db = JFactory::getDBO();
-				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . $array["evid"];
+				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
 				$db->query();
 				// TODO clear out old exception details
@@ -1206,6 +1266,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_EVENT_STATE_CHANGED"));
+			$this->redirect();
 		}
 		else
 		{
@@ -1215,6 +1276,7 @@ class AdminIcaleventController extends JControllerAdmin
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_DELETE_STATE_SAVED'));
+			$this->redirect();
 		}
 
 	}
@@ -1284,6 +1346,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
+			$this->redirect();
 		}
 		else
 		{
@@ -1293,6 +1356,7 @@ class AdminIcaleventController extends JControllerAdmin
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
+			$this->redirect();
 		}
 
 	}
@@ -1359,7 +1423,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->setQuery($query);
 			$db->query();
 
-			if (strlen($detailidstring) > 0)
+			if (JString::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);
@@ -1385,6 +1449,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if (JFactory::getApplication()->isAdmin())
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", JTEXT::_("ICAL_EVENTS_DELETED"));
+				$this->redirect();
 			}
 			else
 			{
@@ -1392,6 +1457,7 @@ class AdminIcaleventController extends JControllerAdmin
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = JRequest::getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
+				$this->redirect();
 			}
 		}
 		else
@@ -1399,6 +1465,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if (JFactory::getApplication()->isAdmin())
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list");
+				$this->redirect();
 			}
 			else
 			{
@@ -1406,6 +1473,7 @@ class AdminIcaleventController extends JControllerAdmin
 				list($year, $month, $day) = JEVHelper::getYMD();
 				$rettask = JRequest::getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false));
+				$this->redirect();
 			}
 		}
 
@@ -1493,7 +1561,7 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$join[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$where[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$where[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
 			$where[] = " catmap.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = " 1";

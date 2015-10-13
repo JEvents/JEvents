@@ -12,7 +12,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$task = JRequest::getVar("jevtask");
 	// include catids to make sure not lost when category is pre-selected
 	$catids = JRequest::getString("catids",JRequest::getString("category_fv",""));
-	if (strlen($catids)>0){
+	if (JString::strlen($catids)>0){
 		$catids = explode("|",$catids);
 		JArrayHelper::toInteger($catids);
 		$catids = "&catids=".implode("|",$catids);

@@ -19,7 +19,9 @@ class JEventsCategories extends JCategories
 {
 	public function __construct($options = array())
 	{
-		$options['table'] = '#__jevents';
+		$options['table'] = '#__jevents_vevent';
+		$options['field'] = 'catid';
+		$options['key'] = 'ev_id';
 		$options['extension'] = 'com_jevents';
 		parent::__construct($options);
 	}
@@ -40,6 +42,8 @@ class JEventsCategories extends JCategories
 		$puser = $registry->get("jevents.icaluser" , $registry->get("icaluser" , false));
 
 		if (!$puser){
+
+			$this->_options['currentlang'] = 0;
 			return parent::_load($id);
 		}
 		

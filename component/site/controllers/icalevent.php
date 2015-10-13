@@ -40,9 +40,10 @@ class ICalEventController extends AdminIcaleventController   {
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
 			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-			$link = 'index.php?option='.$comsser.'&view=login&return='.base64_encode($link);
+			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
 			$link = JRoute::_($link, false);
 			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
+			$this->redirect();
 			return;
 		}
 				
@@ -120,6 +121,7 @@ class ICalEventController extends AdminIcaleventController   {
 		if (!$is_event_editor || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
@@ -127,6 +129,7 @@ class ICalEventController extends AdminIcaleventController   {
 				$link = $uri->toString();
 				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
 				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->redirect();
 			}
 			return;
 		}

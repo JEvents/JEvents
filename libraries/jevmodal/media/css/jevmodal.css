@@ -55,6 +55,7 @@
 }
 .jevmodal-full.modal.fade.in {
 	top: 5%;
+	display: block!important
 }
 .jevmodal-full body.modal {
 	padding-top: 0;
@@ -169,7 +170,7 @@
 .jevmodal .modal-content{
     box-sizing: border-box;
     height: 100%;
-    margin: 5px;
+    margin-left: 5px;
     position: relative;
     box-shadow: none;
     border:none;

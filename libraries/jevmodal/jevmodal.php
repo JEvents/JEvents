@@ -41,16 +41,10 @@ class JevModal
 		}
 
 		// Load jQuery
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtml::_('jquery.framework');
-		}
-		else {
-			JLoader::register("JevHtmlJquery", JPATH_LIBRARIES."/jevents/bootstrap/jquery.php");
-			JevHtmlJquery::framework();
-		}
+		JHtml::_('jquery.framework');
 		
-		JHtml::stylesheet('lib_jevmodal/jevmodal.css',array(),true);
-		JHtml::script('lib_jevmodal/jevmodal.js',false,true,false,false,true);
+		JHtml::stylesheet('com_jevents/lib_jevmodal/jevmodal.css',array(),true);
+		JHtml::script('com_jevents/lib_jevmodal/jevmodal.js',false,true,false,false,true);
 	
 		static::$loaded[__METHOD__] = true;
 

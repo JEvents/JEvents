@@ -35,6 +35,7 @@ if (count($filterHTML) > 0)
 .jevfilterlist, .jevfilterfloatlist {
 	list-style-type: none;
 	display:block;
+	margin-left:0px
 }
 .jevfilterfloatlist li {
 	float:left;
@@ -60,7 +61,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -106,7 +107,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -173,7 +174,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>

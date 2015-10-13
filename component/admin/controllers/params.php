@@ -191,6 +191,7 @@ class AdminParamsController extends JControllerAdmin
 			$app->setUserState('com_config.config.global.data', $data);
 			// Redirect back to the edit screen.
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', false));
+			$this->redirect();
 			return false;
 		}
 
@@ -223,9 +224,11 @@ class AdminParamsController extends JControllerAdmin
 		switch ($this->getTask()) {
 			case 'apply':
 				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=params.edit', JText::_('CONFIG_SAVED'));
+				$this->redirect();
 				break;
 			default:
 				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=cpanel.cpanel", JText::_('CONFIG_SAVED'));
+				$this->redirect();
 				break;
 		}
 		//$this->setRedirect( 'index.php?option='.JEV_COM_COMPONENT."&task=cpanel.cpanel", JText::_( 'CONFIG_SAVED' ) );
@@ -240,7 +243,7 @@ class AdminParamsController extends JControllerAdmin
 	function cancel($key=NULL)
 	{
 		$this->setRedirect('index.php');
-
+		$this->redirect();
 	}
 
 

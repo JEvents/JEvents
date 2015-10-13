@@ -46,9 +46,9 @@ class JevTypeahead
 		}
 
 		// Load jQuery
-		JevHtmlJquery::framework();
-		JHtml::stylesheet('lib_jevtypeahead/jevtypeahead.css',array(),true);
-		JHtml::script('lib_jevtypeahead/typeahead.bundle.min.js',false,true,false,false,true);
+		JHtml::_('jquery.framework');
+		JHtml::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css',array(),true);
+		JHtml::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js',false,true,false,false,true);
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -101,6 +101,8 @@ class JevTypeahead
 			$opt['limit']	= isset($params['limit']) ? (int) $params['limit'] : '10';
 			$opt['scrollable']	= isset($params['scrollable']) ? (int) $params['scrollable'] : '0';
 			$opt['emptyCallback']	= isset($params['emptyCallback']) ?  $params['emptyCallback'] : '';
+			// Call back method which receives the matched data
+			$opt['callback']	= isset($params['callback']) ?  $params['callback'] : '';
 			$opt['json']	= isset($params['json']) ?  $params['json'] : '';
 
 			if ($opt['scrollable']){
@@ -129,6 +131,10 @@ class JevTypeahead
 				if ($opt['emptyCallback']){
 					$callback = ', transform: function(response) {if(response.length==0){'.$opt['emptyCallback'].'}; return response;} ';
 				}
+				else 	if ($opt['callback']){
+					$callback = ', transform: function(response) {return '.$opt['callback'].'(response);} ';
+				}
+
 
 				$prepare = "";
 				if ($opt['json']){
@@ -138,7 +144,7 @@ class JevTypeahead
                 settings.url = settings.url.replace(settings.wildcard, encodeURIComponent(query));
                 settings.dataType = 'json';
                 settings.type = 'POST';
-                settings.data = {json:" .$opt['json']. ", typeahead:query};
+                settings.data = {json:" .$opt['json']. ", typeahead:query, token:'".JSession::getFormToken()."'};
                 return settings;
             },
 ";

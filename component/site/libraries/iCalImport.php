@@ -387,7 +387,7 @@ class iCalImport
 				// Fix some stupid Microsoft IIS driven calendars which don't encode the data properly!
 				// see section 2 of http://www.the-art-of-web.com/html/character-codes/
 				if ($key=="DESCRIPTION" || $key=="SUMMARY"){
-					$len = strlen($value);
+					$len = JString::strlen($value);
 					$ulen = JString::strlen($value);
 					// Can cause problems with multibyte strings so skip this
 					if ($len == $ulen){

@@ -1,22 +1,21 @@
 function setupFilterChoices(){
-	var fiterchoices = $("filterchoices");
-	var options = fiterchoices.getElements('div');
-	options.each(function(opt){
-		opt.removeEvents("click");
+	var options = jQuery("#filterchoices div");
+	options.each(function(idx, opt){
+		jQuery(opt).off("click");
 		opt.style.cursor="pointer";
-		opt.addEvent("click",function(event){
-			var span = opt.getElements('span'); 
-			var id = span[0].innerHTML;
-			span[0].parentNode.removeChild(span[0]); 
+		jQuery(opt).on("click",function(event){
+			var span = jQuery(opt).find('span');
+			var id = span.html();
+			span.remove();
 			// remove html entities so use firstChild.nodeValue instead of innerHTML
 			var text = opt.firstChild.nodeValue;
-			opt.parentNode.removeChild(opt);
+			jQuery(opt).remove();
 
-			var uls = $("filtermatches");
-			var li = new Element("div",{id:"filter"+id});
-			li.appendText(text);
-			if (uls){
-				uls.appendChild(li);
+			var uls = jQuery("#filtermatches");
+			var li = jQuery("<div>",{id:"filter"+id});
+			li.append(text);
+			if (uls.length){
+				uls.append(li);
 				setupFilterLis();
 			};
 			setupCustomFilterField();
@@ -24,26 +23,25 @@ function setupFilterChoices(){
 	});
 }
 function setupFilterLis(){
-	var uls = $("filtermatches");
-	var lis = uls.getChildren();
-	lis.each(function(item, i){
+	var lis = jQuery("#filtermatches div");
+	lis.each(function(i, item){
 		item.style.cursor="pointer";
-		item.removeEvents("click");
+		jQuery(item).off("click");
 
-		item.addEvent("click",function(event){
+		jQuery(item).on("click",function(event){
 
 			var text = item.innerHTML;  
 			var id = item.id.replace("filter","");
 			item.parentNode.removeChild(item);  
 
-			var sel = $("filterchoices");
-			var opt = new Element("div");
-			opt.appendText(text);
-			var span = new Element("span",{'style':'display:none'});
-			span.appendText(id);
-			opt.appendChild(span);
+			var sel = jQuery("#filterchoices");
+			var opt = jQuery("<div>");
+			opt.append(text);
+			var span = jQuery("<span>",{'style':'display:none'});
+			span.append(id);
+			opt.append(span);
 			if (sel){
-				sel.appendChild(opt);
+				sel.append(opt);
 				setupFilterChoices();
 			};
 			setupCustomFilterField();
@@ -52,18 +50,17 @@ function setupFilterLis(){
 }
 
 function setupCustomFilterField(){
-	var fieldid = "jform_params_filters";
+	var fieldid = "#jform_params_filters";
 	// setup custom field
-	var customfield = $(fieldid);
-	if (!customfield) return;
-	customfield.value = "";
-	var uls = $("filtermatches");
-	var lis = uls.getChildren();
-	lis.each(function(item, i){
-		if (customfield.value != ""){
-			customfield.value+=","
+	var customfield = jQuery(fieldid);
+	if (!customfield.length) return;
+	customfield.val("");
+	var lis = jQuery("#filtermatches div");
+	lis.each(function(i, item){
+		if (customfield.val() != ""){
+			customfield.val(customfield.val()+",");
 		}
-		customfield.value+=item.id.replace("filter","");
+		customfield.val(customfield.val()+item.id.replace("filter",""));
 	});
 }
 
