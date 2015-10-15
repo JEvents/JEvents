@@ -775,8 +775,22 @@ class jIcalEventDB extends jEventCal {
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 		. $extrajoin
 		. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
-		. $extrawhere
-		. "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
+		. $extrawhere;
+
+		//Dirty hack to include locations categories grouping
+		if(strpos($query, "loccatmap"))
+		{
+			if(strpos($query, 'GROUP BY'))
+			{
+				$query .= ", loc.loc_id";
+			}
+			else
+			{
+				$query .= "\n GROUP BY loc.loc_id";
+			}
+		}
+
+		$query .= "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
 
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
