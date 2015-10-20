@@ -442,6 +442,8 @@ class ICalsController extends AdminIcalsController
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
+			// Just load the ical event list on redirect for now.
+			$redirect_task = "icalevent.list";
 			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT'));
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
 			$this->redirect();

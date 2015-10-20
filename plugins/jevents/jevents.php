@@ -5,7 +5,7 @@
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die( ' Restricted Access ' );
 
 jimport('joomla.plugin.plugin');
 
@@ -65,7 +65,7 @@ class plgContentJEvents extends JPlugin
 			if ($result_count >= 1)
 			{
 				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS',  $result_count), 'Warning');
-				JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
 				return false;
 			}
@@ -148,7 +148,7 @@ class plgContentJEvents extends JPlugin
 				//JFactory::getApplication()->enqueueMessage($query, 'Error');
 
 				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS',  $result_count), 'Warning');
-				JFactory::getApplication()->enqueueMessage(JText::_('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 			}
 		}
 

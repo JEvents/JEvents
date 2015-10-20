@@ -304,6 +304,10 @@ public static function generateRRule($array){
 			
 		}
 		$rrule["INTERVAL"] = $interval;
+		$rrule["IRREGULARDATES"] =  JArrayHelper::getValue( $array,  "irregularDates",array(),"ARRAY");
+		array_walk($rrule["IRREGULARDATES"], function(& $item, $index ){
+			$item = JevDate::strtotime($item." 00:00:00");
+			});
 	}
 
 	$whichby			= JArrayHelper::getValue( $array,  "whichby","bd");

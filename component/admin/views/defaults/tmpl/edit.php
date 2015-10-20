@@ -136,6 +136,9 @@ echo $editor->save('value');
 					if (is_object($modvals)){
 						$modvals = get_object_vars($modvals);
 					}
+					$modids = array_values($modids);
+					$modvals = array_values($modvals);
+
 					$count = 0;
 					$conf = JFactory::getConfig();
 					$modeditor =  JFactory::getEditor($conf->get('editor'));

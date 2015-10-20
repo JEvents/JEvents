@@ -35,6 +35,9 @@ class iCalRRule extends JTable  {
 		parent::__construct( '#__jevents_rrule', 'rr_id', $db );
 	}
 
+	function store($updateNulls = false) {
+		return parent::store($updateNulls);
+	}
 	/**
 	 * Pseudo Constructor
 	 *
@@ -76,6 +79,7 @@ class iCalRRule extends JTable  {
 		$temp->processField2("byweekno","");
 		$temp->processField2("bymonth","");
 		$temp->processField2("bysetpos","");
+		$temp->processField2("irregulardates","");
 		$temp->processField2("wkst","");
 		return $temp;
 	}
@@ -128,6 +132,8 @@ class iCalRRule extends JTable  {
 		$temp->processField("byweekno","");
 		$temp->processField("bymonth","");
 		$temp->processField("bysetpos","");
+		$temp->processField("irregulardates","");
+		$temp->irregulardates = json_encode($temp->irregulardates );
 		$temp->processField("wkst","");
 		return $temp;
 	}
@@ -272,7 +278,7 @@ class iCalRRule extends JTable  {
 			return $this->_repetitions;
 		}
 
-		if ($this->count==1){
+		if ($this->count==1 && $this->freq!="IRREGULAR"){
 			//echo "count=1 returing<br/>";
 			$this->_makeRepeat($dtstart,$dtend);
 			return $this->_repetitions;
@@ -428,7 +434,8 @@ class iCalRRule extends JTable  {
 
 						$currentYear = JevDate::strftime("%Y",$start);
 						list ($h,$min,$s,$d,$m,$y) = explode(":",JevDate::strftime("%H:%M:%S:%d:%m:%Y",$start));
-						if (($currentYear+$this->rinterval)>=2037) break;
+						$maxyear  = (PHP_INT_SIZE === 8) ? 2999 : 2037;
+						if (($currentYear+$this->rinterval)>=$maxyear) break;
 						$start = JevDate::strtotime("+".$this->rinterval." years",$start);
 						$end = JevDate::strtotime("+".$this->rinterval." years",$end);
 					}
@@ -788,6 +795,31 @@ class iCalRRule extends JTable  {
 					$end = JevDate::strtotime("+".$this->rinterval." days",$end);
 					$startYear = JevDate::strftime("%Y",$start);
 				}
+				return $this->_repetitions;
+				break;
+			case "IRREGULAR":
+				$processedDates = array();
+				// current date is ALWAYS a repeat
+				$processedDates[] = $dtstart;
+				$this->_makeRepeat($dtstart,$dtend);
+				if (is_string($this->irregulardates) && $this->irregulardates!=""){
+					$this->irregulardates = @json_decode($this->irregulardates);
+				}
+				if (!is_array($this->irregulardates)){
+					$this->irregulardates = array();
+				}
+				sort($this->irregulardates);
+				foreach ($this->irregulardates as $irregulardate){
+					// avoid duplicate values
+					if (in_array($irregulardate,$processedDates)){
+						continue;
+					}
+					$processedDates[] = $irregulardate;
+					// find the start and end times of the initial event
+					$irregulardate += ($dtstart - $dtstartMidnight);
+					$this->_makeRepeat($irregulardate,$irregulardate+$duration);
+				}
+
 				return $this->_repetitions;
 				break;
 			default:

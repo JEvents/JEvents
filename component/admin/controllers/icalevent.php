@@ -522,18 +522,6 @@ class AdminIcaleventController extends JControllerAdmin
 			$row->endtime($defaultendtime);
 		}
 
-		/*
-		  $db = JFactory::getDBO();
-		  // get list of groups
-		  $query = "SELECT id AS value, name AS text"
-		  . "\n FROM #__groups"
-		  . "\n ORDER BY id"	;
-		  $db->setQuery( $query );
-		  $groups = $db->loadObjectList();
-
-		  // build the html select list
-		  $glist = JHTML::_('select.genericlist', $groups, 'access', 'class="inputbox" size="1"',	'value', 'text', intval( $row->access() ) );
-		 */
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		// get all the raw native calendars
@@ -1133,7 +1121,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$eventobj->$newkey = $val;
 		}
 		$eventobj->_icsid = $eventobj->_ics_id;
-		if (is_array($eventobj->_catid))
+		if (isset($eventobj->_catid) && is_array($eventobj->_catid))
 		{
 			$eventobj->_catid = current($eventobj->_catid);
 		}
@@ -1147,7 +1135,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$rrule = SaveIcalEvent::generateRRule($array);
 
 		// ensure authorised
-		if (isset($array["evid"]) && $array["evid"] > 0)
+		if (isset($array["evid"]) && intval($array["evid"]) > 0)
 		{
 			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 			if (!$event || !JEVHelper::canEditEvent($event))
@@ -1159,7 +1147,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$clearout = false;
 		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && $array["evid"] > 0 && JRequest::getInt("updaterepeats", 1))
+		if (isset($array["evid"]) && intval($array["evid"])> 0 && JRequest::getInt("updaterepeats", 1))
 		{
 			$clearout = true;
 		}
@@ -1178,7 +1166,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($clearout)
 			{
 				$db = JFactory::getDBO();
-				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . $array["evid"];
+				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
 				$db->query();
 				// TODO clear out old exception details

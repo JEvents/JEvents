@@ -106,18 +106,21 @@ $fullspan = 12;
 					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
-				// Custom Fields
-				/*
+				// Custom Fields				
 				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
-					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-					JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+				$db->setQuery ( "SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
+				$extension = $db->loadObject();
+				// Stop if user is not authorised to manage JEvents
+				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
+					$manifestCache = json_decode($extension->manifest_cache);
+					if (isset($_SERVER["SERVER_ADDR"]) && $_SERVER["SERVER_ADDR"]=="192.168.1.50")
+					{
+						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
+						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					}
 				}
-				 *
-				 */
+
 				?>
                 <div class="clear"></div>
             </div>

@@ -67,6 +67,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALBUTTON"
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALDIALOG",true);?>", "ICALDIALOG");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON",true);?>", "EDITBUTTON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_STARTED",true);?>", "JEVSTARTED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_ENDED",true);?>", "JEVENDED");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "JEVAGE");
 
 <?php
 // get list of enabled plugins
