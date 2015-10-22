@@ -565,6 +565,7 @@ function toggleAllDayEvent()
 			epm.disabled=false;
 
 			jQuery('.jevendtime').css('display','inline-block');
+			jQuery('.jevnoeendtime').css('display','inline-block');
 
 		}
 		else {
