@@ -109,7 +109,8 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		// we don't want any modules etc.
-		$input->set('tmpl', 'component');
+		//$input->set('tmpl', 'component');
+		$input->set('format', 'json');
 
 		ini_set("display_errors",0);
 
