@@ -138,7 +138,7 @@
 				<field name="modlatest_templatebottom" type="jevtextarea" filter="raw" cols="50" rows="2"  class="jevtextarea" default=''  label="JEV_LEV_TEMPLATE_BOTTOM" description="JEV_LEV_TEMPLATE_BOTTOM_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="bootstrapcss" type="list"  default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" conditional="modlatest_useLocalParam" conditions="1" >
 					<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
-					<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
+					<option value="1">JEV_USE_GLOBAL_JEVENTS_BOOTSTRAP</option>
 					<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
 				</field>
 

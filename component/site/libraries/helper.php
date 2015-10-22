@@ -652,6 +652,8 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+			// Allowable date range for picker
+			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,

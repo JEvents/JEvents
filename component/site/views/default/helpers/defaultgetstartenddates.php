@@ -5,8 +5,21 @@ function Defaultgetstartenddates($view){
 
 	$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
-	$startdate = JRequest::getString("startdate","");
-	$enddate = JRequest::getString("enddate","");
+	// fix to allow start/end date to be preserved during pagination IF filter module before/after dates are used
+	$Itemid = JRequest::getInt("Itemid",0);
+	// This causes the filter module to reset
+	$filters = jevFilterProcessing::getInstance(array());
+	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
+	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
+		JRequest::setVar( 'startdate', '');
+		JRequest::setVar( 'enddate', '');
+		JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
+		JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
+		JFactory::getApplication()->setUserState( 'active_filter_menu ', 0);
+	}
+
+	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', "");
+	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', "");
 
 	if ($startdate==""){
 		if ($params->get("relative","rel")=="abs"){

@@ -78,7 +78,7 @@ foreach ($infields as $infield)
 					for ($r = 0; $r < $num_events; $r++)
 					{
 						$row = $data['rows'][$r];
-						$this->loadedFromTemplate('icalevent.list_event', $row, 0, $template);
+						$this->loadedFromTemplate('icalevent.list_row', $row, 0, $template);
 						//($view, $template_name, $event, $mask, $template_value = false)
 					}
 				}

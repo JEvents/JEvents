@@ -159,6 +159,10 @@ class DefaultModLatestView
 				JHtmlBootstrap::loadCss();
 			}
 		}
+		else if ($myparam->get("bootstrapcss", 1)==2)
+		{
+			JHtmlBootstrap::loadCss();
+		}
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{

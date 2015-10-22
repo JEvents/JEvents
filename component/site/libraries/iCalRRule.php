@@ -52,7 +52,7 @@ class iCalRRule extends JTable  {
 
 		// Should really test count
 		$temp->processField2("freq","YEARLY");
-		$temp->processField2("count",99);
+		$temp->processField2("count",999);
 		$temp->processField2("rinterval",1);
 		//interval ios a mysql reserved word
 		$temp->_interval = $temp->rinterval;
@@ -102,7 +102,7 @@ class iCalRRule extends JTable  {
 		$temp->freq = $temp->data['FREQ'];
 
 		// Should really test count
-		$temp->processField("count",99);
+		$temp->processField("count",999);
 		$temp->processField("interval",1);
 		//interval ios a mysql reserved word
 		$temp->rinterval = $temp->interval;

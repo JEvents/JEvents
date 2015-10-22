@@ -1246,11 +1246,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;
 				}
-				global $tempreplace, $tempevent, $tempsearch;
+				global $tempreplace, $tempevent, $tempsearch, $tempblank;
 				$tempreplace = $rawreplace[$search[$s]];
+				$tempblank = $blank[$s];
 				$tempsearch = str_replace("}}",";.*?}}",$search[$s]);
 				$tempevent = $event;
-				$template_value = preg_replace_callback("|$tempsearch|", 'jevSpecialDateFormatting', $template_value);
+				$template_value = preg_replace_callback("~$tempsearch~", 'jevSpecialDateFormatting', $template_value);
 			}
 		}
 
@@ -1264,6 +1265,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
 		}
 
+		// The universal search and replace to finish
 		$template_value = str_replace($search, $replace, $template_value);
 
 		if ($specialmodules)
@@ -1424,12 +1426,31 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	function jevSpecialDateFormatting($matches){
 		if (count($matches) == 1 && JString::strpos($matches[0], ";") > 0)
 		{
-			global $tempreplace, $tempevent, $tempsearch;
+			global $tempreplace, $tempevent, $tempsearch,$tempblank;
 			$parts = explode(";", $matches[0]);
 			if (count($parts) == 2)
 			{
-				$fmt = str_replace("}}", "", $parts[1]);
+				$fmt = str_replace(array("}}","}"), "", $parts[1]);
+				if (strpos($fmt, "#")!==false){
+					$fmtparts = explode("#", $fmt);
+					if ($tempreplace == $tempblank)
+					{
+						if (count($fmtparts) == 3)
+						{
+							$fmt = $fmtparts[2];
+						}
+						else
+							return  "";
+					}
+					else if (count($fmtparts) >= 2)
+					{
+						$fmt = sprintf($fmtparts[1], $fmtparts[0]);
+					}
+				}
 				//return strftime($fmt, strtotime(strip_tags($tempreplace)));
+				if (!is_int($tempreplace)){
+					$tempreplace =strtotime(strip_tags($tempreplace));
+				}
 				return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
 			}
 			// TZ specified
@@ -1448,14 +1469,36 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					$jtz = new DateTimeZone(@date_default_timezone_get());					
 				}
-				$outputtz = str_replace("}}","",$parts[2]);
-				
+				$outputtz = str_replace(array("}}","}"),"",$parts[2]);
+
+				if (strpos($outputtz, "#")!==false){
+					$outputtzparts = explode("#", $outputtz);
+					$outputtz = $outputtzparts[0];
+					if ($tempreplace == $tempblank)
+					{
+						if (count($outputtzparts) == 3)
+						{
+							$fmt = $outputtzparts[2];
+						}
+						else
+							return  "";
+					}
+					else if (count($outputtzparts) >= 2)
+					{
+						$fmt = sprintf($outputtzparts[1], $fmt);
+					}
+				}
+
+
 				if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz"){
 					$user = JFactory::getUser();
 					$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
 				}
 				$outputtz = new DateTimeZone($outputtz);
 
+				if (is_integer($tempreplace)){
+					$tempreplace = JEV_CommonFunctions::jev_strftime("%Y-%m-%d %H:%M:%S", $tempreplace);
+				}
 				$indate = new DateTime($tempreplace, $jtz);
 				$offset1 = $indate->getOffset();
 

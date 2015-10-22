@@ -30,7 +30,7 @@ class JEventsDBModel
 
 	}
 
-	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false)
+	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true)
 	{
 		if (is_null($aid))
 		{
@@ -123,7 +123,7 @@ class JEventsDBModel
 			$db->setQuery($query);*/
 			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
 
-			$whereQuery = "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+			$whereQuery =$checkAccess ? "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid) : " 1 "
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
@@ -2624,7 +2624,7 @@ class JEventsDBModel
 
 	}
 
-	function listEventsById($rpid, $includeUnpublished = 0, $jevtype = "icaldb")
+	function listEventsById($rpid, $includeUnpublished = 0, $jevtype = "icaldb", $checkAccess=true)
 	{
 		// special case where the event is outside of JEvents - handled by a plugin
 		if ($rpid<0){
@@ -2672,15 +2672,17 @@ class JEventsDBModel
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
-			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 			$params = JComponentHelper::getParams("com_jevents");
 			if ($params->get("multicategory", 0))
 			{
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-				$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
-				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+				if ($checkAccess) {
+					$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+				}
+				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 				$needsgroup = true;
 				$catwhere = "\n WHERE 1 ";
 			}
@@ -2701,8 +2703,9 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
-					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
-					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
+					. ($checkAccess?  "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")" : "")
+					. ($includeUnpublished ? "" : " AND icsf.state=1")
+					. ($checkAccess? "AND icsf.access IN (" . JEVHelper::getAid($user) . ")" : "")
 					. $extrawhere
 					. "\n AND rpt.rp_id = '$rpid'";
 			$query .="\n GROUP BY rpt.rp_id";
@@ -2756,7 +2759,7 @@ class JEventsDBModel
 	 * @param string $jevtype
 	 * @return jeventcal (or desencent)
 	 */
-	function getEventById($evid, $includeUnpublished = 0, $jevtype = "icaldb")
+	function getEventById($evid, $includeUnpublished = 0, $jevtype = "icaldb", $checkAccess=true)
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
@@ -2794,15 +2797,17 @@ class JEventsDBModel
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('onListEventsById', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
-			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+			$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 			$params = JComponentHelper::getParams("com_jevents");
 			if ($params->get("multicategory", 0))
 			{
 				$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-				$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
-				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+				if ($checkAccess){
+					$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+				}
+				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 				$needsgroup = true;
 				$catwhere = "\n WHERE 1 ";
 			}
@@ -2823,9 +2828,9 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
-					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
+					. ($checkAccess? "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")" : "")
 					. ($includeUnpublished ? "" : " AND icsf.state=1")
-					. "\n AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
+					. ($checkAccess?  "\n AND icsf.access IN (" . JEVHelper::getAid($user) . ")" : "")
 					. $extrawhere
 					. "\n AND ev.ev_id = '$evid'"
 					. "\n GROUP BY rpt.rp_id"
