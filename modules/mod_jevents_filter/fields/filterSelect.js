@@ -64,6 +64,6 @@ function setupCustomFilterField(){
 	});
 }
 
-window.addEvent("load",  function() {
+jQuery(window).on("load",  function() {
 	setupFilterChoices(true);setupFilterLis(true);
 });
