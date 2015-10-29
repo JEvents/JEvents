@@ -64,7 +64,7 @@ $mainspan = 10;
 			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 				<tr>
 					<th width="20" nowrap="nowrap">
-						<input type="checkbox" name="toggle" value="" onclick=Joomla.checkAll(this);"  />
+						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"  />
 					</th>
 					<th class="title" width="40%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
