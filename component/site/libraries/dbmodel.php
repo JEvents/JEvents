@@ -123,7 +123,7 @@ class JEventsDBModel
 			$db->setQuery($query);*/
 			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
 
-			$whereQuery =$checkAccess ? "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid) : " 1 "
+			$whereQuery =($checkAccess ? "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid) : " 1 ")
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')

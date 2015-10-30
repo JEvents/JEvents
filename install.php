@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.1
+ * @version     3.4.2
  * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -32,7 +32,7 @@ class Pkg_JeventsInstallerScript
 		} else {
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.0', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.1 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.2 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
 				return false;
 			}
 			return;
