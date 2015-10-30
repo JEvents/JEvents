@@ -954,9 +954,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					static $dofirstrepeat;
 					if (!isset($dofirstrepeat))
 					{
-						$dofirstrepeat = (JString::strpos($template_value, "{{FIRSTREPEAT}}") !== false
-								|| JString::strpos($template_value, "{{FIRSTREPEATSTART}}") !== false
-								 || JString::strpos($template_value, "{{JEVAGE}}") !== false);
+						$dofirstrepeat = (JString::strpos($template_value, "{{FIRSTREPEAT") !== false
+								|| JString::strpos($template_value, "{{FIRSTREPEATSTART") !== false
+								 || JString::strpos($template_value, "{{JEVAGE") !== false);
 					}
 					if ($dofirstrepeat)
 					{
