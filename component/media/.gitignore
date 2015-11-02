@@ -10,6 +10,9 @@ verna/
 flatplus/
 float/
 oldfloat/
+lib_jevmodal/
+lib_jevisotope/
+lib_jevtypeahead/
 extplus
 ruthin
 iconic
@@ -23,3 +26,6 @@ flatplus
 clean
 float
 oldfloat
+lib_jevmodal
+lib_jevisotope
+lib_jevtypeahead
