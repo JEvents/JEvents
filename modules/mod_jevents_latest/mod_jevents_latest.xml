@@ -21,7 +21,7 @@
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV PARAMS"   label="" description="" />
-				<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" viewtype="mod_jevents_latest"/>
+				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" viewtype="mod_jevents_latest"/>
 				<field name="cache" type="radio" class="btn-group" default="0" label="JEV_LATEST_CACHE_ENABLE" description="JEV_LATEST_CACHE_CONTENT">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
