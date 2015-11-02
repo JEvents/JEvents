@@ -40,7 +40,14 @@ class JFormFieldJevview extends JFormFieldList
 		$views = array();
 		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
 
+		$exceptions_values = $this->element['except'];
+		$exceptions = array();
+		$exceptions = explode(',', $exceptions_values);
+
 		foreach (JEV_CommonFunctions::getJEventsViewList((string)$this->element["viewtype"]) as $viewfile) {
+			if (in_array($viewfile, $exceptions)) {
+				continue;
+			}
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
 		sort( $views );
