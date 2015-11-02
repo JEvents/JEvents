@@ -2705,7 +2705,7 @@ class JEventsDBModel
 					. $catwhere
 					. ($checkAccess?  "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")" : "")
 					. ($includeUnpublished ? "" : " AND icsf.state=1")
-					. ($checkAccess? "AND icsf.access IN (" . JEVHelper::getAid($user) . ")" : "")
+					. ($checkAccess? " AND icsf.access IN (" . JEVHelper::getAid($user) . ")" : "")
 					. $extrawhere
 					. "\n AND rpt.rp_id = '$rpid'";
 			$query .="\n GROUP BY rpt.rp_id";
