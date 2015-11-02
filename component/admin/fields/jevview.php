@@ -40,7 +40,7 @@ class JFormFieldJevview extends JFormFieldList
 		$views = array();
 		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
 
-		$exceptions_values = $this->element['except'];
+		$exceptions_values = (string)$this->element['except'] ? (string) $this->element['except'] : "";
 		$exceptions = array();
 		$exceptions = explode(',', $exceptions_values);
 
