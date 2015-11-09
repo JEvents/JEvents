@@ -838,7 +838,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		}
 		$output .= "Fix jQuery? : " . ($params->get("fixjquery", 1)?"Yes":"No"). "\n";
 		$output .= "Load JEvents Bootstrap CSS? : " . ($params->get("bootstrapcss", 1)?"Yes":"No"). "\n";
-		$output .= "Load JEvents Bootstrap JS? : " . ($params->get("bootstrapjs", 1)?"Yes":"No"). "\n";
+		//$output .= "Load JEvents Bootstrap JS? : " . ($params->get("bootstrapjs", 1)?"Yes":"No"). "\n";
 		if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=10000){
 			$output .= "Max Input Vars ? : " . ini_get("max_input_vars"). "\n";
 		}

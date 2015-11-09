@@ -179,7 +179,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	else
 	{
-		if ($runplugins){
+		if ($runplugins && JRequest::getString("option")!="com_jevents"){
 			// This is a special scenario where we call this function externally e.g. from RSVP Pro messages
 			// In this scenario we have not gone through the displaycustomfields plugin
 			static $pluginscalled = array();
