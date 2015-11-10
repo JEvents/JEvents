@@ -2258,12 +2258,15 @@ class JEventsDBModel
 			$langtag = $lang->getTag();
 			for ($i = 0; $i < $icalcount; $i++)
 			{
+				// Check if it's null - Extra catch to avoid issues.
+				if (!$icalrows[$i]->_evdet_id) {continue;}
 				$translationids[] = $icalrows[$i]->_evdet_id;
 			}
 		}
 		if (count($translationids)>0){
 			$db = JFactory::getDbo();
 			$translationids = implode(",",$translationids);
+
 			if (trim($translationids) != ""){
 				$db->setQuery("SELECT *, summary as title, description as content FROM #__jevents_translation WHERE evdet_id IN(".$translationids. ") AND language=".$db->quote($langtag) );
 				$translations = $db->loadObjectList("evdet_id");
