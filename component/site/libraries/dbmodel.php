@@ -2196,7 +2196,7 @@ class JEventsDBModel
 
 		if ($count)
 		{
-			$db->query();
+			$db->execute();
 			return $db->getNumRows();
 		}
 
@@ -2292,6 +2292,7 @@ class JEventsDBModel
 		if (!$is_array) {
 			$icalrows = $icalrows[0];
 		}
+
 	}
 
 	function listIcalEventsByDay($targetdate)
@@ -3273,7 +3274,7 @@ class JEventsDBModel
 				. "\n GROUP BY ev.ev_id";
 
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		return $db->getNumRows();
 
 	}
@@ -3346,7 +3347,7 @@ class JEventsDBModel
 		;
 
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		return $db->getNumRows();
 
 	}

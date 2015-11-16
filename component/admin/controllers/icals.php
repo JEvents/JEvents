@@ -480,7 +480,7 @@ class AdminIcalsController extends JControllerForm {
 		foreach ($cid as $id) {
 			$sql = "UPDATE #__jevents_icsfile SET state=$newstate where ics_id='".$id."'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
@@ -510,7 +510,7 @@ class AdminIcalsController extends JControllerForm {
 		foreach ($cid as $id) {
 			$sql = "UPDATE #__jevents_icsfile SET autorefresh=$newstate where ics_id='".$id."'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
@@ -540,12 +540,12 @@ class AdminIcalsController extends JControllerForm {
 		// set all to not default first
 		$sql = "UPDATE #__jevents_icsfile SET isdefault=0";
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 
 		$id = $cid[0];
 		$sql = "UPDATE #__jevents_icsfile SET isdefault=$newstate where ics_id='".$id."'";
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", JText::_('JEV_ADMIN_ICALSUPDATED'));
 		$this->redirect();
 	}
@@ -606,7 +606,7 @@ class AdminIcalsController extends JControllerForm {
 		$icsids = $this->_deleteICal($cid);
 		$query = "DELETE FROM #__jevents_icsfile WHERE ics_id IN ($icsids)";
 		$db->setQuery( $query);
-		$db->query();
+		$db->execute();
 
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.list", "ICal deleted" );
 		$this->redirect();
@@ -631,23 +631,23 @@ class AdminIcalsController extends JControllerForm {
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 			$db->setQuery( $query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery( $query);
-			$db->query();
+			$db->execute();
 
 			if ($detailidstring) {
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 			}
 		}
 
 		if ($icsids) {
 			$query = "DELETE FROM #__jevents_vevent WHERE icsid IN ($icsids)";
 			$db->setQuery( $query);
-			$db->query();
+			$db->execute();
 		}
 
 		return $icsids;

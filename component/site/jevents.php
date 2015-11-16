@@ -17,7 +17,7 @@ jimport('joomla.filesystem.path');
 /*
   $db	= JFactory::getDBO();
   $db->setQuery("SET SESSION query_cache_type = OFF");
-  $db->query();
+  $db->execute();
 
   $cfg = JEVConfig::getInstance();
   $cfg->set('jev_debug', 1);

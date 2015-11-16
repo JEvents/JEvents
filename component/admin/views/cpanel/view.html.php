@@ -1154,9 +1154,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($cpupdate && $cpupdate->update_site_id)
 			{
 				$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
-				$db->query();
+				$db->execute();
 				$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
-				$db->query();
+				$db->execute();
 			}
 
 			// Now set package update URL for the component as opposed to the package ;)
@@ -1180,9 +1180,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$strays = $db->loadObjectList('update_site_id');
 		if (count($strays)>0){
 			$db->setQuery("DELETE  FROM #__update_sites_extensions where update_site_id IN (".implode(", ", array_keys($strays)).")");
-			$db->query();
+			$db->execute();
 			$db->setQuery("DELETE FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
-			$db->query();
+			$db->execute();
 		}
 
 		// remove duplicate entries created by Joomla installer that assumes the updateserver will not change
@@ -1203,9 +1203,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 			if (count($strays)>0){
 				$db->setQuery("DELETE  FROM #__update_sites_extensions where update_site_id IN (".implode(", ", array_keys($strays)).")");
-				$db->query();
+				$db->execute();
 				$db->setQuery("DELETE FROM #__update_sites where location like '%jevents.net%' and update_site_id IN (".implode(", ", array_keys($strays)).")");
-				$db->query();
+				$db->execute();
 			}
 		}
 
@@ -1232,9 +1232,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		if ($cpupdate && $cpupdate->update_site_id)
 		{
 			$db->setQuery("DELETE FROM #__update_sites where update_site_id=" . $cpupdate->update_site_id);
-			$db->query();
+			$db->execute();
 			$db->setQuery("DELETE FROM #__update_sites_extensions where update_site_id=" . $cpupdate->update_site_id . " AND extension_id=" . $cpupdate->extension_id);
-			$db->query();
+			$db->execute();
 		}
 
 	}
@@ -1276,7 +1276,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		/*
 		if ($pkgupdate->client_id==0 && $pkgupdate->extension_type=="package"){
 			$db->setQuery("UPDATE #__extensions SET client_id=1 WHERE extension_id = $pkgupdate->extension_id");
-			$db->query();
+			$db->execute();
 			echo $db->getErrorMsg();
 		}
 		 */
@@ -1298,7 +1298,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			*/
 			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "https://$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
 				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
-				$db->query();
+				$db->execute();
 				echo $db->getErrorMsg();
 			}
 		}
@@ -1313,20 +1313,20 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($db->loadResult()>0){
 
 				$db->setQuery("DELETE FROM #__update_sites  WHERE update_site_id in (SELECT update_site_id FROM #__update_sites_extensions WHERE extension_id = $pkgupdate->extension_id )");
-				$db->query();
+				$db->execute();
 
 				$db->setQuery("DELETE FROM #__update_sites_extensions  WHERE extension_id = $pkgupdate->extension_id ");
-				$db->query();
+				$db->execute();
 			}
 
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
-			$db->query();
+			$db->execute();
 			echo $db->getErrorMsg();
 			$id = $db->insertid();
 			echo $db->getErrorMsg();
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
-			$db->query();
+			$db->execute();
 			echo $db->getErrorMsg();
 		}
 

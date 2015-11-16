@@ -764,7 +764,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id = " . $data->eventdetail_id;
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 
 				// I also need to clean out associated custom data
 				$dispatcher = JDispatcher::getInstance();
@@ -786,7 +786,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 			$query = "DELETE FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 
 		if (JFactory::getApplication()->isAdmin())
@@ -917,7 +917,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN (" . implode(",", $detailids) . ")";
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 
 				// I also need to clean out associated custom data
 				$dispatcher = JDispatcher::getInstance();
@@ -945,12 +945,12 @@ class AdminIcalrepeatController extends JControllerLegacy
 			}
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			// Also clear out defunct exceptions
 			$query = "DELETE FROM #__jevents_exception WHERE eventid=" . $repeatdata->eventid . " AND startrepeat>='" . $repeatdata->startrepeat . "' and exception_type=1 ";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 
 	}

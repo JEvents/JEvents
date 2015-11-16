@@ -81,11 +81,11 @@ class AdminParamsController extends JControllerAdmin
                         if (version_compare($version, $maxversion,"lt")){
                             // reset component id in any menu items and link to the old one
                             $db->setQuery("UPDATE #__menu set component_id=".$validExtensionId." WHERE component_id=".$jevcomponent->extension_id);
-                            $db->query();
+                            $db->execute();
                             
                             // remove the older version
                             $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
-                            $db->query();
+                            $db->execute();
 
                         }
                     }
@@ -143,11 +143,11 @@ class AdminParamsController extends JControllerAdmin
 			$db = JFactory::getDbo();
 			$sql = "DELETE FROM #__jevents_catmap";
 			$db->setQuery($sql);
-			$db->query();			
+			$db->execute();
 			
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 
 		// save the changes
