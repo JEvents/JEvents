@@ -3,18 +3,19 @@ defined('_JEXEC') or die('Restricted access');
 
 function FlatViewHelperHeader16($view){
 
-	$task = JRequest::getString("jevtask");
+	$jinput = JFactory::getApplication()->input;
+	$task = $jinput->getString('jevtask');
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 		
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();
-	$jevtype	= JRequest::getVar('jevtype');
-	$evid		= JRequest::getInt('evid');
-	$pop		= JRequest::getInt('pop', 0);
+	$jevtype	= $jinput->get('jevtype', null, null);
+	$evid		= $jinput->getInt('evid');
+	$pop		= $jinput->getInt('pop', '0');
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	echo "\n" . '<!-- '
@@ -62,7 +63,8 @@ function FlatViewHelperHeader16($view){
 		<h2 class="contentheading" ><?php echo $t_headline;?></h2>
 		<?php
 	}
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString('jevtask', '');
+
 	$info = "";
 
 	if ($cfg->get('com_print_icon_view', 1) || $cfg->get('com_email_icon_view', 1) || strpos($info, "<li>")!==false ){
@@ -99,7 +101,8 @@ function FlatViewHelperHeader16($view){
 	}
 	if ($cfg->get('com_email_icon_view', 1)){
 
-		$task = JRequest::getString("jevtask");
+		$task = $jinput->getString('jevtask', '');
+
 		$link = 'index.php?option=' . JEV_COM_COMPONENT
 		. '&task=' . $task
 		. ($evid ? '&evid=' . $evid : '')

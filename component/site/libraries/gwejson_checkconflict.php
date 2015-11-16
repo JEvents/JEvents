@@ -471,7 +471,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
@@ -562,8 +562,6 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 			}
 			$sql .= " LIMIT 100";
 			
-
-			
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts) > 0)
@@ -577,6 +575,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 							$catname[] = $catinfo[$cc]->title;
 						}
 					}
+					//TODO $testevent is not set? We need to look at actually setting it as it is pointless at present.
 					$cat = count($catname)>0 ? implode(", ",$catname) : $testevent->getCategoryName();
 					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
 				}
@@ -586,7 +585,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;

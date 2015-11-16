@@ -95,11 +95,11 @@ class JEV_CommonFunctions {
 			}
 			unset ($cat);
 
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetCategoryData', array (& $cats));
 
 		}
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats));
 
 
@@ -291,7 +291,7 @@ class JEV_CommonFunctions {
 		
 		// attach anonymous creator etc.
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
 
 		$rp_id = $testevent->rp_id();
@@ -393,7 +393,7 @@ class JEV_CommonFunctions {
 		 */
 
 		if ($event){
-			$dispatcher     = JDispatcher::getInstance();
+			$dispatcher     = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onSendAdminMail' , array(&$mail, $event));
 		}

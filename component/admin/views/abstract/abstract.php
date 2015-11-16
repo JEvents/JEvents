@@ -736,7 +736,7 @@ class JEventsAbstractView extends JViewLegacy
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
 		// append array to extratabs keys content, title, paneid
 		$this->extraTabs = array();
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
 
 		foreach ($this->extraTabs as $extraTab)

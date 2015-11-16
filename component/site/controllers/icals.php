@@ -213,7 +213,7 @@ class ICalsController extends AdminIcalsController
 		}
 		$this->dataModel->setupComponentCatids();
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 
@@ -521,7 +521,7 @@ class ICalsController extends AdminIcalsController
 			
 			JRequest::setVar("tmpl", "component");
 		
-			//$dispatcher = JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			//JPluginHelper::importPlugin("jevents");
 			//$dispatcher->trigger('onExportRow', array(&$row));

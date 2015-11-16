@@ -2,11 +2,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 function Defaultgetstartenddates($view){
+	$jinput = JFactory::getApplication()->input;
 
 	$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 	// fix to allow start/end date to be preserved during pagination IF filter module before/after dates are used
-	$Itemid = JRequest::getInt("Itemid",0);
+	$Itemid = $jinput->getInt("Itemid", 0);
 	// This causes the filter module to reset
 	$filters = jevFilterProcessing::getInstance(array());
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);

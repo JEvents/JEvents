@@ -40,7 +40,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 
 	}
@@ -1265,7 +1265,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// I also need to trigger any onpublish event triggers
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
@@ -1345,7 +1345,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// I also need to trigger any onpublish event triggers
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
@@ -1438,7 +1438,7 @@ class AdminIcaleventController extends JControllerAdmin
 				$db->query();
 
 				// I also need to clean out associated custom data
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				// just incase we don't have jevents plugins registered yet
 				JPluginHelper::importPlugin("jevents");
 				$res = $dispatcher->trigger('onDeleteEventDetails', array($detailidstring));
@@ -1449,7 +1449,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->query();
 
 			// I also need to delete custom data
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));

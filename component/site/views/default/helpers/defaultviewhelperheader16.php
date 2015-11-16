@@ -4,18 +4,20 @@ jimport( 'joomla.application.module.helper' );
 
 function DefaultViewHelperHeader16($view){
 
-	$task = JRequest::getString("jevtask");
+	$jinput = JFactory::getApplication()->input;
+
+	$task = $jinput->getString('jevtask', '');
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 	
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();
-	$jevtype	= JRequest::getVar('jevtype');
-	$evid		= JRequest::getInt('evid');
-	$pop		= JRequest::getInt('pop', 0);
+	$jevtype	= $jinput->get('jevtype', null, null);
+	$evid		= $jinput->get('evid', '', 'INT');
+	$pop		= $jinput->get('pop', '0', 'INT');
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	echo "\n" . '<!-- '
@@ -61,7 +63,7 @@ function DefaultViewHelperHeader16($view){
 		<h2 class="contentheading" ><?php echo $t_headline;?></h2>
 		<?php
 	}
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString('jevtask', '');
 	ob_start();
 	$view->information16();
 	$info = ob_get_clean();
@@ -100,7 +102,7 @@ function DefaultViewHelperHeader16($view){
 	}
 	if ($cfg->get('com_email_icon_view', 1)){
 
-		$task = JRequest::getString("jevtask");
+		$task = $jinput->getString('jevtask', '');
 		$link = 'index.php?option=' . JEV_COM_COMPONENT
 		. '&task=' . $task
 		. ($evid ? '&evid=' . $evid : '')

@@ -121,7 +121,7 @@ class iCalEvent extends JTable  {
 		if (!$detailid){
 
 			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
-			
+
 			//TODO Setup a exception catch
 			echo $db->getErrorMsg()."<br/>";
 			return false;
@@ -163,7 +163,7 @@ class iCalEvent extends JTable  {
 		}
 		
 		// I also need to store custom data - when we need the event itself and not just the detail
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onStoreCustomEvent' , array(&$this));
@@ -480,7 +480,7 @@ else $this->_detail = false;
 			$db->execute();
 
 			// I also need to clean out associated custom data
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($idlist));

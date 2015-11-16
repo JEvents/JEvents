@@ -3,6 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	jimport('joomla.html.pagination');
+
+	$jinput = JFactory::getApplication()->input;
+
 	$pageNav = new JPagination($total, $limitstart, $limit);
 	if ($keyword !="" && method_exists($pageNav,"setAdditionalUrlParam")){		
 		$pageNav->setAdditionalUrlParam("keyword", urlencode($keyword));
