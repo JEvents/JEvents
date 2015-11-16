@@ -32,7 +32,7 @@ class Pkg_JeventsInstallerScript
 		} else {
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.0', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.3 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+				JFactory::getApplication()->enqueueMessage('This version of JEvents is desgined for Joomla 3.4.3 and later.<br/>Please update Joomla before upgrading JEvents to this version', 'error');
 				return false;
 			}
 			return;

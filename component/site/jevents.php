@@ -165,7 +165,8 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		return JError::raiseError(404, 'Invalid Controller - ' . $controllerName);
+		JFactory::getApplication()->enqueueMessage('404 - '.  JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+
 		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);

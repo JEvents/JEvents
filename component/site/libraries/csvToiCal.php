@@ -63,17 +63,19 @@ class CsvToiCal
 
 		if (!$this->detectHeadersValidity())
 		{
-			JError::raiseWarning(0, 'Not valid CSV file uploaded - mandatory
-                                    cols CATEGORIES, SUMMARY, DTSTART, DTEND and
-                                    TIMEZONE are required. Fix your CSV please.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
+
 			return false;
 		}
+
 		if (!$this->convertFile())
 		{
-			JError::raiseWarning(0, 'Detected corruption in CSV file - import canceled.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
+
 			return false;
 		}
-		JError::raiseNotice(0, 'CSV succesfully converted.');
+
+		JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
 
 	}
 

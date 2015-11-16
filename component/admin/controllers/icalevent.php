@@ -579,7 +579,9 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
-				JError::raiseWarning(870, JText::_('INVALID_CALENDAR_STRUCTURE'));
+
+				JFactory::getApplication()->enqueueMessage('870 -' . JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+
 			}
 
 			$icsid = $row->icsid() > 0 ? $row->icsid() : (count($nativeCals) > 0 ? current($nativeCals)->ics_id : 0);
@@ -1073,7 +1075,9 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else
 		{
-			JError::raiseWarning(870, JText::_('INVALID_CALENDAR_STRUCTURE'));
+
+			JFactory::getApplication()->enqueueMessage('870 -' . JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+
 		}
 
 		// Set the layout
@@ -1169,7 +1173,7 @@ class AdminIcaleventController extends JControllerAdmin
 				$db = JFactory::getDBO();
 				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
-				$db->execute();
+				$db->query();
 				// TODO clear out old exception details
 			}
 		}
@@ -1244,7 +1248,9 @@ class AdminIcaleventController extends JControllerAdmin
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
-				JError::raiseWarning(534, JText::_("JEV_NO_DELETE_ROW"));
+
+				JFactory::getApplication()->enqueueMessage('870 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
+
 				unset($cid[$key]);
 			}
 		}
@@ -1254,7 +1260,7 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->execute();
+			$db->query();
 
 		}
 
@@ -1325,14 +1331,14 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->execute();
+			$db->query();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($newstate == 1 && $params->get("com_notifyauthor", 0) && !$event->_author_notified)
 			{
 				$sql = "UPDATE #__jevents_vevent SET author_notified=1 where ev_id='" . $id . "'";
 				$db->setQuery($sql);
-				$db->execute();
+				$db->query();
 
 				JEV_CommonFunctions::notifyAuthorPublished($event);
 			}
@@ -1392,7 +1398,8 @@ class AdminIcaleventController extends JControllerAdmin
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
-				JError::raiseWarning(534, JText::_("JEV_NO_DELETE_ROW"));
+				JFactory::getApplication()->enqueueMessage('534 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
+
 				unset($cid[$key]);
 			}
 		}
@@ -1410,25 +1417,25 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			$query = "DELETE FROM #__jevents_catmap WHERE evid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			if (JString::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);
-				$db->execute();
+				$db->query();
 
 				// I also need to clean out associated custom data
 				$dispatcher = JDispatcher::getInstance();
@@ -1439,7 +1446,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			// I also need to delete custom data
 			$dispatcher = JDispatcher::getInstance();

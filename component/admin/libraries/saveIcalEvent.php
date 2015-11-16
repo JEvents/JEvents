@@ -171,10 +171,14 @@ class SaveIcalEvent {
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
-			if (!$vevent->store()){
-				echo $db->getErrorMsg()."<br/>";
+			try {
+				$vevent->store();
+
+			}
+			catch (Exception $e) {
+				throw new Exception($e->getMessage());
 				$success = false;
-				JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_EVENT_' ));
+				JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_EVENT_' ), 'warning');
 			}
 		}
 		else {
@@ -189,10 +193,14 @@ class SaveIcalEvent {
 		$repetitions = $vevent->getRepetitions(true);
 		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
-				if (!$vevent->storeRepetitions()){
-					echo $db->getErrorMsg()."<br/>";
+				try {
+					$vevent->storeRepetitions();
+
+				}
+				catch (Exception $e) {
+					throw new Exception($e->getMessage());
 					$success = false;
-					JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_REPETITIONS' ));
+					JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_REPETITIONS' ), 'warning');
 				}
 			}
 		}

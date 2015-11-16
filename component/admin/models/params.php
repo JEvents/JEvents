@@ -40,7 +40,7 @@ if (!defined("JEVADPARMOD"))
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{
-					JError::raiseWarning(500, 'Not a valid component');
+					JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
 					return false;
 				}
 

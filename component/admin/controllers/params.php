@@ -52,7 +52,8 @@ class AdminParamsController extends JControllerAdmin
 		$table =  JTable::getInstance('extension');
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JError::raiseWarning(500, 'Not a valid component');
+
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'error');
 			return false;
 		}
                 // Sort out sites with more than one entry in the extensions table
@@ -64,7 +65,7 @@ class AdminParamsController extends JControllerAdmin
 		if ($duplicateExtensionWarning == 'JEV_DUPLICATE_EXTENSION_WARNING' ) {
 			$duplicateExtensionWarning = 'We have duplicate entries in the extensions table.  These are being cleaned up.  <br/><br/><strong>Please check your configuration settings and save them</strong>';
 		}
-		JError::raiseWarning(106, $duplicateExtensionWarning);
+			JFactory::getApplication()->enqueueMessage($duplicateExtensionWarning, 'warning');
                     $maxversion = "0.0.1";
                     $validExtensionId = 0;
                     foreach ($jevcomponents as $jevcomponent){
@@ -120,7 +121,7 @@ class AdminParamsController extends JControllerAdmin
 		//if (!$table->loadByOption( $component ))
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JError::raiseWarning(500, 'Not a valid component');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'warning');
 			return false;
 		}
 
@@ -132,7 +133,7 @@ class AdminParamsController extends JControllerAdmin
 		// pre-save checks
 		if (!$table->check())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
 			return false;
 		}
 
@@ -153,7 +154,7 @@ class AdminParamsController extends JControllerAdmin
 		// save the changes
 		if (!$table->store())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
 			return false;
 		}
 
@@ -177,6 +178,7 @@ class AdminParamsController extends JControllerAdmin
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
+				//TODO setup a correct exception handling as JError is deprecated.
 				if (JError::isError($errors[$i]))
 				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
