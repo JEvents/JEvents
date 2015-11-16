@@ -14,7 +14,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$rawtemplates = array();
 	}
 	$specialmodules = false;
-
+	static $allcat_catids;
 	$loadedFromFile = false;
 
 	if (!$template_value)
@@ -368,7 +368,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{ALLCATEGORIES}}":
 					$search[] = "{{ALLCATEGORIES}}";
-					static $allcat_catids;
 
 					if (!isset($allcat_catids))
 					{
@@ -507,6 +506,34 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{ALLCATEGORYIMGS}}":
+					$search[] = "{{ALLCATEGORYIMGS}}";
+					if (!isset($allcat_catids))
+					{
+						$db = JFactory::getDBO();
+						$arr_catids = array();
+						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+						$db->setQuery($catsql);
+						$allcat_catids = $db->loadObjectList('id');
+					}
+					$db = JFactory::getDbo();
+					$db->setQuery("Select params from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+					$data = $db->loadColumn();
+                                        $output = "";
+
+                                        if (is_array($data)) {
+                                                foreach ($data as $cat){
+                                                        $params = json_decode($cat->params);
+                                                        if (isset($params->image) && $params->image!=""){ 
+                                                                $output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+                                                        }							
+                                                }
+                                        }
+                                        
+					$replace[] = $output;
+					$blank[] = "";
+					break;
+                                    
 				case "{{CATDESC}}":
 					$search[] = "{{CATDESC}}";
 					$replace[] = $event->getCategoryDescription();
