@@ -111,7 +111,7 @@ class AdminCpanelController extends JControllerAdmin
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('CALENDARS_NOT_SETUP_PROPERLY'), 'warning');
+			JFactory::getApplication()->enqueueMessage(JText::_('CALENDARS_NOT_SETUP_PROPERLY'), 'notice');
 		}
 
 		/*
