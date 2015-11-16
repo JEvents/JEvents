@@ -16,8 +16,8 @@ function DefaultViewHelperHeader16($view){
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();
 	$jevtype	= $jinput->get('jevtype', null, null);
-	$evid		= $jinput->get('evid', '', 'INT');
-	$pop		= $jinput->get('pop', '0', 'INT');
+	$evid		= $jinput->getInt('evid', '');
+	$pop		= $jinput->getInt('pop', '0');
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	echo "\n" . '<!-- '
