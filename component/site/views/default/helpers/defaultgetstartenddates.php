@@ -11,9 +11,9 @@ function Defaultgetstartenddates($view){
 	// This causes the filter module to reset
 	$filters = jevFilterProcessing::getInstance(array());
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
-	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
-		JRequest::setVar( 'startdate', '');
-		JRequest::setVar( 'enddate', '');
+	if (intval($jinput->getInt('filter_reset', 0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
+		$jinput->set( 'startdate', '');
+		$jinput->set( 'enddate', '');
 		JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
 		JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
 		JFactory::getApplication()->setUserState( 'active_filter_menu ', 0);

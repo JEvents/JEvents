@@ -7,8 +7,9 @@ class FlatViewNavTableBarIconic {
 
     function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid) {
         global $catidsOut;
+        $jinput = JFactory::getApplication()->input;
 
-        if (JRequest::getInt('pop', 0))
+        if ($jinput->getInt('pop', 0))
             return;
         $cfg = JEVConfig::getInstance();
         $compname = JEV_COM_COMPONENT;

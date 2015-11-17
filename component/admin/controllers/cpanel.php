@@ -54,7 +54,7 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 			echo $db->getErrorMsg();
 		}
 		
@@ -742,6 +742,7 @@ class AdminCpanelController extends JControllerAdmin
 	}
 
 	public function fixcollations(){
+		$jinput = JFactory::getApplication()->input;
 
 		if (!JEVHelper::isAdminUser())
 		{
@@ -761,7 +762,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
 		$tables = $db->loadObjectList('Name');
 
-		if (JRequest::getInt("ft",0)){
+		if ($jinput->getInt("ft", 0)){
 			foreach ($tables as $tablename=>$table){
 				if ($table->Collation != $collation){
 					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");
