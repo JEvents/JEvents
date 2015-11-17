@@ -111,7 +111,7 @@ class AdminCpanelController extends JControllerAdmin
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 		if (is_null($nativeCals) || count($nativeCals) == 0)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('CALENDARS_NOT_SETUP_PROPERLY'), 'notice');
+			JFactory::getApplication()->enqueueMessage(JText::_('CALENDARS_NOT_SETUP_PROPERLY'), 'warning');
 
 		}
 
@@ -474,7 +474,7 @@ class AdminCpanelController extends JControllerAdmin
 						$updateLanguagePackMessage = JText::sprintf('JEV_UPDATE_LANGUAGE_PACKAGE',$language['name']);
 					}
 
-					JFactory::getApplication()->enqueueMessage($updateLanguagePackMessage, 'warning');
+					JFactory::getApplication()->enqueueMessage($updateLanguagePackMessage, 'notice');
 
 				}
 			}			
