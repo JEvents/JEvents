@@ -33,8 +33,9 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
 		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
-		
-		$icalformatted = JRequest::getInt("icf", 0);
+		$jinput = JFactory::getApplication()->input;
+
+		$icalformatted = $jinput->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
 		else

@@ -19,6 +19,7 @@ class SaveIcalEvent {
 		$cfg = JEVConfig::getInstance();
 		$db	= JFactory::getDBO();
 		$user = JFactory::getUser();
+		$jinput = JFactory::getApplication()->input;
 
 		// Allow plugins to check data validity
 		$dispatcher     = JEventDispatcher::getInstance();
@@ -59,7 +60,7 @@ class SaveIcalEvent {
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
-		$creatorid = JRequest::getInt("jev_creatorid",0);
+		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
 			$access = $user->authorise('core.admin', 'com_jevents');
 		

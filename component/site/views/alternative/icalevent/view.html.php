@@ -27,7 +27,9 @@ class AlternativeViewICalevent extends JEventsAlternativeView
 		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
+
+		$jinput = JFactory::getApplication()->input;
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 		
@@ -45,8 +47,8 @@ class AlternativeViewICalevent extends JEventsAlternativeView
 			$this->day = $this->data['row']->dup();
 
 			// seth month and year to be used by mini-calendar if needed
-			if (!JRequest::getVar("month",0)) JRequest::setVar("month",$this->month);
-			if (!JRequest::getVar("year",0)) JRequest::setVar("year",$this->year);
+			if (!$jinput->get("month",0)) $jinput->set("month", $this->month);
+			if (!$jinput->get("year",0))  $jinput->set("year", $this->year);
 		}
 		
 	}	

@@ -8,6 +8,7 @@ class DefaultViewNavTableBar
 
 	function DefaultViewNavTableBar($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
 	{
+		$jinput = JFactory::getApplication()->input;
 
 		$cfg = JEVConfig::getInstance();
 		$this->view = $view;
@@ -16,7 +17,7 @@ class DefaultViewNavTableBar
 		$this->cat = $this->view->datamodel->getCatidsOutLink();
 		$this->task = $task;
 
-		if (JRequest::getInt('pop', 0))
+		if ($jinput->getInt('pop', 0))
 			return;
 
 		list($year, $month, $day) = JEVHelper::getYMD();

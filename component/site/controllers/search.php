@@ -37,17 +37,19 @@ class SearchController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
+		$jinput = JFactory::getApplication()->input;
+
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
 		$db	= JFactory::getDBO();
-		$keyword = JRequest::getString( 'keyword', '' );
+		$keyword = $jinput->getString('keyword', '');
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
 		if (JString::strlen($keyword) > $upper_limit) {
 			$keyword	= JString::substr($keyword, 0, $upper_limit - 1);
 		}
-		$keyword = $db->escape(JRequest::getVar( 'keyword', '' ));
+		$keyword = $db->escape($jinput->get('keyword', ''));
 
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();

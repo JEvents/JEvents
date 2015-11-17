@@ -31,6 +31,7 @@ if (!defined("JEVADPARMOD"))
 		function &getParams()
 		{
 			static $instance;
+			$jinput = JFactory::getApplication()->input;
 
 			if ($instance == null)
 			{
@@ -45,7 +46,7 @@ if (!defined("JEVADPARMOD"))
 				}
 
 				// work out file path
-				if ($path = JRequest::getString('path'))
+				if ($path = $jinput->getString('path'))
 				{
 					$path = JPath::clean(JPATH_SITE . '/' . $path);
 					JPath::check($path);

@@ -23,8 +23,10 @@ class JEventsHelper
 	 */
 	public static function addSubmenu($vName = "")
 	{
-		$task = JRequest::getCmd("task", "cpanel.cpanel");
-		$option = JRequest::getCmd("option", "com_categories");
+		$jinput = JFactory::getApplication()->input;
+
+		$task = $jinput->getCmd("task", "cpanel.cpanel");
+		$option = $jinput->getCmd("option", "com_categories");
 
 		if ($option == 'com_categories')
 		{

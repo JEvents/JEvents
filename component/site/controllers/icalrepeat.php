@@ -36,7 +36,9 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
-		if (JRequest::getInt("login",0) && $user->id==0)
+		$jinput = JFactory::getApplication()->input;
+
+		if ($jinput->getInt("login", 0) && $user->id == 0)
 		{			
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
@@ -48,9 +50,9 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 			return;
 		}
 		
-		$evid =JRequest::getInt("rp_id",0);
+		$evid = $jinput->getInt("rp_id", 0);
 		if ($evid==0){
-			$evid =JRequest::getInt("evid",0);
+			$evid =$jinput->getInt("evid", 0);
 			// In this case I do not have a repeat id so I 
 		}
 
@@ -88,13 +90,13 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 
 		// if cancelling from save of copy and edit use the old event id
 		if ($evid==0){
-			$evid =JRequest::getInt("old_evid",0);
+			$evid =$jinput->getInt("old_evid", 0);
 		}
-		$pop = intval(JRequest::getVar( 'pop', 0 ));
+		$pop = intval($jinput->getInt( 'pop', 0));
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
-		$uid = urldecode((JRequest::getVar( 'uid', "" )));
+		$uid = urldecode(($jinput->get('uid', "")));
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();

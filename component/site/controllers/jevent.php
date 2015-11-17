@@ -33,9 +33,10 @@ class JEventController extends JControllerLegacy   {
 }
 
 	function detail() {
+		$jinput = JFactory::getApplication()->input;
 
-		$evid =JRequest::getInt("evid",0);
-		$pop = intval(JRequest::getVar( 'pop', 0 ));
+		$evid =$jinput->getInt("evid",0);
+		$pop = intval($jinput->getVar('pop', 0));
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 

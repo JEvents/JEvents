@@ -15,10 +15,10 @@ JevViewCopyright(); ?>
 </div>
 </div> <!-- close #jevents //-->
 <?php
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsFooter');
 
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString("jevtask");
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_".$task);
 

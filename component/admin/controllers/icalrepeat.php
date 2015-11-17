@@ -45,10 +45,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 	 */
 	function overview()
 	{
+		$jinput = JFactory::getApplication()->input;
 
 		$db = JFactory::getDBO();
 		$publishedOnly = false;
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $jinput->get('cid', array(0));
 		JArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
@@ -57,7 +58,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$id = $cid;
 
 		// if cancelling a repeat edit then I get the event id a different way
-		$evid = JRequest::getInt("evid", 0);
+		$evid = $jinput->getInt("evid", 0);
 		if ($evid > 0)
 		{
 			$id = $evid;

@@ -45,8 +45,9 @@ class JEVHelper
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
+		$jinput = JFactory::getApplication()->input;
 
-		$option = JRequest::getCmd("option");
+		$option = $jinput->getCmd("option");
 		$cfg = JEVConfig::getInstance();
 		$lang = JFactory::getLanguage();
 

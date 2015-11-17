@@ -37,8 +37,9 @@ class ModLatestController extends JControllerLegacy   {
 	}
 
 	function rss() {
-				
-		JRequest::setVar("tmpl","component");
+		$jinput = JFactory::getApplication()->input;
+
+		$jinput->setVar("tmpl", "component");
 
 		// get the view
 		$this->view = $this->getView("modlatest","feed");

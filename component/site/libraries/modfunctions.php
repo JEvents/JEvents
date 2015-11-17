@@ -17,12 +17,13 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// Itemid, search for menuid with lowest access rights
 	$user = JFactory::getUser();
 	$db	= JFactory::getDBO();
+	$jinput = JFactory::getApplication()->input;
 
 	// Do we ignore category filters?
 	$ignorecatfilter = 0;
 	if (isset($modparams->ignorecatfilter) && $modparams->ignorecatfilter){
 		$ignorecatfilter = $modparams->ignorecatfilter;
-		JRequest::setVar("category_fv",0);
+		$jinput->set("category_fv", 0);
 	}
 	
 	$menu = JFactory::getApplication()->getMenu();

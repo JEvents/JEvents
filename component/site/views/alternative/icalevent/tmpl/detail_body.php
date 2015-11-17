@@ -30,7 +30,7 @@ if( array_key_exists('row',$this->data) ){
 	
 	$cfg	 = JEVConfig::getInstance();
 
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$params =new JRegistry(null);
 
 	if (isset($row)) {

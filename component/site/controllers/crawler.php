@@ -28,12 +28,12 @@ class CrawlerController extends JControllerLegacy   {
 	}
 
 	function listevents() {
-
-		JRequest::setVar("tmpl","component");
+		$jinput = JFactory::getApplication()->input;
+		$jinput->set("tmpl", "component");
 		list($year,$month,$day) = JEVHelper::getYMD();
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
+		$limitstart = intval( $jinput->get('start', $jinput->get('limitstart', 	0)));
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = $params->get("com_calEventListRowsPpg",15);
