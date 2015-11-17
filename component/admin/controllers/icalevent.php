@@ -1075,7 +1075,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$rrule = SaveIcalEvent::generateRRule($array);
 
 		// ensure authorised
-		if (isset($array["evid"]) && $array["evid"] > 0)
+		if (isset($array["evid"]) && intval($array["evid"]) > 0)
 		{
 			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
 			if (!$event || !JEVHelper::canEditEvent($event))
@@ -1087,7 +1087,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$clearout = false;
 		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && $array["evid"] > 0 && JRequest::getInt("updaterepeats", 1))
+		if (isset($array["evid"]) && intval($array["evid"]) > 0 && JRequest::getInt("updaterepeats", 1))
 		{
 			$clearout = true;
 		}
@@ -1106,7 +1106,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($clearout)
 			{
 				$db = JFactory::getDBO();
-				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . $array["evid"];
+				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
 				$db->query();
 				// TODO clear out old exception details
