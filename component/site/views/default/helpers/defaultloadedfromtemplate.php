@@ -14,7 +14,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$rawtemplates = array();
 	}
 	$specialmodules = false;
-
+	static $allcat_catids;
 	$loadedFromFile = false;
 
 	if (!$template_value)
@@ -179,7 +179,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	else
 	{
-		if ($runplugins){
+		if ($runplugins && JRequest::getString("option")!="com_jevents"){
 			// This is a special scenario where we call this function externally e.g. from RSVP Pro messages
 			// In this scenario we have not gone through the displaycustomfields plugin
 			static $pluginscalled = array();
@@ -368,7 +368,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{ALLCATEGORIES}}":
 					$search[] = "{{ALLCATEGORIES}}";
-					static $allcat_catids;
 
 					if (!isset($allcat_catids))
 					{
@@ -507,6 +506,34 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{ALLCATEGORYIMGS}}":
+					$search[] = "{{ALLCATEGORYIMGS}}";
+					if (!isset($allcat_catids))
+					{
+						$db = JFactory::getDBO();
+						$arr_catids = array();
+						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+						$db->setQuery($catsql);
+						$allcat_catids = $db->loadObjectList('id');
+					}
+					$db = JFactory::getDbo();
+					$db->setQuery("Select params from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+					$data = $db->loadColumn();
+                                        $output = "";
+
+                                        if (is_array($data)) {
+                                                foreach ($data as $cat){
+                                                        $params = json_decode($cat->params);
+                                                        if (isset($params->image) && $params->image!=""){ 
+                                                                $output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+                                                        }							
+                                                }
+                                        }
+                                        
+					$replace[] = $output;
+					$blank[] = "";
+					break;
+                                    
 				case "{{CATDESC}}":
 					$search[] = "{{CATDESC}}";
 					$replace[] = $event->getCategoryDescription();
@@ -954,9 +981,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					static $dofirstrepeat;
 					if (!isset($dofirstrepeat))
 					{
-						$dofirstrepeat = (JString::strpos($template_value, "{{FIRSTREPEAT}}") !== false
-								|| JString::strpos($template_value, "{{FIRSTREPEATSTART}}") !== false
-								 || JString::strpos($template_value, "{{JEVAGE}}") !== false);
+						$dofirstrepeat = (JString::strpos($template_value, "{{FIRSTREPEAT") !== false
+								|| JString::strpos($template_value, "{{FIRSTREPEATSTART") !== false
+								 || JString::strpos($template_value, "{{JEVAGE") !== false);
 					}
 					if ($dofirstrepeat)
 					{
@@ -1246,11 +1273,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;
 				}
-				global $tempreplace, $tempevent, $tempsearch;
+				global $tempreplace, $tempevent, $tempsearch, $tempblank;
 				$tempreplace = $rawreplace[$search[$s]];
+				$tempblank = $blank[$s];
 				$tempsearch = str_replace("}}",";.*?}}",$search[$s]);
 				$tempevent = $event;
-				$template_value = preg_replace_callback("|$tempsearch|", 'jevSpecialDateFormatting', $template_value);
+				$template_value = preg_replace_callback("~$tempsearch~", 'jevSpecialDateFormatting', $template_value);
 			}
 		}
 
@@ -1264,6 +1292,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
 		}
 
+		// The universal search and replace to finish
 		$template_value = str_replace($search, $replace, $template_value);
 
 		if ($specialmodules)
@@ -1424,12 +1453,31 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	function jevSpecialDateFormatting($matches){
 		if (count($matches) == 1 && JString::strpos($matches[0], ";") > 0)
 		{
-			global $tempreplace, $tempevent, $tempsearch;
+			global $tempreplace, $tempevent, $tempsearch,$tempblank;
 			$parts = explode(";", $matches[0]);
 			if (count($parts) == 2)
 			{
-				$fmt = str_replace("}}", "", $parts[1]);
+				$fmt = str_replace(array("}}","}"), "", $parts[1]);
+				if (strpos($fmt, "#")!==false){
+					$fmtparts = explode("#", $fmt);
+					if ($tempreplace == $tempblank)
+					{
+						if (count($fmtparts) == 3)
+						{
+							$fmt = $fmtparts[2];
+						}
+						else
+							return  "";
+					}
+					else if (count($fmtparts) >= 2)
+					{
+						$fmt = sprintf($fmtparts[1], $fmtparts[0]);
+					}
+				}
 				//return strftime($fmt, strtotime(strip_tags($tempreplace)));
+				if (!is_int($tempreplace)){
+					$tempreplace =strtotime(strip_tags($tempreplace));
+				}
 				return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
 			}
 			// TZ specified
@@ -1448,14 +1496,36 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				{
 					$jtz = new DateTimeZone(@date_default_timezone_get());					
 				}
-				$outputtz = str_replace("}}","",$parts[2]);
-				
+				$outputtz = str_replace(array("}}","}"),"",$parts[2]);
+
+				if (strpos($outputtz, "#")!==false){
+					$outputtzparts = explode("#", $outputtz);
+					$outputtz = $outputtzparts[0];
+					if ($tempreplace == $tempblank)
+					{
+						if (count($outputtzparts) == 3)
+						{
+							$fmt = $outputtzparts[2];
+						}
+						else
+							return  "";
+					}
+					else if (count($outputtzparts) >= 2)
+					{
+						$fmt = sprintf($outputtzparts[1], $fmt);
+					}
+				}
+
+
 				if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz"){
 					$user = JFactory::getUser();
 					$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
 				}
 				$outputtz = new DateTimeZone($outputtz);
 
+				if (is_integer($tempreplace)){
+					$tempreplace = JEV_CommonFunctions::jev_strftime("%Y-%m-%d %H:%M:%S", $tempreplace);
+				}
 				$indate = new DateTime($tempreplace, $jtz);
 				$offset1 = $indate->getOffset();
 

@@ -10,6 +10,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+// we would use this to add custom data to the output here
+//JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
+
 JHTML::_('behavior.tooltip');
 
 $db = JFactory::getDBO();
@@ -64,7 +67,7 @@ $mainspan = 10;
 			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 				<tr>
 					<th width="20" nowrap="nowrap">
-						<input type="checkbox" name="toggle" value="" onclick=Joomla.checkAll(this);"  />
+						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th class="title" width="40%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
@@ -75,6 +78,13 @@ $mainspan = 10;
 					?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
 					<?php }
+					/*
+					if (count ($this->rows)>0 && isset($this->rows[0]->customfields["danceLevel"])) {
+					?>
+					<th width="10%" nowrap="nowrap"><?php echo $this->rows[0]->customfields["danceLevel"]["label"] ?></th>
+					<?php
+					}
+					 */
 					?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 					<th width="20%" nowrap="nowrap">
@@ -99,7 +109,7 @@ $mainspan = 10;
 					?>
 					<tr class="row<?php echo $k; ?>">
 						<td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
-							<?php echo JHtml::_('grid.id', $i, $row->id()); ?>
+							<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
 						</td>
 						<td >
 							<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
@@ -117,7 +127,22 @@ $mainspan = 10;
 						<td align="center"><?php echo $row->creatorName(); ?></td>
 						<?php  if (count($this->languages)>1) { ?>
 						<td align="center"><?php	 echo $this->translationLinks($row); ?>	</td>
-						<?php } ?>
+						<?php }
+						/*
+						if (isset($this->rows[0]->customfields["danceLevel"])) {
+							if (isset($row->customfields["danceLevel"])){
+								?>
+						<td align="center"><?php	 echo $row->customfields["danceLevel"]["value"]; ?>	</td>
+								<?php
+							}
+							else {
+								?>
+						<td/>
+								<?php
+							}
+						}
+						 */
+						?>
 						<td align="center">
 							<?php
 							if ($row->state()==1){

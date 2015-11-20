@@ -159,6 +159,10 @@ class DefaultModLatestView
 				JHtmlBootstrap::loadCss();
 			}
 		}
+		else if ($myparam->get("bootstrapcss", 1)==2)
+		{
+			JHtmlBootstrap::loadCss();
+		}
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
@@ -1019,7 +1023,7 @@ class DefaultModLatestView
 					if ($match == "endDate" && $dayEvent->sdn() == 59)
 					{
 						$tempEndDate = $endDate + 1;
-						if ($dayEvent->alldayevent())
+						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
 							// if an all day event then we don't want to roll to the next day
 							$tempEndDate -= 86400;
@@ -1037,7 +1041,7 @@ class DefaultModLatestView
 					{
 						$content .= date($dateParm, $$match);
 					}
-					if ($match == "tempDndDate")
+					if ($match == "tempEndDate")
 					{
 						$match = "endDate";
 					}

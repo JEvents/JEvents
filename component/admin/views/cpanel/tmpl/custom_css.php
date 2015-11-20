@@ -76,10 +76,10 @@ if (JRequest::getVar('save')) {
         $status = JFile::write($filepath, $content);
         if (!empty($status)) {
             $msg = JText::_('JEV_CUSTOM_CSS_SUCCESS');
-            $msgType = 'Info';
+            $msgType = 'notice';
         } else {
             $msg = JText::_('JEV_CUSTOM_CSS_ERROR');
-            $msgType = 'Error';
+            $msgType = 'error';
         }
 
         $mainframe->enqueueMessage($msg, $msgType);

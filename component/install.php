@@ -292,7 +292,7 @@ SQL;
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 	ics_id int(12) NOT NULL auto_increment,
-	srcURL VARCHAR(255) NOT NULL default "",
+	srcURL VARCHAR(500) NOT NULL default "",
 	label varchar(30) NOT NULL UNIQUE default "",
 
 	filename VARCHAR(120) NOT NULL default "",
@@ -694,7 +694,7 @@ SQL;
 			@$db->query();
 		}
 
-		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(255) NOT NULL default '' ";
+		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(500) NOT NULL default '' ";
 		$db->setQuery($sql);
 		$db->query();
 

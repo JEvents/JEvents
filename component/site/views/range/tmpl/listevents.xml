@@ -47,6 +47,7 @@
 			</field>
 
 			<field name='daterangeformat' type='text' default='{START(%d %B %Y)} - {END(%d %B %Y)}'  size="30" label="COM_JEVENTS_DATE_RANGE_FORMAT" description="COM_JEVENTS_DATE_RANGE_FORMAT_DESC" />
+			<!--<field name='customdataorder' type='text' default="" label="COM_JEVENTS_CUSTOM_DATA_ORDER_LABEL" description="COM_JEVENTS_CUSTOM_DATA_ORDER_LABEL_DESC" />//-->
 
 		</fieldset>
 
@@ -106,7 +107,7 @@
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
-			<field name="com_showrepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
+			<field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
 			
 			<field name="@spacer" type="jevinfo"  default='ADVANCED_SETTINGS'  label="" description="" />
 			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>

@@ -14,7 +14,7 @@
 		<field name="clubcode_spacer" type="jevinfo" default='JEV_JOOMLA_UPDATE_CLUBCODE_INFO'   menu="hide" label="" description="" difficulty="1" />
 		<field name="clubcode" type="jevtext" size="60" default=''  menu="hide" label="JEV_JOOMLA_UPDATE_CLUBCODE" description="JEV_JOOMLA_UPDATE_CLUBCODE_DESC" difficulty="1" />
 
-		<field name="com_calViewName" type="jevview" default='flat'  menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
+		<field name="com_calViewName" type="jevview" default="flat" except="float" menu="hide" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" difficulty="1"/>
 		<field name="darktemplate" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC" difficulty="1"/>
 		
 		<field name="com_dateformat" type="jevlist" default="0" label="JEV_DATE_FORMAT" description="JEV_DATE_FORMAT_DESC" difficulty="1"  >
@@ -65,11 +65,14 @@
 		<field name="bootstrapcss" type="jevlist"  default="1" label="JEV_LOAD_BOOTSTRAP_CSS" description="JEV_LOAD_BOOTSTRAP_CSS_DESC" difficulty="2" minjoomlaversion="2.5.0" >
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
 			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
+			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
 		</field>
+		<!--
 		<field name="bootstrapjs" type="jevlist"  default="1" label="JEV_LOAD_BOOTSTRAP_JS" description="JEV_LOAD_BOOTSTRAP_JS_DESC" difficulty="2" minjoomlaversion="3.0.0" >
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP_JS</option>
 			<option value="1">JEV_USE_JOOMLA_BOOTSTRAP_JS</option>
 		</field>
+		//-->
 		<!--
 		<field name="usejquery" type="jevboolean" class="btn-group" default="0" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />
 		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description=""  difficulty="2"/>
@@ -131,7 +134,6 @@
 			<option value="d/m/Y">JEV_EVENT_EDIT_DATEFORMAT_DMY_VALUE</option>
 			<option value="d.m.Y">JEV_EVENT_EDIT_DATEFORMAT_EUROPEAN_VALUE</option>
 		</field>
-		<!--<field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC' difficulty="3"/>//-->
 		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
 		<field name="defaultcat" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_Use_Default_Cat" description="JEV_Use_Default_Cat_tip" difficulty="2"/>
 		<field name="forcepopupcalendar" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" difficulty="2"/>
@@ -338,7 +340,7 @@
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 			<option value="ALWAYS">JEV_ALWAYS</option>
-			<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
+			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
 		<field name="modcal_DispLastMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" difficulty="2"/>
 		
@@ -347,7 +349,7 @@
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 			<option value="ALWAYS">JEV_ALWAYS</option>
-			<option value="ALWAYS_events">JEV_DLM_ALWYS_IF_EVENTS</option>
+			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
 		<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" difficulty="2"/>
 		<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" difficulty="3"/>

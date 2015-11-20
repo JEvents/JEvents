@@ -643,7 +643,12 @@ class JEVHelper
 			$document = JFactory::getDocument();
 			$document
 				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {Calendar.setup({
+				'jQuery(document).ready(function($) {
+					if (!jQuery("#' . $fieldid . '").length) {
+						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
+						return;
+					}
+			Calendar.setup({
 			// Id of the input field
 			inputField: "' . $fieldid . '",
 			// Format of the input field
@@ -652,6 +657,8 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+			// Allowable date range for picker
+			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
