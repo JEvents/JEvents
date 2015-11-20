@@ -31,7 +31,7 @@ $version = new JVersion();
 $jver = explode( '.', $version->getShortVersion() );
 
 //version_compare(JVERSION,'1.5.0',">=")
-if (!isset($option))  $option = $jinput->get("option"); // 1.6 mod
+if (!isset($option))  $option = $jinput->getCmd("option"); // 1.6 mod
 define("JEV_COM_COMPONENT",$option);
 define("JEV_COMPONENT",str_replace("com_","",$option));
 
