@@ -360,7 +360,7 @@ RAWTEXT;
 				}
 
 				// trigger post save plugins e.g. AutoTweet
-				$dispatcher     = JDispatcher::getInstance();
+				$dispatcher     = JEventDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				if ($matchingEvent) {
 					JRequest::setVar("evid", $vevent->ev_id);
@@ -570,7 +570,7 @@ RAWTEXT;
 					$db->query();
 
 					// I also need to clean out associated custom data
-					$dispatcher	= JDispatcher::getInstance();
+					$dispatcher	= JEventDispatcher::getInstance();
 					// just incase we don't have jevents plugins registered yet
 					JPluginHelper::importPlugin("jevents");
 					$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($detailidstring));

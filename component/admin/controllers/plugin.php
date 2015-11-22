@@ -28,7 +28,7 @@ class AdminPluginController extends JControllerAdmin
 
 	function plugin()
 	{
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$action = JFactory::getApplication()->input->get("task", "", "cmd");

@@ -749,7 +749,7 @@ class jIcalEventDB extends jEventCal {
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
 		$extrajoin =array();
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 		$params = JComponentHelper::getParams("com_jevents");
@@ -785,7 +785,7 @@ class jIcalEventDB extends jEventCal {
 		// iCal agid uses GUID or UUID as identifier
 		if( $rows ){
 			$row = new jIcalEventRepeat($rows[0]);
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger( 'onDisplayCustomFields', array( &$row ));
 		}
 		return $row;

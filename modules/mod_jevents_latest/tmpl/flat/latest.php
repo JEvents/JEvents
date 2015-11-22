@@ -21,7 +21,7 @@ class FlatModLatestView extends DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 	
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -126,7 +126,7 @@ class FlatModLatestView extends DefaultModLatestView
 			$content .= $callink_HTML;
 		}
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;

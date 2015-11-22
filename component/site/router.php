@@ -74,7 +74,7 @@ function JEventsBuildRoute(&$query)
 	}
 
 	JPluginHelper::importPlugin("jevents");
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsRoute');
 
 	// Translatable URLs

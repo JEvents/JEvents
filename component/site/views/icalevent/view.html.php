@@ -148,7 +148,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function _adminStart()
 	{
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
 		$this->Itemid = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
@@ -187,7 +187,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		?>
 		</div>
 		<?php
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onJEventsFooter', array($this));
 
 	}
