@@ -1169,7 +1169,7 @@ class AdminIcaleventController extends JControllerAdmin
 				$db = JFactory::getDBO();
 				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 				// TODO clear out old exception details
 			}
 		}
@@ -1254,7 +1254,7 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 		}
 
@@ -1325,14 +1325,14 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($newstate == 1 && $params->get("com_notifyauthor", 0) && !$event->_author_notified)
 			{
 				$sql = "UPDATE #__jevents_vevent SET author_notified=1 where ev_id='" . $id . "'";
 				$db->setQuery($sql);
-				$db->query();
+				$db->execute();
 
 				JEV_CommonFunctions::notifyAuthorPublished($event);
 			}
@@ -1410,25 +1410,25 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_catmap WHERE evid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			if (JString::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 
 				// I also need to clean out associated custom data
 				$dispatcher = JDispatcher::getInstance();
@@ -1439,7 +1439,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			// I also need to delete custom data
 			$dispatcher = JDispatcher::getInstance();

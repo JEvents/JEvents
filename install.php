@@ -129,22 +129,22 @@ class Pkg_JeventsInstallerScript
 			{
 				$query = "UPDATE #__extensions SET enabled=1 WHERE folder='finder' and type='plugin' and element='jevents'";
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 			}
 
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='search' and type='plugin' and element='eventsearch'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
                         
                         // Enable new JEvents Plugin
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
  			$db->setQuery($query);
- 			$db->query();
+ 			$db->execute();
 
                         // Enable JSON Plugin
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
  			$db->setQuery($query);
- 			$db->query();
+ 			$db->execute();
 
 		}
 		else {
@@ -165,12 +165,12 @@ class Pkg_JeventsInstallerScript
 			$db = JFactory::getDbo();
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
                         // Enable JSON Plugin
                         $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
  			$db->setQuery($query);
- 			$db->query();
+ 			$db->execute();
 
 		}
 

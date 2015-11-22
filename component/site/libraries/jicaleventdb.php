@@ -809,7 +809,7 @@ class jIcalEventDB extends jEventCal {
 		// Should this happen here?
 		$query = "UPDATE #__jevents_vevdetail SET hits=(hits+1) WHERE evdet_id='".$this->evdet_id()."'"	;
 		$db->setQuery( $query );
-		if( !$db->query() ) {
+		if( !$db->execute() ) {
 			echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
 			exit();
 		}

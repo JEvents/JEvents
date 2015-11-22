@@ -148,11 +148,11 @@ class iCalEvent extends JTable  {
 			}
 			$db->setQuery("DELETE FROM #__jevents_catmap where evid = ".$this->ev_id." AND catid NOT IN (".implode(",",$catids).")");
 			$sql =$db->getQuery();
-			$success = $db->query();
+			$success = $db->execute();
 			if (count($pairs)>0){
 				$db->setQuery("Replace into #__jevents_catmap (evid, catid, ordering) VALUES ".implode(",", $pairs));
 				$sql =$db->getQuery();
-				$success = $db->query();
+				$success = $db->execute();
 			}
 		}
 		
@@ -386,7 +386,7 @@ else $this->_detail = false;
 		$db	= JFactory::getDBO();
 		$sql = "DELETE FROM #__jevents_repetition WHERE duplicatecheck='".$duplicatecheck."'";
 		$db->setQuery($sql);
-		return $db->query();
+		return $db->execute();
 	}
 
 	/**
@@ -450,7 +450,7 @@ else $this->_detail = false;
 		.", duplicatecheck='".$duplicatecheck."'"
 		." WHERE rp_id=".$matchingRepetition->rp_id;
 		$db->setQuery($sql);
-		return $db->query();
+		return $db->execute();
 
 	}
 
@@ -471,7 +471,7 @@ else $this->_detail = false;
 			$idlist = implode(",",$ids);
 			$sql = "DELETE FROM #__jevents_vevdetail  WHERE evdet_id IN(".$idlist.")";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 			// I also need to clean out associated custom data
 			$dispatcher	= JDispatcher::getInstance();
@@ -498,7 +498,7 @@ else $this->_detail = false;
 			// since the repeat may have been= adjusted
 			$sql = "DELETE FROM #__jevents_repetition  WHERE eventid=".$this->ev_id;
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		 }
 
 		// Now attempt to replace repetitions using the old repeat ids
@@ -544,7 +544,7 @@ else $this->_detail = false;
 			if ($r+1 < count($this->_repetitions)) $sql .= ",";
 		}
 		$db->setQuery($sql);
-		return $db->query();
+		return $db->execute();
 	}
 
 	function eventOnDate($testDate){
