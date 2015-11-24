@@ -21,7 +21,7 @@ class SaveIcalEvent {
 		$user = JFactory::getUser();
 
 		// Allow plugins to check data validity
-		$dispatcher     = JDispatcher::getInstance();
+		$dispatcher     = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 

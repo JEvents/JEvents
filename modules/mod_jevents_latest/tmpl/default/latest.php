@@ -951,7 +951,7 @@ class DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
@@ -969,7 +969,7 @@ class DefaultModLatestView
 			function processMatch(&$content, $match, $dayEvent, $dateParm, $relDay)
 	{
 		$datenow = JEVHelper::getNow();
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1023,7 +1023,7 @@ class DefaultModLatestView
 					if ($match == "endDate" && $dayEvent->sdn() == 59)
 					{
 						$tempEndDate = $endDate + 1;
-						if ($dayEvent->alldayevent())
+						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
 							// if an all day event then we don't want to roll to the next day
 							$tempEndDate -= 86400;
@@ -1041,7 +1041,7 @@ class DefaultModLatestView
 					{
 						$content .= date($dateParm, $$match);
 					}
-					if ($match == "tempDndDate")
+					if ($match == "tempEndDate")
 					{
 						$match = "endDate";
 					}
