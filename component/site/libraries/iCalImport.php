@@ -170,6 +170,9 @@ class iCalImport
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
 			} else {
+				//echo "first line = $firstLine<br/>";
+				//echo "raw imported data = ".$this->rawData."<br/>";
+				//exit();
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!

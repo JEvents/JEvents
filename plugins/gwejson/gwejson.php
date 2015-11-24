@@ -188,7 +188,7 @@ class PlgSystemGwejson extends JPlugin
 			PlgSystemGwejson::throwerror("There was an error - no request data");
 		}
 
-		header("Content-Type: application/x-javascript; charset=utf-8");
+		header("Content-Type: application/javascript; charset=utf-8");
 
 		if (is_object($data)){
 			if (defined('_SC_START'))
@@ -217,7 +217,7 @@ class PlgSystemGwejson extends JPlugin
 		$data->result = "ERROR";
 		$data->user = "";
 
-		header("Content-Type: application/x-javascript");
+		header("Content-Type: application/javascript");
 		// Must suppress any error messages
 		@ob_end_clean();
 		echo json_encode($data);

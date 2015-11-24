@@ -165,7 +165,8 @@ class JevTypeahead
 			// clear local cache!
 		//	$typeaheadLoad .= "$jsname.clear();$jsname.clearPrefetchCache();";
 
-				$typeaheadLoad .= "jQuery('".$selector."').typeahead
+				$typeaheadLoad .= "jQuery(document).ready(function() {"
+						. "jQuery('".$selector."').typeahead
 									(
 										{
 											highlight: ".$opt['highlight'].",
@@ -177,7 +178,8 @@ class JevTypeahead
 											limit:  ".$opt['limit'].",
 											source: $jsname
 										}
-									);\n";
+									);
+							})\n";
 				if($opt['field_selector'])
 				{
 					$typeaheadLoad .= "jQuery('".$selector."').on

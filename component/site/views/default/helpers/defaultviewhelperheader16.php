@@ -18,11 +18,7 @@ function DefaultViewHelperHeader16($view){
 	$pop		= JRequest::getInt('pop', 0);
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	echo "\n" . '<!-- '
-	. $version->getLongVersion() . ', '
-	. utf8_encode(@html_entity_decode($version->getLongCopyright(), ENT_COMPAT, 'ISO-8859-1')) . ', '
-	. $version->getUrl()
-	. ' -->' . "\n";
+	$view->copyrightComment();
 
 	// stop crawler and set meta tag
 	JEVHelper::checkRobotsMetaTag();

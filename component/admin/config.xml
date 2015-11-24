@@ -67,10 +67,12 @@
 			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
 			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
 		</field>
+		<!--
 		<field name="bootstrapjs" type="jevlist"  default="1" label="JEV_LOAD_BOOTSTRAP_JS" description="JEV_LOAD_BOOTSTRAP_JS_DESC" difficulty="2" minjoomlaversion="3.0.0" >
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP_JS</option>
 			<option value="1">JEV_USE_JOOMLA_BOOTSTRAP_JS</option>
 		</field>
+		//-->
 		<!--
 		<field name="usejquery" type="jevboolean" class="btn-group" default="0" label="JEV_USE_JQUERY" description="JEV_USE_JQUERY_TIP" difficulty="2" maxjoomlaversion="2.99.99" />
 		<field name="com_copyright" type="jevboolmsg" class="btn-group" default="1" menu="hide" label="JEV_SHOW_COPYRIGHT" description=""  difficulty="2"/>
