@@ -335,7 +335,7 @@ class JEventsHTML
 				}
 			}
 
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
 
 			// allow anon-user event creation through

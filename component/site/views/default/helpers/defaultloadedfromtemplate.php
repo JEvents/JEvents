@@ -185,7 +185,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			static $pluginscalled = array();
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
@@ -1119,7 +1119,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						if (JString::strpos($event->contact_info(), '<script') === false)
 						{
-							$dispatcher = JDispatcher::getInstance();
+							$dispatcher = JEventDispatcher::getInstance();
 							JPluginHelper::importPlugin('content');
 
 							//Contact
@@ -1152,7 +1152,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					//Extra
 					if (JString::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 					{
-						$dispatcher = JDispatcher::getInstance();
+						$dispatcher = JEventDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 
 						$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
@@ -1364,7 +1364,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tmprow = new stdClass();
 		$tmprow->text = $template_value;
 		$tmprow->event = $event;
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 		$template_value = $tmprow->text;

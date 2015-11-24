@@ -78,7 +78,7 @@ class iCalEventDetail extends JTable  {
 
 		if (parent::store($updateNulls)){
 			// I also need to store custom data
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onStoreCustomDetails' , array(&$this));

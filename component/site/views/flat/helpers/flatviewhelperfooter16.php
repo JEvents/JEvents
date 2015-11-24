@@ -27,7 +27,7 @@ function FlatViewHelperFooter16($view)
 	</div>
 	</div>
 	<?php
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onJEventsFooter');
 
 	$task = JRequest::getString("jevtask");

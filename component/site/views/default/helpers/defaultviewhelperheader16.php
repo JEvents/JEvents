@@ -8,7 +8,7 @@ function DefaultViewHelperHeader16($view){
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 	
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsHeader', array($view));
 
 	$cfg		= JEVConfig::getInstance();

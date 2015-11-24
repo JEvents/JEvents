@@ -269,7 +269,7 @@ class DefaultModLegendView
 		unset($cat);
 		
 		// any plugin based resitrictions
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// remember NOT to reindex the list
 		$dispatcher->trigger('onGetAccessibleCategories', array(& $catlist, false));
 

@@ -1118,7 +1118,7 @@ class JEVHelper
 			}
 
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}
 		if (is_null($isEventCreator)) $isEventCreator = false;
@@ -1159,7 +1159,7 @@ class JEVHelper
 					JRequest::setVar("task", "icalevent.edit");
 					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
 					$catids = implode(",", $catids);
-					$dispatcher = JDispatcher::getInstance();
+					$dispatcher = JEventDispatcher::getInstance();
 					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
 					$allowedcats = explode(",", $catids);
 					JRequest::setVar("task", $jevtask);
@@ -1456,7 +1456,7 @@ class JEVHelper
 				$isEventPublisher[$type] = true;
 			}
 
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
 		}
 
@@ -2358,7 +2358,7 @@ class JEVHelper
 			if (count($rows))
 			{
 				JPluginHelper::importPlugin('jevents');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
 				foreach ($rows as $k => $row)
 				{
@@ -2387,7 +2387,7 @@ class JEVHelper
 		else
 		{
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 
@@ -2644,7 +2644,7 @@ SCRIPT;
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2667,7 +2667,7 @@ SCRIPT;
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2833,7 +2833,7 @@ SCRIPT;
 			$icalEvents = array_values($icalEvents);
 
 			// Call plugin on each event
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			ob_start();
 			JEVHelper::onDisplayCustomFieldsMultiRow($icalEvents);
 			ob_end_clean();
