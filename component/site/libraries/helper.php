@@ -2570,7 +2570,7 @@ SCRIPT;
 			if (!in_array($filtervars, $filters))
 			{
 				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) . ")");
-				$db->query();
+				$db->execute();
 			}
 		}
 
