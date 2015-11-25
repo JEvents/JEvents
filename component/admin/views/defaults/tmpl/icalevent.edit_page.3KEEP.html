@@ -1,0 +1,150 @@
+{{Message:MESSAGE}}
+<div class="adminform">
+
+	{{Tab Start:TABSTART#JEV_TAB_COMMON}}
+	<div class="row jevtitle">
+		<div class="span2">
+			{{Title Label:TITLE_LBL}}
+		</div>
+		<div class="span10">
+			{{Title:TITLE}}
+		</div>
+	</div>
+	<div {{Priority:PRIORITY# class="row jevpriority" #class="row jevpriority jev_none"}}>
+		<div class="span2">
+			{{Priority Label:PRIORITY_LBL}}
+		</div>
+		{{Priority:PRIORITY#<div class="span10">%s</div>}}
+	</div>
+	<div {{Creator:CREATOR# class="row jevcreator" #class="row jevcreator jev_none"}}>
+		<div class="span2">
+			{{Creator label:CREATOR_LBL}}
+		</div>
+		<div class="span10">
+			{{Creator:CREATOR}}
+		</div>
+	</div>			
+	<div {{Calendar label:ICAL_LBL#class="row jevical" #class="row jevical jev_none"}}>
+		<div class="span2">
+			{{Calendar label:ICAL_LBL}}
+		</div>
+		<div class="span10">
+			{{Calendar:ICAL}}
+		</div>
+	</div>
+	<div {{Lock Event:LOCK#class="row jevlock" #class="row jevlock jev_none"}}>
+		<div class="span2">
+			{{Lock Event label:LOCK_LBL}}
+		</div>
+		<div class="span10">
+			{{Lock Event:LOCK}}
+		</div>
+	</div>
+	<div {{Category:CATEGORY# class="row jevcategory"#class="row jevcategory jev_none"}}>
+		<div class="span2">
+			{{Category label:CATEGORY_LBL}}
+		</div>
+		<div class="span10">
+			{{Category:CATEGORY}}
+		</div>
+	</div>
+	<div {{Primary Category:PRIMARYCATEGORY# class="row jevprimarycategory"#class="row jevprimarycategory jev_none"}}>
+		<div class="span2">
+			{{Primary Category label:PRIMARYCATEGORY_LBL}}
+		</div>
+		<div class="span10">
+			{{Primary Category:PRIMARY CATEGORY}}
+		</div>
+	</div>
+	<div {{Access:ACCESS# class="row jevaccess" #class="row jevaccess jev_none"}} >
+		<div class="span2">
+			{{Access label:ACCESS_LBL}}
+		</div>
+		<div class="span10">
+			{{Access:ACCESS}}
+		</div>
+	</div>
+	<div {{State:STATE# class="row jevstate" #class="row jevstate jev_none"}} >
+		<div class="span2">
+			{{State label:STATE_LBL}}
+		</div>
+		<div class="span10">
+			{{State:STATE}}
+		</div>
+	</div>
+	<div {{Event Colour:COLOUR#class="row jevcolour"  #class=" row jevcolour jev_none"}} >
+		<div class="span2">
+			{{Colour label:COLOUR_LBL}}
+		</div>
+		<div class="span10">
+			{{Event Colour:COLOUR}}
+		</div>
+	</div>
+
+	<div class="row jev_description" id='jeveditor' >
+		<div class="span2">
+			{{Description label:DESCRIPTION_LBL}}
+		</div>
+		<div class="span10">
+			{{Description:DESCRIPTION}}
+		</div>
+	</div>
+
+	<div class="row jeveditlocation"  id="jeveditlocation">
+		<div class="span2">
+			{{LOCATION label:LOCN_LBL}}
+		</div>
+		<div class="span10">
+			{{Location:LOCN}}
+		</div>
+	</div>
+
+	<div class="row jev_contact">
+		<div class="span2">
+			{{Contact label:CONTACT_LBL}}
+		</div>
+		<div class="span10">
+			{{Contact:CONTACT}}
+		</div>
+	</div>
+
+	<div class="row jev_extrainfo">
+		<div class="span2">
+			{{Extra label:EXTRA_LBL}}
+		</div>
+		<div class="span10">
+			{{Extra:EXTRA}}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="span2">
+			Example of single custom field : {{Custom joomlauser2 label:customfield_joomlauser2_lbl}}
+		</div>
+		<div class="span10">
+			{{Custom joomlauser2:customfield_joomlauser2}}
+		</div>
+	</div>
+
+	{{Custom Fields:CUSTOMFIELDS}} 
+
+	{{Tab Start:TABSTART#JEV_TAB_CALENDAR}}
+	{{Calendar tab content:CALTAB}}
+
+	{{Tab Start:TABSTART#Custom Fields Tab One}}
+	{{Tab 1:CUSTOM_1}}
+
+	{{Tab Start:TABSTART#Custom Fields Tab Two}}
+	{{Tab 2:CUSTOM_2}}
+
+	{{Tab Start:TABSTART#JEV_ATTENDANCE}}
+	{{Attendance Tab:JEV_ATTENDANCE}}
+
+	{{Tab Start:TABSTART#JEV_INVITATION_OPTIONS}}
+	{{Invitations Tab:JEV_INVITATION_OPTIONS}}
+
+	{{Tab Start:TABSTART#JEV_REMINDER_OPTIONS}}
+	{{Reminder Tab:JEV_REMINDER_OPTIONS}}
+
+	{{End Tabs:TABSEND}}
+</div>

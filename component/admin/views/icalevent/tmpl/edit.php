@@ -434,6 +434,30 @@ else
 				</div>
 				<?php
 			}
+/*
+			if ($this->form->getLabel("primarycatid"))
+			{
+				?>
+				<div class="row  jevprimarycategory">
+					<?php
+					if ($this->form->getLabel("primarycatid"))
+					{
+						?>
+						<div class="span2">
+							<?php
+							echo $this->form->getLabel("primarycatid");
+							?>
+						</div>
+						<div class="span10 jevprimarycategory">
+							<?php echo $this->form->getInput("primarycatid"); ?>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+*/
 			if (  $this->form->getLabel("access") ){
 				?>
 				<div class="row  jevaccess">

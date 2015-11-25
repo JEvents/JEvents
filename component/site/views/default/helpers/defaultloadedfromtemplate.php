@@ -1195,7 +1195,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						{
 							if (JString::strpos($event->contact_info(), '<script') === false)
 							{
-								$dispatcher = JDispatcher::getInstance();
+								$dispatcher = JEventDispatcher::getInstance();
 								JPluginHelper::importPlugin('content');
 
 								//Contact
