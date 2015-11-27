@@ -26,6 +26,9 @@ class JFormFieldJeveventprimarycategory extends JFormField
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get("multicategory", 0)) {
 			$catids = $this->form->getValue("catid", array());
+			if (!is_array($catids)) {
+				$catids = array($catids);
+			}
 			$primarycatid = $this->value;
 			$options = array();
 			$options[]  = JHTML::_('select.option', '0',JText::_("JEV_SELECT_PRIMARY_CATEGORY"));
