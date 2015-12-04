@@ -172,7 +172,10 @@ function simulateSaveEvent($requestObject)
 	$row = false;
 
 	// do dry run of event saving!
-	if ($event = SaveIcalEvent::save($array, $queryModel, $rrule, true))
+	ob_start();
+	$event = SaveIcalEvent::save($array, $queryModel, $rrule, true);
+	ob_end_clean();
+	if ($event)
 	{
 
 		$row = new jIcalEventDB($event);
