@@ -377,7 +377,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$db = JFactory::getDBO();
 						$arr_catids = array();
-						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+						$catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 						$db->setQuery($catsql);
 						$allcat_catids = $db->loadObjectList('id');
 					}
@@ -516,23 +516,28 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$db = JFactory::getDBO();
 						$arr_catids = array();
-						$catsql = "SELECT cat.id, cat.title as name FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+						$catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 						$db->setQuery($catsql);
 						$allcat_catids = $db->loadObjectList('id');
 					}
-					$db = JFactory::getDbo();
-					$db->setQuery("Select params from #__jevents_catmap  WHERE evid = " . $event->ev_id());
-					$data = $db->loadColumn();
-                                        $output = "";
 
-                                        if (is_array($data)) {
-                                                foreach ($data as $cat){
-                                                        $params = json_decode($cat->params);
-                                                        if (isset($params->image) && $params->image!=""){ 
-                                                                $output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
-                                                        }							
-                                                }
-                                        }
+					$db = JFactory::getDbo();
+					$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+					$allcat_eventcats = $db->loadColumn();
+
+					$output = "";
+					if (is_array($allcat_eventcats)) {
+						foreach ($allcat_eventcats as $catid)
+						{
+							if (isset($allcat_catids[$catid]))
+							{
+								$params = json_decode($allcat_catids[$catid]->params);
+								if (isset($params->image) && $params->image!=""){
+									$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+								}
+							}
+						}
+					}
                                         
 					$replace[] = $output;
 					$blank[] = "";
