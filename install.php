@@ -24,7 +24,7 @@ class Pkg_JeventsInstallerScript
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-	        $is_enabled = $db->loadResult();
+		$is_enabled = $db->loadResult();
 
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
@@ -32,11 +32,7 @@ class Pkg_JeventsInstallerScript
 		} else {
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.0', '<')){
-<<<<<<< HEAD
-				JFactory::getApplication()->enqueueMessage('This version of JEvents is desgined for Joomla 3.4.3 and later.<br/>Please update Joomla before upgrading JEvents to this version', 'error');
-=======
 				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.4 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
->>>>>>> upstream/jQuery
 				return false;
 			}
 			return;
@@ -49,8 +45,8 @@ class Pkg_JeventsInstallerScript
 	}
 
 	public function install($parent)
-			
-	{	
+
+	{
 		return true;
 	}
 
@@ -62,11 +58,11 @@ class Pkg_JeventsInstallerScript
 	/*
 	 * enable the plugins
 	 */
-	
+
 	public function postflight($type, $parent)
 	{
 		// CSS Styling:
-		?> 
+		?>
 		<style type="text/css">
 			.adminform tr th:first-child {display:none;}
 			table.adminform tr td {padding:15px;}
@@ -89,7 +85,7 @@ class Pkg_JeventsInstallerScript
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='http://www.jevents.net/images/JeventsTransparent.png' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
-				<div class='installed'> 
+				<div class='installed'>
 					<ul>
 						<li>JEvents Core Component</li>
 						<li>JEvents Module - Latest Events </li>
@@ -101,8 +97,8 @@ class Pkg_JeventsInstallerScript
 						<li>JEvents Plugin - Finder </li>
 					</ul>
 				</div>
-				
-				<div class='proceed'> 
+
+				<div class='proceed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents&task=params.edit' alt='JEvents Configuration'><img src='components/com_jevents/assets/images/jevents_config_sml.png' alt='Configuration Page' /><br/> Configuration</a><br/></li>
 						<li><a href='https://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
@@ -110,7 +106,7 @@ class Pkg_JeventsInstallerScript
 					</ul>
 				</div>";
 
-		
+
 		if ($this->hasJEventsInst == 0)
 		{
 			// enable plugin
@@ -139,24 +135,16 @@ class Pkg_JeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='search' and type='plugin' and element='eventsearch'";
 			$db->setQuery($query);
 			$db->execute();
-                        
-            // Enable new JEvents Plugin
-            $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
- 			$db->setQuery($query);
-<<<<<<< HEAD
+
+			// Enable new JEvents Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
+			$db->setQuery($query);
 			$db->execute();
-=======
- 			$db->execute();
->>>>>>> upstream/jQuery
 
 			// Enable JSON Plugin
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
- 			$db->setQuery($query);
-<<<<<<< HEAD
+			$db->setQuery($query);
 			$db->execute();
-=======
- 			$db->execute();
->>>>>>> upstream/jQuery
 
 		}
 		else {
@@ -179,14 +167,10 @@ class Pkg_JeventsInstallerScript
 			$db->setQuery($query);
 			$db->execute();
 
-                        // Enable JSON Plugin
-                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
- 			$db->setQuery($query);
-<<<<<<< HEAD
+			// Enable JSON Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+			$db->setQuery($query);
 			$db->execute();
-=======
- 			$db->execute();
->>>>>>> upstream/jQuery
 
 		}
 
