@@ -113,7 +113,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		// keep this incase we use filters in category lists
 		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
-		$params = JComponentHelper::getParams($jinput->get("option"));
+		$params = JComponentHelper::getParams($jinput->getCmd("option"));
 		if ($params->get("multicategory", 0))
 		{
 			$join[] =  "\n #__jevents_catmap as catmap ON catmap.evid = ev.ev_id" ;
@@ -703,9 +703,9 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function savetranslation ()
 	{
-		$jinput = JFactory::getApplication()->input;
-
 		JSession::checkToken('default') or jexit('Invalid Token');
+
+		$jinput = JFactory::getApplication()->input;
 
 		if (!JEVHelper::isEventCreator())
 		{
@@ -1111,8 +1111,9 @@ class AdminIcaleventController extends JControllerAdmin
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$jinput = JFactory::getApplication()->input;
+		//TODO Find a replacement for the below, standard jinput methods strip the array clean.
+		$array = JRequest::get('request', JREQUEST_ALLOWHTML);
 
-		$array = $jinput->get('request', RAW);
 		// Should we allow raw content through unfiltered
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("allowraw", 0))
