@@ -609,6 +609,9 @@ class JEventsAbstractView extends JViewLegacy
 		{
 			$this->catid = $this->defaultCat;
 		}
+		$this->primarycatid = $this->catid;
+		$this->form->setValue("primarycatid", null, $this->primarycatid);
+
 		if ($this->row->catids)
 		{
 			$this->catid = $this->row->catids;
@@ -667,6 +670,8 @@ class JEventsAbstractView extends JViewLegacy
 			$this->form->jevdata["catid"]["excats"] = $this->excats;
 		}
 		$this->form->setValue("catid", null, $this->catid);
+
+		$this->form->jevdata["primarycatid"] = $this->primarycatid;
 
 		$this->form->jevdata["creator"]["users"] = false;
 		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy"

@@ -37,6 +37,8 @@ class CrawlerController extends JControllerLegacy   {
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = $params->get("com_calEventListRowsPpg",15);
+		// Crawler should list at least 100 events for efficiency
+		$limit = intval($limit)<100 ? 100 : $limit;
 
 		$Itemid	= JEVHelper::getItemid();
 

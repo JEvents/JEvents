@@ -916,12 +916,20 @@ function JEventsParseRouteNew(&$segments, $task)
 					case "icalevent.detail":
 					case "icalrepeat.detail":
 						$vars['evid'] = $segments[$slugcount];
+						$slugcount++;
 						if (!$params->get("nocatindetaillink", 0)){
 							// note that URI decoding swaps /-/ for :
-							if (count($segments) > $slugcount + 1 && $segments[$slugcount + 1] != ":")
+							if (count($segments) > $slugcount && $segments[$slugcount ] != ":")
 							{
-								$vars['catids'] = $segments[$slugcount + 1];
+								$vars['catids'] = $segments[$slugcount];
+								$slugcount++;
 							}
+						}
+						// do we have the title?
+						if (count($segments) > $slugcount && $segments[$slugcount ] != "" && $segments[$slugcount ] != "-")
+						{
+								$vars['title'] = $segments[$slugcount];
+								$slugcount++;
 						}
 						break;
 					default:

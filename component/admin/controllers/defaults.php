@@ -350,7 +350,7 @@ class AdminDefaultsController extends JControllerForm {
 	private function populateCategories() {
 		$db = JFactory::getDBO();
 
-		// get the list of languages first
+		// get the list of categories first
 		$query	= $db->getQuery(true);
 		$query->select("c.*");
 		$query->from("#__categories as c");
@@ -373,7 +373,7 @@ class AdminDefaultsController extends JControllerForm {
 		$db->setQuery($query);
 		$db->execute();
 
-		// not needed if only one language
+		// not needed if only one category
 		if (count($cats )==1){
 			return;
 		}

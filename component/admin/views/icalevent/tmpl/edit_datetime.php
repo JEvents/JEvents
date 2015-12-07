@@ -49,6 +49,40 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</div>
 		</div>
 
+		<?php
+		if ( $params->get("disablemultiday", 0)) {
+		?>
+		<div style="margin:0px">
+			<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<?php echo $this->form->getLabel("publish_up"); ?>
+				<?php echo $this->form->getInput("publish_up"); ?>
+			</div>
+
+			<div class='jevstarttime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<?php echo $this->form->getLabel("start_time"); ?>
+				<?php echo $this->form->getInput("start_time"); ?>
+			</div>
+
+			<div class='jevendtime' style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<?php echo $this->form->getLabel("end_time"); ?>
+				<?php echo $this->form->getInput("end_time"); ?>
+			</div>
+
+			<div class='jevnoeendtime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<?php echo $this->form->getLabel("noendtime"); ?>
+				<?php echo $this->form->getInput("noendtime"); ?>
+			</div>
+
+			<div class="jevenddate" style="display:none">
+				<?php echo $this->form->getLabel("publish_down"); ?>
+				<?php echo $this->form->getInput("publish_down"); ?>
+			</div>
+
+		</div>
+		<?php
+		}
+		else {
+		?>
 		<div style="margin:0px">
 			<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;">
 				<?php echo $this->form->getLabel("publish_up"); ?>
@@ -82,6 +116,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			</div>
 
 		</div>
+		<?php
+		}
+		?>
 		
 
 		<div id="jevmultiday" style="display:<?php echo $this->row->endDate() > $this->row->startDate() ? "block" : "none"; ?>">

@@ -3546,4 +3546,18 @@ SCRIPT;
 		return;
 	}
 
+	public static function getCache($option) {
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		// only unlogged in users and not logged in OR all visitors grouped by access level
+		if ($params->get("com_cache", 1)  && $user->id == 0)
+		{
+			return JFactory::getCache($option);
+		}
+		else {
+			include_once("jevCache.php");
+			return new jevCache();
+		}
+	}
 }
+

@@ -52,6 +52,10 @@ if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
 	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 }
+else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
+{
+	JHtmlBootstrap::loadCss();
+}
 
 
 $newparams = JFactory::getApplication('site')->getParams();

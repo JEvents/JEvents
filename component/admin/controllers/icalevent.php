@@ -321,7 +321,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
 		}
 		// only include repeat id since we need it if we call plugins on the resultant data
-		$query = "SELECT ev.*, rpt.rp_id, ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields
+		$query = "SELECT ev.* " .  ($this->_largeDataSet ? "" :", rpt.rp_id") . ", ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields
 				. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 				. ($this->_largeDataSet ? "" : "\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1185,7 +1185,7 @@ class AdminIcaleventController extends JControllerAdmin
 				$db = JFactory::getDBO();
 				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 				// TODO clear out old exception details
 			}
 		}
@@ -1279,7 +1279,7 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 		}
 
@@ -1350,14 +1350,14 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($newstate == 1 && $params->get("com_notifyauthor", 0) && !$event->_author_notified)
 			{
 				$sql = "UPDATE #__jevents_vevent SET author_notified=1 where ev_id='" . $id . "'";
 				$db->setQuery($sql);
-				$db->query();
+				$db->execute();
 
 				JEV_CommonFunctions::notifyAuthorPublished($event);
 			}
@@ -1436,25 +1436,25 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			$query = "DELETE FROM #__jevents_catmap WHERE evid IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			if (JString::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 
 				// I also need to clean out associated custom data
 				$dispatcher = JEventDispatcher::getInstance();
@@ -1465,7 +1465,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			// I also need to delete custom data
 			$dispatcher = JEventDispatcher::getInstance();

@@ -392,7 +392,7 @@ class JEventsDBModel
 				. ($needsgroup ? $groupby : "");
 		$query .= " ORDER BY ev.created DESC , rpt.startrepeat ASC ";
 		//echo str_replace("#__", 'jos_', $query);
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		// make sure we have the first repeat in each instance
@@ -556,7 +556,7 @@ class JEventsDBModel
 		$query .= " ORDER BY det.hits DESC ";
 		$query .= " LIMIT " . $limit;
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		$dispatcher = JEventDispatcher::getInstance();
@@ -743,7 +743,7 @@ class JEventsDBModel
 				// This limit will always be enough
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -785,7 +785,7 @@ class JEventsDBModel
 				// This limit will always be enough
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -831,7 +831,7 @@ class JEventsDBModel
 				// This limit will always be enough
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -1014,7 +1014,7 @@ class JEventsDBModel
 
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
-					$cache = JFactory::getCache(JEV_COM_COMPONENT);
+					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
@@ -1059,7 +1059,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1096,7 +1096,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1132,7 +1132,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1356,7 +1356,7 @@ class JEventsDBModel
  
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -1398,7 +1398,7 @@ class JEventsDBModel
 				// This limit will always be enough
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -1444,7 +1444,7 @@ class JEventsDBModel
 				// This limit will always be enough
 				$query .= " LIMIT " . $limit;
 
-				$cache = JFactory::getCache(JEV_COM_COMPONENT);
+				$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 				$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 
@@ -1627,7 +1627,7 @@ class JEventsDBModel
 
 					// This limit will always be enough
 					//$query .= " LIMIT " . $limit;
-					$cache = JFactory::getCache(JEV_COM_COMPONENT);
+					$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 				//list ($usec, $sec) = explode(" ", microtime());
@@ -1672,7 +1672,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows1 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1709,7 +1709,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows2 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1745,7 +1745,7 @@ class JEventsDBModel
 					// This limit will always be enough
 					$query .= " LIMIT " . $limit;
 
-					$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+					$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 					$rows3 = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 				}
 
@@ -1914,7 +1914,7 @@ class JEventsDBModel
 				. ($needsgroup ? $groupby : "");
 		$query .= " ORDER BY det.hits DESC ";
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 
 		$dispatcher = JEventDispatcher::getInstance();
@@ -2089,7 +2089,7 @@ class JEventsDBModel
 
 				// skip this cache now we have the onDisplayCustomFieldsMultiRow cache
 				$rows = $this->_cachedlistIcalEvents($query, $langtag);
-				//$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+				//$cache =  JEVHelper::getCache(JEV_COM_COMPONENT);
 				//$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
 			}
 			else {
@@ -2442,7 +2442,7 @@ class JEventsDBModel
 			$query .= " LIMIT " . ($limitstart != "" ? $limitstart . "," : "") . $limit;
 		}
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag, $count);
 
@@ -2603,7 +2603,7 @@ class JEventsDBModel
 		}
 
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 
 		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag, $count);
 
@@ -3501,7 +3501,7 @@ class JEventsDBModel
 					. $limit;
 		}
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -3800,6 +3800,7 @@ class JEventsDBModel
 					. "\n WHERE rpt.eventdetail_id = $detid"
 					. $extrawhere
 					. $having
+					. ($needsgroup ?  "\n GROUP BY rpt.rp_id" : "")
 					. "\n ORDER BY rpt.startrepeat ASC limit 1";
 			$db->setQuery($query2);
 			//echo $db->explain();
