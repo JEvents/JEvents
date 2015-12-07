@@ -14,6 +14,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
 		$this->Itemid = JEVHelper::getItemid();
 		$this->cat = $this->view->datamodel->getCatidsOutLink();
 		$this->task = $task;
+
 		$jinput = JFactory::getApplication()->input;
 
 		$cfg = JEVConfig::getInstance();
@@ -22,12 +23,11 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
 		
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		
-<<<<<<< HEAD
+
 		if ($jinput->getInt( 'pop', 0 )) return;
-=======
-		if (JRequest::getInt( 'pop', 0 )) return;
+
 		$colspan = 1;
->>>>>>> upstream/jQuery
+
     	?>
     	<div class="ev_navigation">
     		<table  >
