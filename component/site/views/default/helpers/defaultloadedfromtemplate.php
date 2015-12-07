@@ -1193,17 +1193,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{CONTACT_LABEL}}":
 				case "{{CONTACT}}":
-<<<<<<< HEAD
-					if ($event->hasContactInfo())
-					{
-						if (JString::strpos($event->contact_info(), '<script') === false)
-						{
-							$dispatcher = JEventDispatcher::getInstance();
-							JPluginHelper::importPlugin('content');
-=======
 					// no need to repeat this for each of the matching 'case's
 					if (!in_array( "{{CONTACT}}", $search)) {
->>>>>>> upstream/jQuery
 
 						if ($event->hasContactInfo())
 						{
@@ -1444,7 +1435,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if ($template_name!="month.calendar_cell" && $template_name!="month.calendar_tip"){
 			$template_value = str_replace(array("[[","]]"), array("{","}"), $template_value);
 		}
-		
+
 		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
 		// do this before calling content plugins in case these add javascript etc. to layout
 		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
@@ -1575,7 +1566,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (count($parts) == 3)
 			{
 				$fmt = $parts[1];
-				
+
 				// Must get this each time otherwise modules can't set their own timezone
 				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$jtz = $compparams->get("icaltimezonelive", "");
@@ -1585,7 +1576,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				else
 				{
-					$jtz = new DateTimeZone(@date_default_timezone_get());					
+					$jtz = new DateTimeZone(@date_default_timezone_get());
 				}
 				$outputtz = str_replace(array("}}","}"),"",$parts[2]);
 
@@ -1621,7 +1612,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$offset1 = $indate->getOffset();
 
 				// set the new timezone
-				$indate->setTimezone($outputtz);				
+				$indate->setTimezone($outputtz);
 				$offset2 = $indate->getOffset();;
 
 				$indate = $indate->getTimestamp()+$offset2-$offset1;
