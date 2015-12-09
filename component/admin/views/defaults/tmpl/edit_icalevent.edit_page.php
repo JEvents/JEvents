@@ -34,6 +34,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",tr
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY",true);?>", "CATEGORY");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CATEGORY_LABEL",true);?>", "CATEGORY_LBL");
+//defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PRIMARY_CATEGORY",true);?>", "PRIMARYCATEGORY");
+//defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PRIMARY_CATEGORY_LABEL",true);?>", "PRIMARYCATEGORY_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL",true);?>", "ICAL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_LABEL",true);?>", "ICAL_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ACCESS",true);?>", "ACCESS");

@@ -43,11 +43,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_DETAIL_PAGE")." WHERE name='icalevent.detail_body'");
-			$db->query();
+			$db->execute();
 		}
 
 		if (!isset($defaults['icalevent.edit_page'])){
@@ -56,11 +56,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_EDIT_PAGE")." WHERE name='icalevent.edit_page'");
-			$db->query();
+			$db->execute();
 		}
 		
 		if (!isset($defaults['icalevent.list_row'])){
@@ -69,11 +69,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_LIST_ROW")." WHERE name='icalevent.list_row'");
-			$db->query();
+			$db->execute();
 		}
 		
 		if (!isset($defaults['month.calendar_cell'])){
@@ -82,11 +82,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_MONTH_CALENDAR_CELL")." WHERE name='month.calendar_cell'");
-			$db->query();
+			$db->execute();
 		}
 		
 		if (!isset($defaults['month.calendar_tip'])){
@@ -95,11 +95,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote("JEV_EVENT_MONTH_CALENDAR_TIP")." WHERE name='month.calendar_tip'");
-			$db->query();
+			$db->execute();
 		}
 		
 /*
@@ -110,11 +110,11 @@ class AdminDefaultsController extends JControllerForm {
 						subject='',
 						value='',
 						state=0");
-			$db->query();
+			$db->execute();
 		}
 		else {
 			$db->setQuery("UPDATE #__jev_defaults set title=".$db->Quote(JText::_("JEV_EVENT_EDIT_PAGE"))." WHERE name='icalevent.edit_page'");
-			$db->query();
+			$db->execute();
 		}
 */
 
@@ -177,7 +177,7 @@ class AdminDefaultsController extends JControllerForm {
 		$name = $cid[0];
 		$sql = "UPDATE #__jev_defaults SET state=0 where id=".$db->Quote($name);
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 		$this->redirect();
@@ -223,7 +223,7 @@ class AdminDefaultsController extends JControllerForm {
 		
 		$sql = "UPDATE #__jev_defaults SET state=1 where id=".$db->Quote($name);
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 
 		$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 		$this->redirect();
@@ -284,7 +284,7 @@ class AdminDefaultsController extends JControllerForm {
 		$langcodes =  implode(",",$langcodes);
 		$query->delete('#__jev_defaults')->where("language NOT IN ($langcodes)");
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		
 		// not needed if only one language
 		if (count($languages )==1){
@@ -335,7 +335,7 @@ class AdminDefaultsController extends JControllerForm {
 				$query->values(implode(",",$values));
 			}
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		//echo $db->getgetErrorMsg();
@@ -345,7 +345,7 @@ class AdminDefaultsController extends JControllerForm {
 	private function populateCategories() {
 		$db = JFactory::getDBO();
 
-		// get the list of languages first
+		// get the list of categories first
 		$query	= $db->getQuery(true);
 		$query->select("c.*");
 		$query->from("#__categories as c");
@@ -366,9 +366,9 @@ class AdminDefaultsController extends JControllerForm {
 		$incats =  implode(",",$cats);
 		$query->delete('#__jev_defaults')->where("catid NOT IN ($incats)");
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 
-		// not needed if only one language
+		// not needed if only one category
 		if (count($cats )==1){
 			return;
 		}
@@ -468,7 +468,7 @@ class AdminDefaultsController extends JControllerForm {
 				$query->values(implode(",",$values));
 			}
 			$db->setQuery($query);			
-			$db->query();
+			$db->execute();
 		}
 
 		echo $db->getErrorMsg();

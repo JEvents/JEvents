@@ -743,7 +743,7 @@ class JEventsDataModel {
 		if( $num_row ){
 
 			// process the new plugins
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
@@ -782,7 +782,7 @@ class JEventsDataModel {
 				$tmprow = new stdClass();
 				$tmprow->text = $row->location();
 
-				$dispatcher	= JDispatcher::getInstance();
+				$dispatcher	= JEventDispatcher::getInstance();
 
 				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
 				
@@ -870,7 +870,7 @@ class JEventsDataModel {
 
 			// See if a plugin can find our missing event - maybe on another menu item
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
 
 			return null;

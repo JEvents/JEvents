@@ -9,7 +9,7 @@ if (isset($moddata))
 		$mode = 0;
 		foreach ($moddata as $md){
                     	JPluginHelper::importPlugin('content');
-                        $dispatcher = JDispatcher::getInstance();
+                        $dispatcher = JEventDispatcher::getInstance();
 
                         $eventdata = new stdClass();
 			$eventdata->text = $md;

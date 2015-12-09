@@ -17,7 +17,7 @@ jimport('joomla.filesystem.path');
 /*
   $db	= JFactory::getDBO();
   $db->setQuery("SET SESSION query_cache_type = OFF");
-  $db->query();
+  $db->execute();
 
   $cfg = JEVConfig::getInstance();
   $cfg->set('jev_debug', 1);
@@ -51,6 +51,10 @@ if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
 	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
 	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+}
+else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
+{
+	JHtmlBootstrap::loadCss();
 }
 
 

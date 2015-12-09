@@ -71,6 +71,7 @@ $mainspan = 10;
 					</th>
 					<th class="title" width="40%" nowrap="nowrap">
 						<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
+					</th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 					<?php

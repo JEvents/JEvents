@@ -177,7 +177,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n AND ical.state = 1"		
 		. "\n AND ical.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
 
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger( 'onSelectIcals', array( &$query) );		
 		
 		$db->setQuery( $query );
