@@ -78,9 +78,9 @@ var jevConditional = {
 		{
 			condition.find('option:selected').each (function(i, co)
 			{
-				if (conditionsarray.indexOf(co.val() ) >= 0)
+				if (conditionsarray.indexOf(jQuery(co).val() ) >= 0)
 				{
-					conditionsarray.push( co.val());
+					conditionsarray.push( jQuery(co).val());
 				}
 			});
 		}
