@@ -424,7 +424,13 @@ function setEndDateWhenNotRepeating(){
 	
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);	
-	
+
+	// if the end date is not visible then always set the end date to match the start date
+	enddate_container = jQuery('.jevenddate');
+	if (enddate_container.css("display")=="none"){
+		end_date.value = start_date.value;
+	}
+
 	if (startDate>endDate){
 		end_date.value = start_date.value;
 		normaliseElem(end_date);

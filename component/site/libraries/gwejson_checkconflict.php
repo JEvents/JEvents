@@ -172,7 +172,10 @@ function simulateSaveEvent($requestObject)
 	$row = false;
 
 	// do dry run of event saving!
-	if ($event = SaveIcalEvent::save($array, $queryModel, $rrule, true))
+	ob_start();
+	$event = SaveIcalEvent::save($array, $queryModel, $rrule, true);
+	ob_end_clean();
+	if ($event)
 	{
 
 		$row = new jIcalEventDB($event);
@@ -471,7 +474,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
@@ -586,7 +589,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;

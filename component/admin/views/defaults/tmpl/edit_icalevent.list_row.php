@@ -35,6 +35,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_END_TZ",tru
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ISOENDTIME",true);?>", "ISOEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_MULTIENDDATE",true);?>", "MULTIENDDATE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DURATION",true);?>", "DURATION");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_COUNTDOWN",true);?>", "COUNTDOWN");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXT",true);?>", "PREVIOUSNEXT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_FIRSTREPEAT",true);?>", "FIRSTREPEAT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LASTREPEAT",true);?>", "LASTREPEAT");
@@ -70,6 +71,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG"
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_STARTED",true);?>", "JEVSTARTED");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_ENDED",true);?>", "JEVENDED");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "JEVAGE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON",true);?>", "EDITBUTTON");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
 
 <?php
 // get list of enabled plugins

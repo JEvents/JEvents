@@ -155,7 +155,8 @@
 		<field name="com_single_pane_edit" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ONE_TAB_EVENT" description="JEV_ONE_TAB_EVENT_TIP" difficulty="2"/>
 		
 		<field name="timebeforedescription" type="jevboolean" class="btn-group" default="0" menu="hide" label="SHOW_TIME_DETAILS_BEFORE_DESRIPTION" description="SHOW_TIME_DETAILS_BEFORE_DESRIPTION_DESC" difficulty="1"/>
-		<field name="multiday" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DEFAULT_MULTIDAY" description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1"/>
+		<field name="disablemultiday" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_MULTIDAY" description="JEV_DISABLE_MULTIDAY_DESC" difficulty="1"/>
+		<field name="multiday" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DEFAULT_MULTIDAY" description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1" conditional="disablemultiday" conditions="0" />
 		<field name="com_show_editor_buttons" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_EDITOR_BUTTONS" description="JEV_SHOW_EDITOR_BUTTONS_TIP" difficulty="2"/>
 		<field name="com_editor_button_exceptions" type="text" default="pagebreak,readmore" menu="hide" size="26" label="JEV_EDITOR_BUTTON_EXCEPTIONS" description="JEV_EDITOR_BUTTON_EXCEPTIONS_TIP" difficulty="2"/>
 		<field name="com_notifyboth" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY" description="JEV_NOTIFY_TIP" difficulty="2"/>

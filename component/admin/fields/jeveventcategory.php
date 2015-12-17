@@ -42,7 +42,7 @@ class JFormFieldJeveventcategory extends JFormField
 	}
 	
 	protected function getLabel() {
-		if ($this->getInput()){
+		if ($this->form->jevdata[$this->name]["repeatId"]==0){
 			return parent::getLabel();
 		}
 		return "";

@@ -21,7 +21,8 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
 		
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		
-		if (JRequest::getInt( 'pop', 0 )) return;		
+		if (JRequest::getInt( 'pop', 0 )) return;
+		$colspan = 1;
     	?>
     	<div class="ev_navigation">
     		<table  >
@@ -31,6 +32,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
     	    			echo $this->_lastYearIcon($dates, $alts);
 				if ( $task!="year.listevents") {
 					echo $this->_lastMonthIcon($dates, $alts);
+					$colspan = 2;
 				}
     	    		}
     	    		if (in_array("byyear", $this->iconstoshow)) echo $this->_viewYearIcon($view_date);
@@ -41,7 +43,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
     	    		if (in_array("bymonth", $this->iconstoshow)) echo $this->_viewJumptoIcon($view_date);
     	    		if($cfg->get('com_calUseIconic', 1) != 2  && $task!="range.listevents"){
 				if ( $task!="year.listevents") {
-							echo $this->_nextMonthIcon($dates, $alts);
+					echo $this->_nextMonthIcon($dates, $alts);
 				}
     		    		echo $this->_nextYearIcon($dates, $alts);
     	    		}
@@ -49,7 +51,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
                 </tr>
     			<tr class="icon_labels" align="center" valign="top">
     				<?php   if($cfg->get('com_calUseIconic', 1) != 2  && $task!="range.listevents"){ ?>
-	        		<td colspan="2"></td>
+	        		<td colspan="<?php echo $colspan;?>"></td>
 	        		<?php } ?>
     				<?php if (in_array("byyear", $this->iconstoshow))   { ?><td><?php echo JText::_('JEV_VIEWBYYEAR');?></td><?php } ?>
     				<?php if (in_array("bymonth", $this->iconstoshow))   { ?><td><?php echo JText::_('JEV_VIEWBYMONTH');?></td><?php } ?>
@@ -58,7 +60,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic {
     				<?php if (in_array("search", $this->iconstoshow))   { ?><td><?php echo JText::_('JEV_SEARCH_TITLE');?></td><?php } ?>
     				<?php if (in_array("bymonth", $this->iconstoshow))   { ?><td><?php echo  JText::_('JEV_JUMPTO');?></td><?php } ?>
     				<?php   if($cfg->get('com_calUseIconic', 1) != 2  && $task!="range.listevents"){ ?>
-	        		<td colspan="2"></td>
+	        		<td colspan="<?php echo $colspan;?>"></td>
 	        		<?php } ?>
                 </tr>
                 <?php

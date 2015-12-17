@@ -25,7 +25,7 @@ class ExtModLatestView extends DefaultModLatestView
 
 		$viewpath = "components/".JEV_COM_COMPONENT."/views/".$viewname."/assets/css/";
 		
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -131,7 +131,7 @@ class ExtModLatestView extends DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
