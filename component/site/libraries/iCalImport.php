@@ -87,6 +87,7 @@ class iCalImport
 				curl_setopt($ch, CURLOPT_POST, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                                curl_setopt($ch, CURLOPT_USERAGENT, "Jevents.net");
 				curl_setopt($ch,CURLOPT_ENCODING,'');
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
