@@ -174,6 +174,16 @@ class iCalImport
 				//echo "first line = $firstLine<br/>";
 				//echo "raw imported data = ".$this->rawData."<br/>";
 				//exit();
+                                if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isAdmin()) {
+                                    $config = JFactory::getConfig();
+                                    $debug = (boolean) $config->get('debug');
+                                       if ($debug){
+                                           echo "Unable to fetch calendar data<br/>";
+                                           echo "Raw Data is ".$this->rawData;
+                                           exit();
+                                       }
+                                    return false;
+                                }
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!
