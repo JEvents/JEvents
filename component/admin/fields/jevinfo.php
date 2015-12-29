@@ -104,7 +104,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
-		return "<strong style='color:#993300'>" . JText::_($value) . "</strong>";
+		return "<strong style='color:#993300' id='".$this->id."' >" . JText::_($value) . "</strong>";
 
 	}
 
