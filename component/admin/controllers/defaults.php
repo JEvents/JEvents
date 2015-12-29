@@ -246,8 +246,9 @@ class AdminDefaultsController extends JControllerForm {
 
 			// Get/Create the model
 			if ($model =  $this->getModel("default", "defaultsModel")) {
-				if ($model->store($jinput->get("post", '', RAW))){
-					if ($jinput->get("task") == "defaults.apply"){
+				//TODO find a work around for getting post array with JInput.
+				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
+					if ($jinput->getCmd("task") == "defaults.apply"){
 						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));
 						$this->redirect();
 						return;
