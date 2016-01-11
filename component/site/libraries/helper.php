@@ -767,7 +767,7 @@ class JEVHelper
 				$jevitemid[$evid] = $Itemid;
 				return $jevitemid[$evid];
 			}
-			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "crawler") === false)
+			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "edit") === false && strpos($active->link, "crawler") === false)
 			{
 				$jevitemid[$evid] = $active->id;
 				return $jevitemid[$evid];
@@ -786,63 +786,131 @@ class JEVHelper
 				{
 					foreach ($jevitems as $jevitem)
 					{
-						if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
-						{
-							$jevitemid[$evid] = $jevitem->id;
+                                            // skip manage events and edit events menu items unless we really need them
+                                            if (strpos($jevitem->link, "edit")>0 || strpos($jevitem->link, "admin")>0){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
 
-							if ($forcecheck)
-							{
-								$mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
-								$mcatids = array();
-								// New system
-								$newcats = $mparams->get("catidnew", false);
-								if ($newcats && is_array($newcats))
-								{
-									foreach ($newcats as $newcat)
-									{
-										if ($forcecheck->catid() == $newcat)
-										{
-											return $jevitemid[$evid];
-										}
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($newcat, $mcatids))
-										{
-											$mcatids[] = $newcat;
-										}
-									}
-								}
-								else
-								{
-									for ($c = 0; $c < 999; $c++)
-									{
-										$nextCID = "catid$c";
-										//  stop looking for more catids when you reach the last one!
-										if (!$nextCatId = $mparams->get($nextCID, null))
-										{
-											break;
-										}
-										if ($forcecheck->catid() == $mparams->get($nextCID, null))
-										{
-											return $jevitemid[$evid];
-										}
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($nextCatId, $mcatids))
-										{
-											$mcatids[] = $nextCatId;
-										}
-									}
-								}
-								// if no restrictions then can use this
-								if (count($mcatids) == 0)
-								{
-									return $jevitemid[$evid];
-								}
-								continue;
-							}
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
 
-							return $jevitemid[$evid];
-						}
+                                                    return $jevitemid[$evid];
+                                            }
+                                            
 					}
+                                        // we didn't find them amongst the other menu item so checn the edit and admin ones 
+					foreach ($jevitems as $jevitem)
+					{
+                                            if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
+
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
+
+                                                    return $jevitemid[$evid];
+                                            }
+                                        }
 				}
 			}
 		}

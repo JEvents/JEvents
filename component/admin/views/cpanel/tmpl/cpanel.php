@@ -113,7 +113,7 @@ $fullspan = 12;
 				// Stop if user is not authorised to manage JEvents
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (isset($_SERVER["SERVER_ADDR"]) && $_SERVER["SERVER_ADDR"]=="192.168.1.50")
+					if (isset($_SERVER["SERVER_ADDR"]) && ($_SERVER["SERVER_ADDR"]=="192.168.1.51" || $_SERVER["SERVER_ADDR"]=="192.168.1.87"  || $_SERVER["SERVER_ADDR"]=="10.0.2.15" ) )
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
