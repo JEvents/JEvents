@@ -84,7 +84,7 @@
 
 		<field name="show_adminpanel" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_ADMIN_PANEL" description="JEV_SHOW_ADMIN_PANEL_DESC" difficulty="2"/>
 
-		<field name="@spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" difficulty="3"/>
+		<field name="spacer_tzi2" type="jevinfo" default="JEV_TIMEZONE_INFO_2"  menu="hide" label="" description="" difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
 		<field name="icaltimezonelive" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE_2" description="JEV_TIMEZONE_2_DESC" difficulty="3"/>
@@ -134,6 +134,7 @@
 			<option value="d/m/Y">JEV_EVENT_EDIT_DATEFORMAT_DMY_VALUE</option>
 			<option value="d.m.Y">JEV_EVENT_EDIT_DATEFORMAT_EUROPEAN_VALUE</option>
 		</field>
+                <field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC' difficulty="3"/>
 		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
 		<field name="defaultcat" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_Use_Default_Cat" description="JEV_Use_Default_Cat_tip" difficulty="2"/>
 		<field name="forcepopupcalendar" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" difficulty="2"/>
@@ -202,7 +203,7 @@
 	
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
-		<field name="@spacer_evd1" type="jevinfo" default='SETTINGS_RELATED_TO_DETAIL_VIEW'   menu="hide" label="" description="" difficulty="1"/>
+		<field name="spacer_evd1" type="jevinfo" default='SETTINGS_RELATED_TO_DETAIL_VIEW'   menu="hide" label="" description="" difficulty="1"/>
 		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>
 		<field name="com_mailview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" difficulty="1"/>
 		<field name="com_hitsview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_HITS" description="" difficulty="1"/>
@@ -211,19 +212,19 @@
 			<option value="0">JEV_USER_NAME</option>
 			<option value="1">JEV_NAME</option>
 		</field>
-		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
+		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
 		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
 		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>
         </fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">
-		<field name="@spacer_mv1" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
+		<field name="spacer_mv1" type="jevinfo" default='SETTINGS_RELATED_TO_MONTHLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
 		<field name="com_calCutTitle" type="text" default="15" menu="hide" size="4" label="JEV_CUT_TITLE" description="JEV_TIP_CUT_TITLE" difficulty="1"/>
 		<field name="com_calMaxDisplay" type="text" default="15" menu="hide" size="4" label="JEV_MAX_DISPLAY" description="JEV_TIP_MAX_DISPLAY" difficulty="1"/>
 		<field name="com_calDisplayStarttime" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DIS_STARTTIME" description="JEV_TIP_DIS_STARTTIME" difficulty="1"/>
 		<field name="com_calShowLegend" type="jevboolean" class="btn-group" default="1"  menu="hide" label="JEV_MONTH_SHOW_LEGEND" description="JEV_MONTH_SHOW_LEGEND_DESC" difficulty="1"/>					
 
-		<field name="@spacer_mv2" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" difficulty="1"/>
+		<field name="spacer_mv2" type="jevinfo" default="JEV_TOOLTIP" menu="hide" label="" description="" difficulty="1"/>
 
 		<field name="com_enableToolTip" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_ENABLETOOLTIP" description="JEV_ENABLETOOLTIP_TIP" difficulty="1"/>
 		<!--
@@ -243,7 +244,7 @@
 	</fieldset>
 	
 	<fieldset name="JEV_YEAR_CATEGORY_VIEW" difficulty="1">
-		<field name="@spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_AND_CATEGORY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
+		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_AND_CATEGORY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
 		<field name="com_calEventListRowsPpg" type="jevlist" default="10" menu="hide" label="JEV_NR_OF_LIST" description="JEV_TIP_NR_OF_LIST" difficulty="1">
 			<option value="5">5</option>
 			<option value="10">10</option>
@@ -260,14 +261,14 @@
 			<option value="1">JEV_YES</option>
 		</field>		
 
-		<field name="@spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
+		<field name="spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>	
 		<field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="1"/>
 		<field name="showyeardate" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_SHOW_YEAR_DATE" description="JEV_VIEW_SHOW_YEAR_DATE_TIP" difficulty="1"/>
 		<field name="year_show_noev_found" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_VIEW_SHOW_NO_EVENTS_FOUND" description="JEV_VIEW_SHOW_NO_EVENTS_FOUND_DESC" difficulty="1"/>
 
         </fieldset>
 	<fieldset  name="JEV_ICAL_CALENDAR" difficulty="2">
-		<field name="@spacer_tzi" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" difficulty="3"/>
+		<field name="spacer_tzi" type="jevinfo" default="JEV_TIMEZONE_INFO"  menu="hide" label="" description="" difficulty="3"/>
 		<!-- TIMEZONE DATA //-->
 		<!-- see http://www.php.net/manual/en/datetimezone.listidentifiers.php //-->
 		<field name="icaltimezone" type="jevtimezone" default="" menu="hide" label="JEV_TIMEZONE" description="JEV_TIMEZONE_DESC" difficulty="3"/>
@@ -285,7 +286,7 @@
 	</fieldset>
 	
 	<fieldset name="JEV_TAB_RSS" difficulty="2">
-		<field name="@spacer_rss1" type="jevinfo" default="JEV_SETT_FOR_RSS"  menu="hide" label="" description="" difficulty="2"/>	
+		<field name="spacer_rss1" type="jevinfo" default="JEV_SETT_FOR_RSS"  menu="hide" label="" description="" difficulty="2"/>	
 		<field name="com_rss_cache" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_RSS_CACHE" description="" difficulty="2"/>
 		<field name="com_rss_cache_time" type="text" default="3600" menu="hide" size="6" label="JEV_RSS_CTIME" description="" difficulty="2"/>
 		<field name="com_rss_count" type="text" default="5" menu="hide" size="6" label="JEV_RSS_LIMIT" description="" difficulty="2"/>
@@ -332,35 +333,41 @@
 		<field name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP"/>
 		
 	</fieldset>
-	<fieldset  name="JEV_MODULE_CONFIG" difficulty="2">
-		<field name="@spacer_cm0" type="jevinfo" default="JEV_TAB_CAL_MOD"  menu="hide" label="" description="" difficulty="2"/>
-		<field name="@spacer_cm1" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD"  menu="hide" label="" description="" difficulty="2"/>	
+	<fieldset  name="JEV_MODULE_CONFIG" difficulty="3">
+		<field name="spacer_cm2" type="jevinfo" default="JEV_MODULE_CONFIG_FROM_COMPONENT_WARNING"  menu="hide" label="" description="" difficulty="3"  />
+                <field name="module_config_from_component" type="jevlist" default="0" menu="hide" label="JEV_MODULE_CONFIG_FROM_COMPONENT" description="JEV_MODULE_CONFIG_FROM_COMPONENT_DESC" difficulty="3" >
+        		<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+                </field>
+                
+		<field name="spacer_cm0" type="jevinfo" default="JEV_TAB_CAL_MOD"  menu="hide" label="" description="" difficulty="3"  conditional="module_config_from_component" conditions="1"/>
+		<field name="spacer_cm1" type="jevinfo" default="JEV_SETT_FOR_CAL_MOD"  menu="hide" label="" description="" difficulty="3"  conditional="module_config_from_component" conditions="1"/>	
 		
-		<field name="modcal_DispLastMonth" type="jevlist" default='NO'  menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="" difficulty="2">
+		<field name="modcal_DispLastMonth" type="jevlist" default='NO'  menu="hide" label="JEV_DISPLAY_LAST_MONTH" description="" difficulty="3"  conditional="module_config_from_component" conditions="1">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 			<option value="ALWAYS">JEV_ALWAYS</option>
 			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
-		<field name="modcal_DispLastMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" difficulty="2"/>
+		<field name="modcal_DispLastMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" difficulty="3"  conditional="module_config_from_component" conditions="1"/>
 		
-		<field name="modcal_DispNextMonth" type="jevlist" default='NO'  menu="hide" label="JEV_DISPLAY_NEXT_MONTH" description="" difficulty="2">
+		<field name="modcal_DispNextMonth" type="jevlist" default='NO'  menu="hide" label="JEV_DISPLAY_NEXT_MONTH" description="" difficulty="3"  conditional="module_config_from_component" conditions="1">
 			<option value="NO">JEV_NO</option>
 			<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 			<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 			<option value="ALWAYS">JEV_ALWAYS</option>
 			<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 		</field>
-		<field name="modcal_DispNextMonthDays" type="text" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" difficulty="2"/>
-		<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" difficulty="3"/>
+		<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" difficulty="3"  conditional="module_config_from_component" conditions="1"/>
+		<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
 
-		<field name="@spacer_le0" type="jevinfo" default="JEV_TAB_LATEST_MOD"  menu="hide" label="" description=""  difficulty="1"/>
-		<field name="@spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description=""  difficulty="1"/>
+		<field name="spacer_le0" type="jevinfo" default="JEV_TAB_LATEST_MOD"  menu="hide" label="" description=""  difficulty="3"  conditional="module_config_from_component" conditions="1"/>
+		<field name="spacer_le1" type="jevinfo" default="JEV_SETT_FOR_MOD_LATEST"  menu="hide" label="" description=""  difficulty="3"  conditional="module_config_from_component" conditions="1"/>
 
-		<field name="modlatest_MaxEvents" type="text" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="1"/>
+		<field name="modlatest_MaxEvents" type="jevtext" default="10" menu="hide" size="3" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" difficulty="3"  conditional="module_config_from_component" conditions="1" />
 
-		<field name="modlatest_Mode" type="jevlist" default="0" menu="hide" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" difficulty="2">
+		<field name="modlatest_Mode" type="jevlist" default="0" menu="hide" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" difficulty="3"  conditional="module_config_from_component" conditions="1">
 			<option value="0">0</option>
 			<option value="1">1</option>
 			<option value="2">2</option>
@@ -368,31 +375,31 @@
 			<option value="4">4</option>
 			<option value="5">5</option>
 		</field>		
-		<field name="modlatest_Days" type="text" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"/>
-		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" difficulty="1"/>
-		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1"/>
-		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1"/>		
+		<field name="modlatest_Days" type="jevtext" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"  conditional="module_config_from_component" conditions="1"/>
+		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>		
 
-		<field name="modlatest_multiday" type="jevlist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" difficulty="2">
+		<field name="modlatest_multiday" type="jevlist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" difficulty="3"  conditional="module_config_from_component" conditions="1"> 
 			<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>
 			<option value="1">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_1</option>
 			<option value="2">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_2</option>
 			<option value="3">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_3</option>
 		</field>
-		<field name="modlatest_DispLinks" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP" difficulty="2" />
-		<field name="modlatest_DisDateStyle" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP" difficulty="2"/>
-		<field name="modlatest_DisTitleStyle" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_CSS_TITLE_FIELD" description="JEV_LEV_CSS_TITLE_FIELD_TIP" difficulty="2"/>
-		<field name="modlatest_LinkToCal" type="jevlist" default="0" menu="hide" label="JEV_LEV_LINKCAL_FIELD" description="JEV_LEV_LINKCAL_FIELD_TIP" difficulty="2">
+		<field name="modlatest_DispLinks" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_EV_AS_LINK" description="JEV_LEV_EV_AS_LINK_TIP" difficulty="3"  conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_DisDateStyle" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_CSS_DATE_FIELD" description="JEV_LEV_CSS_DATE_FIELD_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_DisTitleStyle" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_CSS_TITLE_FIELD" description="JEV_LEV_CSS_TITLE_FIELD_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_LinkToCal" type="jevlist" default="0" menu="hide" label="JEV_LEV_LINKCAL_FIELD" description="JEV_LEV_LINKCAL_FIELD_TIP" difficulty="3" conditional="module_config_from_component" conditions="1">
 			<option value="0">JEV_LEV_NOLINK</option>
 			<option value="1">JEV_LEV_FIRSTLINE</option>
 			<option value="2">JEV_LEV_LASTLINE</option>
 		</field>		
-		<field name="modlatest_SortReverse" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="2"/>
-		<field name="modlatest_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3"/>
-		<field name="@spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" difficulty="3"/>	
-		<field name="modlatest_CustFmtStr" type="textarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3"/>
-		<field name="modlatest_RSS" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3"/>			
-		<field name="modlatest_contentplugins" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3"/>
+		<field name="modlatest_SortReverse" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		<field name="spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" difficulty="3" conditional="module_config_from_component" conditions="1"/>	
+		<field name="modlatest_CustFmtStr" type="jevtextarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
+		<field name="modlatest_RSS" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>			
+		<field name="modlatest_contentplugins" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
 
 	</fieldset>
 
