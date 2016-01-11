@@ -289,8 +289,12 @@ class iCalRRule extends JTable  {
 		= explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtstart));
 		//echo "$startHour,$startMin,$startSecond,$startDay,$startMonth,$startYear,$startWD,$dtstart<br/>";
 		$dtstartMidnight = JevDate::mktime(0,0,0,$startMonth,$startDay,$startYear);
-		list ($endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$dtend));
+		list ($endHour,$endMin,$endSecond,$endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtend));
 		$duration = $dtend-$dtstart;
+                // duration in days
+                $jevstart = new JevDate($dtstart);
+                $jevend = new JevDate($dtend);
+                $durationdays=$jevstart->diff($jevend)->days;
 		static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
 		static $dailySecs = 86400;
@@ -495,7 +499,10 @@ class iCalRRule extends JTable  {
 									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
 									if ($currentMonth==JevDate::strftime("%m",$testStart)){
 										$targetStart = $testStart;
-										$targetEnd = $targetStart + $duration;
+                                                                                // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                                $targetEnd = $targetStart + $duration;
+                                                                                $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
+                                                                                
 										if ($countRepeats >= $this->count) {
 											return  $this->_repetitions;
 										}
@@ -521,7 +528,9 @@ class iCalRRule extends JTable  {
 									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
 									if ($currentMonth==JevDate::strftime("%m",$testStart)){
 										$targetStart = $testStart;
-										$targetEnd = $targetStart + $duration;
+                                                                                // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                                $targetEnd = $targetStart + $duration;
+                                                                                $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 										if ($countRepeats >= $this->count) {
 											return  $this->_repetitions;
 										}
@@ -698,7 +707,9 @@ class iCalRRule extends JTable  {
 								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
 								if ($currentMonth==JevDate::strftime("%m",$targetStart)){
-									$targetEnd = $targetStart + $duration;
+                                                                        // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                        $targetEnd = $targetStart + $duration;
+                                                                        $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
 									}
@@ -764,7 +775,9 @@ class iCalRRule extends JTable  {
 
 							$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
+                                                        // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
 							$targetEnd = $targetStart + $duration;
+                                                        $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 							if ($countRepeats >= $this->count) {
 								return  $this->_repetitions;
 							}
