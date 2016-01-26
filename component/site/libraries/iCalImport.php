@@ -719,6 +719,12 @@ class iCalImport
 		$wtzdata["Romance Standard Time"] = "Europe/Brussels";
 		$wtzdata["GMT Standard Time"] = "UTC";
 		$wtzdata["Tasmania Standard Time"] = "Australia/Hobart";
+
+		// Lets check if a file for custom timezones exists
+		if (JFile::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php')) {
+			//Load the custom file once
+			include_once('ical_custom_timezones.php');
+		}
 		
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
