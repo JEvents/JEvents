@@ -1303,29 +1303,51 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 						{
-							if (!JString::strpos($template_value, $fieldname) !== false)
-							{
-								continue;
-							}
-							$search[] = "{{" . $fieldname . "}}";
-							// is the event detail hidden - if so then hide any custom fields too!
-							if (!isset($event->_privateevent) || $event->_privateevent != 3)
-							{
-								$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
-								if (is_callable(array($classname, "blankfield")))
-								{
-									$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
-								}
-								else
-								{
-									$blank[] = "";
-								}
-							}
-							else
-							{
-								$blank[] = "";
-								$replace[] = "";
-							}
+                                                        $fieldnames = array();
+                                                        // Special case where $fielename has option value in it e.g. sizedimages 
+                                                        if (strpos($fieldname, ";")>0){
+                                                            $temp = explode(";", $fieldname);
+                                                            $fn = $temp[0];
+                                                            // What is the list of them 
+                                                            $temp = array();
+                                                            preg_match_all('@\{{'.$fn.';(.*?)[#|}}]@', $template_value, $temp);
+                                                            if (count($temp)==2 && count($temp[1])){
+                                                                $fieldnames = array();
+                                                                foreach ($temp[1] as $tmp){
+                                                                    $fieldnames[] = $fn.";".$tmp;
+                                                                }
+                                                            }
+                                                        }
+                                                        else {
+                                                            $fieldnames = array($fieldname);
+                                                        }
+
+                                                        foreach ($fieldnames as $fn){
+                                                            if (!JString::strpos($template_value, $fn) !== false)
+                                                            {
+                                                                    continue;
+                                                            }
+                                                            
+                                                            $search[] = "{{" . $fn . "}}";
+                                                            // is the event detail hidden - if so then hide any custom fields too!
+                                                            if (!isset($event->_privateevent) || $event->_privateevent != 3)
+                                                            {
+                                                                    $replace[] = call_user_func(array($classname, "substitutefield"), $event, $fn);
+                                                                    if (is_callable(array($classname, "blankfield")))
+                                                                    {
+                                                                            $blank[] = call_user_func(array($classname, "blankfield"), $event, $fn);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $blank[] = "";
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    $blank[] = "";
+                                                                    $replace[] = "";
+                                                            }
+                                                        }
 						}
 					}
 				}
