@@ -177,7 +177,7 @@
 }
 
 /** Hide the modal body by default **/
-.jevbootstrap > div {display:none;}
+.jevbootstrap > div.action_dialogJQ  {display:none;}
 
 /* Only for sites that want a max size for the popup! */
 
