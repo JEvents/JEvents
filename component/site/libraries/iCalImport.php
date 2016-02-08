@@ -47,7 +47,7 @@ class iCalImport
 		if ($filename!=""){
 			$file = $filename;
 			if (!@file_exists($file)) {
-				
+
 				$file = JPATH_SITE."/components/$option/".$filename;
 			}
 			if (!file_exists($file)) {
@@ -73,7 +73,7 @@ class iCalImport
 
 			if (!$isFile && is_callable("curl_exec")){
 				$ch = curl_init();
-				
+
 				// Set curl option CURLOPT_HTTPAUTH, if the url includes user name and password.
 				// e.g. http://username:password@www.example.com/cal.ics
 				$username = parse_url($file, PHP_URL_USER);
@@ -81,7 +81,7 @@ class iCalImport
 				if ($username != "" && $password != "") {
 					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 				}
-				
+
 				curl_setopt($ch, CURLOPT_URL, $file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
@@ -425,7 +425,7 @@ class iCalImport
 						}
 					}
 				 }
-				 
+
 				// THIS IS NEEDED BECAUSE OF DODGY carriage returns in google calendar UID
 				// TODO check its enough
 				if ($append){
@@ -566,7 +566,7 @@ class iCalImport
 				$tz = new DateTimeZone($tz);
 				$t = new JevDate($ical_date, $tz);
 				echo "icaldate = ".$ical_date." imported date=".$t->toMySQL()."<br/>";
-				
+
 			}
 			else {
 				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -706,12 +706,12 @@ class iCalImport
 		$wtzdata["Fiji, Kamchatka, Marshall Is."] = "Etc/GMT-12";
 		$wtzdata["Chatham Islands"] = "Pacific/Chatham";
 		$wtzdata["Nuku'alofa"] = "Pacific/Tongatapu";
-		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";		
+		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";
 		$wtzdata["Central Standard Time"] = "America/Chicago";
 
 		// manual entries
 		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
-		$wtzdata["Eastern Standard Time"] = "America/New_York";		
+		$wtzdata["Eastern Standard Time"] = "America/New_York";
 		$wtzdata["W. Europe Standard Time"] = "Europe/Paris";
 		$wtzdata["E. Europe Standard Time"] = "Europe/Helsinki";
 		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
@@ -725,11 +725,11 @@ class iCalImport
 			//Load the custom file once
 			include_once('ical_custom_timezones.php');
 		}
-		
+
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
 	}
-	
+
 	function handleDate($key, $value)
 	{
 		$rawvalue = $value;
