@@ -1004,6 +1004,10 @@ class AdminIcaleventController extends JControllerAdmin
 		$evid = intval($event->ev_id());
 		$testevent = $this->queryModel->getEventById($evid, 1, "icaldb");
 		$rp_id = $testevent->rp_id();
+                if (!$rp_id){
+                    JFactory::getApplication()->enqueueMessage(JText::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
+                    return;
+                }
 		list($year, $month, $day) = JEVHelper::getYMD();
 
 		if (JFactory::getApplication()->isAdmin())
