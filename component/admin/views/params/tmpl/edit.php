@@ -26,6 +26,11 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 		$haslayouts = true;
 	}
 }
+$hasPlugins = false;
+$plugins = JPluginHelper::getPlugin("jevents");
+if (count($plugins)){
+    $hasPlugins = true;
+}
 ?>
 <!-- Set Difficulty : -->
 
