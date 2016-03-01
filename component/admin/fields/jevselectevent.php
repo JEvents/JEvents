@@ -62,7 +62,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		$rpidfield = $this->form->getField("rp_id", "request");
 		$rp_id = $rpidfield->value;
 		$db	= JFactory::getDBO();
-		$query = $db-getQuery(true);
+		$query = $db->getQuery(true);
 		$query
 				->select($db->quoteName('det.summary', 'title'))
 			  	->from($db->quoteName('#__jevents_vevdetail', 'det'))
