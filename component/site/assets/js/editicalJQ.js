@@ -915,7 +915,7 @@ function fixRepeatDates(checkYearDay){
 			bd[day].checked=false;
 		}
 	}
-        alert(startDate.getDay());
+	//alert(startDate.getDay());
 	bd[startDate.getDay()].checked=true;
 
 	end_date = document.getElementById("publish_down");

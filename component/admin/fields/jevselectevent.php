@@ -66,7 +66,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		$query
 				->select($db->quoteName('det.summary', 'title'))
 			  	->from($db->quoteName('#__jevents_vevdetail', 'det'))
-				->join('LEFT', $db->quoteName('__jevents_repetition', 'rep') . ' ON' . ($db->quoteName('rep.eventdetail_id') . ' = ' . $db->quoteName('det.evdet_id')))
+				->join('LEFT', $db->quoteName('#__jevents_repetition', 'rep') . ' ON' . ($db->quoteName('rep.eventdetail_id') . ' = ' . $db->quoteName('det.evdet_id')))
 				->where($db->quoteName('rep.rp_id') . ' = ' . (int) $rp_id);
 
 		//Hide the below!
