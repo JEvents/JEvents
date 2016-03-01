@@ -111,12 +111,13 @@ if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') ==
 		JRequest::setVar("jevsmartphone", 1);
 		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
 		{
-			JRequest::setVar("jEV", "smartphone");
+                    JRequest::setVar("jEV", "smartphone");
 		}
-		$params->set('iconicwidth', 485);
-		$params->set('extpluswidth', 485);
-		$params->set('ruthinwidth', 485);
+		$params->set('iconicwidth', "scalable");
+		$params->set('extpluswidth', "scalable");
+		$params->set('ruthinwidth', "scalable");
 	}
+        $params->set("isSmartphone",1);
 }
 
 // See http://www.php.net/manual/en/timezones.php

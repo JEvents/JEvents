@@ -22,6 +22,13 @@ function Defaultgetstartenddates($view){
 	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', "");
 	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', "");
 
+        if ($startdate!=""){
+            // WE have specified a start date in the URL so we should use it!
+            list($startyear,$startmonth,$startday)=explode("-",$startdate);
+            $view->assign("month",$startmonth);
+            $view->assign("day",$startday);
+            $view->assign("year",$startyear);        
+        }
 	if ($startdate==""){
 		if ($params->get("relative","rel")=="abs"){
 			$startdate = $params->get("absstart","");

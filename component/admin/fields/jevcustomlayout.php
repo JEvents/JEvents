@@ -64,7 +64,7 @@ DROPDOWN;
 	 * @since	1.6
 	 */
 	protected function getOptions()
-	{
+	{ 
 		// Initialize variables.
 		$session = JFactory::getSession();
 		$options = array();

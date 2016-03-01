@@ -376,6 +376,13 @@ function checkDates(elem){
 	checkEndTime();
 	checkUntil();
 	updateRepeatWarning();
+        // update the by day type checkboxes
+        fixRepeatDates();
+        try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
+
 }
 
 function reformatStartEndDates() {
@@ -803,6 +810,7 @@ function toggleFreq(freq , setup)
 				weekofmonth.style.display="none";
 				// always set week nums false for weekly events
 				toggleWeekNums(false);
+                                fixRepeatDates(false);
 			}
 			break;
 		case "DAILY":
@@ -907,6 +915,7 @@ function fixRepeatDates(checkYearDay){
 			bd[day].checked=false;
 		}
 	}
+        alert(startDate.getDay());
 	bd[startDate.getDay()].checked=true;
 
 	end_date = document.getElementById("publish_down");

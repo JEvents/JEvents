@@ -276,7 +276,7 @@ class SaveIcalEvent {
 					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";
 				}
 			}
-
+                        //JFactory::getApplication()->enququeMessage("Sending Admin mail to ".$adminEmail);
 			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent, $cc);
 
 		}
