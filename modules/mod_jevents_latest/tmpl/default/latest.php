@@ -550,7 +550,11 @@ class DefaultModLatestView
 					{
 						break;
 					}
-					$date = JevDate::strtotime("+1 day", $date);
+                                        
+                                        // Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
+                                        list($yy,$mm,$dd) = explode("-", strftime("%Y-%m-%d", $date));
+                                        $date = JevDate::mktime(0, 0, 0,$mm, $dd+1, $yy);          
+                                        //echo strftime("%Y-%m-%d %H:%M<br/>", $date);
 					$i++;
 				}
 			}

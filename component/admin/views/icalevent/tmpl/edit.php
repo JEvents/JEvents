@@ -237,7 +237,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					}
 				}
 				catch (e) {
-
+                                        var x = e;
 				}
 				// do field validation
 				if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {

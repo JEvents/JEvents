@@ -99,7 +99,7 @@ Joomla.submitbutton = function (pressbutton){
                     missingFields.push('TABSEND');
                 }
 		//  Native Javascript array
-                requiredFields.each(function(requiredField, index){
+                requiredFields.forEach(function(requiredField, index){
                     var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";                    
                     if(!defaultsLayout.test(requiredFieldRE))
                     {
