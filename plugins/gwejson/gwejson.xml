@@ -2,7 +2,7 @@
 <extension version="3.1" type="plugin" group="system" method="upgrade">
 	<name>plg_system_gwejson</name>
 	<author>Geraint Edwards</author>
-	<creationDate>February 2016</creationDate>
+	<creationDate>March 2016</creationDate>
 	<copyright>(C) 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>

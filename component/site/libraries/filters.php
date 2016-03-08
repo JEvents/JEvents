@@ -308,7 +308,7 @@ class jevFilter
 				JFactory::getApplication()->setUserState( 'active_filter_menu ',JRequest::getInt("Itemid", 0));
 			}
 			// DO NOT RESET if posting a filter form!
-			else if ($modparams->get("resetfilters")=="newmenu" && !JRequest::getCmd("jevents_filter_submit", false,"POST")) {
+			else if ($modparams->get("resetfilters")=="newmenu" && JRequest::getCmd("jevents_filter_submit", false,"POST")!==false) {
 				// Must use JRequest::getInt("Itemid") since missing event finder resets active menu item!
 				if (JRequest::getInt("Itemid",0) && JRequest::getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
 					JRequest::setVar('filter_reset',1);

@@ -2,25 +2,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 function Defaultgetstartenddates($view){
-	$jinput = JFactory::getApplication()->input;
 
 	$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 	// fix to allow start/end date to be preserved during pagination IF filter module before/after dates are used
-	$Itemid = $jinput->getInt("Itemid", 0);
+	$Itemid = JRequest::getInt("Itemid",0);
 	// This causes the filter module to reset
 	$filters = jevFilterProcessing::getInstance(array());
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
-	if (intval($jinput->getInt('filter_reset', 0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
-		$jinput->set( 'startdate', '');
-		$jinput->set( 'enddate', '');
-		JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
-		JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
+	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
+                // if actively filtering then do not reset
+		if (!JRequest::getString("startdate",0)) {
+                    JRequest::setVar( 'startdate', '');
+        	    JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
+                }
+		if (!JRequest::getString("enddate",0)) {
+                    JRequest::setVar( 'enddate', '');
+                    JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
+                }
 		JFactory::getApplication()->setUserState( 'active_filter_menu ', 0);
 	}
 
-	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', "");
-	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', "");
+	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', JRequest::getString("startdate"));
+	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', JRequest::getString("enddate"));
 
         if ($startdate!=""){
             // WE have specified a start date in the URL so we should use it!
