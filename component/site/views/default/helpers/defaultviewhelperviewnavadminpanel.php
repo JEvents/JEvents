@@ -19,6 +19,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
+		$jinput = JFactory::getApplication()->input;
 
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 
@@ -28,7 +29,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 
 		$cfg = JEVConfig::getInstance();
 
-		if (JRequest::getInt('pop', 0))
+		if ($jinput->getInt('pop', 0))
 			return;
 
 		if ($is_event_editor)

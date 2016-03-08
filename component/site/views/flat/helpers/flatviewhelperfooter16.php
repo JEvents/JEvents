@@ -3,7 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 
 function FlatViewHelperFooter16($view)
 {
-	if (JRequest::getInt('pop', 0))
+$jinput = JFactory::getApplication()->input;
+
+	if ($jinput->get('pop', '0', 'INT'))
 	{
 		?>
 		<div class="ev_noprint"><p align="center">
@@ -30,7 +32,7 @@ function FlatViewHelperFooter16($view)
 	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onJEventsFooter');
 
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString('jevtask', '');
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

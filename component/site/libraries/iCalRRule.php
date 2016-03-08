@@ -500,6 +500,7 @@ class iCalRRule extends JTable  {
 
 									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
 									if ($currentMonth==JevDate::strftime("%m",$testStart)){
+										$currentYear = JevDate::strftime("%Y",$start);
 										$targetStart = $testStart;
                                                                                 // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
                                                                                 $targetEnd = $targetStart + $duration;

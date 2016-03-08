@@ -35,7 +35,9 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	
 	function edit($tpl = null)
 	{
-		$document = JFactory::getDocument();		
+		$document = JFactory::getDocument();
+		// Set editstrings var just incase and to avoid IDE reporting not set.
+		$editStrings = "";
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
 

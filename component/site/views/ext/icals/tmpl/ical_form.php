@@ -9,13 +9,14 @@ echo $this->ExportScript();
 	
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
+$jinput = JFactory::getApplication()->input;
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
-if (JRequest::getString("submit","")!="")
+if ($jinput->getString("submit","") != "")
 {
 
-	$categories = JRequest::getVar('categories', array(0), 'POST');
+	$categories = $jinput->post->get('categories', array(0), null);
 
 	$cats = array();
 	foreach ($categories AS $cid)
@@ -32,7 +33,7 @@ if (JRequest::getString("submit","")!="")
 
 	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
-        $jr_years = JRequest::getVar('years', array(0), 'POST');
+        $jr_years = $jinput->post->get('years', array(0), null);
 	$years = JEVHelper::forceIntegerArray($jr_years, true);
         $cats = implode(",", $cats);
 
@@ -42,7 +43,7 @@ if (JRequest::getString("submit","")!="")
 		$link .="&catids=" . $cats;
 	}
 	$link .="&years=" . $years;
-	if (JRequest::getInt("icalformatted", 0))
+	if ($jinput->getInt("icalformatted", 0))
 	{
 		$link .="&icf=1";
 	}
@@ -50,7 +51,7 @@ if (JRequest::getString("submit","")!="")
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("constrained", 0))
 	{
-		$link .="&Itemid=" . JRequest::getInt("Itemid", 1);
+		$link .="&Itemid=" . $jinput->getInt("Itemid", 1);
 	}
 
 	$icalkey = $params->get("icalkey", "secret phrase");
@@ -107,12 +108,12 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 // All categories
 		$cb = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('categories', 0, 'POST'))
+		if (!$jinput->post->get('categories', 0, null))
 		{
 			$cb = $cb . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('categories', 0, 'POST') && in_array(0, JRequest::getVar('categories', '', 'POST')))
+		else if ($jinput->post->get('categories', 0, null) && in_array(0, $jinput->post->get('categories', '', null)))
 		{
 			$cb = $cb . " CHECKED";
 			$checked = true;
@@ -127,11 +128,11 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				if (!in_array($c->id, $accessiblecats))
 					continue;
 				$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
-				if (!JRequest::getVar('categories', 0))
+				if (!$jinput->get('categories', 0))
 				{
 					//$cb=$cb." CHECKED";
 				}
-				else if (JRequest::getVar('categories', 0) && in_array($c->id, JRequest::getVar('categories', '', 'POST')))
+				else if ($jinput->getVar('categories', 0) && in_array($c->id, $jinput->post->get('categories', '', null)))
 				{
 					$cb = $cb . " CHECKED";
 				}
@@ -148,12 +149,12 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 // All years
 		$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('years', 0))
+		if (!$jinput->get('years', 0))
 		{
 			$yt = $yt . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('years', 0) && in_array(0, JRequest::getVar('years', '', 'POST')))
+		else if ($jinput->get('years', 0) && in_array(0, $jinput->post->get('years', '', null)))
 		{
 			$yt = $yt . " CHECKED";
 			$checked = true;
@@ -175,11 +176,11 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			foreach ($year AS $y)
 			{
 				$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
-				if (!JRequest::getVar('years', 0))
+				if (!$jinput->get('years', 0))
 				{
 					//$yt = $yt . " CHECKED";
 				}
-				else if (JRequest::getVar('years', 0) && in_array($y, JRequest::getVar('years', '', 'POST')))
+				else if ($jinput->get('years', 0) && in_array($y, $jinput->post->get('years', '', null)))
 				{
 					$yt = $yt . " CHECKED";
 				}

@@ -45,8 +45,9 @@ class JEVHelper
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
+		$jinput = JFactory::getApplication()->input;
 
-		$option = JRequest::getCmd("option");
+		$option = $jinput->getCmd("option");
 		$cfg = JEVConfig::getInstance();
 		$lang = JFactory::getLanguage();
 
@@ -1146,6 +1147,8 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
 					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+
 				}
 			}
 			else if ($user->cancreate)
@@ -3030,6 +3033,8 @@ SCRIPT;
 
 						if (is_callable("date_default_timezone_set"))
 						{
+							// Change timezone to UTC
+							$current_timezone = date_default_timezone_get();
 							date_default_timezone_set("UTC");
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 							// Change back

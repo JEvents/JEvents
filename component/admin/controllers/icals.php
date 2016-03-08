@@ -327,7 +327,8 @@ class AdminIcalsController extends JControllerForm {
 		}
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
-			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT') );
+			JFactory::getApplication()->enqueueMessage('Fatal Error - ' . JText::_('JEV_E_WARNCAT') , 'error');
+
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task",  JText::_('JEV_E_WARNCAT'));
 			$this->redirect();
 			return;
@@ -340,7 +341,7 @@ class AdminIcalsController extends JControllerForm {
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']) ) {
 			$file 			= $_FILES['upload'];
 			if ($file['size']==0 ){//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				JError::raiseWarning(0, 'empty upload file');
+				JFactory::getApplication()->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else {
@@ -570,7 +571,7 @@ class AdminIcalsController extends JControllerForm {
 
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
-			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT') );
+			JFactory::getApplication()->enqueueMessage('Fatal Error - ' . JText::_("JEV_E_WARNCAT"), 'error');
 
 			// Set option variable.
 			$option = JEV_COM_COMPONENT;

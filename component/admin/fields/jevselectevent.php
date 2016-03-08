@@ -62,17 +62,24 @@ class JFormFieldJEVselectEvent extends JFormField
 		$rpidfield = $this->form->getField("rp_id", "request");
 		$rp_id = $rpidfield->value;
 		$db	= JFactory::getDBO();
-		$db->setQuery(
-			'SELECT det.summary as title' .
-			' FROM #__jevents_vevdetail as det ' .
-			' LEFT JOIN #__jevents_repetition as rep ON rep.eventdetail_id = det.evdet_id' .
-			' WHERE rep.rp_id = '.(int) $rp_id
-		);
-		$title = $db->loadResult();
-		echo $db->getErrorMsg();
+		$query = $db->getQuery(true);
+		$query
+				->select($db->quoteName('det.summary', 'title'))
+			  	->from($db->quoteName('#__jevents_vevdetail', 'det'))
+				->join('LEFT', $db->quoteName('#__jevents_repetition', 'rep') . ' ON' . ($db->quoteName('rep.eventdetail_id') . ' = ' . $db->quoteName('det.evdet_id')))
+				->where($db->quoteName('rep.rp_id') . ' = ' . (int) $rp_id);
 
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		//Hide the below!
+		//echo $db->getErrorMsg();
+
+		try
+		{
+			$db->setQuery($query);
+			$title = $db->loadResult();
+		}
+		catch (RuntimeException $e){
+			throw new Exception($e->getMessage());
+			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'errpr');
 		}
 
 		if (empty($title)) {

@@ -35,7 +35,10 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
-		if (JRequest::getInt("login",0) && $user->id==0)
+
+		$jinput = JFactory::getApplication()->input;
+
+		if ($jinput->getInt("login", 0) && $user->id==0)
 		{			
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
@@ -47,12 +50,12 @@ class ICalEventController extends AdminIcaleventController   {
 			return;
 		}
 				
-		$evid =JRequest::getInt("rp_id",0);
+		$evid =$jinput->getInt("rp_id", 0);
 		if ($evid==0){
-			$evid =JRequest::getInt("evid",0);
+			$evid = $jinput->getInt("evid", 0);
 			// if cancelling from save of copy and edit use the old event id
 			if ($evid==0){
-				$evid =JRequest::getInt("old_evid",0);
+				$evid =$jinput->getInt("old_evid", 0);
 			}
 			// In this case I do not have a repeat id so I find the first one that matches
 			$datamodel = new JEventsDataModel("JEventsAdminDBModel");
@@ -64,15 +67,15 @@ class ICalEventController extends AdminIcaleventController   {
 				$evid=$repeat->rp_id();
 			}			
 		}
-		$pop = intval(JRequest::getVar( 'pop', 0 ));
-		$uid = urldecode((JRequest::getVar( 'uid', "" )));
+		$pop = intval($jinput->getInt('pop', 0 ));
+		$uid = urldecode(($jinput->get('uid', "")));
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
 		// seth month and year to be used by mini-calendar if needed
 		if (isset($repeat)) {
-			if (!JRequest::getVar("month",0)) JRequest::setVar("month",$repeat->mup());
-			if (!JRequest::getVar("year",0)) JRequest::setVar("year",$repeat->yup());
+			if (!$jinput->get("month", 0)) $jinput->set("month", $repeat->mup());
+			if (!$jinput->get("year", 0))  $jinput->set("year", $repeat->yup());
 		}
 
 		$document = JFactory::getDocument();

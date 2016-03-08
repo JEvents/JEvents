@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultViewEventRowNew($view,$row,$args="") {
 
 	$cfg = JEVConfig::getInstance();
-
+	$jinput = JFactory::getApplication()->input;
 	$rowlink = $row->viewDetailLink($row->yup(),$row->mup(),$row->dup(),false);
 	$rowlink = JRoute::_($rowlink.$view->datamodel->getCatidsOutLink());
 
@@ -19,7 +19,7 @@ function DefaultViewEventRowNew($view,$row,$args="") {
 	}
 	*/
 
-	$jevtask  = JRequest::getString("jevtask");
+	$jevtask  = $jinput->getString("jevtask");
 	$jevtask = str_replace(".listevents","",$jevtask);
 
 	$showyeardate = $cfg->get("showyeardate",0);

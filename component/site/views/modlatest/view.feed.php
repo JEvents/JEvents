@@ -28,7 +28,9 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 
 	function rss($tpl = null)
 	{
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$jinput = JFactory::getApplication()->input;
+
+		$modid = intval(($jinput->get('modid', 0)));
 		if ($modid<0){
 			$modid = 0;
 		}
