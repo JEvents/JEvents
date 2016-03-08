@@ -22,7 +22,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (!array_key_exists($template_name, $templates))
 		{
 
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND value<>'' AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 			$rawtemplates = $db->loadObjectList();
 			$templates[$template_name] = array();
 			if ($rawtemplates){
