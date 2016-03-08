@@ -12,11 +12,14 @@
 defined('_JEXEC') or die();
 
 $option = JEV_COM_COMPONENT;
+
+$jinput = JFactory::getApplication()->input;
+
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $pathIMG = JURI::root() . 'administrator/images/';
-$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
-$order = JRequest::getCmd("filter_order", 'tl.id');
+$orderdir = $jinput->getCmd("filter_order_Dir", 'asc');
+$order = $jinput->getCmd("filter_order", 'tl.id');
 
 if (isset($this->message) && $this->message != null)
 {

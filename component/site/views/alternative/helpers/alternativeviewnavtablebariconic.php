@@ -9,8 +9,8 @@ class AlternativeViewNavTableBarIconic
 	function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
 	{
 		global $catidsOut;
-
-		if (JRequest::getInt('pop', 0))
+		$jinput = JFactory::getApplication()->input;
+		if ($jinput->getInt('pop', 0))
 			return;
 		
 		$cat = "";

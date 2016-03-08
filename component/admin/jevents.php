@@ -10,6 +10,7 @@
  */
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+$jinput = JFactory::getApplication()->input;
 
 if (version_compare(phpversion(), '5.0.0', '<')===true) {
 	echo  '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">'.JText::_("JEV_INVALID_PHP1").'</h3></div>'.JText::_("JEV_INVALID_PHP2").'</div>';
@@ -30,7 +31,7 @@ $version = new JVersion();
 $jver = explode( '.', $version->getShortVersion() );
 
 //version_compare(JVERSION,'1.5.0',">=")
-if (!isset($option))  $option = JRequest::getCmd("option"); // 1.6 mod
+if (!isset($option))  $option = $jinput->getCmd("option"); // 1.6 mod
 define("JEV_COM_COMPONENT",$option);
 define("JEV_COMPONENT",str_replace("com_","",$option));
 
@@ -97,7 +98,7 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 @ini_set("zend.ze1_compatibility_mode","Off");
 
 // Split tasl into command and task
-$cmd = JRequest::getCmd('task', 'cpanel.show');
+$cmd = $jinput->get('task', 'cpanel.show');
 
 if (strpos($cmd, '.') != false) {
 	// We have a defined controller/task pair -- lets split them out
@@ -122,8 +123,8 @@ if (strpos($cmd, '.') != false) {
 }
 
 // Make the task available later
-JRequest::setVar("jevtask",$cmd);
-JRequest::setVar("jevcmd",$cmd);
+$jinput->set("jevtask", $cmd);
+$jinput->set("jevcmd", $cmd);
 
 JPluginHelper::importPlugin("jevents");
 

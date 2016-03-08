@@ -167,8 +167,10 @@ class AdminDefaultsController extends JControllerForm {
 	}
 
 	function unpublish(){
+		$jinput = JFactory::getApplication()->input;
+
 		$db= JFactory::getDBO();
-		$cid = JRequest::getVar("cid",array());
+		$cid = $jinput->get("cid", array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();
@@ -185,7 +187,9 @@ class AdminDefaultsController extends JControllerForm {
 
 	function publish(){
 		$db= JFactory::getDBO();
-		$cid = JRequest::getVar("cid",array());
+		$jinput = JFactory::getApplication()->input;
+
+		$cid = $jinput->get("cid",array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();
@@ -235,14 +239,16 @@ class AdminDefaultsController extends JControllerForm {
 	*/
 	function save($key = NULL, $urlVar = NULL) {
 
+		$jinput = JFactory::getApplication()->input;
 
-		$id = JRequest::getInt("id",0);
+		$id = $jinput->getInt("id",0);
 		if ($id >0 ){
 
 			// Get/Create the model
 			if ($model =  $this->getModel("default", "defaultsModel")) {
+				//TODO find a work around for getting post array with JInput.
 				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
-					if (JRequest::getCmd("task")=="defaults.apply"){
+					if ($jinput->getCmd("task") == "defaults.apply"){
 						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));
 						$this->redirect();
 						return;

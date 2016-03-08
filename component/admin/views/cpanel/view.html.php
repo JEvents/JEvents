@@ -662,6 +662,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			"module_mod_jevents_paidsubs" => 48,
 			"module_mod_jevents_switchview" => 52
 		);
+		$output = "";
 		foreach ($apps as $appname => $app)
 		{
 			$row = new stdClass();
@@ -903,8 +904,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
                 if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=1000){
-                    JError::raiseNotice(234,JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")));
-                }
+
+					JFactory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")), 'warning');
+
+				}
                 
 
 		if (JevJoomlaVersion::isCompatible("3.0"))

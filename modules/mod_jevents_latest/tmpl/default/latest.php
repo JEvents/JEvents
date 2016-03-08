@@ -838,7 +838,6 @@ class DefaultModLatestView
 		$viewname = $this->getTheme();
 
 		$cfg = JEVConfig::getInstance();
-		$compname = JEV_COM_COMPONENT;
 
 		// override global start now setting so that timelimit plugin can use it!
 		$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -987,6 +986,7 @@ class DefaultModLatestView
 	{
 		$datenow = JEVHelper::getNow();
 		$dispatcher = JEventDispatcher::getInstance();
+		$compname = JEV_COM_COMPONENT;
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1391,7 +1391,7 @@ class DefaultModLatestView
 												{
 													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
-													if (!isset($event->_privateevent) || $event->_privateevent != 3)
+													if (!isset($dayEvent->_privateevent) || $dayEvent->_privateevent != 3)
 													{
 														$temp = call_user_func(array($classname, "substitutefield"), $dayEvent, $subparts[0]);
 														if ($temp != "")
