@@ -2292,6 +2292,7 @@ class JEventsDBModel
 		if (!$is_array) {
 			$icalrows = $icalrows[0];
 		}
+
 	}
 
 	function listIcalEventsByDay($targetdate)
@@ -3673,6 +3674,7 @@ class JEventsDBModel
 		// get extra data and conditionality from plugins
 		$extrawhere = array();
 		$extrajoin = array();
+		$extratables = array();
 		$extrafields = "";  // must have comma prefix		
 		$needsgroup = false;
 
@@ -3883,7 +3885,7 @@ class JEventsDBModel
 		$rows = $db->loadObjectList();
 		if (count($rows) > 0)
 		{
-			JError::raiseNotice(1, JText::_("This event has changed - this is occurance is now the closest to the date you searched for"));
+			JFactory::getApplication()->enqueueMessage(JText::_('THIS_EVENT_HAS_CHANGED_THIS_OCCURANCE_IS_NOW_THE_CLOSEST_TO_THE_DATE_YOU_SEARCHED_FOR'), 'notice');
 			return $rows[0]->rp_id;
 		}
 

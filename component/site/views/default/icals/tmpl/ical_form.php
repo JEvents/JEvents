@@ -9,13 +9,14 @@ echo $this->ExportScript();
 	
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
+$jinput = JFactory::getApplication()->input;
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
-if (JRequest::getString("submit","")!="")
+if ($jinput->getString("submit","") != "")
 {
 
-	$categories = JRequest::getVar('categories', array(0), 'POST');
+	$categories = $jinput->post->get('categories', array(0), null);
 
 	$cats = array();
 	foreach ($categories AS $cid)
@@ -32,7 +33,7 @@ if (JRequest::getString("submit","")!="")
 
 	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
-        $jr_years = JRequest::getVar('years', array(0), 'POST');
+        $jr_years = $jinput->post->get('years', array(0), null);
 	$years = JEVHelper::forceIntegerArray($jr_years, true);
         $cats = implode(",", $cats);
 
@@ -42,7 +43,7 @@ if (JRequest::getString("submit","")!="")
 		$link .="&catids=" . $cats;
 	}
 	$link .="&years=" . $years;
-	if (JRequest::getInt("icalformatted", 0))
+	if ($jinput->getInt("icalformatted", 0))
 	{
 		$link .="&icf=1";
 	}
@@ -50,7 +51,7 @@ if (JRequest::getString("submit","")!="")
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("constrained", 0))
 	{
-		$link .="&Itemid=" . JRequest::getInt("Itemid", 1);
+		$link .="&Itemid=" . $jinput->getInt("Itemid", 1);
 	}
 
 	$icalkey = $params->get("icalkey", "secret phrase");

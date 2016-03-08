@@ -10,8 +10,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+$jinput = JFactory::getApplication()->input;
+
 // Check if we are saving here.
-if (JRequest::getVar('save')) {
+if ($jinput->get('save', null, null)) {
     customCssSave();
 }
 ?>

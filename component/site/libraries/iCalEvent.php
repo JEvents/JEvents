@@ -117,8 +117,12 @@ class iCalEvent extends JTable  {
 				
 		$db = JFactory::getDBO();
 		$detailid = $this->_detail->store($updateNulls);
+
 		if (!$detailid){
-			JError::raiseError( 104, JText::_( 'PROBLEMS_STORING_EVENT_DETAIL' ));
+
+			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
+
+			//TODO Setup a exception catch
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}
@@ -130,7 +134,9 @@ class iCalEvent extends JTable  {
 			$this->catid =$this->catid[0];
 		}
 		if (!parent::store($updateNulls)){
-			JError::raiseError( 105, JText::_( 'PROBLEMS_STORING_EVENT' ) );
+			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT"), 'error');
+
+			//TODO Setup a exception catch
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}

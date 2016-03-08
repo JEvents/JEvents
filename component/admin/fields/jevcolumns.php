@@ -233,7 +233,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 		else
 		{
-			JError::raiseWarning(500, JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'));
+			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters

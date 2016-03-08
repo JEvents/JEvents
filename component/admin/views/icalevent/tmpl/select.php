@@ -14,18 +14,18 @@ JHTML::_('behavior.tooltip');
 
 $db = JFactory::getDBO();
 $user = JFactory::getUser();
-
+$jinput = JFactory::getApplication()->input;
 // get configuration object
 $cfg = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
-$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
-$order = JRequest::getCmd("filter_order", 'start');
+$orderdir = $jinput->getCmd("filter_order_Dir", 'asc');
+$order = $jinput->getCmd("filter_order", 'start');
 $pathIMG = JURI::root() . 'administrator/images/';
 $document = JFactory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
 	table.filters {margin-bottom:10px}");
-$function = JRequest::getCmd('function', 'jSelectEvent');
+$function = $jinput->getCmd('function', 'jSelectEvent');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_jevents&task=icalevent.select&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1'); ?>" method="post" name="adminForm" id="adminForm">
 	<table cellpadding="4" cellspacing="0" class="filters">
@@ -44,7 +44,7 @@ $function = JRequest::getCmd('function', 'jSelectEvent');
 				<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
 			</td>
 		</tr>
-<?php if (!JRequest::getInt("nomenu"))
+<?php if (!$jinput->getInt("nomenu", null))
 { ?>
 			<tr>
 				<td colspan="2" align="right"><?php echo JText::_('JEV_TARGET_MENU'); ?> </td>

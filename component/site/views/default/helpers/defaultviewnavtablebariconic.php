@@ -12,6 +12,7 @@ class DefaultViewNavTableBarIconic {
 		$this->Itemid = JEVHelper::getItemid();
 		$this->cat = $this->view->datamodel->getCatidsOutLink();
 		$this->task = $task;
+		$jinput = JFactory::getApplication()->input;
 
 		$cfg = JEVConfig::getInstance();
                 
@@ -20,7 +21,7 @@ class DefaultViewNavTableBarIconic {
 		
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 		
-		if (JRequest::getInt( 'pop', 0 )) return;
+		if ($jinput->getInt('pop', 0 )) return;
 				
     	?>
     	<div class="ev_navigation">
