@@ -72,17 +72,17 @@ defined('_JEXEC') or die('Restricted access');
 				for ($i = 0; $i < $pathNodes; $i++)
 				{
 					// If any node along the registry path does not exist, create it
-					if (!isset($ns->$nodes[$i]))
+                                        if (!isset($ns->{$nodes[$i]}))
 					{
-						$ns->$nodes[$i] = new stdClass();
+                                                $ns->{$nodes[$i]} = new stdClass();
 					}
-					$ns = & $ns->$nodes[$i];
+                                        $ns = & $ns->{$nodes[$i]};
 				}
 
 				// Get the old value if exists so we can return it
-				$ns->$nodes[$i] = & $value;
+                                $ns->{$nodes[$i]} = & $value;
 
-				return $ns->$nodes[$i];
+                                return $ns->{$nodes[$i]};
 
 			}
 
@@ -108,19 +108,19 @@ defined('_JEXEC') or die('Restricted access');
 
 					if (isset($this->_registry[$namespace]))
 					{
-						$ns = & $this->_registry[$namespace]['data'];
+     						$ns = & $this->_registry[$namespace]['data'];
 						$pathNodes = $count - 1;
 
 						//for ($i = 0; $i < $pathNodes; $i ++) {
 						for ($i = 1; $i < $pathNodes; $i++)
 						{
-							if ((isset($ns->$nodes[$i])))
-								$ns = & $ns->$nodes[$i];
+                                                        if ((isset($ns->{$nodes[$i]})))
+                                                                $ns = & $ns->{$nodes[$i]};
 						}
 
-						if (isset($ns->$nodes[$i]))
+                                                if (isset($ns->{$nodes[$i]}))
 						{
-							$result = $ns->$nodes[$i];
+                                                        $result = $ns->{$nodes[$i]};
 						}
 					}
 				}
