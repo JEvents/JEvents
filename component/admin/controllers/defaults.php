@@ -167,8 +167,10 @@ class AdminDefaultsController extends JControllerForm {
 	}
 
 	function unpublish(){
+		$jinput = JFactory::getApplication()->input;
+
 		$db= JFactory::getDBO();
-		$cid = JRequest::getVar("cid",array());
+		$cid = $jinput->get("cid", array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();
@@ -185,7 +187,9 @@ class AdminDefaultsController extends JControllerForm {
 
 	function publish(){
 		$db= JFactory::getDBO();
-		$cid = JRequest::getVar("cid",array());
+		$jinput = JFactory::getApplication()->input;
+
+		$cid = $jinput->get("cid",array());
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();
@@ -235,14 +239,16 @@ class AdminDefaultsController extends JControllerForm {
 	*/
 	function save($key = NULL, $urlVar = NULL) {
 
+		$jinput = JFactory::getApplication()->input;
 
-		$id = JRequest::getInt("id",0);
+		$id = $jinput->getInt("id",0);
 		if ($id >0 ){
 
 			// Get/Create the model
 			if ($model =  $this->getModel("default", "defaultsModel")) {
+				//TODO find a work around for getting post array with JInput.
 				if ($model->store(JRequest::get("post",JREQUEST_ALLOWRAW))){
-					if (JRequest::getCmd("task")=="defaults.apply"){
+					if ($jinput->getCmd("task") == "defaults.apply"){
 						$this->setRedirect("index.php?option=".JEV_COM_COMPONENT."&task=defaults.edit&id=$id",JText::_("JEV_TEMPLATE_SAVED"));
 						$this->redirect();
 						return;
@@ -290,6 +296,69 @@ class AdminDefaultsController extends JControllerForm {
 		if (count($languages )==1){
 			return;
 		}
+                
+                // Clean up bad data                
+		$query	= $db->getQuery(true);
+                $query->select("count(id) as duplicatecount, name, language, catid");
+                $query->from("#__jev_defaults as def");
+                $query->group("name, language, catid");
+                $query->having("duplicatecount > 1");
+		$db->setQuery($query);
+                $xxx = (string) $db->getQuery();
+		$duplicates = $db->loadObjectList();
+                
+                if ( count($duplicates)) {
+                    foreach ($duplicates as $duplicate)
+                    {
+                        $query	= $db->getQuery(true);
+                        $query->select("id, state, name, language, value");
+                        $query->from("#__jev_defaults as def");
+                        $query->where('def.name ='.$db->quote($duplicate->name));
+                        $query->where('def.catid ='.$db->quote($duplicate->catid));
+                        $query->where('def.language ='.$db->quote($duplicate->language));
+                        $query->order("name, language, state desc, id desc");
+                        $db->setQuery($query);
+                        $duplicatedetails = $db->loadObjectList();
+                        if (count($duplicatedetails)==$duplicate->duplicatecount){
+                            // Keep the most up to date published entry
+                            if ($duplicatedetails[0]->state==1) {
+                                $dupids = array();
+                                for ($d=1; $d<$duplicate->duplicatecount; $d++) {
+                                    $dupids[] = $duplicatedetails[$d]->id;
+                                }
+                                if (count($dupids)>0) {
+                                    $query = $db->getQuery(true);
+                                    $query->delete("#__jev_defaults");
+                                    $query->where("id in (".implode(",", $dupids).")");
+                                    $db->setQuery($query);
+                                    //var_dump($duplicate);
+                                    //echo "<hr/>";
+                                    //echo (string) $db->getQuery();exit();
+                                    $db->execute();
+                                }
+                            }
+                            else {
+                                // sort by descending value
+                                usort($duplicatedetails, function($a, $b){ return -1 * strcmp($a->value, $b->value);});
+                                $dupids = array();
+                                for ($d=1; $d<$duplicate->duplicatecount; $d++) {                                    
+                                    $dupids[] = $duplicatedetails[$d]->id;
+                                }
+                                if (count($dupids)>0) {
+                                    $query = $db->getQuery(true);
+                                    $query->delete("#__jev_defaults");
+                                    $query->where("id in (".implode(",", $dupids).")");
+                                    $db->setQuery($query);
+                                    //var_dump($duplicate);
+                                    //echo "<hr/>";
+                                    //echo (string) $db->getQuery();exit();
+                                    $db->execute();
+                                }
+                            }
+                        }
+                    }
+                }
+
 		$query	= $db->getQuery(true);
 		$query->select("def.*");
 		$query->from("#__jev_defaults as def");
@@ -315,8 +384,8 @@ class AdminDefaultsController extends JControllerForm {
 		foreach ($allLanguageTitles as $title){
 			foreach ($languages  as $lang_code=>$lang){
 				$matched = false;
-				foreach ($specificLanguageTitles as $title){
-					if ($title == $title ){
+				foreach ($specificLanguageTitles as $stitle){
+					if ($title->name == $stitle->name && $stitle->language == $lang_code){
 						$matched = true;
 						break;
 					}

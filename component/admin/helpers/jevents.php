@@ -23,8 +23,10 @@ class JEventsHelper
 	 */
 	public static function addSubmenu($vName = "")
 	{
-		$task = JRequest::getCmd("task", "cpanel.cpanel");
-		$option = JRequest::getCmd("option", "com_categories");
+		$jinput = JFactory::getApplication()->input;
+
+		$task = $jinput->getCmd("task", "cpanel.cpanel");
+		$option = $jinput->getCmd("option", "com_categories");
 
 		if ($option == 'com_categories')
 		{
@@ -67,85 +69,100 @@ STYLE;
 		// could be called from categories component
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			JHtmlSidebar::addEntry(
-					JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
-			);
+                JHtmlSidebar::addEntry(
+                                JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
+                );
 
-			JHtmlSidebar::addEntry(
-					JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
-			);
+                JHtmlSidebar::addEntry(
+                                JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
+                );
 
-			if (JEVHelper::isAdminUser())
-			{
-				JHtmlSidebar::addEntry(
-						JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
-				);
-			}
-			JHtmlSidebar::addEntry(
-					JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
-			);
-			if (JEVHelper::isAdminUser())
-			{
-				JHtmlSidebar::addEntry(
-						JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
-				);
-				JHtmlSidebar::addEntry(
-						JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
-				);
-				JHtmlSidebar::addEntry(
-						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
-				);
+                if (JEVHelper::isAdminUser())
+                {
+                        JHtmlSidebar::addEntry(
+                                        JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
+                        );
+                }
+                JHtmlSidebar::addEntry(
+                                JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
+                );
+                if (JEVHelper::isAdminUser())
+                {
+                        JHtmlSidebar::addEntry(
+                                        JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
+                        );
+                        JHtmlSidebar::addEntry(
+                                        JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
+                        );
+                        JHtmlSidebar::addEntry(
+                                        JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
+                        );
 
-				//Support & CSS Customs should only be for Admins really.
-				JHtmlSidebar::addEntry(
-						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
-				);
-				JHtmlSidebar::addEntry(
-						JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
-				);
-			}
-		}
-		else {
-			JSubMenuHelper::addEntry(
-					JText::_('CONTROL_PANEL'), 'index.php?option=com_jevents', $vName == 'cpanel.cpanel'
-			);
-
-			JSubMenuHelper::addEntry(
-					JText::_('JEV_ADMIN_ICAL_EVENTS'), 'index.php?option=com_jevents&task=icalevent.list', $vName == 'icalevent.list'
-			);
-
-			if (JEVHelper::isAdminUser())
-			{
-				JSubMenuHelper::addEntry(
-						JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'), 'index.php?option=com_jevents&task=icals.list', $vName == 'icals.list'
-				);
-			}
-			JSubMenuHelper::addEntry(
-					JText::_('JEV_INSTAL_CATS'), "index.php?option=com_categories&extension=com_jevents", $vName == 'categories'
-			);
-			if (JEVHelper::isAdminUser())
-			{
-				JSubMenuHelper::addEntry(
-						JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
-				);
-				JSubMenuHelper::addEntry(
-						JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
-				);
-				JSubMenuHelper::addEntry(
-						JText::_('JEV_LAYOUT_DEFAULTS'), 'index.php?option=com_jevents&task=defaults.list', in_array($vName, array('defaults.list', 'defaults.overview'))
-				);
-
-				//Support & CSS customs should only be for Admins really.
-				JSubMenuHelper::addEntry(
-						JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
-				);
-				JSubMenuHelper::addEntry(
-						JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
-				);
-			}
-		}
+                        //Support & CSS Customs should only be for Admins really.
+                        JHtmlSidebar::addEntry(
+                                        JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
+                        );
+                        JHtmlSidebar::addEntry(
+                                        JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
+                        );
+                        
+                        // Links to addons
+                        // Managed Locations
+                        $db = JFactory::getDbo ();
+                        $db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' " );
+                        $is_enabled = $db->loadResult ();
+                        if ($is_enabled) {
+                                $link = "index.php?option=com_jevlocations";
+                                JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
+                                JHtmlSidebar::addEntry(
+                                        JText::_('COM_JEVLOCATIONS'), $link, $vName == 'cpanel.managed_locations'
+                                );
+                        }
+                        
+                        // Managed People
+                        $db = JFactory::getDbo ();
+                        $db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' " );
+                        $is_enabled = $db->loadResult ();
+                        if ($is_enabled) {
+                                $link = "index.php?option=com_jevpeople";
+                                JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+                                JHtmlSidebar::addEntry(
+                                        JText::_('COM_JEVPEOPLE'), $link, $vName == 'cpanel.managed_people'
+                                );
+                                
+                        }
+                        // RSVP Pro
+                        $db = JFactory::getDbo ();
+                        $db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' " );
+                        $is_enabled = $db->loadResult ();
+                        if ($is_enabled) {
+                                $link = "index.php?option=com_rsvppro";
+                                JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+                                JHtmlSidebar::addEntry(
+                                        JText::_('COM_RSVPPRO'), $link, $vName == 'cpanel.rsvppro'
+                                );
+                                
+                        }
+                        // Custom Fields				
+                        $db = JFactory::getDbo ();
+                        $db->setQuery ( "SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
+                        $extension = $db->loadObject();
+                        // Stop if user is not authorised to manage JEvents
+                        if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
+                                $manifestCache = json_decode($extension->manifest_cache);
+                                if (version_compare($manifestCache->version, "3.5.0", "ge") )
+                                {
+                                        $link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
+                                        JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+                                        JHtmlSidebar::addEntry(
+                                            JText::_('JEV_CUSTOM_FIELDS'), $link, $vName == 'plugin.jev_customfields.overview'
+                                        );                                        
+                                }
+                        }
+                        
+                }
+                
+                
 
 	}
 

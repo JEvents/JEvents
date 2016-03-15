@@ -3,8 +3,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $cfg	= JEVConfig::getInstance();
 
+$jinput = JFactory::getApplication()->input;
+
+
 if( 0 == $this->evid) {
-	$Itemid = JRequest::getInt("Itemid");
+	$Itemid = $jinput->getInt('Itemid', 0);
+
 	JFactory::getApplication()->redirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid",false));
 	return;
 }
@@ -58,11 +62,13 @@ if( array_key_exists('row',$this->data) ){
             <?php
         }
 
-		if(!($mask & MASK_BACKTOLIST)) { ?>
-    		<p align="center">
-    			<a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
-    		</p>
-    		<?php
-		}
+        /*
+        if(!($mask & MASK_BACKTOLIST)) { ?>
+        <p align="center">
+                <a href="javascript:window.history.go(-1);" class="jev_back btn" title="<?php echo JText::_('JEV_BACK'); ?>"><?php echo JText::_('JEV_BACK'); ?></a>
+        </p>
+        <?php
+        }
+         */
 
 }

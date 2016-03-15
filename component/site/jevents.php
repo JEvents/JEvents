@@ -111,12 +111,13 @@ if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') ==
 		JRequest::setVar("jevsmartphone", 1);
 		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
 		{
-			JRequest::setVar("jEV", "smartphone");
+                    JRequest::setVar("jEV", "smartphone");
 		}
-		$params->set('iconicwidth', 485);
-		$params->set('extpluswidth', 485);
-		$params->set('ruthinwidth', 485);
+		$params->set('iconicwidth', "scalable");
+		$params->set('extpluswidth', "scalable");
+		$params->set('ruthinwidth', "scalable");
 	}
+        $params->set("isSmartphone",1);
 }
 
 // See http://www.php.net/manual/en/timezones.php
@@ -169,7 +170,8 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		return JError::raiseError(404, 'Invalid Controller - ' . $controllerName);
+		JFactory::getApplication()->enqueueMessage('404 - '.  JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+
 		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);

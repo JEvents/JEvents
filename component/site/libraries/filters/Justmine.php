@@ -28,6 +28,8 @@ class jevJustmineFilter extends jevFilter
 	const filterType = "justmine";
 
 	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+		$jinput = JFactory::getApplication()->input;
+
 		$this->filterType=self::filterType;
 		$this->filterNullValue="0";
 		$this->yesLabel = JText::_($yesLabel);
@@ -37,7 +39,7 @@ class jevJustmineFilter extends jevFilter
 		// this is a special filter - we always want memory here since only used in frontend management
 		
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
-		JRequest::setVar($this->filterType.'_fv',$this->filter_value);
+		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
 		parent::jevFilter($tablename, "state", $isstring);
 

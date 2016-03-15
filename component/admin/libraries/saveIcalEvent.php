@@ -19,6 +19,7 @@ class SaveIcalEvent {
 		$cfg = JEVConfig::getInstance();
 		$db	= JFactory::getDBO();
 		$user = JFactory::getUser();
+		$jinput = JFactory::getApplication()->input;
 
 		// Allow plugins to check data validity
 		$dispatcher     = JEventDispatcher::getInstance();
@@ -59,7 +60,7 @@ class SaveIcalEvent {
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
-		$creatorid = JRequest::getInt("jev_creatorid",0);
+		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
 			$access = $user->authorise('core.admin', 'com_jevents');
 		
@@ -171,10 +172,14 @@ class SaveIcalEvent {
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
-			if (!$vevent->store()){
-				echo $db->getErrorMsg()."<br/>";
+			try {
+				$vevent->store();
+
+			}
+			catch (Exception $e) {
+				throw new Exception($e->getMessage());
 				$success = false;
-				JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_EVENT_' ));
+				JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_EVENT_' ), 'warning');
 			}
 		}
 		else {
@@ -189,10 +194,14 @@ class SaveIcalEvent {
 		$repetitions = $vevent->getRepetitions(true);
 		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
-				if (!$vevent->storeRepetitions()){
-					echo $db->getErrorMsg()."<br/>";
+				try {
+					$vevent->storeRepetitions();
+
+				}
+				catch (Exception $e) {
+					throw new Exception($e->getMessage());
 					$success = false;
-					JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_REPETITIONS' ));
+					JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_REPETITIONS' ), 'warning');
 				}
 			}
 		}
@@ -267,7 +276,7 @@ class SaveIcalEvent {
 					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";
 				}
 			}
-
+                        //JFactory::getApplication()->enququeMessage("Sending Admin mail to ".$adminEmail);
 			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent, $cc);
 
 		}

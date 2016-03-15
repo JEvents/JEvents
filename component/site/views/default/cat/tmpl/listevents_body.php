@@ -5,6 +5,8 @@ $data = $this->datamodel->getCatData( $this->catids,$cfg->get('com_showrepeats',
 $this->data = $data;
 $Itemid = JEVHelper::getItemid();
 
+$jinput = JFactory::getApplication()->input;
+
 ?>
 <div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
 

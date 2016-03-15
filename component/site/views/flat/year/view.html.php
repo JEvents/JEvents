@@ -30,6 +30,8 @@ class flatViewYear extends JEventsflatView
 
 	function getAdjacentYear($year,$month,$day, $direction=1)
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		$d1 = JevDate::mktime(0,0,0,$month,$day,$year+$direction);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
@@ -51,7 +53,7 @@ class flatViewYear extends JEventsflatView
 		}
 		
 		$month = JevDate::strftime("%m",$d1);
-		$task = JRequest::getString('jevtask');
+		$task = $jinput->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
 		else $item="";

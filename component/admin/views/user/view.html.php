@@ -32,6 +32,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$livesite = JURI::base();
 
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$jinput = JFactory::getApplication()->input;
 
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('USERS'), 'jevents');
@@ -49,7 +50,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$db = JFactory::getDbo();
 		$search = $db->escape(trim(strtolower($search)));
 
-		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
+		$option = $jinput->getCmd('option', JEV_COM_COMPONENT);
 
 		$pagination =  $this->get('Pagination');
 		$users = $this->get('users');

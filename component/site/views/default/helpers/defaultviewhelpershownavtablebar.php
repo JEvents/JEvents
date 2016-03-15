@@ -5,7 +5,7 @@ function DefaultViewHelperShowNavTableBar($view){
 	// this, previous and next date handling
 	
 	$cfg = JEVConfig::getInstance();
-
+	$jinput = JFactory::getApplication()->input;
 	// Optionally display no nav bar
 	if($cfg->get('com_calUseIconic', 1) == -1) return "";
 	
@@ -19,10 +19,10 @@ function DefaultViewHelperShowNavTableBar($view){
 	$today_date = clone($this_date);
 	$today_date->setDate( $regs[1], $regs[2], $regs[3] );
 
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString("jevtask");
 	if ($task == ""){
 		// I think xdebug messes up this variable in the memory so when debugging this is helpful
-		$task = JRequest::getString("jevtask",JRequest::getString("task", JRequest::getString("view").".". JRequest::getString("layout")));	
+		$task = $jinput->getString("jevtask", $jinput->getString("task", $jinput->getString("view") . "." . $jinput->getString("layout")));
 	}
 	echo "<div class='jev_pretoolbar'>";	
 	$view->loadModules("jevpretoolbar");

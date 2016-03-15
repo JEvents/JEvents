@@ -17,6 +17,8 @@ class jevEventlistFilter extends jevFilter
 
 	function _createfilterHTML(){
 
+		$jinput = JFactory::getApplication()->input;
+
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
@@ -33,9 +35,9 @@ class jevEventlistFilter extends jevFilter
 		$filterList["title"]=JText::_("JEV_SELECT_MATCHING_EVENT");
 		
 		$options = array();
-		
+
 		// only if other filters are active to we offer a choice
-		if (JRequest::getInt("eventlist")==1){
+		if ($jinput->getInt("eventlist")==1){
 			$options[] = JHTML::_('select.option', "0",JText::_("JEV_SELECT_MATCHING_EVENT") ,"value","text");			
 
 			list($year, $month, $day) = JEVHelper::getYMD();

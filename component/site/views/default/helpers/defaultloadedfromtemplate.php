@@ -22,7 +22,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (!array_key_exists($template_name, $templates))
 		{
 
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND value<>'' AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 			$rawtemplates = $db->loadObjectList();
 			$templates[$template_name] = array();
 			if ($rawtemplates){
@@ -1303,29 +1303,51 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 						{
-							if (!JString::strpos($template_value, $fieldname) !== false)
-							{
-								continue;
-							}
-							$search[] = "{{" . $fieldname . "}}";
-							// is the event detail hidden - if so then hide any custom fields too!
-							if (!isset($event->_privateevent) || $event->_privateevent != 3)
-							{
-								$replace[] = call_user_func(array($classname, "substitutefield"), $event, $fieldname);
-								if (is_callable(array($classname, "blankfield")))
-								{
-									$blank[] = call_user_func(array($classname, "blankfield"), $event, $fieldname);
-								}
-								else
-								{
-									$blank[] = "";
-								}
-							}
-							else
-							{
-								$blank[] = "";
-								$replace[] = "";
-							}
+                                                        $fieldnames = array();
+                                                        // Special case where $fielename has option value in it e.g. sizedimages 
+                                                        if (strpos($fieldname, ";")>0){
+                                                            $temp = explode(";", $fieldname);
+                                                            $fn = $temp[0];
+                                                            // What is the list of them 
+                                                            $temp = array();
+                                                            preg_match_all('@\{{'.$fn.';(.*?)[#|}}]@', $template_value, $temp);
+                                                            if (count($temp)==2 && count($temp[1])){
+                                                                $fieldnames = array();
+                                                                foreach ($temp[1] as $tmp){
+                                                                    $fieldnames[] = $fn.";".$tmp;
+                                                                }
+                                                            }
+                                                        }
+                                                        else {
+                                                            $fieldnames = array($fieldname);
+                                                        }
+
+                                                        foreach ($fieldnames as $fn){
+                                                            if (!JString::strpos($template_value, $fn) !== false)
+                                                            {
+                                                                    continue;
+                                                            }
+                                                            
+                                                            $search[] = "{{" . $fn . "}}";
+                                                            // is the event detail hidden - if so then hide any custom fields too!
+                                                            if (!isset($event->_privateevent) || $event->_privateevent != 3)
+                                                            {
+                                                                    $replace[] = call_user_func(array($classname, "substitutefield"), $event, $fn);
+                                                                    if (is_callable(array($classname, "blankfield")))
+                                                                    {
+                                                                            $blank[] = call_user_func(array($classname, "blankfield"), $event, $fn);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $blank[] = "";
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    $blank[] = "";
+                                                                    $replace[] = "";
+                                                            }
+                                                        }
 						}
 					}
 				}
@@ -1435,7 +1457,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if ($template_name!="month.calendar_cell" && $template_name!="month.calendar_tip"){
 			$template_value = str_replace(array("[[","]]"), array("{","}"), $template_value);
 		}
-		
+
 		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
 		// do this before calling content plugins in case these add javascript etc. to layout
 		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
@@ -1566,7 +1588,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (count($parts) == 3)
 			{
 				$fmt = $parts[1];
-				
+
 				// Must get this each time otherwise modules can't set their own timezone
 				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$jtz = $compparams->get("icaltimezonelive", "");
@@ -1576,7 +1598,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				else
 				{
-					$jtz = new DateTimeZone(@date_default_timezone_get());					
+					$jtz = new DateTimeZone(@date_default_timezone_get());
 				}
 				$outputtz = str_replace(array("}}","}"),"",$parts[2]);
 
@@ -1612,7 +1634,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$offset1 = $indate->getOffset();
 
 				// set the new timezone
-				$indate->setTimezone($outputtz);				
+				$indate->setTimezone($outputtz);
 				$offset2 = $indate->getOffset();;
 
 				$indate = $indate->getTimestamp()+$offset2-$offset1;

@@ -10,8 +10,9 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 
 	JevHtmlBootstrap::modal("action_dialogJQ".$row->rp_id());
-
+	$jinput = JFactory::getApplication()->input;
 	$user = JFactory::getUser();
+
 	if ($user->get("id")==0) return "";
 	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row)) ) { 
 
@@ -25,7 +26,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 			$popupw = $params->get("popupw",800);
 			$popuph = $params->get("popuph",600);
 		}
-		if (JRequest::getInt("pop",0)){
+		if ($jinput->getInt("pop", 0)){
 			// do not call the modal scripts if already in a popup window!
 			$popup=false;
 		}

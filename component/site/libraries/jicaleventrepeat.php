@@ -102,7 +102,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			{
 				$this->_endday = JevDate::mktime(0, 0, 0, $this->mdn(), $this->ddn()-1, $this->ydn());
 			}
-		}
+		}                
 		if ($this->_startday <= $testDate && $this->_endday >= $testDate)
 		{
 			// if only show on first day

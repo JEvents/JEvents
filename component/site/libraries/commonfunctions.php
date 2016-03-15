@@ -25,10 +25,11 @@ class JEV_CommonFunctions {
 
 		if (!isset($jEventsView)){
 			$cfg = JEVConfig::getInstance();
+			$jinput = JFactory::getApplication()->input;
 			// priority of view setting is url, cookie, config,
 			$jEventsView = $cfg->get('com_calViewName',"flat");
-			$jEventsView = JRequest::getString("jevents_view",$jEventsView,"cookie");
-			$jEventsView = JRequest::getString("jEV",$jEventsView);
+			$jEventsView = $jinput->cookie->getString("jevents_view", $jEventsView, null);
+			$jEventsView = $jinput->getString("jEV", $jEventsView);
 			// security check
 			if (!in_array($jEventsView, JEV_CommonFunctions::getJEventsViewList() )){
 				$jEventsView = "flat";

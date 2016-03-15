@@ -11,16 +11,28 @@ function Defaultgetstartenddates($view){
 	$filters = jevFilterProcessing::getInstance(array());
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
 	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
-		JRequest::setVar( 'startdate', '');
-		JRequest::setVar( 'enddate', '');
-		JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
-		JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
+                // if actively filtering then do not reset
+		if (!JRequest::getString("startdate",0)) {
+                    JRequest::setVar( 'startdate', '');
+        	    JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
+                }
+		if (!JRequest::getString("enddate",0)) {
+                    JRequest::setVar( 'enddate', '');
+                    JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
+                }
 		JFactory::getApplication()->setUserState( 'active_filter_menu ', 0);
 	}
 
-	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', "");
-	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', "");
+	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', JRequest::getString("startdate"));
+	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', JRequest::getString("enddate"));
 
+        if ($startdate!=""){
+            // WE have specified a start date in the URL so we should use it!
+            list($startyear,$startmonth,$startday)=explode("-",$startdate);
+            $view->assign("month",$startmonth);
+            $view->assign("day",$startday);
+            $view->assign("year",$startyear);        
+        }
 	if ($startdate==""){
 		if ($params->get("relative","rel")=="abs"){
 			$startdate = $params->get("absstart","");

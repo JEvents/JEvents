@@ -256,6 +256,19 @@ class DefaultModLatestView
 		$this->now_w = date('w', $this->now);
 		$t_datenowSQL = $t_datenow->toMysql();
 
+                // To pick up date from URL use this
+                /*
+                $ymd = JEVHelper::getYMD();
+                $t_datenow->setDate($ymd[0],$ymd[1],$ymd[2]);
+		$this->now = $t_datenow->toUnix(true);
+		$this->now_Y_m_d = date('Y-m-d', $this->now);
+		$this->now_d = date('d', $this->now);
+		$this->now_m = date('m', $this->now);
+		$this->now_Y = date('Y', $this->now);
+		$this->now_w = date('w', $this->now);
+		$t_datenowSQL = $t_datenow->toMysql();
+                */
+                
 		// derive the event date range we want based on current date and
 		// form the db query.
 
@@ -537,7 +550,11 @@ class DefaultModLatestView
 					{
 						break;
 					}
-					$date = JevDate::strtotime("+1 day", $date);
+                                        
+                                        // Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
+                                        list($yy,$mm,$dd) = explode("-", strftime("%Y-%m-%d", $date));
+                                        $date = JevDate::mktime(0, 0, 0,$mm, $dd+1, $yy);          
+                                        //echo strftime("%Y-%m-%d %H:%M<br/>", $date);
 					$i++;
 				}
 			}
@@ -821,7 +838,6 @@ class DefaultModLatestView
 		$viewname = $this->getTheme();
 
 		$cfg = JEVConfig::getInstance();
-		$compname = JEV_COM_COMPONENT;
 
 		// override global start now setting so that timelimit plugin can use it!
 		$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -970,6 +986,7 @@ class DefaultModLatestView
 	{
 		$datenow = JEVHelper::getNow();
 		$dispatcher = JEventDispatcher::getInstance();
+		$compname = JEV_COM_COMPONENT;
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1374,7 +1391,7 @@ class DefaultModLatestView
 												{
 													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
-													if (!isset($event->_privateevent) || $event->_privateevent != 3)
+													if (!isset($dayEvent->_privateevent) || $dayEvent->_privateevent != 3)
 													{
 														$temp = call_user_func(array($classname, "substitutefield"), $dayEvent, $subparts[0]);
 														if ($temp != "")

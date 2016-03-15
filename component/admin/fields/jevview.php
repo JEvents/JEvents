@@ -33,6 +33,8 @@ class JFormFieldJevview extends JFormFieldList
 
 	public function getOptions()
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		// Must load admin language files
 		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
@@ -52,7 +54,7 @@ class JFormFieldJevview extends JFormFieldList
 		}
 		sort( $views );
 		if ($this->menu !='hide'){
-                    $task = JRequest::getVar('task');
+                    $task = $jinput->get('task');
                     if ($task == "params.edit") {
                         unset($views['global']);
                     } else {

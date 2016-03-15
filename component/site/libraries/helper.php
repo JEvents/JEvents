@@ -45,8 +45,9 @@ class JEVHelper
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
+		$jinput = JFactory::getApplication()->input;
 
-		$option = JRequest::getCmd("option");
+		$option = $jinput->getCmd("option");
 		$cfg = JEVConfig::getInstance();
 		$lang = JFactory::getLanguage();
 
@@ -657,11 +658,14 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+                        // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
+                        firstDay: '.$offset.',
 			// Allowable date range for picker
 			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
+                        //showsTime:true,
 			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
 			});});'
 			);
@@ -767,7 +771,7 @@ class JEVHelper
 				$jevitemid[$evid] = $Itemid;
 				return $jevitemid[$evid];
 			}
-			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "crawler") === false)
+			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "edit") === false && strpos($active->link, "crawler") === false)
 			{
 				$jevitemid[$evid] = $active->id;
 				return $jevitemid[$evid];
@@ -786,63 +790,131 @@ class JEVHelper
 				{
 					foreach ($jevitems as $jevitem)
 					{
-						if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
-						{
-							$jevitemid[$evid] = $jevitem->id;
+                                            // skip manage events and edit events menu items unless we really need them
+                                            if (strpos($jevitem->link, "edit")>0 || strpos($jevitem->link, "admin")>0){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
 
-							if ($forcecheck)
-							{
-								$mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
-								$mcatids = array();
-								// New system
-								$newcats = $mparams->get("catidnew", false);
-								if ($newcats && is_array($newcats))
-								{
-									foreach ($newcats as $newcat)
-									{
-										if ($forcecheck->catid() == $newcat)
-										{
-											return $jevitemid[$evid];
-										}
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($newcat, $mcatids))
-										{
-											$mcatids[] = $newcat;
-										}
-									}
-								}
-								else
-								{
-									for ($c = 0; $c < 999; $c++)
-									{
-										$nextCID = "catid$c";
-										//  stop looking for more catids when you reach the last one!
-										if (!$nextCatId = $mparams->get($nextCID, null))
-										{
-											break;
-										}
-										if ($forcecheck->catid() == $mparams->get($nextCID, null))
-										{
-											return $jevitemid[$evid];
-										}
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($nextCatId, $mcatids))
-										{
-											$mcatids[] = $nextCatId;
-										}
-									}
-								}
-								// if no restrictions then can use this
-								if (count($mcatids) == 0)
-								{
-									return $jevitemid[$evid];
-								}
-								continue;
-							}
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
 
-							return $jevitemid[$evid];
-						}
+                                                    return $jevitemid[$evid];
+                                            }
+                                            
 					}
+                                        // we didn't find them amongst the other menu item so checn the edit and admin ones 
+					foreach ($jevitems as $jevitem)
+					{
+                                            if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
+
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
+
+                                                    return $jevitemid[$evid];
+                                            }
+                                        }
 				}
 			}
 		}
@@ -1075,6 +1147,8 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
 					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+
 				}
 			}
 			else if ($user->cancreate)
@@ -2585,7 +2659,7 @@ SCRIPT;
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING');
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING', 'pop' => 'UINT');
 			$app = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
@@ -2959,6 +3033,8 @@ SCRIPT;
 
 						if (is_callable("date_default_timezone_set"))
 						{
+							// Change timezone to UTC
+							$current_timezone = date_default_timezone_get();
 							date_default_timezone_set("UTC");
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 							// Change back

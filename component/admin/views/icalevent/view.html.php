@@ -121,6 +121,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		//Define to keep editor happy that it is defined.
+		$editStrings = "";
 		include(JEV_ADMINLIBS . "editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
@@ -346,13 +348,16 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	protected function translationLinks ($row) {
 		if ($this->languages)
 		{
+			$translations = array();
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
-			// Any existing translations ?
-			$db = JFactory::getDbo();
-			$db->setQuery("SELECT language FROM #__jevents_translation where evdet_id= ".$row->evdet_id);
-			$translations = $db->loadColumn();
+			// Any existing translations ?  Do NOT use isset here since there is a magic __get that will return false if its not defined
+			if ($row->evdet_id) {
+				$db = JFactory::getDbo();
+				$db->setQuery("SELECT language FROM #__jevents_translation where evdet_id= " . $row->evdet_id);
+				$translations = $db->loadColumn();
+			}
 			// test styling for existing translation
 			//$translations[] = "cy-GB";
 			?>

@@ -160,7 +160,7 @@ class iCalRRule extends JTable  {
 		if (($h+$m+$s)==0) {
 			//			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',($end-86400));
 			$duration = $end-$start;
-			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$start+$duration-1);
+			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$start + $duration-1);
 			//$repeat->endrepeat = JevDate::strftime('%Y-%m-%d 23:59:59',$end);
 		}
 		else {
@@ -269,7 +269,7 @@ class iCalRRule extends JTable  {
 		$this->_exdate = $exdate;
 		// TODO  "getRepetitions doesnt yet deal with Short months and 31st or leap years/week 53<br/>";
 		if ($dtend==0 && $duration>0){
-			$dtend=$dtstart+$duration;
+			$dtend=$dtstart + $duration;
 		}
 		if (!$recreate && isset($this->_repetitions)) return $this->_repetitions;
 		$this->_repetitions = array();
@@ -289,8 +289,12 @@ class iCalRRule extends JTable  {
 		= explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtstart));
 		//echo "$startHour,$startMin,$startSecond,$startDay,$startMonth,$startYear,$startWD,$dtstart<br/>";
 		$dtstartMidnight = JevDate::mktime(0,0,0,$startMonth,$startDay,$startYear);
-		list ($endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("%d:%m:%Y:%w",$dtend));
+		list ($endHour,$endMin,$endSecond,$endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtend));
 		$duration = $dtend-$dtstart;
+                // duration in days
+                $jevstart = new JevDate($dtstart);
+                $jevend = new JevDate($dtend);
+                $durationdays=$jevstart->diff($jevend)->days;
 		static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
 		static $dailySecs = 86400;
@@ -345,7 +349,9 @@ class iCalRRule extends JTable  {
 								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,1,1,$currentYear+1);
 								$targetStart = JevDate::strtotime("-$daynumber days",$targetStart);
 							}
-							$targetEnd = $targetStart+$duration;
+                                                        // TODO - Fix situation where summer time starts or ends for all day event here!!!
+							$targetEnd = $targetStart + $duration;
+                                                        
 							if ($countRepeats >= $this->count) {
 								return  $this->_repetitions;
 							}
@@ -392,7 +398,7 @@ class iCalRRule extends JTable  {
 							if ($day>$currentMonthDays) continue;
 
 							$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$day,$currentYear);
-							$targetEnd = $targetStart+$duration;
+							$targetEnd = $targetStart + $duration;
 							if ($countRepeats >= $this->count) {
 								return  $this->_repetitions;
 							}
@@ -494,8 +500,12 @@ class iCalRRule extends JTable  {
 
 									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
 									if ($currentMonth==JevDate::strftime("%m",$testStart)){
+										$currentYear = JevDate::strftime("%Y",$start);
 										$targetStart = $testStart;
-										$targetEnd = $targetStart + $duration;
+                                                                                // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                                $targetEnd = $targetStart + $duration;
+                                                                                $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
+                                                                                
 										if ($countRepeats >= $this->count) {
 											return  $this->_repetitions;
 										}
@@ -521,7 +531,9 @@ class iCalRRule extends JTable  {
 									$testStart = JevDate::mktime($h,$min,$s,$m,$targetstartDay,$y);
 									if ($currentMonth==JevDate::strftime("%m",$testStart)){
 										$targetStart = $testStart;
-										$targetEnd = $targetStart + $duration;
+                                                                                // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                                $targetEnd = $targetStart + $duration;
+                                                                                $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 										if ($countRepeats >= $this->count) {
 											return  $this->_repetitions;
 										}
@@ -591,7 +603,7 @@ class iCalRRule extends JTable  {
 
 									echo "I need to check negative bymonth days <br/>";
 									$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$currentMonthDays+1-$daynumber,$currentYear);
-									$targetEnd = $targetStart+$duration;
+									$targetEnd = $targetStart + $duration;
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
 									}
@@ -605,7 +617,9 @@ class iCalRRule extends JTable  {
 									if ($daynumber>$currentMonthDays) continue;
 									//echo "$startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear<br/>";
 									$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$daynumber,$currentYear);
-									$targetEnd = $targetStart+$duration;
+									$targetEnd = $targetStart + $duration;
+                                                                        // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                        $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$daynumber+$durationdays,$currentYear);
 									//echo "$targetStart $targetEnd $dtstartMidnight<br/>";
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
@@ -698,7 +712,9 @@ class iCalRRule extends JTable  {
 								$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
 								if ($currentMonth==JevDate::strftime("%m",$targetStart)){
-									$targetEnd = $targetStart + $duration;
+                                                                        // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
+                                                                        $targetEnd = $targetStart + $duration;
+                                                                        $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 									if ($countRepeats >= $this->count) {
 										return  $this->_repetitions;
 									}
@@ -764,7 +780,9 @@ class iCalRRule extends JTable  {
 
 							$targetStart = JevDate::mktime($startHour,$startMin,$startSecond,$currentMonth,$targetstartDay,$currentYear);
 
+                                                        // WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
 							$targetEnd = $targetStart + $duration;
+                                                        $targetEnd = JevDate::mktime($endHour,$endMin,$endSecond,$currentMonth,$targetstartDay+$durationdays,$currentYear);
 							if ($countRepeats >= $this->count) {
 								return  $this->_repetitions;
 							}
@@ -817,7 +835,7 @@ class iCalRRule extends JTable  {
 					$processedDates[] = $irregulardate;
 					// find the start and end times of the initial event
 					$irregulardate += ($dtstart - $dtstartMidnight);
-					$this->_makeRepeat($irregulardate,$irregulardate+$duration);
+					$this->_makeRepeat($irregulardate,$irregulardate + $duration);
 				}
 
 				return $this->_repetitions;
