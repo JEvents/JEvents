@@ -348,6 +348,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	protected function translationLinks ($row) {
 		if ($this->languages)
 		{
+			$translations = array();
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
