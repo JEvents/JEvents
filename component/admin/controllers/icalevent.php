@@ -1646,8 +1646,8 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$user = JFactory::getUser();
-		$where[] = "\n ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
-		$where[] = "\n icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+		$where[] = "\n ev.access " . ' IN (' . JEVHelper::getAid($user) . ')' ;
+		$where[] = "\n icsf.access " . ' IN (' . JEVHelper::getAid($user) . ')' ;
 
 		$hidepast = intval(JFactory::getApplication()->getUserStateFromRequest("hidepast", "hidepast", 1));
 		if ($hidepast)

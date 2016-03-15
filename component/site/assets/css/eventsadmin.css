@@ -735,7 +735,10 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     padding: 4px 6px 4px 30px;
     width: 65px;
 }
-
+/* Event editing rounded grey boxes */
+.roundedgrey {
+    background-color:#ddd;
+}
 /* Only for sites that want a max size for the popup! */
 
 @media (min-width: 1200px){

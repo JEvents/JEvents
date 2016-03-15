@@ -1178,7 +1178,6 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
-		$domain = "www.jevents.net";
 
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
@@ -1262,8 +1261,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
-		//$domain = "ubu.jev20j16.com";
-		$domain = "www.jevents.net";
+		//$domain = "http://ubu.j33jq.com";
+		$domain = "https://www.jevents.net";
 
 		//$extension  = JTable::getInstance("Extension");
 		//$extension->load($pkgupdate->extension_id);
@@ -1301,8 +1300,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "https://$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
-				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
+			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
+				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
 				$db->execute();
 				echo $db->getErrorMsg();
 			}
@@ -1324,7 +1323,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 				$db->execute();
 			}
 
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->execute();
 			echo $db->getErrorMsg();
 			$id = $db->insertid();
