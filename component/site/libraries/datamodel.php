@@ -90,6 +90,16 @@ class JEventsDataModel {
 		}
 		else {
 			// If accessing this function from outside the component then I must load suitable parameters
+			// We may be calling from a Jevents module so we should use the target menu item if available
+			$registry	= JRegistry::getInstance("jevents");
+			$moduleparams = $registry->get("jevents.moduleparams", false);
+			$moduleid = $registry->get("jevents.moduleid","");
+			if ($moduleparams && $moduleparams->get("target_itemid",0)>0 && $moduleid){
+				$menuitem = $menu->getItem($moduleparams->get("target_itemid",0));
+				if (!is_null($menuitem) && $menuitem->component==JEV_COM_COMPONENT){
+					$this->myItemid = $moduleparams->get("target_itemid",0);
+				}
+			}
 			$params = $menu->getParams($this->myItemid);
 		}
 
@@ -733,7 +743,7 @@ class JEventsDataModel {
 		if( $num_row ){
 
 			// process the new plugins
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
@@ -772,7 +782,7 @@ class JEventsDataModel {
 				$tmprow = new stdClass();
 				$tmprow->text = $row->location();
 
-				$dispatcher	= JDispatcher::getInstance();
+				$dispatcher	= JEventDispatcher::getInstance();
 
 				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
 				
@@ -860,7 +870,7 @@ class JEventsDataModel {
 
 			// See if a plugin can find our missing event - maybe on another menu item
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
 
 			return null;

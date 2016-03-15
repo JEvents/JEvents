@@ -129,7 +129,7 @@ class AdminUserModelUser extends JModelLegacy
 		$success =  $user->save($data);
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$set = $dispatcher->trigger('afterSaveUser', array ($user));
 	}
 		return $success;

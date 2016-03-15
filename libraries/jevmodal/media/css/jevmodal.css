@@ -19,11 +19,11 @@
 
 .jevmodal-full {
 	bottom:5%;
-	position:fixed;
+	position:fixed!important;
 	overflow: hidden;
 }
 .jevmodal-full.modal {
-	position: fixed;
+	position: fixed!important;
 	bottom: 5%;
 	top: 5%;
 	left: 5%;

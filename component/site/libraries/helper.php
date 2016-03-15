@@ -643,7 +643,12 @@ class JEVHelper
 			$document = JFactory::getDocument();
 			$document
 				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {Calendar.setup({
+				'jQuery(document).ready(function($) {
+					if (!jQuery("#' . $fieldid . '").length) {
+						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
+						return;
+					}
+			Calendar.setup({
 			// Id of the input field
 			inputField: "' . $fieldid . '",
 			// Format of the input field
@@ -652,6 +657,8 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+			// Allowable date range for picker
+			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
@@ -1111,7 +1118,7 @@ class JEVHelper
 			}
 
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}
 		if (is_null($isEventCreator)) $isEventCreator = false;
@@ -1152,7 +1159,7 @@ class JEVHelper
 					JRequest::setVar("task", "icalevent.edit");
 					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
 					$catids = implode(",", $catids);
-					$dispatcher = JDispatcher::getInstance();
+					$dispatcher = JEventDispatcher::getInstance();
 					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
 					$allowedcats = explode(",", $catids);
 					JRequest::setVar("task", $jevtask);
@@ -1449,7 +1456,7 @@ class JEVHelper
 				$isEventPublisher[$type] = true;
 			}
 
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
 		}
 
@@ -2351,7 +2358,7 @@ class JEVHelper
 			if (count($rows))
 			{
 				JPluginHelper::importPlugin('jevents');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
 				foreach ($rows as $k => $row)
 				{
@@ -2380,7 +2387,7 @@ class JEVHelper
 		else
 		{
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 
@@ -2563,7 +2570,7 @@ SCRIPT;
 			if (!in_array($filtervars, $filters))
 			{
 				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) . ")");
-				$db->query();
+				$db->execute();
 			}
 		}
 
@@ -2637,7 +2644,7 @@ SCRIPT;
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2660,7 +2667,7 @@ SCRIPT;
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2826,7 +2833,7 @@ SCRIPT;
 			$icalEvents = array_values($icalEvents);
 
 			// Call plugin on each event
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			ob_start();
 			JEVHelper::onDisplayCustomFieldsMultiRow($icalEvents);
 			ob_end_clean();
@@ -3534,4 +3541,18 @@ SCRIPT;
 		return;
 	}
 
+	public static function getCache($option) {
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		// only unlogged in users and not logged in OR all visitors grouped by access level
+		if ($params->get("com_cache", 1)  && $user->id == 0)
+		{
+			return JFactory::getCache($option);
+		}
+		else {
+			include_once("jevCache.php");
+			return new jevCache();
+		}
+	}
 }
+

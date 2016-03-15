@@ -216,7 +216,7 @@ RAWTEXT;
 			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 	}
 
@@ -259,7 +259,7 @@ RAWTEXT;
 			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 
 		// find the full set of ids currently in the calendar so taht we can remove cancelled ones
@@ -360,7 +360,7 @@ RAWTEXT;
 				}
 
 				// trigger post save plugins e.g. AutoTweet
-				$dispatcher     = JDispatcher::getInstance();
+				$dispatcher     = JEventDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				if ($matchingEvent) {
 					JRequest::setVar("evid", $vevent->ev_id);
@@ -472,25 +472,25 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
-					$db->query();
+					$db->execute();
 				}
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				
 				JFactory::getApplication()->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
@@ -554,23 +554,23 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
-					$db->query();
+					$db->execute();
 
 					// I also need to clean out associated custom data
-					$dispatcher	= JDispatcher::getInstance();
+					$dispatcher	= JEventDispatcher::getInstance();
 					// just incase we don't have jevents plugins registered yet
 					JPluginHelper::importPlugin("jevents");
 					$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($detailidstring));
@@ -578,7 +578,7 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				// I also need to delete custom data
 				$res = $dispatcher->trigger( 'onDeleteCustomEvent' , array(&$veventidstring));

@@ -8,6 +8,8 @@ map/
 zim/
 verna/
 flatplus/
+float/
+oldfloat/
 extplus
 ruthin
 iconic
@@ -19,3 +21,5 @@ zim
 verna
 flatplus
 clean
+float
+oldfloat

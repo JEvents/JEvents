@@ -115,7 +115,7 @@ class jevCategoryFilter extends jevFilter
 		}
 		
 		$filterList=array();
-		$filterList["title"]=JText::_("Select_Category");
+		$filterList["title"]="<label class='evcategory_label' for='".$this->filterType."_fv'>".JText::_("SELECT_CATEGORY")."</label>";
 
 		if ($allowAutoSubmit){
 			$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;submit(this.form)" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );

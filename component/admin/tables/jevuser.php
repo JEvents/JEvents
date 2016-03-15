@@ -107,7 +107,7 @@ class TableUser extends JTable
 		}
 		
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
 		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
@@ -161,7 +161,7 @@ class TableUser extends JTable
 	public static function getUserCount() {
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
@@ -190,7 +190,7 @@ class TableUser extends JTable
 		}
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));

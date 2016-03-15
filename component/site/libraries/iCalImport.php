@@ -87,6 +87,7 @@ class iCalImport
 				curl_setopt($ch, CURLOPT_POST, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                                curl_setopt($ch, CURLOPT_USERAGENT, "Jevents.net");
 				curl_setopt($ch,CURLOPT_ENCODING,'');
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
@@ -170,6 +171,19 @@ class iCalImport
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
 			} else {
+				//echo "first line = $firstLine<br/>";
+				//echo "raw imported data = ".$this->rawData."<br/>";
+				//exit();
+                                if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isAdmin()) {
+                                    $config = JFactory::getConfig();
+                                    $debug = (boolean) $config->get('debug');
+                                       if ($debug){
+                                           echo "Unable to fetch calendar data<br/>";
+                                           echo "Raw Data is ".$this->rawData;
+                                           exit();
+                                       }
+                                    return false;
+                                }
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!
@@ -380,7 +394,8 @@ class iCalImport
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
 				if (is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
 					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false){
-						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\-.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $value);
+						// See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
+						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $value);
 					}
 				}
 

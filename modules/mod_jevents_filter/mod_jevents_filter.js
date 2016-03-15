@@ -11,7 +11,7 @@ var JeventsFilters = {
 				if (!elem.length && form[item.id]){
 					elem = jQuery(form[item.id]);
 				}
-				if (elem) {
+				if (elem.length) {
 					var tag = elem.prop('tagName');
 					if (tag.toLowerCase() == 'select'  ){
 						elem.find('option').each(

@@ -121,10 +121,8 @@ class JFormFieldJevfilters extends JFormFieldText
 		$input .= '</div></td>
 			</tr></table>';
 
-        // load core and extra mootools
-        JHTML::_('behavior.framework');
-        JHtmlBehavior::framework();
-        JHtmlBehavior::framework(true);
+		// Include jQuery
+		JHtml::_('jquery.framework');
 
 		JEVHelper::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		

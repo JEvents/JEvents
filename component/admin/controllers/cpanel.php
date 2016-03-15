@@ -54,7 +54,7 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 			echo $db->getErrorMsg();
 		}
 		
@@ -153,7 +153,7 @@ class AdminCpanelController extends JControllerAdmin
 
 		if (!$user->authorise('core.admin')) {
 			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
-			$msgType = 'Error';
+			$msgType = 'error';
 			$mainframe->enqueueMessage($msg, $msgType);
 			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
 			return;
@@ -278,7 +278,7 @@ class AdminCpanelController extends JControllerAdmin
 								if (array_key_exists($current->rp_id, $exceptions))
 								{
 									$db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($current->startrepeat) . " WHERE rp_id=" . $current->rp_id);
-									$db->query();
+									$db->execute();
 									unset($eventexceptions[$eventid][$current->rp_id]);
 									unset($exceptions[$current->rp_id]);
 								}
@@ -323,7 +323,7 @@ class AdminCpanelController extends JControllerAdmin
 									if (array_key_exists($current->rp_id, $exceptions))
 									{
 										$db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($current->startrepeat) . " WHERE rp_id=" . $current->rp_id);
-										$db->query();
+										$db->execute();
 										unset($eventexceptions[$eventid][$current->rp_id]);
 										unset($exceptions[$current->rp_id]);
 									}
@@ -348,7 +348,7 @@ class AdminCpanelController extends JControllerAdmin
 							{
 								$generated = $generatedrepetitions[$c];
 								$db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($generated->startrepeat) . " WHERE rp_id=" . $current->rp_id);
-								$db->query();
+								$db->execute();
 								unset($eventexceptions[$eventid][$current->rp_id]);
 								unset($exceptions[$current->rp_id]);
 							}
@@ -376,7 +376,7 @@ class AdminCpanelController extends JControllerAdmin
 						{
 
 							$db->setQuery("Update #__jevents_exception set oldstartrepeat=" . $db->Quote($rep->startrepeat) . " WHERE rp_id=" . $rep->rp_id);
-							$db->query();
+							$db->execute();
 							//echo $rep->startrepeat . " " . $rep->rp_id . "<Br/>";
 						}
 					}
@@ -410,7 +410,7 @@ class AdminCpanelController extends JControllerAdmin
 		$blankruleassets = $db->loadObjectList('id');
 		if ($blankruleassets && count ($blankruleassets)>0){
 			$db->setQuery("UPDATE #__assets SET rules='".'{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}'."' WHERE name like 'com_jevents.category.%' AND rules=''");
-			$db->query();
+			$db->execute();
 		}
 
 		// Fix assets with no parents set!
@@ -545,7 +545,7 @@ class AdminCpanelController extends JControllerAdmin
 		$query = "UPDATE {$updatetable} SET asset_id = {$table->id}"
 				. " WHERE id = {$id}";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 
 		// Check for query error.
 		$error = $db->getErrorMsg();
@@ -592,7 +592,7 @@ class AdminCpanelController extends JControllerAdmin
 			if (array_key_exists($em->link, $links)){
 				$sql = "DELETE FROM #__menu where client_id and id=$em->id OR parent_id=$em->id";
 				$db->setQuery($sql);			
-				$db->query();			
+				$db->execute();
 				$updatemenus = true;
 			}
 			else {
@@ -644,7 +644,7 @@ class AdminCpanelController extends JControllerAdmin
 		where client_id=1 AND alias="jevents-tags"';
 
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 		echo $db->getErrorMsg();
 
 		// Fix Managed People menu item if needed
@@ -652,7 +652,7 @@ class AdminCpanelController extends JControllerAdmin
 		set menutype = "main" where client_id=1 AND menutype="" AND alias="com-jevpeople"';
 
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 		echo $db->getErrorMsg();
 
 		// Is the JEvents menu item completely missing or corrupted - if so then skip the rest
@@ -692,7 +692,7 @@ class AdminCpanelController extends JControllerAdmin
 								// remove duplicates
 								$sql = "DELETE FROM #__menu  where id=$checkitem->id";
 								$db->setQuery($sql);			
-								$db->query();
+								$db->execute();
 							}
 						}
 					}
@@ -705,7 +705,7 @@ class AdminCpanelController extends JControllerAdmin
 				'.$tochange.'
 				)';
 				$db->setQuery($sql);			
-				$db->query();
+				$db->execute();
 				echo $db->getErrorMsg();
 			}
 		}
@@ -725,7 +725,7 @@ class AdminCpanelController extends JControllerAdmin
 					'.$tochange.'
 					)';
 					$db->setQuery($sql);			
-					$db->query();
+					$db->execute();
 					echo $db->getErrorMsg();				
 				}
 			}
@@ -762,7 +762,7 @@ class AdminCpanelController extends JControllerAdmin
 			foreach ($tables as $tablename=>$table){
 				if ($table->Collation != $collation){
 					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");
-					$db->query();
+					$db->execute();
 				}
 			}
 		}
@@ -806,7 +806,7 @@ WHERE cat.id is null
 			if ($catid){
 				$sql = "UPDATE #__jevents_vevent SET catid=$catid where ev_id IN (".implode(",", $orphans).")";
 				$db->setQuery($sql);
-				$db->query();
+				$db->execute();
 				$hasOrphans  = true;
 			}
 		}
@@ -831,12 +831,12 @@ WHERE cat.id is null
 						if ($db->loadObject()){
 							$sql = "DELETE FROM #__jevents_catmap where evid=".$orphan->evid." AND catid=".$orphan->catid;
 							$db->setQuery($sql);
-							$db->query();
+							$db->execute();
 						}
 						else {
 							$sql = "UPDATE #__jevents_catmap SET catid=$catid where evid=".$orphan->evid." AND catid=".$orphan->catid;
 							$db->setQuery($sql);
-							$db->query();
+							$db->execute();
 						}
 						$hasOrphans  = true;
 					}
@@ -857,7 +857,7 @@ WHERE cat.id is null
 					foreach ($orphans as $orphan){
 						$sql = "REPLACE INTO #__jevents_catmap (evid, catid) VALUES($orphan, $catid)";
 						$db->setQuery($sql);
-						$db->query();
+						$db->execute();
 						$hasOrphans  = true;
 					}
 				}
@@ -876,7 +876,7 @@ WHERE ics.ics_id is null
 			if ($icsid){
 				$sql = "UPDATE #__jevents_vevent SET icsid=$icsid where ev_id IN (".implode(",", $orphans).")";
 				$db->setQuery($sql);
-				$db->query();
+				$db->execute();
 				$hasOrphans  = true;
 			}
 		}
@@ -901,7 +901,7 @@ WHERE ics.ics_id is null
 		{
 			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Orphans','Orphan ICS File',2,0,1,$catid,0)";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 
 			$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2 and label='Orphans'";
 			$db->setQuery($sql);

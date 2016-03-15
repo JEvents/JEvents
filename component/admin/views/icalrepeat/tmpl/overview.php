@@ -40,7 +40,7 @@ $mainspan = 10;
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 		<tr>
 			<th width="20" nowrap="nowrap">
-		            <input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0")?"Joomla.checkAll(this)":"checkAll(".count( $this->icalrows ).")"; ?>" />
+		            <?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
 			<th width="40%" nowrap="nowrap"><?php echo "Repeat Date/Time"; ?></th>

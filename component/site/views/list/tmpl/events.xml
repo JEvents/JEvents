@@ -16,7 +16,7 @@
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
 
-			<field name="com_calViewName" type="jevview" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
+			<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 			<field name="darktemplate" type="jevboolean" class="btn-group" default="0"  label="JEV_DARK_TEMPLATE" description="JEV_DARK_TEMPLATE_DESC"/>
 
 			<field name="columns" type="jevcolumns" default=""  label="JEV_SELECT_COLUMNS" description="JEV_SELECT_COLUMNS_DESC"/>

@@ -130,7 +130,7 @@ JPluginHelper::importPlugin("jevents");
 // Make this a config option - should not normally be needed
 //$db = JFactory::getDBO();
 //$db->setQuery( "SET SQL_BIG_SELECTS=1");
-//$db->query();
+//$db->execute();
 
 // Set the name for the controller and instantiate it
 $controllerClass = ucfirst($controllerName).'Controller';

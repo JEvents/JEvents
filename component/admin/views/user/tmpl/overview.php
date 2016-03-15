@@ -56,7 +56,7 @@ $mainspan = 10;
 					<thead>
 						<tr>
 							<th width="20">
-								<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->users) . ")"; ?>" />
+								<?php echo JHtml::_('grid.checkall'); ?>
 							</th>
 							<th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
 							<th width="20%" align="left" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>
