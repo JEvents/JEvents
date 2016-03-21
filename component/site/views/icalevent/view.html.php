@@ -105,18 +105,18 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		if ($params->get("editpopup", 0))
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
-			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'Cancel', false);
+			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL',  false);
 			JRequest::setVar('tmpl', 'component'); //force the component template
 		}
 		else
 		{
 			if ($this->id > 0)
 			{
-				$this->toolbarButton("icalrepeat.detail", 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton("icalrepeat.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 			}
 			else
 			{
-				$this->toolbarButton($evedrd, 'cancel', 'cancel', 'Cancel', false);
+				$this->toolbarButton($evedrd, 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 			}
 		}
 

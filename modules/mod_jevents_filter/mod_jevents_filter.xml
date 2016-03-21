@@ -33,6 +33,14 @@
 					default=""
 					label="JEV_FILTER_TARGET_MENU_ITEM"
 					description="JEV_FILTER_TARGET_MENU_ITEM_DESC" />
+      
+                                <field
+					name="alwaystarget"
+					type="jevboolean" class="btn-group"
+					default="0"
+					label="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM"
+					description="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM_DESC" />
+                                
 				<field
 					name="resetfilters"
 					type="list"
@@ -75,13 +83,6 @@
 					default="0" 
 					label="JEV_SHOW_IN_DETAILS" 
 					description="JEV_SHOW_IN_DETAILS_DESC" />
-
-				<field
-					name="alwaystarget"
-					type="jevboolean" class="btn-group"
-					default="0"
-					label="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM"
-					description="JEV_FILTER_ALWAYS_GO_TO_TARGET_MENU_ITEM_DESC" />
 
 				<field
 					name="filterlayout"

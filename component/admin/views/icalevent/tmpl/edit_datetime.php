@@ -389,6 +389,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 						label.addClass('active btn-danger');
 					}
 					input.prop('checked', true);
+                                        input.trigger('change');
 				}
 			});
 
@@ -415,6 +416,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 					input.prop('checked', false);
 					event.stopImmediatePropagation();
+                                        input.trigger('change');
 					return;
 				}
 				if (!input.prop('checked')) {
@@ -428,6 +430,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 				else {
 					label.removeClass('active btn-success btn-danger btn-primary');
 				}
+                                input.trigger('change');
 				// bootstrap takes care of the checkboxes themselves!
 				
 			});

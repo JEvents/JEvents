@@ -60,12 +60,12 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
-			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'Cancel', false);
+			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 			JRequest::setVar('tmpl', 'component'); //force the component template
 		}
 		else
 		{
-			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'Cancel', false);
+			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
 		
 		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);		
