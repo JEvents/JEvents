@@ -55,7 +55,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (JFile::exists($templatefile))
 				{
 					$loadedFromFile = true;
-					$templates[$template_name]['*'] = array();
+                                        if (!isset($templates[$template_name]['*'])){
+                                            $templates[$template_name]['*'] = array();
+                                        }
 					$templates[$template_name]['*'][0] =new stdClass();
 					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
 					$templates[$template_name]['*'][0]->params = null;
