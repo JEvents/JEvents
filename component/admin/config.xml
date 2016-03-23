@@ -376,7 +376,7 @@
 			<option value="5">5</option>
 		</field>		
 		<field name="modlatest_Days" type="jevtext" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"  conditional="module_config_from_component" conditions="1"/>
-		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+		<field name="startnow" type="jevboolean" class="btn-group" default="1" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>		
 

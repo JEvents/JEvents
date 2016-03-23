@@ -441,7 +441,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$this->view->setModel($model, true);
 		}
 
-		$cid = $jinput->get('cid', array(0), null);
+		$cid = $jinput->get('cid', array(0), "array");
 		JArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
@@ -1231,7 +1231,7 @@ class AdminIcaleventController extends JControllerAdmin
 	{
 		$jinput = JFactory::getApplication()->input;
 
-		$cid = $jinput->get('cid', array(0));
+		$cid = $jinput->get('cid', array(0), "array");
 		JArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 1);
 
@@ -1241,7 +1241,7 @@ class AdminIcaleventController extends JControllerAdmin
 	{
 		$jinput = JFactory::getApplication()->input;
 
-		$cid = $jinput->get('cid', array(0));
+		$cid = $jinput->get('cid', array(0), "array");
 		JArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 0);
 	}
@@ -1255,7 +1255,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$jinput = JFactory::getApplication()->input;
 
-		$cid = $jinput->get('cid', array(0));
+		$cid = $jinput->get('cid', array(0), "array");
 		JArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid

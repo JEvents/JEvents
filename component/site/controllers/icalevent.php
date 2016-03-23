@@ -68,14 +68,14 @@ class ICalEventController extends AdminIcaleventController   {
 			}			
 		}
 		$pop = intval($jinput->getInt('pop', 0 ));
-		$uid = urldecode(($jinput->get('uid', "")));
+		$uid = urldecode(($jinput->getString('uid', "")));
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
 		// seth month and year to be used by mini-calendar if needed
 		if (isset($repeat)) {
-			if (!$jinput->get("month", 0)) $jinput->set("month", $repeat->mup());
-			if (!$jinput->get("year", 0))  $jinput->set("year", $repeat->yup());
+			if (!$jinput->getInt("month", 0)) $jinput->set("month", $repeat->mup());
+			if (!$jinput->getInt("year", 0))  $jinput->set("year", $repeat->yup());
 		}
 
 		$document = JFactory::getDocument();

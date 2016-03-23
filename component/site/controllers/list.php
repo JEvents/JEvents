@@ -37,7 +37,7 @@ class ListController extends JControllerLegacy   {
 		$jinput = JFactory::getApplication()->input;
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( $jinput->getVar('start', $jinput->get('limitstart', 0)));
+		$limitstart = intval( $jinput->getInt('start', $jinput->getInt('limitstart', 0)));
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
