@@ -219,6 +219,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->form->setFieldAttribute("description", "buttons", "false");
 
+                
+                $dispatcher = JEventDispatcher::getInstance();
+                $dispatcher->trigger('onTranslateEvent', array(&$this->row), true);
+                                
 		$this->addTranslationToolbar();
 	}
 

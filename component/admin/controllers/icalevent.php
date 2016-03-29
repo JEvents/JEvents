@@ -680,6 +680,7 @@ class AdminIcaleventController extends JControllerAdmin
 				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 				return false;
 			}
+                        $this->view->assign("row",$row);
 
 		}
 		else {
@@ -703,7 +704,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function savetranslation ()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -767,7 +768,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function deletetranslation ()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		$jinput = JFactory::getApplication()->input;
 
