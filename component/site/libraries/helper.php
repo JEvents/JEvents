@@ -665,8 +665,7 @@ class JEVHelper
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
-                        //showsTime:true,
-			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+                        //showsTime:true
 			});});'
 			);
 			$done[] = $fieldid;
