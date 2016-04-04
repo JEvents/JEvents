@@ -47,8 +47,8 @@ class AlternativeViewICalevent extends JEventsAlternativeView
 			$this->day = $this->data['row']->dup();
 
 			// seth month and year to be used by mini-calendar if needed
-			if (!$jinput->get("month",0)) $jinput->set("month", $this->month);
-			if (!$jinput->get("year",0))  $jinput->set("year", $this->year);
+			if (!$jinput->getInt("month",0)) $jinput->set("month", $this->month);
+			if (!$jinput->getInt("year",0))  $jinput->set("year", $this->year);
 		}
 		
 	}	

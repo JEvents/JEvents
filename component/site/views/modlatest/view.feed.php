@@ -30,7 +30,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 	{
 		$jinput = JFactory::getApplication()->input;
 
-		$modid = intval(($jinput->get('modid', 0)));
+		$modid = intval(($jinput->getInt('modid', 0)));
 		if ($modid<0){
 			$modid = 0;
 		}

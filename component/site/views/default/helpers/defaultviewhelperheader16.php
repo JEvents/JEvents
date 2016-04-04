@@ -84,13 +84,13 @@ function DefaultViewHelperHeader16($view){
 
 		if ($pop) { ?>
 			<li class="print-icon">
-			<a href="javascript:void(0);" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 		              	<span class="icon-print"> </span>
 			</a>
 			</li> <?php
 		} else { ?>
 			<li class="print-icon">
-			<a href="javascript:void(0);" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 				<span class="icon-print"> </span>
 			</a>
 			</li> <?php
@@ -120,7 +120,7 @@ function DefaultViewHelperHeader16($view){
 
 		?>
 		<li class="email-icon">
-			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
 				<span class="icon-envelope"> </span>
 			</a>
 		</li>

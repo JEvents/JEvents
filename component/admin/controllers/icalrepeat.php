@@ -49,7 +49,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$db = JFactory::getDBO();
 		$publishedOnly = false;
-		$cid = $jinput->get('cid', array(0));
+		$cid = $jinput->get('cid', array(0),"array");
 		JArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)

@@ -126,7 +126,8 @@ class ModCalController extends JControllerLegacy   {
 		$content = $modview->getAjaxCal($modid,$month,$year);
 		$content = str_replace("<script style='text/javascript'>xyz=1;", "XYZ", $content);
 		$content = str_replace("zyx=1;</script>", "ZYX", $content);
-		preg_match("/XYZ(.*)ZYX/s", $content, $match);
+                // ungreedy match 
+		preg_match("/XYZ(.*)ZYX/sU", $content, $match);
 		$script = "";
 		if (isset($match[1])){
 			$script = $match[1];

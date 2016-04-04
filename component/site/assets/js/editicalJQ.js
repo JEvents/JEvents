@@ -669,20 +669,26 @@ function toggleNoEndTime(){
 function toggleGreyBackground(inputtype,inputelem, tomatch) {
 	if (inputtype==tomatch){
 		inputelem.disabled = false;
-		inputelem.closest('fieldset').css("background-color","#ffffff");
+		//inputelem.closest('fieldset').css("background-color","#ffffff");
+                inputelem.closest('fieldset').removeClass("roundedgrey");
 		inputelem.closest('fieldset').css("opacity","1");
 		if (inputelem.closest('fieldset').find('legend')){
-			inputelem.closest('fieldset').find('legend').css("background-color","#ffffff");
-			jevjq("#"+inputtype).css("background-color","#ffffff");
+			//inputelem.closest('fieldset').find('legend').css("background-color","#ffffff");
+			//jevjq("#"+inputtype).css("background-color","#ffffff");
+			inputelem.closest('fieldset').find('legend').removeClass("roundedgrey");
+			jevjq("#"+inputtype).removeClass("roundedgrey");
 		}
 	}
 	else {
 		inputelem.disabled = true;
-		inputelem.closest('fieldset').css("background-color","#dddddd");
+		//inputelem.closest('fieldset').css("background-color","#dddddd");
+                inputelem.closest('fieldset').addClass("roundedgrey");
 		inputelem.closest('fieldset').css("opacity","0.7");
 		if (inputelem.closest('fieldset').find('legend')){
-			inputelem.closest('fieldset').find('legend').css("background-color","#dddddd");
-			jevjq("#"+inputtype).css("background-color","#dddddd");
+			//inputelem.closest('fieldset').find('legend').css("background-color","#dddddd");
+			//jevjq("#"+inputtype).css("background-color","#dddddd");
+			inputelem.closest('fieldset').find('legend').addClass("roundedgrey");
+			jevjq("#"+inputtype).addClass("roundedgrey");
 		}
 	}
 }

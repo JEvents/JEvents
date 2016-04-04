@@ -62,7 +62,7 @@ function addJevModalHtml (id){
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	var myModal="";
 	var modalsize='jevmodal-full';
-	if (!jQuery("#"+id).length){
+	if (jQuery("#"+id).length==0){
 		if (bootstrap3_enabled){
 			myModal = '<div class="modal   fade ' + modalsize + ' jevmodal" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="'+id+'Label" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-lg">'

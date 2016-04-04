@@ -55,7 +55,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (JFile::exists($templatefile))
 				{
 					$loadedFromFile = true;
-					$templates[$template_name]['*'] = array();
+                                        if (!isset($templates[$template_name]['*'])){
+                                            $templates[$template_name]['*'] = array();
+                                        }
 					$templates[$template_name]['*'][0] =new stdClass();
 					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
 					$templates[$template_name]['*'][0]->params = null;
@@ -411,6 +413,29 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{RGBA}}":
+					$bgcolor = $event->bgcolor();
+					$search[] = $strippedmatch;
+					$bgcolor = $bgcolor == "" ? "#ffffff" : $bgcolor;
+                                        // skip the #
+                                        if (strlen($bgcolor) == 7){
+                                            $bgcolor = substr($bgcolor, 1);
+                                        }
+                                        if (strlen($bgcolor) == 6)
+                                            list($r, $g, $b) = array($bgcolor[0].$bgcolor[1],
+                                                                     $bgcolor[2].$bgcolor[3],
+                                                                     $bgcolor[4].$bgcolor[5]);
+                                        elseif (strlen($bgcolor) == 3)
+                                            list($r, $g, $b) = array($bgcolor[0].$bgcolor[0], $bgcolor[1].$bgcolor[1], $bgcolor[2].$bgcolor[2]);
+                                        else
+                                            return false;
+
+                                        $r = hexdec($r); $g = hexdec($g); $b = hexdec($b);
+                                        $replace[] = "rgba($r, $g, $b, 0.3)";
+                                        
+					$blank[] = "";
+					break;
+                                    
 				case "{{FGCOLOUR}}":
 					$search[] = "{{FGCOLOUR}}";
 					$replace[] = $event->fgcolor();

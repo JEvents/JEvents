@@ -187,9 +187,9 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<input class="inputbox" type="text" name="count" id="count" size="3" maxlength="3" value="<?php echo $this->row->count(); ?>" onchange="checkInterval();" /><span id='count_label' style="margin-left:1em"><?php echo JText::_('REPEATS'); ?></span>
 			</fieldset>
 		</div>
-		<div style="float:left;margin-left:20px!important;background-color:#dddddd;" id="cu_until">
-			<fieldset style="background-color:#dddddd">
-				<legend  style="background-color:#dddddd"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
+		<div style="float:left;margin-left:20px!important;" id="cu_until" class="roundedgrey">
+			<fieldset class="roundedgrey">
+				<legend  class="roundedgrey"><input type="radio" name="countuntil" value="until" id="cuu" onclick="toggleCountUntil('cu_until');" /><?php echo JText::_('REPEAT_UNTIL'); ?></legend>
 				<?php
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear = JEVHelper::getMinYear();
@@ -389,6 +389,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 						label.addClass('active btn-danger');
 					}
 					input.prop('checked', true);
+                                        input.trigger('change');
 				}
 			});
 
@@ -415,6 +416,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 					label.removeClass('active btn-success btn-danger btn-primary');
 					input.prop('checked', false);
 					event.stopImmediatePropagation();
+                                        input.trigger('change');
 					return;
 				}
 				if (!input.prop('checked')) {
@@ -428,6 +430,7 @@ if ($this->row->id() != 0 && $this->row->freq())
 				else {
 					label.removeClass('active btn-success btn-danger btn-primary');
 				}
+                                input.trigger('change');
 				// bootstrap takes care of the checkboxes themselves!
 				
 			});

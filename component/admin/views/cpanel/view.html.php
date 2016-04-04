@@ -448,12 +448,27 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			function getValidManifestFile($manifest)
 	{
 		$filecontent = JFile::read($manifest);
-		if (stripos($filecontent, "jevents.net") === false && stripos($filecontent, "gwesystems.com") === false && stripos($filecontent, "joomlacontenteditor") === false && stripos($filecontent, "virtuemart") === false && stripos($filecontent, "sh404sef") === false && stripos($filecontent, "TechJoomla") === false && stripos($filecontent, "hikashop") === false )
+		if (stripos($filecontent, "jevents.net") === false 
+                        && stripos($filecontent, "gwesystems.com") === false 
+                        && stripos($filecontent, "joomlacontenteditor") === false 
+                        && stripos($filecontent, "virtuemart") === false 
+                        && stripos($filecontent, "sh404sef") === false 
+                        && stripos($filecontent, "comprofiler") === false 
+                        && stripos($filecontent, "community") === false 
+                        && stripos($filecontent, "TechJoomla") === false 
+                        && stripos($filecontent, "hikashop") === false )
 		{
 			return false;
 		}
 		// for JCE and Virtuemart only check component version number
-		if (stripos($filecontent, "joomlacontenteditor") !== false || stripos($filecontent, "virtuemart") !== false || stripos($filecontent, "sh404sef") !== false || strpos($filecontent, "JCE") !== false || strpos($filecontent, "TechJoomla") !== false || strpos($filecontent, "hikashop") !== false)
+		if (stripos($filecontent, "joomlacontenteditor") !== false 
+                        || stripos($filecontent, "virtuemart") !== false 
+                        || stripos($filecontent, "sh404sef") !== false
+                        || strpos($filecontent, "JCE") !== false 
+                        || strpos($filecontent, "Community") !== false 
+                        || strpos($filecontent, "Comprofiler") !== false 
+                        || strpos($filecontent, "TechJoomla") !== false
+                        || strpos($filecontent, "hikashop") !== false)
 		{
 			if (strpos($filecontent, "type='component'") === false && strpos($filecontent, 'type="component"') === false)
 			{
@@ -464,7 +479,16 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$manifestdata = JApplicationHelper::parseXMLInstallFile($manifest);
 		if (!$manifestdata)
 			return false;
-		if (strpos($manifestdata["authorUrl"], "jevents") === false && strpos($manifestdata["authorUrl"], "gwesystems") === false && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false && strpos($manifestdata["authorUrl"], "virtuemart") === false && strpos($manifestdata['name'], "sh404SEF") === false && strpos($manifestdata['author'], "TechJoomla") === false && strpos($manifestdata['name'], "HikaShop") === false)
+		if (strpos($manifestdata["authorUrl"], "jevents") === false 
+                        && strpos($manifestdata["authorUrl"], "gwesystems") === false
+                        && strpos($manifestdata["authorUrl"], "joomlacontenteditor") === false 
+                        && strpos($manifestdata["authorUrl"], "virtuemart") === false 
+                        && strpos($manifestdata['name'], "sh404SEF") === false 
+                        && strpos($manifestdata['name'], "Community") === false 
+                        && strpos($manifestdata['name'], "comprofiler") === false 
+                        && strpos($manifestdata['author'], "TechJoomla") === false 
+                        && strpos($manifestdata['name'], "HikaShop") === false
+                        )
 		{
 			return false;
 		}
@@ -710,8 +734,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "sh404sef\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "virtuemart\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jce\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "comprofiler\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "community\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop_j3\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true));
 		foreach ($xmlfiles3 as $manifest)
 		{
@@ -807,7 +834,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		foreach ($xmlfiles2 as $manifest)
 		{
-			if (strpos($manifest, "Zend") > 0)
+			if (strpos($manifest, "Zend") > 0 || strpos($manifest, "invalid") >= 0)
 				continue;
 
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
@@ -1178,7 +1205,6 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
-		$domain = "www.jevents.net";
 
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
@@ -1262,8 +1288,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = new JEventsVersion();
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ","",$version);
-		//$domain = "ubu.jev20j16.com";
-		$domain = "www.jevents.net";
+		//$domain = "http://ubu.j33jq.com";
+		$domain = "https://www.jevents.net";
 
 		//$extension  = JTable::getInstance("Extension");
 		//$extension->load($pkgupdate->extension_id);
@@ -1301,8 +1327,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 				}
 			}
 			*/
-			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "https://$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
-				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
+			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "$domain/updates/$clubcode/$extensionname-update-$version.xml"  || $pkgupdate->enabled != 1) {
+				$db->setQuery("UPDATE #__update_sites set name=".$db->quote(ucwords($extension->name)).", location=".$db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml").", enabled = 1 WHERE update_site_id=".$pkgupdate->update_site_id);
 				$db->execute();
 				echo $db->getErrorMsg();
 			}
@@ -1324,7 +1350,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 				$db->execute();
 			}
 
-			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("https://$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
+			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (".$db->quote(ucwords($extension->name)).",'extension',".$db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml").",'1','0')");
 			$db->execute();
 			echo $db->getErrorMsg();
 			$id = $db->insertid();

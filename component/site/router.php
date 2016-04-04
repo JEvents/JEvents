@@ -78,7 +78,7 @@ function JEventsBuildRoute(&$query)
 	$dispatcher->trigger( 'onJEventsRoute');
 
 	// Translatable URLs
-	if ($params->get("newsef", 0))
+	if ($params->get("newsef", 1))
 	{
 		return JEventsBuildRouteNew($query, $task);
 	}

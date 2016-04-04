@@ -32,7 +32,7 @@ class DefaultsModelDefault extends JModelLegacy
 		parent::__construct();
 		$jinput = JFactory::getApplication()->input;
 		$id = $jinput->getInt("id");
-		$edit	= $jinput->get('edit', true);
+		$edit	= $jinput->getBool('edit', true);
 		if($edit){
 			$this->setId($id);
 		}

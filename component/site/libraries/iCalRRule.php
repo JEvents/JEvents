@@ -291,9 +291,11 @@ class iCalRRule extends JTable  {
 		$dtstartMidnight = JevDate::mktime(0,0,0,$startMonth,$startDay,$startYear);
 		list ($endHour,$endMin,$endSecond,$endDay,$endMonth,$endYear,$endWD) = explode(":",JevDate::strftime("0%H:0%M:0%S:%d:%m:%Y:%w",$dtend));
 		$duration = $dtend-$dtstart;
-                // duration in days
-                $jevstart = new JevDate($dtstart);
-                $jevend = new JevDate($dtend);
+                // duration in days (work in the middle part of the day in case the clocks change and make the end time a couple of hours later too)
+                $jevStart = JevDate::mktime(12,0,0,$startMonth,$startDay,$startYear);
+                $jevstart = new JevDate($jevStart);
+                $jevEnd= JevDate::mktime(15,0,0,$endMonth,$endDay,$endYear);
+                $jevend = new JevDate($jevEnd);
                 $durationdays=$jevstart->diff($jevend)->days;
 		static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 		static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");

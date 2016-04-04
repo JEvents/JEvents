@@ -170,7 +170,7 @@ class AdminDefaultsController extends JControllerForm {
 		$jinput = JFactory::getApplication()->input;
 
 		$db= JFactory::getDBO();
-		$cid = $jinput->get("cid", array());
+		$cid = $jinput->get("cid", array(), "array");
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();
@@ -189,7 +189,7 @@ class AdminDefaultsController extends JControllerForm {
 		$db= JFactory::getDBO();
 		$jinput = JFactory::getApplication()->input;
 
-		$cid = $jinput->get("cid",array());
+		$cid = $jinput->get("cid",array(), "array");
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
 			$this->redirect();

@@ -2282,7 +2282,11 @@ class JEventsDBModel
 						foreach (get_object_vars($translations[$icalrows[$i]->_evdet_id]) as $k=>$v){
 							$k = "_".$k;
 							if ($v !="" && isset($icalrows[$i]->$k)){
-								$icalrows[$i]->$k = $v;
+                                                            // hard coded workaround for translated locations overwritng usefuldata
+                                                            if ($k == "_location" && is_numeric($v)){
+                                                                continue;
+                                                            }
+                                                            $icalrows[$i]->$k = $v;
 							}
 						}
 					}

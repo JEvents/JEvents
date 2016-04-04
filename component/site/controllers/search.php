@@ -49,7 +49,7 @@ class SearchController extends JControllerLegacy   {
 		if (JString::strlen($keyword) > $upper_limit) {
 			$keyword	= JString::substr($keyword, 0, $upper_limit - 1);
 		}
-		$keyword = $db->escape($jinput->get('keyword', ''));
+		$keyword = $db->escape($jinput->getString('keyword', ''));
 
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();

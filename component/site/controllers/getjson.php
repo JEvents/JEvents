@@ -49,8 +49,8 @@ class GetjsonController extends JControllerLegacy
 		$this->datamodel = new JEventsDataModel();
 
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$start = $jinput->get('start', "$year-$month-$day");
-		$end = $jinput->get('end', "$year-$month-$day");
+		$start = $jinput->getString('start', "$year-$month-$day");
+		$end = $jinput->getString('end', "$year-$month-$day");
 		$limitstart = 0;
 		$limit = 0;
 

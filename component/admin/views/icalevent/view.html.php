@@ -219,6 +219,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->form->setFieldAttribute("description", "buttons", "false");
 
+                
+                $dispatcher = JEventDispatcher::getInstance();
+                $dispatcher->trigger('onTranslateEvent', array(&$this->row), true);
+                                
 		$this->addTranslationToolbar();
 	}
 
@@ -348,11 +352,12 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	protected function translationLinks ($row) {
 		if ($this->languages)
 		{
+			$translations = array();
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js','components/'.JEV_COM_COMPONENT.'/assets/js/');
 
-			// Any existing translations ?
-			if (isset($row->evdet_id)) {
+			// Any existing translations ?  Do NOT use isset here since there is a magic __get that will return false if its not defined
+			if ($row->evdet_id) {
 				$db = JFactory::getDbo();
 				$db->setQuery("SELECT language FROM #__jevents_translation where evdet_id= " . $row->evdet_id);
 				$translations = $db->loadColumn();

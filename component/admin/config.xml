@@ -306,7 +306,7 @@
 			<option value="1">JEV_YES_ONLY_FOR_NOT_LOGGED_IN_VISITORS</option>
 			<option value="2">JEV_YES_BY_USER_ACCESS_LEVEL</option>
 		</field>					
-		<field name="newsef" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
+		<field name="newsef" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		<field name="nocatindetaillink" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS" description="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS_DESC" conditional="newsef" conditions="1"/>
 		<field name="com_blockRobots" type="jevlist" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
@@ -376,7 +376,7 @@
 			<option value="5">5</option>
 		</field>		
 		<field name="modlatest_Days" type="jevtext" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"  conditional="module_config_from_component" conditions="1"/>
-		<field name="startnow" type="jevboolean" class="btn-group" default="0" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+		<field name="startnow" type="jevboolean" class="btn-group" default="1" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>		
 
