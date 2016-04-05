@@ -892,7 +892,7 @@ class AdminIcaleventController extends JControllerAdmin
 					$day = $event->dup();
 					$jinput->set("year", $year);
 					$jinput->set("month", $month);
-					$jinput->set("day".$day);
+					$jinput->set("day", $day);
 				}
 				if ($event && $event->state())
 				{
