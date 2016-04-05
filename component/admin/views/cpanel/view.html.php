@@ -448,7 +448,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			function getValidManifestFile($manifest)
 	{
 		$filecontent = file_get_contents($manifest);
-		if (stripos($filecontent, "jevents.net") === false 
+		if ( stripos($filecontent, "jevents.net") === false
                         && stripos($filecontent, "gwesystems.com") === false 
                         && stripos($filecontent, "joomlacontenteditor") === false 
                         && stripos($filecontent, "virtuemart") === false 
@@ -456,7 +456,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
                         && stripos($filecontent, "comprofiler") === false 
                         && stripos($filecontent, "community") === false 
                         && stripos($filecontent, "TechJoomla") === false 
-                        && stripos($filecontent, "hikashop") === false )
+                        && stripos($filecontent, "hikashop") === false
+						&& stripos($filecontent, "acymailing") === false )
 		{
 			return false;
 		}
@@ -488,6 +489,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
                         && strpos($manifestdata['name'], "comprofiler") === false 
                         && strpos($manifestdata['author'], "TechJoomla") === false 
                         && strpos($manifestdata['name'], "HikaShop") === false
+						&& strpos($manifestdata['name'], "AcyMailing") === false
                         )
 		{
 			return false;
