@@ -447,7 +447,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	private
 			function getValidManifestFile($manifest)
 	{
-		$filecontent = JFile::read($manifest);
+		$filecontent = file_get_contents($manifest);
 		if (stripos($filecontent, "jevents.net") === false 
                         && stripos($filecontent, "gwesystems.com") === false 
                         && stripos($filecontent, "joomlacontenteditor") === false 
@@ -739,7 +739,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop_j3\.xml", true, true),
-				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true));
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "acymailing\.xml", true, true));
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
