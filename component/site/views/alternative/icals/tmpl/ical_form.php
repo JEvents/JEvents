@@ -180,7 +180,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					//$yt = $yt . " CHECKED";
 				}
-				else if ($jinput->get('years', 0) && in_array($y, $jinmput->post->get('years', '', null)))
+				else if ($jinput->get('years', 0) && in_array($y, $jinput->post->get('years', '', null)))
 				{
 					$yt = $yt . " CHECKED";
 				}
