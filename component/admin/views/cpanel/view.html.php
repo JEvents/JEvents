@@ -447,8 +447,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	private
 			function getValidManifestFile($manifest)
 	{
-		$filecontent = JFile::read($manifest);
-		if (stripos($filecontent, "jevents.net") === false 
+		$filecontent = file_get_contents($manifest);
+		if ( stripos($filecontent, "jevents.net") === false
                         && stripos($filecontent, "gwesystems.com") === false 
                         && stripos($filecontent, "joomlacontenteditor") === false 
                         && stripos($filecontent, "virtuemart") === false 
@@ -456,7 +456,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
                         && stripos($filecontent, "comprofiler") === false 
                         && stripos($filecontent, "community") === false 
                         && stripos($filecontent, "TechJoomla") === false 
-                        && stripos($filecontent, "hikashop") === false )
+                        && stripos($filecontent, "hikashop") === false
+						&& stripos($filecontent, "acymailing") === false )
 		{
 			return false;
 		}
@@ -488,6 +489,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
                         && strpos($manifestdata['name'], "comprofiler") === false 
                         && strpos($manifestdata['author'], "TechJoomla") === false 
                         && strpos($manifestdata['name'], "HikaShop") === false
+						&& strpos($manifestdata['name'], "AcyMailing") === false
                         )
 		{
 			return false;
@@ -739,7 +741,8 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jmailalerts\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop\.xml", true, true),
 				JFolder::files(JPATH_ADMINISTRATOR . "/components", "hikashop_j3\.xml", true, true),
-				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true));
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "jev_latestevents\.xml", true, true),
+				JFolder::files(JPATH_ADMINISTRATOR . "/components", "acymailing\.xml", true, true));
 		foreach ($xmlfiles3 as $manifest)
 		{
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
