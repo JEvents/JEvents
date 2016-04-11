@@ -5,7 +5,8 @@ function callNavigation(link) {
 			type : 'GET',
 			// use JSONP to allow cross-domain calling of this data!
 			dataType : 'jsonp',
-			url : link,
+                        cache : false,
+                        url : link,
 			contentType: "application/json; charset=utf-8",
 			scriptCharset: "utf-8"
 			})

@@ -127,7 +127,6 @@ echo JToolbar::getInstance('toolbar')->render('toolbar');
 	window.setTimeout("setupTranslationBootstrap()", 500);
 
 	function setupTranslationBootstrap(){
-                                            alert(0);
 		(function($){
 			// Turn radios into btn-group
 			$('.radio.btn-group label').addClass('btn');

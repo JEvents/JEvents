@@ -68,14 +68,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$this->assignRef("component", $component);
 
 		// Set the layout
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->setLayout('edit');
-		}
-		else
-		{
-			$this->setLayout('edit16');
-		}
+		$this->setLayout('edit');
 
 	}
 

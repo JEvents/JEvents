@@ -221,7 +221,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
                 
                 $dispatcher = JEventDispatcher::getInstance();
-                $dispatcher->trigger('onTranslateEvent', array(&$this->row), true);
+                $dispatcher->trigger('onTranslateEvent', array(&$this->row, $lang), true);
                                 
 		$this->addTranslationToolbar();
 	}
