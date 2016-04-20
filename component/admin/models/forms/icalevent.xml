@@ -47,5 +47,8 @@
 		<field name="noendtime" type="checkbox" layoutfield="JEV_EVENT_NOENDTIME"  labelclass="" class="checkbox"  label="JEV_EVENT_NOENDTIME"
 			onclick="toggleNoEndTime();"    description="JEV_EVENT_NOENDTIME_TIP" value="1" />
 
+		<field name="tzid" type="jevtimezone" default="0"  layoutfield="TZID"  labelclass=""
+			   label="JEV_EVENT_TIMEZONE" onchange="updateRepeatWarning();" description="JEV_EVENT_TIMEZONE_TIP" />
+                
 	</fieldset>
 </form>

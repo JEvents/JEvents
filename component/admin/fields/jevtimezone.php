@@ -28,6 +28,13 @@ class JFormFieldJevtimezone extends JFormField
 
 		if (class_exists("DateTimeZone"))
 		{
+                        $params = JComponentHelper::getParams("com_jevents");
+                        $choosefrom =  $params->get("offeredtimezones", array());
+                        //? explode(",",$this->getAttribute("choosefrom", "")) : array();
+
+                        if (!is_array($choosefrom) || (count($choosefrom)==1 && $choosefrom[0]=="")) {
+                            $choosefrom = array();
+                        }
 			$zones = DateTimeZone::listIdentifiers();
 			static $options;
 			if (!isset($options))
@@ -40,10 +47,30 @@ class JFormFieldJevtimezone extends JFormField
 						continue;
 					if (strpos($zone, "Etc") === 0)
 						continue;
+                                        if (count($choosefrom) && !in_array($zone,$choosefrom)){
+						continue;                                            
+                                        }
 					$options[] = JHTML::_('select.option', $zone, $zone);
 				}
 			}
-			return JHTML::_('select.genericlist', $options, $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id);
+			$attr = array('list.attr' => 'class="'.$this->class.'" ',
+                                        'list.select' => $this->value, 
+                                        'option.key' => 'value',
+                                        'option.text' => 'text',
+                                        'id' => $this->id
+                                );                                               
+     
+            		$attr["list.attr"] .= !empty($this->size) ? ' size="' . $this->size . '"' : '';
+                        $attr["list.attr"] .= !empty($this->onchange) ? ' onchange="' . $this->onchange. '"' : '';
+                        $attr["list.attr"] .= $this->getAttribute("style", false) ?  "style='".$this->getAttribute("style")."'" : '';
+                	$attr["list.attr"] .= $this->multiple ? ' multiple="multiple" ' : '';
+                        if (($this->value=="" || $this->value==-1)  && $this->multiple){
+                            unset($attr["list.select"]);
+                        }
+                        
+			//$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);
+
+			return JHTML::_('select.genericlist', $options, $this->name, $attr); //'class="inputbox"', 'value', 'text', $this->value, $this->id);
 		}
 		else
 		{

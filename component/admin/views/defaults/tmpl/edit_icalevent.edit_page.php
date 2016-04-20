@@ -60,6 +60,12 @@ if ($jevparams->get("showpriority", 0)){
 	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
 	<?php
 }
+if ($jevparams->get("showtimezone", 0)){
+	?>
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE",true);?>", "TZID");
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE_LABEL",true);?>", "TZID_LBL");
+	<?php
+}
 ?>
 //
 Joomla.submitbutton = function (pressbutton){

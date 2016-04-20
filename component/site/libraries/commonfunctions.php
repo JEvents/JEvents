@@ -392,15 +392,16 @@ class JEV_CommonFunctions {
 		 * TODO - pass message through layout template processor
 		 *
 		 */
-
+		
+		$mail->setSubject($subject);
+		$mail->setBody($messagetemplate);
+                
 		if ($event){
 			$dispatcher     = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onSendAdminMail' , array(&$mail, $event));
 		}
-		
-		$mail->setSubject($subject);
-		$mail->setBody($messagetemplate);
+                
 		if ($cc!=""){
 			$mail->addCC($cc);
 		}

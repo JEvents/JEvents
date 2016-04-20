@@ -363,14 +363,29 @@ else $this->_detail = false;
 			$db	= JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
-			$repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
-			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
-			$repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
+                        // is it in a non-default timezone
+                        $repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart, $this->tzid);
+                        $repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend, $this->tzid);
+                        
+                        $repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
 			$this->_repetitions[] = $repeat;
 			return $this->_repetitions;
 		}
 		else {
 			$this->_repetitions = $this->rrule->getRepetitions($this->_detail->dtstart,$this->_detail->dtend,$this->_detail->duration, $recreate,$this->_exdate);
+                        
+                        // is it in a non-default timezone
+                        foreach ($this->_repetitions as &$repeat){
+                            $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->startrepeat, new DateTimeZone($this->tzid));
+                            $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                            $repeat->startrepeat = $testdate->format('Y-m-d H:i:s');
+
+                            $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->endrepeat, new DateTimeZone($this->tzid));
+                            $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                            $repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
+                            unset($repeat);
+                        }
+                        
 			return $this->_repetitions;
 		}
 	}
