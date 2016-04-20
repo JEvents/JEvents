@@ -14,7 +14,7 @@ defined('_JEXEC') or die( 'Direct Access to this location is not allowed.' );
 
 class jevResetFilter extends jevFilter
 {
-	function jevResetFilter ($contentElement){
+	function __construct($contentElement){
 		$this->filterNullValue=-1;
 		$this->filterType="reset";
 		$this->filterField = "";

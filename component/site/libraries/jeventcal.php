@@ -26,7 +26,7 @@ class jEventCal {
 	// default values
 	var $_catid=0;
 
-	function jEventCal($inRow) {
+	function __construct($inRow) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){

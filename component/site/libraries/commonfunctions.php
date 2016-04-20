@@ -269,6 +269,9 @@ class JEV_CommonFunctions {
 	public static function notifyAuthorPublished($event){
 
 		JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
+
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		
 		$db = JFactory::getDBO();
 		$cat = new JEventsCategory($db);
 		$cat->load($event->catid());
@@ -328,9 +331,24 @@ class JEV_CommonFunctions {
 
 		// mail function
 		$mail = JFactory::getMailer();
-		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
-		$mail->addRecipient($authoremail);
+		$sender_config = $params->get('sender_config');
+		if ($sender_config == 0) {
+			
+			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
+			
+		} elseif ($sender_config == 1) {
 
+			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
+
+		} else {
+			$mail->setSender(array(0 => $params->get('sender_email'), 1 => $params->get('sender_name')));
+		}
+
+		if ($params->get('email_replyto') == 0) {
+			$mail->addReplyTo($adminEmail);
+		}
+
+		$mail->addRecipient($authoremail);
 		$mail->setSubject($subject);
 		$mail->setBody($content);
 		$mail->IsHTML(true);
@@ -338,6 +356,7 @@ class JEV_CommonFunctions {
 	}
 
 	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $day='', $month='', $year='', $start_time='', $end_time='', $author='', $live_site, $modifylink, $viewlink , $event=false, $cc = "") {
+		$config = new JConfig();
 
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
@@ -377,7 +396,23 @@ class JEV_CommonFunctions {
 		
 		// mail function
 		$mail = JFactory::getMailer();
-		$mail->setSender(array( 0 => $adminEmail, 1 => $adminName ));
+		$sender_config = $params->get('sender_config');
+		if ($sender_config == 0) {
+
+			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
+
+		} elseif ($sender_config == 1) {
+
+			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
+
+		} else {
+			$mail->setSender(array(0 => $params->get('sender_email'), 1 => $params->get('sender_name')));
+		}
+
+		if ($params->get('email_replyto') == 0) {
+			$mail->addReplyTo($adminEmail);
+		}
+
 		$mail->addRecipient($adminEmail);
 
 		if ($params->get("com_notifyboth")){

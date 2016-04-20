@@ -20,8 +20,8 @@ class JEventsDBModel
 	var $cfg = null;
 	var $datamodel = null;
 
-	function JEventsDBModel(&$datamodel)
-	{
+	public function __construct(&$datamodel){
+
 		$this->cfg = JEVConfig::getInstance();
 
 		$this->datamodel = & $datamodel;

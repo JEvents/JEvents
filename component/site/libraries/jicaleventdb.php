@@ -17,7 +17,7 @@ class jIcalEventDB extends jEventCal {
 	// array of jIcalEventRepeat
 	var $_repeats=null;
 
-	function jIcalEventDB($vevent) {
+	function __construct($vevent) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){

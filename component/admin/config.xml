@@ -198,8 +198,19 @@
 			<option value="cat.listevents">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
             <option value="admin.listevents">JEV_INSTAL_MANAGE</option>
 		</field>
-                
-        </fieldset>
+		<field name="sender_config" type="jevlist" default="0" label="JEV_SENDER_CONFIG" description="JEV_SENDER_CONFIG_DESC" difficulty="1">
+			<option value="0">JEV_SENDER_CREATOR_DETAILS</option>
+			<option value="1">JEV_SENDER_USE_GLOBAL_JOOMLA_SENDER</option>
+			<option value="2">JEV_SENDER_USE_BELOW_SENDER_DETAILS</option>
+		</field>
+		<field name="sender_name" type="text" filter="" label="JEV_SENDAR_NAME" description="JEV_SENDER_NAME_DESC" difficulty="1" />
+		<field name="sender_email" type="text" filter="" label="JEV_SENDAR_EMAIL" description="JEV_SENDER_EMAIL_DESC" difficulty="1" />
+		<field name="email_replyto" type="radio" class="btn-group" default="1" label="JEV_SENDER_REPLY_TO" description="JEV_SENDER_REPLY_TO_DESC" difficulty="1">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+		</field>
+
+	</fieldset>
 	
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
