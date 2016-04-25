@@ -27,6 +27,29 @@ class JFormFieldJeveventtime extends JFormField
 			function getInput()
 	{
 		$event = $this->form->jevdata[$this->name]["event"];
+                
+                // Adjust date/time for timezones!
+                if ($event->_tzid && !isset($event->tzid_adjusted)){
+                    // They are stored in system timezone - we need them in event timezone
+                    $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_up(), new DateTimeZone(@date_default_timezone_get()));
+                    $testdate->setTimezone(new DateTimeZone($event->tzid));
+
+                    $event->dtstart($testdate->format("U"));
+                    $event->_publish_up = $testdate->format('Y-m-d H:i:s');
+                    $event->_unixstartdate = $event->dtstart();
+                    $event->_unixstarttime= $event->dtstart();
+                            
+                    $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_down(), new DateTimeZone(@date_default_timezone_get()));
+                    $testdate->setTimezone(new DateTimeZone($event->tzid));
+                    
+                    $event->dtend($testdate->format("U"));
+                    $event->_publish_down = $testdate->format('Y-m-d H:i:s');
+                    $event->_unixenddate = $event->dtend();
+                    $event->_unixendtime= $event->dtend();
+                    
+                    $event->tzid_adjusted = true;
+                }
+                
 		ob_start();
 		$name = $this->name;
 		$partname = explode("_",$name);

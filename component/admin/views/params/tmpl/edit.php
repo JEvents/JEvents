@@ -14,6 +14,7 @@ jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
 //JHtml::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
+JHtml::_('formbehavior.chosen', '#adminForm select.chosen');
 
 $version = JEventsVersion::getInstance();
 

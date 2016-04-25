@@ -145,6 +145,8 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	author_notified tinyint(3) NOT NULL default 0,
 	access int(11) unsigned NOT NULL default 0,
 	
+        tzid varchar(100) NOT NULL default '',
+                        
 	PRIMARY KEY  (ev_id),
 	INDEX (icsid),
 	INDEX stateidx (state)
@@ -466,6 +468,13 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("tzid", $cols))
+		{
+			$sql = "alter table #__jevents_vevent add column tzid varchar(100) NOT NULL default '' ";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+                
 		if (!array_key_exists("author_notified", $cols))
 		{
 			$sql = "alter table #__jevents_vevent add column author_notified tinyint(3) NOT NULL default 0";

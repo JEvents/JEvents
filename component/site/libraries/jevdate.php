@@ -243,23 +243,26 @@ jimport("joomla.utilities.date");
 
 			}
 
-			public static function strftime()
+			public static function strftime($format, $timestamp = 'time()', $tzid = false)
 			{
 				static $date;
 				if (!isset($date))
 				{
 					$date = new JevDate();
 				}
+                                $oldtz = date_default_timezone_get();
 				// reset the timezone !!
-				date_default_timezone_set($date->mytz->getName());
-				$arg = func_get_args();
+                                if ($tzid) {
+                                    date_default_timezone_set($tzid);
+                                }   
+                                else {
+                                    date_default_timezone_set($date->mytz->getName());
+                                }
 
-				$name = "strftime";
-				if (is_callable($name))
-				{
-					return call_user_func_array($name, $arg);
-				}
+				$return =  strftime($format, $timestamp);
 
+                                date_default_timezone_set($oldtz);
+                                return $return;
 			}
 
 			public function __call($name, $arguments)

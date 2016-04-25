@@ -1111,6 +1111,8 @@ class AdminIcaleventController extends JControllerAdmin
 			return false;
 		}
 
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+                
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -1120,7 +1122,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$array = JRequest::get('request', JREQUEST_ALLOWHTML);
 
 		// Should we allow raw content through unfiltered
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("allowraw", 0))
 		{
 			$array['jevcontent'] = $jinput->post->get("jevcontent", "", RAW);

@@ -55,6 +55,7 @@ class SaveIcalEvent {
 		if ($data["publish_up2"]){
 			$data["publish_up"] = $data["publish_up2"];
 		}
+
 		$data["SUMMARY"]		= JArrayHelper::getValue( $array,  "title","");
 		$data["URL"]	= JArrayHelper::getValue( $array,  "url","");
 
@@ -138,6 +139,9 @@ class SaveIcalEvent {
 		// Shouldn't really do this like this
 		$vevent->_detail->priority =  intval(JArrayHelper::getValue( $array,  "priority",0));
 
+                // Set Timezone where required
+                $vevent->tzid = JArrayHelper::getValue( $array,  "tzid", "");
+                
 		// FRONT END AUTO PUBLISHING CODE
 		$frontendPublish = JEVHelper::isEventPublisher();
 

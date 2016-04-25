@@ -3274,7 +3274,7 @@ SCRIPT;
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 							$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 						}
-						$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+						$html .= "DTSTAMP:" . $stamptime . "\r\n";
 						$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 						$html .= "DTEND$tzid:" . $chend . "\r\n";
 						$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";

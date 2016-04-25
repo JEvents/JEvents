@@ -457,7 +457,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
                         && stripos($filecontent, "community") === false 
                         && stripos($filecontent, "TechJoomla") === false 
                         && stripos($filecontent, "hikashop") === false
-						&& stripos($filecontent, "acymailing") === false )
+			&& stripos($filecontent, "acymailing") === false )
 		{
 			return false;
 		}
@@ -837,7 +837,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		foreach ($xmlfiles2 as $manifest)
 		{
-			if (strpos($manifest, "Zend") > 0 || strpos($manifest, "invalid") >= 0)
+			if (strpos($manifest, "Zend") > 0 || strpos($manifest, "invalid") === 0  || strpos($manifest, "invalid") > 0)
 				continue;
 
 			if (!$manifestdata = $this->getValidManifestFile($manifest))
