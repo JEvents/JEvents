@@ -331,7 +331,7 @@ class JEV_CommonFunctions {
 
 		// mail function
 		$mail = JFactory::getMailer();
-		$sender_config = $params->get('sender_config');
+		$sender_config = $params->get('sender_config', 9);
 		if ($sender_config == 0) {
 			
 			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
@@ -341,10 +341,10 @@ class JEV_CommonFunctions {
 			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
 
 		} else {
-			$mail->setSender(array(0 => $params->get('sender_email'), 1 => $params->get('sender_name')));
+			$mail->setSender(array(0 => $params->get('sender_email', ''), 1 => $params->get('sender_name', '')));
 		}
 
-		if ($params->get('email_replyto') == 0) {
+		if ($params->get('email_replyto', 0) == 1) {
 			$mail->addReplyTo($adminEmail);
 		}
 
@@ -396,7 +396,7 @@ class JEV_CommonFunctions {
 		
 		// mail function
 		$mail = JFactory::getMailer();
-		$sender_config = $params->get('sender_config');
+		$sender_config = $params->get('sender_config', 9);
 		if ($sender_config == 0) {
 
 			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
@@ -406,10 +406,10 @@ class JEV_CommonFunctions {
 			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
 
 		} else {
-			$mail->setSender(array(0 => $params->get('sender_email'), 1 => $params->get('sender_name')));
+			$mail->setSender(array(0 => $params->get('sender_email', ''), 1 => $params->get('sender_name', '')));
 		}
 
-		if ($params->get('email_replyto') == 0) {
+		if ($params->get('email_replyto', 0) == 1) {
 			$mail->addReplyTo($adminEmail);
 		}
 
