@@ -1281,7 +1281,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->rp_id();
 					$blank[] = "";
 					break;
-
+				case "{{EVID}}":
+					$search[] = "{{EVID}}";
+					$replace[] = $event->ev_id();
+					$blank[] = "";
+					break;
+			
 				default:
 					$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
 					if (is_callable(array($event, $strippedmatch)))
