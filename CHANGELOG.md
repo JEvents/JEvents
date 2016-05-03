@@ -4,9 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## 02-05-2016 - Tony Partridge
-# Added {{EVID}} Custom layout support
-# Added configurable options for who email is sent from
-# Removed stray debug messages
+Added {{EVID}} Custom layout support
+Added configurable options for who email is sent from
+Removed stray debug messages
 
 ## 20-04-2016 - Tony Partridge
 Added in sender configurable parameters within: Configuration -> Event Editing
