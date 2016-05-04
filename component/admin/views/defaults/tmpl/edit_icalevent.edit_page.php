@@ -72,7 +72,11 @@ Joomla.submitbutton = function (pressbutton){
 
     if(pressbutton == "defaults.apply" || pressbutton == "defaults.save")
     {
-        <?php $editor =  JFactory::getEditor("none");?>
+        <?php
+
+	    $editor =  JEditor::getInstance('none');
+
+	    ?>
                     
        <?php 
        $requiredfields = "'CALTAB','TITLE','CATEGORY','ICAL','MESSAGE'";
@@ -82,6 +86,7 @@ Joomla.submitbutton = function (pressbutton){
        }
        ?>
         var requiredFields = [<?php echo $requiredfields; ?>];
+
         var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
         if(defaultsLayout == '')
         {
