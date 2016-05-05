@@ -2584,7 +2584,7 @@ SCRIPT;
 				{
 					$filtervars = get_object_vars($filtervars);
 				}
-				var_dump($filtervars);
+				//var_dump($filtervars);
 				if (is_array($filtervars))
 				{
 					foreach ($filtervars as $fvk => $fvv)

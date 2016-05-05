@@ -285,7 +285,7 @@ RAWTEXT;
 								$cat->published=1;
 								$cat->check();
 								if (!$cat->store()){
-									var_dump($cat->getErrors());
+									//var_dump($cat->getErrors());
 									die("failed to auto create category $ct");
 								}
 							}

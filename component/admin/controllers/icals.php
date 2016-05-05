@@ -206,7 +206,8 @@ class AdminIcalsController extends JControllerForm {
                 $message = JText::_( 'ICS_ALL_FILES_IMPORTED' );
 		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
 		$this->redirect();
-        } 
+        }
+
 	function save($key = null, $urlVar = null){
 
 		// Check for request forgeries
@@ -360,9 +361,11 @@ class AdminIcalsController extends JControllerForm {
 			$icsFileid = $icsFile->store();
 			$message = JText::_( 'ICS_FILE_IMPORTED' );
 		}
-
-		$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", $message);
-		$this->redirect();
+		if (JRequest::getCmd("task") != "icals.reloadall")
+		{
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", $message);
+			$this->redirect();
+		}
 	}
 
 	/**

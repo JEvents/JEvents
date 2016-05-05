@@ -22,7 +22,7 @@ class JEventDate {
 	var $second	= null;
 	var $dim	= null;
 
-	function JEventDate( $datetime='' ) {
+	function __construct( $datetime='' ) {
 		$time = JevDate::strtotime($datetime);
 		if ($datetime!="" && $time!==false){
 			$this->date = $time;
