@@ -342,7 +342,7 @@ function checkEndTime() {
 	endDate.setMinutes(endtimeparts[1]);
 
 	var jevmultiday = document.getElementById('jevmultiday');
-	if (end_date.value>start_date.value){
+	if (endDate.dateFromYMD(end_date.value)>startDate.dateFromYMD(start_date.value)){
 		jevmultiday.style.display='block';
 	}
 	else {

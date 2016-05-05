@@ -375,15 +375,17 @@ else $this->_detail = false;
 			$this->_repetitions = $this->rrule->getRepetitions($this->_detail->dtstart,$this->_detail->dtend,$this->_detail->duration, $recreate,$this->_exdate);
                         
                         // is it in a non-default timezone
-                        foreach ($this->_repetitions as &$repeat){
-                            $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->startrepeat, new DateTimeZone($this->tzid));
-                            $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
-                            $repeat->startrepeat = $testdate->format('Y-m-d H:i:s');
+                        if ($this->tzid) {
+                            foreach ($this->_repetitions as &$repeat){
+                                $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->startrepeat, new DateTimeZone($this->tzid));
+                                $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                                $repeat->startrepeat = $testdate->format('Y-m-d H:i:s');
 
-                            $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->endrepeat, new DateTimeZone($this->tzid));
-                            $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
-                            $repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
-                            unset($repeat);
+                                $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->endrepeat, new DateTimeZone($this->tzid));
+                                $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                                $repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
+                                unset($repeat);
+                            }
                         }
                         
 			return $this->_repetitions;

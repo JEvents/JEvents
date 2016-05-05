@@ -61,6 +61,7 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)=
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,
 // we need to get it from the menu item itself
+// WP TODO sort out menus!
 $menu = JFactory::getApplication()->getMenu()->getActive();
 if ($menu)
 {
@@ -87,6 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 $component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
 $component->params = & $newparams;
+
+JEVHelper::setupWordpress();
 
 $isMobile = $browser->isMobile();
 // Joomla isMobile method doesn't identify all android phones
