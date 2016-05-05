@@ -14,6 +14,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JEventsDataModel {
+
 	var $myItemid = null;
 	var $catidsOut = "";
 	var $catids = null;
@@ -29,9 +30,10 @@ class JEventsDataModel {
 
 	var $queryModel;
 
-	function  JEventsDataModel($dbmodel=null){
+	public function __construct($dbmodel=null){
+
 		$cfg = JEVConfig::getInstance();
-		
+
 		$user = JFactory::getUser();
 		$this->aid = JEVHelper::getAid($user);
 

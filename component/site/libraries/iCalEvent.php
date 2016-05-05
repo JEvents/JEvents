@@ -50,7 +50,7 @@ class iCalEvent extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalEvent( &$db ) {
+	function __construct( &$db ) {
 		parent::__construct( '#__jevents_vevent', 'ev_id', $db );
 		$this->access = JEVHelper::getBaseAccess();
 	}

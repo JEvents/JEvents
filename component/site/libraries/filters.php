@@ -25,6 +25,133 @@ class jevFilterProcessing
 	static public $visiblefilters;
 	static public $indexedvisiblefilters;
 
+	function __construct($item, $filterpath=false){
+		jimport('joomla.filesystem.folder');
+
+		$this->filterpath = array();
+		if (is_array($filterpath)){
+			$this->filterpath = array_merge($this->filterpath,$filterpath);
+		}
+		else {
+			$this->filterpath[] = $filterpath;
+		}
+
+		settype($this->filterpath, 'array'); //force to array
+		$this->filterpath[]=dirname(__FILE__).'/'."filters";
+		jimport('joomla.filesystem.folder');
+		if (JFolder::exists(JPATH_SITE."/plugins/jevents")){
+			$others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
+			if (is_array($others)){
+				$this->filterpath = array_merge($this->filterpath,$others);
+			}
+		}
+
+		// Find if filter type module is visible and therefore if the filters should have 'memory'
+		if (!isset(self::$visiblefilters)){
+			self::$visiblefilters = array();
+
+			// TODO Watch out if this becomes private - it just saves a DB query for the time being
+			$visblemodules = JevModuleHelper::getVisibleModules();
+
+			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
+			//  but we can't do anything about that
+			foreach ($visblemodules as $module) {
+
+				$modparams =  new JRegistry($module->params);
+				if ($module->module == "mod_jevents_filter" ){
+					$filters = $modparams->get("filters","");
+				}
+				else {
+					$filters = $modparams->get("jevfilters","");
+				}
+				if (trim($filters)!=""){
+					self::$visiblefilters = array_merge(explode(",",$filters),self::$visiblefilters);
+				}
+			}
+			foreach (self::$visiblefilters as &$vf){
+				$vf = ucfirst(trim($vf));
+			}
+			unset($vf);
+
+			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
+			self::$indexedvisiblefilters = array();
+			$registry	= JRegistry::getInstance("jevents");
+			$registry->set("indexedvisiblefilters",false);
+
+			foreach (self::$visiblefilters as $filtername) {
+				$filter = "jev".ucfirst($filtername)."Filter";
+				if (!class_exists($filter)){
+					$filterFile = ucfirst($filtername).'.php';
+
+					$filterFilePath = JPath::find($this->filterpath,$filterFile);
+					if ($filterFilePath){
+						include_once($filterFilePath);
+					}
+					else {
+						//echo "Missing filter file $filterFile<br/>";
+						continue;
+					}
+				}
+				if ( defined($filter."::filterType") ){
+					$thefilter =  new $filter("",$filtername);
+					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+					//self::$indexedvisiblefilters[$filtername] = $filter::filterType;
+				}
+				else {
+					$thefilter =  new $filter("",$filtername);
+					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
+				}
+
+			}
+
+			$registry	= JRegistry::getInstance("jevents");
+			$registry->set("indexedvisiblefilters",self::$indexedvisiblefilters);
+		}
+
+		// get filter details
+		if (is_object($item)){
+			$filters = $item->getFilters();
+		}
+		else if (is_array($item)){
+			$filters = $item;
+		}
+		else if (is_string($item)){
+			$filters = array();
+		}
+
+		$this->filters = array();
+		// extract filters if set
+		foreach ($filters as $filtername) {
+			$filter = "jev".ucfirst($filtername)."Filter";
+			if (!class_exists($filter)){
+				$filterFile = ucfirst($filtername).'.php';
+
+				$filterFilePath = JPath::find($this->filterpath,$filterFile);
+
+				if ($filterFilePath){
+					include_once($filterFilePath);
+				}
+				else {
+					echo "Missing filter file $filterFile<br/>";
+					continue;
+				}
+
+			}
+			$theFilter =  new $filter("",$filtername);
+			$this->filters[] = $theFilter;
+		}
+
+		foreach ($this->filters as $filter) {
+			$sqlFilter = $filter->_createFilter();
+			if ($sqlFilter!="") $this->where[]=$sqlFilter;
+			$joinFilter =  $filter->_createJoinFilter();
+			if ($joinFilter!="") $this->join[] = $joinFilter;
+			if ($filter->needsgroupby) $this->needsgroupby=true;
+		}
+
+	}
+
+
 	public static function & getInstance($item, $filterpath="", $unsetfilter=false, $uid = ""){
 
 		if (is_numeric($uid) && $uid == 0){
@@ -71,132 +198,6 @@ class jevFilterProcessing
 			$instances[$key]= new jevFilterProcessing($item, $filterpath);
 		}
 		return $instances[$key];
-	}
-
-	function __construct($item, $filterpath=false){
-                jimport('joomla.filesystem.folder');
-
-		$this->filterpath = array();
-		if (is_array($filterpath)){
-			$this->filterpath = array_merge($this->filterpath,$filterpath);
-		}
-		else {
-			$this->filterpath[] = $filterpath;
-		}
-
-		settype($this->filterpath, 'array'); //force to array
-		$this->filterpath[]=dirname(__FILE__).'/'."filters";
-		jimport('joomla.filesystem.folder');
-		if (JFolder::exists(JPATH_SITE."/plugins/jevents")){
-			$others = JFolder::folders(JPATH_SITE."/plugins/jevents",'filters',true,true);
-			if (is_array($others)){
-				$this->filterpath = array_merge($this->filterpath,$others);
-			}
-		}
-
-		// Find if filter type module is visible and therefore if the filters should have 'memory'
-		if (!isset(self::$visiblefilters)){
-			self::$visiblefilters = array();
-
-			// TODO Watch out if this becomes private - it just saves a DB query for the time being
-			$visblemodules = JevModuleHelper::getVisibleModules();
-
-			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
-			//  but we can't do anything about that
-			foreach ($visblemodules as $module) {
-				
-				$modparams =  new JRegistry($module->params);
-				if ($module->module == "mod_jevents_filter" ){
-					$filters = $modparams->get("filters","");
-				}
-				else {
-					$filters = $modparams->get("jevfilters","");
-				}
-				if (trim($filters)!=""){
-					self::$visiblefilters = array_merge(explode(",",$filters),self::$visiblefilters);
-				}
-			}
-			foreach (self::$visiblefilters as &$vf){
-				$vf = ucfirst(trim($vf));
-			}
-			unset($vf);
-
-			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
-			self::$indexedvisiblefilters = array();
-			$registry	= JRegistry::getInstance("jevents");
-			$registry->set("indexedvisiblefilters",false);			
-                        
-			foreach (self::$visiblefilters as $filtername) {
-				$filter = "jev".ucfirst($filtername)."Filter";
-				if (!class_exists($filter)){
-					$filterFile = ucfirst($filtername).'.php';
-
-					$filterFilePath = JPath::find($this->filterpath,$filterFile);
-					if ($filterFilePath){
-						include_once($filterFilePath);
-					}
-					else {
-						//echo "Missing filter file $filterFile<br/>";
-						continue;
-					}
-				}
-				if ( defined($filter."::filterType") ){
-					$thefilter =  new $filter("",$filtername);
-					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
-					//self::$indexedvisiblefilters[$filtername] = $filter::filterType;
-				}
-				else {
-					$thefilter =  new $filter("",$filtername);
-					self::$indexedvisiblefilters[$filtername] = $thefilter->filterType;
-				}
-
-			}
-
-			$registry	= JRegistry::getInstance("jevents");
-			$registry->set("indexedvisiblefilters",self::$indexedvisiblefilters);
-		}
-
-		// get filter details
-		if (is_object($item)){
-			$filters = $item->getFilters();
-		}
-		else if (is_array($item)){
-			$filters = $item;
-		}
-		else if (is_string($item)){
-			$filters = array();
-		}
-		
-		$this->filters = array();
-		// extract filters if set
-		foreach ($filters as $filtername) {
-			$filter = "jev".ucfirst($filtername)."Filter";
-			if (!class_exists($filter)){
-				$filterFile = ucfirst($filtername).'.php';
-
-				$filterFilePath = JPath::find($this->filterpath,$filterFile);
-                                
-				if ($filterFilePath){
-					include_once($filterFilePath);
-				}
-				else {
-					echo "Missing filter file $filterFile<br/>";
-					continue;
-				}
-
-			}
-			$theFilter =  new $filter("",$filtername);
-			$this->filters[] = $theFilter;
-		}
-
-		foreach ($this->filters as $filter) {
-			$sqlFilter = $filter->_createFilter();
-			if ($sqlFilter!="") $this->where[]=$sqlFilter;
-			$joinFilter =  $filter->_createJoinFilter();
-			if ($joinFilter!="") $this->join[] = $joinFilter;
-			if ($filter->needsgroupby) $this->needsgroupby=true;
-		}
-
 	}
 
 	function setWhereJoin(&$where, &$join){
