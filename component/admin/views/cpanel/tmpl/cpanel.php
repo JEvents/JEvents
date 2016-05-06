@@ -4,7 +4,7 @@
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -113,7 +113,7 @@ $fullspan = 12;
 				// Stop if user is not authorised to manage JEvents
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (version_compare($manifestCache->version, "3.5.0", "ge") || ( isset($_SERVER["SERVER_ADDR"]) && ($_SERVER["SERVER_ADDR"]=="192.168.1.51" || $_SERVER["SERVER_ADDR"]=="192.168.1.87"  || $_SERVER["SERVER_ADDR"]=="10.0.2.15" )) )
+					if (version_compare($manifestCache->version, "3.5.0RC", "ge") )
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);

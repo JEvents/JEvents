@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2016 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
