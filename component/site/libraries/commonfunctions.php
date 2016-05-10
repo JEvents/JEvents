@@ -396,17 +396,17 @@ class JEV_CommonFunctions {
 		
 		// mail function
 		$mail = JFactory::getMailer();
-		$sender_config = $params->get('sender_config', 9);
+		$sender_config = $params->get('sender_config', 0);
 		if ($sender_config == 0) {
 
 			$mail->setSender(array(0 => $adminEmail, 1 => $adminName));
 
 		} elseif ($sender_config == 1) {
 
-			$mail->setSender(array(0 => $config->mailfrom, 1 => $config->fromname));
+			$mail->setSender(array(0 => $config->mailfrom!="" ? $config->mailfrom : adminEmail, 1 => $config->fromname!="" ? $config->fromname : adminName));
 
 		} else {
-			$mail->setSender(array(0 => $params->get('sender_email', ''), 1 => $params->get('sender_name', '')));
+			$mail->setSender(array(0 => $params->get('sender_email', $adminEmail), 1 => $params->get('sender_name', $adminName)));
 		}
 
 		if ($params->get('email_replyto', 0) == 1) {

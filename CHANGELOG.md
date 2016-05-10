@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 06-05-2016 - Geraint Edwards
+* Fix for unspecified sender address in new admin email config setting
+
 ## 04-05-2016 - Tony Partridge
 * Updated edit page getEditor to JEditor
 * Added Float Block custom layout template codes
