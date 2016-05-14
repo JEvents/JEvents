@@ -90,7 +90,7 @@
 	bottom: -0.25em;
 }
 #jevents .jevbootstrap img {
-	width: auto\9;
+	width: auto;
 	height: auto;
 	max-width: 100%;
 	vertical-align: middle;
@@ -210,7 +210,6 @@
 	background-color: #ffffff;
 }
 #jevents .jevbootstrap a {
-	color: inherit;
 	text-decoration: none;
 }
 #jevents .jevbootstrap a:hover,

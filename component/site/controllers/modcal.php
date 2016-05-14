@@ -4,7 +4,7 @@
  *
  * @version     $Id: modcal.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -126,7 +126,8 @@ class ModCalController extends JControllerLegacy   {
 		$content = $modview->getAjaxCal($modid,$month,$year);
 		$content = str_replace("<script style='text/javascript'>xyz=1;", "XYZ", $content);
 		$content = str_replace("zyx=1;</script>", "ZYX", $content);
-		preg_match("/XYZ(.*)ZYX/s", $content, $match);
+                // ungreedy match 
+		preg_match("/XYZ(.*)ZYX/sU", $content, $match);
 		$script = "";
 		if (isset($match[1])){
 			$script = $match[1];

@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3257 2012-02-10 13:16:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -33,8 +33,9 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
 		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
-		
-		$icalformatted = JRequest::getInt("icf", 0);
+		$jinput = JFactory::getApplication()->input;
+
+		$icalformatted = $jinput->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
 		else

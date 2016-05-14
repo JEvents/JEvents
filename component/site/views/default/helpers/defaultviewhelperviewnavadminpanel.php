@@ -4,7 +4,7 @@
  *
  * @version     $Id: defaultviewhelperviewnavadminpanel.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -19,6 +19,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 
 		$is_event_editor = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
+		$jinput = JFactory::getApplication()->input;
 
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 
@@ -28,7 +29,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 
 		$cfg = JEVConfig::getInstance();
 
-		if (JRequest::getInt('pop', 0))
+		if ($jinput->getInt('pop', 0))
 			return;
 
 		if ($is_event_editor)

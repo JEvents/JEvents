@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2016 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -228,7 +228,7 @@ class DefaultModCalView
 			$this->_navigationJS($this->_modid);
 			$link = htmlentities(JURI::base()  . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component".$this->cat);
 			$content = '<td>';
-			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\''.$link.'\');">'.$symbol."</div>\n";
+			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\''.$link.'\');" ontouchstart="callNavigation(\''.$link.'\');">'.$symbol."</div>\n";
 			$content .= '</td>';
 		}
 		return $content;

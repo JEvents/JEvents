@@ -4,7 +4,7 @@
  *
  * @version     $Id: modfunctions.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,12 +17,13 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// Itemid, search for menuid with lowest access rights
 	$user = JFactory::getUser();
 	$db	= JFactory::getDBO();
+	$jinput = JFactory::getApplication()->input;
 
 	// Do we ignore category filters?
 	$ignorecatfilter = 0;
 	if (isset($modparams->ignorecatfilter) && $modparams->ignorecatfilter){
 		$ignorecatfilter = $modparams->ignorecatfilter;
-		JRequest::setVar("category_fv",0);
+		$jinput->set("category_fv", 0);
 	}
 	
 	$menu = JFactory::getApplication()->getMenu();

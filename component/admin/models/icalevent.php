@@ -110,6 +110,12 @@ class IcaleventsModelicalevent extends JModelAdmin
 		include_once JPATH_COMPONENT."/tables/translate.php";
 		$translation = new TableTranslate();
 		$success =  $translation->save($array);
+                
+                if ($success) {
+                    $dispatcher = JEventDispatcher::getInstance();
+                    $dispatcher->trigger('onSaveTranslation', array($array), true);
+                }                    
+
 		return $success;
 	}
 

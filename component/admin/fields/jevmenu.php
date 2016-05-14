@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevmenu.php 3157 2012-01-05 13:12:19Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -41,9 +41,11 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 	public function getOptions()
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		// Trap to stop the config from being editing from the categories page
 		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components. 
-		if (JRequest::getString("option") =="com_config"){
+		if ($jinput->getString("option") == "com_config"){
 			$redirect_url  =  "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
 			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url); //redirect 

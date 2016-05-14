@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 class modJeventsLatestHelper
 {
 
-	function modJeventsLatestHelper(){
+	public function __construct(){
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {

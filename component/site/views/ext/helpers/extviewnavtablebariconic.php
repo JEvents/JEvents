@@ -11,8 +11,9 @@ class ExtViewNavTableBarIconic
 	{
 		global $catidsOut;
 
+		$jinput = JFactory::getApplication()->input;
 
-		if (JRequest::getInt('pop', 0))
+		if ($jinput->getInt('pop', 0))
 			return;
 
 		$cfg = JEVConfig::getInstance();

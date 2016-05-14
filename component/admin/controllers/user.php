@@ -4,7 +4,7 @@
  *
  * @version     $Id: user.php 1975 2011-04-27 15:52:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -25,12 +25,14 @@ class AdminUserController extends JControllerLegacy   {
 	function __construct( ){
 		parent::__construct();
 		$this->registerDefaultTask( 'showUser' );
+		$jinput = JFactory::getApplication()->input;
 
-		$this->task =  JRequest::getVar( 'task', '' );
-		$this->cid =  JRequest::getVar( 'cid', array(0) );
+		$this->task =  $jinput->get('task', '', "cmd");
+		$this->cid =  $jinput->get('cid', array(0), "array");
 		if (!is_array( $this->cid )) {
 			$this->cid = array(0);
 		}
+                JArrayHelper::toInteger($this->cid);
 
 		$this->registerTask( 'overview', 'showUsers' );
 		$this->registerTask( 'list', 'showUsers' );

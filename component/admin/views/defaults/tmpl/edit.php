@@ -4,19 +4,21 @@
  *
  * @version     $Id: edit.php 2768 2011-10-14 08:43:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+jimport( 'joomla.filesystem.file' );
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
 {
-	$editor =  JFactory::getEditor("none");
+	$editor =  JEditor::getInstance("none");
 }
 else
 {
-	$editor =  JFactory::getEditor();
+	$editor = JFactory::getConfig()->get('editor');
+	$editor =  JEditor::getInstance($editor);
 }
 
 if (strpos($this->item->name, "com_") === 0)
@@ -34,6 +36,15 @@ if (JevJoomlaVersion::isCompatible("3.0.0"))
 }
 if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".html"))
 	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".html");
+
+//Float layout check to load default value
+if ($this->item->name == 'icalevent.list_block1' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html')) {
+	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html');
+}
+if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html')) {
+	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html');
+}
+
 $this->replaceLabels($this->item->value);
 ?>		
 <div id="jevents">
@@ -141,7 +152,7 @@ echo $editor->save('value');
 
 					$count = 0;
 					$conf = JFactory::getConfig();
-					$modeditor =  JFactory::getEditor($conf->get('editor'));
+					$modeditor =  $editor;
 
 					foreach ($modids as $modid)
 					{

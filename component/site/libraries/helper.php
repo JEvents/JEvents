@@ -5,7 +5,7 @@
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -45,8 +45,9 @@ class JEVHelper
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
+		$jinput = JFactory::getApplication()->input;
 
-		$option = JRequest::getCmd("option");
+		$option = $jinput->getCmd("option");
 		$cfg = JEVConfig::getInstance();
 		$lang = JFactory::getLanguage();
 
@@ -657,12 +658,14 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+                        // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
+                        firstDay: '.$offset.',
 			// Allowable date range for picker
 			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
-			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+                        //showsTime:true
 			});});'
 			);
 			$done[] = $fieldid;
@@ -1143,6 +1146,8 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
 					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+
 				}
 			}
 			else if ($user->cancreate)
@@ -1925,8 +1930,8 @@ class JEVHelper
 					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 					. "\n WHERE block ='0'"
 					. "\n AND cd.published =1 "
-					. "\n AND cd.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "\n AND cat.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
+					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
 					. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
@@ -2579,7 +2584,7 @@ SCRIPT;
 				{
 					$filtervars = get_object_vars($filtervars);
 				}
-				var_dump($filtervars);
+				//var_dump($filtervars);
 				if (is_array($filtervars))
 				{
 					foreach ($filtervars as $fvk => $fvv)
@@ -2653,7 +2658,7 @@ SCRIPT;
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING');
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING', 'pop' => 'UINT');
 			$app = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
@@ -3027,6 +3032,8 @@ SCRIPT;
 
 						if (is_callable("date_default_timezone_set"))
 						{
+							// Change timezone to UTC
+							$current_timezone = date_default_timezone_get();
 							date_default_timezone_set("UTC");
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 							// Change back
@@ -3267,7 +3274,7 @@ SCRIPT;
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 							$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 						}
-						$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+						$html .= "DTSTAMP:" . $stamptime . "\r\n";
 						$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 						$html .= "DTEND$tzid:" . $chend . "\r\n";
 						$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";
@@ -3622,5 +3629,16 @@ SCRIPT;
 			return new jevCache();
 		}
 	}
+        
+        /* 
+         * Fix config etc. to run in WP with minimal code changes!
+         */
+        public static function setupWordpress() {
+                if (defined ("WPJEVENTS")){
+                    $cfg = JEVConfig::getInstance();
+                    $cfg->set('com_email_icon_view', 0);
+                    
+                }
+        }
 }
 

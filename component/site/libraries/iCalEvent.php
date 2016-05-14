@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalEvent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -50,7 +50,7 @@ class iCalEvent extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalEvent( &$db ) {
+	function __construct( &$db ) {
 		parent::__construct( '#__jevents_vevent', 'ev_id', $db );
 		$this->access = JEVHelper::getBaseAccess();
 	}
@@ -117,8 +117,12 @@ class iCalEvent extends JTable  {
 				
 		$db = JFactory::getDBO();
 		$detailid = $this->_detail->store($updateNulls);
+
 		if (!$detailid){
-			JError::raiseError( 104, JText::_( 'PROBLEMS_STORING_EVENT_DETAIL' ));
+
+			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
+
+			//TODO Setup a exception catch
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}
@@ -130,7 +134,9 @@ class iCalEvent extends JTable  {
 			$this->catid =$this->catid[0];
 		}
 		if (!parent::store($updateNulls)){
-			JError::raiseError( 105, JText::_( 'PROBLEMS_STORING_EVENT' ) );
+			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT"), 'error');
+
+			//TODO Setup a exception catch
 			echo $db->getErrorMsg()."<br/>";
 			return false;
 		}
@@ -357,14 +363,31 @@ else $this->_detail = false;
 			$db	= JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
-			$repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
-			$repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
-			$repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
+                        // is it in a non-default timezone
+                        $repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart, $this->tzid);
+                        $repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend, $this->tzid);
+                        
+                        $repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
 			$this->_repetitions[] = $repeat;
 			return $this->_repetitions;
 		}
 		else {
 			$this->_repetitions = $this->rrule->getRepetitions($this->_detail->dtstart,$this->_detail->dtend,$this->_detail->duration, $recreate,$this->_exdate);
+                        
+                        // is it in a non-default timezone
+                        if ($this->tzid) {
+                            foreach ($this->_repetitions as &$repeat){
+                                $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->startrepeat, new DateTimeZone($this->tzid));
+                                $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                                $repeat->startrepeat = $testdate->format('Y-m-d H:i:s');
+
+                                $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->endrepeat, new DateTimeZone($this->tzid));
+                                $testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+                                $repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
+                                unset($repeat);
+                            }
+                        }
+                        
 			return $this->_repetitions;
 		}
 	}

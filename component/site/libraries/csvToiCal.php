@@ -5,7 +5,7 @@
  *
  * @version     $Id: csvToiCal.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -63,17 +63,19 @@ class CsvToiCal
 
 		if (!$this->detectHeadersValidity())
 		{
-			JError::raiseWarning(0, 'Not valid CSV file uploaded - mandatory
-                                    cols CATEGORIES, SUMMARY, DTSTART, DTEND and
-                                    TIMEZONE are required. Fix your CSV please.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
+
 			return false;
 		}
+
 		if (!$this->convertFile())
 		{
-			JError::raiseWarning(0, 'Detected corruption in CSV file - import canceled.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
+
 			return false;
 		}
-		JError::raiseNotice(0, 'CSV succesfully converted.');
+
+		JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
 
 	}
 

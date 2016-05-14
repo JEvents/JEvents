@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3012 2011-11-16 10:29:35Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -35,7 +35,9 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	
 	function edit($tpl = null)
 	{
-		$document = JFactory::getDocument();		
+		$document = JFactory::getDocument();
+		// Set editstrings var just incase and to avoid IDE reporting not set.
+		$editStrings = "";
 		include(JEV_ADMINLIBS."/editStrings.php");		
 		$document->addScriptDeclaration($editStrings);
 
@@ -58,12 +60,12 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
-			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'Cancel', false);
+			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 			JRequest::setVar('tmpl', 'component'); //force the component template
 		}
 		else
 		{
-			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'Cancel', false);
+			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
 		
 		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);		

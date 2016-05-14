@@ -183,6 +183,11 @@ fieldset.checkboxes li {
     margin-left: 0;
     padding-bottom: 10px;
 }
+/* Custom fields */
+.jevextrablock .btn-group {
+    padding: 0 !important;
+}
+
 /* fix for wysiwyg editors */
 #jevents .jevbootstrap .adminform .jev_description div , #jevents .jevbootstrap .adminform #jeveditor div, #jevents .jevbootstrap .adminform .editor div {
     padding-bottom: 0;
@@ -735,7 +740,10 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     padding: 4px 6px 4px 30px;
     width: 65px;
 }
-
+/* Event editing rounded grey boxes */
+.roundedgrey {
+    background-color:#ddd;
+}
 /* Only for sites that want a max size for the popup! */
 
 @media (min-width: 1200px){

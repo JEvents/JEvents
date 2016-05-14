@@ -22,7 +22,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (!array_key_exists($template_name, $templates))
 		{
 
-			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$db->setQuery("SELECT * FROM #__jev_defaults WHERE state=1 AND name= " . $db->Quote($template_name) . " AND value<>'' AND " . 'language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 			$rawtemplates = $db->loadObjectList();
 			$templates[$template_name] = array();
 			if ($rawtemplates){
@@ -55,7 +55,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				if (JFile::exists($templatefile))
 				{
 					$loadedFromFile = true;
-					$templates[$template_name]['*'] = array();
+                                        if (!isset($templates[$template_name]['*'])){
+                                            $templates[$template_name]['*'] = array();
+                                        }
 					$templates[$template_name]['*'][0] =new stdClass();
 					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
 					$templates[$template_name]['*'][0]->params = null;
@@ -411,6 +413,29 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[] = "";
 					break;
 
+				case "{{RGBA}}":
+					$bgcolor = $event->bgcolor();
+					$search[] = $strippedmatch;
+					$bgcolor = $bgcolor == "" ? "#ffffff" : $bgcolor;
+                                        // skip the #
+                                        if (strlen($bgcolor) == 7){
+                                            $bgcolor = substr($bgcolor, 1);
+                                        }
+                                        if (strlen($bgcolor) == 6)
+                                            list($r, $g, $b) = array($bgcolor[0].$bgcolor[1],
+                                                                     $bgcolor[2].$bgcolor[3],
+                                                                     $bgcolor[4].$bgcolor[5]);
+                                        elseif (strlen($bgcolor) == 3)
+                                            list($r, $g, $b) = array($bgcolor[0].$bgcolor[0], $bgcolor[1].$bgcolor[1], $bgcolor[2].$bgcolor[2]);
+                                        else
+                                            return false;
+
+                                        $r = hexdec($r); $g = hexdec($g); $b = hexdec($b);
+                                        $replace[] = "rgba($r, $g, $b, 0.3)";
+                                        
+					$blank[] = "";
+					break;
+                                    
 				case "{{FGCOLOUR}}":
 					$search[] = "{{FGCOLOUR}}";
 					$replace[] = $event->fgcolor();
@@ -1256,7 +1281,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->rp_id();
 					$blank[] = "";
 					break;
-
+				case "{{EVID}}":
+					$search[] = "{{EVID}}";
+					$replace[] = $event->ev_id();
+					$blank[] = "";
+					break;
+			
 				default:
 					$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
 					if (is_callable(array($event, $strippedmatch)))
@@ -1457,7 +1487,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if ($template_name!="month.calendar_cell" && $template_name!="month.calendar_tip"){
 			$template_value = str_replace(array("[[","]]"), array("{","}"), $template_value);
 		}
-		
+
 		//We add new line characters again to avoid being marked as SPAM when using tempalte in emails
 		// do this before calling content plugins in case these add javascript etc. to layout
 		$template_value = preg_replace("@(<\s*(br)*\s*\/\s*(p|td|tr|table|div|ul|li|ol|dd|dl|dt)*\s*>)+?@i","$1\n",$template_value);
@@ -1588,7 +1618,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			else if (count($parts) == 3)
 			{
 				$fmt = $parts[1];
-				
+
 				// Must get this each time otherwise modules can't set their own timezone
 				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 				$jtz = $compparams->get("icaltimezonelive", "");
@@ -1598,7 +1628,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				else
 				{
-					$jtz = new DateTimeZone(@date_default_timezone_get());					
+					$jtz = new DateTimeZone(@date_default_timezone_get());
 				}
 				$outputtz = str_replace(array("}}","}"),"",$parts[2]);
 
@@ -1634,7 +1664,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$offset1 = $indate->getOffset();
 
 				// set the new timezone
-				$indate->setTimezone($outputtz);				
+				$indate->setTimezone($outputtz);
 				$offset2 = $indate->getOffset();;
 
 				$indate = $indate->getTimestamp()+$offset2-$offset1;

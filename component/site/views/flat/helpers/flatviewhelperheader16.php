@@ -3,7 +3,8 @@ defined('_JEXEC') or die('Restricted access');
 
 function FlatViewHelperHeader16($view){
 
-	$task = JRequest::getString("jevtask");
+	$jinput = JFactory::getApplication()->input;
+	$task = $jinput->getString('jevtask');
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_".$task);
 		
@@ -12,9 +13,9 @@ function FlatViewHelperHeader16($view){
 
 	$cfg		= JEVConfig::getInstance();
 	$version	= JEventsVersion::getInstance();
-	$jevtype	= JRequest::getVar('jevtype');
-	$evid		= JRequest::getInt('evid');
-	$pop		= JRequest::getInt('pop', 0);
+	$jevtype	= $jinput->get('jevtype', null, null);
+	$evid		= $jinput->getInt('evid');
+	$pop		= $jinput->getInt('pop', '0');
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	$view->copyrightComment();
@@ -58,7 +59,8 @@ function FlatViewHelperHeader16($view){
 		<h2 class="contentheading" ><?php echo $t_headline;?></h2>
 		<?php
 	}
-	$task = JRequest::getString("jevtask");
+	$task = $jinput->getString('jevtask', '');
+
 	$info = "";
 
 	if ($cfg->get('com_print_icon_view', 1) || $cfg->get('com_email_icon_view', 1) || strpos($info, "<li>")!==false ){
@@ -81,13 +83,13 @@ function FlatViewHelperHeader16($view){
 
 		if ($pop) { ?>
 			<li class="print-icon">
-			<a href="javascript:void(0);" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="javascript:window.print(); return false;" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 					<span class="icon-print"> </span>	
 			</a>
 			</li> <?php
 		} else { ?>
 			<li class="print-icon">
-			<a href="javascript:void(0);" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="window.open('<?php echo $print_link; ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=600,height=600,directories=no,location=no');" title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 					<span class="icon-print"> </span>
 			</a>
 			</li> <?php
@@ -95,7 +97,8 @@ function FlatViewHelperHeader16($view){
 	}
 	if ($cfg->get('com_email_icon_view', 1)){
 
-		$task = JRequest::getString("jevtask");
+		$task = $jinput->getString('jevtask', '');
+
 		$link = 'index.php?option=' . JEV_COM_COMPONENT
 		. '&task=' . $task
 		. ($evid ? '&evid=' . $evid : '')
@@ -117,7 +120,7 @@ function FlatViewHelperHeader16($view){
 
 		?>
 		<li class="email-icon">
-			<a href="javascript:void(0);" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
+			<a href="javascript:void(0);" rel="nofollow" Sonclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
 				<span class="icon-envelope"> </span>
 			</a>
 		</li>

@@ -4,14 +4,16 @@
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
 
+$jinput = JFactory::getApplication()->input;
+
 // Check if we are saving here.
-if (JRequest::getVar('save')) {
+if ($jinput->get('save', null, null)) {
     customCssSave();
 }
 ?>
@@ -68,7 +70,7 @@ if (JRequest::getVar('save')) {
         $file = 'jevcustom.css';
         $filepath = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
         $jinput = JFactory::getApplication()->input;
-        $content = $jinput->get('content', '', 'POST', '', 'RAW');
+        $content = $jinput->post->get('content', '', 'RAW');
 
         $msg = '';
         $msgType = '';

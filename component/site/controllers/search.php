@@ -4,7 +4,7 @@
  *
  * @version     $Id: search.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -37,17 +37,19 @@ class SearchController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
+		$jinput = JFactory::getApplication()->input;
+
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
 		$db	= JFactory::getDBO();
-		$keyword = JRequest::getString( 'keyword', '' );
+		$keyword = $jinput->getString('keyword', '');
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
 		if (JString::strlen($keyword) > $upper_limit) {
 			$keyword	= JString::substr($keyword, 0, $upper_limit - 1);
 		}
-		$keyword = $db->escape(JRequest::getVar( 'keyword', '' ));
+		$keyword = $db->escape($jinput->getString('keyword', ''));
 
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();

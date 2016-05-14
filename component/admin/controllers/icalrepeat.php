@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalrepeat.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd,2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd,2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -45,10 +45,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 	 */
 	function overview()
 	{
+		$jinput = JFactory::getApplication()->input;
 
 		$db = JFactory::getDBO();
 		$publishedOnly = false;
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $jinput->get('cid', array(0),"array");
 		JArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
@@ -57,7 +58,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$id = $cid;
 
 		// if cancelling a repeat edit then I get the event id a different way
-		$evid = JRequest::getInt("evid", 0);
+		$evid = $jinput->getInt("evid", 0);
 		if ($evid > 0)
 		{
 			$id = $evid;
@@ -822,6 +823,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (JFactory::getApplication()->isAdmin())
 		{
+			//TODO $repeatdata is not set so we cannot call in the eventid as it's trying it do!
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $repeatdata->eventid, "ICal Repeats deleted");
 			$this->redirect();
 		}

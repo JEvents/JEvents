@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevview.php 3493 2012-04-08 09:41:27Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -33,6 +33,8 @@ class JFormFieldJevview extends JFormFieldList
 
 	public function getOptions()
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		// Must load admin language files
 		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
@@ -52,7 +54,7 @@ class JFormFieldJevview extends JFormFieldList
 		}
 		sort( $views );
 		if ($this->menu !='hide'){
-                    $task = JRequest::getVar('task');
+                    $task = $jinput->get('task');
                     if ($task == "params.edit") {
                         unset($views['global']);
                     } else {

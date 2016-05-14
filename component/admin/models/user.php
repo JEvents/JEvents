@@ -4,7 +4,7 @@
  *
  * @version     $Id: user.php 1406 2010-11-09 11:48:51Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -45,9 +45,10 @@ class AdminUserModelUser extends JModelLegacy
 	 */
 	function __construct() {
 		parent::__construct();
-		
+		$jinput = JFactory::getApplication()->input;
+
 		$app	= JFactory::getApplication();
-		$option = JRequest::getVar('option', '');
+		$option = $jinput->get('option', '');
 		// Get the pagination request variables
 		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );

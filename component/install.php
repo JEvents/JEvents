@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2016 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -145,6 +145,8 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 	author_notified tinyint(3) NOT NULL default 0,
 	access int(11) unsigned NOT NULL default 0,
 	
+        tzid varchar(100) NOT NULL default '',
+                        
 	PRIMARY KEY  (ev_id),
 	INDEX (icsid),
 	INDEX stateidx (state)
@@ -466,6 +468,13 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("tzid", $cols))
+		{
+			$sql = "alter table #__jevents_vevent add column tzid varchar(100) NOT NULL default '' ";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+                
 		if (!array_key_exists("author_notified", $cols))
 		{
 			$sql = "alter table #__jevents_vevent add column author_notified tinyint(3) NOT NULL default 0";

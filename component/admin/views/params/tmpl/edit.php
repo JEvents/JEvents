@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit16.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -14,6 +14,7 @@ jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
 //JHtml::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
+JHtml::_('formbehavior.chosen', '#adminForm select.chosen');
 
 $version = JEventsVersion::getInstance();
 
@@ -25,6 +26,11 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 	{
 		$haslayouts = true;
 	}
+}
+$hasPlugins = false;
+$plugins = JPluginHelper::getPlugin("jevents");
+if (count($plugins)){
+    $hasPlugins = true;
 }
 ?>
 <!-- Set Difficulty : -->
@@ -367,11 +373,12 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
 	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
-
+        <input type="hidden" name="jform_title" id="jform_title" value="com_jevents"/>
 	<input type="hidden" name="controller" value="component" />
 	<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo JHTML::_('form.token'); ?>
+        
 </form>
 
 

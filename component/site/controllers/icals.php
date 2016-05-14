@@ -4,7 +4,7 @@
  *
  * @version     $Id: icals.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -359,7 +359,9 @@ class ICalsController extends AdminIcalsController
 		{
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
-				JError::raiseWarning(870, JText::_('INVALID_CALENDAR_STRUCTURE'));
+
+				JFactory::getApplication()->enqueueMessage(JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+
 			}
 
 			$icsid = current($nativeCals)->ics_id;
@@ -444,7 +446,8 @@ class ICalsController extends AdminIcalsController
 			// Paranoia, should not be here, validation is done by java script
 			// Just load the ical event list on redirect for now.
 			$redirect_task = "icalevent.list";
-			JError::raiseError('Fatal error', JText::_('JEV_E_WARNCAT'));
+			JFactory::getApplication()->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') .  JText::_('JEV_E_WARNCAT'), 'error');
+
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
 			$this->redirect();
 			return;
@@ -460,7 +463,7 @@ class ICalsController extends AdminIcalsController
 			$file = $_FILES['upload'];
 			if ($file['size'] == 0)
 			{//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				JError::raiseWarning(0, 'empty upload file');
+				JFactory::getApplication()->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else

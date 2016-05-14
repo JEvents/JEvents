@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 2692 2011-10-04 10:33:39Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -68,14 +68,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$this->assignRef("component", $component);
 
 		// Set the layout
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->setLayout('edit');
-		}
-		else
-		{
-			$this->setLayout('edit16');
-		}
+		$this->setLayout('edit');
 
 	}
 

@@ -5,7 +5,7 @@
  *
  * @version     $Id: modlatest.php 1142 2010-09-08 10:10:52Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -420,7 +420,7 @@ if (!empty($this->icalEvents))
 					$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 					$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 				}
-				$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+				$html .= "DTSTAMP:" . $stamptime . "\r\n";
 				$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 				$html .= "DTEND$tzid:" . $chend . "\r\n";
 				$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";

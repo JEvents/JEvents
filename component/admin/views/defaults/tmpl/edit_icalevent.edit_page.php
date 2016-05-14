@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_icalevent.edit_page.php 2091 2011-05-16 09:12:40Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -60,13 +60,23 @@ if ($jevparams->get("showpriority", 0)){
 	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_PRIORITY_LABEL",true);?>", "PRIORITY_LBL");
 	<?php
 }
+if ($jevparams->get("showtimezone", 0)){
+	?>
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE",true);?>", "TZID");
+	defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_TIMEZONE_LABEL",true);?>", "TZID_LBL");
+	<?php
+}
 ?>
 //
 Joomla.submitbutton = function (pressbutton){
 
     if(pressbutton == "defaults.apply" || pressbutton == "defaults.save")
     {
-        <?php $editor =  JFactory::getEditor("none");?>
+        <?php
+
+	    $editor =  JEditor::getInstance('none');
+
+	    ?>
                     
        <?php 
        $requiredfields = "'CALTAB','TITLE','CATEGORY','ICAL','MESSAGE'";
@@ -76,6 +86,7 @@ Joomla.submitbutton = function (pressbutton){
        }
        ?>
         var requiredFields = [<?php echo $requiredfields; ?>];
+
         var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
         if(defaultsLayout == '')
         {
@@ -99,7 +110,7 @@ Joomla.submitbutton = function (pressbutton){
                     missingFields.push('TABSEND');
                 }
 		//  Native Javascript array
-                requiredFields.each(function(requiredField, index){
+                requiredFields.forEach(function(requiredField, index){
                     var requiredFieldRE = "\{\{.*:"+requiredField+"\}\}";                    
                     if(!defaultsLayout.test(requiredFieldRE))
                     {

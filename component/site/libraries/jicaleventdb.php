@@ -4,7 +4,7 @@
  *
  * @version     $Id: jicaleventdb.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,7 +17,7 @@ class jIcalEventDB extends jEventCal {
 	// array of jIcalEventRepeat
 	var $_repeats=null;
 
-	function jIcalEventDB($vevent) {
+	function __construct($vevent) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){

@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevcategorynew.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -25,24 +25,19 @@ class JFormFieldJevcolumns extends JFormFieldText
 			function getInput()
 	{
 
+                // Must also load frontend language files
+                $lang = JFactory::getLanguage();
+                $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		// Mkae sure jQuery is loaded
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtml::_('jquery.framework');
-			JHtml::_('jquery.ui', array("core","sortable"));
-			JHtml::_('bootstrap.framework');
-			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-		}
-		else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
-			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-		}
+                JHtml::_('jquery.framework');
+                JHtml::_('jquery.ui', array("core","sortable"));
+                JHtml::_('bootstrap.framework');
+                JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+                // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+                JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 
 		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
 
@@ -61,6 +56,8 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_ENDTIME",true), "ENDTIME");
 		$collist[] = array(JText::_("JEV_FIELD_ISOENDTIME",true), "ISOEND");
 		$collist[] = array(JText::_("JEV_FIELD_MULTIENDDATE",true), "MULTIENDDATE");
+                $collist[] = array(JText::_("JEV_FIRSTREPEATSTART",true), "FIRSTREPEATSTART");
+                $collist[] = array(JText::_("JEV_LASTREPEATEND",true), "LASTREPEATEND");
 		$collist[] = array(JText::_("JEV_FIELD_DURATION",true), "DURATION");
 		$collist[] = array(JText::_("JEV_FIELD_PREVIOUSNEXT",true), "PREVIOUSNEXT");
 		$collist[] = array(JText::_("JEV_FIELD_FIRSTREPEAT",true), "FIRSTREPEAT");
@@ -233,7 +230,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 		else
 		{
-			JError::raiseWarning(500, JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'));
+			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters

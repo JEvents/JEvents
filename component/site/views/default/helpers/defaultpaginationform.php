@@ -3,30 +3,33 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	jimport('joomla.html.pagination');
+
+	$jinput = JFactory::getApplication()->input;
+
 	$pageNav = new JPagination($total, $limitstart, $limit);
 	if ($keyword !="" && method_exists($pageNav,"setAdditionalUrlParam")){		
 		$pageNav->setAdditionalUrlParam("keyword", urlencode($keyword));
-		$pageNav->setAdditionalUrlParam("showpast",JRequest::getInt("showpast",0));
+		$pageNav->setAdditionalUrlParam("showpast", $jinput->getInt("showpast", 0));
 	}
-	$Itemid = JRequest::getInt("Itemid");
-	$task = JRequest::getVar("jevtask");
+	$Itemid = $jinput->getInt("Itemid");
+	$task = $jinput->get("jevtask", null, null);
 	// include catids to make sure not lost when category is pre-selected
-	$catids = JRequest::getString("catids",JRequest::getString("category_fv",""));
+	$catids = $jinput->getString("catids", $jinput->getString("category_fv", ""));
 	if (JString::strlen($catids)>0){
 		$catids = explode("|",$catids);
 		JArrayHelper::toInteger($catids);
 		$catids = "&catids=".implode("|",$catids);
 	}
 	$year = "";
-	if (JRequest::getInt("year",0)>0){
-		$year = "&year=".JRequest::getInt("year",0);
+	if ($jinput->getInt("year",0)>0){
+		$year = "&year=".$jinput->getInt("year",0);
 	}
 	$month = "";
-	if (JRequest::getInt("month",0)>0){
-		$month = "&month=".JRequest::getInt("month",0);
+	if ($jinput->getInt("month",0)>0){
+		$month = "&month=".$jinput->getInt("month",0);
 	}
 	if ($keyword !=""){
-		$keyword = "&keyword=".urlencode($keyword)."&showpast=".JRequest::getInt("showpast",0);
+		$keyword = "&keyword=".urlencode($keyword)."&showpast=".$jinput->getInt("showpast",0);
 	}
 	$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&Itemid=$Itemid&task=$task$catids$year$month$keyword");
 	?>

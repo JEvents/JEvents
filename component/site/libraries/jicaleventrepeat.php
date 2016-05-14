@@ -5,7 +5,7 @@
  *
  * @version     $Id: jicaleventrepeat.php 2992 2011-11-10 15:15:22Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -102,7 +102,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			{
 				$this->_endday = JevDate::mktime(0, 0, 0, $this->mdn(), $this->ddn()-1, $this->ydn());
 			}
-		}
+		}                
 		if ($this->_startday <= $testDate && $this->_endday >= $testDate)
 		{
 			// if only show on first day

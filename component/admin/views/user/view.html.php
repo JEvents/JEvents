@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -32,6 +32,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$livesite = JURI::base();
 
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$jinput = JFactory::getApplication()->input;
 
 		// Set toolbar items for the page
 		JToolBarHelper::title(JText::_('USERS'), 'jevents');
@@ -49,7 +50,7 @@ class AdminUserViewUser extends JEventsAbstractView
 		$db = JFactory::getDbo();
 		$search = $db->escape(trim(strtolower($search)));
 
-		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
+		$option = $jinput->getCmd('option', JEV_COM_COMPONENT);
 
 		$pagination =  $this->get('Pagination');
 		$users = $this->get('users');

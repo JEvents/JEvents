@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevents.php 3551 2012-04-20 09:41:37Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -61,6 +61,7 @@ else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)=
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,
 // we need to get it from the menu item itself
+// WP TODO sort out menus!
 $menu = JFactory::getApplication()->getMenu()->getActive();
 if ($menu)
 {
@@ -88,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 $component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
 $component->params = & $newparams;
 
+JEVHelper::setupWordpress();
+
 $isMobile = $browser->isMobile();
 // Joomla isMobile method doesn't identify all android phones
 if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
@@ -111,12 +114,13 @@ if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') ==
 		JRequest::setVar("jevsmartphone", 1);
 		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
 		{
-			JRequest::setVar("jEV", "smartphone");
+                    JRequest::setVar("jEV", "smartphone");
 		}
-		$params->set('iconicwidth', 485);
-		$params->set('extpluswidth', 485);
-		$params->set('ruthinwidth', 485);
+		$params->set('iconicwidth', "scalable");
+		$params->set('extpluswidth', "scalable");
+		$params->set('ruthinwidth', "scalable");
 	}
+        $params->set("isSmartphone",1);
 }
 
 // See http://www.php.net/manual/en/timezones.php
@@ -169,7 +173,8 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		return JError::raiseError(404, 'Invalid Controller - ' . $controllerName);
+		JFactory::getApplication()->enqueueMessage('404 - '.  JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+
 		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
 		list($controllerName, $task) = explode('.', $cmd);
