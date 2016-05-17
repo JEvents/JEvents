@@ -52,6 +52,20 @@ class Pkg_JeventsInstallerScript
 
 	public function uninstall($parent)
 	{
+                $uninstall_text = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
+                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY'); 
+                if ($uninstall_text ==  'JEV_SORRY_THAT_YOU_UNINSTALL'){
+                    $uninstall_text = "We are sorry that you have uninstalled JEvents";
+                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
+                }
+		echo "<div class='jev_install'>
+				<div class='jev_logo'><img src='http://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='version'><h2>". $uninstall_text ."</h2></div>
+				<div class='installed'>
+					<h4>".$uninstall_text2."</h4>
+                                        <br/><br/><br/>
+				</div>";
+            
 		return true;
 	}
 
