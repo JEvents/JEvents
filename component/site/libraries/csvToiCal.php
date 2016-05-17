@@ -258,9 +258,27 @@ class CsvToiCal
 			// unfold content lines according the unfolding procedure of rfc2445
 			$this->data = str_replace("\n ","",$this->data);
 			$this->data = str_replace("\n\t","",$this->data);
-
+                        
 			// Convert string into array for easier processing
 			$this->data = explode("\n", $this->data);
+                        for ($i=0;$i<count($this->data); $i++){
+                            $buffer = $this->data[$i];
+                            while ((!$line = $this->parseCsvLine($buffer)) && $i+1<count($this->data))
+                            {
+                                $i++;
+                                $buffer .= $this->data[$i];
+                            }
+                            if (!$line)
+                            {
+					// something gone wrong, CSV is corrupted, cancel
+					return false;
+                            }
+                            if ($i == 0)
+				continue; // fist line is header, so continue
+                            fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file				
+                        }
+                        /*
+                         * this approach doesn't deal with carraige returns within fields!
 			$i = 1;
 			foreach ($this->data as $buffer){
 				if ($buffer == "")
@@ -274,6 +292,7 @@ class CsvToiCal
 					continue; // fist line is header, so continue
 				fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file				
 			}
+                         */
 		}
 		else {
 			$fp = fopen($this->file, 'r');

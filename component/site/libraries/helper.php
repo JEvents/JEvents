@@ -1574,6 +1574,10 @@ class JEVHelper
 
 		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
 		{
+                        if ($evid == 0)
+			{
+				return true;
+			}
 			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 			$queryModel = new JEventsDBModel($dataModel);
 

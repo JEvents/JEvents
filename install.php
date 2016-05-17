@@ -83,7 +83,7 @@ class Pkg_JeventsInstallerScript
 		if ($this->hasJEventsInst == 1) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION');}
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/images/JeventsTransparent.png' /></div>
+				<div class='jev_logo'><img src='http://www.jevents.net/logo/JeventsTransparent.png' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
 				<div class='installed'>
 					<ul>

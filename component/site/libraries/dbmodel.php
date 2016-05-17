@@ -278,7 +278,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
@@ -435,7 +435,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = strftime('%Y-%m-%d 23:59:59', $enddate);
@@ -629,7 +629,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
@@ -1240,7 +1240,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
@@ -1854,7 +1854,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
@@ -2268,7 +2268,7 @@ class JEventsDBModel
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
-		if (strpos($startdate, "-") === false)
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
 		{
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
