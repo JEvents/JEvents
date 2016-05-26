@@ -59,7 +59,7 @@ class Pkg_JeventsInstallerScript
                     $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
                 }
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
 				<div class='version'><h2>". $uninstall_text ."</h2></div>
 				<div class='installed'>
 					<h4>".$uninstall_text2."</h4>
@@ -104,7 +104,7 @@ class Pkg_JeventsInstallerScript
                 }
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/logo/$logo' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
 				<div class='installed'>
 					<ul>
