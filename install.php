@@ -94,10 +94,17 @@ class Pkg_JeventsInstallerScript
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 1) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION');}
+		if ($this->hasJEventsInst == 1) { 
+                    $inst_text = JText::_('JEV_INST_VERSION_UPRG'); 
+                    $logo = "JeventsTransparent3.png";
+                } 
+                else {  
+                    $inst_text = JText::_('JEV_INST_VERSION');
+                    $logo = "JeventsTransparent.png";                    
+                }
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/logo/JeventsTransparent.png' /></div>
+				<div class='jev_logo'><img src='http://www.jevents.net/logo/$logo' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
 				<div class='installed'>
 					<ul>
