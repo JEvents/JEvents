@@ -601,7 +601,7 @@ class JEVHelper
 		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
 		$value = $yearpart."-".$monthpart."-".$daypart;
 		$name =  $fieldname;
-		
+
 		static $done;
 
 		if ($done === null)
@@ -849,9 +849,9 @@ class JEVHelper
 
                                                     return $jevitemid[$evid];
                                             }
-                                            
+
 					}
-                                        // we didn't find them amongst the other menu item so checn the edit and admin ones 
+                                        // we didn't find them amongst the other menu item so checn the edit and admin ones
 					foreach ($jevitems as $jevitem)
 					{
                                             if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
@@ -1934,8 +1934,8 @@ class JEVHelper
 					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 					. "\n WHERE block ='0'"
 					. "\n AND cd.published =1 "
-					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
-					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
+					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
+					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
 					. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
@@ -2061,7 +2061,7 @@ class JEVHelper
 		}
 		//$access = JAccess::check($user->id, "core.admin","com_jevents");
 		// Add a second check incase the getuser failed.
-		if (is_null($user)) {
+		if (!$user) {
 			return false;
 		}
 		$access = $user->authorise('core.admin', 'com_jevents');
@@ -3094,7 +3094,7 @@ SCRIPT;
 							$html .= ';INTERVAL=' . $row->_rinterval;
 						if ($row->_freq == "DAILY")
 						{
-							
+
 						}
 						else if ($row->_freq == "WEEKLY")
 						{
@@ -3609,7 +3609,7 @@ SCRIPT;
 	public static
 			function modal($selector = 'a.modal', $params = array())
 	{
-		
+
 		if (version_compare(JVERSION, "3.0", "ge"))
 		{
 			// Load the code Joomla version
@@ -3637,15 +3637,15 @@ SCRIPT;
 			return new jevCache();
 		}
 	}
-        
-        /* 
+
+        /*
          * Fix config etc. to run in WP with minimal code changes!
          */
         public static function setupWordpress() {
                 if (defined ("WPJEVENTS")){
                     $cfg = JEVConfig::getInstance();
                     $cfg->set('com_email_icon_view', 0);
-                    
+
                 }
         }
 }
