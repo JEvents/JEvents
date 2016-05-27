@@ -54,9 +54,10 @@ $fullspan = 12;
 
 				if (JEVHelper::isAdminUser())
 				{
+                                    if ($params->get("authorisedonly", 0)) {
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
 					$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-
+                                    }
 					// new version - Joomla 3.5 does its stuff using AJAX and assumes its ONLY called from com_config :(
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit&view=component&component=com_jevents";
 					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");

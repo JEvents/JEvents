@@ -53,7 +53,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 <?php } ?>
 	</table>
 
-	<table  class="adminlist   table table-striped">
+	<table  class="adminlist   table table-striped jevbootstrap">
 		<thead>
 			<tr>
 				<th class="title" width="40%" nowrap="nowrap">

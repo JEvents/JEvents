@@ -88,9 +88,12 @@ STYLE;
                 );
                 if (JEVHelper::isAdminUser())
                 {
-                        JHtmlSidebar::addEntry(
+                        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+                        if ($params->get("authorisedonly", 0)) {
+                            JHtmlSidebar::addEntry(
                                         JText::_('JEV_MANAGE_USERS'), 'index.php?option=com_jevents&task=user.list', $vName == 'user.list'
-                        );
+                            );
+                        }
                         JHtmlSidebar::addEntry(
                                         JText::_('JEV_INSTAL_CONFIG'), 'index.php?option=com_jevents&task=params.edit', $vName == 'params.edit'
                         );

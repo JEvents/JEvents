@@ -52,8 +52,8 @@
 			<option value="gray">JEV_NAV_BAR_GRAY</option>
 			<option value="yellow">JEV_NAV_BAR_YELLOW</option>
 		</field>
-		<field name="com_earliestyear" type="text" default="2000" menu="hide" size="6" label="JEV_EARLIEST_YEAR" description="" difficulty="1"/>
-		<field name="com_latestyear" type="text" default="2020" menu="hide" size="6"  label="JEV_LATEST_YEAR" description="" difficulty="1"/>
+		<field name="com_earliestyear" type="text" default="-2" menu="hide" size="6" label="JEV_EARLIEST_YEAR" description="JEV_EARLIEST_YEAR_DESC" difficulty="1"/>
+		<field name="com_latestyear" type="text" default="+5" menu="hide" size="6"  label="JEV_LATEST_YEAR" description="JEV_LATEST_YEAR_DESC" difficulty="1"/>
 		<field name="com_starday" type="jevlist" default="0" menu="hide" label="JEV_FIRST_DAY" description="" difficulty="1">
 			<option value="0">JEV_SUNDAY_FIRST</option>
 			<option value="1">JEV_MONDAY_FIRST</option>

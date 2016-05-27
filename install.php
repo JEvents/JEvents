@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.12
+ * @version     3.4.13
  * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -52,6 +52,20 @@ class Pkg_JeventsInstallerScript
 
 	public function uninstall($parent)
 	{
+                $uninstall_text = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
+                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY'); 
+                if ($uninstall_text ==  'JEV_SORRY_THAT_YOU_UNINSTALL'){
+                    $uninstall_text = "We are sorry that you have uninstalled JEvents";
+                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
+                }
+		echo "<div class='jev_install'>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='version'><h2>". $uninstall_text ."</h2></div>
+				<div class='installed'>
+					<h4>".$uninstall_text2."</h4>
+                                        <br/><br/><br/>
+				</div>";
+            
 		return true;
 	}
 
@@ -80,10 +94,17 @@ class Pkg_JeventsInstallerScript
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 1) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION');}
+		if ($this->hasJEventsInst == 1) { 
+                    $inst_text = JText::_('JEV_INST_VERSION_UPRG'); 
+                    $logo = "JeventsTransparent3.png";
+                } 
+                else {  
+                    $inst_text = JText::_('JEV_INST_VERSION');
+                    $logo = "JeventsTransparent.png";                    
+                }
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/images/JeventsTransparent.png' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
 				<div class='installed'>
 					<ul>
