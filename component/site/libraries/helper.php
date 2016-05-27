@@ -2056,6 +2056,10 @@ class JEVHelper
 			$user = JFactory::getUser();
 		}
 		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		// Add a second check incase the getuser failed.
+		if (is_null($user)) {
+			return false;
+		}
 		$access = $user->authorise('core.admin', 'com_jevents');
 		return $access;
 
