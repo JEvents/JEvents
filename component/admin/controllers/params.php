@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * This file based on Joomla config component Copyright (C) 2005 - 2008 Open Source Matters.
  *

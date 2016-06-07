@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Search.php 1976 2011-04-27 15:54:31Z geraintedwards $
  * @package     JEvents

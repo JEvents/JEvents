@@ -12,8 +12,11 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.application.component.helper');
 
+use Joomla\Utilities\ArrayHelper;
+
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+
 JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 /**
@@ -359,7 +362,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		}
 
 		// Convert the item to a result object.
-		$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
+		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');
 
 		// Set the item type.
 		$item->type_id = $this->type_id;

@@ -1,6 +1,6 @@
 <?php 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: overview.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
@@ -15,6 +15,7 @@ $db	= JFactory::getDBO();
 $user = JFactory::getUser();
 JHTML::_('behavior.tooltip');
 
+use Joomla\String\StringHelper;
 
 $pathIMG = JURI::Root() . 'administrator/images/';
 $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/"; 
@@ -62,8 +63,8 @@ $mainspan = 10;
               	<td width="40%">
               	<?php
                 $times = '<table style="border: 1px solid #666666; width:100%;">';
-                $times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
-                $times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
+                $times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(),0,16)) . '</td></tr>';
+                $times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(),0,16)) . '</td></tr>';
                 $times .="</table>";
                 echo $times;
                 ?>

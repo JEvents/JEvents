@@ -1,10 +1,10 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 $cfg	= JEVConfig::getInstance();
-
 $jinput = JFactory::getApplication()->input;
-
 
 if( 0 == $this->evid) {
 	$Itemid = $jinput->getInt('Itemid', 0);
@@ -41,7 +41,7 @@ if( array_key_exists('row',$this->data) ){
 			<div class="jev_evdt">
 			<?php
 			foreach ($customresults as $result) {
-				if (is_string($result) && JString::strlen($result)>0){
+				if (is_string($result) && StringHelper::strlen($result)>0){
 					echo "<div>".$result."</div>";
 				}
 			}

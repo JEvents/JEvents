@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: abstract.php 3153 2012-01-05 10:11:45Z geraintedwards $
  * @package     JEvents
@@ -33,6 +33,8 @@ define( 'MASK_LINK_TITLES', 0x1000 );
 // mos_content.mask masks
 define( 'MASK_HIDE_TITLE', 0x0001 );
 define( 'MASK_HIDE_INTRO', 0x0002 );
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML Abstract view class for the component frontend
@@ -124,7 +126,7 @@ class JEventsDefaultView extends JEventsAbstractView
 	// This handles all methods where the view is passed as the first argument
 	function __call($name, $arguments){
 		if (strpos($name,"_")===0){
-			$name="ViewHelper".ucfirst(JString::substr($name,1));
+			$name="ViewHelper".ucfirst(StringHelper::substr($name,1));
 		}
 		$helper = ucfirst($this->jevlayout).ucfirst($name);
 		if (!$this->loadHelper($helper)){

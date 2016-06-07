@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit.php 2768 2011-10-14 08:43:42Z geraintedwards $
  * @package     JEvents

@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Repeating.php 3549 2013-09-03 09:26:21Z odp04y $
  * @package     JEvents

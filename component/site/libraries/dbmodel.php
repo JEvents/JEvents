@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // load language constants
 JEVHelper::loadLanguage('front');
+use Joomla\String\StringHelper;
 
 class JEventsDBModel
 {
@@ -184,7 +185,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
 			{
 				$where = ' AND c.id IN (' . $catidList . ') ';
 			}
@@ -238,7 +239,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
 			{
 				$where = ' AND (p.id IN (' . $catidList . ') ' . ($levels > 1 ? ' OR gp.id IN (' . $catidList . ')' : '') . ($levels > 2 ? ' OR ggp.id IN (' . $catidList . ')' : '') . ')';
 			}
@@ -2396,9 +2397,9 @@ class JEventsDBModel
 
 		$startdate = JevDate::strftime('%Y-%m-%d', $startdate);
 
-		if (JString::strlen($startdate) == 10)
+		if (StringHelper::strlen($startdate) == 10)
 			$startdate.= " 00:00:00";
-		if (JString::strlen($enddate) == 10)
+		if (StringHelper::strlen($enddate) == 10)
 			$enddate.= " 23:59:59";
 
 		// This code is used by the iCals code with a spoofed user so check if this is what is happening
