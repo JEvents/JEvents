@@ -8,12 +8,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Updated hardcoded english for iCal Repeat Deleted and iCal Repeats Deleted.
 * Fixed undefined variable within iCalRepeat on redirect.
 * Fixed jevuser.php where $idsstring was undefined, it should have been $idstring
-* Replace JButton with JToolBarButton as JButton is not deprecated.
+* Migrated from deprecated JButton to JToolBarButton
 * Declared editStrings variable in icalrepat/view.html.php to avoid a coding notice in code editor. Has not other effect but to be cleaner.
 * Fixed $value implementation within jevtimezone.php JFormFieldJevtimeZone
 * Updated License to correct Joomla! Version and wording
 * Migrated from deprecated JString to StringHelper
-* Removal of deprecated JArrayHelper with ArrayHelper
+* Migrated from deprecated JArrayHelper with ArrayHelper
 * Set xhtml to false on JRoute on the Link within the default Later Events View to avoid failing urls.
 
 ## 06-05-2016 - Geraint Edwards
