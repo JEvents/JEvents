@@ -823,20 +823,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$this->_deleteFuture();
 
-
 		if (JFactory::getApplication()->isAdmin())
 		{
-			//TODO $repeatdata is not set so we cannot call in the eventid as it's trying it do!
-			echo "<pre>" . var_dump($this) . "</pre>";
-			die;
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $repeatdata->eventid, "ICal Repeats deleted");
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $this->rrule->data["eventid"], JText::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), "Ical Repeats Deleted");
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), JText::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 
