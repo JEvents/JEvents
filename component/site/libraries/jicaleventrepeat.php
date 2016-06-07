@@ -381,6 +381,15 @@ class jIcalEventRepeat extends jIcalEventDB
 			function getAdjacentRepeats()
 	{
 
+		$jinput = JFactory::getApplication()->input;
+		$pop = $jinput->getInt('pop', 0);
+		$tmpl ='';
+		$popc =  "&pop=" . $pop;
+
+		if ($pop == 1) {
+			$tmpl = "&tmpl=component";
+		}
+
 		$Itemid = JEVHelper::getItemid();
 		list($year, $month, $day) = JEVHelper::getYMD();
 
@@ -393,7 +402,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($prior))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->rp_id . '&Itemid=' . $Itemid
-					. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($prior->title);
+					. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($prior->title) . $tmpl . $popc;
 			$link = JRoute::_($link);
 			$this->_prevRepeat = $link;
 		}
@@ -409,7 +418,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($post))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
-					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($post->title);
+					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($post->title) . $tmpl . $popc;
 			$link = JRoute::_($link);
 			$this->_nextRepeat = $link;
 		}
