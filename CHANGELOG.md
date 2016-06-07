@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 07-06-2016 - Tony Partridge
+* Fixed Next and Previous repeat navigation in pop-ups. Previously the whole template was being loading within a modal when click next or previous repeat.
 * Updated hardcoded english for iCal Repeat Deleted and iCal Repeats Deleted.
 * Fixed undefined variable within iCalRepeat on redirect.
 * Fixed jevuser.php where $idsstring was undefined, it should have been $idstring
