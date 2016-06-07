@@ -13,6 +13,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('joomla.html.toolbar.button');
+jimport('cms.toolbar.button');
+
 use Joomla\String\StringHelper;
 
 class JButtonJev extends JToolbarButton
@@ -51,7 +53,7 @@ class JButtonJev extends JToolbarButton
 	{
 		return $this->_parent->getName().'-'.$icon;
 	}
-	
+
 	/**
 	 * Get the JavaScript command for the button
 	 *
@@ -78,7 +80,7 @@ class JButtonJev extends JToolbarButton
 
 
 		return $cmd;
-	}	
+	}
 }
 
 class JButtonJevlink extends JToolbarButton
@@ -118,7 +120,7 @@ class JButtonJevlink extends JToolbarButton
 	{
 		return $this->_parent->getName().'-'.$icon;
 	}
-	
+
 	/**
 	 * Get the JavaScript command for the button
 	 *
@@ -136,7 +138,7 @@ class JButtonJevlink extends JToolbarButton
 		$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=$task&Itemid=$Itemid");
 
 		return $link;
-	}	
+	}
 }
 
 class JButtonJevconfirm extends JtoolbarButton
@@ -174,7 +176,7 @@ class JButtonJevconfirm extends JtoolbarButton
 	 */
 	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
 	{
-		return $this->_parent->getName().'-'.$name;		
+		return $this->_parent->getName().'-'.$name;
 	}
 
 	/**
@@ -191,7 +193,7 @@ class JButtonJevconfirm extends JtoolbarButton
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";
-		
+
 		if ($hide) {
 			if ($list) {
 				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
