@@ -13,6 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
+use Joomla\Utilities\ArrayHelper;
 
 class AdminUserController extends JControllerLegacy   {
 
@@ -32,7 +33,7 @@ class AdminUserController extends JControllerLegacy   {
 		if (!is_array( $this->cid )) {
 			$this->cid = array(0);
 		}
-                JArrayHelper::toInteger($this->cid);
+                ArrayHelper::toInteger($this->cid);
 
 		$this->registerTask( 'overview', 'showUsers' );
 		$this->registerTask( 'list', 'showUsers' );

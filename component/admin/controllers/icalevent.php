@@ -12,6 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controlleradmin');
 
+use Joomla\Utilities\ArrayHelper;
+
+
 class AdminIcaleventController extends JControllerAdmin
 {
 
@@ -442,7 +445,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
 		else
@@ -1234,7 +1237,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 1);
 
 	}
@@ -1244,7 +1247,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 0);
 	}
 
@@ -1258,7 +1261,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
@@ -1408,7 +1411,7 @@ class AdminIcaleventController extends JControllerAdmin
 		  }
 		 */
 		$cid = JRequest::getVar('cid', array(0));
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)

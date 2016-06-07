@@ -1,6 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Utilities\ArrayHelper;
+
 function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	jimport('joomla.html.pagination');
 
@@ -17,7 +19,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$catids = $jinput->getString("catids", $jinput->getString("category_fv", ""));
 	if (JString::strlen($catids)>0){
 		$catids = explode("|",$catids);
-		JArrayHelper::toInteger($catids);
+		ArrayHelper::toInteger($catids);
 		$catids = "&catids=".implode("|",$catids);
 	}
 	$year = "";

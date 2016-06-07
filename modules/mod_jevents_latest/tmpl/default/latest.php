@@ -1089,7 +1089,7 @@ class DefaultModLatestView
 					$link = $dayEvent->viewDetailLink($ev_year, $ev_month, $ev_day, false, $this->myItemid);
 					if ($this->modparams->get("ignorefiltermodule", 0))
 					{
-						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1");
+						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1", false);
 					}
 					else
 					{

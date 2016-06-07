@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\Utilities\ArrayHelper;
+
 class jEventCal {
 	var $data;
 	var $_unixstartdate = null;
@@ -922,7 +924,7 @@ class jEventCal {
 			if (!is_array($catids)){
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			ArrayHelper::toInteger($catids);
 			$this->_catidsarray= $catids;
 			return $catids;
 		}

@@ -13,6 +13,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\Utilities\ArrayHelper;
+
 function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall){
 	// Itemid, search for menuid with lowest access rights
 	$user = JFactory::getUser();
@@ -132,7 +134,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	
 	if (JString::strlen($catidsin)>0){
 		$catidsin = explode("|",$catidsin);
-		JArrayHelper::toInteger($catidsin);
+		ArrayHelper::toInteger($catidsin);
 	}
 	else {
 		// if no catids from the URL then stick to the module catids

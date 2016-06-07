@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 07-05-2016 - Tony Partridge
+* Removal of deperecated JArrayHelper with ArrayHelper
+* Set xhtml to false on JRoute on the Link within the default Later Events View to avoid failing urls.
+
 ## 06-05-2016 - Geraint Edwards
 * Fix for unspecified sender address in new admin email config setting
 

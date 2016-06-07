@@ -12,6 +12,8 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 include_once(JEV_ADMINPATH . "/controllers/icals.php");
 
+use Joomla\Utilities\ArrayHelper;
+
 class ICalsController extends AdminIcalsController
 {
 
@@ -188,7 +190,7 @@ class ICalsController extends AdminIcalsController
 				if (!in_array($y, $years))
 					$years[] = $y;
 			}
-			JArrayHelper::toInteger($years);
+			ArrayHelper::toInteger($years);
 		}
 		else if ($years != "NONE")
 		{
@@ -198,7 +200,7 @@ class ICalsController extends AdminIcalsController
 				list($y, $m, $d) = JEVHelper::getYMD();
 				$years = array($y);
 			}
-			JArrayHelper::toInteger($years);
+			ArrayHelper::toInteger($years);
 		}
 		else
 		{

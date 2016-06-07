@@ -12,7 +12,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.access.access');
+
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
+
+use Joomla\Utilities\ArrayHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -617,7 +620,7 @@ class JEVHelper
 			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
 			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
 
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		JHtml::_('bootstrap.tooltip');
@@ -2135,7 +2138,7 @@ class JEVHelper
 				// Set the query for execution.
 				$db->setQuery((string) $query);
 				$rootlevels = $db->loadColumn();
-				JArrayHelper::toInteger($rootlevels);
+				ArrayHelper::toInteger($rootlevels);
 			}
 			$levels = $rootlevels;
 		}
@@ -2343,7 +2346,7 @@ class JEVHelper
 		{
 			$catids = array(intval($catids));
 		}
-		JArrayHelper::toInteger($catids);
+		ArrayHelper::toInteger($catids);
 		$result = false; //count($catids)>0;
 		foreach ($catids as $catid)
 		{
@@ -2377,7 +2380,7 @@ class JEVHelper
 			{
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			ArrayHelper::toInteger($catids);
 			$row->_catidsarray = $catids;
 			return $catids;
 		}
