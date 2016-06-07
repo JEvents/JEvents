@@ -795,14 +795,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		if (JFactory::getApplication()->isAdmin())
 		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, "ICal Repeat deleted");
+			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
 			$Itemid = JRequest::getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), "ICal Repeat deleted");
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 
@@ -827,6 +827,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 		if (JFactory::getApplication()->isAdmin())
 		{
 			//TODO $repeatdata is not set so we cannot call in the eventid as it's trying it do!
+			echo "<pre>" . var_dump($this) . "</pre>";
+			die;
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $repeatdata->eventid, "ICal Repeats deleted");
 			$this->redirect();
 		}
