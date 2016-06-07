@@ -164,7 +164,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = StringHelper::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -178,7 +178,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JApplication::stringURLSafe($query['title']);
+						  $segments[] = JApplicationHelper::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -210,7 +210,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = StringHelper::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -255,7 +255,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = StringHelper::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -738,7 +738,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = StringHelper::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
