@@ -382,6 +382,7 @@ class JEV_CommonFunctions {
 		if ($event){
 			$messagetemplate = str_replace("{CATEGORY}", $event->catname(),$messagetemplate);
 			//$messagetemplate = str_replace("{EXTRA}", $event->extra_info(),$messagetemplate);
+
 		}
 		$messagetemplate = str_replace("{LIVESITE}", $live_site,$messagetemplate);
 		$messagetemplate = str_replace("{AUTHOR}", $author,$messagetemplate);

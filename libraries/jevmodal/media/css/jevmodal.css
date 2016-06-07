@@ -176,6 +176,9 @@
     border:none;
 }
 
+/** Hide the modal body by default **/
+.jevbootstrap > div.action_dialogJQ  {display:none;}
+
 /* Only for sites that want a max size for the popup! */
 
 @media (min-width: 1200px){
