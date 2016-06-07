@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: cpanel.php 3546 2012-04-20 09:08:44Z geraintedwards $
  * @package     JEvents

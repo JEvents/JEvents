@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: saveIcalEvent.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class SaveIcalEvent {
 
@@ -356,13 +357,13 @@ public static function generateRRule($array){
 			if (count($weeknums)==0){
 				// special case for weekly repeats which don't specify eeek of a month
 				foreach ($weekdays as $wd) {
-					if (JString::strlen($byday)>0) $byday.=",";
+					if (StringHelper::strlen($byday)>0) $byday.=",";
 					$byday .= $weekdayReverseMap[$wd];
 				}
 			}
 			foreach ($weeknums as $week){
 				foreach ($weekdays as $wd) {
-					if (JString::strlen($byday)>0) $byday.=",";
+					if (StringHelper::strlen($byday)>0) $byday.=",";
 					$byday .= $bd_direction.$week.$weekdayReverseMap[$wd];
 				}
 			}

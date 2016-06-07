@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalEvent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
+use Joomla\String\StringHelper;
 
 class iCalEvent extends JTable  {
 
@@ -420,7 +420,7 @@ else $this->_detail = false;
 		$eventid = $this->ev_id;
 		
 		$tz = false;
-		if (JString::stristr($this->recurrence_id,"TZID")){
+		if (StringHelper::stristr($this->recurrence_id,"TZID")){
 			list($tz, $this->recurrence_id) = explode(";", $this->recurrence_id);
 			$tz= str_replace("TZID=", "", $tz);
 			$tz = iCalImport::convertWindowsTzid($tz);
@@ -511,7 +511,7 @@ else $this->_detail = false;
 		$oldrepeatcount = count($oldrepeats);
 		foreach ($oldrepeats as &$oldrepeat) {
 			// find matching day
-			$oldrepeat->startday = JString::substr($oldrepeat->startrepeat,0,10);
+			$oldrepeat->startday = StringHelper::substr($oldrepeat->startrepeat,0,10);
 			// free the reference
 			unset($oldrepeat);
 		}
@@ -528,7 +528,7 @@ else $this->_detail = false;
 		for ($r = 0;$r<count($this->_repetitions);$r++){
 			$repeat =& $this->_repetitions[$r];
 			// find matching day and only one!!
-			$repeat->startday = JString::substr($repeat->startrepeat,0,10);
+			$repeat->startday = StringHelper::substr($repeat->startrepeat,0,10);
 			$matched = false;
 			foreach ($oldrepeats as $oldrepeat) {
 				if ($oldrepeat->startday == $repeat->startday){

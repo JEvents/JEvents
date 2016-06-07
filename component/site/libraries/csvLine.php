@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: csvLine.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
@@ -17,6 +17,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  *
  * Part of the CSV to iCal conversion mechanism
  */
+
+use Joomla\String\StringHelper;
+
 class CsvLine {
 
     var $uid;
@@ -236,7 +239,7 @@ class CsvLine {
     private function datetimeToIcsFormat($datetime) {
 		$newdatetime = JevDate::strtotime($datetime);
 		$tempdate = new JevDate($newdatetime);
-	if (JString::strlen($datetime)<=10 && $tempdate->toFormat("%H:%M:%S")=="00:00:00"){
+	if (StringHelper::strlen($datetime)<=10 && $tempdate->toFormat("%H:%M:%S")=="00:00:00"){
 		// in this case we have not time element so don't set it otherwise iCal import will think a time is actually set and not process all day or no end time events correctly
 		return date("Ymd", $newdatetime);
 	}

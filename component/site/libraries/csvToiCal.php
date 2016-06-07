@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: csvToiCal.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once("csvLine.php");
+
+use Joomla\String\StringHelper;
 
 if (!function_exists('str_getcsv'))
 {
@@ -86,7 +88,7 @@ class CsvToiCal
 	 */
 	public function getConvertedTempFile()
 	{
-		$file = array("name" => JString::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
+		$file = array("name" => StringHelper::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
 			"tmp_name" => $this->tmpFileName);
 		return $file;
 
@@ -109,7 +111,7 @@ class CsvToiCal
 	private function parseFileHeader()
 	{
 		if ($this->data){
-			$line = JString::substr($this->data,0,JString::strpos($this->data,"\n")+1);
+			$line = StringHelper::substr($this->data,0,StringHelper::strpos($this->data,"\n")+1);
 		}
 		else {
 			$fp = fopen($this->file, 'r');

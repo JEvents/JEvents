@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jicaleventrepeat.php 2992 2011-11-10 15:15:22Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
 
 class jIcalEventRepeat extends jIcalEventDB
 {
@@ -41,7 +43,7 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	/*
 	  function dtstart($val=""){
-	  if (JString::strlen($val)==0) return $this->getUnixStartTime();
+	  if (StringHelper::strlen($val)==0) return $this->getUnixStartTime();
 	  else {
 	  $this->_dtstart=$val;
 	  $this->_unixstarttime=$val;
@@ -50,7 +52,7 @@ class jIcalEventRepeat extends jIcalEventDB
 	  }
 
 	  function dtend($val=""){
-	  if (JString::strlen($val)==0) return $this->getUnixEndTime();
+	  if (StringHelper::strlen($val)==0) return $this->getUnixEndTime();
 	  else {
 	  $this->_dtend=$val;
 	  $this->_unixendtime=$val;

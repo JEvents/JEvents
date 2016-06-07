@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: commonfunctions.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -16,6 +16,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Joomla 1.5
 // tasker/controller
 jimport('joomla.application.component.controller');
+
+use Joomla\String\StringHelper;
 
 class JEV_CommonFunctions {
 
@@ -194,7 +196,7 @@ class JEV_CommonFunctions {
 	}
 
 	public static function jEventsDoLink($url="",$alt="alt",$attr=array()){
-		if (JString::strlen($url)==0) $url="javascript:void(0)";
+		if (StringHelper::strlen($url)==0) $url="javascript:void(0)";
 		$link = "<a href='".$url."' ";
 		if (count($attr)>0) {
 			foreach ($attr as $key=>$val){

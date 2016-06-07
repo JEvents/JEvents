@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 07-05-2016 - Tony Partridge
-* Removal of deperecated JArrayHelper with ArrayHelper
+## 07-06-2016 - Tony Partridge
+* Declared editStrings variable in icalrepat/view.html.php to avoid a coding notice in code editor. Has not other effect but to be cleaner.
+* Fixed $value implementation within jevtimezone.php JFormFieldJevtimeZone
+* Updated License to correct Joomla! Version and wording
+* Migrated from deprecated JString to StringHelper
+* Removal of deprecated JArrayHelper with ArrayHelper
 * Set xhtml to false on JRoute on the Link within the default Later Events View to avoid failing urls.
 
 ## 06-05-2016 - Geraint Edwards

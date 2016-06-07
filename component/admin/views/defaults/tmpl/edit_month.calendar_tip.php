@@ -1,6 +1,6 @@
 <?php 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit_month.calendar_tip.php 3333 2012-03-12 09:36:35Z geraintedwards $
  * @package     JEvents

@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit16.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
@@ -15,6 +15,8 @@ jimport('joomla.html.html.bootstrap');
 
 //JHtml::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
 JHtml::_('formbehavior.chosen', '#adminForm select.chosen');
+
+use Joomla\String\StringHelper;
 
 $version = JEventsVersion::getInstance();
 
@@ -192,7 +194,7 @@ if (count($plugins)){
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
-				if (JString::strlen($class) > 0)
+				if (StringHelper::strlen($class) > 0)
 				{
 					$class = " class='$class $difficultyClass'";
 				}
@@ -222,7 +224,7 @@ if (count($plugins)){
 				{
 					$class = isset($field->class) ? $field->class : "";
 
-					if (JString::strlen($class) > 0)
+					if (StringHelper::strlen($class) > 0)
 					{
 						$class = " class='$class'";
 					}
@@ -326,7 +328,7 @@ if (count($plugins)){
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 
-							if (JString::strlen($class) > 0)
+							if (StringHelper::strlen($class) > 0)
 							{
 								$class = " class='$class'";
 							}

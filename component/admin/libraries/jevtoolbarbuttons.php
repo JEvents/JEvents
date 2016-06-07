@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevbuttons.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
@@ -19,6 +19,9 @@ JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevent
  * Joomla 3.0 version
  * 
  */
+
+use Joomla\String\StringHelper;
+
 class JToolbarButtonJev extends JToolbarButton
 {
 	/**
@@ -81,7 +84,7 @@ class JToolbarButtonJev extends JToolbarButton
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		$todo		= JString::strtolower(JText::_( $name ));
+		$todo		= StringHelper::strtolower(JText::_( $name ));
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
@@ -218,7 +221,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	 */
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
-		$todo	 = JString::strtolower(JText::_( $name ));
+		$todo	 = StringHelper::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";

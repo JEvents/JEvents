@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: icalrepeat.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class AdminIcalrepeatController extends JControllerLegacy
 {
@@ -608,7 +609,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[JString::substr($key, 1)] = $val;
+				$data[StringHelper::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);

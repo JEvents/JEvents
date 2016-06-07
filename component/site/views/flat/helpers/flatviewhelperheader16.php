@@ -1,6 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function FlatViewHelperHeader16($view){
 
 	$jinput = JFactory::getApplication()->input;
@@ -110,7 +112,7 @@ function FlatViewHelperHeader16($view){
 		. $view->datamodel->getCatidsOutLink()
 		;
 		$link =JRoute::_($link);
-		//if (strpos($link,"/")===0) $link = JString::substr($link,1);
+		//if (strpos($link,"/")===0) $link = StringHelper::substr($link,1);
 		$uri	        = JURI::getInstance(JURI::base());
 		$root = $uri->toString( array('scheme', 'host', 'port') );
 

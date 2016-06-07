@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 $cfg = JEVConfig::getInstance();
 
 $data = $this->datamodel->getCatData($this->catids, $cfg->get('com_showrepeats', 0), $this->limit, $this->limitstart);
@@ -19,7 +21,7 @@ $Itemid = JEVHelper::getItemid();
             ?>
         </div>
         <?php
-        if (JString::strlen($data ['catdesc']) > 0) {
+        if (StringHelper::strlen($data ['catdesc']) > 0) {
             echo "<div class='jev_catdesc'>" . $data ['catdesc'] . "</div>";
         }
         echo "</div>";

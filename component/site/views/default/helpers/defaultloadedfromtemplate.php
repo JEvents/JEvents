@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
 	$db = JFactory::getDBO();
@@ -254,10 +256,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			continue;
 		}
 		// translation string
-		if (JString::strpos($strippedmatch, "{{_") === 0 && JString::strpos($strippedmatch, " ") === false)
+		if (StringHelper::strpos($strippedmatch, "{{_") === 0 && StringHelper::strpos($strippedmatch, " ") === false)
 		{
 			$search[] = $strippedmatch;
-			$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
+			$strippedmatch = StringHelper::substr($strippedmatch, 3, StringHelper::strlen($strippedmatch) - 5);
 			$replace[] = JText::_($strippedmatch);
 			$blank[] = "";
 			continue;
@@ -513,7 +515,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 							$eventlink.= $key . "=" . $val . "&";
 						}
-						$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
+						$eventlink = StringHelper::substr($eventlink, 0, StringHelper::strlen($eventlink) - 1);
 						$eventlink = JRoute::_($eventlink);
 
 						$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
@@ -783,7 +785,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 							$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
-							if (JString::strpos($template_value, "{{ISOSTART}}") !== false || JString::strpos($template_value, "{{ISOEND}}") !== false)
+							if (StringHelper::strpos($template_value, "{{ISOSTART}}") !== false || StringHelper::strpos($template_value, "{{ISOEND}}") !== false)
 							{
 								$search[] = "{{ISOSTART}}";
 								$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
@@ -837,7 +839,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$rawreplace["{{ENDTZ}}"] = $row->ydn()."-".$row->mdn()."-".$row->ddn()." ".$row->hdn().":".$row->mindn().":".$row->sdn();
 							$rawreplace["{{MULTIENDDATE}}"] = $row->endDate() > $row->startDate() ? $row->getUnixEndDate() : "";
 
-							if (JString::strpos($template_value, "{{ISOSTART}}") !== false || JString::strpos($template_value, "{{ISOEND}}") !== false)
+							if (StringHelper::strpos($template_value, "{{ISOSTART}}") !== false || StringHelper::strpos($template_value, "{{ISOEND}}") !== false)
 							{
 								$search[] = "{{ISOSTART}}";
 								$replace[] = JEventsHTML::getDateFormat($row->yup(), $row->mup(), $row->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $row->hup(), $row->minup());
@@ -848,7 +850,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 
 							// these would slow things down if not needed in the list
-							$dorepeatsummary = (JString::strpos($template_value, "{{REPEATSUMMARY}}") !== false);
+							$dorepeatsummary = (StringHelper::strpos($template_value, "{{REPEATSUMMARY}}") !== false);
 							if ($dorepeatsummary)
 							{
 
@@ -1042,7 +1044,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					static $doprevnext;
 					if (!isset($doprevnext))
 					{
-						$doprevnext = (JString::strpos($template_value, "{{PREVIOUSNEXT}}") !== false);
+						$doprevnext = (StringHelper::strpos($template_value, "{{PREVIOUSNEXT}}") !== false);
 					}
 					if ($doprevnext)
 					{
@@ -1056,7 +1058,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					static $doprevnextevent;
 					if (!isset($doprevnextevent))
 					{
-						$doprevnextevent = (JString::strpos($template_value, "{{PREVIOUSNEXTEVENT}}") !== false);
+						$doprevnextevent = (StringHelper::strpos($template_value, "{{PREVIOUSNEXTEVENT}}") !== false);
 					}
 					if ($doprevnextevent)
 					{
@@ -1075,9 +1077,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						static $dofirstrepeat;
 						if (!isset($dofirstrepeat))
 						{
-							$dofirstrepeat = (JString::strpos($template_value, "{{FIRSTREPEAT") !== false
-									|| JString::strpos($template_value, "{{FIRSTREPEATSTART") !== false
-									 || JString::strpos($template_value, "{{JEVAGE") !== false);
+							$dofirstrepeat = (StringHelper::strpos($template_value, "{{FIRSTREPEAT") !== false
+									|| StringHelper::strpos($template_value, "{{FIRSTREPEATSTART") !== false
+									 || StringHelper::strpos($template_value, "{{JEVAGE") !== false);
 						}
 						if ($dofirstrepeat)
 						{
@@ -1127,7 +1129,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						static $dolastrepeat;
 						if (!isset($dolastrepeat))
 						{
-							$dolastrepeat = (JString::strpos($template_value, "{{LASTREPEAT}}") !== false || JString::strpos($template_value, "{{LASTREPEATEND}}") !== false);
+							$dolastrepeat = (StringHelper::strpos($template_value, "{{LASTREPEAT}}") !== false || StringHelper::strpos($template_value, "{{LASTREPEATEND}}") !== false);
 						}
 						if ($dolastrepeat)
 						{
@@ -1223,14 +1225,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						if ($event->hasContactInfo())
 						{
-							if (JString::strpos($event->contact_info(), '<script') === false)
+							if (StringHelper::strpos($event->contact_info(), '<script') === false)
 							{
 								$dispatcher = JEventDispatcher::getInstance();
 								JPluginHelper::importPlugin('content');
 
 								//Contact
 								$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
-								if (JString::strpos($event->contact_info(), '<a href=') === false && $event->contact_info() != "")
+								if (StringHelper::strpos($event->contact_info(), '<a href=') === false && $event->contact_info() != "")
 								{
 									$event->contact_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 								}
@@ -1257,13 +1259,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{EXTRAINFO}}":
 					//Extra
-					if (JString::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
+					if (StringHelper::strpos($event->extra_info(), '<script') === false && $event->extra_info() != "")
 					{
 						$dispatcher = JEventDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 
 						$pattern = '[a-zA-Z0-9&?_.,=%\-\/#]';
-						if (JString::strpos($event->extra_info(), '<a href=') === false)
+						if (StringHelper::strpos($event->extra_info(), '<a href=') === false)
 						{
 							$event->extra_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->extra_info()));
 						}
@@ -1353,7 +1355,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                                         }
 
                                                         foreach ($fieldnames as $fn){
-                                                            if (!JString::strpos($template_value, $fn) !== false)
+                                                            if (!StringHelper::strpos($template_value, $fn) !== false)
                                                             {
                                                                     continue;
                                                             }
@@ -1387,7 +1389,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// word counts etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (JString::strpos($search[$s], "TRUNCATED_DESC:") > 0 || JString::strpos($search[$s], "TRUNCATED_TITLE:") > 0)
+			if (StringHelper::strpos($search[$s], "TRUNCATED_DESC:") > 0 || StringHelper::strpos($search[$s], "TRUNCATED_TITLE:") > 0)
 			{
 				global $tempreplace, $tempevent, $tempsearch;
 				$tempreplace = $replace[$s];
@@ -1400,9 +1402,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		// Date/time formats etc.
 		for ($s = 0; $s < count($search); $s++)
 		{
-			if (JString::strpos($search[$s], "STARTDATE") > 0 || JString::strpos($search[$s], "STARTTIME") > 0 || JString::strpos($search[$s], "ENDDATE") > 0 || JString::strpos($search[$s], "ENDTIME") > 0
-				|| JString::strpos($search[$s], "ENDTZ") > 0 || JString::strpos($search[$s], "STARTTZ") > 0 || JString::strpos($search[$s], "MULTIENDDATE") > 0
-				|| JString::strpos($search[$s], "FIRSTREPEATSTART") > 0 || JString::strpos($search[$s], "LASTREPEATEND") > 0)
+			if (StringHelper::strpos($search[$s], "STARTDATE") > 0 || StringHelper::strpos($search[$s], "STARTTIME") > 0 || StringHelper::strpos($search[$s], "ENDDATE") > 0 || StringHelper::strpos($search[$s], "ENDTIME") > 0
+				|| StringHelper::strpos($search[$s], "ENDTZ") > 0 || StringHelper::strpos($search[$s], "STARTTZ") > 0 || StringHelper::strpos($search[$s], "MULTIENDDATE") > 0
+				|| StringHelper::strpos($search[$s], "FIRSTREPEATSTART") > 0 || StringHelper::strpos($search[$s], "LASTREPEATEND") > 0)
 			{
 				if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]]){
 					continue;
@@ -1438,12 +1440,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			foreach ($parts as $part)
 			{
 				$currentdynamicmodules = $reg->get("dynamicmodules", false);
-				if (JString::strpos($part, "{{MODULEEND}}") === false)
+				if (StringHelper::strpos($part, "{{MODULEEND}}") === false)
 				{
 					// strip out BAD HTML tags left by WYSIWYG editors
-					if (JString::substr($part, JString::strlen($part) - 3) == "<p>")
+					if (StringHelper::substr($part, StringHelper::strlen($part) - 3) == "<p>")
 					{
-						$template_value = JString::substr($part, 0, JString::strlen($part) - 3);
+						$template_value = StringHelper::substr($part, 0, StringHelper::strlen($part) - 3);
 					}
 					else
 					{
@@ -1452,15 +1454,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					continue;
 				}
 				// start with module name
-				$modname = JString::substr($part, 0, JString::strpos($part, "}}"));
-				$modulecontent = JString::substr($part, JString::strpos($part, "}}") + 2);
-				$modulecontent = JString::substr($modulecontent, 0, JString::strpos($modulecontent, "{{MODULEEND}}"));
+				$modname = StringHelper::substr($part, 0, StringHelper::strpos($part, "}}"));
+				$modulecontent = StringHelper::substr($part, StringHelper::strpos($part, "}}") + 2);
+				$modulecontent = StringHelper::substr($modulecontent, 0, StringHelper::strpos($modulecontent, "{{MODULEEND}}"));
 				// strip out BAD HTML tags left by WYSIWYG editors
-				if (JString::strpos($modulecontent, "</p>") === 0)
+				if (StringHelper::strpos($modulecontent, "</p>") === 0)
 				{
 					$modulecontent = "<p>x@#" . $modulecontent;
 				}
-				if (JString::substr($modulecontent, JString::strlen($modulecontent) - 3) == "<p>")
+				if (StringHelper::substr($modulecontent, StringHelper::strlen($modulecontent) - 3) == "<p>")
 				{
 					$modulecontent .= "x@#</p>";
 				}
@@ -1516,7 +1518,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			$parts = explode(":", $matches[0]);
 			if (count($parts) > 0)
 			{
-				if (JString::strpos($matches[0], "://") > 0)
+				if (StringHelper::strpos($matches[0], "://") > 0)
 				{
 					return "{{" . $parts[count($parts) - 1];
 				}
@@ -1541,7 +1543,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	function jevSpecialHandling($matches)
 	{
-		if (count($matches) == 1 && JString::strpos($matches[0], ":") > 0)
+		if (count($matches) == 1 && StringHelper::strpos($matches[0], ":") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch;
 			$parts = explode(":", $matches[0]);
@@ -1549,7 +1551,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			{
 				$wordcount = str_replace("}}", "", $parts[1]);
 				$charcount = 0;
-				if (JString::strpos($wordcount, "chars") > 0)
+				if (StringHelper::strpos($wordcount, "chars") > 0)
 				{
 					$charcount = intval(str_replace("chars", "", $wordcount));
 					$wordcount = 0;
@@ -1568,9 +1570,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$words[] = " ...";
 					return implode(" ", $words);
 				}
-				if ($charcount > 0 && JString::strlen($value) > $charcount)
+				if ($charcount > 0 && StringHelper::strlen($value) > $charcount)
 				{
-					return JString::substr($value, 0, $charcount) . " ...";
+					return StringHelper::substr($value, 0, $charcount) . " ...";
 				}
 				return implode(" ", $words);
 			}
@@ -1585,7 +1587,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 
 	function jevSpecialDateFormatting($matches){
-		if (count($matches) == 1 && JString::strpos($matches[0], ";") > 0)
+		if (count($matches) == 1 && StringHelper::strpos($matches[0], ";") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch,$tempblank;
 			$parts = explode(";", $matches[0]);
@@ -1681,7 +1683,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 	function jevSpecialHandling2($matches)
 	{
-		if (count($matches) == 2 && JString::strpos($matches[0], "#") > 0)
+		if (count($matches) == 2 && StringHelper::strpos($matches[0], "#") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
 			$parts = explode("#", $matches[1]);

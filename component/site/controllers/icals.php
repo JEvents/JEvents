@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: icals.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 include_once(JEV_ADMINPATH . "/controllers/icals.php");
 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class ICalsController extends AdminIcalsController
 {
@@ -456,7 +457,7 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// I need a better check and expiry information etc.
-		if (JString::strlen($uploadURL) > 0)
+		if (StringHelper::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -600,16 +601,16 @@ class ICalsController extends AdminIcalsController
 		// new version
 
 		$output = '';
-		while (JString::strlen($input) >= $line_max)
+		while (StringHelper::strlen($input) >= $line_max)
 		{
-			$output .= JString::substr($input, 0, $line_max - 1);
-			$input = JString::substr($input, $line_max - 1);
-			if (JString::strlen($input) > 0)
+			$output .= StringHelper::substr($input, 0, $line_max - 1);
+			$input = StringHelper::substr($input, $line_max - 1);
+			if (StringHelper::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (JString::strlen($input) > 0)
+		if (StringHelper::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -620,12 +621,12 @@ class ICalsController extends AdminIcalsController
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = JString::strlen($input);
+		$linlen = StringHelper::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = JString::substr($input, $i, 1);
+			$c = StringHelper::substr($input, $i, 1);
 
 			/*
 			  $dec = ord($c);
@@ -639,7 +640,7 @@ class ICalsController extends AdminIcalsController
 			  }
 			  }
 			 */
-			if ((JString::strlen($outline) + 1) >= $line_max)
+			if ((StringHelper::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

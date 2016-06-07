@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: calendar_cell.php 2679 2011-10-03 08:52:57Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
 
 include_once(JEV_VIEWS."/default/month/tmpl/calendar_cell.php");
 
@@ -66,8 +68,8 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 		$tmpTitle = $title;
 		// set truncated title
 		if (!isset($this->event->truncatedtitle)){
-			if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
-				$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+			if( StringHelper::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
+				$tmpTitle = StringHelper::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
 			}
 			$tmpTitle = JEventsHTML::special($tmpTitle);			
 			$this->event->truncatedtitle = $tmpTitle;
@@ -155,7 +157,7 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 				}
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = JString::substr($tooltip,9);
+					$title = StringHelper::substr($tooltip,9);
 					$cellString = "";
 				}
 				else {

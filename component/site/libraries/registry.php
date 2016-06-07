@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: registry.php 2484 2011-08-24 10:22:46Z geraintedwards $
  * @package     JEvents

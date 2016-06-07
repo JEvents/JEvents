@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevbuttons.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
@@ -13,8 +13,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('joomla.html.toolbar.button');
-	
-class JButtonJev extends JButton
+use Joomla\String\StringHelper;
+
+class JButtonJev extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -64,7 +65,7 @@ class JButtonJev extends JButton
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		$todo		= JString::strtolower(JText::_( $name ));
+		$todo		= StringHelper::strtolower(JText::_( $name ));
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
@@ -80,7 +81,7 @@ class JButtonJev extends JButton
 	}	
 }
 
-class JButtonJevlink extends JButton
+class JButtonJevlink extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -138,7 +139,7 @@ class JButtonJevlink extends JButton
 	}	
 }
 
-class JButtonJevconfirm extends JButton
+class JButtonJevconfirm extends JtoolbarButton
 {
 	/**
 	 * Button type
@@ -186,7 +187,7 @@ class JButtonJevconfirm extends JButton
 	 */
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
-		$todo	 = JString::strtolower(JText::_( $name ));
+		$todo	 = StringHelper::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";
