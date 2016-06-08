@@ -12,10 +12,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JEVAccess {
-	
+
 	var $access;
 
-	function __construct(){
+	public function __construct(){
 		// Editor usertype check
 		global $acl;
 		$user = JFactory::getUser();
