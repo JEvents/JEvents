@@ -291,13 +291,15 @@ class jevFilter
 		// This is our best guess as to whether this filter is visible on this page.
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
 
+		// No longer needed since we set useCache = false just below this call.
+		
 		// If using caching should disable session filtering if not logged in
-		$cfg	 = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
-		$useCache = int($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+		//$cfg	 = JEVConfig::getInstance();
+		//$joomlaconf = JFactory::getConfig();
+		//$useCache = (int)$cfg->get('com_cache', 0) && $joomlaconf->get('caching', 1);
 		
 		// New special code in jevents.php sets the session variables in the cache id calculation!
-		$useCache =false;
+		$useCache = false;
 		
 		// Is the filter module setup to reset automatically
 		$module = JModuleHelper::getModule("mod_jevents_filter");
