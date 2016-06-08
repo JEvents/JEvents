@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 ## 08-06-2016 - Tony Partridge
 * Updated constructor classes for PHP7 to avoid deprecated notices.
-* Replaced some old intval() usage with int() since we are using whole numbers in the values, this is also more efficient.
+* Replaced some old intval() usage with (int) since we are using whole numbers in the values, this is also more efficient.
 
 ## 07-06-2016 - Tony Partridge
 * Migrated from deprecated JApplication::stringURLSafe to JApplicationHelper::stringURLSafe

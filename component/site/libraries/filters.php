@@ -292,7 +292,7 @@ class jevFilter
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
 
 		// No longer needed since we set useCache = false just below this call.
-		
+
 		// If using caching should disable session filtering if not logged in
 		//$cfg	 = JEVConfig::getInstance();
 		//$joomlaconf = JFactory::getConfig();
@@ -322,7 +322,7 @@ class jevFilter
 		
 		$user = JFactory::getUser();
 		// TODO chek this logic
-		if (int(JRequest::getVar('filter_reset',0))){
+		if ((int)JRequest::getVar('filter_reset',0)){
 			$this->filter_value =  $this->filterNullValue;
 			for ($v=0;$v<$this->valueNum;$v++){
 				$this->filter_values[$v] = $this->filterNullValues[$v] ;
