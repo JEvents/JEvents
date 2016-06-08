@@ -45,7 +45,7 @@ class CsvLine {
      * @param dtstart start datetime of the event
      * @param dtend end datetime of the event
      */
-    public function CsvLine($categories, $summary, $dtstart, $dtend) {
+    public function __construct($categories, $summary, $dtstart, $dtend) {
         $this->categories = $categories;
         $this->summary = $summary;
         $this->dtstart = $dtstart;

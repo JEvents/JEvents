@@ -33,11 +33,11 @@ class iCalRRule extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalRRule( &$db ) {
+	function __construct( &$db ) {
 		parent::__construct( '#__jevents_rrule', 'rr_id', $db );
 	}
 
-	function store($updateNulls = false) {
+	public function store($updateNulls = false) {
 		return parent::store($updateNulls);
 	}
 	/**
@@ -46,7 +46,7 @@ class iCalRRule extends JTable  {
 	 * @param iCal Entry parsed from ICS file as an array $ice
 	 * @return n/a
 	 */
-	function iCalRRuleFromDB($icalrowAsArray){
+	public function iCalRRuleFromDB($icalrowAsArray){
 		$db	= JFactory::getDBO();
 		$temp = new iCalRRule($db);
 
@@ -85,7 +85,7 @@ class iCalRRule extends JTable  {
 		$temp->processField2("wkst","");
 		return $temp;
 	}
-	function processField2($field,$default){
+	public function processField2($field,$default){
 		$this->$field = array_key_exists(strtolower($field),$this->data)?$this->data[strtolower($field)]:$default;
 	}
 
@@ -140,7 +140,7 @@ class iCalRRule extends JTable  {
 		return $temp;
 	}
 
-	function processField($field,$default){
+	public function processField($field,$default){
 		$this->$field = array_key_exists(strtoupper($field),$this->data)?$this->data[strtoupper($field)]:$default;
 	}
 	/**
@@ -150,7 +150,7 @@ class iCalRRule extends JTable  {
 	 * @param unknown_type $end
 	 * @return unknown
 	 */
-	function _makeRepeat($start,$end){
+	public function _makeRepeat($start,$end){
 		if (!isset($this->_repetitions)) $this->_repetitions = array();
 		$db	= JFactory::getDBO();
 		$repeat = new iCalRepetition($db);
@@ -184,7 +184,7 @@ class iCalRRule extends JTable  {
 		return 1;
 	}
 
-	function _afterUntil($testDate){
+	public function _afterUntil($testDate){
 		if (StringHelper::strlen($this->until)==0) return false;
 		if (!isset($this->_untilMidnight)) {
 			list ($d,$m,$y) = explode(":",JevDate::strftime("%d:%m:%Y",$this->until));
@@ -204,7 +204,7 @@ class iCalRRule extends JTable  {
 	 * @param unknown_type $currentMonthStart
 	 * @param unknown_type $dtstart
 	 */
-	function sortByDays(&$days,$currentMonthStart,$dtstart){
+	public function sortByDays(&$days,$currentMonthStart,$dtstart){
 		if (count($days)==0) return;
 		// only sort negative values
 		if (strpos($days[0],"-")===false) return;
@@ -266,7 +266,7 @@ class iCalRRule extends JTable  {
 	 * Generates repetition from vevent & rrule data from scratch
 	 * The result can then be saved to the database
 	 */
-	function getRepetitions($dtstart,$dtend,$duration,$recreate=false,$exdate=array()) {
+	public function getRepetitions($dtstart,$dtend,$duration,$recreate=false,$exdate=array()) {
 		// put exdate into somewhere that I can get from _makerepeat
 		$this->_exdate = $exdate;
 		// TODO  "getRepetitions doesnt yet deal with Short months and 31st or leap years/week 53<br/>";
@@ -851,7 +851,7 @@ class iCalRRule extends JTable  {
 		}
 	}
 
-	function dumpData(){
+	public function dumpData(){
 		echo "Freq : $this->freq <br/>";
 		echo "Interval : ".$this->data['INTERVAL']."<br/>";
 		switch ($this->freq) {
@@ -902,12 +902,12 @@ class iCalRRule extends JTable  {
 		echo "<hr/>";
 	}
 
-	function checkDate($test, $start, $end){
+	public function checkDate($test, $start, $end){
 		if ($test>=$start && $test<=$end) return true;
 		else return false;
 	}
 
-	function eventInPeriod($startDate,$endDate, $start, $end){
+	public function eventInPeriod($startDate,$endDate, $start, $end){
 		// stupid verison to start that scans through EVERY single day!!!
 		$checkDate = $startDate;
 		while ($checkDate<=$endDate){
@@ -917,7 +917,7 @@ class iCalRRule extends JTable  {
 		return false;
 	}
 
-	function isDuplicate(){
+	public function isDuplicate(){
 		$sql = "SELECT rr_id from #__jevents_rrule as rr WHERE rr.eventid = '".$this->eventid."'";
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();

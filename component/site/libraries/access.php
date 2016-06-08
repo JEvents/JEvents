@@ -12,9 +12,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class JEVAccess {
+	
 	var $access;
 
-	function JEVAccess(){
+	function __construct(){
 		// Editor usertype check
 		global $acl;
 		$user = JFactory::getUser();
@@ -26,15 +27,15 @@ class JEVAccess {
 		$this->access->canPublish = $acl->acl_check( 'action', 'publish', 'users', JEVHelper::getUserType($user), 'content', 'all' );
 	}
 
-	function canEdit(){
+	public function canEdit(){
 		return $this->access->canEdit;
 	}
 
-	function canEditOwn(){
+	public function canEditOwn(){
 		return $this->access->canEditOwn;
 	}
 
-	function canPublish(){
+	public function canPublish(){
 		return $this->access->canPublish;
 	}
 

@@ -30,7 +30,7 @@ class iCalException extends JTable  {
 	var $oldstartrepeat = '0000-00-00 00:00:00';
 
 
-	function iCalException( &$db ) {
+	public function __construct( &$db ) {
 		parent::__construct( '#__jevents_exception', 'ex_id', $db );
 	}
 
