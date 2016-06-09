@@ -57,7 +57,7 @@ class DefaultModCalView
 	// flag to say if we want to load tooltips
 	protected $hasTooltips	 = false;
 
-	function DefaultModCalView($params, $modid){
+	public function __construct($params, $modid){
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
@@ -166,7 +166,7 @@ class DefaultModCalView
 
 	}
 
-	function getTheme(){
+	public function getTheme(){
 		$modtheme = $this->modparams->get("com_calViewName", "flat");
 		if ($modtheme == "" || $modtheme == "global")
 		{
@@ -203,7 +203,7 @@ class DefaultModCalView
 
 	}
 
-	function _navigationJS($modid){
+	public function _navigationJS($modid){
 		static $included = false;
 		if ($included) return;
 		$included = true;
@@ -216,7 +216,7 @@ class DefaultModCalView
 		}
 	}
 
-	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
+	public function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
 		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$adjDate = JevDate::strtotime($adj,$cal_today);
@@ -234,7 +234,7 @@ class DefaultModCalView
 		return $content;
 	}
 
-	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
+	public function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
 
 		$db	= JFactory::getDBO();
 		$cfg = JEVConfig::getInstance();
@@ -444,7 +444,7 @@ class DefaultModCalView
 		return $content;
 	}
 
-	function getCal($modid=0) {
+	public function getCal($modid=0) {
 		// capture module id so that we can use it for ajax type navigation
 		if ($modid!=0) {
 			$this->_modid=$modid;
@@ -500,7 +500,7 @@ class DefaultModCalView
 	} // function getCal
 
 
-	function getAjaxCal($modid=0, $month, $year){
+	public function getAjaxCal($modid=0, $month, $year){
 		// capture module id so that we can use it for ajax type navigation
 		if ($modid!=0) {
 			$this->_modid=$modid;

@@ -53,12 +53,12 @@ class iCalICSFile extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalICSFile( &$db ) {
+	public function __construct( &$db ) {
 		parent::__construct( '#__jevents_icsfile', 'ics_id', $db );
 		$this->access = intval(JEVHelper::getBaseAccess());
 	}
 
-	function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
+	public function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
 		if ($icsid>0) $this->ics_id = $icsid;
 		$this->created = date( 'Y-m-d H:i:s' );
 		$this->refreshed = $this->created;
@@ -69,7 +69,7 @@ class iCalICSFile extends JTable  {
 		$this->ignoreembedcat = $ignoreembedcat;
 	}
 
-	function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
+	public function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
 		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state);
@@ -133,12 +133,13 @@ RAWTEXT;
 				}
 			}
 		}
-
-		$urlParts = parse_url($uploadURL);
-		$pathParts = pathinfo($urlParts['path']);
 		/*
-		if (isset($pathParts['basename'])) $temp->filename =  $pathParts['basename'];
-		else $temp->filename = $uploadURL;
+				$urlParts = parse_url($uploadURL);
+
+				$pathParts = pathinfo($urlParts['path']);
+
+				if (isset($pathParts['basename'])) $temp->filename =  $pathParts['basename'];
+				else $temp->filename = $uploadURL;
 		*/
 		$temp->filename = 'Remote-' . md5($uploadURL);
 		$temp->icaltype=0;  // i.e. from URL
@@ -183,7 +184,7 @@ RAWTEXT;
 	/**
 	 * Used to create Ical from raw strring
 	 */
-	function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
+	public function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	= JFactory::getDBO();
 		$temp = null;
 		$temp = new iCalICSFile($db);
@@ -210,7 +211,7 @@ RAWTEXT;
 	 * Method that updates details about the ical but does not touch the events contained
 	 *
 	 */
-	function updateDetails(){
+	public function updateDetails(){
 		if (parent::store() && $this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
 			$db	= JFactory::getDBO();
@@ -225,7 +226,7 @@ RAWTEXT;
 	 *
 	 * @param int $catid - forced category for the underlying events
 	 */
-	function store($catid=false , $cleanup=true , $flush =true) {
+	public function store($catid=false , $cleanup=true , $flush =true) {
 		@ini_set("memory_limit","256M");
 		@ini_set("max_execution_time","300");
 		
@@ -503,7 +504,7 @@ RAWTEXT;
 	}
 
 	// find if icsFile already imported
-	function isDuplicate(){
+	public function isDuplicate(){
 		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = " . $this->_db->quote($this->label) ;
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
@@ -515,7 +516,7 @@ RAWTEXT;
 	}
 
 	// Method to store the events WITHOUT storing  the calendar itself - used in frontend imports
-	function storeEvents($catid=false , $flush =true) {
+	public function storeEvents($catid=false , $flush =true) {
 
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');

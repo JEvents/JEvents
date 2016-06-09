@@ -22,7 +22,7 @@ class iCalRepetition extends JTable  {
 	var $startrepeat = null;
 	var $endrepeat =null;
 
-	function iCalRepetition( &$db ) {
+	public function __construct( &$db ) {
 		parent::__construct( '#__jevents_repetition', 'rp_id', $db );
 	}
 }

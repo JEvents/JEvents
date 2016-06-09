@@ -18,7 +18,7 @@ use Joomla\String\StringHelper;
 class modJeventsLegendHelper
 {
 
-	function modJeventsLegendHelper()
+	public function __construct()
 	{
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';

@@ -58,7 +58,7 @@ class iCalEventDetail extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalEventDetail( &$db ) {
+	public function __construct( &$db ) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		$this->_multiday=$cfg->get('multiday',1);
@@ -72,7 +72,7 @@ class iCalEventDetail extends JTable  {
 	 *
 	 * @param unknown_type $updateNulls
 	 */
-	function store($updateNulls=false ) {
+	public function store($updateNulls=false ) {
 		$date = JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
@@ -123,7 +123,7 @@ class iCalEventDetail extends JTable  {
 	 *
 	 * @param string $field
 	 */
-	function processField($field,$default,$targetFieldName=""){
+	public function processField($field,$default,$targetFieldName=""){
 		if ($targetFieldName==""){
 			$targetfield = str_replace("-","_",$field);
 		}
@@ -133,7 +133,7 @@ class iCalEventDetail extends JTable  {
 		$this->$targetfield = array_key_exists(strtoupper($field),$this->_data)?$this->_data[strtoupper($field)]:$default;
 	}
 
-	function processCustom(){
+	public function processCustom(){
 		if (!isset($this->_customFields)){
 			$this->_customFields = array();
 		}
@@ -149,7 +149,7 @@ class iCalEventDetail extends JTable  {
 	 * Converts $data into class values 
 	 *
 	 */
-	function convertData(){
+	public function convertData(){
 		$this->_rawdata = serialize($this->_data);
 
 		$this->processField("dtstart",0);
@@ -234,11 +234,11 @@ class iCalEventDetail extends JTable  {
 		$this->processCustom();
 	}
 
-	function isCancelled() {
+	public function isCancelled() {
 		return $this->status=="CANCELLED";
 	}
 
-	function dumpData(){
+	public function dumpData(){
 		echo "starting : ".$this->dtstart."<br/>";
 		echo "ending : ".$this->dtend."<br/>";
 		if (isset($this->rrule)){

@@ -5,7 +5,7 @@ class DefaultViewNavTableBarIconic {
 
 	var $view = null;
 	
-	function DefaultViewNavTableBarIconic($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid ) {
+	public function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid ) {
 
 		$this->view = $view	;
 		$this->transparentGif = JURI::root() . "components/".JEV_COM_COMPONENT."/views/".$this->view->getViewName()."/assets/images/transp.gif";
@@ -67,7 +67,7 @@ class DefaultViewNavTableBarIconic {
 
 	}
 
-	function _genericMonthNavigation($dates, $alts, $which, $icon){
+	public function _genericMonthNavigation($dates, $alts, $which, $icon){
 		$cfg = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$task = $this->task;
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid. '&';
@@ -90,23 +90,23 @@ class DefaultViewNavTableBarIconic {
 		}
 	}
 	
-	function _lastYearIcon($dates, $alts){
+	public function _lastYearIcon($dates, $alts){
 		$this->_genericMonthNavigation($dates, $alts, "prev2","gg");
 	}
 
-	function _lastMonthIcon($dates, $alts){
+	public function _lastMonthIcon($dates, $alts){
 		$this->_genericMonthNavigation($dates, $alts,"prev1","g");
 	}
 
-	function _nextMonthIcon($dates, $alts){
+	public function _nextMonthIcon($dates, $alts){
 		$this->_genericMonthNavigation($dates, $alts,"next1","d");
 	}
 
-	function _nextYearIcon($dates, $alts){
+	public function _nextYearIcon($dates, $alts){
 		$this->_genericMonthNavigation($dates, $alts,"next2","dd");
 	}
 
-	function _viewYearIcon($today_date) {
+	public function _viewYearIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
     		<div id="ev_icon_yearly" class="nav_bar_cal"><a href="<?php echo JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=year.listevents&'. $today_date->toDateURL() . '&Itemid=' . $this->Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYYEAR');?>"> 
@@ -116,7 +116,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewMonthIcon($today_date) {
+	public function _viewMonthIcon($today_date) {
 		?>
     	<td class="iconic_td" align="center" valign="middle">
     		<div id="ev_icon_monthly" class="nav_bar_cal" ><a href="<?php echo JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&'. $today_date->toDateURL() . '&Itemid=' . $this->Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYMONTH');?>">
@@ -126,7 +126,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewWeekIcon($today_date) {
+	public function _viewWeekIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_weekly" class="nav_bar_cal"><a href="<?php echo JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=week.listevents&'. $today_date->toDateURL() . '&Itemid=' . $this->Itemid );?>" title="<?php echo  JText::_('JEV_VIEWBYWEEK');?>">
@@ -136,7 +136,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewDayIcon($today_date) {
+	public function _viewDayIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_daily" class="nav_bar_cal" ><a href="<?php echo JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&'. $today_date->toDateURL() . '&Itemid=' . $this->Itemid );?>" title="<?php echo  JText::_('JEV_VIEWTODAY');?>"><img src="<?php echo $this->transparentGif;?>" alt="<?php echo JText::_('JEV_VIEWBYDAY');?>"/></a>
@@ -145,7 +145,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewSearchIcon($today_date) {
+	public function _viewSearchIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_search" class="nav_bar_cal"><a href="<?php echo JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=search.form&'. $today_date->toDateURL() . '&Itemid=' . $this->Itemid );?>" title="<?php echo  JText::_('JEV_SEARCH_TITLE');?>"><img src="<?php echo $this->transparentGif;?>" alt="<?php echo JText::_('JEV_SEARCH_TITLE');?>"/></a>
@@ -154,7 +154,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewJumptoIcon($today_date) {
+	public function _viewJumptoIcon($today_date) {
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_jumpto" class="nav_bar_cal"><a href="#" onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;" title="<?php echo   JText::_('JEV_JUMPTO');?>"><img src="<?php echo $this->transparentGif;?>" alt="<?php echo  JText::_('JEV_JUMPTO');?>"/></a>
@@ -163,7 +163,7 @@ class DefaultViewNavTableBarIconic {
         <?php
 	}
 
-	function _viewHiddenJumpto($this_date){
+	public function _viewHiddenJumpto($this_date){
 		$cfg = JEVConfig::getInstance();
 		$hiddencat	= "";
 		if ($this->view->datamodel->catidsOut!=0){

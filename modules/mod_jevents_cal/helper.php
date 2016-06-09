@@ -17,7 +17,7 @@ use Joomla\String\StringHelper;
 class modJeventsCalHelper
 {
 	
-	function modJeventsCalHelper(){
+	public function __construct(){
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
@@ -32,7 +32,7 @@ class modJeventsCalHelper
 		JEVHelper::loadLanguage('modcal');
 	}
 	
-	function getViewClass($theme, $module, $layout, $params=false){
+	public function getViewClass($theme, $module, $layout, $params=false){
 
 		// If we have a specified over ride then use it here
 		if ($params && StringHelper::strlen($params->get("layout",""))>0){

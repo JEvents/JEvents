@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class catLegend {
-	function catLegend($id, $name, $color, $description,$parent_id=0)
+	function __construct($id, $name, $color, $description,$parent_id=0)
 	{
 		$this->id=$id;
 		$this->name=$name;
