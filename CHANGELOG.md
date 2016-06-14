@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
+
+## 13-06-2016 - Tony Partridge
+* Updated the google export to support http and https replacing to webcal://, fixes invalid email address issue when adding to google calendar.
+
 ## 08-06-2016 - Tony Partridge
 * Updated constructor classes for PHP7 to avoid deprecated notices.
 * Replaced some old intval() usage with (int) since we are using whole numbers in the values, this is also more efficient.
