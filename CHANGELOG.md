@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 14-06-2016 - Geraint Edwards
+* Enable configuration of all JEvents plugins via the main JEvents config/params page
+* Allow filtering of all published JEvents layouts i.e. without need to check all the categories in turn
+* Fix for jevFilter constructor names
+* DTSTAMP for export of repeat exceptions should not have timezone in it
+* Allow list of events view to be ordered with more choices
+* Installer message when updating using Joomla updater was not being shown
+* SMore flexibility on countdown output in latest events module
+
 ## 13-06-2016 - Tony Partridge
 * Updated the google export to support http and https replacing to webcal://, fixes invalid email address issue when adding to google calendar.
 
