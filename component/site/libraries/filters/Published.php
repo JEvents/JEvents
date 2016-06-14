@@ -44,7 +44,7 @@ class jevPublishedFilter extends jevFilter
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
 		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
-		parent::jevFilter($tablename, "state", $isstring);
+		parent::__construct($tablename, "state", $isstring);
 		
 		// event creators can look at their own unpublished events
 		if (!JEVHelper::isEventCreator()){

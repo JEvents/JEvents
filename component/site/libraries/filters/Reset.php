@@ -18,7 +18,7 @@ class jevResetFilter extends jevFilter
 		$this->filterNullValue=-1;
 		$this->filterType="reset";
 		$this->filterField = "";
-		parent::jevFilter($contentElement,"");
+		parent::__construct($contentElement,"");
 	}
 
 	function _createFilter($prefix = ""){

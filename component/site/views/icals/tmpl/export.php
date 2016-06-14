@@ -408,7 +408,6 @@ if (!empty($this->icalEvents))
 					// Do not use JevDate version since this sets timezone to config value!								
 					$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
 					$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-					$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
 					$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
 					// Change back
 					date_default_timezone_set($current_timezone);
@@ -417,9 +416,21 @@ if (!empty($this->icalEvents))
 				{
 					$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
 					$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-					$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 					$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 				}
+                                
+                                if ( is_callable("date_default_timezone_set")) {
+                                        // Change timezone to UTC
+                                        $current_timezone = date_default_timezone_get();
+                                        date_default_timezone_set("UTC");			
+                                        $stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+                                        // Change back
+                                        date_default_timezone_set($current_timezone);				
+                                }
+                                else {
+                                        $stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
+                                }
+                                
 				$html .= "DTSTAMP:" . $stamptime . "\r\n";
 				$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 				$html .= "DTEND$tzid:" . $chend . "\r\n";

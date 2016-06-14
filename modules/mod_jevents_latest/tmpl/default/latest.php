@@ -1231,16 +1231,25 @@ class DefaultModLatestView
 				break;
 
 			case 'countdown':
-				$timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
-				$eventPassed = !($timedelta >= 0);
+                                $timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
+                            	$now = new JevDate("+0 seconds");
+				$now = $now->toFormat("%Y-%m-%d %H:%M:%S");
+
+				$eventStarted = $dayEvent->publish_up() < $now ? 1 : 0 ;
+				$eventEnded   = $dayEvent->publish_down() < $now ? 1 : 0 ;
+
 				$fieldval = $dateParm;
 				$shownsign = false;
 				if (stripos($fieldval, "%nopast") !== false)
 				{
-					if (!$eventPassed)
+					if (!$eventStarted)
 					{
 						$fieldval = str_ireplace("%nopast", "", $fieldval);
 					}
+                                        else if (!$eventEnded)
+                                        {
+                                                $fieldval = JText::_('JEV_EVENT_STARTED');
+                                        }
 					else
 					{
 						$fieldval = JText::_('JEV_EVENT_FINISHED');

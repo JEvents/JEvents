@@ -431,7 +431,7 @@ class jevBooleanFilter extends jevFilter
 		$this->yesLabel = $yesLabel;
 		$this->noLabel = $noLabel;
 		$this->bothLabel = $bothLabel;
-		parent::jevFilter($tablename, $filterfield, $isstring);
+		parent::__construct($tablename, $filterfield, $isstring);
 	}
 
 	public function _createFilter($prefix=""){
@@ -459,7 +459,7 @@ class jevTitleFilter extends jevFilter
 	public function __construct ($tablename, $filterfield, $isstring=true){
 		$this->filterNullValue="";
 		$this->filterType="title";
-		parent::jevFilter($tablename,$filterfield, true);
+		parent::__construct($tablename,$filterfield, true);
 	}
 
 	public function _createFilter($prefix=""){

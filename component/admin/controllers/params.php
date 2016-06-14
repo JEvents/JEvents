@@ -127,6 +127,7 @@ class AdminParamsController extends JControllerAdmin
 
 		$post = JRequest::get('post');
 		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
+                $post['plugins'] = JRequest::getVar('jform_plugin', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 
@@ -222,6 +223,32 @@ class AdminParamsController extends JControllerAdmin
 			$cacheController->cache->remove("com_jevents");
 		}
 		
+                foreach ($post['plugins'] as $folder=>$plugins) {
+                    foreach ($plugins as $plugin => $pluginparams){
+                        $table =  JTable::getInstance('extension');
+                        if (!$table->load(array("element" => $plugin, "type" => "plugin", "folder"=> $folder)))
+                        {
+                            JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_NOT_A_VALID_PLUGIN', $plugin), 'warning');
+                            continue;
+                        }
+                        $table->bind($pluginparams);
+
+                        // pre-save checks
+                        if (!$table->check())
+                        {
+                                JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
+                                return false;
+                        }
+
+                        // save the changes
+                        if (!$table->store())
+                        {
+                                JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
+                                return false;
+                        }
+                    }                    
+                }
+                
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':

@@ -49,6 +49,9 @@
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
 				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+				<option value="rpt.endrepeat ASC, rpt.startrepeat asc, det.summary ASC" >JEV_ENDDATE_INCREASING</option>
+				<option value="rpt.endrepeat desc, rpt.startrepeat desc, det.summary ASC" >JEV_ENDDATE_DECREASING</option>
+				<option value="det.priority desc, rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_PRIORITY_DECREASING</option>
 			</field>
 
                         <field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
