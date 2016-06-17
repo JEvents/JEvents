@@ -1,5 +1,5 @@
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view_detailJQ.js 1539 2010-12-07 10:30:01Z geraintedwards $
  * @package     JEvents

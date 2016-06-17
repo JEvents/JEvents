@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3257 2012-02-10 13:16:38Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component frontend
@@ -87,14 +89,14 @@ class ICalsViewIcals extends JEventsAbstractView
 		// new version
 
 		$output = '';
-		while (JString::strlen($input)>=$line_max){
-			$output .= JString::substr($input,0,$line_max-1);
-			$input = JString::substr($input,$line_max-1);
-			if (JString::strlen($input)>0){
+		while (StringHelper::strlen($input)>=$line_max){
+			$output .= StringHelper::substr($input,0,$line_max-1);
+			$input = StringHelper::substr($input,$line_max-1);
+			if (StringHelper::strlen($input)>0){
 		  		 $output .= $eol." ";
 			}
 		}
-		if (JString::strlen($input)>0){
+		if (StringHelper::strlen($input)>0){
 			$output .= $input;
 		}
 		return $output;
@@ -104,12 +106,12 @@ class ICalsViewIcals extends JEventsAbstractView
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = JString::strlen($input);
+		$linlen = StringHelper::strlen($input);
 
 		
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = JString::substr($input, $i, 1);
+			$c = StringHelper::substr($input, $i, 1);
 
 			/*
 			$dec = ord($c);
@@ -123,7 +125,7 @@ class ICalsViewIcals extends JEventsAbstractView
 			  }
 			  }
 			 */
-			if ((JString::strlen($outline) + 1) >= $line_max)
+			if ((StringHelper::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevextras.php 1785 2011-03-14 14:28:17Z geraintedwards $
  * @package     JEvents
@@ -11,11 +11,15 @@
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+
+use Joomla\String\StringHelper;
+
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 
+include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 class JFormFieldJevfilters extends JFormFieldText
@@ -69,10 +73,10 @@ class JFormFieldJevfilters extends JFormFieldText
 			{
 				if (!array_key_exists($filtername, $filters))
 				{
-					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != JString::strlen($filtername) - 4)
+					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != StringHelper::strlen($filtername) - 4)
 						continue;
 					$filterpath = $path."/".$filtername;
-					$filtername = JString::substr($filtername, 0, JString::strlen($filtername) - 4);
+					$filtername = StringHelper::substr($filtername, 0, StringHelper::strlen($filtername) - 4);
 					// skip special function filters
 					if ($filtername=="startdate" || $filtername=="Startdate")
 						continue;

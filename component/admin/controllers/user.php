@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: user.php 1975 2011-04-27 15:52:33Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,7 @@ defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.'
 
 jimport('joomla.application.component.controller');
 
+use Joomla\Utilities\ArrayHelper;
 
 class AdminUserController extends JControllerLegacy   {
 
@@ -32,7 +33,7 @@ class AdminUserController extends JControllerLegacy   {
 		if (!is_array( $this->cid )) {
 			$this->cid = array(0);
 		}
-                JArrayHelper::toInteger($this->cid);
+                ArrayHelper::toInteger($this->cid);
 
 		$this->registerTask( 'overview', 'showUsers' );
 		$this->registerTask( 'list', 'showUsers' );

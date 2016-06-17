@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: icalevent.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controlleradmin');
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class AdminIcaleventController extends JControllerAdmin
 {
@@ -442,7 +445,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
 		else
@@ -1234,7 +1237,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 1);
 
 	}
@@ -1244,7 +1247,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 0);
 	}
 
@@ -1258,7 +1261,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
@@ -1408,7 +1411,7 @@ class AdminIcaleventController extends JControllerAdmin
 		  }
 		 */
 		$cid = JRequest::getVar('cid', array(0));
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
@@ -1457,7 +1460,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->setQuery($query);
 			$db->execute();
 
-			if (JString::strlen($detailidstring) > 0)
+			if (StringHelper::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);

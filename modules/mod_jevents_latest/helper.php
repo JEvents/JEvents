@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3418 2012-03-26 10:26:46Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
 
 class modJeventsLatestHelper
 {
@@ -33,7 +35,7 @@ class modJeventsLatestHelper
 	function getViewClass($theme, $module, $layout, $params=false){
 
 		// If we have a specified over ride then use it here
-		if ($params && JString::strlen($params->get("layout",""))>0){
+		if ($params && StringHelper::strlen($params->get("layout",""))>0){
 			$speciallayout = strtolower($params->get("layout",""));
 			// Build the template and base path for the layout
 			$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$theme.'/'.$speciallayout.'.php';

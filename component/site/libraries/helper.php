@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -12,7 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.access.access');
+
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -492,12 +496,12 @@ class JEVHelper
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description'))
+		if ($params->get('menu-meta_description') && !$document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords'))
+		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -601,7 +605,7 @@ class JEVHelper
 		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
 		$value = $yearpart."-".$monthpart."-".$daypart;
 		$name =  $fieldname;
-		
+
 		static $done;
 
 		if ($done === null)
@@ -617,7 +621,7 @@ class JEVHelper
 			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
 			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
 
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		JHtml::_('bootstrap.tooltip');
@@ -849,9 +853,9 @@ class JEVHelper
 
                                                     return $jevitemid[$evid];
                                             }
-                                            
+
 					}
-                                        // we didn't find them amongst the other menu item so checn the edit and admin ones 
+                                        // we didn't find them amongst the other menu item so checn the edit and admin ones
 					foreach ($jevitems as $jevitem)
 					{
                                             if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
@@ -971,20 +975,20 @@ class JEVHelper
 	{
 		$datenow = JEVHelper::getNow();
 		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = JString::substr($year, 0, 1);
+		$firstpos = StringHelper::substr($year, 0, 1);
 
 		if ($firstpos == "+")
 		{
-			$year = JString::substr($year, 1);
+			$year = StringHelper::substr($year, 1);
 			$year = $yearnow + $year;
 		}
 		else if ($firstpos == "-")
 		{
-			$year = JString::substr($year, 1);
+			$year = StringHelper::substr($year, 1);
 			$year = $yearnow - $year;
 		}
 		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (JString::strlen($year) < 4)
+		else if (StringHelper::strlen($year) < 4)
 		{
 			$cuenta = count($year);
 			$year = $yearnow + $year;
@@ -1934,8 +1938,8 @@ class JEVHelper
 					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 					. "\n WHERE block ='0'"
 					. "\n AND cd.published =1 "
-					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
-					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')' 
+					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
+					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
 					. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
@@ -2060,6 +2064,10 @@ class JEVHelper
 			$user = JFactory::getUser();
 		}
 		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		// Add a second check incase the getuser failed.
+		if (!$user) {
+			return false;
+		}
 		$access = $user->authorise('core.admin', 'com_jevents');
 		return $access;
 
@@ -2135,7 +2143,7 @@ class JEVHelper
 				// Set the query for execution.
 				$db->setQuery((string) $query);
 				$rootlevels = $db->loadColumn();
-				JArrayHelper::toInteger($rootlevels);
+				ArrayHelper::toInteger($rootlevels);
 			}
 			$levels = $rootlevels;
 		}
@@ -2343,7 +2351,7 @@ class JEVHelper
 		{
 			$catids = array(intval($catids));
 		}
-		JArrayHelper::toInteger($catids);
+		ArrayHelper::toInteger($catids);
 		$result = false; //count($catids)>0;
 		foreach ($catids as $catid)
 		{
@@ -2377,7 +2385,7 @@ class JEVHelper
 			{
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			ArrayHelper::toInteger($catids);
 			$row->_catidsarray = $catids;
 			return $catids;
 		}
@@ -3090,7 +3098,7 @@ SCRIPT;
 							$html .= ';INTERVAL=' . $row->_rinterval;
 						if ($row->_freq == "DAILY")
 						{
-							
+
 						}
 						else if ($row->_freq == "WEEKLY")
 						{
@@ -3519,16 +3527,16 @@ SCRIPT;
 
 		// new version
 		$output = '';
-		while (JString::strlen($input) >= $line_max)
+		while (StringHelper::strlen($input) >= $line_max)
 		{
-			$output .= JString::substr($input, 0, $line_max - 1);
-			$input = JString::substr($input, $line_max - 1);
-			if (JString::strlen($input) > 0)
+			$output .= StringHelper::substr($input, 0, $line_max - 1);
+			$input = StringHelper::substr($input, $line_max - 1);
+			if (StringHelper::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (JString::strlen($input) > 0)
+		if (StringHelper::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -3539,12 +3547,12 @@ SCRIPT;
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = JString::strlen($input);
+		$linlen = StringHelper::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = JString::substr($input, $i, 1);
+			$c = StringHelper::substr($input, $i, 1);
 
 			/*
 			  $dec = ord($c);
@@ -3558,7 +3566,7 @@ SCRIPT;
 			  }
 			  }
 			 */
-			if ((JString::strlen($outline) + 1) >= $line_max)
+			if ((StringHelper::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;
@@ -3605,7 +3613,7 @@ SCRIPT;
 	public static
 			function modal($selector = 'a.modal', $params = array())
 	{
-		
+
 		if (version_compare(JVERSION, "3.0", "ge"))
 		{
 			// Load the code Joomla version
@@ -3633,15 +3641,15 @@ SCRIPT;
 			return new jevCache();
 		}
 	}
-        
-        /* 
+
+        /*
          * Fix config etc. to run in WP with minimal code changes!
          */
         public static function setupWordpress() {
                 if (defined ("WPJEVENTS")){
                     $cfg = JEVConfig::getInstance();
                     $cfg->set('com_email_icon_view', 0);
-                    
+
                 }
         }
 }

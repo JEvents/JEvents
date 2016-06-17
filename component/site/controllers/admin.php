@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: admin.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -39,7 +39,7 @@ class AdminController extends JControllerLegacy   {
 
 		$user = JFactory::getUser();
 		if( !$is_event_editor ){
-			$returnlink = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=month.calendar&Itemid=' . $Itemid, false );
+			$returnlink = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false );
 			$this->setRedirect( $returnlink, html_entity_decode( JText::_('JEV_NOPERMISSION') ));
 			$this->redirect();
 			return;

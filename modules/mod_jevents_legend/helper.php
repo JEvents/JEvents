@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3141 2011-12-29 10:13:17Z geraintedwards $
  * @package     JEvents
@@ -13,10 +13,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 class modJeventsLegendHelper
 {
 
-	function modJeventsLegendHelper()
+	public function __construct()
 	{
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -41,7 +43,7 @@ class modJeventsLegendHelper
 			foreach ($newcats as $newcat){
 				if ( !in_array( $newcat,$catids )){
 					$catids[]=$newcat;
-					$catidList .= (JString::strlen($catidList)>0?",":"").$newcat;
+					$catidList .= (StringHelper::strlen($catidList)>0?",":"").$newcat;
 				}
 			}				
 		}
@@ -53,7 +55,7 @@ class modJeventsLegendHelper
 					break;
 				if ($modparams->get($nextCID) > 0 && !in_array($modparams->get($nextCID), $catids)) {
 					$catids[]=  $modparams->get($nextCID);
-					$catidList .= ( JString::strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
+					$catidList .= ( StringHelper::strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
 				}
 			}
 		}
@@ -63,7 +65,7 @@ class modJeventsLegendHelper
 	function getViewClass($theme, $module, $layout, $params=false){
 
 		// If we have a specified over ride then use it here
-		if ($params && JString::strlen($params->get("layout",""))>0){
+		if ($params && StringHelper::strlen($params->get("layout",""))>0){
 			$speciallayout = strtolower($params->get("layout",""));
 			// Build the template and base path for the layout
 			$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$theme.'/'.$speciallayout.'.php';

@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jeventshtml.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
+
+use Joomla\String\StringHelper;
 
 // TODO replace with JevDate
 
@@ -705,9 +707,9 @@ class JEventsHTML
 						// BAR COLOR GENERATION
 						//$start_publish = JevDate::mktime (0, 0, 0, date("m"),date("d"),date("Y"));
 						//$colorgenerate = intval(($start_publish/$event_id));
-						//$bg1color = JString::substr($colorgenerate, 5, 1);
-						//$bg2color = JString::substr($colorgenerate, 3, 1);
-						//$bg3color = JString::substr($colorgenerate, 7, 1);
+						//$bg1color = StringHelper::substr($colorgenerate, 5, 1);
+						//$bg2color = StringHelper::substr($colorgenerate, 3, 1);
+						//$bg3color = StringHelper::substr($colorgenerate, 7, 1);
 						$bg1color = rand(0, 9);
 						$bg2color = rand(0, 9);
 						$bg3color = rand(0, 9);

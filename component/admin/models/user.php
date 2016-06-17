@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: user.php 1406 2010-11-09 11:48:51Z geraintedwards $
  * @package     JEvents
@@ -13,7 +13,10 @@
 defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
+
 JLoader::import("jevuser",JPATH_COMPONENT_ADMINISTRATOR."/tables/");
+
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * @package		Joom!Fish
@@ -104,7 +107,7 @@ class AdminUserModelUser extends JModelLegacy
 	 */
 	function getUser() {
 		$cid = JRequest::getVar("cid",array(0));
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (count($cid)>0){
 			$id=$cid[0];
 		}

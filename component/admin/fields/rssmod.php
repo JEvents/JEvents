@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: rssmod.php 1272 2010-10-11 13:11:55Z geraintedwards $
  * @package     JEvents

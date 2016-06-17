@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: default_layout.php 3323 2012-03-08 13:37:46Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,9 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
+
 if (count($filterHTML) > 0)
 {
 
@@ -61,7 +64,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -107,7 +110,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -174,7 +177,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>

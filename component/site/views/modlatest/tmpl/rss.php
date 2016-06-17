@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: rss.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 // setup document
 $doc = JFactory::getDocument();
@@ -35,7 +37,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		// url link to article
 		$startDate = $row->publish_up();
-		//$eventDate = JevDate::mktime(JString::substr($startDate,11,2),JString::substr($startDate,14,2), JString::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
+		//$eventDate = JevDate::mktime(StringHelper::substr($startDate,11,2),StringHelper::substr($startDate,14,2), StringHelper::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
 		$eventDate = JevDate::strtotime($startDate);
 		$datenow = JEVHelper::getNow();
 		if ($relDay > 0)

@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
@@ -17,7 +17,7 @@ class modJeventsFilterHelper
 {
 	private $params = null;
 	
-	function modJeventsFilterHelper($params){
+	public function __construct($params){
 		$this->params = $params;
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -34,7 +34,7 @@ class modJeventsFilterHelper
 		
 	}
 	
-	function getFilters(){
+	public function getFilters(){
 		JLoader::register('jevFilterProcessing',JEV_PATH."/libraries/filters.php");
 		$pluginsDir = JPATH_ROOT.'/'.'plugins'.'/'.'jevents';
 		$filterlist	= explode(",",str_replace(" ","",$this->params->get('filters', "search")));

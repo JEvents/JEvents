@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: icals.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.controllerform');
 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class AdminIcalsController extends JControllerForm {
 
@@ -156,7 +158,7 @@ class AdminIcalsController extends JControllerForm {
 		$this->view = $this->getView("icals","html");
 
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) $editItem=$cid[0];
 		else $editItem=0;
 
@@ -247,7 +249,7 @@ class AdminIcalsController extends JControllerForm {
 			return;
 		}
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
 		} else {
@@ -286,7 +288,7 @@ class AdminIcalsController extends JControllerForm {
 				$access = intval($currentICS->access);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && JString::strlen($currentICS->label)>=0){
+			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && StringHelper::strlen($currentICS->label)>=0){
 				$icsLabel = $currentICS->label;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
@@ -310,7 +312,7 @@ class AdminIcalsController extends JControllerForm {
 			}
 
 			$state = 1;
-			if (JString::strlen($currentICS->srcURL)==0) {
+			if (StringHelper::strlen($currentICS->srcURL)==0) {
 				echo "Can only reload URL based subscriptions";
 				return;
 			}
@@ -336,7 +338,7 @@ class AdminIcalsController extends JControllerForm {
 		}
 
 		// I need a better check and expiry information etc.
-		if (JString::strlen($uploadURL)>0){
+		if (StringHelper::strlen($uploadURL)>0){
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL,$icsid,$catid,$access,$state,$icsLabel, $autorefresh, $ignoreembedcat);
 		}
 		else if (isset($_FILES['upload']) && is_array($_FILES['upload']) ) {
@@ -394,7 +396,7 @@ class AdminIcalsController extends JControllerForm {
 
 		$icsid = intval(JRequest::getVar('icsid',0));
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
 		} else {
@@ -432,11 +434,11 @@ class AdminIcalsController extends JControllerForm {
 				$state = intval($currentICS->state);
 			}
 			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if ($icsLabel=="" && JString::strlen($currentICS->icsLabel)>=0){
+			if ($icsLabel=="" && StringHelper::strlen($currentICS->icsLabel)>=0){
 				$icsLabel = $currentICS->icsLabel;
 			}
 			$uploadURL = JRequest::getVar('uploadURL',$currentICS->srcURL );
-			if ($uploadURL=="" && JString::strlen($currentICS->srcURL)>=0){
+			if ($uploadURL=="" && StringHelper::strlen($currentICS->srcURL)>=0){
 				$uploadURL = $currentICS->srcURL;
 			}
 			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
@@ -465,13 +467,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function publish(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid,1);
 	}
 
 	function unpublish(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid,0);
 	}
 
@@ -495,13 +497,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function autorefresh(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid,1);
 	}
 
 	function noautorefresh(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid,0);
 	}
 
@@ -525,13 +527,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function isdefault(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid,1);
 	}
 
 	function notdefault(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid,0);
 	}
 
@@ -597,7 +599,7 @@ class AdminIcalsController extends JControllerForm {
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		$db	= JFactory::getDBO();
 

@@ -6,6 +6,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\String\StringHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -68,7 +70,7 @@ class FlatModLegendView extends DefaultModLegendView{
 				if (!in_array($newcat, $catids))
 				{
 					$catids[] = $newcat;
-					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
+					$catidList .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $newcat;
 				}
 			}
 		}
@@ -79,7 +81,7 @@ class FlatModLegendView extends DefaultModLegendView{
 				if (!in_array($nextCatId, $catids))
 				{
 					$catids[] = $nextCatId;
-					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
+					$catidList .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $nextCatId;
 				}
 				$c++;
 			}
@@ -103,7 +105,7 @@ class FlatModLegendView extends DefaultModLegendView{
 		// This is the full set of top level catids
 		$availableCatsIds="";
 		foreach ($allrows as $row){
-			$availableCatsIds.=(JString::strlen($availableCatsIds)>0?$separator:"").$row->id;
+			$availableCatsIds.=(StringHelper::strlen($availableCatsIds)>0?$separator:"").$row->id;
 		}
 
 		$allcats = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'),"#d3d3d3",JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
@@ -223,7 +225,7 @@ class FlatModLegendView extends DefaultModLegendView{
 		. '<a href="'.JRoute::_("index.php?option=".JEV_COM_COMPONENT."$cat$itm$tsk").'" title="'.JEventsHTML::special($row->name).'">'
 		. JEventsHTML::special($row->name).'</a>';
 		$content .= '</div>'."\n";
-		if (JString::strlen($row->description)>0) {
+		if (StringHelper::strlen($row->description)>0) {
 			$content .='<div class="event_legend_desc"  style="border-color:'.$row->color.'">'.$row->description.'</div>';
 		}
 		$content .= '</div>'."\n";

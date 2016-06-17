@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
@@ -45,7 +45,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		$editStrings = '';
+
 		include(JEV_ADMINLIBS . "editStrings.php");
+
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');

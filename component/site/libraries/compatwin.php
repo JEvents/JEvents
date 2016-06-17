@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: compatwin.php 1784 2011-03-14 14:28:13Z geraintedwards $
  * @package     JEvents

@@ -12,6 +12,7 @@
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
 		<filename>helper.php</filename>
+		<filename>gwejson_fetchlatestevents.php</filename>
 		<folder>tmpl</folder>
 	</files>
 	<languages folder="language">
@@ -52,6 +53,7 @@
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
+                                <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="CustomFromTemplate" type="jevcustomlayout" layouttype="LatestEvents"  default='1'  target='jform_params_modlatest_CustFmtStr'  csstarget='jform_params_modlatest_customcss'  label="JEV_LEV_CUSTOM_LAYOUT_IMPORT" description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)}\n&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]\n&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_customcss" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default=''  label="JEV_LEV_CUSTOM_CSS" description="JEV_LEV_CUSTOM_CSS_TIP" conditional="modlatest_useLocalParam" conditions="1" />

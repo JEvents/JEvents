@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // load language constants
 JEVHelper::loadLanguage('front');
+use Joomla\String\StringHelper;
 
 class JEventsDBModel
 {
@@ -184,7 +185,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
 			{
 				$where = ' AND c.id IN (' . $catidList . ') ';
 			}
@@ -238,7 +239,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
 			{
 				$where = ' AND (p.id IN (' . $catidList . ') ' . ($levels > 1 ? ' OR gp.id IN (' . $catidList . ')' : '') . ($levels > 2 ? ' OR ggp.id IN (' . $catidList . ')' : '') . ')';
 			}
@@ -702,6 +703,13 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
+
+                // Are we responding to pagination request  - if so ignore the repeats already shown
+                $ignoreRepeatIds = $this->getIgnoreRepeatIds();
+                if ($ignoreRepeatIds){
+                    $extrawhere[] = $ignoreRepeatIds ;                            
+                }
+                
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -1230,6 +1238,34 @@ class JEventsDBModel
 		return $rows;
 
 	}
+        
+        private function getIgnoreRepeatIds() 
+        {
+                $registry	= JRegistry::getInstance("jevents");
+                $modid = $registry->get("jevents.moduleid", 0);
+            
+                $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$modid.".shownEventIds",array());                            
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$modid.".page",0);
+            
+                $ignoreRepeatIds = "";
+                if (count($shownEventIds)>0){
+                    $ignoreRepeatIds = array();
+                    foreach ($shownEventIds as $shownpage => $shownids){
+                        if ($shownpage == $page){
+                            continue;
+                        }
+                        $ignoreRepeatIds = array_merge($ignoreRepeatIds, $shownids);                        
+                    }
+                    if (!count($ignoreRepeatIds)){
+                        $ignoreRepeatIds = "";
+                    }
+                    else {
+                        $ignoreRepeatIds = " rpt.rp_id NOT IN (".implode(",",  $ignoreRepeatIds).")";
+                    }
+                }
+                return $ignoreRepeatIds;
+            
+        }
 
         function randomIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0, $multidayTreatment = 0)
 	{
@@ -2396,9 +2432,9 @@ class JEventsDBModel
 
 		$startdate = JevDate::strftime('%Y-%m-%d', $startdate);
 
-		if (JString::strlen($startdate) == 10)
+		if (StringHelper::strlen($startdate) == 10)
 			$startdate.= " 00:00:00";
-		if (JString::strlen($enddate) == 10)
+		if (StringHelper::strlen($enddate) == 10)
 			$enddate.= " 23:59:59";
 
 		// This code is used by the iCals code with a spoofed user so check if this is what is happening

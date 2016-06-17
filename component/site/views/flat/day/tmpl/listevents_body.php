@@ -49,12 +49,7 @@ $precedingDay = $this->datamodel->getPrecedingDay ( $this->year, $this->month, $
 						
 						$listyle = 'style="border-color:' . $row->bgcolor () . ';"';
 						echo "<li class='ev_td_li' $listyle>\n";
-						
-						if (! $this->loadedFromTemplate ( 'icalevent.list_row', $row, 0 )) {
-							$this->viewEventRowNew ( $row );
-							echo '&nbsp;::&nbsp;';
-							$this->viewEventCatRowNew ( $row );
-						}
+						$this->loadedFromTemplate('icalevent.list_row', $row, 0);
 						echo "</li>\n";
 					}
 					echo "</ul>\n";
@@ -69,12 +64,7 @@ $precedingDay = $this->datamodel->getPrecedingDay ( $this->year, $this->month, $
 						foreach ( $data ['hours'] [$h] ['events'] as $row ) {
 							$listyle = 'style="border-color:' . $row->bgcolor () . ';"';
 							echo "<li class='ev_td_li' $listyle>\n";
-							
-							if (! $this->loadedFromTemplate ( 'icalevent.list_row', $row, 0 )) {
-								$this->viewEventRowNew ( $row );
-								echo '&nbsp;::&nbsp;';
-								$this->viewEventCatRowNew ( $row );
-							}
+							$this->loadedFromTemplate('icalevent.list_row', $row, 0);
 							echo "</li>\n";
 						}
 						echo "</ul>\n";

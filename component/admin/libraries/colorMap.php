@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: colorMap.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
 
 function JevMapColor($background) {
 
@@ -96,9 +98,9 @@ function JevMapColor($background) {
 
 	// see http://24ways.org/2010/calculating-color-contrast/
 	$hexcolor = str_replace("#", "", $background);
-	$r = hexdec(JString::substr($hexcolor,0,2));
-	$g = hexdec(JString::substr($hexcolor,2,2));
-	$b = hexdec(JString::substr($hexcolor,4,2));
+	$r = hexdec(StringHelper::substr($hexcolor,0,2));
+	$g = hexdec(StringHelper::substr($hexcolor,2,2));
+	$b = hexdec(StringHelper::substr($hexcolor,4,2));
 	$yiq = (($r*299)+($g*587)+($b*114))/1000;
 	return ($yiq >= 128) ? '#000':'#fff';
 

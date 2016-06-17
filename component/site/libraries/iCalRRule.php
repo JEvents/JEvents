@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalRRule.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
 
 class iCalRRule extends JTable  {
 
@@ -31,11 +33,11 @@ class iCalRRule extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalRRule( &$db ) {
+	function __construct( &$db ) {
 		parent::__construct( '#__jevents_rrule', 'rr_id', $db );
 	}
 
-	function store($updateNulls = false) {
+	public function store($updateNulls = false) {
 		return parent::store($updateNulls);
 	}
 	/**
@@ -44,7 +46,7 @@ class iCalRRule extends JTable  {
 	 * @param iCal Entry parsed from ICS file as an array $ice
 	 * @return n/a
 	 */
-	function iCalRRuleFromDB($icalrowAsArray){
+	public function iCalRRuleFromDB($icalrowAsArray){
 		$db	= JFactory::getDBO();
 		$temp = new iCalRRule($db);
 
@@ -83,7 +85,7 @@ class iCalRRule extends JTable  {
 		$temp->processField2("wkst","");
 		return $temp;
 	}
-	function processField2($field,$default){
+	public function processField2($field,$default){
 		$this->$field = array_key_exists(strtolower($field),$this->data)?$this->data[strtolower($field)]:$default;
 	}
 
@@ -138,7 +140,7 @@ class iCalRRule extends JTable  {
 		return $temp;
 	}
 
-	function processField($field,$default){
+	public function processField($field,$default){
 		$this->$field = array_key_exists(strtoupper($field),$this->data)?$this->data[strtoupper($field)]:$default;
 	}
 	/**
@@ -148,7 +150,7 @@ class iCalRRule extends JTable  {
 	 * @param unknown_type $end
 	 * @return unknown
 	 */
-	function _makeRepeat($start,$end){
+	public function _makeRepeat($start,$end){
 		if (!isset($this->_repetitions)) $this->_repetitions = array();
 		$db	= JFactory::getDBO();
 		$repeat = new iCalRepetition($db);
@@ -182,13 +184,13 @@ class iCalRRule extends JTable  {
 		return 1;
 	}
 
-	function _afterUntil($testDate){
-		if (JString::strlen($this->until)==0) return false;
+	public function _afterUntil($testDate){
+		if (StringHelper::strlen($this->until)==0) return false;
 		if (!isset($this->_untilMidnight)) {
 			list ($d,$m,$y) = explode(":",JevDate::strftime("%d:%m:%Y",$this->until));
 			$this->_untilMidnight = JevDate::mktime(23,59,59,$m,$d,$y);
 		}
-		if (JString::strlen($this->until)>0 && $testDate>intval($this->_untilMidnight)) {
+		if (StringHelper::strlen($this->until)>0 && $testDate>intval($this->_untilMidnight)) {
 			return true;
 		}
 		else return false;
@@ -202,7 +204,7 @@ class iCalRRule extends JTable  {
 	 * @param unknown_type $currentMonthStart
 	 * @param unknown_type $dtstart
 	 */
-	function sortByDays(&$days,$currentMonthStart,$dtstart){
+	public function sortByDays(&$days,$currentMonthStart,$dtstart){
 		if (count($days)==0) return;
 		// only sort negative values
 		if (strpos($days[0],"-")===false) return;
@@ -264,7 +266,7 @@ class iCalRRule extends JTable  {
 	 * Generates repetition from vevent & rrule data from scratch
 	 * The result can then be saved to the database
 	 */
-	function getRepetitions($dtstart,$dtend,$duration,$recreate=false,$exdate=array()) {
+	public function getRepetitions($dtstart,$dtend,$duration,$recreate=false,$exdate=array()) {
 		// put exdate into somewhere that I can get from _makerepeat
 		$this->_exdate = $exdate;
 		// TODO  "getRepetitions doesnt yet deal with Short months and 31st or leap years/week 53<br/>";
@@ -339,7 +341,7 @@ class iCalRRule extends JTable  {
 							$details=array();
 							preg_match("/(\+|-?)(\d*)/",$day,$details);
 							list($temp,$plusminus,$daynumber) = $details;
-							if (JString::strlen($plusminus)==0) $plusminus="+";
+							if (StringHelper::strlen($plusminus)==0) $plusminus="+";
 
 							// do not go over year end
 							if ($daynumber>$currentYearDays) continue;
@@ -484,8 +486,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$weeknumber,$dayname) = $details;
-								if (JString::strlen($plusminus)==0) $plusminus="+";
-								if (JString::strlen($weeknumber)==0) $weeknumber=1;
+								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
+								if (StringHelper::strlen($weeknumber)==0) $weeknumber=1;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus=="-") {
@@ -595,8 +597,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$daynumber) = $details;
-								if (JString::strlen($plusminus)==0) $plusminus="+";
-								if (JString::strlen($daynumber)==0) $daynumber=$startDay;
+								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
+								if (StringHelper::strlen($daynumber)==0) $daynumber=$startDay;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus=="-") {
@@ -690,8 +692,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$weeknumber,$dayname) = $details;
-								if (JString::strlen($plusminus)==0) $plusminus="+";
-								if (JString::strlen($weeknumber)==0) $weeknumber=1;
+								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
+								if (StringHelper::strlen($weeknumber)==0) $weeknumber=1;
 
 								$multiplier = $plusminus=="+"?1:-1;
 								// always check for dtstart (nothing is allowed earlier)
@@ -767,9 +769,9 @@ class iCalRRule extends JTable  {
 						}
 						else {
 							list($temp,$plusminus,$daynumber,$dayname) = $details;
-							if (JString::strlen($plusminus)==0) $plusminus="+";
+							if (StringHelper::strlen($plusminus)==0) $plusminus="+";
 							// this is not relevant for weekly recurrence ?!?!?
-							//if (JString::strlen($daynumber)==0) $daynumber=1;
+							//if (StringHelper::strlen($daynumber)==0) $daynumber=1;
 							$multiplier = $plusminus=="+"?1:-1;
 							if ($plusminus=="-") {
 								// TODO find out if I ever have this situation?
@@ -849,7 +851,7 @@ class iCalRRule extends JTable  {
 		}
 	}
 
-	function dumpData(){
+	public function dumpData(){
 		echo "Freq : $this->freq <br/>";
 		echo "Interval : ".$this->data['INTERVAL']."<br/>";
 		switch ($this->freq) {
@@ -864,7 +866,7 @@ class iCalRRule extends JTable  {
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
 					if (count($details)!=4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else {
-						if (JString::strlen($details[1])==0) $details[1]="+";
+						if (StringHelper::strlen($details[1])==0) $details[1]="+";
 						echo "Event repeat details<br/>";
 						if ($details[1]=="-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";
@@ -881,7 +883,7 @@ class iCalRRule extends JTable  {
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
 					if (count($details)!=4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else {
-						if (JString::strlen($details[1])==0) $details[1]="+";
+						if (StringHelper::strlen($details[1])==0) $details[1]="+";
 						echo "Event repeat details<br/>";
 						if ($details[1]=="-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";
@@ -900,12 +902,12 @@ class iCalRRule extends JTable  {
 		echo "<hr/>";
 	}
 
-	function checkDate($test, $start, $end){
+	public function checkDate($test, $start, $end){
 		if ($test>=$start && $test<=$end) return true;
 		else return false;
 	}
 
-	function eventInPeriod($startDate,$endDate, $start, $end){
+	public function eventInPeriod($startDate,$endDate, $start, $end){
 		// stupid verison to start that scans through EVERY single day!!!
 		$checkDate = $startDate;
 		while ($checkDate<=$endDate){
@@ -915,7 +917,7 @@ class iCalRRule extends JTable  {
 		return false;
 	}
 
-	function isDuplicate(){
+	public function isDuplicate(){
 		$sql = "SELECT rr_id from #__jevents_rrule as rr WHERE rr.eventid = '".$this->eventid."'";
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();

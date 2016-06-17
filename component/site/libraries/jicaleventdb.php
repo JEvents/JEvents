@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jicaleventdb.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
 
 class jIcalEventDB extends jEventCal {
 	//var $vevent;
@@ -151,7 +153,7 @@ class jIcalEventDB extends jEventCal {
 
 
 	function dtstart($val=""){
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			if (!isset($this->_dtstart)){
 				return null;
 			}
@@ -164,7 +166,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function dtend($val=""){
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			if (!isset($this->_dtend)){
 				return null;
 			}
@@ -177,7 +179,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function interval($val="") {
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			if (!isset($this->_interval) || $this->_interval=="" || $this->_interval==0) return 1;
 			else return $this->_interval;
 		}
@@ -187,7 +189,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function count($val="") {
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			if (!isset($this->_count) || $this->_count=="" || $this->_count==0) return 1;
 			else return $this->_count;
 		}
@@ -202,7 +204,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function until($val="") {
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			if (!isset($this->_until) || $this->_until=="" || $this->_until==0) return $this->dtstart();
 			return $this->_until;
 		}
@@ -229,7 +231,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function starttime($val=""){
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtstart());
@@ -251,7 +253,7 @@ class jIcalEventDB extends jEventCal {
 
 
 	function endtime($val=""){
-		if (JString::strlen($val)==0) {
+		if (StringHelper::strlen($val)==0) {
 			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtend());

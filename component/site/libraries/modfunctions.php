@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: modfunctions.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -12,6 +12,9 @@
 // functions used by the modules
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall){
 	// Itemid, search for menuid with lowest access rights
@@ -100,7 +103,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 		foreach ($newcats as $newcat){
 			if ( !in_array( $newcat,$modcatids )){
 				$modcatids[]=$newcat;
-				$catidList .= (JString::strlen($catidList)>0?",":"").$newcat;
+				$catidList .= (StringHelper::strlen($catidList)>0?",":"").$newcat;
 			}
 		}				
 	}
@@ -111,7 +114,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 			if (!isset($modparams->$nextCID)) break;
 			if ($modparams->$nextCID>0 && !in_array($modparams->$nextCID,$modcatids)){
 				$modcatids[]=$modparams->$nextCID;
-				$catidList .= (JString::strlen($catidList)>0?",":"").$modparams->$nextCID;
+				$catidList .= (StringHelper::strlen($catidList)>0?",":"").$modparams->$nextCID;
 			}
 		}
 	}
@@ -130,9 +133,9 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	// if ignoring catid filter then force to blank
 	if ($ignorecatfilter) $catidsin = "";
 	
-	if (JString::strlen($catidsin)>0){
+	if (StringHelper::strlen($catidsin)>0){
 		$catidsin = explode("|",$catidsin);
-		JArrayHelper::toInteger($catidsin);
+		ArrayHelper::toInteger($catidsin);
 	}
 	else {
 		// if no catids from the URL then stick to the module catids

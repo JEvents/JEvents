@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: router.php 3578 2012-05-01 14:25:28Z geraintedwards $
  * @package     JEvents
@@ -14,6 +14,8 @@ defined('_JEXEC') or die('No Direct Access');
 JLoader::register('JEVConfig', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/config.php");
 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
+
+use Joomla\String\StringHelper;
 
 function JEventsBuildRoute(&$query)
 {
@@ -162,7 +164,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -176,7 +178,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JApplication::stringURLSafe($query['title']);
+						  $segments[] = JApplicationHelper::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -188,7 +190,7 @@ function JEventsBuildRoute(&$query)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
+				if (isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -208,7 +210,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +255,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -703,7 +705,7 @@ function JEventsBuildRouteNew(&$query, $task)
 							}
 						}
 
-						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && JString::strlen($query['catids']) > 0)
+						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 						{
 							unset($query['catids']);
 						}
@@ -712,7 +714,7 @@ function JEventsBuildRouteNew(&$query, $task)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
+				if (isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -736,7 +738,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else

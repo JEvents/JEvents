@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Justmine.php 2657 2011-09-28 11:42:45Z geraintedwards $
  * @package     JEvents
@@ -41,7 +41,7 @@ class jevJustmineFilter extends jevFilter
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
 		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
-		parent::jevFilter($tablename, "state", $isstring);
+		parent::__construct($tablename, "state", $isstring);
 
 	}
 
