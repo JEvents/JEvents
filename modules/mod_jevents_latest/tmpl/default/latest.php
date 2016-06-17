@@ -706,8 +706,8 @@ class DefaultModLatestView
 
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-                        $lastEvent = false;
-                        $firstEvent = false;
+                        $lastEventDate = false;
+                        $firstEventDate = false;
                         if (!isset($shownEventIds[$page])){
                             $shownEventIds[$page] = array();
                         }
@@ -717,19 +717,21 @@ class DefaultModLatestView
 
 				// get all of the events for this day
 				foreach($daysEvents as $dayEvent){
-                                        if (!$firstEvent) {
-                                            $firstEvent = $dayEvent->startrepeat;
+                                        if (!$firstEventDate) {
+                                            $firstEventDate = $dayEvent->startrepeat;
                                             $firstEventId = $dayEvent->rp_id;
                                         }
                                         if (!in_array($dayEvent->rp_id, $shownEventIds)){
                                             $shownEventIds[$page][] = $dayEvent->rp_id;
                                         }
-                                        $lastEvent = $dayEvent->startrepeat;
+                                        $lastEventDate = $dayEvent->startrepeat;
                                         $lastEventId = $dayEvent->rp_id;                                        
                                 }
                         }
                         
                         JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",$shownEventIds);
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".firstEventDate",$firstEventDate);
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$lastEventDate);
 
                         // Navigation
                         static $scriptloaded = false;
@@ -1552,7 +1554,7 @@ SCRIPT;
                 if ($params->get("showNavigation",0)){
                     $content .= '<div class="mod_events_latest_navigation">';
                     $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
-                    if ($page>0) {
+                    if ($page>0 || $params->get("modlatest_Mode",0)!=2) {
                         $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',-1);return false;">'.JText::_('JEV_PRIOR_EVENTS').'</a>';
                     }
                     $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',1);return false;">'.JText::_('JEV_NEXT_EVENTS').'</a>';
