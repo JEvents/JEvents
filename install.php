@@ -215,3 +215,4 @@ class Pkg_JeventsInstallerScript
 	}
 
 }
+
