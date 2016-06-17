@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 17-06-2016 - Geraint Edwards
+* Fix duplicated output in flat theme date range view.
+* Let category link in latest events module respect target menu item is using ${CATEGORYLNK}
+
 ## 14-06-2016 - Geraint Edwards
 * Enable configuration of all JEvents plugins via the main JEvents config/params page
 * Allow filtering of all published JEvents layouts i.e. without need to check all the categories in turn

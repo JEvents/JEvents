@@ -489,7 +489,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$catids = array($event->catid());
 						$catdata = array($event->getCategoryData());
 					}
-
+                                        // Is this being called from the latest events module - if so then use the target item instead of current Itemid
+                                        $reg =  JRegistry::getInstance("com_jevents");
+                                        $modparams = $reg->get("jevents.moduleparams", new JRegistry);
+                                        $modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid",0));
 					$vars = $router->getVars();
 					foreach ($catids as $cat)
 					{
@@ -513,6 +516,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 								$val = "week.listevents";
 							}
+                                                        if ($key == $Itemid && $modItemid){
+                                                            $val = $modItemid;
+                                                        }
 							$eventlink.= $key . "=" . $val . "&";
 						}
 						$eventlink = StringHelper::substr($eventlink, 0, StringHelper::strlen($eventlink) - 1);
