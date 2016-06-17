@@ -239,6 +239,16 @@ class DefaultModLatestView
 	// for the time being put it here so the different views can inherit from this 'base' class
 	function getLatestEventsData($limit = "")
 	{
+                // Find the repeat ids to ignore because of pagination
+                // when not loading data using JSON we need to reset the shownEventIds array and the page variable in the session
+                $registry = JRegistry::getInstance("jevents");
+                if (!$registry->get("jevents.fetchlatestevents", 0))
+                {
+                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());                            
+                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".page",0);
+                }
+                $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());                            
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
 
 		// RSS situation overrides maxecents
 		$limit = intval($limit);
@@ -680,7 +690,7 @@ class DefaultModLatestView
 			// and work our way up so sort the data first
 
 			ksort($this->eventsByRelDay, SORT_NUMERIC);
-			reset($this->eventsByRelDay);
+			reset($this->eventsByRelDay);                                                
 		}
 		if ($this->sortReverse)
 		{
@@ -691,6 +701,63 @@ class DefaultModLatestView
 				$this->eventsByRelDay[$relDay] = array_reverse($daysEvents, true);
 			}
 		}
+                
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
+
+		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
+		{
+                        $lastEvent = false;
+                        $firstEvent = false;
+                        if (!isset($shownEventIds[$page])){
+                            $shownEventIds[$page] = array();
+                        }
+			foreach($this->eventsByRelDay as $relDay => $daysEvents){
+
+				reset($daysEvents);
+
+				// get all of the events for this day
+				foreach($daysEvents as $dayEvent){
+                                        if (!$firstEvent) {
+                                            $firstEvent = $dayEvent->startrepeat;
+                                            $firstEventId = $dayEvent->rp_id;
+                                        }
+                                        if (!in_array($dayEvent->rp_id, $shownEventIds)){
+                                            $shownEventIds[$page][] = $dayEvent->rp_id;
+                                        }
+                                        $lastEvent = $dayEvent->startrepeat;
+                                        $lastEventId = $dayEvent->rp_id;                                        
+                                }
+                        }
+                        
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",$shownEventIds);
+
+                        // Navigation
+                        static $scriptloaded = false;
+                        if (!$scriptloaded ){
+                            $root = JURI::root();
+                            $token= JSession::getFormToken();
+                            $script = <<<SCRIPT
+function fetchMoreLatestEvents(modid, direction)
+{        
+        jQuery.ajax({
+                    type : 'POST',
+                    dataType : 'json',
+                    url : "{$root}index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=fetchlatestevents&path=module&folder=mod_jevents_latest&token={$token}",
+                    data : {'json':JSON.stringify({'modid':modid, 'direction':direction})},
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    scriptCharset: "utf-8"
+            })                        
+                .done(function( data ){                    
+                    jQuery("#mod_events_latest_"+modid+"_data").replaceWith(data.html);
+                })
+                .fail(function(x) {
+        alert('fail '+x);
+                });
+}
+SCRIPT;
+                            JFactory::getDocument()->addScriptDeclaration($script);
+                        }
+                }
 
 	}
 
@@ -1477,6 +1544,17 @@ class DefaultModLatestView
 		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
 
 	}
+        
+        protected function getNavigationIcons() {
+                $content = '<div class="mod_events_latest_navigation">';
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
+                if ($page>0) {
+                    $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',-1);return false;">'.JText::_('JEV_PRIOR_EVENTS').'</a>';
+                }
+                $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',1);return false;">'.JText::_('JEV_NEXT_EVENTS').'</a>';
+                $content .= '</div>';
+                return $content;
+        }
 
 }
 

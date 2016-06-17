@@ -532,6 +532,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$pastevpost = 0;
+                $post = null;
 		$limit = 10;
 		while ($pastevpost == 0) {
 			$next = $this->datamodel->queryModel->listIcalEvents($this->_startrepeat, $maxyear.'-01-01 00:00:00', "rpt.startrepeat ASC, rpt.rp_id ASC", false, "", "", $limit);
