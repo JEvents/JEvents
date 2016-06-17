@@ -1546,13 +1546,18 @@ SCRIPT;
 	}
         
         protected function getNavigationIcons() {
-                $content = '<div class="mod_events_latest_navigation">';
-                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
-                if ($page>0) {
-                    $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',-1);return false;">'.JText::_('JEV_PRIOR_EVENTS').'</a>';
+                $registry = JRegistry::getInstance("jevents");
+                $params = $registry->get("jevents.moduleparams", new JRegistry);
+                $content = "";
+                if ($params->get("showNavigation",0)){
+                    $content .= '<div class="mod_events_latest_navigation">';
+                    $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
+                    if ($page>0) {
+                        $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',-1);return false;">'.JText::_('JEV_PRIOR_EVENTS').'</a>';
+                    }
+                    $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',1);return false;">'.JText::_('JEV_NEXT_EVENTS').'</a>';
+                    $content .= '</div>';
                 }
-                $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',1);return false;">'.JText::_('JEV_NEXT_EVENTS').'</a>';
-                $content .= '</div>';
                 return $content;
         }
 
