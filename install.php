@@ -41,13 +41,14 @@ class Pkg_JeventsInstallerScript
 
 	public function update($parent)
 	{
-		return true;
+            $this->postflightHandler("update", $parent);
+            return true;
 	}
 
 	public function install($parent)
-
 	{
-		return true;
+            $this->postflightHandler("update", $parent);
+            return true;
 	}
 
 	public function uninstall($parent)
@@ -74,6 +75,16 @@ class Pkg_JeventsInstallerScript
 	 */
 
 	public function postflight($type, $parent)
+	{
+            return;
+            //return $this->postflightHandler($type, $parent);
+        }
+        
+        /*
+	 * enable the plugins
+	 */
+
+	public function postflightHandler($type, $parent)
 	{
 		// CSS Styling:
 		?>
@@ -196,7 +207,12 @@ class Pkg_JeventsInstallerScript
 		}
 
 		echo "</div>";
+		// Joomla updater special case
+		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
+                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG'), 'message');
+		}
 
 	}
 
 }
+
