@@ -388,15 +388,29 @@ if (count($jevplugins)){
 		}
                 
 		if ($hasPlugins)
-		{
+		{                    
 			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
                         echo JHtml::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
+                        $script = <<<SCRIPT
+jQuery(document).ready(function(){    
+    jQuery('#myPluginAccordion').on('show', function (evt) {
+       jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-right").removeClass("icon-chevron-right").addClass("icon-chevron-down");
+    });
+    jQuery('#myPluginAccordion').on('hidden', function (evt) {
+       jQuery(evt.target).closest('.accordion-group').find(".icon-chevron-down").removeClass("icon-chevron-down").addClass("icon-chevron-right");
+    });                                
+});                                
+SCRIPT;
+                         
+                        JevHtmlBootstrap::popover('#myPluginAccordion .icon-info' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#plugin_options", "delay"=> array( "show"=> 150, "hide"=> 150 )));                        
+                        JFactory::getDocument()->addScriptDeclaration($script);
+                        
                         $i = 0;
                         foreach ($jevplugins as $plugin)
                         {
                                 $config = JPATH_SITE . "/plugins/".$plugin->type."/" . $plugin->name . "/".$plugin->name.".xml";
                                 if (file_exists($config))
-                                {                                   
+                                {     
                                     // Load language file
                                     $lang = JFactory::getLanguage();
                                     $langfile = "plg_".$plugin->type."_".$plugin->name.".sys";
@@ -410,12 +424,36 @@ if (count($jevplugins)){
                                     //$pluginform = JForm::getInstance('com_plugins.plugin', $config, array('control' => 'jform_plugin['.$plugin->name.']', 'load_data' => true), true, "/extension/config/fields");
                                     $pluginparams = new JRegistry($plugin->params);
 
-                                                                                // Load the whole XML config file to get the plugin name in plain english
+                                    // Load the whole XML config file to get the plugin name in plain english
                                     $xml = new SimpleXMLElement($config, 0, true);
                                     // TODO Consider adding enabled/disabled method here for plugins inclusing unpublished ones!
                                     // TODO handle unpublished plugins too
-                                    $label =  JText::_($xml->name ) ;
                                     
+                                    $hasfields = false;
+                                    $fieldSets = $pluginform->getFieldsets();
+                                    foreach ($fieldSets as $name => $fieldSet)
+                                    {
+                                            if ($pluginform->getFieldset($name)) {
+                                                $hasfields = true;
+                                            }
+                                    }
+                                    $safedesc = JText::_($xml->description, true);
+                                    $safename = JText::_($xml->name, true);
+                                    
+                                    // offer drop down IFF has fields!
+                                    if ($hasfields) {
+                                        $label =  '<i class="icon-chevron-right"></i> ' .JText::_($xml->name ) ;
+                                    }
+                                    else {
+                                        $label =  '<i class="icon-blank"></i> ' .JText::_($xml->name ) ;
+                                    }
+                                    if ($safedesc) {
+                                        $label .=  '<i class="icon-info-sign icon-info" data-content="<strong>'.$safename."</strong><br/>".$safedesc.'" style="margin-left:10px;font-size:1.2em;"></i> ' ;
+                                    }
+                                    else {
+                                        $label .=  '<i class="icon-blank" style="margin-left:10px"></i> ' ;
+                                    }
+                                                                        
                                     $checked1 = $plugin->enabled ? 'checked="checked" ' : '';
                                     $checked0 = !$plugin->enabled ? 'checked="checked" ' : '';
                                     $label .= '<fieldset class="btn-group radio"  style="float:right;">'
@@ -428,15 +466,6 @@ if (count($jevplugins)){
                                                 . JText::_('JDISABLED')
                                                 . '</label>'
                                                 .'</fieldset>';
-                                    
-                                    $hasfields = false;
-                                    $fieldSets = $pluginform->getFieldsets();
-                                    foreach ($fieldSets as $name => $fieldSet)
-                                    {
-                                            if ($pluginform->getFieldset($name)) {
-                                                $hasfields = true;
-                                            }
-                                    }
                                     
                                     if ($hasfields) {
                                         echo JHtml::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));

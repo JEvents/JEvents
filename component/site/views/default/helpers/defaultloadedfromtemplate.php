@@ -490,7 +490,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$catdata = array($event->getCategoryData());
 					}
                                         // Is this being called from the latest events module - if so then use the target item instead of current Itemid
-                                        $reg =  JRegistry::getInstance("com_jevents");
+                                        $reg =  JRegistry::getInstance("jevents");
                                         $modparams = $reg->get("jevents.moduleparams", new JRegistry);
                                         $modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid",0));
 					$vars = $router->getVars();
@@ -507,6 +507,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 						}
 						$eventlink = "index.php?";
+                                                $itemidSet = false;
 						foreach ($vars as $key => $val)
 						{
 							// this is only used in the latest events module so do not perpetuate it here
@@ -516,11 +517,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 								$val = "week.listevents";
 							}
-                                                        if ($key == $Itemid && $modItemid){
+                                                        if ($key == "Itemid" && $modItemid){
                                                             $val = $modItemid;
+                                                            $itemidSet = true;
                                                         }
 							$eventlink.= $key . "=" . $val . "&";
 						}
+                                                if (!$itemidSet && $modItemid) {
+                                                    $eventlink.= "Itemid=".$modItemid;
+                                                }
 						$eventlink = StringHelper::substr($eventlink, 0, StringHelper::strlen($eventlink) - 1);
 						$eventlink = JRoute::_($eventlink);
 

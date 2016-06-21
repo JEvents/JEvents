@@ -281,7 +281,7 @@ class jevFilter
 	// is this filter visible in a module or the core component - this determines if it should remember its value
 	var $visible = false;
 
-	function jevFilter($tablename, $filterfield, $isString=false){
+	function __construct($tablename, $filterfield, $isString=false){
 
 
 		$registry	= JRegistry::getInstance("jevents");
