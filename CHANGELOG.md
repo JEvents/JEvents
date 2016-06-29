@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 29-06-2016 - Tony Partridge
+* Reverted StringHelper back to JString for Joomla! 3.4 Support
+
 ## 17-06-2016 - Geraint Edwards
 * Fix duplicated output in flat theme date range view.
 * Let category link in latest events module respect target menu item is using ${CATEGORYLNK}
