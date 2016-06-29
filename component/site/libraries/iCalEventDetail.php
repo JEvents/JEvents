@@ -139,7 +139,7 @@ class iCalEventDetail extends JTable  {
 		}
 		foreach ($this->_data as $key=>$value) {
 			if (strpos($key,"custom_")===0){
-				$field = StringHelper::substr($key,7);
+				$field = JString::substr($key,7);
 				$this->_customFields[$field]=$value;
 			}
 		}
@@ -163,7 +163,7 @@ class iCalEventDetail extends JTable  {
 		$this->processField("categories","");
 		$this->processField("description","");
 		if (strpos($this->description,"##migration##")===0 ){
-			$this->description = StringHelper::substr($this->description,StringHelper::strlen("##migration##"));
+			$this->description = JString::substr($this->description,JString::strlen("##migration##"));
 			$this->description = base64_decode($this->description);
 		}
 		else {
@@ -217,13 +217,13 @@ class iCalEventDetail extends JTable  {
 			$icimport = new iCalImport();
 			$this->dtend = $icimport->unixTime($this->dtstartraw);
 			// an all day event
-			if ($this->dtend==$this->dtstart && StringHelper::strlen($this->dtstartraw)==8){
+			if ($this->dtend==$this->dtstart && JString::strlen($this->dtstartraw)==8){
 				// convert to JEvents all day event mode!
 				//$this->allday = 1;				
 				$this->dtend += 86399; 
 			}
 		}
-		if ($this->dtend<$this->dtstart && StringHelper::strlen($this->dtstartraw)==8){
+		if ($this->dtend<$this->dtstart && JString::strlen($this->dtstartraw)==8){
 			// convert to JEvents all day event mode!
 			$this->noendtime = 1;
 			//$this->allday = 1;				

@@ -457,7 +457,7 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// I need a better check and expiry information etc.
-		if (StringHelper::strlen($uploadURL) > 0)
+		if (JString::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -601,16 +601,16 @@ class ICalsController extends AdminIcalsController
 		// new version
 
 		$output = '';
-		while (StringHelper::strlen($input) >= $line_max)
+		while (JString::strlen($input) >= $line_max)
 		{
-			$output .= StringHelper::substr($input, 0, $line_max - 1);
-			$input = StringHelper::substr($input, $line_max - 1);
-			if (StringHelper::strlen($input) > 0)
+			$output .= JString::substr($input, 0, $line_max - 1);
+			$input = JString::substr($input, $line_max - 1);
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (StringHelper::strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -621,12 +621,12 @@ class ICalsController extends AdminIcalsController
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = StringHelper::strlen($input);
+		$linlen = JString::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = StringHelper::substr($input, $i, 1);
+			$c = JString::substr($input, $i, 1);
 
 			/*
 			  $dec = ord($c);
@@ -640,7 +640,7 @@ class ICalsController extends AdminIcalsController
 			  }
 			  }
 			 */
-			if ((StringHelper::strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

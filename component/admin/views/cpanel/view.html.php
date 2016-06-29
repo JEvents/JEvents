@@ -54,7 +54,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	protected function checkForAddons () {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && StringHelper::strlen($params->get("clubcode", "")>20)){
+		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", "")>20)){
 			return;
 		}
 
@@ -606,7 +606,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		  {
 		  $output .='"' . $appname . '"=> 0,' . "\n";
 		  }
-		  $output = StringHelper::substr($output, 0, StringHelper::strlen($output) - 2) . ");\n\n";
+		  $output = JString::substr($output, 0, JString::strlen($output) - 2) . ");\n\n";
 		 */
 		$criticaldata = JFile::read('http://ubu.jev20j16.com/importantversions.txt');
 		$criticaldata = explode("\n", $criticaldata);

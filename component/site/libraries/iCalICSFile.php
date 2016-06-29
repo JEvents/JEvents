@@ -274,7 +274,7 @@ RAWTEXT;
 
 			if (!$vevent->isCancelled() && !$vevent->isRecurrence()){
 				// if existing category then use it
-				if (!$this->ignoreembedcat && StringHelper::strlen($vevent->_detail->categories)>0){
+				if (!$this->ignoreembedcat && JString::strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
 					if (count($evcat)>0) {
 						include_once(JEV_ADMINLIBS."categoryClass.php");
@@ -401,7 +401,7 @@ RAWTEXT;
 
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence())){
 				// if existing category then use it
-				if (StringHelper::strlen($vevent->_detail->categories)>0){
+				if (JString::strlen($vevent->_detail->categories)>0){
 					if (count($evcat)>0) {
 						include_once(JEV_ADMINLIBS."categoryClass.php");
 						foreach ($evcat as $ct){
@@ -483,7 +483,7 @@ RAWTEXT;
 				$db->setQuery( $query);
 				$db->execute();
 
-				if (StringHelper::strlen($detailidstring)>0){
+				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
 					$db->execute();
@@ -565,7 +565,7 @@ RAWTEXT;
 				$db->setQuery( $query);
 				$db->execute();
 
-				if (StringHelper::strlen($detailidstring)>0){
+				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
 					$db->execute();
@@ -589,7 +589,7 @@ RAWTEXT;
 
 			if (!$vevent->isCancelled() && !$vevent->isRecurrence()){
 				// if existing category then use it
-				if (!$this->ignoreembedcat && StringHelper::strlen($vevent->_detail->categories)>0){
+				if (!$this->ignoreembedcat && JString::strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
 					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
 						if ($params->get("multicategory",0) && count($evcat)>1){
@@ -679,7 +679,7 @@ RAWTEXT;
 		foreach ($this->_icalInfo->vevents as $vevent) {
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence())){
 				// if existing category then use it
-				if (StringHelper::strlen($vevent->_detail->categories)>0){
+				if (JString::strlen($vevent->_detail->categories)>0){
 					$evcat = explode(",",$vevent->_detail->categories);
 					if (count($evcat)>0 && array_key_exists($evcat[0],$categories)){
 						if ($params->get("multicategory",0) && count($evcat)>1){

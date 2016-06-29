@@ -88,7 +88,7 @@ class CsvToiCal
 	 */
 	public function getConvertedTempFile()
 	{
-		$file = array("name" => StringHelper::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
+		$file = array("name" => JString::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
 			"tmp_name" => $this->tmpFileName);
 		return $file;
 
@@ -111,7 +111,7 @@ class CsvToiCal
 	private function parseFileHeader()
 	{
 		if ($this->data){
-			$line = StringHelper::substr($this->data,0,StringHelper::strpos($this->data,"\n")+1);
+			$line = JString::substr($this->data,0,JString::strpos($this->data,"\n")+1);
 		}
 		else {
 			$fp = fopen($this->file, 'r');

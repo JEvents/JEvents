@@ -18,7 +18,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	$task = $jinput->get("jevtask", null, null);
 	// include catids to make sure not lost when category is pre-selected
 	$catids = $jinput->getString("catids", $jinput->getString("category_fv", ""));
-	if (StringHelper::strlen($catids)>0){
+	if (JString::strlen($catids)>0){
 		$catids = explode("|",$catids);
 		ArrayHelper::toInteger($catids);
 		$catids = "&catids=".implode("|",$catids);

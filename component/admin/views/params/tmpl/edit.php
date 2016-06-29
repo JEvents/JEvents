@@ -213,7 +213,7 @@ if (count($jevplugins)){
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
-				if (StringHelper::strlen($class) > 0)
+				if (JString::strlen($class) > 0)
 				{
 					$class = " class='$class $difficultyClass'";
 				}
@@ -243,7 +243,7 @@ if (count($jevplugins)){
 				{
 					$class = isset($field->class) ? $field->class : "";
 
-					if (StringHelper::strlen($class) > 0)
+					if (JString::strlen($class) > 0)
 					{
 						$class = " class='$class'";
 					}
@@ -347,7 +347,7 @@ if (count($jevplugins)){
 							$hasconfig = true;
 							$class = isset($field->class) ? $field->class : "";
 
-							if (StringHelper::strlen($class) > 0)
+							if (JString::strlen($class) > 0)
 							{
 								$class = " class='$class'";
 							}
@@ -509,7 +509,7 @@ SCRIPT;
                                                         $hasconfig = true;
                                                         $class = isset($field->class) ? $field->class : "";
 
-                                                        if (StringHelper::strlen($class) > 0)
+                                                        if (JString::strlen($class) > 0)
                                                         {
                                                                 $class = " class='$class'";
                                                         }
