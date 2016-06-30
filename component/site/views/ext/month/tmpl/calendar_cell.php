@@ -77,8 +77,8 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 		$tmpTitle = $title;
 		// set truncated title
 		if (!isset($this->event->truncatedtitle)){
-			if( StringHelper::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
-				$tmpTitle = StringHelper::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+			if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
+				$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
 			}
 			$tmpTitle = JEventsHTML::special($tmpTitle);			
 			$this->event->truncatedtitle = $tmpTitle;
@@ -171,7 +171,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 				}
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = StringHelper::substr($tooltip,9);
+					$title = JString::substr($tooltip,9);
 					$cellString = "";
 				}
 				else {

@@ -98,7 +98,7 @@ class jEventCal {
 
 	// workaround for php 4 - much easier in php 5!!!
 	function getOrSet($field, $val=""){
-		if (StringHelper::strlen($val)==0) return $this->get($field);
+		if (JString::strlen($val)==0) return $this->get($field);
 		else $this->set($field,$val);
 	}
 	function get($field){
@@ -252,7 +252,7 @@ class jEventCal {
 	}
 
 	function contactLink($val="", $admin=false){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_contactLink) || $this->_contactLink=="") $this->_contactLink = JEventsHTML::getUserMailtoLink( $this->id(), $this->created_by(),$admin, $this);
 		}
 		else $this->_contactLink=$val;
@@ -266,7 +266,7 @@ class jEventCal {
 	}
 
 	function catname($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_catname)) $this->_catname = $this->getCategoryName();
 			return $this->_catname;
 		}
@@ -274,7 +274,7 @@ class jEventCal {
 	}
 
 	function allcategories($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_catname)) $this->_catname = $this->getCategoryName();
 			return $this->_catname;
 		}
@@ -282,7 +282,7 @@ class jEventCal {
 	}
 
 	function bgcolor($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_bgcolor)) $this->_bgcolor = JEV_CommonFunctions::setColor($this);
 			return $this->_bgcolor;
 		}
@@ -290,7 +290,7 @@ class jEventCal {
 	}
 
 	function fgcolor($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 			if (!isset($this->_fgcolor)) $this->_fgcolor = JevMapColor($this->bgcolor());
 			return $this->_fgcolor;
@@ -849,7 +849,7 @@ class jEventCal {
 						$each = strtolower($each);
 					}
 					$daystring="";
-					if (StringHelper::strlen($this->reccurweeks())==0){
+					if (JString::strlen($this->reccurweeks())==0){
 						$days = explode("|",$this->reccurweekdays());
 						for ($d=0;$d<count($days);$d++){
 							$daystring .= JEventsHTML::getDayName( $days[$d] );

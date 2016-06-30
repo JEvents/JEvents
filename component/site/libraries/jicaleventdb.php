@@ -153,7 +153,7 @@ class jIcalEventDB extends jEventCal {
 
 
 	function dtstart($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_dtstart)){
 				return null;
 			}
@@ -166,7 +166,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function dtend($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_dtend)){
 				return null;
 			}
@@ -179,7 +179,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function interval($val="") {
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_interval) || $this->_interval=="" || $this->_interval==0) return 1;
 			else return $this->_interval;
 		}
@@ -189,7 +189,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function count($val="") {
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_count) || $this->_count=="" || $this->_count==0) return 1;
 			else return $this->_count;
 		}
@@ -204,7 +204,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function until($val="") {
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			if (!isset($this->_until) || $this->_until=="" || $this->_until==0) return $this->dtstart();
 			return $this->_until;
 		}
@@ -231,7 +231,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function starttime($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtstart());
@@ -253,7 +253,7 @@ class jIcalEventDB extends jEventCal {
 
 
 	function endtime($val=""){
-		if (StringHelper::strlen($val)==0) {
+		if (JString::strlen($val)==0) {
 			$cfg	 = JEVConfig::getInstance();
 			// com_calUseStdTime = 12h clock
 			return JEVHelper::getTime($this->dtend());

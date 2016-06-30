@@ -43,7 +43,7 @@ class modJeventsLegendHelper
 			foreach ($newcats as $newcat){
 				if ( !in_array( $newcat,$catids )){
 					$catids[]=$newcat;
-					$catidList .= (StringHelper::strlen($catidList)>0?",":"").$newcat;
+					$catidList .= (JString::strlen($catidList)>0?",":"").$newcat;
 				}
 			}				
 		}
@@ -55,7 +55,7 @@ class modJeventsLegendHelper
 					break;
 				if ($modparams->get($nextCID) > 0 && !in_array($modparams->get($nextCID), $catids)) {
 					$catids[]=  $modparams->get($nextCID);
-					$catidList .= ( StringHelper::strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
+					$catidList .= ( JString::strlen($catidList) > 0 ? "," : "") . $modparams->get($nextCID);
 				}
 			}
 		}
@@ -65,7 +65,7 @@ class modJeventsLegendHelper
 	function getViewClass($theme, $module, $layout, $params=false){
 
 		// If we have a specified over ride then use it here
-		if ($params && StringHelper::strlen($params->get("layout",""))>0){
+		if ($params && JString::strlen($params->get("layout",""))>0){
 			$speciallayout = strtolower($params->get("layout",""));
 			// Build the template and base path for the layout
 			$tPath = JPATH_SITE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.$module.'/'.$theme.'/'.$speciallayout.'.php';

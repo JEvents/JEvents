@@ -975,20 +975,20 @@ class JEVHelper
 	{
 		$datenow = JEVHelper::getNow();
 		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = StringHelper::substr($year, 0, 1);
+		$firstpos = JString::substr($year, 0, 1);
 
 		if ($firstpos == "+")
 		{
-			$year = StringHelper::substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow + $year;
 		}
 		else if ($firstpos == "-")
 		{
-			$year = StringHelper::substr($year, 1);
+			$year = JString::substr($year, 1);
 			$year = $yearnow - $year;
 		}
 		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (StringHelper::strlen($year) < 4)
+		else if (JString::strlen($year) < 4)
 		{
 			$cuenta = count($year);
 			$year = $yearnow + $year;
@@ -3527,16 +3527,16 @@ SCRIPT;
 
 		// new version
 		$output = '';
-		while (StringHelper::strlen($input) >= $line_max)
+		while (JString::strlen($input) >= $line_max)
 		{
-			$output .= StringHelper::substr($input, 0, $line_max - 1);
-			$input = StringHelper::substr($input, $line_max - 1);
-			if (StringHelper::strlen($input) > 0)
+			$output .= JString::substr($input, 0, $line_max - 1);
+			$input = JString::substr($input, $line_max - 1);
+			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (StringHelper::strlen($input) > 0)
+		if (JString::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -3547,12 +3547,12 @@ SCRIPT;
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = StringHelper::strlen($input);
+		$linlen = JString::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = StringHelper::substr($input, $i, 1);
+			$c = JString::substr($input, $i, 1);
 
 			/*
 			  $dec = ord($c);
@@ -3566,7 +3566,7 @@ SCRIPT;
 			  }
 			  }
 			 */
-			if ((StringHelper::strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

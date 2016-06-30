@@ -84,7 +84,7 @@ class JToolbarButtonJev extends JToolbarButton
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		$todo		= StringHelper::strtolower(JText::_( $name ));
+		$todo		= JString::strtolower(JText::_( $name ));
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
 
@@ -221,7 +221,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	 */
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
-		$todo	 = StringHelper::strtolower(JText::_( $name ));
+		$todo	 = JString::strtolower(JText::_( $name ));
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";

@@ -52,7 +52,7 @@ class JevParameter extends  JRegistry{
 					break;
 				}
 			}
-			if (StringHelper::strlen($class)>0){
+			if (JString::strlen($class)>0){
 				$class=" class='$class'";
 			}
 			$html[] = "<tr $class>";

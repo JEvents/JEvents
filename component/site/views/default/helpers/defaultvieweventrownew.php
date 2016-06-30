@@ -16,8 +16,8 @@ function DefaultViewEventRowNew($view,$row,$args="") {
 
 	/*
 	// [mic] if title is too long, cut 'em for display
-	if( StringHelper::strlen( $row->title() ) >= 50 ){
-		$tmpTitle = StringHelper::substr( $row->title(), 0, 50 ) . ' ...';
+	if( JString::strlen( $row->title() ) >= 50 ){
+		$tmpTitle = JString::substr( $row->title(), 0, 50 ) . ' ...';
 	}
 	*/
 

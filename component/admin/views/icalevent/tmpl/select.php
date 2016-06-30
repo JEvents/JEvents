@@ -146,8 +146,8 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : $row->publish_up()) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : $row->publish_down()) . '</td></tr>';
 							$times .="</table>";
 							echo $times;
 						}

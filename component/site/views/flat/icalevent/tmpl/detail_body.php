@@ -42,7 +42,7 @@ if( array_key_exists('row',$this->data) ){
 			<div class="jev_evdt">
 			<?php
 			foreach ($customresults as $result) {
-				if (is_string($result) && StringHelper::strlen($result)>0){
+				if (is_string($result) && JString::strlen($result)>0){
 					echo "<div>".$result."</div>";
 				}
 			}
