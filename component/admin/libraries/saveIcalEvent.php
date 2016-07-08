@@ -276,7 +276,7 @@ class SaveIcalEvent {
 				$cc = "";
 			}
 
-			$created_by = $user->name;
+			$created_by = $user->name . " (".$user->email.")";
 			if ($created_by==null) {
 				$created_by= "Anonymous";
 				if (JRequest::getString("custom_anonusername","")!=""){

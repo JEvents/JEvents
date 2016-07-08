@@ -1242,6 +1242,10 @@ class JEventsDBModel
         private function getIgnoreRepeatIds() 
         {
                 $registry	= JRegistry::getInstance("jevents");
+                if (!$registry->get("jevents.fetchlatestevents", 0))
+                {
+                    return "";
+                }
                 $modid = $registry->get("jevents.moduleid", 0);
             
                 $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$modid.".shownEventIds",array());                            
