@@ -228,7 +228,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	{
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(StringHelper::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

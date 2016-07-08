@@ -185,7 +185,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
 			{
 				$where = ' AND c.id IN (' . $catidList . ') ';
 			}
@@ -239,7 +239,7 @@ class JEventsDBModel
 
 		if (!array_key_exists($index, $instances))
 		{
-			if (count($catids) > 0 && $catidList != "0" && StringHelper::strlen($catidList) != "")
+			if (count($catids) > 0 && $catidList != "0" && JString::strlen($catidList) != "")
 			{
 				$where = ' AND (p.id IN (' . $catidList . ') ' . ($levels > 1 ? ' OR gp.id IN (' . $catidList . ')' : '') . ($levels > 2 ? ' OR ggp.id IN (' . $catidList . ')' : '') . ')';
 			}
@@ -2457,9 +2457,9 @@ class JEventsDBModel
 
 		$startdate = JevDate::strftime('%Y-%m-%d', $startdate);
 
-		if (StringHelper::strlen($startdate) == 10)
+		if (JString::strlen($startdate) == 10)
 			$startdate.= " 00:00:00";
-		if (StringHelper::strlen($enddate) == 10)
+		if (JString::strlen($enddate) == 10)
 			$enddate.= " 23:59:59";
 
 		// This code is used by the iCals code with a spoofed user so check if this is what is happening

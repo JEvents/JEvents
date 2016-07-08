@@ -1460,7 +1460,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$db->setQuery($query);
 			$db->execute();
 
-			if (StringHelper::strlen($detailidstring) > 0)
+			if (JString::strlen($detailidstring) > 0)
 			{
 				$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 				$db->setQuery($query);

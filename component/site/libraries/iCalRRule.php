@@ -185,12 +185,12 @@ class iCalRRule extends JTable  {
 	}
 
 	public function _afterUntil($testDate){
-		if (StringHelper::strlen($this->until)==0) return false;
+		if (JString::strlen($this->until)==0) return false;
 		if (!isset($this->_untilMidnight)) {
 			list ($d,$m,$y) = explode(":",JevDate::strftime("%d:%m:%Y",$this->until));
 			$this->_untilMidnight = JevDate::mktime(23,59,59,$m,$d,$y);
 		}
-		if (StringHelper::strlen($this->until)>0 && $testDate>intval($this->_untilMidnight)) {
+		if (JString::strlen($this->until)>0 && $testDate>intval($this->_untilMidnight)) {
 			return true;
 		}
 		else return false;
@@ -341,7 +341,7 @@ class iCalRRule extends JTable  {
 							$details=array();
 							preg_match("/(\+|-?)(\d*)/",$day,$details);
 							list($temp,$plusminus,$daynumber) = $details;
-							if (StringHelper::strlen($plusminus)==0) $plusminus="+";
+							if (JString::strlen($plusminus)==0) $plusminus="+";
 
 							// do not go over year end
 							if ($daynumber>$currentYearDays) continue;
@@ -486,8 +486,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$weeknumber,$dayname) = $details;
-								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
-								if (StringHelper::strlen($weeknumber)==0) $weeknumber=1;
+								if (JString::strlen($plusminus)==0) $plusminus="+";
+								if (JString::strlen($weeknumber)==0) $weeknumber=1;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus=="-") {
@@ -597,8 +597,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$daynumber) = $details;
-								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
-								if (StringHelper::strlen($daynumber)==0) $daynumber=$startDay;
+								if (JString::strlen($plusminus)==0) $plusminus="+";
+								if (JString::strlen($daynumber)==0) $daynumber=$startDay;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus=="-") {
@@ -692,8 +692,8 @@ class iCalRRule extends JTable  {
 							}
 							else {
 								list($temp,$plusminus,$weeknumber,$dayname) = $details;
-								if (StringHelper::strlen($plusminus)==0) $plusminus="+";
-								if (StringHelper::strlen($weeknumber)==0) $weeknumber=1;
+								if (JString::strlen($plusminus)==0) $plusminus="+";
+								if (JString::strlen($weeknumber)==0) $weeknumber=1;
 
 								$multiplier = $plusminus=="+"?1:-1;
 								// always check for dtstart (nothing is allowed earlier)
@@ -769,9 +769,9 @@ class iCalRRule extends JTable  {
 						}
 						else {
 							list($temp,$plusminus,$daynumber,$dayname) = $details;
-							if (StringHelper::strlen($plusminus)==0) $plusminus="+";
+							if (JString::strlen($plusminus)==0) $plusminus="+";
 							// this is not relevant for weekly recurrence ?!?!?
-							//if (StringHelper::strlen($daynumber)==0) $daynumber=1;
+							//if (JString::strlen($daynumber)==0) $daynumber=1;
 							$multiplier = $plusminus=="+"?1:-1;
 							if ($plusminus=="-") {
 								// TODO find out if I ever have this situation?
@@ -866,7 +866,7 @@ class iCalRRule extends JTable  {
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
 					if (count($details)!=4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else {
-						if (StringHelper::strlen($details[1])==0) $details[1]="+";
+						if (JString::strlen($details[1])==0) $details[1]="+";
 						echo "Event repeat details<br/>";
 						if ($details[1]=="-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";
@@ -883,7 +883,7 @@ class iCalRRule extends JTable  {
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
 					if (count($details)!=4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else {
-						if (StringHelper::strlen($details[1])==0) $details[1]="+";
+						if (JString::strlen($details[1])==0) $details[1]="+";
 						echo "Event repeat details<br/>";
 						if ($details[1]=="-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";

@@ -43,7 +43,7 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	/*
 	  function dtstart($val=""){
-	  if (StringHelper::strlen($val)==0) return $this->getUnixStartTime();
+	  if (JString::strlen($val)==0) return $this->getUnixStartTime();
 	  else {
 	  $this->_dtstart=$val;
 	  $this->_unixstarttime=$val;
@@ -52,7 +52,7 @@ class jIcalEventRepeat extends jIcalEventDB
 	  }
 
 	  function dtend($val=""){
-	  if (StringHelper::strlen($val)==0) return $this->getUnixEndTime();
+	  if (JString::strlen($val)==0) return $this->getUnixEndTime();
 	  else {
 	  $this->_dtend=$val;
 	  $this->_unixendtime=$val;

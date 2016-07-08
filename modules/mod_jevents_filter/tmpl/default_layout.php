@@ -64,7 +64,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -110,7 +110,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (StringHelper::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -177,7 +177,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (StringHelper::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>

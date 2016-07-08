@@ -139,7 +139,7 @@ class JEventsAbstractView extends JViewLegacy
 					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text ); 
 					if (strpos($path, '/') === 0)
 					{
-						$path = StringHelper::substr($path, 1);
+						$path = JString::substr($path, 1);
 					}
 					echo JHTML::_('image', $path . $image, $alttext, array('title' => $alttext), false);
 					//JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true)
@@ -174,7 +174,7 @@ class JEventsAbstractView extends JViewLegacy
 					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text );
 					if (strpos($path, '/') === 0)
 					{
-						$path = StringHelper::substr($path, 1);
+						$path = JString::substr($path, 1);
 					}
 					$atributes = array('title' => $alttext, 'onmouseover' => 'this.src=\'../' . $path . $image_hover . '\'', 'onmouseout' => 'this.src=\'../' . $path . $image . '\'' );
 
@@ -315,7 +315,7 @@ class JEventsAbstractView extends JViewLegacy
 			if (strpos($strippedmatch, "{{_") === 0 && strpos($strippedmatch, " ") === false)
 			{
 				$search[] = $strippedmatch;
-				$strippedmatch = StringHelper::substr($strippedmatch, 3, StringHelper::strlen($strippedmatch) - 5);
+				$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
 				$replace[] = JText::_($strippedmatch);
 				$blank[] = "";
 				continue;
@@ -586,7 +586,7 @@ class JEventsAbstractView extends JViewLegacy
 		{
 			if (strpos($k, "_") === 0)
 			{
-				$newk = StringHelper::substr($k, 1);
+				$newk = JString::substr($k, 1);
 				//$this->row->$newk = $v;
 			}
 			else

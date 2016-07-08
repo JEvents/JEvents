@@ -88,7 +88,7 @@ class DefaultModLatestView
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
 
 		$user =  JFactory::getUser();
-		
+
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
 		$tmplang = JFactory::getLanguage();
 		$this->langtag = $tmplang->getTag();
@@ -244,10 +244,10 @@ class DefaultModLatestView
                 $registry = JRegistry::getInstance("jevents");
                 if (!$registry->get("jevents.fetchlatestevents", 0))
                 {
-                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());                            
+                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());
                     JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".page",0);
                 }
-                $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());                            
+                $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());
                 $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
 
 		// RSS situation overrides maxecents
@@ -280,7 +280,7 @@ class DefaultModLatestView
 		$this->now_w = date('w', $this->now);
 		$t_datenowSQL = $t_datenow->toMysql();
                 */
-                
+
 		// derive the event date range we want based on current date and
 		// form the db query.
 
@@ -366,8 +366,8 @@ class DefaultModLatestView
 			}
 		}
 
-		$periodStart = $beginDate; //StringHelper::substr($beginDate,0,10);
-		$periodEnd = $endDate; //StringHelper::substr($endDate,0,10);
+		$periodStart = $beginDate; //JString::substr($beginDate,0,10);
+		$periodEnd = $endDate; //JString::substr($endDate,0,10);
 
 		$reg =  JFactory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
@@ -410,7 +410,7 @@ class DefaultModLatestView
 			$endDate = $futuredate < $endDate ? $futuredate : $endDate;
 		}
 		$timeLimitNow = $todayBegin < $beginDate ? $beginDate : $todayBegin;
-		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($timeLimitNow, 5, 2)), intval(StringHelper::substr($timeLimitNow, 8, 2)), intval(StringHelper::substr($timeLimitNow, 0, 4)));
+		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(JString::substr($timeLimitNow, 5, 2)), intval(JString::substr($timeLimitNow, 8, 2)), intval(JString::substr($timeLimitNow, 0, 4)));
 
 		// determine the events that occur each day within our range
 
@@ -418,7 +418,7 @@ class DefaultModLatestView
 		// I need the date not the time of day !!
 		//$date = $this->now;
 		$date = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d, $this->now_Y);
-		$lastDate = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($endDate, 5, 2)), intval(StringHelper::substr($endDate, 8, 2)), intval(StringHelper::substr($endDate, 0, 4)));
+		$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($endDate, 5, 2)), intval(JString::substr($endDate, 8, 2)), intval(JString::substr($endDate, 0, 4)));
 		$i = 0;
 
 		$seenThisEvent = array();
@@ -562,10 +562,10 @@ class DefaultModLatestView
 					{
 						break;
 					}
-                                        
+
                                         // Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
                                         list($yy,$mm,$dd) = explode("-", strftime("%Y-%m-%d", $date));
-                                        $date = JevDate::mktime(0, 0, 0,$mm, $dd+1, $yy);          
+                                        $date = JevDate::mktime(0, 0, 0,$mm, $dd+1, $yy);
                                         //echo strftime("%Y-%m-%d %H:%M<br/>", $date);
 					$i++;
 				}
@@ -579,7 +579,7 @@ class DefaultModLatestView
 					// start from yesterday
 					// I need the date not the time of day !!
 					$date = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - 1, $this->now_Y);
-					$lastDate = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($beginDate, 5, 2)), intval(StringHelper::substr($beginDate, 8, 2)), intval(StringHelper::substr($beginDate, 0, 4)));
+					$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($beginDate, 5, 2)), intval(JString::substr($beginDate, 8, 2)), intval(JString::substr($beginDate, 0, 4)));
 					$i = -1;
 
 					// Timelimit plugin constraints
@@ -690,7 +690,7 @@ class DefaultModLatestView
 			// and work our way up so sort the data first
 
 			ksort($this->eventsByRelDay, SORT_NUMERIC);
-			reset($this->eventsByRelDay);                                                
+			reset($this->eventsByRelDay);
 		}
 		if ($this->sortReverse)
 		{
@@ -701,7 +701,7 @@ class DefaultModLatestView
 				$this->eventsByRelDay[$relDay] = array_reverse($daysEvents, true);
 			}
 		}
-                
+
                 $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
 
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
@@ -725,10 +725,10 @@ class DefaultModLatestView
                                             $shownEventIds[$page][] = $dayEvent->rp_id;
                                         }
                                         $lastEventDate = $dayEvent->startrepeat;
-                                        $lastEventId = $dayEvent->rp_id;                                        
+                                        $lastEventId = $dayEvent->rp_id;
                                 }
                         }
-                        
+
                         JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",$shownEventIds);
                         JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".firstEventDate",$firstEventDate);
                         JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$lastEventDate);
@@ -765,7 +765,7 @@ SCRIPT;
 
 	function checkCreateDay($date, $row)
 	{
-		return (JevDate::strftime("%Y-%m-%d", $date) == StringHelper::substr($row->created(), 0, 10));
+		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->created(), 0, 10));
 
 	}
 
@@ -992,12 +992,12 @@ SCRIPT;
 							$this->processMatch($eventcontent, $match, $dayEvent, $dateParm, $relDay);
 						} // end of foreach
 					} // end of foreach
-					
+
 					if ($firstTime)
 						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest_first">%s'."</td></tr>\n";
 					else
 						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest">%s'."</td></tr>\n";
-					
+
 					$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : $eventrow;
 					$content .= str_replace("%s", $eventcontent , $templaterow);
 
@@ -1144,9 +1144,9 @@ SCRIPT;
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && StringHelper::strlen($title) > intval($parts[0]))
+					if (count($parts) > 0 && JString::strlen($title) > intval($parts[0]))
 					{
-						$title = StringHelper::substr($title, 0, intval($parts[0]));
+						$title = JString::substr($title, 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$title .= $parts[1];
@@ -1209,9 +1209,9 @@ SCRIPT;
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && StringHelper::strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
+					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
 					{
-						$dayEvent->data->text = StringHelper::substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
+						$dayEvent->data->text = JString::substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$dayEvent->data->text .= $parts[1];
@@ -1220,7 +1220,7 @@ SCRIPT;
 				}
 
 				$dayEvent->content($dayEvent->data->text);
-				//$content .= StringHelper::substr($dayEvent->content, 0, 150);
+				//$content .= JString::substr($dayEvent->content, 0, 150);
 				$content .= $dayEvent->content();
 				break;
 
@@ -1414,7 +1414,7 @@ SCRIPT;
 							{
 								// limit to 2 because we may be using joomla content plugins
 								$subparts = explode("}", $part,2);
-								
+
 								if (strpos($subparts[0], "#") > 0)
 								{
 									$formattedparts = explode("#", $subparts[0]);
@@ -1546,7 +1546,7 @@ SCRIPT;
 		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
 
 	}
-        
+
         protected function getNavigationIcons() {
                 $registry = JRegistry::getInstance("jevents");
                 $params = $registry->get("jevents.moduleparams", new JRegistry);

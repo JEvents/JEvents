@@ -89,14 +89,14 @@ class ICalsViewIcals extends JEventsAbstractView
 		// new version
 
 		$output = '';
-		while (StringHelper::strlen($input)>=$line_max){
-			$output .= StringHelper::substr($input,0,$line_max-1);
-			$input = StringHelper::substr($input,$line_max-1);
-			if (StringHelper::strlen($input)>0){
+		while (JString::strlen($input)>=$line_max){
+			$output .= JString::substr($input,0,$line_max-1);
+			$input = JString::substr($input,$line_max-1);
+			if (JString::strlen($input)>0){
 		  		 $output .= $eol." ";
 			}
 		}
-		if (StringHelper::strlen($input)>0){
+		if (JString::strlen($input)>0){
 			$output .= $input;
 		}
 		return $output;
@@ -106,12 +106,12 @@ class ICalsViewIcals extends JEventsAbstractView
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = StringHelper::strlen($input);
+		$linlen = JString::strlen($input);
 
 		
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = StringHelper::substr($input, $i, 1);
+			$c = JString::substr($input, $i, 1);
 
 			/*
 			$dec = ord($c);
@@ -125,7 +125,7 @@ class ICalsViewIcals extends JEventsAbstractView
 			  }
 			  }
 			 */
-			if ((StringHelper::strlen($outline) + 1) >= $line_max)
+			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;

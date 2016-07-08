@@ -73,10 +73,10 @@ class JFormFieldJevfilters extends JFormFieldText
 			{
 				if (!array_key_exists($filtername, $filters))
 				{
-					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != StringHelper::strlen($filtername) - 4)
+					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != JString::strlen($filtername) - 4)
 						continue;
 					$filterpath = $path."/".$filtername;
-					$filtername = StringHelper::substr($filtername, 0, StringHelper::strlen($filtername) - 4);
+					$filtername = JString::substr($filtername, 0, JString::strlen($filtername) - 4);
 					// skip special function filters
 					if ($filtername=="startdate" || $filtername=="Startdate")
 						continue;

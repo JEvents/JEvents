@@ -37,7 +37,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 		// url link to article
 		$startDate = $row->publish_up();
-		//$eventDate = JevDate::mktime(StringHelper::substr($startDate,11,2),StringHelper::substr($startDate,14,2), StringHelper::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
+		//$eventDate = JevDate::mktime(JString::substr($startDate,11,2),JString::substr($startDate,14,2), JString::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
 		$eventDate = JevDate::strtotime($startDate);
 		$datenow = JEVHelper::getNow();
 		if ($relDay > 0)
