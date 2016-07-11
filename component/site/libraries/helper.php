@@ -79,12 +79,9 @@ class JEVHelper
 		switch ($type) {
 			case 'front':
 				// load new style language
-				// if loading from another component or is admin then force the load of the site language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || JFactory::getApplication()->isAdmin())
-				{
-					// force load of installed language pack
-					$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
-				}
+				// Always load site component language !
+        			$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+                            
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);

@@ -87,7 +87,18 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 		 *
 		 */
-
+                
+                // If cancelling edit in popup then stay in popup
+                $popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+                if ($popupdetail) {
+                        $popuppluginparams = new JRegistry($popupdetail->params);
+                        $popupdetail = $popuppluginparams->get("detailinpopup",1);
+                        if ($popupdetail) {
+                                $jinput->set("pop",1);
+                                $jinput->set("tmpl","component");
+                        }
+                }
+                
 		// if cancelling from save of copy and edit use the old event id
 		if ($evid==0){
 			$evid =$jinput->getInt("old_evid", 0);

@@ -1090,7 +1090,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		);
 		// Do the language files for Joomla
 		$db = JFactory::getDbo();
-		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%JEventsAddons' ");
+		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' and element NOT LIKE '%_JEventsAddons' ");
 		$translations = $db->loadObjectList();
 		foreach ($translations  as $translation){
 			if ($translation->name==""){
@@ -1100,7 +1100,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$updates[]= array("element"=>$translation->element,"name"=>$translation->name,"type"=>"file");
 		}
 
-		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%JEventsAddons' ");
+		$db->setQuery("SELECT * FROM #__extensions where type='file' AND (element LIKE '%_JEvents_Addons' OR element LIKE '%_JEventsAddons') ");
 		$translations = $db->loadObjectList();
 		foreach ($translations  as $translation){
 			//	array("element"=>"ar-AA_JEvents","name"=>"Arabic translation for JEvents","type"=>"file"),
