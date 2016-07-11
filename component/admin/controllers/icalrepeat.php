@@ -275,7 +275,7 @@ class AdminIcalrepeatController extends JControllerLegacy
                     
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			if ($params->get("editpopup", 0))
+			if ($params->get("editpopup", 0) || $popupdetail )
 			{
                             $link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
                             $msg = JText::_("JEV_ICAL_RPT_UPDATED",true );    
