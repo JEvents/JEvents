@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 11-07-2016 - Tony Partridge
+* Removed some version compares since no longer needed. 
+* Replaced some intval() with (int)
+* Fixed Approval Email subject, if editing or creating events it should differ. 
+
 ## 29-06-2016 - Tony Partridge
 * Reverted StringHelper back to JString for Joomla! 3.4 Support
 

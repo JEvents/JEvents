@@ -270,6 +270,7 @@ class JEV_CommonFunctions {
 
 	public static function notifyAuthorPublished($event){
 
+
 		JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -288,7 +289,7 @@ class JEV_CommonFunctions {
 
 		$Itemid = JEVHelper::getItemid();
 		// reload the event to get the reptition ids
-		$evid = intval($event->ev_id());
+		$evid = (int) $event->ev_id();
 
 		$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$queryModel = new JEventsDBModel($dataModel);
