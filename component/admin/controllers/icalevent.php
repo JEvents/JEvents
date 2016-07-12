@@ -882,7 +882,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			if ($params->get("editpopup", 0))
+			if ($params->get("editpopup", 0) || $popupdetail)
 			{
 				ob_end_clean();
 				if (!headers_sent() && $popupdetail=="")
