@@ -67,6 +67,7 @@
 					<option value="5">JEV_LATEST_DISPLAY_MODE_5</option>
 					<option value="6">JEV_LATEST_DISPLAY_MODE_6</option>
                                         <option value="7">JEV_LATEST_DISPLAY_MODE_7</option>
+                                        <option value="8">JEV_LATEST_DISPLAY_MODE_8</option>
 				</field>
 				<field name="modlatest_Days" type="jevtext" default="30" size="2" label="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS" description="JEV_LATEST_DISPLAY_EVENTS_FOR_DAYS_DESC" conditional="modlatest_useLocalParam" conditions="1"  />
 				<field name="startnow" type="jevradio" class="btn-group"  default="0" label="START_NOW" description="START_NOW_DESC" conditional="modlatest_useLocalParam" conditions="1" >
