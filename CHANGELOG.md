@@ -8,6 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * More control options for notification messages for new events
 * Fix for TinyMCE editor issue arising in Joomla 3.6.0
 * Fix for router issue where tasks has a hyphen in their translations
+* Fix for editing from an event detail popup and hitting close or save and close
+* Fix for updating JEvents translations using Joomla Updater
+* Fix for multiple instances of cloaked email within the same event detail page
+* Add configuration options for icons to show on iCal export menu item
+* Better scollable typeahead results
 
 ## 29-06-2016 - Tony Partridge
 * Reverted StringHelper back to JString for Joomla! 3.4 Support
