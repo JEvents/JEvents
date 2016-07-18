@@ -18,8 +18,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Reverted StringHelper back to JString for Joomla! 3.4 Support
 
 ## 21-06-2012 - Geraint Edwards
-* Calendar popovers appear after 150milisecs to avoid lots appearing at once
-* add chevrons and info icons to plugin configuration
+Calendar popovers appear after 150milisecs to avoid lots appearing at once
+add chevrons and info icons to plugin configuration
 
 ## 17-06-2016 - Geraint Edwards
 * Fix duplicated output in flat theme date range view.
