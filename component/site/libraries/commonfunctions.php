@@ -365,6 +365,9 @@ class JEV_CommonFunctions {
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);				
+                if ($params->get("com_notifyboth",0)==3){
+                    return; // no notifications
+                }
 		$messagetemplate = $params->get("notifymessage", JText::_('JEV_DEFAULT_NOTIFYMESSAGE'));
 		
 		if (strpos($messagetemplate, "JEV_DEFAULT_NOTIFYMESSAGE")!==false || trim(strip_tags($messagetemplate))=="") {
@@ -417,14 +420,23 @@ class JEV_CommonFunctions {
 			$mail->addReplyTo($adminEmail);
 		}
 
-		$mail->addRecipient($adminEmail);
-
-		if ($params->get("com_notifyboth")){
-			$jevadminuser = new  JUser($params->get("jevadmin",62));
-			if ($jevadminuser->email != $adminEmail){
-				$mail->addCC($jevadminuser->email);
-			}
-		}
+                // JEvents category admin only or both get notifications
+                if ($params->get("com_notifyboth",0)==0 || $params->get("com_notifyboth",0)==1){
+                    $mail->addRecipient($adminEmail);
+                    if ($params->get("com_notifyboth",0)==1){
+                            $jevadminuser = new  JUser($params->get("jevadmin",62));
+                            if ($jevadminuser->email != $adminEmail){
+                                    $mail->addCC($jevadminuser->email);
+                            }
+                    }
+                }
+                // Just JEvents admin user
+                else if ($params->get("com_notifyboth",0)==2){
+                    $jevadminuser = new  JUser($params->get("jevadmin",62));
+                    if ($jevadminuser->email != $adminEmail){
+                            $mail->addRecipient($jevadminuser->email);
+                    }                    
+                }
 
 		/**
 		 *
