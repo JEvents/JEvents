@@ -367,7 +367,8 @@ function JEventsParseRoute($segments)
 			"icalrepeat.deletefuture",
 			"modlatest.rss",
 			"icalrepeat.vcal",
-			"icalevent.vcal");
+			"icalevent.vcal",
+                        "list.events");
 
 		foreach ($tasks as $tt)
 		{
