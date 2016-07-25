@@ -207,7 +207,7 @@ class AdminIcaleventController extends JControllerAdmin
 		if ($created_by >=0)
 		{
 			$created_by = intval($created_by);
-			if ($created_by > 0)
+			if ($created_by >= 0)
 				$where[] = "ev.created_by=" . $db->Quote($created_by);
 		}
 

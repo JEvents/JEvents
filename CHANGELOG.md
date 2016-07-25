@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 22-07-2016
+## 25-07-2016 - Geraint Edwards
+* JEvents 3.4.15 Release
+* Missing $rand in email cloak code
+* re-instate filter of events created by unlogged in users in backend list of events
+
+## 22-07-2016 - Geraint Edwards
 * isEventPublisher, isEventCreator now check category permissions for enhanced ACL support
 * Category Admin users can be chosen from users able to publish event within that category
 * manage events list is visible to users who can publish events in addition to JEvents admin users 

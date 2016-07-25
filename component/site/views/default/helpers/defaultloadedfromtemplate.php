@@ -1257,6 +1257,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                                                 JPluginHelper::importPlugin('content');
                                                                 $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
                                                                 // Make sure each instance is replaced properly
+                                                                // New Joomla code for mail cloak only works once on a page !!!
+                                                                // Random number
+                                                                $rand = rand(1, 100000);                                                                
                                                                 $tmprow->text = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $tmprow->text);
                                                                 $event->contact_info($tmprow->text);
 							}
