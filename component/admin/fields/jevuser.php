@@ -48,7 +48,15 @@ class JFormFieldJEVuser extends JFormFieldList
 
 		$db = JFactory::getDBO();
 
-		$rules = JAccess::getAssetRules("com_jevents", true);
+                // if editing category then find the rules for a specific category
+                if ($this->name == "jform[params][admin]" 
+                        && JFactory::getApplication()->input->getCmd("option")=="com_categories"
+                        && JFactory::getApplication()->input->getInt("id")>0){
+                    $rules = JAccess::getAssetRules("com_jevents.category.".JFactory::getApplication()->input->getInt("id"), true);
+                }
+                else {
+                    $rules = JAccess::getAssetRules("com_jevents", true);
+                }
 		$creatorgroups = $rules->getData();
 		if (strpos($this->name, "jevadmin") === 0)
 		{

@@ -79,12 +79,9 @@ class JEVHelper
 		switch ($type) {
 			case 'front':
 				// load new style language
-				// if loading from another component or is admin then force the load of the site language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || JFactory::getApplication()->isAdmin())
-				{
-					// force load of installed language pack
-					$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
-				}
+				// Always load site component language !
+        			$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+                            
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
@@ -1520,8 +1517,59 @@ class JEVHelper
 				if (!$authorisedonly)
 				{
 					$juser = JFactory::getUser();
-					//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
-					$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+                                        
+					if ($params->get("category_allow_deny",1)==0){
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id")){
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							$juser = JFactory::getUser();
+							if (count($okcats)){
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventPublisher[$type] = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+					}
+					else
+					{
+						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+						if ($isEventPublisher[$type])
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							if (count($okcats) > 0)
+							{
+								$juser = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventPublisher[$type] = false;
+								}
+							}
+							else
+							{
+								$isEventPublisher[$type] = false;
+							}
+						}
+					}
+                                        
+                                        
+                                        
 				}
 			}
 			else if ($user->canpublishall)
@@ -2258,7 +2306,7 @@ class JEVHelper
 		//JHTML::script($path . $file);
 		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 		// no need to find browser specific versions
-		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser);
+		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser,$detect_debug);
 		if (!$includes)
 		{
 			return;

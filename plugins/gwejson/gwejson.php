@@ -26,6 +26,13 @@ defined('JPATH_BASE') or die;
 class PlgSystemGwejson extends JPlugin
 {
 
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+                $this->doc = JFactory::getDocument();
+	}
+    
 	/**
 	 * Method to catch the onAfterInitialise event.
 	 *

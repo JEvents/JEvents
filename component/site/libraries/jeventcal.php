@@ -129,9 +129,10 @@ class jEventCal {
             }            
         }
 	function created() { return $this->_created; }
+	function modified() { return $this->_modified; }
 	
 	function formattedCreationDate() { return $this->_created; }
-	function formattedModifyDate() { return $this->_created; }
+	function formattedModifyDate() { return $this->_modified; }
 
 	function hits() { return $this->_hits; }
 	function state() { return $this->_state; }

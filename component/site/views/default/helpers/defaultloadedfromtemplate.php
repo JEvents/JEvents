@@ -1247,7 +1247,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 								{
 									$event->contact_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 								}
-								// NO need to call conContentPrepate since its called on the template value below here
+								// Need to call conContentPrepare even thought its called on the template value below here
+                                                                // because is the field appears twice it won't do the replacement on the second item
+                                                                $params = new JRegistry(null);
+                                                                $tmprow = new stdClass();
+                                                                $tmprow->text = $event->contact_info();
+                                                                $tmprow->event = $event;
+                                                                $dispatcher = JEventDispatcher::getInstance();
+                                                                JPluginHelper::importPlugin('content');
+                                                                $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+                                                                // Make sure each instance is replaced properly
+                                                                // New Joomla code for mail cloak only works once on a page !!!
+                                                                // Random number
+                                                                $rand = rand(1, 100000);                                                                
+                                                                $tmprow->text = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $tmprow->text);
+                                                                $event->contact_info($tmprow->text);
 							}
 							$search[] = "{{CONTACT_LABEL}}";
 							$replace[] = JText::_('JEV_EVENT_CONTACT') . "&nbsp;";
