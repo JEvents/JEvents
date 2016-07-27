@@ -2,7 +2,7 @@
 <extension type="package" version="2.5" method="upgrade">
 	<name>JEvents Package</name>
 	<packagename>jevents</packagename>
-	<version>3.4.15</version>
+	<version>3.4.16</version>
 	<url>http://www.jevents.net</url>
 	<creationDate>July 2016</creationDate>
 	<author>Geraint Edwards</author>
@@ -31,6 +31,6 @@
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 	<updateservers>
-		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.15.xml</server>
+		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.16.xml</server>
 	</updateservers>
 </extension>
