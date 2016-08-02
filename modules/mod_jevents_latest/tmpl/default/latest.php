@@ -176,7 +176,7 @@ class DefaultModLatestView
 			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
 		}
 
-		if ($this->dispMode > 7)
+		if ($this->dispMode > 8)
 			$this->dispMode = 0;
 
 		// $maxEvents hardcoded to 105 for now to avoid bad mistakes in params
@@ -320,6 +320,7 @@ class DefaultModLatestView
 			case 3:
 			case 5:
 			case 6:
+			case 8:
 				// begin of today - $days
 				$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
 				// end of today + $days
@@ -389,9 +390,13 @@ class DefaultModLatestView
 			$rows = $this->datamodel->queryModel->randomIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
 			shuffle($rows);
 		}
+		else if ($this->dispMode == 8)
+		{
+			$this->sortReverse = true;
+			$rows = $this->datamodel->queryModel->recentlyModifiedIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+		}
 		else
 		{
-
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
 		}
 		JRequest::setVar('published_fv', $filter_value);
@@ -434,6 +439,8 @@ class DefaultModLatestView
 				usort($rows, array(get_class($this), "_sortEventsByHits"));
 			else if ($this->dispMode !== 7)
 				usort($rows, array(get_class($this), "_sortEventsByDate"));
+			else if ($this->dispMode == 8)
+				usort($rows, array(get_class($this), "_sortEventsByModificationDate"));
 		}
 
 		if ($this->dispMode == 6)
@@ -477,7 +484,7 @@ class DefaultModLatestView
 			if (count($rows))
 			{
 				// Timelimit plugin constraints
-				while ($date < $timeLimitNow && $this->dispMode != 5)
+				while ($date < $timeLimitNow && $this->dispMode != 5 && $this->dispMode != 8)
 				{
 					$this->eventsByRelDay[$i] = array();
 					$date = JevDate::strtotime("+1 day", $date);
@@ -498,7 +505,9 @@ class DefaultModLatestView
 						}
 
 
-						if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) || ($this->dispMode != 5 && $row->checkRepeatDay($date, $this->multiday)))
+						if (($this->dispMode == 5 && $this->checkCreateDay($date, $row))
+                                                        || ($this->dispMode == 8 && $this->checkModificationDay($date, $row)) 
+                                                        || ($this->dispMode != 5 && $this->dispMode != 8 && $row->checkRepeatDay($date, $this->multiday)))
 						{
 							if (($this->norepeat && $row->hasrepetition())
 									// use settings from the event - multi day event only show once
@@ -570,7 +579,7 @@ class DefaultModLatestView
 					$i++;
 				}
 			}
-			if ($events < $this->maxEvents && ($this->dispMode == 1 || $this->dispMode == 3 || $this->dispMode == 5 || $this->dispMode == 6))
+			if ($events < $this->maxEvents && ($this->dispMode == 1 || $this->dispMode == 3 || $this->dispMode == 5 || $this->dispMode == 6 || $this->dispMode == 8))
 			{
 
 				if (count($rows))
@@ -583,7 +592,7 @@ class DefaultModLatestView
 					$i = -1;
 
 					// Timelimit plugin constraints
-					while ($date > $timeLimitNow && $this->dispMode != 5)
+					while ($date > $timeLimitNow && $this->dispMode != 5 && $this->dispMode != 8)
 					{
 						$this->eventsByRelDay[$i] = array();
 						$date = JevDate::strtotime("-1 day", $date);
@@ -596,7 +605,9 @@ class DefaultModLatestView
 						$eventsThisDay = array();
 						foreach ($rows as $row)
 						{
-							if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) || ($this->dispMode != 5 && $row->checkRepeatDay($date, $this->multiday)))
+							if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) 
+                                                                || ($this->dispMode == 8 && $this->checkModificationDay($date, $row)) 
+                                                                || ($this->dispMode != 5 && $this->dispMode != 8 && $row->checkRepeatDay($date, $this->multiday)))
 							{
 								if (($this->norepeat && $row->hasrepetition())
 										// use settings from the event - multi day event only show once
@@ -628,7 +639,7 @@ class DefaultModLatestView
 											break;
 										}
 									}
-									if ($this->dispMode == 5 && !$eventAlreadyAdded)
+									if (($this->dispMode == 5 || $this->dispMode == 8 ) && !$eventAlreadyAdded)
 									{
 										foreach ($eventsThisDay as $evt)
 										{
@@ -703,7 +714,8 @@ class DefaultModLatestView
 		}
 
                 $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
-
+                $direction  = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".direction",1);
+                
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
                         $lastEventDate = false;
@@ -724,8 +736,14 @@ class DefaultModLatestView
                                         if (!in_array($dayEvent->rp_id, $shownEventIds)){
                                             $shownEventIds[$page][] = $dayEvent->rp_id;
                                         }
-                                        $lastEventDate = $dayEvent->startrepeat;
-                                        $lastEventId = $dayEvent->rp_id;
+                                        if (!isset($lastEventDate)){
+                                            $lastEventDate = $dayEvent->startrepeat;
+                                            $lastEventId = $dayEvent->rp_id;
+                                        }
+                                        if ($dayEvent->startrepeat > $lastEventDate) {
+                                            $lastEventDate = $dayEvent->startrepeat;
+                                            $lastEventId = $dayEvent->rp_id;
+                                        }
                                 }
                         }
 
@@ -751,6 +769,11 @@ function fetchMoreLatestEvents(modid, direction)
             })                        
                 .done(function( data ){                    
                     jQuery("#mod_events_latest_"+modid+"_data").replaceWith(data.html);
+                    try {
+                        document.getElementById("mod_events_latest_"+modid+"_data").parentNode.scrollIntoView({block: "start", behavior: "smooth"});
+                    }
+                    catch (e) {
+                    }
                 })
                 .fail(function(x) {
         alert('fail '+x);
@@ -759,6 +782,19 @@ function fetchMoreLatestEvents(modid, direction)
 SCRIPT;
                             JFactory::getDocument()->addScriptDeclaration($script);
                         }
+                }
+                else {
+                    $firstEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".firstEventDate",false);
+                    $lastEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".lastEventDate",false);
+
+                    if ($direction == 1){
+                        // fix the start and end dates for navigation
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".firstEventDate",$lastEventDate);
+                    }
+                    else if ($direction == -1){
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$firstEventDate);
+                    }
+
                 }
 
 	}
@@ -769,6 +805,12 @@ SCRIPT;
 
 	}
 
+	function checkModificationDay($date, $row)
+	{
+		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->modified(), 0, 10));
+
+	}
+        
 	public static function _sortEventsByDate(&$a, &$b)
 	{
 		$adate = $a->_startrepeat;
@@ -783,6 +825,15 @@ SCRIPT;
 	{
 		$adate = $a->created();
 		$bdate = $b->created();
+		// reverse created date
+		return -strcmp($adate, $bdate);
+
+	}
+
+	public static function _sortEventsByModificationDate(&$a, &$b)
+	{
+		$adate = $a->modified();
+		$bdate = $b->modified();
 		// reverse created date
 		return -strcmp($adate, $bdate);
 

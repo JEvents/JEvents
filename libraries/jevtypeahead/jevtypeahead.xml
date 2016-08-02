@@ -4,13 +4,13 @@
 	<libraryname>jevents/jevtypeahead</libraryname>
 	<description>Typeahead Library for JEvents</description>
 	<author>JEvents</author>
-	<creationDate>May 2016</creationDate>
+	<creationDate>July 2016</creationDate>
 	<copyright>(C) 2015 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>carcam@jevents.net</authorEmail>
 	<packager>JEvents</packager>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.13</version>
+	<version>3.4.16</version>
 	<files>
 		<file>jevtypeahead.php</file>
 		<file>index.html</file>

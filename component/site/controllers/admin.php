@@ -60,7 +60,7 @@ class AdminController extends JControllerLegacy   {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$adminuser = $params->get("jevadmin",-1);
 		
-		if(JEVHelper::isAdminUser($user) || $user->id==$adminuser) {
+		if(JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher() || JEVHelper::isEventEditor() ||$user->id==$adminuser) {
 			$creator_id = 'ADMIN';
 		}else{
 			$creator_id = $user->id;

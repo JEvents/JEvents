@@ -206,9 +206,9 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if ($created_by >=0)
 		{
-			$created_by = intval($created_by);
-			if ($created_by > 0)
-				$where[] = "ev.created_by=" . $db->Quote($created_by);
+			$cby = intval($created_by);
+			if ($cby >= 0 && $created_by!="")
+				$where[] = "ev.created_by=" . $db->Quote($cby);
 		}
 
 		if ($icsFile > 0)
@@ -882,7 +882,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			if ($params->get("editpopup", 0))
+			if ($params->get("editpopup", 0) || $popupdetail)
 			{
 				ob_end_clean();
 				if (!headers_sent() && $popupdetail=="")

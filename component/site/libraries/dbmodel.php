@@ -425,6 +425,160 @@ class JEventsDBModel
 	}
 
 	/**
+	 * Fetch recently modified events
+	 */
+	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
+	function recentlyModifiedIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0)
+	{
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
+		$lang = JFactory::getLanguage();
+		$langtag = $lang->getTag();
+
+		if (strpos($startdate, "-") === false  || is_numeric($startdate))
+		{
+			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
+			$enddate = JevDate::strftime('%Y-%m-%d 23:59:59', $enddate);
+		}
+
+		// Use alternative data source
+		$rows = array();
+		$skipJEvents=false;
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('fetchListRecentlyModifiedIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		if ($skipJEvents) {
+			return $rows;
+		}
+
+		// process the new plugins
+		// get extra data and conditionality from plugins
+		$extrawhere = array();
+		$extrajoin = array();
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$needsgroup = false;
+
+		$filterarray = array("published", "justmine", "category", "search", "repeating");
+
+		// If there are extra filters from the module then apply them now
+		$reg =  JFactory::getConfig();
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("extrafilters", false))
+		{
+			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
+		}
+
+		$filters = jevFilterProcessing::getInstance($filterarray);
+		$filters->setWhereJoin($extrawhere, $extrajoin);
+		$needsgroup = $filters->needsGroupBy();
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+
+		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$params = JComponentHelper::getParams("com_jevents");
+		if ($params->get("multicategory", 0))
+		{
+			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
+			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+			$needsgroup = true;
+			$catwhere = "\n WHERE 1 ";
+		}
+
+		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
+		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
+
+		// get the event ids first
+		$query = "SELECT  det.evdet_id FROM #__jevents_repetition as rpt"
+				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. $extrajoin
+				. $catwhere
+				. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
+				. $extrawhere
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
+				. " \n AND icsf.state=1"
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
+				// published state is now handled by filter
+				. "\n GROUP BY det.evdet_id";
+		// always in reverse modification date order!
+		$query .= " ORDER BY det.modified DESC ";
+
+		// This limit will always be enough
+		$query .= " LIMIT " . $limit;
+
+
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+//echo "<pre>".$db->getQuery()."</pre>";exit();
+		$detids = $db->loadColumn();
+		array_push($detids, 0);
+		$detids = implode(",", $detids);
+
+		$groupby = "\n GROUP BY det.evdet_id";
+
+		// This version picks the details from the details table
+		// ideally we should check if the event is a repeat but this involves extra queries unfortunately
+		$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
+				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+				. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+				. "\n FROM #__jevents_repetition as rpt"
+				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
+				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. $extrajoin
+				. $catwhere
+				. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
+				. $extrawhere
+				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
+				. "  AND icsf.state=1 "
+				. "\n AND icsf.access  IN (" . JEVHelper::getAid($user) . ")"
+				. "  AND det.evdet_id IN (" . $detids . ")"
+				// published state is now handled by filter
+				//. "\n AND ev.state=1"
+				. $groupby;
+		$query .= " ORDER BY det.modified DESC , rpt.startrepeat ASC ";
+		//echo str_replace("#__", 'jos_', $query);
+		$cache = JEVHelper::getCache(JEV_COM_COMPONENT);
+		$rows = $cache->call(array($this,'_cachedlistIcalEvents'), $query, $langtag);
+
+		// make sure we have the first repeat in each instance
+		// do not use foreach incase time limit plugin removes one of the repeats
+		for ($i=0;$i<count($rows); $i++) {
+			$row = $rows[$i];
+			if (strtolower($row->freq())!="none" && $noRepeats){
+				$repeat = $row->getFirstRepeat();
+				if ($repeat->rp_id() != $row->rp_id()){
+					$row = $this->listEventsById($repeat->rp_id());
+					if (is_null($row)){
+						unset($rows[$i]);
+					}
+					else {
+						$rows[$i] = $row;
+					}
+				}
+			}
+		}
+		$rows = array_values($rows);
+
+		JEventsDBModel::translateEvents($rows);
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
+
+		return $rows;
+
+	}
+
+	/**
 	 * Fetch recently created events
 	 */
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
@@ -1242,6 +1396,10 @@ class JEventsDBModel
         private function getIgnoreRepeatIds() 
         {
                 $registry	= JRegistry::getInstance("jevents");
+                if (!$registry->get("jevents.fetchlatestevents", 0))
+                {
+                    return "";
+                }
                 $modid = $registry->get("jevents.moduleid", 0);
             
                 $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$modid.".shownEventIds",array());                            
