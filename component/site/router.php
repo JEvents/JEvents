@@ -367,7 +367,8 @@ function JEventsParseRoute($segments)
 			"icalrepeat.deletefuture",
 			"modlatest.rss",
 			"icalrepeat.vcal",
-			"icalevent.vcal");
+			"icalevent.vcal",
+                        "list.events");
 
 		foreach ($tasks as $tt)
 		{
@@ -380,7 +381,7 @@ function JEventsParseRoute($segments)
 	//Get the active menu item
 	$menu =  JFactory::getApplication()->getMenu();
 	$item = $menu->getActive();
-
+        
 	// Count route segments
 	$count = count($segments);
 
@@ -388,6 +389,10 @@ function JEventsParseRoute($segments)
 	{
 		// task
 		$task = $segments[0];
+                // note that URI decoding swaps /-/ for :
+                if (strpos($task, ":")>0){
+                    $task = str_replace(":", "-", $task);
+                }
 		if (translatetask("icalrepeat.detail")==""  && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks)){
 			//array_unshift($segments, "icalrepeat.detail");
 			array_unshift($segments, "");

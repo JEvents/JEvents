@@ -530,7 +530,15 @@ else
 					<?php echo $this->form->getLabel("jevcontent"); ?>
 				</div>
 				<div class="span10" id='jeveditor' >
-					<?php echo $this->form->getInput("jevcontent"); ?>
+					<?php  
+                                        // There is a TinyMCE issue in Joomla 3.6 where it loads the javascript twice if we do this
+                                        //echo $this->form->getInput("jevcontent");
+                                        // so instead we use the value we already have in the replacetags
+                                        $index = array_search("{{DESCRIPTION}}", $this->searchtags);
+                                        if ($index !== false){
+                                            echo $this->replacetags[$index];
+                                        }                                        
+                                        ?>
 				</div>
 			</div>
 			<div class="row jeveditlocation" id="jeveditlocation">
