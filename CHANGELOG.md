@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 02-08-2016 - Tony Partridge 
+* Fixed Club Plugins loading in JEvents EXT Layout
+* Removed unused variables. 
+
 ## 25-07-2016 - Geraint Edwards
 * JEvents 3.4.15 Release
 * Missing $rand in email cloak code
