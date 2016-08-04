@@ -376,9 +376,10 @@ class jEventCal {
 				$output = "";
 				foreach ($data as $cat){
 					$params = json_decode($cat->params);
-					if (isset($params->image) && $params->image!=""){ 
-						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
-					}							
+					if (isset($params->image) && $params->image!=""){
+						$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT') : $params->image_alt;
+						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='" . $alt_text . "' />";
+					}
 				}
 				return $output;
 			}
@@ -388,9 +389,10 @@ class jEventCal {
 		}
 		if ($data){
 			$params = json_decode($data->params);
-			if (isset($params->image) && $params->image!=""){ 
-				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
-			}		
+			if (isset($params->image) && $params->image!=""){
+				$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT') : $params->image_alt;
+				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='" . $alt_text . "' />";
+			}
 		}
 		return "";
 	}
