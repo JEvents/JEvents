@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: search.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -12,6 +12,8 @@
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
 jimport('joomla.application.component.controller');
+
+use Joomla\String\StringHelper;
 
 class SearchController extends JControllerLegacy   {
 

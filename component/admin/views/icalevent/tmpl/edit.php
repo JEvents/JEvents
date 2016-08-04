@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
@@ -174,8 +174,8 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="month" value="<?php echo $month; ?>" />
 		<input type="hidden" name="day" value="<?php echo $day; ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
-		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
-		<?php if (!JFactory::getApplication()->isAdmin()) { ?>
+		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />                
+		<?php if (!JFactory::getApplication()->isAdmin()) { ?>                
 		<input type="hidden" name="Itemid" id="Itemid" value="<?php echo  JEVHelper::getItemid();?>"  />
 		<?php } ?>
 		<?php
@@ -530,7 +530,15 @@ else
 					<?php echo $this->form->getLabel("jevcontent"); ?>
 				</div>
 				<div class="span10" id='jeveditor' >
-					<?php echo $this->form->getInput("jevcontent"); ?>
+					<?php  
+                                        // There is a TinyMCE issue in Joomla 3.6 where it loads the javascript twice if we do this
+                                        //echo $this->form->getInput("jevcontent");
+                                        // so instead we use the value we already have in the replacetags
+                                        $index = array_search("{{DESCRIPTION}}", $this->searchtags);
+                                        if ($index !== false){
+                                            echo $this->replacetags[$index];
+                                        }                                        
+                                        ?>
 				</div>
 			</div>
 			<div class="row jeveditlocation" id="jeveditlocation">

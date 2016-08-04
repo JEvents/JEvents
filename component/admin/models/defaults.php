@@ -148,6 +148,10 @@ class DefaultsModelDefaults extends JModelLegacy
 		//$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published), 'filter.language' => explode(',', $filter_language)));
 		$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published)));
 
+                // if only published entries then allow option to look across all categories
+                if (JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1")==1){
+                    array_unshift($options, JHtml::_('select.option', '0', JText::_('JEV_ANY_CATEGORY')));
+                }
 		return $options;
 	}
 }

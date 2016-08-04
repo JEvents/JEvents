@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalEvent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
+use Joomla\String\StringHelper;
 
 class iCalEvent extends JTable  {
 

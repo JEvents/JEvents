@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: mod_jevents_switchview.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents

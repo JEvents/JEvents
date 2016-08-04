@@ -4,6 +4,8 @@
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
+use Joomla\String\StringHelper;
+
 function ProcessJsonRequest(&$requestObject, $returnData){
 
 	$returnData->titles	= array();

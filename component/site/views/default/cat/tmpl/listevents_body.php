@@ -7,6 +7,8 @@ $Itemid = JEVHelper::getItemid();
 
 $jinput = JFactory::getApplication()->input;
 
+use Joomla\String\StringHelper;
+
 ?>
 <div class="jev_catselect" ><?php echo $data['catname']; $this->viewNavCatText( $this->catids, JEV_COM_COMPONENT, 'cat.listevents', $this->Itemid );?></div><?php
 

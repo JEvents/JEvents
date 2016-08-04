@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: datamodel.php 3553 2012-04-20 10:18:59Z geraintedwards $
  * @package     JEvents
@@ -12,6 +12,8 @@
 // functions common to component and modules
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
 
 class JEventsDataModel {
 

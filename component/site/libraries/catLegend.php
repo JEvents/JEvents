@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: catLegend.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class catLegend {
-	function catLegend($id, $name, $color, $description,$parent_id=0)
+	function __construct($id, $name, $color, $description,$parent_id=0)
 	{
 		$this->id=$id;
 		$this->name=$name;

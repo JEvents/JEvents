@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: version.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
@@ -17,7 +17,7 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.4.12';
+	var $RELEASE 	= '3.4.16';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */

@@ -22,6 +22,8 @@ JFormHelper::loadFieldClass('spacer');
 $lang = JFactory::getLanguage();
 $lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
+use Joomla\String\StringHelper;
+
 /**
  * JEVMenu Field class for the JEvents Component
  *

@@ -160,7 +160,12 @@
 		<field name="multiday" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DEFAULT_MULTIDAY" description="JEV_DEFAULT_MULTIDAY_DESC" difficulty="1" conditional="disablemultiday" conditions="0" />
 		<field name="com_show_editor_buttons" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_EDITOR_BUTTONS" description="JEV_SHOW_EDITOR_BUTTONS_TIP" difficulty="2"/>
 		<field name="com_editor_button_exceptions" type="text" default="pagebreak,readmore" menu="hide" size="26" label="JEV_EDITOR_BUTTON_EXCEPTIONS" description="JEV_EDITOR_BUTTON_EXCEPTIONS_TIP" difficulty="2"/>
-		<field name="com_notifyboth" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY" description="JEV_NOTIFY_TIP" difficulty="2"/>
+		<field name="com_notifyboth" type="jevlist" default="0" menu="hide" label="JEV_NOTIFY" description="JEV_NOTIFY_TIP" difficulty="2">
+			<option value="0">JEV_CATEGORY_ADMIN_ONLY</option>
+			<option value="1">JEV_BOTH_JEVENTS_ADMIN_AND_CATEGORY_ADMIN</option>
+			<option value="2">JEV_ADMIN_ONLY</option>
+                        <option value="3">JEV_NO_NOTIFICATIONS</option>
+                </field>
 		<field name="com_notifyallevents" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFYALL" description="JEV_NOTIFYALL_TIP" difficulty="2"/>
 		<field name="com_notifyauthor" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY_AUTHOR" description="JEV_NOTIFY_AUTHOR_TIP" difficulty="2"/>
 		<field name="showpriority" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" difficulty="2"/>

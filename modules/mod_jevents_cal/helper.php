@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3194 2012-01-16 11:04:20Z geraintedwards $
  * @package     JEvents
@@ -12,10 +12,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 class modJeventsCalHelper
 {
 	
-	function modJeventsCalHelper(){
+	public function __construct(){
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 		if (file_exists($file) ) {
@@ -30,7 +32,7 @@ class modJeventsCalHelper
 		JEVHelper::loadLanguage('modcal');
 	}
 	
-	function getViewClass($theme, $module, $layout, $params=false){
+	public function getViewClass($theme, $module, $layout, $params=false){
 
 		// If we have a specified over ride then use it here
 		if ($params && JString::strlen($params->get("layout",""))>0){

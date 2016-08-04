@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
@@ -45,5 +45,8 @@ class DefaultViewList extends JEventsDefaultView
 		// Note that using a $limit value of -1 the limit is ignored in the query
 		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart, $order));
 
+                if ($params->get("csvexport",0)){
+                    $this->setLayout("csvprintevents");
+                }
 	}
 }

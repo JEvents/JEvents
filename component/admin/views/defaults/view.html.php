@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 2942 2011-11-01 16:12:51Z carcam $
  * @package     JEvents
@@ -16,6 +16,9 @@ defined('_JEXEC') or die();
  *
  * @static
  */
+
+use Joomla\String\StringHelper;
+
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 

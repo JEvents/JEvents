@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3418 2012-03-26 10:26:46Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
 
 class modJeventsLatestHelper
 {

@@ -1,6 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function DefaultViewEventRowNew($view,$row,$args="") {
 
 	$cfg = JEVConfig::getInstance();

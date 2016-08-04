@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: calendar_cell.php 2679 2011-10-03 08:52:57Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,9 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
+
 include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
 class EventCalendarCell_flat  extends EventCalendarCell_default {
@@ -131,7 +134,7 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 
 				}
 
-				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "hide"=> 150 )));
+				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "show"=> 150, "hide"=> 150 )));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 

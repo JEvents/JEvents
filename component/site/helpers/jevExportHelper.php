@@ -18,6 +18,9 @@ defined('_JEXEC') or die;
  * @package		Jevents
  * @since		1.6
  */
+
+use Joomla\String\StringHelper;
+
 class JevExportHelper {
 
 	static function getAddToGCal($row)
@@ -63,6 +66,7 @@ class JevExportHelper {
 		}
 		$urlString['st'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixStartTime());
 		$urlString['et'] = JevDate::strftime("%Y%m%dT%H%M%SZ",$row->getUnixEndTime());
+		$urlString['duration'] = (int)$row->getUnixEndTime() - (int)$row->getUnixStartTime();
 		$urlString['duration'] = (int)$row->getUnixEndTime() - (int)$row->getUnixStartTime();
 		$urlString['location'] = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
 		$urlString['sitename'] = urlencode(JFactory::getApplication()->get('sitename'));

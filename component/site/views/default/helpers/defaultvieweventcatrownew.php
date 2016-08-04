@@ -1,6 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function DefaultViewEventCatRowNew($view,$row,$args="") {
 	$jinput = JFactory::getApplication()->input;
 	// I choost not to use $row->fgcolor()

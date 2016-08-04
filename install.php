@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.12
+ * @version     3.4.16
  * @releasedate January 2015
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -41,13 +41,14 @@ class Pkg_JeventsInstallerScript
 
 	public function update($parent)
 	{
-		return true;
+            $this->postflightHandler("update", $parent);
+            return true;
 	}
 
 	public function install($parent)
-
 	{
-		return true;
+            $this->postflightHandler("update", $parent);
+            return true;
 	}
 
 	public function uninstall($parent)
@@ -59,7 +60,7 @@ class Pkg_JeventsInstallerScript
                     $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
                 }
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
 				<div class='version'><h2>". $uninstall_text ."</h2></div>
 				<div class='installed'>
 					<h4>".$uninstall_text2."</h4>
@@ -74,6 +75,16 @@ class Pkg_JeventsInstallerScript
 	 */
 
 	public function postflight($type, $parent)
+	{
+            return;
+            //return $this->postflightHandler($type, $parent);
+        }
+        
+        /*
+	 * enable the plugins
+	 */
+
+	public function postflightHandler($type, $parent)
 	{
 		// CSS Styling:
 		?>
@@ -104,7 +115,7 @@ class Pkg_JeventsInstallerScript
                 }
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/logo/$logo' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
 				<div class='installed'>
 					<ul>
@@ -196,7 +207,12 @@ class Pkg_JeventsInstallerScript
 		}
 
 		echo "</div>";
+		// Joomla updater special case
+		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
+                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG'), 'message');
+		}
 
 	}
 
 }
+

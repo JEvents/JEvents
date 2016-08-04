@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Reset.php 1976 2011-04-27 15:54:31Z geraintedwards $
  * @package     JEvents
@@ -18,7 +18,7 @@ class jevResetFilter extends jevFilter
 		$this->filterNullValue=-1;
 		$this->filterType="reset";
 		$this->filterField = "";
-		parent::jevFilter($contentElement,"");
+		parent::__construct($contentElement,"");
 	}
 
 	function _createFilter($prefix = ""){

@@ -778,3 +778,7 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 	}
 }
 
+/** CP Accordion Styling **/
+#plugin_options .accordion-toggle fieldset.radio.btn-group{
+	margin-top: -5px;
+}

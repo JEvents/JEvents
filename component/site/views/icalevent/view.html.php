@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 2979 2011-11-10 13:50:14Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component frontend

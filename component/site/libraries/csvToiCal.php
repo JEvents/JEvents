@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: csvToiCal.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once("csvLine.php");
+
+use Joomla\String\StringHelper;
 
 if (!function_exists('str_getcsv'))
 {

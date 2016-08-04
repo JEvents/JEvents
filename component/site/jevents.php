@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevents.php 3551 2012-04-20 09:41:37Z geraintedwards $
  * @package     JEvents
@@ -162,6 +162,11 @@ if (strpos($cmd, '.') != false)
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
+        // check view input is compatible - can be a problem on some form submissions
+        if (JRequest::getCmd("view","")!="" &&  JRequest::getCmd("view","")!=$controllerName){
+            JRequest::setVar("view",$controllerName);
+        }
+        
 	// Define the controller name and path
 	$controllerName = strtolower($controllerName);
 	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';

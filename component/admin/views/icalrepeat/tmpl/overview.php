@@ -1,6 +1,6 @@
 <?php 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: overview.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
@@ -15,6 +15,7 @@ $db	= JFactory::getDBO();
 $user = JFactory::getUser();
 JHTML::_('behavior.tooltip');
 
+use Joomla\String\StringHelper;
 
 $pathIMG = JURI::Root() . 'administrator/images/';
 $pathJeventsIMG = JURI::Root() . "administrator/components/".JEV_COM_COMPONENT."/images/"; 

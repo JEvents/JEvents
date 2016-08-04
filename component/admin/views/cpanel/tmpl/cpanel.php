@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
@@ -9,6 +9,9 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
+
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
 

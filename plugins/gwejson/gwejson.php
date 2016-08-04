@@ -26,6 +26,13 @@ defined('JPATH_BASE') or die;
 class PlgSystemGwejson extends JPlugin
 {
 
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+                $this->doc = JFactory::getDocument();
+	}
+    
 	/**
 	 * Method to catch the onAfterInitialise event.
 	 *
@@ -55,7 +62,7 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		$path = $input->get('path', 'site', 'cmd');
-		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules");
+		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{
 			return true;
@@ -70,7 +77,7 @@ class PlgSystemGwejson extends JPlugin
 			}
 			$path = $paths[$path] . "/$folder/$plugin/";
 		}
-		else if ($path == "module") {
+		else if ($path == "module" || $path == "library") {
 			if ($folder == "" )
 			{
 				return true;

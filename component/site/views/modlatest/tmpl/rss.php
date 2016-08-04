@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: rss.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 // setup document
 $doc = JFactory::getDocument();

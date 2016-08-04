@@ -1,8 +1,9 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-$cfg	= JEVConfig::getInstance();
+use Joomla\String\StringHelper;
 
+$cfg	= JEVConfig::getInstance();
 $jinput = JFactory::getApplication()->input;
 
 if( 0 == $this->evid) {

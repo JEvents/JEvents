@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Startdate.php 1976 2011-04-27 15:54:31Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 
 defined('_VALID_MOS') or defined('_JEXEC') or die( 'No Direct Access' );
 JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
+
+use Joomla\String\StringHelper;
 
 // Event repeat startdate fitler
 class jevStartdateFilter extends jevFilter

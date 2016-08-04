@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jeventshtml.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
+
+use Joomla\String\StringHelper;
 
 // TODO replace with JevDate
 
@@ -388,7 +390,7 @@ class JEventsHTML
 
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
-		$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+		$params = JComponentHelper::getParams(JRequest::getCmd("option", "com_jevents"));
 		if ($eventediting && $params->get("multicategory", 0))
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;

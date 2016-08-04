@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevcategory.php 1987 2011-04-28 09:53:46Z geraintedwards $
  * @package     JEvents

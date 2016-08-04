@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: router.php 3578 2012-05-01 14:25:28Z geraintedwards $
  * @package     JEvents
@@ -14,6 +14,8 @@ defined('_JEXEC') or die('No Direct Access');
 JLoader::register('JEVConfig', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/config.php");
 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
+
+use Joomla\String\StringHelper;
 
 function JEventsBuildRoute(&$query)
 {
@@ -162,7 +164,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -176,7 +178,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JApplication::stringURLSafe($query['title']);
+						  $segments[] = JApplicationHelper::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -208,7 +210,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +255,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -365,7 +367,8 @@ function JEventsParseRoute($segments)
 			"icalrepeat.deletefuture",
 			"modlatest.rss",
 			"icalrepeat.vcal",
-			"icalevent.vcal");
+			"icalevent.vcal",
+                        "list.events");
 
 		foreach ($tasks as $tt)
 		{
@@ -378,7 +381,7 @@ function JEventsParseRoute($segments)
 	//Get the active menu item
 	$menu =  JFactory::getApplication()->getMenu();
 	$item = $menu->getActive();
-
+        
 	// Count route segments
 	$count = count($segments);
 
@@ -386,6 +389,10 @@ function JEventsParseRoute($segments)
 	{
 		// task
 		$task = $segments[0];
+                // note that URI decoding swaps /-/ for :
+                if (strpos($task, ":")>0){
+                    $task = str_replace(":", "-", $task);
+                }
 		if (translatetask("icalrepeat.detail")==""  && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks)){
 			//array_unshift($segments, "icalrepeat.detail");
 			array_unshift($segments, "");
@@ -736,7 +743,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else

@@ -1,6 +1,9 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+
 jimport( 'joomla.application.module.helper' );
+
+use Joomla\String\StringHelper;
 
 function DefaultViewHelperHeader16($view){
 

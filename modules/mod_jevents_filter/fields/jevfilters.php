@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevextras.php 1785 2011-03-14 14:28:17Z geraintedwards $
  * @package     JEvents
@@ -11,11 +11,15 @@
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+
+use Joomla\String\StringHelper;
+
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 
+include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 class JFormFieldJevfilters extends JFormFieldText

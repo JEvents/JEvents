@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevbuttons.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
@@ -19,6 +19,9 @@ JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevent
  * Joomla 3.0 version
  * 
  */
+
+use Joomla\String\StringHelper;
+
 class JToolbarButtonJev extends JToolbarButton
 {
 	/**

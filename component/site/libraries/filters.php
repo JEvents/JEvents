@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: filters.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -281,8 +281,8 @@ class jevFilter
 	// is this filter visible in a module or the core component - this determines if it should remember its value
 	var $visible = false;
 
-	function jevFilter($tablename, $filterfield, $isString=false){
-		
+	function __construct($tablename, $filterfield, $isString=false){
+
 
 		$registry	= JRegistry::getInstance("jevents");
 		$indexedvisiblefilters = $registry->get("indexedvisiblefilters",array());
@@ -291,13 +291,15 @@ class jevFilter
 		// This is our best guess as to whether this filter is visible on this page.
 		$this->isVisible(in_array($this->filterType,$indexedvisiblefilters));
 
+		// No longer needed since we set useCache = false just below this call.
+
 		// If using caching should disable session filtering if not logged in
-		$cfg	 = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+		//$cfg	 = JEVConfig::getInstance();
+		//$joomlaconf = JFactory::getConfig();
+		//$useCache = (int)$cfg->get('com_cache', 0) && $joomlaconf->get('caching', 1);
 		
 		// New special code in jevents.php sets the session variables in the cache id calculation!
-		$useCache =false;
+		$useCache = false;
 		
 		// Is the filter module setup to reset automatically
 		$module = JModuleHelper::getModule("mod_jevents_filter");
@@ -320,7 +322,7 @@ class jevFilter
 		
 		$user = JFactory::getUser();
 		// TODO chek this logic
-		if (intval(JRequest::getVar('filter_reset',0))){
+		if ((int)JRequest::getVar('filter_reset',0)){
 			$this->filter_value =  $this->filterNullValue;
 			for ($v=0;$v<$this->valueNum;$v++){
 				$this->filter_values[$v] = $this->filterNullValues[$v] ;
@@ -424,22 +426,22 @@ class jevBooleanFilter extends jevFilter
 	var $yesLabel = "";
 	var $noLabel = "";
 
-	function jevBooleanFilter($tablename, $filterfield, $isstring=true,$bothLabel="Both", $yesLabel="Yes", $noLabel="No"){
+	public function __construct($tablename, $filterfield, $isstring=true,$bothLabel="Both", $yesLabel="Yes", $noLabel="No"){
 		$this->filterNullValue="-1";
 		$this->yesLabel = $yesLabel;
 		$this->noLabel = $noLabel;
 		$this->bothLabel = $bothLabel;
-		parent::jevFilter($tablename, $filterfield, $isstring);
+		parent::__construct($tablename, $filterfield, $isstring);
 	}
 
-	function _createFilter($prefix=""){
+	public function _createFilter($prefix=""){
 		if (!$this->filterField ) return "";
 		if ($this->filter_value==$this->filterNullValue) return "";
 		$filter = "$prefix".$this->filterField."=".$this->filter_value;
 		return $filter;
 	}
 
-	function _createfilterHTML(){
+	public function _createfilterHTML(){
 		$filterList=array();
 		$filterList["title"] = $this->filterLabel;
 		$options = array();
@@ -454,13 +456,13 @@ class jevBooleanFilter extends jevFilter
 
 class jevTitleFilter extends jevFilter
 {
-	function jevTitleFilter ($tablename, $filterfield, $isstring=true){
+	public function __construct ($tablename, $filterfield, $isstring=true){
 		$this->filterNullValue="";
 		$this->filterType="title";
-		parent::jevFilter($tablename,$filterfield, true);
+		parent::__construct($tablename,$filterfield, true);
 	}
 
-	function _createFilter($prefix=""){
+	public function _createFilter($prefix=""){
 		if (!$this->filterField ) return "";
 		$filter="";
 		if ($this->filter_value!=$this->filterNullValue){
@@ -469,14 +471,14 @@ class jevTitleFilter extends jevFilter
 		return $filter;
 	}
 
-	function _createJoinFilter($prefix=""){
+	public function _createJoinFilter($prefix=""){
 		if (!$this->filterField ) return "";
 		if ($this->filter_value==$this->filterNullValue) return "";
 		$filter="#__content AS cont ON cont.id=c.target_id";
 		return $filter;
 	}
 
-	function _createfilterHTML(){
+	public function _createfilterHTML(){
 
 		if (!$this->filterField) return "";
 

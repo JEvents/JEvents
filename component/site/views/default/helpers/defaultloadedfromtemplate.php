@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
 	$db = JFactory::getDBO();
@@ -487,7 +489,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$catids = array($event->catid());
 						$catdata = array($event->getCategoryData());
 					}
-
+                                        // Is this being called from the latest events module - if so then use the target item instead of current Itemid
+                                        $reg =  JRegistry::getInstance("jevents");
+                                        $modparams = $reg->get("jevents.moduleparams", new JRegistry);
+                                        $modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid",0));
 					$vars = $router->getVars();
 					foreach ($catids as $cat)
 					{
@@ -502,6 +507,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 						}
 						$eventlink = "index.php?";
+                                                $itemidSet = false;
 						foreach ($vars as $key => $val)
 						{
 							// this is only used in the latest events module so do not perpetuate it here
@@ -511,8 +517,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 								$val = "week.listevents";
 							}
+                                                        if ($key == "Itemid" && $modItemid){
+                                                            $val = $modItemid;
+                                                            $itemidSet = true;
+                                                        }
 							$eventlink.= $key . "=" . $val . "&";
 						}
+                                                if (!$itemidSet && $modItemid) {
+                                                    $eventlink.= "Itemid=".$modItemid;
+                                                }
 						$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
 						$eventlink = JRoute::_($eventlink);
 
@@ -1234,7 +1247,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 								{
 									$event->contact_info(preg_replace('@(https?://)(' . $pattern . '*)@i', '<a href="\\1\\2">\\1\\2</a>', $event->contact_info()));
 								}
-								// NO need to call conContentPrepate since its called on the template value below here
+								// Need to call conContentPrepare even thought its called on the template value below here
+                                                                // because is the field appears twice it won't do the replacement on the second item
+                                                                $params = new JRegistry(null);
+                                                                $tmprow = new stdClass();
+                                                                $tmprow->text = $event->contact_info();
+                                                                $tmprow->event = $event;
+                                                                $dispatcher = JEventDispatcher::getInstance();
+                                                                JPluginHelper::importPlugin('content');
+                                                                $dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+                                                                // Make sure each instance is replaced properly
+                                                                // New Joomla code for mail cloak only works once on a page !!!
+                                                                // Random number
+                                                                $rand = rand(1, 100000);                                                                
+                                                                $tmprow->text = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $tmprow->text);
+                                                                $event->contact_info($tmprow->text);
 							}
 							$search[] = "{{CONTACT_LABEL}}";
 							$replace[] = JText::_('JEV_EVENT_CONTACT') . "&nbsp;";

@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalException.php 941 2010-05-20 13:21:57Z geraintedwards $
  * @package     JEvents
@@ -30,7 +30,7 @@ class iCalException extends JTable  {
 	var $oldstartrepeat = '0000-00-00 00:00:00';
 
 
-	function iCalException( &$db ) {
+	public function __construct( &$db ) {
 		parent::__construct( '#__jevents_exception', 'ex_id', $db );
 	}
 

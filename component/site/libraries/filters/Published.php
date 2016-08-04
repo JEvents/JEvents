@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Published.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -44,7 +44,7 @@ class jevPublishedFilter extends jevFilter
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
 		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
-		parent::jevFilter($tablename, "state", $isstring);
+		parent::__construct($tablename, "state", $isstring);
 		
 		// event creators can look at their own unpublished events
 		if (!JEVHelper::isEventCreator()){

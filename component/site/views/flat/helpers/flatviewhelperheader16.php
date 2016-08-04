@@ -1,6 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function FlatViewHelperHeader16($view){
 
 	$jinput = JFactory::getApplication()->input;

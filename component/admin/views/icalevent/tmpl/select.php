@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: select.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
+
+use Joomla\String\StringHelper;
 
 $db = JFactory::getDBO();
 $user = JFactory::getUser();
@@ -53,7 +55,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 <?php } ?>
 	</table>
 
-	<table  class="adminlist   table table-striped">
+	<table  class="adminlist   table table-striped jevbootstrap">
 		<thead>
 			<tr>
 				<th class="title" width="40%" nowrap="nowrap">

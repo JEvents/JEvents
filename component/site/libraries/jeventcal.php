@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jeventcal.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
@@ -10,6 +10,9 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class jEventCal {
 	var $data;
@@ -126,9 +129,10 @@ class jEventCal {
             }            
         }
 	function created() { return $this->_created; }
+	function modified() { return $this->_modified; }
 	
 	function formattedCreationDate() { return $this->_created; }
-	function formattedModifyDate() { return $this->_created; }
+	function formattedModifyDate() { return $this->_modified; }
 
 	function hits() { return $this->_hits; }
 	function state() { return $this->_state; }
@@ -255,11 +259,35 @@ class jEventCal {
 		else $this->_contactLink=$val;
 
 		// New Joomla code for mail cloak only works once on a page !!!
-		// Random number
-		$rand = rand(1, 100000);
+                $rand = md5($this->_contactLink . rand(1, 100000));
+                if (version_compare(JVERSION, "3.6.1", "<")) {
+                    return preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
+                }
+                else {
+                    return  preg_replace_callback('/id="cloak([a-f0-9]+)"/i', 
+                        function ($matches){
+                            $oldrand = $matches[1];
+                            // Joomla 3.6.1 changed this YET again!
+                            foreach (JFactory::getDocument()->_script as &$script){
+                                if (strpos($script, $oldrand)>0){
+                                    $script = str_replace("document.getElementById('cloak$oldrand').innerHTML = '';",
+                                            "jQuery('.cloak$oldrand').html('');",
+                                            $script);
+                                    $script = str_replace("document.getElementById('cloak$oldrand').innerHTML += ",
+                                            "jQuery('.cloak$oldrand').html(jQuery('.cloak$oldrand').html() + ",
+                                            $script);
+                                    $script = str_replace("$oldrand+'<\/a>';","$oldrand+'<\/a>');", $script);
+                                    //$script = str_replace("cloak$oldrand", "cloak$rand", $script);
+                                }
+                            }
+                            //if (strpos(JFactory, $oldrand))
+                            $return = 'id="cloak'.$rand.'" class="cloak'.$oldrand.'" ';
 
-		return preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
-		//return $this->_contactLink;
+                            return $return;
+                        }, 
+                        $this->_contactLink);
+                }
+
 	}
 
 	function catname($val=""){
@@ -750,7 +778,7 @@ class jEventCal {
 
 	function viewDetailLink($year,$month,$day,$sef=true, $Itemid=0){
 		$Itemid	= $Itemid>0?$Itemid:JEVHelper::getItemid($this);
-		$title = JApplication::stringURLSafe($this->title());
+		$title = JApplicationHelper::stringURLSafe($this->title());
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$this->id() .'&Itemid='.$Itemid
 		."&year=$year&month=$month&day=$day" ;
 		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd('task', 'selectfunction')!='icalevent.select'  && JRequest::getCmd("option","")!="com_acymailing" && JRequest::getCmd("option","")!="com_jnews" && JRequest::getCmd("jevtask","")!="crawler.listevents"){
@@ -922,7 +950,7 @@ class jEventCal {
 			if (!is_array($catids)){
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			ArrayHelper::toInteger($catids);
 			$this->_catidsarray= $catids;
 			return $catids;
 		}

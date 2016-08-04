@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: abstract.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
@@ -12,6 +12,8 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
+
+use Joomla\String\StringHelper;
 
 class JEventsAbstractView extends JViewLegacy
 {

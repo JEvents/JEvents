@@ -6,7 +6,7 @@ class DefaultViewNavTableBar
 
 	var $view = null;
 
-	function DefaultViewNavTableBar($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
+	public function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
 	{
 		$jinput = JFactory::getApplication()->input;
 
@@ -132,7 +132,7 @@ class DefaultViewNavTableBar
 
 	}
 
-	function _genericMonthNavigation($dates, $alts, $which, $icon)
+	public function _genericMonthNavigation($dates, $alts, $which, $icon)
 	{
 		$cfg = JEVConfig::getInstance();
 		$task = $this->task;
@@ -159,25 +159,25 @@ class DefaultViewNavTableBar
 
 	}
 
-	function _lastYearIcon($dates, $alts)
+	public function _lastYearIcon($dates, $alts)
 	{
 		$this->_genericMonthNavigation($dates, $alts, "prev2", "gg");
 
 	}
 
-	function _lastMonthIcon($dates, $alts)
+	public function _lastMonthIcon($dates, $alts)
 	{
 		$this->_genericMonthNavigation($dates, $alts, "prev1", "g");
 
 	}
 
-	function _nextMonthIcon($dates, $alts)
+	public function _nextMonthIcon($dates, $alts)
 	{
 		$this->_genericMonthNavigation($dates, $alts, "next1", "d");
 
 	}
 
-	function _nextYearIcon($dates, $alts)
+	public function _nextYearIcon($dates, $alts)
 	{
 		$this->_genericMonthNavigation($dates, $alts, "next2", "dd");
 

@@ -1,10 +1,10 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 $cfg	= JEVConfig::getInstance();
-
 $jinput = JFactory::getApplication()->input;
-
 
 if( 0 == $this->evid) {
 	$Itemid = $jinput->getInt('Itemid', 0);
