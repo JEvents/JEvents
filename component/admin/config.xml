@@ -415,7 +415,7 @@
 		</field>		
 		<field name="modlatest_SortReverse" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_SORTREVERSE" description="JEV_LEV_SORTREVERSE_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_LinkCloaking" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_HIDE_LINK" description="JEV_LEV_HIDE_LINK_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
-		<field name="spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS,JEV_LEV_FUNC_DATE,JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" difficulty="3" conditional="module_config_from_component" conditions="1"/>	
+		<field name="spacer_le2" type="jevinfo" default="JEV_LEV_AVAIL_FIELDS_JEV_LEV_FUNC_DATE_JEV_LEV_FUNC_STRFTIME"  menu="hide" label="" description="" difficulty="3" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_CustFmtStr" type="jevtextarea" default="${eventDate}[!a: - ${endDate(%I:%M%p)}]&lt;br/&gt;${title}" menu="hide" rows="5" cols="60" label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>
 		<field name="modlatest_RSS" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_RSSLINK_FIELD" description="JEV_LEV_RSSLINK_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>			
 		<field name="modlatest_contentplugins" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LATEST_CONTENT_PLUGINS" description="JEV_LATEST_CONTENT_PLUGINS_TIP" difficulty="3" conditional="module_config_from_component" conditions="1"/>

@@ -33,7 +33,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JToolBarHelper::unpublishList('icals.unpublish');
 		JToolBarHelper::addNew('icals.edit');
 		JToolBarHelper::editList('icals.edit');
-		JToolBarHelper::deleteList('Delete Ical and all associated events and repeats?','icals.delete');
+		JToolBarHelper::deleteList(JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING",true),'icals.delete');
 		JToolBarHelper::spacer();
 
 		JEventsHelper::addSubmenu();
