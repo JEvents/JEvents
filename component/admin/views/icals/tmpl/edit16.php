@@ -37,8 +37,14 @@ if (isset($this->editItem->ics_id)){
 	$overlaps = $this->editItem->overlaps;
 	$label = $this->editItem->label;
 	$icaltype = $this->editItem->icaltype;
-	if ($srcURL == "") $filemessage=JText::_("Loaded from Local file called"." ");
-	else $filemessage=JText::_( 'FROM_FILE' );
+	if ($srcURL == "")
+	{
+		$filemessage = JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_LOADED_FROM_LOCAL_FILE_CALLLED") . " ";
+	}
+	else 
+	{
+		$filemessage=JText::_( 'FROM_FILE' );
+	}
 }
 else {
 	$id=0;

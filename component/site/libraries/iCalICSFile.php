@@ -500,7 +500,7 @@ RAWTEXT;
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
 		
-		JFactory::getApplication()->enqueueMessage($count . ' iCal events processed');
+		JFactory::getApplication()->enqueueMessage(JText::plural('COM_USERS_N_USERS_ACTIVATED', $count));
 	}
 
 	// find if icsFile already imported

@@ -84,7 +84,8 @@ $mainspan = 10;
 						<td align="center">
 							<?php
 							$types = array("Remote", "Uploaded File", "Native");
-							echo $types[$row->icaltype];
+							$typeTranslation = 'COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_' . str_replace(' ','_',strtoupper($types[$row->icaltype]));
+							echo JText::_($typeTranslation);
 							?>
 						</td>
 						<td align="center"><?php echo $row->category; ?></td>
