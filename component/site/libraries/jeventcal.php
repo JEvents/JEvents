@@ -268,6 +268,7 @@ class jEventCal {
                         function ($matches){
                             $oldrand = $matches[1];
                             // Joomla 3.6.1 changed this YET again!
+                            $rand = md5($oldrand . rand(1, 100000));
                             foreach (JFactory::getDocument()->_script as &$script){
                                 if (strpos($script, $oldrand)>0){
                                     $script = str_replace("document.getElementById('cloak$oldrand').innerHTML = '';",

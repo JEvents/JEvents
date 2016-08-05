@@ -778,6 +778,8 @@ class jIcalEventDB extends jEventCal {
 		. $extrajoin
 		. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
 		. $extrawhere
+                // Should not need Group By but group_concat fields from location addon seems to cause a group by implicitly!!!
+                . "\n GROUP BY rpt.rp_id"        
 		. "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
 
 		$db->setQuery( $query );
