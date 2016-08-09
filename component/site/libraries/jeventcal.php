@@ -260,14 +260,17 @@ class jEventCal {
 
 		// New Joomla code for mail cloak only works once on a page !!!
                 $rand = md5($this->_contactLink . rand(1, 100000));
-                if (version_compare(JVERSION, "3.6.1", "<")) {
-                    return preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
+                if (version_compare(JVERSION, "93.6.1", "<")) {
+                    $replace = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
+                    return $replace;
                 }
                 else {
+                    // verdsino 3.6.1. experimented with some problematic code but then reversed it!
                     return  preg_replace_callback('/id="cloak([a-f0-9]+)"/i', 
                         function ($matches){
                             $oldrand = $matches[1];
                             // Joomla 3.6.1 changed this YET again!
+                            $rand = md5($oldrand . rand(1, 100000));
                             foreach (JFactory::getDocument()->_script as &$script){
                                 if (strpos($script, $oldrand)>0){
                                     $script = str_replace("document.getElementById('cloak$oldrand').innerHTML = '';",

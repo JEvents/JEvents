@@ -27,7 +27,7 @@
 				default="0"
 				class="btn-group"
 				label="JEV_BLOCK_OVERLAPS"
-				description="JEV_BLOCK_OVERLAPS"
+				description="JEV_BLOCK_OVERLAPS_CATEGORY_DESC"
 				/>
 			<!--//
 			<field

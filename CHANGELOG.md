@@ -9,6 +9,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fixed Club Plugins loading in JEvents EXT Layout
 * Removed unused variables. 
 
+## 05-08--2016 - Geraint Edwards
+* JEvents 3.4.17 released
+* Fixed missing $rand in email cloak code changes to compensate for Joomla changes
+* Remove workaround for problematic cloaking code introduced in Joomla 3.6.1 but then removed in 3.6.2
+* Fixed group by issue arising from managed locations that cause some iCal exports to pick up the wrong start date
+
+## 03-08-2016 - Geraint Edwards
+* Add config option for event list view to output events as a CSV File
+
+## 27-07-2016 - Geraint Edwards
+* JEvents 3.4.16 release
+* Fix for backend filtering of events by creator from 3.4.15
+* workaround for cloaking change in Joomla 3.6.1
+* upgrade isEventEditor method to take account of users who can only edit in specific categories
+
 ## 25-07-2016 - Geraint Edwards
 * JEvents 3.4.15 Release
 * Missing $rand in email cloak code
