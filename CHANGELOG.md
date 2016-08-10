@@ -24,6 +24,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * workaround for cloaking change in Joomla 3.6.1
 * upgrade isEventEditor method to take account of users who can only edit in specific categories
 
+## 10-08-2016 - Tony Partridge
+# Added
+* CSV Export Filter for the 'List of Events' menu item. 
+
 ## 25-07-2016 - Geraint Edwards
 * JEvents 3.4.15 Release
 * Missing $rand in email cloak code
