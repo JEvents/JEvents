@@ -2,7 +2,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if (JRequest::getInt("limit", 0) < 1000)
+$jinput = Jfactory::getApplication()->input;
+
+if ($jinput->getInt("limit", 0) < 1000)
 {
 	$uri = JUri::getInstance();
 	$uri->setVar("limit", 99999);
