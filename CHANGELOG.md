@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 15-08-2016 - Tony Partridge
+* FIXED
+** Alternative View Search, was falling back to default due to class extends default when it should be alternative 
+
 ## 04-08-2016 - Tony Partridge
 * Updated Category Image ALT to use specified ALT within category if it exists else fall back to a translation.
 
