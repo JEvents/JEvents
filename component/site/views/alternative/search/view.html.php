@@ -17,10 +17,10 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeViewSearch extends JEventsDefaultView 
+class AlternativeViewSearch extends JEventsAlternativeView
 {
 	
-	function form($tpl = null)
+	public function form($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
 
@@ -34,7 +34,7 @@ class AlternativeViewSearch extends JEventsDefaultView
 
 	}	
 
-	function results($tpl = null)
+	public function results($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
 
