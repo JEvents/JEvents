@@ -218,9 +218,6 @@ class SaveIcalEvent {
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
-		// Lets do a crud check to see if editing an event or creating:
-		$editing =  ($vevent->created != '' ? false : true);
-
 		// If not authorised to publish in the frontend then notify the administrator
 		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
 
@@ -233,7 +230,7 @@ class SaveIcalEvent {
 			$config = new JConfig();
 			$sitename =  $config->sitename;
 
-			$subject_text	= ($editing ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject_text	= ($newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
 			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
 
 
