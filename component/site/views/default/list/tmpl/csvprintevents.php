@@ -26,10 +26,6 @@ $rows = array();
 
 $fields = array();
 
-$app = JFactory::getApplication();
-$currentMenuId = JSite::getMenu()->getActive()->id;
-$mparams   = $app->getMenu()->getItem($currentMenuId)->params;
-
 $compparams = JComponentHelper::getParams("com_jevents");
 $infields = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
 $cols = array();
@@ -61,11 +57,11 @@ if ($num_events > 0)
             ob_start();
             $this->loadedFromTemplate('icalevent.list_row', $data['rows'][$r], 0, $template);
             $rowdata = ob_get_clean();
-	        if ($mparams->get("csvexportfiler", 0) == 1)
+	        if ($compparams->get("csvexportfiler", 0) == 1)
 	        {
 		        $rows[] = explode("##@@##", strip_tags($rowdata));
 
-	        } elseif($mparams->get("csvexportfiler", 0) == 2) {
+	        } elseif($compparams->get("csvexportfiler", 0) == 2) {
 
 		        $rows[] = explode("##@@##", htmlentities($rowdata));
 
