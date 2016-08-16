@@ -6,22 +6,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * FIXED
 ** Alternative View Search, was falling back to default due to class extends default when it should be alternative 
 
-## 04-08-2016 - Tony Partridge
-* Updated Category Image ALT to use specified ALT within category if it exists else fall back to a translation.
-
-## 02-08-2016 - Tony Partridge 
-* Fixed Club Plugins loading in JEvents EXT Layout
-* Removed unused variables. 
-
-## 05-08--2016 - Geraint Edwards
+## 05-08-2016 - Geraint Edwards
 * JEvents 3.4.17 released
 * Fixed missing $rand in email cloak code changes to compensate for Joomla changes
 * Remove workaround for problematic cloaking code introduced in Joomla 3.6.1 but then removed in 3.6.2
 * Fixed group by issue arising from managed locations that cause some iCal exports to pick up the wrong start date
 
+## 04-08-2016 - Tony Partridge
+* Updated Category Image ALT to use specified ALT within category if it exists else fall back to a translation.
+
 ## 03-08-2016 - Geraint Edwards
 * Add config option for event list view to output events as a CSV File
-
+* 
+## 02-08-2016 - Tony Partridge 
+* Fixed Club Plugins loading in JEvents EXT Layout
+* Removed unused variables. 
+* 
 ## 27-07-2016 - Geraint Edwards
 * JEvents 3.4.16 release
 * Fix for backend filtering of events by creator from 3.4.15
