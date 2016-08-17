@@ -1083,7 +1083,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 jevjq(document).on('ready', function() {
 	try {
 		if(Browser.firefox) {
-			jevjq("#adminForm").autocomplete='off';
+			jevjq("#adminForm").attr("autocomplete",'off');
 		}
 	}
 	catch(e){	

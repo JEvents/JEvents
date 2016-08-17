@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 05-08--2016 - Geraint Edwards
+* JEvents 3.4.17 released
+* Fixed missing $rand in email cloak code changes to compensate for Joomla changes
+* Remove workaround for problematic cloaking code introduced in Joomla 3.6.1 but then removed in 3.6.2
+* Fixed group by issue arising from managed locations that cause some iCal exports to pick up the wrong start date
+
 ## 03-08-2016 - Geraint Edwards
 * Add config option for event list view to output events as a CSV File
 
