@@ -80,6 +80,7 @@
 
 			<field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
 			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
+                        <field name="maxevents" type="jevtext" size="3" default="0" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />                        
 		</fieldset>
 	</fields>
 </metadata>

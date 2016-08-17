@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 17-08-2016 - Geraint Edwards
+* Add message to warn user if they create a self-overlapping event
+* Add max event option for category list view
+
 ## 05-08--2016 - Geraint Edwards
 * JEvents 3.4.17 released
 * Fixed missing $rand in email cloak code changes to compensate for Joomla changes
