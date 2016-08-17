@@ -2,7 +2,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if (JRequest::getInt("limit", 0) < 1000)
+$jinput = Jfactory::getApplication()->input;
+
+if ($jinput->getInt("limit", 0) < 1000)
 {
 	$uri = JUri::getInstance();
 	$uri->setVar("limit", 99999);
@@ -28,6 +30,7 @@ $compparams = JComponentHelper::getParams("com_jevents");
 $infields = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
 $cols = array();
 $titles = array();
+
 foreach ($infields as $infield)
 {
 	$parts = explode("|", $infield);
@@ -37,6 +40,7 @@ foreach ($infields as $infield)
 }
 
 $rows[] = array_keys($fields);
+
 
 $template = "";
 foreach ($cols as $col)
@@ -53,7 +57,17 @@ if ($num_events > 0)
             ob_start();
             $this->loadedFromTemplate('icalevent.list_row', $data['rows'][$r], 0, $template);
             $rowdata = ob_get_clean();
-            $rows[] = explode("##@@##", $rowdata);
+	        if ($compparams->get("csvexportfiler", 0) == 1)
+	        {
+		        $rows[] = explode("##@@##", strip_tags($rowdata));
+
+	        } elseif($compparams->get("csvexportfiler", 0) == 2) {
+
+		        $rows[] = explode("##@@##", htmlentities($rowdata));
+
+	        } else {
+		        $rows[] = explode("##@@##", $rowdata);
+	        }
         }
 }
 

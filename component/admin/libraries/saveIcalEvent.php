@@ -251,11 +251,14 @@ class SaveIcalEvent {
 			$adminEmail	= $adminuser->email;
 			$config = new JConfig();
 			$sitename =  $config->sitename;
-			$subject	= JText::_('JEV_MAIL_ADDED') . ' ' . $sitename;
-			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject : JText::_('COM_JEV_APPROVAL') . $subject;
+
+			$subject_text	= ($newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
+
+
 			$Itemid = JEVHelper::getItemid();
 			// reload the event to get the reptition ids
-			$evid = intval($vevent->ev_id);
+			$evid = (int) $vevent->ev_id;
 			$testevent = $queryModel->getEventById( $evid, 1, "icaldb" );
 
 			list($year,$month,$day) = JEVHelper::getYMD();

@@ -571,7 +571,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 								$params = json_decode($allcat_catids[$catid]->params);
 								if (isset($params->image) && $params->image!=""){
-									$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
+									$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
+									$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='" . $alt_text . "' />";
 								}
 							}
 						}
