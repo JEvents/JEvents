@@ -348,8 +348,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 
 		$user = JFactory::getUser();
-		$where[] = "\n ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
-		$where[] = "\n icsf.state=1 AND icsf.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+		$where[] = "\n ev.access IN ('" . JEVHelper::getAid($user) . '")';
+		$where[] = "\n icsf.state=1 AND icsf.access ' IN ('" . JEVHelper::getAid($user) . "')";
 
 		$query = "SELECT count( DISTINCT rpt.rp_id)"
 				. "\n FROM #__jevents_vevent as ev"

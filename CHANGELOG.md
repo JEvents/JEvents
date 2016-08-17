@@ -2,20 +2,35 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 05-08--2016 - Geraint Edwards
+## 15-08-2016 - Tony Partridge
+* FIXED
+** Alternative View Search, was falling back to default due to class extends default when it should be alternative 
+
+## 05-08-2016 - Geraint Edwards
 * JEvents 3.4.17 released
 * Fixed missing $rand in email cloak code changes to compensate for Joomla changes
 * Remove workaround for problematic cloaking code introduced in Joomla 3.6.1 but then removed in 3.6.2
 * Fixed group by issue arising from managed locations that cause some iCal exports to pick up the wrong start date
 
+## 04-08-2016 - Tony Partridge
+* Updated Category Image ALT to use specified ALT within category if it exists else fall back to a translation.
+
 ## 03-08-2016 - Geraint Edwards
 * Add config option for event list view to output events as a CSV File
-
+* 
+## 02-08-2016 - Tony Partridge 
+* Fixed Club Plugins loading in JEvents EXT Layout
+* Removed unused variables. 
+* 
 ## 27-07-2016 - Geraint Edwards
 * JEvents 3.4.16 release
 * Fix for backend filtering of events by creator from 3.4.15
 * workaround for cloaking change in Joomla 3.6.1
 * upgrade isEventEditor method to take account of users who can only edit in specific categories
+
+## 10-08-2016 - Tony Partridge
+# Added
+* CSV Export Filter for the 'List of Events' menu item. 
 
 ## 25-07-2016 - Geraint Edwards
 * JEvents 3.4.15 Release
@@ -39,6 +54,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fix for multiple instances of cloaked email within the same event detail page
 * Add configuration options for icons to show on iCal export menu item
 * Better scollable typeahead results
+
+## 11-07-2016 - Tony Partridge
+* Removed some version compares since no longer needed. 
+* Replaced some intval() with (int)
+* Fixed Approval Email subject, if editing or creating events it should differ. 
 
 ## 29-06-2016 - Tony Partridge
 * Reverted StringHelper back to JString for Joomla! 3.4 Support
