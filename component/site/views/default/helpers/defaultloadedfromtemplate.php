@@ -289,7 +289,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				// no need to repeat this for each of the matching 'case's
 				if (!in_array( "{{LINK}}", $search)) {
 					// Title link
-					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
+
+					if (isset($view->datamodel->myItemid) && $view->datamodel->myItemid > 0) {
+						$Itemid = $view->datamodel->myItemid;
+					} else {
+						$Itemid = 0;
+					}
+					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $Itemid);
 					if ($view)
 					{
 						$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
