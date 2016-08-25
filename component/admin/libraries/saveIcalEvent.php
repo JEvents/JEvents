@@ -218,6 +218,28 @@ class SaveIcalEvent {
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
+		// Do the repeats overlap each other
+                if (count($repetitions)>1){
+                    $overlaprepeats = false;
+                    $oldrep = false;
+                    foreach ($repetitions as $rep){
+                        if (!$oldrep){
+                            $oldrep = $rep;
+                            continue;
+                        }
+                        else {
+                            if ($rep->startrepeat < $oldrep->endrepeat){
+                                $overlaprepeats = true;
+                                break;
+                            }
+                            $oldrep = $rep;
+                        }
+                    }
+                }
+                if ($overlaprepeats){
+                    JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");                    
+                }
+                
 		// If not authorised to publish in the frontend then notify the administrator
 		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
 

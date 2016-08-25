@@ -3532,6 +3532,11 @@ class JEventsDBModel
 			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
 		}
 
+		if ($this->cfg->get("maxevents", 10) > 0)
+		{
+                    $limit = $this->cfg->get("maxevents", 10);
+                }
+                
 		if (!$filters)
 		{
 			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
@@ -3689,7 +3694,7 @@ class JEventsDBModel
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
 		}
-
+                
 		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
@@ -3776,6 +3781,12 @@ class JEventsDBModel
 		//echo $db->_sql;
 		//echo $db->explain();
 		$total = intval($db->loadResult());
+                
+		if ($this->cfg->get("maxevents", 0) > 0)
+		{
+                    $total = $total > $this->cfg->get("maxevents", 0) ? $this->cfg->get("maxevents", 0) : $total;
+                }
+                
 		return $total;
 
 	}
