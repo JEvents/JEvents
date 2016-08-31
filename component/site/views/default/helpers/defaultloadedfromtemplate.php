@@ -289,7 +289,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				// no need to repeat this for each of the matching 'case's
 				if (!in_array( "{{LINK}}", $search)) {
 					// Title link
-
 					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
 					if ($view)
 					{
