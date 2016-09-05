@@ -9,6 +9,7 @@ zip  -r --exclude=*.svn* ../finder.zip finder
 zip  -r --exclude=*.svn* ../search.zip search
 zip  -r --exclude=*.svn* ../jevents.zip jevents
 zip  -r --exclude=*.svn* ../gwejson.zip gwejson
+zip  -r --exclude=*.svn* ../installer.zip installer
 cd ../
 cd libraries
 zip  -r --exclude=*.svn* ../googl.zip googl
@@ -23,6 +24,6 @@ zip  -r --exclude=*.svn* ../mod_jevents_latest.zip mod_jevents_latest
 zip  -r --exclude=*.svn* ../mod_jevents_legend.zip mod_jevents_legend
 zip  -r --exclude=*.svn* ../mod_jevents_switchview.zip mod_jevents_switchview
 cd ../
-zip  -r --exclude=*.svn* "jevents34_$VERSION.zip" language install.php pkg_jevents.xml com_jevents.zip finder.zip search.zip gwejson.zip googl.zip jevtypeahead.zip jevmodal.zip jevents.zip  mod_jevents_cal.zip mod_jevents_custom.zip mod_jevents_filter.zip   mod_jevents_latest.zip mod_jevents_legend.zip mod_jevents_switchview.zip
+zip  -r --exclude=*.svn* "jevents34_$VERSION.zip" language install.php pkg_jevents.xml com_jevents.zip finder.zip search.zip gwejson.zip installer.zip googl.zip jevtypeahead.zip jevmodal.zip jevents.zip  mod_jevents_cal.zip mod_jevents_custom.zip mod_jevents_filter.zip   mod_jevents_latest.zip mod_jevents_legend.zip mod_jevents_switchview.zip
 
 find . \! -name "createpackage.sh" \! -name "jevents34_$VERSION.zip" | xargs rm -rf
