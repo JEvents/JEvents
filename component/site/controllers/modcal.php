@@ -135,7 +135,8 @@ class ModCalController extends JControllerLegacy   {
 		}
 		$json = array("data" => $content, "modid"=>$modid, "script"=>$script);
 		ob_end_clean();
-		ob_end_flush();
+                // commmended out - see https://www.jevents.net/forum/viewtopic.php?f=24&t=40917&p=192337#p192337
+		//ob_end_flush();
 		if (JRequest::getCmd("callback", 0)){
 			echo JRequest::getCmd("callback", 0)."(". json_encode($json),");";
 			exit();

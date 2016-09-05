@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 25-08-2016 - Geraint Edwards
+* Change to GWEJson plugin to fix issue with RSS feeds for some users in Joomla 3.6.2
+
 ## 17-08-2016 - Geraint Edwards
 * Add message to warn user if they create a self-overlapping event
 * Add max event option for category list view
