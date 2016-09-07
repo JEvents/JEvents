@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 07-09-2016 - Geraint Edwards
+* Fixed
+* Issue with anonymous event creator name/email not appearing in notification messages.
+
 ## 25-08-2016 - Geraint Edwards
 * Change to GWEJson plugin to fix issue with RSS feeds for some users in Joomla 3.6.2
 

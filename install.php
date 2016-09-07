@@ -178,6 +178,11 @@ class Pkg_JeventsInstallerScript
 			$db->setQuery($query);
 			$db->execute();
 
+			// Enable Jevents Installer Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
+			$db->setQuery($query);
+			$db->execute();
+                        
 		}
 		else {
 			jimport( 'joomla.filesystem.file' );

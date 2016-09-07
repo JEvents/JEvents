@@ -252,7 +252,7 @@ class SaveIcalEvent {
 			$config = new JConfig();
 			$sitename =  $config->sitename;
 
-			$subject_text	= ($newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject_text	= (!$newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
 			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
 
 
@@ -301,7 +301,7 @@ class SaveIcalEvent {
 			}
 
 			$created_by = $user->name . " (".$user->email.")";
-			if ($created_by==null) {
+			if ($created_by==null || $created_by==" ()") {
 				$created_by= "Anonymous";
 				if (JRequest::getString("custom_anonusername","")!=""){
 					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";
