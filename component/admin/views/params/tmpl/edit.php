@@ -495,7 +495,7 @@ SCRIPT;
                                                         }
 
                                                         // Set the value for the form 
-                                                        $field->value = $pluginparams->get($field->fieldname, $field->default);
+                                                        $field->setValue ( $pluginparams->get($field->fieldname, $field->default));
 
                                                         $maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
                                                         if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {

@@ -30,6 +30,14 @@ class PlgSystemGwejson extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
+		$input = JFactory::getApplication()->input;
+		$task = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
+
+		if ($task != "gwejson")
+		{
+			return true;
+		}
+                // Some plugins set the document type too early which messes up our ouput.
                 $this->doc = JFactory::getDocument();
 	}
     

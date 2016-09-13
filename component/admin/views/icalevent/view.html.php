@@ -36,7 +36,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolBarHelper::publishList('icalevent.publish');
 		JToolBarHelper::unpublishList('icalevent.unpublish');
 		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
-		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0));
+		$state = (int)JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0);
 		if ($state==-1){
 			JToolBarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
@@ -64,13 +64,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$db->setQuery($query);
 		$icsfiles = $db->loadObjectList();
-		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
+		$icsFile = (int) JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0);
 
 		JHtmlSidebar::addFilter(
 				JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
 		);
 
-		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
+		$state = (int) JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3);
 		$options = array();
 					$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 		$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
@@ -101,10 +101,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		);
 
 		$this->sidebar = JHtmlSidebar::render();
-		
-
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
 
@@ -118,7 +114,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	}
 
-	function edit($tpl = null)
+	public function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
 		//Define to keep editor happy that it is defined.
