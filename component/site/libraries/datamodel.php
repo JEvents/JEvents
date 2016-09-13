@@ -548,6 +548,7 @@ class JEventsDataModel {
 			$data ["limitstart"]=0;
 		}
 
+
 		$data["rows"] = $this->queryModel->listIcalEventsByRange( $start,$end, $data ["limitstart"], $data ["limit"],  $cfg->get('com_showrepeats'), $order);
 
 		return $data;
@@ -885,7 +886,7 @@ class JEventsDataModel {
 		return $this->queryModel->accessibleCategoryList($aid, $catids, $catidList, $allLanguages);
 	}
 
-	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
+	function getCatData( $catids, $showRepeats=true, $limit = 0, $limitstart = 0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
 		$data = array();
 
 		$Itemid = JEVHelper::getItemid();
@@ -902,8 +903,8 @@ class JEventsDataModel {
 		if ( $data ['total']  <= $limit  || $limitstart > $data ['total']) {
 			$limitstart = 0;
 		}
-		$data['limit']=$limit;
-		$data['limitstart']=$limitstart;
+		$data['limit'] = $limit;
+		$data['limitstart'] = $limitstart;
 
 		$rows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$counter, $limitstart, $limit , $order);
 

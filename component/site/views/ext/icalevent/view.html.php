@@ -20,20 +20,13 @@ defined('_JEXEC') or die();
 class ExtViewICalevent extends JEventsExtView 
 {
 	
-	function detail($tpl = null)
+	public function detail($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
 
 		$jinput = JFactory::getApplication()->input;
 
-		$document = JFactory::getDocument();
-		// TODO do this properly
-		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$this->assign("introduction", $params->get("intro",""));
-
-		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day );
+		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day, $this->uid );
 		// Dynamic pathway
 		if (isset($this->data['row'])){
 			$pathway = JFactory::getApplication()->getPathway();

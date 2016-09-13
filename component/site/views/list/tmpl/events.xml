@@ -56,6 +56,12 @@
 
                         <field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
                         
+			<field name="csvexport" type="jevboolean" class="btn-group" default="0"  label="JEV_CSV_EXPORT" description="JEV_CSV_EXPORT_DESC"/>
+			<field name="csvexportfiler" showon="csvexport:1" type="list" default="0"  label="JEV_CSV_EXPORT_FILTER" description="JEV_CSV_EXPORT_FILTER_DESC">
+				<option value="0" >JEV_CSV_EXPORT_FILTER_FIELD_0</option>
+				<option value="1" >JEV_CSV_EXPORT_FILTER_FIELD_1</option>
+				<option value="2" >JEV_CSV_EXPORT_FILTER_FIELD_2</option>
+			</field>
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />

@@ -287,7 +287,7 @@ RAWTEXT;
 								$cat->check();
 								if (!$cat->store()){
 									//var_dump($cat->getErrors());
-									die("failed to auto create category $ct");
+									die(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_FAILED_TO_CREATE_CAT', $ct));
 								}
 							}
 						}
@@ -493,14 +493,14 @@ RAWTEXT;
 				$db->setQuery( $query);
 				$db->execute();
 
-				
-				JFactory::getApplication()->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
+				$ex_count = count($existingevents);
+				JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
 			}
 		}
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
 		
-		JFactory::getApplication()->enqueueMessage($count . ' iCal events processed');
+		JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 	}
 
 	// find if icsFile already imported

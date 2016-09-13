@@ -37,7 +37,7 @@ $function	= $jinput->getCmd('function', 'jSelectEvent');
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist   table table-striped">
 		<tr>
 			<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-			<th width="40%" nowrap="nowrap"><?php echo "Repeat Date/Time"; ?></th>
+			<th width="40%" nowrap="nowrap"><?php echo JText::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
 		</tr>
 
 		<?php

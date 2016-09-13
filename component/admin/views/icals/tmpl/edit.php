@@ -36,9 +36,13 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
             $label = $this->editItem->label;
             $icaltype = $this->editItem->icaltype;
             if ($srcURL == "")
-                $filemessage = JText::_("Loaded from Local file called" . " ");
+			{
+                $filemessage = JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_LOADED_FROM_LOCAL_FILE_CALLLED") . " ";
+			}
             else
+			{
                 $filemessage = JText::_('FROM_FILE');
+			}
         }
         else {
             $id = 0;

@@ -3504,8 +3504,9 @@ class JEventsDBModel
 	}
 
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
+	public function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
 	{
+
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
@@ -3532,6 +3533,11 @@ class JEventsDBModel
 			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
 		}
 
+		if ($limit == 0 && $this->cfg->get("maxevents", 10) > 0)
+		{
+			$limit = $this->cfg->get("maxevents", 10);
+        }
+                
 		if (!$filters)
 		{
 			$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
@@ -3689,7 +3695,7 @@ class JEventsDBModel
 			$startdate = JevDate::strftime('%Y-%m-%d 00:00:00', $startdate);
 			$extrawhere[] = "rpt.endrepeat >=  '$startdate'";
 		}
-
+                
 		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "search", "repeating"));
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
@@ -3776,6 +3782,12 @@ class JEventsDBModel
 		//echo $db->_sql;
 		//echo $db->explain();
 		$total = intval($db->loadResult());
+                
+		if ($this->cfg->get("maxevents", 0) > 0)
+		{
+                    $total = $total > $this->cfg->get("maxevents", 0) ? $this->cfg->get("maxevents", 0) : $total;
+                }
+                
 		return $total;
 
 	}

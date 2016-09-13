@@ -218,7 +218,28 @@ class SaveIcalEvent {
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
-		
+		// Do the repeats overlap each other
+                if (count($repetitions)>1){
+                    $overlaprepeats = false;
+                    $oldrep = false;
+                    foreach ($repetitions as $rep){
+                        if (!$oldrep){
+                            $oldrep = $rep;
+                            continue;
+                        }
+                        else {
+                            if ($rep->startrepeat < $oldrep->endrepeat){
+                                $overlaprepeats = true;
+                                break;
+                            }
+                            $oldrep = $rep;
+                        }
+                    }
+                }
+                if ($overlaprepeats){
+                    JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");                    
+                }
+                
 		// If not authorised to publish in the frontend then notify the administrator
 		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
 
@@ -230,11 +251,14 @@ class SaveIcalEvent {
 			$adminEmail	= $adminuser->email;
 			$config = new JConfig();
 			$sitename =  $config->sitename;
-			$subject	= JText::_('JEV_MAIL_ADDED') . ' ' . $sitename;
-			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject : JText::_('COM_JEV_APPROVAL') . $subject;
+
+			$subject_text	= (!$newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
+
+
 			$Itemid = JEVHelper::getItemid();
 			// reload the event to get the reptition ids
-			$evid = intval($vevent->ev_id);
+			$evid = (int) $vevent->ev_id;
 			$testevent = $queryModel->getEventById( $evid, 1, "icaldb" );
 
 			list($year,$month,$day) = JEVHelper::getYMD();
@@ -277,7 +301,7 @@ class SaveIcalEvent {
 			}
 
 			$created_by = $user->name . " (".$user->email.")";
-			if ($created_by==null) {
+			if ($created_by==null || $created_by==" ()") {
 				$created_by= "Anonymous";
 				if (JRequest::getString("custom_anonusername","")!=""){
 					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";

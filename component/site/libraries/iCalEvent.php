@@ -180,7 +180,8 @@ class iCalEvent extends JTable  {
 	}
 
 	function isDuplicate(){
-		$sql = "SELECT ev_id from #__jevents_vevent as vev WHERE vev.uid = '".$this->uid."'";
+		$uid = str_replace("'", '', $this->uid);
+		$sql = "SELECT ev_id from #__jevents_vevent as vev WHERE vev.uid = '".$uid."'";
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
 		if (count($matches)>0 && isset($matches[0]->ev_id)) {
@@ -194,8 +195,9 @@ class iCalEvent extends JTable  {
 		if (isset($this->_matched)){ 
 			return;
 		}
+		$uid = str_replace("'", "", $this->uid);
 		$sql = "SELECT *  from #__jevents_vevent as vev,#__jevents_vevdetail as det"
-		."\n WHERE vev.uid = '".$this->uid."'"
+		."\n WHERE vev.uid = '".$uid . "'"
 		."\n AND vev.detail_id = det.evdet_id";
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();

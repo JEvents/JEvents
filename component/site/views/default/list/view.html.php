@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
 class DefaultViewList extends JEventsDefaultView
 {
 
-	function events($tpl = null)
+	public function events($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
 
@@ -44,6 +44,9 @@ class DefaultViewList extends JEventsDefaultView
 		
 		// Note that using a $limit value of -1 the limit is ignored in the query
 		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart, $order));
-
+		$this->csvfilter = $params->get("csvexportfilter", 0);
+        if ($params->get("csvexport",0)){
+            $this->setLayout("csvprintevents");
+        }
 	}
 }

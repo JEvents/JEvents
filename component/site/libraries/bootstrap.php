@@ -909,11 +909,20 @@ class JevHtmlBootstrap
 	 */
 	public static function loadCss($includeMainCss = true, $direction = 'ltr', $attribs = array())
 	{
+		$params = JComponentHelper::getParams('com_jevents');
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			JHtml::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
-			JHtml::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
+			switch ($params->get("bootstrapcss", 1))
+			{
+				case 1:
+					JHtml::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
+					JHtml::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
+					break;
+				case 2:
+					JHtmlBootstrap::loadCss();
+					break;
+			}
 			//JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
 		}
 

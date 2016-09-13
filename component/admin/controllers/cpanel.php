@@ -32,6 +32,12 @@ class AdminCpanelController extends JControllerAdmin
 	{
 		
 		$db = JFactory::getDBO();
+                
+                // Enable Jevents Installer Plugin
+               // $query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
+               // $db->setQuery($query);
+               // $db->execute();
+            
 		// Add one category by default if none exist already
 		$sql = "SELECT id from #__categories where extension='com_jevents'";
 		$db->setQuery($sql);

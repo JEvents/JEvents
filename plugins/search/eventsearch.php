@@ -333,7 +333,7 @@ class plgSearchEventsearch extends JPlugin
 						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 						. "\n LEFT JOIN #__jevents_exception as ex ON det.evdet_id = ex.eventdetail_id"
-						. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+						. "\n WHERE ev.access IN ('" . $groups . "')"
 						. "\n AND det.evdet_id = $id"
 						. "\n ORDER BY rpt.startrepeat ASC limit 1";
 

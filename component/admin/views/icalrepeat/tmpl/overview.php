@@ -44,7 +44,7 @@ $mainspan = 10;
 		            <?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-			<th width="40%" nowrap="nowrap"><?php echo "Repeat Date/Time"; ?></th>
+			<th width="40%" nowrap="nowrap"><?php echo JText::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
 		</tr>
 
         <?php
