@@ -199,10 +199,6 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$registry->loadString($item->metadata);
 		$item->metadata = $registry;
 
-		// add custom field keyword
-		$keyword        = $this->getKeyword('jev_search_keyword', $item->evdet_id);
-		$item->summary  = $item->summary . ' ' . $keyword;
-
 		// Trigger the onContentPrepare event.
 		$item->summary  = FinderIndexerHelper::prepareContent($item->summary, $item->params);
 		$item->body     = FinderIndexerHelper::prepareContent($item->body, $item->params);
@@ -484,29 +480,4 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		return $query;
 	}
 
-	/**
-	 * Custom method to get a custom field (keyword) for searching an event
-	 *
-	 * @param   $keyword    string  The custom field name.
-	 * @param   $id         int     The event id.
-	 *
-	 * @since   1.0
-	 * @return  Custom field value
-	 */
-	protected function getKeyword($customfield, $id)
-	{
-		$db     = JFactory::getDbo();
-		$sql    = $db->getQuery(true);
-
-		$sql->select($db->quoteName(array('id','name', 'value')));
-		$sql->from($db->quoteName('#__jev_customfields'));
-		$sql->where($db->quoteName('name') . ' = ' . $db->quote($customfield) . ' AND ' . $db->quoteName('evdet_id') . ' = ' . $db->quote($id));
-
-		$db->setQuery($sql);
-
-		$result = $db->loadObject();
-
-		return $result->value;
-
-	}
 }
