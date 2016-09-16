@@ -458,26 +458,5 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		return true;
 	}
 
-	/**
-	 * Custom method to get the event repeat data.
-	 * This method will only get the first row Start Repeat Date and the Last Row End Repeat Date.
-	 * The dates will be use to populate the publish_start_date, publish_end_date, start_date, end_date.
-	 *
-	 * @param   void
-	 *
-	 * @since   1.0
-	 * @return  Query string.
-	 */
-	protected function getRepeats()
-	{
-		$db     = $this->db;
-		$query  = $db->getQuery(true);
-
-		$query->select('MIN(r.startrepeat) AS start_repeat, MAX(r.endrepeat) AS end_repeat')
-			->from($db->quoteName('#__jevents_repetition', 'r'))
-			->group($db->quoteName('r.eventid'));
-
-		return $query;
-	}
 
 }
