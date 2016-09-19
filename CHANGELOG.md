@@ -2,7 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 18-08-2016 - Geraint Edwards
+* Jevents 3.4.19
+
+## 07-09-2016 - Geraint Edwards
+* Issue with anonymous event creator name/email not appearing in notification messages.
+
+## 05-09-2016 - Geraint Edwards
+* New installer plugin to manage installation of club addons
+
+## 31-08-2016 - Tony Partridge
+ * Fix on setting limits on lists that were ignoring the max count set in menu items
+
+## 30-08-2016 - Geraint Edwards
+* Fixed paramater saving for plugins where value is an array
+
+## 25-08-2016 - Tony Partridge
+* Updated defaultloadedtemplate to generate the correct menu item links if the view datamodel contains a menu item for conisitency and custom datacalls.
+
 ## 25-08-2016 - Geraint Edwards
+* Jevents 3.4.18
 * Change to GWEJson plugin to fix issue with RSS feeds for some users in Joomla 3.6.2
 
 ## 17-08-2016 - Geraint Edwards

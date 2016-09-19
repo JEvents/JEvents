@@ -27,7 +27,6 @@ if( array_key_exists('row',$this->data) ){
 	$mask = $this->data['mask'];
 	$page = 0;
 
-	
 	$cfg	 = JEVConfig::getInstance();
 
 	$dispatcher	= JEventDispatcher::getInstance();
