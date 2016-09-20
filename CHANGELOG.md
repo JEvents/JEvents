@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 20-08-2016 - Geraint Edwards
+* Jevents 3.4.20
+* Include fixes from 30-08-2016 in package
+
 ## 18-08-2016 - Geraint Edwards
 * Jevents 3.4.19
 
@@ -15,7 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  * Fix on setting limits on lists that were ignoring the max count set in menu items
 
 ## 30-08-2016 - Geraint Edwards
-* Fixed paramater saving for plugins where value is an array
+* Fixed parameter saving for plugins where value is an array
 
 ## 25-08-2016 - Tony Partridge
 * Updated defaultloadedtemplate to generate the correct menu item links if the view datamodel contains a menu item for conisitency and custom datacalls.
