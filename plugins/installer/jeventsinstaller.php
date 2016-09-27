@@ -31,7 +31,7 @@ class PlgInstallerJeventsinstaller extends JPlugin
                 if (count($parts)==2){
                     list($codepart, $filepart) = $parts;
                     $filename = substr($filepart, 0, strpos($filepart, "-update-"));
-                    echo $filename."<Br/>";
+                    //echo $filename."<Br/>";
                     $db = JFactory::getDbo();
                     $db->setQuery("SELECT * FROM #__update_sites WHERE location LIKE ".$db->quote("%".$filename."-update-%"));
                     $updatesite = $db->loadObject();
