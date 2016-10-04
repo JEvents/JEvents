@@ -13,6 +13,7 @@
 		<filename module="mod_jevents_switchview">mod_jevents_switchview.php</filename>
 	</files>
 	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_switchview.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_jevents_switchview.sys.ini</language>
 	</languages>
 	<config>

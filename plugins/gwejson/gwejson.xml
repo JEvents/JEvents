@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1" type="plugin" group="system" method="upgrade">
-	<name>plg_system_gwejson</name>
+	<name>PLG_SYSTEM_GWEJSON</name>
 	<author>GWE Systems Ltd</author>
 	<creationDate>October 2016</creationDate>
 	<copyright>(C) 2015-2016 GWE Systems Ltd. All rights reserved.</copyright>

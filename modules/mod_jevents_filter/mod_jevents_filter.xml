@@ -17,6 +17,7 @@
 		<folder>fields</folder>
 	</files>
 	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_filter.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_jevents_filter.sys.ini</language>
 	</languages>
 	<config>
