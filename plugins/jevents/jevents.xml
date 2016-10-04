@@ -8,7 +8,7 @@
 <extension type="plugin" version="2.5" group="content" method="upgrade">
 	<name>PLG_JEV_CORE_CONTENT_PLUGIN_TITLE</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>January 2015</creationDate>
+	<creationDate>October 2016</creationDate>
 	<copyright>(C) 2012-2016 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.0" client="site" method="upgrade">
 	<name>MOD_JEV_CUSTOM_MODULE_TITLE</name>
-	<creationDate>September 2016</creationDate>
+	<creationDate>October 2016</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2013-2016 GWE Systems Ltd</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
