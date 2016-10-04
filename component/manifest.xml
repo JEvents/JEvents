@@ -54,7 +54,7 @@
         <folder>js</folder>
     </media>
     <administration>
-        <menu>com_jevents</menu>
+        <menu>COM_JEVENTS_MENU</menu>
 
         <files folder="admin">
             <folder>assets</folder>
