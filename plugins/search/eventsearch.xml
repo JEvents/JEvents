@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="search" method="upgrade">
-    <name>Search - JEvents</name>
+    <name>PLG_JEV_SEARCH_TITLE</name>
 	<creationDate>September 2016</creationDate>
-	<author>JEvents Project Group</author>
+	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>www.jevents.net</authorUrl>
 	<version>3.4.20</version>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <description>Events Search is a plugin to allow searching events of the Events component.</description>
+    <description>PLG_JEV_SEARCH_DESC</description>
     <files>
         <filename plugin="eventsearch">eventsearch.php</filename>
     </files>
-	<languages>
-		<language tag="en-GB">en-GB.plg_search_eventsearch.ini</language>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_search_eventsearch.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_search_eventsearch.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

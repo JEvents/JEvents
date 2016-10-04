@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
-	<name>JEvents Legend</name>
+	<name>MOD_JEV_LEGEND_TITLE</name>
 	<creationDate>September 2016</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
@@ -8,12 +8,15 @@
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
 	<version>3.4.20</version>
-	<description>Shows legend for JEvents categories</description>
+	<description>MOD_JEV_LEGEND_DESC</description>
 	<files>
 		<filename module="mod_jevents_legend">mod_jevents_legend.php</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_legend.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
