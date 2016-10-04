@@ -63,7 +63,12 @@ class AdminIcalsController extends JControllerForm {
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "search{$option}", 'search', '' );
 		$search		= $db->escape( trim( strtolower( $search ) ) );
 		$where		= array();
-
+                
+                // Trap cancelled edit and reset category ID.
+                $icsid = intval(JRequest::getVar('icsid',-1));  
+                if ($icsid>-1){
+                    $catid=0;
+                }
 		if( $search ){
 			$where[] = "LOWER(icsf.label) LIKE '%$search%'";
 		}
@@ -326,7 +331,7 @@ class AdminIcalsController extends JControllerForm {
 			$access = JRequest::getInt('access',0);
 			$state = 1;
 			$uploadURL = JRequest::getVar('uploadURL','' );
-			$icsLabel = JRequest::getString('icsLabel','' );
+			$icsLabel = JRequest::getString('icsLabel','' );                        
 		}
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
@@ -583,6 +588,21 @@ class AdminIcalsController extends JControllerForm {
 			JFactory::getApplication()->redirect( 'index.php?option=' . $option);
 			return;
 		}
+                        
+                // Check for duplicates
+                $db = JFactory::getDbo();
+                $query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE label=".$db->quote($icsLabel);
+                $db->setQuery($query);
+                $existing = $db->loadObject();
+                if ($existing){ 
+                    JFactory::getApplication()->enqueueMessage(JText::_('JEV_DUPLICATE_CALENDAR') , 'error');
+
+                    $this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=icals.edit");
+                    $this->redirect();
+                    return;
+
+                }
+                
 		$icsid = 0;
 		$icsFile = iCalICSFile::editICalendar($icsid,$catid,$access,$state,$icsLabel);
                 $icsFile->created_by = JRequest::getInt("created_by",0);

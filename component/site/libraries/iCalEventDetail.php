@@ -229,6 +229,14 @@ class iCalEventDetail extends JTable  {
 			//$this->allday = 1;				
 			$this->dtend = $this->dtstart + 86399; 
 		}
+                // All day event midnight to same midnight from iCalImport
+                else if ($this->dtstart-$this->dtend==1 && $this->dtendraw == $this->dtstartraw){
+                        if (JevDate::strftime('%H:%M:%S',$this->dtstart)=="00:00:00"){
+                            // convert to JEvents all day event mode!
+                            $this->noendtime = 1;
+                            $this->dtend = $this->dtstart + 86399; 
+                        }
+		}
 
 		// Process any custom fields
 		$this->processCustom();
