@@ -66,7 +66,7 @@ class SaveIcalEvent {
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
-			$access = $user->authorise('core.admin', 'com_jevents');
+                        $access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 		
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;

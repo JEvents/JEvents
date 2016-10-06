@@ -55,6 +55,7 @@ class JFormFieldJEVuser extends JFormFieldList
                     $rules = JAccess::getAssetRules("com_jevents.category.".JFactory::getApplication()->input->getInt("id"), true);
                 }
                 else {
+                    //JAccess::preload(array("com_jevents"));
                     $rules = JAccess::getAssetRules("com_jevents", true);
                 }
 		$creatorgroups = $rules->getData();

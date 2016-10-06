@@ -2675,42 +2675,64 @@ SCRIPT;
 	public static
 			function getFilterValues()
 	{
-		// This is new experimental code that is disabled for the time being
-		return;
-		$fid = JFactory::getApplication()->input->getInt("jfilter", 0);
-		if ($fid > 0)
-		{
-			$db = JFactory::getDbo();
-			$db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $fid);
-			$filter = $db->loadObject();
+            
+              //  $session = JFactory::getSession();
+               // $session->set('name', "value");
 
-			// does this filter belong to this user (needed ??)
-			$user = JFactory::getUser();
-			if ($filter)
-			{
+                $session = JFactory::getSession();
+                echo $session->get('name');
 
-				$filtervars = json_decode($filter->filters);
-				if (is_object($filtervars))
-				{
-					$filtervars = get_object_vars($filtervars);
-				}
-				//var_dump($filtervars);
-				if (is_array($filtervars))
-				{
-					foreach ($filtervars as $fvk => $fvv)
-					{
-						if (strpos($fvk, "_fv") > 0)
-						{
-							JRequest::setVar($fvk, $fvv);
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			JEVHelper::setFilterValues();
-		}
+            
+                // Only save/delete filters for non-guests
+                if (JFactory::getUser()->id > 0){
+                    $deletefilter = JFactory::getApplication()->input->getInt("deletefilter", 0);
+                    if ($deletefilter){
+                            $db = JFactory::getDbo();
+                            $db->setQuery("DELETE FROM #__jevents_filtermap where fid = " . $db->quote($deletefilter). " AND userid=".intval(JFactory::getUser()->id));
+                            $db->execute();
+                            return;
+                    }
+
+                    // This is new experimental code 
+                    $fid = JFactory::getApplication()->input->getString("jfilter", '');
+                    if ($fid != "")
+                    {
+                            // This isn't high security but best to be safe to make sure filter belongs to this user
+                            $db = JFactory::getDbo();
+                            $db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $db->quote($fid). " AND userid=".intval(JFactory::getUser()->id));
+                            $filter = $db->loadObject();
+
+                            if ($filter)
+                            {
+                                    $filtervars = json_decode($filter->filters);
+                                    if (is_object($filtervars))
+                                    {
+                                            $filtervars = get_object_vars($filtervars);
+                                    }
+                                    //var_dump($filtervars);
+                                    if (is_array($filtervars))
+                                    {
+                                            foreach ($filtervars as $fvk => $fvv)
+                                            {
+                                                    if (strpos($fvk, "_fv") > 0)
+                                                    {
+                                                            JFactory::getApplication()->input->set($fvk, $fvv);
+                                                    }
+                                            }
+                                    }
+
+                                    // Also set the saved filter results
+                                    JFactory::getApplication()->input->set('filtername', $filter->name);
+                            }
+                    }
+                    else
+                    {
+                            JEVHelper::setFilterValues();
+                    }
+                }
+                else {
+			JEVHelper::setFilterValues();                    
+                }
 
 	}
 
@@ -2720,13 +2742,22 @@ SCRIPT;
 	public static
 			function setFilterValues()
 	{
+                // Only save filters for non-guests
+                if (!JFactory::getUser()->id){
+                    return;
+                }
+                
+                $filtername = JFactory::getApplication()->input->getString("filtername", '');
+                $modid = JFactory::getApplication()->input->getInt("modid",0 );
 
-		$input = JRequest::get();
-
+                if ($filtername==""){
+                    return;
+                }
+                
 		$filtervars = array();
 
-		$input = JRequest::get();
-		if (is_array($input))
+		$input = JFactory::getApplication()->input->getArray();
+		if (is_array($input) && count($input)>0)
 		{
 			foreach ($input as $fvk => $fvv)
 			{
@@ -2737,10 +2768,9 @@ SCRIPT;
 			}
 		}
 
-		if (count($filtervars) > 0)
+		if (count($filtervars) > 0 && JFactory::getApplication()->input->getMethod()=="POST")
 		{
 			ksort($filtervars);
-			var_dump($filtervars);
 			$filtervars = json_encode($filtervars);
 
 			$db = JFactory::getDbo();
@@ -2750,11 +2780,21 @@ SCRIPT;
 			$db->setQuery("SELECT fid, filters  FROM #__jevents_filtermap where md5 = " . $db->quote($md5));
 			$filters = $db->loadAssocList("fid", "filters");
 
-			if (!in_array($filtervars, $filters))
+			$db->setQuery("SELECT fid  FROM #__jevents_filtermap where name = " . $db->quote($filtername));
+			$fid = intval($db->loadResult("fid"));
+                        
+                        if ($fid){
+				$db->setQuery("REPLACE INTO #__jevents_filtermap (fid, filters, md5, userid, name, andor, modid) VALUES ($fid," . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
+				$db->execute();
+                        }
+			else if (!in_array($filtervars, $filters))
 			{
-				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) . ")");
+				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5, userid, name, andor, modid) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
 				$db->execute();
 			}
+                        else {
+                            // has name changed!
+                        }
 		}
 
 	}
@@ -2763,12 +2803,17 @@ SCRIPT;
 			function parameteriseJoomlaCache()
 	{
 
-// If Joomla! caching is enabled then we have to manage progressive caching and ensure that session data is taken into account.
+                // If Joomla! caching is enabled then we have to manage progressive caching 
+                // and ensure that session data is taken into account.
 		$conf = JFactory::getConfig();
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING', 'pop' => 'UINT');
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 
+                            'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 
+                            'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 
+                            'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 
+                            'em2' => 'STRING', 'pop' => 'UINT');
 			$app = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
@@ -3750,5 +3795,32 @@ SCRIPT;
 
                 }
         }
+        
+        public static function & getMenuFilters() {
+                $registry = JRegistry::getInstance("jevents");
+                $menufilters = $registry->get("jevents.menufilters", false);
+                if (!$menufilters) {
+                    $menufilters = new stdClass();
+                    $registry->set("jevents.menufilters", $menufilters);
+                }
+                return $menufilters;
+        }
+        
+        public static function setMenuFilter($key, $value) {
+            $menufilters = JEVHelper::getMenuFilters();
+            $menufilters->$key = $value;
+        }
+
+        public static function getMenuFilter($key, $default = null) {
+            $menufilters = JEVHelper::getMenuFilters();
+            return isset($menufilters->$key) ? $menufilters->$key :  $default;
+        }
+        
+        // TODO - create a stack of previous values and use reset rather than clear to allow recursive type calls
+        public static function clearMenuFilter($key) {
+            $menufilters = JEVHelper::getMenuFilters();
+            unset($menufilters->$key);
+        }
+
 }
 

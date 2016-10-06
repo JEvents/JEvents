@@ -3506,7 +3506,7 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	public function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
 	{
-
+            
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
@@ -3536,7 +3536,11 @@ class JEventsDBModel
 		if ($limit == 0 && $this->cfg->get("maxevents", 10) > 0)
 		{
 			$limit = $this->cfg->get("maxevents", 10);
-        }
+                }
+		else if ($this->cfg->get("maxevents", 10) > $limit)
+		{
+			$limit = $this->cfg->get("maxevents", 10);
+                }
                 
 		if (!$filters)
 		{

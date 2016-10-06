@@ -39,6 +39,7 @@ else if ($option=="com_jevents"){
 if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
 	return;
 }
+JFactory::getApplication()->activeModule = $module;
 require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
 
 

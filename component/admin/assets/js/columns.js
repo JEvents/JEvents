@@ -49,13 +49,17 @@ function setupColumnLis(){
 		},
 		update: function(event, ui){
 			setupCustomColumnField("#jevcolumns");
-		}
-	});
+		},
+                cancel:'#columnmatches_heading'
+	});        
 
 	var lis = jQuery("#columnmatches > div");
 	
 	lis.each(function(i){
 		item = jQuery(this);
+                if (item.attr("id")=="columnmatches_heading"){
+                    return;
+                }
 		item.css("cursor","pointer");
 		// remove event handlers
 		item.off("click");

@@ -17,6 +17,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 				<field name="cache" type="radio" default="0" class="btn-group" label="Enable Cache" description="Select whether to cache the content of this module">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

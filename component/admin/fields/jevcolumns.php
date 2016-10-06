@@ -159,6 +159,10 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$input .= '</div></td>
 		<td><div  style="font-weight:bold;margin-left:20px;">' . JText::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
 			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
+                $input.='<div id="columnmatches_heading" style="clear:left;">'
+                        . '<div style="width:200px;display:inline-block;font-weight:bold">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_NAME"). "</div>"
+                        . '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">'.JText::_("JEV_COLUMNS_SELECTED_FIELD_LABEL"). "</div>"
+                        . "</div>";
 		$invalues = array();
 		foreach ($invalue as $col)
 		{

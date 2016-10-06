@@ -2,9 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 06-10-2016 - Geraint Edwards
+* Allow saving and reloading of filter module data - start of re-working of filter system
+* Make column selection in list view menu item sortable
+* use showon for range view date settings to improve usability of configuration
+* Make sure filter module sets option to com_jevents in the form incase the target menu item is not a JEvents one
+* Fix for router where task could appear twice if not translated
+* Make filter choices in module parameters sortable by drag and drop
+
 ## 20-08-2016 - Geraint Edwards
 * Jevents 3.4.20
 * Include fixes from 30-08-2016 in package
+* Fix DB query for SELECT event used in editor plugins etc.
+* Work around for some imported all day event data representations
+* Reset category filter when cancelling ical calendar edit
+* Check for duplicate calendar names when creating new ones
 
 ## 18-08-2016 - Geraint Edwards
 * Jevents 3.4.19

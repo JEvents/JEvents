@@ -41,6 +41,11 @@ class JFormFieldJevfilters extends JFormFieldText
 	protected
 			function getInput()
 	{
+            
+		// Mkae sure jQuery is loaded
+                JHtml::_('jquery.framework');
+                JHtml::_('jquery.ui', array("core","sortable"));
+            
 		jimport('joomla.filesystem.folder');
 
 		$invalue = str_replace(" ","",$this->value);

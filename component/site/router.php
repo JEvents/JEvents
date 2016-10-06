@@ -846,7 +846,9 @@ function JEventsBuildRouteNew(&$query, $task)
 			break;
 
 		default:
-			$segments[] = $transtask;
+                        if (!in_array($transtask, $segments)){
+                            $segments[] = $transtask;
+                        }
 			$segments[] = "-";
 			break;
 	}
