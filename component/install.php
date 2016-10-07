@@ -601,7 +601,7 @@ SQL;
 		$db->setQuery($sql);
 		$db->execute();
 
-		$sql = "SHOW INDEX FROM #__jevents_filtermap";
+		$sql = "SHOW COLUMNS FROM #__jevents_filtermap";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
 

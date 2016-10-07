@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 07-10-2016 - Geraint Edwards
+* Correct install script error 
 * Fix for column selection in list menu item
 * Fix for deleting first repeat of repeats when repeat id = event id
 
