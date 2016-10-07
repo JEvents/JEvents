@@ -57,7 +57,7 @@ function setupColumnLis(){
 	
 	lis.each(function(i){
 		item = jQuery(this);
-                if (item.attr("id")=="columnmatches_heading"){
+                if (item.prop("id")=="columnmatches_heading"){
                     return;
                 }
 		item.css("cursor","pointer");
@@ -105,6 +105,9 @@ function setupCustomColumnField(fieldid){
 	var lis = jQuery("#columnmatches div");
 	lis.each(function( i){
 		if (!jQuery(this).prop("id")) return;
+                if (jQuery(this).prop("id")=="columnmatches_heading"){
+                    return;
+                }                
 		var item = jQuery(this).clone();
 		var input = item.find('input');
 		var value = input.val();
