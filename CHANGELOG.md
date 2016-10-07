@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 07-10-2016 - Geraint Edwards
+* Fix for column selection in list menu item
+* Fir for deleting first repeat of repeats when repeat id = event id
+
 ## 06-10-2016 - Geraint Edwards
 * Allow saving and reloading of filter module data - start of re-working of filter system
 * Make column selection in list view menu item sortable
