@@ -737,7 +737,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		{
 
 			$evid = JRequest::getInt("evid", 0);
-			if ($evid > 0 && $id == $evid)
+			if ($id == 0)
 				continue;
 
 			// I should be able to do this in one operation but that can come later
