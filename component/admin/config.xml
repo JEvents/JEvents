@@ -59,6 +59,7 @@
 			<option value="1">JEV_MONDAY_FIRST</option>
 			<option value="6">JEV_SATURDAY_FIRST</option>
 		</field>
+		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>                
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"  difficulty="1"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"  difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99" />		
@@ -223,7 +224,6 @@
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
 		<field name="spacer_evd1" type="jevinfo" default='SETTINGS_RELATED_TO_DETAIL_VIEW'   menu="hide" label="" description="" difficulty="1"/>
-		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>
 		<field name="com_mailview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" difficulty="1"/>
 		<field name="com_hitsview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_HITS" description="" difficulty="1"/>
 		<field name="com_repeatview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_TIME" description="JEV_VIEW_REPEAT_TIME_DESC" difficulty="1"/>
