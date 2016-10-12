@@ -863,7 +863,6 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 
 			$Itemid = $jinput->getInt("Itemid");
-
 			list($year, $month, $day) = JEVHelper::getYMD();
 
 			// When editing an event from a specific repeat page we want to return to that specific repeat
@@ -1300,10 +1299,6 @@ class AdminIcaleventController extends JControllerAdmin
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
 
-		JPluginHelper::importPlugin("content");
-		// Trigger the onContentChangeState event.
-		$dispatcher->trigger('onContentChangeState', array('com_jevents.event', $cid, $newstate));
-
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_EVENT_STATE_CHANGED"));
@@ -1383,10 +1378,6 @@ class AdminIcaleventController extends JControllerAdmin
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
-
-		JPluginHelper::importPlugin("content");
-		// Trigger the onContentChangeState event.
-		$dispatcher->trigger('onContentChangeState', array('com_jevents.event', $cid, $newstate));
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -1491,16 +1482,6 @@ class AdminIcaleventController extends JControllerAdmin
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
-
-			JPluginHelper::importPlugin("content");
-
-			$events = new stdClass();
-
-			foreach ($cid as $key => $id) {
-				$events->id = $id;
-				// Trigger the onContentChangeState event.
-				$dispatcher->trigger('onContentAfterDelete', array('com_jevents.event', $events));
-			}
 
 			if (JFactory::getApplication()->isAdmin())
 			{
