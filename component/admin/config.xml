@@ -255,8 +255,8 @@
 		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
-			<option value="joomla">Mootools</option>
-			<option value="bootstrap">Bootstrap</option>
+			<option value="joomla">JEV_MOOTOOLS</option>
+			<option value="bootstrap">JEV_BOOTSTRAP</option>
 		</field>
 
 		<field name="com_calTTBackground" type="jevboolean" class="btn-group jevp_tooltip" default="1" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" difficulty="2"   />
