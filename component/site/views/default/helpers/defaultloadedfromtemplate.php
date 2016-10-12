@@ -1173,7 +1173,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{CREATOR_LABEL}}":
 					$search[] = "{{CREATOR_LABEL}}";
-					if ($jevparams->get("com_byview",1) || $template_name!="icalevent.detail_body") {
+					if ($jevparams->get("com_byview",1)) {
 						$replace[] = JText::_('JEV_BY');
 					}
 					else {
@@ -1184,7 +1184,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				case "{{CREATOR}}":
 					$search[] = "{{CREATOR}}";
-					if ($jevparams->get("com_byview",1) || $template_name!="icalevent.detail_body") {
+					if ($jevparams->get("com_byview",1)) {
 						$replace[] = $event->contactlink();
 					}
 					else {
