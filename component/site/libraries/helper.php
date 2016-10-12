@@ -3792,7 +3792,6 @@ SCRIPT;
                 if (defined ("WPJEVENTS")){
                     $cfg = JEVConfig::getInstance();
                     $cfg->set('com_email_icon_view', 0);
-
                 }
         }
         

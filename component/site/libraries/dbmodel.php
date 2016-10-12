@@ -2327,6 +2327,12 @@ class JEventsDBModel
 			//exit();
 		}
 
+/*
+SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+select @@sql_mode;
+SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',ONLY_FULL_GROUP_BY'));
+select @@sql_mode;                
+ */
 		if ($count)
 		{
 			$db->execute();
@@ -2871,7 +2877,7 @@ class JEventsDBModel
 		}
 
 		$db->setQuery($query);
-		//echo $db->_sql;
+		//echo (string) $db->getQuery();
 		$rows = $db->loadObjectList();
 
 		// iCal agid uses GUID or UUID as identifier

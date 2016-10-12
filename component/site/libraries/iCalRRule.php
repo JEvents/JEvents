@@ -315,7 +315,7 @@ class iCalRRule extends JTable  {
 				// If I have byday and bymonthday then the two considions must be met
 				$weekdays = array();
 				if ($this->byday!=""){
-					foreach (explode(",",$this->byday) as $bday) {
+					foreach (explode(",",str_replace(" ", "", $this->byday)) as $bday) {
 						if (array_key_exists($bday, $weekdayMap)){
 							$weekdays[]=$weekdayMap[$bday];
 						}
@@ -324,7 +324,7 @@ class iCalRRule extends JTable  {
 
 				if ($this->byyearday!=""){
 					echo "byyearday <br/>";
-					$days = explode(",",$this->byyearday);
+					$days = explode(",",  str_replace(" ", "", $this->byyearday));
 
 					$start = $dtstart;
 					$end = $dtend;
@@ -380,7 +380,7 @@ class iCalRRule extends JTable  {
 				// TODO relzs this assumption !!
 				else if ($this->bymonthday!="") {
 					echo "bymonthday".$this->bymonthday." <br/>";
-					$days = explode(",",$this->bymonthday);
+					$days = explode(",",str_replace(" ", "", $this->bymonthday));
 
 
 					$start = $dtstart;
@@ -451,7 +451,7 @@ class iCalRRule extends JTable  {
 					}
 				}
 				else {
-					$days = explode(",",$this->byday);
+					$days = explode(",",str_replace(" ", "", $this->byday));
 					// duplicate where necessary 
 					$extradays = array();
 					foreach ($days as $day) {
@@ -567,11 +567,11 @@ class iCalRRule extends JTable  {
 				if ($this->bymonthday!="") {
 					echo "bymonthday".$this->bymonthday." <br/>";
 					// if not byday then by monthday
-					$days = explode(",",$this->bymonthday);
+					$days = explode(",",str_replace(" ", "", $this->bymonthday));
 					// If I have byday and bymonthday then the two considions must be met
 					$weekdays = array();
 					if ($this->byday!=""){
-						foreach (explode(",",$this->byday) as $bday) {
+						foreach (explode(",",str_replace(" ", "", $this->byday)) as $bday) {
 							$weekdays[]=$weekdayMap[$bday];
 						}
 					}
@@ -649,13 +649,13 @@ class iCalRRule extends JTable  {
 				}
 				// This is byday
 				else {
-					$days = explode(",",$this->byday);
+					$days = explode(",",str_replace(" ", "", $this->byday));
 					// TODO I should also iterate over week number if this is used
-					//$weeknumbers = explode(",",$this->byweekno);
+					//$weeknumbers = explode(",",str_replace(" ", "", $this->byweekno));
 
 					if ($this->bysetpos!=""){
 						$newdays = array();
-						$setpositions = explode(",",$this->bysetpos);
+						$setpositions = explode(",",str_replace(" ", "", $this->bysetpos));
 						foreach($setpositions as  $setposition){
 							foreach ($days as $day) {
 								if (strpos($setposition, "+")===false && strpos($setposition, "-")===false){
@@ -738,7 +738,7 @@ class iCalRRule extends JTable  {
 
 				break;
 			case "WEEKLY":
-				$days = explode(",",$this->byday);
+				$days = explode(",",str_replace(" ", "", $this->byday));
 				$start = $dtstart;
 				$end = $dtend;
 				$countRepeats = 0;
@@ -860,7 +860,7 @@ class iCalRRule extends JTable  {
 				break;
 			case "MONTHLY":
 				echo "By Day : ".$this->data['BYDAY']."<br/>";
-				$days = explode(",",$this->data['BYDAY']);
+				$days = explode(",",str_replace(" ", "", $this->data['BYDAY']));
 				foreach ($days as $day) {
 					$details=array();
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);
@@ -877,7 +877,7 @@ class iCalRRule extends JTable  {
 				break;
 			case "WEEKLY":
 				echo "By Day : ".$this->data['BYDAY']."<br/>";
-				$days = explode(",",$this->data['BYDAY']);
+				$days = explode(",",str_replace(" ", "", $this->data['BYDAY']));
 				foreach ($days as $day) {
 					$details=array();
 					preg_match("/(\+|-?)(\d?)(.+)/",$day,$details);

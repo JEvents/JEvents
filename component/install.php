@@ -603,7 +603,7 @@ SQL;
 
 		$sql = "SHOW COLUMNS FROM #__jevents_filtermap";
 		$db->setQuery($sql);
-		$cols = @$db->loadObjectList("Key_name");
+		$cols = @$db->loadObjectList("Field");
 
 		if (!array_key_exists("andor", $cols))
 		{

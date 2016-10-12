@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 12-10-2016 - Geraint Edwards
+* JEvents 3.4.24
+* Fix for filtermap fields install problem on some servers
+* Comma separated by*day fields need to have spaces stripped during save process
+
 ## 07-10-2016 - Geraint Edwards
 * Correct install script error 
 * Fix for column selection in list menu item
