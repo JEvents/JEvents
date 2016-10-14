@@ -185,8 +185,10 @@ class ICalEventController extends AdminIcaleventController   {
 	}
 
 	public function edit_cancel() {
-		$session = & JFactory::getSession();
-		$ref = $session->get('jev_referrer',$origref, 'extref');
+		$session = JFactory::getSession();
+                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+-               $fallback = $params->get("editreturnto", "day.listevents");
+		$ref = $session->get('jev_referrer',$fallback, 'extref');
 
 		$this->setRedirect($ref);
 		$this->redirect();
