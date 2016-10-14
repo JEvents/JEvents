@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.0" client="site" method="upgrade">
-	<name>JEvents CustomModule</name>
+	<name>MOD_JEV_CUSTOM_MODULE_TITLE</name>
 	<creationDate>October 2016</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2013-2016 GWE Systems Ltd</copyright>
@@ -8,7 +8,7 @@
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
 	<version>3.4.24</version>
-	<description>Displays data from customised event detail or event list layouts</description>
+	<description>MOD_JEV_CUSTOM_MODULE_DESC</description>
 	<files>
 		<filename>mod_jevents_custom.xml</filename>
 		<filename module="mod_jevents_custom">mod_jevents_custom.php</filename>
@@ -17,6 +17,7 @@
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.mod_jevents_custom.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_custom.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

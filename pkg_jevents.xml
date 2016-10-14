@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5" method="upgrade">
-	<name>JEvents Package</name>
+	<name>JEV_PACKAGE_TITLE</name>
 	<packagename>jevents</packagename>
 	<version>3.4.24</version>
 	<url>http://www.jevents.net</url>
 	<creationDate>October 2016</creationDate>
-	<author>Geraint Edwards</author>
+	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2012-2016 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>
 	<packagerurl>http://www.jevents.net</packagerurl>
-	<description>JEvents  - Events, Meetings, Calendars and More</description>
+	<description>JEV_PACKAGE_DESC</description>
 	<update></update>
 	<scriptfile>install.php</scriptfile>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.pkg_jevents.sys.ini</language>
+	</languages>
 	<files>
 		<file type="component" id="com_jevents" >com_jevents.zip</file>
 		<file type="module" id="mod_jevents_cal" client="site">mod_jevents_cal.zip</file>

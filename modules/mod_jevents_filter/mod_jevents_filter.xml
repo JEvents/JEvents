@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
-	<name>JEvents Filter</name>
+	<name>MOD_JEV_FILTER_MODULE_TITLE</name>
 	<creationDate>October 2016</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2016 GWE Systems Ltd</copyright>	  
@@ -8,7 +8,7 @@
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
 	<version>3.4.24</version>
-	<description>Shows JEvents Filter</description>
+	<description>MOD_JEV_FILTER_MODULE_DESC</description>
 	<files>
 		<filename module="mod_jevents_filter">mod_jevents_filter.php</filename>
 		<filename>mod_jevents_filter.js</filename>
@@ -16,6 +16,10 @@
 		<folder>tmpl</folder>
 		<folder>fields</folder>
 	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_filter.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_jevents_filter.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset addfieldpath="/modules/mod_jevents_filter/fields" />
