@@ -15,5 +15,11 @@ if (!isset($this->jevviewdone)){
 	$this->jevviewdone = true;
 	
 	$this->loadModules("jevposteditevent");
-	
+
+	//Set previous page
+	$session = & JFactory::getSession();
+
+	$origref = $_SERVER['HTTP_REFERER'];
+	$session->set('jev_referrer', $origref, 'extref');
+
 }
