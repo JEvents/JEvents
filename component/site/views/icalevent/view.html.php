@@ -103,7 +103,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-                $evedrd = $params->get("editreturnto", "day.listevents");
+
+                $evedrd = 'icalevent.edit_cancel';
+
+                //$evedrd = $params->get("editreturnto", "day.listevents");
 		if ($params->get("editpopup", 0))
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");

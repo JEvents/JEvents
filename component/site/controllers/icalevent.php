@@ -183,7 +183,15 @@ class ICalEventController extends AdminIcaleventController   {
 		JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 		parent::select();
 	}
-	
+
+	public function edit_cancel() {
+		$session = & JFactory::getSession();
+		$ref = $session->get('jev_referrer',$origref, 'extref');
+
+		$this->setRedirect($ref);
+		$this->redirect();
+
+	}
 	
 		
 }
