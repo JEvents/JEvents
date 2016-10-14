@@ -316,8 +316,8 @@ $mainspan = 10;
 				<input type="hidden" name="hidemainmenu" value="" />
 				<input type="hidden" name="boxchecked" value="0" />
 				<input type="hidden" name="task" value='user.overview' />
-				<input type="hidden" name="filter_order" value="<?php echo JRequest::getCmd("filter_order", "tl.id"); ?>" />
-				<input type="hidden" name="filter_order_Dir" value="<?php echo JRequest::getCmd("filter_order_Dir", "asc"); ?>" />
+				<input type="hidden" name="filter_order" value="<?php echo JFactory::getApplication()->input->getCmd("filter_order", "tl.id"); ?>" />
+				<input type="hidden" name="filter_order_Dir" value="<?php echo JFactory::getApplication()->input->getCmd("filter_order_Dir", "asc"); ?>" />
 			</div>
 		</div>
 </form>

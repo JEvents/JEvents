@@ -31,7 +31,7 @@ if ($jinput->getString("submit","") != "")
 		$cats[] = 0;
 
 
-	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
+	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JFactory::getApplication()->input->getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
         $jr_years = $jinput->post->get('years', array(0), null);
 	$years = JEVHelper::forceIntegerArray($jr_years, true);
@@ -196,7 +196,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 	if ($params->get("icalformatted", 1) == 1){
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
+	<input name="icalformatted" type="checkbox" value="1" <?php echo JFactory::getApplication()->input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
 	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
 <?php } 
 	echo "</div>";

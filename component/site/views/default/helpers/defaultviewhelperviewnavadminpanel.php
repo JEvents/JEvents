@@ -96,12 +96,12 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						$datamodel->setupComponentCatids();
 
 						list($year, $month, $day) = JEVHelper::getYMD();
-						$evid = JRequest::getVar("evid", false);
-						$jevtype = JRequest::getVar("jevtype", false);
+						$evid = JFactory::getApplication()->input->getVar("evid", false);
+						$jevtype = JFactory::getApplication()->input->getVar("jevtype", false);
 						// FORM for filter submission
 						$form_link = JRoute::_(
 										'index.php?option=' . JEV_COM_COMPONENT
-										. '&task=' . JRequest::getVar("jevtask", "month.calendar")
+										. '&task=' . JFactory::getApplication()->input->getVar("jevtask", "month.calendar")
 										. ($evid ? '&evid=' . $evid : '')
 										. ($jevtype ? '&jevtype=' . $jevtype : '')
 										. ($year ? '&year=' . $year : '')

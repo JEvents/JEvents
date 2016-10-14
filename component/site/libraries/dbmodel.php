@@ -103,7 +103,7 @@ class JEventsDBModel
 				$where = " AND 0 ";
 			}
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
-			$jevtask = JRequest::getString("jevtask");
+			$jevtask = JFactory::getApplication()->input->getString("jevtask");
 			$isedit = false;
 			// not only for edit pages but for all backend changes we ignore the language filter on categories
 			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || $allLanguages)
@@ -771,7 +771,7 @@ class JEventsDBModel
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
             
-		$userid = JRequest::getVar('jev_userid',"0");
+		$userid = JFactory::getApplication()->input->getVar('jev_userid',"0");
 
 		if($userid=="0")
 		{
@@ -1085,7 +1085,7 @@ class JEventsDBModel
 			//$time_end = (float) $usec + (float) $sec;
 			//echo  "pre version= ".round($time_end - $starttime, 4)."<br/>";
 			
-			$version = JRequest::getCmd("version", "old");
+			$version = JFactory::getApplication()->input->getCmd("version", "old");
 
 			if ($version == "new")
 			{
@@ -1751,7 +1751,7 @@ class JEventsDBModel
 			//$time_end = (float) $usec + (float) $sec;
 			//echo  "pre version= ".round($time_end - $starttime, 4)."<br/>";
 			
-			$version = JRequest::getCmd("version", "old");
+			$version = JFactory::getApplication()->input->getCmd("version", "old");
 
 			if ($version == "new")
 			{
@@ -2140,7 +2140,7 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
-		$version = JRequest::getCmd("version", "old");
+		$version = JFactory::getApplication()->input->getCmd("version", "old");
 
 		if ($version == "new")
 		{
@@ -2623,7 +2623,7 @@ select @@sql_mode;
 			$enddate.= " 23:59:59";
 
 		// This code is used by the iCals code with a spoofed user so check if this is what is happening
-		if (JRequest::getString("jevtask", "") == "icals.export")
+		if (JFactory::getApplication()->input->getString("jevtask", "") == "icals.export")
 		{
 			$registry = JRegistry::getInstance("jevents");
 			$user = $registry->get("jevents.icaluser", false);
@@ -3834,7 +3834,7 @@ select @@sql_mode;
 
 		$where = "";
 		$having = "";
-		if (!JRequest::getInt('showpast', 0))
+		if (!JFactory::getApplication()->input->getInt('showpast', 0))
 		{
 			$datenow = JevDate::getDate("-12 hours");
 			$having = " AND rpt.endrepeat>'" . $datenow->toSql() . "'";

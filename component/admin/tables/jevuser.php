@@ -112,8 +112,8 @@ class TableUser extends JTable
 		$dispatcher	= JEventDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
-		$order = JRequest::getCmd("filter_order",'tl.id');
+		$orderdir = JFactory::getApplication()->input->getCmd("filter_order_Dir",'asc');
+		$order = JFactory::getApplication()->input->getCmd("filter_order",'tl.id');
 		$dir = $orderdir=="asc" ? "asc" : "desc";
 		$order = " ORDER BY ".$order." ".$orderdir;
 		

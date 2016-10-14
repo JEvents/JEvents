@@ -108,7 +108,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL',  false);
-			JRequest::setVar('tmpl', 'component'); //force the component template
+			JFactory::getApplication()->input->setVar('tmpl', 'component'); //force the component template
 		}
 		else
 		{
@@ -123,7 +123,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		}
 
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
-		$this->assign("rp_id", JRequest::getInt("rp_id", 0));
+		$this->assign("rp_id", JFactory::getApplication()->input->getInt("rp_id", 0));
 
 		$this->_adminStart();
 

@@ -31,7 +31,7 @@ if ($jinput->getString("submit","") != "")
 		$cats[] = 0;
 
 
-	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
+	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JFactory::getApplication()->input->getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
 	$years = JEVHelper::forceIntegerArray($jinput->post->get('years', array(0), null), true);
 	$cats = implode(",", $cats);

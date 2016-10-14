@@ -106,9 +106,9 @@ function JEventsBuildRoute(&$query)
 				$nowmonth = JevDate::strftime('%m', $t_datenow->toUnix(true));
 				$nowday = JevDate::strftime('%d', $t_datenow->toUnix(true));
 				/*
-				  $year	= intval( JRequest::getVar( 'year',	 $nowyear ));
-				  $month	= intval( JRequest::getVar( 'month', $nowmonth ));
-				  $day	= intval( JRequest::getVar( 'day',	 $nowday ));
+				  $year	= intval( JFactory::getApplication()->input->getVar( 'year',	 $nowyear ));
+				  $month	= intval( JFactory::getApplication()->input->getVar( 'month', $nowmonth ));
+				  $day	= intval( JFactory::getApplication()->input->getVar( 'day',	 $nowday ));
 				 */
 				if (isset($query['year']))
 				{

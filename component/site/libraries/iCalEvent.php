@@ -95,7 +95,7 @@ class iCalEvent extends JTable  {
 		// if existing row preserve created by - unless being overwritten by authorised user
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
-		$creatorid = JRequest::getInt("jev_creatorid",0);
+		$creatorid = JFactory::getApplication()->input->getInt("jev_creatorid",0);
 
 		$access = false;
 		if ($user->get('id')>0){

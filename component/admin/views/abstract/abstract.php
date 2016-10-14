@@ -29,7 +29,7 @@ class JEventsAbstractView extends JViewLegacy
 		// note that the name config variable is ignored in the parent construct!
 
 		// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
-
+                /*
 		$app = JFactory::getApplication();
 		// Get current template style ID
 		$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
@@ -48,7 +48,9 @@ class JEventsAbstractView extends JViewLegacy
 		} else {
 			$template = JFactory::getApplication()->getTemplate();
 		}
-
+                */
+                $template = JFactory::getApplication()->getTemplate();
+                
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$name = $this->getName();
 		$name = str_replace($theme."/", "", $name);
@@ -667,7 +669,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
 		$this->form->jevdata["catid"]["repeatId"] = $this->repeatId;
 		$this->form->jevdata["catid"]["excats"] = false;
-		if (JRequest::getCmd("task") == "icalevent.edit" && isset($this->excats))
+		if (JFactory::getApplication()->input->getCmd("task") == "icalevent.edit" && isset($this->excats))
 		{
 			$this->form->jevdata["catid"]["excats"] = $this->excats;
 		}
@@ -676,8 +678,8 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form->jevdata["primarycatid"] = $this->primarycatid;
 
 		$this->form->jevdata["creator"]["users"] = false;
-		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy"
-				|| JRequest::getCmd("jevtask") == "icalevent.edit" || JRequest::getCmd("jevtask") == "icalevent.editcopy")  && isset($this->users))
+		if ((JFactory::getApplication()->input->getCmd("task") == "icalevent.edit" || JFactory::getApplication()->input->getCmd("task") == "icalevent.editcopy"
+				|| JFactory::getApplication()->input->getCmd("jevtask") == "icalevent.edit" || JFactory::getApplication()->input->getCmd("jevtask") == "icalevent.editcopy")  && isset($this->users))
 		{
 			$this->form->jevdata["creator"]["users"] = $this->users;
 		}

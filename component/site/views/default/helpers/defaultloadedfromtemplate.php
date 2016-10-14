@@ -185,7 +185,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	}
 	else
 	{
-		if ($runplugins && JRequest::getString("option")!="com_jevents"){
+		if ($runplugins && JFactory::getApplication()->input->getString("option")!="com_jevents"){
 			// This is a special scenario where we call this function externally e.g. from RSVP Pro messages
 			// In this scenario we have not gone through the displaycustomfields plugin
 			static $pluginscalled = array();
@@ -867,7 +867,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							{
 
 								$cfg = JEVConfig::getInstance();
-								$jevtask = JRequest::getString("jevtask");
+								$jevtask = JFactory::getApplication()->input->getString("jevtask");
 								$jevtask = str_replace(".listevents", "", $jevtask);
 
 								$showyeardate = $cfg->get("showyeardate", 0);

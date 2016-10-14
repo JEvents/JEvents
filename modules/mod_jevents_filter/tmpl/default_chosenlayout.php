@@ -254,7 +254,7 @@ STYLE;
 		?>
 	</form>
 	<?php
-	if (JRequest::getCmd("jevents_filter_submit")=="ok") {
+	if (JFactory::getApplication()->input->getCmd("jevents_filter_submit")=="ok") {
 	//	JFactory::getApplication()->enqueueMessage("Search Filters applied successfully");
 	}
 }

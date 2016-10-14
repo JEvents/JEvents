@@ -129,7 +129,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	$catidsOut = str_replace("|", $separator,$catidsOut);
 
 	// Now check the catids from the URL
-	$catidsin = JRequest::getString("catids","");
+	$catidsin = JFactory::getApplication()->input->getString("catids","");
 	// if ignoring catid filter then force to blank
 	if ($ignorecatfilter) $catidsin = "";
 	

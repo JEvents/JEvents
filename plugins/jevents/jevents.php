@@ -38,7 +38,7 @@ class plgContentJEvents extends JPlugin
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd("option"));
             if ($data->published == "-2" || $data->published == "2") {
                 if ($params->get("multicategory", 0)) {
                     $query->select($db->quoteName('map.catid'));
@@ -100,7 +100,7 @@ class plgContentJEvents extends JPlugin
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd("option"));
 			if ($params->get("multicategory", 0))
 			{
 				$query->select($db->quoteName('map.catid'));

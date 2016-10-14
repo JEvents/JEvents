@@ -167,7 +167,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="jevtype" value="icaldb" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="updaterepeats" value="0"/>
-		<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task", "icalevent.edit"); ?>" />
+		<input type="hidden" name="task" value="<?php echo JFactory::getApplication()->input->getCmd("task", "icalevent.edit"); ?>" />
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>" />
 		<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>" />
 		<input type="hidden" name="year" value="<?php echo $year; ?>" />

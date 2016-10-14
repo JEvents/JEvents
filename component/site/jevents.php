@@ -25,39 +25,6 @@ jimport('joomla.filesystem.path');
 
 include_once(JPATH_COMPONENT . '/' . "jevents.defines.php");
 
-$isMobile = false;
-jimport("joomla.environment.browser");
-$browser = JBrowser::getInstance();
-
-$registry = JRegistry::getInstance("jevents");
-// In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
-
-// Load Joomla Core scripts for sites that don't load MooTools;
-JHtml::_('behavior.core', true);
-
-// This loads jQuery too!
-JevHtmlBootstrap::framework();
-
-// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-}
-
-if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
-{
-	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
-	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
-}
-else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
-{
-	JHtmlBootstrap::loadCss();
-}
-
-
 $newparams = JFactory::getApplication('site')->getParams();
 // Because the application sets a default page title,
 // we need to get it from the menu item itself
@@ -91,6 +58,38 @@ $component->params = & $newparams;
 
 JEVHelper::setupWordpress();
 
+$isMobile = false;
+jimport("joomla.environment.browser");
+$browser = JBrowser::getInstance();
+
+$registry = JRegistry::getInstance("jevents");
+// In Joomla 1.6 JComponentHelper::getParams(JEV_COM_COMPONENT) is a clone so the menu params do not propagate so we force this here!
+
+// Load Joomla Core scripts for sites that don't load MooTools;
+JHtml::_('behavior.core', true);
+
+// This loads jQuery too!
+JevHtmlBootstrap::framework();
+
+// jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
+JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+}
+
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
+{
+	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
+	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+}
+else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
+{
+	JHtmlBootstrap::loadCss();
+}
+
 $isMobile = $browser->isMobile();
 // Joomla isMobile method doesn't identify all android phones
 if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
@@ -107,14 +106,14 @@ if (!$isMobile && isset($_SERVER['HTTP_USER_AGENT']))
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JRequest::getVar("jEV", "") == "smartphone")
+if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') === 0 || (class_exists("T3Common") && class_exists("T3Parameter") && T3Common::mobile_device_detect()) || JFactory::getApplication()->input->getVar("jEV", "") == "smartphone")
 {
 	if (!$params->get("disablesmartphone"))
 	{
-		JRequest::setVar("jevsmartphone", 1);
+		JFactory::getApplication()->input->setVar("jevsmartphone", 1);
 		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
 		{
-                    JRequest::setVar("jEV", "smartphone");
+                    JFactory::getApplication()->input->setVar("jEV", "smartphone");
 		}
 		$params->set('iconicwidth', "scalable");
 		$params->set('extpluswidth', "scalable");
@@ -143,12 +142,12 @@ $lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->
 @ini_set("zend.ze1_compatibility_mode", "Off");
 
 // Split task into command and task
-$cmd = JRequest::getCmd('task', false);
+$cmd = JFactory::getApplication()->input->getCmd('task', false);
 
 if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false)
 {
-	$view = JRequest::getCmd('view', false);
-	$layout = JRequest::getCmd('layout', "show");
+	$view = JFactory::getApplication()->input->getCmd('view', false);
+	$layout = JFactory::getApplication()->input->getCmd('layout', "show");
 	if ($view && $layout)
 	{
 		$cmd = $view . '.' . $layout;
@@ -163,8 +162,8 @@ if (strpos($cmd, '.') != false)
 	list($controllerName, $task) = explode('.', $cmd);
 
         // check view input is compatible - can be a problem on some form submissions
-        if (JRequest::getCmd("view","")!="" &&  JRequest::getCmd("view","")!=$controllerName){
-            JRequest::setVar("view",$controllerName);
+        if (JFactory::getApplication()->input->getCmd("view","")!="" &&  JFactory::getApplication()->input->getCmd("view","")!=$controllerName){
+            JFactory::getApplication()->input->setVar("view",$controllerName);
         }
         
 	// Define the controller name and path
@@ -195,8 +194,8 @@ else
 }
 
 // Make the task available later
-JRequest::setVar("jevtask", $cmd);
-JRequest::setVar("jevcmd", $cmd);
+JFactory::getApplication()->input->setVar("jevtask", $cmd);
+JFactory::getApplication()->input->setVar("jevcmd", $cmd);
 
 // Are all Jevents pages apart from crawler, rss and details pages to be redirected for search engines?
 if (in_array($cmd, array("year.listevents", "month.calendar", "week.listevents", "day.listevents", "cat.listevents", "search.form",
@@ -239,8 +238,8 @@ else
 	JFactory::getApplication()->enqueueMessage('Invalid Controller Class - ' . $controllerClass);
 	$cmd = "month.calendar";
 	list($controllerName, $task) = explode('.', $cmd);
-	JRequest::setVar("jevtask", $cmd);
-	JRequest::setVar("jevcmd", $cmd);
+	JFactory::getApplication()->input->setVar("jevtask", $cmd);
+	JFactory::getApplication()->input->setVar("jevcmd", $cmd);
 	$controllerClass = ucfirst($controllerName) . 'Controller';
 	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
 	require_once($controllerPath);
@@ -260,9 +259,9 @@ $registry->set("jevents.controller", $controller);
 $registry->set("jevents.activeprocess", "component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory
-if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
+if ($cfg->get('blockall', 0) && ( JFactory::getApplication()->input->getInt("limit", -1) == 0 || JFactory::getApplication()->input->getInt("limit", -1) > 100 ))
 {
-	JRequest::setVar("limit", 100);
+	JFactory::getApplication()->input->setVar("limit", 100);
 	JFactory::getApplication()->setUserState("limit", 100);
 }
 
@@ -300,7 +299,7 @@ elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
 elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
 	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 }
-if (JRequest::getCmd("format")!="feed"){
+if (JFactory::getApplication()->input->getCmd("format")!="feed"){
 	JFactory::getDocument()->SetTitle($title);
 }
 

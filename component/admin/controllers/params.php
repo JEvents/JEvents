@@ -111,7 +111,7 @@ class AdminParamsController extends JControllerAdmin
 	function save($key = NULL, $urlVar = NULL)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JSession::checkToken() or jexit('Invalid Token');
 		//echo $this->getTask();
 		//exit;
 		$component = JEV_COM_COMPONENT;
@@ -125,9 +125,9 @@ class AdminParamsController extends JControllerAdmin
 			return false;
 		}
 
-		$post = JRequest::get('post');
-		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
-                $post['plugins'] = JRequest::getVar('jform_plugin', array(), 'post', 'array');
+		$post = JFactory::getApplication()->input->get('post');
+		$post['params'] = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+                $post['plugins'] = JFactory::getApplication()->input->getVar('jform_plugin', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 
@@ -160,7 +160,7 @@ class AdminParamsController extends JControllerAdmin
 		}
 
 		// Now save the form permissions data
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 		$option = JEV_COM_COMPONENT;
 		$comp = JComponentHelper::getComponent(JEV_COM_COMPONENT);
 		$id = $comp->id;

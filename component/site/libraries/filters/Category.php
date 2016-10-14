@@ -109,8 +109,8 @@ class jevCategoryFilter extends jevFilter
 		$filter_value = $this->filter_value;
 		// if catids come from the URL then use this if filter is blank
 		if ($filter_value==$this->filterNullValue  || $filter_value=="") {
-			if (JRequest::getInt("catids",0)>0){
-				$filter_value=JRequest::getInt("catids",0);
+			if (JFactory::getApplication()->input->getInt("catids",0)>0){
+				$filter_value=JFactory::getApplication()->input->getInt("catids",0);
 			}
 		}
 		

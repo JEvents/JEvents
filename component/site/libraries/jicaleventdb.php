@@ -798,7 +798,7 @@ class jIcalEventDB extends jEventCal {
 	
 	function updateHits(){
 		// stop counter being updated repeatedly and in the wrong place
-		$task = JRequest::getCmd("jevtask", "");
+		$task = JFactory::getApplication()->input->getCmd("jevtask", "");
 		if ($task != "icalrepeat.detail" && $task != "icalevent.detail" ){
 			return;
 		}

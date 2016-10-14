@@ -64,7 +64,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			
 			// check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd("option"));
 			if ($params->get("multicategory",0)){
 				// get list of categories this event is in - are they all accessible?
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
@@ -76,7 +76,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 					$inaccessiblecats[] = -1;
 					$inaccessiblecats = implode(",",$inaccessiblecats);
 
-					$jevtask = JRequest::getString("jevtask");
+					$jevtask = JFactory::getApplication()->input->getString("jevtask");
 					$isedit = false;
 					// not only for edit pages but for all backend changes we ignore the language filter on categories
 					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || !$user->get("isRoot"))
@@ -97,7 +97,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 					$realcatids = $db->loadColumn();
 					if (count ($realcatids) ){
 						if ($isedit && !JFactory::getApplication()->isAdmin() ){
-							$Itemid = JRequest::getInt("Itemid");
+							$Itemid = JFactory::getApplication()->input->getInt("Itemid");
 							JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
 						}
 						return null;
@@ -140,7 +140,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			
 			// check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd("option"));
 			if ($params->get("multicategory",0)){
 				// get list of categories this event is in - are they all accessible?
 				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);

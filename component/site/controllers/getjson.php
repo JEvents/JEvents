@@ -99,7 +99,7 @@ class GetjsonController extends JControllerLegacy
 
 	function monthEvents()
 	{
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$modid = intval((JFactory::getApplication()->input->getVar('modid', 0)));
 
 		$user = JFactory::getUser();
 		$query = "SELECT id, params"
@@ -126,8 +126,8 @@ class GetjsonController extends JControllerLegacy
 		$this->datamodel = new JEventsDataModel();
 		$myItemid = $this->datamodel->setupModuleCatids($params);
 
-		$year = JRequest::getVar('jev_current_year', 0);
-		$month = JRequest::getVar('jev_current_month', 0);
+		$year = JFactory::getApplication()->input->getVar('jev_current_year', 0);
+		$month = JFactory::getApplication()->input->getVar('jev_current_month', 0);
 
 		if ($year == 0)
 		{

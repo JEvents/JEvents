@@ -764,7 +764,7 @@ class AdminCpanelController extends JControllerAdmin
 		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
 		$tables = $db->loadObjectList('Name');
 
-		if (JRequest::getInt("ft",0)){
+		if (JFactory::getApplication()->input->getInt("ft",0)){
 			foreach ($tables as $tablename=>$table){
 				if ($table->Collation != $collation){
 					$db->setQuery("ALTER TABLE $tablename convert to character set utf8 collate $collation");

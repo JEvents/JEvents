@@ -134,7 +134,7 @@ class JButtonJevlink extends JToolbarButton
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		$Itemid = JRequest::getInt("Itemid");
+		$Itemid = JFactory::getApplication()->input->getInt("Itemid");
 		$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=$task&Itemid=$Itemid");
 
 		return $link;

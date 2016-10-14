@@ -435,12 +435,12 @@ class JEVHelper
 			// Allow on detail  pages - block otherwise unless crawler!
 			if ($cfg->get('com_blockRobots', 0) == 3)
 			{
-				if (strpos(JRequest::getString("jevtask", ""), ".detail") > 0)
+				if (strpos(JFactory::getApplication()->input->getString("jevtask", ""), ".detail") > 0)
 				{
 					$document->setMetaData($name, "index,nofollow");
 					return;
 				}
-				if (strpos(JRequest::getString("jevtask", ""), "crawler") !== false || $content != "index,follow")
+				if (strpos(JFactory::getApplication()->input->getString("jevtask", ""), "crawler") !== false || $content != "index,follow")
 				{
 					$document->setMetaData($name, $content);
 				}
@@ -752,21 +752,21 @@ class JEVHelper
 			$jevitemid[$evid] = 0;
 			$menu = JFactory::getApplication()->getMenu();
 			$active = $menu->getActive();
-			$Itemid = JRequest::getInt("Itemid");
+			$Itemid = JFactory::getApplication()->input->getInt("Itemid");
 			if (is_null($active))
 			{
 				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
-				$Itemid = JRequest::getInt("Itemid");
+				$Itemid = JFactory::getApplication()->input->getInt("Itemid");
 				if ($Itemid > 0 && $jevitemid[$evid] != $Itemid)
 				{
 					$active = $menu->getItem($Itemid);
 				}
 			}
-			$option = JRequest::getCmd("option");
+			$option = JFactory::getApplication()->input->getCmd("option");
 			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
 			if ($Itemid == 0)
-				$Itemid = JRequest::getInt("amp;Itemid", 0);
-			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && JRequest::getCmd("task") != "crawler.listevents" && JRequest::getCmd("jevtask") != "crawler.listevents")
+				$Itemid = JFactory::getApplication()->input->getInt("amp;Itemid", 0);
+			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && JFactory::getApplication()->input->getCmd("task") != "crawler.listevents" && JFactory::getApplication()->input->getCmd("jevtask") != "crawler.listevents")
 			{
 				$jevitemid[$evid] = $Itemid;
 				return $jevitemid[$evid];
@@ -1011,9 +1011,9 @@ class JEVHelper
 			$datenow = JEVHelper::getNow();
 			list($yearnow, $monthnow, $daynow) = explode('-', $datenow->toFormat('%Y-%m-%d'));
 
-			$year = min(2100, abs(intval(JRequest::getVar('year', $yearnow))));
-			$month = min(99, abs(intval(JRequest::getVar('month', $monthnow))));
-			$day = min(3650, abs(intval(JRequest::getVar('day', $daynow))));
+			$year = min(2100, abs(intval(JFactory::getApplication()->input->getVar('year', $yearnow))));
+			$month = min(99, abs(intval(JFactory::getApplication()->input->getVar('month', $monthnow))));
+			$day = min(3650, abs(intval(JFactory::getApplication()->input->getVar('day', $daynow))));
 			if ($day <= 0)
 			{
 				$day = $daynow;
@@ -1226,17 +1226,17 @@ class JEVHelper
 
 			// anon user event creation
 			if ($user->id == 0 && count($allowedcats)==0){
-				$jevtask = JRequest::getString("task");
+				$jevtask = JFactory::getApplication()->input->getString("task");
 				// This allows savenew through too!
 				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
 				{
-					JRequest::setVar("task", "icalevent.edit");
+					JFactory::getApplication()->input->setVar("task", "icalevent.edit");
 					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
 					$catids = implode(",", $catids);
 					$dispatcher = JEventDispatcher::getInstance();
 					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
 					$allowedcats = explode(",", $catids);
-					JRequest::setVar("task", $jevtask);
+					JFactory::getApplication()->input->setVar("task", $jevtask);
 				}
 			}
 
@@ -2645,7 +2645,7 @@ SCRIPT;
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get('com_rss_live_bookmarks'))
 		{
-			$Itemid = JRequest::getInt('Itemid', 0);
+			$Itemid = JFactory::getApplication()->input->getInt('Itemid', 0);
 			$rssmodid = $cfg->get('com_rss_modid', 0);
 			// do not use JRoute since this creates .rss link which normal sef can't deal with
 			$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
@@ -2861,7 +2861,7 @@ SCRIPT;
 			{
 				$safeurlparams["sessionArray"] = "STRING";
 				//var_dump($sessionArrayData);
-				JRequest::setVar("sessionArray", md5(serialize($sessionArrayData)));
+				JFactory::getApplication()->input->setVar("sessionArray", md5(serialize($sessionArrayData)));
 
 				// if we have session data then stop progressive caching
 				if ($conf->get('caching', 1) == 2)
@@ -2891,7 +2891,7 @@ SCRIPT;
 				}
 			}
 
-			 if (JRequest::getCmd("em") || JRequest::getCmd("em2")){
+			 if (JFactory::getApplication()->input->getCmd("em") || JFactory::getApplication()->input->getCmd("em2")){
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
@@ -3641,7 +3641,7 @@ SCRIPT;
 	{
 		// TODO - run this through plugins first ?
 
-		$icalformatted = JRequest::getInt("icf", 0);
+		$icalformatted = JFactory::getApplication()->input->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = self::replacetags($desc);
 		else
@@ -3792,6 +3792,7 @@ SCRIPT;
                 if (defined ("WPJEVENTS")){
                     $cfg = JEVConfig::getInstance();
                     $cfg->set('com_email_icon_view', 0);
+                    $cfg->set('bootstrapcss', 1);
                 }
         }
         

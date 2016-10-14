@@ -63,7 +63,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
-			JRequest::setVar('tmpl', 'component'); //force the component template
+			JFactory::getApplication()->input->setVar('tmpl', 'component'); //force the component template
 		}
 		else
 		{

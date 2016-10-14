@@ -60,7 +60,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		/*
 		 * This is problematic since it will affect direct links to a specific repeat e.g. from latest events module on this menu item
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$Itemid = JRequest::getInt("Itemid");
+		$Itemid = JFactory::getApplication()->input->getInt("Itemid");
 		if ($params->get("nextrepeat", 0) && $Itemid>0 )
 		{
 			$menu = JFactory::getApplication()->getMenu();
@@ -73,7 +73,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 						$this->datamodel  =  new JEventsDataModel();
 						$this->datamodel->setupComponentCatids();
 						list($year,$month,$day) = JEVHelper::getYMD();
-						$uid = urldecode((JRequest::getVar( 'uid', "" )));
+						$uid = urldecode((JFactory::getApplication()->input->getVar( 'uid', "" )));
 						$eventdata = $this->datamodel->getEventData( $evid, "icaldb", $year, $month, $day, $uid );
 						if ($eventdata && isset($eventdata["row"])){
 							$nextrepeat = $eventdata["row"]->getNextRepeat();
@@ -165,7 +165,7 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0)) JRequest::setVar("tmpl","component");
+		if ($params->get("editpopup",0)) JFactory::getApplication()->input->setVar("tmpl","component");
 		
 		parent::edit();
 	}

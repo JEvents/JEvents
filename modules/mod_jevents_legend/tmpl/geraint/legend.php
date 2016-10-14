@@ -42,7 +42,7 @@ class GeraintModLegendView extends DefaultModLegendView{
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
 		$cfg = JEVConfig::getInstance();
 
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		if ($this->disable && $option!=JEV_COM_COMPONENT) return;
 
 		$catidList = "";
@@ -96,7 +96,7 @@ class GeraintModLegendView extends DefaultModLegendView{
 		$catidsOut = str_replace(",",$separator,$catidList);
 
 		// I should only show legend for items that **can** be shown in calendar so must filter based on GET/POST
-		$catidsIn = JRequest::getVar('catids', "NONE" );
+		$catidsIn = JFactory::getApplication()->input->getVar('catids', "NONE" );
 		if ($catidsIn!="NONE" && $catidsIn!="0") $catidsGP = explode($separator,$catidsIn);
 		else $catidsGP = array();
 		$catidsGPList = implode(",",$catidsGP);
@@ -118,7 +118,7 @@ class GeraintModLegendView extends DefaultModLegendView{
 		else {
 
 			if ($Itemid<999999) $itm = "&Itemid=$Itemid";
-			$task 	= JRequest::getVar(	'jevcmd',	$cfg->get('com_startview'));
+			$task 	= JFactory::getApplication()->input->getVar(	'jevcmd',	$cfg->get('com_startview'));
 
 			list($year,$month,$day) = JEVHelper::getYMD();
 			$tsk="";

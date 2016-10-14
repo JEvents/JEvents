@@ -305,24 +305,24 @@ class jevFilter
 		$module = JModuleHelper::getModule("mod_jevents_filter");
 		if ($module){
 			$modparams = new JRegistry($module->params);
-			$option = JRequest::getCmd("option");
+			$option = JFactory::getApplication()->input->getCmd("option");
 			if ($modparams->get("resetfilters")=="nonjevents" && $option!="com_jevents" && $option!="com_jevlocations" && $option!="com_jevpeople" && $option!="com_rsvppro"  && $option!="com_jevtags") {
-				JRequest::setVar('filter_reset',1);
-				JFactory::getApplication()->setUserState( 'active_filter_menu ',JRequest::getInt("Itemid", 0));
+				JFactory::getApplication()->input->setVar('filter_reset',1);
+				JFactory::getApplication()->setUserState( 'active_filter_menu ',JFactory::getApplication()->input->getInt("Itemid", 0));
 			}
 			// DO NOT RESET if posting a filter form!
-			else if ($modparams->get("resetfilters")=="newmenu" && JRequest::getCmd("jevents_filter_submit", false,"POST")!==false) {
-				// Must use JRequest::getInt("Itemid") since missing event finder resets active menu item!
-				if (JRequest::getInt("Itemid",0) && JRequest::getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
-					JRequest::setVar('filter_reset',1);
-					JFactory::getApplication()->setUserState( 'active_filter_menu ',JRequest::getInt("Itemid", 0));
+			else if ($modparams->get("resetfilters")=="newmenu" && JFactory::getApplication()->input->getCmd("jevents_filter_submit", false,"POST")!==false) {
+				// Must use JFactory::getApplication()->input->getInt("Itemid") since missing event finder resets active menu item!
+				if (JFactory::getApplication()->input->getInt("Itemid",0) && JFactory::getApplication()->input->getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem",0)){
+					JFactory::getApplication()->input->setVar('filter_reset',1);
+					JFactory::getApplication()->setUserState( 'active_filter_menu ',JFactory::getApplication()->input->getInt("Itemid", 0));
 				}				
 			}
 		}
 		
 		$user = JFactory::getUser();
 		// TODO chek this logic
-		if ((int)JRequest::getVar('filter_reset',0)){
+		if ((int)JFactory::getApplication()->input->getVar('filter_reset',0)){
 			$this->filter_value =  $this->filterNullValue;
 			for ($v=0;$v<$this->valueNum;$v++){
 				$this->filter_values[$v] = $this->filterNullValues[$v] ;
@@ -335,9 +335,9 @@ class jevFilter
 		// if not logged in and using cache then do not use session data
 		// ALSO if this filter is not visible on the page then should not use filter value - does this supersede the previous condition ???
 		else if ( ($user->get('id')==0 && $useCache) || !$this->visible) {
-			$this->filter_value =  JRequest::getVar($this->filterType.'_fv', $this->filterNullValue );
+			$this->filter_value =  JFactory::getApplication()->input->getVar($this->filterType.'_fv', $this->filterNullValue );
 			for ($v=0;$v<$this->valueNum;$v++){
-				$this->filter_values[$v] = JRequest::getVar($this->filterType.'_fvs'.$v, $this->filterNullValues[$v]);
+				$this->filter_values[$v] = JFactory::getApplication()->input->getVar($this->filterType.'_fvs'.$v, $this->filterNullValues[$v]);
 			}
 		}
 		else {
@@ -353,9 +353,9 @@ class jevFilter
 		/*
 }
 else {
-$this->filter_value = JRequest::getString($this->filterType.'_fv', $this->filterNullValue );
+$this->filter_value = JFactory::getApplication()->input->getString($this->filterType.'_fv', $this->filterNullValue );
 for ($v=0;$v<$this->valueNum;$v++){
-$this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->filterNullValues[$v] );
+$this->filter_values[$v] = JFactory::getApplication()->input->getInt($this->filterType."_fvs".$v, $this->filterNullValues[$v] );
 }
 }
 */
@@ -380,7 +380,7 @@ $this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->
 			$filterValue = JFactory::getApplication()->getUserStateFromRequest( $filterType.'_fv_ses', $filterType.'_fv', $filterNullValue );
 		}
 		else {
-			$filterValue = JRequest::getInt($filterType.'_fv', $filterNullValue );
+			$filterValue = JFactory::getApplication()->input->getInt($filterType.'_fv', $filterNullValue );
 		}
 		return $filterValue;
 	}

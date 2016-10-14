@@ -199,7 +199,7 @@ class SaveIcalEvent {
 		
 		// Only update the repetitions if the event edit says the reptitions will have changed or a new event or ONLY 1 repetition
 		$repetitions = $vevent->getRepetitions(true);
-		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
+		if ($newevent || JFactory::getApplication()->input->getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
 				try {
 					$vevent->storeRepetitions();
@@ -303,8 +303,8 @@ class SaveIcalEvent {
 			$created_by = $user->name . " (".$user->email.")";
 			if ($created_by==null || $created_by==" ()") {
 				$created_by= "Anonymous";
-				if (JRequest::getString("custom_anonusername","")!=""){
-					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";
+				if (JFactory::getApplication()->input->getString("custom_anonusername","")!=""){
+					$created_by=JFactory::getApplication()->input->getString("custom_anonusername","")." (".JFactory::getApplication()->input->getString("custom_anonemail","").")";
 				}
 			}
                         //JFactory::getApplication()->enququeMessage("Sending Admin mail to ".$adminEmail);

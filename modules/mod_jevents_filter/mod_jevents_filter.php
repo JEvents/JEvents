@@ -25,7 +25,7 @@ $registry	= JRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess","mod_jevents_filter");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
-$option = JRequest::getCmd("option");
+$option = JFactory::getApplication()->input->getCmd("option");
 if ($params->get("alwaystarget",0) && $params->get("target_itemid",0)>0){
 	JFactory::getApplication()->setUserState("jevents.filtermenuitem",$params->get("target_itemid",0));
 }
@@ -36,7 +36,7 @@ else if ($option=="com_jevents"){
 		JFactory::getApplication()->setUserState("jevents.filtermenuitem",$active->id);
 	}
 }
-if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
+if (JFactory::getApplication()->input->getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
 	return;
 }
 JFactory::getApplication()->activeModule = $module;

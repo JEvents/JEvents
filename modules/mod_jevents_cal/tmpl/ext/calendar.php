@@ -32,11 +32,11 @@ class ExtModCalView extends DefaultModCalView
 		$base_month = date("m",$basedate);
 		$basefirst_of_month   = JevDate::mktime(0,0,0,$base_month, 1, $base_year);
 
-		$requestYear = JRequest::getInt("year",0);
-		$requestMonth = JRequest::getInt("month",0);
+		$requestYear = JFactory::getApplication()->input->getInt("year",0);
+		$requestMonth = JFactory::getApplication()->input->getInt("month",0);
 		// special case when site link set the dates for the mini-calendar in the URL but not in the ajax request
-		if ($requestMonth && $requestYear && JRequest::getString("task","")!="modcal.ajax"  && $this->modparams->get("minical_usedate",0)){
-			$requestDay = JRequest::getInt("day",1);
+		if ($requestMonth && $requestYear && JFactory::getApplication()->input->getString("task","")!="modcal.ajax"  && $this->modparams->get("minical_usedate",0)){
+			$requestDay = JFactory::getApplication()->input->getInt("day",1);
 
 			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);

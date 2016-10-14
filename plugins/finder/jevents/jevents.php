@@ -86,7 +86,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	public function onStoreCustomDetails($evdetail)
 	{
 		// Only use this method when editing and saving a specific repeat
-		if (JRequest::getCmd("task")!="icalrepeat.save" && JRequest::getCmd("task")!="icalrepeat.apply" ){
+		if (JFactory::getApplication()->input->getCmd("task")!="icalrepeat.save" && JFactory::getApplication()->input->getCmd("task")!="icalrepeat.apply" ){
 			return true;
 		}
 		$detailid = $evdetail->evdet_id;

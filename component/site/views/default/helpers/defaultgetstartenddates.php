@@ -6,25 +6,25 @@ function Defaultgetstartenddates($view){
 	$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 
 	// fix to allow start/end date to be preserved during pagination IF filter module before/after dates are used
-	$Itemid = JRequest::getInt("Itemid",0);
+	$Itemid = JFactory::getApplication()->input->getInt("Itemid",0);
 	// This causes the filter module to reset
 	$filters = jevFilterProcessing::getInstance(array());
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
-	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
+	if (intval(JFactory::getApplication()->input->getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
                 // if actively filtering then do not reset
-		if (!JRequest::getString("startdate",0)) {
-                    JRequest::setVar( 'startdate', '');
+		if (!JFactory::getApplication()->input->getString("startdate",0)) {
+                    JFactory::getApplication()->input->setVar( 'startdate', '');
         	    JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
                 }
-		if (!JRequest::getString("enddate",0)) {
-                    JRequest::setVar( 'enddate', '');
+		if (!JFactory::getApplication()->input->getString("enddate",0)) {
+                    JFactory::getApplication()->input->setVar( 'enddate', '');
                     JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
                 }
 		JFactory::getApplication()->setUserState( 'active_filter_menu ', 0);
 	}
 
-	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', JRequest::getString("startdate"));
-	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', JRequest::getString("enddate"));
+	$startdate = JFactory::getApplication()->getUserStateFromRequest( 'range_startdate'.$Itemid, 'startdate', JFactory::getApplication()->input->getString("startdate"));
+	$enddate = JFactory::getApplication()->getUserStateFromRequest( 'range_enddate'.$Itemid, 'enddate', JFactory::getApplication()->input->getString("enddate"));
 
         if ($startdate!=""){
             // WE have specified a start date in the URL so we should use it!

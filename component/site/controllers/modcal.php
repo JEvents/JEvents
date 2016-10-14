@@ -77,7 +77,7 @@ class ModCalController extends JControllerLegacy   {
 	}
 
 	function ajax() {
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$modid = intval((JFactory::getApplication()->input->getVar('modid', 0)));
 		if ($modid<=0){
 			echo "<script>alert('bad mod id');</script>";
 			return;
@@ -137,11 +137,11 @@ class ModCalController extends JControllerLegacy   {
 		ob_end_clean();
                 // commmended out - see https://www.jevents.net/forum/viewtopic.php?f=24&t=40917&p=192337#p192337
 		//ob_end_flush();
-		if (JRequest::getCmd("callback", 0)){
-			echo JRequest::getCmd("callback", 0)."(". json_encode($json),");";
+		if (JFactory::getApplication()->input->getCmd("callback", 0)){
+			echo JFactory::getApplication()->input->getCmd("callback", 0)."(". json_encode($json),");";
 			exit();
 		}
-		else if (JRequest::getInt("json")==1){
+		else if (JFactory::getApplication()->input->getInt("json")==1){
 			echo json_encode($json);
 			exit();
 		}

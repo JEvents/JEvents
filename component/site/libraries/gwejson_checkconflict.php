@@ -150,7 +150,6 @@ function simulateSaveEvent($requestObject)
 	}
 	
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
-	//	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
 	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
 	$array = $safeHtmlFilter->clean($formdata, null);
 		
@@ -211,7 +210,6 @@ function simulateSaveRepeat($requestObject)
 		$k = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	//$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
 	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
 	$array = $safeHtmlFilter->clean($formdata, null);
 

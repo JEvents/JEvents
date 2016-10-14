@@ -72,7 +72,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 		$db = JFactory::getDbo();
 
-		$evdet_id = JRequest::getInt("evdet_id", 0);
+		$evdet_id = JFactory::getApplication()->input->getInt("evdet_id", 0);
 		$db->setQuery("SELECT * FROM #__jevents_vevdetail where evdet_id = ".$evdet_id);
 		$data = $db->loadAssoc();
 		return $data;
@@ -82,8 +82,8 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 		$db = JFactory::getDbo();
 
-		$evdet_id = JRequest::getInt("evdet_id", 0);
-		$lang = JRequest::getString("lang", "");
+		$evdet_id = JFactory::getApplication()->input->getInt("evdet_id", 0);
+		$lang = JFactory::getApplication()->input->getString("lang", "");
 		$db->setQuery("SELECT * FROM #__jevents_translation where evdet_id = ".$evdet_id . " AND language = ". $db->quote($lang));
 		$tempdata = $db->loadAssoc();
 		$data  = array();
@@ -103,8 +103,8 @@ class IcaleventsModelicalevent extends JModelAdmin
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("allowraw", 0))
 		{
-			$array['trans_description'] = JRequest::getString("trans_description", "", "POST", JREQUEST_ALLOWRAW);
-			$array['trans_extra_info'] = JRequest::getString("trans_extra_info", "", "POST", JREQUEST_ALLOWRAW);
+			$array['trans_description'] = JFactory::getApplication()->input->getString("trans_description", "", "POST", "RAW");
+			$array['trans_extra_info'] = JFactory::getApplication()->input->getString("trans_extra_info", "", "POST", "RAW");
 		}
 
 		include_once JPATH_COMPONENT."/tables/translate.php";
@@ -123,7 +123,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 		include_once JPATH_COMPONENT."/tables/translate.php";
 		$translation = new TableTranslate();
-		$translation->delete(JRequest::getInt("trans_translation_id"));
+		$translation->delete(JFactory::getApplication()->input->getInt("trans_translation_id"));
 	}
 
 	/**

@@ -109,9 +109,9 @@ class JEventsDataModel {
 
 		$separator = $params->get("catseparator","|");
 
-		$catidsIn		= JRequest::getVar(	'catids', 		'NONE' ) ;
+		$catidsIn		= JFactory::getApplication()->input->getVar(	'catids', 		'NONE' ) ;
 		if ($catidsIn == "NONE"   || $catidsIn == 0 ) {
-			$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
+			$catidsIn		= JFactory::getApplication()->input->getVar(	'category_fv', 		'NONE' ) ;
 		}
 		
 		// set menu/module constraint values for later use
@@ -140,7 +140,7 @@ class JEventsDataModel {
 		$this->mmcatidList = implode(",",$this->mmcatids);
 		
 		// if resettting then always reset to module/menu value
-		if (intval(JRequest::getVar('filter_reset',0))){
+		if (intval(JFactory::getApplication()->input->getVar('filter_reset',0))){
 			$this->catids = $this->mmcatids;
 			$this->catidList  = $this->mmcatidList ;
 		}
@@ -713,7 +713,7 @@ class JEventsDataModel {
 		$data = array();
 
 		
-		$pop = intval(JRequest::getVar( 'pop', 0 ));
+		$pop = intval(JFactory::getApplication()->input->getVar( 'pop', 0 ));
 		$Itemid = JEVHelper::getItemid();
 		$db	= JFactory::getDBO();
 		$user= JFactory::getUser();
@@ -912,7 +912,7 @@ class JEventsDataModel {
 
 		if (count($catids)==0 || (count($catids)==1 && $catids[0]=="")){
 			// We are using the filter instead
-			$tempcat = JRequest::getVar("category_fv",0);
+			$tempcat = JFactory::getApplication()->input->getVar("category_fv",0);
 			$catids = array();
 			$catids[] = $tempcat;
 		}
@@ -1134,7 +1134,7 @@ class JEventsDataModel {
 		$month = JevDate::strftime("%m",$d1);
 		$monthResult['month'] = $month;
 		$monthResult['name'] = JEVHelper::getMonthName($month);
-		$task = JRequest::getString('jevtask');
+		$task = JFactory::getApplication()->input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
 		else $item="";
@@ -1167,7 +1167,7 @@ class JEventsDataModel {
 		}
 		
 		$month = JevDate::strftime("%m",$d1);
-		$task = JRequest::getString('jevtask');
+		$task = JFactory::getApplication()->input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
 		else $item="";
@@ -1197,7 +1197,7 @@ class JEventsDataModel {
 		}
 		
 		$month = JevDate::strftime("%m",$d1);
-		$task = JRequest::getString('jevtask');
+		$task = JFactory::getApplication()->input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
 		else $item="";

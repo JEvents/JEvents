@@ -15,13 +15,13 @@ defined('_JEXEC') or die();
 
 $datamodel = new JEventsDataModel();
 // find appropriate Itemid and setup catids for datamodel
-$Itemid = JRequest::getInt("Itemid");
-$option = JRequest::getCmd("option");
+$Itemid = JFactory::getApplication()->input->getInt("Itemid");
+$option = JFactory::getApplication()->input->getCmd("option");
 $jevtask = false;
 if ($option == JEV_COM_COMPONENT)
 {
 	$myItemid = $Itemid;
-	$jevtask = JRequest::getVar("jevtask", "year.listevents");
+	$jevtask = JFactory::getApplication()->input->getVar("jevtask", "year.listevents");
 }
 else
 {
@@ -59,14 +59,14 @@ if ($myItemid > 0)
 $datamodel->setupComponentCatids();
 
 list($year, $month, $day) = JEVHelper::getYMD();
-$evid = JRequest::getVar("evid", false);
-$jevtype = JRequest::getVar("jevtype", false);
+$evid = JFactory::getApplication()->input->getVar("evid", false);
+$jevtype = JFactory::getApplication()->input->getVar("jevtype", false);
 // FORM for filter submission
 $tmpCatids = trim($datamodel->catidsOut);
 
 if ($form_link == "")
 {
-	$form_link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . JRequest::getVar("jevtask", "cat.listevents") . "&Itemid=" . $myItemid;
+	$form_link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . JFactory::getApplication()->input->getVar("jevtask", "cat.listevents") . "&Itemid=" . $myItemid;
 }
 
 $form_link .= "&year=$year&month=$month&day=$day";
@@ -79,7 +79,7 @@ $form_link = JRoute::_($form_link
 
 $filters = $jevhelper->getFilters();
 
-$option = JRequest::getCmd("option");
+$option = JFactory::getApplication()->input->getCmd("option");
 if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $option != "com_jevlocations" && $option != "com_jevpeople" && $option != "com_rsvppro" && $option != "com_jevtags")
 {
 	// display nothing on non-jevents pages - again make this a config option
@@ -89,7 +89,7 @@ if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $op
 //Check if in event details
 //We never need filters in an edit page, this could cause user issues, so if there remove to.
 if (
-		((JRequest::getCmd("task") == "icalrepeat.detail" || JRequest::getCmd("task") == "icalevent.detail" ) && $params->get('showindetails', 0) == 0) || JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalrepeat.edit" || JRequest::getCmd("task") == "icalevent.edit")
+		((JFactory::getApplication()->input->getCmd("task") == "icalrepeat.detail" || JFactory::getApplication()->input->getCmd("task") == "icalevent.detail" ) && $params->get('showindetails', 0) == 0) || JFactory::getApplication()->input->getCmd("task") == "icalevent.edit" || JFactory::getApplication()->input->getCmd("task") == "icalrepeat.edit" || JFactory::getApplication()->input->getCmd("task") == "icalevent.edit")
 {
 	return;
 }

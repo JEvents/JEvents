@@ -106,7 +106,7 @@ class AdminUserModelUser extends JModelLegacy
 	 * @return array of users
 	 */
 	function getUser() {
-		$cid = JRequest::getVar("cid",array(0));
+		$cid = JFactory::getApplication()->input->getVar("cid",array(0));
 		ArrayHelper::toInteger($cid);
 		if (count($cid)>0){
 			$id=$cid[0];

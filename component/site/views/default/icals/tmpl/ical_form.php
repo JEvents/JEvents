@@ -31,7 +31,7 @@ if ($jinput->getString("submit","") != "")
 		$cats[] = 0;
 
 
-	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
+	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JFactory::getApplication()->input->getVar('years','','POST'),true));
 	//$cats = implode("|",$cats);
         $jr_years = $jinput->post->get('years', array(0), null);
 	$years = JEVHelper::forceIntegerArray($jr_years, true);
@@ -108,12 +108,12 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 // All categories
 		$cb = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('categories', 0, 'POST'))
+		if (!JFactory::getApplication()->input->getVar('categories', 0, 'POST'))
 		{
 			$cb = $cb . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('categories', 0, 'POST') && in_array(0, JRequest::getVar('categories', '', 'POST')))
+		else if (JFactory::getApplication()->input->getVar('categories', 0, 'POST') && in_array(0, JFactory::getApplication()->input->getVar('categories', '', 'POST')))
 		{
 			$cb = $cb . " CHECKED";
 			$checked = true;
@@ -128,11 +128,11 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				if (!in_array($c->id, $accessiblecats))
 					continue;
 				$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
-				if (!JRequest::getVar('categories', 0))
+				if (!JFactory::getApplication()->input->getVar('categories', 0))
 				{
 					//$cb=$cb." CHECKED";
 				}
-				else if (JRequest::getVar('categories', 0) && in_array($c->id, JRequest::getVar('categories', '', 'POST')))
+				else if (JFactory::getApplication()->input->getVar('categories', 0) && in_array($c->id, JFactory::getApplication()->input->getVar('categories', '', 'POST')))
 				{
 					$cb = $cb . " CHECKED";
 				}
@@ -149,12 +149,12 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 // All years
 		$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('years', 0))
+		if (!JFactory::getApplication()->input->getVar('years', 0))
 		{
 			$yt = $yt . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('years', 0) && in_array(0, JRequest::getVar('years', '', 'POST')))
+		else if (JFactory::getApplication()->input->getVar('years', 0) && in_array(0, JFactory::getApplication()->input->getVar('years', '', 'POST')))
 		{
 			$yt = $yt . " CHECKED";
 			$checked = true;
@@ -176,11 +176,11 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 			foreach ($year AS $y)
 			{
 				$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
-				if (!JRequest::getVar('years', 0))
+				if (!JFactory::getApplication()->input->getVar('years', 0))
 				{
 					//$yt = $yt . " CHECKED";
 				}
-				else if (JRequest::getVar('years', 0) && in_array($y, JRequest::getVar('years', '', 'POST')))
+				else if (JFactory::getApplication()->input->getVar('years', 0) && in_array($y, JFactory::getApplication()->input->getVar('years', '', 'POST')))
 				{
 					$yt = $yt . " CHECKED";
 				}
@@ -196,7 +196,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 	if ($params->get("icalformatted", 1) == 1){
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
-	<input name="icalformatted" type="checkbox" value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
+	<input name="icalformatted" type="checkbox" value="1" <?php echo JFactory::getApplication()->input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?> />
 	<label>		<?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING") ; ?>	</label>
 <?php } 
 	echo "</div>";

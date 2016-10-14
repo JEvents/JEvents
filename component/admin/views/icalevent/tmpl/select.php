@@ -122,7 +122,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 								$img = JHTML::_('image', 'system/calendar.png', '', array('title' => ''), true);
 							}							
 							?>
-							<a href="<?php echo JRoute::_("index.php?option=com_jevents&tmpl=component&task=icalrepeat.select&evid=" . $row->ev_id() . "&function=" . $function . "&" . JSession::getFormToken() . '=1&nomenu=' . JRequest::getInt("nomenu")); ?>" title="<?php echo JText::_("JEV_SELECT_REPEAT"); ?>" >
+							<a href="<?php echo JRoute::_("index.php?option=com_jevents&tmpl=component&task=icalrepeat.select&evid=" . $row->ev_id() . "&function=" . $function . "&" . JSession::getFormToken() . '=1&nomenu=' . JFactory::getApplication()->input->getInt("nomenu")); ?>" title="<?php echo JText::_("JEV_SELECT_REPEAT"); ?>" >
 		<?php echo $img; ?>
 							</a>
 						<?php } ?>

@@ -108,22 +108,22 @@ class ICalsController extends AdminIcalsController
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$years = JRequest::getVar('years', 'NONE');
-		$cats = JRequest::getVar('catids', 'NONE');
+		$years = JFactory::getApplication()->input->getVar('years', 'NONE');
+		$cats = JFactory::getApplication()->input->getVar('catids', 'NONE');
 
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
 
-		$outlook2003icalexport = JRequest::getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
+		$outlook2003icalexport = JFactory::getApplication()->input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
 		if ($outlook2003icalexport)
 		{
-			JRequest::setVar("icf", 1);
+			JFactory::getApplication()->input->setVar("icf", 1);
 		}
 
 		$privatecalendar = false;
-		$k = JRequest::getString("k", "NONE");
-		$pk = JRequest::getString("pk", "NONE");
-		$userid = JRequest::getInt("i", 0);
+		$k = JFactory::getApplication()->input->getString("k", "NONE");
+		$pk = JFactory::getApplication()->input->getString("pk", "NONE");
+		$userid = JFactory::getApplication()->input->getInt("i", 0);
 		if ($pk != "NONE")
 		{
 			if (!$userid) {
@@ -172,11 +172,11 @@ class ICalsController extends AdminIcalsController
 		JEVHelper::forceIntegerArray($cats, false);
 		if ($cats != array(0))
 		{
-			JRequest::setVar("catids", implode("|", $cats));
+			JFactory::getApplication()->input->setVar("catids", implode("|", $cats));
 		}
 		else
 		{
-			JRequest::setVar("catids", '');
+			JFactory::getApplication()->input->setVar("catids", '');
 		}
 
 		//Parsing variables from URL
@@ -195,7 +195,7 @@ class ICalsController extends AdminIcalsController
 		}
 		else if ($years != "NONE")
 		{
-			$years = explode(",", JRequest::getVar('years'));
+			$years = explode(",", JFactory::getApplication()->input->getVar('years'));
 			if (!is_array($years) || count($years) == 0)
 			{
 				list($y, $m, $d) = JEVHelper::getYMD();
@@ -210,9 +210,9 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// Lockin hte categories from the URL
-		$Itemid = JRequest::getInt("Itemid",0);
+		$Itemid = JFactory::getApplication()->input->getInt("Itemid",0);
 		if (!$Itemid){
-			JRequest::setVar("Itemid",1);
+			JFactory::getApplication()->input->setVar("Itemid",1);
 		}
 		$this->dataModel->setupComponentCatids();
 
@@ -406,7 +406,7 @@ class ICalsController extends AdminIcalsController
 	function importdata()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JSession::checkToken() or jexit('Invalid Token');
 
 		// Can only do this if can add an event
 		// Must be at least an event creator to edit or create events
@@ -434,14 +434,14 @@ class ICalsController extends AdminIcalsController
 			return;
 		}
 
-		$catid = JRequest::getInt('catid', 0);
-		$ignoreembedcat = JRequest::getInt('ignoreembedcat', 0);
+		$catid = JFactory::getApplication()->input->getInt('catid', 0);
+		$ignoreembedcat = JFactory::getApplication()->input->getInt('ignoreembedcat', 0);
 		// Should come from the form or existing item
 		$access = 0;
 		$state = 1;
-		$uploadURL = JRequest::getVar('uploadURL', '');
+		$uploadURL = JFactory::getApplication()->input->getVar('uploadURL', '');
 		$icsLabel = uniqid('icsLabel');
-		$icsid = JRequest::getInt('icsid', 0);
+		$icsid = JFactory::getApplication()->input->getInt('icsid', 0);
 		$autorefresh = 0;
 
 		if ($catid == 0)
@@ -504,7 +504,7 @@ class ICalsController extends AdminIcalsController
 
 	private function exportEvent($withrepeats = true)
 	{
-		$rpid = JRequest::getInt("evid", 0);
+		$rpid = JFactory::getApplication()->input->getInt("evid", 0);
 		if (!$rpid)
 			return;
 
@@ -522,7 +522,7 @@ class ICalsController extends AdminIcalsController
 			}
 			if (!$a) return;
 			
-			JRequest::setVar("tmpl", "component");
+			JFactory::getApplication()->input->setVar("tmpl", "component");
 		
 			//$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
@@ -549,7 +549,7 @@ class ICalsController extends AdminIcalsController
 	{
 		// TODO - run this through plugins first ?
 
-		$icalformatted = JRequest::getInt("icf", 0);
+		$icalformatted = JFactory::getApplication()->input->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
 		else

@@ -263,7 +263,7 @@ class JEventsHTML
 
 		// Thanks to ssobada
 		// when editing events we restrict the available list!
-		$jevtask = JRequest::getString("jevtask");
+		$jevtask = JFactory::getApplication()->input->getString("jevtask");
 		if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
 		{
 			$user = JFactory::getUser();
@@ -288,7 +288,7 @@ class JEventsHTML
 					}
 					else
 					{
-						if (JRequest::getInt("evid", 0) > 0)
+						if (JFactory::getApplication()->input->getInt("evid", 0) > 0)
 						{
 							// TODO - this should check the creator of the event
 							$action = 'core.edit';
@@ -305,7 +305,7 @@ class JEventsHTML
 				}
 				else
 				{
-					if (JRequest::getInt("evid", 0) > 0)
+					if (JFactory::getApplication()->input->getInt("evid", 0) > 0)
 					{
 						// TODO - this should check the creator of the event
 						$action = 'core.edit';
@@ -322,7 +322,7 @@ class JEventsHTML
 			}
 			else
 			{
-				if (JRequest::getInt("evid", 0) > 0)
+				if (JFactory::getApplication()->input->getInt("evid", 0) > 0)
 				{
 					// TODO - this should check the creator of the event
 					$action = 'core.edit';
@@ -390,7 +390,7 @@ class JEventsHTML
 
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
-		$params = JComponentHelper::getParams(JRequest::getCmd("option", "com_jevents"));
+		$params = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd("option", "com_jevents"));
 		if ($eventediting && $params->get("multicategory", 0))
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;

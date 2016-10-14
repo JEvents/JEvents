@@ -81,7 +81,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		//JToolBarHelper::help( 'edit.user', true);
 
-		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
+		$option = JFactory::getApplication()->input->getCmd('option', JEV_COM_COMPONENT);
 
 		$db = JFactory::getDBO();
 

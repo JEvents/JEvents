@@ -364,10 +364,10 @@ RAWTEXT;
 				$dispatcher     = JEventDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				if ($matchingEvent) {
-					JRequest::setVar("evid", $vevent->ev_id);
+					JFactory::getApplication()->input->setVar("evid", $vevent->ev_id);
 				}
 				else {
-					JRequest::setVar("evid", 0);
+					JFactory::getApplication()->input->setVar("evid", 0);
 				}
 
 				$repetitions = $vevent->getRepetitions(true);

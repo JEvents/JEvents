@@ -504,7 +504,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	private
 			function generateVersionsFile($rssDoc)
 	{
-		if (JRequest::getInt("versions", 0) == 0)
+		if (JFactory::getApplication()->input->getInt("versions", 0) == 0)
 		{
 			return;
 		}

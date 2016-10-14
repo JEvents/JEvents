@@ -86,7 +86,7 @@ class AdminUserController extends JControllerLegacy   {
 
 	function saveUser( ) {
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
@@ -96,8 +96,8 @@ class AdminUserController extends JControllerLegacy   {
 			return;
 		}
 		
-		$post	= JRequest::get('post');
-		$cid	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$post	= JFactory::getApplication()->input->get('post');
+		$cid	= JFactory::getApplication()->input->getVar( 'cid', array(0), 'post', 'array' );
 		$cid = (int) $cid[0];
 
 		$model = $this->getModel('user');
@@ -116,7 +116,7 @@ class AdminUserController extends JControllerLegacy   {
 
 	function removeUser() {
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";
@@ -239,7 +239,7 @@ class AdminUserController extends JControllerLegacy   {
 	
 	private function changeState($field, $newstate, $successMessage){
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		if (!JEVHelper::isAdminUser()) {
 			$msg = "Not Authorised";

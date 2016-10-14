@@ -166,7 +166,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . parent::editTask() . '&evid=' . parent::id() . '&Itemid=' . $Itemid . '&rp_id=' . $this->rp_id() . "&year=$year&month=$month&day=$day";
 		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop",0)?"&tmpl=component&pop=1":"";
+		$link .= JFactory::getApplication()->input->getInt("pop",0)?"&tmpl=component&pop=1":"";
 		$link = JRoute::_($link, true);
 		return $link;
 
@@ -181,7 +181,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . parent::editCopyTask() . '&evid=' . parent::id() . '&Itemid=' . $Itemid . '&rp_id=' . $this->rp_id() . "&year=$year&month=$month&day=$day";
 		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop",0)?"&tmpl=component&pop=1":"";
+		$link .= JFactory::getApplication()->input->getInt("pop",0)?"&tmpl=component&pop=1":"";
 		$link = JRoute::_($link, true);
 		return $link;
 
@@ -194,7 +194,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->editTask() . '&evid=' . $this->id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day";
 		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop",0)?"&tmpl=component&pop=1":"";
+		$link .= JFactory::getApplication()->input->getInt("pop",0)?"&tmpl=component&pop=1":"";
 		$link = JRoute::_($link, true);
 		return $link;
 
@@ -249,7 +249,7 @@ class jIcalEventRepeat extends jIcalEventDB
                     $link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.detail&evid=" . $this->ev_id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
                 }
-		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("option", "") != "com_search" && JRequest::getCmd("jevtask", "") != "crawler.listevents")
+		if (JFactory::getApplication()->input->getCmd("tmpl", "") == "component" && JFactory::getApplication()->input->getCmd('task', 'selectfunction') != 'icalevent.select' && JFactory::getApplication()->input->getCmd("option", "") != "com_acymailing" && JFactory::getApplication()->input->getCmd("option", "") != "com_jnews" && JFactory::getApplication()->input->getCmd("option", "") != "com_search" && JFactory::getApplication()->input->getCmd("jevtask", "") != "crawler.listevents")
 		{
 			$link .= "&tmpl=component";
 		}
