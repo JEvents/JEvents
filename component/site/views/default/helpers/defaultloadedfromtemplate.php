@@ -535,6 +535,70 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = implode(", ", $catlinks);
 					$blank[] = "";
 					break;
+			case "{{CATEGORYLNK}}" || "{{CATEGORYLINK_RAW}}":
+				$router = JRouter::getInstance("site");
+				$catlinks = array();
+				if ($jevparams->get("multicategory", 0))
+				{
+					$catids = $event->catids();
+					$catdata = $event->getCategoryData();
+				}
+				else
+				{
+					$catids = array($event->catid());
+					$catdata = array($event->getCategoryData());
+				}
+				// Is this being called from the latest events module - if so then use the target item instead of current Itemid
+				$reg =  JRegistry::getInstance("jevents");
+				$modparams = $reg->get("jevents.moduleparams", new JRegistry);
+				$modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid",0));
+				$vars = $router->getVars();
+				foreach ($catids as $cat)
+				{
+					$vars["catids"] = $cat;
+					$catname = "xxx";
+					foreach ($catdata as $cg)
+					{
+						if ($cat == $cg->id)
+						{
+							$catname = $cg->name;
+							break;
+						}
+					}
+					$eventlink = "index.php?";
+					$itemidSet = false;
+					foreach ($vars as $key => $val)
+					{
+						// this is only used in the latest events module so do not perpetuate it here
+						if ($key == "filter_reset")
+							continue;
+						if ($key == "task" && ($val == "icalrepeat.detail" || $val == "icalevent.detail"))
+						{
+							$val = "week.listevents";
+						}
+						if ($key == "Itemid" && $modItemid){
+							$val = $modItemid;
+							$itemidSet = true;
+						}
+						$eventlink.= $key . "=" . $val . "&";
+					}
+					if (!$itemidSet && $modItemid) {
+						$eventlink.= "Itemid=".$modItemid;
+					}
+					$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
+					$eventlink = JRoute::_($eventlink);
+
+                    $catlinks_raw[] = $eventlink;
+
+					$catlinks[] = '<a class="ev_link_cat" href="' . $eventlink . '"  title="' . JEventsHTML::special($catname) . '">' . $catname . '</a>';
+				}
+				$search[] = "{{CATEGORYLNK_RAW}}";
+				$replace[] = implode(", ", $catlinks_raw);
+
+				$search[] = "{{CATEGORYLNK}}";
+				$replace[] = implode(", ", $catlinks);
+				$blank[] = "";
+				break;
 
 				case "{{CATEGORYIMG}}":
 					$search[] = "{{CATEGORYIMG}}";

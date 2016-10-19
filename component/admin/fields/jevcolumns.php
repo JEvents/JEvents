@@ -74,6 +74,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY",true), "CATEGORY");
 		$collist[] = array(JText::_("JEV_FIELD_ALL_CATEGORIES",true), "ALLCATEGORIES");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK",true), "CATEGORYLNK");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK_RAW",true), "CATEGORYLNK_RAW");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGE",true), "CATEGORYIMG");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGES",true), "CATEGORYIMGS");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_DESCRIPTION",true), "CATDESC");
