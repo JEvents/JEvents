@@ -454,6 +454,12 @@
 	<fields name="fieldset">
 		<!--		
 		<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
+			<field
+				name="target_itemid"
+				type="jevmenu"
+				default=""
+				label='JEV_TARGET_MENU'
+				description='JEV_TARGET_MENU_TIP'  />
 		</fieldset>		
 		//-->
 	</fields>	
