@@ -109,10 +109,16 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		jimport('joomla.filesystem.file');
-		if (!JFile::exists($path . $file . ".php"))
-		{
-			return true;
-		}
+                // Check for a custom version of the file first!
+                $custom_file =  str_replace("gwejson_", "gwejson_custom_", $file);
+                if (JFile::exists($path . $custom_file . ".php"))
+                {
+                        $file = $custom_file;
+                }
+                if (!JFile::exists($path . $file . ".php"))
+                {
+                        return true;
+                }
 
 		include_once ($path . $file . ".php");
 

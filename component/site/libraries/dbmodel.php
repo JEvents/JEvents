@@ -46,6 +46,17 @@ class JEventsDBModel
 			$catidList = $this->datamodel->catidList;
 		}
 
+                // If the menu of module has been constrained then we need to take account of that here!
+                JEVHelper::forceIntegerArray($catids, false);
+                if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
+                    JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
+                    $catids = array_intersect($this->datamodel->mmcatids, $catids);
+                    $catids = array_values($catids);
+                    $catids[] = -1;
+                    // hardening!
+                    $catidList = JEVHelper::forceIntegerArray($catids,true);
+                }
+                
 		$sectionname = JEV_COM_COMPONENT;
 
 		static $instances;
@@ -93,6 +104,10 @@ class JEventsDBModel
 					}
 				}
 			}
+                        // trap siguation where we have menu contraint but URL/filter is trying to get categories outside this!
+                        if (count($catids)>0 && !$hascatid  && isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
+                            $hascatid = true;
+                        }
 			if (count($catwhere) > 0)
 			{
 				$where = "AND (" . implode(" OR ", $catwhere) . ")";
