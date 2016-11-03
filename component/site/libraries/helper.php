@@ -1642,7 +1642,7 @@ class JEVHelper
 
 	// Fall back test to see if user can publish their own events based on config setting
 	public static
-			function canPublishOwnEvents($evid)
+			function canPublishOwnEvents($evid, $vevent = false)
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
@@ -1659,19 +1659,66 @@ class JEVHelper
 			{
 				return true;
 			}
-			else if ($evid == 0)
+			else if ($evid == 0  && $publishown==1)
 			{
 				return true;
 			}
-			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
-			$queryModel = new JEventsDBModel($dataModel);
+                        
+                        if ($evid==0 && $publishown==2){
+                            if ($params->get("category_allow_deny",1)==0){                            
+                                $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                if (isset($vevent->catid)){
+                                    $catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                                    $catids = array_intersect($catids, $okcats);
+                                    return count($catids)>0;
+                                }
+                            }
+                            else {
+                                $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+                                if ($canPublishOwn)
+                                {
+                                     $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                     if (isset($vevent->catid)){
+                                        $catids  = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                                        $catids = array_intersect($catids, $okcats);
+                                        return count($catids)>0;
+                                     }
+                                }
+                            }
+                        }
+                        else {
+                            $dataModel = new JEventsDataModel("JEventsAdminDBModel");
+                            $queryModel = new JEventsDBModel($dataModel);
 
-			$evid = intval($evid);
-			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
-			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
-			{
-				return true;
-			}
+                            $evid = intval($evid);
+                            $testevent = $queryModel->getEventById($evid, 1, "icaldb");
+                            if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+                            {
+                                if ($publishown==2) {
+                                    if ($params->get("category_allow_deny",1)==0){                            
+                                        $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                        $catids = $testevent->catids();
+                                        $catids = array_intersect($catids, $okcats);
+                                        return count($catids)>0;
+                                    }
+                                    else {
+                                        $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+                                        if ($canPublishOwn)
+                                        {
+                                            $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                            $catids = $testevent->catids();
+                                            $catids = array_intersect($catids, $okcats);
+                                            return count($catids)>0;
+                                        }
+                                        return false;
+                                    }
+                                }
+                                else {
+                                    return true;
+                                }
+                                
+                            }
+                        }
 		}
 
 		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
@@ -1813,10 +1860,18 @@ class JEVHelper
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 1);
 			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && $publishown)
+			if (!$authorisedonly && $publishown==1)
 			{
 				return true;
 			}
+                        else if (!$authorisedonly && $publishown==2)
+                        {                            
+                            $publishown = JEVHelper::canPublishOwnEvents($row->ev_id());
+                            if ($publishown )
+                            {
+                                return true;
+                            }
+                        }
 
 			// This involes TOO many database queries in Joomla - one per category which can be a LOT
 			/*
@@ -1995,7 +2050,7 @@ class JEVHelper
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 1);
 			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && ($publishown || JEVHelper::canPublishEvent($row, $user)))
+			if (!$authorisedonly && ($publishown==1 || JEVHelper::canPublishEvent($row, $user)))
 			{
 				return true;
 			}

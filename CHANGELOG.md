@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 01-11-2016 - Geraint Edwards
+* Foundation for publish own permissions in ACL - not implemented yet
+* Warning message when RSVP Pro and RSVP are both enabled
+* Enable category images in calendar cell and tool tip layouts
+* Allow gwejson to pick up custom versions of scripts instead of released ones to preserve customisations e.g. use gwesjon_custom_finduser.php to replace gwesjon_finduser.php
+
 ## 12-10-2016 - Geraint Edwards
 * JEvents 3.4.24
 * Fix for filtermap fields install problem on some servers

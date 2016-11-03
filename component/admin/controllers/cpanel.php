@@ -38,6 +38,13 @@ class AdminCpanelController extends JControllerAdmin
                // $db->setQuery($query);
                // $db->execute();
             
+                // Make sure RSVP Pro and RSVP are not both enabled
+                $rsvpplugin = JPluginHelper::isEnabled("jevents", "jevrsvp");
+                $rsvpproplugin = JPluginHelper::isEnabled("jevents", "jevrsvppro");
+                if ($rsvpproplugin && $rsvpplugin) {
+                    JFactory::getApplication()->enqueueMessage(JText::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
+                }
+                
 		// Add one category by default if none exist already
 		$sql = "SELECT id from #__categories where extension='com_jevents'";
 		$db->setQuery($sql);
