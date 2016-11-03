@@ -307,6 +307,8 @@
 		<field name="feimport" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_FRONTENDIMPORT" description="JEV_FRONTENDIMPORT_TIP" difficulty="3"/>
 		<field name="allowedit" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ALLOW_ICAL_EDIT" description="JEV_ALLOW_ICAL_EDIT_DESC" difficulty="3"/>
 		<field name="icalformatted" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_DESCRIPTIONS_FORMATTED" description="JEV_ICAL_DESCRIPTIONS_FORMATTED_DESC" difficulty="3"/>
+		<field name="source_url" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_EXPORT_SOURCE_URL" description="JEV_ICAL_EXPORT_SOURCE_URL_DESC" difficulty="2" />
+		<field name="default_itemid" type="jevmenu" default="" label='JEV_TARGET_MENU' description='JEV_TARGET_MENU_TIP' difficulty="2" />
 	</fieldset>
 	
 	<fieldset name="JEV_TAB_RSS" difficulty="2">
@@ -457,11 +459,11 @@
 	<fields name="fieldset">
 		<!--		
 		<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
-				<field 
+			<field
 				name="target_itemid"
 				type="jevmenu"
 				default=""
-				label='JEV_TARGET_MENU' 
+				label='JEV_TARGET_MENU'
 				description='JEV_TARGET_MENU_TIP'  />
 		</fieldset>		
 		//-->
