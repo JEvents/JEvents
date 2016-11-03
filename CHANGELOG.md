@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 03-11-2016 - Geraint Edwards
 * JEvents 3.4.24
-* 
-
+* Fix conditional custom fields showon for event edit fields on first tab
+* Force Itemid in check conflict script  - some routers/SEF addons were dropping this
+*Latest events module default custom format string \n were not being parsed in default value  - replace with <br/>
 
 ## 01-11-2016 - Geraint Edwards
 * Foundation for publish own permissions in ACL - not implemented yet
