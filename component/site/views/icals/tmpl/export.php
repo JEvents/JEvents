@@ -146,7 +146,7 @@ if (!empty($this->icalEvents))
 			$link = $a->viewDetailLink($a->yup(),$a->mup(),$a->dup(),true, $params->get('default_itemid', 0));
 			$uri =  JURI::getInstance(JURI::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
-			$html .= $this->setDescription($a->content()) . ' ' .JText::_('JEV_EVENT_IMPORTED_FROM') .$root . JRoute::_($link, true, -1) . "\r\n";
+			$html .= $this->setDescription($a->content() . ' ' .JText::_('JEV_EVENT_IMPORTED_FROM') .$root . JRoute::_($link, true, -1)) . "\r\n";
 		} else {
 			$html .= $this->setDescription($a->content()) . "\r\n";
 		}
