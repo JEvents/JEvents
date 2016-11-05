@@ -33,7 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Make hide author setting apply throughout JEvents
 
 ## 07-10-2016 - Geraint Edwards
-* Jevents 3.5.23
+* Jevents 3.4.23
 * Correct install script error 
 * Fix for column selection in list menu item
 * Fix for deleting first repeat of repeats when repeat id = event id
