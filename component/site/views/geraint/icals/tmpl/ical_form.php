@@ -132,7 +132,7 @@ if ($cfg->get("outlook2003icalexport", 0) == 0 && $cfg->get("show_ical_download"
 				{
 					//$cb=$cb." CHECKED";
 				}
-				else if ($jinput->get('categories', 0) && in_array($c->id, $hinput->post->get('categories', '', null)))
+				else if ($jinput->get('categories', 0) && in_array($c->id, $jinput->post->get('categories', '', null)))
 				{
 					$cb = $cb . " CHECKED";
 				}
