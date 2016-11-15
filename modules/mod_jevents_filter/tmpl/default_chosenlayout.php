@@ -42,6 +42,7 @@ if (count($filterHTML) > 0)
 	?>
 	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post" class="jevfiltermodule" >
 		<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut); ?>' />
+		<input type='hidden' name='option'  value='com_jevents' />		
 		<?php
 		// This forces category settings in URL to reset too since they could be set by SEF
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";

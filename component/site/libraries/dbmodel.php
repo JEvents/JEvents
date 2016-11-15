@@ -46,6 +46,17 @@ class JEventsDBModel
 			$catidList = $this->datamodel->catidList;
 		}
 
+                // If the menu of module has been constrained then we need to take account of that here!
+                JEVHelper::forceIntegerArray($catids, false);
+                if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
+                    JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
+                    $catids = array_intersect($this->datamodel->mmcatids, $catids);
+                    $catids = array_values($catids);
+                    $catids[] = -1;
+                    // hardening!
+                    $catidList = JEVHelper::forceIntegerArray($catids,true);
+                }
+                
 		$sectionname = JEV_COM_COMPONENT;
 
 		static $instances;
@@ -93,6 +104,10 @@ class JEventsDBModel
 					}
 				}
 			}
+                        // trap siguation where we have menu contraint but URL/filter is trying to get categories outside this!
+                        if (count($catids)>0 && !$hascatid  && isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
+                            $hascatid = true;
+                        }
 			if (count($catwhere) > 0)
 			{
 				$where = "AND (" . implode(" OR ", $catwhere) . ")";
@@ -2327,6 +2342,12 @@ class JEventsDBModel
 			//exit();
 		}
 
+/*
+SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+select @@sql_mode;
+SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',ONLY_FULL_GROUP_BY'));
+select @@sql_mode;                
+ */
 		if ($count)
 		{
 			$db->execute();
@@ -2871,7 +2892,7 @@ class JEventsDBModel
 		}
 
 		$db->setQuery($query);
-		//echo $db->_sql;
+		//echo (string) $db->getQuery();
 		$rows = $db->loadObjectList();
 
 		// iCal agid uses GUID or UUID as identifier
@@ -3506,7 +3527,7 @@ class JEventsDBModel
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
 	public function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
 	{
-
+            
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 
@@ -3536,7 +3557,11 @@ class JEventsDBModel
 		if ($limit == 0 && $this->cfg->get("maxevents", 10) > 0)
 		{
 			$limit = $this->cfg->get("maxevents", 10);
-        }
+                }
+		else if ($this->cfg->get("maxevents", 10) > $limit)
+		{
+			$limit = $this->cfg->get("maxevents", 10);
+                }
                 
 		if (!$filters)
 		{

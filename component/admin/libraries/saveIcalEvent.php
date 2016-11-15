@@ -66,7 +66,7 @@ class SaveIcalEvent {
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
-			$access = $user->authorise('core.admin', 'com_jevents');
+                        $access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 		
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
@@ -149,7 +149,7 @@ class SaveIcalEvent {
 		$frontendPublish = JEVHelper::isEventPublisher();
 
 		if (!$frontendPublish){
-			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id);
+			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
 		}
 		// Always unpublish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
@@ -219,8 +219,8 @@ class SaveIcalEvent {
 		if ($dryrun) return $vevent;
 
 		// Do the repeats overlap each other
+                $overlaprepeats = false;
                 if (count($repetitions)>1){
-                    $overlaprepeats = false;
                     $oldrep = false;
                     foreach ($repetitions as $rep){
                         if (!$oldrep){

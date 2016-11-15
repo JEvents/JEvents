@@ -35,15 +35,15 @@
 				<option value="end">COM_JEVENTS_DATE_RANGE_END</option>
 			</field>
 
-			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description="" />
-			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL" description="" format="%Y-%m-%d" />
-			<field name="absend" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_END_LABEL" description="" format="%Y-%m-%d" />
-			<field name="@spacer2" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_REL_LABEL" label="" description="" />
-			<field name='relstart' type='text' default="-1w" label="COM_JEVENTS_DATE_RANGE_REL_START_LABEL" description="JEV_RELSTART_DESC" />
-			<field name='relend' type='text' default="+1m" label="COM_JEVENTS_DATE_RANGE_REL_END_LABEL" description="JEV_RELEND_DESC" />
-			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" />
-			<field name='strstart' type='text' default='YESTERDAY'  label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" />
-			<field name='strend' type='text' default='TOMORROW'  label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" />
+			<field name="@spacer1" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_ABS_LABEL" label="" description="" showon="relative:abs" />
+			<field name="absstart" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_START_LABEL" description="" format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,start" />
+			<field name="absend" type="calendar" default="" label="COM_JEVENTS_DATE_RANGE_ABS_END_LABEL" description="" format="%Y-%m-%d" showon="relative:abs[AND]usedates:both,end" />
+			<field name="@spacer2" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_REL_LABEL" label="" description="" showon="relative:rel" />
+			<field name='relstart' type='text' default="-1w" label="COM_JEVENTS_DATE_RANGE_REL_START_LABEL" description="JEV_RELSTART_DESC" showon="relative:rel[AND]usedates:both,start" />
+			<field name='relend' type='text' default="+1m" label="COM_JEVENTS_DATE_RANGE_REL_END_LABEL" description="JEV_RELEND_DESC" showon="relative:rel[AND]usedates:both,end" />
+			<field name="@spacer3" type="jevinfo" default="COM_JEVENTS_DATE_RANGE_STR_LABEL" label="" description="" showon="relative:strtotime" />
+			<field name='strstart' type='text' default='YESTERDAY'  label="COM_JEVENTS_DATE_RANGE_STR_START_LABEL" description="" showon="relative:strtotime[AND]usedates:both,start" />
+			<field name='strend' type='text' default='TOMORROW'  label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL" description="" showon="relative:strtotime[AND]usedates:both,end" />
 
 			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
 				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>

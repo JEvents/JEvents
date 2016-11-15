@@ -346,6 +346,10 @@ class jevFilter
 				$this->filter_values[$v] = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fvs_ses'.$v, $this->filterType.'_fvs'.$v,$this->filterNullValues[$v] );
 			}
 		}
+                $menuFilterValue = JEVHelper::getMenuFilter($this->filterType.'_fv', "@something abstract@");
+                if ($menuFilterValue !="@something abstract@"){
+                    $this->filter_value = $menuFilterValue;
+                }
 		/*
 }
 else {

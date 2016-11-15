@@ -59,6 +59,7 @@
 			<option value="1">JEV_MONDAY_FIRST</option>
 			<option value="6">JEV_SATURDAY_FIRST</option>
 		</field>
+		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>                
 		<field name="com_print_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_PRINT_ICON" description="JEV_SHOW_PRINT_ICON_TIP"  difficulty="1"/>
 		<field name="com_email_icon_view" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_SHOW_EMAIL_ICON" description="JEV_SHOW_EMAIL_ICON_TIP"  difficulty="1"/>
 		<field name="fixjquery" type="jevboolean" class="btn-group" default="1" label="JEV_FIX_JQUERY" description="JEV_FIX_JQUERY_TIP" difficulty="2" maxjoomlaversion="3.99.99" />		
@@ -110,7 +111,12 @@
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' difficulty="1"/>
 
 		<field name="authorisedonly" type="jevboolean" class="btn-group" default="0" menu="hide" label='ENABLE_USER_AUTHORISATION'  description='ENABLE_USER_AUTHORISATION_DESC' difficulty="1"/>
-		<field name="jevpublishown" type="jevboolean" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="1"/>
+		<field name="jevpublishown" type="radio" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="1">
+			<option value="0">JEV_NO</option>
+			<option value="1">JEV_YES</option>
+			<!--<option value="2">JEV_USE_JOOMLA_ACL</option>//-->
+                </field>
+
 		<field name="category_allow_deny" type="jevlist" default="1" menu="hide" label='CATEGORY_PERMISSION_MODEL'  description='CATEGORY_PERMISSION_MODEL_DESC' difficulty="3">
 			<option value="1">JEV_ALLOW_OVERALL_BLOCK_BY_CATEGORY</option>
 			<option value="0">JEV_INHERIT_OVERALL_ALLOW_BY_CATEGORY</option>
@@ -223,7 +229,6 @@
         
 	<fieldset name="JEV_EVENT_DETAIL_VIEW" difficulty="1">
 		<field name="spacer_evd1" type="jevinfo" default='SETTINGS_RELATED_TO_DETAIL_VIEW'   menu="hide" label="" description="" difficulty="1"/>
-		<field name="com_byview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_BY" description="" difficulty="1"/>
 		<field name="com_mailview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_MAIL" description="" difficulty="1"/>
 		<field name="com_hitsview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_HITS" description="" difficulty="1"/>
 		<field name="com_repeatview" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_TIME" description="JEV_VIEW_REPEAT_TIME_DESC" difficulty="1"/>
@@ -255,8 +260,8 @@
 		//-->
 
 		<field name="tooltiptype" type="jevmultilist" default='bootstrap'  menu="hide" label="JEV_TOOLTIPTYPE" description="JEV_TOOLTIPTYPE_TIP" difficulty="2" conditional="com_enableToolTip" conditions="1">
-			<option value="joomla">Mootools</option>
-			<option value="bootstrap">Bootstrap</option>
+			<option value="joomla">JEV_MOOTOOLS</option>
+			<option value="bootstrap">JEV_BOOTSTRAP</option>
 		</field>
 
 		<field name="com_calTTBackground" type="jevboolean" class="btn-group jevp_tooltip" default="1" menu="hide" label="JEV_TT_BGROUND" description="JEV_TIP_TT_BGROUND" difficulty="2"   />
@@ -302,6 +307,8 @@
 		<field name="feimport" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_FRONTENDIMPORT" description="JEV_FRONTENDIMPORT_TIP" difficulty="3"/>
 		<field name="allowedit" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ALLOW_ICAL_EDIT" description="JEV_ALLOW_ICAL_EDIT_DESC" difficulty="3"/>
 		<field name="icalformatted" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_DESCRIPTIONS_FORMATTED" description="JEV_ICAL_DESCRIPTIONS_FORMATTED_DESC" difficulty="3"/>
+		<field name="source_url" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_ICAL_EXPORT_SOURCE_URL" description="JEV_ICAL_EXPORT_SOURCE_URL_DESC" difficulty="2" />
+		<field name="default_itemid" type="jevmenu" default="" label='JEV_TARGET_MENU' description='JEV_TARGET_MENU_TIP' difficulty="2" />
 	</fieldset>
 	
 	<fieldset name="JEV_TAB_RSS" difficulty="2">
@@ -452,11 +459,11 @@
 	<fields name="fieldset">
 		<!--		
 		<fieldset name="1" addfieldpath="/administrator/components/com_jevents/fields">
-				<field 
+			<field
 				name="target_itemid"
 				type="jevmenu"
 				default=""
-				label='JEV_TARGET_MENU' 
+				label='JEV_TARGET_MENU'
 				description='JEV_TARGET_MENU_TIP'  />
 		</fieldset>		
 		//-->

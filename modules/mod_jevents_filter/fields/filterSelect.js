@@ -22,13 +22,34 @@ function setupFilterChoices(){
 		});
 	});
 }
+
+var colsbeingsorted = false;
 function setupFilterLis(){
+    
+	jQuery("#filtermatches").sortable({
+		start: function(event, ui) {
+			colsbeingsorted=true;
+		},
+		stop: function(event, ui) {
+			setTimeout(function() {
+				colsbeingsorted=false;
+			}, 200);
+		},
+		update: function(event, ui){
+			setupCustomFilterField();
+		}
+	});
+    
 	var lis = jQuery("#filtermatches div");
 	lis.each(function(i, item){
 		item.style.cursor="pointer";
 		jQuery(item).off("click");
 
 		jQuery(item).on("click",function(event){
+
+			if (colsbeingsorted){
+				return;
+			}
 
 			var text = item.innerHTML;  
 			var id = item.id.replace("filter","");

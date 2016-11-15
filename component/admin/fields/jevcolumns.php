@@ -74,6 +74,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY",true), "CATEGORY");
 		$collist[] = array(JText::_("JEV_FIELD_ALL_CATEGORIES",true), "ALLCATEGORIES");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK",true), "CATEGORYLNK");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK_RAW",true), "CATEGORYLNK_RAW");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGE",true), "CATEGORYIMG");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGES",true), "CATEGORYIMGS");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_DESCRIPTION",true), "CATDESC");
@@ -159,6 +160,10 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$input .= '</div></td>
 		<td><div  style="font-weight:bold;margin-left:20px;">' . JText::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
 			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
+                $input.='<div id="columnmatches_heading" style="clear:left;">'
+                        . '<div style="width:200px;display:inline-block;font-weight:bold">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_NAME"). "</div>"
+                        . '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">'.JText::_("JEV_COLUMNS_SELECTED_FIELD_LABEL"). "</div>"
+                        . "</div>";
 		$invalues = array();
 		foreach ($invalue as $col)
 		{

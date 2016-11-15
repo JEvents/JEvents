@@ -41,7 +41,7 @@ class YearController extends JControllerLegacy   {
 		$limitstart = intval( $jinput->getInt('start', $jinput->getInt('limitstart', 0)));
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit.year','limit', $params->get("com_calEventListRowsPpg",15)));
 
 		$Itemid	= JEVHelper::getItemid();
 

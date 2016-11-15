@@ -798,6 +798,9 @@ class JEventsAbstractView extends JViewLegacy
 			$this->searchtags[] = '{{' . $key . '_lbl}}';
 			$this->replacetags[] = $this->customfields[$key]["label"];
 			$this->blanktags[] = "";
+			$this->searchtags[] = '{{' . $key . '_showon}}';
+			$this->replacetags[] = isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : "";
+			$this->blanktags[] = "";
 
 			if (in_array($key, $requiredFields))
 			{
@@ -827,34 +830,14 @@ class JEventsAbstractView extends JViewLegacy
 				$requiredTags['label'] = $this->customfields[$key]["label"];
 				$this->requiredtags[] = $requiredTags;
 			}
-			if (JevJoomlaVersion::isCompatible("3.0"))
-			{
-				?>
-				<div class="control-group jevplugin_<?php echo $key; ?>">
-					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-					<div class="controls" >
-						<?php echo $this->customfields[$key]["input"]; ?>
-					</div>
-				</div>
-				<?php
-			}
-			else
-			{
-				?>
-				<tr class="jevplugin_<?php echo $key; ?>">
-					<td valign="top"  width="130" align="left">
-						<?php
-						echo $this->customfields[$key]["label"];
-						?>
-					</td>
-					<td colspan="3">
-						<?php
-						echo $this->customfields[$key]["input"];
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+                        ?>
+                        <div class="control-group jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
+                                <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+                                <div class="controls" >
+                                        <?php echo $this->customfields[$key]["input"]; ?>
+                                </div>
+                        </div>
+                        <?php
 		}
 		$this->searchtags[] = "{{CUSTOMFIELDS}}";
 		$output = ob_get_clean();

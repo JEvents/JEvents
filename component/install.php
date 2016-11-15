@@ -401,7 +401,10 @@ SQL;
 CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 	fid int(12) NOT NULL auto_increment,
 	userid int(12) NOT NULL default 0,
+	modid int(12) NOT NULL default 0,
+	andor tinyint(3) NOT NULL default 0,
 	filters TEXT NOT NULL,
+        name varchar(255) $rowcharset NOT NULL default "",                        
 	md5 VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (fid),
 	INDEX (md5)
@@ -598,7 +601,32 @@ SQL;
 		$db->setQuery($sql);
 		$db->execute();
 
-		$sql = "SHOW INDEX FROM #__jevents_repetition";
+		$sql = "SHOW COLUMNS FROM #__jevents_filtermap";
+		$db->setQuery($sql);
+		$cols = @$db->loadObjectList("Field");
+
+		if (!array_key_exists("andor", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN andor tinyint(3) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->execute();                        
+		}
+                
+		if (!array_key_exists("modid", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN modid int(12) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->execute();                        
+		}
+                
+		if (!array_key_exists("name", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_filtermap ADD COLUMN name varchar(255) $rowcharset NOT NULL default '' ";
+			$db->setQuery($sql);
+			@$db->execute();                        
+		}
+
+                $sql = "SHOW INDEX FROM #__jevents_repetition";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
 
