@@ -518,6 +518,18 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("evaccess", $cols))
+		{
+                    $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
+                    @$db->execute();
+                    //select @@sql_mode;
+                    $sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
+                    $db->setQuery($sql);
+                    @$db->execute();
+                    $db->setQuery("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',NO_ZERO_DATE'))");
+                    @$db->execute();
+		}
+                
 		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");

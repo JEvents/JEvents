@@ -356,7 +356,8 @@
 		<field name="redirectrobots" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM" description="JEV_REDIRECT_ROBOTS_TO_MENU_ITEM_DESC"/>
 		<field name="robotmenuitem" type="jevmenu" default="" label="JEV_CRAWLERMENU_FOR_ROBOTS" description="JEV_CRAWLERMENU_FOR_ROBOTS_DESC" />
 		<field name="blockall" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_BLOCK_ALL_IN_LISTS" description="JEV_BLOCK_ALL_IN_LISTS_DESC"/>
-		<field name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP"/>
+		<field name="largeDataSetLimit" type="text" default="100000" menu="hide" label="JEV_LARGE_DATASET" description="JEV_LARGE_DATASET_TIP" difficulty="3" />
+		<field name="subquery" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_SUBQUERIES_NOT_JOINS" description="JEV_USE_SUBQUERIES_NOT_JOINS_DESC" difficulty="3" />
 		
 	</fieldset>
 	<fieldset  name="JEV_MODULE_CONFIG" difficulty="3">
