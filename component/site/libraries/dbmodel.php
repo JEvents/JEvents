@@ -20,6 +20,7 @@ class JEventsDBModel
 
 	var $cfg = null;
 	var $datamodel = null;
+        var $subquery = false;
 
 	public function __construct(&$datamodel){
 
@@ -29,6 +30,7 @@ class JEventsDBModel
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
+                $this->subquery = $params->get("subquery",0);
 	}
 
 	function accessibleCategoryList($aid = null, $catids = null, $catidList = null, $allLanguages = false, $checkAccess = true)
@@ -139,7 +141,7 @@ class JEventsDBModel
 			$db->setQuery($query);*/
 			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
 
-			$whereQuery =($checkAccess ? "c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid) : " 1 ")
+			$whereQuery =($checkAccess ? "c.access  " .  ' IN (' . $aid . ')' : " 1 ")
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
@@ -706,6 +708,11 @@ class JEventsDBModel
 		$multiday2 = "";
 		$multiday3 = "";
 
+                $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                        ."\n WHERE  $daterange2 )";
+                
 		// get the event ids first
 		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
 				. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -715,7 +722,7 @@ class JEventsDBModel
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
+				. ($this->subquery ? $daterange2 : $daterange)
 				// We only show events on their first day if they are not to be shown on multiple days so also add this condition
 				. "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)"
 				. $extrawhere
@@ -744,6 +751,11 @@ class JEventsDBModel
 		if ($noRepeats)
 			$groupby = "\n GROUP BY ev.ev_id";
 
+                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                        ."\n WHERE  $daterange2 )";
+                
 		// This version picks the details from the details table
 		// ideally we should check if the event is a repeat but this involves extra queries unfortunately
 		$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
@@ -759,7 +771,7 @@ class JEventsDBModel
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
+				. ($this->subquery ? $daterange2 : $daterange)
 				. $extrawhere
 				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -928,6 +940,11 @@ class JEventsDBModel
 			$rows1 = array();
 			if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 			{
+                                $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 						. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -941,7 +958,8 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
-						. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
+                                                // For large sites sub-query is a LOT faster
+                                                . ($this->subquery ? $daterange2 : $daterange)
 						. $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -971,6 +989,11 @@ class JEventsDBModel
 			$rows2 = array();
 			if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 			{
+                                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				// note the order is the ones nearest today
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -985,7 +1008,7 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
-						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
+                                                . ($this->subquery ? $daterange2 : $daterange)
 						. $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1012,6 +1035,11 @@ class JEventsDBModel
 			$rows3 = array();
 			if ($multidayTreatment != 2 && $multidayTreatment != 3)
 			{
+                                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				// Mutli day events
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1026,8 +1054,8 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						// Must be starting before NOW otherwise would already be picked up
-						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-						. $multiday2
+                                                . ($this->subquery ? $daterange2 : $daterange)						
+                                                . $multiday2
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1111,6 +1139,11 @@ class JEventsDBModel
 				$ids1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					$query = "SELECT DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
 							. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -1119,8 +1152,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
-							. $multiday
+                                                        . ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1143,6 +1176,11 @@ class JEventsDBModel
 				$ids2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					// note the order is the ones nearest today
 					$query = "SELECT  DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
@@ -1153,8 +1191,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1176,6 +1214,10 @@ class JEventsDBModel
 				$ids3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
 					// Mutli day events
 					$query = "SELECT  DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
@@ -1185,9 +1227,9 @@ class JEventsDBModel
 							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
-							// Must be starting before NOW otherwise would already be picked up
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday2
+							// Must be starting before NOW otherwise would already be picked up							
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1251,6 +1293,11 @@ class JEventsDBModel
 				$rows1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 							. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -1264,8 +1311,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
-							. $multiday
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1287,6 +1334,11 @@ class JEventsDBModel
 				$rows2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					// note the order is the ones nearest today
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1301,8 +1353,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday
+                                                        . ($this->subquery ? $daterange2 : $daterange)	
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1323,6 +1375,12 @@ class JEventsDBModel
 				$rows3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
+                                        // Must be starting before NOW otherwise would already be picked up
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					// Mutli day events
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1336,9 +1394,8 @@ class JEventsDBModel
 							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
-							// Must be starting before NOW otherwise would already be picked up
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday2
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1592,6 +1649,11 @@ class JEventsDBModel
 			$rows1 = array();
 			if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 			{
+                                $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 						. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -1605,8 +1667,8 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
-						. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
-						. $multiday
+						. ($this->subquery ? $daterange2 : $daterange)
+                                                . $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1637,6 +1699,11 @@ class JEventsDBModel
 			$rows2 = array();
 			if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 			{
+                                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				// note the order is the ones nearest today
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1651,8 +1718,8 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
-						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-						. $multiday
+                                                . ($this->subquery ? $daterange2 : $daterange)
+                                                . $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1678,6 +1745,12 @@ class JEventsDBModel
 			$rows3 = array();
 			if ($multidayTreatment != 2 && $multidayTreatment != 3)
 			{
+                                // Must be starting before NOW otherwise would already be picked up
+                                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                        ."\n WHERE  $daterange2 )";
+                            
 				// Mutli day events
 				$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1691,9 +1764,8 @@ class JEventsDBModel
 						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
-						// Must be starting before NOW otherwise would already be picked up
-						. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-						. $multiday2
+						. ($this->subquery ? $daterange2 : $daterange)
+                                                . $multiday2
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1777,6 +1849,12 @@ class JEventsDBModel
 				$ids1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
+					// New equivalent but simpler test
+                                        $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					$query = "SELECT DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
 							. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -1784,9 +1862,8 @@ class JEventsDBModel
 							. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 							. $extrajoin
 							. $catwhere
-							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
-							. $multiday
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1809,6 +1886,10 @@ class JEventsDBModel
 				$ids2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
 					// note the order is the ones nearest today
 					$query = "SELECT  DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
@@ -1819,8 +1900,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1842,6 +1923,11 @@ class JEventsDBModel
 				$ids3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
+                                        // Must be starting before NOW otherwise would already be picked up
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
 					// Mutli day events
 					$query = "SELECT  DISTINCT rpt.rp_id"
 							. "\n FROM #__jevents_repetition as rpt"
@@ -1851,9 +1937,8 @@ class JEventsDBModel
 							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
-							// Must be starting before NOW otherwise would already be picked up
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday2
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1917,6 +2002,11 @@ class JEventsDBModel
 				$rows1 = array();
 				if ($enddate >= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) != 1)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 							. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -1930,8 +2020,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'"
-							. $multiday
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1953,6 +2043,11 @@ class JEventsDBModel
 				$rows2 = array();
 				if ($startdate <= $t_datenowSQL && $modparams && $modparams->get("pastonly", 0) < 2)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					// note the order is the ones nearest today
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -1966,9 +2061,9 @@ class JEventsDBModel
 							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
-							// New equivalent but simpler test
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday
+							// New equivalent but simpler test							
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -1989,6 +2084,11 @@ class JEventsDBModel
 				$rows3 = array();
 				if ($multidayTreatment != 2 && $multidayTreatment != 3)
 				{
+                                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$t_datenowSQL'";
+                                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                                ."\n WHERE  $daterange2 )";
+                                    
 					// Mutli day events
 					$query = "SELECT rpt.*, ev.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 							. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -2003,8 +2103,8 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							// Must be starting before NOW otherwise would already be picked up
-							. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$t_datenowSQL'"
-							. $multiday2
+							. ($this->subquery ? $daterange2 : $daterange)
+                                                        . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 							. "  AND icsf.state=1 "
@@ -2169,6 +2269,11 @@ class JEventsDBModel
 			$newextrajoin = ( count($newextrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $newextrajoin) : '' );
 			$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 			
+                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                ."\n WHERE  $daterange2 )";
+                        
 			$query = "SELECT DISTINCT rpt.rp_id "
 					. "\n FROM #__jevents_repetition as rpt"
 					. "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -2176,8 +2281,9 @@ class JEventsDBModel
 					. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. $newextrajoin
 					. $catwhere
-					. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-					// Radical alternative - seems slower though
+                                        // New equivalent but simpler test
+					. ($this->subquery ? $daterange2 : $daterange)
+                                        // Radical alternative - seems slower though
 					/*
 					  . "\n WHERE rpt.rp_id IN (SELECT  rbd.rp_id
 					  FROM jos_jevents_repbyday as rbd
@@ -2249,6 +2355,11 @@ class JEventsDBModel
 			$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 			$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 			
+                        $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                ."\n WHERE  $daterange2 )";
+                        
 			// This version picks the details from the details table
 			// ideally we should check if the event is a repeat but this involves extra queries unfortunately
 			$query = "SELECT det.evdet_id as detailid, rpt.*, ev.*, rr.*, det.* ,  ev.state as published, ev.created as created $extrafields"
@@ -2264,8 +2375,8 @@ class JEventsDBModel
 					. $extrajoin
 					. $catwhere
 					// New equivalent but simpler test
-					. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-					// Radical alternative - seems slower though
+					. ($this->subquery ? $daterange2 : $daterange)
+                                        // Radical alternative - seems slower though
 					/*
 					  . "\n WHERE rpt.rp_id IN (SELECT  rbd.rp_id
 					  FROM jos_jevents_repbyday as rbd
@@ -2569,6 +2680,11 @@ select @@sql_mode;
                 else {
                     $query .= "\n FROM #__jevents_repetition as rpt ";                                    
                 }
+                $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
+                $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                        ."\n WHERE  $daterange2 )";
+                
 		$query .=  "\n LEFT JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
@@ -2576,8 +2692,8 @@ select @@sql_mode;
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
-				. "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'"
-				/*
+				. ($this->subquery ? $daterange2 : $daterange)
+                                /*
 				  . "\n AND ((rpt.startrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate')"
 				  . "\n OR (rpt.endrepeat >= '$startdate' AND rpt.endrepeat <= '$enddate')"
 				  //. "\n OR (rpt.startrepeat >= '$startdate' AND rpt.endrepeat <= '$enddate')"
@@ -2697,18 +2813,33 @@ select @@sql_mode;
 			$daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
 			// Must suppress multiday events that have already started
 			$multidate =  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+                        $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
+			$multidate2 =  "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                //."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 )";
 		}
 		else if ($usedates=="start")
 		{
 			$daterange =  "\n AND rpt.endrepeat >= '$startdate' ";
 			// Must suppress multiday events that have already started
 			$multidate =  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
+			$daterange2 =  "\n rpt2.endrepeat >= '$startdate' ";
+			$multidate2 =  "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                                //."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 )";
 		}
 		else if ($usedates=="end")
 		{
 			$daterange =  "\n AND rpt.startrepeat <= '$enddate' ";
 			// Must suppress multiday events that haven't already ended
 			$multidate =  "\n AND NOT (rpt.endrepeat > '$enddate' AND det.multiday=0) ";
+                        $daterange2 =  "\n rpt2.startrepeat <= '$enddate' ";
+			$multidate2 =  "\n AND NOT (rpt2.endrepeat > '$enddate' AND det2.multiday=0) ";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
+                               // ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 )";
 		}
 		// This version picks the details from the details table
 		if ($count)
@@ -2742,7 +2873,7 @@ select @@sql_mode;
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
-				. $daterange
+				. ($this->subquery ? $daterange2 : $daterange)
 				. $multidate
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
