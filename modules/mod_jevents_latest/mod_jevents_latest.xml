@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" method="upgrade" client="site">
 	<name>MOD_JEV_LATEST_EVENTS_TITLE</name>
-	<creationDate>October 2016</creationDate>
+	<creationDate>November 2016</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.4.24</version>
+	<version>3.4.25</version>
 	<description>MOD_JEV_LATEST_EVENTS_DESC</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
@@ -56,7 +56,7 @@
 				</field>
                                 <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="CustomFromTemplate" type="jevcustomlayout" layouttype="LatestEvents"  default='1'  target='jform_params_modlatest_CustFmtStr'  csstarget='jform_params_modlatest_customcss'  label="JEV_LEV_CUSTOM_LAYOUT_IMPORT" description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)}\n&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]\n&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)};&lt;br /&gt;&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_customcss" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default=''  label="JEV_LEV_CUSTOM_CSS" description="JEV_LEV_CUSTOM_CSS_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" conditional="modlatest_useLocalParam" conditions="1" >

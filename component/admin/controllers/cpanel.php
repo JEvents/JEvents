@@ -578,11 +578,11 @@ class AdminCpanelController extends JControllerAdmin
 		$db = JFactory::getDbo();
 		// merge/unmerge menu items?
 		// Joomla 2.5 version
-		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and title="com_jevents"';
+		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and (title="com_jevents" OR title="COM_JEVENTS_MENU")';
 		$db->setQuery($sql);			
 		$parent = $db->loadResult();
 
-		$tochange = 'title="Attend JEvents" OR LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(alias)="jevents-tags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" ';
+		$tochange = 'LOWER(title)="com_jevlocations"  OR LOWER(title)="com_jeventstags"  OR LOWER(title)="com_jevpeople"  OR LOWER(title)="com_rsvppro" OR LOWER(title)="com_jevlocations_menu"  OR LOWER(title)="com_jeventstags_menu"  OR LOWER(title)="com_jevpeople_menu"  OR LOWER(title)="com_rsvppro_menu" OR LOWER(alias)="jevents-tags"  ';
 		$toexist = ' link="index.php?option=com_jevlocations"  OR link="index.php?option=com_jeventstags"  OR link="index.php?option=com_jevpeople"  OR link="index.php?option=com_rsvppro" ';
 			
 		// is this an upgrade of JEvents in which case we may have lost the submenu items and may need to recreate them

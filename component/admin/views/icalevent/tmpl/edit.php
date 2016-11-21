@@ -265,11 +265,12 @@ if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	$urlitemid = JEVHelper::getItemid()>0 ?  "&Itemid=".JEVHelper::getItemid() : "";
-	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid, false);
+        $ttitemid = JEVHelper::getItemid()>0 ?  "&ttItemid=".JEVHelper::getItemid() : "";
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid.$ttitemid, false);
 	?>
-						// reformat start and end dates  to Y-m-d format
-						reformatStartEndDates();
-						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+            // reformat start and end dates  to Y-m-d format
+            reformatStartEndDates();
+            checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
 	<?php
 }
 else
@@ -575,7 +576,7 @@ else
                                 }
                             
 				?>
-				<div class="row jevplugin_<?php echo $key; ?>">
+				<div class="row jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
 					<div class="span2">
 						<label ><?php echo $this->customfields[$key]["label"]; ?></label>
 					</div>

@@ -2,18 +2,38 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+03-11-2016 - Geraint Edwards
+* JEvents 3.4.24
+* Fix conditional custom fields showon for event edit fields on first tab
+* Force Itemid in check conflict script  - some routers/SEF addons were dropping this
+* Latest events module default custom format string \n were not being parsed in default value  - replace with <br/>
+
 ## 01-11-2016 - Geraint Edwards
 * Foundation for publish own permissions in ACL - not implemented yet
 * Warning message when RSVP Pro and RSVP are both enabled
 * Enable category images in calendar cell and tool tip layouts
 * Allow gwejson to pick up custom versions of scripts instead of released ones to preserve customisations e.g. use gwesjon_custom_finduser.php to replace gwesjon_finduser.php
 
+## 19-10-2016 - Tony Partridge
+* Added Category Link Raw
+* Added Option to include event detail link in iCal Export, added set default menu item id in Joomla! config under ical export for the time being since it's only used here.
+
+## 14-10-2016 - Geraint Edwards
+* Add error checks to return to referrer on cancel code
+
+# 14-10-2016 - Tony Partridge
+* Sends user back to previous url on cancel of event editing.
+* Added a more meaningful title to toolbar and browser bar for JEvents cPanel
+
 ## 12-10-2016 - Geraint Edwards
-* JEvents 3.4.24
 * Fix for filtermap fields install problem on some servers
 * Comma separated by*day fields need to have spaces stripped during save process
 
+## 09-10-2016 - Geraint Edwards
+* Make hide author setting apply throughout JEvents
+
 ## 07-10-2016 - Geraint Edwards
+* Jevents 3.4.23
 * Correct install script error 
 * Fix for column selection in list menu item
 * Fix for deleting first repeat of repeats when repeat id = event id

@@ -29,6 +29,13 @@ function callNavigation(link) {
 		catch (e) {
 		}
 
+                // we may have popup links too
+		try {
+                    setupEventPopups();
+		}
+		catch (e) {
+		}
+                
 		setupMiniCalTouchInteractions();
 	})
 	.fail( function( jqxhr, textStatus, error){
