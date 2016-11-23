@@ -68,7 +68,7 @@ class iCalRRule extends JTable  {
 				$temp->processField2("until","");
 			}
 			else {
-				$temp->processField2("until",JevDate::mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
+				$temp->processField2("until",JevDate::mktime(23,59,59,12,12,JEVHelper::getMaxYear()));
 			}
 		}
 		$temp->processField2("untilraw","");
@@ -120,7 +120,7 @@ class iCalRRule extends JTable  {
 			}
 			else {
 				$cfg = JEVConfig::getInstance();
-				$temp->processField("until",JevDate::mktime(23,59,59,12,12,$cfg->get("com_latestyear",2020)));
+				$temp->processField("until",JevDate::mktime(23,59,59,12,12, JEVHelper::getMaxYear()));
 				$temp->processField("count",9999);
 			}
 		}
