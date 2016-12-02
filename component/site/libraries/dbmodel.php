@@ -709,9 +709,14 @@ class JEventsDBModel
 		$multiday3 = "";
 
                 $daterange =  "\n AND rpt.endrepeat >= '$t_datenowSQL' AND rpt.startrepeat <= '$enddate'";
+                $multidate =   "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)";
                 $daterange2 =  "\n rpt2.endrepeat >= '$t_datenowSQL' AND rpt2.startrepeat <= '$enddate'";
-                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                        ."\n WHERE  $daterange2 )";
+                $multidate2 =  "\n AND ((rpt2.startrepeat >= '$t_datenowSQL' AND det2.multiday=0) OR  det2.multiday=1)";
+                $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "                                
+                        ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                        ."\n WHERE  $daterange2 "
+                        . $multidate2
+                        . ")";
                 
 		// get the event ids first
 		$query = "SELECT  ev.ev_id FROM #__jevents_repetition as rpt"
@@ -724,7 +729,7 @@ class JEventsDBModel
 				// New equivalent but simpler test
 				. ($this->subquery ? $daterange2 : $daterange)
 				// We only show events on their first day if they are not to be shown on multiple days so also add this condition
-				. "\n AND ((rpt.startrepeat >= '$t_datenowSQL' AND det.multiday=0) OR  det.multiday=1)"
+				. ($this->subquery ?  "" : $multidate)
 				. $extrawhere
                                 . $multiday 
 				. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -961,6 +966,7 @@ class JEventsDBModel
                                                 // For large sites sub-query is a LOT faster
                                                 . ($this->subquery ? $daterange2 : $daterange)
 						. $multiday
+                                        //xxxxx
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1010,6 +1016,7 @@ class JEventsDBModel
 						// New equivalent but simpler test
                                                 . ($this->subquery ? $daterange2 : $daterange)
 						. $multiday
+                                        //xxxx
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1056,6 +1063,7 @@ class JEventsDBModel
 						// Must be starting before NOW otherwise would already be picked up
                                                 . ($this->subquery ? $daterange2 : $daterange)						
                                                 . $multiday2
+                                        //xxxx
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
 						. "  AND icsf.state=1 "
@@ -1153,6 +1161,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
                                                         . ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1192,6 +1201,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                    //xxx    
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1229,6 +1239,7 @@ class JEventsDBModel
 							. $catwhere
 							// Must be starting before NOW otherwise would already be picked up							
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1312,6 +1323,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1354,6 +1366,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
                                                         . ($this->subquery ? $daterange2 : $daterange)	
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1395,6 +1408,7 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1668,6 +1682,7 @@ class JEventsDBModel
 						. $catwhere
 						// New equivalent but simpler test
 						. ($this->subquery ? $daterange2 : $daterange)
+                                        //xxx
                                                 . $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1719,6 +1734,7 @@ class JEventsDBModel
 						. $catwhere
 						// New equivalent but simpler test
                                                 . ($this->subquery ? $daterange2 : $daterange)
+                                        //xxx
                                                 . $multiday
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1765,6 +1781,7 @@ class JEventsDBModel
 						. $extrajoin
 						. $catwhere
 						. ($this->subquery ? $daterange2 : $daterange)
+                                        //xxx
                                                 . $multiday2
 						. $extrawhere
 						. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1863,6 +1880,7 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1901,6 +1919,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -1938,6 +1957,7 @@ class JEventsDBModel
 							. $extrajoin
 							. $catwhere
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -2021,6 +2041,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -2063,6 +2084,7 @@ class JEventsDBModel
 							. $catwhere
 							// New equivalent but simpler test							
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -2104,6 +2126,7 @@ class JEventsDBModel
 							. $catwhere
 							// Must be starting before NOW otherwise would already be picked up
 							. ($this->subquery ? $daterange2 : $daterange)
+                                                //xxx
                                                         . $multiday2
 							. $extrawhere
 							. "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")"
@@ -2272,7 +2295,10 @@ class JEventsDBModel
                         $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
                         $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
                         $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                                ."\n WHERE  $daterange2 )";
+                                . "\n LEFT JOIN #__jevents_vevdetail as det2 ON det2.evdet_id = rpt2.eventdetail_id"
+                                . "\n WHERE  $daterange2 "
+                                . "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) "                                
+                                . ")";
                         
 			$query = "SELECT DISTINCT rpt.rp_id "
 					. "\n FROM #__jevents_repetition as rpt"
@@ -2283,13 +2309,7 @@ class JEventsDBModel
 					. $catwhere
                                         // New equivalent but simpler test
 					. ($this->subquery ? $daterange2 : $daterange)
-                                        // Radical alternative - seems slower though
-					/*
-					  . "\n WHERE rpt.rp_id IN (SELECT  rbd.rp_id
-					  FROM jos_jevents_repbyday as rbd
-					  WHERE  rbd.catid IN(".$this->accessibleCategoryList().")
-					  AND rbd.rptday >= '$startdate' AND rbd.rptday <= '$enddate' )"
-					 */
+                                        . ($this->subquery ? "" :  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ")
 					. $extrawhere
 					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -2358,7 +2378,10 @@ class JEventsDBModel
                         $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
                         $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
                         $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                                ."\n WHERE  $daterange2 )";
+                                . "\n LEFT JOIN #__jevents_vevdetail as det2 ON det2.evdet_id = rpt2.eventdetail_id"
+                                . "\n WHERE  $daterange2 "
+                                . "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) "                                
+                                . ")";
                         
 			// This version picks the details from the details table
 			// ideally we should check if the event is a repeat but this involves extra queries unfortunately
@@ -2376,13 +2399,8 @@ class JEventsDBModel
 					. $catwhere
 					// New equivalent but simpler test
 					. ($this->subquery ? $daterange2 : $daterange)
-                                        // Radical alternative - seems slower though
-					/*
-					  . "\n WHERE rpt.rp_id IN (SELECT  rbd.rp_id
-					  FROM jos_jevents_repbyday as rbd
-					  WHERE  rbd.catid IN(".$this->accessibleCategoryList().")
-					  AND rbd.rptday >= '$startdate' AND rbd.rptday <= '$enddate' )"
-					 */
+                                        // Should be blocking multi-day events started before the time window
+                                        . ($this->subquery ? "" : "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ")
 					. $extrawhere
 					. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 					. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -2693,12 +2711,6 @@ select @@sql_mode;
 				. $catwhere
 				// New equivalent but simpler test
 				. ($this->subquery ? $daterange2 : $daterange)
-                                /*
-				  . "\n AND ((rpt.startrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate')"
-				  . "\n OR (rpt.endrepeat >= '$startdate' AND rpt.endrepeat <= '$enddate')"
-				  //. "\n OR (rpt.startrepeat >= '$startdate' AND rpt.endrepeat <= '$enddate')"
-				  . "\n OR (rpt.startrepeat <= '$startdate' AND rpt.endrepeat >= '$enddate'))"
-				 */
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"
@@ -2815,9 +2827,11 @@ select @@sql_mode;
 			$multidate =  "\n AND NOT (rpt.startrepeat < '$startdate' AND det.multiday=0) ";
                         $daterange2 =  "\n rpt2.endrepeat >= '$startdate' AND rpt2.startrepeat <= '$enddate'";
 			$multidate2 =  "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
-                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                                //."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-                                ."\n WHERE  $daterange2 )";
+                        $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "                                
+                                ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 "
+                                . $multidate2
+                                . ")";
 		}
 		else if ($usedates=="start")
 		{
@@ -2827,8 +2841,10 @@ select @@sql_mode;
 			$daterange2 =  "\n rpt2.endrepeat >= '$startdate' ";
 			$multidate2 =  "\n AND NOT (rpt2.startrepeat < '$startdate' AND det2.multiday=0) ";
                         $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                                //."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-                                ."\n WHERE  $daterange2 )";
+                                ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 "
+                                . $multidate2
+                                . ")";
 		}
 		else if ($usedates=="end")
 		{
@@ -2838,8 +2854,10 @@ select @@sql_mode;
                         $daterange2 =  "\n rpt2.startrepeat <= '$enddate' ";
 			$multidate2 =  "\n AND NOT (rpt2.endrepeat > '$enddate' AND det2.multiday=0) ";
                         $daterange2 =  "\n AND rpt.rp_id in (SELECT rp_id FROM #__jevents_repetition as rpt2 "
-                               // ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
-                                ."\n WHERE  $daterange2 )";
+                                ."\n LEFT JOIN #__jevents_vevdetail as det2  ON det2.evdet_id = rpt2.eventdetail_id"
+                                ."\n WHERE  $daterange2 "
+                                . $multidate2
+                                . ")";
 		}
 		// This version picks the details from the details table
 		if ($count)
@@ -2874,7 +2892,7 @@ select @@sql_mode;
 				. $extrajoin
 				. $catwhere
 				. ($this->subquery ? $daterange2 : $daterange)
-				. $multidate
+				. ($this->subquery ? "" : $multidate)
 				. $extrawhere
 				. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ")"
 				. "  AND icsf.state=1 AND icsf.access IN (" . JEVHelper::getAid($user) . ")"

@@ -1388,7 +1388,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                                         }
 
                                                         foreach ($fieldnames as $fn){
-                                                            if (!JString::strpos($template_value, $fn) !== false)
+                                                            if (empty($fn) ||  !JString::strpos($template_value, $fn) !== false)
                                                             {
                                                                     continue;
                                                             }
