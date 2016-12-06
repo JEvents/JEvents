@@ -42,7 +42,7 @@ class SaveIcalEvent {
 		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
-		if ($data["allDayEvent"] == 1)
+		if ($data["allDayEvent"]  = 1)
 		{
 			$data["allDayEvent"]="on";
 		}
@@ -62,7 +62,7 @@ class SaveIcalEvent {
 		$data["SUMMARY"]		= ArrayHelper::getValue( $array,  "title","");
 		$data["URL"]	= ArrayHelper::getValue( $array,  "url","");
 
-		// If user is JEvents can delete all or has backend access then allow them to specify the creator
+		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
 		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){

@@ -432,7 +432,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$option = JEV_COM_COMPONENT;
-		$rp_id = intval(JRequest::getVar("rp_id", "0"));
+		$rp_id = (int) JRequest::getVar("rp_id", "0");
 		$cid = JRequest::getVar("cid", array());
 		if (count($cid) > 0 && $rp_id == 0)
 			$rp_id = intval($cid[0]);
@@ -561,7 +561,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt->duplicatecheck = md5($rpt->eventid . $start);
 		$rpt->eventdetail_id = $detail->evdet_id;
 		$rpt->rp_id = $rp_id;
-		$rpt->store();
+
+        $rpt->store();
 
 		// I may also need to process repeat changes
 		$dispatcher	= JEventDispatcher::getInstance();
