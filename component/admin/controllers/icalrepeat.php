@@ -568,11 +568,31 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt->duplicatecheck = md5($rpt->eventid . $start);
 		$rpt->eventdetail_id = $detail->evdet_id;
 		$rpt->rp_id = $rp_id;
-		$rpt->store();
+
+		// Avoid SQL error on duplicate key insert.
+		try
+		{
+			$rpt->store();
+
+		} catch (Exception $e) {
+
+			if (JFactory::getApplication()->isAdmin())
+			{
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END")."", "error");
+				$this->redirect();
+			}
+			else
+			{
+				list($year, $month, $day) = JEVHelper::getYMD();
+				$rettask = $jinput->getString("rettask", "day.listevents");
+				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END")."", "error");
+				$this->redirect();
+			}
+        }
 
 		// I may also need to process repeat changes
 		$dispatcher	= JEventDispatcher::getInstance();
-		// just incase we don't have jevents plugins registered yet
+		// just in case we don't have JEvents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onStoreCustomRepeat' , array(&$rpt));
 		
