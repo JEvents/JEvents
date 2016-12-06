@@ -498,7 +498,6 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-
                 
 		$sql = "SHOW INDEX FROM #__jevents_vevent";
 		$db->setQuery($sql);
