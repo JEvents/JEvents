@@ -427,15 +427,18 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
+		$jinput = JFactory::getApplication()->input;
+
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$option = JEV_COM_COMPONENT;
-		$rp_id = (int) JRequest::getVar("rp_id", "0");
-		$cid = JRequest::getVar("cid", array());
+		$rp_id  = $jinput->getInt("rp_id", 0);
+		$cid    = $jinput->get("cid", array());
+
 		if (count($cid) > 0 && $rp_id == 0)
-			$rp_id = intval($cid[0]);
+			$rp_id = (int) $cid[0];
 		if ($rp_id == 0)
 		{
 			$this->setRedirect('index.php?option=' . $option . '&task=icalrepeat.list&cid[]=' . $rp_id, "1Cal rpt NOT SAVED");
@@ -443,14 +446,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		// I should be able to do this in one operation but that can come later
-		$event = $this->queryModel->listEventsById(intval($rp_id), 1, "icaldb");
+		$event = $this->queryModel->listEventsById((int) $rp_id, 1, "icaldb");
 		if (!JEVHelper::canEditEvent($event))
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$rpt = new iCalRepetition($db);
 		$rpt->load($rp_id);
 
@@ -458,42 +461,45 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$db->setQuery($query);
 		$eventdetailid = $db->loadResult();
 
-		$data["UID"] = JRequest::getVar("uid", md5(uniqid(rand(), true)));
+		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"] = JRequest::getVar("extra_info", "");
-		$data["LOCATION"] = JRequest::getVar("location", "");
-		$data["allDayEvent"] = JRequest::getVar("allDayEvent", "off");
+		$data["X-EXTRAINFO"]    = $jinput->get("extra_info", "");
+		$data["LOCATION"]       = $jinput->getString("location", "");
+		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
                 if ($data["allDayEvent"]==1){
                     $data["allDayEvent"] = "on";
                 }
-		$data["CONTACT"] = JRequest::getVar("contact_info", "");
+		$data["CONTACT"]        = $jinput->getString("contact_info", "");
 		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"] = JRequest::getVar("jevcontent", "", 'request', 'html', 2);
-		$data["publish_down"] = JRequest::getVar("publish_down", "2006-12-12");
-		$data["publish_up"] = JRequest::getVar("publish_up", "2006-12-12");
+		$data["DESCRIPTION"]    = $jinput->get('jevcontent', '', 'RAW'); //JRequest::getVar("jevcontent", "", 'request', 'html', 2); No option for raw html in JInput, so just RAW the jinput instead.
+		$data["publish_down"]   = $jinput->getString("publish_down", "2006-12-12");
+		$data["publish_up"]     = $jinput->getString("publish_up", "2006-12-12");
 
 		// Alternative date format handling
-		if (JRequest::getVar("publish_up2",false)){
-			$data["publish_up"] =  JRequest::getVar("publish_up2",$data["publish_up"]);
+		if ($jinput->get("publish_up2", false)){
+			$data["publish_up"]  = $jinput->getString("publish_up2",$data["publish_up"]);
 		}
-		if (JRequest::getVar("publish_down2",false)){
-			$data["publish_down"] =  JRequest::getVar("publish_down2",$data["publish_down"]);
+		if ($jinput->get("publish_down2",false)){
+			$data["publish_down"] = $jinput->getString("publish_down2",$data["publish_down"]);
 		}
-		
-		$interval = JRequest::getVar("rinterval", 1);
-		$data["SUMMARY"] = JRequest::getVar("title", "");
 
-		$data["MULTIDAY"] = JRequest::getInt("multiday", "1");
-		$data["NOENDTIME"] = JRequest::getInt("noendtime", 0);
+		$interval = $jinput->get("rinterval", 1); //Not current in use
+		$data["SUMMARY"] = $jinput->getString("title", "");
 
-		$ics_id = JRequest::getVar("ics_id", 0);
+		$data["MULTIDAY"] = $jinput->get("multiday", "1");
+		$data["NOENDTIME"] = $jinput->get("noendtime", 0);
+
+		$ics_id = $jinput->get("ics_id", 0);
 
 		if ($data["allDayEvent"] == "on")
 		{
 			$start_time = "00:00";
 		}
 		else
-			$start_time = JRequest::getVar("start_time", "08:00");
+		{
+			$start_time = $jinput->getString("start_time", "08:00");
+		}
+
 		$publishstart = $data["publish_up"] . ' ' . $start_time . ':00';
 		$data["DTSTART"] = JevDate::strtotime($publishstart);
 
@@ -504,7 +510,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 		else
 		{
-			$end_time = JRequest::getVar("end_time", "15:00");
+			$end_time = $jinput->getString("end_time", "15:00");
 			$publishend = $data["publish_down"] . ' ' . $end_time . ':00';
 		}
 
@@ -517,10 +523,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$data["DTEND"] = JevDate::strtotime($publishend);
 		}
 
-		$data["X-COLOR"] = JRequest::getVar("color", "");
+		$data["X-COLOR"] = $jinput->get("color", "");
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
-		$array = JRequest::get("post", 2);
+		$array = $jinput->post->getArray();
+
 		foreach ($array as $key => $value)
 		{
 			if (strpos($key, "custom_") === 0)
@@ -543,7 +550,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$detail->evdet_id = $rpt->eventdetail_id;
 		}
 
-		$detail->priority = intval(ArrayHelper::getValue($array, "priority", 0));
+		$detail->priority = (int) ArrayHelper::getValue($array, "priority", 0);
 
 		$detail->store();
 
@@ -561,8 +568,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt->duplicatecheck = md5($rpt->eventid . $start);
 		$rpt->eventdetail_id = $detail->evdet_id;
 		$rpt->rp_id = $rp_id;
-
-        $rpt->store();
+		$rpt->store();
 
 		// I may also need to process repeat changes
 		$dispatcher	= JEventDispatcher::getInstance();
