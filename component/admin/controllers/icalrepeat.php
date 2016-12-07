@@ -575,7 +575,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$store = $rpt->store();
 
 			if (!$store){
-				throw new RuntimeException(JText::_('ALERTNOTAUTH'), 403);
+				throw new RuntimeException(JText::_('JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END'), 101);
 			}
 
 		} catch (RuntimeException $e) {
