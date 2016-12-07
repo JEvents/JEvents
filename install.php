@@ -214,7 +214,7 @@ class Pkg_JeventsInstallerScript
 		echo "</div>";
 		// Joomla updater special case
 		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
-                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG'), 'message');
+                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG')." :: ". $parent->get('manifest')->version, 'message');
 		}
 
 	}

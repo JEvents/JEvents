@@ -38,7 +38,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		{
 			$extrajoin = "\n LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = ev.ev_id";
 			$extrajoin .= "\n LEFT JOIN  #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$extrawhere = " AND  catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere = " AND catmapcat.access " . ' IN (' . JEVHelper::getAid($user) . ')' ;
 			$extrawhere .= " AND catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$catwhere = "\n WHERE 1 ";
 		}

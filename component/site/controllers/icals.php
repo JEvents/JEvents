@@ -694,7 +694,7 @@ class ICalsController extends AdminIcalsController
 			$transitions = array_slice($transitions, $tzindex);
 			if (count($transitions) >= 2)
 			{
-				$lastyear = $params->get("com_latestyear", 2020);
+				$lastyear = JEVHelper::getMaxYear();
 				echo "BEGIN:VTIMEZONE\n";
 				echo "TZID:$current_timezone\n";
 				for ($t = 0; $t < count($transitions); $t++)
