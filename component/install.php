@@ -570,7 +570,7 @@ SQL;
 		}
 		if (array_key_exists("extra_info", $cols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevdetail modify extra_info text NOT NULL default ''";
+			$sql = "ALTER TABLE #__jevents_vevdetail modify extra_info text NOT NULL";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
