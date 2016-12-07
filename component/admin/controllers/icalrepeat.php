@@ -572,9 +572,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// Avoid SQL error on duplicate key insert.
 		try
 		{
-			$rpt->store();
+			$store = $rpt->store();
 
-		} catch (Exception $e) {
+			if (!$store){
+				throw new RuntimeException(JText::_('ALERTNOTAUTH'), 403);
+			}
+
+		} catch (RuntimeException $e) {
 
 			if (JFactory::getApplication()->isAdmin())
 			{
