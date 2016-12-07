@@ -51,7 +51,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 
 
 		$targetid = $this->modparams->get("target_itemid",0);
-		$link = $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
+		$link = JURI::base() .  $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
 		$link = str_replace("&tmpl=component","",$link );
 		$item_link  = JRoute::_($link.$this->jeventCalObject->datamodel->getCatidsOutLink());
 
@@ -105,7 +105,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		*/
 
 		// load individual item creator class
-		$item =new JFeedItem();
+		$item = new JFeedItem();
 		// item info
 		if ($row->alldayevent()) {
 			$temptime = new JevDate($eventDate);
