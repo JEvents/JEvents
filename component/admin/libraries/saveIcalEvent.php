@@ -42,7 +42,7 @@ class SaveIcalEvent {
 		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
-		if ($data["allDayEvent"]  = 1)
+		if ($data["allDayEvent"] == 1)
 		{
 			$data["allDayEvent"]="on";
 		}
