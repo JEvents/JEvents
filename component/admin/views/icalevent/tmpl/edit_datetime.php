@@ -288,7 +288,13 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					$maxyear = JEVHelper::getMaxYear();
 					$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
 					$inputdateformat2 = str_replace(array("Y","m", "d"), array("%Y","%m", "%d"),$inputdateformat);
-					JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();updateRepeatWarning();", $inputdateformat, array("style"=>"display:none;"));
+                                        $attribs = array("style"=>"display:none;");
+                                        $irregulartimes = $params->get("irregulartimes", 0);
+                                        if ($irregulartimes) {
+                                            $attribs["showtime"]="showtime";
+                                            $inputdateformat .= " %H:%M";
+                                        }
+					JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();updateRepeatWarning();", $inputdateformat, $attribs);
 				?>
 				</div>
 				<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" onchange="updateRepeatWarning()">

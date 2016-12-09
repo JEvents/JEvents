@@ -396,7 +396,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$db = JFactory::getDBO();
 
 		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.startrepeat<'" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat<='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
 		$db->setQuery($sql);
 		$prior = $db->loadObject();
 		if (!is_null($prior))
@@ -412,7 +412,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$sql = "SELECT rpt.*,det.summary as title, YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.startrepeat>'" . $this->_startrepeat . "' ORDER BY rpt.startrepeat ASC limit 1";
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat>='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat ASC limit 1";
 		$db->setQuery($sql);
 		$post = $db->loadObject();
 		if (!is_null($post))

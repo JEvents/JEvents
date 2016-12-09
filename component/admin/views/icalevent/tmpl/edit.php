@@ -213,7 +213,12 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				{
 					<?php
 					$editorcontent = $this->editor->save('jevcontent');
-					if (!$editorcontent ) {
+                                        // Tiny MCE has changed what onSave method does so we need to use onGetContent
+                                        $getContent = $this->editor->getContent('jevcontent');
+                                        if ($getContent){
+                                            $editorcontent = $getContent;
+                                        }
+					if (!$editorcontent) {
 						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
 						$editorcontent = $this->editor->getContent('jevcontent');
 						echo "var editorcontent =".$editorcontent."\n";
