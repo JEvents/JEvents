@@ -28,15 +28,21 @@ class Pkg_JeventsInstallerScript
 
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
+			if (version_compare(JVERSION, '3.6.3', '<')){
+				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.4 before installing JEvents. This will also prevent issues with JEvents' );
+				return false;
+			}
 			return;
+
 		} else {
 			$this->hasJEventsInst = 1;
-			if (version_compare(JVERSION, '3.0', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.4 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+			if (version_compare(JVERSION, '3.6.3', '<')){
+				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.4.4 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
 				return false;
 			}
 			return;
 		}
+
 	}
 
 	public function update($parent)
