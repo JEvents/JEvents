@@ -20,7 +20,7 @@ class SaveIcalEvent {
 	public static function save($array, &$queryModel, $rrule, $dryrun = false){
 
 		$cfg = JEVConfig::getInstance();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
 		$jinput = JFactory::getApplication()->input;
 
@@ -30,7 +30,7 @@ class SaveIcalEvent {
 		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 
 		// TODO do error and hack checks here
-		$ev_id = intval(ArrayHelper::getValue( $array,  "evid",0));
+		$ev_id = (int) ArrayHelper::getValue( $array,  "evid",0);
 		$newevent = $ev_id==0;
 
 		$data = array();
@@ -42,7 +42,7 @@ class SaveIcalEvent {
 		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
 		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
-		if ($data["allDayEvent"]==1)
+		if ($data["allDayEvent"] == 1)
 		{
 			$data["allDayEvent"]="on";
 		}
@@ -142,8 +142,8 @@ class SaveIcalEvent {
 		// Shouldn't really do this like this
 		$vevent->_detail->priority =  intval(ArrayHelper::getValue( $array,  "priority",0));
 
-                // Set Timezone where required
-                $vevent->tzid = ArrayHelper::getValue( $array,  "tzid", "");
+        // Set Timezone where required
+        $vevent->tzid = ArrayHelper::getValue( $array,  "tzid", "");
                 
 		// FRONT END AUTO PUBLISHING CODE
 		$frontendPublish = JEVHelper::isEventPublisher();
@@ -165,7 +165,7 @@ class SaveIcalEvent {
 			$vevent->ev_id=$ev_id;
 		}
 
-		$rp_id = intval(ArrayHelper::getValue( $array,  "rp_id",0));
+		$rp_id = (int) ArrayHelper::getValue( $array,  "rp_id",0);
 		if ($rp_id>0){
 			// I should be able to do this in one operation but that can come later
 			$testevent = $queryModel->listEventsById( intval($rp_id), 1, "icaldb" );
@@ -175,7 +175,7 @@ class SaveIcalEvent {
 			}
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
@@ -197,7 +197,7 @@ class SaveIcalEvent {
 			$vevent->rrule->eventid = $vevent->ev_id;
 		}
 		
-		// Only update the repetitions if the event edit says the reptitions will have changed or a new event or ONLY 1 repetition
+		// Only update the repetitions if the event edit says the repetitions will have changed or a new event or ONLY 1 repetition
 		$repetitions = $vevent->getRepetitions(true);
 		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
@@ -214,34 +214,35 @@ class SaveIcalEvent {
 		}
 		
 		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
-		$vevent->published =  $vevent->state ;
+		$vevent->published =  $vevent->state;
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
 		// Do the repeats overlap each other
-                $overlaprepeats = false;
-                if (count($repetitions)>1){
-                    $oldrep = false;
-                    foreach ($repetitions as $rep){
-                        if (!$oldrep){
-                            $oldrep = $rep;
-                            continue;
-                        }
-                        else {
-                            if ($rep->startrepeat < $oldrep->endrepeat){
-                                $overlaprepeats = true;
-                                break;
-                            }
-                            $oldrep = $rep;
-                        }
+        $overlaprepeats = false;
+        if (count($repetitions)>1){
+            $oldrep = false;
+            foreach ($repetitions as $rep){
+                if (!$oldrep){
+                    $oldrep = $rep;
+                    continue;
+                }
+                else {
+                    if ($rep->startrepeat < $oldrep->endrepeat){
+                        $overlaprepeats = true;
+                        break;
                     }
+                    $oldrep = $rep;
                 }
-                if ($overlaprepeats){
-                    JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");                    
-                }
-                
+            }
+        }
+        if ($overlaprepeats){
+            JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
+        }
+
 		// If not authorised to publish in the frontend then notify the administrator
-		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
+		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()) {
+
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
@@ -329,7 +330,7 @@ public static function generateRRule($array){
 		$rrule["FREQ"]	= $freq;
 		$countuntil		= ArrayHelper::getValue( $array,  "countuntil","count");
 		if ($countuntil=="count" ){
-			$count 			= intval(ArrayHelper::getValue( $array,  "count",1));
+			$count 			= (int) ArrayHelper::getValue( $array,  "count", 1);
 			if ($count<=0) $count=1;
 			$rrule["COUNT"] = $count;
 		}
@@ -379,7 +380,7 @@ public static function generateRRule($array){
 			$weeknums			= ArrayHelper::getValue( $array,  "weeknums",array());
 			$byday		= "";
 			if (count($weeknums)==0){
-				// special case for weekly repeats which don't specify eeek of a month
+				// special case for weekly repeats which don't specify week of a month
 				foreach ($weekdays as $wd) {
 					if (JString::strlen($byday)>0) $byday.=",";
 					$byday .= $weekdayReverseMap[$wd];

@@ -18,6 +18,4 @@
 		<action name="core.deleteall" title="JEV_JACTION_DELETE_ALL" description="JEV_JACTION_DELETE_ALL_DESC" />
 		<action name="core.edit.own" title="JEV_JACTION_EDIT_OWN" description="JEV_JACTION_EDIT_OWN_DESC" />
 	</section>
-
-
 </access>
