@@ -213,24 +213,29 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				{
 					<?php
 					$editorcontent = $this->editor->save('jevcontent');
+					echo $editorcontent."\n";
                                         // Tiny MCE has changed what onSave method does so we need to use onGetContent
                                         $getContent = $this->editor->getContent('jevcontent');
                                         if ($getContent){
-                                            $editorcontent = $getContent;
+                                            ?>
+                                               // tinyMCE chooses a random editor so we have to specify the one we want
+                                               if (tinyMCE){
+                                                    try {
+                                                        tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
+                                                    }
+                                                    catch (e) {
+                                                    }
+                                               }
+                                            <?php
+                                            echo "var getContent =".$getContent."\n";
+                                            ?>
+                                            try {
+                                                jevjq('#jevcontent').html(getContent);
+                                            }
+                                            catch (e) {
+                                            }
+                                            <?php 
                                         }
-					if (!$editorcontent) {
-						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
-						$editorcontent = $this->editor->getContent('jevcontent');
-						echo "var editorcontent =".$editorcontent."\n";
-						?>
-						try {
-							jevjq('#jevcontent').html(editorcontent);
-						}
-						catch (e) {
-						}
-						<?php 
-					}
-					echo $editorcontent;
 					?>
 				}
 				try {

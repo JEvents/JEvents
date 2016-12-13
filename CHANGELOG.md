@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+13-12-2016
+* Make publish own an ACL setting
+* TinyMCE required description workarounds
+
 09-12-2016 - Geraint Edwards
 * fix for required description field - changes in TinyMCE
 * allow irregular repeats to occur more than once on the same day.
