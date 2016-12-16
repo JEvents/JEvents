@@ -180,6 +180,14 @@ class iCalRRule extends JTable  {
 				return 1;
 			}
 		}
+                
+                // if we are saving a set of irregular repeats initially they have the same time so the duplicatecheck fails 
+                // so spoof this for repeat sother than the first
+                if (in_array($repeat, $this->_repetitions)){
+                    static $duplicates = 1;
+                    $repeat->duplicatecheck = md5($repeat->eventid . $start . " ". $duplicates );
+                    $duplicates ++;
+                }
 		$this->_repetitions[] = $repeat;
 		return 1;
 	}
@@ -834,7 +842,7 @@ class iCalRRule extends JTable  {
 				foreach ($this->irregulardates as $irregulardate){
 					// avoid duplicate values
 					if (in_array($irregulardate,$processedDates)){
-						continue;
+						//continue;
 					}
 					$processedDates[] = $irregulardate;
 					// find the start and end times of the initial event

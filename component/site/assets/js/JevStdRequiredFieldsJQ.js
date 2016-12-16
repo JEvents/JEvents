@@ -15,6 +15,25 @@ var JevStdRequiredFields = {
         // This is a Javascript each over an array !
         JevStdRequiredFields.fields.forEach(function (item, i) {
             var name = item.name;
+            var value = "";            
+            if (item.preAction) {
+                try {
+                    eval(item.preAction);
+                }
+                catch (ex){
+                    //alert(ex.message);
+                }
+            }
+            if (item.getValue) {
+                try {
+                    value = eval(item.getValue);
+                }
+                catch (e){
+                    alert("failed "+e.message);
+                    
+                }
+            }
+                       
             var noncustomname = name.replace("custom_jform", "jform");
             // to test field id we must NOT have [ or ] in the name
             var nosquarename = name.replace(/\[/g, "");
@@ -63,7 +82,6 @@ var JevStdRequiredFields = {
                 matches.push(form.find("[name='" + noncustomname + "']"));
             }
 
-            var value = "";
             if (matches.length == 1) {
                 value = matches[0].val();
                 if (typeof value == "undefined" || value == null) {

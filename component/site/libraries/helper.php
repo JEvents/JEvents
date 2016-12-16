@@ -612,6 +612,12 @@ class JEVHelper
 
 		$readonly = isset($attribs['readonly']) && $attribs['readonly'] == 'readonly';
 		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
+                $showtime = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
+                $timeformat = "24";
+                if ($showtime && $params->get("com_calUseStdTime", 1)==0) {
+                   // $timeformat = "12";
+                }
+                $showtime = $showtime? "true": "false";
 
 		if (is_array($attribs))
 		{
@@ -666,7 +672,8 @@ class JEVHelper
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
-                        //showsTime:true
+                        showsTime:'.$showtime.',
+                        timeFormat:'.$timeformat.',
 			});});'
 			);
 			$done[] = $fieldid;
