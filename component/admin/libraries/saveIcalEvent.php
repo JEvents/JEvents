@@ -155,7 +155,10 @@ class SaveIcalEvent {
 		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents",0);
 		if (!$frontendPublish){
-			$vevent->state = 0;
+			if($cfg->get('jevunpublishonedit','1'))
+			{
+				$vevent->state = 0;
+			}
 			// In this case we send a notification email to admin
 			$notifyAdmin = true;
 		}
