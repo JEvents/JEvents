@@ -1044,6 +1044,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$fieldval = str_ireplace("%h", $hours, $fieldval);
 							$shownsign = true;
 						}
+						if (stripos($fieldval, "%k") !== false)
+						{
+							$hours = intval($timedelta / (60 * 60));
+							$timedelta -= $hours * 60 * 60;
+							if ($shownsign)
+								$hours = abs($hours);
+							$fieldval = str_ireplace("%k", $hours, $fieldval);
+							$shownsign = true;
+						}
 						if (stripos($fieldval, "%m") !== false)
 						{
 							$mins = intval($timedelta / 60);

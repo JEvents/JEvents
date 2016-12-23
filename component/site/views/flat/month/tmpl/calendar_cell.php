@@ -101,7 +101,7 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 			$eventIMG	= '<img align="left" style="border:1px solid white;" src="' . JURI::root()
 			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" height="12" width="8" alt=""' . ' />';
 
-			$title_event_link = '<a class="cal_titlelink">' . $eventIMG . '</a>' . "\n";
+			$title_event_link = '<a class="cal_titlelink"  href="' . $link . '">' . $eventIMG . '</a>' . "\n";
 			$cellStyle .= ' float:left;width:10px;';
 		}
 		
