@@ -121,7 +121,7 @@ class AdminIcaleventController extends JControllerAdmin
 		{
 			$join[] =  "\n #__jevents_catmap as catmap ON catmap.evid = ev.ev_id" ;
 			$join[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$where[] = " catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$where[] = " catmapcat.access " . ' IN (' . JEVHelper::getAid($user) . ')' ;
 			$where[] = " catmap.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = " 1";
@@ -1182,13 +1182,13 @@ class AdminIcaleventController extends JControllerAdmin
 		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
 		{
 			$row = new jIcalEventRepeat($event);
-			if (JEVHelper::canPublishEvent($row))
+			if (!JEVHelper::canPublishEvent($row) && !$event->state)
 			{
-				$msg = JText::_("Event_Saved", true);
+				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
 			}
 			else
 			{
-				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
+				$msg = JText::_("Event_Saved", true);
 			}
 			if ($clearout)
 			{
@@ -1333,7 +1333,7 @@ class AdminIcaleventController extends JControllerAdmin
 				{
 					if (!JEVHelper::canPublishOwnEvents($id))
 					{
-						throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+						throw new Exception( JText::_('ALERTNOTAUTH'). " 1", 403);
 						return false;
 					}
 				}
@@ -1342,7 +1342,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		if (!$is_event_editor)
 		{
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			throw new Exception( JText::_('ALERTNOTAUTH'). " 2", 403);
 			return false;
 		}
 
@@ -1352,12 +1352,18 @@ class AdminIcaleventController extends JControllerAdmin
 
 			// I should be able to do this in one operation but that can come later
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
-			if (is_null($event) || !JEVHelper::canPublishEvent($event))
+			if (is_null($event))
 			{
-				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+                                /*echo $db->getQuery()."<br/>";return;*/
+				throw new Exception( JText::_('ALERTNOTAUTH'). " 3", 403);
 				return false;
 			}
-
+                        else if ( !JEVHelper::canPublishEvent($event))
+                        {
+				throw new Exception( JText::_('ALERTNOTAUTH'). " 4", 403);
+				return false;
+                        }
+                            
 			$sql = "UPDATE #__jevents_vevent SET state=$newstate where ev_id='" . $id . "'";
 			$db->setQuery($sql);
 			$db->execute();
@@ -1789,8 +1795,8 @@ class AdminIcaleventController extends JControllerAdmin
 		$icslist = JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $icsFile);
 
 		// get list of creators
-		$sql = "SELECT distinct u.id, u.* FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by order by u.name ";
-		$db = JFactory::getDBO();
+		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name";
+		$db = JFactory::getDbo();
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 		$userOptions = array();

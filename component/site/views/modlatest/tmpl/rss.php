@@ -105,7 +105,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		*/
 
 		// load individual item creator class
-		$item =new JFeedItem();
+		$item = new JFeedItem();
 		// item info
 		if ($row->alldayevent()) {
 			$temptime = new JevDate($eventDate);

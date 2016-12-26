@@ -38,7 +38,7 @@ $query = $db->getQuery(true)
         //->where('enabled = 1')        
         ->where('type =' . $db->quote('plugin'))
         ->where('state IN (0,1)')
-        ->where('(folder="jevents" OR element="gwejson")')
+        ->where('(folder="jevents" OR element="gwejson" OR element="jevent_embed")')
         ->order('enabled desc, ordering asc');
 
 $jevplugins = $db->setQuery($query)->loadObjectList();
@@ -320,12 +320,12 @@ if (count($jevplugins)){
 					$hasconfig = false;
 					foreach ($fieldSets as $name => $fieldSet)
 					{
-						$html[] = '<table class="paramlist admintable" >';
+						$html[] = '<div class="paramlist admintable form-horizontal" >';
 
 						if (isset($fieldSet->description) && !empty($fieldSet->description))
 						{
 							$desc = JText::_($fieldSet->description);
-							$html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
+							$html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
 						}
 
 						foreach ($layoutform->getFieldset($name) as $field)
@@ -345,6 +345,8 @@ if (count($jevplugins)){
 							}
 
 							$hasconfig = true;
+                                                        $html[] = $field->renderField();
+                                                        /*
 							$class = isset($field->class) ? $field->class : "";
 
 							if (JString::strlen($class) > 0)
@@ -361,10 +363,10 @@ if (count($jevplugins)){
 							{
 								$html[] = '<td class="paramlist_value" colspan="2">' . $field->input . '</td>';
 							}
-
 							$html[] = '</tr>';
+                                                         */
 						}
-						$html[] = '</table>';
+						$html[] = '</div>';
 					}
 
 					if (!$hasconfig)
@@ -479,12 +481,12 @@ SCRIPT;
                                                    continue;
                                                 }
 
-                                                $html[] = '<table class="paramlist admintable" >';
+                                                $html[] = '<div class="paramlist admintable form-horizontal" >';
 
                                                 if (isset($fieldSet->description) && !empty($fieldSet->description))
                                                 {
                                                         $desc = JText::_($fieldSet->description);
-                                                        $html[] = '<tr><td class="paramlist_description" colspan="2">' . $desc . '</td></tr>';
+                                                        $html[] = '<div class="paramlist_description" colspan="2">' . $desc . '</div>';
                                                 }
 
                                                 foreach ($pluginform->getFieldset($name) as $field)
@@ -495,7 +497,12 @@ SCRIPT;
                                                         }
 
                                                         // Set the value for the form 
-                                                        $field->setValue ( $pluginparams->get($field->fieldname, $field->default));
+                                                        $paramsval = $pluginparams->get($field->fieldname, $field->default);
+                                                        if (is_object($paramsval)){
+                                                            // Need this for subform to work
+                                                            $paramsval = (array) $paramsval;
+                                                        }
+                                                        $field->setValue ($paramsval);
 
                                                         $maxjoomlaversion = $this->form->getFieldAttribute($field->fieldname, "maxjoomlaversion", false);
                                                         if ( $maxjoomlaversion && version_compare(JVERSION,$maxjoomlaversion , ">")) {
@@ -506,8 +513,14 @@ SCRIPT;
                                                                 continue;
                                                         }
 
+                                                        if ($field->fieldname=="whitelist"){
+                                                            $x = 1;
+                                                        }
+                                                        
                                                         $hasconfig = true;
-                                                        $class = isset($field->class) ? $field->class : "";
+                                                        $html[] = $field->renderField();
+                                                        /*
+                                                        $class = $field->class;
 
                                                         if (JString::strlen($class) > 0)
                                                         {
@@ -525,8 +538,10 @@ SCRIPT;
                                                         }
 
                                                         $html[] = '</tr>';
+                                                         * 
+                                                         */
                                                 }
-                                                $html[] = '</table>';
+                                                $html[] = '</div>';
                                                 echo implode("\n", $html);                                    
                                         }
                                         echo JHtml::_('bootstrap.endSlide');                                     

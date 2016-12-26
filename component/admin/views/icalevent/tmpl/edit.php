@@ -213,19 +213,29 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				{
 					<?php
 					$editorcontent = $this->editor->save('jevcontent');
-					if (!$editorcontent ) {
-						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
-						$editorcontent = $this->editor->getContent('jevcontent');
-						echo "var editorcontent =".$editorcontent."\n";
-						?>
-						try {
-							jevjq('#jevcontent').html(editorcontent);
-						}
-						catch (e) {
-						}
-						<?php 
-					}
-					echo $editorcontent;
+					echo $editorcontent."\n";
+                                        // Tiny MCE has changed what onSave method does so we need to use onGetContent
+                                        $getContent = $this->editor->getContent('jevcontent');
+                                        if ($getContent){
+                                            ?>
+                                               // tinyMCE chooses a random editor so we have to specify the one we want
+                                               if (tinyMCE){
+                                                    try {
+                                                        tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
+                                                    }
+                                                    catch (e) {
+                                                    }
+                                               }
+                                            <?php
+                                            echo "var getContent =".$getContent."\n";
+                                            ?>
+                                            try {
+                                                jevjq('#jevcontent').html(getContent);
+                                            }
+                                            catch (e) {
+                                            }
+                                            <?php 
+                                        }
 					?>
 				}
 				try {
@@ -265,11 +275,12 @@ if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	$urlitemid = JEVHelper::getItemid()>0 ?  "&Itemid=".JEVHelper::getItemid() : "";
-	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid, false);
+        $ttitemid = JEVHelper::getItemid()>0 ?  "&ttItemid=".JEVHelper::getItemid() : "";
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid.$ttitemid, false);
 	?>
-						// reformat start and end dates  to Y-m-d format
-						reformatStartEndDates();
-						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+            // reformat start and end dates  to Y-m-d format
+            reformatStartEndDates();
+            checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
 	<?php
 }
 else
@@ -575,7 +586,7 @@ else
                                 }
                             
 				?>
-				<div class="row jevplugin_<?php echo $key; ?>">
+				<div class="row jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
 					<div class="span2">
 						<label ><?php echo $this->customfields[$key]["label"]; ?></label>
 					</div>

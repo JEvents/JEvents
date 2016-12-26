@@ -3,8 +3,8 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.24
- * @releasedate January 2015
+ * @version     3.4.25
+ * @releasedate November 2016
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,15 +28,21 @@ class Pkg_JeventsInstallerScript
 
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
+			if (version_compare(JVERSION, '3.6.3', '<')){
+				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.4 before installing JEvents. This will also prevent issues with JEvents' );
+				return false;
+			}
 			return;
+
 		} else {
 			$this->hasJEventsInst = 1;
-			if (version_compare(JVERSION, '3.0', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.4 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
+			if (version_compare(JVERSION, '3.6.3', '<')){
+				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.4.4 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
 				return false;
 			}
 			return;
 		}
+
 	}
 
 	public function update($parent)
@@ -214,7 +220,7 @@ class Pkg_JeventsInstallerScript
 		echo "</div>";
 		// Joomla updater special case
 		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
-                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG'), 'message');
+                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG')." :: ". $parent->get('manifest')->version, 'message');
 		}
 
 	}

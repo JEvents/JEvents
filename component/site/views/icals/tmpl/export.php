@@ -12,6 +12,8 @@
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
 
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
 @ob_end_clean();
 @ob_end_clean();
 
@@ -138,7 +140,16 @@ if (!empty($this->icalEvents))
 		}
 		// We Need to wrap this according to the specs
 		/* $html .= "DESCRIPTION:".preg_replace("'<[\/\!]*?[^<>]*?>'si","",preg_replace("/\n|\r\n|\r$/","",$a->content()))."\n"; */
-		$html .= $this->setDescription($a->content()) . "\r\n";
+
+		//Check if we should include the link to the event
+		if ($params->get('source_url', 0) == 1) {
+			$link = $a->viewDetailLink($a->yup(),$a->mup(),$a->dup(),true, $params->get('default_itemid', 0));
+			$uri =  JURI::getInstance(JURI::base());
+			$root = $uri->toString(array('scheme', 'host', 'port'));
+			$html .= $this->setDescription($a->content() . ' ' .JText::_('JEV_EVENT_IMPORTED_FROM') .$root . JRoute::_($link, true, -1)) . "\r\n";
+		} else {
+			$html .= $this->setDescription($a->content()) . "\r\n";
+		}
 
 		if ($a->hasContactInfo())
 			$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";

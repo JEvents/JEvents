@@ -532,10 +532,11 @@ else $this->_detail = false;
 			// find matching day and only one!!
 			$repeat->startday = JString::substr($repeat->startrepeat,0,10);
 			$matched = false;
-			foreach ($oldrepeats as $oldrepeat) {
-				if ($oldrepeat->startday == $repeat->startday){
+			foreach ($oldrepeats as & $oldrepeat) {
+				if ($oldrepeat->startday == $repeat->startday && !isset($repeat->old_rpid) && !isset($oldrepeat->matched) ){
 					$matched = true;
 					$repeat->old_rpid = $oldrepeat->rp_id;
+                                        $oldrepeat->matched = true;
 					if (is_null($repeat->rp_id)){
 						$repeat->rp_id = $repeat->old_rpid;
 					}
@@ -544,6 +545,7 @@ else $this->_detail = false;
 				if ($oldrepeat->startday > $repeat->startday){
 					break;
 				}
+                                unset($oldrepeat);
 			}
 			if (!$matched) $repeat->old_rpid = 0;
 			// free the reference
