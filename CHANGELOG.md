@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+07-01-2017 Geraint Edwards
+* Code to handle bad TZID from microsoft imports was affecting descriptions and other fields with colons in them - resolve this.
+
 13-12-2016
 * Make publish own an ACL setting
 * TinyMCE required description workarounds
