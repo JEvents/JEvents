@@ -343,7 +343,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+                        // accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -499,7 +500,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -654,7 +656,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -883,7 +886,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access  IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -1608,7 +1612,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2272,7 +2277,8 @@ class JEventsDBModel
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2668,7 +2674,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -2809,7 +2816,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3005,7 +3013,8 @@ select @@sql_mode;
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
 				if ($checkAccess) {
-					$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+					// accessibleCategoryList handles access checks on category
+                                        //$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 				}
 				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 				$needsgroup = true;
@@ -3130,7 +3139,8 @@ select @@sql_mode;
 				$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 				$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
 				if ($checkAccess){
-					$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+					// accessibleCategoryList handles access checks on category
+                                        //$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 				}
 				$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList(null, null, null, false, $checkAccess ) . ")";
 				$needsgroup = true;
@@ -3242,7 +3252,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3364,7 +3375,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3536,7 +3548,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3616,7 +3629,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3733,7 +3747,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -3887,7 +3902,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
@@ -4038,7 +4054,8 @@ select @@sql_mode;
 			$extrajoin[] = "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$extrajoin[] = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-			$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
+			// accessibleCategoryList handles access checks on category
+			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
 			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";

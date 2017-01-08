@@ -313,9 +313,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 					}
 				}
-				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
+                                if (count($users)>200){
+                                    return null;
+                                }
+				$sql = "SELECT count(id) FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
 				$db->setQuery($sql);
-				$users = $db->loadObjectList();
+				$userCount = $db->loadResult();
+
+				if ($userCount<=200) {                                
+                                    $sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
+                                    $db->setQuery($sql);
+                                    $users = $db->loadObjectList();
+                                }
+                                else {
+                                    return null;
+                                }
+                                    
 			}
 
 			// get list of creators - if fewer than 200
