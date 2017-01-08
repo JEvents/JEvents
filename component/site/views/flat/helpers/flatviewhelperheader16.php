@@ -122,7 +122,7 @@ function FlatViewHelperHeader16($view){
 
 		?>
 		<li class="email-icon">
-			<a href="javascript:void(0);" rel="nofollow" Sonclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
+			<a href="javascript:void(0);" rel="nofollow" onclick="javascript:window.open('<?php echo $url;?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;" title="<?php echo JText::_( 'EMAIL' ); ?>">
 				<span class="icon-envelope"> </span>
 			</a>
 		</li>

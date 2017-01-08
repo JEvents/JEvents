@@ -15,6 +15,7 @@
 	<fields name="params" >
 
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
+			<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
 
 			<field name="com_calUseIconic" type="list" default="1" label="JEV_ICONIC_NAVBAR" description="" difficulty="2">
 				<option value="1">JEV_NAVIGATION_ICONS</option>
