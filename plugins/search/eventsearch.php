@@ -6,7 +6,7 @@
  * @version     $Id: eventsearch.php 3588 2012-05-02 10:40:19Z geraintedwards $
  * @package     Events
  * @subpackage  Mambot Events Calendar
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @copyright   Copyright (C) 2006-2007 JEvents Project Group
  * @copyright   Copyright (C) 2000 - 2003 Eric Lamette, Dave McDonnell
  * @licence     http://www.gnu.org/copyleft/gpl.html

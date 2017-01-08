@@ -4,9 +4,9 @@
  * JEvents Component for Joomla 2.5.x
  *
  * @version     3.4.25
- * @releasedate November 2016
+ * @releasedate November 2017
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */

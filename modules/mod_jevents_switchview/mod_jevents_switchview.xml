@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
 	<name>MOD_JEV_SWITCH_VIEW_TITLE</name>
-	<creationDate>November 2016</creationDate>
+	<creationDate>November 2017</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2009-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>	  
+	<copyright>(C) 2009-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>	  
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
