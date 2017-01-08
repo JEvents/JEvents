@@ -41,7 +41,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 		$editCopyLink = $popup?"javascript:jevEditPopupNoHeader('".$editCopyLink."');":$editCopyLink;
 		$deleteImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_EVENT"),null,true);
 		$deleteLink = $row->deleteLink();
-		if ($row->until()!=$row->dtstart() || $row->count()>1){
+		if ($row->until()!=$row->dtstart() || $row->count()>1 || $row->freq()=="IRREGULAR"){
 
 			$hasrepeat = true;
 
