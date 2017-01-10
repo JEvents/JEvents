@@ -448,7 +448,7 @@ class JEV_CommonFunctions {
 			$mail->addReplyTo($adminEmail);
 		}
 
-		if ($add_cc > '') {
+		if (isset($add_cc) && $add_cc !== "") {
 			$mail->addCC($add_cc);
 		}
 
