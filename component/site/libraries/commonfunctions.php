@@ -474,8 +474,6 @@ class JEV_CommonFunctions {
 			$mail->addCC($cc);
 		}
 		$mail->IsHTML(true);
-
-
 		$mail->send();
 
 	}
