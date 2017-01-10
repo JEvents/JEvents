@@ -424,7 +424,7 @@ class JEV_CommonFunctions {
 			}
 			//Check not emailing the same user who is editing:
 			$user = JFactory::getUser();
-			if ($user->email !== $adminEmail){
+			if ($user->email === $adminEmail){
 				// Get out of here we don't want to notify the admin of their own change
 				return;
 			}
