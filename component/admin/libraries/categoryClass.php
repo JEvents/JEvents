@@ -100,7 +100,7 @@ class JEventsCategory extends JTableCategory {
 		}
 
 		// Lets only return once.
-		if (isset($catuser) && $catuser->id > '') {
+		if (isset($catuser) && $catuser->id !== '') {
 			return $catuser;
 		} else {
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
