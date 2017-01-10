@@ -88,13 +88,6 @@ class JEventsCategory extends JTableCategory {
 
 	function getAdminUser(){
 
-		static $adminuser;
-
-		if (!isset($adminuser)){
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$adminuser = new  JUser($params->get("jevadmin",62));
-		}
-
 		if (isset($this->_catextra)){
 			if ($this->_catextra->admin>0){
 				$catuser = new JUser();
@@ -112,10 +105,9 @@ class JEventsCategory extends JTableCategory {
 		} else {
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$adminuser = new  JUser($params->get("jevadmin",62));
+
 			return $adminuser;
 		}
-
-		return $adminuser;
 	}
 
 	public static function categoriesTree() {
