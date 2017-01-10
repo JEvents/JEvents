@@ -46,13 +46,10 @@ function Defaultgetstartenddates($view){
 		else {
 			$value = $params->get("relstart","");
 			$value = str_replace(","," ",$value);
-			$value = str_replace("h","hour",$value);
-			$value = str_replace("m","minute",$value);
-			$value = str_replace("s","second",$value);
+			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = str_replace("y","year",$value);
 			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
 		}
@@ -69,13 +66,10 @@ function Defaultgetstartenddates($view){
 		else {
 			$value = $params->get("relend","");
 			$value = str_replace(","," ",$value);
-			$value = str_replace("h","hour",$value);
-			$value = str_replace("m","minute",$value);
-			$value = str_replace("s","second",$value);
+			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);
 			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
-			$value = str_replace("y","year",$value);
 			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");
 		}
