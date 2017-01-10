@@ -402,6 +402,34 @@ class JEV_CommonFunctions {
 		$messagetemplate = str_replace("{MANAGEEVENTS}", $adminLink,$messagetemplate);
 
 		// mail function
+		// JEvents category admin only or both get notifications
+		if ($params->get("com_notifyboth",0)==0 || $params->get("com_notifyboth",0)==1){
+			$recipient = $adminEmail;
+			if ($params->get("com_notifyboth",0)==1){
+				$jevadminuser = new  JUser($params->get("jevadmin",62));
+				if ($jevadminuser->email != $adminEmail){
+					$add_cc = $jevadminuser->email;
+				} else {
+					$recipient = $adminEmail;
+				}
+			}
+		}
+		// Just JEvents admin user
+		else if ($params->get("com_notifyboth",0)==2){
+			$jevadminuser = new  JUser($params->get("jevadmin",62));
+			if ($jevadminuser->email != $adminEmail){
+				$recipient = $jevadminuser->email;
+			} else {
+				$recipient = $adminEmail;
+			}
+			//Check not emailing the same user who is editing:
+			$user = JFactory::getUser();
+			if ($user->email !== $adminEmail){
+				// Get out of here we don't want to notify the admin of their own change
+				return;
+			}
+		}
+
 		$mail = JFactory::getMailer();
 		$sender_config = $params->get('sender_config', 0);
 		if ($sender_config == 0) {
@@ -420,27 +448,12 @@ class JEV_CommonFunctions {
 			$mail->addReplyTo($adminEmail);
 		}
 
-                // JEvents category admin only or both get notifications
-                if ($params->get("com_notifyboth",0)==0 || $params->get("com_notifyboth",0)==1){
-                    $mail->addRecipient($adminEmail);
-                    if ($params->get("com_notifyboth",0)==1){
-                            $jevadminuser = new  JUser($params->get("jevadmin",62));
-                            if ($jevadminuser->email != $adminEmail){
-                            	$mail->addCC($jevadminuser->email);
-                            } else {
-	                            $mail->addRecipient($adminEmail);
-                            }
-                    }
-                }
-                // Just JEvents admin user
-                else if ($params->get("com_notifyboth",0)==2){
-                    $jevadminuser = new  JUser($params->get("jevadmin",62));
-                    if ($jevadminuser->email != $adminEmail){
-                            $mail->addRecipient($jevadminuser->email);
-                    } else {
-                    	$mail->addRecipient($adminEmail);
-                    }
-                }
+		if ($add_cc > '') {
+			$mail->addCC($add_cc);
+		}
+
+		$mail->addRecipient($recipient);
+
 
 		/**
 		 *
@@ -462,13 +475,8 @@ class JEV_CommonFunctions {
 		}
 		$mail->IsHTML(true);
 
-		//Check not emailing the same user who is editing:
-		$user = JFactory::getUser();
 
-		if ($user->email !== $adminEmail){
-
-			$mail->send();
-		}
+		$mail->send();
 
 	}
 
