@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+12-01-2017 Geraint Edwards
+* JEvents 3.4.26
+* Fix for reseting date filters in date range view
+
 08-01-2017 Geraint Edwards
 * New config option to show multi-day events first in day list view
 * Trap for memory overflow on sites with 60,000+ event creators
