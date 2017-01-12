@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 12-01-2017 Geraint Edwards
+* JEvents 3.4.27
+* Fix for sites not using TinyMCE (workaround for descriptions wasn't working in 3.4.26)
 * JEvents 3.4.26
 * Fix for reseting date filters in date range view
 

@@ -219,7 +219,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                                         if ($getContent){
                                             ?>
                                                // tinyMCE chooses a random editor so we have to specify the one we want
-                                               if (tinyMCE){
+                                               if (typeof tinyMCE != 'undefined'){
                                                     try {
                                                         tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
                                                     }

@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.26</version>
+	<version>3.4.27</version>
 	<description>PLG_INSTALLER_JEVENTSINSTALLER</description>
 	<files>
 		<filename plugin="jeventsinstaller">jeventsinstaller.php</filename>
