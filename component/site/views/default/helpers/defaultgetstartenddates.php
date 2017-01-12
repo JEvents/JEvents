@@ -49,6 +49,7 @@ function Defaultgetstartenddates($view){
 			$value = str_replace(","," ",$value);
 			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);
+			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
 			$value = new JevDate($value);
 			$startdate = $value->toFormat("%Y-%m-%d");
@@ -69,6 +70,7 @@ function Defaultgetstartenddates($view){
 			$value = str_replace(","," ",$value);
 			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);
+			$value = str_replace("w","week",$value);
 			$value = str_replace("m","month",$value);
 			$value = new JevDate($value);
 			$enddate = $value->toFormat("%Y-%m-%d");
