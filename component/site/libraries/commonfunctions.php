@@ -434,8 +434,8 @@ class JEV_CommonFunctions {
                 else if ($params->get("com_notifyboth",0)==2){
                     $jevadminuser = new  JUser($params->get("jevadmin",62));
                     if ($jevadminuser->email != $adminEmail){
-                            $mail->addRecipient($jevadminuser->email);
-                    }                    
+                    $mail->addRecipient($jevadminuser->email);
+                }
                 }
 
 		/**

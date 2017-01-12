@@ -2455,6 +2455,11 @@ class JEventsDBModel
 			$time_end = (float) $usec + (float) $sec;
 			echo  "listIcalEvents  = ".round($time_end - $starttime, 4)."<br/>";
 		}
+                
+                $secretmodule = JRegistry::getInstance("secretmodule");                
+                if ($secretmodule->get("storedata",0)){
+                    $secretmodule->set("storeddata",$rows);
+                }
 		
 		return $rows;
 
@@ -2939,6 +2944,11 @@ select @@sql_mode;
 		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onDisplayCustomFieldsMultiRowUncached', array(&$rows));
 
+                $secretmodule = JRegistry::getInstance("secretmodule");                
+                if ($secretmodule->get("storedata",0)){
+                    $secretmodule->set("storeddata",$rows);
+                }
+		                
 		return $rows;
 
 	}
