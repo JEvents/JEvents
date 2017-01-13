@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.27
+ * @version     3.4.28
  * @releasedate January 2017
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -21,6 +21,14 @@ jimport( 'joomla.application.component.helper' );
 class Pkg_JeventsInstallerScript
 {
 	public function preflight ($type, $parent) {
+            
+                define('JEVENTS_MINIMUM_PHP', '8.6.0');
+
+                if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
+                {
+                        Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", JOOMLA_MINIMUM_PHP );
+                }
+
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
