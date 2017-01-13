@@ -184,7 +184,8 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
                                                 $title = $dom->saveHTML($node);
                                                 $node->parentNode->removeChild($node);
                                             }
-                                            $body = $dom->getElementsByTagName('body')[0];
+                                            $bdy = $dom->getElementsByTagName('body');
+	                                        $body = $bdy[0];
                                             $cellString= '';
                                             $children = $body->childNodes;
                                             foreach ($children as $child) {
