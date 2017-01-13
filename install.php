@@ -22,11 +22,11 @@ class Pkg_JeventsInstallerScript
 {
 	public function preflight ($type, $parent) {
             
-                define('JEVENTS_MINIMUM_PHP', '8.6.0');
+                define('JEVENTS_MINIMUM_PHP', '5.6.0');
 
                 if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
                 {
-                        Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", JOOMLA_MINIMUM_PHP );
+                        Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION ));
                 }
 
 		// Joomla! broke the update call, so we have to create a workaround check.
