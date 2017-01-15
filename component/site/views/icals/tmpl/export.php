@@ -91,6 +91,12 @@ if (!empty($this->icalEvents))
 			$a = $a->getOriginalFirstRepeat();
 		}
 		if (!$a) continue;
+                
+                // if an irregular repeat then skip it :(
+                // TODO create it as a daily repeat using the irregular values as exceptions
+                if (isset($a->_freq) && $a->_freq=="IRREGULAR"){
+                    continue;
+                }
 
 		// Fix for end time of first repeat if its an exception
 		if (array_key_exists($a->ev_id(), $exceptiondata) && array_key_exists($a->rp_id(),$exceptiondata[$a->ev_id()]))
