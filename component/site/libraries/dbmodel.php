@@ -184,6 +184,7 @@ class JEventsDBModel
 			$catids = $this->datamodel->catids;
 		}
 
+                JArrayHelper::toInteger($catids);
 		$catidList = implode(",", $catids);
 
 		$cfg = JEVConfig::getInstance();

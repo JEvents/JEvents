@@ -46,6 +46,7 @@ class CatController extends JControllerLegacy   {
 		//	$catid 	= intval( JRequest::getVar( 	'catid', 		0 ) );
 		$catids 	= $jinput->getString('catids', "");
 		$catids = explode("|",$catids);
+                JArrayHelper::toInteger($catids);
 		
 		$Itemid	= JEVHelper::getItemid();
 
