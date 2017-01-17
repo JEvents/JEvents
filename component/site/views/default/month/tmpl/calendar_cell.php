@@ -435,30 +435,29 @@ class EventCalendarCell_default  extends JEventsDefaultView {
 
 				if (strpos($tooltip,"templated")===0 ) {
 					$cellString = JString::substr($tooltip,9);
-                                        $dom = new DOMDocument();
-                                        $dom->loadHTML($cellString);
-                                        
-                                        $classname = 'jevtt_title';
-                                        $finder = new DomXPath($dom);
-                                        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+					$dom = new DOMDocument();
+					$dom->loadHTML($cellString);
 
-                                        if ($nodes->length){
-                                            foreach ($nodes as $node){
-                                                $title = $dom->saveHTML($node);
-                                                $node->parentNode->removeChild($node);
-                                            }
-                                            $bdy = $dom->getElementsByTagName('body');
-	                                        $body = $bdy[0];
-                                            $cellString= '';
-                                            $children = $body->childNodes;
-                                            foreach ($children as $child) {
-                                                $cellString .= $child->ownerDocument->saveXML( $child );
-                                            } 
-                                        }
-                                        else {
-                                            $title = $cellString;
-                                            $cellString = "";
-                                        }
+					$classname = 'jevtt_title';
+					$finder = new DomXPath($dom);
+					$nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+
+					if ($nodes->length){
+						foreach ($nodes as $node){
+							$title = $dom->saveHTML($node);
+							$node->parentNode->removeChild($node);
+						}
+						$body = $dom->getElementsByTagName('body')->item(0);
+						$cellString= '';
+						$children = $body->childNodes;
+						foreach ($children as $child) {
+							$cellString .= $child->ownerDocument->saveXML( $child );
+						}
+					}
+					else {
+						$title = $cellString;
+						$cellString = "";
+					}
 				}
 				else {
 					// TT background
