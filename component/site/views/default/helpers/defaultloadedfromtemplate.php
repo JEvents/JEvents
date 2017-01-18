@@ -1330,6 +1330,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->ev_id();
 					$blank[] = "";
 					break;
+                case "{{SITEROOT}}":
+                    $search[]   = "{{SITEROOT}}";
+                    $replace[]  = JUri::root();
+                    $blank[]    = "";
+                    break;
+                case "{{SITEBASE}}":
+                    $search[]   = "{{SITEBASE}}";
+                    $replace[]  = JUri::base();
+                    $blank[]    = "";
+                    break;
 			
 				default:
 					$strippedmatch = str_replace(array("{", "}"), "", $strippedmatch);
