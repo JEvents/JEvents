@@ -463,10 +463,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"]    = $jinput->get("extra_info", "");
+		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
 		$data["LOCATION"]       = $jinput->getString("location", "");
 		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
-                if ($data["allDayEvent"]==1){
+                if ($data["allDayEvent"] == 1){
                     $data["allDayEvent"] = "on";
                 }
 		$data["CONTACT"]        = $jinput->getString("contact_info", "");
