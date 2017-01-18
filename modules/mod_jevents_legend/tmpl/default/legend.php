@@ -149,6 +149,7 @@ class DefaultModLegendView
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
+                JArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories

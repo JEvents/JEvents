@@ -94,6 +94,7 @@ class JEventsDBModel
 			$hascatid = false;
 			foreach ($catids as $catid)
 			{
+                                // hardening
 				$catid = intval($catid);
 				if ($catid > 0)
 				{
