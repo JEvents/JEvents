@@ -973,7 +973,7 @@ SCRIPT;
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom")? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -1061,7 +1061,7 @@ SCRIPT;
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
 			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
 			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";

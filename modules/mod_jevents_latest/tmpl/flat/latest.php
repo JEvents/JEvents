@@ -30,7 +30,7 @@ class FlatModLatestView extends DefaultModLatestView
 
 		if(isset($this->eventsByRelDay) && count($this->eventsByRelDay)){
 
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -99,7 +99,7 @@ class FlatModLatestView extends DefaultModLatestView
 					$firstTime=false;
 				} // end of foreach
 			} // end of foreach
-			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
+			$content .=$this->modparams->get("modlatest_templatebottom") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1)){
 			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
