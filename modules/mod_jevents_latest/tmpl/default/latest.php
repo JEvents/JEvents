@@ -896,7 +896,7 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -1460,6 +1460,13 @@ SCRIPT;
 				  . "&day=".$st_day
 				  . "&Itemid=".$this->myItemid . $this->catout);
 				 */
+				break;
+
+			case 'siteroot':
+				$content .= JUri::root();
+				break;
+			case 'sitebase':
+				$content .= Juri::base();
 				break;
 
 			default:
