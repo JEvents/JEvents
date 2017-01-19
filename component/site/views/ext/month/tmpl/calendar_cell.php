@@ -173,7 +173,8 @@ class EventCalendarCell_ext extends EventCalendarCell_default{
 				if (strpos($tooltip,"templated")===0 ) {
 					$cellString = JString::substr($tooltip,9);
 					$dom = new DOMDocument();
-					$dom->loadHTML($cellString);
+                                        // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>'.$cellString.'</body>');
 
 					$classname = 'jevtt_title';
 					$finder = new DomXPath($dom);
