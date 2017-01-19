@@ -151,8 +151,8 @@ class SaveIcalEvent {
 		if (!$frontendPublish){
 			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
 		}
-		// Always unpublish if no Publisher otherwise publish automatically (for new events)
-		// Should we always notify of new events edit_requires_reapproval
+		// Always un-publish if no Publisher otherwise publish automatically (for new events)
+		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents",0);
 
 		$re_approve = $cfg->get('edit_requires_reapproval', 1);
