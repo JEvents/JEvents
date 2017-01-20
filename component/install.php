@@ -528,7 +528,7 @@ SQL;
                     @$db->execute();
                     $db->setQuery("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',NO_ZERO_DATE'))");
                     @$db->execute();
-                    $db->setQuery("SET SESSION sql_mode=''");
+                    $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
                     @$db->execute();
 		}
                                 
