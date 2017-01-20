@@ -12,11 +12,11 @@ function Defaultgetstartenddates($view){
 	$activeFilterMenu = JFactory::getApplication()->getUserState( 'active_filter_menu ',$Itemid);
 	if (intval(JRequest::getVar('filter_reset',0)) || ($activeFilterMenu>0 && $activeFilterMenu!=$Itemid)){
                 // if actively filtering then do not reset
-		if (!JRequest::getString("startdate",0)) {
+		if (!JRequest::getString("startdate",0) || intval(JRequest::getVar('filter_reset',0))) {
                     JRequest::setVar( 'startdate', '');
         	    JFactory::getApplication()->setUserState( 'range_startdate'.$Itemid, '');
                 }
-		if (!JRequest::getString("enddate",0)) {
+		if (!JRequest::getString("enddate",0) || intval(JRequest::getVar('filter_reset',0))) {
                     JRequest::setVar( 'enddate', '');
                     JFactory::getApplication()->setUserState( 'range_enddate'.$Itemid, '');
                 }
@@ -45,6 +45,7 @@ function Defaultgetstartenddates($view){
 		}
 		else {
 			$value = $params->get("relstart","");
+                        // order is important since "day" has a y in it which would then be matched! 
 			$value = str_replace(","," ",$value);
 			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);
@@ -65,6 +66,7 @@ function Defaultgetstartenddates($view){
 		}
 		else {
 			$value = $params->get("relend","");
+                        // order is important since "day" has a y in it which would then be matched! 
 			$value = str_replace(","," ",$value);
 			$value = str_replace("y","year",$value);
 			$value = str_replace("d","day",$value);

@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -313,9 +313,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 					}
 				}
-				$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
+                                if (count($users)>200){
+                                    return null;
+                                }
+				$sql = "SELECT count(id) FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
 				$db->setQuery($sql);
-				$users = $db->loadObjectList();
+				$userCount = $db->loadResult();
+
+				if ($userCount<=200) {                                
+                                    $sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
+                                    $db->setQuery($sql);
+                                    $users = $db->loadObjectList();
+                                }
+                                else {
+                                    return null;
+                                }
+                                    
 			}
 
 			// get list of creators - if fewer than 200

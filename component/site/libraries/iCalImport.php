@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalImport.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -224,9 +224,14 @@ class iCalImport
 				$matches = explode(":",$vcLine,3);                                
                                 // Catch some bad Microsoft timezones e.g. "(UTC+01:00) Amsterdam, Berlin, Bern, Rom, Stockholm, Wien"
                                 if (count($matches) == 3) {
-                                    $matches[0] = $matches[0].":".$matches[1];
-                                    $matches[1] = $matches[2];
-                                    unset($matches[2]);
+                                    if (strpos($matches[0], ";TZID")>0){
+                                        $matches[0] = $matches[0].":".$matches[1];
+                                        $matches[1] = $matches[2];
+                                        unset($matches[2]);
+                                    }
+                                    else {
+                                        $matches = explode(":",$vcLine,2);
+                                    }
                                 }
 				if (count($matches) == 2) {
 					list($this->key,$value)= $matches;
@@ -304,7 +309,7 @@ class iCalImport
 
 	function add_to_cal($parent, $key, $value, $append)
 	{
-
+            
 		// I'm not interested in when the events were created/modified
 		if (($key == "DTSTAMP") or ($key == "LAST-MODIFIED") or ($key == "CREATED")) return;
 

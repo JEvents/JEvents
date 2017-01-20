@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2016 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2017 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -568,7 +568,7 @@ SQL;
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-		if (array_key_exists("extra_info", $cols))
+		if (!array_key_exists("extra_info", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevdetail modify extra_info text NOT NULL";
 			$db->setQuery($sql);

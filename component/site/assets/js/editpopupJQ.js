@@ -92,6 +92,8 @@ function launchModal(selector, url) {
 		});
 	}
 	jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
+        //reloads parent page on close!
+        //jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();});
 	return;
 }
 

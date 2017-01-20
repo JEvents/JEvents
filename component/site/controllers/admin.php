@@ -4,7 +4,7 @@
  *
  * @version     $Id: admin.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -60,7 +60,7 @@ class AdminController extends JControllerLegacy   {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$adminuser = $params->get("jevadmin",-1);
 		
-		if(JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher() || JEVHelper::isEventEditor() ||$user->id==$adminuser) {
+		if(JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor() ||$user->id==$adminuser) {
 			$creator_id = 'ADMIN';
 		}else{
 			$creator_id = $user->id;

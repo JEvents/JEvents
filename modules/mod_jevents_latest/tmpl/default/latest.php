@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2008-2016 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -896,7 +896,7 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -973,7 +973,7 @@ SCRIPT;
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom")? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -1061,7 +1061,7 @@ SCRIPT;
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
 			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
 			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
@@ -1330,6 +1330,15 @@ SCRIPT;
 					$fieldval = str_ireplace("%h", $hours, $fieldval);
 					$shownsign = true;
 				}
+				if (stripos($fieldval, "%k") !== false)
+				{
+					$hours = intval($timedelta / (60 * 60));
+					$timedelta -= $hours * 60 * 60;
+					if ($shownsign)
+						$hours = abs($hours);
+					$fieldval = str_ireplace("%kgi", $hours, $fieldval);
+					$shownsign = true;
+				}
 				if (stripos($fieldval, "%m") !== false)
 				{
 					$mins = intval($timedelta / 60);
@@ -1451,6 +1460,13 @@ SCRIPT;
 				  . "&day=".$st_day
 				  . "&Itemid=".$this->myItemid . $this->catout);
 				 */
+				break;
+
+			case 'siteroot':
+				$content .= JUri::root();
+				break;
+			case 'sitebase':
+				$content .= Juri::base();
 				break;
 
 			default:

@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -219,7 +219,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
                                         if ($getContent){
                                             ?>
                                                // tinyMCE chooses a random editor so we have to specify the one we want
-                                               if (tinyMCE){
+                                               if (typeof tinyMCE != 'undefined'){
                                                     try {
                                                         tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
                                                     }

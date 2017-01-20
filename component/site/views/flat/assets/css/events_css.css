@@ -88,13 +88,15 @@
     height:80px;
     vertical-align:top;
     width:14%;
+    border: 1px solid #ddd;
 }
 #jevents_body .cal_dayshasevents {
     background-color: #FFF;
     padding:4px;
-    vertical-algin:top;
+    vertical-align:top;
     height:80px;
     width:14%;
+    border: 1px solid #ddd;
 }
 a.cal_daylink:link {
     

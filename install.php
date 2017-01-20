@@ -3,10 +3,10 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.25
- * @releasedate November 2016
+ * @version     3.4.28
+ * @releasedate January 2017
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -21,6 +21,14 @@ jimport( 'joomla.application.component.helper' );
 class Pkg_JeventsInstallerScript
 {
 	public function preflight ($type, $parent) {
+            
+                define('JEVENTS_MINIMUM_PHP', '5.6.0');
+
+                if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
+                {
+                        Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION ));
+                }
+
 		// Joomla! broke the update call, so we have to create a workaround check.
 		$db = JFactory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
@@ -29,7 +37,7 @@ class Pkg_JeventsInstallerScript
 		if (!$is_enabled){
 			$this->hasJEventsInst = 0;
 			if (version_compare(JVERSION, '3.6.3', '<')){
-				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.4 before installing JEvents. This will also prevent issues with JEvents' );
+				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.3 before installing JEvents. This will also prevent issues with JEvents' );
 				return false;
 			}
 			return;
@@ -37,7 +45,7 @@ class Pkg_JeventsInstallerScript
 		} else {
 			$this->hasJEventsInst = 1;
 			if (version_compare(JVERSION, '3.6.3', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.4.4 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
+				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.6.3 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
 				return false;
 			}
 			return;

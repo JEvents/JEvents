@@ -3,22 +3,25 @@
 defined('JPATH_BASE') or die;
 
 /**
- * @copyright	Copyright (C) 2015-2016 GWE Systems Ltd. All rights reserved.
+ * @copyright	Copyright (C) 2015-2017 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
  */
 use Joomla\String\StringHelper;
 
 function ProcessJsonRequest(&$requestObject, $returnData) {
 
-    ini_set("display_errors", 0);
+//	ini_set("log_errors", 1);
+//	ini_set("error_log", "error_log"); // Confirms log file is error_log in Joomla! root.
 
-    if (!isset($requestObject->modid) || intval($requestObject->modid)<=0) {
+	ini_set("display_errors", 0);
+
+    if (!isset($requestObject->modid) || (int) $requestObject->modid <= 0) {
         PlgSystemGwejson::throwerror("There was an error - no valid module id");
     }    
     
     ob_clean();
     ob_start();
-    $db = JFactory::getDBO();
+    $db = JFactory::getDbo();
 
     $query = 'SELECT id, title, module, position, content, showtitle,  params'
                     . ' FROM #__modules AS m'
@@ -26,7 +29,7 @@ function ProcessJsonRequest(&$requestObject, $returnData) {
                     . ' WHERE m.published = 1'
                     . ' AND m.access <= 1 '
                     . ' AND m.client_id = 0'
-                    . ' AND m.id=' . intval($requestObject->modid)
+                    . ' AND m.id=' . (int) $requestObject->modid
                     . ' GROUP BY m.id'
                     . ' ORDER BY position, ordering';
 

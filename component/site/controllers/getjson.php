@@ -5,7 +5,7 @@
  *
  * @version     $Id: getJSON.php 3549 2013-10-25 09:26:21Z carcam $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */

@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_icalevent.list_row.php 3333 2012-03-12 09:36:35Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -74,6 +74,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_EVENT_ENDED",true
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "JEVAGE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON",true);?>", "EDITBUTTON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_ROOT",true);?>", "SITEROOT");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_BASE",true);?>", "SITEBASE");
 
 <?php
 // get list of enabled plugins

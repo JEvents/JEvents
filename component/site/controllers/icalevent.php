@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalevent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2016 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -130,8 +130,7 @@ class ICalEventController extends AdminIcaleventController   {
 			else {
 				$uri = JURI::getInstance();
 				$link = $uri->toString();
-				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			return;

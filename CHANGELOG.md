@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+12-01-2017 Geraint Edwards
+* JEvents 3.4.27
+* Fix for sites not using TinyMCE (workaround for descriptions wasn't working in 3.4.26)
+* JEvents 3.4.26
+* Fix for reseting date filters in date range view
+
+08-01-2017 Geraint Edwards
+* New config option to show multi-day events first in day list view
+* Trap for memory overflow on sites with 60,000+ event creators
+* Performance gain - no need to check category access in db queries since we already do this in getAccessibleCategories
+* Support for %k in duration in latest events module
+
+07-01-2017 Geraint Edwards
+* Code to handle bad TZID from microsoft imports was affecting descriptions and other fields with colons in them - resolve this.
+
 13-12-2016
 * Make publish own an ACL setting
 * TinyMCE required description workarounds

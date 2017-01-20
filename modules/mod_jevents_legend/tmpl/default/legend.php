@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2008-2016 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -149,6 +149,7 @@ class DefaultModLegendView
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
+                JArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories

@@ -19,11 +19,11 @@
 
 .jevmodal-full {
 	bottom:5%;
-	position:fixed!important;
+	position:fixed;
 	overflow: hidden;
 }
 .jevmodal-full.modal {
-	position: fixed!important;
+	position: fixed;
 	bottom: 5%;
 	top: 5%;
 	left: 5%;
@@ -175,9 +175,6 @@
     box-shadow: none;
     border:none;
 }
-
-/** Hide the modal body by default **/
-.jevbootstrap > div.action_dialogJQ  {display:none;}
 
 /* Only for sites that want a max size for the popup! */
 

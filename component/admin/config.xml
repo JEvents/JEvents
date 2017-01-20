@@ -96,8 +96,8 @@
 		</field>		
 		
 		<field name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC" difficulty="3"/>
-		
-		
+	
+                <field name="daylist_multifirst" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LIST_MULTIDAY_EVENTS_FIRST_IN_DAY_LIST" description="JEV_LIST_MULTIDAY_EVENTS_FIRST_IN_DAY_LIST_DESC" difficulty="2"/>
 		
 		<!--//
 		<field name="jevkey" type="jevkey" default="" menu="hide" size="40" label='COPYRIGHT_MESSAGE_KEY'  description='PLEASE_USE_THIS_KEY_CODE_AT_THE_JEVENTS_WEBSITE_TO_OBTAIN_A_FREE_CODE_THAT_WILL_DISABLE_THE_COPYRIGHT_MESSAGE'  />
@@ -114,7 +114,7 @@
 		<field name="jevpublishown" type="radio" class="btn-group" default="0" menu="hide" label="PUBLISH_OWN" description="JEVPUBLISH_OWN_TIP" difficulty="1">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
-			<!--<option value="2">JEV_USE_JOOMLA_ACL</option>//-->
+			<option value="2">JEV_USE_JOOMLA_ACL</option>
 		</field>
 		<field name="jevunpublishonedit" type="radio" class="btn-group" default="1" menu="hide" label="JEV_CONFIG_UNPUBLISH_ON_EDIT_LABEL" description="JEV_CONFIG_UNPUBLISH_ON_EDIT_TIP" difficulty="3">
 			<option value="0">JEV_NO</option>
