@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+22-01-2017 Geraint Edwards
+* Fix for UTF-8 tooltips
+* Fix for install error on creating evaccess index 
+
 12-01-2017 Geraint Edwards
 * JEvents 3.4.27
 * Fix for sites not using TinyMCE (workaround for descriptions wasn't working in 3.4.26)

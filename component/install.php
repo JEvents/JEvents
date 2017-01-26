@@ -149,7 +149,8 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
                         
 	PRIMARY KEY  (ev_id),
 	INDEX (icsid),
-	INDEX stateidx (state)
+	INDEX stateidx (state),
+        INDEX evaccess (access)                        
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -522,7 +523,6 @@ SQL;
 		{
                     $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
                     @$db->execute();
-                    //select @@sql_mode;
                     $sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
                     $db->setQuery($sql);
                     @$db->execute();
