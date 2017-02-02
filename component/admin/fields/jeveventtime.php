@@ -32,17 +32,22 @@ class JFormFieldJeveventtime extends JFormField
                 if ($event->_tzid && !isset($event->tzid_adjusted)){
                     // They are stored in system timezone - we need them in event timezone
                     $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_up(), new DateTimeZone(@date_default_timezone_get()));
+                    $offset1 = $testdate->getOffset();
                     $testdate->setTimezone(new DateTimeZone($event->tzid));
+                    $offset2 = $testdate->getOffset();
 
-                    $event->dtstart($testdate->format("U"));
+                    //USE OFFSETS FOR unix time stamps!!                       
+                    $event->dtstart($testdate->format("U") - $offset2 + $offset1);
                     $event->_publish_up = $testdate->format('Y-m-d H:i:s');
                     $event->_unixstartdate = $event->dtstart();
                     $event->_unixstarttime= $event->dtstart();
                             
                     $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_down(), new DateTimeZone(@date_default_timezone_get()));
+                    $offset1 = $testdate->getOffset();
                     $testdate->setTimezone(new DateTimeZone($event->tzid));
+                    $offset2 = $testdate->getOffset();
                     
-                    $event->dtend($testdate->format("U"));
+                    $event->dtend($testdate->format("U") - $offset2 + $offset1);
                     $event->_publish_down = $testdate->format('Y-m-d H:i:s');
                     $event->_unixenddate = $event->dtend();
                     $event->_unixendtime= $event->dtend();

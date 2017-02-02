@@ -32,7 +32,7 @@ class JFormFieldJevtimezone extends JFormField
                         $choosefrom =  $params->get("offeredtimezones", array());
                         //? explode(",",$this->getAttribute("choosefrom", "")) : array();
 
-                        if (!is_array($choosefrom) || (count($choosefrom)==1 && $choosefrom[0]=="")) {
+                        if (!is_array($choosefrom) || (count($choosefrom)==1 && $choosefrom[0]=="") || JFactory::getApplication()->input->getCmd("task")=="params.edit") {
                             $choosefrom = array();
                         }
 			$zones = DateTimeZone::listIdentifiers();

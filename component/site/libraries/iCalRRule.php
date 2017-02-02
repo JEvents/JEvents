@@ -378,12 +378,11 @@ class iCalRRule extends JTable  {
 							}
 						}
 						// now ago to the start of next year
-						if ($currentYear+$this->rinterval>2099) return  $this->_repetitions;
+                                                $maxyear  = (PHP_INT_SIZE === 8) ? 2999 : 2037;                                                
+						if ($currentYear+$this->rinterval>$maxyear) return  $this->_repetitions;
 						$currentYearStart = JevDate::mktime(0,0,0,1,1,$currentYear+$this->rinterval);
 					}
-
 				}
-
 				// assume for now that its an anniversary of the start month only!
 				// TODO relzs this assumption !!
 				else if ($this->bymonthday!="") {

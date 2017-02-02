@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+23-01-2017 Geraint Edwards
+ * JEvents 3.4.29
+
 22-01-2017 Geraint Edwards
 * Fix for UTF-8 tooltips
 * Fix for install error on creating evaccess index 
