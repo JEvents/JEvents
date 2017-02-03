@@ -1388,7 +1388,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 						{
                                                         $fieldnames = array();
-                                                        // Special case where $fielename has option value in it e.g. sizedimages 
+                                                        // Special case where $fieldname has option value in it e.g. sizedimages 
                                                         if (strpos($fieldname, ";")>0){
                                                             $temp = explode(";", $fieldname);
                                                             $fn = $temp[0];

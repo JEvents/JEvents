@@ -1531,10 +1531,31 @@ SCRIPT;
 											if (!isset($fieldNameArrays[$classname]))
 											{
 												$fieldNameArrays[$classname] = call_user_func(array($classname, "fieldNameArray"), $layout);
+                                                                                                
+                                                                                                if (isset($fieldNameArrays[$classname]["values"]) && is_array($fieldNameArrays[$classname]["values"]))
+                                                                                                {
+                                                                                                    // Special case where $fieldname has option value in it e.g. sizedimages 
+                                                                                                    foreach($fieldNameArrays[$classname]["values"] as $idx => $fieldname){
+                                                                                                        if (strpos($fieldname, ";")>0){
+                                                                                                            $temp = explode(";", $fieldname);
+                                                                                                            $fn = $temp[0];
+                                                                                                            if (!in_array($fn,$fieldNameArrays[$classname]["values"])){
+                                                                                                                $fieldNameArrays[$classname]["values"][] = $fn;
+                                                                                                                $fieldNameArrays[$classname]["labels"][] = $fieldNameArrays[$classname]["labels"][$idx] ;
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                
 											}
 											if (isset($fieldNameArrays[$classname]["values"]))
 											{
-												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]))
+                                                                                                $strippedSubPart = $subparts[0];
+                                                                                                if (strpos($subparts[0], ";")){
+                                                                                                    $temp = explode(";", $subparts[0]);
+                                                                                                    $strippedSubPart = $temp[0];
+                                                                                                }
+												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]) || in_array($strippedSubPart, $fieldNameArrays[$classname]["values"]))
 												{
 													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!

@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+02-02-2017 Geraint Edwards
+* Fix for time offset applied twice when editing event in nonstandard timezone
+* Translation support for edit tabs from custom fields
+* Max year php_max_int constraint for annual repeating events
+* Stop calendar mod direct links to event detail from including tmpl=component
+* latest events process match to support formatting options from plugins
+
+23-01-2017 Geraint Edwards
+ * JEvents 3.4.29
+
+22-01-2017 Geraint Edwards
+* Fix for UTF-8 tooltips
+* Fix for install error on creating evaccess index 
+
 12-01-2017 Geraint Edwards
 * JEvents 3.4.27
 * Fix for sites not using TinyMCE (workaround for descriptions wasn't working in 3.4.26)

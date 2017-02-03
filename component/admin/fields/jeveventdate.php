@@ -42,7 +42,7 @@ class JFormFieldJeveventdate extends JFormField
                     $offset2 = $testdate->getOffset();
 
                     //USE OFFSETS FOR unix time stamps!!                       
-                    $event->dtstart($testdate->format("U") + $offset2 - $offset1);
+                    $event->dtstart($testdate->format("U") - $offset2 + $offset1);
                     $event->_publish_up = $testdate->format('Y-m-d H:i:s');
                     $event->_unixstartdate = $event->dtstart();
                     $event->_unixstarttime= $event->dtstart();
@@ -52,7 +52,7 @@ class JFormFieldJeveventdate extends JFormField
                     $testdate->setTimezone(new DateTimeZone($event->tzid));
                     $offset2 = $testdate->getOffset();
                     
-                    $event->dtend($testdate->format("U") + $offset2 - $offset1);
+                    $event->dtend($testdate->format("U") - $offset2 + $offset1);
                     $event->_publish_down = $testdate->format('Y-m-d H:i:s');
                     $event->_unixenddate = $event->dtend();
                     $event->_unixendtime= $event->dtend();

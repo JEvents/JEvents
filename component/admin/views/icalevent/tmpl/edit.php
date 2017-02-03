@@ -334,6 +334,9 @@ else
 								if (trim($extraTab['content'])=="") {
 									continue;
 								}
+                                                                if (strpos($extraTab['title'], " " )===false && JText::_($extraTab['title']) != $extraTab['title']){
+                                                                    $extraTab['title'] = JText::_($extraTab['title']);
+                                                                }
 								?>
 								<li ><a data-toggle="tab" href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a></li>
 								<?php
