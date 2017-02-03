@@ -227,10 +227,6 @@
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
 		</field>
-		<field name="edit_requires_reapproval" type="radio" class="btn-group" default="1" label="JEV_EDIT_REQUIRES_REAPPROVAL" description="JEV_EDIT_REQUIRES_REAPPROVAL" difficulty="3">
-			<option value="0">JEV_NO</option>
-			<option value="1">JEV_YES</option>
-		</field>
 	</fieldset>
 	
         
