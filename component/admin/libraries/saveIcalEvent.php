@@ -154,32 +154,13 @@ class SaveIcalEvent {
 		// Always un-publish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents",0);
-
-		$re_approve = $cfg->get('edit_requires_reapproval', 1);
-
-		if ($re_approve == 1)
-		{
-
-			if (!$frontendPublish){
-				if($cfg->get('jevunpublishonedit','1'))
-				{
-					$vevent->state = 0;
-				}
-				// In this case we send a notification email to admin
-				$notifyAdmin = true;
-			}
-
-		} else {
-
-			if (!$frontendPublish && $ev_id <= 0)
+		if (!$frontendPublish){
+			if($cfg->get('jevunpublishonedit','1'))
 			{
-				if ($cfg->get('jevunpublishonedit', '1'))
-				{
-					$vevent->state = 0;
-				}
-				// In this case we send a notification email to admin
-				$notifyAdmin = true;
+				$vevent->state = 0;
 			}
+			// In this case we send a notification email to admin
+			$notifyAdmin = true;
 		}
 
 		$vevent->icsid = $ics_id;
