@@ -153,9 +153,9 @@ class SaveIcalEvent {
 		}
 		// Always un-publish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
-		$notifyAdmin = $cfg->get("com_notifyallevents",0);
+		$notifyAdmin = $cfg->get("com_notifyallevents", 0);
 		if (!$frontendPublish){
-			if($cfg->get('jevunpublishonedit','1'))
+			if($newevent || (int) $cfg->get('jevunpublishonedit', '1') === 1)
 			{
 				$vevent->state = 0;
 			}
