@@ -881,7 +881,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 								$row = $event;
 								$times = "";
-								if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || $jevtask == "range")
+								if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat")
 								{
 
 									$start_publish = $row->getUnixStartDate();
@@ -925,7 +925,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 										$times = $start_date . ' - ' . $stop_date . " " . $times . "<br/>";
 									}
 								}
-								else if (($jevtask == "day" || $jevtask == "week" ) && ($row->starttime() != $row->endtime()) && !($row->alldayevent()))
+								else if (($jevtask == "day" || $jevtask == "week"  || $jevtask == "range") && ($row->starttime() != $row->endtime()) && !($row->alldayevent()))
 								{
 									if ($row->noendtime())
 									{
