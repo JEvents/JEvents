@@ -53,38 +53,39 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
                   JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		if ($this->row->title() <= "")
+		if (strlen($this->row->title()) <= 0)
 		{
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
-
-			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
+			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 		}
 		else
 		{
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
-
-			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
+			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
 		}
 
 		$bar =  JToolBar::getInstance('toolbar');
+
 		if ($this->id > 0)
 		{
 			if ($this->editCopy)
 			{
 				
 				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
-				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
-                                $this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				{
+                    $this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+					$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+				}
 			}
 			else
 			{
-                            if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
-					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
-				//$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
-                            $this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+                if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+                {
+	                $this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+	                $this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
+                }
 				
 			}
 		}
@@ -97,9 +98,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
-				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
-			//JToolBarHelper::save('icalevent.savenew', "JEV_Save_New");
-                        $this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			{
+                $this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
+				$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			}
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
