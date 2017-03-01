@@ -373,6 +373,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->catname();
 					$blank[] = "";
 					break;
+                case "{{CATEGORY_ALIAS}}":
+	                $db = JFactory::getDbo();
+	                $catsql = "SELECT alias FROM #__categories WHERE extension = 'com_jevents' AND id = '".$event->catid()."'";
+                    $db->setQuery($catsql);
+	                $cat_alias = $db->loadResult();
+                    $search[] = "{{CATEGORY_ALIAS}}";
+                    $replace[] = $cat_alias;
+                    $blank[] = "";
+                    break;
 
 				case "{{ALLCATEGORIES}}":
 					$search[] = "{{ALLCATEGORIES}}";
