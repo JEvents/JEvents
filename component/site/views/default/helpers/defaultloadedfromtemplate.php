@@ -373,6 +373,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$replace[] = $event->catname();
 					$blank[] = "";
 					break;
+                case "{{CATEGORY_ALIAS}}":
+	                $db = JFactory::getDbo();
+	                $catsql = "SELECT alias FROM #__categories WHERE extension = 'com_jevents' AND id = '".$event->catid()."'";
+                    $db->setQuery($catsql);
+	                $cat_alias = $db->loadResult();
+                    $search[] = "{{CATEGORY_ALIAS}}";
+                    $replace[] = $cat_alias;
+                    $blank[] = "";
+                    break;
 
 				case "{{ALLCATEGORIES}}":
 					$search[] = "{{ALLCATEGORIES}}";
@@ -881,7 +890,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 								$row = $event;
 								$times = "";
-								if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || $jevtask == "range")
+								if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat")
 								{
 
 									$start_publish = $row->getUnixStartDate();
@@ -925,7 +934,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 										$times = $start_date . ' - ' . $stop_date . " " . $times . "<br/>";
 									}
 								}
-								else if (($jevtask == "day" || $jevtask == "week" ) && ($row->starttime() != $row->endtime()) && !($row->alldayevent()))
+								else if (($jevtask == "day" || $jevtask == "week"  || $jevtask == "range") && ($row->starttime() != $row->endtime()) && !($row->alldayevent()))
 								{
 									if ($row->noendtime())
 									{

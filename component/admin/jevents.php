@@ -94,13 +94,33 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 	$template = $db->loadResult();
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
 }
-// disable Zend php4 compatability mode
-@ini_set("zend.ze1_compatibility_mode","Off");
 
 // Split tasl into command and task
-$cmd = $jinput->get('task', 'cpanel.show');
+$cmd    = $jinput->get('task', 'cpanel.show');
 
-if (strpos($cmd, '.') != false) {
+//Time to handle view switching for our current setup for J3.7
+$view   = $jinput->get('view', '');
+//Check the view and redirect if any match.
+if ($view === 'customcss') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+}
+if ($view === 'supportinfo') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
+}
+if ($view === 'config') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=params.edit');
+}
+if ($view === 'icalevent') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.list');
+}
+if ($view === 'icaleventform') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.edit');
+}
+if ($view === 'categories') {
+	 JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
+}
+
+if (strpos($cmd, '.') !== false) {
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 

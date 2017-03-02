@@ -139,9 +139,6 @@ $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 // Load Site specific language overrides
 $lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate());
 
-// disable Zend php4 compatability mode
-@ini_set("zend.ze1_compatibility_mode", "Off");
-
 // Split task into command and task
 $cmd = JRequest::getCmd('task', false);
 
