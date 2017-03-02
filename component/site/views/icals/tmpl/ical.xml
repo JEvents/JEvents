@@ -32,30 +32,30 @@
 			</field>                        
 			<field name='icalcache' type='text' default="1440" label="JEV_ICALCACHE" description="JEV_ICALCACHE_DESC" />
 			<field name='constrained' type='jevboolean' class="btn-group" default="0" label="JEV_CONSTRAIN_EXPORT_USING_SETTINGS_BELOW" description="JEV_CONSTRAIN_EXPORT_DESC" />
-			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" showon="constrained:1" />
 		
 			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="0" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
 			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_WEBCAL_URL" description="JEV_ICAL_WEBCAL_URL_DESC" />
 			<field name="show_ical_download" type="jevboolean" class="btn-group" default="1"  label="JEV_ICAL_ALLOW_DOWNLOAD" description="JEV_ICAL_ALLOW_DOWNLOAD" />
 			<field name="show_webcal_google" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_GOOGLE_CALENDAR" description="JEV_ICAL_GOOGLE_CALENDAR_DESC"/>
 		
-			<field name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" />
-			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
+			<field name="@spacer" type="jevinfo" default='ADDITIONAL_CONSTRAINTS'    label="" description="" showon="constrained:1" />
+			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras3" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras4" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras5" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras6" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras7" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras8" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras9" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras10" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras11" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras12" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
+			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  showon="constrained:1" />
                         <field name="@spacer" type="jevinfo" default='ADVANCED_SETTINGS'  label="" description="" />
                         <field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
              </fieldset>

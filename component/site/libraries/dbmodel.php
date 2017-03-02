@@ -120,6 +120,11 @@ class JEventsDBModel
 			{
 				$where = " AND 0 ";
 			}
+                        // The menu or module may have specified categories but NOT their children 
+                        if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0) {
+                            $where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
+                        }
+                        
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$jevtask = JRequest::getString("jevtask");
 			$isedit = false;

@@ -61,10 +61,10 @@ class JFormFieldJeveventdate extends JFormField
                 }
 
 		$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
-		static $firsttime;
-		if (!defined($firsttime)){
+		static $firsttime = true;
+		if ($firsttime){
 			$document = JFactory::getDocument();
-			$js = "\neventEditDateFormat='$inputdateformat';//Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
+			$js = "\n eventEditDateFormat='$inputdateformat';//Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
 			$document->addScriptDeclaration($js);
 			$firsttime = false;
 		}

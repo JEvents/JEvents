@@ -55,7 +55,7 @@ class CsvToiCal
 	 * @param columnSeparator separator of columns in CSV file - default ,
 	 */
 
-	public function csvToiCal($file, $columnSeparator = ",", $data = false)
+	public function __construct($file, $columnSeparator = ",", $data = false)
 	{
 		$this->file = $file;
 		$this->data = $data;
