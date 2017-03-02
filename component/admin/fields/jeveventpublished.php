@@ -30,7 +30,7 @@ class JFormFieldJeveventpublished extends JFormField
 		{
 			$ev_id= $this->form->jevdata[$this->name]["ev_id"];
 			
-			if ($ev_id == 0)
+			if ($ev_id == 0 && JFactory::getApplication()->input->getCmd("task")!="icalevent.editcopy")
 			{
 				// published by default	
 				$this->value = 1;

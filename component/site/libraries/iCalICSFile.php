@@ -595,7 +595,7 @@ RAWTEXT;
 						if ($params->get("multicategory",0) && count($evcat)>1){
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
-								$vevent->catid[] =  $categories[$ct]->id;
+                                                            $vevent->catid[] =  $categories[trim($ct)]->id;
 							}							
 						}
 						if ($params->get("multicategory",0) && count($evcat)==1){

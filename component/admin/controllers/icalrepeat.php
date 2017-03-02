@@ -193,7 +193,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
+		//$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
 		// For repeats don't offer choice of ical or category
 		// get all the raw native calendars
@@ -214,7 +214,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->view->assign('nativeCals', $nativeCals);
 		$this->view->assign('clist', $clist);
 		$this->view->assign('repeatId', $repeatId);
-		$this->view->assign('glist', $glist);
+		//$this->view->assign('glist', $glist);
 		$this->view->assignRef('dataModel', $this->dataModel);
 		$this->view->assign('editCopy', false);
 

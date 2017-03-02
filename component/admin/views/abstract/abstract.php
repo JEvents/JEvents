@@ -690,7 +690,8 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
 
-		$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
+		$this->form->jevdata["access"]["event"] = $this->row;
+		//$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
 
 		$this->form->jevdata["state"]["ev_id"] = $this->ev_id;
 

@@ -103,7 +103,7 @@ class JEV_CommonFunctions {
 
 		}
 		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats));
+		$dispatcher->trigger('onGetAccessibleCategories', array (& $cats, false));
 
 
 		return $cats;
@@ -120,7 +120,7 @@ class JEV_CommonFunctions {
 			if( $cfg->get('com_calForceCatColorEventForm',2) == '2' ){
 				$color = ($row->catid() > 0 && isset($catData[$row->catid()])) ? $catData[$row->catid()]->color : '#333333';
 			}
-			else $color = $row->useCatColor() ? ( $row->catid() > 0  && isset($catData[$row->catid()])) ? $catData[$row->catid()]->color : '#333333' : $row->color_bar();
+			else $color = $row->useCatColor() ? (( $row->catid() > 0  && isset($catData[$row->catid()])) ? $catData[$row->catid()]->color : '#333333' ) : $row->color_bar();
 
 		}
 		else {

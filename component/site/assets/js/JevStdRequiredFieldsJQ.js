@@ -77,9 +77,12 @@ var JevStdRequiredFields = {
                     matches.push(ckbx);
                 });
             }
-            // find other custom field elements
+            // find other custom field elements (could be radio boxes so traverse the array)
             else if (form.find("[name='" + noncustomname + "']").length) {
-                matches.push(form.find("[name='" + noncustomname + "']"));
+                form.find("[name='" + noncustomname + "']").each(function (idx, fld) {
+                    matches.push(fld);
+                });
+                //matches.push(form.find("[name='" + noncustomname + "']"));
             }
 
             if (matches.length == 1) {
