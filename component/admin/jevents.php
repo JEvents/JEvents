@@ -55,7 +55,7 @@ $registry	= JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
-/* Bug fixed in Joomla 3.2.1 ?? - not always it appears */
+/* Bug fixed in Joomla! 3.2.1 ?? - not always it appears */
 $joomlaconfig = JFactory::getConfig();
 if ($joomlaconfig->get("caching",0)){
 	$cacheController = JFactory::getCache('_system', 'callback');
@@ -72,7 +72,7 @@ if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezon
 // Thanks to ssobada
 $authorisedonly = $params->get("authorisedonly", 0);
 $user      = JFactory::getUser();
-//Stop if user is not authorised to access JEevents CPanel
+//Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
@@ -82,7 +82,7 @@ $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 if (!version_compare(JVERSION,'1.6.0',">=")){
-	// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
+	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
 	$db = JFactory::getDBO();
 	$query = 'SELECT template'
 	. ' FROM #__templates_menu'

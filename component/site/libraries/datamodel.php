@@ -472,7 +472,7 @@ class JEventsDataModel {
 		$data = array();
 		$data ["year"]=$year;
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 

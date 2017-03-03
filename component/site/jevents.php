@@ -80,6 +80,15 @@ if ($com_calViewName == "global" || $com_calViewName == "")
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->set('com_calViewName', $params->get('com_calViewName'));
 }
+
+// handle global menu item parameter for com_showrepeats
+$com_showrepeats = $newparams->get('com_showrepeats', "");
+if ($com_showrepeats === "-1" || $com_showrepeats === "")
+{
+	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$newparams->set('com_showrepeats', $params->get('com_showrepeats'));
+}
+
 // disable caching for form POSTS
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
