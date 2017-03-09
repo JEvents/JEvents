@@ -21,6 +21,18 @@ class jIcalEventRepeat extends jIcalEventDB
 	private
 			$_prevRepeat = null;
 
+        
+        public function __get($name) {
+                if (strpos($name, "_")===0){
+                    ob_start();
+                    $name = str_replace("_", "",$name);
+                    $dispatcher	= JEventDispatcher::getInstance();
+                    $dispatcher->trigger( 'onJeventsGetter', array( &$row, $name) );
+                    return ob_get_clean();
+                }
+        }
+        
+        
 	function id()
 	{
 		if (!isset($this->_rp_id))

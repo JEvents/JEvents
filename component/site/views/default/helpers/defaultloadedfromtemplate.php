@@ -6,6 +6,24 @@ use Joomla\String\StringHelper;
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
 	$db = JFactory::getDBO();
+        static $allcatids;
+        if (!isset($allcatids)){
+            $query = $db->getQuery(true);
+
+            $query->select('a.id, a.parent_id');
+            $query->from('#__categories AS a');
+            $query->where('a.parent_id > 0');
+
+            // Filter on extension.
+            $query->where('a.extension = "com_jevents"');
+            $query->where('a.published = 1');
+            $query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+            $query->order('a.lft');
+
+            $db->setQuery($query);
+            $allcatids = $db->loadObjectList('id');
+        }
+        
 	// find published template
 	static $templates;
 	static $fieldNameArray;
@@ -156,8 +174,37 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$catids[]=0;
 
 		// find the overlap
-		$catids = array_intersect($catids, array_keys($templates[$template_name]));
+		$catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));                
 
+                // If no categories match - check for parent, one level
+                if (count($catids)==0 || (count($catids)==1 && $catids[0]==0)){
+                    $catids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+                    $catcount = count($catids);
+                    for ($c=0;$c<$catcount;$c++){
+                        if (isset($allcatids[$catids[$c]]) && $allcatids[$catids[$c]]->parent_id>0){
+                            $catids[]=$allcatids[$catids[$c]]->parent_id;
+                        }                                    
+                    }
+                    $catids[]=0;
+                    // find the overlap
+                    $catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));
+
+                    // If no categories match - check for parent, one level
+                    if (count($catids)==0 || (count($catids)==1 && $catids[0]==0)){
+                        $catids = ($event->catids() && count($event->catids())) ? $event->catids() : array($event->catid());
+                        $catcount = count($catids);
+                        for ($c=0;$c<$catcount;$c++){
+                            if (isset($allcatids[$catids[$c]]) && $allcatids[$catids[$c]]->parent_id>0){
+                                $catids[]=$allcatids[$catids[$c]]->parent_id;
+                            }                                    
+                        }
+                        $catids[]=0;
+                        // find the overlap
+                        $catids = array_values(array_intersect($catids, array_keys($templates[$template_name])));
+                    }
+                    
+                 }
+                
 		// At present must be an EXACT category match - no inheriting allowed!
 		if (count($catids)==0){
 			if (!isset($templates[$template_name][0]) || $templates[$template_name][0]->value == ""){
