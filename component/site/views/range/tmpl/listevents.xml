@@ -100,9 +100,11 @@
 			<field name="extras13" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras14" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras15" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
-
-			<field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
-			
+			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
+				<option value="-1">USE_GLOBAL</option>
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+			</field>
 			<field name="@spacer" type="jevinfo"  default='ADVANCED_SETTINGS'  label="" description="" />
 			<field name="overridelayout" type="text" default="" label='OVERRIDE_LAYOUT'  description="OVERRIDE_LAYOUT_DESC"/>
 		</fieldset>
