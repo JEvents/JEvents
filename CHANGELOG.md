@@ -2,6 +2,42 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+09-03-2017 Geraint Edwards
+* JEvents 3.4.30
+* Correct category image URL for sites with multiple categories but not all have images attached
+* Add new JEvents getter plugin to allow plugins to push data into variables in a different way - needed for standard images update 3.4.9
+* Layout customisation tool now inherits category specific layouts
+
+03-03-2017 Tony Partridge
+* Added Global option as default for show all repeats option in Menu Items.
+
+02-03-2017 Geraint Edwards
+* Force default time and date fields to be integers (some people had used 8:00pm instead of 20:00)
+* preserve published state when copying and editing event
+* move generation of access list to access field definition - will allow default value to be set in template override now
+* required fields check fix for radio/check boxes
+* export 500 characters of event description instead of just 100
+* menu item filters setting parent categories will not pick up events in child categories unless they are specified too
+* Add option for date range view to show date as well as time in list presentation
+
+
+01-03-2017 Tony Partridge
+* More robust check if event title is blank
+* Add CATEGORY_ALIAS to layout editor 
+* Support for Joomla 3.7
+
+17-02-2017 Brian Teeman
+* Language corrections
+
+16-02-2017 Tony Partridge
+* Range views now always have a date column to the left. So tend not to need the date output again. This change is suggested by @BrianTeeman. Any users requiring the date and do so easily with the additional date string.
+
+08-02-2017 Tony Partridge
+* Fixes issue where users not authorised to publish events auto-published new events.
+
+03-02-2017 Tony Partridge
+* Added strings to .sys.ini for debugged permissions report.
+
 02-02-2017 Geraint Edwards
 * Fix for time offset applied twice when editing event in nonstandard timezone
 * Translation support for edit tabs from custom fields
