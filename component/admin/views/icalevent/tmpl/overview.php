@@ -179,7 +179,7 @@ $mainspan = 10;
 							?>
 						</td>
 						<td align="center"><?php echo $row->created(); ?></td>
-						<td align="center"><?php echo $row->_modified; ?></td>
+						<td align="center"><?php echo $row->modified; ?></td>
 						<td align="center"><?php echo $row->_groupname; ?></td>
 					</tr>
 	<?php
