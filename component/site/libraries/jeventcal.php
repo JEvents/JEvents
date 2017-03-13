@@ -973,10 +973,23 @@ class jEventCal {
 	}
 	
 	function __get($field) {
-		$field = "_".$field;
-		if (isset($this->$field)) return $this->$field;
+		$underscorefield = "_".$field;
+		if (isset($this->$underscorefield)) return $this->$underscorefield;
 		else {
-			return false;
+                    if (strpos($field, "_")===0){
+                        ob_start();
+                        $name = str_replace("_", "",$field);
+                        $dispatcher	= JEventDispatcher::getInstance();
+                        $available = false;
+                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, $available) );
+                        $value = ob_get_clean();
+                        if ($available){
+                            return $value;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
 		}		
 	}
 

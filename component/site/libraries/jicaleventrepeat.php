@@ -21,17 +21,7 @@ class jIcalEventRepeat extends jIcalEventDB
 	private
 			$_prevRepeat = null;
 
-        
-        public function __get($name) {
-                if (strpos($name, "_")===0){
-                    ob_start();
-                    $name = str_replace("_", "",$name);
-                    $dispatcher	= JEventDispatcher::getInstance();
-                    $dispatcher->trigger( 'onJeventsGetter', array( &$row, $name) );
-                    return ob_get_clean();
-                }
-        }
-        
+                
         
 	function id()
 	{
@@ -250,7 +240,13 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
-		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+                if ($params->get("permatarget",0)){
+                    $Itemid = (int) $params->get("permatarget",0);
+                }
+                else {
+                    $Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                }
 		// uid = event series unique id i.e. the actual event
 		$title = JApplicationHelper::stringURLSafe($this->title());
                 if ($this->rp_id()){
