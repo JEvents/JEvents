@@ -27,28 +27,28 @@ class CustomcssViewCustomcss extends JViewLegacy {
 		jimport('joomla.html.pane');
 
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
+		$document->setTitle(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'));
 
-		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::apply('customcss');
-		JToolBarHelper::cancel('customcss');
+		JToolBarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
 
-		//   jimport('joomla.form.form');
-		//Setup the file:
-		$app            = JFactory::getApplication();
-		$file           = 'jevcustom.css';
-		$srcfile        = 'jevcustom.css.new';
-		$filepath       = JPATH_ROOT . '/components/com_jevents/assets/css/' . $file;
-		$srcfilepath    = JPATH_ROOT . '/components/com_jevents/assets/css/' . $srcfile;
+		JToolBarHelper::apply('customcss.apply');
+		JToolBarHelper::save('customcss.save');
+		JToolBarHelper::cancel('customcss.cancel');
+		JToolbarHelper::divider();
+
+
+		//Check if the Customcss file already exists, if not load the .new version
+		$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
 
 		if (!JFile::exists($filepath))
 		{
-			Jfile::copy($srcfilepath, $filepath);
+			//Whoops doesn't exist yet, lets add the .new to it.
+			$filepath = JPATH_ROOT . $filepath . '.new';
 		}
 
 		$this->file     = $filepath;
-
 		$this->form     = $this->get('Form');
 		$this->form->setFieldAttribute('source', 'syntax', 'css');
 		$this->source   = $this->get('Customcss');

@@ -97,13 +97,14 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 
 // Split tasl into command and task
 $cmd    = $jinput->get('task', 'cpanel.show');
+//echo $cmd;die;
 
 //Time to handle view switching for our current setup for J3.7
 $view   = $jinput->get('view', '');
 //Check the view and redirect if any match.
 if ($view === 'customcss') {
 //	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
-	$cmd = $view;
+	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0) { $cmd = $view; }
 	$controllerName = 'CustomCss';
 }
 if ($view === 'supportinfo') {
@@ -123,6 +124,7 @@ if ($view === 'categories')
 	JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
 }
 
+
 if (strpos($cmd, '.') !== false) {
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
@@ -130,7 +132,12 @@ if (strpos($cmd, '.') !== false) {
 	// Define the controller name and path
 	$controllerName	= strtolower($controllerName);
 	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
-	$controllerName = "Admin".$controllerName;
+	//Ignore controller names array.
+	$ignore = array('customcss');
+	if (!in_array($controllerName, $ignore, FALSE))
+	{
+		$controllerName = "Admin" . $controllerName;
+	}
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
 	if (file_exists($controllerPath)) {
