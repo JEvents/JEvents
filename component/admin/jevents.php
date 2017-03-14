@@ -102,7 +102,9 @@ $cmd    = $jinput->get('task', 'cpanel.show');
 $view   = $jinput->get('view', '');
 //Check the view and redirect if any match.
 if ($view === 'customcss') {
-	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+//	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+	$cmd = $view;
+	$controllerName = 'CustomCss';
 }
 if ($view === 'supportinfo') {
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
@@ -116,8 +118,9 @@ if ($view === 'icalevent') {
 if ($view === 'icaleventform') {
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.edit');
 }
-if ($view === 'categories') {
-	 JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
+if ($view === 'categories')
+{
+	JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
 }
 
 if (strpos($cmd, '.') !== false) {
@@ -133,12 +136,32 @@ if (strpos($cmd, '.') !== false) {
 	if (file_exists($controllerPath)) {
 		require_once($controllerPath);
 	} else {
-		throw new Exception(  'Invalid Controller', 500);
+		throw new Exception(  'Invalid Controller' . $controllerName, 500);
 		return false;
 	}
 } else {
 	// Base controller, just set the task
-	$controllerName = null;
+	if (isset($controllerName) && $controllerName !== '')
+	{
+		// Define the controller name and path
+		$controllerName = strtolower($controllerName);
+		$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+		$controllerName = $controllerName;
+
+		// If the controller file path exists, include it ... else lets die with a 500 error
+		if (file_exists($controllerPath))
+		{
+			require_once($controllerPath);
+		}
+		else
+		{
+			throw new Exception('Invalid Controller' . $controllerName, 500);
+
+			return false;
+		}
+	} else {
+		$controllerName = Null;
+	}
 	$task = $cmd;
 }
 
