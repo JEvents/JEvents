@@ -493,7 +493,7 @@ SQL;
 			@$db->execute();
 		}
 
-		if (array_key_exists("uid", $cols))
+		if (!array_key_exists("uid", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);

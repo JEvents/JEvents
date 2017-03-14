@@ -21,6 +21,8 @@ class jIcalEventRepeat extends jIcalEventDB
 	private
 			$_prevRepeat = null;
 
+                
+        
 	function id()
 	{
 		if (!isset($this->_rp_id))
@@ -238,7 +240,13 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
-		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+                if ($params->get("permatarget",0)){
+                    $Itemid = (int) $params->get("permatarget",0);
+                }
+                else {
+                    $Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                }
 		// uid = event series unique id i.e. the actual event
 		$title = JApplicationHelper::stringURLSafe($this->title());
                 if ($this->rp_id()){

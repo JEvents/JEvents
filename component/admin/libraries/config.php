@@ -19,8 +19,6 @@ defined('_JEXEC') or die('Restricted access');
 if (!defined("JEVCONFIG")) {
     define("JEVCONFIG", 1);
 
-    
-
     class JEVConfig {
 
         // 1.6 mod
@@ -28,7 +26,5 @@ if (!defined("JEVCONFIG")) {
             $params = JComponentHelper::getParams("com_jevents");
             return $params;
         }
-
     }
-
 }
