@@ -729,7 +729,6 @@ function toggleWhichBy(wb)
 		initialiseBootstrapButtons()
 	}
 	catch(e) {};
-
 }
 
 function toggleFreq(freq , setup)
@@ -1104,6 +1103,12 @@ jevjq(document).on('ready', function() {
 	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
 	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
 	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
+        
+        // setup rounded grey response
+        jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
+            toggleWhichBy(this.id);
+        });
+                    
 });
 
 function enableRepeatUntil() {
