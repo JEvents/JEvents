@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+15-03-2017 Tony Partridge
+* Change from Editor to Creator for Save / Apply on new events
+* Imrpoved canPublishOwnEvents() method to return $canPublishOwn value if set and no conditions met.
+
+14-03-2017 Tony Partridge
+* Added new Custom CSS View and JForm based form
+
 09-03-2017 Geraint Edwards
 * JEvents 3.4.30
 * Correct category image URL for sites with multiple categories but not all have images attached
