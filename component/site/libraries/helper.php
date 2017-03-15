@@ -1670,67 +1670,67 @@ class JEVHelper
 			{
 				return true;
 			}
-                        
-                        if ($evid==0 && $publishown==2){
-                            if ($params->get("category_allow_deny",1)==0){                            
-                                $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                                if (isset($vevent->catid)){
-                                    $catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
-                                    $catids = array_intersect($catids, $okcats);
-                                    return count($catids)>0;
-                                }
-                            }
-                            else {
-                                $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
-                                if ($canPublishOwn)
-                                {
-                                     $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                                     if (isset($vevent->catid)){
-                                        $catids  = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
-                                        $catids = array_intersect($catids, $okcats);
-                                        return count($catids)>0;
-                                     }
-                                }
-                            }
+
+            if ($evid==0 && $publishown==2){
+                if ($params->get("category_allow_deny",1)==0){
+                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                    if (isset($vevent->catid)){
+                        $catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                        $catids = array_intersect($catids, $okcats);
+                        return count($catids)>0;
+                    }
+                }
+                else {
+                    $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+	                if ($canPublishOwn)
+                    {
+	                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                         if (isset($vevent->catid)){
+                            $catids  = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                            $catids = array_intersect($catids, $okcats);
+                            return count($catids)>0;
+                         }
+                    }
+                }
+            }
+            else {
+                $dataModel = new JEventsDataModel("JEventsAdminDBModel");
+                $queryModel = new JEventsDBModel($dataModel);
+
+                $evid = intval($evid);
+                $testevent = $queryModel->getEventById($evid, 1, "icaldb");
+                if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+                {
+                    if ($publishown==2) {
+                        if ($params->get("category_allow_deny",1)==0){
+                            $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                            $catids = $testevent->catids();
+                            $catids = array_intersect($catids, $okcats);
+                            return count($catids)>0;
                         }
                         else {
-                            $dataModel = new JEventsDataModel("JEventsAdminDBModel");
-                            $queryModel = new JEventsDBModel($dataModel);
-
-                            $evid = intval($evid);
-                            $testevent = $queryModel->getEventById($evid, 1, "icaldb");
-                            if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+                            $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+                            if ($canPublishOwn)
                             {
-                                if ($publishown==2) {
-                                    if ($params->get("category_allow_deny",1)==0){                            
-                                        $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                                        $catids = $testevent->catids();
-                                        $catids = array_intersect($catids, $okcats);
-                                        return count($catids)>0;
-                                    }
-                                    else {
-                                        $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
-                                        if ($canPublishOwn)
-                                        {
-                                            $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                                            $catids = $testevent->catids();
-                                            $catids = array_intersect($catids, $okcats);
-                                            return count($catids)>0;
-                                        }
-                                        return false;
-                                    }
-                                }
-                                else {
-                                    return true;
-                                }
-                                
+                                $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                $catids = $testevent->catids();
+                                $catids = array_intersect($catids, $okcats);
+                                return count($catids)>0;
                             }
+                            return false;
                         }
+                    }
+                    else {
+                        return true;
+                    }
+
+                }
+            }
 		}
 
 		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
 		{
-                        if ($evid == 0)
+			if ($evid == 0)
 			{
 				return true;
 			}
@@ -1743,7 +1743,10 @@ class JEVHelper
 			{
 				return true;
 			}
+		} elseif ($canPublishOwn) {
+			return true;
 		}
+
 		return false;
 
 	}
