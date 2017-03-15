@@ -1654,6 +1654,7 @@ class JEVHelper
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
 		$publishown = $params->get("jevpublishown", 0);
+		$canPublishOwn = false;
 
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
