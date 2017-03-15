@@ -981,7 +981,7 @@ class jEventCal {
                         $name = str_replace("_", "",$field);
                         $dispatcher	= JEventDispatcher::getInstance();
                         $available = false;
-                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, $available) );
+                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );
                         $value = ob_get_clean();
                         if ($available){
                             return $value;

@@ -9,6 +9,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 14-03-2017 Tony Partridge
 * Added new Custom CSS View and JForm based form
 
+14-03-2017 Geraint Edwards
+* JEvents 3.4.31
+* Use Opacity to make unselected fieldsets on edit screen more obviously disabled
+* Switch repeat types if grey boxes are clicked anywhere
+* Correct getter method for undeclared variables
+
+13-03-2017 Geraint Edwards
+* JEvents 3.4.30
+* Fix for modified column missing in the backend of JEvents and links to translations failing 
+* Add Permalink config option on event detail tab of JEvents config - all JEvents detail links can now be pointed to the same menu item regardless of the source
+* Fix for uid column duplication during upgrades on some times
+
 09-03-2017 Geraint Edwards
 * JEvents 3.4.30
 * Correct category image URL for sites with multiple categories but not all have images attached
