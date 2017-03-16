@@ -97,11 +97,16 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 				$juser = JFactory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
-			if (JEVHelper::isEventEditor() || $canEditOwn)
+			if (JEVHelper::canCreateEvent() || $canEditOwn)
 			{
                 $this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
+			}
+
+			if (JEVHelper::isEventEditor() || $canEditOwn)
+			{
 				$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			}
+
 		}
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
