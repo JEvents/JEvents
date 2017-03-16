@@ -26,10 +26,10 @@ JevViewCopyright(); ?>
 	jimport('joomla.filesystem.file');
 
 	// Lets check if we have editted before! if not... rename the custom file.
-	if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+	if (JFile::exists(JPATH_SITE . "/media/com_jevents/css/jevcustom.css"))
 	{
 		// It is definitely now created, lets load it!
-		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		JEVHelper::stylesheet('jevcustom.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 	}
 	
 }

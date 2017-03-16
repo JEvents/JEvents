@@ -97,10 +97,12 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 				$juser = JFactory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
-			if (JEVHelper::isEventEditor() || $canEditOwn)
+			if (JEVHelper::canCreateEvent() || $canEditOwn)
 			{
-                $this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 				$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			}
+			if (JEVHelper::isEventEditor() || $canEditOwn) {
+				 $this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			}
 		}
 
@@ -144,10 +146,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		jimport('joomla.filesystem.file');
 
 		// Lets check if we have editted before! if not... rename the custom file.
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (JFile::exists(JPATH_SITE . "/media/com_jevents/css/jevcustom.css"))
 		{
 			// It is definitely now created, lets load it!
-			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+			JEVHelper::stylesheet('jevcustom.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 		}
 
 		$this->setupEditForm();

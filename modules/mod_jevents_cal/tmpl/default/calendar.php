@@ -58,10 +58,10 @@ class DefaultModCalView
 	protected $hasTooltips	 = false;
 
 	public function __construct($params, $modid){
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (JFile::exists(JPATH_SITE . "/media/com_jevents/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
-			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+			JEVHelper::stylesheet('jevcustom.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 		}
 
 		$this->_modid = $modid;

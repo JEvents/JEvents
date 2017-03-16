@@ -40,7 +40,7 @@ class CustomcssViewCustomcss extends JViewLegacy {
 
 
 		//Check if the Customcss file already exists, if not load the .new version
-		$filepath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
+		$filepath = JPATH_ROOT . '/media/com_jevents/css/jevcustom.css';
 
 		if (!JFile::exists($filepath))
 		{

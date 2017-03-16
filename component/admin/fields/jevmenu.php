@@ -34,7 +34,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 			define("JEV_COMPONENT",str_replace("com_","",JEV_COM_COMPONENT));
 		}
 
-		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		JEVHelper::stylesheet('eventsadmin.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 
 		return parent::getInput();
 	}
