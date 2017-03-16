@@ -166,10 +166,10 @@ class DefaultModLatestView
 			JHtmlBootstrap::loadCss();
 		}
 
-		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
+		if (JFile::exists(JPATH_SITE . "/media/com_jevents/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
-			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+			JEVHelper::stylesheet('jevcustom.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 		}
 
 		if ($myparam->get("modlatest_customcss", false)){

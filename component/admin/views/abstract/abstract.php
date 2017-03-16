@@ -23,7 +23,7 @@ class JEventsAbstractView extends JViewLegacy
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
-		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+		JEVHelper::stylesheet('eventsadmin.css', 'media/' . JEV_COM_COMPONENT . '/css/');
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
 		// note that the name config variable is ignored in the parent construct!

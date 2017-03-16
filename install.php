@@ -209,6 +209,13 @@ class Pkg_JeventsInstallerScript
 			if (JFile::exists($file2)) JFile::delete($file2);
 			if (JFile::exists($file3)) JFile::delete($file3);
 
+			//Custom CSS Mover
+            if (!JFile::exists(JPATH_SITE . '/media/com_jevents/css/jevcustom.css') && JFile::exists(JPATH_SITE . '/components/com_jevents/assets/css/jevcustom.css'))
+            {
+                //Move it!
+                JFile::move(JPATH_SITE . '/components/com_jevents/css/jevcustom.css', JPATH_SITE . '/media/com_jevents/css/jevcustom.css');
+            }
+
 			$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
 			if (JFile::exists($file4)) JFile::delete($file4);
 
