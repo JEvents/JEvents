@@ -106,7 +106,7 @@ STYLE;
                                         JText::_('SUPPORT_INFO'), 'index.php?option=com_jevents&task=cpanel.support', $vName == 'cpanel.support'
                         );
                         JHtmlSidebar::addEntry(
-                                        JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&task=cpanel.custom_css', $vName == 'cpanel.custom_css'
+                                        JText::_('JEV_CUSTOM_CSS'), 'index.php?option=com_jevents&view=customcss', $vName == 'customcss'
                         );
                         
                         // Links to addons
