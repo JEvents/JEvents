@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+17-03-2017 Geraint Edwards
+* Fix for save button not appearing
+* Week count in monthly repeatihg event editing now uses ordinals and reserves when counting back from the end of the month
+
 14-03-2017 Geraint Edwards
 * JEvents 3.4.31
 * Use Opacity to make unselected fieldsets on edit screen more obviously disabled
