@@ -156,32 +156,6 @@ class AdminCpanelController extends JControllerAdmin
 
 		$this->view->display();
 	}
-	
-	function custom_css()
-	{
-		$mainframe = JFactory::getApplication();
-
-		//Hold on... Are you a super user?
-		$user = JFactory::getUser();
-
-		if (!$user->authorise('core.admin')) {
-			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
-			$msgType = 'error';
-			$mainframe->enqueueMessage($msg, $msgType);
-			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
-			return;
-		}
-
-		//Get the view
-		$this->view = $this->getView("cpanel", "html");
-		
-		// Set the layout
-		$this->view->setLayout('custom_css');
-		$this->view->assign('title', JText::_('CONTROL_PANEL'));
-
-		$this->view->display();
-	}
-
 
 	function fixExceptions()
 	{
