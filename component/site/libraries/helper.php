@@ -2393,6 +2393,16 @@ class JEVHelper
 		}
 
 	}
+
+	//Custom CSS File Helper file - Single place to define location, preparing to move to media folder
+	static public function CustomCSSFile() {
+
+		$filePath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
+
+		return $filePath;
+
+	}
+
 	/*
 	 * Load JEvents Custom CSS file if any
 	 */
