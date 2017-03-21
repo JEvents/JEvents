@@ -25,7 +25,7 @@ class JFormFieldJeveventpublished extends JFormField
 	{
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents())
+		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			$ev_id= $this->form->jevdata[$this->name]["ev_id"];
 
@@ -50,7 +50,7 @@ class JFormFieldJeveventpublished extends JFormField
 
 	protected function getLabel()
 	{
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents())
+		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			return parent::getLabel();
 		}

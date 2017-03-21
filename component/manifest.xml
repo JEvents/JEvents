@@ -8,7 +8,7 @@
     <authorEmail></authorEmail>
     <authorUrl>http://www.jevents.net</authorUrl>
     <description>COM_JEVENTS_DESC</description>
-    <version>3.4.33</version>
+    <version>3.4.34</version>
     <scriptfile>install.php</scriptfile>
     <files folder="site">
         <folder>assets</folder>
