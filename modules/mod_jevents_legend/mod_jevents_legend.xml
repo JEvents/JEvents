@@ -41,6 +41,7 @@
 				</field>
 				<field name="target_itemid" type="jevmenu" default="" label="Target Menu Item" description="Menu item for target page" />
                                 <field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+                                <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 				<field name="hideinactivekids" type="radio" class="btn-group" default="1" label="Hide Inactive child categories" description="WHEN ENABLED HIDES INACTIVE CHILD CATEGORIES">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

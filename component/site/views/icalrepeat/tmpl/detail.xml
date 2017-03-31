@@ -41,7 +41,6 @@
 			</field>
 
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-
 			<field name="nextrepeat" type="jevboolean" class="btn-group" default="1"  label="COM_JEVENTS_NEXT_REPEAT" description="COM_JEVENTS_NEXT_REPEAT_DESC"/>
 
 		</fieldset>

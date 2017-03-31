@@ -24,6 +24,7 @@
 				<field name="@spacer" type="jevinfo" default="MODULE_PARAMETERS"   label="" description="" />
 				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+                                <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="JEV_LATEST_USE_SETTINGS_DESC">
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
