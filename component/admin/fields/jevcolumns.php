@@ -86,6 +86,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_URL",true), "URL");
 		$collist[] = array(JText::_("JEV_ACCESS_LEVEL",true), "ACCESS");
 		$collist[] = array(JText::_("JEV_EVENT_PRIORITY",true), "PRIORITY");
+		$collist[] = array(JText::_("JEV_FIELD_ICALBUTTON",true), "ICALBUTTON");
 
 		// get list of enabled plugins
 		$jevplugins = JPluginHelper::getPlugin("jevents");
