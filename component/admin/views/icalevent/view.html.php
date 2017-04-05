@@ -160,9 +160,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		else
 		{
 			if (JEVHelper::isEventEditor())
+			{
 				JToolBarHelper::apply('icalevent.apply', "JEV_SAVE");
-			JToolBarHelper::save('icalevent.save');
-			JToolBarHelper::save2new('icalevent.savenew', "JEV_SAVE_NEW");
+				JToolBarHelper::save('icalevent.save');
+				JToolBarHelper::save2new('icalevent.savenew', "JEV_SAVE_NEW");
+			}
 		}
 
 		JToolBarHelper::cancel('icalevent.list');

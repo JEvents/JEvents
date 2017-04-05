@@ -413,14 +413,24 @@ class jEventCal {
 				return $output;
 			}
 		}
-		if (is_array($data)) {
-			$data = $data[0];
-		}
+		
 		if ($data){
-			$params = json_decode($data->params);
-			if (isset($params->image) && $params->image!=""){
-				return JURI::root().$params->image;
-			}
+        		if (!is_array($data)) {
+                            $params = json_decode($data->params);
+                            if (isset($params->image) && $params->image!=""){
+                                    return JURI::root().$params->image;
+                            }
+                        }
+                        else {
+                            // return the image URL from the first category that has one!
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){
+						return JURI::root().$params->image;
+					}
+				}
+                                return "";                            
+                        }
 		}
 		return "";
 	}
@@ -963,10 +973,23 @@ class jEventCal {
 	}
 	
 	function __get($field) {
-		$field = "_".$field;
-		if (isset($this->$field)) return $this->$field;
+		$underscorefield = "_".$field;
+		if (isset($this->$underscorefield)) return $this->$underscorefield;
 		else {
-			return false;
+                    if (strpos($field, "_")===0){
+                        ob_start();
+                        $name = str_replace("_", "",$field);
+                        $dispatcher	= JEventDispatcher::getInstance();
+                        $available = false;
+                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );
+                        $value = ob_get_clean();
+                        if ($available){
+                            return $value;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
 		}		
 	}
 

@@ -80,6 +80,15 @@ if ($com_calViewName == "global" || $com_calViewName == "")
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	$newparams->set('com_calViewName', $params->get('com_calViewName'));
 }
+
+// handle global menu item parameter for com_showrepeats
+$com_showrepeats = $newparams->get('com_showrepeats', "");
+if ($com_showrepeats === "-1" || $com_showrepeats === "")
+{
+	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$newparams->set('com_showrepeats', $params->get('com_showrepeats'));
+}
+
 // disable caching for form POSTS
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -138,9 +147,6 @@ $lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
 
 // Load Site specific language overrides
 $lang->load(JEV_COM_COMPONENT, JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate());
-
-// disable Zend php4 compatability mode
-@ini_set("zend.ze1_compatibility_mode", "Off");
 
 // Split task into command and task
 $cmd = JRequest::getCmd('task', false);

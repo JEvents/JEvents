@@ -110,7 +110,7 @@ echo $editor->save('value');
 									</td>
 								</tr>
 
-								<tr>
+								<tr class="layouteditor">
 									<td valign="top" align="left">
 										<?php echo JText::_('JEV_LAYOUT'); ?>
 									</td>

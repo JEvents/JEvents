@@ -88,8 +88,13 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				// Don't show warning for new events
 				if ($this->ev_id > 0)
 				{
-					echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
-				}
+					if ($this->row->_freq === "none"){
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT_WITH_NO_REPEATS');
+					}
+					else {
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
+					}
+				}				
 			}
 			else
 			{

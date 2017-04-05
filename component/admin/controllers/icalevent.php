@@ -516,8 +516,8 @@ class AdminIcaleventController extends JControllerAdmin
 			list($starthour, $startmin) = explode(":", $defaultstarttime);
 			list($endhour, $endmin) = explode(":", $defaultendtime);
 
-			$vevent->set("dtstart", JevDate::mktime($starthour, $startmin, 0, $month, $day, $year));
-			$vevent->set("dtend", JevDate::mktime($endhour, $endmin, 0, $month, $day, $year));
+			$vevent->set("dtstart", JevDate::mktime((int)$starthour, $startmin, 0, $month, $day, $year));
+			$vevent->set("dtend", JevDate::mktime((int)$endhour, $endmin, 0, $month, $day, $year));
 			$row = new jIcalEventDB($vevent);
 			// uncomment to default to all day event
 			//$row->_alldayevent=1;
