@@ -499,8 +499,9 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("state"))
-			{
+			if ($this->repeatId !== 0){
+                //Do Nothing, repeats do not yet have states
+            } else if ($this->form->getLabel("state")) {
 				?>
 				<div class="row jevpublished">
 					<div class="span2">
