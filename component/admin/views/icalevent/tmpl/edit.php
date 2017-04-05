@@ -477,7 +477,7 @@ else
 				<?php
 			}
 */
-			if (  $this->form->getLabel("access") ){
+			if ($this->repeatId === 0 && $this->form->getLabel("access") ){
 				?>
 				<div class="row  jevaccess">
 					<?php
