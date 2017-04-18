@@ -136,11 +136,11 @@ class SaveIcalEvent {
 			$vevent->catid = $db->loadResult();
 		}
 		// minimum access is 1 in Joomla 2.5+
-		$vevent->access = intval(ArrayHelper::getValue( $array,  "access",1));
+		$vevent->access = (int) ArrayHelper::getValue( $array,  "access",1);
 
-		$vevent->state =  intval(ArrayHelper::getValue( $array,  "state",0));
+		$vevent->state =  (int) ArrayHelper::getValue( $array,  "state",0);
 		// Shouldn't really do this like this
-		$vevent->_detail->priority =  intval(ArrayHelper::getValue( $array,  "priority",0));
+		$vevent->_detail->priority =  (int) ArrayHelper::getValue( $array,  "priority",0);
 
         // Set Timezone where required
         $vevent->tzid = ArrayHelper::getValue( $array,  "tzid", "");
@@ -151,11 +151,11 @@ class SaveIcalEvent {
 		if (!$frontendPublish){
 			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
 		}
-		// Always unpublish if no Publisher otherwise publish automatically (for new events)
+		// Always un-publish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
-		$notifyAdmin = $cfg->get("com_notifyallevents",0);
+		$notifyAdmin = $cfg->get("com_notifyallevents", 0);
 		if (!$frontendPublish){
-			if($cfg->get('jevunpublishonedit','1'))
+			if($newevent || (int) $cfg->get('jevunpublishonedit', '1') === 1)
 			{
 				$vevent->state = 0;
 			}

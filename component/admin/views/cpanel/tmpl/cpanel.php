@@ -70,7 +70,7 @@ $fullspan = 12;
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 					$this->_quickiconButtonWHover($link, "cpanel/LayoutsCool.png", "cpanel/LayoutsHot.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Custom CSS
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.custom_css";
+					$link = "index.php?option=" . JEV_COM_COMPONENT . "&view=customcss";
 					$this->_quickiconButtonWHover($link, "cpanel/CSSCool.png", "cpanel/CSSHot.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Support Info
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";

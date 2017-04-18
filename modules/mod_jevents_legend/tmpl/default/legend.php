@@ -268,6 +268,7 @@ class DefaultModLegendView
 			$params = new JRegistry($cat->params);
 			$cat->color = $params->get("catcolour", "");
 			$cat->overlaps = $params->get("overlaps", 0);
+                        $cat->image = $params->get("image", "");
 		}
 		unset($cat);
 		

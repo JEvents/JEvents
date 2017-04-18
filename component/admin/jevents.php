@@ -55,7 +55,7 @@ $registry	= JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
-/* Bug fixed in Joomla 3.2.1 ?? - not always it appears */
+/* Bug fixed in Joomla! 3.2.1 ?? - not always it appears */
 $joomlaconfig = JFactory::getConfig();
 if ($joomlaconfig->get("caching",0)){
 	$cacheController = JFactory::getCache('_system', 'callback');
@@ -72,7 +72,7 @@ if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezon
 // Thanks to ssobada
 $authorisedonly = $params->get("authorisedonly", 0);
 $user      = JFactory::getUser();
-//Stop if user is not authorised to access JEevents CPanel
+//Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
@@ -82,7 +82,7 @@ $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 if (!version_compare(JVERSION,'1.6.0',">=")){
-	// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
+	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
 	$db = JFactory::getDBO();
 	$query = 'SELECT template'
 	. ' FROM #__templates_menu'
@@ -94,31 +94,81 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 	$template = $db->loadResult();
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
 }
-// disable Zend php4 compatability mode
-@ini_set("zend.ze1_compatibility_mode","Off");
 
 // Split tasl into command and task
-$cmd = $jinput->get('task', 'cpanel.show');
+$cmd    = $jinput->get('task', 'cpanel.show');
+//echo $cmd;die;
 
-if (strpos($cmd, '.') != false) {
+//Time to handle view switching for our current setup for J3.7
+$view   = $jinput->get('view', '');
+//Check the view and redirect if any match.
+if ($view === 'customcss') {
+//	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0) { $cmd = $view; }
+	$controllerName = 'CustomCss';
+}
+if ($view === 'supportinfo') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
+}
+if ($view === 'config') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=params.edit');
+}
+if ($view === 'icalevent') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.list');
+}
+if ($view === 'icaleventform') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.edit');
+}
+if ($view === 'categories')
+{
+	JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
+}
+
+
+if (strpos($cmd, '.') !== false) {
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
 	// Define the controller name and path
 	$controllerName	= strtolower($controllerName);
 	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
-	$controllerName = "Admin".$controllerName;
+	//Ignore controller names array.
+	$ignore = array('customcss');
+	if (!in_array($controllerName, $ignore, FALSE))
+	{
+		$controllerName = "Admin" . $controllerName;
+	}
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
 	if (file_exists($controllerPath)) {
 		require_once($controllerPath);
 	} else {
-		throw new Exception(  'Invalid Controller', 500);
+		throw new Exception(  'Invalid Controller' . $controllerName, 500);
 		return false;
 	}
 } else {
 	// Base controller, just set the task
-	$controllerName = null;
+	if (isset($controllerName) && $controllerName !== '')
+	{
+		// Define the controller name and path
+		$controllerName = strtolower($controllerName);
+		$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+		$controllerName = $controllerName;
+
+		// If the controller file path exists, include it ... else lets die with a 500 error
+		if (file_exists($controllerPath))
+		{
+			require_once($controllerPath);
+		}
+		else
+		{
+			throw new Exception('Invalid Controller' . $controllerName, 500);
+
+			return false;
+		}
+	} else {
+		$controllerName = Null;
+	}
 	$task = $cmd;
 }
 

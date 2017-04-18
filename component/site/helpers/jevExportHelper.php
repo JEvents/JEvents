@@ -73,8 +73,16 @@ class JevExportHelper {
 		$urlString['siteurl'] = urlencode(JUri::root());
 		$urlString['rawdetails'] = urlencode($row->get('description'));
 		$urlString['details'] = strip_tags($row->get('description'));
-		if (JString::strlen($urlString['details'])>100) {
-			$urlString['details'] = JString::substr( $urlString['details'], 0, 100 ) . ' ...';
+		if (JString::strlen($urlString['details'])>500) {
+			$urlString['details'] = JString::substr( $urlString['details'], 0, 500 ) . ' ...';
+                        
+                        //Check if we should include the link to the event
+                        if ($params->get('source_url', 0) == 1) {
+                                $link = $row->viewDetailLink($row->yup(),$row->mup(),$row->dup(),true, $params->get('default_itemid', 0));
+                                $uri =  JURI::getInstance(JURI::base());
+                                $root = $uri->toString(array('scheme', 'host', 'port'));
+                                $urlString['details'] .= ' ' .JText::_('JEV_EVENT_IMPORTED_FROM') .$root . JRoute::_($link, true, -1);
+                        }                         
 		}
 		$urlString['details'] = urlencode($urlString['details']);
 

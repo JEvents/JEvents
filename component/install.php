@@ -493,7 +493,7 @@ SQL;
 			@$db->execute();
 		}
 
-		if (array_key_exists("uid", $cols))
+		if (!array_key_exists("uid", $cols))
 		{
 			$sql = "ALTER TABLE #__jevents_vevent modify uid varchar(255) $rowcharset NOT NULL default '' UNIQUE";
 			$db->setQuery($sql);
@@ -749,7 +749,7 @@ SQL;
 			@$db->execute();
 		}
 
-		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(500) NOT NULL default '' ";
+		$sql = "Alter table #__jevents_icsfile MODIFY COLUMN srcURL varchar(500) NOT NULL default ''";
 		$db->setQuery($sql);
 		$db->execute();
 

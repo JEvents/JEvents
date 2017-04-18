@@ -22,6 +22,7 @@
 			<field name="columns" type="jevcolumns" default=""  label="JEV_SELECT_COLUMNS" description="JEV_SELECT_COLUMNS_DESC"/>
 
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+                        <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 
 			<field name="@spacer0" type="spacer" label="COM_MENUS_RANGEDATETIME_FIELDSET_LABEL" />
 			<field name="relative" type="radio"  class="btn-group" default='rel'  label="COM_JEVENTS_DATE_RANGE_RELATIVE_LABEL" description="COM_JEVENTS_DATE_RANGE_RELATIVE_DESC">
@@ -53,9 +54,11 @@
 				<option value="rpt.endrepeat desc, rpt.startrepeat desc, det.summary ASC" >JEV_ENDDATE_DECREASING</option>
 				<option value="det.priority desc, rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_PRIORITY_DECREASING</option>
 			</field>
-
-                        <field name="com_showrepeats" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" />
-                        
+			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
+				<option value="-1">USE_GLOBAL</option>
+				<option value="0">JEV_NO</option>
+				<option value="1">JEV_YES</option>
+			</field>
 			<field name="csvexport" type="jevboolean" class="btn-group" default="0"  label="JEV_CSV_EXPORT" description="JEV_CSV_EXPORT_DESC"/>
 			<field name="csvexportfiler" showon="csvexport:1" type="list" default="0"  label="JEV_CSV_EXPORT_FILTER" description="JEV_CSV_EXPORT_FILTER_DESC">
 				<option value="0" >JEV_CSV_EXPORT_FILTER_FIELD_0</option>

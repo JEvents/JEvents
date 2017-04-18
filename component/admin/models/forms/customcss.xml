@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field
+                name="extension_id"
+                type="hidden" />
+
+        <field
+                name="filename"
+                type="hidden" />
+
+        <field
+                name="source"
+                type="editor"
+                editor="codemirror|none"
+                buttons="no"
+                label="COM_JEV_CUSTOM_CSS_SOURCE_LBL"
+                description="COM_JEV_CUSTOM_CSS_SOURCE_DESC"
+                height="500px"
+                rows="20"
+                cols="80"
+                syntax="css"
+                filter="raw"
+
+        />
+    </fieldset>
+</form>

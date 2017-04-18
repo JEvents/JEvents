@@ -25,33 +25,32 @@ class JFormFieldJeveventpublished extends JFormField
 	{
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
-
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher())
+		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			$ev_id= $this->form->jevdata[$this->name]["ev_id"];
-			
-			if ($ev_id == 0)
+
+			if ($ev_id == 0 && JFactory::getApplication()->input->getCmd("task")!="icalevent.editcopy")
 			{
-				// published by default	
+				// published by default
 				$this->value = 1;
 			}
 				$poptions = array();
 				$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
 				$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
                                 $poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
-			
+
 				return JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->value);
-			
+
 		}
 		else {
-			return '<input type="hidden" name="state" id="state" value="' . $this->value . '" />';	
-		}		
+			return '<input type="hidden" name="state" id="state" value="' . $this->value . '" />';
+		}
 
 	}
 
 	protected function getLabel()
 	{
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher())
+		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			return parent::getLabel();
 		}

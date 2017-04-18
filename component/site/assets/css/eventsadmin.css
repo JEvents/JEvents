@@ -748,6 +748,7 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 /* Event editing rounded grey boxes */
 .roundedgrey {
     background-color:#ddd;
+    opacity: 0.75;
 }
 /* Only for sites that want a max size for the popup! */
 
@@ -787,3 +788,7 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 #plugin_options .accordion-toggle fieldset.radio.btn-group{
 	margin-top: -5px;
 }
+
+/** Fixes issues with some templates. The inline display: block; always overrides this anyhow**/
+
+.jevbootstrap > div.action_dialogJQ, .jevbootstrap div.ical_dialogJQ  {display:none;}

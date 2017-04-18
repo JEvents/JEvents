@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" method="upgrade" client="site">
 	<name>MOD_JEV_LATEST_EVENTS_TITLE</name>
-	<creationDate>January 2017</creationDate>
+	<creationDate>March 2017</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>	  
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
-	<version>3.4.29</version>
+	<version>3.4.34</version>
 	<description>MOD_JEV_LATEST_EVENTS_DESC</description>
 	<files>
 		<filename module="mod_jevents_latest">mod_jevents_latest.php</filename>
@@ -35,6 +35,7 @@
 				<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+                                <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 				<field name="ignorecatfilter" type="radio" class="btn-group" default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
@@ -80,9 +81,11 @@
 					<option value="1">JEV_LATEST_PAST_OPTION_1</option>
 					<option value="2">JEV_LATEST_PAST_OPTION_2</option>
 				</field>
-				<field name="modlatest_NoRepeat" type="jevradio" class="btn-group"  default="0" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" conditional="modlatest_useLocalParam" conditions="1" >
-					<option value="0">JEV_NO</option>
-					<option value="1">JEV_Yes</option>
+				<field name="modlatest_NoRepeat" type="list" default="0" label="JEV_LEV_REP_EV_DISPLAY_OPTIONS" description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" conditional="modlatest_useLocalParam" conditions="1" >
+                                        <option value="0">JEV_SHOW_ALL_REPEATS</option>
+                                        <option value="1">JEV_SHOW_ONE_REPEAT</option>
+                                        <!--<option value="2">JEV_SHOW_FIRST_REPEAT_ONLY</option>//-->
+                                        <option value="3">JEV_SHOW_NO_REPEATS</option>
 				</field>
 				<field name="modlatest_multiday" type="jevmultilist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" conditional="modlatest_useLocalParam" conditions="1" >
 					<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>

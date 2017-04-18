@@ -2,6 +2,81 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+24-03-2017 Geraint Edwards
+* Jevents 3.4.34
+* Fix for canPublishOwnEvents call
+* Fix for geraint/default theme navigation icons when using relative min/max years
+* Clarify message on top of page when editing an existing event with no repeats.
+
+17-03-2017 Geraint Edwards
+* Fix for save button not appearing
+* Week count in monthly repeatihg event editing now uses ordinals and reserves when counting back from the end of the month
+
+15-03-2017 Tony Partridge
+* Change from Editor to Creator for Save / Apply on new events
+* Imrpoved canPublishOwnEvents() method to return $canPublishOwn value if set and no conditions met.
+
+14-03-2017 Tony Partridge
+* Added new Custom CSS View and JForm based form
+
+14-03-2017 Geraint Edwards
+* JEvents 3.4.31
+* Use Opacity to make unselected fieldsets on edit screen more obviously disabled
+* Switch repeat types if grey boxes are clicked anywhere
+* Correct getter method for undeclared variables
+
+13-03-2017 Geraint Edwards
+* JEvents 3.4.30
+* Fix for modified column missing in the backend of JEvents and links to translations failing 
+* Add Permalink config option on event detail tab of JEvents config - all JEvents detail links can now be pointed to the same menu item regardless of the source
+* Fix for uid column duplication during upgrades on some times
+
+09-03-2017 Geraint Edwards
+* JEvents 3.4.30
+* Correct category image URL for sites with multiple categories but not all have images attached
+* Add new JEvents getter plugin to allow plugins to push data into variables in a different way - needed for standard images update 3.4.9
+* Layout customisation tool now inherits category specific layouts
+
+03-03-2017 Tony Partridge
+* Added Global option as default for show all repeats option in Menu Items.
+
+02-03-2017 Geraint Edwards
+* Force default time and date fields to be integers (some people had used 8:00pm instead of 20:00)
+* preserve published state when copying and editing event
+* move generation of access list to access field definition - will allow default value to be set in template override now
+* required fields check fix for radio/check boxes
+* export 500 characters of event description instead of just 100
+* menu item filters setting parent categories will not pick up events in child categories unless they are specified too
+* Add option for date range view to show date as well as time in list presentation
+
+
+01-03-2017 Tony Partridge
+* More robust check if event title is blank
+* Add CATEGORY_ALIAS to layout editor 
+* Support for Joomla 3.7
+
+17-02-2017 Brian Teeman
+* Language corrections
+
+16-02-2017 Tony Partridge
+* Range views now always have a date column to the left. So tend not to need the date output again. This change is suggested by @BrianTeeman. Any users requiring the date and do so easily with the additional date string.
+
+08-02-2017 Tony Partridge
+* Fixes issue where users not authorised to publish events auto-published new events.
+
+03-02-2017 Tony Partridge
+* Added strings to .sys.ini for debugged permissions report.
+
+02-02-2017 Geraint Edwards
+* Fix for time offset applied twice when editing event in nonstandard timezone
+* Translation support for edit tabs from custom fields
+* Max year php_max_int constraint for annual repeating events
+* Stop calendar mod direct links to event detail from including tmpl=component
+* latest events process match to support formatting options from plugins
+
+23-01-2017 Geraint Edwards
+ * JEvents 3.4.29
+
 22-01-2017 Geraint Edwards
 * Fix for UTF-8 tooltips
 * Fix for install error on creating evaccess index 

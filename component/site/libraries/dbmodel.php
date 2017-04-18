@@ -120,6 +120,11 @@ class JEventsDBModel
 			{
 				$where = " AND 0 ";
 			}
+                        // The menu or module may have specified categories but NOT their children 
+                        if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0 && !$this->cfg->get("include_subcats", 1)) {
+                            $where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
+                        }
+                        
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$jevtask = JRequest::getString("jevtask");
 			$isedit = false;
@@ -291,7 +296,7 @@ class JEventsDBModel
 	 * Fetch recently created events
 	 */
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function recentIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0)
+	function recentIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0)
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
@@ -308,7 +313,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListRecentIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		$dispatcher->trigger('fetchListRecentIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptionsZ));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -352,6 +357,12 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
+		// showing NO repeating events - in which case MUST search for events with freq=none
+		if ($repeatdisplayoptions==3) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -385,7 +396,7 @@ class JEventsDBModel
 		$ids = implode(",", $ids);
 
 		$groupby = "\n GROUP BY rpt.rp_id";
-		if ($noRepeats)
+		if ($repeatdisplayoptions)
 			$groupby = "\n GROUP BY ev.ev_id";
 
 		// This version picks the details from the details table
@@ -420,7 +431,11 @@ class JEventsDBModel
 		// do not use foreach incase time limit plugin removes one of the repeats
 		for ($i=0;$i<count($rows); $i++) {
 			$row = $rows[$i];
-			if (strtolower($row->freq())!="none" && $noRepeats){
+			// no repeating events 
+			if (strtolower($row->freq())!="none" && $repeatdisplayoptions==2){
+				continue;
+			}
+			else if (strtolower($row->freq())!="none" && $repeatdisplayoptions==1){
 				$repeat = $row->getFirstRepeat();
 				if ($repeat->rp_id() != $row->rp_id()){
 					$row = $this->listEventsById($repeat->rp_id());
@@ -448,7 +463,7 @@ class JEventsDBModel
 	 * Fetch recently modified events
 	 */
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
-	function recentlyModifiedIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0)
+	function recentlyModifiedIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0)
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
@@ -465,7 +480,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListRecentlyModifiedIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		$dispatcher->trigger('fetchListRecentlyModifiedIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptions));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -509,6 +524,12 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
+		// showing NO repeating events - in which case MUST search for events with freq=none
+		if ($repeatdisplayoptions==3) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -575,7 +596,11 @@ class JEventsDBModel
 		// do not use foreach incase time limit plugin removes one of the repeats
 		for ($i=0;$i<count($rows); $i++) {
 			$row = $rows[$i];
-			if (strtolower($row->freq())!="none" && $noRepeats){
+			// no repeating events 
+			if (strtolower($row->freq())!="none" && $repeatdisplayoptions==2){
+				continue;
+			}
+			if (strtolower($row->freq())!="none" && $repeatdisplayoptions==1){
 				$repeat = $row->getFirstRepeat();
 				if ($repeat->rp_id() != $row->rp_id()){
 					$row = $this->listEventsById($repeat->rp_id());
@@ -604,7 +629,7 @@ class JEventsDBModel
 	 */
 	// Allow the passing of filters directly into this function for use in 3rd party extensions etc.
         // TODO fix multi-day event handling!
-	function popularIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0, $multidayTreatment = 0)
+	function popularIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
@@ -621,7 +646,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListPopularIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats));
+		$dispatcher->trigger('fetchListPopularIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptions));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -665,6 +690,12 @@ class JEventsDBModel
 			$catwhere = "\n WHERE 1 ";
 		}
 
+		// showing NO repeating events - in which case MUST search for events with freq=none
+		if ($repeatdisplayoptions==3) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -758,7 +789,7 @@ class JEventsDBModel
 		$ids = implode(",", $ids);
 
 		$groupby = "\n GROUP BY rpt.rp_id";
-		if ($noRepeats)
+		if ($repeatdisplayoptions)
 			$groupby = "\n GROUP BY ev.ev_id";
 
                 $daterange =  "\n AND rpt.endrepeat >= '$startdate' AND rpt.startrepeat <= '$enddate'";
@@ -803,7 +834,7 @@ class JEventsDBModel
 
 	/* Special version for Latest events module */
 
-	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0, $multidayTreatment = 0)
+	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
@@ -831,7 +862,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListLatestIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit, $noRepeats, $multidayTreatment ));
+		$dispatcher->trigger('fetchListLatestIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit, $repeatdisplayoptions, $multidayTreatment ));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -865,6 +896,12 @@ class JEventsDBModel
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "post onListIcalEvents= ".round($time_end - $starttime, 4)."<br/>";
+		
+		// showing NO repeating events - in which case MUST search for events with freq=none
+		if ($repeatdisplayoptions==3) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
 		
 		// What if join multiplies the rows?
 		// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492
@@ -944,7 +981,7 @@ class JEventsDBModel
 			$multiday3 = "AND det.multiday=1";
 		}
 
-		if ($noRepeats)
+		if ($repeatdisplayoptions)
 		{
 			// Display a repeating event ONCE we group by event id selecting the most appropriate repeat for each one
 			// Find the ones after now (only if not past only)
@@ -1538,7 +1575,7 @@ class JEventsDBModel
             
         }
 
-        function randomIcalEvents($startdate, $enddate, $limit = 10, $noRepeats = 0, $multidayTreatment = 0)
+        function randomIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
@@ -1557,7 +1594,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListRandomIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $noRepeats,$multidayTreatment));
+		$dispatcher->trigger('fetchListRandomIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptions,$multidayTreatment));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -1588,6 +1625,12 @@ class JEventsDBModel
 		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup, & $rptwhere));
 
+		// showing NO repeating events - in which case MUST search for events with freq=none
+		if ($repeatdisplayoptions==3) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+				
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "post onListIcalEvents= ".round($time_end - $starttime, 4)."<br/>";
@@ -1663,7 +1706,7 @@ class JEventsDBModel
 			$multiday3 = "AND det.multiday=1";
 		}
 
-		if ($noRepeats)
+		if ($repeatdisplayoptions==1)
 		{
 			// Display a repeating event ONCE we group by event id selecting the most appropriate repeat for each one
 			// Find the ones after now (only if not past only)

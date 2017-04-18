@@ -729,7 +729,6 @@ function toggleWhichBy(wb)
 		initialiseBootstrapButtons()
 	}
 	catch(e) {};
-
 }
 
 function toggleFreq(freq , setup)
@@ -976,6 +975,17 @@ function updateRepeatWarning(){
 	}
 }
 
+function toggleWeeknumDirection () {
+    if (jevjq('#weekofmonth input[name="bd_direction"]').attr('checked')){
+        jevjq('.weeknameforward').css('display','none');
+        jevjq('.weeknameback').css('display','inline');
+    }
+    else {
+        jevjq('.weeknameforward').css('display','inline');
+        jevjq('.weeknameback').css('display','none');
+    }
+}
+
 /* Check for booking conflicts */
 
 jQuery.fn.formToJson =  function(){
@@ -1104,6 +1114,13 @@ jevjq(document).on('ready', function() {
 	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
 	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
 	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
+        
+        // setup rounded grey response
+        jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
+            jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
+            toggleWhichBy(this.id);
+        });
+                    
 });
 
 function enableRepeatUntil() {
