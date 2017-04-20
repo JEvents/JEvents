@@ -163,7 +163,7 @@ class AdminIcalsController extends JControllerForm {
 		$this->view = $this->getView("icals","html");
 
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) $editItem=$cid[0];
 		else $editItem=0;
 
@@ -254,7 +254,7 @@ class AdminIcalsController extends JControllerForm {
 			return;
 		}
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
 		} else {
@@ -401,7 +401,7 @@ class AdminIcalsController extends JControllerForm {
 
 		$icsid = intval(JRequest::getVar('icsid',0));
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
 		} else {
@@ -472,13 +472,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function publish(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid,1);
 	}
 
 	function unpublish(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid,0);
 	}
 
@@ -502,13 +502,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function autorefresh(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid,1);
 	}
 
 	function noautorefresh(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid,0);
 	}
 
@@ -532,13 +532,13 @@ class AdminIcalsController extends JControllerForm {
 
 	function isdefault(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid,1);
 	}
 
 	function notdefault(){
 		$cid = JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid,0);
 	}
 
@@ -619,7 +619,7 @@ class AdminIcalsController extends JControllerForm {
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$cid	= JRequest::getVar(	'cid',	array(0) );
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		$db	= JFactory::getDBO();
 

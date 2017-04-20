@@ -965,7 +965,7 @@ class jEventCal {
 			if (!is_array($catids)){
 				$catids = array($catids);
 			}
-			ArrayHelper::toInteger($catids);
+			$catids = ArrayHelper::toInteger($catids);
 			$this->_catidsarray= $catids;
 			return $catids;
 		}
@@ -978,7 +978,7 @@ class jEventCal {
 		else {
                     if (strpos($field, "_")===0){
                         ob_start();
-                        $name = str_replace("_", "",$field);
+                        $name = substr($field,1);
                         $dispatcher	= JEventDispatcher::getInstance();
                         $available = false;
                         $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );

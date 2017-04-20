@@ -50,7 +50,13 @@ class JFormFieldJevtimezone extends JFormField
                                         if (count($choosefrom) && !in_array($zone,$choosefrom)){
 						continue;                                            
                                         }
-					$options[] = JHTML::_('select.option', $zone, $zone);
+					$zonevalue = $zone;
+					$translatezone = str_replace("/","_",$zone);
+					$translatedzone = JText::_($translatezone);
+					if ($translatezone != $translatedzone) {
+						$zone = $translatedzone;
+					}
+					$options[] = JHTML::_('select.option', $zonevalue, $zone);
 				}
 			}
 			$attr = array('list.attr' => 'class="'.$this->class.'" ',

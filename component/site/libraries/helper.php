@@ -2309,7 +2309,7 @@ class JEVHelper
 				// Set the query for execution.
 				$db->setQuery((string) $query);
 				$rootlevels = $db->loadColumn();
-				ArrayHelper::toInteger($rootlevels);
+				$rootlevels = ArrayHelper::toInteger($rootlevels);
 			}
 			$levels = $rootlevels;
 		}
@@ -2527,7 +2527,7 @@ class JEVHelper
 		{
 			$catids = array(intval($catids));
 		}
-		ArrayHelper::toInteger($catids);
+		$catids = ArrayHelper::toInteger($catids);
 		$result = false; //count($catids)>0;
 		foreach ($catids as $catid)
 		{
@@ -2561,7 +2561,7 @@ class JEVHelper
 			{
 				$catids = array($catids);
 			}
-			ArrayHelper::toInteger($catids);
+			$catids = ArrayHelper::toInteger($catids);
 			$row->_catidsarray = $catids;
 			return $catids;
 		}

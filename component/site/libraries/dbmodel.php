@@ -362,6 +362,10 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
 		}
+		else if ($repeatdisplayoptions==4) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
+		}
 
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
@@ -529,6 +533,10 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
 		}
+		else if ($repeatdisplayoptions==4) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
+		}
 				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
@@ -694,6 +702,10 @@ class JEventsDBModel
 		if ($repeatdisplayoptions==3) 
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+		else if ($repeatdisplayoptions==4) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
 				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
@@ -901,6 +913,10 @@ class JEventsDBModel
 		if ($repeatdisplayoptions==3) 
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+		else if ($repeatdisplayoptions==4) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
 		
 		// What if join multiplies the rows?
@@ -1629,6 +1645,10 @@ class JEventsDBModel
 		if ($repeatdisplayoptions==3) 
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
+		}
+		else if ($repeatdisplayoptions==4) 
+		{
+			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
 				
 		//list ($usec, $sec) = explode(" ", microtime());

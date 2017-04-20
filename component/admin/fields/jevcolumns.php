@@ -134,7 +134,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 
 		$input = '<div style="clear:left"></div><table><tr valign="top">
-			<td><div style="font-weight:bold">' . JText::_("JEV_CLICK_TO_ADD_COLUMN") . '</div>
+			<td><div style="font-weight:bold" >' . JText::_("JEV_CLICK_TO_ADD_COLUMN") . '</div>
 			<div id="columnchoices" style="margin-top:10px;padding:5px;min-width:200px;height:150px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($collist as $col)
 		{
@@ -167,14 +167,14 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$invalues = array();
 		foreach ($invalue as $col)
 		{
-			$input.='<div id="column' . $col. '" style="clear:left;"><div style="width:200px;display:inline-block;">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='".$indexedgroups[$col]->label."' style='margin-left:20px;' /></div>";
+			$input.='<div id="column' . $col. '" style="clear:left;"><div style="width:200px;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='".$indexedgroups[$col]->label."' style='margin-left:20px;' /></div>";
 			$invalues[] = $indexedgroups[$col]->raw;
 		}
 		$invalues = implode("||", $invalues);
 
 		$input .= '</div></td>
 		</tr></table>';
-		$input .= '<textarea style="display:block"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
+		$input .= '<textarea style="display:none"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 		
 		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';

@@ -33,7 +33,7 @@ class AdminUserController extends JControllerLegacy   {
 		if (!is_array( $this->cid )) {
 			$this->cid = array(0);
 		}
-                ArrayHelper::toInteger($this->cid);
+                $this->cid = ArrayHelper::toInteger($this->cid);
 
 		$this->registerTask( 'overview', 'showUsers' );
 		$this->registerTask( 'list', 'showUsers' );

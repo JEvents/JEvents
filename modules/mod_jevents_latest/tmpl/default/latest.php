@@ -437,7 +437,7 @@ class DefaultModLatestView
 				usort($rows, array(get_class($this), "_sortEventsByCreationDate"));
 			else if ($this->dispMode == 6)
 				usort($rows, array(get_class($this), "_sortEventsByHits"));
-			else if ($this->dispMode !== 7)
+			else if ($this->dispMode == 7)
 				usort($rows, array(get_class($this), "_sortEventsByDate"));
 			else if ($this->dispMode == 8)
 				usort($rows, array(get_class($this), "_sortEventsByModificationDate"));

@@ -86,6 +86,7 @@
                                         <option value="1">JEV_SHOW_ONE_REPEAT</option>
                                         <!--<option value="2">JEV_SHOW_FIRST_REPEAT_ONLY</option>//-->
                                         <option value="3">JEV_SHOW_NO_REPEATS</option>
+                                        <option value="4">JEV_ONLY_SHOW_REPEATING_EVENTS</option>
 				</field>
 				<field name="modlatest_multiday" type="jevmultilist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" conditional="modlatest_useLocalParam" conditions="1" >
 					<option value="0">JEV_LATEST_MULTIEVENT_DISPLAY_OPTION_0</option>

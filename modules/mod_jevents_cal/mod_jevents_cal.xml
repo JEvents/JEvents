@@ -57,7 +57,7 @@
 				</field>
 				<field name="minical_nextmonth" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_MONTH" description="JEV_NEXT_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1" />
 				<field name="minical_nextyear" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="minical_usedate" type="jevboolean" class="btn-group"  default="0" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" conditional="modcal_useLocalParam" conditions="1" />
+				<field name="minical_usedate" type="jevboolean" class="btn-group"  default="1" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" conditional="modcal_useLocalParam" conditions="1" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="modcal_DispLastMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC" conditional="modcal_useLocalParam" conditions="1" >
 					<option value="NO">JEV_NO</option>
