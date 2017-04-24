@@ -193,7 +193,8 @@ class AdminIcalsController extends JControllerForm {
 	}
 
         function reloadall(){
-            if (JFactory::getApplication()->isAdmin()){
+		@set_time_limit(1800);
+		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
 		}
 		else {

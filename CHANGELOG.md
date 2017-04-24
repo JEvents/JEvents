@@ -2,8 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+20-04-2017 Geraint Edwards
+* JEvents 3.4.34
+* Latest events module option to show only repeating events
+* Hardening of catid filtering
+* New config option to allow dropping eventdetail from new SEF URLs for event detail
+* Latest events module - option to not show any repeating events
+* Correct confusing translations for years before and after now
+
 24-03-2017 Geraint Edwards
-* Jevents 3.4.34
 * Fix for canPublishOwnEvents call
 * Fix for geraint/default theme navigation icons when using relative min/max years
 * Clarify message on top of page when editing an existing event with no repeats.
