@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 
 $component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
-$component->params = & $newparams;
+$component->params =  $newparams;
 
 JEVHelper::setupWordpress();
 
