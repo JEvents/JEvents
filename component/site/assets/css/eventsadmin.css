@@ -797,4 +797,5 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 
 .com_jevents [class^="icon-"] {
     background-image:none;
+    vertical-align:baseline;
 }

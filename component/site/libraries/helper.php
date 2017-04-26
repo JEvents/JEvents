@@ -644,6 +644,7 @@ class JEVHelper
 
 		// Load the calendar behavior
 		JHtml::_('behavior.calendar');
+		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
 		$tag      = JFactory::getLanguage()->getTag();
 		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
 		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);

@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+26-04-2017 Geraint Edwards
+* JEvents 3.4.36 
+* Joomla 3.7.0 bug workaround for calendar popup
+
+25-04-2017 Geraint Edwards
+* JEvents 3.4.35 
+* Joomla 3.7.0 workarounds on assigning parameters
+
 20-04-2017 Geraint Edwards
 * JEvents 3.4.34
 * Latest events module option to show only repeating events
