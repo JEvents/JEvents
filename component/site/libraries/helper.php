@@ -81,7 +81,7 @@ class JEVHelper
 				// load new style language
 				// Always load site component language !
         			$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
-                            
+
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
@@ -644,6 +644,9 @@ class JEVHelper
 
 		// Load the calendar behavior
 		JHtml::_('behavior.calendar');
+		$tag      = JFactory::getLanguage()->getTag();
+		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
 
 		// Only display the triggers once for each control.
 		if (!in_array($fieldid, $done))
@@ -1313,7 +1316,7 @@ class JEVHelper
 						return false;
 					}
 					//$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
-                                        
+
 					if ($params->get("category_allow_deny",1)==0){
 						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
 						list($usec, $sec) = explode(" ", microtime());
@@ -1363,7 +1366,7 @@ class JEVHelper
 							}
 						}
 					}
-                                        
+
 				}
 			}
 			/*
@@ -1574,7 +1577,7 @@ class JEVHelper
 				if (!$authorisedonly)
 				{
 					$juser = JFactory::getUser();
-                                        
+
 					if ($params->get("category_allow_deny",1)==0){
 						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
 						list($usec, $sec) = explode(" ", microtime());
@@ -1624,9 +1627,9 @@ class JEVHelper
 							}
 						}
 					}
-                                        
-                                        
-                                        
+
+
+
 				}
 			}
 			else if ($user->canpublishall)
@@ -1761,8 +1764,8 @@ class JEVHelper
 		$juser = JFactory::getUser();
 
 		$db = JFactory::getDBO();
-                // TODO make this query tighter to stop uers with ids starting with $juser->id from matching - 
-                // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html 
+                // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
+                // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
 		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
 		$db->setQuery($sql);
 		$catids = $db->loadColumn();
@@ -1878,7 +1881,7 @@ class JEVHelper
 				return true;
 			}
                         else if (!$authorisedonly && $publishown==2)
-                        {                            
+                        {
                             $publishown = JEVHelper::canPublishOwnEvents($row->ev_id());
                             if ($publishown )
                             {
@@ -2753,14 +2756,14 @@ SCRIPT;
 	public static
 			function getFilterValues()
 	{
-            
+
               //  $session = JFactory::getSession();
                // $session->set('name', "value");
 
                 $session = JFactory::getSession();
                 echo $session->get('name');
 
-            
+
                 // Only save/delete filters for non-guests
                 if (JFactory::getUser()->id > 0){
                     $deletefilter = JFactory::getApplication()->input->getInt("deletefilter", 0);
@@ -2771,7 +2774,7 @@ SCRIPT;
                             return;
                     }
 
-                    // This is new experimental code 
+                    // This is new experimental code
                     $fid = JFactory::getApplication()->input->getString("jfilter", '');
                     if ($fid != "")
                     {
@@ -2809,7 +2812,7 @@ SCRIPT;
                     }
                 }
                 else {
-			JEVHelper::setFilterValues();                    
+			JEVHelper::setFilterValues();
                 }
 
 	}
@@ -2824,14 +2827,14 @@ SCRIPT;
                 if (!JFactory::getUser()->id){
                     return;
                 }
-                
+
                 $filtername = JFactory::getApplication()->input->getString("filtername", '');
                 $modid = JFactory::getApplication()->input->getInt("modid",0 );
 
                 if ($filtername==""){
                     return;
                 }
-                
+
 		$filtervars = array();
 
 		$input = JFactory::getApplication()->input->getArray();
@@ -2860,7 +2863,7 @@ SCRIPT;
 
 			$db->setQuery("SELECT fid  FROM #__jevents_filtermap where name = " . $db->quote($filtername));
 			$fid = intval($db->loadResult("fid"));
-                        
+
                         if ($fid){
 				$db->setQuery("REPLACE INTO #__jevents_filtermap (fid, filters, md5, userid, name, andor, modid) VALUES ($fid," . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
 				$db->execute();
@@ -2881,16 +2884,16 @@ SCRIPT;
 			function parameteriseJoomlaCache()
 	{
 
-                // If Joomla! caching is enabled then we have to manage progressive caching 
+                // If Joomla! caching is enabled then we have to manage progressive caching
                 // and ensure that session data is taken into account.
 		$conf = JFactory::getConfig();
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 
-                            'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 
-                            'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 
-                            'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING',
+                            'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING',
+                            'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT',
+                            'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING',
                             'em2' => 'STRING', 'pop' => 'UINT');
 			$app = JFactory::getApplication();
 
@@ -3872,7 +3875,7 @@ SCRIPT;
                     $cfg->set('com_email_icon_view', 0);
                 }
         }
-        
+
         public static function & getMenuFilters() {
                 $registry = JRegistry::getInstance("jevents");
                 $menufilters = $registry->get("jevents.menufilters", false);
@@ -3882,7 +3885,7 @@ SCRIPT;
                 }
                 return $menufilters;
         }
-        
+
         public static function setMenuFilter($key, $value) {
             $menufilters = JEVHelper::getMenuFilters();
             $menufilters->$key = $value;
@@ -3892,7 +3895,7 @@ SCRIPT;
             $menufilters = JEVHelper::getMenuFilters();
             return isset($menufilters->$key) ? $menufilters->$key :  $default;
         }
-        
+
         // TODO - create a stack of previous values and use reset rather than clear to allow recursive type calls
         public static function clearMenuFilter($key) {
             $menufilters = JEVHelper::getMenuFilters();
@@ -3900,4 +3903,3 @@ SCRIPT;
         }
 
 }
-
