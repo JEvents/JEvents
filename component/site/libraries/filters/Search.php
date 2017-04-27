@@ -20,6 +20,9 @@ class jevSearchFilter extends jevFilter
 		$this->filterType=self::filterType;
 		$this->filterLabel=JText::_( 'SEARCH_EVENT' );
 		$this->filterNullValue="";
+		$this->extrasearchfields = array();
+		$this->extrajoin = "";
+		$this->needsgroup = false;
 		parent::__construct($tablename,$filterfield, true);
 		// Should these be ignored?
 		$reg = JFactory::getConfig();
@@ -27,7 +30,6 @@ class jevSearchFilter extends jevFilter
 		if ($modparams && $modparams->get("ignorefiltermodule",false)){
 			$this->filter_value = $this->filterNullValue;
 		}
-		
 	}
 
 	function _createFilter($prefix=""){
@@ -36,13 +38,47 @@ class jevSearchFilter extends jevFilter
 
 		$db = JFactory::getDBO();
 		$text = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
-				
+		
 		$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
-
+		
 		return $filter;
+		
+		/* Implementing this is more complicated becase of clash between onSearchEvents and onListIcalEvents triggers !
+		// create filter gets called before createjoin !!
+		JPluginHelper::importPlugin('jevents');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));			
+		
+		$db = JFactory::getDBO();
+		$keyword = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
+		$text = $db->escape( $this->filter_value, true );
+							
+		if (count($this->extrasearchfields) > 0)
+		{
+			$extraor = implode(" OR ", $this->extrasearchfields);
+			$extraor = " OR " . $extraor;
+			// replace the ### placeholder with the keyword
+			$extraor = str_replace("###", $text, $extraor);
+
+			$filter = "(det.summary LIKE $keyword OR det.description LIKE $keyword OR det.extra_info LIKE $keyword OR det.extra_info LIKE $keyword $extraor)\n" ;				
+		}
+		else
+		{
+			$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
+		}
+		
+		return $filter;
+		 */
 	}
 
 	function _createJoinFilter($prefix=""){
+		/*
+		// search filter code doesn't want 'LEFT JOIN' here
+		if (strpos($this->extrajoin, "LEFT JOIN") <= 1){
+			$this->extrajoin = substr($this->extrajoin, 9 + strpos($this->extrajoin, "LEFT JOIN"));
+		}
+		return $this->extrajoin;
+		*/
 		return "";
 	}
 

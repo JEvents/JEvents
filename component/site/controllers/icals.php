@@ -191,7 +191,7 @@ class ICalsController extends AdminIcalsController
 				if (!in_array($y, $years))
 					$years[] = $y;
 			}
-			ArrayHelper::toInteger($years);
+			$years = ArrayHelper::toInteger($years);
 		}
 		else if ($years != "NONE")
 		{
@@ -201,7 +201,7 @@ class ICalsController extends AdminIcalsController
 				list($y, $m, $d) = JEVHelper::getYMD();
 				$years = array($y);
 			}
-			ArrayHelper::toInteger($years);
+			$years = ArrayHelper::toInteger($years);
 		}
 		else
 		{

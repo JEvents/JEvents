@@ -10,7 +10,7 @@ function setupColumnChoices(){
 			opt.css('color',"red");
 			return;
 		}
-		opt.css('cursor',"pointer");
+		opt.css('cursor',"move");
 		opt.on("click",function(event){
 			var span = jQuery(this).find('span:first-child');
 			var id = span.html();
@@ -50,7 +50,8 @@ function setupColumnLis(){
 		update: function(event, ui){
 			setupCustomColumnField("#jevcolumns");
 		},
-                cancel:'#columnmatches_heading'
+                cancel:'#columnmatches_heading',
+                handle:'.sortablehandle'
 	});        
 
 	var lis = jQuery("#columnmatches > div");

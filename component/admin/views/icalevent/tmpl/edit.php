@@ -88,8 +88,13 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				// Don't show warning for new events
 				if ($this->ev_id > 0)
 				{
-					echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
-				}
+					if ($this->row->_freq === "none"){
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT_WITH_NO_REPEATS');
+					}
+					else {
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
+					}
+				}				
 			}
 			else
 			{
@@ -472,7 +477,7 @@ else
 				<?php
 			}
 */
-			if (  $this->form->getLabel("access") ){
+			if ($this->repeatId === 0 && $this->form->getLabel("access") ){
 				?>
 				<div class="row  jevaccess">
 					<?php
@@ -494,8 +499,9 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("state"))
-			{
+			if ($this->repeatId !== 0){
+                //Do Nothing, repeats do not yet have states
+            } else if ($this->form->getLabel("state")) {
 				?>
 				<div class="row jevpublished">
 					<div class="span2">

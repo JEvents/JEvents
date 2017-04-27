@@ -74,13 +74,13 @@ var JevStdRequiredFields = {
             // names that start with the correct checkbox pattern
             else if (form.find("[name^='" + checkboxname + "']").length) {
                 form.find("[name^='" + checkboxname + "']").each(function (idx, ckbx) {
-                    matches.push(ckbx);
+                    matches.push(jQuery(ckbx));
                 });
             }
             // find other custom field elements (could be radio boxes so traverse the array)
             else if (form.find("[name='" + noncustomname + "']").length) {
                 form.find("[name='" + noncustomname + "']").each(function (idx, fld) {
-                    matches.push(fld);
+                    matches.push(jQuery(fld));
                 });
                 //matches.push(form.find("[name='" + noncustomname + "']"));
             }

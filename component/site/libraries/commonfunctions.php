@@ -361,6 +361,7 @@ class JEV_CommonFunctions {
 	public static function sendAdminMail( $adminName, $adminEmail, $subject='', $title='', $content='', $day='', $month='', $year='', $start_time='', $end_time='', $author='', $live_site, $modifylink, $viewlink , $event=false, $cc = "") {
 		$config = new JConfig();
 
+
 		if (!$adminEmail) return;
 		if ((strpos($adminEmail,'@example.com') !== false)) return;
 
@@ -444,12 +445,20 @@ class JEV_CommonFunctions {
 			$mail->setSender(array(0 => $params->get('sender_email', $adminEmail), 1 => $params->get('sender_name', $adminName)));
 		}
 
-		if ($params->get('email_replyto', 0) == 1) {
+
+		// attach anonymous creator etc.
+		JPluginHelper::importPlugin('jevents');
+		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher->trigger( 'onDisplayCustomFields', array( &$event) );
+
+		if (!isset($event->authoremail) && $params->get('email_replyto', 0) == 1) {
 			$mail->addReplyTo($adminEmail);
+		} else if (isset($event->authoremail) && $event->authoremail !== '') {
+			$mail->addReplyTo($event->authoremail);
 		}
 
 		if (isset($add_cc) && $add_cc !== "") {
-			$mail->addCC($add_cc);
+			$mail->addCc($add_cc);
 		}
 
 		$mail->addRecipient($recipient);

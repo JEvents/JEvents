@@ -125,6 +125,9 @@ class PlgSystemGwejson extends JPlugin
 		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken()){
 			$token = JSession::getFormToken();;
 			if ($token != $input->get('token', '', 'string')){
+				if ($input->get('json', '', 'raw')){
+					
+				}
 				PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 			}
 		}

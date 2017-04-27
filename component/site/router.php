@@ -387,6 +387,9 @@ function JEventsParseRoute($segments)
 
 	if ($count > 0)
 	{
+		if (is_numeric($segments[0])) {
+			array_unshift($segments, translatetask("icalrepeat.detail"));
+		}
 		// task
 		$task = $segments[0];
                 // note that URI decoding swaps /-/ for :
@@ -557,7 +560,8 @@ function JEventsBuildRouteNew(&$query, $task)
 	$transtask = translatetask($task, $query);
 
 	$params = JComponentHelper::getParams("com_jevents");
-
+	$noeventdetailinurl = $params->get("noeventdetailinurl", 0);
+	
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -853,7 +857,11 @@ function JEventsBuildRouteNew(&$query, $task)
 			break;
 	}
 
-
+	if ($task == "icalrepeat.detail"){
+		if ($noeventdetailinurl) {
+			array_shift($segments);
+		}
+	}
 	return $segments;
 
 }

@@ -2,6 +2,31 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+26-04-2017 Geraint Edwards
+* JEvents 3.4.36 
+* Joomla 3.7.0 bug workaround for calendar popup
+
+25-04-2017 Geraint Edwards
+* JEvents 3.4.35 
+* Joomla 3.7.0 workarounds on assigning parameters
+
+20-04-2017 Geraint Edwards
+* JEvents 3.4.34
+* Latest events module option to show only repeating events
+* Hardening of catid filtering
+* New config option to allow dropping eventdetail from new SEF URLs for event detail
+* Latest events module - option to not show any repeating events
+* Correct confusing translations for years before and after now
+
+24-03-2017 Geraint Edwards
+* Fix for canPublishOwnEvents call
+* Fix for geraint/default theme navigation icons when using relative min/max years
+* Clarify message on top of page when editing an existing event with no repeats.
+
+17-03-2017 Geraint Edwards
+* Fix for save button not appearing
+* Week count in monthly repeatihg event editing now uses ordinals and reserves when counting back from the end of the month
+
 15-03-2017 Tony Partridge
 * Change from Editor to Creator for Save / Apply on new events
 * Imrpoved canPublishOwnEvents() method to return $canPublishOwn value if set and no conditions met.

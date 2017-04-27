@@ -792,3 +792,10 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 /** Fixes issues with some templates. The inline display: block; always overrides this anyhow**/
 
 .jevbootstrap > div.action_dialogJQ, .jevbootstrap div.ical_dialogJQ  {display:none;}
+
+/* Joomla 3.7.0 backend icon fix for poor bootstrap css issues */
+
+.com_jevents [class^="icon-"] {
+    background-image:none;
+    vertical-align:baseline;
+}
