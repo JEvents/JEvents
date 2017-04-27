@@ -8,6 +8,6 @@
 /modules/mod_jevents_cal/tmpl/flatplus
 /modules/mod_jevents_latest/tmpl/flatplus
 /modules/mod_jevents_legend/tmpl/flatplus
-
+/component/media/css/jevcustom.css
 /component/site/views/clean/
 component/site/views/clean

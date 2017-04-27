@@ -72,12 +72,20 @@ class CustomcssModelCustomcss extends JModelForm
 	 */
 	public function &getSource()
 	{
+
 		$app = JFactory::getApplication();
 		$item = new stdClass;
 
+		//Define a check for both locations
+		if (JFile::exists(JEVHelper::CustomCSSFile())) {
+			$new_filePath = JPath::check(JEVHelper::CustomCSSFile());
+		} else {
+			$new_filePath = JPath::check(JEVHelper::CustomCSSFile() . '.new');
+		}
+
 		try
 		{
-			$filePath = JPath::check(JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css');
+			$filePath = $new_filePath;
 		}
 		catch (Exception $e)
 		{
@@ -85,17 +93,9 @@ class CustomcssModelCustomcss extends JModelForm
 			return;
 		}
 
-		if (file_exists($filePath))
-		{
-			$item->extension_id = $this->getState('extension.id');
-			$item->filename = 'jevcustom.css';
-			$item->source = file_get_contents($filePath);
-		}
-		else
-		{
-			$app->enqueueMessage(JText::_('COM_JEVENTS_CUSTOM_CSS_SOURCE_NOT_FOUND'), 'error');
-		}
-
+		//We know the file already exists as we try/catch above. Load it in.
+		$item->filename = 'jevcustom.css';
+		$item->source = file_get_contents($filePath);
 
 		return $item;
 	}
