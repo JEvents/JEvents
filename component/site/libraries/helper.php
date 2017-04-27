@@ -3903,4 +3903,5 @@ SCRIPT;
             unset($menufilters->$key);
         }
 
+
 }
