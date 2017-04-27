@@ -477,7 +477,7 @@ else
 				<?php
 			}
 */
-			if (  $this->form->getLabel("access") ){
+			if ($this->repeatId === 0 && $this->form->getLabel("access") ){
 				?>
 				<div class="row  jevaccess">
 					<?php
@@ -499,8 +499,9 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("state"))
-			{
+			if ($this->repeatId !== 0){
+                //Do Nothing, repeats do not yet have states
+            } else if ($this->form->getLabel("state")) {
 				?>
 				<div class="row jevpublished">
 					<div class="span2">

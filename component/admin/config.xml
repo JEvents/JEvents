@@ -290,7 +290,7 @@
 		</field>		
 
 		<field name="spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>
-		<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
+		<field name="com_showrepeats" type="list" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
 			<option value="-1">USE_GLOBAL</option>
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
