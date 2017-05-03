@@ -298,7 +298,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		$strippedmatch = preg_replace('/(#|:|;)+[^}]*/', '', $matchesarray[0][$i]);
 
-		if (in_array($strippedmatch, $search))
+		if (in_array($strippedmatch, $search, FALSE))
 		{
 			continue;
 		}
@@ -334,7 +334,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			case "{{LINKEND}}":
 			case "{{TITLE_LINK}}":
 				// no need to repeat this for each of the matching 'case's
-				if (!in_array( "{{LINK}}", $search)) {
+				if (!in_array( "{{LINK}}", $search, FALSE)) {
 					// Title link
 					$rowlink = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false);
 					if ($view)
@@ -666,7 +666,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{EDITDIALOG}}":
 				case "{{EDITBUTTON}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{EDITBUTTON}}", $search)) {
+					if (!in_array( "{{EDITBUTTON}}", $search, FALSE)) {
 
 						if ($jevparams->get("showicalicon", 0) && !$jevparams->get("disableicalexport", 0))
 						{
@@ -771,7 +771,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{JEVSTARTED}}":
 				case "{{JEVENDED}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{JEVSTARTED}}", $search)) {
+					if (!in_array( "{{JEVSTARTED}}", $search, FALSE)) {
 
 						$search[] = "{{JEVSTARTED}}";
 
@@ -799,7 +799,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{COUNTDOWN}}":
 				case "{{MULTIENDDATE}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{COUNTDOWN}}", $search)) {
+					if (!in_array( "{{COUNTDOWN}}", $search, FALSE)) {
 
 						if ($template_name == "icalevent.detail_body")
 						{
@@ -1027,14 +1027,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%d") !== false)
 						{
-							$days = intval($timedelta / (60 * 60 * 24));
+							$days = (int) $timedelta / (60 * 60 * 24);
 							$timedelta -= $days * 60 * 60 * 24;
 							$fieldval = str_ireplace("%d", $days, $fieldval);
 							$shownsign = true;
 						}
 						if (stripos($fieldval, "%h") !== false)
 						{
-							$hours = intval($timedelta / (60 * 60));
+							$hours = (int) $timedelta / (60 * 60);
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1044,7 +1044,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%m") !== false)
 						{
-							$mins = intval($timedelta / 60);
+							$hours = (int) $timedelta / (60 * 60);
+							$mins = (int) $timedelta / 60;
 							$timedelta -= $hours * 60;
 							if ($mins)
 								$mins = abs($mins);
@@ -1063,15 +1064,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$fieldval = JText::_("JEV_DURATION_FORMAT");
 						$shownsign = false;
 						// whole days!
-						if (stripos($fieldval, "%wd") !== false)
+                        if (stripos($fieldval, "%wd") !== false)
 						{
-							$days = intval($timedelta / (60 * 60 * 24));
+							$days = (int) $timedelta / (60 * 60 * 24);
 							$timedelta -= $days * 60 * 60 * 24;
 
 							if ($timedelta > 3610)
 							{
 								//if more than 1 hour and 10 seconds over a day then round up the day output
-								$days +=1;
+								++$days;
 							}
 
 							$fieldval = str_ireplace("%d", $days, $fieldval);
@@ -1079,7 +1080,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%d") !== false)
 						{
-							$days = intval($timedelta / (60 * 60 * 24));
+							$days = (int) $timedelta / (60 * 60 * 24);
 							$timedelta -= $days * 60 * 60 * 24;
 							/*
 							  if ($timedelta>3610){
@@ -1092,7 +1093,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%h") !== false)
 						{
-							$hours = intval($timedelta / (60 * 60));
+							$hours = (int) $timedelta / (60 * 60);
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1102,7 +1103,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%k") !== false)
 						{
-							$hours = intval($timedelta / (60 * 60));
+							$hours = (int) $timedelta / (60 * 60);
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1111,7 +1112,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%m") !== false)
 						{
-							$mins = intval($timedelta / 60);
+							$hours = (int) $timedelta / (60 * 60);
+							$mins = (int) $timedelta / 60;
 							$timedelta -= $hours * 60;
 							if ($mins)
 								$mins = abs($mins);
@@ -1156,7 +1158,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                                         case "{{FIRSTREPEATSTART}}":
                                         case "{{JEVAGE}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{FIRSTREPEAT}}", $search)) {
+					if (!in_array( "{{FIRSTREPEAT}}", $search, FALSE)) {
 
 						static $dofirstrepeat;
 						if (!isset($dofirstrepeat))
@@ -1208,7 +1210,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{LASTREPEAT}}":
 				case "{{LASTREPEATEND}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{LASTREPEAT}}", $search)) {
+					if (!in_array( "{{LASTREPEAT}}", $search, FALSE)) {
 
 						static $dolastrepeat;
 						if (!isset($dolastrepeat))
@@ -1279,7 +1281,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{LOCATION_LABEL}}":
 				case "{{LOCATION}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{LOCATION}}", $search)) {
+					if (!in_array( "{{LOCATION}}", $search, FALSE)) {
 
 						if ($event->hasLocation())
 						{
@@ -1305,7 +1307,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				case "{{CONTACT_LABEL}}":
 				case "{{CONTACT}}":
 					// no need to repeat this for each of the matching 'case's
-					if (!in_array( "{{CONTACT}}", $search)) {
+					if (!in_array( "{{CONTACT}}", $search, FALSE)) {
 
 						if ($event->hasContactInfo())
 						{
