@@ -1121,8 +1121,8 @@ class AdminIcaleventController extends JControllerAdmin
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$jinput = JFactory::getApplication()->input;
-		//TODO Find a replacement for the below, standard jinput methods strip the array clean.
-		$array = JRequest::get('request', JREQUEST_ALLOWHTML);
+		$array = $jinput->getArray(array(), null, 'HTML');
+
 
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
