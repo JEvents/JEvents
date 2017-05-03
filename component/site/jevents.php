@@ -89,6 +89,14 @@ if ($com_showrepeats === "-1" || $com_showrepeats === "")
 	$newparams->set('com_showrepeats', $params->get('com_showrepeats'));
 }
 
+// handle global menu item parameter for com_startday
+$com_startday = $newparams->get('com_starday', "");
+if ($com_startday === "-1" || $com_startday === "")
+{
+	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$newparams->set('com_starday', $params->get('com_starday'));
+}
+
 // disable caching for form POSTS
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
