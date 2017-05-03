@@ -1123,7 +1123,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 		$array = $jinput->getArray(array(), null, 'HTML');
 
-
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
 		{
