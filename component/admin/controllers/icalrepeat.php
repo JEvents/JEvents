@@ -510,8 +510,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 		else
 		{
-			$end_time = $jinput->getString("end_time", "15:00");
-			$publishend = $data["publish_down"] . ' ' . $end_time . ':00';
+			if (isset($data["NOENDTIME"]) && $data["NOENDTIME"]){
+				$end_time = '23:59:59';
+			}
+			else {
+				$end_time = $jinput->getString("end_time", "15:00"). ':00';
+			}
+			$publishend = $data["publish_down"] . ' ' . $end_time ;
 		}
 
 		$data["DTEND"] = JevDate::strtotime($publishend);

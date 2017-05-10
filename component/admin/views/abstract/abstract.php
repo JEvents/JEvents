@@ -100,16 +100,6 @@ class JEventsAbstractView extends JViewLegacy
 	}
 
 	/**
-	 * Routine to hide submenu suing CSS since there are no paramaters for doing so without hiding the main menu
-	 *
-	 */
-	function _hideSubmenu()
-	{
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JHTML::stylesheet('hidesubmenu.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
-	}
-
-	/**
 	 * This method creates a standard cpanel button
 	 *
 	 * @param unknown_type $link

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 10-05-2017 Geraint Edwards
+* JEvents 3.4.37
+* For for checkbox and radio box required fields check
+* Fix for no-end time events when editing specific repeats
+
 #### 04-05-2017 Tony Partridge
 * Added ability to select week start day within week view menu item to override the core selection.
 * Code style improvements and deprecated class updates.

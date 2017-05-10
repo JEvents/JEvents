@@ -16,10 +16,13 @@ use Joomla\String\StringHelper;
 
 if (count($filterHTML) > 0)
 {
+	// chosen is already setup within default.php
+	/*
 	if ($params->get("bootstrapchosen", 1))
 	{
 		JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	}
+	 */
 	if ($params->get("bootstrapcss", 1)==2)
 	{
 		JHtmlBootstrap::loadCss();
