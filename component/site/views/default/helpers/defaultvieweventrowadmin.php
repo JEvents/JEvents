@@ -4,6 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultViewEventRowAdmin($view, $row, $manage = false)
 {
 
+    $jinput = JFactory::getApplication()->input;
+    $pub_filter = $jinput->get('published_fv', 0);
 	$popup = false;
 	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
@@ -18,10 +20,10 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	$editLink = $row->editLink(true);
 	$editLink = $popup ? "javascript:jevEditPopup('" . $editLink . "');" : $editLink;
 
-	$modifylink = "";
+	$modifylink = '';
 	if (!$manage && JEVHelper::canEditEvent($row))
 	{
-		$modifylink = '<a href="' . $row->editlink(true) . '" title="' . JText::_('JEV_MODIFY') . '"><b>' . JText::_('JEV_MODIFY') . "</b></a>\n";
+		//$modifylink = '<a href="' . $row->editlink(true) . '" title="' . JText::_('JEV_MODIFY') . '"><b>' . JText::_('JEV_MODIFY') . "</b></a>\n";
 		$modifylink = '<a href="' . $editLink . '" title="' . JText::_('JEV_MODIFY') . '"><b>' . JText::_('JEV_MODIFY') . "</b></a>\n";
 	}
 
@@ -35,11 +37,11 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	{
 		if ($row->published())
 		{
-			$publishlink = '<a href="' . $row->unpublishlink(false) . "&rettask=admin.listevents" . '" title="' . JText::_('UNPUBLISH') . '"><b>' . JText::_('UNPUBLISH') . "</b></a>\n";
+			$publishlink = '<a href="' . $row->unpublishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . JText::_('UNPUBLISH') . '"><b>' . JText::_('UNPUBLISH') . "</b></a>\n";
 		}
 		else
 		{
-			$publishlink = '<a href="' . $row->publishlink(false) . "&rettask=admin.listevents" . '" title="' . JText::_('PUBLISH') . '"><b>' . JText::_('PUBLISH') . "</b></a>\n";
+			$publishlink = '<a href="' . $row->publishlink(false) . "&rettask=admin.listevents&published_fv=" . $pub_filter . '" title="' . JText::_('PUBLISH') . '"><b>' . JText::_('PUBLISH') . "</b></a>\n";
 		}
 	}
 	else
