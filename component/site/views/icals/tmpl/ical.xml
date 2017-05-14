@@ -33,6 +33,7 @@
 			<field name='icalcache' type='text' default="1440" label="JEV_ICALCACHE" description="JEV_ICALCACHE_DESC" />
 			<field name='constrained' type='jevboolean' class="btn-group" default="0" label="JEV_CONSTRAIN_EXPORT_USING_SETTINGS_BELOW" description="JEV_CONSTRAIN_EXPORT_DESC" />
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" showon="constrained:1" />
+                        <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 		
 			<field name="outlook2003icalexport" type="jevboolean" class="btn-group" default="0" label="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003" description="JEV_ADD_SPECIAL_EXPORT_FOR_OUTLOOK_2003_DESC"/>
 			<field name="show_webcal_url" type="jevboolean" class="btn-group" default="0" label="JEV_ICAL_WEBCAL_URL" description="JEV_ICAL_WEBCAL_URL_DESC" />

@@ -95,7 +95,7 @@
 			<option value="0">JEV_FULL_TEXT</option>
 		</field>		
 		
-		<field name="catseparator" type="text" default="|" menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC" difficulty="3"/>
+		<field name="catseparator" type="text" default="," menu="hide" size="2" label="JEV_CATEGORY_SEPARATOR" description="JEV_CATEGORY_SEPARATOR_DESC" difficulty="3"/>
 	
                 <field name="daylist_multifirst" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LIST_MULTIDAY_EVENTS_FIRST_IN_DAY_LIST" description="JEV_LIST_MULTIDAY_EVENTS_FIRST_IN_DAY_LIST_DESC" difficulty="2"/>
 		
@@ -242,7 +242,7 @@
 		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
 		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
 		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>
-                <!-- <field name="permatarget" type="jevmenu" default="" label="JEV_PERMALINK_MENU_ITEM" description="JEV_PERMALINK_MENU_ITEM_TIP" /> //-->
+                <field name="permatarget" type="jevmenu" default="" label="JEV_PERMALINK_MENU_ITEM" description="JEV_PERMALINK_MENU_ITEM_TIP" />
         </fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">
@@ -290,8 +290,7 @@
 		</field>		
 
 		<field name="spacer_cv2" type="jevinfo" default='SETTINGS_RELATED_TO_YEARLY_VIEW'   menu="hide" label="" description="" difficulty="1"/>
-		<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
-			<option value="-1">USE_GLOBAL</option>
+		<field name="com_showrepeats" type="list" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
 		</field>
@@ -342,6 +341,7 @@
 		</field>					
 		<field name="newsef" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_USE_NEW_SEF_URL_SYSTEM" description="JEV_USE_NEW_SEF_URL_SYSTEM_DESC"/>
 		<field name="nocatindetaillink" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS" description="JEV_SUPPRESS_CATEGORY_IN_DETAIL_LINKS_DESC" conditional="newsef" conditions="1"/>
+		<field name="noeventdetailinurl" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS" description="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS_DESC" conditional="newsef" conditions="1"/>
 		<field name="com_blockRobots" type="jevlist" default="1" menu="hide" label="JEV_STOP_ROBOTS" description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
@@ -412,7 +412,12 @@
 		</field>		
 		<field name="modlatest_Days" type="jevtext" default="5" menu="hide" size="3" label="JEV_LEV_DAY_RANGE" description="JEV_LEV_DAY_RANGE_TIP" difficulty="1"  conditional="module_config_from_component" conditions="1"/>
 		<field name="startnow" type="jevboolean" class="btn-group" default="1" label="START_NOW" description="START_NOW_DESC" difficulty="1" conditional="module_config_from_component" conditions="1"/>
-		<field name="modlatest_NoRepeat" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_LEV_REP_EV_ONCE" description="JEV_LEV_REP_EV_ONCE_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>
+                <field name="modlatest_NoRepeat" type="list" default="0" label="JEV_LEV_REP_EV_DISPLAY_OPTIONS" description="JEV_LEV_REP_EV_DISPLAY_OPTIONS_TIP" conditional="modlatest_useLocalParam" conditions="1" >
+                        <option value="0">JEV_SHOW_ALL_REPEATS</option>
+                        <option value="1">JEV_SHOW_ONE_REPEAT</option>
+                        <!--<option value="2">JEV_SHOW_FIRST_REPEAT_ONLY</option>//-->
+                        <option value="3">JEV_SHOW_NO_REPEATS</option>
+                </field>
 		<field name="modlatest_DispYear" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_LEV_DISPLAY_YEAR" description="JEV_LEV_DISPLAY_YEAR_TIP" difficulty="1" conditional="module_config_from_component" conditions="1"/>		
 
 		<field name="modlatest_multiday" type="jevlist" default="0" label="JEV_LATEST_MULTIEVENT_DISPLAY" description="JEV_LATEST_MULTIEVENT_DISPLAY_DESC" difficulty="3"  conditional="module_config_from_component" conditions="1"> 

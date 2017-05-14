@@ -14,8 +14,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 
 class jIcalEventDB extends jEventCal {
+    
 	//var $vevent;
 	var $_icsid=0;
+        
 	// array of jIcalEventRepeat
 	var $_repeats=null;
 

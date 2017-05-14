@@ -33,10 +33,16 @@
 				<option value="bycat">JEVENTS_LIST_CATEGORY_DEFAULT_TITLE</option>
 				<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
 			</field>
-
+			<field name="com_starday" type="jevlist" default="-1" menu="hide" label="JEV_FIRST_DAY" description="">
+				<option value="-1">USE_GLOBAL</option>
+				<option value="0">JEV_SUNDAY_FIRST</option>
+				<option value="1">JEV_MONDAY_FIRST</option>
+				<option value="6">JEV_SATURDAY_FIRST</option>
+			</field>
 			<field name="rollingweeks" type="text" default="1"  size="4" label="JEV_ROLLING_WEEKS_CLUB_ONLY" description="JEV_ROLLING_WEEKS_CLUB_ONLY_DESC"/>
 
 			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+                        <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
 			<field name="extras0" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras1" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />
 			<field name="extras2" type="jevextras" default="" label='ADDITIONAL_CONSTRAINTS'  description='ADDITIONAL_MENU_CONSTRAINTS_FROM_ADDONS'  />

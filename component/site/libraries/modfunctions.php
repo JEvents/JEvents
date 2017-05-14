@@ -135,7 +135,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	
 	if (JString::strlen($catidsin)>0){
 		$catidsin = explode("|",$catidsin);
-		ArrayHelper::toInteger($catidsin);
+		$catidsin = ArrayHelper::toInteger($catidsin);
 	}
 	else {
 		// if no catids from the URL then stick to the module catids

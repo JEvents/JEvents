@@ -53,7 +53,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$db = JFactory::getDBO();
 		$publishedOnly = false;
 		$cid = $jinput->get('cid', array(0),"array");
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
@@ -149,7 +149,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid', array(0));
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
 		else
@@ -510,8 +510,13 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 		else
 		{
-			$end_time = $jinput->getString("end_time", "15:00");
-			$publishend = $data["publish_down"] . ' ' . $end_time . ':00';
+			if (isset($data["NOENDTIME"]) && $data["NOENDTIME"]){
+				$end_time = '23:59:59';
+			}
+			else {
+				$end_time = $jinput->getString("end_time", "15:00"). ':00';
+			}
+			$publishend = $data["publish_down"] . ' ' . $end_time ;
 		}
 
 		$data["DTEND"] = JevDate::strtotime($publishend);
@@ -761,7 +766,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$cid = JRequest::getVar('cid', array(0));
 		if (!is_array($cid))
 			$cid = array(intval($cid));
-			ArrayHelper::toInteger($cid);
+			$cid = ArrayHelper::toInteger($cid);
 
 		$db = JFactory::getDBO();
 		foreach ($cid as $id)
@@ -874,7 +879,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$cid = JRequest::getVar('cid', array(0));
 		if (!is_array($cid))
 			$cid = array(intval($cid));
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		$db = JFactory::getDBO();
 		foreach ($cid as $id)

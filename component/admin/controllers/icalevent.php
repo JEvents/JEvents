@@ -445,7 +445,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		$cid = $jinput->get('cid', array(0), "array");
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
 		else
@@ -1121,8 +1121,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$jinput = JFactory::getApplication()->input;
-		//TODO Find a replacement for the below, standard jinput methods strip the array clean.
-		$array = JRequest::get('request', JREQUEST_ALLOWHTML);
+		$array = $jinput->getArray(array(), null, 'HTML');
 
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
@@ -1237,7 +1236,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 1);
 
 	}
@@ -1247,7 +1246,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalEventPublish($cid, 0);
 	}
 
@@ -1261,7 +1260,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get('cid', array(0), "array");
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
@@ -1319,6 +1318,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	protected function toggleICalEventPublish($cid, $newstate)
 	{
+	    $jinput = JFactory::getApplication()->input;
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -1346,7 +1346,7 @@ class AdminIcaleventController extends JControllerAdmin
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		foreach ($cid as $id)
 		{
 
@@ -1384,6 +1384,7 @@ class AdminIcaleventController extends JControllerAdmin
 		// just incase we don't have jevents plugins registered yet
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
+		$pub_filter = $jinput->get('published_fv', 0);
 
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -1397,7 +1398,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$rettask = JRequest::getString("rettask", "day.listevents");
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( JRoute::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
+			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid&published_fv=$pub_filter", false), JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 			$this->redirect();
 		}
 
@@ -1417,7 +1418,7 @@ class AdminIcaleventController extends JControllerAdmin
 		  }
 		 */
 		$cid = JRequest::getVar('cid', array(0));
-		ArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)

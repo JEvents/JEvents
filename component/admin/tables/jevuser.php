@@ -91,7 +91,7 @@ class TableUser extends JTable
 		$join = array();
 		if (is_array($ids)){
 			if (count($ids)>0){
-				ArrayHelper::toInteger($ids);
+				$ids = ArrayHelper::toInteger($ids);
 				$idstring = implode(",",$ids);
 				$where[] = " tl.id in ($idstring)";
 			}
@@ -184,7 +184,7 @@ class TableUser extends JTable
 
 	public static function getUsersByUserid($userid,$index="id"){
 		if (is_array($userid)){
-			ArrayHelper::toInteger($userid);
+			$userid = ArrayHelper::toInteger($userid);
 			$userids = implode(",",$userid);
 		}
 		else {
@@ -288,14 +288,14 @@ class TableUser extends JTable
 		if (key_exists('categories', $array)) {
 			if($array['categories']=='all' || $array['categories']=='none') $this->categories = $array['categories'];
 			else if (is_array($array['categories'])){
-				ArrayHelper::toInteger($array['categories']);
+				$array['categories'] = ArrayHelper::toInteger($array['categories']);
 				$this->categories = implode("|",$array['categories']);
 			}
 		}
 		if (key_exists('calendars', $array)) {
 			if($array['calendars']=='all' || $array['calendars']=='none') $this->calendars = $array['calendars'];
 			else if (is_array($array['calendars'])){
-				ArrayHelper::toInteger($array['calendars']);
+				$array['calendars'] = ArrayHelper::toInteger($array['calendars']);
 				$this->calendars = implode("|",$array['calendars']);
 			}
 		}

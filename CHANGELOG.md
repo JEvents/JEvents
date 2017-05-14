@@ -2,16 +2,76 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-09-03-2017 Geraint Edwards
+### 10-05-2017 Geraint Edwards
+* JEvents 3.4.37
+* For for checkbox and radio box required fields check
+* Fix for no-end time events when editing specific repeats
+
+#### 04-05-2017 Tony Partridge
+* Added ability to select week start day within week view menu item to override the core selection.
+* Code style improvements and deprecated class updates.
+* Added published_fv to the publish/unpublish links within Manage Events View, this keeps the manage events filter state i.e. all events, published or un-published.
+
+#### 03-05-2017 Tony Partridge
+*Fixed issue with 504 Gateway timeout when saving on some servers, caused but using JRequest, replaced with JInput
+
+####26-04-2017 Geraint Edwards
+* JEvents 3.4.36 
+* Joomla 3.7.0 bug workaround for calendar popup
+
+####25-04-2017 Geraint Edwards
+* JEvents 3.4.35 
+* Joomla 3.7.0 workarounds on assigning parameters
+
+####20-04-2017 Geraint Edwards
+* JEvents 3.4.34
+* Latest events module option to show only repeating events
+* Hardening of catid filtering
+* New config option to allow dropping eventdetail from new SEF URLs for event detail
+* Latest events module - option to not show any repeating events
+* Correct confusing translations for years before and after now
+
+####24-03-2017 Geraint Edwards
+* Fix for canPublishOwnEvents call
+* Fix for geraint/default theme navigation icons when using relative min/max years
+* Clarify message on top of page when editing an existing event with no repeats.
+
+####17-03-2017 Geraint Edwards
+* Fix for save button not appearing
+* Week count in monthly repeating event editing now uses ordinals and reserves when counting back from the end of the month
+
+####16-03-2016 Tony Partridge
+* Tidied up CustomCSS and added new CustomCSS Caller Method
+
+####15-03-2017 Tony Partridge
+* Change from Editor to Creator for Save / Apply on new events
+* Imrpoved canPublishOwnEvents() method to return $canPublishOwn value if set and no conditions met.
+
+####14-03-2017 Tony Partridge
+* Added new Custom CSS View and JForm based form
+
+####14-03-2017 Geraint Edwards
+* JEvents 3.4.31
+* Use Opacity to make unselected fieldsets on edit screen more obviously disabled
+* Switch repeat types if grey boxes are clicked anywhere
+* Correct getter method for undeclared variables
+
+####13-03-2017 Geraint Edwards
+* JEvents 3.4.30
+* Fix for modified column missing in the backend of JEvents and links to translations failing 
+* Add Permalink config option on event detail tab of JEvents config - all JEvents detail links can now be pointed to the same menu item regardless of the source
+* Fix for uid column duplication during upgrades on some times
+
+####09-03-2017 Geraint Edwards
 * JEvents 3.4.30
 * Correct category image URL for sites with multiple categories but not all have images attached
 * Add new JEvents getter plugin to allow plugins to push data into variables in a different way - needed for standard images update 3.4.9
 * Layout customisation tool now inherits category specific layouts
 
-03-03-2017 Tony Partridge
+####03-03-2017 Tony Partridge
 * Added Global option as default for show all repeats option in Menu Items.
 
-02-03-2017 Geraint Edwards
+####02-03-2017 Geraint Edwards
 * Force default time and date fields to be integers (some people had used 8:00pm instead of 20:00)
 * preserve published state when copying and editing event
 * move generation of access list to access field definition - will allow default value to be set in template override now
@@ -20,99 +80,98 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * menu item filters setting parent categories will not pick up events in child categories unless they are specified too
 * Add option for date range view to show date as well as time in list presentation
 
-
-01-03-2017 Tony Partridge
+####01-03-2017 Tony Partridge
 * More robust check if event title is blank
 * Add CATEGORY_ALIAS to layout editor 
 * Support for Joomla 3.7
 
-17-02-2017 Brian Teeman
+####17-02-2017 Brian Teeman
 * Language corrections
 
-16-02-2017 Tony Partridge
+####16-02-2017 Tony Partridge
 * Range views now always have a date column to the left. So tend not to need the date output again. This change is suggested by @BrianTeeman. Any users requiring the date and do so easily with the additional date string.
 
-08-02-2017 Tony Partridge
+####08-02-2017 Tony Partridge
 * Fixes issue where users not authorised to publish events auto-published new events.
 
-03-02-2017 Tony Partridge
+####03-02-2017 Tony Partridge
 * Added strings to .sys.ini for debugged permissions report.
 
-02-02-2017 Geraint Edwards
+####02-02-2017 Geraint Edwards
 * Fix for time offset applied twice when editing event in nonstandard timezone
 * Translation support for edit tabs from custom fields
 * Max year php_max_int constraint for annual repeating events
 * Stop calendar mod direct links to event detail from including tmpl=component
 * latest events process match to support formatting options from plugins
 
-23-01-2017 Geraint Edwards
+####23-01-2017 Geraint Edwards
  * JEvents 3.4.29
 
-22-01-2017 Geraint Edwards
+####22-01-2017 Geraint Edwards
 * Fix for UTF-8 tooltips
 * Fix for install error on creating evaccess index 
 
-12-01-2017 Geraint Edwards
+####12-01-2017 Geraint Edwards
 * JEvents 3.4.27
 * Fix for sites not using TinyMCE (workaround for descriptions wasn't working in 3.4.26)
 * JEvents 3.4.26
 * Fix for reseting date filters in date range view
 
-08-01-2017 Geraint Edwards
+####08-01-2017 Geraint Edwards
 * New config option to show multi-day events first in day list view
 * Trap for memory overflow on sites with 60,000+ event creators
 * Performance gain - no need to check category access in db queries since we already do this in getAccessibleCategories
 * Support for %k in duration in latest events module
 
-07-01-2017 Geraint Edwards
+####07-01-2017 Geraint Edwards
 * Code to handle bad TZID from microsoft imports was affecting descriptions and other fields with colons in them - resolve this.
 
-13-12-2016
+####13-12-2016
 * Make publish own an ACL setting
 * TinyMCE required description workarounds
 
-09-12-2016 - Geraint Edwards
+####09-12-2016 - Geraint Edwards
 * fix for required description field - changes in TinyMCE
 * allow irregular repeats to occur more than once on the same day.
 * allow day list view to use float theme
 
-03-11-2016 - Geraint Edwards
+####03-11-2016 - Geraint Edwards
 * JEvents 3.4.24
 * Fix conditional custom fields showon for event edit fields on first tab
 * Force Itemid in check conflict script  - some routers/SEF addons were dropping this
 * Latest events module default custom format string \n were not being parsed in default value  - replace with <br/>
 
-## 01-11-2016 - Geraint Edwards
+######01-11-2016 - Geraint Edwards
 * Foundation for publish own permissions in ACL - not implemented yet
 * Warning message when RSVP Pro and RSVP are both enabled
 * Enable category images in calendar cell and tool tip layouts
 * Allow gwejson to pick up custom versions of scripts instead of released ones to preserve customisations e.g. use gwesjon_custom_finduser.php to replace gwesjon_finduser.php
 
-## 19-10-2016 - Tony Partridge
+####19-10-2016 - Tony Partridge
 * Added Category Link Raw
 * Added Option to include event detail link in iCal Export, added set default menu item id in Joomla! config under ical export for the time being since it's only used here.
 
-## 14-10-2016 - Geraint Edwards
+####14-10-2016 - Geraint Edwards
 * Add error checks to return to referrer on cancel code
 
-# 14-10-2016 - Tony Partridge
+####14-10-2016 - Tony Partridge
 * Sends user back to previous url on cancel of event editing.
 * Added a more meaningful title to toolbar and browser bar for JEvents cPanel
 
-## 12-10-2016 - Geraint Edwards
+####12-10-2016 - Geraint Edwards
 * Fix for filtermap fields install problem on some servers
 * Comma separated by*day fields need to have spaces stripped during save process
 
-## 09-10-2016 - Geraint Edwards
+####09-10-2016 - Geraint Edwards
 * Make hide author setting apply throughout JEvents
 
-## 07-10-2016 - Geraint Edwards
+####07-10-2016 - Geraint Edwards
 * Jevents 3.4.23
 * Correct install script error 
 * Fix for column selection in list menu item
 * Fix for deleting first repeat of repeats when repeat id = event id
 
-## 06-10-2016 - Geraint Edwards
+####06-10-2016 - Geraint Edwards
 * Allow saving and reloading of filter module data - start of re-working of filter system
 * Make column selection in list view menu item sortable
 * use showon for range view date settings to improve usability of configuration
@@ -120,7 +179,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fix for router where task could appear twice if not translated
 * Make filter choices in module parameters sortable by drag and drop
 
-## 20-08-2016 - Geraint Edwards
+####20-08-2016 - Geraint Edwards
 * Jevents 3.4.20
 * Include fixes from 30-08-2016 in package
 * Fix DB query for SELECT event used in editor plugins etc.
@@ -128,74 +187,74 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Reset category filter when cancelling ical calendar edit
 * Check for duplicate calendar names when creating new ones
 
-## 18-08-2016 - Geraint Edwards
+####18-08-2016 - Geraint Edwards
 * Jevents 3.4.19
 
-## 07-09-2016 - Geraint Edwards
+####07-09-2016 - Geraint Edwards
 * Issue with anonymous event creator name/email not appearing in notification messages.
 
-## 05-09-2016 - Geraint Edwards
+####05-09-2016 - Geraint Edwards
 * New installer plugin to manage installation of club addons
 
-## 31-08-2016 - Tony Partridge
+####31-08-2016 - Tony Partridge
  * Fix on setting limits on lists that were ignoring the max count set in menu items
 
-## 30-08-2016 - Geraint Edwards
+####30-08-2016 - Geraint Edwards
 * Fixed parameter saving for plugins where value is an array
 
-## 25-08-2016 - Tony Partridge
+####25-08-2016 - Tony Partridge
 * Updated defaultloadedtemplate to generate the correct menu item links if the view datamodel contains a menu item for conisitency and custom datacalls.
 
-## 25-08-2016 - Geraint Edwards
+####25-08-2016 - Geraint Edwards
 * Jevents 3.4.18
 * Change to GWEJson plugin to fix issue with RSS feeds for some users in Joomla 3.6.2
 
-## 17-08-2016 - Geraint Edwards
+####17-08-2016 - Geraint Edwards
 * Add message to warn user if they create a self-overlapping event
 * Add max event option for category list view
 
-## 15-08-2016 - Tony Partridge
+####15-08-2016 - Tony Partridge
 * FIXED
 ** Alternative View Search, was falling back to default due to class extends default when it should be alternative 
 
-## 05-08-2016 - Geraint Edwards
+####05-08-2016 - Geraint Edwards
 * JEvents 3.4.17 released
 * Fixed missing $rand in email cloak code changes to compensate for Joomla changes
 * Remove workaround for problematic cloaking code introduced in Joomla 3.6.1 but then removed in 3.6.2
 * Fixed group by issue arising from managed locations that cause some iCal exports to pick up the wrong start date
 
-## 04-08-2016 - Tony Partridge
+####04-08-2016 - Tony Partridge
 * Updated Category Image ALT to use specified ALT within category if it exists else fall back to a translation.
 
-## 03-08-2016 - Geraint Edwards
+####03-08-2016 - Geraint Edwards
 * Add config option for event list view to output events as a CSV File
 * 
-## 02-08-2016 - Tony Partridge 
+####02-08-2016 - Tony Partridge 
 * Fixed Club Plugins loading in JEvents EXT Layout
 * Removed unused variables. 
 * 
-## 27-07-2016 - Geraint Edwards
+####27-07-2016 - Geraint Edwards
 * JEvents 3.4.16 release
 * Fix for backend filtering of events by creator from 3.4.15
 * workaround for cloaking change in Joomla 3.6.1
 * upgrade isEventEditor method to take account of users who can only edit in specific categories
 
-## 10-08-2016 - Tony Partridge
+####10-08-2016 - Tony Partridge
 # Added
 * CSV Export Filter for the 'List of Events' menu item. 
 
-## 25-07-2016 - Geraint Edwards
+####25-07-2016 - Geraint Edwards
 * JEvents 3.4.15 Release
 * Missing $rand in email cloak code
 * re-instate filter of events created by unlogged in users in backend list of events
 
-## 22-07-2016 - Geraint Edwards
+####22-07-2016 - Geraint Edwards
 * isEventPublisher, isEventCreator now check category permissions for enhanced ACL support
 * Category Admin users can be chosen from users able to publish event within that category
 * manage events list is visible to users who can publish events in addition to JEvents admin users 
 * Fix for pagination in list events view where no translated tasks are available.
 
-## 18-07-2016 - Geraint Edwards
+####18-07-2016 - Geraint Edwards
 * JEvents 3.4.14 Release
 * Add latest events option to show most recently modified events
 * More control options for notification messages for new events
@@ -207,23 +266,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Add configuration options for icons to show on iCal export menu item
 * Better scollable typeahead results
 
-## 11-07-2016 - Tony Partridge
+####11-07-2016 - Tony Partridge
 * Removed some version compares since no longer needed. 
 * Replaced some intval() with (int)
 * Fixed Approval Email subject, if editing or creating events it should differ. 
 
-## 29-06-2016 - Tony Partridge
+####29-06-2016 - Tony Partridge
 * Reverted StringHelper back to JString for Joomla! 3.4 Support
 
-## 21-06-2012 - Geraint Edwards
+####21-06-2012 - Geraint Edwards
 Calendar popovers appear after 150milisecs to avoid lots appearing at once
 add chevrons and info icons to plugin configuration
 
-## 17-06-2016 - Geraint Edwards
+####17-06-2016 - Geraint Edwards
 * Fix duplicated output in flat theme date range view.
 * Let category link in latest events module respect target menu item is using ${CATEGORYLNK}
 
-## 14-06-2016 - Geraint Edwards
+####14-06-2016 - Geraint Edwards
 * Enable configuration of all JEvents plugins via the main JEvents config/params page
 * Allow filtering of all published JEvents layouts i.e. without need to check all the categories in turn
 * Fix for jevFilter constructor names
@@ -232,14 +291,14 @@ add chevrons and info icons to plugin configuration
 * Installer message when updating using Joomla updater was not being shown
 * SMore flexibility on countdown output in latest events module
 
-## 13-06-2016 - Tony Partridge
+####13-06-2016 - Tony Partridge
 * Updated the google export to support http and https replacing to webcal://, fixes invalid email address issue when adding to google calendar.
 
-## 08-06-2016 - Tony Partridge
+####08-06-2016 - Tony Partridge
 * Updated constructor classes for PHP7 to avoid deprecated notices.
 * Replaced some old intval() usage with (int) since we are using whole numbers in the values, this is also more efficient.
 
-## 07-06-2016 - Tony Partridge
+####07-06-2016 - Tony Partridge
 * Migrated from deprecated JApplication::stringURLSafe to JApplicationHelper::stringURLSafe
 * Fixed Next and Previous repeat navigation in pop-ups. Previously the whole template was being loading within a modal when click next or previous repeat.
 * Updated hardcoded english for iCal Repeat Deleted and iCal Repeats Deleted.
@@ -253,20 +312,20 @@ add chevrons and info icons to plugin configuration
 * Migrated from deprecated JArrayHelper with ArrayHelper
 * Set xhtml to false on JRoute on the Link within the default Later Events View to avoid failing urls.
 
-## 06-05-2016 - Geraint Edwards
+####06-05-2016 - Geraint Edwards
 * Fix for unspecified sender address in new admin email config setting
 
-## 04-05-2016 - Tony Partridge
+####04-05-2016 - Tony Partridge
 * Updated edit page getEditor to JEditor
 * Added Float Block custom layout template codes
 * Added Float Theme Language Strings
 
-## 02-05-2016 - Tony Partridge
+####02-05-2016 - Tony Partridge
 * Added {{EVID}} Custom layout support
 * Added configurable options for who email is sent from
 * Removed stray debug messages
 
-## 20-04-2016 - Tony Partridge
+####20-04-2016 - Tony Partridge
 * Added in sender configurable parameters within: Configuration -> Event Editing
 * Updated constructor classes to fix PHP7 Deprecation messages.
 * Commented out var_dump commands..

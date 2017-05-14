@@ -965,7 +965,7 @@ class jEventCal {
 			if (!is_array($catids)){
 				$catids = array($catids);
 			}
-			ArrayHelper::toInteger($catids);
+			$catids = ArrayHelper::toInteger($catids);
 			$this->_catidsarray= $catids;
 			return $catids;
 		}
@@ -973,10 +973,23 @@ class jEventCal {
 	}
 	
 	function __get($field) {
-		$field = "_".$field;
-		if (isset($this->$field)) return $this->$field;
+		$underscorefield = "_".$field;
+		if (isset($this->$underscorefield)) return $this->$underscorefield;
 		else {
-			return false;
+                    if (strpos($field, "_")===0){
+                        ob_start();
+                        $name = substr($field,1);
+                        $dispatcher	= JEventDispatcher::getInstance();
+                        $available = false;
+                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );
+                        $value = ob_get_clean();
+                        if ($available){
+                            return $value;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
 		}		
 	}
 
