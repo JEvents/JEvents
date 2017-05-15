@@ -2,7 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### 10-05-2017 Geraint Edwards
+#### 15-05-2017 Tony Partridge
+ * JEvents 3.4.39
+ * W3C Validation fix in ext latest events module (Removed inline tags)
+ * Added version compare to filtering method onSave.
+ * Fixed {DURATION} output which broke in 3.4.38 by Tony's (int) conversion.
+ 
+#### 11-05-2017 Tony Partridge
+* JEvents 3.4.38 
+* Fixed issue with JInputFilter saving on pre J3.7.1
+
+#### 10-05-2017 Geraint Edwards
 * JEvents 3.4.37
 * For for checkbox and radio box required fields check
 * Fix for no-end time events when editing specific repeats

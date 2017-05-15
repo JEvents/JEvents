@@ -1120,10 +1120,11 @@ class AdminIcaleventController extends JControllerAdmin
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 		$jinput = JFactory::getApplication()->input;
+		$array  = $jinput->getArray(array(), null, 'RAW');
 
 		if (version_compare(JVERSION, '3.7.1', '>='))
-		{
-			$array  = $jinput->getArray(array(), null, 'RAW');
+        {
+
 			$filter = JFilterInput::getInstance(null, null, 1, 1);
 
 			//Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
@@ -1156,9 +1157,7 @@ class AdminIcaleventController extends JControllerAdmin
 					}
 				}
 			}
-		} else {
-			$array  = $jinput->getArray(array(), null, 'RAW');
-        }
+		}
 
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
