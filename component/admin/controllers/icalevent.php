@@ -1121,7 +1121,31 @@ class AdminIcaleventController extends JControllerAdmin
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$jinput = JFactory::getApplication()->input;
-		$array = $jinput->getArray(array(), null, 'HTML');
+		$array = $jinput->getArray(array(), null, 'RAW');
+//		$filter = JevJFilterInput::getInstance(null, null, 1, 1);
+
+		//Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
+        //Then filter on through with JFilterInput to HTML
+
+//		foreach ($array as $key => $row) {
+//		    //Single row check
+//            if(!is_array($row)) {
+//                $array[$key] = $filter->clean($row, 'HTML');
+//            } else {
+//                //1 Deep row check
+//                foreach ($array[$key] as $key1 => $sub_row) {
+//                    //2 Deep row check
+//                    if(!is_array($sub_row))
+//                    {
+//	                    $array[$key][$key1] = $filter->clean($sub_row, 'HTML');
+//                    } else {
+//                        foreach($sub_row as $key2 =>$sub_sub_row) {
+//	                        $array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
