@@ -402,14 +402,6 @@ class JEV_CommonFunctions {
 		$messagetemplate = str_replace("{EDITLINK}", $modifylink,$messagetemplate);
 		$messagetemplate = str_replace("{MANAGEEVENTS}", $adminLink,$messagetemplate);
 
-		//Leave old replacements in place for now, and now run through default loadedfromtemplate
-		if ($event)
-		{
-			include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
-			ob_start();
-			DefaultLoadedFromTemplate(false, false, $event, 0, $messagetemplate);
-			$messagetemplate = ob_get_clean();
-		}
 		// mail function
 		// JEvents category admin only or both get notifications
 		if ($params->get("com_notifyboth",0)==0 || $params->get("com_notifyboth",0)==1){
@@ -472,11 +464,15 @@ class JEV_CommonFunctions {
 		$mail->addRecipient($recipient);
 
 
-		/**
-		 *
-		 * TODO - pass message through layout template processor
-		 *
-		 */
+		//Leave old replacements in place for now, and now run through default loadedfromtemplate
+		// if there is an event!
+		if ($event)
+		{
+			include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
+			ob_start();
+			DefaultLoadedFromTemplate(false, false, $event, 0, $messagetemplate);
+			$messagetemplate = ob_get_clean();
+		}
 
 		$mail->setSubject($subject);
 		$mail->setBody($messagetemplate);
