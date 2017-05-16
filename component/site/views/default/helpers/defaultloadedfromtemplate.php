@@ -1027,14 +1027,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%d") !== false)
 						{
-							$days = (int) $timedelta / (60 * 60 * 24);
+							$days = intval($timedelta / (60 * 60 * 24));
 							$timedelta -= $days * 60 * 60 * 24;
 							$fieldval = str_ireplace("%d", $days, $fieldval);
 							$shownsign = true;
 						}
 						if (stripos($fieldval, "%h") !== false)
 						{
-							$hours = (int) $timedelta / (60 * 60);
+							$hours = intval($timedelta / (60 * 60));
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1044,8 +1044,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%m") !== false)
 						{
-							$hours = (int) $timedelta / (60 * 60);
-							$mins = (int) $timedelta / 60;
+							$hours = intval($timedelta / (60 * 60));
+							$mins = intval($timedelta / 60);
 							$timedelta -= $hours * 60;
 							if ($mins)
 								$mins = abs($mins);
@@ -1066,7 +1066,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						// whole days!
                         if (stripos($fieldval, "%wd") !== false)
 						{
-							$days = (int) $timedelta / (60 * 60 * 24);
+							$days = intval($timedelta / (60 * 60 * 24));
 							$timedelta -= $days * 60 * 60 * 24;
 
 							if ($timedelta > 3610)
@@ -1080,7 +1080,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%d") !== false)
 						{
-							$days = (int) $timedelta / (60 * 60 * 24);
+							$days = intval($timedelta / (60 * 60 * 24));
 							$timedelta -= $days * 60 * 60 * 24;
 							/*
 							  if ($timedelta>3610){
@@ -1093,7 +1093,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%h") !== false)
 						{
-							$hours = (int) $timedelta / (60 * 60);
+							$hours = intval($timedelta / (60 * 60));
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1103,7 +1103,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%k") !== false)
 						{
-							$hours = (int) $timedelta / (60 * 60);
+							$hours = intval($timedelta / (60 * 60));
 							$timedelta -= $hours * 60 * 60;
 							if ($shownsign)
 								$hours = abs($hours);
@@ -1112,8 +1112,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						}
 						if (stripos($fieldval, "%m") !== false)
 						{
-							$hours = (int) $timedelta / (60 * 60);
-							$mins = (int) $timedelta / 60;
+							$hours = intval($timedelta / (60 * 60));
+							$mins = intval($timedelta / 60);
 							$timedelta -= $hours * 60;
 							if ($mins)
 								$mins = abs($mins);
