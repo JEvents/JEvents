@@ -124,6 +124,13 @@ class JEventsDBModel
                         if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0 && !$this->cfg->get("include_subcats", 1)) {
                             $where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
                         }
+			else {
+				$reg =  JFactory::getConfig();
+				$modparams = $reg->get("jev.modparams", false);
+				if ($modparams && isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0 && !$modparams->get("include_subcats", 1)) {
+					$where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
+				}
+			}
                         
 			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$jevtask = JRequest::getString("jevtask");
