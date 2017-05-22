@@ -117,7 +117,7 @@
 }
 .mod_events_latest_table {
 	width: 100%;
-	text-align: center;
+	margin: auto auto;
 	border: 0;
 }
 .mod_events_latest_table tr {
