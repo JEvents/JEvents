@@ -320,7 +320,7 @@ class JEventsDBModel
 		$rows = array();
 		$skipJEvents=false;
 		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('fetchListRecentIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptionsZ));
+		$dispatcher->trigger('fetchListRecentIcalEvents', array(&$skipJEvents, &$rows, $startdate, $enddate, $limit , $repeatdisplayoptions));
 		if ($skipJEvents) {
 			return $rows;
 		}
@@ -2956,7 +2956,7 @@ select @@sql_mode;
 		}
 		else
 		{
-			$query = "SELECT ev.*, rpt.*, rr.*, det.*, ev.state as published $extrafields"
+			$query = "SELECT ev.*, rpt.*, rr.*, det.*, ev.state as published, ev.created as created $extrafields"
 					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
 					. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
