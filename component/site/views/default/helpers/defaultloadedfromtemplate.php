@@ -1108,6 +1108,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					    $timedelta = $row->getUnixStartTime() - JevDate::mktime();
 					    $eventPassed = !($timedelta >= 0);
 					    $shownsign = false;
+					    $fieldval = 'past';
 					    if (stripos($fieldval, "%nopast") !== false)
 					    {
 						    if (!$eventPassed)
