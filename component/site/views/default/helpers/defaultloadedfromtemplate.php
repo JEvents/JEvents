@@ -841,6 +841,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			    case "{{ISOEND}}":
 			    case "{{DURATION}}":
 			    case "{{COUNTDOWN}}":
+			    case "{{PAST_OR_FUTURE}}":
 			    case "{{MULTIENDDATE}}":
 				    // no need to repeat this for each of the matching 'case's
 				    if (!in_array("{{COUNTDOWN}}", $search, FALSE))
@@ -1098,6 +1099,25 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							    $mins = abs($mins);
 						    $mins = sprintf("%02d", $mins);
 						    $fieldval = str_ireplace("%m", $mins, $fieldval);
+					    }
+					    $replace[] = $fieldval;
+					    $blank[] = "";
+
+
+					    $search[] = "{{PAST_OR_FUTURE}}";
+					    $timedelta = $row->getUnixStartTime() - JevDate::mktime();
+					    $eventPassed = !($timedelta >= 0);
+					    $shownsign = false;
+					    if (stripos($fieldval, "%nopast") !== false)
+					    {
+						    if (!$eventPassed)
+						    {
+							    $fieldval = 'future';
+						    }
+						    else
+						    {
+							    $fieldval = 'past';
+						    }
 					    }
 					    $replace[] = $fieldval;
 					    $blank[] = "";
