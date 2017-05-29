@@ -13,7 +13,10 @@
 	
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params">
-
+		<fieldset name="request"
+				  addfieldpath="/administrator/components/com_jevents/fields/">
+			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
+		</fieldset>
 		<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/" >
 
 			<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
@@ -35,8 +38,7 @@
 				<option value="search">JEVENTS_SEARCH_DEFAULT_TITLE</option>
 			</field>
 
-			<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-                        <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
+			<field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />
 			<!--
 			<field name="catid0" type="jevcategory"  default="0" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORY_DEFAULT_DESC" />
 			<field name="catid1" type="jevcategory" default="0" extension="com_jevents" label="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_LABEL" description="COM_JEVENTS_ADDITIONAL_CATEGORY_DEFAULT_DESC" />
