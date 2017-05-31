@@ -464,11 +464,15 @@ class JEV_CommonFunctions {
 		$mail->addRecipient($recipient);
 
 
-		/**
-		 *
-		 * TODO - pass message through layout template processor
-		 *
-		 */
+		//Leave old replacements in place for now, and now run through default loadedfromtemplate
+		// if there is an event!
+		if ($event)
+		{
+			include_once(JEV_PATH . "/views/default/helpers/defaultloadedfromtemplate.php");
+			ob_start();
+			DefaultLoadedFromTemplate(false, false, $event, 0, $messagetemplate);
+			$messagetemplate = ob_get_clean();
+		}
 
 		$mail->setSubject($subject);
 		$mail->setBody($messagetemplate);
