@@ -1108,19 +1108,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					    $timedelta = $row->getUnixStartTime() - JevDate::mktime();
 					    $eventPassed = !($timedelta >= 0);
 					    $shownsign = false;
-					    $fieldval = 'past';
-					    if (stripos($fieldval, "%nopast") !== false)
+					    if (!$eventPassed)
 					    {
-						    if (!$eventPassed)
-						    {
-							    $fieldval = 'future';
-						    }
-						    else
-						    {
-							    $fieldval = 'past';
-						    }
+						    $replace[] =  'future';
 					    }
-					    $replace[] = $fieldval;
+					    else
+					    {
+						    $replace[] =  'past';
+					    }
 					    $blank[] = "";
 
 					    $search[] = "{{DURATION}}";
