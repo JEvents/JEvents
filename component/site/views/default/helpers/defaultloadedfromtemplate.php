@@ -1103,7 +1103,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					    $blank[] = "";
 
 					    $search[] = "{{DURATION}}";
-					    $timedelta = $row->noendtime() ? "" : $row->getUnixEndTime() - $row->getUnixStartTime();
+					    $timedelta = $row->noendtime() ? 0 : $row->getUnixEndTime() - $row->getUnixStartTime();
 					    if ($row->alldayevent())
 					    {
 						    $timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
@@ -1661,7 +1661,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	    // replace [[ with { to that other content plugins can work ok - but not for calendar cell or tooltip since we use [[ there already!
 	    if ($template_name != "month.calendar_cell" && $template_name != "month.calendar_tip")
 	    {
-		    $template_value = str_replace(array("[[", "]]"), array("{", "}"), $template_value);
+			// making sure we don't trip over closing CDATA tags which look like ]]>
+		    $template_value = str_replace(array("[[", "]]>", "]]", "]&*$^]"), array("{", "]&*$^]", "}", "]]>"), $template_value);
 	    }
 
 	    //We add new line characters again to avoid being marked as SPAM when using tempalte in emails
@@ -2014,8 +2015,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    $opts = array('ellipsis' => $opts);
 			    $opts = array_merge(static::$default_options, $opts);
 			    // wrap the html in case it consists of adjacent nodes like <p>foo</p><p>bar</p>
-			    $html = "<div>" . static::utf8_for_xml($html) . "</div>";
+			    //$html = "<div>" . static::utf8_for_xml($html) . "</div>";
 
+                            // see http://php.net/manual/en/domdocument.loadhtml.php
+                            $html = '<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body><div>'.$html.'</div></body>';
 			    $root_node = null;
 
 			    // Parse using HTML5Lib if it's available.

@@ -134,7 +134,7 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	if ($ignorecatfilter) $catidsin = "";
 	
 	if (JString::strlen($catidsin)>0){
-		$catidsin = explode("|",$catidsin);
+		$catidsin = explode($separator,$catidsin);
 		$catidsin = ArrayHelper::toInteger($catidsin);
 	}
 	else {

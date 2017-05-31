@@ -1252,6 +1252,19 @@ SCRIPT;
 				$dayEvent->text = $dayEvent->contact_info();
 				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
 
+				if (!empty($dateParm))
+				{
+					$parts = explode("|", $dateParm);
+					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->text)) > intval($parts[0]))
+					{
+						$dayEvent->text = JString::substr(strip_tags($dayEvent->text), 0, intval($parts[0]));
+						if (count($parts) > 1)
+						{
+							$dayEvent->text .= $parts[1];
+						}
+					}
+				}
+				
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
