@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### 01-07-2017 Tony Partridge
 * Updated Changelog
 * Added new default option for no specific endtime.
+* Disable system messages for iCal Reloading when a guest.
 
 #### 25-06-2016 Tony Partridge
 * Added new custom layout tag: {{{Past or Future:PAST_OR_FUTURE}} to output text past or future depending if the event is in the past or future. Handy for CSS Classing.

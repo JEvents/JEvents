@@ -223,6 +223,9 @@ class AdminIcalsController extends JControllerForm {
 			JRequest::checkToken() or jexit( 'Invalid Token' );
 		}
 
+		$user = JFactory::getUser();
+		$guest = $user->get('guest');
+
 		$authorised = false;
 		
 		if (JFactory::getApplication()->isAdmin()){
@@ -248,7 +251,7 @@ class AdminIcalsController extends JControllerForm {
 				}
 			}
 		}
-		$user = JFactory::getUser();				
+
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			$this->redirect();
@@ -369,7 +372,7 @@ class AdminIcalsController extends JControllerForm {
 			$icsFileid = $icsFile->store();
 			$message = JText::_( 'ICS_FILE_IMPORTED' );
 		}
-		if (JRequest::getCmd("task") != "icals.reloadall")
+		if (JRequest::getCmd("task") !== "icals.reloadall" && $guest !== 1)
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", $message);
 			$this->redirect();
@@ -381,6 +384,7 @@ class AdminIcalsController extends JControllerForm {
 	 *
 	 */
 	function savedetails(){
+		$user = JFactory::getUser();
 		$authorised = false;
 
 		// Check for request forgeries
@@ -393,7 +397,6 @@ class AdminIcalsController extends JControllerForm {
 			$redirect_task="month.calendar";
 		}
 
-		$user = JFactory::getUser();
 		if (!($authorised || JEVHelper::isAdminUser($user))) {
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task", "Not Authorised - must be super admin" );
 			$this->redirect();
