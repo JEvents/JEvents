@@ -227,6 +227,10 @@ RAWTEXT;
 	 * @param int $catid - forced category for the underlying events
 	 */
 	public function store($catid=false , $cleanup=true , $flush =true) {
+
+		$user = JFactory::getUser();
+		$guest = $user->get('guest');
+
 		@ini_set("memory_limit","256M");
 		@ini_set("max_execution_time","300");
 		
@@ -494,13 +498,18 @@ RAWTEXT;
 				$db->execute();
 
 				$ex_count = count($existingevents);
-				JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+				if($guest === 1)
+				{
+					JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+				}
 			}
 		}
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
-		
-		JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
+		if($guest === 1)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
+		}
 	}
 
 	// find if icsFile already imported
