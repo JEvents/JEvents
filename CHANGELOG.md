@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 01-07-2017 Tony Partridge
+* Updated Changelog
+* Added new default option for no specific endtime.
+* Disable system messages for iCal Reloading when a guest.
+
+#### 25-06-2016 Tony Partridge
+* Added new custom layout tag: {{{Past or Future:PAST_OR_FUTURE}} to output text past or future depending if the event is in the past or future. Handy for CSS Classing.
+
+#### 21-06-2017 Tony Partridge
+* Added CREATED: to the iCal export events following iCal Specification.
+
+#### 20-06-2017 Tony Partridge
+* Update ext modstyle.css to stop centralising latest events caused by  my change on the 15th.
+
+#### 16-06-2017 Tony Partridge
+* Set admin emails to run through the defaultloadedtemplate.php parser. This means tags used in the Event Details custom layout can now be used within the admin emails.
+
 #### 15-05-2017 Tony Partridge
  * JEvents 3.4.39
  * W3C Validation fix in ext latest events module (Removed inline tags)

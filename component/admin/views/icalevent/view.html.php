@@ -72,7 +72,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$state = (int) JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3);
 		$options = array();
-					$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
+		$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
 		$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
 		$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
 		$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
@@ -116,6 +116,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	public function edit($tpl = null)
 	{
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
 		$document = JFactory::getDocument();
 		//Define to keep editor happy that it is defined.
 		$editStrings = "";
@@ -124,14 +126,16 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-                  JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+        JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		if ($this->row->title() <= "")
+		if ($this->row->title() === '')
 		{
 			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
-
 			// Set toolbar items for the page
 			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+
+			// Set default noendtime
+			$this->row->noendtime((int) $params->get('default_noendtime', '0'));
 		}
 		else
 		{
