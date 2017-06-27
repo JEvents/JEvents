@@ -150,26 +150,43 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			if ($this->editCopy)
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+
+				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				{
+					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+				}
 				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 				$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 			}
 			else
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				{
+					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+				}
 				$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
-				$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
+				$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
+
 			}
 		}
 		else
 		{
-			if (JEVHelper::isEventEditor())
+			$canEditOwn = false;
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			if (!$params->get("authorisedonly", 0))
 			{
-				JToolBarHelper::apply('icalevent.apply', "JEV_SAVE");
-				JToolBarHelper::save('icalevent.save');
-				JToolBarHelper::save2new('icalevent.savenew', "JEV_SAVE_NEW");
+				$juser = JFactory::getUser();
+				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
+			if (JEVHelper::isEventEditor() || $canEditOwn)
+			{
+				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
+			}
+			$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 		}
+
+
 
 		JToolBarHelper::cancel('icalevent.list');
 		//JToolBarHelper::help( 'screen.icalevent.edit', true);
