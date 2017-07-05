@@ -39,7 +39,7 @@ class ICalEventController extends AdminIcaleventController   {
 		$jinput = JFactory::getApplication()->input;
 
 		if ($jinput->getInt("login", 0) && $user->id==0)
-		{			
+		{
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
 			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
@@ -49,8 +49,8 @@ class ICalEventController extends AdminIcaleventController   {
 			$this->redirect();
 			return;
 		}
-				
-		$evid =$jinput->getInt("rp_id", 0);
+
+		$evid = $jinput->getInt("rp_id", 0);
 		if ($evid==0){
 			$evid = $jinput->getInt("evid", 0);
 			// if cancelling from save of copy and edit use the old event id
@@ -65,7 +65,7 @@ class ICalEventController extends AdminIcaleventController   {
 			$repeat = $event->getNextRepeat();
 			if ($repeat){
 				$evid=$repeat->rp_id();
-			}			
+			}
 		}
 		$pop = intval($jinput->getInt('pop', 0 ));
 		$uid = urldecode(($jinput->getString('uid', "")));
@@ -80,14 +80,14 @@ class ICalEventController extends AdminIcaleventController   {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		
+
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = $this->getView($view,$viewType, $theme."View", 
-			array( 'base_path'=>$this->_basePath, 
+		$this->view = $this->getView($view,$viewType, $theme."View",
+			array( 'base_path'=>$this->_basePath,
 				"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
 				"name"=>$theme.'/'.$view));
 
@@ -103,7 +103,7 @@ class ICalEventController extends AdminIcaleventController   {
 		$this->view->assign("evid",$evid);
 		$this->view->assign("jevtype","icaldb");
 		$this->view->assign("uid",$uid);
-		
+
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
@@ -116,12 +116,19 @@ class ICalEventController extends AdminIcaleventController   {
 			$cache->get($this->view, 'display');
 		}
 	}
-	
+
 	function edit($key = NULL, $urlVar = NULL){
+
+		$jinput = JFactory::getApplication()->input;
+		$ev_id  = $jinput->getInt("rp_id", 0);
+		if ($ev_id > 0) {
+			$is_event_editor = JEVHelper::isEventEditor();
+		} else {
+			$is_event_editor = JEVHelper::isEventCreator();
+		}
 		// Must be at least an event creator to edit or create events
-		$is_event_editor = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
-		if (!$is_event_editor || ($user->id==0 && JRequest::getInt("evid",0)>0)){
+		if (!$is_event_editor || ($user->id == 0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
@@ -135,13 +142,13 @@ class ICalEventController extends AdminIcaleventController   {
 			}
 			return;
 		}
-				
+
 		// attach data model component catids at this point so it will affect the choice of calendars too
 		$this->dataModel->setupComponentCatids();
 
 		parent::edit();
 	}
-		
+
 	function editcopy(){
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
@@ -153,7 +160,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// attach data model component catids at this point so it will affect the choice of calendars too
 		$this->dataModel->setupComponentCatids();
-		
+
 		parent::edit();
 	}
 
@@ -167,7 +174,7 @@ class ICalEventController extends AdminIcaleventController   {
 		}
 		parent::save();
 	}
-	
+
 	function apply(){
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
@@ -193,7 +200,7 @@ class ICalEventController extends AdminIcaleventController   {
 		$this->redirect();
 
 	}
-	
-		
+
+
 }
 
