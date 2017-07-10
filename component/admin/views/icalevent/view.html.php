@@ -372,6 +372,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	}
 
+	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true) {
+		$bar = JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
+	}
+
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
 		$bar =  JToolBar::getInstance('toolbar');
