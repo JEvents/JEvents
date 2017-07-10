@@ -36,7 +36,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document->setTitle(JText::_('JEVENTS_CORE_CPANEL'));
 
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
+		JToolbarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
@@ -930,7 +930,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		JToolbarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
