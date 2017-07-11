@@ -1710,6 +1710,10 @@ class JEVHelper
                         if ($params->get("category_allow_deny",1)==0){
                             $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
                             $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
                             $catids = array_intersect($catids, $okcats);
                             return count($catids)>0;
                         }
@@ -1719,6 +1723,10 @@ class JEVHelper
                             {
                                 $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
                                 $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
                                 $catids = array_intersect($catids, $okcats);
                                 return count($catids)>0;
                             }

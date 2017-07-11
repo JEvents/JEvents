@@ -272,7 +272,8 @@ class DefaultModCalView
 			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
 			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
-
+			
+			$cal_day= date ( "d", $requestTime );
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
@@ -301,8 +302,7 @@ class DefaultModCalView
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
-		//$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
-		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
+		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
 
 		$content    = '';
 

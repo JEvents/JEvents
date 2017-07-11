@@ -527,7 +527,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			}
 			$limit = $limit * 2;
 		}
-		if (!is_null($prior))
+		if (isset($prior) && !is_null($prior))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->_rp_id . '&Itemid=' . $Itemid
 					. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplicationHelper::stringURLSafe($prior->_title);
