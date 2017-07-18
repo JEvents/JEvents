@@ -34,7 +34,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
+		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
@@ -110,11 +110,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		}
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
+		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
 
-		JToolBarHelper::apply("defaults.apply");
-		JToolBarHelper::save("defaults.save");
-		JToolBarHelper::cancel("defaults.cancel");
+		JToolbarHelper::apply("defaults.apply");
+		JToolbarHelper::save("defaults.save");
+		JToolbarHelper::cancel("defaults.cancel");
 
 		JEventsHelper::addSubmenu();
 
