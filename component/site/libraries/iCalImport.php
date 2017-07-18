@@ -734,7 +734,7 @@ class iCalImport
 		// Lets check if a file for custom timezones exists
 		if (JFile::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php')) {
 			//Load the custom file once
-			include_once('ical_custom_timezones.php');
+			include('ical_custom_timezones.php');
 		}
 
 		$wtzid = str_replace('"','',$wtzid);
