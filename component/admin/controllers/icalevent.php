@@ -1130,7 +1130,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 		$array  = $jinput->getArray(array(), null, 'RAW');
 
-		if (version_compare(JVERSION, '3.7.1', '>='))
+		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
         {
 
 			$filter = JFilterInput::getInstance(null, null, 1, 1);
