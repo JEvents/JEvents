@@ -26,11 +26,11 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(JText::_('ICAL_EVENT_REPEATS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
+		JToolbarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
 
-		JToolBarHelper::editList('icalrepeat.edit');
-		JToolBarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
-		JToolBarHelper::cancel('icalevent.list');
+		JToolbarHelper::editList('icalrepeat.edit');
+		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
+		JToolbarHelper::cancel('icalevent.list');
 				
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		JEventsHelper::addSubmenu();
@@ -58,16 +58,16 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(JText::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
+		JToolbarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
 
-		JToolBarHelper::apply('icalrepeat.apply', "JEV_SAVE");
-		JToolBarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		// We will need this when we offer to change one or more repeats on save!
 		//$this->addSaveToolBarButton();
 
-		JToolBarHelper::cancel('icalrepeat.list');
-		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);
+		JToolbarHelper::cancel('icalrepeat.list');
+		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
