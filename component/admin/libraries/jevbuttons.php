@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevbuttons.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,8 +13,11 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('joomla.html.toolbar.button');
-	
-class JButtonJev extends JButton
+jimport('cms.toolbar.button');
+
+use Joomla\String\StringHelper;
+
+class JButtonJev extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -50,7 +53,7 @@ class JButtonJev extends JButton
 	{
 		return $this->_parent->getName().'-'.$icon;
 	}
-	
+
 	/**
 	 * Get the JavaScript command for the button
 	 *
@@ -77,10 +80,10 @@ class JButtonJev extends JButton
 
 
 		return $cmd;
-	}	
+	}
 }
 
-class JButtonJevlink extends JButton
+class JButtonJevlink extends JToolbarButton
 {
 	/**
 	 * Button type
@@ -117,7 +120,7 @@ class JButtonJevlink extends JButton
 	{
 		return $this->_parent->getName().'-'.$icon;
 	}
-	
+
 	/**
 	 * Get the JavaScript command for the button
 	 *
@@ -135,10 +138,10 @@ class JButtonJevlink extends JButton
 		$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=$task&Itemid=$Itemid");
 
 		return $link;
-	}	
+	}
 }
 
-class JButtonJevconfirm extends JButton
+class JButtonJevconfirm extends JtoolbarButton
 {
 	/**
 	 * Button type
@@ -173,7 +176,7 @@ class JButtonJevconfirm extends JButton
 	 */
 	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
 	{
-		return $this->_parent->getName().'-'.$name;		
+		return $this->_parent->getName().'-'.$name;
 	}
 
 	/**
@@ -190,7 +193,7 @@ class JButtonJevconfirm extends JButton
 		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
 		$message = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";
-		
+
 		if ($hide) {
 			if ($list) {
 				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){

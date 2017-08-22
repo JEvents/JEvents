@@ -1,11 +1,11 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: csvToiCal.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once("csvLine.php");
+
+use Joomla\String\StringHelper;
 
 if (!function_exists('str_getcsv'))
 {
@@ -53,7 +55,7 @@ class CsvToiCal
 	 * @param columnSeparator separator of columns in CSV file - default ,
 	 */
 
-	public function csvToiCal($file, $columnSeparator = ",", $data = false)
+	public function __construct($file, $columnSeparator = ",", $data = false)
 	{
 		$this->file = $file;
 		$this->data = $data;
@@ -63,17 +65,19 @@ class CsvToiCal
 
 		if (!$this->detectHeadersValidity())
 		{
-			JError::raiseWarning(0, 'Not valid CSV file uploaded - mandatory
-                                    cols CATEGORIES, SUMMARY, DTSTART, DTEND and
-                                    TIMEZONE are required. Fix your CSV please.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
+
 			return false;
 		}
+
 		if (!$this->convertFile())
 		{
-			JError::raiseWarning(0, 'Detected corruption in CSV file - import canceled.');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
+
 			return false;
 		}
-		JError::raiseNotice(0, 'CSV succesfully converted.');
+
+		JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
 
 	}
 
@@ -256,9 +260,27 @@ class CsvToiCal
 			// unfold content lines according the unfolding procedure of rfc2445
 			$this->data = str_replace("\n ","",$this->data);
 			$this->data = str_replace("\n\t","",$this->data);
-
+                        
 			// Convert string into array for easier processing
 			$this->data = explode("\n", $this->data);
+                        for ($i=0;$i<count($this->data); $i++){
+                            $buffer = $this->data[$i];
+                            while ((!$line = $this->parseCsvLine($buffer)) && $i+1<count($this->data))
+                            {
+                                $i++;
+                                $buffer .= $this->data[$i];
+                            }
+                            if (!$line)
+                            {
+					// something gone wrong, CSV is corrupted, cancel
+					return false;
+                            }
+                            if ($i == 0)
+				continue; // fist line is header, so continue
+                            fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file				
+                        }
+                        /*
+                         * this approach doesn't deal with carraige returns within fields!
 			$i = 1;
 			foreach ($this->data as $buffer){
 				if ($buffer == "")
@@ -272,6 +294,7 @@ class CsvToiCal
 					continue; // fist line is header, so continue
 				fwrite($this->tmpfile, $line->getInICalFormat()); // write to the converted file				
 			}
+                         */
 		}
 		else {
 			$fp = fopen($this->file, 'r');

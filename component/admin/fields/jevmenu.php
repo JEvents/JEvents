@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevmenu.php 3157 2012-01-05 13:12:19Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -41,9 +41,12 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 	public function getOptions()
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		// Trap to stop the config from being editing from the categories page
 		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components. 
-		if (JRequest::getString("option") =="com_config"){
+                // Only do the redirect in the backend since in the frontend module editing uses com_config (go figure!!!)
+		if ($jinput->getString("option") == "com_config" && JFactory::getApplication()->isAdmin()){
 			$redirect_url  =  "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
 			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url); //redirect 
@@ -58,6 +61,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$value = $this->value;
 		$name = $this->name;
 		$control_name = $this->type;
+		$strict  = $this->getAttribute("strict", 0);
 		
 		$db = JFactory::getDBO();
 
@@ -85,12 +89,11 @@ class JFormFieldJEVmenu extends JFormFieldList
 		foreach ($menuItems as &$item) {
 		 	
 			if ($item->component ==$extension){
-				if (version_compare(JVERSION, '1.6.0', ">=")){
-					$item->title  = "*** ".$item->title." ***";
-				}
-				else {
-					$item->name = "*** ".$item->name." ***";
-				}
+				$item->title  = $strict ? $item->title : "*** ".$item->title." ***";
+				$item->disabled = false;
+			}
+			else {
+				$item->disabled = $strict ? true : false;
 			}
 			unset($item);
 		 } 
@@ -139,11 +142,10 @@ class JFormFieldJEVmenu extends JFormFieldList
 							$item->type = $currentItemType;
 						}
 					}
-					
-					$disable = false; //strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-					// RSH 10/4/10 - J!1.6 does a htmlspecialentities and html_entity_decode to screw up the text!  Make sure the correct values are passed for the respective versions
-					//$text = (version_compare(JVERSION, '1.6.0', ">=")) ? utf8_encode(html_entity_decode('&nbsp;&nbsp;&nbsp;' . $item->treename)) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
-					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' .html_entity_decode( $item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
+
+					// Do we disable this option?
+					$disable = $item->disabled;
+					$text =  '     ' .html_entity_decode( $item->treename) ;
 					$text = str_repeat("&nbsp;",(isset($item->level)?$item->level:$item->sublevel) * 4) . $text;
 					$options[] = JHTML::_('select.option',  $item->id, $text , 'value', 'text', $disable );
 

@@ -1,16 +1,18 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevuser.php 3178 2012-01-13 09:44:58Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\Utilities\ArrayHelper;
 
 /**
 * User Table class
@@ -89,13 +91,13 @@ class TableUser extends JTable
 		$join = array();
 		if (is_array($ids)){
 			if (count($ids)>0){
-				JArrayHelper::toInteger($ids);
+				$ids = ArrayHelper::toInteger($ids);
 				$idstring = implode(",",$ids);
 				$where[] = " tl.id in ($idstring)";
 			}
 		}
 		else {
-			$idsstring = intval($ids);
+			$idstring = intval($ids);
 			$where[] = "tl.id in ($idstring)";
 		}
 
@@ -107,7 +109,7 @@ class TableUser extends JTable
 		}
 		
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
 		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
@@ -161,7 +163,7 @@ class TableUser extends JTable
 	public static function getUserCount() {
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
@@ -182,7 +184,7 @@ class TableUser extends JTable
 
 	public static function getUsersByUserid($userid,$index="id"){
 		if (is_array($userid)){
-			JArrayHelper::toInteger($userid);
+			$userid = ArrayHelper::toInteger($userid);
 			$userids = implode(",",$userid);
 		}
 		else {
@@ -190,7 +192,7 @@ class TableUser extends JTable
 		}
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$where = array();
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
@@ -286,14 +288,14 @@ class TableUser extends JTable
 		if (key_exists('categories', $array)) {
 			if($array['categories']=='all' || $array['categories']=='none') $this->categories = $array['categories'];
 			else if (is_array($array['categories'])){
-				JArrayHelper::toInteger($array['categories']);
+				$array['categories'] = ArrayHelper::toInteger($array['categories']);
 				$this->categories = implode("|",$array['categories']);
 			}
 		}
 		if (key_exists('calendars', $array)) {
 			if($array['calendars']=='all' || $array['calendars']=='none') $this->calendars = $array['calendars'];
 			else if (is_array($array['calendars'])){
-				JArrayHelper::toInteger($array['calendars']);
+				$array['calendars'] = ArrayHelper::toInteger($array['calendars']);
 				$this->calendars = implode("|",$array['calendars']);
 			}
 		}

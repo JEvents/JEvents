@@ -3,10 +3,10 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.0
- * @releasedate January 2015
+ * @version     3.4.40
+ * @releasedate August 2017
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -16,53 +16,90 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
-jimport( 'joomla.application.component.helper' );
+jimport('joomla.application.component.helper');
 
 class Pkg_JeventsInstallerScript
 {
-	public function preflight ($type, $parent) {
-		// Joomla! broke the update call, so we have to create a workaround check.
-		$db = JFactory::getDbo();
-		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-	        $is_enabled = $db->loadResult();
+    public function preflight($type, $parent)
+    {
+        define('JEVENTS_MINIMUM_PHP', '5.6.0');
 
-		if (!$is_enabled){
-			$this->hasJEventsInst = 0;
-			return;
-		} else {
-			$this->hasJEventsInst = 1;
-			if (version_compare(JVERSION, '3.0', '<')){
-				Jerror::raiseWarning(null, 'This version of JEvents is desgined for Joomla 3.4.0 and later.<br/>Please update Joomla before upgrading JEvents to this version' );
-				return false;
-			}
-			return;
-		}
-	}
+        if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
+        {
+            Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
+        }
 
-	public function update($parent)
-	{
-		return true;
-	}
+        // Joomla! broke the update call, so we have to create a workaround check.
+        $db = JFactory::getDbo();
+        $db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
+        $is_enabled = $db->loadResult();
+
+        if (!$is_enabled) {
+            $this->hasJEventsInst = 0;
+            if (version_compare(JVERSION, '3.6.3', '<')) {
+                Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.3 before installing JEvents. This will also prevent issues with JEvents' );
+                return false;
+            }
+            return;
+        } else {
+            $this->hasJEventsInst = 1;
+            if (version_compare(JVERSION, '3.6.3', '<')) {
+                Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.6.3 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
+                return false;
+            }
+            return;
+        }
+    }
+
+    public function update($parent)
+    {
+            $this->postflightHandler("update", $parent);
+            return true;
+    }
 
 	public function install($parent)
-			
-	{	
-		return true;
+	{
+            $this->postflightHandler("update", $parent);
+            return true;
 	}
 
 	public function uninstall($parent)
 	{
+                $uninstall_text = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
+                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY'); 
+                if ($uninstall_text ==  'JEV_SORRY_THAT_YOU_UNINSTALL'){
+                    $uninstall_text = "We are sorry that you have uninstalled JEvents";
+                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
+                }
+		echo "<div class='jev_install'>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='version'><h2>". $uninstall_text ."</h2></div>
+				<div class='installed'>
+					<h4>".$uninstall_text2."</h4>
+                                        <br/><br/><br/>
+				</div>";
+            
 		return true;
 	}
 
 	/*
 	 * enable the plugins
 	 */
-	
+
 	public function postflight($type, $parent)
 	{
+            return;
+            //return $this->postflightHandler($type, $parent);
+        }
+        
+        /*
+	 * enable the plugins
+	 */
+
+	public function postflightHandler($type, $parent)
+	{
 		// CSS Styling:
-		?> 
+		?>
 		<style type="text/css">
 			.adminform tr th:first-child {display:none;}
 			table.adminform tr td {padding:15px;}
@@ -80,12 +117,19 @@ class Pkg_JeventsInstallerScript
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 1) { $inst_text = JText::_('JEV_INST_VERSION_UPRG'); } else {  $inst_text = JText::_('JEV_INST_VERSION');}
+		if ($this->hasJEventsInst == 1) { 
+                    $inst_text = JText::_('JEV_INST_VERSION_UPRG'); 
+                    $logo = "JeventsTransparent3.png";
+                } 
+                else {  
+                    $inst_text = JText::_('JEV_INST_VERSION');
+                    $logo = "JeventsTransparent.png";                    
+                }
 
 		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='http://www.jevents.net/images/JeventsTransparent.png' /></div>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
 				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
-				<div class='installed'> 
+				<div class='installed'>
 					<ul>
 						<li>JEvents Core Component</li>
 						<li>JEvents Module - Latest Events </li>
@@ -97,8 +141,8 @@ class Pkg_JeventsInstallerScript
 						<li>JEvents Plugin - Finder </li>
 					</ul>
 				</div>
-				
-				<div class='proceed'> 
+
+				<div class='proceed'>
 					<ul>
 						<li><a href='index.php?option=com_jevents&task=params.edit' alt='JEvents Configuration'><img src='components/com_jevents/assets/images/jevents_config_sml.png' alt='Configuration Page' /><br/> Configuration</a><br/></li>
 						<li><a href='https://www.jevents.net/forum' alt='JEvents Forum'><img src='components/com_jevents/assets/images/support_forum.jpg' alt='JEvents Forum' /><br/>Support Forums</a><br/></li>
@@ -106,7 +150,7 @@ class Pkg_JeventsInstallerScript
 					</ul>
 				</div>";
 
-		
+
 		if ($this->hasJEventsInst == 0)
 		{
 			// enable plugin
@@ -129,23 +173,28 @@ class Pkg_JeventsInstallerScript
 			{
 				$query = "UPDATE #__extensions SET enabled=1 WHERE folder='finder' and type='plugin' and element='jevents'";
 				$db->setQuery($query);
-				$db->query();
+				$db->execute();
 			}
 
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='search' and type='plugin' and element='eventsearch'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
+
+			// Enable new JEvents Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
+			$db->setQuery($query);
+			$db->execute();
+
+			// Enable JSON Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+			$db->setQuery($query);
+			$db->execute();
+
+			// Enable Jevents Installer Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
+			$db->setQuery($query);
+			$db->execute();
                         
-                        // Enable new JEvents Plugin
-                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
- 			$db->setQuery($query);
- 			$db->query();
-
-                        // Enable JSON Plugin
-                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
- 			$db->setQuery($query);
- 			$db->query();
-
 		}
 		else {
 			jimport( 'joomla.filesystem.file' );
@@ -165,17 +214,22 @@ class Pkg_JeventsInstallerScript
 			$db = JFactory::getDbo();
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
-                        // Enable JSON Plugin
-                        $query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
- 			$db->setQuery($query);
- 			$db->query();
+			// Enable JSON Plugin
+			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='system' and type='plugin' and element='gwejson'";
+			$db->setQuery($query);
+			$db->execute();
 
 		}
 
 		echo "</div>";
+		// Joomla updater special case
+		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
+                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG')." :: ". $parent->get('manifest')->version, 'message');
+		}
 
 	}
 
 }
+

@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -88,8 +88,13 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				// Don't show warning for new events
 				if ($this->ev_id > 0)
 				{
-					echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
-				}
+					if ($this->row->_freq === "none"){
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT_WITH_NO_REPEATS');
+					}
+					else {
+						echo JText::_('YOU_ARE_EDITING_AN_ICAL_EVENT');
+					}
+				}				
 			}
 			else
 			{
@@ -174,8 +179,8 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="month" value="<?php echo $month; ?>" />
 		<input type="hidden" name="day" value="<?php echo $day; ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
-		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />
-		<?php if (!JFactory::getApplication()->isAdmin()) { ?>
+		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />                
+		<?php if (!JFactory::getApplication()->isAdmin()) { ?>                
 		<input type="hidden" name="Itemid" id="Itemid" value="<?php echo  JEVHelper::getItemid();?>"  />
 		<?php } ?>
 		<?php
@@ -213,19 +218,29 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				{
 					<?php
 					$editorcontent = $this->editor->save('jevcontent');
-					if (!$editorcontent ) {
-						// These are problematic editors like JCKEditor that don't follow the Joomla coding patterns !!!
-						$editorcontent = $this->editor->getContent('jevcontent');
-						echo "var editorcontent =".$editorcontent."\n";
-						?>
-						try {
-							jevjq('#jevcontent').html(editorcontent);
-						}
-						catch (e) {
-						}
-						<?php 
-					}
-					echo $editorcontent;
+					echo $editorcontent."\n";
+                                        // Tiny MCE has changed what onSave method does so we need to use onGetContent
+                                        $getContent = $this->editor->getContent('jevcontent');
+                                        if ($getContent){
+                                            ?>
+                                               // tinyMCE chooses a random editor so we have to specify the one we want
+                                               if (typeof tinyMCE != 'undefined'){
+                                                    try {
+                                                        tinyMCE.EditorManager.setActive(tinyMCE.get("jevcontent"));
+                                                    }
+                                                    catch (e) {
+                                                    }
+                                               }
+                                            <?php
+                                            echo "var getContent =".$getContent."\n";
+                                            ?>
+                                            try {
+                                                jevjq('#jevcontent').html(getContent);
+                                            }
+                                            catch (e) {
+                                            }
+                                            <?php 
+                                        }
 					?>
 				}
 				try {
@@ -237,7 +252,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 					}
 				}
 				catch (e) {
-
+                                        var x = e;
 				}
 				// do field validation
 				if (form.catid && form.catid.value == 0 && form.catid.options && form.catid.options.length) {
@@ -265,11 +280,12 @@ if (  $params->get("checkconflicts", 0) )
 {
 	$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
 	$urlitemid = JEVHelper::getItemid()>0 ?  "&Itemid=".JEVHelper::getItemid() : "";
-	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid, false);
+        $ttitemid = JEVHelper::getItemid()>0 ?  "&ttItemid=".JEVHelper::getItemid() : "";
+	$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=". JSession::getFormToken().$urlitemid.$ttitemid, false);
 	?>
-						// reformat start and end dates  to Y-m-d format
-						reformatStartEndDates();
-						checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+            // reformat start and end dates  to Y-m-d format
+            reformatStartEndDates();
+            checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
 	<?php
 }
 else
@@ -323,6 +339,9 @@ else
 								if (trim($extraTab['content'])=="") {
 									continue;
 								}
+                                                                if (strpos($extraTab['title'], " " )===false && JText::_($extraTab['title']) != $extraTab['title']){
+                                                                    $extraTab['title'] = JText::_($extraTab['title']);
+                                                                }
 								?>
 								<li ><a data-toggle="tab" href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a></li>
 								<?php
@@ -434,7 +453,31 @@ else
 				</div>
 				<?php
 			}
-			if (  $this->form->getLabel("access") ){
+/*
+			if ($this->form->getLabel("primarycatid"))
+			{
+				?>
+				<div class="row  jevprimarycategory">
+					<?php
+					if ($this->form->getLabel("primarycatid"))
+					{
+						?>
+						<div class="span2">
+							<?php
+							echo $this->form->getLabel("primarycatid");
+							?>
+						</div>
+						<div class="span10 jevprimarycategory">
+							<?php echo $this->form->getInput("primarycatid"); ?>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+*/
+			if ($this->repeatId === 0 && $this->form->getLabel("access") ){
 				?>
 				<div class="row  jevaccess">
 					<?php
@@ -456,8 +499,9 @@ else
 				<?php
 			}
 
-			if ($this->form->getLabel("state"))
-			{
+			if ($this->repeatId !== 0){
+                //Do Nothing, repeats do not yet have states
+            } else if ($this->form->getLabel("state")) {
 				?>
 				<div class="row jevpublished">
 					<div class="span2">
@@ -506,7 +550,15 @@ else
 					<?php echo $this->form->getLabel("jevcontent"); ?>
 				</div>
 				<div class="span10" id='jeveditor' >
-					<?php echo $this->form->getInput("jevcontent"); ?>
+					<?php  
+                                        // There is a TinyMCE issue in Joomla 3.6 where it loads the javascript twice if we do this
+                                        //echo $this->form->getInput("jevcontent");
+                                        // so instead we use the value we already have in the replacetags
+                                        $index = array_search("{{DESCRIPTION}}", $this->searchtags);
+                                        if ($index !== false){
+                                            echo $this->replacetags[$index];
+                                        }                                        
+                                        ?>
 				</div>
 			</div>
 			<div class="row jeveditlocation" id="jeveditlocation">
@@ -543,7 +595,7 @@ else
                                 }
                             
 				?>
-				<div class="row jevplugin_<?php echo $key; ?>">
+				<div class="row jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
 					<div class="span2">
 						<label ><?php echo $this->customfields[$key]["label"]; ?></label>
 					</div>

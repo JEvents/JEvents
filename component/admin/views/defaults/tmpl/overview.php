@@ -54,7 +54,7 @@ if (count($this->languages) > 1)
 					<thead>
 						<tr>
 							<th width="20" nowrap="nowrap">
-								<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->items) . ")"; ?>" />
+								<?php echo JHtml::_('grid.checkall'); ?>
 							</th>
 							<th width="5">
 								<?php echo JText::_('NUM'); ?>

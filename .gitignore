@@ -1,9 +1,14 @@
 /nbproject/private/
 /nbproject/
 .DS_Store
+.idea
 /component/site/assets/css/jevcustom.css
 /modules/mod_jevents_latest/tmpl/verna
 /modules/mod_jevents_cal/tmpl/verna
 /modules/mod_jevents_legend/tmpl/verna
+/modules/mod_jevents_cal/tmpl/flatplus
+/modules/mod_jevents_latest/tmpl/flatplus
+/modules/mod_jevents_legend/tmpl/flatplus
+/component/media/css/jevcustom.css
 /component/site/views/clean/
 component/site/views/clean

@@ -1,14 +1,17 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: cpanel.php 3119 2011-12-20 14:34:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
+
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
 
@@ -54,11 +57,12 @@ $fullspan = 12;
 
 				if (JEVHelper::isAdminUser())
 				{
+                                    if ($params->get("authorisedonly", 0)) {
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
 					$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-
-					// new version
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit";
+                                    }
+					// new version - Joomla 3.5 does its stuff using AJAX and assumes its ONLY called from com_config :(
+					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit&view=component&component=com_jevents";
 					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				if (JEVHelper::isAdminUser())
@@ -66,7 +70,7 @@ $fullspan = 12;
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.list";
 					$this->_quickiconButtonWHover($link, "cpanel/LayoutsCool.png", "cpanel/LayoutsHot.png", JText::_('JEV_LAYOUT_DEFAULTS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Custom CSS
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.custom_css";
+					$link = "index.php?option=" . JEV_COM_COMPONENT . "&view=customcss";
 					$this->_quickiconButtonWHover($link, "cpanel/CSSCool.png", "cpanel/CSSHot.png", JText::_('JEV_CUSTOM_CSS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					// Support Info
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.support";
@@ -113,7 +117,7 @@ $fullspan = 12;
 				// Stop if user is not authorised to manage JEvents
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (isset($_SERVER["SERVER_ADDR"]) && $_SERVER["SERVER_ADDR"]=="192.168.1.50")
+					if (version_compare($manifestCache->version, "3.5.0RC", "ge") )
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);

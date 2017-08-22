@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5" method="upgrade">
-	<name>JEvents Package</name>
+	<name>JEV_PACKAGE_TITLE</name>
 	<packagename>jevents</packagename>
-	<version>3.4.0</version>
+	<version>3.4.40</version>
 	<url>http://www.jevents.net</url>
-	<creationDate>September 2015</creationDate>
-	<author>Geraint Edwards</author>
-	<copyright>(C) 2012-2015 GWE Systems Ltd</copyright>
+	<creationDate>August 2017</creationDate>
+	<author>GWE Systems Ltd</author>
+	<copyright>(C) 2012-2017 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>
 	<packagerurl>http://www.jevents.net</packagerurl>
-	<description>JEvents  - Events, Meetings, Calendars and More</description>
+	<description>JEV_PACKAGE_DESC</description>
 	<update></update>
 	<scriptfile>install.php</scriptfile>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.pkg_jevents.sys.ini</language>
+	</languages>
 	<files>
 		<file type="component" id="com_jevents" >com_jevents.zip</file>
 		<file type="module" id="mod_jevents_cal" client="site">mod_jevents_cal.zip</file>
@@ -24,6 +27,7 @@
 		<file type="module" id="mod_jevents_switchview" client="site">mod_jevents_switchview.zip</file>
 		<file type="plugin" id="jevents" group="finder">finder.zip</file>
 		<file type="plugin" id="eventsearch" group="search">search.zip</file>
+		<file type="plugin" id="jeventsinstaller" group="content">installer.zip</file>
 		<file type="plugin" id="jevents" group="content">jevents.zip</file>
 		<file type="library" id="googl">googl.zip</file>
 		<file type="library" id="jevmodal">jevmodal.zip</file>
@@ -31,6 +35,6 @@
 		<file type="library" id="jevtypeahead">jevtypeahead.zip</file>
 	</files>
 	<updateservers>
-		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.0.xml</server>
+		<server type="extension" name="JEvents Updates">https://www.jevents.net/updates/-/pkg_jevents-update-3.4.40.xml</server>
 	</updateservers>
 </extension>

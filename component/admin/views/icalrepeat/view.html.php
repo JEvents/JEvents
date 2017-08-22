@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 2749 2011-10-13 08:54:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -26,11 +26,11 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(JText::_('ICAL_EVENT_REPEATS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
+		JToolbarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
 
-		JToolBarHelper::editList('icalrepeat.edit');
-		JToolBarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
-		JToolBarHelper::cancel('icalevent.list');
+		JToolbarHelper::editList('icalrepeat.edit');
+		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
+		JToolbarHelper::cancel('icalevent.list');
 				
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		JEventsHelper::addSubmenu();
@@ -45,7 +45,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		$editStrings = '';
+
 		include(JEV_ADMINLIBS . "editStrings.php");
+
 		$document->addScriptDeclaration($editStrings);
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
@@ -55,16 +58,16 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		$document->setTitle(JText::_('EDIT_ICAL_REPEAT'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
+		JToolbarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
 
-		JToolBarHelper::apply('icalrepeat.apply', "JEV_SAVE");
-		JToolBarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		// We will need this when we offer to change one or more repeats on save!
 		//$this->addSaveToolBarButton();
 
-		JToolBarHelper::cancel('icalrepeat.list');
-		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);
+		JToolbarHelper::cancel('icalrepeat.list');
+		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

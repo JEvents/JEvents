@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevview.php 3493 2012-04-08 09:41:27Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -33,6 +33,8 @@ class JFormFieldJevview extends JFormFieldList
 
 	public function getOptions()
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		// Must load admin language files
 		$lang = JFactory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
@@ -40,12 +42,19 @@ class JFormFieldJevview extends JFormFieldList
 		$views = array();
 		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
 
+		$exceptions_values = (string)$this->element['except'] ? (string) $this->element['except'] : "";
+		$exceptions = array();
+		$exceptions = explode(',', $exceptions_values);
+
 		foreach (JEV_CommonFunctions::getJEventsViewList((string)$this->element["viewtype"]) as $viewfile) {
+			if (in_array($viewfile, $exceptions)) {
+				continue;
+			}
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
 		sort( $views );
 		if ($this->menu !='hide'){
-                    $task = JRequest::getVar('task');
+                    $task = $jinput->get('task');
                     if ($task == "params.edit") {
                         unset($views['global']);
                     } else {

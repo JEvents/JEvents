@@ -1,15 +1,18 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jeventcal.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class jEventCal {
 	var $data;
@@ -26,7 +29,7 @@ class jEventCal {
 	// default values
 	var $_catid=0;
 
-	function jEventCal($inRow) {
+	function __construct($inRow) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){
@@ -126,9 +129,10 @@ class jEventCal {
             }            
         }
 	function created() { return $this->_created; }
+	function modified() { return $this->_modified; }
 	
 	function formattedCreationDate() { return $this->_created; }
-	function formattedModifyDate() { return $this->_created; }
+	function formattedModifyDate() { return $this->_modified; }
 
 	function hits() { return $this->_hits; }
 	function state() { return $this->_state; }
@@ -255,11 +259,37 @@ class jEventCal {
 		else $this->_contactLink=$val;
 
 		// New Joomla code for mail cloak only works once on a page !!!
-		// Random number
-		$rand = rand(1, 100000);
+                $rand = md5($this->_contactLink . rand(1, 100000));
+                if (version_compare(JVERSION, "93.6.1", "<")) {
+                    $replace = preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
+                    return $replace;
+                }
+                else {
+                    // verdsino 3.6.1. experimented with some problematic code but then reversed it!
+                    return  preg_replace_callback('/id="cloak([a-f0-9]+)"/i', 
+                        function ($matches){
+                            $oldrand = $matches[1];
+                            // Joomla 3.6.1 changed this YET again!
+                            $rand = md5($oldrand . rand(1, 100000));
+                            foreach (JFactory::getDocument()->_script as &$script){
+                                if (strpos($script, $oldrand)>0){
+                                    $script = str_replace("document.getElementById('cloak$oldrand').innerHTML = '';",
+                                            "jQuery('.cloak$oldrand').html('');",
+                                            $script);
+                                    $script = str_replace("document.getElementById('cloak$oldrand').innerHTML += ",
+                                            "jQuery('.cloak$oldrand').html(jQuery('.cloak$oldrand').html() + ",
+                                            $script);
+                                    $script = str_replace("$oldrand+'<\/a>';","$oldrand+'<\/a>');", $script);
+                                    //$script = str_replace("cloak$oldrand", "cloak$rand", $script);
+                                }
+                            }
+                            //if (strpos(JFactory, $oldrand))
+                            $return = 'id="cloak'.$rand.'" class="cloak'.$oldrand.'" ';
+                            return $return;
+                        }, 
+                        $this->_contactLink);
+                }
 
-		return preg_replace("/cloak[0-9]*/i", "cloak".$rand, $this->_contactLink);
-		//return $this->_contactLink;
 	}
 
 	function catname($val=""){
@@ -348,9 +378,10 @@ class jEventCal {
 				$output = "";
 				foreach ($data as $cat){
 					$params = json_decode($cat->params);
-					if (isset($params->image) && $params->image!=""){ 
-						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
-					}							
+					if (isset($params->image) && $params->image!=""){
+						$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
+						$output .= "<img src = '".JURI::root().$params->image."' class='catimage'  alt='" . $alt_text . "' />";
+					}
 				}
 				return $output;
 			}
@@ -360,9 +391,10 @@ class jEventCal {
 		}
 		if ($data){
 			$params = json_decode($data->params);
-			if (isset($params->image) && $params->image!=""){ 
-				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='categoryimage' />";
-			}		
+			if (isset($params->image) && $params->image!=""){
+				$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
+				return "<img src = '".JURI::root().$params->image."' class='catimage'  alt='" . $alt_text . "' />";
+			}
 		}
 		return "";
 	}
@@ -380,14 +412,24 @@ class jEventCal {
 				return $output;
 			}
 		}
-		if (is_array($data)) {
-			$data = $data[0];
-		}
+		
 		if ($data){
-			$params = json_decode($data->params);
-			if (isset($params->image) && $params->image!=""){
-				return JURI::root().$params->image;
-			}
+        		if (!is_array($data)) {
+                            $params = json_decode($data->params);
+                            if (isset($params->image) && $params->image!=""){
+                                    return JURI::root().$params->image;
+                            }
+                        }
+                        else {
+                            // return the image URL from the first category that has one!
+				foreach ($data as $cat){
+					$params = json_decode($cat->params);
+					if (isset($params->image) && $params->image!=""){
+						return JURI::root().$params->image;
+					}
+				}
+                                return "";                            
+                        }
 		}
 		return "";
 	}
@@ -750,7 +792,7 @@ class jEventCal {
 
 	function viewDetailLink($year,$month,$day,$sef=true, $Itemid=0){
 		$Itemid	= $Itemid>0?$Itemid:JEVHelper::getItemid($this);
-		$title = JApplication::stringURLSafe($this->title());
+		$title = JApplicationHelper::stringURLSafe($this->title());
 		$link = "index.php?option=".JEV_COM_COMPONENT."&task=".$this->detailTask()."&evid=".$this->id() .'&Itemid='.$Itemid
 		."&year=$year&month=$month&day=$day" ;
 		if (JRequest::getCmd("tmpl","")=="component" && JRequest::getCmd('task', 'selectfunction')!='icalevent.select'  && JRequest::getCmd("option","")!="com_acymailing" && JRequest::getCmd("option","")!="com_jnews" && JRequest::getCmd("jevtask","")!="crawler.listevents"){
@@ -922,7 +964,7 @@ class jEventCal {
 			if (!is_array($catids)){
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			$catids = ArrayHelper::toInteger($catids);
 			$this->_catidsarray= $catids;
 			return $catids;
 		}
@@ -930,10 +972,23 @@ class jEventCal {
 	}
 	
 	function __get($field) {
-		$field = "_".$field;
-		if (isset($this->$field)) return $this->$field;
+		$underscorefield = "_".$field;
+		if (isset($this->$underscorefield)) return $this->$underscorefield;
 		else {
-			return false;
+                    if (strpos($field, "_")===0){
+                        ob_start();
+                        $name = substr($field,1);
+                        $dispatcher	= JEventDispatcher::getInstance();
+                        $available = false;
+                        $dispatcher->trigger( 'onJeventsGetter', array( &$this, $name, &$available) );
+                        $value = ob_get_clean();
+                        if ($available){
+                            return $value;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
 		}		
 	}
 

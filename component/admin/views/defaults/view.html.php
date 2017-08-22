@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 2942 2011-11-01 16:12:51Z carcam $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -16,6 +16,9 @@ defined('_JEXEC') or die();
  *
  * @static
  */
+
+use Joomla\String\StringHelper;
+
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
@@ -31,7 +34,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
+		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
@@ -107,11 +110,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		}
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
+		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULT_EDIT'), 'jevents');
 
-		JToolBarHelper::apply("defaults.apply");
-		JToolBarHelper::save("defaults.save");
-		JToolBarHelper::cancel("defaults.cancel");
+		JToolbarHelper::apply("defaults.apply");
+		JToolbarHelper::save("defaults.save");
+		JToolbarHelper::cancel("defaults.cancel");
 
 		JEventsHelper::addSubmenu();
 

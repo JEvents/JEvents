@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalEventDetail.php 1742 2011-03-08 10:53:09Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
+use Joomla\String\StringHelper;
 
 class iCalEventDetail extends JTable  {
 
@@ -58,7 +58,7 @@ class iCalEventDetail extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalEventDetail( &$db ) {
+	public function __construct( &$db ) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		$this->_multiday=$cfg->get('multiday',1);
@@ -72,13 +72,13 @@ class iCalEventDetail extends JTable  {
 	 *
 	 * @param unknown_type $updateNulls
 	 */
-	function store($updateNulls=false ) {
+	public function store($updateNulls=false ) {
 		$date = JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
 		if (parent::store($updateNulls)){
 			// I also need to store custom data
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger( 'onStoreCustomDetails' , array(&$this));
@@ -123,7 +123,7 @@ class iCalEventDetail extends JTable  {
 	 *
 	 * @param string $field
 	 */
-	function processField($field,$default,$targetFieldName=""){
+	public function processField($field,$default,$targetFieldName=""){
 		if ($targetFieldName==""){
 			$targetfield = str_replace("-","_",$field);
 		}
@@ -133,7 +133,7 @@ class iCalEventDetail extends JTable  {
 		$this->$targetfield = array_key_exists(strtoupper($field),$this->_data)?$this->_data[strtoupper($field)]:$default;
 	}
 
-	function processCustom(){
+	public function processCustom(){
 		if (!isset($this->_customFields)){
 			$this->_customFields = array();
 		}
@@ -149,7 +149,7 @@ class iCalEventDetail extends JTable  {
 	 * Converts $data into class values 
 	 *
 	 */
-	function convertData(){
+	public function convertData(){
 		$this->_rawdata = serialize($this->_data);
 
 		$this->processField("dtstart",0);
@@ -174,6 +174,7 @@ class iCalEventDetail extends JTable  {
 		$this->processField("geolon","0");
 		$this->processField("geolat","0");
 		$this->processField("location","");
+		$this->loc_id = (int) $this->location;
 		$this->processField("priority","0");
 		$this->processField("status","");
 		$this->processField("summary","");
@@ -229,16 +230,24 @@ class iCalEventDetail extends JTable  {
 			//$this->allday = 1;				
 			$this->dtend = $this->dtstart + 86399; 
 		}
+                // All day event midnight to same midnight from iCalImport
+                else if ($this->dtstart-$this->dtend==1 && $this->dtendraw == $this->dtstartraw){
+                        if (JevDate::strftime('%H:%M:%S',$this->dtstart)=="00:00:00"){
+                            // convert to JEvents all day event mode!
+                            $this->noendtime = 1;
+                            $this->dtend = $this->dtstart + 86399; 
+                        }
+		}
 
 		// Process any custom fields
 		$this->processCustom();
 	}
 
-	function isCancelled() {
+	public function isCancelled() {
 		return $this->status=="CANCELLED";
 	}
 
-	function dumpData(){
+	public function dumpData(){
 		echo "starting : ".$this->dtstart."<br/>";
 		echo "ending : ".$this->dtend."<br/>";
 		if (isset($this->rrule)){

@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -27,14 +27,14 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$document->setTitle(JText::_( 'ICALS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'ICALS' ), 'jevents' );
+		JToolbarHelper::title( JText::_( 'ICALS' ), 'jevents' );
 
-		JToolBarHelper::publishList('icals.publish');
-		JToolBarHelper::unpublishList('icals.unpublish');
-		JToolBarHelper::addNew('icals.edit');
-		JToolBarHelper::editList('icals.edit');
-		JToolBarHelper::deleteList('Delete Ical and all associated events and repeats?','icals.delete');
-		JToolBarHelper::spacer();
+		JToolbarHelper::publishList('icals.publish');
+		JToolbarHelper::unpublishList('icals.unpublish');
+		JToolbarHelper::addNew('icals.edit');
+		JToolbarHelper::editList('icals.edit');
+		JToolbarHelper::deleteList(JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING",true),'icals.delete');
+		JToolbarHelper::spacer();
 
 		JEventsHelper::addSubmenu();
 
@@ -56,15 +56,15 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$document->setTitle(JText::_( 'EDIT_ICS' ));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'EDIT_ICS' ), 'jevents' );
+		JToolbarHelper::title( JText::_( 'EDIT_ICS' ), 'jevents' );
 
-		//JToolBarHelper::save('icals.save');
+		//JToolbarHelper::save('icals.save');
 		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id >0){
-			JToolBarHelper::save('icals.savedetails');
+			JToolbarHelper::save('icals.savedetails');
 		}
-		JToolBarHelper::cancel('icals.list');
-		//JToolBarHelper::help( 'screen.icals.edit', true);
+		JToolbarHelper::cancel('icals.list');
+		//JToolbarHelper::help( 'screen.icals.edit', true);
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);

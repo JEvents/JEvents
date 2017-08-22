@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: csvLine.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,6 +17,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  *
  * Part of the CSV to iCal conversion mechanism
  */
+
+use Joomla\String\StringHelper;
+
 class CsvLine {
 
     var $uid;
@@ -42,7 +45,7 @@ class CsvLine {
      * @param dtstart start datetime of the event
      * @param dtend end datetime of the event
      */
-    public function CsvLine($categories, $summary, $dtstart, $dtend) {
+    public function __construct($categories, $summary, $dtstart, $dtend) {
         $this->categories = $categories;
         $this->summary = $summary;
         $this->dtstart = $dtstart;

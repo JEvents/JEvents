@@ -1,15 +1,18 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: saveIcalEvent.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 class SaveIcalEvent {
 
@@ -17,51 +20,53 @@ class SaveIcalEvent {
 	public static function save($array, &$queryModel, $rrule, $dryrun = false){
 
 		$cfg = JEVConfig::getInstance();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
+		$jinput = JFactory::getApplication()->input;
 
 		// Allow plugins to check data validity
-		$dispatcher     = JDispatcher::getInstance();
+		$dispatcher     = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onBeforeSaveEvent' , array(&$array, &$rrule, $dryrun));
 
 		// TODO do error and hack checks here
-		$ev_id = intval(JArrayHelper::getValue( $array,  "evid",0));
+		$ev_id = (int) ArrayHelper::getValue( $array,  "evid",0);
 		$newevent = $ev_id==0;
 
 		$data = array();
 
 		// TODO add UID to edit form
-		$data["UID"]				= JArrayHelper::getValue( $array,  "uid",md5(uniqid(rand(),true)));
+		$data["UID"]				= ArrayHelper::getValue( $array,  "uid",md5(uniqid(rand(),true)));
 
-		$data["X-EXTRAINFO"]	= JArrayHelper::getValue( $array,  "extra_info","");
-		$data["LOCATION"]		= JArrayHelper::getValue( $array,  "location","");
-		$data["allDayEvent"]	= JArrayHelper::getValue( $array,  "allDayEvent","off");
+		$data["X-EXTRAINFO"]	= ArrayHelper::getValue( $array,  "extra_info","");
+		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
+		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
-		if ($data["allDayEvent"]==1)
+		if ($data["allDayEvent"] == 1)
 		{
 			$data["allDayEvent"]="on";
 		}
-		$data["CONTACT"]		= JArrayHelper::getValue( $array,  "contact_info","");
-		$data["DESCRIPTION"]	= JArrayHelper::getValue( $array,  "jevcontent","");
-		$data["publish_down"]	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
-		$data["publish_up"]		= JArrayHelper::getValue( $array,  "publish_up","2006-12-12");
-		$data["publish_down2"]	= JArrayHelper::getValue( $array,  "publish_down2",false);
-		$data["publish_up2"]		= JArrayHelper::getValue( $array,  "publish_up2",false);
+		$data["CONTACT"]		= ArrayHelper::getValue( $array,  "contact_info","");
+		$data["DESCRIPTION"]	= ArrayHelper::getValue( $array,  "jevcontent","");
+		$data["publish_down"]	= ArrayHelper::getValue( $array,  "publish_down","2006-12-12");
+		$data["publish_up"]		= ArrayHelper::getValue( $array,  "publish_up","2006-12-12");
+		$data["publish_down2"]	= ArrayHelper::getValue( $array,  "publish_down2",false);
+		$data["publish_up2"]		= ArrayHelper::getValue( $array,  "publish_up2",false);
 		if ($data["publish_down2"]){
 			$data["publish_down"] = $data["publish_down2"];
 		}
 		if ($data["publish_up2"]){
 			$data["publish_up"] = $data["publish_up2"];
 		}
-		$data["SUMMARY"]		= JArrayHelper::getValue( $array,  "title","");
-		$data["URL"]	= JArrayHelper::getValue( $array,  "url","");
+
+		$data["SUMMARY"]		= ArrayHelper::getValue( $array,  "title","");
+		$data["URL"]	= ArrayHelper::getValue( $array,  "url","");
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser	= JEVHelper::getAuthorisedUser();
-		$creatorid = JRequest::getInt("jev_creatorid",0);
+		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
-			$access = $user->authorise('core.admin', 'com_jevents');
+                        $access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 		
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
@@ -69,19 +74,20 @@ class SaveIcalEvent {
 
 		}
 
-		$ics_id				= JArrayHelper::getValue( $array,  "ics_id",0);
+		$ics_id				= ArrayHelper::getValue( $array,  "ics_id",0);
 
 		if ($data["allDayEvent"]=="on"){
 			$start_time="00:00";
 		}
-		else $start_time			= JArrayHelper::getValue( $array,  "start_time","08:00");
+		else $start_time			= ArrayHelper::getValue( $array,  "start_time","08:00");
 		$publishstart		= $data["publish_up"] . ' ' . $start_time . ':00';
 		$data["DTSTART"]	= JevDate::strtotime( $publishstart );
+		$data["X-PUBLISHSTART"]	= $publishstart;
 
 		if ($data["allDayEvent"]=="on"){
 			$end_time="00:00";
 		}
-		else $end_time 			= JArrayHelper::getValue( $array,  "end_time","15:00");
+		else $end_time 			= ArrayHelper::getValue( $array,  "end_time","15:00");
 		$publishend		= $data["publish_down"] . ' ' . $end_time . ':00';
 
 		if (isset($array["noendtime"]) && $array["noendtime"]){
@@ -89,20 +95,22 @@ class SaveIcalEvent {
 		}
 
 		$data["DTEND"]		= JevDate::strtotime( $publishend );
+		
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 		list ($h,$m,$s) = explode(":",$end_time . ':00');
 		if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>=$data["DTSTART"]) {
 			$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]));
 			$data["DTEND"]		= JevDate::strtotime( $publishend );
 		}
+		$data["X-PUBLISHEND"]	= $publishend;
 
 		$data["RRULE"]	= $rrule;
 
-		$data["MULTIDAY"]	= JArrayHelper::getValue( $array,  "multiday","1");
-		$data["NOENDTIME"]	= JArrayHelper::getValue( $array,  "noendtime","0");
-		$data["X-COLOR"]	= JArrayHelper::getValue( $array,  "color","");
+		$data["MULTIDAY"]	= ArrayHelper::getValue( $array,  "multiday","1");
+		$data["NOENDTIME"]	= ArrayHelper::getValue( $array,  "noendtime","0");
+		$data["X-COLOR"]	= ArrayHelper::getValue( $array,  "color","");
 
-		$data["LOCKEVENT"]	= JArrayHelper::getValue( $array,  "lockevent","0");
+		$data["LOCKEVENT"]	= ArrayHelper::getValue( $array,  "lockevent","0");
 
 		// Add any custom fields into $data array
 		foreach ($array as $key=>$value) {
@@ -120,9 +128,9 @@ class SaveIcalEvent {
 		
 		$vevent = iCalEvent::iCalEventFromData($data);
 
-		$vevent->catid = JArrayHelper::getValue( $array,  "catid",0);
+		$vevent->catid = ArrayHelper::getValue( $array,  "catid",0);
 		if (is_array($vevent->catid)){
-			  JArrayHelper::toInteger($vevent->catid);
+			  $vevent->catid = ArrayHelper::toInteger($vevent->catid);
 		}
 		// if catid is empty then use the catid of the ical calendar
 		if ((is_string($vevent->catid) && $vevent->catid<=0) || (is_array($vevent->catid) && count($vevent->catid)==0)){
@@ -131,23 +139,29 @@ class SaveIcalEvent {
 			$vevent->catid = $db->loadResult();
 		}
 		// minimum access is 1 in Joomla 2.5+
-		$vevent->access = intval(JArrayHelper::getValue( $array,  "access",1));
+		$vevent->access = (int) ArrayHelper::getValue( $array,  "access",1);
 
-		$vevent->state =  intval(JArrayHelper::getValue( $array,  "state",0));
+		$vevent->state =  (int) ArrayHelper::getValue( $array,  "state",0);
 		// Shouldn't really do this like this
-		$vevent->_detail->priority =  intval(JArrayHelper::getValue( $array,  "priority",0));
+		$vevent->_detail->priority =  (int) ArrayHelper::getValue( $array,  "priority",0);
 
+        // Set Timezone where required
+        $vevent->tzid = ArrayHelper::getValue( $array,  "tzid", "");
+                
 		// FRONT END AUTO PUBLISHING CODE
 		$frontendPublish = JEVHelper::isEventPublisher();
 
 		if (!$frontendPublish){
-			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id);
+			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
 		}
-		// Always unpublish if no Publisher otherwise publish automatically (for new events)
+		// Always un-publish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
-		$notifyAdmin = $cfg->get("com_notifyallevents",0);
+		$notifyAdmin = $cfg->get("com_notifyallevents", 0);
 		if (!$frontendPublish){
-			$vevent->state = 0;
+			if($newevent || (int) $cfg->get('jevunpublishonedit', '1') === 1)
+			{
+				$vevent->state = 0;
+			}
 			// In this case we send a notification email to admin
 			$notifyAdmin = true;
 		}
@@ -157,7 +171,7 @@ class SaveIcalEvent {
 			$vevent->ev_id=$ev_id;
 		}
 
-		$rp_id = intval(JArrayHelper::getValue( $array,  "rp_id",0));
+		$rp_id = (int) ArrayHelper::getValue( $array,  "rp_id",0);
 		if ($rp_id>0){
 			// I should be able to do this in one operation but that can come later
 			$testevent = $queryModel->listEventsById( intval($rp_id), 1, "icaldb" );
@@ -167,14 +181,18 @@ class SaveIcalEvent {
 			}
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun){
-			if (!$vevent->store()){
-				echo $db->getErrorMsg()."<br/>";
+			try {
+				$vevent->store();
+
+			}
+			catch (Exception $e) {
+				throw new Exception($e->getMessage());
 				$success = false;
-				JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_EVENT_' ));
+				JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_EVENT_' ), 'warning');
 			}
 		}
 		else {
@@ -185,26 +203,52 @@ class SaveIcalEvent {
 			$vevent->rrule->eventid = $vevent->ev_id;
 		}
 		
-		// Only update the repetitions if the event edit says the reptitions will have changed or a new event or ONLY 1 repetition
+		// Only update the repetitions if the event edit says the repetitions will have changed or a new event or ONLY 1 repetition
 		$repetitions = $vevent->getRepetitions(true);
 		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
 			if (!$dryrun){
-				if (!$vevent->storeRepetitions()){
-					echo $db->getErrorMsg()."<br/>";
+				try {
+					$vevent->storeRepetitions();
+
+				}
+				catch (Exception $e) {
+					throw new Exception($e->getMessage());
 					$success = false;
-					JError::raiseWarning(101,JText::_( 'COULD_NOT_SAVE_REPETITIONS' ));
+					JFactory::getApplication()->enqueueMessage('101 - ' . JText::_( 'COULD_NOT_SAVE_REPETITIONS' ), 'warning');
 				}
 			}
 		}
 		
 		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
-		$vevent->published =  $vevent->state ;
+		$vevent->published =  $vevent->state;
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
-		
+		// Do the repeats overlap each other
+        $overlaprepeats = false;
+        if (count($repetitions)>1){
+            $oldrep = false;
+            foreach ($repetitions as $rep){
+                if (!$oldrep){
+                    $oldrep = $rep;
+                    continue;
+                }
+                else {
+                    if ($rep->startrepeat < $oldrep->endrepeat){
+                        $overlaprepeats = true;
+                        break;
+                    }
+                    $oldrep = $rep;
+                }
+            }
+        }
+        if ($overlaprepeats){
+            JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
+        }
+
 		// If not authorised to publish in the frontend then notify the administrator
-		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()){
+		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()) {
+
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
 			$cat = new JEventsCategory($db);
@@ -214,11 +258,14 @@ class SaveIcalEvent {
 			$adminEmail	= $adminuser->email;
 			$config = new JConfig();
 			$sitename =  $config->sitename;
-			$subject	= JText::_('JEV_MAIL_ADDED') . ' ' . $sitename;
-			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject : JText::_('COM_JEV_APPROVAL') . $subject;
+
+			$subject_text	= (!$newevent ? JText::_('JEV_MAIL_MODIFIED') : JText::_('JEV_MAIL_ADDED')) . ' ' . $sitename;
+			$subject	= ($vevent->state == '1') ? JText::_('COM_JEV_INFO') . $subject_text : JText::_('COM_JEV_APPROVAL') . $subject_text;
+
+
 			$Itemid = JEVHelper::getItemid();
 			// reload the event to get the reptition ids
-			$evid = intval($vevent->ev_id);
+			$evid = (int) $vevent->ev_id;
 			$testevent = $queryModel->getEventById( $evid, 1, "icaldb" );
 
 			list($year,$month,$day) = JEVHelper::getYMD();
@@ -260,14 +307,14 @@ class SaveIcalEvent {
 				$cc = "";
 			}
 
-			$created_by = $user->name;
-			if ($created_by==null) {
+			$created_by = $user->name . " (".$user->email.")";
+			if ($created_by==null || $created_by==" ()") {
 				$created_by= "Anonymous";
 				if (JRequest::getString("custom_anonusername","")!=""){
 					$created_by=JRequest::getString("custom_anonusername","")." (".JRequest::getString("custom_anonemail","").")";
 				}
 			}
-
+                        //JFactory::getApplication()->enququeMessage("Sending Admin mail to ".$adminEmail);
 			JEV_CommonFunctions::sendAdminMail( $sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink , $testevent, $cc);
 
 		}
@@ -281,22 +328,22 @@ public static function generateRRule($array){
 	//static $weekdayMap=array("SU"=>0,"MO"=>1,"TU"=>2,"WE"=>3,"TH"=>4,"FR"=>5,"SA"=>6);
 	static $weekdayReverseMap=array("SU","MO","TU","WE","TH","FR","SA");
 
-	$interval 	= JArrayHelper::getValue( $array,  "rinterval",1);
+	$interval 	= ArrayHelper::getValue( $array,  "rinterval",1);
 
-	$freq = JArrayHelper::getValue( $array,  "freq","NONE");
+	$freq = ArrayHelper::getValue( $array,  "freq","NONE");
 	if ($freq!="NONE") {
 		$rrule = array();
 		$rrule["FREQ"]	= $freq;
-		$countuntil		= JArrayHelper::getValue( $array,  "countuntil","count");
+		$countuntil		= ArrayHelper::getValue( $array,  "countuntil","count");
 		if ($countuntil=="count" ){
-			$count 			= intval(JArrayHelper::getValue( $array,  "count",1));
+			$count 			= (int) ArrayHelper::getValue( $array,  "count", 1);
 			if ($count<=0) $count=1;
 			$rrule["COUNT"] = $count;
 		}
 		else {
-			$publish_down	= JArrayHelper::getValue( $array,  "publish_down","2006-12-12");
-			$until			= JArrayHelper::getValue( $array,  "until", $publish_down);
-			$until2		= JArrayHelper::getValue( $array,  "until2" , false);
+			$publish_down	= ArrayHelper::getValue( $array,  "publish_down","2006-12-12");
+			$until			= ArrayHelper::getValue( $array,  "until", $publish_down);
+			$until2		= ArrayHelper::getValue( $array,  "until2" , false);
 			if ($until2){
 				$until = $until2;
 			}
@@ -304,42 +351,42 @@ public static function generateRRule($array){
 			
 		}
 		$rrule["INTERVAL"] = $interval;
-		$rrule["IRREGULARDATES"] =  JArrayHelper::getValue( $array,  "irregularDates",array(),"ARRAY");
+		$rrule["IRREGULARDATES"] =  ArrayHelper::getValue( $array,  "irregularDates",array(),"ARRAY");
 		array_walk($rrule["IRREGULARDATES"], function(& $item, $index ){
 			$item = JevDate::strtotime($item." 00:00:00");
 			});
 	}
 
-	$whichby			= JArrayHelper::getValue( $array,  "whichby","bd");
+	$whichby			= ArrayHelper::getValue( $array,  "whichby","bd");
 
 	switch ($whichby){
 		case "byd":
-			$byd_direction		= JArrayHelper::getValue( $array,  "byd_direction","off")=="off"?"+":"-";
-			$byyearday 			= JArrayHelper::getValue( $array,  "byyearday","");
+			$byd_direction		= ArrayHelper::getValue( $array,  "byd_direction","off")=="off"?"+":"-";
+			$byyearday 			= ArrayHelper::getValue( $array,  "byyearday","");
 			$rrule["BYYEARDAY"] = $byd_direction.$byyearday;
 			break;
 		case "bm":
-			$bm_direction		= JArrayHelper::getValue( $array,  "bm_direction","off")=="off"?"+":"-";
-			$bymonth			= JArrayHelper::getValue( $array,  "bymonth","");
+			$bm_direction		= ArrayHelper::getValue( $array,  "bm_direction","off")=="off"?"+":"-";
+			$bymonth			= ArrayHelper::getValue( $array,  "bymonth","");
 			$rrule["BYMONTH"] 	= $bymonth;
 			break;
 		case "bwn":
-			$bwn_direction		= JArrayHelper::getValue( $array,  "bwn_direction","off")=="off"?"+":"-";
-			$byweekno			= JArrayHelper::getValue( $array,  "byweekno","");
+			$bwn_direction		= ArrayHelper::getValue( $array,  "bwn_direction","off")=="off"?"+":"-";
+			$byweekno			= ArrayHelper::getValue( $array,  "byweekno","");
 			$rrule["BYWEEKNO"] 	= $bwn_direction.$byweekno;
 			break;
 		case "bmd":
-			$bmd_direction		= JArrayHelper::getValue( $array,  "bmd_direction","off")=="off"?"+":"-";
-			$bymonthday			= JArrayHelper::getValue( $array,  "bymonthday","");
+			$bmd_direction		= ArrayHelper::getValue( $array,  "bmd_direction","off")=="off"?"+":"-";
+			$bymonthday			= ArrayHelper::getValue( $array,  "bymonthday","");
 			$rrule["BYMONTHDAY"]= $bmd_direction.$bymonthday;
 			break;
 		case "bd":
-			$bd_direction		= JArrayHelper::getValue( $array,  "bd_direction","off")=="off"?"+":"-";
-			$weekdays			= JArrayHelper::getValue( $array,  "weekdays",array());
-			$weeknums			= JArrayHelper::getValue( $array,  "weeknums",array());
+			$bd_direction		= ArrayHelper::getValue( $array,  "bd_direction","off")=="off"?"+":"-";
+			$weekdays			= ArrayHelper::getValue( $array,  "weekdays",array());
+			$weeknums			= ArrayHelper::getValue( $array,  "weeknums",array());
 			$byday		= "";
 			if (count($weeknums)==0){
-				// special case for weekly repeats which don't specify eeek of a month
+				// special case for weekly repeats which don't specify week of a month
 				foreach ($weekdays as $wd) {
 					if (JString::strlen($byday)>0) $byday.=",";
 					$byday .= $weekdayReverseMap[$wd];

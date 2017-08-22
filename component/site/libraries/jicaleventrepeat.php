@@ -1,15 +1,17 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jicaleventrepeat.php 2992 2011-11-10 15:15:22Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\String\StringHelper;
 
 class jIcalEventRepeat extends jIcalEventDB
 {
@@ -19,6 +21,8 @@ class jIcalEventRepeat extends jIcalEventDB
 	private
 			$_prevRepeat = null;
 
+                
+        
 	function id()
 	{
 		if (!isset($this->_rp_id))
@@ -102,7 +106,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			{
 				$this->_endday = JevDate::mktime(0, 0, 0, $this->mdn(), $this->ddn()-1, $this->ydn());
 			}
-		}
+		}                
 		if ($this->_startday <= $testDate && $this->_endday >= $testDate)
 		{
 			// if only show on first day
@@ -236,9 +240,15 @@ class jIcalEventRepeat extends jIcalEventDB
 
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
-		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+                if ($params->get("permatarget",0)){
+                    $Itemid = (int) $params->get("permatarget",0);
+                }
+                else {
+                    $Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
+                }
 		// uid = event series unique id i.e. the actual event
-		$title = JApplication::stringURLSafe($this->title());
+		$title = JApplicationHelper::stringURLSafe($this->title());
                 if ($this->rp_id()){
                     $link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->rp_id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
@@ -247,7 +257,7 @@ class jIcalEventRepeat extends jIcalEventDB
                     $link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.detail&evid=" . $this->ev_id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
                 }
-		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("option", "") != "com_search" && JRequest::getCmd("jevtask", "") != "crawler.listevents")
+		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("option", "") != "com_search" && JRequest::getCmd("jevtask", "") != "crawler.listevents" && JRequest::getCmd("jevtask", "") != "modcal.ajax")
 		{
 			$link .= "&tmpl=component";
 		}
@@ -379,19 +389,28 @@ class jIcalEventRepeat extends jIcalEventDB
 			function getAdjacentRepeats()
 	{
 
+		$jinput = JFactory::getApplication()->input;
+		$pop = $jinput->getInt('pop', 0);
+		$tmpl ='';
+		$popc =  "&pop=" . $pop;
+
+		if ($pop == 1) {
+			$tmpl = "&tmpl=component";
+		}
+
 		$Itemid = JEVHelper::getItemid();
 		list($year, $month, $day) = JEVHelper::getYMD();
 
 		$db = JFactory::getDBO();
 
 		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.startrepeat<'" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat<='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
 		$db->setQuery($sql);
 		$prior = $db->loadObject();
 		if (!is_null($prior))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->rp_id . '&Itemid=' . $Itemid
-					. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($prior->title);
+					. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($prior->title) . $tmpl . $popc;
 			$link = JRoute::_($link);
 			$this->_prevRepeat = $link;
 		}
@@ -401,13 +420,13 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$sql = "SELECT rpt.*,det.summary as title, YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
-			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.startrepeat>'" . $this->_startrepeat . "' ORDER BY rpt.startrepeat ASC limit 1";
+			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat>='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat ASC limit 1";
 		$db->setQuery($sql);
 		$post = $db->loadObject();
 		if (!is_null($post))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
-					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($post->title);
+					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title) . $tmpl . $popc;
 			$link = JRoute::_($link);
 			$this->_nextRepeat = $link;
 		}
@@ -508,10 +527,10 @@ class jIcalEventRepeat extends jIcalEventDB
 			}
 			$limit = $limit * 2;
 		}
-		if (!is_null($prior))
+		if (isset($prior) && !is_null($prior))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->_rp_id . '&Itemid=' . $Itemid
-					. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplication::stringURLSafe($prior->_title);
+					. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplicationHelper::stringURLSafe($prior->_title);
 			$link = JRoute::_($link);
 			$this->_prevEvent = $link;
 		}
@@ -521,9 +540,10 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 
 		$pastevpost = 0;
+                $post = null;
 		$limit = 10;
 		while ($pastevpost == 0) {
-			$next = $this->datamodel->queryModel->listIcalEvents($this->_startrepeat, $maxyear.'-01-01 00:00:00', "rpt.startrepeat ASC, rpt.rp_id ASC", false, "", "", $limit);
+			$next = $this->datamodel->queryModel->listIcalEvents($this->_startrepeat, $maxyear.'-12-31 00:00:00', "rpt.startrepeat ASC, rpt.rp_id ASC", false, "", "", $limit);
 			for ($i = 0; $i < count($next); $i++)
 			{
 				if ($this->_startrepeat < $next[$i]->_startrepeat)
@@ -549,7 +569,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		if (!is_null($post))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
-					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplication::stringURLSafe($post->title);
+					. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title);
 			$link = JRoute::_($link);
 			$this->_nextEvent = $link;
 		}

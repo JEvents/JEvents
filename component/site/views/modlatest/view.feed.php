@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.feed.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -28,7 +28,9 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 
 	function rss($tpl = null)
 	{
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$jinput = JFactory::getApplication()->input;
+
+		$modid = intval(($jinput->getInt('modid', 0)));
 		if ($modid<0){
 			$modid = 0;
 		}

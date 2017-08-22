@@ -5,6 +5,7 @@ function callNavigation(link) {
 			type : 'GET',
 			// use JSONP to allow cross-domain calling of this data!
 			dataType : 'jsonp',
+                        cache : false,                        
 			url : link,
 			contentType: "application/json; charset=utf-8",
 			scriptCharset: "utf-8"
@@ -28,6 +29,13 @@ function callNavigation(link) {
 		catch (e) {
 		}
 
+                // we may have popup links too
+		try {
+                    setupEventPopups();
+		}
+		catch (e) {
+		}
+                
 		setupMiniCalTouchInteractions();
 	})
 	.fail( function( jqxhr, textStatus, error){

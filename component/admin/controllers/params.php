@@ -1,13 +1,13 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * This file based on Joomla config component Copyright (C) 2005 - 2008 Open Source Matters.
  *
  * @version     $Id: params.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -52,7 +52,8 @@ class AdminParamsController extends JControllerAdmin
 		$table =  JTable::getInstance('extension');
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JError::raiseWarning(500, 'Not a valid component');
+
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'error');
 			return false;
 		}
                 // Sort out sites with more than one entry in the extensions table
@@ -64,7 +65,7 @@ class AdminParamsController extends JControllerAdmin
 		if ($duplicateExtensionWarning == 'JEV_DUPLICATE_EXTENSION_WARNING' ) {
 			$duplicateExtensionWarning = 'We have duplicate entries in the extensions table.  These are being cleaned up.  <br/><br/><strong>Please check your configuration settings and save them</strong>';
 		}
-		JError::raiseWarning(106, $duplicateExtensionWarning);
+			JFactory::getApplication()->enqueueMessage($duplicateExtensionWarning, 'warning');
                     $maxversion = "0.0.1";
                     $validExtensionId = 0;
                     foreach ($jevcomponents as $jevcomponent){
@@ -81,11 +82,11 @@ class AdminParamsController extends JControllerAdmin
                         if (version_compare($version, $maxversion,"lt")){
                             // reset component id in any menu items and link to the old one
                             $db->setQuery("UPDATE #__menu set component_id=".$validExtensionId." WHERE component_id=".$jevcomponent->extension_id);
-                            $db->query();
+                            $db->execute();
                             
                             // remove the older version
                             $db->setQuery("DELETE FROM #__extensions WHERE element='com_jevents' and type='component' and extension_id=".$jevcomponent->extension_id);
-                            $db->query();
+                            $db->execute();
 
                         }
                     }
@@ -120,19 +121,20 @@ class AdminParamsController extends JControllerAdmin
 		//if (!$table->loadByOption( $component ))
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JError::raiseWarning(500, 'Not a valid component');
+			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_COM'), 'warning');
 			return false;
 		}
 
 		$post = JRequest::get('post');
 		$post['params'] = JRequest::getVar('jform', array(), 'post', 'array');
+                $post['plugins'] = JRequest::getVar('jform_plugin', array(), 'post', 'array');
 		$post['option'] = $component;
 		$table->bind($post);
 
 		// pre-save checks
 		if (!$table->check())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
 			return false;
 		}
 
@@ -143,17 +145,17 @@ class AdminParamsController extends JControllerAdmin
 			$db = JFactory::getDbo();
 			$sql = "DELETE FROM #__jevents_catmap";
 			$db->setQuery($sql);
-			$db->query();			
+			$db->execute();
 			
 			$sql = "REPLACE INTO #__jevents_catmap (evid, catid) SELECT ev_id, catid from #__jevents_vevent WHERE catid in (SELECT id from #__categories where extension='com_jevents')";
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 
 		// save the changes
 		if (!$table->store())
 		{
-			JError::raiseWarning(500, $table->getError());
+			JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
 			return false;
 		}
 
@@ -177,6 +179,7 @@ class AdminParamsController extends JControllerAdmin
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
+				//TODO setup a correct exception handling as JError is deprecated.
 				if (JError::isError($errors[$i]))
 				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
@@ -220,6 +223,32 @@ class AdminParamsController extends JControllerAdmin
 			$cacheController->cache->remove("com_jevents");
 		}
 		
+                foreach ($post['plugins'] as $folder=>$plugins) {
+                    foreach ($plugins as $plugin => $pluginparams){
+                        $table =  JTable::getInstance('extension');
+                        if (!$table->load(array("element" => $plugin, "type" => "plugin", "folder"=> $folder)))
+                        {
+                            JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_NOT_A_VALID_PLUGIN', $plugin), 'warning');
+                            continue;
+                        }
+                        $table->bind($pluginparams);
+
+                        // pre-save checks
+                        if (!$table->check())
+                        {
+                                JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
+                                return false;
+                        }
+
+                        // save the changes
+                        if (!$table->store())
+                        {
+                                JFactory::getApplication()->enqueueMessage('Error 500 - ' . $table->getError(), 'error');
+                                return false;
+                        }
+                    }                    
+                }
+                
 		//SAVE AND APPLY CODE FROM PRAKASH
 		switch ($this->getTask()) {
 			case 'apply':
@@ -260,7 +289,7 @@ class AdminParamsController extends JControllerAdmin
 	protected function cleanCache($group = null, $client_id = 0)
 	{
 		$conf = JFactory::getConfig();
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		$options = array(
 			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),

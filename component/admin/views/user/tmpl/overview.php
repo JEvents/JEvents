@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: overview.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,11 +12,14 @@
 defined('_JEXEC') or die();
 
 $option = JEV_COM_COMPONENT;
+
+$jinput = JFactory::getApplication()->input;
+
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $pathIMG = JURI::root() . 'administrator/images/';
-$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
-$order = JRequest::getCmd("filter_order", 'tl.id');
+$orderdir = $jinput->getCmd("filter_order_Dir", 'asc');
+$order = $jinput->getCmd("filter_order", 'tl.id');
 
 if (isset($this->message) && $this->message != null)
 {
@@ -56,7 +59,7 @@ $mainspan = 10;
 					<thead>
 						<tr>
 							<th width="20">
-								<input type="checkbox" name="toggle" value="" onclick="<?php echo JevJoomlaVersion::isCompatible("3.0") ? "Joomla.checkAll(this)" : "checkAll(" . count($this->users) . ")"; ?>" />
+								<?php echo JHtml::_('grid.checkall'); ?>
 							</th>
 							<th class="title" width="20%" align="left"  nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('NAME'), 'jname', $orderdir, $order, "user.list"); ?></th>
 							<th width="20%" align="left" nowrap="nowrap"><?php echo JHTML::_('grid.sort', JText::_('USERNAME'), 'username', $orderdir, $order, "user.list"); ?></th>

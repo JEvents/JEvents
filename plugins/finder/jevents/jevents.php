@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   copyright (C) 2012-2015 GWE Systems Ltd - All rights reserved
+ * @copyright   copyright (C) 2012-2017 GWE Systems Ltd - All rights reserved
  *
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
@@ -12,8 +12,11 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.application.component.helper');
 
+use Joomla\Utilities\ArrayHelper;
+
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+
 JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
 
 /**
@@ -326,6 +329,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
 		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
 		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
+		$sql->where('evt.state = 1');
 		return $sql;
 	}
 
@@ -359,7 +363,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		}
 
 		// Convert the item to a result object.
-		$item = JArrayHelper::toObject($row, 'FinderIndexerResult');
+		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');
 
 		// Set the item type.
 		$item->type_id = $this->type_id;

@@ -1,15 +1,18 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: calendar_cell.php 2679 2011-10-03 08:52:57Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\String\StringHelper;
+
 include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
 class EventCalendarCell_flat  extends EventCalendarCell_default {
@@ -98,7 +101,7 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 			$eventIMG	= '<img align="left" style="border:1px solid white;" src="' . JURI::root()
 			. 'components/'.JEV_COM_COMPONENT.'/images/event.png" height="12" width="8" alt=""' . ' />';
 
-			$title_event_link = '<a class="cal_titlelink">' . $eventIMG . '</a>' . "\n";
+			$title_event_link = '<a class="cal_titlelink"  href="' . $link . '">' . $eventIMG . '</a>' . "\n";
 			$cellStyle .= ' float:left;width:10px;';
 		}
 		
@@ -131,7 +134,7 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 
 				}
 
-				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "hide"=> 150 )));
+				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "show"=> 150, "hide"=> 150 )));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
@@ -143,8 +146,31 @@ class EventCalendarCell_flat  extends EventCalendarCell_default {
 				$tooltip = $this->correctTooltipLanguage($tooltip);
 
 				if (strpos($tooltip,"templated")===0 ) {
-					$title = JString::substr($tooltip,9);
-					$cellString = "";
+					$cellString = JString::substr($tooltip,9);
+					$dom = new DOMDocument();
+                                        // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>'.$cellString.'</body>');
+
+					$classname = 'jevtt_title';
+					$finder = new DomXPath($dom);
+					$nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+
+					if ($nodes->length){
+						foreach ($nodes as $node){
+							$title = $dom->saveHTML($node);
+							$node->parentNode->removeChild($node);
+						}
+						$body = $dom->getElementsByTagName('body')->item(0);
+						$cellString= '';
+						$children = $body->childNodes;
+						foreach ($children as $child) {
+							$cellString .= $child->ownerDocument->saveXML( $child );
+						}
+					}
+					else {
+						$title = $cellString;
+						$cellString = "";
+					}
 				}
 				else {
 					$cellString .= '<div class="jevtt_text" >'.$tooltip.'</div>';

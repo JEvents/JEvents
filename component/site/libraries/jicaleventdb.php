@@ -1,23 +1,27 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jicaleventdb.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\String\StringHelper;
+
 class jIcalEventDB extends jEventCal {
+    
 	//var $vevent;
 	var $_icsid=0;
+        
 	// array of jIcalEventRepeat
 	var $_repeats=null;
 
-	function jIcalEventDB($vevent) {
+	function __construct($vevent) {
 		// get default value for multiday from params
 		$cfg = JEVConfig::getInstance();
 		if ($this->_multiday==-1){
@@ -50,7 +54,20 @@ class jIcalEventDB extends jEventCal {
 		}
 
 		if (isset($vevent->irregulardates) &&  is_string($vevent->irregulardates) && $vevent->irregulardates!=""){
-			$this->_irregulardates = @json_decode($vevent->irregulardates);
+			$this->_irregulardates = @json_decode(str_replace("'",'"',trim($vevent->irregulardates,'"')));
+			if (is_array($this->_irregulardates))
+			{
+				array_walk($this->_irregulardates, function(& $item, $index ){
+					if (!is_int($item)){
+						$item = JevDate::strtotime($item." 00:00:00");
+					}
+				});					
+			}
+			else {
+				$this->_irregulardates = array();
+			}
+			//$this->_irregulardates = @json_decode($vevent->irregulardates);
+				
 		}
 		else {
 			$this->_irregulardates = array();
@@ -749,7 +766,7 @@ class jIcalEventDB extends jEventCal {
 		$extratables = "";  // must have comma prefix
 		$extrawhere =array();
 		$extrajoin =array();
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger('onListEventsById', array (& $extrafields, & $extratables, & $extrawhere, & $extrajoin));
 
 		$params = JComponentHelper::getParams("com_jevents");
@@ -776,6 +793,8 @@ class jIcalEventDB extends jEventCal {
 		. $extrajoin
 		. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
 		. $extrawhere
+                // Should not need Group By but group_concat fields from location addon seems to cause a group by implicitly!!!
+                . "\n GROUP BY rpt.rp_id"        
 		. "\n ORDER BY rpt.startrepeat asc LIMIT 1" ;
 
 		$db->setQuery( $query );
@@ -785,7 +804,7 @@ class jIcalEventDB extends jEventCal {
 		// iCal agid uses GUID or UUID as identifier
 		if( $rows ){
 			$row = new jIcalEventRepeat($rows[0]);
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger( 'onDisplayCustomFields', array( &$row ));
 		}
 		return $row;
@@ -809,7 +828,7 @@ class jIcalEventDB extends jEventCal {
 		// Should this happen here?
 		$query = "UPDATE #__jevents_vevdetail SET hits=(hits+1) WHERE evdet_id='".$this->evdet_id()."'"	;
 		$db->setQuery( $query );
-		if( !$db->query() ) {
+		if( !$db->execute() ) {
 			echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
 			exit();
 		}
@@ -852,11 +871,11 @@ class jIcalEventDB extends jEventCal {
 
 		// Now get the first repeat since dtstart may have been set in a different timezeone and since it is a unixdate it would then be wrong
 		if (strtolower($this->freq())=="none"){
-			$repeat = $this->getFirstRepeat();
-			$this->dtstart($repeat->getUnixStartTime());
-			$this->dtend( $repeat->getUnixEndTime());
-			list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
-			list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
+				$repeat = $this->getFirstRepeat();
+				$this->dtstart($repeat->getUnixStartTime());
+				$this->dtend( $repeat->getUnixEndTime());
+				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
 		}
 		else {
 			$repeat = $this->getFirstRepeat();
@@ -867,7 +886,7 @@ class jIcalEventDB extends jEventCal {
 				$this->dtstart($repeat->getUnixStartTime());
 				$this->dtend( $repeat->getUnixEndTime());
 				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
-				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));					
 			}
 			else {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried

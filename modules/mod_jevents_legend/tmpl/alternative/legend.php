@@ -1,10 +1,12 @@
 <?php
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component frontend
@@ -96,6 +98,7 @@ class AlternativeModLegendView extends DefaultModLegendView{
 		$catidsIn = JRequest::getVar('catids', "NONE" );
 		if ($catidsIn!="NONE" && $catidsIn!="0") $catidsGP = explode($separator,$catidsIn);
 		else $catidsGP = array();
+                JArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",",$catidsGP);
 
 		// This produces a full tree of categories

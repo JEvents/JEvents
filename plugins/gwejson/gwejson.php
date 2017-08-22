@@ -26,6 +26,21 @@ defined('JPATH_BASE') or die;
 class PlgSystemGwejson extends JPlugin
 {
 
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+
+		$input = JFactory::getApplication()->input;
+		$task = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
+
+		if ($task != "gwejson")
+		{
+			return true;
+		}
+                // Some plugins set the document type too early which messes up our ouput.
+                $this->doc = JFactory::getDocument();
+	}
+    
 	/**
 	 * Method to catch the onAfterInitialise event.
 	 *
@@ -55,7 +70,7 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		$path = $input->get('path', 'site', 'cmd');
-		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules");
+		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{
 			return true;
@@ -70,7 +85,7 @@ class PlgSystemGwejson extends JPlugin
 			}
 			$path = $paths[$path] . "/$folder/$plugin/";
 		}
-		else if ($path == "module") {
+		else if ($path == "module" || $path == "library") {
 			if ($folder == "" )
 			{
 				return true;
@@ -94,22 +109,33 @@ class PlgSystemGwejson extends JPlugin
 		}
 
 		jimport('joomla.filesystem.file');
-		if (!JFile::exists($path . $file . ".php"))
-		{
-			return true;
-		}
+                // Check for a custom version of the file first!
+                $custom_file =  str_replace("gwejson_", "gwejson_custom_", $file);
+                if (JFile::exists($path . $custom_file . ".php"))
+                {
+                        $file = $custom_file;
+                }
+                if (!JFile::exists($path . $file . ".php"))
+                {
+	                PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
+	                return true;
+                }
 
 		include_once ($path . $file . ".php");
 
 		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken()){
 			$token = JSession::getFormToken();;
 			if ($token != $input->get('token', '', 'string')){
+				if ($input->get('json', '', 'raw')){
+					
+				}
 				PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 			}
 		}
 
 		// we don't want any modules etc.
-		$input->set('tmpl', 'component');
+		//$input->set('tmpl', 'component');
+		$input->set('format', 'json');
 
 		ini_set("display_errors",0);
 
@@ -187,7 +213,7 @@ class PlgSystemGwejson extends JPlugin
 			PlgSystemGwejson::throwerror("There was an error - no request data");
 		}
 
-		header("Content-Type: application/x-javascript; charset=utf-8");
+		header("Content-Type: application/javascript; charset=utf-8");
 
 		if (is_object($data)){
 			if (defined('_SC_START'))
@@ -216,7 +242,7 @@ class PlgSystemGwejson extends JPlugin
 		$data->result = "ERROR";
 		$data->user = "";
 
-		header("Content-Type: application/x-javascript");
+		header("Content-Type: application/javascript");
 		// Must suppress any error messages
 		@ob_end_clean();
 		echo json_encode($data);

@@ -1,10 +1,12 @@
 <?php
 
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the module  frontend
@@ -86,7 +88,7 @@ class DefaultModLatestView
 		$this->catout = $this->datamodel->getCatidsOutLink(true);
 
 		$user =  JFactory::getUser();
-		
+
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
 		$tmplang = JFactory::getLanguage();
 		$this->langtag = $tmplang->getTag();
@@ -132,7 +134,7 @@ class DefaultModLatestView
 		$this->startNow = intval($myparam->get('startnow', 0));
 		$this->pastOnly = intval($myparam->get('pastonly', 0));
 		$this->rangeDays = intval($myparam->get('modlatest_Days', 30));
-		$this->norepeat = intval($myparam->get('modlatest_NoRepeat', 0));
+		$this->repeatdisplayoptions = intval($myparam->get('modlatest_NoRepeat', 0));
 		$this->multiday = intval($myparam->get('modlatest_multiday', 0));
 		$this->displayLinks = intval($myparam->get('modlatest_DispLinks', 1));
 		$this->displayYear = intval($myparam->get('modlatest_DispYear', 0));
@@ -159,6 +161,10 @@ class DefaultModLatestView
 				JHtmlBootstrap::loadCss();
 			}
 		}
+		else if ($myparam->get("bootstrapcss", 1)==2)
+		{
+			JHtmlBootstrap::loadCss();
+		}
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
@@ -170,7 +176,7 @@ class DefaultModLatestView
 			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
 		}
 
-		if ($this->dispMode > 7)
+		if ($this->dispMode > 8)
 			$this->dispMode = 0;
 
 		// $maxEvents hardcoded to 105 for now to avoid bad mistakes in params
@@ -233,6 +239,16 @@ class DefaultModLatestView
 	// for the time being put it here so the different views can inherit from this 'base' class
 	function getLatestEventsData($limit = "")
 	{
+                // Find the repeat ids to ignore because of pagination
+                // when not loading data using JSON we need to reset the shownEventIds array and the page variable in the session
+                $registry = JRegistry::getInstance("jevents");
+                if (!$registry->get("jevents.fetchlatestevents", 0))
+                {
+                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());
+                    JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".page",0);
+                }
+                $shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".shownEventIds",array());
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
 
 		// RSS situation overrides maxecents
 		$limit = intval($limit);
@@ -251,6 +267,19 @@ class DefaultModLatestView
 		$this->now_Y = date('Y', $this->now);
 		$this->now_w = date('w', $this->now);
 		$t_datenowSQL = $t_datenow->toMysql();
+
+                // To pick up date from URL use this
+                /*
+                $ymd = JEVHelper::getYMD();
+                $t_datenow->setDate($ymd[0],$ymd[1],$ymd[2]);
+		$this->now = $t_datenow->toUnix(true);
+		$this->now_Y_m_d = date('Y-m-d', $this->now);
+		$this->now_d = date('d', $this->now);
+		$this->now_m = date('m', $this->now);
+		$this->now_Y = date('Y', $this->now);
+		$this->now_w = date('w', $this->now);
+		$t_datenowSQL = $t_datenow->toMysql();
+                */
 
 		// derive the event date range we want based on current date and
 		// form the db query.
@@ -291,6 +320,7 @@ class DefaultModLatestView
 			case 3:
 			case 5:
 			case 6:
+			case 8:
 				// begin of today - $days
 				$beginDate = date('Y-m-d', JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - $this->rangeDays, $this->now_Y)) . " 00:00:00";
 				// end of today + $days
@@ -348,22 +378,24 @@ class DefaultModLatestView
 		JRequest::setVar('published_fv', "0");
 		if ($this->dispMode == 5)
 		{
-			$this->sortReverse = true;
-			$rows = $this->datamodel->queryModel->recentIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+			$rows = $this->datamodel->queryModel->recentIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
 		}
 		else if ($this->dispMode == 6)
 		{
-			$rows = $this->datamodel->queryModel->popularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+			$rows = $this->datamodel->queryModel->popularIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions, $this->multiday);
 		}
 		else if ($this->dispMode == 7)
 		{
-			$rows = $this->datamodel->queryModel->randomIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat);
+			$rows = $this->datamodel->queryModel->randomIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
 			shuffle($rows);
+		}
+		else if ($this->dispMode == 8)
+		{
+			$rows = $this->datamodel->queryModel->recentlyModifiedIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
 		}
 		else
 		{
-
-			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->norepeat, $this->multiday);
+			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions, $this->multiday);
 		}
 		JRequest::setVar('published_fv', $filter_value);
 		$reg->set("jev.modparams", false);
@@ -403,8 +435,10 @@ class DefaultModLatestView
 				usort($rows, array(get_class($this), "_sortEventsByCreationDate"));
 			else if ($this->dispMode == 6)
 				usort($rows, array(get_class($this), "_sortEventsByHits"));
-			else if ($this->dispMode !== 7)
+			else if ($this->dispMode == 7)
 				usort($rows, array(get_class($this), "_sortEventsByDate"));
+			else if ($this->dispMode == 8)
+				usort($rows, array(get_class($this), "_sortEventsByModificationDate"));
 		}
 
 		if ($this->dispMode == 6)
@@ -448,7 +482,7 @@ class DefaultModLatestView
 			if (count($rows))
 			{
 				// Timelimit plugin constraints
-				while ($date < $timeLimitNow && $this->dispMode != 5)
+				while ($date < $timeLimitNow && $this->dispMode != 5 && $this->dispMode != 8)
 				{
 					$this->eventsByRelDay[$i] = array();
 					$date = JevDate::strtotime("+1 day", $date);
@@ -469,9 +503,11 @@ class DefaultModLatestView
 						}
 
 
-						if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) || ($this->dispMode != 5 && $row->checkRepeatDay($date, $this->multiday)))
+						if (($this->dispMode == 5 && $this->checkCreateDay($date, $row))
+                                                        || ($this->dispMode == 8 && $this->checkModificationDay($date, $row)) 
+                                                        || ($this->dispMode != 5 && $this->dispMode != 8 && $row->checkRepeatDay($date, $this->multiday)))
 						{
-							if (($this->norepeat && $row->hasrepetition())
+							if (($this->repeatdisplayoptions && $row->hasrepetition())
 									// use settings from the event - multi day event only show once
 									|| ($this->multiday == 0 && ($row->ddn() != $row->dup() || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) && $row->multiday() == 0)
 									// override settings from the event - multi day event only show once/on first day
@@ -485,12 +521,12 @@ class DefaultModLatestView
 									foreach ($ebrd as $evt)
 									{
 										// could test on devent detail but would need another config option
-										if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+										if ($row->ev_id() == $evt->ev_id() && $this->repeatdisplayoptions)
 										{
 											$eventAlreadyAdded = true;
 											break;
 										}
-										else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
+										else if ($row->rp_id() == $evt->rp_id() && !$this->repeatdisplayoptions)
 										{
 											$eventAlreadyAdded = true;
 											break;
@@ -524,7 +560,10 @@ class DefaultModLatestView
 						$eventsToAdd = min($this->maxEvents - $events, count($eventsThisDay));
 						$eventsThisDay = array_slice($eventsThisDay, 0, $eventsToAdd);
 						//sort by time on this day
-						usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+						if ($this->dispMode !== 5 && $this->dispMode !== 8) 
+						{
+							usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+						}
 
 						$this->eventsByRelDay[$i] = $eventsThisDay;
 						$events += count($this->eventsByRelDay[$i]);
@@ -533,11 +572,15 @@ class DefaultModLatestView
 					{
 						break;
 					}
-					$date = JevDate::strtotime("+1 day", $date);
+
+                                        // Attempt to handle Brazil timezone changes which happen at midnight - go figure !!!
+                                        list($yy,$mm,$dd) = explode("-", strftime("%Y-%m-%d", $date));
+                                        $date = JevDate::mktime(0, 0, 0,$mm, $dd+1, $yy);
+                                        //echo strftime("%Y-%m-%d %H:%M<br/>", $date);
 					$i++;
 				}
 			}
-			if ($events < $this->maxEvents && ($this->dispMode == 1 || $this->dispMode == 3 || $this->dispMode == 5 || $this->dispMode == 6))
+			if ($events < $this->maxEvents && ($this->dispMode == 1 || $this->dispMode == 3 || $this->dispMode == 5 || $this->dispMode == 6 || $this->dispMode == 8))
 			{
 
 				if (count($rows))
@@ -550,7 +593,7 @@ class DefaultModLatestView
 					$i = -1;
 
 					// Timelimit plugin constraints
-					while ($date > $timeLimitNow && $this->dispMode != 5)
+					while ($date > $timeLimitNow && $this->dispMode != 5 && $this->dispMode != 8)
 					{
 						$this->eventsByRelDay[$i] = array();
 						$date = JevDate::strtotime("-1 day", $date);
@@ -563,9 +606,11 @@ class DefaultModLatestView
 						$eventsThisDay = array();
 						foreach ($rows as $row)
 						{
-							if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) || ($this->dispMode != 5 && $row->checkRepeatDay($date, $this->multiday)))
+							if (($this->dispMode == 5 && $this->checkCreateDay($date, $row)) 
+                                                                || ($this->dispMode == 8 && $this->checkModificationDay($date, $row)) 
+                                                                || ($this->dispMode != 5 && $this->dispMode != 8 && $row->checkRepeatDay($date, $this->multiday)))
 							{
-								if (($this->norepeat && $row->hasrepetition())
+								if (($this->repeatdisplayoptions && $row->hasrepetition())
 										// use settings from the event - multi day event only show once
 										|| ($this->multiday == 0 && ($row->ddn() != $row->dup() || $row->mdn() != $row->mup() || $row->ydn() != $row->yup()) && $row->multiday() == 0)
 										// override settings from the event - multi day event only show once/on first day
@@ -579,12 +624,12 @@ class DefaultModLatestView
 										foreach ($ebrd as $evt)
 										{
 											// could test on devent detail but would need another config option
-											if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+											if ($row->ev_id() == $evt->ev_id() && $this->repeatdisplayoptions)
 											{
 												$eventAlreadyAdded = true;
 												break;
 											}
-											else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
+											else if ($row->rp_id() == $evt->rp_id() && !$this->repeatdisplayoptions)
 											{
 												$eventAlreadyAdded = true;
 												break;
@@ -595,17 +640,17 @@ class DefaultModLatestView
 											break;
 										}
 									}
-									if ($this->dispMode == 5 && !$eventAlreadyAdded)
+									if (($this->dispMode == 5 || $this->dispMode == 8 ) && !$eventAlreadyAdded)
 									{
 										foreach ($eventsThisDay as $evt)
 										{
 											// could test on devent detail but would need another config option
-											if ($row->ev_id() == $evt->ev_id() && $this->norepeat)
+											if ($row->ev_id() == $evt->ev_id() && $this->repeatdisplayoptions)
 											{
 												$eventAlreadyAdded = true;
 												break;
 											}
-											else if ($row->rp_id() == $evt->rp_id() && !$this->norepeat)
+											else if ($row->rp_id() == $evt->rp_id() && !$this->repeatdisplayoptions)
 											{
 												$eventAlreadyAdded = true;
 												break;
@@ -636,7 +681,10 @@ class DefaultModLatestView
 						if (count($eventsThisDay))
 						{
 							//sort by time on this day
-							usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+							if ($this->dispMode !== 5 && $this->dispMode !== 8) 
+							{							
+								usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+							}
 							$this->eventsByRelDay[$i] = $eventsThisDay;
 							$events += count($this->eventsByRelDay[$i]);
 						}
@@ -650,7 +698,7 @@ class DefaultModLatestView
 				}
 			}
 		}
-		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
+		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay) && $this->dispMode !== 5 && $this->dispMode !== 8 )
 		{
 
 			// When we display these events, we just start at the smallest index of the $this->eventsByRelDay array
@@ -669,6 +717,90 @@ class DefaultModLatestView
 			}
 		}
 
+                $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
+                $direction  = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".direction",1);
+                
+		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
+		{
+                        $lastEventDate = false;
+                        $firstEventDate = false;
+                        if (!isset($shownEventIds[$page])){
+                            $shownEventIds[$page] = array();
+                        }
+			foreach($this->eventsByRelDay as $relDay => $daysEvents){
+
+				reset($daysEvents);
+
+				// get all of the events for this day
+				foreach($daysEvents as $dayEvent){
+                                        if (!$firstEventDate) {
+                                            $firstEventDate = $dayEvent->startrepeat;
+                                            $firstEventId = $dayEvent->rp_id;
+                                        }
+                                        if (!in_array($dayEvent->rp_id, $shownEventIds)){
+                                            $shownEventIds[$page][] = $dayEvent->rp_id;
+                                        }
+                                        if (!isset($lastEventDate)){
+                                            $lastEventDate = $dayEvent->startrepeat;
+                                            $lastEventId = $dayEvent->rp_id;
+                                        }
+                                        if ($dayEvent->startrepeat > $lastEventDate) {
+                                            $lastEventDate = $dayEvent->startrepeat;
+                                            $lastEventId = $dayEvent->rp_id;
+                                        }
+                                }
+                        }
+
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".shownEventIds",$shownEventIds);
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".firstEventDate",$firstEventDate);
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$lastEventDate);
+
+                        // Navigation
+                        static $scriptloaded = false;
+                        if (!$scriptloaded ){
+                            $root = JURI::root();
+                            $token= JSession::getFormToken();
+                            $script = <<<SCRIPT
+function fetchMoreLatestEvents(modid, direction)
+{        
+        jQuery.ajax({
+                    type : 'POST',
+                    dataType : 'json',
+                    url : "{$root}index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=fetchlatestevents&path=module&folder=mod_jevents_latest&token={$token}",
+                    data : {'json':JSON.stringify({'modid':modid, 'direction':direction})},
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    scriptCharset: "utf-8"
+            })                        
+                .done(function( data ){                    
+                    jQuery("#mod_events_latest_"+modid+"_data").replaceWith(data.html);
+                    try {
+                        document.getElementById("mod_events_latest_"+modid+"_data").parentNode.scrollIntoView({block: "start", behavior: "smooth"});
+                    }
+                    catch (e) {
+                    }
+                })
+                .fail(function(x) {
+        alert('fail '+x);
+                });
+}
+SCRIPT;
+                            JFactory::getDocument()->addScriptDeclaration($script);
+                        }
+                }
+                else {
+                    $firstEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".firstEventDate",false);
+                    $lastEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".lastEventDate",false);
+
+                    if ($direction == 1){
+                        // fix the start and end dates for navigation
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".firstEventDate",$lastEventDate);
+                    }
+                    else if ($direction == -1){
+                        JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$firstEventDate);
+                    }
+
+                }
+
 	}
 
 	function checkCreateDay($date, $row)
@@ -677,6 +809,12 @@ class DefaultModLatestView
 
 	}
 
+	function checkModificationDay($date, $row)
+	{
+		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->modified(), 0, 10));
+
+	}
+        
 	public static function _sortEventsByDate(&$a, &$b)
 	{
 		$adate = $a->_startrepeat;
@@ -691,6 +829,15 @@ class DefaultModLatestView
 	{
 		$adate = $a->created();
 		$bdate = $b->created();
+		// reverse created date
+		return -strcmp($adate, $bdate);
+
+	}
+
+	public static function _sortEventsByModificationDate(&$a, &$b)
+	{
+		$adate = $a->modified();
+		$bdate = $b->modified();
 		// reverse created date
 		return -strcmp($adate, $bdate);
 
@@ -753,7 +900,7 @@ class DefaultModLatestView
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -817,7 +964,6 @@ class DefaultModLatestView
 		$viewname = $this->getTheme();
 
 		$cfg = JEVConfig::getInstance();
-		$compname = JEV_COM_COMPONENT;
 
 		// override global start now setting so that timelimit plugin can use it!
 		$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -831,7 +977,7 @@ class DefaultModLatestView
 		$k = 0;
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom")? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -901,12 +1047,12 @@ class DefaultModLatestView
 							$this->processMatch($eventcontent, $match, $dayEvent, $dateParm, $relDay);
 						} // end of foreach
 					} // end of foreach
-					
+
 					if ($firstTime)
 						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest_first">%s'."</td></tr>\n";
 					else
 						$eventrow = '<tr class="jevrow' . $k . '"><td class="mod_events_latest">%s'."</td></tr>\n";
-					
+
 					$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : $eventrow;
 					$content .= str_replace("%s", $eventcontent , $templaterow);
 
@@ -919,7 +1065,7 @@ class DefaultModLatestView
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1))
 		{
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 			$templaterow = $this->modparams->get("modlatest_templaterow") ? $this->modparams->get("modlatest_templaterow")  : '<tr><td class="mod_events_latest_noevents">%s</td></tr>' . "\n";
 			$content .= str_replace("%s", JText::_('JEV_NO_EVENTS') , $templaterow);
 			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
@@ -947,7 +1093,7 @@ class DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
@@ -965,7 +1111,8 @@ class DefaultModLatestView
 			function processMatch(&$content, $match, $dayEvent, $dateParm, $relDay)
 	{
 		$datenow = JEVHelper::getNow();
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
+		$compname = JEV_COM_COMPONENT;
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1019,7 +1166,7 @@ class DefaultModLatestView
 					if ($match == "endDate" && $dayEvent->sdn() == 59)
 					{
 						$tempEndDate = $endDate + 1;
-						if ($dayEvent->alldayevent())
+						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
 							// if an all day event then we don't want to roll to the next day
 							$tempEndDate -= 86400;
@@ -1037,7 +1184,7 @@ class DefaultModLatestView
 					{
 						$content .= date($dateParm, $$match);
 					}
-					if ($match == "tempDndDate")
+					if ($match == "tempEndDate")
 					{
 						$match = "endDate";
 					}
@@ -1068,7 +1215,7 @@ class DefaultModLatestView
 					$link = $dayEvent->viewDetailLink($ev_year, $ev_month, $ev_day, false, $this->myItemid);
 					if ($this->modparams->get("ignorefiltermodule", 0))
 					{
-						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1");
+						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1", false);
 					}
 					else
 					{
@@ -1105,6 +1252,19 @@ class DefaultModLatestView
 				$dayEvent->text = $dayEvent->contact_info();
 				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
 
+				if (!empty($dateParm))
+				{
+					$parts = explode("|", $dateParm);
+					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->text)) > intval($parts[0]))
+					{
+						$dayEvent->text = JString::substr(strip_tags($dayEvent->text), 0, intval($parts[0]));
+						if (count($parts) > 1)
+						{
+							$dayEvent->text .= $parts[1];
+						}
+					}
+				}
+				
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
@@ -1187,6 +1347,15 @@ class DefaultModLatestView
 					$fieldval = str_ireplace("%h", $hours, $fieldval);
 					$shownsign = true;
 				}
+				if (stripos($fieldval, "%k") !== false)
+				{
+					$hours = intval($timedelta / (60 * 60));
+					$timedelta -= $hours * 60 * 60;
+					if ($shownsign)
+						$hours = abs($hours);
+					$fieldval = str_ireplace("%kgi", $hours, $fieldval);
+					$shownsign = true;
+				}
 				if (stripos($fieldval, "%m") !== false)
 				{
 					$mins = intval($timedelta / 60);
@@ -1208,16 +1377,25 @@ class DefaultModLatestView
 				break;
 
 			case 'countdown':
-				$timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
-				$eventPassed = !($timedelta >= 0);
+                                $timedelta = $dayEvent->getUnixStartTime() - JevDate::mktime();
+                            	$now = new JevDate("+0 seconds");
+				$now = $now->toFormat("%Y-%m-%d %H:%M:%S");
+
+				$eventStarted = $dayEvent->publish_up() < $now ? 1 : 0 ;
+				$eventEnded   = $dayEvent->publish_down() < $now ? 1 : 0 ;
+
 				$fieldval = $dateParm;
 				$shownsign = false;
 				if (stripos($fieldval, "%nopast") !== false)
 				{
-					if (!$eventPassed)
+					if (!$eventStarted)
 					{
 						$fieldval = str_ireplace("%nopast", "", $fieldval);
 					}
+                                        else if (!$eventEnded)
+                                        {
+                                                $fieldval = JText::_('JEV_EVENT_STARTED');
+                                        }
 					else
 					{
 						$fieldval = JText::_('JEV_EVENT_FINISHED');
@@ -1301,6 +1479,13 @@ class DefaultModLatestView
 				 */
 				break;
 
+			case 'siteroot':
+				$content .= JUri::root();
+				break;
+			case 'sitebase':
+				$content .= Juri::base();
+				break;
+
 			default:
 				try {
 					if (strpos($match, '${') !== false)
@@ -1313,7 +1498,7 @@ class DefaultModLatestView
 							{
 								// limit to 2 because we may be using joomla content plugins
 								$subparts = explode("}", $part,2);
-								
+
 								if (strpos($subparts[0], "#") > 0)
 								{
 									$formattedparts = explode("#", $subparts[0]);
@@ -1363,14 +1548,35 @@ class DefaultModLatestView
 											if (!isset($fieldNameArrays[$classname]))
 											{
 												$fieldNameArrays[$classname] = call_user_func(array($classname, "fieldNameArray"), $layout);
+                                                                                                
+                                                                                                if (isset($fieldNameArrays[$classname]["values"]) && is_array($fieldNameArrays[$classname]["values"]))
+                                                                                                {
+                                                                                                    // Special case where $fieldname has option value in it e.g. sizedimages 
+                                                                                                    foreach($fieldNameArrays[$classname]["values"] as $idx => $fieldname){
+                                                                                                        if (strpos($fieldname, ";")>0){
+                                                                                                            $temp = explode(";", $fieldname);
+                                                                                                            $fn = $temp[0];
+                                                                                                            if (!in_array($fn,$fieldNameArrays[$classname]["values"])){
+                                                                                                                $fieldNameArrays[$classname]["values"][] = $fn;
+                                                                                                                $fieldNameArrays[$classname]["labels"][] = $fieldNameArrays[$classname]["labels"][$idx] ;
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                
 											}
 											if (isset($fieldNameArrays[$classname]["values"]))
 											{
-												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]))
+                                                                                                $strippedSubPart = $subparts[0];
+                                                                                                if (strpos($subparts[0], ";")){
+                                                                                                    $temp = explode(";", $subparts[0]);
+                                                                                                    $strippedSubPart = $temp[0];
+                                                                                                }
+												if (in_array($subparts[0], $fieldNameArrays[$classname]["values"]) || in_array($strippedSubPart, $fieldNameArrays[$classname]["values"]))
 												{
 													$matchedByPlugin = true;
 													// is the event detail hidden - if so then hide any custom fields too!
-													if (!isset($event->_privateevent) || $event->_privateevent != 3)
+													if (!isset($dayEvent->_privateevent) || $dayEvent->_privateevent != 3)
 													{
 														$temp = call_user_func(array($classname, "substitutefield"), $dayEvent, $subparts[0]);
 														if ($temp != "")
@@ -1445,6 +1651,22 @@ class DefaultModLatestView
 		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
 
 	}
+
+        protected function getNavigationIcons() {
+                $registry = JRegistry::getInstance("jevents");
+                $params = $registry->get("jevents.moduleparams", new JRegistry);
+                $content = "";
+                if ($params->get("showNavigation",0)){
+                    $content .= '<div class="mod_events_latest_navigation">';
+                    $page = (int)JFactory::getApplication()->getUserState("jevents.moduleid".$this->_modid.".page",0);
+                    if ($page>0 || $params->get("modlatest_Mode",0)!=2) {
+                        $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',-1);return false;">'.JText::_('JEV_PRIOR_EVENTS').'</a>';
+                    }
+                    $content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents('.$this->_modid.',1);return false;">'.JText::_('JEV_NEXT_EVENTS').'</a>';
+                    $content .= '</div>';
+                }
+                return $content;
+        }
 
 }
 

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevcategorynew.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -25,24 +25,19 @@ class JFormFieldJevcolumns extends JFormFieldText
 			function getInput()
 	{
 
+                // Must also load frontend language files
+                $lang = JFactory::getLanguage();
+                $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		// Mkae sure jQuery is loaded
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtml::_('jquery.framework');
-			JHtml::_('jquery.ui', array("core","sortable"));
-			JHtml::_('bootstrap.framework');
-			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-		}
-		else if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
-			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-			JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
-			JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-			// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-			JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
-		}
+                JHtml::_('jquery.framework');
+                JHtml::_('jquery.ui', array("core","sortable"));
+                JHtml::_('bootstrap.framework');
+                JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+                // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+                JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
 
 		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
 
@@ -61,6 +56,8 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_ENDTIME",true), "ENDTIME");
 		$collist[] = array(JText::_("JEV_FIELD_ISOENDTIME",true), "ISOEND");
 		$collist[] = array(JText::_("JEV_FIELD_MULTIENDDATE",true), "MULTIENDDATE");
+                $collist[] = array(JText::_("JEV_FIRSTREPEATSTART",true), "FIRSTREPEATSTART");
+                $collist[] = array(JText::_("JEV_LASTREPEATEND",true), "LASTREPEATEND");
 		$collist[] = array(JText::_("JEV_FIELD_DURATION",true), "DURATION");
 		$collist[] = array(JText::_("JEV_FIELD_PREVIOUSNEXT",true), "PREVIOUSNEXT");
 		$collist[] = array(JText::_("JEV_FIELD_FIRSTREPEAT",true), "FIRSTREPEAT");
@@ -77,6 +74,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY",true), "CATEGORY");
 		$collist[] = array(JText::_("JEV_FIELD_ALL_CATEGORIES",true), "ALLCATEGORIES");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK",true), "CATEGORYLNK");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK_RAW",true), "CATEGORYLNK_RAW");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGE",true), "CATEGORYIMG");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGES",true), "CATEGORYIMGS");
 		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_DESCRIPTION",true), "CATDESC");
@@ -88,6 +86,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_URL",true), "URL");
 		$collist[] = array(JText::_("JEV_ACCESS_LEVEL",true), "ACCESS");
 		$collist[] = array(JText::_("JEV_EVENT_PRIORITY",true), "PRIORITY");
+		$collist[] = array(JText::_("JEV_FIELD_ICALBUTTON",true), "ICALBUTTON");
 
 		// get list of enabled plugins
 		$jevplugins = JPluginHelper::getPlugin("jevents");
@@ -136,7 +135,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 
 		$input = '<div style="clear:left"></div><table><tr valign="top">
-			<td><div style="font-weight:bold">' . JText::_("JEV_CLICK_TO_ADD_COLUMN") . '</div>
+			<td><div style="font-weight:bold" >' . JText::_("JEV_CLICK_TO_ADD_COLUMN") . '</div>
 			<div id="columnchoices" style="margin-top:10px;padding:5px;min-width:200px;height:150px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($collist as $col)
 		{
@@ -162,17 +161,21 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$input .= '</div></td>
 		<td><div  style="font-weight:bold;margin-left:20px;">' . JText::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
 			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
+                $input.='<div id="columnmatches_heading" style="clear:left;">'
+                        . '<div style="width:200px;display:inline-block;font-weight:bold">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_NAME"). "</div>"
+                        . '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">'.JText::_("JEV_COLUMNS_SELECTED_FIELD_LABEL"). "</div>"
+                        . "</div>";
 		$invalues = array();
 		foreach ($invalue as $col)
 		{
-			$input.='<div id="column' . $col. '" style="clear:left;"><div style="width:200px;display:inline-block;">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='".$indexedgroups[$col]->label."' style='margin-left:20px;' /></div>";
+			$input.='<div id="column' . $col. '" style="clear:left;"><div style="width:200px;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='".$indexedgroups[$col]->label."' style='margin-left:20px;' /></div>";
 			$invalues[] = $indexedgroups[$col]->raw;
 		}
 		$invalues = implode("||", $invalues);
 
 		$input .= '</div></td>
 		</tr></table>';
-		$input .= '<textarea style="display:block"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
+		$input .= '<textarea style="display:none"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 		
 		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';
@@ -233,7 +236,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 		else
 		{
-			JError::raiseWarning(500, JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'));
+			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters

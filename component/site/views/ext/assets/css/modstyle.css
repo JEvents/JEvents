@@ -98,8 +98,8 @@
 }
 #extcal_minical .extcal_picture 
 #extcal_minical .extcal_weekcell {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   text-align:center;
 }
 
@@ -114,6 +114,11 @@
 }
 .mod_events_link {
 	cursor:pointer;
+}
+.mod_events_latest_table {
+	width: 100%;
+	margin: auto auto;
+	border: 0;
 }
 .mod_events_latest_table tr {
     border-bottom: 1px solid #ccc;

@@ -1,18 +1,22 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.access.access');
+
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
+
+use Joomla\Utilities\ArrayHelper;
+use Joomla\String\StringHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -45,8 +49,9 @@ class JEVHelper
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
+		$jinput = JFactory::getApplication()->input;
 
-		$option = JRequest::getCmd("option");
+		$option = $jinput->getCmd("option");
 		$cfg = JEVConfig::getInstance();
 		$lang = JFactory::getLanguage();
 
@@ -74,12 +79,9 @@ class JEVHelper
 		switch ($type) {
 			case 'front':
 				// load new style language
-				// if loading from another component or is admin then force the load of the site language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || JFactory::getApplication()->isAdmin())
-				{
-					// force load of installed language pack
-					$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
-				}
+				// Always load site component language !
+        			$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
 				//$lang->load(JEV_COM_COMPONENT, $inibase);
@@ -491,12 +493,12 @@ class JEVHelper
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description'))
+		if ($params->get('menu-meta_description') && !$document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords'))
+		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -600,7 +602,7 @@ class JEVHelper
 		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
 		$value = $yearpart."-".$monthpart."-".$daypart;
 		$name =  $fieldname;
-		
+
 		static $done;
 
 		if ($done === null)
@@ -610,13 +612,19 @@ class JEVHelper
 
 		$readonly = isset($attribs['readonly']) && $attribs['readonly'] == 'readonly';
 		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
+                $showtime = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
+                $timeformat = "24";
+                if ($showtime && $params->get("com_calUseStdTime", 1)==0) {
+                   // $timeformat = "12";
+                }
+                $showtime = $showtime? "true": "false";
 
 		if (is_array($attribs))
 		{
 			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
 			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
 
-			$attribs = JArrayHelper::toString($attribs);
+			$attribs = ArrayHelper::toString($attribs);
 		}
 
 		JHtml::_('bootstrap.tooltip');
@@ -636,6 +644,10 @@ class JEVHelper
 
 		// Load the calendar behavior
 		JHtml::_('behavior.calendar');
+		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
+		$tag      = JFactory::getLanguage()->getTag();
+		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
 
 		// Only display the triggers once for each control.
 		if (!in_array($fieldid, $done))
@@ -643,7 +655,12 @@ class JEVHelper
 			$document = JFactory::getDocument();
 			$document
 				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {Calendar.setup({
+				'jQuery(document).ready(function($) {
+					if (!jQuery("#' . $fieldid . '").length) {
+						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
+						return;
+					}
+			Calendar.setup({
 			// Id of the input field
 			inputField: "' . $fieldid . '",
 			// Format of the input field
@@ -652,10 +669,15 @@ class JEVHelper
 			button: "' . $fieldid . '_img",
 			// Alignment (defaults to "Bl")
 			align: "Tl",
+                        // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
+                        firstDay: '.$offset.',
+			// Allowable date range for picker
+			range:['.$minyear.','.$maxyear.'],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
-			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+                        showsTime:'.$showtime.',
+                        timeFormat:'.$timeformat.',
 			});});'
 			);
 			$done[] = $fieldid;
@@ -760,7 +782,7 @@ class JEVHelper
 				$jevitemid[$evid] = $Itemid;
 				return $jevitemid[$evid];
 			}
-			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "crawler") === false)
+			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "edit") === false && strpos($active->link, "crawler") === false)
 			{
 				$jevitemid[$evid] = $active->id;
 				return $jevitemid[$evid];
@@ -779,63 +801,131 @@ class JEVHelper
 				{
 					foreach ($jevitems as $jevitem)
 					{
-						if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
-						{
-							$jevitemid[$evid] = $jevitem->id;
+                                            // skip manage events and edit events menu items unless we really need them
+                                            if (strpos($jevitem->link, "edit")>0 || strpos($jevitem->link, "admin")>0){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
 
-							if ($forcecheck)
-							{
-								$mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
-								$mcatids = array();
-								// New system
-								$newcats = $mparams->get("catidnew", false);
-								if ($newcats && is_array($newcats))
-								{
-									foreach ($newcats as $newcat)
-									{
-										if ($forcecheck->catid() == $newcat)
-										{
-											return $jevitemid[$evid];
-										}
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($newcat, $mcatids))
-										{
-											$mcatids[] = $newcat;
-										}
-									}
-								}
-								else
-								{
-									for ($c = 0; $c < 999; $c++)
-									{
-										$nextCID = "catid$c";
-										//  stop looking for more catids when you reach the last one!
-										if (!$nextCatId = $mparams->get($nextCID, null))
-										{
-											break;
-										}
-										if ($forcecheck->catid() == $mparams->get($nextCID, null))
-										{
-											return $jevitemid[$evid];
-										}
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
 
-										if (!in_array($nextCatId, $mcatids))
-										{
-											$mcatids[] = $nextCatId;
-										}
-									}
-								}
-								// if no restrictions then can use this
-								if (count($mcatids) == 0)
-								{
-									return $jevitemid[$evid];
-								}
-								continue;
-							}
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
 
-							return $jevitemid[$evid];
-						}
+                                                    return $jevitemid[$evid];
+                                            }
+
 					}
+                                        // we didn't find them amongst the other menu item so checn the edit and admin ones
+					foreach ($jevitems as $jevitem)
+					{
+                                            if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
+                                                continue;
+                                            }
+                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
+                                            {
+                                                    $jevitemid[$evid] = $jevitem->id;
+
+                                                    if ($forcecheck)
+                                                    {
+                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+                                                            $mcatids = array();
+                                                            // New system
+                                                            $newcats = $mparams->get("catidnew", false);
+                                                            if ($newcats && is_array($newcats))
+                                                            {
+                                                                    foreach ($newcats as $newcat)
+                                                                    {
+                                                                            if ($forcecheck->catid() == $newcat)
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($newcat, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $newcat;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            else
+                                                            {
+                                                                    for ($c = 0; $c < 999; $c++)
+                                                                    {
+                                                                            $nextCID = "catid$c";
+                                                                            //  stop looking for more catids when you reach the last one!
+                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    break;
+                                                                            }
+                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
+                                                                            {
+                                                                                    return $jevitemid[$evid];
+                                                                            }
+
+                                                                            if (!in_array($nextCatId, $mcatids))
+                                                                            {
+                                                                                    $mcatids[] = $nextCatId;
+                                                                            }
+                                                                    }
+                                                            }
+                                                            // if no restrictions then can use this
+                                                            if (count($mcatids) == 0)
+                                                            {
+                                                                    return $jevitemid[$evid];
+                                                            }
+                                                            continue;
+                                                    }
+
+                                                    return $jevitemid[$evid];
+                                            }
+                                        }
 				}
 			}
 		}
@@ -1068,6 +1158,8 @@ class JEVHelper
 				}
 				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
 					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+
 				}
 			}
 			else if ($user->cancreate)
@@ -1111,7 +1203,7 @@ class JEVHelper
 			}
 
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
 		}
 		if (is_null($isEventCreator)) $isEventCreator = false;
@@ -1152,7 +1244,7 @@ class JEVHelper
 					JRequest::setVar("task", "icalevent.edit");
 					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
 					$catids = implode(",", $catids);
-					$dispatcher = JDispatcher::getInstance();
+					$dispatcher = JEventDispatcher::getInstance();
 					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
 					$allowedcats = explode(",", $catids);
 					JRequest::setVar("task", $jevtask);
@@ -1212,6 +1304,7 @@ class JEVHelper
 			$isEventEditor = false;
 
 			$user = JEVHelper::getAuthorisedUser();
+
 			if (is_null($user))
 			{
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -1224,10 +1317,61 @@ class JEVHelper
 					{
 						return false;
 					}
-					//$isEventEditor = JAccess::check($juser->id, "core.edit","com_jevents");
-					$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
+					//$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
+
+					if ($params->get("category_allow_deny",1)==0){
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id")){
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
+							$juser = JFactory::getUser();
+							if (count($okcats)){
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventEditor = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+					}
+					else
+					{
+						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
+						if ($isEventEditor)
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
+							if (count($okcats) > 0)
+							{
+								$juser = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventEditor = false;
+								}
+							}
+							else
+							{
+								$isEventEditor = false;
+							}
+						}
+					}
+
 				}
 			}
+
 			/*
 			  $user = JEVHelper::getAuthorisedUser();
 			  if (is_null($user)){
@@ -1242,6 +1386,20 @@ class JEVHelper
 			else if ($user->canedit)
 			{
 				$isEventEditor = true;
+			} else if ($user->cancreate) {
+				// User can create, lets check the DB for the Creator ID.
+				$jinput = JFactory::getApplication()->input;
+				$ev_id  = $jinput->getInt('evid', 0);
+				if ($ev_id > 0) {
+					// Get the creator ID:
+					$db = JFactory::getDbo();
+					$db->setQuery("SELECT created_by FROM #__jevents_vevent WHERE ev_id = " . $ev_id);
+					$result = $db->loadResult();
+					if ($result === $user->user_id) {
+						$isEventEditor = true;
+					}
+
+				}
 			}
 		}
 		return $isEventEditor;
@@ -1436,8 +1594,59 @@ class JEVHelper
 				if (!$authorisedonly)
 				{
 					$juser = JFactory::getUser();
-					//$isEventPublisher[$type]  = JAccess::check($juser->id, "core.edit.state","com_jevents");
-					$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+
+					if ($params->get("category_allow_deny",1)==0){
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id")){
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							$juser = JFactory::getUser();
+							if (count($okcats)){
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventPublisher[$type] = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+					}
+					else
+					{
+						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+						if ($isEventPublisher[$type])
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							if (count($okcats) > 0)
+							{
+								$juser = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventPublisher[$type] = false;
+								}
+							}
+							else
+							{
+								$isEventPublisher[$type] = false;
+							}
+						}
+					}
+
+
+
 				}
 			}
 			else if ($user->canpublishall)
@@ -1449,7 +1658,7 @@ class JEVHelper
 				$isEventPublisher[$type] = true;
 			}
 
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
 		}
 
@@ -1460,11 +1669,12 @@ class JEVHelper
 
 	// Fall back test to see if user can publish their own events based on config setting
 	public static
-			function canPublishOwnEvents($evid)
+			function canPublishOwnEvents($evid, $vevent = false)
 	{
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$authorisedonly = $params->get("authorisedonly", 1);
 		$publishown = $params->get("jevpublishown", 0);
+		$canPublishOwn = false;
 
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
@@ -1477,23 +1687,82 @@ class JEVHelper
 			{
 				return true;
 			}
-			else if ($evid == 0)
+			else if ($evid == 0  && $publishown==1)
 			{
 				return true;
 			}
-			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
-			$queryModel = new JEventsDBModel($dataModel);
 
-			$evid = intval($evid);
-			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
-			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
-			{
-				return true;
-			}
+            if ($evid==0 && $publishown==2){
+                if ($params->get("category_allow_deny",1)==0){
+                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                    if (isset($vevent->catid)){
+                        $catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                        $catids = array_intersect($catids, $okcats);
+                        return count($catids)>0;
+                    }
+                }
+                else {
+                    $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+	                if ($canPublishOwn)
+                    {
+	                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                         if (isset($vevent->catid)){
+                            $catids  = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+                            $catids = array_intersect($catids, $okcats);
+                            return count($catids)>0;
+                         }
+                    }
+                }
+            }
+            else {
+                $dataModel = new JEventsDataModel("JEventsAdminDBModel");
+                $queryModel = new JEventsDBModel($dataModel);
+
+                $evid = intval($evid);
+                $testevent = $queryModel->getEventById($evid, 1, "icaldb");
+                if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+                {
+                    if ($publishown==2) {
+                        if ($params->get("category_allow_deny",1)==0){
+                            $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                            $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
+                            $catids = array_intersect($catids, $okcats);
+                            return count($catids)>0;
+                        }
+                        else {
+                            $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+                            if ($canPublishOwn)
+                            {
+                                $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+                                $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
+                                $catids = array_intersect($catids, $okcats);
+                                return count($catids)>0;
+                            }
+                            return false;
+                        }
+                    }
+                    else {
+                        return true;
+                    }
+
+                }
+            }
 		}
 
 		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
 		{
+			if ($evid == 0)
+			{
+				return true;
+			}
 			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 			$queryModel = new JEventsDBModel($dataModel);
 
@@ -1503,7 +1772,10 @@ class JEVHelper
 			{
 				return true;
 			}
+		} elseif ($canPublishOwn) {
+			return true;
 		}
+
 		return false;
 
 	}
@@ -1517,6 +1789,8 @@ class JEVHelper
 		$juser = JFactory::getUser();
 
 		$db = JFactory::getDBO();
+                // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
+                // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
 		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
 		$db->setQuery($sql);
 		$catids = $db->loadColumn();
@@ -1627,10 +1901,18 @@ class JEVHelper
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 1);
 			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && $publishown)
+			if (!$authorisedonly && $publishown==1)
 			{
 				return true;
 			}
+                        else if (!$authorisedonly && $publishown==2)
+                        {
+                            $publishown = JEVHelper::canPublishOwnEvents($row->ev_id());
+                            if ($publishown )
+                            {
+                                return true;
+                            }
+                        }
 
 			// This involes TOO many database queries in Joomla - one per category which can be a LOT
 			/*
@@ -1809,7 +2091,7 @@ class JEVHelper
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 1);
 			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && ($publishown || JEVHelper::canPublishEvent($row, $user)))
+			if (!$authorisedonly && ($publishown==1 || JEVHelper::canPublishEvent($row, $user)))
 			{
 				return true;
 			}
@@ -1850,8 +2132,8 @@ class JEVHelper
 					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
 					. "\n WHERE block ='0'"
 					. "\n AND cd.published =1 "
-					. "\n AND cd.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-					. "\n AND cat.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
+					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
 					. "\n AND ju.id = " . $id;
 
 			$db->setQuery($query);
@@ -1976,6 +2258,10 @@ class JEVHelper
 			$user = JFactory::getUser();
 		}
 		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		// Add a second check incase the getuser failed.
+		if (!$user) {
+			return false;
+		}
 		$access = $user->authorise('core.admin', 'com_jevents');
 		return $access;
 
@@ -2051,7 +2337,7 @@ class JEVHelper
 				// Set the query for execution.
 				$db->setQuery((string) $query);
 				$rootlevels = $db->loadColumn();
-				JArrayHelper::toInteger($rootlevels);
+				$rootlevels = ArrayHelper::toInteger($rootlevels);
 			}
 			$levels = $rootlevels;
 		}
@@ -2135,6 +2421,16 @@ class JEVHelper
 		}
 
 	}
+
+	//Custom CSS File Helper file - Single place to define location, preparing to move to media folder
+	static public function CustomCSSFile() {
+
+		$filePath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
+
+		return $filePath;
+
+	}
+
 	/*
 	 * Load JEvents Custom CSS file if any
 	 */
@@ -2166,7 +2462,7 @@ class JEVHelper
 		//JHTML::script($path . $file);
 		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 		// no need to find browser specific versions
-		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser);
+		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser,$detect_debug);
 		if (!$includes)
 		{
 			return;
@@ -2259,7 +2555,7 @@ class JEVHelper
 		{
 			$catids = array(intval($catids));
 		}
-		JArrayHelper::toInteger($catids);
+		$catids = ArrayHelper::toInteger($catids);
 		$result = false; //count($catids)>0;
 		foreach ($catids as $catid)
 		{
@@ -2293,7 +2589,7 @@ class JEVHelper
 			{
 				$catids = array($catids);
 			}
-			JArrayHelper::toInteger($catids);
+			$catids = ArrayHelper::toInteger($catids);
 			$row->_catidsarray = $catids;
 			return $catids;
 		}
@@ -2351,7 +2647,7 @@ class JEVHelper
 			if (count($rows))
 			{
 				JPluginHelper::importPlugin('jevents');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
 				foreach ($rows as $k => $row)
 				{
@@ -2380,7 +2676,7 @@ class JEVHelper
 		else
 		{
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 
@@ -2485,42 +2781,64 @@ SCRIPT;
 	public static
 			function getFilterValues()
 	{
-		// This is new experimental code that is disabled for the time being
-		return;
-		$fid = JFactory::getApplication()->input->getInt("jfilter", 0);
-		if ($fid > 0)
-		{
-			$db = JFactory::getDbo();
-			$db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $fid);
-			$filter = $db->loadObject();
 
-			// does this filter belong to this user (needed ??)
-			$user = JFactory::getUser();
-			if ($filter)
-			{
+              //  $session = JFactory::getSession();
+               // $session->set('name', "value");
 
-				$filtervars = json_decode($filter->filters);
-				if (is_object($filtervars))
-				{
-					$filtervars = get_object_vars($filtervars);
-				}
-				var_dump($filtervars);
-				if (is_array($filtervars))
-				{
-					foreach ($filtervars as $fvk => $fvv)
-					{
-						if (strpos($fvk, "_fv") > 0)
-						{
-							JRequest::setVar($fvk, $fvv);
-						}
-					}
-				}
-			}
-		}
-		else
-		{
+                $session = JFactory::getSession();
+                echo $session->get('name');
+
+
+                // Only save/delete filters for non-guests
+                if (JFactory::getUser()->id > 0){
+                    $deletefilter = JFactory::getApplication()->input->getInt("deletefilter", 0);
+                    if ($deletefilter){
+                            $db = JFactory::getDbo();
+                            $db->setQuery("DELETE FROM #__jevents_filtermap where fid = " . $db->quote($deletefilter). " AND userid=".intval(JFactory::getUser()->id));
+                            $db->execute();
+                            return;
+                    }
+
+                    // This is new experimental code
+                    $fid = JFactory::getApplication()->input->getString("jfilter", '');
+                    if ($fid != "")
+                    {
+                            // This isn't high security but best to be safe to make sure filter belongs to this user
+                            $db = JFactory::getDbo();
+                            $db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $db->quote($fid). " AND userid=".intval(JFactory::getUser()->id));
+                            $filter = $db->loadObject();
+
+                            if ($filter)
+                            {
+                                    $filtervars = json_decode($filter->filters);
+                                    if (is_object($filtervars))
+                                    {
+                                            $filtervars = get_object_vars($filtervars);
+                                    }
+                                    //var_dump($filtervars);
+                                    if (is_array($filtervars))
+                                    {
+                                            foreach ($filtervars as $fvk => $fvv)
+                                            {
+                                                    if (strpos($fvk, "_fv") > 0)
+                                                    {
+                                                            JFactory::getApplication()->input->set($fvk, $fvv);
+                                                    }
+                                            }
+                                    }
+
+                                    // Also set the saved filter results
+                                    JFactory::getApplication()->input->set('filtername', $filter->name);
+                            }
+                    }
+                    else
+                    {
+                            JEVHelper::setFilterValues();
+                    }
+                }
+                else {
 			JEVHelper::setFilterValues();
-		}
+                }
 
 	}
 
@@ -2530,13 +2848,22 @@ SCRIPT;
 	public static
 			function setFilterValues()
 	{
+                // Only save filters for non-guests
+                if (!JFactory::getUser()->id){
+                    return;
+                }
 
-		$input = JRequest::get();
+                $filtername = JFactory::getApplication()->input->getString("filtername", '');
+                $modid = JFactory::getApplication()->input->getInt("modid",0 );
+
+                if ($filtername==""){
+                    return;
+                }
 
 		$filtervars = array();
 
-		$input = JRequest::get();
-		if (is_array($input))
+		$input = JFactory::getApplication()->input->getArray();
+		if (is_array($input) && count($input)>0)
 		{
 			foreach ($input as $fvk => $fvv)
 			{
@@ -2547,10 +2874,9 @@ SCRIPT;
 			}
 		}
 
-		if (count($filtervars) > 0)
+		if (count($filtervars) > 0 && JFactory::getApplication()->input->getMethod()=="POST")
 		{
 			ksort($filtervars);
-			var_dump($filtervars);
 			$filtervars = json_encode($filtervars);
 
 			$db = JFactory::getDbo();
@@ -2560,11 +2886,21 @@ SCRIPT;
 			$db->setQuery("SELECT fid, filters  FROM #__jevents_filtermap where md5 = " . $db->quote($md5));
 			$filters = $db->loadAssocList("fid", "filters");
 
-			if (!in_array($filtervars, $filters))
+			$db->setQuery("SELECT fid  FROM #__jevents_filtermap where name = " . $db->quote($filtername));
+			$fid = intval($db->loadResult("fid"));
+
+                        if ($fid){
+				$db->setQuery("REPLACE INTO #__jevents_filtermap (fid, filters, md5, userid, name, andor, modid) VALUES ($fid," . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
+				$db->execute();
+                        }
+			else if (!in_array($filtervars, $filters))
 			{
-				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) . ")");
-				$db->query();
+				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5, userid, name, andor, modid) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
+				$db->execute();
 			}
+                        else {
+                            // has name changed!
+                        }
 		}
 
 	}
@@ -2573,12 +2909,17 @@ SCRIPT;
 			function parameteriseJoomlaCache()
 	{
 
-// If Joomla! caching is enabled then we have to manage progressive caching and ensure that session data is taken into account.
+                // If Joomla! caching is enabled then we have to manage progressive caching
+                // and ensure that session data is taken into account.
 		$conf = JFactory::getConfig();
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING', 'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING', 'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT', 'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING', 'em2' => 'STRING');
+			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING',
+                            'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING',
+                            'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT',
+                            'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING',
+                            'em2' => 'STRING', 'pop' => 'UINT');
 			$app = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
@@ -2637,7 +2978,7 @@ SCRIPT;
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2660,7 +3001,7 @@ SCRIPT;
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
 				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$observers = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
@@ -2826,7 +3167,7 @@ SCRIPT;
 			$icalEvents = array_values($icalEvents);
 
 			// Call plugin on each event
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			ob_start();
 			JEVHelper::onDisplayCustomFieldsMultiRow($icalEvents);
 			ob_end_clean();
@@ -2952,6 +3293,8 @@ SCRIPT;
 
 						if (is_callable("date_default_timezone_set"))
 						{
+							// Change timezone to UTC
+							$current_timezone = date_default_timezone_get();
 							date_default_timezone_set("UTC");
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 							// Change back
@@ -3004,7 +3347,7 @@ SCRIPT;
 							$html .= ';INTERVAL=' . $row->_rinterval;
 						if ($row->_freq == "DAILY")
 						{
-							
+
 						}
 						else if ($row->_freq == "WEEKLY")
 						{
@@ -3192,7 +3535,7 @@ SCRIPT;
 							$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
 							$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 						}
-						$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
+						$html .= "DTSTAMP:" . $stamptime . "\r\n";
 						$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 						$html .= "DTEND$tzid:" . $chend . "\r\n";
 						$html .= "RECURRENCE-ID$tzid:" . $originalstart . "\r\n";
@@ -3519,7 +3862,7 @@ SCRIPT;
 	public static
 			function modal($selector = 'a.modal', $params = array())
 	{
-		
+
 		if (version_compare(JVERSION, "3.0", "ge"))
 		{
 			// Load the code Joomla version
@@ -3533,5 +3876,55 @@ SCRIPT;
 
 		return;
 	}
+
+	public static function getCache($option) {
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		// only unlogged in users and not logged in OR all visitors grouped by access level
+		if ($params->get("com_cache", 1)  && $user->id == 0)
+		{
+			return JFactory::getCache($option);
+		}
+		else {
+			include_once("jevCache.php");
+			return new jevCache();
+		}
+	}
+
+        /*
+         * Fix config etc. to run in WP with minimal code changes!
+         */
+        public static function setupWordpress() {
+                if (defined ("WPJEVENTS")){
+                    $cfg = JEVConfig::getInstance();
+                    $cfg->set('com_email_icon_view', 0);
+                }
+        }
+
+        public static function & getMenuFilters() {
+                $registry = JRegistry::getInstance("jevents");
+                $menufilters = $registry->get("jevents.menufilters", false);
+                if (!$menufilters) {
+                    $menufilters = new stdClass();
+                    $registry->set("jevents.menufilters", $menufilters);
+                }
+                return $menufilters;
+        }
+
+        public static function setMenuFilter($key, $value) {
+            $menufilters = JEVHelper::getMenuFilters();
+            $menufilters->$key = $value;
+        }
+
+        public static function getMenuFilter($key, $default = null) {
+            $menufilters = JEVHelper::getMenuFilters();
+            return isset($menufilters->$key) ? $menufilters->$key :  $default;
+        }
+
+        // TODO - create a stack of previous values and use reset rather than clear to allow recursive type calls
+        public static function clearMenuFilter($key) {
+            $menufilters = JEVHelper::getMenuFilters();
+            unset($menufilters->$key);
+        }
 
 }

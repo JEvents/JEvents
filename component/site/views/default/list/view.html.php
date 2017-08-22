@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
 class DefaultViewList extends JEventsDefaultView
 {
 
-	function events($tpl = null)
+	public function events($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
 
@@ -44,6 +44,9 @@ class DefaultViewList extends JEventsDefaultView
 		
 		// Note that using a $limit value of -1 the limit is ignored in the query
 		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart, $order));
-
+		$this->csvfilter = $params->get("csvexportfilter", 0);
+        if ($params->get("csvexport",0)){
+            $this->setLayout("csvprintevents");
+        }
 	}
 }

@@ -6,7 +6,7 @@
  * @version     $Id: eventsearch.php 3588 2012-05-02 10:40:19Z geraintedwards $
  * @package     Events
  * @subpackage  Mambot Events Calendar
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @copyright   Copyright (C) 2006-2007 JEvents Project Group
  * @copyright   Copyright (C) 2000 - 2003 Eric Lamette, Dave McDonnell
  * @licence     http://www.gnu.org/copyleft/gpl.html
@@ -186,7 +186,7 @@ class plgSearchEventsearch extends JPlugin
 		$needsgroup = $filters->needsGroupBy();
 
 		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
@@ -278,7 +278,7 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		$eventstitle = JText::_("Events Calendar");
+		$eventstitle = JText::_("JEV_EVENT_CALENDAR");
 		// Now Search Icals
 		$display2 = array();
 		foreach ($search_ical_attributes as $search_ical_attribute)
@@ -333,7 +333,7 @@ class plgSearchEventsearch extends JPlugin
 						. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 						. "\n LEFT JOIN #__jevents_exception as ex ON det.evdet_id = ex.eventdetail_id"
-						. "\n WHERE ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+						. "\n WHERE ev.access IN ('" . $groups . "')"
 						. "\n AND det.evdet_id = $id"
 						. "\n ORDER BY rpt.startrepeat ASC limit 1";
 

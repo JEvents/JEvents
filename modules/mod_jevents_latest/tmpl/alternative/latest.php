@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -22,7 +22,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 		
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 		$datenow	= JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -30,7 +30,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 		$content = "";
 
 		if(isset($this->eventsByRelDay) && count($this->eventsByRelDay)){
-			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
+			$content .= $this->modparams->get("modlatest_templatetop") || $this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
 
 			// Now to display these events, we just start at the smallest index of the $this->eventsByRelDay array
 			// and work our way up.
@@ -100,7 +100,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 					$firstTime=false;
 				} // end of foreach
 			} // end of foreach
-			$content .=$this->modparams->get("modlatest_templatebottom") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
+			$content .=$this->modparams->get("modlatest_templatebottom") || $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatebottom") : "</table>\n";
 		}
 		else if ($this->modparams->get("modlatest_NoEvents", 1)){
 			$content .= $this->modparams->get("modlatest_templatetop") ? $this->modparams->get("modlatest_templatetop") : '<table class="mod_events_latest_table jevbootstrap" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">';
@@ -129,7 +129,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 		}
 
 		if ($this->modparams->get("contentplugins", 0)){
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;

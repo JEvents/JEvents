@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -23,6 +23,7 @@ class DefaultViewICalevent extends JEventsDefaultView
 	function detail($tpl = null)
 	{
 		JEVHelper::componentStylesheet($this);
+		$jinput = JFactory::getApplication()->input;
 
 		$document = JFactory::getDocument();
 		// TODO do this properly
@@ -45,8 +46,8 @@ class DefaultViewICalevent extends JEventsDefaultView
 			$this->day = $this->data['row']->dup();
 
 			// seth month and year to be used by mini-calendar if needed
-			if (!JRequest::getVar("month",0)) JRequest::setVar("month",$this->month);
-			if (!JRequest::getVar("year",0)) JRequest::setVar("year",$this->year);
+			if (!$jinput->getInt("month",0)) $jinput->set("month", $this->month);
+			if (!$jinput->getInt("year",0))  $jinput->set("year", $this->year);
 		}
 	}	
 }

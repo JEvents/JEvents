@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -35,6 +35,8 @@ class DefaultViewYear extends JEventsDefaultView
 	}
 	function getAdjacentYear($year,$month,$day, $direction=1)
 	{
+		$jinput = JFactory::getApplication()->input;
+
 		$d1 = JevDate::mktime(0,0,0,$month,$day,$year+$direction);
 		$day = JevDate::strftime("%d",$d1);
 		$year = JevDate::strftime("%Y",$d1);
@@ -47,7 +49,7 @@ class DefaultViewYear extends JEventsDefaultView
 		}
 		
 		$month = JevDate::strftime("%m",$d1);
-		$task = JRequest::getString('jevtask');
+		$task = $jinput->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item= "&Itemid=$Itemid";
 		else $item="";

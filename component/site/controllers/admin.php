@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: admin.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -31,6 +31,7 @@ class AdminController extends JControllerLegacy   {
 	}
 
 	function listevents() {
+		$jinput = JFactory::getApplication()->input;
 
 		$is_event_editor = JEVHelper::isEventCreator();
 
@@ -38,7 +39,7 @@ class AdminController extends JControllerLegacy   {
 
 		$user = JFactory::getUser();
 		if( !$is_event_editor ){
-			$returnlink = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=month.calendar&Itemid=' . $Itemid, false );
+			$returnlink = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false );
 			$this->setRedirect( $returnlink, html_entity_decode( JText::_('JEV_NOPERMISSION') ));
 			$this->redirect();
 			return;
@@ -47,10 +48,10 @@ class AdminController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
+		$limitstart = intval( $jinput->getInt('start', $jinput->getInt('limitstart', 	0)));
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit','limit', $params->get("com_calEventListRowsPpg",15)));
+		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit.admin','limit', $params->get("com_calEventListRowsPpg",15)));
 
 		$Itemid	= JEVHelper::getItemid();
 
@@ -59,7 +60,7 @@ class AdminController extends JControllerLegacy   {
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$adminuser = $params->get("jevadmin",-1);
 		
-		if(JEVHelper::isAdminUser($user) || $user->id==$adminuser) {
+		if(JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor() ||$user->id==$adminuser) {
 			$creator_id = 'ADMIN';
 		}else{
 			$creator_id = $user->id;

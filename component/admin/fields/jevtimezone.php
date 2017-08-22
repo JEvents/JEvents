@@ -1,11 +1,11 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevtimezone.php 1975 2011-04-27 15:52:33Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -28,6 +28,13 @@ class JFormFieldJevtimezone extends JFormField
 
 		if (class_exists("DateTimeZone"))
 		{
+                        $params = JComponentHelper::getParams("com_jevents");
+                        $choosefrom =  $params->get("offeredtimezones", array());
+                        //? explode(",",$this->getAttribute("choosefrom", "")) : array();
+
+                        if (!is_array($choosefrom) || (count($choosefrom)==1 && $choosefrom[0]=="") || JFactory::getApplication()->input->getCmd("task")=="params.edit") {
+                            $choosefrom = array();
+                        }
 			$zones = DateTimeZone::listIdentifiers();
 			static $options;
 			if (!isset($options))
@@ -40,10 +47,36 @@ class JFormFieldJevtimezone extends JFormField
 						continue;
 					if (strpos($zone, "Etc") === 0)
 						continue;
-					$options[] = JHTML::_('select.option', $zone, $zone);
+                                        if (count($choosefrom) && !in_array($zone,$choosefrom)){
+						continue;                                            
+                                        }
+					$zonevalue = $zone;
+					$translatezone = str_replace("/","_",$zone);
+					$translatedzone = JText::_($translatezone);
+					if ($translatezone != $translatedzone) {
+						$zone = $translatedzone;
+					}
+					$options[] = JHTML::_('select.option', $zonevalue, $zone);
 				}
 			}
-			return JHTML::_('select.genericlist', $options, $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id);
+			$attr = array('list.attr' => 'class="'.$this->class.'" ',
+                                        'list.select' => $this->value, 
+                                        'option.key' => 'value',
+                                        'option.text' => 'text',
+                                        'id' => $this->id
+                                );                                               
+     
+            		$attr["list.attr"] .= !empty($this->size) ? ' size="' . $this->size . '"' : '';
+                        $attr["list.attr"] .= !empty($this->onchange) ? ' onchange="' . $this->onchange. '"' : '';
+                        $attr["list.attr"] .= $this->getAttribute("style", false) ?  "style='".$this->getAttribute("style")."'" : '';
+                	$attr["list.attr"] .= $this->multiple ? ' multiple="multiple" ' : '';
+                        if (($this->value=="" || $this->value==-1)  && $this->multiple){
+                            unset($attr["list.select"]);
+                        }
+                        
+			//$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);
+
+			return JHTML::_('select.genericlist', $options, $this->name, $attr); //'class="inputbox"', 'value', 'text', $this->value, $this->id);
 		}
 		else
 		{
@@ -52,9 +85,10 @@ class JFormFieldJevtimezone extends JFormField
 			 * html_entity_decode was used in place of htmlspecialchars_decode because
 			 * htmlspecialchars_decode is not compatible with PHP 4
 			 */
-			$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
+			
+			$value = htmlspecialchars(html_entity_decode($this->value, ENT_QUOTES), ENT_QUOTES);
 
-			return '<input type="text" name="' . $this->name . '" id="' . $this->id. '" value="' . $this->value . '" />';
+			return '<input type="text" name="' . $this->name . '" id="' . $this->id. '" value="' . $value . '" />';
 		}
 
 	}

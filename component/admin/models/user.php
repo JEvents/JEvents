@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: user.php 1406 2010-11-09 11:48:51Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,7 +13,10 @@
 defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
+
 JLoader::import("jevuser",JPATH_COMPONENT_ADMINISTRATOR."/tables/");
+
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * @package		Joom!Fish
@@ -45,9 +48,10 @@ class AdminUserModelUser extends JModelLegacy
 	 */
 	function __construct() {
 		parent::__construct();
-		
+		$jinput = JFactory::getApplication()->input;
+
 		$app	= JFactory::getApplication();
-		$option = JRequest::getVar('option', '');
+		$option = $jinput->get('option', '');
 		// Get the pagination request variables
 		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
@@ -103,7 +107,7 @@ class AdminUserModelUser extends JModelLegacy
 	 */
 	function getUser() {
 		$cid = JRequest::getVar("cid",array(0));
-		JArrayHelper::toInteger($cid);
+		$cid = ArrayHelper::toInteger($cid);
 		if (count($cid)>0){
 			$id=$cid[0];
 		}
@@ -129,7 +133,7 @@ class AdminUserModelUser extends JModelLegacy
 		$success =  $user->save($data);
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$set = $dispatcher->trigger('afterSaveUser', array ($user));
 	}
 		return $success;

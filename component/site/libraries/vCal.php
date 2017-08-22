@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: vCal.php 1085 2010-07-26 17:07:27Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -28,7 +28,7 @@ class vEvent// extends JObject
 	var $migration = false;
 
 	//function __construct($event) {
-	function vEvent($event, $migration = false) {
+	public function __construct($event, $migration = false) {
 		// to track migration from 1.4 to 1.5 events
 		$this->migration = $migration;
 
@@ -156,11 +156,11 @@ class vEvent// extends JObject
 		$this->addProperty("DTSTAMP",date("Ymd\THi00")."Z");
 	}
 
-	function addProperty($key,$prop) {
+	public function addProperty($key,$prop) {
 		$this->properties[$key]=$prop;
 	}
 
-	function setDescription($desc) {
+	public function setDescription($desc) {
 		if ($this->migration){
 			$description = "##migration##".base64_encode($desc);
 			$this->addProperty("DESCRIPTION",$description);
@@ -189,10 +189,10 @@ class vEvent// extends JObject
 		}
 	}
 
-	function getEvent() {
+	public function getEvent() {
 		$output = "";
 		$output .=  "BEGIN:VEVENT\r\n";
-		$showBR = intval(JRequest::getVar('showBR', '0'));
+		$showBR = (int) JRequest::getVar('showBR', '0');
 		if ($showBR) $output.= "<br/>";
 
 		foreach($this->properties as $key => $value) {
@@ -219,7 +219,7 @@ class vCal //extends JObject
 	* @param filename for download
 	*/
 	//function __construct($vCalFileName) {
-	function vCal($vCalFileName, $migration=false){
+	public function __construct($vCalFileName, $migration=false){
 		$this->properties = array();
 		$this->filename = $vCalFileName;
 		$this->events = array();
@@ -228,16 +228,16 @@ class vCal //extends JObject
 	}
 
 
-	function addProperty($key,$prop) {
+	public function addProperty($key,$prop) {
 		$this->properties[$key]=$prop;
 	}
 
-	function addEvent($event){
+	public function addEvent($event){
 		$this->events[] = new vEvent($event, $this->migration);
 	}
 
-	function getVCal() {
-		$showBR = intval(JRequest::getVar('showBR', '0'));
+	public function getVCal() {
+		$showBR = (int)JRequest::getVar('showBR', '0');
 
 		$output = "";
 		$output .=  "BEGIN:VCALENDAR\r\n";
@@ -262,7 +262,7 @@ class vCal //extends JObject
 		return $output;
 	}
 
-	function getFileName() {
+	public function getFileName() {
 		return $this->filename;
 	}
 }

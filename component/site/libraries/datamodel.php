@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: datamodel.php 3553 2012-04-20 10:18:59Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,7 +13,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\String\StringHelper;
+
 class JEventsDataModel {
+
 	var $myItemid = null;
 	var $catidsOut = "";
 	var $catids = null;
@@ -29,9 +32,10 @@ class JEventsDataModel {
 
 	var $queryModel;
 
-	function  JEventsDataModel($dbmodel=null){
+	public function __construct($dbmodel=null){
+
 		$cfg = JEVConfig::getInstance();
-		
+
 		$user = JFactory::getUser();
 		$this->aid = JEVHelper::getAid($user);
 
@@ -90,6 +94,16 @@ class JEventsDataModel {
 		}
 		else {
 			// If accessing this function from outside the component then I must load suitable parameters
+			// We may be calling from a Jevents module so we should use the target menu item if available
+			$registry	= JRegistry::getInstance("jevents");
+			$moduleparams = $registry->get("jevents.moduleparams", false);
+			$moduleid = $registry->get("jevents.moduleid","");
+			if ($moduleparams && $moduleparams->get("target_itemid",0)>0 && $moduleid){
+				$menuitem = $menu->getItem($moduleparams->get("target_itemid",0));
+				if (!is_null($menuitem) && $menuitem->component==JEV_COM_COMPONENT){
+					$this->myItemid = $moduleparams->get("target_itemid",0);
+				}
+			}
 			$params = $menu->getParams($this->myItemid);
 		}
 
@@ -458,7 +472,7 @@ class JEventsDataModel {
 		$data = array();
 		$data ["year"]=$year;
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -533,6 +547,7 @@ class JEventsDataModel {
 			$data["total"]=0;
 			$data ["limitstart"]=0;
 		}
+
 
 		$data["rows"] = $this->queryModel->listIcalEventsByRange( $start,$end, $data ["limitstart"], $data ["limit"],  $cfg->get('com_showrepeats'), $order);
 
@@ -629,7 +644,7 @@ class JEventsDataModel {
 
 	function _populateHourData(&$data, $rows, $target_date){
 		$num_events			= count( $rows );
-
+                $params	=  JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$data['hours']=array();
 		$data['hours']['timeless']=array();
 		$data['hours']['timeless']['events']=array();
@@ -659,7 +674,7 @@ class JEventsDataModel {
 						// Ignore timeless events
 					}
 					// if first hour of the day get the previous days events here!!
-					else if ($h==0 && $row->getUnixStartDate()<$target_date){
+					else if ($params->get("daylist_multifirst", 0) && $h==0 && $row->getUnixStartDate()<$target_date){
 						$count = count($data['hours'][$h]['events']);
 						$data['hours'][$h]['events'][$count]=$row;
 						$row->alreadyHourSlotted = 1;
@@ -733,7 +748,7 @@ class JEventsDataModel {
 		if( $num_row ){
 
 			// process the new plugins
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetEventData', array (& $row));
 
 			$params =new JRegistry(null);
@@ -772,7 +787,7 @@ class JEventsDataModel {
 				$tmprow = new stdClass();
 				$tmprow->text = $row->location();
 
-				$dispatcher	= JDispatcher::getInstance();
+				$dispatcher	= JEventDispatcher::getInstance();
 
 				$dispatcher->trigger( 'onContentPrepare', array('com_jevents', &$tmprow, &$params, 0 ));
 				
@@ -860,7 +875,7 @@ class JEventsDataModel {
 
 			// See if a plugin can find our missing event - maybe on another menu item
 			JPluginHelper::importPlugin('jevents');
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$dispatcher->trigger('onMissingEvent', array (& $row,$rpid, $jevtype, $year, $month, $day, $uid));
 
 			return null;
@@ -871,7 +886,7 @@ class JEventsDataModel {
 		return $this->queryModel->accessibleCategoryList($aid, $catids, $catidList, $allLanguages);
 	}
 
-	function getCatData( $catids, $showRepeats=true, $limit=0, $limitstart=0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
+	function getCatData( $catids, $showRepeats=true, $limit = 0, $limitstart = 0, $order="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"){
 		$data = array();
 
 		$Itemid = JEVHelper::getItemid();
@@ -888,8 +903,8 @@ class JEventsDataModel {
 		if ( $data ['total']  <= $limit  || $limitstart > $data ['total']) {
 			$limitstart = 0;
 		}
-		$data['limit']=$limit;
-		$data['limitstart']=$limitstart;
+		$data['limit'] = $limit;
+		$data['limitstart'] = $limitstart;
 
 		$rows = $this->queryModel->listIcalEventsByCat( $catids,$showRepeats,$counter, $limitstart, $limit , $order);
 

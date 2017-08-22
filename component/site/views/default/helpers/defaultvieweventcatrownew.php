@@ -1,7 +1,10 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\String\StringHelper;
+
 function DefaultViewEventCatRowNew($view,$row,$args="") {
+	$jinput = JFactory::getApplication()->input;
 	// I choost not to use $row->fgcolor()
 	$fgcolor="inherit";
 
@@ -10,7 +13,7 @@ function DefaultViewEventCatRowNew($view,$row,$args="") {
 	$vars["catids"]=$row->catid();
 
 	if (array_key_exists("Itemid", $vars) && is_null($vars["Itemid"])) {
-		$vars["Itemid"] = JRequest::getInt("Itemid",0);
+		$vars["Itemid"] = $jinput->getInt("Itemid",0);
 	}
 	$eventlink = "index.php?";
 	foreach ($vars as $key=>$val) {

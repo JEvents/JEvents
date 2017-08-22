@@ -5,7 +5,7 @@
  *
  * @version     $Id: getJSON.php 3549 2013-10-25 09:26:21Z carcam $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -44,12 +44,13 @@ class GetjsonController extends JControllerLegacy
 
 	function eventdata()
 	{
+		$jinput = JFactory::getApplication()->input;
 
 		$this->datamodel = new JEventsDataModel();
 
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$start = JRequest::getVar('start', "$year-$month-$day");
-		$end = JRequest::getVar('end', "$year-$month-$day");
+		$start = $jinput->getString('start', "$year-$month-$day");
+		$end = $jinput->getString('end', "$year-$month-$day");
 		$limitstart = 0;
 		$limit = 0;
 
@@ -81,7 +82,7 @@ class GetjsonController extends JControllerLegacy
 		}
 
 		// Get the document object.
-		$document = & JFactory::getDocument();
+		$document =  JFactory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding('application/json');

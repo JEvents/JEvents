@@ -1,9 +1,9 @@
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -342,7 +342,7 @@ function checkEndTime() {
 	endDate.setMinutes(endtimeparts[1]);
 
 	var jevmultiday = document.getElementById('jevmultiday');
-	if (end_date.value>start_date.value){
+	if (endDate.dateFromYMD(end_date.value)>startDate.dateFromYMD(start_date.value)){
 		jevmultiday.style.display='block';
 	}
 	else {
@@ -376,6 +376,13 @@ function checkDates(elem){
 	checkEndTime();
 	checkUntil();
 	updateRepeatWarning();
+        // update the by day type checkboxes
+        fixRepeatDates();
+        try {
+		initialiseBootstrapButtons()
+	}
+	catch(e) {};
+
 }
 
 function reformatStartEndDates() {
@@ -424,7 +431,13 @@ function setEndDateWhenNotRepeating(){
 	
 	endDate = new Date();
 	endDate = endDate.dateFromYMD(end_date.value);	
-	
+
+	// if the end date is not visible then always set the end date to match the start date
+	enddate_container = jQuery('.jevenddate');
+	if (enddate_container.css("display")=="none"){
+		end_date.value = start_date.value;
+	}
+
 	if (startDate>endDate){
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
@@ -565,6 +578,7 @@ function toggleAllDayEvent()
 			epm.disabled=false;
 
 			jQuery('.jevendtime').css('display','inline-block');
+			jQuery('.jevnoeendtime').css('display','inline-block');
 
 		}
 		else {
@@ -655,20 +669,26 @@ function toggleNoEndTime(){
 function toggleGreyBackground(inputtype,inputelem, tomatch) {
 	if (inputtype==tomatch){
 		inputelem.disabled = false;
-		inputelem.closest('fieldset').css("background-color","#ffffff");
+		//inputelem.closest('fieldset').css("background-color","#ffffff");
+                inputelem.closest('fieldset').removeClass("roundedgrey");
 		inputelem.closest('fieldset').css("opacity","1");
 		if (inputelem.closest('fieldset').find('legend')){
-			inputelem.closest('fieldset').find('legend').css("background-color","#ffffff");
-			jevjq("#"+inputtype).css("background-color","#ffffff");
+			//inputelem.closest('fieldset').find('legend').css("background-color","#ffffff");
+			//jevjq("#"+inputtype).css("background-color","#ffffff");
+			inputelem.closest('fieldset').find('legend').removeClass("roundedgrey");
+			jevjq("#"+inputtype).removeClass("roundedgrey");
 		}
 	}
 	else {
 		inputelem.disabled = true;
-		inputelem.closest('fieldset').css("background-color","#dddddd");
+		//inputelem.closest('fieldset').css("background-color","#dddddd");
+                inputelem.closest('fieldset').addClass("roundedgrey");
 		inputelem.closest('fieldset').css("opacity","0.7");
 		if (inputelem.closest('fieldset').find('legend')){
-			inputelem.closest('fieldset').find('legend').css("background-color","#dddddd");
-			jevjq("#"+inputtype).css("background-color","#dddddd");
+			//inputelem.closest('fieldset').find('legend').css("background-color","#dddddd");
+			//jevjq("#"+inputtype).css("background-color","#dddddd");
+			inputelem.closest('fieldset').find('legend').addClass("roundedgrey");
+			jevjq("#"+inputtype).addClass("roundedgrey");
 		}
 	}
 }
@@ -709,7 +729,6 @@ function toggleWhichBy(wb)
 		initialiseBootstrapButtons()
 	}
 	catch(e) {};
-
 }
 
 function toggleFreq(freq , setup)
@@ -796,6 +815,7 @@ function toggleFreq(freq , setup)
 				weekofmonth.style.display="none";
 				// always set week nums false for weekly events
 				toggleWeekNums(false);
+                                fixRepeatDates(false);
 			}
 			break;
 		case "DAILY":
@@ -955,6 +975,17 @@ function updateRepeatWarning(){
 	}
 }
 
+function toggleWeeknumDirection () {
+    if (jevjq('#weekofmonth input[name="bd_direction"]').attr('checked')){
+        jevjq('.weeknameforward').css('display','none');
+        jevjq('.weeknameback').css('display','inline');
+    }
+    else {
+        jevjq('.weeknameforward').css('display','inline');
+        jevjq('.weeknameback').css('display','none');
+    }
+}
+
 /* Check for booking conflicts */
 
 jQuery.fn.formToJson =  function(){
@@ -1062,7 +1093,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 jevjq(document).on('ready', function() {
 	try {
 		if(Browser.firefox) {
-			jevjq("#adminForm").autocomplete='off';
+			jevjq("#adminForm").attr("autocomplete",'off');
 		}
 	}
 	catch(e){	
@@ -1083,6 +1114,13 @@ jevjq(document).on('ready', function() {
 	jevjq('#cu_until').on('mousedown', function(){enableRepeatUntil();});
 	jevjq('#cu_count').on('click', function(){enableRepeatCount();});
 	jevjq('#cu_count').on('mousedown', function(){enableRepeatCount();});
+        
+        // setup rounded grey response
+        jevjq('#byyearday, #bymonth, #byweekno, #bymonthday, #byday, #byirregular, #bysetpos').on('click', function() {
+            jevjq('#'+this.id).find('legend input[name="whichby"]').attr('checked', true);
+            toggleWhichBy(this.id);
+        });
+                    
 });
 
 function enableRepeatUntil() {

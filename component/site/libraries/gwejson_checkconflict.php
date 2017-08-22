@@ -1,6 +1,6 @@
 <?php
 /**
-* @copyright	Copyright (C) 2015-2015 GWE Systems Ltd. All rights reserved.
+* @copyright	Copyright (C) 2015-2017 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
@@ -9,6 +9,14 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	//$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
 	//if (JFile::exists($file4)) JFile::delete($file4);
 
+        // Some SEF addons leave Itemid blank here so force the active menu!
+	$ttItemid = 	JRequest::getVar("ttItemid", 0);
+	if ($ttItemid>0 && JRequest::getVar("Itemid", 0)==0){
+		$menu = JFactory::getApplication()->getMenu();
+		JRequest::setVar("Itemid", $ttItemid);
+		$menu->setActive($ttItemid);
+	}
+    
 	$returnData->allclear = 1;
 
 	ini_set("display_errors", 0);
@@ -172,7 +180,10 @@ function simulateSaveEvent($requestObject)
 	$row = false;
 
 	// do dry run of event saving!
-	if ($event = SaveIcalEvent::save($array, $queryModel, $rrule, true))
+	ob_start();
+	$event = SaveIcalEvent::save($array, $queryModel, $rrule, true);
+	ob_end_clean();
+	if ($event)
 	{
 
 		$row = new jIcalEventDB($event);
@@ -471,7 +482,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
@@ -562,8 +573,6 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 			}
 			$sql .= " LIMIT 100";
 			
-
-			
 			$db->setQuery($sql);
 			$conflicts = $db->loadObjectList();
 			if ($conflicts && count($conflicts) > 0)
@@ -577,6 +586,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 							$catname[] = $catinfo[$cc]->title;
 						}
 					}
+					//TODO $testevent is not set? We need to look at actually setting it as it is pointless at present.
 					$cat = count($catname)>0 ? implode(", ",$catname) : $testevent->getCategoryName();
 					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
 				}
@@ -586,7 +596,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;

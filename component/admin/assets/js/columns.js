@@ -10,7 +10,7 @@ function setupColumnChoices(){
 			opt.css('color',"red");
 			return;
 		}
-		opt.css('cursor',"pointer");
+		opt.css('cursor',"move");
 		opt.on("click",function(event){
 			var span = jQuery(this).find('span:first-child');
 			var id = span.html();
@@ -49,13 +49,18 @@ function setupColumnLis(){
 		},
 		update: function(event, ui){
 			setupCustomColumnField("#jevcolumns");
-		}
-	});
+		},
+                cancel:'#columnmatches_heading',
+                handle:'.sortablehandle'
+	});        
 
 	var lis = jQuery("#columnmatches > div");
 	
 	lis.each(function(i){
 		item = jQuery(this);
+                if (item.prop("id")=="columnmatches_heading"){
+                    return;
+                }
 		item.css("cursor","pointer");
 		// remove event handlers
 		item.off("click");
@@ -101,6 +106,9 @@ function setupCustomColumnField(fieldid){
 	var lis = jQuery("#columnmatches div");
 	lis.each(function( i){
 		if (!jQuery(this).prop("id")) return;
+                if (jQuery(this).prop("id")=="columnmatches_heading"){
+                    return;
+                }                
 		var item = jQuery(this).clone();
 		var input = item.find('input');
 		var value = input.val();

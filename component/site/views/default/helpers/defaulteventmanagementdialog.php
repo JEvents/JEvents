@@ -10,8 +10,9 @@ defined('_JEXEC') or die('Restricted access');
 function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 
 	JevHtmlBootstrap::modal("action_dialogJQ".$row->rp_id());
-
+	$jinput = JFactory::getApplication()->input;
 	$user = JFactory::getUser();
+
 	if ($user->get("id")==0) return "";
 	if( (JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row)|| JEVHelper::canDeleteEvent($row)) ) { 
 
@@ -25,7 +26,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 			$popupw = $params->get("popupw",800);
 			$popuph = $params->get("popuph",600);
 		}
-		if (JRequest::getInt("pop",0)){
+		if ($jinput->getInt("pop", 0)){
 			// do not call the modal scripts if already in a popup window!
 			$popup=false;
 		}
@@ -40,7 +41,7 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 		$editCopyLink = $popup?"javascript:jevEditPopupNoHeader('".$editCopyLink."');":$editCopyLink;
 		$deleteImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_EVENT"),null,true);
 		$deleteLink = $row->deleteLink();
-		if ($row->until()!=$row->dtstart() || $row->count()>1){
+		if ($row->until()!=$row->dtstart() || $row->count()>1 || $row->freq()=="IRREGULAR"){
 
 			$hasrepeat = true;
 

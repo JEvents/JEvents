@@ -15,5 +15,5 @@ if (!isset($this->jevviewdone)){
 	$this->jevviewdone = true;
 	
 	$this->loadModules("jevposteditevent");
-	
+        
 }

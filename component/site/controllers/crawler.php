@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: crawler.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -28,15 +28,17 @@ class CrawlerController extends JControllerLegacy   {
 	}
 
 	function listevents() {
-
-		JRequest::setVar("tmpl","component");
+		$jinput = JFactory::getApplication()->input;
+		$jinput->set("tmpl", "component");
 		list($year,$month,$day) = JEVHelper::getYMD();
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( JRequest::getVar( 	'start', 	 JRequest::getVar( 	'limitstart', 	0 ) ) );
+		$limitstart = intval( $jinput->getInt('start', $jinput->getInt('limitstart', 	0)));
 		
 		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
 		$limit = $params->get("com_calEventListRowsPpg",15);
+		// Crawler should list at least 100 events for efficiency
+		$limit = intval($limit)<100 ? 100 : $limit;
 
 		$Itemid	= JEVHelper::getItemid();
 

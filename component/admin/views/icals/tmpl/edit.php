@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: edit.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,9 +36,13 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
             $label = $this->editItem->label;
             $icaltype = $this->editItem->icaltype;
             if ($srcURL == "")
-                $filemessage = JText::_("Loaded from Local file called" . " ");
+			{
+                $filemessage = JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_LOADED_FROM_LOCAL_FILE_CALLLED") . " ";
+			}
             else
+			{
                 $filemessage = JText::_('FROM_FILE');
+			}
         }
         else {
             $id = 0;

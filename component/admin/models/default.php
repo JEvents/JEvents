@@ -30,9 +30,9 @@ class DefaultsModelDefault extends JModelLegacy
 	function __construct()
 	{
 		parent::__construct();
-
-		$id = JRequest::getInt("id");
-		$edit	= JRequest::getVar('edit',true);
+		$jinput = JFactory::getApplication()->input;
+		$id = $jinput->getInt("id");
+		$edit	= $jinput->getBool('edit', true);
 		if($edit){
 			$this->setId($id);
 		}
@@ -144,7 +144,7 @@ class DefaultsModelDefault extends JModelLegacy
 			$default->title				= "";
 			$default->subject			= "";
 			$default->value				= "";
-			$detaulf->_state			= 1;
+			$default->_state			= 1;
 			$this->_data				= $default;
 			return (boolean) $this->_data;
 		}

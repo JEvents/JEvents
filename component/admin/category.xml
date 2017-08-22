@@ -12,13 +12,22 @@
 				label="JEV_COLOR_PICKER"
 				description="JEV_CHOOSE_CATEGORY_COLOUR"
 				/>
+        			<!-- implement later
+			<field
+				name="preferred_itemid"
+				type="jevmenu"
+				label="JEV_PREFERRED_MENU_ITEM"
+				description="JEV_PREFERRED_MENU_ITEM_DESC"
+				strict="1"
+				/>
+				//-->
 			<field
 				name="overlaps"
 				type="jevboolean"
 				default="0"
 				class="btn-group"
 				label="JEV_BLOCK_OVERLAPS"
-				description="JEV_BLOCK_OVERLAPS"
+				description="JEV_BLOCK_OVERLAPS_CATEGORY_DESC"
 				/>
 			<!--//
 			<field
@@ -26,16 +35,6 @@
 				type="jevfaicon"
 				label="JEV_CATEGORY_ICON"
 				description="JEV_CATEGORY_ICON_TIP"
-				/>
-				//-->
-			<!--
-			<field
-				name="targetmenuid"
-				type="jevmenu"
-				default="0"
-				extension="com_jevents"
-				label="JEV_PREFERRED_MENU_ITEM"
-				description="JEV_PREFERRED_MENU_ITEM_DESC"
 				/>
 				//-->
 			<field

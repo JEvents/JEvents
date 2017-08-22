@@ -1,13 +1,13 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  * 
  * This file based on Joomla config component Copyright (C) 2005 - 2008 Open Source Matters.
  *
  * @version     $Id: params.php 2214 2011-06-20 13:42:27Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -31,6 +31,7 @@ if (!defined("JEVADPARMOD"))
 		function &getParams()
 		{
 			static $instance;
+			$jinput = JFactory::getApplication()->input;
 
 			if ($instance == null)
 			{
@@ -40,12 +41,12 @@ if (!defined("JEVADPARMOD"))
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{
-					JError::raiseWarning(500, 'Not a valid component');
+					JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
 					return false;
 				}
 
 				// work out file path
-				if ($path = JRequest::getString('path'))
+				if ($path = $jinput->getString('path'))
 				{
 					$path = JPath::clean(JPATH_SITE . '/' . $path);
 					JPath::check($path);

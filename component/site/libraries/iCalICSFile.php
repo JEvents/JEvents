@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalICSFile.php 3474 2012-04-03 13:40:53Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
+use Joomla\String\StringHelper;
 
 class iCalICSFile extends JTable  {
 
@@ -53,12 +53,12 @@ class iCalICSFile extends JTable  {
 	/**
 	 * Null Constructor
 	 */
-	function iCalICSFile( &$db ) {
+	public function __construct( &$db ) {
 		parent::__construct( '#__jevents_icsfile', 'ics_id', $db );
 		$this->access = intval(JEVHelper::getBaseAccess());
 	}
 
-	function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
+	public function _setup($icsid,$catid,$access=0,$state=1, $autorefresh=0, $ignoreembedcat=0){
 		if ($icsid>0) $this->ics_id = $icsid;
 		$this->created = date( 'Y-m-d H:i:s' );
 		$this->refreshed = $this->created;
@@ -69,7 +69,7 @@ class iCalICSFile extends JTable  {
 		$this->ignoreembedcat = $ignoreembedcat;
 	}
 
-	function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
+	public function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
 		$db	= JFactory::getDBO();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state);
@@ -133,12 +133,13 @@ RAWTEXT;
 				}
 			}
 		}
-
-		$urlParts = parse_url($uploadURL);
-		$pathParts = pathinfo($urlParts['path']);
 		/*
-		if (isset($pathParts['basename'])) $temp->filename =  $pathParts['basename'];
-		else $temp->filename = $uploadURL;
+				$urlParts = parse_url($uploadURL);
+
+				$pathParts = pathinfo($urlParts['path']);
+
+				if (isset($pathParts['basename'])) $temp->filename =  $pathParts['basename'];
+				else $temp->filename = $uploadURL;
 		*/
 		$temp->filename = 'Remote-' . md5($uploadURL);
 		$temp->icaltype=0;  // i.e. from URL
@@ -183,7 +184,7 @@ RAWTEXT;
 	/**
 	 * Used to create Ical from raw strring
 	 */
-	function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
+	public function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
 		$db	= JFactory::getDBO();
 		$temp = null;
 		$temp = new iCalICSFile($db);
@@ -210,13 +211,13 @@ RAWTEXT;
 	 * Method that updates details about the ical but does not touch the events contained
 	 *
 	 */
-	function updateDetails(){
+	public function updateDetails(){
 		if (parent::store() && $this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
 			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 	}
 
@@ -225,7 +226,11 @@ RAWTEXT;
 	 *
 	 * @param int $catid - forced category for the underlying events
 	 */
-	function store($catid=false , $cleanup=true , $flush =true) {
+	public function store($catid=false , $cleanup=true , $flush =true) {
+
+		$user = JFactory::getUser();
+		$guest = $user->get('guest');
+
 		@ini_set("memory_limit","256M");
 		@ini_set("max_execution_time","300");
 		
@@ -259,7 +264,7 @@ RAWTEXT;
 			$db	= JFactory::getDBO();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
-			$db->query();
+			$db->execute();
 		}
 
 		// find the full set of ids currently in the calendar so taht we can remove cancelled ones
@@ -285,8 +290,8 @@ RAWTEXT;
 								$cat->published=1;
 								$cat->check();
 								if (!$cat->store()){
-									var_dump($cat->getErrors());
-									die("failed to auto create category $ct");
+									//var_dump($cat->getErrors());
+									die(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_FAILED_TO_CREATE_CAT', $ct));
 								}
 							}
 						}
@@ -360,7 +365,7 @@ RAWTEXT;
 				}
 
 				// trigger post save plugins e.g. AutoTweet
-				$dispatcher     = JDispatcher::getInstance();
+				$dispatcher     = JEventDispatcher::getInstance();
 				JPluginHelper::importPlugin("jevents");
 				if ($matchingEvent) {
 					JRequest::setVar("evid", $vevent->ev_id);
@@ -472,38 +477,43 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
-					$db->query();
+					$db->execute();
 				}
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
-				
-				JFactory::getApplication()->enqueueMessage(count($existingevents) . ' deleted iCal events removed');
+				$ex_count = count($existingevents);
+				if($guest === 1)
+				{
+					JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+				}
 			}
 		}
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
-		
-		JFactory::getApplication()->enqueueMessage($count . ' iCal events processed');
+		if($guest === 1)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
+		}
 	}
 
 	// find if icsFile already imported
-	function isDuplicate(){
+	public function isDuplicate(){
 		$sql = "SELECT ics_id from #__jevents_icsfile as ics WHERE ics.label = " . $this->_db->quote($this->label) ;
 		$this->_db->setQuery($sql);
 		$matches = $this->_db->loadObjectList();
@@ -515,7 +525,7 @@ RAWTEXT;
 	}
 
 	// Method to store the events WITHOUT storing  the calendar itself - used in frontend imports
-	function storeEvents($catid=false , $flush =true) {
+	public function storeEvents($catid=false , $flush =true) {
 
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
@@ -554,23 +564,23 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_rrule WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_repetition WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				$query = "DELETE FROM #__jevents_exception WHERE eventid IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				if (JString::strlen($detailidstring)>0){
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery( $query);
-					$db->query();
+					$db->execute();
 
 					// I also need to clean out associated custom data
-					$dispatcher	= JDispatcher::getInstance();
+					$dispatcher	= JEventDispatcher::getInstance();
 					// just incase we don't have jevents plugins registered yet
 					JPluginHelper::importPlugin("jevents");
 					$res = $dispatcher->trigger( 'onDeleteEventDetails' , array($detailidstring));
@@ -578,7 +588,7 @@ RAWTEXT;
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
 				$db->setQuery( $query);
-				$db->query();
+				$db->execute();
 
 				// I also need to delete custom data
 				$res = $dispatcher->trigger( 'onDeleteCustomEvent' , array(&$veventidstring));
@@ -594,7 +604,7 @@ RAWTEXT;
 						if ($params->get("multicategory",0) && count($evcat)>1){
 							$vevent->catid = array();
 							foreach ($evcat as $ct){
-								$vevent->catid[] =  $categories[$ct]->id;
+                                                            $vevent->catid[] =  $categories[trim($ct)]->id;
 							}							
 						}
 						if ($params->get("multicategory",0) && count($evcat)==1){

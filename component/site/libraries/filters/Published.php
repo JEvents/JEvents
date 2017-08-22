@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Published.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -27,9 +27,11 @@ class jevPublishedFilter extends jevFilter
 	const filterType = "published";
 
 	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
-                $this->filterType=self::filterType;    
-                $task = JRequest::getVar( 'view', '') . '.' . JRequest::getVar( 'layout', '');
-                if ($task == "admin.listevents") { $default_filter = "-1"; } else { $default_filter = "0";}
+		$jinput = JFactory::getApplication()->input;
+
+		$this->filterType=self::filterType;
+		$task = $jinput->get('view', '') . '.' . $jinput->get('layout', '');
+		if ($task == "admin.listevents") { $default_filter = "-1"; } else { $default_filter = "0";}
 		
 		$this->filterNullValue= $default_filter;
 		$this->allLabel = JText::_( 'ALL' );
@@ -40,9 +42,9 @@ class jevPublishedFilter extends jevFilter
 		// this is a special filter - we always want memory here since only used in frontend management
 		
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
-		JRequest::setVar($this->filterType.'_fv',$this->filter_value);
+		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
-		parent::jevFilter($tablename, "state", $isstring);
+		parent::__construct($tablename, "state", $isstring);
 		
 		// event creators can look at their own unpublished events
 		if (!JEVHelper::isEventCreator()){

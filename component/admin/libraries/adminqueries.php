@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: adminqueries.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */ 
@@ -38,7 +38,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		{
 			$extrajoin = "\n LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = ev.ev_id";
 			$extrajoin .= "\n LEFT JOIN  #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$extrawhere = " AND  catmapcat.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user));
+			$extrawhere = " AND catmapcat.access " . ' IN (' . JEVHelper::getAid($user) . ')' ;
 			$extrawhere .= " AND catmap.catid IN(" . $this->accessibleCategoryList() . ")";
 			$catwhere = "\n WHERE 1 ";
 		}
@@ -175,9 +175,10 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n FROM #__jevents_icsfile as ical"
 		. "\n WHERE ical.icaltype = '2'"
 		. "\n AND ical.state = 1"		
-		. "\n AND ical.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
-
-		$dispatcher	= JDispatcher::getInstance();
+		. "\n AND ical.access  " .' IN (' . JEVHelper::getAid($user) . ')';
+                $query .= "\n ORDER BY isdefault desc, label asc"  ;
+                
+		$dispatcher	= JEventDispatcher::getInstance();
 		$dispatcher->trigger( 'onSelectIcals', array( &$query) );		
 		
 		$db->setQuery( $query );

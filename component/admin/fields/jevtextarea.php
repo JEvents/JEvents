@@ -1,6 +1,6 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  */
 
@@ -14,7 +14,7 @@ class JFormFieldJevtextarea extends JFormFieldTextarea
 {
 	protected function getInput()
 	{
-		$this->value = str_replace('<br />', "\n", JText::_($this->value));
+		$this->value = str_replace('<br />', "\n", strpos($this->value, " ")>0 ? $this->value : JText::_($this->value));
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());

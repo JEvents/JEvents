@@ -6,7 +6,7 @@ class AlternativeBuildMonthSelect {
 	var $view = null;
 	var $result = "";
 	
-	function AlternativeBuildMonthSelect($view, $link, $month, $year){
+	public function __construct($view, $link, $month, $year){
 		for( $a=-6; $a<6; $a++ ){
 			$m = $month+$a;
 			$y=$year;

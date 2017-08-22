@@ -1,15 +1,16 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevents.php 3552 2012-04-20 09:41:53Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+$jinput = JFactory::getApplication()->input;
 
 if (version_compare(phpversion(), '5.0.0', '<')===true) {
 	echo  '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">'.JText::_("JEV_INVALID_PHP1").'</h3></div>'.JText::_("JEV_INVALID_PHP2").'</div>';
@@ -30,7 +31,7 @@ $version = new JVersion();
 $jver = explode( '.', $version->getShortVersion() );
 
 //version_compare(JVERSION,'1.5.0',">=")
-if (!isset($option))  $option = JRequest::getCmd("option"); // 1.6 mod
+if (!isset($option))  $option = $jinput->getCmd("option"); // 1.6 mod
 define("JEV_COM_COMPONENT",$option);
 define("JEV_COMPONENT",str_replace("com_","",$option));
 
@@ -54,7 +55,7 @@ $registry	= JRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
-/* Bug fixed in Joomla 3.2.1 ?? - not always it appears */
+/* Bug fixed in Joomla! 3.2.1 ?? - not always it appears */
 $joomlaconfig = JFactory::getConfig();
 if ($joomlaconfig->get("caching",0)){
 	$cacheController = JFactory::getCache('_system', 'callback');
@@ -71,7 +72,7 @@ if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezon
 // Thanks to ssobada
 $authorisedonly = $params->get("authorisedonly", 0);
 $user      = JFactory::getUser();
-//Stop if user is not authorised to access JEevents CPanel
+//Stop if user is not authorised to access JEvents CPanel
 if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
     return;
 }
@@ -81,7 +82,7 @@ $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 if (!version_compare(JVERSION,'1.6.0',">=")){
-	// Load Site specific language overrides - can't use getTemplate since wer'e in the admin interface
+	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
 	$db = JFactory::getDBO();
 	$query = 'SELECT template'
 	. ' FROM #__templates_menu'
@@ -93,44 +94,94 @@ if (!version_compare(JVERSION,'1.6.0',">=")){
 	$template = $db->loadResult();
 	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
 }
-// disable Zend php4 compatability mode
-@ini_set("zend.ze1_compatibility_mode","Off");
 
 // Split tasl into command and task
-$cmd = JRequest::getCmd('task', 'cpanel.show');
+$cmd    = $jinput->get('task', 'cpanel.show');
+//echo $cmd;die;
 
-if (strpos($cmd, '.') != false) {
+//Time to handle view switching for our current setup for J3.7
+$view   = $jinput->get('view', '');
+//Check the view and redirect if any match.
+if ($view === 'customcss') {
+//	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
+	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0) { $cmd = $view; }
+	$controllerName = 'CustomCss';
+}
+if ($view === 'supportinfo') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
+}
+if ($view === 'config') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=params.edit');
+}
+if ($view === 'icalevent') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.list');
+}
+if ($view === 'icaleventform') {
+	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.edit');
+}
+if ($view === 'categories')
+{
+	JFactory::getApplication()->redirect('index.php?option=com_categories&extension=com_jevents');
+}
+
+
+if (strpos($cmd, '.') !== false) {
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
 	// Define the controller name and path
 	$controllerName	= strtolower($controllerName);
 	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
-	$controllerName = "Admin".$controllerName;
+	//Ignore controller names array.
+	$ignore = array('customcss');
+	if (!in_array($controllerName, $ignore, FALSE))
+	{
+		$controllerName = "Admin" . $controllerName;
+	}
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
 	if (file_exists($controllerPath)) {
 		require_once($controllerPath);
 	} else {
-		throw new Exception(  'Invalid Controller', 500);
+		throw new Exception(  'Invalid Controller' . $controllerName, 500);
 		return false;
 	}
 } else {
 	// Base controller, just set the task
-	$controllerName = null;
+	if (isset($controllerName) && $controllerName !== '')
+	{
+		// Define the controller name and path
+		$controllerName = strtolower($controllerName);
+		$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+		$controllerName = $controllerName;
+
+		// If the controller file path exists, include it ... else lets die with a 500 error
+		if (file_exists($controllerPath))
+		{
+			require_once($controllerPath);
+		}
+		else
+		{
+			throw new Exception('Invalid Controller' . $controllerName, 500);
+
+			return false;
+		}
+	} else {
+		$controllerName = Null;
+	}
 	$task = $cmd;
 }
 
 // Make the task available later
-JRequest::setVar("jevtask",$cmd);
-JRequest::setVar("jevcmd",$cmd);
+$jinput->set("jevtask", $cmd);
+$jinput->set("jevcmd", $cmd);
 
 JPluginHelper::importPlugin("jevents");
 
 // Make this a config option - should not normally be needed
 //$db = JFactory::getDBO();
 //$db->setQuery( "SET SQL_BIG_SELECTS=1");
-//$db->query();
+//$db->execute();
 
 // Set the name for the controller and instantiate it
 $controllerClass = ucfirst($controllerName).'Controller';

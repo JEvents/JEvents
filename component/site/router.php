@@ -1,11 +1,11 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: router.php 3578 2012-05-01 14:25:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -14,6 +14,8 @@ defined('_JEXEC') or die('No Direct Access');
 JLoader::register('JEVConfig', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/config.php");
 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 JLoader::register('JSite' , JPATH_SITE.'/includes/application.php');
+
+use Joomla\String\StringHelper;
 
 function JEventsBuildRoute(&$query)
 {
@@ -74,11 +76,11 @@ function JEventsBuildRoute(&$query)
 	}
 
 	JPluginHelper::importPlugin("jevents");
-	$dispatcher	= JDispatcher::getInstance();
+	$dispatcher	= JEventDispatcher::getInstance();
 	$dispatcher->trigger( 'onJEventsRoute');
 
 	// Translatable URLs
-	if ($params->get("newsef", 0))
+	if ($params->get("newsef", 1))
 	{
 		return JEventsBuildRouteNew($query, $task);
 	}
@@ -162,7 +164,7 @@ function JEventsBuildRoute(&$query)
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title'])) {
-										//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else {
@@ -176,7 +178,7 @@ function JEventsBuildRoute(&$query)
 						/*
 						  // Can we drop the use of uid?
 						  if(isset($query['title'])) {
-						  $segments[] = JApplication::stringURLSafe($query['title']);
+						  $segments[] = JApplicationHelper::stringURLSafe($query['title']);
 						  unset($query['title']);
 						  }
 						  else {
@@ -208,7 +210,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -253,7 +255,7 @@ function JEventsBuildRoute(&$query)
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title'])) {
-							//$query['title'] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else {
@@ -365,7 +367,8 @@ function JEventsParseRoute($segments)
 			"icalrepeat.deletefuture",
 			"modlatest.rss",
 			"icalrepeat.vcal",
-			"icalevent.vcal");
+			"icalevent.vcal",
+                        "list.events");
 
 		foreach ($tasks as $tt)
 		{
@@ -378,14 +381,21 @@ function JEventsParseRoute($segments)
 	//Get the active menu item
 	$menu =  JFactory::getApplication()->getMenu();
 	$item = $menu->getActive();
-
+        
 	// Count route segments
 	$count = count($segments);
 
 	if ($count > 0)
 	{
+		if (is_numeric($segments[0])) {
+			array_unshift($segments, translatetask("icalrepeat.detail"));
+		}
 		// task
 		$task = $segments[0];
+                // note that URI decoding swaps /-/ for :
+                if (strpos($task, ":")>0){
+                    $task = str_replace(":", "-", $task);
+                }
 		if (translatetask("icalrepeat.detail")==""  && !in_array($task, $tasks) && !array_key_exists($task, $translatedTasks)){
 			//array_unshift($segments, "icalrepeat.detail");
 			array_unshift($segments, "");
@@ -550,7 +560,8 @@ function JEventsBuildRouteNew(&$query, $task)
 	$transtask = translatetask($task, $query);
 
 	$params = JComponentHelper::getParams("com_jevents");
-
+	$noeventdetailinurl = $params->get("noeventdetailinurl", 0);
+	
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -736,7 +747,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplication::stringURLSafe($query['title']), 0, 150);
+							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -839,12 +850,18 @@ function JEventsBuildRouteNew(&$query, $task)
 			break;
 
 		default:
-			$segments[] = $transtask;
+                        if (!in_array($transtask, $segments)){
+                            $segments[] = $transtask;
+                        }
 			$segments[] = "-";
 			break;
 	}
 
-
+	if ($task == "icalrepeat.detail"){
+		if ($noeventdetailinurl) {
+			array_shift($segments);
+		}
+	}
 	return $segments;
 
 }
@@ -916,12 +933,20 @@ function JEventsParseRouteNew(&$segments, $task)
 					case "icalevent.detail":
 					case "icalrepeat.detail":
 						$vars['evid'] = $segments[$slugcount];
+						$slugcount++;
 						if (!$params->get("nocatindetaillink", 0)){
 							// note that URI decoding swaps /-/ for :
-							if (count($segments) > $slugcount + 1 && $segments[$slugcount + 1] != ":")
+							if (count($segments) > $slugcount && $segments[$slugcount ] != ":")
 							{
-								$vars['catids'] = $segments[$slugcount + 1];
+								$vars['catids'] = $segments[$slugcount];
+								$slugcount++;
 							}
+						}
+						// do we have the title?
+						if (count($segments) > $slugcount && $segments[$slugcount ] != "" && $segments[$slugcount ] != "-")
+						{
+								$vars['title'] = $segments[$slugcount];
+								$slugcount++;
 						}
 						break;
 					default:

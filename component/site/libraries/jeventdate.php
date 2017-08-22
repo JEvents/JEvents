@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jeventdate.php 1784 2011-03-14 14:28:13Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -22,7 +22,7 @@ class JEventDate {
 	var $second	= null;
 	var $dim	= null;
 
-	function JEventDate( $datetime='' ) {
+	function __construct( $datetime='' ) {
 		$time = JevDate::strtotime($datetime);
 		if ($datetime!="" && $time!==false){
 			$this->date = $time;

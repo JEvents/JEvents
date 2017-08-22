@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: categoryClass.php 3157 2012-01-05 13:12:19Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -27,7 +27,7 @@ class JEventsCategory extends JTableCategory {
 		$cfg = JEVConfig::getInstance();
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
-		
+
 		$params = new JRegistry($this->params);
 		if (!$params->get("catcolour", false)){
 			$color = array_key_exists("color",$array)?$array['color']:"#000000";
@@ -48,15 +48,15 @@ class JEventsCategory extends JTableCategory {
 			$params->set("image",$image);
 		}
 		$this->params = (string)  $params;
-				
+
 		// Fill in the gaps
 		$this->parent_id = array_key_exists("parent_id",$array)?intval($array['parent_id']):1;
-		$this->level = array_key_exists("level",$array)?intval($array['level']):1;		
+		$this->level = array_key_exists("level",$array)?intval($array['level']):1;
 		$this->extension="com_jevents";
 		$this->language ="*";
-		
+
 		$this->setLocation(1, 'last-child');
-		
+
 		return true;
 	}
 
@@ -65,7 +65,7 @@ class JEventsCategory extends JTableCategory {
 		$params = new JRegistry($this->params);
 		$this->color = $params->get("catcolour", "#000000");
 		$this->overlaps = $params->get("overlaps",0);
-		$this->admin = $params->get("admin",0);		
+		$this->admin = $params->get("admin",0);
 		$this->image = $params->get("image","");
 	}
 
@@ -73,39 +73,41 @@ class JEventsCategory extends JTableCategory {
 		$success = parent::store();
 		if ($success){
 			JPluginHelper::importPlugin("jevents");
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher	= JEventDispatcher::getInstance();
 			$set = $dispatcher->trigger('afterSaveCategory', array ($this));
-/*			
+/*
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
 			if (!$table->rebuild())
 			{
 				throw new Exception( $table->getError(), 500);
 			}
-*/			
+*/
 		}
 		return $success;
 	}
 
 	function getAdminUser(){
-		static $adminuser;
-		if (!isset($adminuser)){
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$adminuser = new  JUser($params->get("jevadmin",62));
-		}
 
 		if (isset($this->_catextra)){
 			if ($this->_catextra->admin>0){
 				$catuser = new JUser();
 				$catuser->load($this->_catextra->admin);
-				return $catuser;
 			}
 		}
 		else if (isset($this->admin) && $this->admin>0){
 			$catuser = new JUser();
-			$catuser->load($this->admin);			
-			return $catuser;
+			$catuser->load($this->admin);
 		}
-		return $adminuser;
+
+		// Lets only return once.
+		if (isset($catuser) && $catuser->id !== '') {
+			return $catuser;
+		} else {
+			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$adminuser = new  JUser($params->get("jevadmin",62));
+
+			return $adminuser;
+		}
 	}
 
 	public static function categoriesTree() {

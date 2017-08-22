@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: select.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -15,6 +15,7 @@ $db = JFactory::getDBO();
 $user = JFactory::getUser();
 JHTML::_('behavior.tooltip');
 
+$jinput = JFactory::getApplication()->input;
 
 $pathIMG = JURI::Root() . 'administrator/images/';
 $pathJeventsIMG = JURI::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
@@ -22,10 +23,10 @@ $document = JFactory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
 	table.filters {margin-bottom:10px}");
-$function	= JRequest::getCmd('function', 'jSelectEvent');
+$function	= $jinput->getCmd('function', 'jSelectEvent');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php if (!JRequest::getInt("nomenu")) {?>
+	<?php if (!$jinput->getInt("nomenu")) {?>
 	<table cellpadding="4" cellspacing="0"  class="filters">
 		<tr>
 			<td align="right"><?php echo JText::_('JEV_TARGET_MENU'); ?> </td>
@@ -36,7 +37,7 @@ $function	= JRequest::getCmd('function', 'jSelectEvent');
 	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist   table table-striped">
 		<tr>
 			<th class="title" width="60%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-			<th width="40%" nowrap="nowrap"><?php echo "Repeat Date/Time"; ?></th>
+			<th width="40%" nowrap="nowrap"><?php echo JText::_('COM_JEVENTS_ICALREPEAT_REPEAT_DATE_TIME'); ?></th>
 		</tr>
 
 		<?php

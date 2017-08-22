@@ -1,10 +1,12 @@
 <?php
 
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 /**
  * HTML View class for the component frontend
@@ -147,6 +149,7 @@ class DefaultModLegendView
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
+                JArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
@@ -265,11 +268,12 @@ class DefaultModLegendView
 			$params = new JRegistry($cat->params);
 			$cat->color = $params->get("catcolour", "");
 			$cat->overlaps = $params->get("overlaps", 0);
+                        $cat->image = $params->get("image", "");
 		}
 		unset($cat);
 		
 		// any plugin based resitrictions
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		// remember NOT to reindex the list
 		$dispatcher->trigger('onGetAccessibleCategories', array(& $catlist, false));
 

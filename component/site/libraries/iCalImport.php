@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: iCalImport.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,6 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\String\StringHelper;
 
 // This class doesn't yet deal with repeating events
 
@@ -47,7 +48,7 @@ class iCalImport
 		if ($filename!=""){
 			$file = $filename;
 			if (!@file_exists($file)) {
-				
+
 				$file = JPATH_SITE."/components/$option/".$filename;
 			}
 			if (!file_exists($file)) {
@@ -73,7 +74,7 @@ class iCalImport
 
 			if (!$isFile && is_callable("curl_exec")){
 				$ch = curl_init();
-				
+
 				// Set curl option CURLOPT_HTTPAUTH, if the url includes user name and password.
 				// e.g. http://username:password@www.example.com/cal.ics
 				$username = parse_url($file, PHP_URL_USER);
@@ -81,12 +82,13 @@ class iCalImport
 				if ($username != "" && $password != "") {
 					curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 				}
-				
+
 				curl_setopt($ch, CURLOPT_URL, $file);
 				curl_setopt($ch, CURLOPT_VERBOSE, 1);
 				curl_setopt($ch, CURLOPT_POST, 0);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                                curl_setopt($ch, CURLOPT_USERAGENT, "Jevents.net");
 				curl_setopt($ch,CURLOPT_ENCODING,'');
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
@@ -170,6 +172,19 @@ class iCalImport
 				$this->rawData = $csvTrans->getRawData();
 				date_default_timezone_set($timezone);
 			} else {
+				//echo "first line = $firstLine<br/>";
+				//echo "raw imported data = ".$this->rawData."<br/>";
+				//exit();
+                                if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isAdmin()) {
+                                    $config = JFactory::getConfig();
+                                    $debug = (boolean) $config->get('debug');
+                                       if ($debug){
+                                           echo "Unable to fetch calendar data<br/>";
+                                           echo "Raw Data is ".$this->rawData;
+                                           exit();
+                                       }
+                                    return false;
+                                }
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
 				// return false so that we don't remove a valid calendar because of a bad URL load!
@@ -206,9 +221,18 @@ class iCalImport
 					}
 					continue;
 				}
-				$matches = explode(":",$vcLine,2);
-
-
+				$matches = explode(":",$vcLine,3);                                
+                                // Catch some bad Microsoft timezones e.g. "(UTC+01:00) Amsterdam, Berlin, Bern, Rom, Stockholm, Wien"
+                                if (count($matches) == 3) {
+                                    if (strpos($matches[0], ";TZID")>0){
+                                        $matches[0] = $matches[0].":".$matches[1];
+                                        $matches[1] = $matches[2];
+                                        unset($matches[2]);
+                                    }
+                                    else {
+                                        $matches = explode(":",$vcLine,2);
+                                    }
+                                }
 				if (count($matches) == 2) {
 					list($this->key,$value)= $matches;
 					//$value = str_replace('\n', "\n", $value);
@@ -285,7 +309,7 @@ class iCalImport
 
 	function add_to_cal($parent, $key, $value, $append)
 	{
-
+            
 		// I'm not interested in when the events were created/modified
 		if (($key == "DTSTAMP") or ($key == "LAST-MODIFIED") or ($key == "CREATED")) return;
 
@@ -379,17 +403,19 @@ class iCalImport
 				//$value = ereg_replace("[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]","<a href=\"\\0\">\\0</a>", $value);
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
 				if (is_string($value) && $key!="UID" && $key!="X-EXTRAINFO"){
-					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false){
-						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\-.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $value);
+					if (JString::strpos(str_replace(" ","",JString::strtolower($value)),"<ahref=")===false && JString::strpos(str_replace(" ","",JString::strtolower($value)),"<img")===false && (JString::strpos(JString::strtolower($value),"http://")!==false || JString::strpos(JString::strtolower($value),"https://")!==false)){
+                                                // See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
+                                                $value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
 					}
 				}
 
 				// Fix some stupid Microsoft IIS driven calendars which don't encode the data properly!
 				// see section 2 of http://www.the-art-of-web.com/html/character-codes/
 				if ($key=="DESCRIPTION" || $key=="SUMMARY"){
-					$len = JString::strlen($value);
+					$len = strlen($value);
 					$ulen = JString::strlen($value);
 					// Can cause problems with multibyte strings so skip this
+                                        // we need to check this since some UTF-8 characters from Google get truncates otherwise
 					if ($len == $ulen){
 						$value =str_replace(array("\205","\221","\222","\223","\224","\225","\226","\227","\240"),array("...","'","'",'"','"',"*","-","--"," "),$value);
 					}
@@ -410,7 +436,7 @@ class iCalImport
 						}
 					}
 				 }
-				 
+
 				// THIS IS NEEDED BECAUSE OF DODGY carriage returns in google calendar UID
 				// TODO check its enough
 				if ($append){
@@ -551,7 +577,7 @@ class iCalImport
 				$tz = new DateTimeZone($tz);
 				$t = new JevDate($ical_date, $tz);
 				echo "icaldate = ".$ical_date." imported date=".$t->toMySQL()."<br/>";
-				
+
 			}
 			else {
 				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -691,12 +717,12 @@ class iCalImport
 		$wtzdata["Fiji, Kamchatka, Marshall Is."] = "Etc/GMT-12";
 		$wtzdata["Chatham Islands"] = "Pacific/Chatham";
 		$wtzdata["Nuku'alofa"] = "Pacific/Tongatapu";
-		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";		
+		$wtzdata["Kiritimati"] = "Pacific/Kiritimati";
 		$wtzdata["Central Standard Time"] = "America/Chicago";
 
 		// manual entries
 		$wtzdata["GMT -0500 (Standard) / GMT -0400 (Daylight)"] = "America/New_York";
-		$wtzdata["Eastern Standard Time"] = "America/New_York";		
+		$wtzdata["Eastern Standard Time"] = "America/New_York";
 		$wtzdata["W. Europe Standard Time"] = "Europe/Paris";
 		$wtzdata["E. Europe Standard Time"] = "Europe/Helsinki";
 		$wtzdata["FLE Standard Time"] = "Europe/Helsinki";
@@ -704,11 +730,17 @@ class iCalImport
 		$wtzdata["Romance Standard Time"] = "Europe/Brussels";
 		$wtzdata["GMT Standard Time"] = "UTC";
 		$wtzdata["Tasmania Standard Time"] = "Australia/Hobart";
-		
+
+		// Lets check if a file for custom timezones exists
+		if (JFile::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php')) {
+			//Load the custom file once
+			include('ical_custom_timezones.php');
+		}
+
 		$wtzid = str_replace('"','',$wtzid);
 		return array_key_exists($wtzid,$wtzdata ) ? $wtzdata[$wtzid] : $wtzid;
 	}
-	
+
 	function handleDate($key, $value)
 	{
 		$rawvalue = $value;

@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: Justmine.php 2657 2011-09-28 11:42:45Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -28,6 +28,8 @@ class jevJustmineFilter extends jevFilter
 	const filterType = "justmine";
 
 	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
+		$jinput = JFactory::getApplication()->input;
+
 		$this->filterType=self::filterType;
 		$this->filterNullValue="0";
 		$this->yesLabel = JText::_($yesLabel);
@@ -37,9 +39,9 @@ class jevJustmineFilter extends jevFilter
 		// this is a special filter - we always want memory here since only used in frontend management
 		
 		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest( $this->filterType.'_fv_ses', $this->filterType.'_fv', $this->filterNullValue );		
-		JRequest::setVar($this->filterType.'_fv',$this->filter_value);
+		$jinput->set($this->filterType.'_fv', $this->filter_value);
 		
-		parent::jevFilter($tablename, "state", $isstring);
+		parent::__construct($tablename, "state", $isstring);
 
 	}
 

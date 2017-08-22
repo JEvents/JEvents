@@ -1,10 +1,10 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: abstract.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,6 +12,8 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
+
+use Joomla\String\StringHelper;
 
 class JEventsAbstractView extends JViewLegacy
 {
@@ -95,16 +97,6 @@ class JEventsAbstractView extends JViewLegacy
 	{
 		return parent::display($tpl);
 
-	}
-
-	/**
-	 * Routine to hide submenu suing CSS since there are no paramaters for doing so without hiding the main menu
-	 *
-	 */
-	function _hideSubmenu()
-	{
-		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		JHTML::stylesheet('hidesubmenu.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
 
 	/**
@@ -609,6 +601,9 @@ class JEventsAbstractView extends JViewLegacy
 		{
 			$this->catid = $this->defaultCat;
 		}
+		$this->primarycatid = $this->catid;
+		$this->form->setValue("primarycatid", null, $this->primarycatid);
+
 		if ($this->row->catids)
 		{
 			$this->catid = $this->row->catids;
@@ -668,6 +663,8 @@ class JEventsAbstractView extends JViewLegacy
 		}
 		$this->form->setValue("catid", null, $this->catid);
 
+		$this->form->jevdata["primarycatid"] = $this->primarycatid;
+
 		$this->form->jevdata["creator"]["users"] = false;
 		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy"
 				|| JRequest::getCmd("jevtask") == "icalevent.edit" || JRequest::getCmd("jevtask") == "icalevent.editcopy")  && isset($this->users))
@@ -683,10 +680,12 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
 
-		$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
+		$this->form->jevdata["access"]["event"] = $this->row;
+		//$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
 
 		$this->form->jevdata["state"]["ev_id"] = $this->ev_id;
-
+		$this->form->jevdata["published"]["ev_id"] = $this->ev_id;
+		
 		$this->form->jevdata["location"]["event"] = $this->row;
 		$this->form->jevdata["publish_up"]["event"] = $this->row;
 		$this->form->jevdata["publish_down"]["event"] = $this->row;
@@ -736,7 +735,7 @@ class JEventsAbstractView extends JViewLegacy
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
 		// append array to extratabs keys content, title, paneid
 		$this->extraTabs = array();
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
 
 		foreach ($this->extraTabs as $extraTab)
@@ -791,6 +790,9 @@ class JEventsAbstractView extends JViewLegacy
 			$this->searchtags[] = '{{' . $key . '_lbl}}';
 			$this->replacetags[] = $this->customfields[$key]["label"];
 			$this->blanktags[] = "";
+			$this->searchtags[] = '{{' . $key . '_showon}}';
+			$this->replacetags[] = isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : "";
+			$this->blanktags[] = "";
 
 			if (in_array($key, $requiredFields))
 			{
@@ -820,34 +822,14 @@ class JEventsAbstractView extends JViewLegacy
 				$requiredTags['label'] = $this->customfields[$key]["label"];
 				$this->requiredtags[] = $requiredTags;
 			}
-			if (JevJoomlaVersion::isCompatible("3.0"))
-			{
-				?>
-				<div class="control-group jevplugin_<?php echo $key; ?>">
-					<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-					<div class="controls" >
-						<?php echo $this->customfields[$key]["input"]; ?>
-					</div>
-				</div>
-				<?php
-			}
-			else
-			{
-				?>
-				<tr class="jevplugin_<?php echo $key; ?>">
-					<td valign="top"  width="130" align="left">
-						<?php
-						echo $this->customfields[$key]["label"];
-						?>
-					</td>
-					<td colspan="3">
-						<?php
-						echo $this->customfields[$key]["input"];
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+                        ?>
+                        <div class="control-group jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
+                                <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+                                <div class="controls" >
+                                        <?php echo $this->customfields[$key]["input"]; ?>
+                                </div>
+                        </div>
+                        <?php
 		}
 		$this->searchtags[] = "{{CUSTOMFIELDS}}";
 		$output = ob_get_clean();

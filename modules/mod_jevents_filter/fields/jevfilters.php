@@ -1,21 +1,25 @@
 <?php
 
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: jevextras.php 1785 2011-03-14 14:28:17Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+
+use Joomla\String\StringHelper;
+
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 
+include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 class JFormFieldJevfilters extends JFormFieldText
@@ -37,6 +41,11 @@ class JFormFieldJevfilters extends JFormFieldText
 	protected
 			function getInput()
 	{
+            
+		// Mkae sure jQuery is loaded
+                JHtml::_('jquery.framework');
+                JHtml::_('jquery.ui', array("core","sortable"));
+            
 		jimport('joomla.filesystem.folder');
 
 		$invalue = str_replace(" ","",$this->value);
@@ -121,10 +130,8 @@ class JFormFieldJevfilters extends JFormFieldText
 		$input .= '</div></td>
 			</tr></table>';
 
-        // load core and extra mootools
-        JHTML::_('behavior.framework');
-        JHtmlBehavior::framework();
-        JHtmlBehavior::framework(true);
+		// Include jQuery
+		JHtml::_('jquery.framework');
 
 		JEVHelper::script('modules/mod_jevents_filter/fields/filterSelect.js' );
 		

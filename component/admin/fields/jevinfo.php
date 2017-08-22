@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevinfo.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -21,6 +21,8 @@ JFormHelper::loadFieldClass('spacer');
 // Must load admin language files
 $lang = JFactory::getLanguage();
 $lang->load("com_jevents", JPATH_ADMINISTRATOR);
+
+use Joomla\String\StringHelper;
 
 /**
  * JEVMenu Field class for the JEvents Component
@@ -104,7 +106,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
-		return "<strong style='color:#993300'>" . JText::_($value) . "</strong>";
+		return "<strong style='color:#993300' id='".$this->id."' >" . JText::_($value) . "</strong>";
 
 	}
 

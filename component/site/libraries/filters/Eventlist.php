@@ -4,7 +4,7 @@
  *
  * @version     $Id: Category.php 3542 2012-04-20 08:17:05Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2013-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2013-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -16,6 +16,8 @@ class jevEventlistFilter extends jevFilter
 {
 
 	function _createfilterHTML(){
+
+		$jinput = JFactory::getApplication()->input;
 
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -33,9 +35,9 @@ class jevEventlistFilter extends jevFilter
 		$filterList["title"]=JText::_("JEV_SELECT_MATCHING_EVENT");
 		
 		$options = array();
-		
+
 		// only if other filters are active to we offer a choice
-		if (JRequest::getInt("eventlist")==1){
+		if ($jinput->getInt("eventlist")==1){
 			$options[] = JHTML::_('select.option', "0",JText::_("JEV_SELECT_MATCHING_EVENT") ,"value","text");			
 
 			list($year, $month, $day) = JEVHelper::getYMD();

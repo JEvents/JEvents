@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -57,7 +57,7 @@ class DefaultModCalView
 	// flag to say if we want to load tooltips
 	protected $hasTooltips	 = false;
 
-	function DefaultModCalView($params, $modid){
+	public function __construct($params, $modid){
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
 			$document = JFactory::getDocument();
@@ -166,7 +166,7 @@ class DefaultModCalView
 
 	}
 
-	function getTheme(){
+	public function getTheme(){
 		$modtheme = $this->modparams->get("com_calViewName", "flat");
 		if ($modtheme == "" || $modtheme == "global")
 		{
@@ -203,7 +203,7 @@ class DefaultModCalView
 
 	}
 
-	function _navigationJS($modid){
+	public function _navigationJS($modid){
 		static $included = false;
 		if ($included) return;
 		$included = true;
@@ -216,7 +216,7 @@ class DefaultModCalView
 		}
 	}
 
-	function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
+	public function monthYearNavigation($cal_today,$adj,$symbol, $label,$action="month.calendar"){
 		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
 		$adjDate = JevDate::strtotime($adj,$cal_today);
@@ -228,13 +228,13 @@ class DefaultModCalView
 			$this->_navigationJS($this->_modid);
 			$link = htmlentities(JURI::base()  . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component".$this->cat);
 			$content = '<td>';
-			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\''.$link.'\');">'.$symbol."</div>\n";
+			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\''.$link.'\');" ontouchstart="callNavigation(\''.$link.'\');">'.$symbol."</div>\n";
 			$content .= '</td>';
 		}
 		return $content;
 	}
 
-	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
+	public function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
 
 		$db	= JFactory::getDBO();
 		$cfg = JEVConfig::getInstance();
@@ -272,7 +272,8 @@ class DefaultModCalView
 			$requestTime = JevDate::mktime(0,0,0,$requestMonth, $requestDay, $requestYear);
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
 			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
-
+			
+			$cal_day= date ( "d", $requestTime );
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
@@ -301,8 +302,7 @@ class DefaultModCalView
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
-		//$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
-		$today = JevDate::strtotime(date('Y-m-d', $this->timeWithOffset));
+		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
 
 		$content    = '';
 
@@ -417,11 +417,14 @@ class DefaultModCalView
 							$content .= $tooltip;
 						}
 						else {
-                                                    if ($this->modparams->get("emptydaylinks", 1) || $currentDay["events"] || $this->modparams->get("noeventcheck",0)) {
-							$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class'=>"mod_events_daylink",'title'=> JText::_('JEV_CLICK_TOSWITCH_DAY')));
-                                                    } else {
-                                                        $content .= $currentDay['d'];
-                                                    }
+							if ($this->modparams->get("emptydaylinks", 1) || $currentDay["events"] || $this->modparams->get("noeventcheck", 0))
+							{
+								$content .= $this->htmlLinkCloaking($currentDay["link"], $currentDay['d'], array('class' => "mod_events_daylink", 'title' => JText::_('JEV_CLICK_TOSWITCH_DAY')));
+							}
+							else
+							{
+								$content .= $currentDay['d'];
+							}
 						}
 						$content .="</td>\n";
 
@@ -441,7 +444,7 @@ class DefaultModCalView
 		return $content;
 	}
 
-	function getCal($modid=0) {
+	public function getCal($modid=0) {
 		// capture module id so that we can use it for ajax type navigation
 		if ($modid!=0) {
 			$this->_modid=$modid;
@@ -497,7 +500,7 @@ class DefaultModCalView
 	} // function getCal
 
 
-	function getAjaxCal($modid=0, $month, $year){
+	public function getAjaxCal($modid=0, $month, $year){
 		// capture module id so that we can use it for ajax type navigation
 		if ($modid!=0) {
 			$this->_modid=$modid;
@@ -557,4 +560,8 @@ class DefaultModCalView
 	 protected function getTooltip($currentDay, $linkattr) {
 		return "";
 	 }
+
+	 protected function getTooltipReference(&$currentDay, $linkattr) {
+		 return "";
+	 }	 
 }

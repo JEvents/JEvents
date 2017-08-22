@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2015 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -42,6 +42,7 @@ class ExtModCalView extends DefaultModCalView
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
 			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
 
+			$cal_day= date ( "d", $requestTime );
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
@@ -117,7 +118,7 @@ class ExtModCalView extends DefaultModCalView
 		if( $this->minical_prevmonth ){
 			$linkprevious = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component".$this->cat);
 			$scriptlinks .= "linkprevious = '".$linkprevious."';\n";
-			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="'.JText::_("JEV_LAST_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowleft.gif" onmousedown="callNavigation(\''.$linkprevious.'\');" />';
+			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="'.JText::_("JEV_LAST_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowleft.gif" onmousedown="callNavigation(\''.$linkprevious.'\');" ontouchstart="callNavigation(\''.$linkprevious.'\');" />';
 		}
 		else {
 			$linkprevious =  "";
@@ -143,7 +144,7 @@ class ExtModCalView extends DefaultModCalView
 		if( $this->minical_nextmonth ){
 			$linknext = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component".$this->cat);
 			$scriptlinks .= "linknext = '".$linknext."';\n";
-			$linknext = '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="'.JText::_("JEV_NEXT_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowright.gif" onmousedown="callNavigation(\''.$linknext.'\');" />';
+			$linknext = '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="'.JText::_("JEV_NEXT_MONTH").'" class="mod_events_link" src="'.$viewimages.'/mini_arrowright.gif" onmousedown="callNavigation(\''.$linknext.'\');"  ontouchstart="callNavigation(\''.$linknext.'\');"/>';
 		}
 		else {
 			$linknext ="";
@@ -207,9 +208,9 @@ START;
 
 						$dayOfWeek=JevDate::strftime("%w",$currentDay["cellDate"]);
 
-						$class = ($currentDay["today"]) ? "extcal_todaycell" : "extcal_daycell";
+						$class = ($currentDay["cellDate"] == $today) ? "extcal_todaycell" : "extcal_daycell";
 						$linkclass = "extcal_daylink";
-						if($dayOfWeek==0 && !$currentDay["today"]) {
+						if($dayOfWeek==0 && $currentDay["cellDate"] != $today) {
 							$class = "extcal_sundaycell";
 							$linkclass = "extcal_sundaylink";
 						}

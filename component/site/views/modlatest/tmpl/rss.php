@@ -1,16 +1,18 @@
 <?php
 /**
- * JEvents Component for Joomla 1.5.x
+ * JEvents Component for Joomla! 3.x
  *
  * @version     $Id: rss.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2015 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+use Joomla\String\StringHelper;
 
 // setup document
 $doc = JFactory::getDocument();
@@ -103,7 +105,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		*/
 
 		// load individual item creator class
-		$item =new JFeedItem();
+		$item = new JFeedItem();
 		// item info
 		if ($row->alldayevent()) {
 			$temptime = new JevDate($eventDate);
