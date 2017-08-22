@@ -31,11 +31,11 @@ class CustomcssViewCustomcss extends JViewLegacy {
 
 		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
+		JToolbarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
 
-		JToolBarHelper::apply('customcss.apply');
-		JToolBarHelper::save('customcss.save');
-		JToolBarHelper::cancel('customcss.cancel');
+		JToolbarHelper::apply('customcss.apply');
+		JToolbarHelper::save('customcss.save');
+		JToolbarHelper::cancel('customcss.cancel');
 		JToolbarHelper::divider();
 
 

@@ -457,7 +457,15 @@ class AdminIcaleventController extends JControllerAdmin
 			$id = $jinput->getInt("evid", 0);
 		}
 
-		if (!JEVHelper::isEventCreator())
+		// Check if the user is the event editor?
+		if ($id !== 0 && !JEVHelper::isEventEditor())
+		{
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
+		}
+
+		// Check if a new event and is event creator
+		if ($id == 0 && !JEVHelper::isEventCreator())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -1122,7 +1130,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 		$array  = $jinput->getArray(array(), null, 'RAW');
 
-		if (version_compare(JVERSION, '3.7.1', '>='))
+		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
         {
 
 			$filter = JFilterInput::getInstance(null, null, 1, 1);

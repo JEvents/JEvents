@@ -1304,6 +1304,7 @@ class JEVHelper
 			$isEventEditor = false;
 
 			$user = JEVHelper::getAuthorisedUser();
+
 			if (is_null($user))
 			{
 				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -1370,6 +1371,7 @@ class JEVHelper
 
 				}
 			}
+
 			/*
 			  $user = JEVHelper::getAuthorisedUser();
 			  if (is_null($user)){
@@ -1384,6 +1386,20 @@ class JEVHelper
 			else if ($user->canedit)
 			{
 				$isEventEditor = true;
+			} else if ($user->cancreate) {
+				// User can create, lets check the DB for the Creator ID.
+				$jinput = JFactory::getApplication()->input;
+				$ev_id  = $jinput->getInt('evid', 0);
+				if ($ev_id > 0) {
+					// Get the creator ID:
+					$db = JFactory::getDbo();
+					$db->setQuery("SELECT created_by FROM #__jevents_vevent WHERE ev_id = " . $ev_id);
+					$result = $db->loadResult();
+					if ($result === $user->user_id) {
+						$isEventEditor = true;
+					}
+
+				}
 			}
 		}
 		return $isEventEditor;
