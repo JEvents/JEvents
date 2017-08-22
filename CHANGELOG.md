@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 22-08-2017 Geraint Edwards
+ * JEvents 3.4.40
+ * Move Timezone input to before date/time 
+ * Add loc_id integer field to database for locations to improve performance of DB queries on large sites
+ * Improve irregular date imports
+ * Add location index to event detail table for performance gains
+ * Fix toolbar buttons in backend
+ * Use Inner join instead of left join for performance gains
+ * stray use of | instead of $separator
+ * Allow contact field to be truncated in latest events module
+ * no end time should default to 0 not ""
+ * Allow CDATA through template replacer - was replacing closing ]] with }} which was not good for Google 
+ * Fix for Authorised Users not being able to edit own events when they hit the event limit.
+ * Added where clause to smart search plugin to only find published events.
+ * Modify input sanitization where the user has allowed raw.
+ * Make sure visibile filters check only is applied when using JEvents filter module or modules with filters in their params
+
 #### 01-07-2017 Tony Partridge
 * Updated Changelog
 * Added new default option for no specific endtime.
