@@ -832,7 +832,15 @@ class iCalRRule extends JTable  {
 				$processedDates[] = $dtstart;
 				$this->_makeRepeat($dtstart,$dtend);
 				if (is_string($this->irregulardates) && $this->irregulardates!=""){
-					$this->irregulardates = @json_decode($this->irregulardates);
+					$this->irregulardates = @json_decode(str_replace("'",'"',trim($this->irregulardates,'"')));
+					if (is_array($this->_irregulardates))
+					{
+						array_walk($this->irregulardates, function(& $item, $index ){
+							if (!is_int($item)){
+								$item = JevDate::strtotime($item." 00:00:00");
+							}
+						});					
+					}
 				}
 				if (!is_array($this->irregulardates)){
 					$this->irregulardates = array();

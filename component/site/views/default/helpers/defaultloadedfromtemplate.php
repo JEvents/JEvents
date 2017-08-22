@@ -1617,7 +1617,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	    // The universal search and replace to finish
 	    $template_value = str_replace($search, $replace, $template_value);
 
-	    if ($specialmodules)
+	    if ($specialmodules && strpos($template_value, "{{MODULESTART#") !== false) 
 	    {
 		    $reg = JRegistry::getInstance("com_jevents");
 

@@ -54,7 +54,20 @@ class jIcalEventDB extends jEventCal {
 		}
 
 		if (isset($vevent->irregulardates) &&  is_string($vevent->irregulardates) && $vevent->irregulardates!=""){
-			$this->_irregulardates = @json_decode($vevent->irregulardates);
+			$this->_irregulardates = @json_decode(str_replace("'",'"',trim($vevent->irregulardates,'"')));
+			if (is_array($this->_irregulardates))
+			{
+				array_walk($this->_irregulardates, function(& $item, $index ){
+					if (!is_int($item)){
+						$item = JevDate::strtotime($item." 00:00:00");
+					}
+				});					
+			}
+			else {
+				$this->_irregulardates = array();
+			}
+			//$this->_irregulardates = @json_decode($vevent->irregulardates);
+				
 		}
 		else {
 			$this->_irregulardates = array();

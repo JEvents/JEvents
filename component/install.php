@@ -582,7 +582,23 @@ SQL;
 			@$db->execute();
 		}
 
+		if (!array_key_exists("loc_id", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD COLUMN loc_id int(11) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->execute();
 
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX loc_id (loc_id)";
+			$db->setQuery($sql);
+			@$db->execute();
+			
+			// move across all the data
+			$sql = "UPDATE #__jevents_vevdetail SET loc_id = CAST(location AS UNSIGNED) where location REGEXP '^-?[0-9]+$'";
+			$db->setQuery($sql);
+			@$db->execute();
+			
+		}
+				
 		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");

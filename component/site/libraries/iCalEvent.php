@@ -365,9 +365,22 @@ else $this->_detail = false;
 			$db	= JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
-                        // is it in a non-default timezone
-                        $repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart, $this->tzid);
-                        $repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend, $this->tzid);
+                        // is it in a non-default timezone?
+			// $this->_detail->dtstart assumed that the time was in our default timezone via jevdate::strtotime
+                        $repeat->startrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtstart);
+                        $repeat->endrepeat = JevDate::strftime('%Y-%m-%d %H:%M:%S',$this->_detail->dtend);
+			
+                        // If it is in a non-default timezone then we must change the start and end repeats
+			// so that the stored times are in our default timezone!
+                        if ($this->tzid) {
+				$testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->startrepeat, new DateTimeZone($this->tzid));
+				$testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+				$repeat->startrepeat = $testdate->format('Y-m-d H:i:s');
+
+				$testdate = DateTime::createFromFormat('Y-m-d H:i:s', $repeat->endrepeat, new DateTimeZone($this->tzid));
+				$testdate->setTimezone(new DateTimeZone(@date_default_timezone_get()));
+				$repeat->endrepeat = $testdate->format('Y-m-d H:i:s');
+                        }
                         
                         $repeat->duplicatecheck = md5($repeat->eventid . $this->_detail->dtstart);
 			$this->_repetitions[] = $repeat;

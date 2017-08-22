@@ -285,7 +285,6 @@ class jEventCal {
                             }
                             //if (strpos(JFactory, $oldrand))
                             $return = 'id="cloak'.$rand.'" class="cloak'.$oldrand.'" ';
-
                             return $return;
                         }, 
                         $this->_contactLink);
