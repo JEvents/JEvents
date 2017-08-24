@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-#### 22-08-2017 Geraint Edwards
+#### 22-08-2017 Geraint7 Edwards
+ * JEvents 3.4.41
+ * revert changes to JOIN queries on rrule which had exposed a problem with iCal imported events not showing in the frontend.
+
+#### 22-08-2017 Geraint7 Edwards
  * JEvents 3.4.40
- * Move Timezone input to before date/time 
+ * Move Timezone input to before date/time on event edit page (where enabled)
  * Add loc_id integer field to database for locations to improve performance of DB queries on large sites
  * Improve irregular date imports
  * Add location index to event detail table for performance gains

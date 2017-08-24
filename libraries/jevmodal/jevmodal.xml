@@ -10,7 +10,7 @@
 	<authorEmail>via website</authorEmail>
 	<packager>JEvents</packager>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.40</version>
+	<version>3.4.41</version>
 	<files>
 		<file>jevmodal.php</file>
 		<file>index.html</file>

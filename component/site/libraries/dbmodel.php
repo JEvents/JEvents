@@ -382,7 +382,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
@@ -421,7 +421,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				. "\n AND ev.created >= '$startdate' AND ev.created <= '$enddate'"
@@ -553,7 +553,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
@@ -590,7 +590,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				. "\n AND det.modified >= '$startdate' AND det.modified <= '$enddate'"
@@ -778,7 +778,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
@@ -827,7 +827,7 @@ class JEventsDBModel
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
@@ -1025,7 +1025,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
@@ -1076,7 +1076,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
@@ -1123,7 +1123,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						// Must be starting before NOW otherwise would already be picked up
@@ -1262,7 +1262,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
@@ -1300,7 +1300,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// Must be starting before NOW otherwise would already be picked up							
@@ -1346,7 +1346,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. " \n WHERE rpt.rp_id IN (" . implode(",", $ids) . ")"
 							. "\n GROUP BY rpt.rp_id";
@@ -1384,7 +1384,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
@@ -1427,7 +1427,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
@@ -1470,7 +1470,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							. ($this->subquery ? $daterange2 : $daterange)
@@ -1754,7 +1754,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
@@ -1806,7 +1806,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						// New equivalent but simpler test
@@ -1854,7 +1854,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. $catwhere
 						. ($this->subquery ? $daterange2 : $daterange)
@@ -1991,7 +1991,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
@@ -2030,7 +2030,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							. ($this->subquery ? $daterange2 : $daterange)
@@ -2075,7 +2075,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. " \n WHERE rpt.rp_id IN (" . implode(",", $ids) . ")"
 							. "\n GROUP BY rpt.rp_id";
@@ -2113,7 +2113,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test
@@ -2156,7 +2156,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// New equivalent but simpler test							
@@ -2198,7 +2198,7 @@ class JEventsDBModel
 							. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 							. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 							. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-							. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+							. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 							. $extrajoin
 							. $catwhere
 							// Must be starting before NOW otherwise would already be picked up
@@ -2425,7 +2425,7 @@ class JEventsDBModel
 						. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 						. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 						. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-						. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+						. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 						. $extrajoin
 						. "\n WHERE rpt.rp_id in (".implode(",",$rptids).") "
 						.  "\n GROUP BY rpt.rp_id" ;
@@ -2472,7 +2472,7 @@ class JEventsDBModel
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 					. $extrajoin
 					. $catwhere
 					// New equivalent but simpler test
@@ -2790,7 +2790,7 @@ select @@sql_mode;
 		$query .=  "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				// New equivalent but simpler test
@@ -2993,7 +2993,7 @@ select @@sql_mode;
                 $query .=    "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = rpt.eventid"
 				. $extrajoin
 				. $catwhere
 				. ($this->subquery ? $daterange2 : $daterange)
@@ -3135,7 +3135,7 @@ select @@sql_mode;
 					. "\n FROM (#__jevents_vevent as ev $extratables)"
 					. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
@@ -3261,7 +3261,7 @@ select @@sql_mode;
 					. "\n FROM (#__jevents_vevent as ev $extratables)"
 					. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid "
 					. $extrajoin
 					. $catwhere
@@ -3401,7 +3401,7 @@ select @@sql_mode;
 				. "\n , HOUR(dtend  ) as hdn, MINUTE(dtend  ) as mindn, SECOND(dtend     ) as sdn"
 				. "\n FROM #__jevents_vevent as ev"
 				. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = ev.detail_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 				. $extrajoin
@@ -3530,7 +3530,7 @@ select @@sql_mode;
 					. "\n FROM #__jevents_repetition as rpt "
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. $extrajoin
 					. $catwhere
@@ -3774,7 +3774,7 @@ select @@sql_mode;
 				. "\n FROM #__jevents_repetition as rpt "
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 				. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-				. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. $extrajoin
 				. $catwhere
 				. $extrawhere
@@ -3890,7 +3890,7 @@ select @@sql_mode;
 					. "\n FROM #__jevents_vevent as ev"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
 					. "\n INNER JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. $extrajoin
 					//. "\n WHERE ev.catid IN(".$this->accessibleCategoryList($aid,$catids,$catidlist).")"
@@ -3908,7 +3908,7 @@ select @@sql_mode;
 			// TODO find a single query way of doing this !!!
 			$query = "SELECT MIN(rpt.rp_id) as rp_id FROM #__jevents_repetition as rpt "
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf  ON icsf.ics_id=ev.icsid"
 					. $extrajoin
@@ -3934,7 +3934,7 @@ select @@sql_mode;
 					. "\n FROM #__jevents_repetition as rpt  "
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf ON icsf.ics_id=ev.icsid"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. $extrajoin
 					//. "\n WHERE ev.catid IN(".$this->accessibleCategoryList($aid,$catids,$catidlist).")"
@@ -4036,7 +4036,7 @@ select @@sql_mode;
 			// TODO fine a single query way of doing this !!!
 			$query = "SELECT MIN(rpt.rp_id) as rp_id FROM #__jevents_repetition as rpt "
 					. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
-					. "\n INNER JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+					. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 					. "\n INNER JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 					. "\n INNER JOIN #__jevents_icsfile as icsf  ON icsf.ics_id=ev.icsid "
 					. $extrajoin
