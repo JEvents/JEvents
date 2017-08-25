@@ -73,16 +73,16 @@ if (!empty($this->icalEvents))
 			$exceptiondata[$row->eventid][$row->rp_id] = $row;
 		}
 	}
-	
+
 	// make sure the array is now reindexed for the sake of the plugins!
 	$this->icalEvents = array_values($this->icalEvents);
-			
+
 	// Call plugin on each event
 	$dispatcher = JEventDispatcher::getInstance();
 	ob_start();
 	JEVHelper::onDisplayCustomFieldsMultiRow($this->icalEvents);
 	ob_end_clean();
-	
+
 	foreach ($this->icalEvents as $a)
 	{
 		// if event has repetitions I must find the first one to confirm the dates
@@ -91,7 +91,7 @@ if (!empty($this->icalEvents))
 			$a = $a->getOriginalFirstRepeat();
 		}
 		if (!$a) continue;
-                
+
                 // if an irregular repeat then skip it :(
                 // TODO create it as a daily repeat using the irregular values as exceptions
                 if (isset($a->_freq) && $a->_freq=="IRREGULAR"){
@@ -132,6 +132,7 @@ if (!empty($this->icalEvents))
 		$html .= "CATEGORIES:" . $a->catname() . "\r\n";
 		if (!empty($a->_class))
 			$html .= "CLASS:" . $a->_class . "\r\n";
+		$html .= "CREATED:" . JevDate::strftime("%Y%m%dT%H%M%S", strtotime($a->_created)) . "\r\n";
 		$html .= "SUMMARY:" . $a->title() . "\r\n";
 		if ($a->location()!="") {
 			if (!is_numeric($a->location())){
@@ -231,14 +232,14 @@ if (!empty($this->icalEvents))
 
 			$start = JevDate::strftime($startformat, $start);
 			$end = JevDate::strftime($endformat, $end);
-			
+
 			if ( is_callable("date_default_timezone_set")) {
 				// Change timezone to UTC
 				$current_timezone = date_default_timezone_get();
-				date_default_timezone_set("UTC");			
+				date_default_timezone_set("UTC");
 				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
 				// Change back
-				date_default_timezone_set($current_timezone);				
+				date_default_timezone_set($current_timezone);
 			}
 			else {
 				$stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
@@ -281,7 +282,7 @@ if (!empty($this->icalEvents))
 			$html .= 'FREQ=' . $a->_freq;
 			if ($a->_until != "" && $a->_until != 0)
 			{
-				// Do not use JevDate version since this sets timezone to config value!					
+				// Do not use JevDate version since this sets timezone to config value!
 				// GOOGLE HAS A PROBLEM WITH 235959!!!
 				//$html .= ';UNTIL=' . strftime("%Y%m%dT235959Z", $a->_until);
 				$html .= ';UNTIL=' . strftime("%Y%m%dT000000Z", $a->_until+86400);
@@ -294,7 +295,7 @@ if (!empty($this->icalEvents))
 				$html .= ';INTERVAL=' . $a->_rinterval;
 			if ($a->_freq == "DAILY")
 			{
-				
+
 			}
 			else if ($a->_freq == "WEEKLY")
 			{
@@ -374,19 +375,19 @@ if (!empty($this->icalEvents))
 		$html .= "END:VEVENT\r\n";
 
 		$changedrows = array();
-		
+
 		if (isset($changed) && count($changed) > 0 && $changed[0]!=0)
 		{
 			foreach ($changed as $rpid)
 			{
 				$a = $this->dataModel->getEventData($rpid, "icaldb", 0, 0, 0);
-				
+
 				if ($a && isset($a["row"]))
 				{
 					$a = $a["row"];
 					$changedrows[] = $a;
 				}
-			}		
+			}
 
 			ob_start();
 			$dispatcher->trigger( 'onDisplayCustomFieldsMultiRow', array( &$changedrows) );
@@ -399,6 +400,7 @@ if (!empty($this->icalEvents))
 				$html .= "CATEGORIES:" . $a->catname() . "\r\n";
 				if (!empty($a->_class))
 					$html .= "CLASS:" . $a->_class . "\r\n";
+				$html .= "CREATED:" . JevDate::strftime("%Y%m%dT%H%M%S", strtotime($a->_created)) . "\r\n";
 				$html .= "SUMMARY:" . $a->title() . "\r\n";
 				if ($a->location()!="") $html .= "LOCATION:" . $this->wraplines($this->replacetags($a->location())) . "\r\n";
 				// We Need to wrap this according to the specs
@@ -422,7 +424,7 @@ if (!empty($this->icalEvents))
 					$current_timezone = date_default_timezone_get();
 					date_default_timezone_set("UTC");
 
-					// Do not use JevDate version since this sets timezone to config value!								
+					// Do not use JevDate version since this sets timezone to config value!
 					$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
 					$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
 					$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
@@ -435,19 +437,19 @@ if (!empty($this->icalEvents))
 					$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
 					$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 				}
-                                
+
                                 if ( is_callable("date_default_timezone_set")) {
                                         // Change timezone to UTC
                                         $current_timezone = date_default_timezone_get();
-                                        date_default_timezone_set("UTC");			
+                                        date_default_timezone_set("UTC");
                                         $stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
                                         // Change back
-                                        date_default_timezone_set($current_timezone);				
+                                        date_default_timezone_set($current_timezone);
                                 }
                                 else {
                                         $stamptime = JevDate::strftime("%Y%m%dT%H%M%SZ", time());
                                 }
-                                
+
 				$html .= "DTSTAMP:" . $stamptime . "\r\n";
 				$html .= "DTSTART$tzid:" . $chstart . "\r\n";
 				$html .= "DTEND$tzid:" . $chend . "\r\n";

@@ -50,13 +50,13 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
+		JToolbarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 	
 		$bar =  JToolBar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor()) {
-			JToolBarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+			JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		}
-		JToolBarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
@@ -70,7 +70,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
 		
-		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);		
+		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 	
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 

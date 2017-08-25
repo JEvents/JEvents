@@ -30,6 +30,24 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 ?>
 <div style="clear:both;" class="jevdatetime">
     <fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration"); ?></legend>
+	<?php
+	if ($params->get("showtimezone", 0))
+	{
+		?>
+		<div style="margin:0px;clear:left;">
+		    <div class="row jevtimezone">
+			<div class="span2">
+			    <?php echo $this->form->getLabel("tzid"); ?>
+			</div>
+			<div class="span10">
+			    <?php echo $this->form->getInput("tzid"); ?>
+			</div>
+		    </div>
+		</div>                    
+		<?php
+	}
+	?>
+
 	<div  class=" allDayEvent">
 	    <div class='alldayinput' style="margin:10px 20px 0px 0px ;display:inline-block;" >
 		<div style="display:inline-block;" >
@@ -138,23 +156,6 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		</label>
 	    </div>
 	</div>
-	<?php
-	if ($params->get("showtimezone", 0))
-	{
-		?>
-		<div style="margin:0px;clear:left;">
-		    <div class="row jevtimezone">
-			<div class="span2">
-			    <?php echo $this->form->getLabel("tzid"); ?>
-			</div>
-			<div class="span10">
-			    <?php echo $this->form->getInput("tzid"); ?>
-			</div>
-		    </div>
-		</div>                    
-		<?php
-	}
-	?>
     </fieldset>
 </div>
 

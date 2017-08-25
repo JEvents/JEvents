@@ -43,6 +43,7 @@ class FlatModCalView extends DefaultModCalView {
 			else if ($time - $basedate < - 100000)
 				$requestTime = JevDate::strtotime ( "-1 month", $requestTime );
 
+			$cal_day= date ( "d", $requestTime );
 			$cal_year = date ( "Y", $requestTime );
 			$cal_month = date ( "m", $requestTime );
 
@@ -194,9 +195,9 @@ class FlatModCalView extends DefaultModCalView {
 
 						$dayOfWeek = JevDate::strftime ( "%w", $currentDay ["cellDate"] );
 
-						$class = ($currentDay ["today"]) ? "flatcal_todaycell" : "flatcal_daycell";
+						$class = ($currentDay["cellDate"] == $today) ? "flatcal_todaycell" : "flatcal_daycell";
 						$linkclass = "flatcal_daylink";
-						if ($dayOfWeek == 0 && ! $currentDay ["today"]) {
+						if ($dayOfWeek == 0 && $currentDay["cellDate"] != $today) {
 							$class = "flatcal_sundaycell";
 							$linkclass = "flatcal_sundaylink";
 						}

@@ -34,11 +34,11 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
+		JToolbarHelper::title(JText::_('COM_JEVENTS_CONFIGURATION'), 'jevents');
 
-		JToolBarHelper::apply('params.apply');
-		JToolBarHelper::save('params.save');
-		JToolBarHelper::cancel('cpanel.cpanel');
+		JToolbarHelper::apply('params.apply');
+		JToolbarHelper::save('params.save');
+		JToolbarHelper::cancel('cpanel.cpanel');
 
 		$model = $this->getModel();
 
@@ -81,8 +81,8 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$document->setTitle(JText::_( 'DB_SETUP' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );	
-		JToolBarHelper::cancel('cpanel.cpanel');
+		JToolbarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );
+		JToolbarHelper::cancel('cpanel.cpanel');
 		JEventsHelper::addSubmenu();
 	}	
 }

@@ -2,7 +2,55 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### 10-05-2017 Geraint Edwards
+#### 22-08-2017 Geraint7 Edwards
+ * JEvents 3.4.41
+ * revert changes to JOIN queries on rrule which had exposed a problem with iCal imported events not showing in the frontend.
+
+#### 22-08-2017 Geraint7 Edwards
+ * JEvents 3.4.40
+ * Move Timezone input to before date/time on event edit page (where enabled)
+ * Add loc_id integer field to database for locations to improve performance of DB queries on large sites
+ * Improve irregular date imports
+ * Add location index to event detail table for performance gains
+ * Fix toolbar buttons in backend
+ * Use Inner join instead of left join for performance gains
+ * stray use of | instead of $separator
+ * Allow contact field to be truncated in latest events module
+ * no end time should default to 0 not ""
+ * Allow CDATA through template replacer - was replacing closing ]] with }} which was not good for Google 
+ * Fix for Authorised Users not being able to edit own events when they hit the event limit.
+ * Added where clause to smart search plugin to only find published events.
+ * Modify input sanitization where the user has allowed raw.
+ * Make sure visibile filters check only is applied when using JEvents filter module or modules with filters in their params
+
+#### 01-07-2017 Tony Partridge
+* Updated Changelog
+* Added new default option for no specific endtime.
+* Disable system messages for iCal Reloading when a guest.
+
+#### 25-06-2016 Tony Partridge
+* Added new custom layout tag: {{{Past or Future:PAST_OR_FUTURE}} to output text past or future depending if the event is in the past or future. Handy for CSS Classing.
+
+#### 21-06-2017 Tony Partridge
+* Added CREATED: to the iCal export events following iCal Specification.
+
+#### 20-06-2017 Tony Partridge
+* Update ext modstyle.css to stop centralising latest events caused by  my change on the 15th.
+
+#### 16-06-2017 Tony Partridge
+* Set admin emails to run through the defaultloadedtemplate.php parser. This means tags used in the Event Details custom layout can now be used within the admin emails.
+
+#### 15-05-2017 Tony Partridge
+ * JEvents 3.4.39
+ * W3C Validation fix in ext latest events module (Removed inline tags)
+ * Added version compare to filtering method onSave.
+ * Fixed {DURATION} output which broke in 3.4.38 by Tony's (int) conversion.
+ 
+#### 11-05-2017 Tony Partridge
+* JEvents 3.4.38 
+* Fixed issue with JInputFilter saving on pre J3.7.1
+
+#### 10-05-2017 Geraint Edwards
 * JEvents 3.4.37
 * For for checkbox and radio box required fields check
 * Fix for no-end time events when editing specific repeats

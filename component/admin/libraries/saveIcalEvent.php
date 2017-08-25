@@ -82,6 +82,7 @@ class SaveIcalEvent {
 		else $start_time			= ArrayHelper::getValue( $array,  "start_time","08:00");
 		$publishstart		= $data["publish_up"] . ' ' . $start_time . ':00';
 		$data["DTSTART"]	= JevDate::strtotime( $publishstart );
+		$data["X-PUBLISHSTART"]	= $publishstart;
 
 		if ($data["allDayEvent"]=="on"){
 			$end_time="00:00";
@@ -94,12 +95,14 @@ class SaveIcalEvent {
 		}
 
 		$data["DTEND"]		= JevDate::strtotime( $publishend );
+		
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 		list ($h,$m,$s) = explode(":",$end_time . ':00');
 		if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>=$data["DTSTART"]) {
 			$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]));
 			$data["DTEND"]		= JevDate::strtotime( $publishend );
 		}
+		$data["X-PUBLISHEND"]	= $publishend;
 
 		$data["RRULE"]	= $rrule;
 

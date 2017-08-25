@@ -42,6 +42,7 @@ class ExtModCalView extends DefaultModCalView
 			if ($time-$basedate > 100000) $requestTime = JevDate::strtotime("+1 month",$requestTime);
 			else if ($time-$basedate < -100000) $requestTime = JevDate::strtotime("-1 month",$requestTime);
 
+			$cal_day= date ( "d", $requestTime );
 			$cal_year = date("Y",$requestTime);
 			$cal_month = date("m",$requestTime);
 
@@ -207,9 +208,9 @@ START;
 
 						$dayOfWeek=JevDate::strftime("%w",$currentDay["cellDate"]);
 
-						$class = ($currentDay["today"]) ? "extcal_todaycell" : "extcal_daycell";
+						$class = ($currentDay["cellDate"] == $today) ? "extcal_todaycell" : "extcal_daycell";
 						$linkclass = "extcal_daylink";
-						if($dayOfWeek==0 && !$currentDay["today"]) {
+						if($dayOfWeek==0 && $currentDay["cellDate"] != $today) {
 							$class = "extcal_sundaycell";
 							$linkclass = "extcal_sundaylink";
 						}

@@ -154,8 +154,8 @@ class JevTypeahead
 				if($opt['remote'])
 				{
 					$typeaheadLoad .= "remote: {
-										url: '".$opt['remote']."&token=".JSession::getFormToken()."&typeahead=%QUERY',
-										wildcard: '%QUERY'
+										url: '".$opt['remote']."&token=".JSession::getFormToken()."&typeahead=PQRZYX',
+										wildcard: 'PQRZYX'
 										$callback
 										$prepare
 									},";

@@ -202,7 +202,8 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 	hits int(11) NOT NULL default 0,
 	noendtime tinyint(3) NOT NULL default 0,
 		
-	PRIMARY KEY  (evdet_id)
+	PRIMARY KEY  (evdet_id),
+	INDEX (location)
 ) $charset;
 SQL;
 		$db->setQuery($sql);
@@ -581,18 +582,40 @@ SQL;
 			@$db->execute();
 		}
 
-/*
+		if (!array_key_exists("loc_id", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD COLUMN loc_id int(11) NOT NULL default 0";
+			$db->setQuery($sql);
+			@$db->execute();
+
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX loc_id (loc_id)";
+			$db->setQuery($sql);
+			@$db->execute();
+			
+			// move across all the data
+			$sql = "UPDATE #__jevents_vevdetail SET loc_id = CAST(location AS UNSIGNED) where location REGEXP '^-?[0-9]+$'";
+			$db->setQuery($sql);
+			@$db->execute();
+			
+		}
+				
 		$sql = "SHOW INDEX FROM #__jevents_vevdetail";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Key_name");
 
-		if (!array_key_exists("searchIdx", $cols))
+		if (!array_key_exists("location", $cols))
 		{
-			$sql = "ALTER TABLE #__jevents_vevdetail ADD FULLTEXT searchIdx (summary,description)";
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX location (location)";
 			$db->setQuery($sql);
 			@$db->execute();
 		}
-*/
+		if (!array_key_exists("multiday", $cols))
+		{
+			$sql = "ALTER TABLE #__jevents_vevdetail ADD INDEX multiday (multiday)";
+			$db->setQuery($sql);
+			@$db->execute();
+		}
+
 		$sql = "SHOW COLUMNS FROM #__jevents_rrule";
 		$db->setQuery($sql);
 		$cols = @$db->loadObjectList("Field");

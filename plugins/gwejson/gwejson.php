@@ -117,7 +117,7 @@ class PlgSystemGwejson extends JPlugin
                 }
                 if (!JFile::exists($path . $file . ".php"))
                 {
-	                PlgSystemGwejson::throwerror("Opps we could find the file: " . $path . $file . ".php");
+	                PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
 	                return true;
                 }
 

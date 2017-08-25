@@ -378,7 +378,6 @@ class DefaultModLatestView
 		JRequest::setVar('published_fv', "0");
 		if ($this->dispMode == 5)
 		{
-			$this->sortReverse = true;
 			$rows = $this->datamodel->queryModel->recentIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
 		}
 		else if ($this->dispMode == 6)
@@ -392,7 +391,6 @@ class DefaultModLatestView
 		}
 		else if ($this->dispMode == 8)
 		{
-			$this->sortReverse = true;
 			$rows = $this->datamodel->queryModel->recentlyModifiedIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
 		}
 		else
@@ -562,7 +560,10 @@ class DefaultModLatestView
 						$eventsToAdd = min($this->maxEvents - $events, count($eventsThisDay));
 						$eventsThisDay = array_slice($eventsThisDay, 0, $eventsToAdd);
 						//sort by time on this day
-						usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+						if ($this->dispMode !== 5 && $this->dispMode !== 8) 
+						{
+							usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+						}
 
 						$this->eventsByRelDay[$i] = $eventsThisDay;
 						$events += count($this->eventsByRelDay[$i]);
@@ -680,7 +681,10 @@ class DefaultModLatestView
 						if (count($eventsThisDay))
 						{
 							//sort by time on this day
-							usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+							if ($this->dispMode !== 5 && $this->dispMode !== 8) 
+							{							
+								usort($eventsThisDay, array(get_class($this), "_sortEventsByTime"));
+							}
 							$this->eventsByRelDay[$i] = $eventsThisDay;
 							$events += count($this->eventsByRelDay[$i]);
 						}
@@ -694,7 +698,7 @@ class DefaultModLatestView
 				}
 			}
 		}
-		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
+		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay) && $this->dispMode !== 5 && $this->dispMode !== 8 )
 		{
 
 			// When we display these events, we just start at the smallest index of the $this->eventsByRelDay array
@@ -1248,6 +1252,19 @@ SCRIPT;
 				$dayEvent->text = $dayEvent->contact_info();
 				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
 
+				if (!empty($dateParm))
+				{
+					$parts = explode("|", $dateParm);
+					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->text)) > intval($parts[0]))
+					{
+						$dayEvent->text = JString::substr(strip_tags($dayEvent->text), 0, intval($parts[0]));
+						if (count($parts) > 1)
+						{
+							$dayEvent->text .= $parts[1];
+						}
+					}
+				}
+				
 				$dayEvent->contact_info($dayEvent->text);
 				$content .= $dayEvent->contact_info();
 				break;
