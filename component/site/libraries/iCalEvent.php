@@ -168,14 +168,17 @@ class iCalEvent extends JTable  {
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger( 'onStoreCustomEvent' , array(&$this));
 
-		if (isset($this->rrule)) {
-			$this->rrule->eventid = $this->ev_id;
-			if($id = $this->rrule->isDuplicate()){
-				$this->rrule->rr_id = $id;
-			}
-			$this->rrule->store($updateNulls);
-			echo $db->getErrorMsg()."<br/>";
+		// some iCal imports do not provide an RRULE entry so create an empty one here
+		if (!isset($this->rrule)) {
+			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ"=>"NONE"));		
 		}
+		$this->rrule->eventid = $this->ev_id;
+		if($id = $this->rrule->isDuplicate()){
+			$this->rrule->rr_id = $id;
+		}
+		$this->rrule->store($updateNulls);
+		echo $db->getErrorMsg()."<br/>";
+		
 		return true;
 	}
 

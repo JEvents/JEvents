@@ -329,7 +329,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
 		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
 		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
-		$sql->where('evt.state = 1');
+		// this query is used during the save process as well as fetching results so we can't just do this
+		//$sql->where('evt.state = 1');
 		return $sql;
 	}
 
