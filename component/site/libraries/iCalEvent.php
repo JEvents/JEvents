@@ -170,7 +170,7 @@ class iCalEvent extends JTable  {
 
 		// some iCal imports do not provide an RRULE entry so create an empty one here
 		if (!isset($this->rrule)) {
-			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ"=>"NONE"));		
+			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ"=>"none"));		
 		}
 		$this->rrule->eventid = $this->ev_id;
 		if($id = $this->rrule->isDuplicate()){
@@ -364,7 +364,7 @@ else $this->_detail = false;
 			return $this->_repetitions;
 		}
 		// if no rrule then only one instance
-		if (!isset($this->rrule)  || $this->rrule->freq=="none" ){
+		if (!isset($this->rrule)  || strtolower($this->rrule->freq)=="none" ){
 			$db	= JFactory::getDBO();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
