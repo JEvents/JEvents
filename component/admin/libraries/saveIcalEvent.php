@@ -247,7 +247,7 @@ class SaveIcalEvent {
         }
 
 		// If not authorised to publish in the frontend then notify the administrator
-		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()) {
+		if (!$dryrun && $success && $notifyAdmin) {
 
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
