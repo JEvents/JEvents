@@ -119,16 +119,11 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function edit($key = NULL, $urlVar = NULL){
 
-		$jinput = JFactory::getApplication()->input;
-		$ev_id  = $jinput->getInt("rp_id", 0);
-		if ($ev_id > 0) {
-			$is_event_editor = JEVHelper::isEventEditor();
-		} else {
-			$is_event_editor = JEVHelper::isEventCreator();
-		}
 		// Must be at least an event creator to edit or create events
+		// We check specific event editing permissions in the parent class
+		$is_event_editor = JEVHelper::isEventCreator();
 		$user = JFactory::getUser();
-		if (!$is_event_editor || ($user->id == 0 && JRequest::getInt("evid",0)>0)){
+		if (!$is_event_editor || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
 				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
