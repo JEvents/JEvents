@@ -53,7 +53,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		if (strlen($this->row->title()) <= 0)
+		if (strlen($this->row->title()) > 0)
 		{
 			// Set toolbar items for the page
 			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
