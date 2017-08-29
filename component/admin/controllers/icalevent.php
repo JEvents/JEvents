@@ -458,7 +458,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// we check if user can edit specific event in about 30 lines time
-		if (!JEVHelper::isEventCreator())
+		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
