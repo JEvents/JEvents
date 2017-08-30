@@ -312,7 +312,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 *
 	 * @since   2.5
 	 */
-	protected function getListQuery($query = NULL)
+	protected function getListQuery($query = NULL, $type = 'list')
 	{
 		$db = JFactory::getDbo();
 		// Check if we can use the supplied SQL query.
@@ -329,8 +329,11 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
 		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
 		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
-		// this query is used during the save process as well as fetching results so we can't just do this
-		//$sql->where('evt.state = 1');
+
+        if ($type === 'list' ) {
+            $sql->where('evt.state = 1');
+        }
+
 		return $sql;
 	}
 
@@ -349,7 +352,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		//JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
 
 		// Get the list query and add the extra WHERE clause.
-		$sql = $this->getListQuery();
+		$sql = $this->getListQuery($query = NULL, 'item');
 		$sql->where('det.'. $this->db->quoteName('evdet_id') . ' = ' . (int) $id);
 
 		// Get the item to index.
