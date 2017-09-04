@@ -240,11 +240,6 @@ class DefaultModCalView
 		$cfg = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
 
-		$cal_year=date("Y",$time);
-		$cal_month=date("m",$time);
-		// do not use $cal_day since it's not reliable due to month offset calculation
-		//$cal_day=date("d",$time);
-
 		if (!$basedate) $basedate=$time;
 		$base_year = date("Y",$basedate);
 		$base_month = date("m",$basedate);
@@ -284,6 +279,7 @@ class DefaultModCalView
 		else {
 			$cal_year=date("Y",$time);
 			$cal_month=date("m",$time);
+			$cal_day=date("d",$time);			
 		}
 
 		$reg = JFactory::getConfig();
