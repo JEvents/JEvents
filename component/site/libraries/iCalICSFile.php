@@ -498,7 +498,7 @@ RAWTEXT;
 				$db->execute();
 
 				$ex_count = count($existingevents);
-				if($guest === 1)
+				if($guest !== 1)
 				{
 					JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
 				}
@@ -506,7 +506,7 @@ RAWTEXT;
 		}
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
-		if($guest === 1)
+		if($guest !== 1)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 		}
