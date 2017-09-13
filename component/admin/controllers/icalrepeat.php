@@ -531,7 +531,46 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$data["X-COLOR"] = $jinput->get("color", "");
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
-		$array = $jinput->post->getArray();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		$array  = $jinput->getArray(array(), null, 'RAW');
+
+		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
+		{
+
+		    $filter = JFilterInput::getInstance(null, null, 1, 1);
+
+		    //Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
+		    //Then filter on through with JFilterInput to HTML
+
+		    foreach ($array as $key => $row)
+		    {
+			//Single row check
+			if (!is_array($row))
+			{
+			    $array[$key] = $filter->clean($row, 'HTML');
+			}
+			else
+			{
+			    //1 Deep row check
+			    foreach ($array[$key] as $key1 => $sub_row)
+			    {
+				//2 Deep row check
+				if (!is_array($sub_row))
+				{
+				    $array[$key][$key1] = $filter->clean($sub_row, 'HTML');
+				}
+				else
+				{
+				    foreach ($sub_row as $key2 => $sub_sub_row)
+				    {
+					$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+				    }
+				}
+			    }
+			}
+		    }
+		}
 
 		foreach ($array as $key => $value)
 		{
