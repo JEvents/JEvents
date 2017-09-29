@@ -31,7 +31,7 @@ class JFormFieldJeveventcalendar extends JFormField
 		
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($native && $clistChoice && (int) $params->get('defaultcat', 1) === 1)
+		if ($native && $clistChoice)
 		{
 			?>
 				<script type="text/javascript" >
@@ -43,11 +43,17 @@ class JFormFieldJeveventcalendar extends JFormField
 			{
 				echo 'lookup[' . $nc->ics_id . ']=' . $nc->catid . ';';
 			}
+			
+			if ((int)$params->get('defaultcat', 1) === 0) {
+				echo "catid = 0;";
+			} else {
+				echo "catid = document.adminForm['catid'];";
+			}
 			?>
-			document.adminForm['catid'].value=lookup[select.value];
+			catid.value=lookup[select.value];
 				// trigger Bootstrap Chosen replacement
 				try {
-					jQuery(document.adminForm['catid']).trigger("liszt:updated");
+					jQuery(catid).trigger("liszt:updated");
 				}
 				catch (e){									
 				}
