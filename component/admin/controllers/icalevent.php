@@ -580,7 +580,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$row_icsid = $row->icsid();
 
-			if (!$row_icsid) {
+			if ($params->get('defaultcal', 0) && !$row_icsid) {
 				$row_icsid = count($nativeCals) > 0 ? current($nativeCals)->ics_id : 0;
 			}
 			$clist = JHTML::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', $row_icsid);
