@@ -29,7 +29,9 @@ class JFormFieldJeveventcalendar extends JFormField
 		$clist= $this->form->jevdata[$this->name]["clist"];
 		$nativeCals = $this->form->jevdata[$this->name]["nativeCals"];
 		
-		if ($native && $clistChoice)
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		if ($native && $clistChoice && (int) $params->get('defaultcat', 1) === 1)
 		{
 			?>
 				<script type="text/javascript" >
