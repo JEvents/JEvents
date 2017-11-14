@@ -50,6 +50,8 @@ function DefaultEventManagementDialog($view,$row, $mask, $bootstrap = false) {
 			$editRepeatLink = $popup?"javascript:jevEditPopupNoHeader('".$editRepeatLink."');":$editRepeatLink;
 			$deleteRepeatImg = JHtml::image('com_jevents/icons-32/discard.png',JText::_("DELETE_THIS_REPEAT"),null,true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
+			//$deleteRepeatLink = $row->deleteRepeatLink(false);
+			//$deleteRepeatLink = JRoute::_($deleteRepeatLink."&rettask=month.calendar", true);
 			$deleteFutureImg = JHtml::image('com_jevents/icons-32/discards.png',JText::_("JEV_DELETE_FUTURE_REPEATS"),null,true);
 			$deleteFutureLink = $row->deleteFutureLink();
 			$deleteImg = JHtml::image('com_jevents/icons-32/discards.png',JText::_("DELETE_ALL_REPEATS"),null,true);

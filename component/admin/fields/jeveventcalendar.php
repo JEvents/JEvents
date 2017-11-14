@@ -29,28 +29,35 @@ class JFormFieldJeveventcalendar extends JFormField
 		$clist= $this->form->jevdata[$this->name]["clist"];
 		$nativeCals = $this->form->jevdata[$this->name]["nativeCals"];
 		
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);		
+		
 		if ($native && $clistChoice)
 		{
 			?>
-				<script type="text/javascript" >
-					function preselectCategory(select){
-						var lookup = new Array();
-						lookup[0]=0;
-			<?php
-			foreach ($nativeCals as $nc)
-			{
-				echo 'lookup[' . $nc->ics_id . ']=' . $nc->catid . ';';
-			}
-			?>
-			document.adminForm['catid'].value=lookup[select.value];
-				// trigger Bootstrap Chosen replacement
-				try {
-					jQuery(document.adminForm['catid']).trigger("liszt:updated");
+			<script type="text/javascript" >
+				function preselectCategory(select){
+					var lookup = new Array();
+					lookup[0]=0;
+					<?php
+					foreach ($nativeCals as $nc)
+					{
+						echo 'lookup[' . $nc->ics_id . ']=' . $nc->catid . ';';
+					}
+					if ((int)$params->get('defaultcat', 1) === 0) {
+						echo "document.adminForm['catid'].value=0;";
+					} else {	
+						echo "document.adminForm['catid'].value=lookup[select.value];";
+					}
+
+					?>
+					// trigger Bootstrap Chosen replacement
+					try {
+						jQuery(document.adminForm['catid']).trigger("liszt:updated");
+					}
+					catch (e){									
+					}
 				}
-				catch (e){									
-				}
-			}
-				</script>
+			</script>
 			<?php 
 			echo $clist;
 		}

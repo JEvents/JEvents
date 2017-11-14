@@ -3667,13 +3667,13 @@ SCRIPT;
 			$transitions = array_slice($transitions, $tzindex);
 			if (count($transitions) >= 2)
 			{
-				$lastyear = $params->get("com_latestyear", 2020);
+				$lastyear = JEVHelper::getMaxYear();
 				echo "BEGIN:VTIMEZONE\r\n";
 				echo "TZID:$current_timezone\r\n";
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 0)
+					if ( (int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3705,7 +3705,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 1)
+					if ( (int)$transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
