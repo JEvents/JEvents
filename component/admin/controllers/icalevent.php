@@ -577,7 +577,14 @@ class AdminIcaleventController extends JControllerAdmin
 			$icalList = array();
 			$icalList[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList = array_merge($icalList, $nativeCals);
-			$clist = JHTML::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', $row->icsid());
+
+			$row_icsid = $row->icsid();
+
+			if ($params->get('defaultcal', 0) && !$row_icsid) {
+				$row_icsid = count($nativeCals) > 0 ? current($nativeCals)->ics_id : 0;
+			}
+			$clist = JHTML::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', $row_icsid);
+
 			$this->view->assign('clistChoice', true);
 			$this->view->assign('defaultCat', 0);
 		}

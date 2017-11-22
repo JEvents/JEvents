@@ -142,7 +142,11 @@ class ModCalController extends JControllerLegacy   {
 			exit();
 		}
 		else if (JRequest::getInt("json")==1){
-			echo json_encode($json);
+			$encoded =  json_encode($json);
+			if ($encoded === false && json_last_error() == JSON_ERROR_UTF8) {
+				$encoded = json_encode($this->utf8ize($json));
+			}
+			echo $encoded;
 			exit();
 		}
 		else {
@@ -169,6 +173,17 @@ class ModCalController extends JControllerLegacy   {
 		}
 	}
 
+	// see http://php.net/manual/en/function.json-last-error.php
+	private  function utf8ize($mixed) {
+		if (is_array($mixed)) {
+		    foreach ($mixed as $key => $value) {
+			$mixed[$key] = $this->utf8ize($value);
+		    }
+		} elseif (is_string($mixed)) {
+		    return mb_convert_encoding($mixed, "UTF-8", "UTF-8");
+		}
+		return $mixed;
+	    }
 
 
 	function getViewName(){
