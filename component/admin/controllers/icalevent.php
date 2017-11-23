@@ -523,7 +523,7 @@ class AdminIcaleventController extends JControllerAdmin
 			if ($params->get('default_alldayevent', 0) == 1) {
 				$row->_alldayevent = 1;
 			}
-			if ($params->get('default_alldayevent', 0) == 1) {
+			if ($params->get('default_noendtime', 0) == 1) {
 				$row->_noendtime = 1;
 			}
 			// TODO - move this to class!!
