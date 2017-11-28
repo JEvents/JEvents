@@ -521,19 +521,15 @@ SQL;
 
 		if (!array_key_exists("evaccess", $icols))
 		{
-                    // What is curtent value of sql_mode
-                    $db->setQuery("SELECT @@sql_mode");
-                    $sql_mode = @$db->loadResult();
-                    
                     $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
                     @$db->execute();
                     $sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
                     $db->setQuery($sql);
                     @$db->execute();
-                    
-                    // Return to old value
-                    $db->setQuery("SET SESSION sql_mode=(".$db->quote($sql_mode).")");
-                    @$db->execute();                    
+                    $db->setQuery("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',NO_ZERO_DATE'))");
+                    @$db->execute();
+                    $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
+                    @$db->execute();
 		}
                                 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
