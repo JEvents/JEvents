@@ -520,9 +520,12 @@ class AdminIcaleventController extends JControllerAdmin
 			$vevent->set("dtstart", JevDate::mktime((int)$starthour, $startmin, 0, $month, $day, $year));
 			$vevent->set("dtend", JevDate::mktime((int)$endhour, $endmin, 0, $month, $day, $year));
 			$row = new jIcalEventDB($vevent);
-			// uncomment to default to all day event
-			//$row->_alldayevent=1;
-
+			if ($params->get('default_alldayevent', 0) == 1) {
+				$row->_alldayevent = 1;
+			}
+			if ($params->get('default_noendtime', 0) == 1) {
+				$row->_noendtime = 1;
+			}
 			// TODO - move this to class!!
 			// populate with meaningful initial values
 			$row->starttime($defaultstarttime);
