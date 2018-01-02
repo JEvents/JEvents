@@ -508,6 +508,8 @@ class JEVHelper
 	public static
 			function forceIntegerArray(&$cid, $asString = true)
 	{
+		$cid = is_null($cid) ? array() : $cid;
+
 		for ($c = 0; $c < count($cid); $c++)
 		{
 			$cid[$c] = intval($cid[$c]);
