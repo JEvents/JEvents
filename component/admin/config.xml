@@ -147,7 +147,9 @@
                 <field name="dayselect" type="jevboolean" class="btn-group" default="0" menu="hide" label='JEV_ALLOW_DAY_SELECT_FOR_REPEATS'  description='JEV_ALLOW_DAY_SELECT_FOR_REPEATS_DESC' difficulty="3"/>
 		<field name="disablerepeats" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_REPEATING_EVENTS" description="JEV_DISABLE_REPEATING_EVENTS_DESC" difficulty="1"/>
 		<field name="defaultcat" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_DEFAULT_CAT" description="JEV_USE_DEFAULT_CAT_TIP" difficulty="2"/>
+		<field name="defaultcal" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_DEFAULT_CAL" description="JEV_USE_DEFAULT_CAL_TIP" difficulty="2"/>
 		<field name="default_noendtime" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_DEFAULT_END_TIME" description="JEV_USE_DEFAULT_END_TIME_DESC" difficulty="2" />
+		<field name="default_alldayevent" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_USE_DEFAULT_ALL_DAY_EVENT" description="JEV_USE_DEFAULT_ALL_DAY_EVENT_DESC" difficulty="2" />
 		<field name="forcepopupcalendar" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_FORCE_POPUP_CAL" description="JEV_FORCE_POPUP_CAL_TIP" difficulty="2"/>
 		<field name="com_calForceCatColorEventForm" type="jevlist" default="2" menu="hide" label="JEV_DEF_EC_HIDE_FORCE" description="JEV_TIP_DEF_EC_HIDE_FORCE" difficulty="2">
 			<option value="0">JEV_EVENT_COLS_ALLOWED</option>

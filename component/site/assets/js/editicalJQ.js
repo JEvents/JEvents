@@ -1078,7 +1078,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 				// Make sure the message is visible
 				//jQuery("#jevoverlapwarning").get(0).scrollIntoView();
 				//jQuery('html, body').animate({	scrollTop: jQuery("#jevoverlapwarning").offset().top	}, 200);
-				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top	}, 200);
+				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top-80	}, 200);
 			}
 		}
 	})

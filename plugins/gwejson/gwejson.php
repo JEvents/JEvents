@@ -150,7 +150,7 @@ class PlgSystemGwejson extends JPlugin
 			}
 			catch (Exception $e) {
 				//PlgSystemGwejson::throwerror("There was an exception ".$e->getMessage()." ".var_export($e->getTrace()));
-				PlgSystemGwejson::throwerror("There was an exception " . $e->getMessage());
+				PlgSystemGwejson::throwerror("There was an exception " . addslashes($e->getMessage()));
 			}
 		}
 
