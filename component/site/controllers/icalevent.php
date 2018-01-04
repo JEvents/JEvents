@@ -148,7 +148,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function editcopy(){
 		// Must be at least an event creator to edit or create events
-		$is_event_editor = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -164,7 +164,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function save($key = NULL, $urlVar = NULL){
 		// Must be at least an event creator to save events
-		$is_event_editor = JEVHelper::isEventEditor();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
