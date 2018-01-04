@@ -175,7 +175,8 @@ class JEventsDBModel
 
 			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategories', array(& $instances[$index]));
-			if (is_array($instances[$index]) && count($instances[$index]) === 0)
+
+			if (!is_array($instances[$index]) || count($instances[$index]) === 0)
 			{
 				$instances[$index] = array(-1);
 			}
