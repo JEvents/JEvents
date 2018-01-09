@@ -487,18 +487,21 @@ class JEVHelper
 	static public
 			function SetMetaTags()
 	{
+		// Get Global Config
+		$jConfig = JFactory::getConfig();
+
 		//Get Document to set the Meta Tags to.
 		$document = JFactory::getDocument();
 
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && !$document->getDescription())
+		if ($params->get('menu-meta_description') && $jConfig->get('MetaDesc', '') === $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
