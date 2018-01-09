@@ -729,7 +729,7 @@ class JEventsDataModel {
 			}
 		}
 		
-		$num_row = count($row);
+		$num_row = is_object($row) ? 1 : count($row);
 
 		// No matching rows - use uid as alternative
 		if ($num_row==0 && JString::strlen($uid)>0){
@@ -741,7 +741,7 @@ class JEventsDataModel {
 						$row=null;
 					}
 				}
-				$num_row = count($row);
+				$num_row = is_object($row) ? 1 : count($row);
 			}
 		}
 		

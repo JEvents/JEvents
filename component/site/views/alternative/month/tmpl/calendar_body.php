@@ -40,16 +40,16 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
     <?php
     $datacount = count($this->data["dates"]);
     $dn=0;
-    for ($w=0;$w<6 && $dn<$datacount;$w++){
+    foreach ($this->data['weeks'] AS $wkn => $week) {
     ?>           
 	<tr valign="top" style="height:80px;">				
         <?php
         echo "<td width='2%' class='cal_td_weeklink'>";
-        list($week,$link) = each($this->data['weeks']);
-        echo "<a href='".$link."'>$week</a></td>\n";
+		echo "<a href='".$week."'>$wkn</a></td>\n";
 
-        for ($d=0;$d<7 && $dn<$datacount;$d++){
-        	$currentDay = $this->data["dates"][$dn];
+		for ($d=0;$d<7 && $dn<$datacount;$d++){
+
+	    $currentDay = $this->data["dates"][$dn];
         	switch ($currentDay["monthType"]){
         		case "prior":
         		case "following":
