@@ -50,16 +50,15 @@ $precedingMonth = $this->datamodel->getPrecedingMonth($this->data);
 	}
 	$datacount = count($this->data["dates"]);
 	$dn = 0;
-	for ($w = 0; $w < 6 && $dn < $datacount; $w++)
+    foreach ($this->data['weeks'] AS $wkn => $week)
 	{
 		?>
 		<div class="cal_div_weekrow" >
 			<div class='cal_div_weeklink'>
 				<span>
 					<?php
-					list($week, $link) = each($this->data['weeks']);
+					echo "<a href='".$week."'>$wkn</a></td>\n";
 					?>
-					<a href='<?php echo $link; ?>'><?php echo $week; ?></a>
 				</span>
 			</div>
 			<?php

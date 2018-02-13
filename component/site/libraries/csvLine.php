@@ -115,6 +115,14 @@ class CsvLine {
         $this->noendtime = intval($noendtime);
     }
 
+    public function getPublished() {
+        return $this->published;
+    }
+
+    public function setPublished($published) {
+        $this->published = intval($published);
+    }
+    
     public function getMultiday() {
         return $this->multiday;
     }
@@ -187,15 +195,16 @@ class CsvLine {
                ."SUMMARY:".$this->summary."\n"
                ."DTSTART".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtstart)."\n";
 
-	if($this->dtend != "") $ical .= "DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
-        if($this->dtstamp != "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
-        if($this->location != "") $ical .= "LOCATION:".$this->location."\n";
-        if($this->description != "") $ical .= "DESCRIPTION:".$this->description."\n";
-        if($this->contact != "") $ical .= "CONTACT:".$this->contact."\n";
-        if($this->extraInfo != "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
-        if($this->rrule != "") $ical .= "RRULE:".$this->rrule."\n";
-        if($this->noendtime!= "") $ical .= "NOENDTIME:".$this->noendtime."\n";
-        if($this->multiday!= "") $ical .= "MULTIDAY:".$this->multiday."\n";
+	if($this->dtend !== "") $ical .= "DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
+        if($this->dtstamp !== "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
+        if($this->location !== "") $ical .= "LOCATION:".$this->location."\n";
+        if($this->description !== "") $ical .= "DESCRIPTION:".$this->description."\n";
+        if($this->contact !== "") $ical .= "CONTACT:".$this->contact."\n";
+        if($this->extraInfo !== "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
+        if($this->rrule !=="") $ical .= "RRULE:".$this->rrule."\n";
+        if($this->noendtime!== "") $ical .= "NOENDTIME:".$this->noendtime."\n";
+        if($this->published!== "") $ical .= "X-STATE:".$this->published."\n";
+        if($this->multiday!== "") $ical .= "MULTIDAY:".$this->multiday."\n";
 
 	if (count($this->cf)>0){
 		foreach($this->cf as $key => $cf){
