@@ -75,7 +75,7 @@ class JEventsDBModel
 			$index = $aid . '+';
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$where = "";
 
@@ -187,7 +187,7 @@ class JEventsDBModel
 	function getCategoryInfo($catids = null, $aid = null)
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if (is_null($aid))
 		{
 			$aid = $this->datamodel->aid;
@@ -242,7 +242,7 @@ class JEventsDBModel
 	function getChildCategories($catids = null, $levels = 1, $aid = null)
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if (is_null($aid))
 		{
 			$aid = $this->datamodel->aid;
@@ -306,7 +306,7 @@ class JEventsDBModel
 	function recentIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -400,7 +400,7 @@ class JEventsDBModel
 		$query .= " LIMIT " . $limit;
 
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
 		array_push($ids, 0);
@@ -477,7 +477,7 @@ class JEventsDBModel
 	function recentlyModifiedIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -570,7 +570,7 @@ class JEventsDBModel
 		$query .= " LIMIT " . $limit;
 
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 //echo "<pre>".$db->getQuery()."</pre>";exit();
 		$detids = $db->loadColumn();
@@ -647,7 +647,7 @@ class JEventsDBModel
 	function popularIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -801,7 +801,7 @@ class JEventsDBModel
 		$query .= " LIMIT " . $limit;
 
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
 		array_push($ids, 0);
@@ -2280,7 +2280,7 @@ class JEventsDBModel
 		$starttime = (float) $usec + (float) $sec;
 
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -2402,7 +2402,7 @@ class JEventsDBModel
 				$query .= " LIMIT " . $limit;
 			}
 
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery($query);
 			$rptids = $db->loadColumn();
 
@@ -2496,7 +2496,7 @@ class JEventsDBModel
 			}
 
 			if ($debuginfo){
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$rows = $db->loadObjectList();
 				list ($usec, $sec) = explode(" ", microtime());
@@ -2544,7 +2544,7 @@ class JEventsDBModel
 		$starttime = (float) $usec + (float) $sec;
 
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$adminuser = JEVHelper::isAdminUser($user);
 		$db->setQuery($query);
 		if ($adminuser)
@@ -2712,7 +2712,7 @@ select @@sql_mode;
 		}
 
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -2869,7 +2869,7 @@ select @@sql_mode;
 		{
 			$user = JFactory::getUser();
 		}
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$lang = JFactory::getLanguage();
 		$langtag = $lang->getTag();
 
@@ -3022,7 +3022,7 @@ select @@sql_mode;
 
 		if ($count)
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery($query);
 			$res = $db->loadResult();
 			return $res;
@@ -3073,7 +3073,7 @@ select @@sql_mode;
 		}
 
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$frontendPublish = JEVHelper::isEventPublisher();
 
 		if ($jevtype == "icaldb")
@@ -3198,7 +3198,7 @@ select @@sql_mode;
 	function getEventById($evid, $includeUnpublished = 0, $jevtype = "icaldb", $checkAccess=true)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$frontendPublish = JEVHelper::isEventPublisher();
 
@@ -3318,7 +3318,7 @@ select @@sql_mode;
 	function listIcalEventsByCreator($creator_id, $limitstart, $limit, $orderby = 'dtstart ASC')
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -3445,7 +3445,7 @@ select @@sql_mode;
 		}
 
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -3637,7 +3637,7 @@ select @@sql_mode;
 	function countIcalEventsByCreator($creator_id)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$extrawhere = array();
 		$extrajoin = array();
@@ -3718,7 +3718,7 @@ select @@sql_mode;
 	function countIcalEventRepeatsByCreator($creator_id)
 	{
 		$user = JFactory::getUser();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$extrawhere = array();
 		$extrajoin = array();
@@ -3793,7 +3793,7 @@ select @@sql_mode;
 	public function listIcalEventsByCat($catids, $showrepeats = false, $total = 0, $limitstart = 0, $limit = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC", $filters = false, $extrafields = "", $extratables = "")
 	{
             
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!
@@ -3964,7 +3964,7 @@ select @@sql_mode;
 
 	function countIcalEventsByCat($catids, $showrepeats = false)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$user = JFactory::getUser();
 
 		// Use catid in accessibleCategoryList to pick up offsping too!
@@ -4089,7 +4089,7 @@ select @@sql_mode;
 	{
 		$user = JFactory::getUser();
 		$adminuser = JEVHelper::isAdminUser($user);
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		
 		$keyword = $db->escape($keyword, true) ;
 
@@ -4311,7 +4311,7 @@ select @@sql_mode;
 		$start = $year . '/' . $month . '/' . $day . ' 00:00:00';
 		$end = $year . '/' . $month . '/' . $day . ' 23:59:59';
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.* "
 				. "\n FROM #__jevents_vevent as ev"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -4328,7 +4328,7 @@ select @@sql_mode;
 		}
 
 		// still no match so find the nearest repeat and give a message.
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.*, abs(datediff(rpt.startrepeat," . $db->Quote($start) . ")) as diff "
 				. "\n FROM #__jevents_repetition as rpt"
 				. "\n INNER JOIN #__jevents_vevent as ev ON rpt.eventid = ev.ev_id"
@@ -4354,7 +4354,7 @@ select @@sql_mode;
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			// get list of categories this event is in - are they all accessible?
 			$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=" . $row->ev_id);
 			$catids = $db->loadColumn();

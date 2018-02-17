@@ -51,7 +51,7 @@ class jevCategoryFilter extends jevFilter
 		/*
 		$sectionname = JEV_COM_COMPONENT;
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$q_published = JFactory::getApplication()->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
 		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
 		$query = "SELECT c.id"

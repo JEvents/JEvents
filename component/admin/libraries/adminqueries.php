@@ -24,7 +24,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
  * @return stdClass details of vevent selected
  */
 	function getVEventById( $agid) {
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
 		// force state value to event state!
 		$accessibleCategories = $this->accessibleCategoryList();
@@ -116,7 +116,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	}
 
 	function getVEventRepeatById( $rp_id) {
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
 		$accessibleCategories = $this->accessibleCategoryList();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.*"
@@ -169,7 +169,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	// TODO add more access control e.g. canpublish caneditown etc.
 
 	function getNativeIcalendars() {
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
@@ -188,7 +188,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	}
 
 	function getIcalByIcsid($icsid) {
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user = JFactory::getUser();
 		$query = "SELECT *"
 		. "\n FROM #__jevents_icsfile as ical"
@@ -213,7 +213,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 	 */
 	function getModulesByName($module='mod_events_latest') {
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$query = "select *"
 		. "\n from #__modules"
 		. "\n where module='" . $module . "'";

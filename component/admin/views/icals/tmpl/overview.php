@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $user = JFactory::getUser();
 
 // get configuration object

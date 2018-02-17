@@ -40,7 +40,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$uri =  JFactory::getURI();
 
 		// Get data from the model
@@ -122,7 +122,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$uri =  JFactory::getURI();
 
 		// Get data from the model

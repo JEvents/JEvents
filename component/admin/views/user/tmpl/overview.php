@@ -16,7 +16,7 @@ $option = JEV_COM_COMPONENT;
 $jinput = JFactory::getApplication()->input;
 
 $user = JFactory::getUser();
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $pathIMG = JURI::root() . 'administrator/images/';
 $orderdir = $jinput->getCmd("filter_order_Dir", 'asc');
 $order = $jinput->getCmd("filter_order", 'tl.id');

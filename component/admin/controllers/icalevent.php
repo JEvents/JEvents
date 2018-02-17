@@ -64,7 +64,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$jinput = JFactory::getApplication()->input;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -466,7 +466,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$repeatId = 0;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// iCal agid uses GUID or UUID as identifier
 		if ($id > 0)
@@ -1228,7 +1228,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			if ($clearout)
 			{
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
 				$db->execute();
@@ -1305,7 +1305,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$cid = array($jinput->getInt("evid", 0));
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		foreach ($cid as $key => $id)
 		{
@@ -1463,7 +1463,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$cid = array(JRequest::getInt("evid", 0));
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		foreach ($cid as $key => $id)
 		{
@@ -1565,7 +1565,7 @@ class AdminIcaleventController extends JControllerAdmin
 		// TODO switch this after migration
 		$component_name = "com_jevents";
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
@@ -1581,7 +1581,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JRequest::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('default') or jexit('Invalid Token');
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){
@@ -1596,7 +1596,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$showUnpublishedICS = false;
 		$showUnpublishedCategories = false;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -1874,7 +1874,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	private function targetMenu($itemid = 0, $name)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// assemble menu items to the array
 		$options = array();

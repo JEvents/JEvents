@@ -73,7 +73,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		if ($params->get("authorisedonly",0)){
 			// get authorised users
 			$sql = "SELECT u.* FROM #__jev_users as jev LEFT JOIN #__users as u on u.id=jev.user_id where jev.published=1 and jev.cancreate=1";
-			$db= JFactory::getDBO();
+			$db= JFactory::getDbo();
 			$db->setQuery( $sql );
 			$users = $db->loadObjectList();
 		}

@@ -63,7 +63,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$control_name = $this->type;
 		$strict  = $this->getAttribute("strict", 0);
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// assemble menu items to the array
 		$options 	= array();

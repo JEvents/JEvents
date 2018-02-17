@@ -16,7 +16,7 @@ defined ( '_JEXEC' ) or die ();
 include_once (JPATH_SITE . "/modules/mod_jevents_cal/tmpl/default/calendar.php");
 class FlatModCalView extends DefaultModCalView {
 	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent = false, $basedate = false) {
-		$db = JFactory::getDBO ();
+		$db = JFactory::getDbo ();
 		$cfg = JEVConfig::getInstance ();
 		$compname = JEV_COM_COMPONENT;
 

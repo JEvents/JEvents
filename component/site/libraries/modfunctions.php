@@ -19,7 +19,7 @@ use Joomla\String\StringHelper;
 function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall){
 	// Itemid, search for menuid with lowest access rights
 	$user = JFactory::getUser();
-	$db	= JFactory::getDBO();
+	$db	= JFactory::getDbo();
 	$jinput = JFactory::getApplication()->input;
 
 	// Do we ignore category filters?

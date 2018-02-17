@@ -108,7 +108,7 @@ class GetjsonController extends JControllerLegacy
 				. "\n AND m.id = " . $modid
 				. "\n AND m.access IN (" . JEVHelper::getAid($user, 'string') . ")"
 				. "\n AND m.client_id != 1";
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
 		if (count($modules) <= 0)

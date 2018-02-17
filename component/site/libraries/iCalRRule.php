@@ -47,7 +47,7 @@ class iCalRRule extends JTable  {
 	 * @return n/a
 	 */
 	public function iCalRRuleFromDB($icalrowAsArray){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $icalrowAsArray;
@@ -97,7 +97,7 @@ class iCalRRule extends JTable  {
 	 * @return n/a
 	 */
 	public static  function iCalRRuleFromData($rrule){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $rrule;
@@ -152,7 +152,7 @@ class iCalRRule extends JTable  {
 	 */
 	public function _makeRepeat($start,$end){
 		if (!isset($this->_repetitions)) $this->_repetitions = array();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$repeat = new iCalRepetition($db);
 		$repeat->eventid = $this->eventid;
 		// TODO CHECK THIS logic

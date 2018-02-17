@@ -220,7 +220,7 @@ class JEventsAbstractView extends JViewLegacy
 	 */
 	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), $replace = array(), $blank = array())
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		// find published template
 		static $templates;
 		static $fieldNameArray;
