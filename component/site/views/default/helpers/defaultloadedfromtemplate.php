@@ -588,7 +588,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    $reg = JRegistry::getInstance("jevents");
 				    $modparams = $reg->get("jevents.moduleparams", new JRegistry);
 				    $modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid", 0));
-				    $vars = $router->getVars();
+				    $menuItem = JFactory::getApplication()->getMenu('site')->getItem($modItemid);
+				    $vars = $menuItem->query;
 				    foreach ($catids as $cat)
 				    {
 					    $vars["catids"] = $cat;
@@ -603,11 +604,27 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					    }
 					    $eventlink = "index.php?";
 					    $itemidSet = false;
+					    $hastask = false;
+					    $task = "";
 					    foreach ($vars as $key => $val)
 					    {
 						    // this is only used in the latest events module so do not perpetuate it here
 						    if ($key == "filter_reset")
 							    continue;
+    						    if ($key == "task")
+						    {
+							    $hastask = true;
+							    $task = $val;
+						    }
+    						    if ($key == "view")
+						    {
+							    $task = $val;
+						    }
+    						    if ($key == "layout")
+						    {
+							    $task .= ".".$val;
+						    }
+
 						    if ($key == "task" && ($val == "icalrepeat.detail" || $val == "icalevent.detail"))
 						    {
 							    $val = "week.listevents";
@@ -619,11 +636,16 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						    }
 						    $eventlink .= $key . "=" . $val . "&";
 					    }
+					    if (!$hastask && $task)
+					    {
+						    $eventlink .= "task=" . $task . "&";
+					    }
 					    if (!$itemidSet && $modItemid)
 					    {
-						    $eventlink .= "Itemid=" . $modItemid;
+						    $eventlink .= "Itemid=" . $modItemid. "&";
 					    }
 					    $eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
+					    
 					    $eventlink = JRoute::_($eventlink);
 
 					    $catlinks_raw[] = $eventlink;
@@ -754,6 +776,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					    {
 						    ob_start();
 						    $view->eventManagementButton($event);
+						    $button = ob_get_clean();
+						    ob_start();
+						    echo $button;
 						    ?>
 						    <div class="jevdialogs">
 							<?php
@@ -767,6 +792,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							}
 							else
 							{
+								$dialog = "";
 								$replace[] = "";
 							}
 							$blank[] = "";
@@ -776,7 +802,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						    <?php
 						    $search[] = "{{EDITBUTTON}}";
-						    $replace[] = ob_get_clean();
+						    if (!empty($dialog))
+						    {
+							$replace[] = ob_get_clean();
+						    }
+						    else {
+							 $junk = ob_get_clean();
+							 $replace[] = $button;
+						    }
 						    $blank[] = "";
 					    }
 					    else

@@ -404,13 +404,16 @@ class DefaultModLatestView
 		$reg =  JFactory::getConfig();
 		$pastdate = $reg->get("jev.timelimit.past", false);
 		$futuredate = $reg->get("jev.timelimit.future", false);
-		if ($pastdate)
+		if ($this->dispMode !== 5 && $this->dispMode !== 8)
 		{
-			$beginDate = $pastdate > $beginDate ? $pastdate : $beginDate;
-		}
-		if ($futuredate)
-		{
-			$endDate = $futuredate < $endDate ? $futuredate : $endDate;
+			if ($pastdate)
+			{
+				$beginDate = $pastdate > $beginDate ? $pastdate : $beginDate;
+			}
+			if ($futuredate)
+			{
+				$endDate = $futuredate < $endDate ? $futuredate : $endDate;
+			}
 		}
 		$timeLimitNow = $todayBegin < $beginDate ? $beginDate : $todayBegin;
 		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(JString::substr($timeLimitNow, 5, 2)), intval(JString::substr($timeLimitNow, 8, 2)), intval(JString::substr($timeLimitNow, 0, 4)));

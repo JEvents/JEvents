@@ -487,18 +487,21 @@ class JEVHelper
 	static public
 			function SetMetaTags()
 	{
+		// Get Global Config
+		$jConfig = JFactory::getConfig();
+
 		//Get Document to set the Meta Tags to.
 		$document = JFactory::getDocument();
 
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && !$document->getDescription())
+		if ($params->get('menu-meta_description') && $jConfig->get('MetaDesc', '') === $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -508,6 +511,8 @@ class JEVHelper
 	public static
 			function forceIntegerArray(&$cid, $asString = true)
 	{
+		$cid = is_null($cid) ? array() : $cid;
+
 		for ($c = 0; $c < count($cid); $c++)
 		{
 			$cid[$c] = intval($cid[$c]);
@@ -3667,13 +3672,13 @@ SCRIPT;
 			$transitions = array_slice($transitions, $tzindex);
 			if (count($transitions) >= 2)
 			{
-				$lastyear = $params->get("com_latestyear", 2020);
+				$lastyear = JEVHelper::getMaxYear();
 				echo "BEGIN:VTIMEZONE\r\n";
 				echo "TZID:$current_timezone\r\n";
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 0)
+					if ( (int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3705,7 +3710,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 1)
+					if ( (int)$transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;

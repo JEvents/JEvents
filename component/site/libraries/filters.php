@@ -56,7 +56,7 @@ class jevFilterProcessing
 			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
 			//  but we can't do anything about that
 			foreach ($visblemodules as $module) {
-				if ($module->module == "mod_jevents_filter"  || strpos($module->params, "jevfilters")){
+				if ($module->module == "mod_jevents_filter"  || (!is_array($module->params) && strpos($module->params, "jevfilters"))){
 
 				    $modparams =  new JRegistry($module->params);
 				    if ($module->module == "mod_jevents_filter" ){
