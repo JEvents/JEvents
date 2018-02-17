@@ -1,6 +1,6 @@
 <?php
 /**
-* @copyright	Copyright (C) 2015-2017 GWE Systems Ltd. All rights reserved.
+* @copyright	Copyright (C) 2015-2018 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
@@ -77,7 +77,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 
 	if (intval($requestObject->formdata->evid) > 0)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$queryModel = new JEventsDBModel($dataModel);
 		$event = $queryModel->getEventById(intval($requestObject->formdata->evid), 1, "icaldb");
@@ -240,7 +240,7 @@ function simulateSaveRepeat($requestObject)
 		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$rpt = new iCalRepetition($db);
 	$rpt->load($rp_id);
 
@@ -339,7 +339,7 @@ function valueIfExists($array, $key, $default)
 function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 {
 	$params = JComponentHelper::getParams("com_jevents");
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$overlaps = array();
 
 
@@ -492,7 +492,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 {
 	$params = JComponentHelper::getParams("com_jevents");
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$overlaps = array();
 	if ( $params->get("checkconflicts", 0) == 2 )
 	{

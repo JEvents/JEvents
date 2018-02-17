@@ -4,7 +4,7 @@
  *
  * @version     $Id: calendar_cell.php 2679 2011-10-03 08:52:57Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -160,7 +160,7 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 					$cellString = JString::substr($tooltip,9);
                                         $dom = new DOMDocument();
                                         // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>'.$cellString.'</body>');
+                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
                                         
                                         $classname = 'jevtt_title';
                                         $finder = new DomXPath($dom);

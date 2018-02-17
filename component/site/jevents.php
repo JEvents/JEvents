@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevents.php 3551 2012-04-20 09:41:37Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -15,7 +15,7 @@ jimport('joomla.filesystem.path');
 
 // For development performance testing only
 /*
-  $db	= JFactory::getDBO();
+  $db	= JFactory::getDbo();
   $db->setQuery("SET SESSION query_cache_type = OFF");
   $db->execute();
 
@@ -273,8 +273,8 @@ $registry->set("jevents.controller", $controller);
 // record what is running - used by the filters
 $registry->set("jevents.activeprocess", "component");
 
-// Stop viewing ALL events - it could take VAST amounts of memory
-if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
+// Stop viewing ALL events - it could take VAST amounts of memory.  But allow for CSV export
+if ($cfg->get('blockall', 0) && !$cfg->get("csvexport",0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
 {
 	JRequest::setVar("limit", 100);
 	JFactory::getApplication()->setUserState("limit", 100);

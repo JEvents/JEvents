@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3257 2012-02-10 13:16:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -188,13 +188,13 @@ class ICalsViewIcals extends JEventsAbstractView
 				$transitions = array_slice($transitions, $tzindex);
 				if (count($transitions) >= 2)
 				{
-					$lastyear = $params->get("com_latestyear", 2020);
+					$lastyear = JEVHelper::getMaxYear();
 					echo "BEGIN:VTIMEZONE\r\n";
 					echo "TZID:$current_timezone\r\n";
 					for ($t = 0; $t < count($transitions); $t++)
 					{
 						$transition = $transitions[$t];
-						if ($transition['isdst'] == 0)
+						if ((int)$transition['isdst'] == 0)
 						{
 							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;
@@ -226,7 +226,7 @@ class ICalsViewIcals extends JEventsAbstractView
 					for ($t = 0; $t < count($transitions); $t++)
 					{
 						$transition = $transitions[$t];
-						if ($transition['isdst'] == 1)
+						if ((int)$transition['isdst'] == 1)
 						{
 							if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 								continue;

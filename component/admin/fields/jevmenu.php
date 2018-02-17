@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevmenu.php 3157 2012-01-05 13:12:19Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -41,15 +41,15 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 	public function getOptions()
 	{
-		$jinput = JFactory::getApplication()->input;
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
 
 		// Trap to stop the config from being editing from the categories page
 		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components. 
                 // Only do the redirect in the backend since in the frontend module editing uses com_config (go figure!!!)
-		if ($jinput->getString("option") == "com_config" && JFactory::getApplication()->isAdmin()){
+		if ($jinput->getString("option") == "com_config" && $app->isAdmin()){
 			$redirect_url  =  "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
-			$app  =  JFactory::getApplication();
-			$app->redirect($redirect_url); //redirect 
+			$app->redirect($redirect_url); //redirect
 			exit();
 		}
 
@@ -58,12 +58,10 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$node = $this->element;
-		$value = $this->value;
-		$name = $this->name;
-		$control_name = $this->type;
+
 		$strict  = $this->getAttribute("strict", 0);
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// assemble menu items to the array
 		$options 	= array();
@@ -77,7 +75,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		$db->setQuery( $query );
 		$menuTypes = $db->loadObjectList();
 
-		$menu = JFactory::getApplication()->getMenu('site');
+		$menu = $app->getMenu('site');
 		$menuItems = $menu->getMenu();
 		$extension = "com_jevents";
 		if ($node){
@@ -134,10 +132,10 @@ class JFormFieldJEVmenu extends JFormFieldList
 					$item = &$groupedList[$type->menutype][$i];
 					
 					//If menutype is changed but item is not saved yet, use the new type in the list
-					if ( JRequest::getString('option', '', 'get') == 'com_menus' ) {
-						$currentItemArray = JRequest::getVar('cid', array(0), '', 'array');
+					if ( $jinput->getString('option', '', 'get') == 'com_menus' ) {
+						$currentItemArray = $jinput->get('cid', array(0), "array");
 						$currentItemId = (int) $currentItemArray[0];
-						$currentItemType = JRequest::getString('type', $item->type, 'get');
+						$currentItemType = $jinput->getString('type', $item->type, 'get');
 						if ( $currentItemId == $item->id && $currentItemType != $item->type) {
 							$item->type = $currentItemType;
 						}

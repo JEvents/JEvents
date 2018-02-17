@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -294,7 +294,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

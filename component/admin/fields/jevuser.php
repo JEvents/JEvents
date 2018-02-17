@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevuser.php 1957 2011-04-25 08:28:48Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -46,7 +46,7 @@ class JFormFieldJEVuser extends JFormFieldList
 	{
 		$params = JComponentHelper::getParams("com_jevents");
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
                 // if editing category then find the rules for a specific category
                 if ($this->name == "jform[params][admin]" 

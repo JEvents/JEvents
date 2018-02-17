@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalEventDetail.php 1742 2011-03-08 10:53:09Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -96,7 +96,7 @@ class iCalEventDetail extends JTable  {
 	 * @return n/a
 	 */
 	public static function iCalEventDetailFromData($ice){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalEventDetail($db);
 		$temp->_data = $ice;
 		$temp->convertData();
@@ -111,7 +111,7 @@ class iCalEventDetail extends JTable  {
 	 * @return n/a
 	 */
 	public static function iCalEventDetailFromDB($icalrowAsArray){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalEventDetail($db);
 		$temp->_data = $icalrowAsArray;
 		$temp->convertData();
@@ -193,7 +193,7 @@ class iCalEventDetail extends JTable  {
 		// The description and summary may need escaping !!!
 		// But this will be done by the SQL update function as part of the store so don't do it twice
 		/*
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$this->description = $db->escape($this->description);
 		$this->summary = $db->escape($this->summary);
 		*/

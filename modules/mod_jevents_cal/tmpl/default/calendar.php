@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -70,7 +70,7 @@ class DefaultModCalView
 
 		$cfg = JEVConfig::getInstance();
 		$jev_component_name  = JEV_COM_COMPONENT;
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$this->datamodel = new JEventsDataModel();
 
@@ -236,14 +236,9 @@ class DefaultModCalView
 
 	public function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent=false, $basedate=false){
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$cfg = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
-
-		$cal_year=date("Y",$time);
-		$cal_month=date("m",$time);
-		// do not use $cal_day since it's not reliable due to month offset calculation
-		//$cal_day=date("d",$time);
 
 		if (!$basedate) $basedate=$time;
 		$base_year = date("Y",$basedate);
@@ -284,6 +279,7 @@ class DefaultModCalView
 		else {
 			$cal_year=date("Y",$time);
 			$cal_month=date("m",$time);
+			$cal_day=date("d",$time);			
 		}
 
 		$reg = JFactory::getConfig();
@@ -302,7 +298,7 @@ class DefaultModCalView
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
-		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
+		$today = JevDate::mktime(0,0,0);
 
 		$content    = '';
 
@@ -451,7 +447,7 @@ class DefaultModCalView
 		}
 		$user = JFactory::getUser();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		// this will get the viewname based on which classes have been implemented
 		$viewname = $this->getTheme();
@@ -507,7 +503,7 @@ class DefaultModCalView
 		}
 		$user = JFactory::getUser();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		static $isloaded_css = false;
 		// this will get the viewname based on which classes have been implemented

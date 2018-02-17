@@ -19,7 +19,7 @@ class DefaultsModelDefaults extends JModelLegacy
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query	= $db->getQuery(true);
 			
 			$query->select("def.*");
@@ -93,7 +93,7 @@ class DefaultsModelDefaults extends JModelLegacy
 		if (empty($this->_total))
 		{
 			// Manually add the form data which is not stored in the database in the same way
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$language  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 			
 			$query	= $db->getQuery(true);
@@ -120,7 +120,7 @@ class DefaultsModelDefaults extends JModelLegacy
 	{
 		static  $languages;
 		if (!isset($languages)){
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 
 			// get the list of languages first 
 			$query	= $db->getQuery(true);

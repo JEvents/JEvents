@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevents.php 3552 2012-04-20 09:41:53Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -83,7 +83,7 @@ $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 if (!version_compare(JVERSION,'1.6.0',">=")){
 	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$query = 'SELECT template'
 	. ' FROM #__templates_menu'
 	. ' WHERE client_id = 0 AND menuid=0'
@@ -179,7 +179,7 @@ $jinput->set("jevcmd", $cmd);
 JPluginHelper::importPlugin("jevents");
 
 // Make this a config option - should not normally be needed
-//$db = JFactory::getDBO();
+//$db = JFactory::getDbo();
 //$db->setQuery( "SET SQL_BIG_SELECTS=1");
 //$db->execute();
 

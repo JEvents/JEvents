@@ -5,7 +5,7 @@
  *
  * @version     $Id: csvToiCal.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -185,6 +185,9 @@ class CsvToiCal
 					break;
 				case "NOENDTIME":
 					$dataLine->setNoendtime($data[$order]);					
+					break;
+				case "PUBLISHED":
+					$dataLine->setPublished($data[$order]);					
 					break;
 				case "MULTIDAY":
 					$dataLine->setMultiday($data[$order]);

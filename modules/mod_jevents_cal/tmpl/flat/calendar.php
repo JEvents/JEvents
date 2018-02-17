@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined ( '_JEXEC' ) or die ();
 include_once (JPATH_SITE . "/modules/mod_jevents_cal/tmpl/default/calendar.php");
 class FlatModCalView extends DefaultModCalView {
 	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent = false, $basedate = false) {
-		$db = JFactory::getDBO ();
+		$db = JFactory::getDbo ();
 		$cfg = JEVConfig::getInstance ();
 		$compname = JEV_COM_COMPONENT;
 
@@ -86,7 +86,7 @@ class FlatModCalView extends DefaultModCalView {
 
 		$month_name = JEVHelper::getMonthName ( $cal_month );
 		$to_day = date ( "Y-m-d", $this->timeWithOffset );
-		$today = JevDate::mktime ( 0, 0, 0, $cal_month, $cal_day, $cal_year );
+		$today = JevDate::mktime (0,0,0);
 
 		$cal_prev_month = $cal_month - 1;
 		$cal_next_month = $cal_month + 1;

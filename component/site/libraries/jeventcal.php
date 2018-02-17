@@ -4,7 +4,7 @@
  *
  * @version     $Id: jeventcal.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -329,9 +329,9 @@ class jEventCal {
 		static $arr_catids;
 
 		if (!isset($arr_catids)) {
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$arr_catids = array();
-			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
+			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' ORDER BY cat.lft" ;
 			$db->setQuery($catsql);
 			 $arr_catids = $db->loadObjectList('id') ;
 			

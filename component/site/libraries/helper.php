@@ -5,7 +5,7 @@
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -487,18 +487,21 @@ class JEVHelper
 	static public
 			function SetMetaTags()
 	{
+		// Get Global Config
+		$jConfig = JFactory::getConfig();
+
 		//Get Document to set the Meta Tags to.
 		$document = JFactory::getDocument();
 
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && !$document->getDescription())
+		if ($params->get('menu-meta_description') && $jConfig->get('MetaDesc', '') === $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -508,6 +511,8 @@ class JEVHelper
 	public static
 			function forceIntegerArray(&$cid, $asString = true)
 	{
+		$cid = is_null($cid) ? array() : $cid;
+
 		for ($c = 0; $c < count($cid); $c++)
 		{
 			$cid[$c] = intval($cid[$c]);
@@ -643,54 +648,75 @@ class JEVHelper
 		}
 
 		// Load the calendar behavior
-		JHtml::_('behavior.calendar');
+		//JHtml::_('behavior.calendar');
 		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
-		$tag      = JFactory::getLanguage()->getTag();
-		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
-		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
+		//$tag      = JFactory::getLanguage()->getTag();
+		//JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
 
-		// Only display the triggers once for each control.
-		if (!in_array($fieldid, $done))
+		$tag       = JFactory::getLanguage()->getTag();
+		$calendar  = JFactory::getLanguage()->getCalendar();
+		$direction = strtolower(JFactory::getDocument()->getDirection());
+
+		// Get the appropriate file for the current language date helper
+		$helperPath = 'system/fields/calendar-locales/date/gregorian/date-helper.min.js';
+
+		if (!empty($calendar) && is_dir(JPATH_ROOT . '/media/system/js/fields/calendar-locales/date/' . strtolower($calendar)))
 		{
-			$document = JFactory::getDocument();
-			$document
-				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {
-					if (!jQuery("#' . $fieldid . '").length) {
-						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
-						return;
-					}
-			Calendar.setup({
-			// Id of the input field
-			inputField: "' . $fieldid . '",
-			// Format of the input field
-			ifFormat: "' . $format . '",
-			// Trigger for the calendar (button ID)
-			button: "' . $fieldid . '_img",
-			// Alignment (defaults to "Bl")
-			align: "Tl",
-                        // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
-                        firstDay: '.$offset.',
-			// Allowable date range for picker
-			range:['.$minyear.','.$maxyear.'],
-			// electric false means field update ONLY when a day cell is clicked
-			electric:false,
-			singleClick: true,
-                        showsTime:'.$showtime.',
-                        timeFormat:'.$timeformat.',
-			});});'
-			);
-			$done[] = $fieldid;
+			$helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
 		}
 
+		// Get the appropriate locale file for the current language
+		$localesPath = 'system/fields/calendar-locales/en.js';
+
+		if (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower($tag) . '.js'))
+		{
+			$localesPath = 'system/fields/calendar-locales/' . strtolower($tag) . '.js';
+		}
+		elseif (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js'))
+		{
+			$localesPath = 'system/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js';
+		}
+		
+		$direction = strtolower(JFactory::getDocument()->getDirection());
+		$cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';		
+		
+		// Load polyfills for older IE
+		JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+
+		// The static assets for the calendar
+		JHtml::_('script', $localesPath, false, true, false, false, true);
+		JHtml::_('script', $helperPath, false, true, false, false, true);
+		JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+		JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);		
+		
 		// Hide button using inline styles for readonly/disabled fields
 		$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
 		$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
 
-		echo  '<div' . $div_class . '>'
+		echo  '<div class=" field-calendar">'
+		. '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
-				. '" name="' . $name . '" id="' . $fieldid . '" value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
-				. '<button type="button" class="btn" id="' . $fieldid . '_img"' . $btn_style . '><span class="icon-calendar"></span></button>'
+				. '" name="' . $name . '" id="' . $fieldid . '" '
+			. 'value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" '
+			. 'data-alt-value="'. htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') .'" ' . $attribs . ' />'			
+			. '<button type="button" class="btn btn-secondary '.$btn_style.'"
+			id="' . $fieldid . '_btn"
+			data-inputfield="' . $fieldid . '"
+			data-dayformat="' . $format .'"
+			data-button="' . $fieldid . '_btn"
+			data-firstday="'.$offset.'"
+			data-weekend="'. JFactory::getLanguage()->getWeekEnd(). '"
+			data-today-btn="1"
+			data-week-numbers="0"
+			data-show-time="0"
+			data-show-others="1"
+			data-only-months-nav="0"
+			data-time-24="24" 
+			'. (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") .'
+			'. (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") .'
+		><span class="icon-calendar"></span></button>. '
+			. '</div>'
 			. '</div>';
 
 	}
@@ -1167,7 +1193,7 @@ class JEVHelper
 				// Check maxevent count
 				if ($user->eventslimit > 0)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=" . $user->user_id);
 					$eventcount = intval($db->loadResult());
 					if ($eventcount < $user->eventslimit)
@@ -1788,7 +1814,7 @@ class JEVHelper
 			return false;
 		$juser = JFactory::getUser();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
                 // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
                 // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
 		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
@@ -2111,7 +2137,7 @@ class JEVHelper
 			function getContact($id, $attrib = 'Object')
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		static $rows = array();
 
@@ -2327,7 +2353,7 @@ class JEVHelper
 			if (!$rootlevels)
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Build the base query.
 				$query = $db->getQuery(true);
@@ -2520,7 +2546,7 @@ class JEVHelper
 			else
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Set the query for execution.
 				$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
@@ -3133,7 +3159,7 @@ SCRIPT;
 				$ids[] = $a->ev_id();
 				if (count($ids) > 100)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 					$rows = $db->loadObjectList();
 					foreach ($rows as $row)
@@ -3150,7 +3176,7 @@ SCRIPT;
 			// mop up the last ones
 			if (count($ids) > 0)
 			{
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 				$rows = $db->loadObjectList();
 				foreach ($rows as $row)
@@ -3667,13 +3693,13 @@ SCRIPT;
 			$transitions = array_slice($transitions, $tzindex);
 			if (count($transitions) >= 2)
 			{
-				$lastyear = $params->get("com_latestyear", 2020);
+				$lastyear = JEVHelper::getMaxYear();
 				echo "BEGIN:VTIMEZONE\r\n";
 				echo "TZID:$current_timezone\r\n";
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 0)
+					if ( (int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3705,7 +3731,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 1)
+					if ( (int)$transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;

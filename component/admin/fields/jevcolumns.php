@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevcategorynew.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -175,7 +175,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 
 		$input .= '</div></td>
 		</tr></table>';
-		$input .= '<textarea style="display:none"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
+		$input .= '<textarea style="display:block;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
 		
 		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';

@@ -4,7 +4,7 @@
  *
  * @version     $Id: filters.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -56,7 +56,7 @@ class jevFilterProcessing
 			// note that $visblemodules are only those modules 'visible' on this page - could be overruled by special template
 			//  but we can't do anything about that
 			foreach ($visblemodules as $module) {
-				if ($module->module == "mod_jevents_filter"  || strpos($module->params, "jevfilters")){
+				if ($module->module == "mod_jevents_filter"  || (!is_array($module->params) && strpos($module->params, "jevfilters"))){
 
 				    $modparams =  new JRegistry($module->params);
 				    if ($module->module == "mod_jevents_filter" ){

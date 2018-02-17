@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalICSFile.php 3474 2012-04-03 13:40:53Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -70,7 +70,7 @@ class iCalICSFile extends JTable  {
 	}
 
 	public function editICalendar($icsid,$catid,$access=0,$state=1, $label=""){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state);
 		$temp->filename="_from_scratch_";
@@ -112,7 +112,7 @@ RAWTEXT;
 	}
 
 	public static function newICSFileFromURL($uploadURL,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		if ($access==0){
@@ -161,7 +161,7 @@ RAWTEXT;
 	}
 
 	public static function newICSFileFromFile($file,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid,$catid,$access,$state,$autorefresh,$ignoreembedcat);
 		if ($access==0){
@@ -185,7 +185,7 @@ RAWTEXT;
 	 * Used to create Ical from raw strring
 	 */
 	public function newICSFileFromString($rawtext,$icsid,$catid,$access=0,$state=1, $label="", $autorefresh=0, $ignoreembedcat=0){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = null;
 		$temp = new iCalICSFile($db);
 		if ($icsid>0){
@@ -214,7 +214,7 @@ RAWTEXT;
 	public function updateDetails(){
 		if (parent::store() && $this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
 			$db->execute();
@@ -241,7 +241,7 @@ RAWTEXT;
 		static $categories;
 		if (is_null($categories)){
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}
@@ -261,14 +261,14 @@ RAWTEXT;
 		}
 		else if ($this->isdefault==1 && $this->icaltype==2){
 			// set all the others to 0
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>".$this->ics_id;
 			$db->setQuery($sql);
 			$db->execute();
 		}
 
 		// find the full set of ids currently in the calendar so taht we can remove cancelled ones
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$sql = "SELECT ev_id, uid, lockevent FROM #__jevents_vevent WHERE icsid=".$this->ics_id ;//. " AND catid=".$catid;
 		$db->setQuery($sql);
 		$existingevents = $db->loadObjectList('ev_id');
@@ -498,7 +498,7 @@ RAWTEXT;
 				$db->execute();
 
 				$ex_count = count($existingevents);
-				if($guest === 1)
+				if($guest !== 1)
 				{
 					JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
 				}
@@ -506,7 +506,7 @@ RAWTEXT;
 		}
 		$count = count($this->_icalInfo->vevents) ;
 		unset($this->_icalInfo->vevents);
-		if($guest === 1)
+		if($guest !== 1)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 		}
@@ -534,7 +534,7 @@ RAWTEXT;
 		
 		static $categories;
 		if (is_null($categories)){
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');

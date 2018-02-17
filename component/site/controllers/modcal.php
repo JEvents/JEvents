@@ -4,7 +4,7 @@
  *
  * @version     $Id: modcal.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -95,7 +95,7 @@ class ModCalController extends JControllerLegacy   {
 		. "\n AND m.id = ". $modid
 		. "\n AND m.access IN (" .  JEVHelper::getAid($user, 'string') . ")"
 		. "\n AND m.client_id != 1";
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$db->setQuery( $query );
 		$modules = $db->loadObjectList();
 		if (count($modules)<=0){
@@ -142,7 +142,11 @@ class ModCalController extends JControllerLegacy   {
 			exit();
 		}
 		else if (JRequest::getInt("json")==1){
-			echo json_encode($json);
+			$encoded =  json_encode($json);
+			if ($encoded === false && json_last_error() == JSON_ERROR_UTF8) {
+				$encoded = json_encode($this->utf8ize($json));
+			}
+			echo $encoded;
 			exit();
 		}
 		else {
@@ -169,6 +173,17 @@ class ModCalController extends JControllerLegacy   {
 		}
 	}
 
+	// see http://php.net/manual/en/function.json-last-error.php
+	private  function utf8ize($mixed) {
+		if (is_array($mixed)) {
+		    foreach ($mixed as $key => $value) {
+			$mixed[$key] = $this->utf8ize($value);
+		    }
+		} elseif (is_string($mixed)) {
+		    return mb_convert_encoding($mixed, "UTF-8", "UTF-8");
+		}
+		return $mixed;
+	    }
 
 
 	function getViewName(){
@@ -189,7 +204,7 @@ class ModCalController extends JControllerLegacy   {
 		$user = JFactory::getUser();
 
 		$cfg = JEVConfig::getInstance();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$this->datamodel =new JEventsDataModel();
 
