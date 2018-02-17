@@ -298,7 +298,7 @@ class DefaultModCalView
 
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$first_of_month = JevDate::mktime(0,0,0,$cal_month, 1, $cal_year);
-		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
+		$today = JevDate::mktime(0,0,0);
 
 		$content    = '';
 
