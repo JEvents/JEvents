@@ -708,7 +708,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function savetranslation ()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -772,7 +772,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function deletetranslation ()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -1454,13 +1454,17 @@ class AdminIcaleventController extends JControllerAdmin
 		 return false;
 		  }
 		 */
-		$cid = JRequest::getVar('cid', array(0));
+
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$cid = $jinput->get('cid', array(0), "array");
 		$cid = ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
 		{
-			$cid = array(JRequest::getInt("evid", 0));
+			$cid = array($jinput->getInt("evid", 0));
 		}
 
 		$db = JFactory::getDbo();
@@ -1534,25 +1538,25 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			else
 			{
-				$Itemid = JRequest::getInt("Itemid");
+				$Itemid = $jinput->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = JRequest::getString("rettask", "day.listevents");
+				$rettask = $jinput->getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
 				$this->redirect();
 			}
 		}
 		else
 		{
-			if (JFactory::getApplication()->isAdmin())
+			if ($app->isAdmin())
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list");
 				$this->redirect();
 			}
 			else
 			{
-				$Itemid = JRequest::getInt("Itemid");
+				$Itemid = $jinput->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = JRequest::getString("rettask", "day.listevents");
+				$rettask = $jinput-getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false));
 				$this->redirect();
 			}
@@ -1581,7 +1585,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('default') or jexit('Invalid Token');
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){

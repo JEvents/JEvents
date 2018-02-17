@@ -406,7 +406,7 @@ class ICalsController extends AdminIcalsController
 	function importdata()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit('Invalid Token');
 
 		// Can only do this if can add an event
 		// Must be at least an event creator to edit or create events
