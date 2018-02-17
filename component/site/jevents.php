@@ -15,7 +15,7 @@ jimport('joomla.filesystem.path');
 
 // For development performance testing only
 /*
-  $db	= JFactory::getDBO();
+  $db	= JFactory::getDbo();
   $db->setQuery("SET SESSION query_cache_type = OFF");
   $db->execute();
 

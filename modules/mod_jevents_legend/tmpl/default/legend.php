@@ -83,7 +83,7 @@ class DefaultModLegendView
 		
 		$user =  JFactory::getUser();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
 		$cfg = JEVConfig::getInstance();
 
@@ -249,7 +249,7 @@ class DefaultModLegendView
 	protected function getCategoryHierarchy($catidList, $catidsGPList)
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$aid = $this->datamodel->aid;
 		$user =  JFactory::getUser();
 

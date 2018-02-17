@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 global $task,$catid;
-$db	= JFactory::getDBO();
+$db	= JFactory::getDbo();
 $editor = JFactory::getEditor();
 
 // clean any existing cache files

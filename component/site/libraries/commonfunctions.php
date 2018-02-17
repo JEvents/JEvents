@@ -85,7 +85,7 @@ class JEV_CommonFunctions {
 
 		static $cats;
 		if (!isset($cats)){
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 
 			$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
 			$db->setQuery( $sql);
@@ -275,7 +275,7 @@ class JEV_CommonFunctions {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$cat = new JEventsCategory($db);
 		$cat->load($event->catid());
 		$adminuser = $cat->getAdminUser();

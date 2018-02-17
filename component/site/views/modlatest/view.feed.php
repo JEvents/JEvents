@@ -37,7 +37,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		
 		$cfg = JEVConfig::getInstance();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -60,7 +60,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 			. "\n AND m.id = ". $modid
 			. "\n AND m.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' .  JEVHelper::getAid($user, 'string') . ')' : ' <=  ' .  JEVHelper::getAid($user))
 			. "\n AND m.client_id != 1";
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$db->setQuery( $query );
 			$modules = $db->loadObjectList();
 			if (count($modules)<=0){

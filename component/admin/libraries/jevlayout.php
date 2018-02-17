@@ -36,7 +36,7 @@ class JInstallerJevlayout extends JAdapterInstance
 	function install()
 	{
 		// Get a database connector object
-		$db =& $this->parent->getDBO();
+		$db =& $this->parent->getDbo();
 
 		// Get the extension manifest object
 		$this->manifest = $this->parent->getManifest();

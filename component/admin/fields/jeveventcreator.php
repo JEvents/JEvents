@@ -39,7 +39,7 @@ class JFormFieldJeveventcreator extends JFormField
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

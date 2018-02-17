@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 global   $task;
-$db	= JFactory::getDBO();
+$db	= JFactory::getDbo();
 $user = JFactory::getUser();
 JHTML::_('behavior.tooltip');
 

@@ -64,7 +64,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$jinput = JFactory::getApplication()->input;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -466,7 +466,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$repeatId = 0;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// iCal agid uses GUID or UUID as identifier
 		if ($id > 0)
@@ -1238,7 +1238,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			if ($clearout)
 			{
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
 				$db->setQuery($query);
 				$db->execute();
@@ -1315,7 +1315,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$cid = array($jinput->getInt("evid", 0));
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		foreach ($cid as $key => $id)
 		{
@@ -1453,6 +1453,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function emptytrash()
 	{
+	    $app    = JFactory::getApplication();
+	    $jinput = $app->input();
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -1464,16 +1466,17 @@ class AdminIcaleventController extends JControllerAdmin
 		 return false;
 		  }
 		 */
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $jinput->get('cid', array(0), "array");
+
 		$cid = ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
 		if (count($cid) == 1 && $cid[0] == 0)
 		{
-			$cid = array(JRequest::getInt("evid", 0));
+			$cid = array($jinput->getInt("evid", 0));
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		foreach ($cid as $key => $id)
 		{
@@ -1481,7 +1484,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
-				JFactory::getApplication()->enqueueMessage('534 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
+				$app->enqueueMessage('534 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);
 			}
@@ -1544,9 +1547,9 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			else
 			{
-				$Itemid = JRequest::getInt("Itemid");
+				$Itemid = $app->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = JRequest::getString("rettask", "day.listevents");
+				$rettask = $app->getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
 				$this->redirect();
 			}
@@ -1560,9 +1563,9 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			else
 			{
-				$Itemid = JRequest::getInt("Itemid");
+				$Itemid = $app->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = JRequest::getString("rettask", "day.listevents");
+				$rettask = $app->getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false));
 				$this->redirect();
 			}
@@ -1575,7 +1578,7 @@ class AdminIcaleventController extends JControllerAdmin
 		// TODO switch this after migration
 		$component_name = "com_jevents";
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
@@ -1591,7 +1594,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JRequest::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('default') or jexit('Invalid Token');
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){
@@ -1606,7 +1609,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$showUnpublishedICS = false;
 		$showUnpublishedCategories = false;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
 
@@ -1884,7 +1887,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	private function targetMenu($itemid = 0, $name)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// assemble menu items to the array
 		$options = array();

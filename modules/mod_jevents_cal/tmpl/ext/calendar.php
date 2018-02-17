@@ -18,7 +18,7 @@ class ExtModCalView extends DefaultModCalView
 {
 
 	function _displayCalendarMod($time, $startday, $linkString,	&$day_name, $monthMustHaveEvent=false, $basedate=false){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$cfg = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 

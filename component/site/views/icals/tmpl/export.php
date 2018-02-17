@@ -44,7 +44,7 @@ if (!empty($this->icalEvents))
 		$ids[] = $a->ev_id();
 		if (count($ids) > 100)
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 			$rows = $db->loadObjectList();
 			foreach ($rows as $row)
@@ -61,7 +61,7 @@ if (!empty($this->icalEvents))
 	// mop up the last ones
 	if (count($ids) > 0)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 		$rows = $db->loadObjectList();
 		foreach ($rows as $row)

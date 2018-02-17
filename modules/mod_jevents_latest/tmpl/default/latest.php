@@ -257,7 +257,7 @@ class DefaultModLatestView
 			$this->maxEvents = $limit;
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$t_datenow = JEVHelper::getNow();
 		$this->now = $t_datenow->toUnix(true);

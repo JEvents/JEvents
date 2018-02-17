@@ -83,7 +83,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$rules = JAccess::getAssetRules("com_jevents", true);
