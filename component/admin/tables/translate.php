@@ -39,12 +39,12 @@ class TableTranslate extends JTable
 	 * @since 1.0
 	 */
 	function __construct() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		parent::__construct('#__jevents_translation', 'translation_id', $db);
 	}
 
 	public static function checkTable(){
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 	}
 
 	function bind($array, $ignore = '') {

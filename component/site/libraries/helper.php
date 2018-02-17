@@ -487,18 +487,21 @@ class JEVHelper
 	static public
 			function SetMetaTags()
 	{
+		// Get Global Config
+		$jConfig = JFactory::getConfig();
+
 		//Get Document to set the Meta Tags to.
 		$document = JFactory::getDocument();
 
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && !$document->getDescription())
+		if ($params->get('menu-meta_description') && $jConfig->get('MetaDesc', '') === $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -508,6 +511,8 @@ class JEVHelper
 	public static
 			function forceIntegerArray(&$cid, $asString = true)
 	{
+		$cid = is_null($cid) ? array() : $cid;
+
 		for ($c = 0; $c < count($cid); $c++)
 		{
 			$cid[$c] = intval($cid[$c]);
@@ -1188,7 +1193,7 @@ class JEVHelper
 				// Check maxevent count
 				if ($user->eventslimit > 0)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=" . $user->user_id);
 					$eventcount = intval($db->loadResult());
 					if ($eventcount < $user->eventslimit)
@@ -1809,7 +1814,7 @@ class JEVHelper
 			return false;
 		$juser = JFactory::getUser();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
                 // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
                 // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
 		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
@@ -2132,7 +2137,7 @@ class JEVHelper
 			function getContact($id, $attrib = 'Object')
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		static $rows = array();
 
@@ -2348,7 +2353,7 @@ class JEVHelper
 			if (!$rootlevels)
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Build the base query.
 				$query = $db->getQuery(true);
@@ -2541,7 +2546,7 @@ class JEVHelper
 			else
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Set the query for execution.
 				$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
@@ -3154,7 +3159,7 @@ SCRIPT;
 				$ids[] = $a->ev_id();
 				if (count($ids) > 100)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 					$rows = $db->loadObjectList();
 					foreach ($rows as $row)
@@ -3171,7 +3176,7 @@ SCRIPT;
 			// mop up the last ones
 			if (count($ids) > 0)
 			{
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 				$rows = $db->loadObjectList();
 				foreach ($rows as $row)

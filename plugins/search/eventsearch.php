@@ -114,7 +114,7 @@ class plgSearchEventsearch extends JPlugin
 	function onSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$user =  JFactory::getUser();
 		$groups = (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->getAuthorisedViewLevels()) : false;
 

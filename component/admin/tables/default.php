@@ -41,7 +41,7 @@ class TableDefault extends JTable
 	 * @since 1.0
 	 */
 	function __construct() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		parent::__construct('#__jev_defaults', 'id', $db);
 	}
 

@@ -5,7 +5,7 @@ use Joomla\String\StringHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	static $allcatids;
 	if (!isset($allcatids))
 	{
@@ -470,7 +470,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				    if (!isset($allcat_catids))
 				    {
-					    $db = JFactory::getDBO();
+					    $db = JFactory::getDbo();
 					    $arr_catids = array();
 					    $catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					    $db->setQuery($catsql);
@@ -677,7 +677,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    $search[] = "{{ALLCATEGORYIMGS}}";
 				    if (!isset($allcat_catids))
 				    {
-					    $db = JFactory::getDBO();
+					    $db = JFactory::getDbo();
 					    $arr_catids = array();
 					    $catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					    $db->setQuery($catsql);

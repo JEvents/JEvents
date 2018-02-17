@@ -13,10 +13,12 @@
 
 defined('JPATH_BASE') or die;
 
-if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
+if (version_compare(JVERSION, "3.8.0", 'ge')){
+	\JFormHelper::loadFieldClass('editor');
+}
+else if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
 	include_once(JPATH_SITE."/libraries/joomla/form/fields/editor.php");
 }
-	
 jimport('joomla.html.editor');
 
 class JFormFieldJevhtml extends JFormFieldEditor

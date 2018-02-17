@@ -61,7 +61,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		// get the repeat id
 		$rpidfield = $this->form->getField("rp_id", "request");
 		$rp_id = $rpidfield->value;
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query
 				->select($db->quoteName('det.summary', 'title'))

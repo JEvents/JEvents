@@ -103,7 +103,7 @@ class com_jeventsInstallerScript
 	
 	private function createTables() {
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setDebug(0);
 		if (version_compare(JVERSION, "3.3", 'ge')){
 			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
@@ -450,7 +450,7 @@ SQL;
 		
 	private function updateTables() {
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setDebug(0);
 
 		if (version_compare(JVERSION, "3.3", 'ge')){

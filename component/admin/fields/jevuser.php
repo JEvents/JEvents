@@ -46,7 +46,7 @@ class JFormFieldJEVuser extends JFormFieldList
 	{
 		$params = JComponentHelper::getParams("com_jevents");
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
                 // if editing category then find the rules for a specific category
                 if ($this->name == "jform[params][admin]" 

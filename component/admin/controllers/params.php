@@ -111,7 +111,7 @@ class AdminParamsController extends JControllerAdmin
 	function save($key = NULL, $urlVar = NULL)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JSession::checkToken() or jexit('Invalid Token');
 		//echo $this->getTask();
 		//exit;
 		$component = JEV_COM_COMPONENT;

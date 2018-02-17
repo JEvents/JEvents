@@ -31,7 +31,7 @@ class AdminCpanelController extends JControllerAdmin
 	function cpanel()
 	{
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
                 
                 // Enable Jevents Installer Plugin
                // $query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
@@ -160,7 +160,7 @@ class AdminCpanelController extends JControllerAdmin
 	function fixExceptions()
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 AND (oldstartrepeat='0000-00-00 00:00:00' OR  oldstartrepeat is null) ORDER BY eventid ASC, startrepeat asc");
 		//$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 ORDER BY eventid ASC, startrepeat asc");
 		$rows = $db->loadObjectList("rp_id");
@@ -435,7 +435,7 @@ class AdminCpanelController extends JControllerAdmin
 				{
 					$oldPackage = true;
 
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					// Add one category by default if none exist already
 					$sql = "SELECT element from #__extensions WHERE type = 'file'";
 					$db->setQuery($sql);
@@ -778,7 +778,7 @@ class AdminCpanelController extends JControllerAdmin
 	}
 
 	private function fixOrphanEvents() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$hasOrphans = false;
 
 		$sql = "SELECT ev.ev_id from #__jevents_vevent as ev
@@ -878,7 +878,7 @@ WHERE ics.ics_id is null
 
 	private function createOrphanCalendar() {
 		$catid=$this->createOrphanCategory();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		// Add orphan native calendar by default if none exist already
 		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2 and label='Orphans'";
 		$db->setQuery($sql);
@@ -899,7 +899,7 @@ WHERE ics.ics_id is null
 
 
 	private function createOrphanCategory() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$sql = "SELECT id from #__categories where extension='com_jevents' AND title='Orphans'";
 		$db->setQuery($sql);

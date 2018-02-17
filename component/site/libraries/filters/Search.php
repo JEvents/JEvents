@@ -36,7 +36,7 @@ class jevSearchFilter extends jevFilter
 		if (!$this->filterField ) return "";
 		if (trim($this->filter_value)==$this->filterNullValue) return "";
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$text = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
 		
 		$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
@@ -49,7 +49,7 @@ class jevSearchFilter extends jevFilter
 		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onSearchEvents', array(& $this->extrasearchfields, & $this->extrajoin, & $this->needsgroup));			
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$keyword = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
 		$text = $db->escape( $this->filter_value, true );
 							
@@ -86,7 +86,7 @@ class jevSearchFilter extends jevFilter
 
 		if (!$this->filterField) return "";
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 				
 		$filterList=array();
 		$filterList["title"]="<label class='evsearch_label' for='".$this->filterType."_fv'>".$this->filterLabel."</label>";

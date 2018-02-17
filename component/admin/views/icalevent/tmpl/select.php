@@ -14,7 +14,7 @@ JHTML::_('behavior.tooltip');
 
 use Joomla\String\StringHelper;
 
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $user = JFactory::getUser();
 $jinput = JFactory::getApplication()->input;
 // get configuration object

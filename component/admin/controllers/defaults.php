@@ -34,7 +34,7 @@ class AdminDefaultsController extends JControllerForm {
 		$this->registerDefaultTask("overview");
 
 		// Make sure DB is up to date
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__jev_defaults");
 		$defaults =$db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body'])){
@@ -169,7 +169,7 @@ class AdminDefaultsController extends JControllerForm {
 	function unpublish(){
 		$jinput = JFactory::getApplication()->input;
 
-		$db= JFactory::getDBO();
+		$db= JFactory::getDbo();
 		$cid = $jinput->get("cid", array(), "array");
 		if (count($cid)!=1) {
 			$this->setRedirect(JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=defaults.overview",false) );
@@ -186,7 +186,7 @@ class AdminDefaultsController extends JControllerForm {
 	}
 
 	function publish(){
-		$db= JFactory::getDBO();
+		$db= JFactory::getDbo();
 		$jinput = JFactory::getApplication()->input;
 
 		$cid = $jinput->get("cid",array(), "array");
@@ -268,7 +268,7 @@ class AdminDefaultsController extends JControllerForm {
 	}
 
 	private function populateLanguages() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 			
 		// get the list of languages first 
 		$query	= $db->getQuery(true);
@@ -412,7 +412,7 @@ class AdminDefaultsController extends JControllerForm {
 	}
 
 	private function populateCategories() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// get the list of categories first
 		$query	= $db->getQuery(true);
