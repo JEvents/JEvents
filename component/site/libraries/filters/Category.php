@@ -157,7 +157,14 @@ class jevCategoryFilter extends jevFilter
 		}
 		else {
 			$filterList["html"] = JEventsHTML::buildCategorySelect( $filter_value, 'onchange="if (document.getElementById(\'catidsfv\')) document.getElementById(\'catidsfv\').value=this.value;" ',$this->allAccessibleCategories,false,false,0,$this->filterType.'_fv' );
+		}		
+		
+		// if there is only one category then do not show the filter
+		if (strpos($filterList["html"], "<select") === false)
+		{
+			return "";
 		}
+
 		// try/catch  incase this is called without a filter module!
 		$script = <<<SCRIPT
 try {

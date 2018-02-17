@@ -380,7 +380,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
 		$clist = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
 		// if there is only one category then do not show the filter
-		if (strpos("<select", $clist) === false)
+		if (strpos( $clist, "<select") === false)
 		{
 			$clist = "";
 		}
