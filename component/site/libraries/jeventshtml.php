@@ -407,6 +407,7 @@ class JEventsHTML
 		    if (count($options) == 1)
 		    {
 			$html =   "<div class='catname'>".  $options[0]->text. "</div>";
+			$html .= "<input type='hidden' name='$fieldname' value='$catid' />";
 		    }
 		return $html;
 	    }
