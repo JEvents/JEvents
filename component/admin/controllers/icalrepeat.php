@@ -338,7 +338,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('default') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$db = JFactory::getDbo();
 		$publishedOnly = true;

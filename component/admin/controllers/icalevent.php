@@ -718,7 +718,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function savetranslation ()
 	{
-		JSession::checkToken('request') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -782,7 +782,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function deletetranslation ()
 	{
-		JSession::checkToken('request') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -1591,7 +1591,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('default') or jexit(JText::_('JINVALID_TOKEN'));
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){
