@@ -237,7 +237,7 @@ class AdminIcalsController extends JControllerForm {
 
 		// Check for request forgeries
 		if (JRequest::getCmd("task") != "icals.reload" && JRequest::getCmd("task") != "icals.reloadall"){
-			JSession::checkToken() or jexit( 'Invalid Token' );
+			JSession::checkToken() or jexit( JText::_('JINVALID_TOKEN') );
 		}
 
 		$user = JFactory::getUser();
@@ -412,7 +412,7 @@ class AdminIcalsController extends JControllerForm {
 		$authorised = false;
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( JText::_('JINVALID_TOKEN') );
 
 		if (JFactory::getApplication()->isAdmin()){
 			$redirect_task="icals.list";
@@ -598,7 +598,7 @@ class AdminIcalsController extends JControllerForm {
 	function newical() {
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( JText::_('JINVALID_TOKEN') );
 
 		// include ical files
 		$catid = intval(JRequest::getVar('catid',0));
@@ -644,7 +644,7 @@ class AdminIcalsController extends JControllerForm {
 	function delete(){
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( JText::_('JINVALID_TOKEN') );
 
 		$cid	= JRequest::getVar(	'cid',	array(0) );
 		$cid = ArrayHelper::toInteger($cid);
