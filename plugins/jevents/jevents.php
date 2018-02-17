@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright	Copyright (c) 2014-2017 GWE Systems Ltd. All rights reserved.
+ * @copyright	Copyright (c) 2014-2018 GWE Systems Ltd. All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
