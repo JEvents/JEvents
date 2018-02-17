@@ -41,22 +41,43 @@ class JFormFieldJeveventdate extends JFormField
                     $testdate->setTimezone(new DateTimeZone($event->tzid));
                     $offset2 = $testdate->getOffset();
 
-                    //USE OFFSETS FOR unix time stamps!!                       
-                    $event->dtstart($testdate->format("U") - $offset2 + $offset1);
-                    $event->_publish_up = $testdate->format('Y-m-d H:i:s');
-                    $event->_unixstartdate = $event->dtstart();
-                    $event->_unixstarttime= $event->dtstart();
-                            
-                    $testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_down(), new DateTimeZone(@date_default_timezone_get()));
-                    $offset1 = $testdate->getOffset();
-                    $testdate->setTimezone(new DateTimeZone($event->tzid));
-                    $offset2 = $testdate->getOffset();
-                    
-                    $event->dtend($testdate->format("U") - $offset2 + $offset1);
-                    $event->_publish_down = $testdate->format('Y-m-d H:i:s');
-                    $event->_unixenddate = $event->dtend();
-                    $event->_unixendtime= $event->dtend();
-                    
+		    // Fix for timezone specified repeating events breaks backwards compatability so we must do special case handling here
+		    if ($event->_modified < "2017-08-26 00:00:00")
+		    {
+			//USE OFFSETS FOR unix time stamps!!                       
+			$event->dtstart($testdate->format("U") - $offset2 + $offset1);
+			$event->_publish_up = $testdate->format('Y-m-d H:i:s');
+			$event->_unixstartdate = $event->dtstart();
+			$event->_unixstarttime= $event->dtstart();
+
+			$testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_down(), new DateTimeZone(@date_default_timezone_get()));
+			$offset1 = $testdate->getOffset();
+			$testdate->setTimezone(new DateTimeZone($event->tzid));
+			$offset2 = $testdate->getOffset();
+
+			$event->dtend($testdate->format("U") - $offset2 + $offset1);
+			$event->_publish_down = $testdate->format('Y-m-d H:i:s');
+			$event->_unixenddate = $event->dtend();
+			$event->_unixendtime= $event->dtend();
+		    }
+		    else {
+			//USE OFFSETS FOR unix time stamps!!                       
+			$event->dtstart($testdate->format("U") - $offset1 + $offset2);
+			$event->_publish_up = $testdate->format('Y-m-d H:i:s');
+			$event->_unixstartdate = $event->dtstart();
+			$event->_unixstarttime= $event->dtstart();
+
+			$testdate = DateTime::createFromFormat('Y-m-d H:i:s', $event->publish_down(), new DateTimeZone(@date_default_timezone_get()));
+			$offset1 = $testdate->getOffset();
+			$testdate->setTimezone(new DateTimeZone($event->tzid));
+			$offset2 = $testdate->getOffset();
+
+			$event->dtend($testdate->format("U") - $offset1 + $offset2);
+			$event->_publish_down = $testdate->format('Y-m-d H:i:s');
+			$event->_unixenddate = $event->dtend();
+			$event->_unixendtime= $event->dtend();
+		    }
+		    
                     $event->tzid_adjusted = true;
                 }
 

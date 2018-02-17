@@ -331,7 +331,7 @@ class jEventCal {
 		if (!isset($arr_catids)) {
 			$db	= JFactory::getDbo();
 			$arr_catids = array();
-			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' " ;
+			$catsql = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' ORDER BY cat.lft" ;
 			$db->setQuery($catsql);
 			 $arr_catids = $db->loadObjectList('id') ;
 			

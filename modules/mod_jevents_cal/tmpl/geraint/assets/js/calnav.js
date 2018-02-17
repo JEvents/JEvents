@@ -1,10 +1,10 @@
-function callNavigation(link) {
+function callNavigation(link, datatype) {
 	link += "&json=1";
 	//link += "&XDEBUG_SESSION_START=netbeans-xdebug";
 	var jSonRequest = jQuery.ajax({
 			type : 'GET',
 			// use JSONP to allow cross-domain calling of this data!
-			dataType : 'jsonp',
+			dataType : (typeof datatype !== 'undefined') ?  datatype : 'jsonp',
                         cache : false,
                         url : link,
 			contentType: "application/json; charset=utf-8",
@@ -12,6 +12,9 @@ function callNavigation(link) {
 			})
 	.done(function(json){
 		if (!json || !json.data){
+			if (typeof datatype == 'undefined') {
+				return callNavigation(link, "json");				
+			}
 			alert('could not get calendar');
 			return;
 		}

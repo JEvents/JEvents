@@ -160,7 +160,7 @@ class EventCalendarCell_geraint extends EventCalendarCell_default{
 					$cellString = JString::substr($tooltip,9);
                                         $dom = new DOMDocument();
                                         // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>'.$cellString.'</body>');
+                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
                                         
                                         $classname = 'jevtt_title';
                                         $finder = new DomXPath($dom);

@@ -273,8 +273,8 @@ $registry->set("jevents.controller", $controller);
 // record what is running - used by the filters
 $registry->set("jevents.activeprocess", "component");
 
-// Stop viewing ALL events - it could take VAST amounts of memory
-if ($cfg->get('blockall', 0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
+// Stop viewing ALL events - it could take VAST amounts of memory.  But allow for CSV export
+if ($cfg->get('blockall', 0) && !$cfg->get("csvexport",0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
 {
 	JRequest::setVar("limit", 100);
 	JFactory::getApplication()->setUserState("limit", 100);

@@ -520,9 +520,12 @@ class AdminIcaleventController extends JControllerAdmin
 			$vevent->set("dtstart", JevDate::mktime((int)$starthour, $startmin, 0, $month, $day, $year));
 			$vevent->set("dtend", JevDate::mktime((int)$endhour, $endmin, 0, $month, $day, $year));
 			$row = new jIcalEventDB($vevent);
-			// uncomment to default to all day event
-			//$row->_alldayevent=1;
-
+			if ($params->get('default_alldayevent', 0) == 1) {
+				$row->_alldayevent = 1;
+			}
+			if ($params->get('default_noendtime', 0) == 1) {
+				$row->_noendtime = 1;
+			}
 			// TODO - move this to class!!
 			// populate with meaningful initial values
 			$row->starttime($defaultstarttime);
@@ -577,7 +580,14 @@ class AdminIcaleventController extends JControllerAdmin
 			$icalList = array();
 			$icalList[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList = array_merge($icalList, $nativeCals);
-			$clist = JHTML::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', $row->icsid());
+
+			$row_icsid = $row->icsid();
+
+			if ($params->get('defaultcal', 0) && !$row_icsid) {
+				$row_icsid = count($nativeCals) > 0 ? current($nativeCals)->ics_id : 0;
+			}
+			$clist = JHTML::_('select.genericlist', $icalList, 'ics_id', " onchange='preselectCategory(this);'", 'ics_id', 'label', $row_icsid);
+
 			$this->view->assign('clistChoice', true);
 			$this->view->assign('defaultCat', 0);
 		}
