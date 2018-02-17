@@ -147,8 +147,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$this->view->setModel($model, true);
 		}
 
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
 		$db = JFactory::getDbo();
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $jinput->get('cid', array(0), "array");
 		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
@@ -164,7 +167,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// front end passes the id as evid
 		if ($id == 0)
 		{
-			$id = JRequest::getInt("evid", 0);
+			$id = $jinput->getInt("evid", 0);
 		}
 
 		$db = JFactory::getDbo();
@@ -249,8 +252,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		$Itemid = JRequest::getInt("Itemid");
-		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
@@ -307,7 +308,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		$Itemid = JRequest::getInt("Itemid");
 		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -338,14 +338,17 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('default') or jexit('Invalid Token');
+
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
 
 		$db = JFactory::getDbo();
 		$publishedOnly = true;
-		$id = JRequest::getInt('evid', 0);
+		$id = $jinput->getInt('evid', 0);
 
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10));
-		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$limit = (int) JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10);
+		$limitstart = (int) JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
 
 		$user = JFactory::getUser();
 		$where[] = "\n ev.access IN ('" . JEVHelper::getAid($user) . "')";
@@ -399,7 +402,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 
-		$menulist = $this->targetMenu(JRequest::getInt("Itemid"), "Itemid");
+		$menulist = $this->targetMenu($jinput->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
@@ -802,7 +805,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$cid = JRequest::getVar('cid', array(0));
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+		$cid    = $jinput->get('cid', array(0), "array");
+
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 			$cid = ArrayHelper::toInteger($cid);
@@ -811,7 +817,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		foreach ($cid as $id)
 		{
 
-			$evid = JRequest::getInt("evid", 0);
 			if ($id == 0)
 				continue;
 
@@ -868,14 +873,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$db->execute();
 		}
 
-		if (JFactory::getApplication()->isAdmin())
+		if ($app->isAdmin())
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
-			$Itemid = JRequest::getInt("Itemid");
+			$Itemid = $jinput->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
@@ -915,7 +920,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function _deleteFuture()
 	{
-		$cid = JRequest::getVar('cid', array(0));
+
+	    $app    = JFactory::getApplication();
+	    $jinput = $app->input;
+
+		$cid = $jinput->getVar('cid', array(0));
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 		$cid = ArrayHelper::toInteger($cid);
