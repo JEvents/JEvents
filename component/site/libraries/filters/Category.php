@@ -47,7 +47,43 @@ class jevCategoryFilter extends jevFilter
 
 	function _createFilter($prefix=""){
 		if (!$this->filterField ) return "";
-		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") return "";
+		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") 
+		{
+			return "";
+		}
+
+		/*
+		 * code to allow filter to force events to be in ALL selected categories
+		 */
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		
+		if ($this->filter_value==$this->filterNullValue  || $this->filter_value=="") 
+		{
+			$catidsIn		= JRequest::getVar(	'catids', 		'NONE' ) ;
+			if ($catidsIn == "NONE"   || $catidsIn == 0 ) {
+				$catidsIn		= JRequest::getVar(	'category_fv', 		'NONE' ) ;
+			}
+			
+			$separator = $params->get("catseparator","|");
+			$catids = explode( $separator, $catidsIn );
+			
+			//$catids=  $this->datamodel->catids;
+			if (count($catids) && $params->get("multicategory",0)){
+				// Ths is 'Relational Division'
+				$filter = " ev.ev_id in ( "
+					. " SELECT catmaprd.evid "
+					. " FROM #__jevents_catmap as catmaprd "
+					. " WHERE catmaprd.catid IN(" . implode(",",$catids) . ") "
+					. " GROUP BY catmaprd.evid "
+					. " HAVING COUNT(catmaprd.catid) = " . count($catids) . ")"; 
+
+				return $filter;
+			}
+		
+			
+			return "";
+		}
+		 
 		/*
 		$sectionname = JEV_COM_COMPONENT;
 		
@@ -73,7 +109,6 @@ class jevCategoryFilter extends jevFilter
 		$filter = " ev.catid IN (".$this->accessibleCategories.")";
 		
 		$user = JFactory::getUser();
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("multicategory",0)){
 			// access will already be checked
 			$filter = " catmap.catid IN(" . $this->accessibleCategories . ")";
@@ -105,7 +140,7 @@ class jevCategoryFilter extends jevFilter
 	function createfilterHTML($allowAutoSubmit = true){
 
 		if (!$this->filterField) return "";
-
+		
 		$filter_value = $this->filter_value;
 		// if catids come from the URL then use this if filter is blank
 		if ($filter_value==$this->filterNullValue  || $filter_value=="") {

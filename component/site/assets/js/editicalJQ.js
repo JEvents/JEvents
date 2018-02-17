@@ -509,7 +509,7 @@ function toggleAllDayEvent()
 	hide_start = starttime;
 	hide_end   = endtime;
 
-	temp = new Date();
+	var temp = new Date();
 	temp = temp.dateFromYMD(startdate.value);
 
 	if (checked){

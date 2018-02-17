@@ -403,7 +403,12 @@ class JEventsHTML
 			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
 		    </select>
 		    <?php
-		    return ob_get_clean();
+		    $html =  ob_get_clean();
+		    if (count($options) == 1)
+		    {
+			$html =   "<div class='catname'>".  $options[0]->text. "</div>";
+		    }
+		return $html;
 	    }
 
 	    public static function buildWeekDaysCheck($reccurweekdays, $args, $name = "reccurweekdays")

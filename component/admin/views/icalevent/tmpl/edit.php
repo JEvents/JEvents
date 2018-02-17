@@ -22,7 +22,7 @@ $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplicatio
 // Load Bootstrap
 JevHtmlBootstrap::framework();
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.calendar');
+//JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {

@@ -86,7 +86,7 @@ class ExtModCalView extends DefaultModCalView
 		$month_name = JEVHelper::getMonthName($cal_month);
 		$to_day     = date("Y-m-d", $this->timeWithOffset);
 		$today = JevDate::mktime(0,0,0,$cal_month, $cal_day, $cal_year);
-
+		
 		$cal_prev_month 	= $cal_month - 1;
 		$cal_next_month 	= $cal_month + 1;
 		$cal_next_month_year	= $cal_year;
@@ -208,9 +208,9 @@ START;
 
 						$dayOfWeek=JevDate::strftime("%w",$currentDay["cellDate"]);
 
-						$class = ($currentDay["cellDate"] == $today) ? "extcal_todaycell" : "extcal_daycell";
+						$class = $currentDay["today"] ? "extcal_todaycell" : "extcal_daycell";
 						$linkclass = "extcal_daylink";
-						if($dayOfWeek==0 && $currentDay["cellDate"] != $today) {
+						if($dayOfWeek==0 && !$currentDay["today"]) {
 							$class = "extcal_sundaycell";
 							$linkclass = "extcal_sundaylink";
 						}

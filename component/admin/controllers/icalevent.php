@@ -1116,7 +1116,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	private function doSave(& $msg)
 	{
-		if (!JEVHelper::isEventCreator())
+		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -1196,7 +1196,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$eventobj->_catid = current($eventobj->_catid);
 		}
 
-		if (!JEVHelper::canCreateEvent($eventobj))
+		if (!JEVHelper::canCreateEvent($eventobj) && !JEVHelper::isEventEditor())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;

@@ -1843,6 +1843,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			    {
 				    $tempreplace = strtotime(strip_tags($tempreplace));
 			    }
+			    if (strpos($fmt, "%") === false)
+			    {
+				    return date($fmt, $tempreplace);
+			    }
 			    return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
 		    }
 		    // TZ specified
