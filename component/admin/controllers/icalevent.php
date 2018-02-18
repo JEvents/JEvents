@@ -43,7 +43,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
 
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 
 	}
@@ -380,8 +379,8 @@ class AdminIcaleventController extends JControllerAdmin
 		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
 		$clist = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
 
-		$options[] = JHTML::_('select.option', '0', JText::_('JEV_NO'));
-		$options[] = JHTML::_('select.option', '1', JText::_('JEV_YES'));
+		$options[] = JHTML::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_0'));
+		$options[] = JHTML::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_1'));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
 
 
@@ -1858,8 +1857,8 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1"  onchange="document.adminForm.submit();"', 'value', 'text', $created_by);
 
-		$options[] = JHTML::_('select.option', '0', JText::_('JEV_NO'));
-		$options[] = JHTML::_('select.option', '1', JText::_('JEV_YES'));
+		$options[] = JHTML::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_0'));
+		$options[] = JHTML::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_1'));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
 
 		$menulist = $this->targetMenu(0, "Itemid");
