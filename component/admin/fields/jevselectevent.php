@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevselectevent.php 3503 2012-04-10 11:04:26Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -61,7 +61,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		// get the repeat id
 		$rpidfield = $this->form->getField("rp_id", "request");
 		$rp_id = $rpidfield->value;
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query
 				->select($db->quoteName('det.summary', 'title'))

@@ -5,7 +5,7 @@
  *
  * @version     $Id: modlatest.php 1142 2010-09-08 10:10:52Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -44,7 +44,7 @@ if (!empty($this->icalEvents))
 		$ids[] = $a->ev_id();
 		if (count($ids) > 100)
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 			$rows = $db->loadObjectList();
 			foreach ($rows as $row)
@@ -61,7 +61,7 @@ if (!empty($this->icalEvents))
 	// mop up the last ones
 	if (count($ids) > 0)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 		$rows = $db->loadObjectList();
 		foreach ($rows as $row)

@@ -32,14 +32,20 @@ class JFormFieldJevcolor extends JFormFieldColor
 		if (!$hideColour)
 		{
 
-			return parent::getInput();
+			$input = parent::getInput();
+			
+			// Unswitch the layouts that Joomla has applied!
+			// $this->layout = $this->control === 'simple' ? $this->layout . '.simple' : $this->layout . '.advanced';
+			$this->layout = str_replace(array(".simple", ".advanced"), "", $this->layout);
+
+			return $input;
 		}
 		return "";
 	}
 
 	protected function getLabel()
 	{
-		if ($this->getInput())
+		if ($input = $this->getInput())
 		{
 			return parent::getLabel();
 		}

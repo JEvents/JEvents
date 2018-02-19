@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevuser.php 3178 2012-01-13 09:44:58Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -65,12 +65,12 @@ class TableUser extends JTable
 	 * @since 1.0
 	 */
 	function __construct() {
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		parent::__construct('#__jev_users', 'id', $db);
 	}
 
 	public static function checkTable(){
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 	}
 
 	/**
@@ -101,7 +101,7 @@ class TableUser extends JTable
 			$where[] = "tl.id in ($idstring)";
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
 		$search		= $db->escape( trim( strtolower( $search ) ) );		
 		if($search != ""){
@@ -168,7 +168,7 @@ class TableUser extends JTable
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";
@@ -197,7 +197,7 @@ class TableUser extends JTable
 		$join = array();
 		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join)>0?implode(" ",$join):"";

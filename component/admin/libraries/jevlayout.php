@@ -6,7 +6,7 @@
  * 
  * @version     $Id: jevlayout_1.6.php 2821 2011-10-17 07:56:31Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,7 +36,7 @@ class JInstallerJevlayout extends JAdapterInstance
 	function install()
 	{
 		// Get a database connector object
-		$db =& $this->parent->getDBO();
+		$db =& $this->parent->getDbo();
 
 		// Get the extension manifest object
 		$this->manifest = $this->parent->getManifest();

@@ -4,7 +4,7 @@
  *
  * @version     $Id: search.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -44,7 +44,7 @@ class SearchController extends JControllerLegacy   {
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$keyword = $jinput->getString('keyword', '');
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;
@@ -93,7 +93,7 @@ class SearchController extends JControllerLegacy   {
 		list($year,$month,$day) = JEVHelper::getYMD();
 		$Itemid	= JEVHelper::getItemid();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$keyword = JRequest::getString( 'keyword', '' );
 		// limit searchword to a maximum of characters
 		$upper_limit = 20;

@@ -4,7 +4,7 @@
  *
  * @version     $Id: jeventshtml.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -403,7 +403,13 @@ class JEventsHTML
 			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
 		    </select>
 		    <?php
-		    return ob_get_clean();
+		    $html =  ob_get_clean();
+		    if (count($options) == 1)
+		    {
+			$html =   "<div class='catname'>".  $options[0]->text. "</div>";
+			$html .= "<input type='hidden' name='$fieldname' value='$catid' />";
+		    }
+		return $html;
 	    }
 
 	    public static function buildWeekDaysCheck($reccurweekdays, $args, $name = "reccurweekdays")
@@ -529,7 +535,7 @@ class JEventsHTML
 	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event)
 	    {
 
-		    $db = JFactory::getDBO();
+		    $db = JFactory::getDbo();
 
 		    static $arr_userids;
 		    static $arr_evids;
@@ -602,7 +608,7 @@ class JEventsHTML
 				    $anonplugin = JPluginHelper::getPlugin("jevents", "jevanonuser");
 				    if ($anonplugin)
 				    {
-					    $db = JFactory::getDBO();
+					    $db = JFactory::getDbo();
 					    $db->setQuery("SELECT a.* FROM #__jev_anoncreator as a LEFT JOIN #__jevents_repetition as r on a.ev_id=r.eventid where r.rp_id=" . intval($evid) . " LIMIT 1");
 					    $anonrow = $db->loadObject();
 					    if ($anonrow)
@@ -651,7 +657,7 @@ class JEventsHTML
 
 	    public static function getColorBar($event_id = null, $newcolor)
 	    {
-		    $db = JFactory::getDBO();
+		    $db = JFactory::getDbo();
 
 		    $cfg = JEVConfig::getInstance();
 

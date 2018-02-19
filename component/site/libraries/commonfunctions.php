@@ -4,7 +4,7 @@
  *
  * @version     $Id: commonfunctions.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -85,7 +85,7 @@ class JEV_CommonFunctions {
 
 		static $cats;
 		if (!isset($cats)){
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 
 			$sql = "SELECT c.* FROM #__categories as c WHERE extension='".JEV_COM_COMPONENT."' order by c.lft asc";
 			$db->setQuery( $sql);
@@ -275,7 +275,7 @@ class JEV_CommonFunctions {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$cat = new JEventsCategory($db);
 		$cat->load($event->catid());
 		$adminuser = $cat->getAdminUser();

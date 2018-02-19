@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalEvent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -115,7 +115,7 @@ class iCalEvent extends JTable  {
 		// place private reference to created_by in event detail in case needed by plugins
 		$this->_detail->_created_by = $this->created_by ;
 				
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$detailid = $this->_detail->store($updateNulls);
 
 		if (!$detailid){
@@ -222,7 +222,7 @@ class iCalEvent extends JTable  {
 	 * @return n/a
 	 */
 	public static function iCalEventFromData($ice){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalEvent($db);
 		$temp->data = $ice;
 		if (array_key_exists("RRULE",$temp->data)){
@@ -242,7 +242,7 @@ class iCalEvent extends JTable  {
 	 * @return n/a
 	 */
 	public static function iCalEventFromDB($icalrowAsArray){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalEvent($db);
 		foreach ($icalrowAsArray as $key=>$val) {
 			$temp->$key = $val;
@@ -365,7 +365,7 @@ else $this->_detail = false;
 		}
 		// if no rrule then only one instance
 		if (!isset($this->rrule)  || strtolower($this->rrule->freq)=="none" ){
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$repeat = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
                         // is it in a non-default timezone?
@@ -424,7 +424,7 @@ else $this->_detail = false;
 
 		// TODO if I implement this outsite of upload I need to clean the detail table too
 		$duplicatecheck = md5($eventid . $start);
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$sql = "DELETE FROM #__jevents_repetition WHERE duplicatecheck='".$duplicatecheck."'";
 		$db->setQuery($sql);
 		return $db->execute();
@@ -447,7 +447,7 @@ else $this->_detail = false;
 		$duplicatecheck = md5($eventid . $start );
 
 		// find the existing repetition in order to get the detailid
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$sql = "SELECT * FROM #__jevents_repetition WHERE duplicatecheck='$duplicatecheck'";
 		$db->setQuery($sql);
 		$matchingRepetition=$db->loadObject();
@@ -484,7 +484,7 @@ else $this->_detail = false;
 		}
 
 		$duplicatecheck = md5($eventid . $start );
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$sql = "UPDATE #__jevents_repetition SET eventdetail_id=".$newDetail->evdet_id
 		.", startrepeat='".$start."'"
 		.", endrepeat='".$end."'"
@@ -498,7 +498,7 @@ else $this->_detail = false;
 	function storeRepetitions() {
 		if (!isset($this->_repetitions)) $this->getRepetitions(true);
 		if (count($this->_repetitions)==0) return false;
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		// I must delete the eventdetails for repetitions not matching the global event detail
 		// these will be recreated later to match the new adjusted repetitions
 

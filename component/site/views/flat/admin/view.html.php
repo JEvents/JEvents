@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3155 2012-01-05 12:01:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
