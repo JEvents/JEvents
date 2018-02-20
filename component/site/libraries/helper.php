@@ -5,7 +5,7 @@
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -648,54 +648,75 @@ class JEVHelper
 		}
 
 		// Load the calendar behavior
-		JHtml::_('behavior.calendar');
+		//JHtml::_('behavior.calendar');
 		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
-		$tag      = JFactory::getLanguage()->getTag();
-		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
-		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
+		//$tag      = JFactory::getLanguage()->getTag();
+		//JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
 
-		// Only display the triggers once for each control.
-		if (!in_array($fieldid, $done))
+		$tag       = JFactory::getLanguage()->getTag();
+		$calendar  = JFactory::getLanguage()->getCalendar();
+		$direction = strtolower(JFactory::getDocument()->getDirection());
+
+		// Get the appropriate file for the current language date helper
+		$helperPath = 'system/fields/calendar-locales/date/gregorian/date-helper.min.js';
+
+		if (!empty($calendar) && is_dir(JPATH_ROOT . '/media/system/js/fields/calendar-locales/date/' . strtolower($calendar)))
 		{
-			$document = JFactory::getDocument();
-			$document
-				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {
-					if (!jQuery("#' . $fieldid . '").length) {
-						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
-						return;
-					}
-			Calendar.setup({
-			// Id of the input field
-			inputField: "' . $fieldid . '",
-			// Format of the input field
-			ifFormat: "' . $format . '",
-			// Trigger for the calendar (button ID)
-			button: "' . $fieldid . '_img",
-			// Alignment (defaults to "Bl")
-			align: "Tl",
-                        // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
-                        firstDay: '.$offset.',
-			// Allowable date range for picker
-			range:['.$minyear.','.$maxyear.'],
-			// electric false means field update ONLY when a day cell is clicked
-			electric:false,
-			singleClick: true,
-                        showsTime:'.$showtime.',
-                        timeFormat:'.$timeformat.',
-			});});'
-			);
-			$done[] = $fieldid;
+			$helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
 		}
 
+		// Get the appropriate locale file for the current language
+		$localesPath = 'system/fields/calendar-locales/en.js';
+
+		if (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower($tag) . '.js'))
+		{
+			$localesPath = 'system/fields/calendar-locales/' . strtolower($tag) . '.js';
+		}
+		elseif (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js'))
+		{
+			$localesPath = 'system/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js';
+		}
+		
+		$direction = strtolower(JFactory::getDocument()->getDirection());
+		$cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';		
+		
+		// Load polyfills for older IE
+		JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+
+		// The static assets for the calendar
+		JHtml::_('script', $localesPath, false, true, false, false, true);
+		JHtml::_('script', $helperPath, false, true, false, false, true);
+		JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+		JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);		
+		
 		// Hide button using inline styles for readonly/disabled fields
 		$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
 		$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
 
-		echo  '<div' . $div_class . '>'
+		echo  '<div class=" field-calendar">'
+		. '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
-				. '" name="' . $name . '" id="' . $fieldid . '" value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
-				. '<button type="button" class="btn" id="' . $fieldid . '_img"' . $btn_style . '><span class="icon-calendar"></span></button>'
+				. '" name="' . $name . '" id="' . $fieldid . '" '
+			. 'value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" '
+			. 'data-alt-value="'. htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') .'" ' . $attribs . ' />'			
+			. '<button type="button" class="btn btn-secondary '.$btn_style.'"
+			id="' . $fieldid . '_btn"
+			data-inputfield="' . $fieldid . '"
+			data-dayformat="' . $format .'"
+			data-button="' . $fieldid . '_btn"
+			data-firstday="'.$offset.'"
+			data-weekend="'. JFactory::getLanguage()->getWeekEnd(). '"
+			data-today-btn="1"
+			data-week-numbers="0"
+			data-show-time="0"
+			data-show-others="1"
+			data-only-months-nav="0"
+			data-time-24="24" 
+			'. (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") .'
+			'. (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") .'
+		><span class="icon-calendar"></span></button>. '
+			. '</div>'
 			. '</div>';
 
 	}

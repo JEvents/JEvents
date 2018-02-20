@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -208,9 +208,9 @@ START;
 
 						$dayOfWeek=JevDate::strftime("%w",$currentDay["cellDate"]);
 
-						$class = ($currentDay["cellDate"] == $today) ? "extcal_todaycell" : "extcal_daycell";
+						$class = $currentDay["today"] ? "extcal_todaycell" : "extcal_daycell";
 						$linkclass = "extcal_daylink";
-						if($dayOfWeek==0 && $currentDay["cellDate"] != $today) {
+						if($dayOfWeek==0 && !$currentDay["today"]) {
 							$class = "extcal_sundaycell";
 							$linkclass = "extcal_sundaylink";
 						}

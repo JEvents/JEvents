@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalevent.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -373,7 +373,11 @@ class AdminIcaleventController extends JControllerAdmin
 		// get list of categories
 		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
 		$clist = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
-
+		// if there is only one category then do not show the filter
+		if (strpos( $clist, "<select") === false)
+		{
+			$clist = "";
+		}
 		$options[] = JHTML::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_0'));
 		$options[] = JHTML::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_1'));
 		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
@@ -1113,7 +1117,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	private function doSave(& $msg)
 	{
-		if (!JEVHelper::isEventCreator())
+		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -1193,7 +1197,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$eventobj->_catid = current($eventobj->_catid);
 		}
 
-		if (!JEVHelper::canCreateEvent($eventobj))
+		if (!JEVHelper::canCreateEvent($eventobj) && !JEVHelper::isEventEditor())
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;

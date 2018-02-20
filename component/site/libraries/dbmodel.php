@@ -5,7 +5,7 @@
  *
  * @version     $Id: dbmodel.php 3575 2012-05-01 14:06:28Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -176,9 +176,9 @@ class JEventsDBModel
 			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategories', array(& $instances[$index]));
 
-			if (!is_array($instances[$index]) || count($instances[$index]) === 0)
+			if (empty($instances[$index]))
 			{
-				$instances[$index] = array(-1);
+				$instances[$index] = '-1';
 			}
 		}
 		return $instances[$index];

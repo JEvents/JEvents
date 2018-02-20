@@ -179,9 +179,14 @@ fieldset.checkboxes li {
 #jevents .adminform .row {
     min-height: 40px;
 }
-#jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div,adminform .row {
+#jevents .jevbootstrap .adminform #myEditTabsContent .row, #jevents .jevbootstrap .adminform div, adminform .row {
     margin-left: 0;
     padding-bottom: 10px;
+}
+/* new Joomla calendar */
+#jevents .jevbootstrap .adminform .js-calendar div
+{
+    padding-bottom: 0px;
 }
 /* Custom fields */
 .jevextrablock .btn-group {

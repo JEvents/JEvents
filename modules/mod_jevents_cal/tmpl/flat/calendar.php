@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -86,7 +86,7 @@ class FlatModCalView extends DefaultModCalView {
 
 		$month_name = JEVHelper::getMonthName ( $cal_month );
 		$to_day = date ( "Y-m-d", $this->timeWithOffset );
-		$today = JevDate::mktime ( 0, 0, 0);
+		$today = JevDate::mktime (0,0,0);
 
 		$cal_prev_month = $cal_month - 1;
 		$cal_next_month = $cal_month + 1;
