@@ -20,7 +20,7 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
 if (!empty($this->sidebar))
 {
 	?>
-	<div id="j-sidebar-container" class="span2">
+	<div id="j-sidebar-container" class="j-sidebar-container j-toggle-transition j-sidebar-visible">
 
 		<?php echo $this->sidebar; ?>
 
@@ -37,7 +37,7 @@ $mainspan = 10;
 $fullspan = 12;
 ?>
 
-<div id="jevents" class="span12">
+<div id="jevents" class="span<?php echo $fullspan; ?> j-toggle-main">
     <form action="index.php" method="post" name="adminForm" id="adminForm">
         <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
             <div id="cpanel" class="well well-small clearfix ">

@@ -61,23 +61,18 @@ class AdminIcaleventController extends JControllerAdmin
 		$showUnpublishedICS = true;
 		$showUnpublishedCategories = true;
 
-		$jinput = JFactory::getApplication()->input;
-
-		$db = JFactory::getDbo();
-
-		$icsFile = intval(JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0));
-
-		$catid = intval(JFactory::getApplication()->getUserStateFromRequest("catidIcalEvents", 'catid', 0));
-		$catidtop = $catid;
-
-		$state = intval(JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3));
-
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
-		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
-		$search = JFactory::getApplication()->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
-		$search = $db->escape(trim(strtolower($search)));
-
-		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "-1");
+		$app        = JFactory::getApplication();
+		$jinput     = $app->input;
+		$db         = JFactory::getDbo();
+		$icsFile    = intval($app->getUserStateFromRequest("icsFile", "icsFile", 0));
+		$catid      = intval($app->getUserStateFromRequest("catidIcalEvents", 'catid', 0));
+		$catidtop   = $catid;
+		$state      = intval($app->getUserStateFromRequest("stateIcalEvents", 'state', 3));
+		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
+		$limitstart = intval($app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$search     = $app->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
+		$search     = $db->escape(trim(strtolower($search)));
+		$created_by = $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "-1");
 
 		// Is this a large dataset ?
 		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
@@ -232,7 +227,7 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 		}
 
-		$hidepast = intval(JFactory::getApplication()->getUserStateFromRequest("hidepast", "hidepast", 1));
+		$hidepast = intval($app->getUserStateFromRequest("hidepast", "hidepast", 1));
 		if ($hidepast)
 		{
 			$datenow = JevDate::getDate("-1 day");
@@ -296,8 +291,8 @@ class AdminIcaleventController extends JControllerAdmin
 			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
 		}
 
-		$orderdir = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
-		$order = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
+		$orderdir = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
+		$order = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
 
 		if ($params->get("multicategory", 0))
 		{
