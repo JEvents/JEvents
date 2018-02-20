@@ -12,8 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\String\StringHelper;
 
-JHTML::_('behavior.tooltip');
-JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 
@@ -24,103 +22,130 @@ JHtml::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', '
 // we would use this to add custom data to the output here
 //JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
 
-$db   = JFactory::getDbo();
-$user = JFactory::getUser();
+$app    = JFactory::getApplication();
+$db     = JFactory::getDbo();
+$user   = JFactory::getUser();
 
 // get configuration object
 $cfg                 = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
-$orderdir            = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
-$order               = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-$pathIMG             = JURI::root() . 'administrator/images/';
+$orderdir            = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
+$order               = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
+$pathIMG             = JUri::root() . 'administrator/images/';
 $mainspan            = 10;
 $fullspan            = 12;
 
+// Receive overridable options for Filters
+$data['options'] = !empty($data['options']) ? $data['options'] : array();
+$selectorFieldName = isset($data['options']['selectorFieldName']) ? $data['options']['selectorFieldName'] : 'client_id';
+$showSelector = true;
+// Set some basic options.
+$customOptions = array(
+	'filtersHidden'       => $this->filtersHidden,
+	'defaultLimit'        => 20,
+	'searchFieldSelector' => '#search',
+	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
+);
+// Merge custom options in the options array Filters
+$data['options'] = array_merge($customOptions, $data['options']);
+// Add class to hide the active filters if needed.
+
+$hideActiveFilters = false;
+$filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible shown';
 ?>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<?php if (!empty($this->sidebar)) : ?>
-        <div id="j-sidebar-container" class="span2">
+		<div id="j-sidebar-container" class="span2">
 			<?php echo $this->sidebar; ?>
-        </div>
+		</div>
 	<?php endif; ?>
 
-    <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-        <div class="js-stools clearfix">
-            <div class="clearfix">
-                <div class="js-stools-container-bar">
-                    <label for="search" class="element-invisible">
-                        Search </label>
-                    <div class="btn-wrapper input-append">
-                        <input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
-                               placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
-                               onChange="Joomla.submitform();"/>
-                        <button type="submit" class="btn hasTooltip" title="" aria-label="Search"
-                                data-original-title="Search">
-                            <span class="icon-search" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="btn-wrapper hidden-phone">
-                        <button type="button" class="btn hasTooltip js-stools-btn-filter" title=""
-                                data-original-title="Filter the list items.">
-                                <?php echo JText::_('JSEARCH_TOOLS'); ?>  <span class="caret"></span>
-                        </button>
-                    </div>
-                    <div class="btn-wrapper">
-                        <button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
-                                data-original-title="Clear">
-	                        <?php echo JText::_('JCLEAR'); ?>
-                        </button>
-                    </div>
-                </div>
-                <div class="js-stools-container-list hidden-phone hidden-tablet">
-                    <div class="hidden-select hidden-phone">
-                        <div class="js-stools-field-list">
+	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
+		<!-- Filter Bar -->
+		<?php
+		// Load search tools
+		JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+		?>
+		<div class="js-stools clearfix">
+			<div class="clearfix">
+				<div class="js-stools-container-bar">
+					<label for="search" class="element-invisible">
+						Search </label>
+					<div class="btn-wrapper input-append">
+						<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
+						       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
+						       onChange="Joomla.submitform();" />
+						<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
+						        data-original-title="Search">
+							<span class="icon-search" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="btn-wrapper hidden-phone">
+						<button type="button" class="btn hasTooltip js-stools-btn-filter" title=""
+						        data-original-title="Filter the list items.">
+							<?php echo JText::_('JSEARCH_TOOLS'); ?> <span class="caret"></span>
+						</button>
+					</div>
+					<div class="btn-wrapper">
+						<button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
+						        data-original-title="Clear">
+							<?php echo JText::_('JCLEAR'); ?>
+						</button>
+					</div>
+				</div>
+				<div class="js-stools-container-list hidden-phone hidden-tablet">
+					<div class="hidden-select hidden-phone">
+						<div class="js-stools-field-list">
 							<?php echo $this->plist; ?>
-                        </div>
-                        <div class="js-stools-field-list">
+						</div>
+						<div class="js-stools-field-list">
 							<?php echo $this->pageNav->getLimitBox(); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Filters div -->
-            <div class="js-stools-container-filters hidden-phone clearfix">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Filters div -->
+			<div class="js-stools-container-filters hidden-phone clearfix <?php echo $filtersActiveClass; ?>">
 				<?php foreach ($this->filters AS $filter) { ?>
-                    <div class="js-stools-field-filter">
+					<div class="js-stools-field-filter">
 						<?php echo $filter; ?>
-                    </div>
+					</div>
 				<?php } ?>
-            </div>
-        </div>
+			</div>
+		</div>
 
-        <table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
-            <tr>
-                <th width="20" nowrap="nowrap">
+		<!-- End Filters Bar -->
+
+
+		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
+			<tr>
+				<th width="20" nowrap="nowrap">
 					<?php echo JHtml::_('grid.checkall'); ?>
-                </th>
-                <th class="title" width="40%" nowrap="nowrap">
+				</th>
+				<th class="title" width="40%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
-                </th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+				</th>
+				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
+				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 				<?php
 				if (count($this->languages) > 1)
 				{
 					?>
-                    <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
 				<?php } ?>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-                <th width="20%" nowrap="nowrap">
+				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+				<th width="20%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
-                </th>
-                <th width="20%" nowrap="nowrap">
+				</th>
+				<th width="20%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
-                </th>
-                <th width="20%" nowrap="nowrap">
+				</th>
+				<th width="20%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
-                </th>
-                <th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
-            </tr>
+				</th>
+				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+			</tr>
 
 			<?php
 			$k        = 0;
@@ -130,32 +155,32 @@ $fullspan            = 12;
 			{
 				$row = &$this->rows[$i];
 				?>
-                <tr class="row<?php echo $k; ?>">
-                    <td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
+				<tr class="row<?php echo $k; ?>">
+					<td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
 						<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
-                    </td>
-                    <td>
-                        <a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
-                           title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
-                    </td>
-                    <td align="center">
+					</td>
+					<td>
+						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
+						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
+					</td>
+					<td align="center">
 						<?php
 						if ($row->hasrepetition())
 						{
 							?>
-                            <a href="javascript: void(0);"
-                               onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
-                               class="btn btn-micro">
-                                <span class="icon-list"> </span>
-                            </a>
+							<a href="javascript: void(0);"
+							   onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.list')"
+							   class="btn btn-micro">
+								<span class="icon-list"> </span>
+							</a>
 						<?php } ?>
-                    </td>
-                    <td align="center"><?php echo $row->creatorName(); ?></td>
+					</td>
+					<td align="center"><?php echo $row->creatorName(); ?></td>
 					<?php if (count($this->languages) > 1) { ?>
-                        <td align="center"><?php echo $this->translationLinks($row); ?>    </td>
+						<td align="center"><?php echo $this->translationLinks($row); ?>    </td>
 					<?php } ?>
 
-                    <td align="center">
+					<td align="center">
 						<?php
 						if ($row->state() == 1)
 						{
@@ -170,13 +195,13 @@ $fullspan            = 12;
 							$img = JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true);
 						}
 						?>
-                        <a href="javascript: void(0);"
-                           onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')"
-                           class="btn btn-micro">
+						<a href="javascript: void(0);"
+						   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state() ? 'icalevent.unpublish' : 'icalevent.publish'; ?>')"
+						   class="btn btn-micro">
 							<?php echo $img; ?>
-                        </a>
-                    </td>
-                    <td>
+						</a>
+					</td>
+					<td>
 						<?php
 						if ($this->_largeDataSet)
 						{
@@ -191,23 +216,23 @@ $fullspan            = 12;
 							echo $times;
 						}
 						?>
-                    </td>
-                    <td align="center"><?php echo $row->created(); ?></td>
-                    <td align="center"><?php echo $row->modified; ?></td>
-                    <td align="center"><?php echo $row->_groupname; ?></td>
-                </tr>
+					</td>
+					<td align="center"><?php echo $row->created(); ?></td>
+					<td align="center"><?php echo $row->modified; ?></td>
+					<td align="center"><?php echo $row->_groupname; ?></td>
+				</tr>
 				<?php
 				$k = 1 - $k;
 			}
 			?>
-        </table>
+		</table>
 		<?php echo $this->pageNav->getListFooter(); ?>
-        <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
-        <input type="hidden" name="task" value="icalevent.list"/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $order; ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir; ?>"/>
+		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
+		<input type="hidden" name="task" value="icalevent.list"/>
+		<input type="hidden" name="boxchecked" value="0"/>
+		<input type="hidden" name="filter_order" value="<?php echo $order; ?>"/>
+		<input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir; ?>"/>
 		<?php echo JHtml::_('form.token'); ?>
 
-    </div>
+	</div>
 </form>

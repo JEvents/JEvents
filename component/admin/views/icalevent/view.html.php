@@ -22,7 +22,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-	    $app    = Jfactory::getApplication();
+	    $app    = JFactory::getApplication();
 		// Get data from the model
 		//$model = $this->getModel();
 
@@ -37,17 +37,26 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::unpublishList('icalevent.unpublish');
 		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 
+		$this->filtersHidden = true;
 		// Get fields from request if they exist
-		$state = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 3);
-		$created_by = (int) $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
+		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', null);
+		$created_by = (int) $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', '');
 		$icsFile    = (int) $app->getUserStateFromRequest("icsFile", "icsFile", 0);
 
-		if ($state == -1){
+		if ($state || $created_by || $icsFile) {
+			$this->filtersHidden = false;
+		}
+
+		if (!$state)
+		{
+			$state = 3;
+		} else if ($state == -1){
 			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
 		else {
 			JToolbarHelper::trash('icalevent.delete');
 		}
+
 
 		JToolbarHelper::spacer();
 
@@ -79,15 +88,17 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
             $icsfiles[] = $iscfile;
         }
 
-		$this->filters = array(JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox"', 'value', 'text', $icsFile));
+		$this->filters = array(
+				JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
+		);
 
 		$options = array(
-		    JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED')),
+		    JHTML::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
             JHTML::_('select.option', '1', JText::_('PUBLISHED')),
 		    JHTML::_('select.option', '2', JText::_('UNPUBLISHED')),
 		    JHTML::_('select.option', '-1', JText::_('JTRASH'))
         );
-		$this->filters[] = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox"', 'value', 'text', $state);
+		$this->filters[] = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $state);
 
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";
 		$db->setQuery($sql);
@@ -106,19 +117,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
 
-		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox"', 'value', 'text', $created_by);
+		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		JHTML::_('behavior.tooltip');
-
-		// Only offer translations in latest version of Joomla
-		if (JevJoomlaVersion::isCompatible("3.4")){
-			$this->languages = $this->get('Languages');
-		}
-		else {
-			$this->languages = null;
-		}
+		$this->languages = $this->get('Languages');
 
 	}
 
