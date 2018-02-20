@@ -1458,7 +1458,8 @@ class AdminIcaleventController extends JControllerAdmin
 	function emptytrash()
 	{
 	    $app    = JFactory::getApplication();
-	    $jinput = $app->input();
+		$jinput = $app->input;
+
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
