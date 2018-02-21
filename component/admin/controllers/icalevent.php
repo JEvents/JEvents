@@ -1599,7 +1599,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JSession::checktoken('get') or jexit('Invalid Token');
+		JSession::checkToken('get') or jexit('Invalid Token');
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){
