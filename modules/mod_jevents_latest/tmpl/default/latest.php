@@ -1171,8 +1171,11 @@ SCRIPT;
 						$tempEndDate = $endDate + 1;
 						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
+							$jmatch = new JevDate($tempEndDate);
+							$jmatch->setTime(24,0,0);
 							// if an all day event then we don't want to roll to the next day
-							$tempEndDate -= 86400;
+							$jmatch->sub(new DateInterval('P1D'));
+							$tempEndDate = $jmatch;
 						}
 						$match = "tempEndDate";
 					}
