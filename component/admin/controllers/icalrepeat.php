@@ -338,7 +338,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checktoken('get') or jexit('Invalid Token');
 
 		$app    = JFactory::getApplication();
 		$jinput = $app->input;
