@@ -279,12 +279,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		if (JevJoomlaVersion::isCompatible("3.0.0")){
-			$this->indexer->index($item);
-		}
-		else {
-			FinderIndexer::index($item);
-		}
+		$this->indexer->index($item);
 	}
 
 	/**

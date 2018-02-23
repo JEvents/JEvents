@@ -53,7 +53,7 @@ class ModLatestController extends JControllerLegacy   {
 		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
 		// Stupid Joomla 3.1 problem where its not possible to use the view cache on RSS feed output!
-		if (JevJoomlaVersion::isCompatible("3.1") || $user->get('id') || !$useCache) {
+		if ($user->get('id') || !$useCache) {
 			$this->view->rss();
 		} else {
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');

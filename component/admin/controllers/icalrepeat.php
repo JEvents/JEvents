@@ -1065,14 +1065,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 			if ($item->component == "com_jevents")
 			{
-				if (version_compare(JVERSION, '1.6.0', ">="))
-				{
-					$item->title = "*** " . $item->title . " ***";
-				}
-				else
-				{
-					$item->name = "*** " . $item->name . " ***";
-				}
+				$item->title = "*** " . $item->title . " ***";
 			}
 			unset($item);
 		}
@@ -1114,7 +1107,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 					$item = &$groupedList[$type->menutype][$i];
 
 					$disable = false;
-					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' . html_entity_decode($item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
+					$text = '     ' . html_entity_decode($item->treename);
 					$text = str_repeat("&nbsp;", (isset($item->level) ? $item->level : $item->sublevel) * 4) . $text;
 					$options[] = JHTML::_('select.option', $item->id, $text, 'value', 'text', $disable);
 				}

@@ -141,19 +141,6 @@ class JEventsDBModel
 				$isedit = true;
 			}
 
-			/*$query = "SELECT c.id"
-				. "\n FROM #__categories AS c"
-				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
-				. $q_published
-				// language filter only applies when not editing
-				. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
-				. "\n AND c.extension = '" . $sectionname . "'"
-				. "\n " . $where
-				. "\n ORDER BY c.lft asc"  ;
-
-			$db->setQuery($query);*/
-			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
-
 			$whereQuery =($checkAccess ? "c.access  " .  ' IN (' . $aid . ')' : " 1 ")
 					. $q_published
 					// language filter only applies when not editing
@@ -284,7 +271,7 @@ class JEventsDBModel
 					. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
 					. ($levels > 1 ? ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' : '')
 					. ($levels > 2 ? ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' : '')
-					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+					. "\n WHERE c.access IN (" . $aid . ")"
 					. $q_published
 					. ' AND c.extension ' . ' = ' . $db->Quote($sectionname)
 					. "\n " . $where;
@@ -3516,7 +3503,6 @@ select @@sql_mode;
 				. $catwhere
 				. $extrawhere
 				. $where
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n AND icsf.state=1"
 				. "\n GROUP BY ev.ev_id"
 				. "\n ORDER BY " . ($orderby != "" ? $orderby : "dtstart ASC")
@@ -3674,7 +3660,6 @@ select @@sql_mode;
 					. $extrawhere
 					. $where
 					. "\n  AND icsf.state=1"
-					//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 					. "\n GROUP BY rpt.rp_id"
 					. "\n ORDER BY " . ($orderby != "" ? $orderby : "rpt.startrepeat ASC")
 			;
@@ -3718,7 +3703,6 @@ select @@sql_mode;
 					. $extrajoin
 					. $catwhere
 					. $where
-					//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 					. "\n AND icsf.state=1"
 					. $extrawhere
 					. "\n GROUP BY rpt.rp_id"

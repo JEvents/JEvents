@@ -117,12 +117,9 @@ $fullspan = 12;
 				// Stop if user is not authorised to manage JEvents
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (version_compare($manifestCache->version, "3.5.0RC", "ge") )
-					{
-						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-					}
+					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
+					JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+					$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 
 				?>

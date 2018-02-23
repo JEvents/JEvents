@@ -255,7 +255,7 @@ class DefaultModLegendView
 
 		// Get all the categories
 		$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
-				. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+				. " AND  c.access IN (" . JEVHelper::getAid($user) . ")"
 				// language filter
 				. "\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')'
 				. " AND c.published = 1"
@@ -334,7 +334,7 @@ class DefaultModLegendView
 	// build the tree
 	function mapTree($dataset, $validcats)
 	{
-		$treeroot = version_compare(JVERSION, '1.6.0', '>=') ? 1 : 0;
+		$treeroot = 1;
 		$tree = array();
 		foreach ($dataset as $id => &$node)
 		{

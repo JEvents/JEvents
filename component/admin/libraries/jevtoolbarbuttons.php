@@ -48,7 +48,7 @@ class JToolbarButtonJev extends JToolbarButton
 			$btnClass = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? $btnClass : "";
+		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
 		$html .= "<i class=\"$class $iconWhite\">\n";
@@ -127,7 +127,7 @@ class JToolbarButtonJevlink extends JToolbarButton
 			$btnClass = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? $btnClass : "";
+		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
 		
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
 		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
@@ -188,7 +188,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		$class	= $this->fetchIconClass($name);
 		$doTask	= $this->_getCommand($msg, $name, $task, $list, $hideMenu,$jstestvar);
 
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn btn-small" : "";
+		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn btn-small" : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"$btnClass\">\n";
 		$html .= "<span class=\"$class\">\n";

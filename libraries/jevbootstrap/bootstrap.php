@@ -233,41 +233,7 @@ class JevLibHtmlBootstrap
 	public static function framework($debug = null)
 	{
 		// Use Joomla version first
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtmlBootstrap::framework($debug);
-			return;
-		}
-		
-		// Fall back to JEvents version
-		JLoader::register('JevHtmlBootstrap' , JEV_PATH."libraries/bootstrap.php");
-		try {
-			JevHtmlBootstrap::framework($debug);
-			return;
-		}
-		catch (Exception $ex) {
-
-		}
-
-		// Finally use library version as last resort
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// Load jQuery
-		JevHtmlJquery::framework();
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug = (boolean) $config->get('debug');
-		}
-
-		JHtml::_('script', 'libraries/jevents/bootstrap/js/bootstrap.min.js', false, false, false, false, $debug);
-		static::$loaded[__METHOD__] = true;
-
+		JHtmlBootstrap::framework($debug);
 		return;
 	}
 
@@ -288,42 +254,7 @@ class JevLibHtmlBootstrap
 	 */
 	public static function modal($selector = 'modal', $params = array())
 	{
-		if (version_compare(JVERSION, "3.0", "ge")) {
-			JHtml::_('bootstrap.modal', $selector, $params);
-			return;
-		}
-
-		$sig = md5(serialize(array($selector, $params)));
-
-		if (!isset(static::$loaded[__METHOD__][$sig]))
-		{
-			// Setup options object
-			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
-			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
-			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
-			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
-
-			$options = json_encode($opt); //json_encode($opt);
-
-			// Attach the modal to document
-			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
-			JFactory::getDocument()->addScriptDeclaration(
-				"jQuery(document).ready(function($) {
-					if ($('#$selector')) {
-						// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
-							$('#$selector').removeClass('hide');
-					}
-						//$('#$selector').appendTo('body').modal($options);
-					}
-				});"
-			);
-
-			// Set static array
-			static::$loaded[__METHOD__][$sig] = true;
-		}
-
+		JHtml::_('bootstrap.modal', $selector, $params);
 		return;
 	}
 

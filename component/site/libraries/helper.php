@@ -2168,25 +2168,7 @@ class JEVHelper
 			{
 				// if the user has been deleted then try to suppress the warning
 				// this causes a problem in Joomla 2.5.1 on some servers
-				if (version_compare(JVERSION, '2.5', '>='))
-				{
-					$rows[$id] = JEVHelper::getUser($id);
-				}
-				else
-				{
-					$handlers = JError::getErrorHandling(2);
-					JError::setErrorHandling(2, "ignore");
-					$rows[$id] = JEVHelper::getUser($id);
-					foreach ($handlers as $handler)
-					{
-						if (!is_array($handler))
-							JError::setErrorHandling(2, $handler);
-					}
-					if ($rows[$id])
-					{
-						$error = JError::getError(true);
-					}
-				}
+				$rows[$id] = JEVHelper::getUser($id);
 			}
 		}
 
@@ -2436,14 +2418,7 @@ class JEVHelper
 
 		foreach ($includes as $include)
 		{
-			if (JevJoomlaVersion::isCompatible("3.3"))
-			{
-				$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
-			}
-			else
-			{
-				$document->addStyleSheet($include . "?" . $release, 'text/css', null, array());
-			}
+			$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
 		}
 
 	}
@@ -2505,21 +2480,8 @@ class JEVHelper
 
 		foreach ($includes as $include)
 		{
-			if (JevJoomlaVersion::isCompatible("3.3"))
-			{
-				$document->addScriptVersion($include, $release);
-			}
-			else
-			{
-				$document->addScript($include . "?" . $release);
-			}
+			$document->addScriptVersion($include, $release);
 		}
-
-	}
-
-	static public
-			function setupJoomla160()
-	{
 
 	}
 
@@ -3888,14 +3850,6 @@ SCRIPT;
 	public static
 			function modal($selector = 'a.modal', $params = array())
 	{
-
-		if (version_compare(JVERSION, "3.0", "ge"))
-		{
-			// Load the code Joomla version
-		//	JHtml::_('jquery.framework');
-		//	JHtml::_('bootstrap.modal');
-		//	return;
-		}
 
 		JHtml::_('behavior.modal', $selector, $params);
 		return;

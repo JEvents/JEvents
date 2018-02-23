@@ -105,14 +105,8 @@ class com_jeventsInstallerScript
 
 		$db = JFactory::getDbo();
 		$db->setDebug(0);
-		if (version_compare(JVERSION, "3.3", 'ge')){
-			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
-		}
-		else {
-			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
-		}
+		$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+		$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
 
  		/**
 		 * create table if it doesn't exit
@@ -453,14 +447,8 @@ SQL;
 		$db = JFactory::getDbo();
 		$db->setDebug(0);
 
-		if (version_compare(JVERSION, "3.3", 'ge')){
-			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
-		}
-		else {
-			$charset = ($db->hasUTF()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
-			$rowcharset = ($db->hasUTF()) ?  'CHARACTER SET utf8' : '';
-		}
+		$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
+		$rowcharset = ($db->hasUTFSupport()) ?  'CHARACTER SET utf8' : '';
 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevent";
 		$db->setQuery($sql);

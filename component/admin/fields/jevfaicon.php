@@ -28,9 +28,7 @@ class JFormFieldJevfaicon extends JFormField
 	protected
 			function getInput()
 	{
-		if (version_compare(JVERSION, "3.0", "lt")){
-			return "<p style='float:left'>" . JText::_("JEV_JOOMLA_3_ONWARDS") . "</p>";
-		}
+
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 

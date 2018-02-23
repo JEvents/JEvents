@@ -27,8 +27,8 @@ class JFormFieldJeveventlock extends JFormField
 		ob_start();
 		$offerlock = $this->form->jevdata[$this->name]["offerlock"];
 
-		$btngroup = JevJoomlaVersion::isCompatible("3.0")? "btn-group" : "";
-		$btn = JevJoomlaVersion::isCompatible("3.0")? "btn" : "";
+		$btngroup ="btn-group";
+		$btn =  "btn";
 		if ($offerlock)
 		{
 			?>

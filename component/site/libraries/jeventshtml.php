@@ -209,29 +209,26 @@ class JEventsHTML
 	/**
 	 * Build HTML selection list of categories
 	 *
+     * @since  2.x
 	 * @param int $catid				Selected catid
 	 * @param string $args				Additional HTML attributes for the <select> tag
 	 * @param string $catidList			Restriction list of categories
 	 * @param boolean $with_unpublished	Set true to build list with unpublished categories
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
+	 *
+	 * @return  $html
 	 */
+
 	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false)
 	{
-		// need to declare this because of bug in Joomla JHtml::_('select.options', on content pages - it loade the WRONG CLASS!
+		// We need to declare this because of bug in Joomla JHtml::_('select.options', on content pages - it loads the WRONG CLASS!
 		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
 
 		ob_start();
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 		$options = JHtml::_('category.options', $sectionname);
-		/* hide second level categories
-		  for ($i=0;$i<count($options);$i++){
-		  if (strpos($options[$i]->text,"-")!==false){
-		  unset($options[$i]);
-		  }
-		  }
-		  $options = array_values($options);
-		 */
+
 		if ($catidList != null)
 		{
 			$cats = explode(',', $catidList);
@@ -246,7 +243,7 @@ class JEventsHTML
 			$options = array_values($options);
 		}
 
-		// translate where appropriate
+		// Translate where appropriate
 		$count = count($options);
 		for ($o = 0; $o < $count; $o++)
 		{
@@ -254,8 +251,12 @@ class JEventsHTML
 		}
 
 		// Thanks to ssobada
-		// when editing events we restrict the available list!
-		$jevtask = JRequest::getString("jevtask");
+		// When editing events we restrict the available list!
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$jevtask = $jinput->getString("jevtask");
+
 		if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
 		{
 			$user = JFactory::getUser();
@@ -280,7 +281,7 @@ class JEventsHTML
 					}
 					else
 					{
-						if (JRequest::getInt("evid", 0) > 0)
+						if ($jinput->getInt("evid", 0) > 0)
 						{
 							// TODO - this should check the creator of the event
 							$action = 'core.edit';
@@ -297,7 +298,7 @@ class JEventsHTML
 				}
 				else
 				{
-					if (JRequest::getInt("evid", 0) > 0)
+					if ($jinput->getInt("evid", 0) > 0)
 					{
 						// TODO - this should check the creator of the event
 						$action = 'core.edit';
@@ -314,7 +315,7 @@ class JEventsHTML
 			}
 			else
 			{
-				if (JRequest::getInt("evid", 0) > 0)
+				if ($jinput->getInt("evid", 0) > 0)
 				{
 					// TODO - this should check the creator of the event
 					$action = 'core.edit';
@@ -332,7 +333,7 @@ class JEventsHTML
 			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
 
-			// allow anon-user event creation through
+			// Allow anon-user event creation through
 			if (isset($user->id) && $user->id > 0)
 			{
 				$count = count($options);
@@ -370,35 +371,33 @@ class JEventsHTML
 				}
 			}
 		}
-		else
-		{
-			
-		}
-		// if only one category then preselect it
+
+		// If only one category then preselect it
 		if (count($options) == 1)
 		{
 			$catid = current($options)->value;
 		}
 
-		// sort categories alphabetically
-		//usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
-		// should we offer multi-choice categories?
-		// do not use jev_com_component incase we call this from locations etc.
-		$params = JComponentHelper::getParams(JRequest::getCmd("option", "com_jevents"));
+		// Sort categories alphabetically
+		// usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
+		// Should we offer multi-choice categories?
+		// Do not use jev_com_component in case we call this from locations etc.
+		$params = JComponentHelper::getParams($jinput->get("option", "com_jevents"));
 		if ($eventediting && $params->get("multicategory", 0))
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
 			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
-			    <?php
-		    }
-		    else
-		    {
-			    ?>
-			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
-				<option value="0"><?php echo $t_first_entry; ?></option>
-				<?php
-			}
+			<?php
+		}
+		else
+		{
+			// Value needs to be null for clear filters to work
+		    ?>
+		    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
+			<option value=""><?php echo $t_first_entry; ?></option>
+			<?php
+		}
 			?>
 			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
 		    </select>
@@ -409,6 +408,7 @@ class JEventsHTML
 			$html =   "<div class='catname'>".  $options[0]->text. "</div>";
 			$html .= "<input type='hidden' name='$fieldname' value='$catid' />";
 		    }
+
 		return $html;
 	    }
 
@@ -1021,4 +1021,4 @@ class JEventsHTML
 	    }
 
     }
-    
+

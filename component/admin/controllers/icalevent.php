@@ -64,17 +64,27 @@ class AdminIcaleventController extends JControllerAdmin
 		$app        = JFactory::getApplication();
 		$jinput     = $app->input;
 		$db         = JFactory::getDbo();
-		$icsFile    = intval($app->getUserStateFromRequest("icsFile", "icsFile", 0));
-		$catid      = intval($app->getUserStateFromRequest("catidIcalEvents", 'catid', 0));
+
+		$icsFile    = (int) $app->getUserStateFromRequest("icsFile", "icsFile", 0);
+		$catid      = (int) $app->getUserStateFromRequest("catidIcalEvents", 'catid', 0);
 		$catidtop   = $catid;
-		$state      = intval($app->getUserStateFromRequest("stateIcalEvents", 'state', 3));
-		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
-		$limitstart = intval($app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 3);
+		$limit      = (int) $app->getUserStateFromRequest("viewlistlimit", 'limit', $app->getCfg('list_limit', 10));
+		$limitstart = (int) $app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
 		$search     = $app->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$search     = $db->escape(trim(strtolower($search)));
 		$created_by = $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "-1");
 
-		// Is this a large dataset ?
+		// Club Plugin checks
+		$tagsPlugin = JPluginHelper::isEnabled('jevents', 'jevtags');
+
+		if ($tagsPlugin) {
+			$tagsArray  = $app->getUserStateFromRequest("taglkup_fvs", "taglkup_fvs", 0);
+			$tags       = implode(',', $tagsArray);
+			$this->view->assign('tagsFiltering', true);
+		}
+
+		// Is this a large data set ?
 		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
 		$db->setQuery($query);
 		$totalrepeats = $db->loadResult();
@@ -200,7 +210,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		if ($created_by >=0)
 		{
-			$cby = intval($created_by);
+			$cby = (int) $created_by;
 			if ($cby >= 0 && $created_by!="")
 				$where[] = "ev.created_by=" . $db->Quote($cby);
 		}
@@ -221,13 +231,9 @@ class AdminIcaleventController extends JControllerAdmin
 				$join[] = " #__jevents_icsfile as icsf ON icsf.ics_id = ev.icsid";
 				$where[] = "\n icsf.state=1";
 			}
-			else
-			{
-				$icsFrom = "";
-			}
 		}
 
-		$hidepast = intval($app->getUserStateFromRequest("hidepast", "hidepast", 1));
+		$hidepast = (int) $app->getUserStateFromRequest("hidepast", "hidepast", 1);
 		if ($hidepast)
 		{
 			$datenow = JevDate::getDate("-1 day");
@@ -273,7 +279,7 @@ class AdminIcaleventController extends JControllerAdmin
 				. ( count($where) ? "\n WHERE " . implode(' AND ', $where) : '' );
 		}
 		$db->setQuery($query);
-		//echo $db->getQuery()."<br/><br/>";
+
 		$total = $db->loadResult();
 		echo $db->getErrorMsg();
 		if ($limit > $total)
@@ -289,6 +295,27 @@ class AdminIcaleventController extends JControllerAdmin
 
 			$anonfields = ", ac.name as anonname, ac.email as anonemail";
 			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
+		}
+
+		// Allow tag filtering
+		$tagsFields = '';
+		$tagsJoin   = '';
+
+		if ($tagsPlugin  && $tags) {
+			$tagsFields = ", tg.tag_id, tg.title ";
+			$tagsJoin   = "\n LEFT JOIN #__jev_tageventsmap as tagmap ON tagmap.ev_id = ev.ev_id ";
+			$tagsJoin  .= "\n LEFT JOIN  #__jev_tags as tg ON tagmap.ev_id = ev.ev_id ";
+			if ($tags)
+			{
+				$where[] = "\n tagmap.tag_id IN (" . $tags . ")";
+				$this->view->assign('tagsFilter', $tags);
+
+			} else {
+				$this->view->assign('tagsFilter', false);
+			}
+
+		} else {
+			$this->view->assign('tagsFilter', false);
 		}
 
 		$orderdir = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
@@ -318,7 +345,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
 		}
 		// only include repeat id since we need it if we call plugins on the resultant data
-		$query = "SELECT ev.* " .  ($this->_largeDataSet ? "" :", rpt.rp_id") . ", ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields
+		$query = "SELECT ev.* " .  ($this->_largeDataSet ? "" :", rpt.rp_id") . ", ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields . $tagsFields
 				. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
 				. ($this->_largeDataSet ? "" : "\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
 						. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
@@ -328,6 +355,7 @@ class AdminIcaleventController extends JControllerAdmin
 				. "\n FROM #__jevents_vevent as ev "
 				. ($this->_largeDataSet ? "" : "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
 				. $anonjoin
+				. $tagsJoin
 				. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
 				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 				. "\n LEFT JOIN #__viewlevels AS a ON a.id = ev.access"
@@ -341,9 +369,8 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		$db->setQuery($query);
 
-		//echo $db->explain();
 		$rows = $db->loadObjectList();
-		//echo $db->getQuery()."<br/>";
+
 		foreach ($rows as $key => $val)
 		{
 			// set state variable to the event value not the event detail value
@@ -361,7 +388,6 @@ class AdminIcaleventController extends JControllerAdmin
 			echo '-----------<br />';
 			echo 'option "' . JEV_COM_COMPONENT . '"<br />';
 			echo '</pre>';
-			//die( 'userbreak - mic ' );
 		}
 
 		if ($db->getErrorNum())
@@ -371,19 +397,17 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// get list of categories
-		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
+		$attribs = 'class="inputbox" size="1" onchange="Joomla.submitform();"';
 		$clist = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
 		// if there is only one category then do not show the filter
 		if (strpos( $clist, "<select") === false)
 		{
 			$clist = "";
 		}
+
 		$options[] = JHTML::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_0'));
 		$options[] = JHTML::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_1'));
-		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
-
-
-		$catData = JEV_CommonFunctions::getCategoryData();
+		$plist = JHTML::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="Joomla.submitform();"', 'value', 'text', $hidepast);
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
@@ -1027,13 +1051,13 @@ class AdminIcaleventController extends JControllerAdmin
 		$event = $this->doSave($msg);
 
 		// reload the event to get the reptition ids
-		$evid = intval($event->ev_id());
+		$evid = (int) $event->ev_id();
 		$testevent = $this->queryModel->getEventById($evid, 1, "icaldb");
-		$rp_id = $testevent->rp_id();
-                if (!$rp_id){
-                    JFactory::getApplication()->enqueueMessage(JText::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
-                    return;
-                }
+		$rp_id = $testevent === null ? null : $testevent->rp_id();
+        if (!$rp_id){
+            JFactory::getApplication()->enqueueMessage(JText::_("JEV_CANNOT_DISPLAY_SAVED_EVENT_ON_THIS_MENU_ITEM", "WARNING"));
+            return;
+        }
 		list($year, $month, $day) = JEVHelper::getYMD();
 
 		if (JFactory::getApplication()->isAdmin())
@@ -1906,14 +1930,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 			if ($item->component == "com_jevents")
 			{
-				if (version_compare(JVERSION, '1.6.0', ">="))
-				{
-					$item->title = "*** " . $item->title . " ***";
-				}
-				else
-				{
-					$item->name = "*** " . $item->name . " ***";
-				}
+				$item->title = "*** " . $item->title . " ***";
 			}
 			unset($item);
 		}
@@ -1926,7 +1943,6 @@ class AdminIcaleventController extends JControllerAdmin
 			// first pass - collect children
 			foreach ($menuItems as $v)
 			{
-				$pt = 0; //(version_compare(JVERSION, '1.6.0', ">=")) ? $v->parent_id: $v->parent;  // RSH 10/4/10 in J!1.5 - parent was always 0, this changed in J!.16 to a real parent_id, so force id to 0 for compatibility
 				$list = @$children[0] ? $children[0] : array();
 				array_push($list, $v);
 				$children[0] = $list;
@@ -1955,7 +1971,7 @@ class AdminIcaleventController extends JControllerAdmin
 					$item = &$groupedList[$type->menutype][$i];
 
 					$disable = false;
-					$text = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' . html_entity_decode($item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
+					$text = '     ' . html_entity_decode($item->treename);
 					$text = str_repeat("&nbsp;", (isset($item->level) ? $item->level : $item->sublevel) * 4) . $text;
 					$options[] = JHTML::_('select.option', $item->id, $text, 'value', 'text', $disable);
 				}

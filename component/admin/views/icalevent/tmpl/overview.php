@@ -51,7 +51,7 @@ $data['options'] = array_merge($customOptions, $data['options']);
 // Add class to hide the active filters if needed.
 
 $hideActiveFilters = false;
-$filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible shown';
+$filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-visible shown';
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -116,8 +116,6 @@ $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-vi
 		</div>
 
 		<!-- End Filters Bar -->
-
-
 		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 			<tr>
 				<th width="20" nowrap="nowrap">
@@ -210,15 +208,15 @@ $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-vi
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(), 0, 16)) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(), 0, 16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 8) : JString::substr($row->publish_up(), 0, 10)) . ' <span aria-hidden="true" class="icon-clock"></span></td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 8) : JString::substr($row->publish_down(), 0, 10)) . ' <span aria-hidden="true" class="icon-clock"></span></td></tr>';
 							$times .= "</table>";
 							echo $times;
 						}
 						?>
 					</td>
-					<td align="center"><?php echo $row->created(); ?></td>
-					<td align="center"><?php echo $row->modified; ?></td>
+					<td align="center"><?php echo $row->created(); ?> <span aria-hidden="true" class="icon-clock"></span></td>
+					<td align="center"><?php echo JString::substr($row->modified, 0, 10); ?> <span aria-hidden="true" class="icon-clock"></span></td>
 					<td align="center"><?php echo $row->_groupname; ?></td>
 				</tr>
 				<?php

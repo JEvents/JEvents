@@ -37,13 +37,18 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::unpublishList('icalevent.unpublish');
 		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 
+		// Filters hidden by default
 		$this->filtersHidden = true;
+
 		// Get fields from request if they exist
-		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', null);
+		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 0);
 		$created_by = (int) $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', '');
 		$icsFile    = (int) $app->getUserStateFromRequest("icsFile", "icsFile", 0);
+		$category   = (int) $app->getUserStateFromRequest("catid", "catid", 0);
+		$tags       = $this->tagsFilter; // Already set in /controllers/icalevent.php so no point in gettingstate again
 
-		if ($state || $created_by || $icsFile) {
+		// Filters shown if any are active
+		if ($state || $created_by || $icsFile || $category || $tags) {
 			$this->filtersHidden = false;
 		}
 
@@ -57,9 +62,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JToolbarHelper::trash('icalevent.delete');
 		}
 
-
 		JToolbarHelper::spacer();
-
 		JEventsHelper::addSubmenu();
 
 		$showUnpublishedICS = false;
@@ -67,7 +70,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$db = JFactory::getDbo();
 
 		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
-
 
 		// Get list of ics Files
 		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
@@ -92,6 +94,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
 		);
 
+		$this->filters[] = $this->clist;
 		$options = array(
 		    JHTML::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
             JHTML::_('select.option', '1', JText::_('PUBLISHED')),
@@ -118,6 +121,20 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 
 		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
+
+		// Load the tags filter
+		if ($this->tagsFiltering) {
+			// Load the tags filter
+			$tagFilterHtml  = jevFilterProcessing::getInstance(array('taglookup'))->getFilterHTML(true)[0]['html'];
+			// We have to use a dirty str_replace since Joomla! clear function requires value to be empty for a clear filters.
+			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml);
+		}
+
+		// From and To Date Calendars
+		$fromDate   = '';
+		$toDate     = '';
+
+		$this->filters[] = JevHelper::loadElectricCalendar('fromDate', 'fromDate', $fromDate, '', '');
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -156,7 +173,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
-		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->id > 0)
 		{
 			if ($this->editCopy)
@@ -299,6 +315,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
+
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 

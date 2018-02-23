@@ -39,7 +39,7 @@ function DefaultPaginationForm($total, $limitstart, $limit, $keyword=""){
 	<div class="jev_pagination">
 	<form action="<?php echo $link;?>" method="post" name="adminForm" id="adminForm">
 	<?php
-	if ($task!="crawler.listevents" || version_compare(JVERSION, "3.0.0", 'lt') ){
+	if ($task !== "crawler.listevents"){
 	echo $pageNav->getListFooter();
 	}
 	else {

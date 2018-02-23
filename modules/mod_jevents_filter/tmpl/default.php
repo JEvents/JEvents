@@ -97,7 +97,7 @@ if (
 $allowAutoSubmit = true;
 $filterHTML = $filters->getFilterHTML($allowAutoSubmit);
 
-if (JevJoomlaVersion::isCompatible("3.0") && $params->get("bootstrapchosen", 1))
+if ($params->get("bootstrapchosen", 1))
 {
 	// Load Bookstrap
 	JevHtmlBootstrap::framework();

@@ -176,17 +176,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			<?php
 			$bar = JToolBar::getInstance('toolbar');
 			$barhtml = $bar->render();
-			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
-			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
-			if (JevJoomlaVersion::isCompatible("3.0"))
-			{
-				$title = ""; // JFactory::getApplication()->JComponentTitle;
-			}
-			else
-			{
-				$title = JFactory::getApplication()->get('JComponentTitle');
-			}
+			$title = "";
 			echo $title;
 			?>
 		    </div>

@@ -81,11 +81,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$user = JFactory::getUser();
 		$this->assignRef('user', $user);
 		$this->assignRef('items', $items);
-
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		parent::displaytemplate($tpl);
 
@@ -171,16 +167,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 				echo $barhtml;
-
-				if (JevJoomlaVersion::isCompatible("3.0"))
-				{
-					$title = JFactory::getApplication()->JComponentTitle;
-				}
-				else
-				{
-					$title = JFactory::getApplication()->get('JComponentTitle');
-				}
-				echo $title;
+				echo JFactory::getApplication()->JComponentTitle;
 				?>
 				<div class="clr"></div>
 			</div>
