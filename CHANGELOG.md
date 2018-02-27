@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  * Emptying trashed events
  * Joomla 3.6.x fatal error when trying to load Joomla 3.7 new calendar. 
  * List of Events view return blank on Repeat Summary
+ * Set calendar popup width to inherit rather than 100%.
  
 #### 17-02-2018 Geraint Edwards
  * JEvents 3.4.44
