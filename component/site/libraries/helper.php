@@ -668,9 +668,12 @@ class JEVHelper
 
 		if (version_compare(JVERSION, '3.7.0', '>='))
 		{
-			// Joomla readonly workaround
-			unset($attribs['readonly']);
-			unset($attribs[' readonly']);
+			if (is_array($attribs))
+			{
+				// Joomla readonly workaround
+				unset($attribs['readonly']);
+				unset($attribs[' readonly']);
+			}
 			
 			$calendar  = JFactory::getLanguage()->getCalendar();
 			$direction = strtolower(JFactory::getDocument()->getDirection());
