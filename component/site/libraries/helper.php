@@ -656,7 +656,7 @@ class JEVHelper
 
 		$tag       = JFactory::getLanguage()->getTag();
 
-		if (version_compare(JVERSION, '3.7.0', '<'))
+		if (version_compare(JVERSION, '3.7.0', '>='))
 		{
 			$calendar  = JFactory::getLanguage()->getCalendar();
 			$direction = strtolower(JFactory::getDocument()->getDirection());

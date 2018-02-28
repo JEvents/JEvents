@@ -804,3 +804,7 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     background-image:none;
     vertical-align:baseline;
 }
+/* Fix for calendar popup width */
+.jevbootstrap .js-calendar .table {
+	width: 280px;
+}
