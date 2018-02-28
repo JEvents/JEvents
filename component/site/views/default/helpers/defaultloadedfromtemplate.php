@@ -879,7 +879,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    // no need to repeat this for each of the matching 'case's
 				    if (!in_array("{{COUNTDOWN}}", $search, FALSE))
 				    {
-
 					    if ($template_name == "icalevent.detail_body")
 					    {
 						    $search[] = "{{REPEATSUMMARY}}";
@@ -1007,6 +1006,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						    // these would slow things down if not needed in the list
 						    $dorepeatsummary = (JString::strpos($template_value, "{{REPEATSUMMARY}}") !== false);
+
 						    if ($dorepeatsummary)
 						    {
 
@@ -1018,7 +1018,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 							    $row = $event;
 							    $times = "";
-							    if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || ($showyeardate && $jevtask == "range"))
+
+							    if (($showyeardate && $jevtask == "year") || $jevtask == "list.events" || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || ($showyeardate && $jevtask == "range"))
 							    {
 
 								    $start_publish = $row->getUnixStartDate();

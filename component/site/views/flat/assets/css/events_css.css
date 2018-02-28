@@ -1005,3 +1005,101 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
 
 /** Make sure choosen list is under input **/
 #jevents .chzn-container.chzn-container-single .chzn-results {clear:both;}
+
+/* Responsive Layout */
+
+#jevents #jevents_body .cal_daylink .listview
+{
+    display:none;
+}
+@media (max-width: 480px) {
+    #jevents #jevents_body table.cal_top_day_names,
+    #jevents #jevents_body table.cal_table td.cal_daysoutofmonth
+    {
+        display:none;
+    }
+    #jevents #jevents_body table.cal_table td.cal_daysnoevents
+    {   
+        display:none;
+    }
+    #jevents #jevents_body table.cal_table,
+    #jevents #jevents_body table.cal_table tr.cal_cell_rows    
+    {
+        border:none;
+    }
+    #jevents #jevents_body table.cal_table td.cal_dayshasevents
+    {
+        min-height: 80px;
+        height:auto;
+        margin-top:5px;
+    }
+
+    #jevents #jevents_body table.cal_table  {
+        min-width: 300px;
+        background: none;        
+    }
+    #jevents #jevents_body table.cal_table  th {
+        /*  for accessibility */ 
+        display: none;
+    }
+    #jevents #jevents_body table.cal_table  tr
+    {
+        display: block;
+        background: none!important;
+        height:auto;
+    }
+    #jevents #jevents_body table.cal_table  td {
+        display: block; 
+        clear:left;
+        width:100%;
+        border-width: 1px 0 0 0;
+        box-sizing: border-box;
+        margin-left:1px;
+    }
+
+    #jevents #jevents_body table.cal_table  th, #jevents #jevents_body table.cal_table  td {
+        text-align: left; 
+    }
+
+    #jevents #jevents_body .new-navigation .nav-items     
+    { 
+        padding-left:3.5%;
+    }
+    #jevents #jevents_body .new-navigation .nav-items > div
+    {
+        display: block;
+        border-radius: 0px;
+        border-top-width:1px;
+        border-right-width:1px;
+        border-bottom-width:0px;
+        border-left:1px solid #ff3b30;
+        padding:0;
+    }
+
+    #jevents #jevents_body .new-navigation .nav-items > div a
+    {
+        padding:0;
+        margin:0;
+        display:block;
+    }
+    #jevents #jevents_body .new-navigation .nav-items > div:first-child
+    {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    #jevents #jevents_body .new-navigation .nav-items > div:last-child
+    {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-width:1px 1px 1px 1px;
+    }
+    
+    #jevents #jevents_body .cal_daylink .listview
+    {
+        display:inline;
+    }
+    #jevents #jevents_body .cal_daylink .calview
+    {
+        display:none;
+    }
+}

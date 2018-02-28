@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 27-02-2018
+### Fixed
+ * Saving bug resulting in call on null / rp_id() / location()
+ * Event and event repeat selector not working due to incorrect JSession Check
+ * Emptying trashed events
+ * Joomla 3.6.x fatal error when trying to load Joomla 3.7 new calendar. 
+ * List of Events view return blank on Repeat Summary
+ * Set calendar popup width to be 300px; a nice size rather than 100%.
+ 
 #### 17-02-2018 Geraint Edwards
  * JEvents 3.4.44
  * Authorisation check on save should check creator and editor permissions
