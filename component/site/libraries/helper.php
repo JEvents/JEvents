@@ -615,7 +615,19 @@ class JEVHelper
 			$done = array();
 		}
 
-		$readonly = isset($attribs['readonly']) && $attribs['readonly'] == 'readonly';
+		// new script is disabled if readonly is set so set it on an onload event instead		
+		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly') 
+			|| (isset($attribs[' readonly']) && $attribs[' readonly'] == 'readonly'))
+		{
+			$readonly = true;
+			unset($attribs['readonly']);
+			unset($attribs[' readonly']);
+		}
+		else 
+		{
+			$readonly = false;
+		}
+		
 		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
                 $showtime = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
                 $timeformat = "24";
@@ -691,8 +703,10 @@ class JEVHelper
 		JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);		
 		
 		// Hide button using inline styles for readonly/disabled fields
-		$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
-		$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+		//$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
+		//$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+		$btn_style	= $disabled ? ' style="display:none;"' : '';
+		$div_class	= !$disabled ? ' class="input-append"' : '';
 
 		echo  '<div class=" field-calendar">'
 		. '<div' . $div_class . '>'
@@ -718,7 +732,12 @@ class JEVHelper
 		><span class="icon-calendar"></span></button>. '
 			. '</div>'
 			. '</div>';
-
+		
+		if ($readonly)
+		{
+			JFactory::getDocument()->addScriptDeclaration("jQuery(window).on('load', function(){jQuery('#" . $fieldid . "').prop('readonly', true);})");
+		}
+		
 	}
 
 	/**
