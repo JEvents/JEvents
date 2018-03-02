@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-#### 27-02-2018
+#### 02-03-2018 - Tony Partridge
+### Fixed
+ * event list being filtered after cancelling event creation i.e. events filtered by published state.
+
+#### 27-02-2018 - Tony Partridge
 ### Fixed
  * Saving bug resulting in call on null / rp_id() / location()
  * Event and event repeat selector not working due to incorrect JSession Check
