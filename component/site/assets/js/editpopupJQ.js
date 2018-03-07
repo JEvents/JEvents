@@ -203,7 +203,7 @@ function addImportPopupHtml (){
 	}
 }
 
-function jevEditOptPopup(id){
+function jevIdPopup(id){
     // close dialog may not exist for monthly calendar
     try {
         jQuery('#'+id).modal('hide');
