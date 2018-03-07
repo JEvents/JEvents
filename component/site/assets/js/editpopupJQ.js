@@ -211,8 +211,6 @@ function jevIdPopup(id){
     catch (e){
 
     }
-    addImportPopupHtml();
-
     launchModal('#'+id);
 
     return;
