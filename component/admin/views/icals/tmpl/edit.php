@@ -71,7 +71,15 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
         }
 
         var form = document.adminForm;
-        if (form.catid.value == "0"){
+        catid = form.catid.value;
+        icsid = form.icsid.value;
+
+        if (icsid == "0" && catid != "0") {
+            // replace the input
+            form.catid.setAttribute("name", "catid");
+        }
+
+        if (catid == "0"){
         alert( "<?php echo html_entity_decode(JText::_('JEV_E_WARNCAT')); ?>" );
         return(false);
         } else {
