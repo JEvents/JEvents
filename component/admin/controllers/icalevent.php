@@ -1973,4 +1973,15 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
+	public function cancel() {
+		$app    = Jfactory::getApplication();
+		$jinput = $app->input;
+		$Itemid = $jinput->getInt("Itemid");
+
+		// Clear the post, so event vars are not passed into the filters.
+		$jinput->post = '';
+
+		return $app->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list&Itemid=$Itemid", false));
+	}
+
 }
