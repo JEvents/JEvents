@@ -150,72 +150,13 @@
 	overflow: auto;
 	vertical-align: top;
 }
-@media print {
-	.jevbootstrap * {
-		color: #000 !important;
-		text-shadow: none !important;
-		background: transparent !important;
-		box-shadow: none !important;
-	}
-	.jevbootstrap a,
-	.jevbootstrap a:visited {
-		text-decoration: underline;
-	}
-	.jevbootstrap a[href]:after {
-		content: " (" attr(href) ")";
-	}
-	.jevbootstrap abbr[title]:after {
-		content: " (" attr(title) ")";
-	}
-	.jevbootstrap .ir a:after,
-	.jevbootstrap a[href^="javascript:"]:after,
-	.jevbootstrap a[href^="#"]:after {
-		content: "";
-	}
-	.jevbootstrap pre,
-	.jevbootstrap blockquote {
-		border: 1px solid #999;
-		page-break-inside: avoid;
-	}
-	.jevbootstrap thead {
-		display: table-header-group;
-	}
-	.jevbootstrap tr,
-	.jevbootstrap img {
-		page-break-inside: avoid;
-	}
-	.jevbootstrap img {
-		max-width: 100% !important;
-	}
-	@page {
-		margin: 0.5cm;
-	}
-	.jevbootstrap p,
-	.jevbootstrap h2,
-	.jevbootstrap h3 {
-		orphans: 3;
-		widows: 3;
-	}
-	.jevbootstrap h2,
-	.jevbootstrap h3 {
-		page-break-after: avoid;
-	}
-}
+
 .jevbootstrap body {
 	margin: 0;
-	font-size: 14px;
-	line-height: 20px;
 	color: #333333;
 	background-color: #ffffff;
 }
-.jevbootstrap a {
-	text-decoration: none;
-}
-.jevbootstrap a:hover,
-.jevbootstrap a:focus {
-	color: inherit;
-	text-decoration: underline;
-}
+
 .jevbootstrap .img-rounded {
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
