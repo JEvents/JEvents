@@ -1041,7 +1041,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 			dataType : 'json',
 			url : checkurl,
 			data : {'json':JSON.stringify(requestObject)},
-        	contentType: "application/json; charset=utf-8",
+        	contentType: "application/x-www-form-urlencoded; charset=utf-8",
 			scriptCharset: "utf-8"
 			})
 		.done(function(json){
