@@ -1165,7 +1165,13 @@ function hideEmptyJevTabs() {
 	}
 
 function selectIrregularDate() {
-	var selectElem = jQuery("#irregularDates");
+	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
+
+	// Trap month to month movement!
+	if (calpopup.style.display !== "none")
+	{
+		return;
+	}
 
 	var repeatDate = new Date();
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
@@ -1176,6 +1182,7 @@ function selectIrregularDate() {
 		"text" : jQuery("#irregular").val(),
 		"selected" : true
 	});
+	var selectElem = jQuery("#irregularDates");
 	selectElem.append(option);
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");

@@ -525,7 +525,7 @@ class JEventsHTML
 				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />'
 				    . '<label for="cb_wn' . $a . '" class="checkbox btn">'
 				    . '<span class="weeknameforward" ' . $fwdstyle . '>' . $week_name[$a] . "</span>"
-				    . '<span class="weeknameback"' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
+				    . '<span class="weeknameback" ' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
 				    . '</label>' . "\n"
 			    ;
 		    }
