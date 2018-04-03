@@ -154,24 +154,6 @@ a.cal_daylink:hover{
     background-position: center left;
     padding-left:20px;
 }
-.ev_prevrepeat a.blue {
-    background-image: url("../images/g_blue.gif");
-}
-.ev_prevrepeat a.gray {
-    background-image: url("../images/g_gray.gif");
-}
-.ev_prevrepeat a.green {
-    background-image: url("../images/g_green.gif");
-}
-.ev_prevrepeat a.orange {
-    background-image: url("../images/g_orange.gif");
-}
-.ev_prevrepeat a.red {
-    background-image: url("../images/g_red.gif");
-}
-.ev_prevrepeat a.yellow {
-    background-image: url("../images/g_yellow.gif");
-}
 .ev_nextrepeat {
     line-height:20px;
     float:left;
@@ -181,24 +163,6 @@ a.cal_daylink:hover{
     background-repeat: no-repeat; 
     background-position: center right;
     padding-right:20px;
-}
-.ev_nextrepeat a.blue {
-    background-image: url("../images/d_blue.gif");
-}
-.ev_nextrepeat a.gray {
-    background-image: url("../images/d_gray.gif");
-}
-.ev_nextrepeat a.green {
-    background-image: url("../images/d_green.gif");
-}
-.ev_nextrepeat a.orange {
-    background-image: url("../images/d_orange.gif");
-}
-.ev_nextrepeat a.red {
-    background-image: url("../images/d_red.gif");
-}
-.ev_nextrepeat a.yellow {
-    background-image: url("../images/d_yellow.gif");
 }
 
 /***************************
@@ -532,33 +496,9 @@ div.nav_bar_cal img, div.nav_bar_cal a{
 }
 tr.icon_labels{
     font-size:7pt;
-    margin:0px;
-    padding:0px;
-    vertial-align:top;
-}
-div#ev_icon_yearly {
-    background-image: url("../images/cal5x.jpg")!important;
-    background-repeat: no-repeat;
-}
-div#ev_icon_monthly {
-    background-image: url("../images/cal1x.jpg")!important;
-    background-repeat: no-repeat;
-}
-div#ev_icon_weekly{
-    background-image: url("../images/cal2x.jpg")!important;
-    background-repeat: no-repeat;
-}
-div#ev_icon_daily{
-    background-image: url("../images/cal3x.jpg")!important;
-    background-repeat: no-repeat;
-}
-div#ev_icon_search{
-    background-image: url("../images/cal8x.jpg")!important;
-    background-repeat: no-repeat;
-}
-div#ev_icon_jumpto{
-    background-image: url("../images/cal9x.jpg")!important;
-    background-repeat: no-repeat;
+    margin:0;
+    padding:0;
+    vertical-align:top;
 }
 
 div.jev_pagination {
@@ -733,12 +673,10 @@ span.hasjevtip {
 #jevents_header {position:relative;}
 #jevents_header ul.actions {
     list-style-image: none;
-    /* position:absolute;   right:0px;    top:0px;*/
     float:right;
     margin:5px 5px 2px 2px!important;
     list-style-type: none;
-    list-style-image: none;
-    width:auto!important;	
+    width:auto!important;
 }
 #jevents_header ul.actions li {
     line-height:14px!important;	
@@ -883,30 +821,30 @@ div#jumpto form {text-align:center; width: 93%;margin-top:10px;}
     border-radius: 4px;
     vertical-align: middle;
 }
-#jevents_body #jumpto form button  {display: inline-block;
-                                    padding: 0px 14px;
-                                    margin-bottom: 0;
-                                    font-size: 12px;
-                                    line-height: 20px;
-                                    text-align: center;
-                                    vertical-align: middle;
-                                    cursor: pointer;
-                                    color: #333;
-                                    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
-                                    background-color: #f5f5f5;
-                                    background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
-                                    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
-                                    background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
-                                    background-image: -o-linear-gradient(top,#fff,#e6e6e6);
-                                    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
-                                    background-repeat: repeat-x;
-                                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe5e5e5', GradientType=0);
-                                    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-                                    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-                                    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-                                    border: 1px solid #bbb;
-                                    border-bottom-color: #a2a2a2;
-                                    border-radius: 4px;
+#jevents_body #jumpto form button  {
+    display: inline-block;
+    padding: 0px 14px;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #333;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+    background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
+    background-repeat: repeat-x;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    border: 1px solid #bbb;
+    border-bottom-color: #a2a2a2;
+    border-radius: 4px;
 }
 
 #jevents_body div.event_details {padding:10px;}
