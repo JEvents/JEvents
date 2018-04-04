@@ -14,7 +14,7 @@ use Joomla\String\StringHelper;
 
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
-JHTML::_('behavior.modal');
+JHTML::_('behavior.modal', 'a.modal');
 
 // Load the jQuery plugin && CSS
 JHtml::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
@@ -26,6 +26,7 @@ JHtml::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', '
 $app    = JFactory::getApplication();
 $db     = JFactory::getDbo();
 $user   = JFactory::getUser();
+$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 // get configuration object
 $cfg                 = JEVConfig::getInstance();
@@ -127,10 +128,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				</th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
-				<?php
-				if (count($this->languages) > 1)
-				{
-					?>
+				<?php if (count($this->languages) > 1) { ?>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
 				<?php } ?>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
@@ -149,6 +147,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 			<?php
 			$k        = 0;
 			$nullDate = $db->getNullDate();
+			$itemId = $params->get('default_itemid', 0);
 
 			for ($i = 0, $n = count($this->rows); $i < $n; $i++)
 			{
@@ -159,9 +158,11 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
 					</td>
 					<td>
-						<a href="<?php  echo JURI::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);?>" title="Preview" class="modal"
-						   rel="{size: {x: 700, y: 500}, handler:'iframe'}">
-							<span class="icon-out-2 small"></span>
+						<a href="<?php  echo JURI::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false, $itemId);?>"
+						   id="modal_preview" title="Preview" class="modal"
+						   rel="{size: {x: 1200, y: 900}, handler:'iframe'}">
+
+						<span class="icon-out-2 small"></span>
 						</a>
 						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
@@ -236,6 +237,15 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 		<input type="hidden" name="filter_order" value="<?php echo $order; ?>"/>
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir; ?>"/>
 		<?php echo JHtml::_('form.token'); ?>
-
 	</div>
 </form>
+<script>
+	/** Make the Preview Modal Responsive **/
+    jQuery(document).ready(function() {
+        var width = jQuery(window).width();
+        var height = jQuery(window).height();
+
+        //ID of container
+        jQuery('a#modal_preview').attr('rel','{handler: "iframe", size: {x: '+(width-(width*0.10))+', y: '+(height-(height*0.10))+'}}');
+    });
+</script>
