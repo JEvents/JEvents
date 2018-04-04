@@ -8,14 +8,14 @@
 <extension type="plugin" version="2.5" group="content" method="upgrade">
 	<name>PLG_JEV_CORE_CONTENT_PLUGIN_TITLE</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>February 2018</creationDate>
+	<creationDate>March 2018</creationDate>
 	<copyright>(C) 2012-2018 GWE Systems Ltd</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
 	<packager>GWE Systems Ltd</packager>
 	<packagerurl>http://www.jevents.net</packagerurl>
 	<description>PLG_JEV_CORE_CONTENT_PLUGIN_DESC</description>
-    <version>3.4.44</version>
+    <version>3.4.46</version>
 	<description>
 	<![CDATA[
 		This is a JEvents Core plugin.

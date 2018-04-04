@@ -385,9 +385,27 @@ class JevHtmlBootstrap
 					return;
 				}
 				if (jQuery('$selector').length){
-					jQuery('" . $selector . "').popover(" . $options . ");
+					jQuery('" . $selector . "').popover(" . $options . ");						
 				}
-			});"
+			});
+(function($) {
+
+    var oldHide = $.fn.popover.Constructor.prototype.hide;
+
+    $.fn.popover.Constructor.prototype.hide = function() {
+        if (this.options.container == '#jevents_body' && this.options.trigger.indexOf('hover') >=0  && this.tip().is(':hover')) {
+            var that = this;
+            // try again after what would have been the delay
+            setTimeout(function() {
+                return that.hide.call(that, arguments);
+            }, that.options.delay.hide);
+            return;
+        }
+        oldHide.call(this, arguments);
+    };
+
+})(jQuery);"
+			
 		);
 
 		static::$loaded[__METHOD__][$selector] = true;

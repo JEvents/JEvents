@@ -197,7 +197,6 @@ class FlatModCalView extends DefaultModCalView {
 
 						$class = ($currentDay["cellDate"] == $today) ? "flatcal_todaycell" : "flatcal_daycell";
 						$linkclass = "flatcal_daylink";
-
 						if ($dayOfWeek == 0 && $currentDay["cellDate"] != $today) {
 							$class = "flatcal_sundaycell";
 							$linkclass = "flatcal_sundaylink";

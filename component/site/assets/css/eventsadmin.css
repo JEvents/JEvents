@@ -804,7 +804,9 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     background-image:none;
     vertical-align:baseline;
 }
-/** Prevent Calendar going full screen width **/
-#jevents .js-calendar table {
-	width: auto;
+/* Fix for calendar popup width */
+.jevbootstrap .js-calendar .table {
+	width: 280px;
 }
+
+.jevbootstrap .modal > .modal-dialog {left: 0;right:0;}

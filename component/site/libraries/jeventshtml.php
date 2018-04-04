@@ -405,8 +405,8 @@ class JEventsHTML
 		    $html =  ob_get_clean();
 		    if (count($options) == 1)
 		    {
-			$html =   "<div class='catname'>".  $options[0]->text. "</div>";
-			$html .= "<input type='hidden' name='$fieldname' value='$catid' />";
+			$html   =   "<div class='catname'>".  $options[0]->text. "</div>";
+			$html  .= "<input type='hidden' id='" . $fieldname . "' name='" . $fieldname . "[]' value='$catid' />";
 		    }
 
 		return $html;
@@ -525,7 +525,7 @@ class JEventsHTML
 				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" />'
 				    . '<label for="cb_wn' . $a . '" class="checkbox btn">'
 				    . '<span class="weeknameforward" ' . $fwdstyle . '>' . $week_name[$a] . "</span>"
-				    . '<span class="weeknameback"' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
+				    . '<span class="weeknameback" ' . $bckstyle . '>' . $backwards_week_name[$a] . "</span>"
 				    . '</label>' . "\n"
 			    ;
 		    }

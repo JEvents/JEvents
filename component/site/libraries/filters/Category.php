@@ -74,14 +74,17 @@ class jevCategoryFilter extends jevFilter
 					. " SELECT catmaprd.evid "
 					. " FROM #__jevents_catmap as catmaprd "
 					. " WHERE catmaprd.catid IN(" . implode(",",$catids) . ") "
+					. " AND catmaprd.catid IN(" . $this->accessibleCategories . ")"
 					. " GROUP BY catmaprd.evid "
 					. " HAVING COUNT(catmaprd.catid) = " . count($catids) . ")"; 
 
-				return $filter;
+			}
+			else {
+				$filter = " ev.catid IN (".$this->accessibleCategories.")";
 			}
 		
-			
-			return "";
+			return $filter;
+
 		}
 		 
 		/*

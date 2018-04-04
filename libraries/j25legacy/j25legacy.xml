@@ -4,13 +4,13 @@
 	<libraryname>jevents/j25legacy</libraryname>
 	<description>JEvents Joomla 2.5 Legacy Library namespaced to correctly work with JEvents</description>
 	<author>GWE Systems Ltd</author>
-	<creationDate>February 2018</creationDate>
+	<creationDate>March 2018</creationDate>
 	<copyright>(C) 2010-2018 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>carcam@jevents.net</authorEmail>
 	<packager>JEvents</packager>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.44</version>
+	<version>3.4.46</version>
 	<files>
 		<folder>jlayouts</folder>
 	</files>

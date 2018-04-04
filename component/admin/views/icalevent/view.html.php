@@ -209,7 +209,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 
 
-		JToolbarHelper::cancel('icalevent.list');
+		JToolbarHelper::cancel('icalevent.cancel');
 		//JToolbarHelper::help( 'screen.icalevent.edit', true);
 
 		// TODO move this into JForm field type!

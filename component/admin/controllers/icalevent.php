@@ -1475,8 +1475,6 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function emptytrash()
 	{
-	    $app    = JFactory::getApplication();
-	    $jinput = $app->input();
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
@@ -1488,8 +1486,11 @@ class AdminIcaleventController extends JControllerAdmin
 		 return false;
 		  }
 		 */
-		$cid = $jinput->get('cid', array(0), "array");
 
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$cid = $jinput->get('cid', array(0), "array");
 		$cid = ArrayHelper::toInteger($cid);
 
 		// front end passes the id as evid
@@ -1569,25 +1570,25 @@ class AdminIcaleventController extends JControllerAdmin
 			}
 			else
 			{
-				$Itemid = $app->getInt("Itemid");
+				$Itemid = $jinput->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = $app->getString("rettask", "day.listevents");
+				$rettask = $jinput->getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JTEXT::_("ICAL_EVENT_DELETED"));
 				$this->redirect();
 			}
 		}
 		else
 		{
-			if (JFactory::getApplication()->isAdmin())
+			if ($app->isAdmin())
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list");
 				$this->redirect();
 			}
 			else
 			{
-				$Itemid = $app->getInt("Itemid");
+				$Itemid = $jinput->getInt("Itemid");
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = $app->getString("rettask", "day.listevents");
+				$rettask = $jinput-getString("rettask", "day.listevents");
 				$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false));
 				$this->redirect();
 			}
@@ -1616,7 +1617,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		// get the view
 		if (JFactory::getApplication()->isAdmin()){
@@ -1980,6 +1981,17 @@ class AdminIcaleventController extends JControllerAdmin
 
 		return JHTML::_('select.genericlist', $options, '' . $name, 'class="inputbox"', 'value', 'text', $itemid, $name);
 
+	}
+
+	public function cancel() {
+		$app    = Jfactory::getApplication();
+		$jinput = $app->input;
+		$Itemid = $jinput->getInt("Itemid");
+
+		// Clear the post, so event vars are not passed into the filters.
+		$jinput->post = '';
+
+		return $app->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list&Itemid=$Itemid", false));
 	}
 
 }

@@ -17,7 +17,7 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.4.44';
+	var $RELEASE 	= '3.4.46';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
