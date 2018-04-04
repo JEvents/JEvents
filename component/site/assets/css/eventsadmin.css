@@ -808,3 +808,5 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 .jevbootstrap .js-calendar .table {
 	width: 280px;
 }
+
+.jevbootstrap .modal > .modal-dialog {left: 0;right:0;}

@@ -496,7 +496,7 @@ class JEVHelper
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && $jConfig->get('MetaDesc', '') === $document->getDescription())
+		if ($params->get('menu-meta_description') && (string) $jConfig->get('MetaDesc', '') === (string) $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
