@@ -130,12 +130,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml);
 		}
 
-		// From and To Date Calendars
-		$fromDate   = '';
-		$toDate     = '';
-
-		$this->filters[] = JevHelper::loadElectricCalendar('fromDate', 'fromDate', $fromDate, '', '');
-
 		$this->sidebar = JHtmlSidebar::render();
 
 		$this->languages = $this->get('Languages');

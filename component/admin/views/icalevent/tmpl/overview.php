@@ -14,6 +14,7 @@ use Joomla\String\StringHelper;
 
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
+JHTML::_('behavior.modal');
 
 // Load the jQuery plugin && CSS
 JHtml::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
@@ -158,6 +159,10 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
 					</td>
 					<td>
+						<a href="<?php  echo JURI::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);?>" title="Preview" class="modal"
+						   rel="{size: {x: 700, y: 500}, handler:'iframe'}">
+							<span class="icon-out-2 small"></span>
+						</a>
 						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>

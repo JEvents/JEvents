@@ -79,7 +79,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$tagsPlugin = JPluginHelper::isEnabled('jevents', 'jevtags');
 
 		if ($tagsPlugin) {
-			$tagsArray  = $app->getUserStateFromRequest("taglkup_fvs", "taglkup_fvs", 0);
+			$tagsArray  = $app->getUserStateFromRequest("taglkup_fvs", "taglkup_fvs", array());
 			$tags       = implode(',', $tagsArray);
 			$this->view->assign('tagsFiltering', true);
 		}
