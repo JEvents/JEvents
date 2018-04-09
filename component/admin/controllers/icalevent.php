@@ -69,6 +69,12 @@ class AdminIcaleventController extends JControllerAdmin
 		$catid      = (int) $app->getUserStateFromRequest("catidIcalEvents", 'catid', 0);
 		$catidtop   = $catid;
 		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 3);
+
+		// Clear filters sets it to 0 but our 0 is actually 3 duh.
+		if ($state === 0) {
+			$state = 3;
+		}
+
 		$limit      = (int) $app->getUserStateFromRequest("viewlistlimit", 'limit', $app->getCfg('list_limit', 10));
 		$limitstart = (int) $app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
 		$search     = $app->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');

@@ -127,7 +127,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			// Load the tags filter
 			$tagFilterHtml  = jevFilterProcessing::getInstance(array('taglookup'))->getFilterHTML(true)[0]['html'];
 			// We have to use a dirty str_replace since Joomla! clear function requires value to be empty for a clear filters.
-			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml);
+			$earchBtn = '<button type="submit" class="btn hasTooltip" title="" aria-label="' . JText::_('JEV_SEARCH')  . '" data-original-title="' . JText::_('JEV_SEARCH')  . '">
+							<span class="icon-search" aria-hidden="true"></span>
+						</button>';
+			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
 		$this->sidebar = JHtmlSidebar::render();
