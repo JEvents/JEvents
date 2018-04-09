@@ -314,7 +314,7 @@ RAWTEXT;
 				}
 				else {
 					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-					if ($params->get("multicategory",0) ){
+					if ($params->get("multicategory",0) && !is_array($catid)){
 						$vevent->catid = array($catid);
 					}
 					else {

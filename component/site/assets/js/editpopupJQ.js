@@ -73,28 +73,32 @@ function jevEditPopupNoTitle(url){
 }
 
 function launchModal(selector, url) {
-	// Clear the old page!
-	jQuery(selector+' iframe').attr("src","about:blank");
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
-	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-	if (bootstrap3_enabled){
-		jQuery(selector).off('shown.bs.modal');
-		jQuery(selector).on('shown.bs.modal', function () {
-			//jQuery(selector+' iframe').attr("src","about:blank");
-			jQuery(selector+' iframe').attr("src",url);
-		});
-	}
-	else {
-		jQuery(selector).off('shown');
-		jQuery(selector).on('shown', function () {
-			//jQuery(selector+' iframe').attr("src","about:blank");
-			jQuery(selector+' iframe').attr("src",url);
-		});
-	}
-	jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
-        //reloads parent page on close!
-        //jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();});
-	return;
+    // Clear the old page!
+    jQuery(selector+' iframe').attr("src","about:blank");
+    // Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+    var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+    if (bootstrap3_enabled){
+        jQuery(selector).off('shown.bs.modal');
+        jQuery(selector).on('shown.bs.modal', function () {
+            //jQuery(selector+' iframe').attr("src","about:blank");
+            if (url) {
+                jQuery(selector + ' iframe').attr("src", url);
+            }
+        });
+    }
+    else {
+        jQuery(selector).off('shown');
+        jQuery(selector).on('shown', function () {
+            //jQuery(selector+' iframe').attr("src","about:blank");
+            if (url) {
+                jQuery(selector + ' iframe').attr("src", url);
+            }
+        });
+    }
+    jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
+    //reloads parent page on close!
+    //jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();});
+    return;
 }
 
 function addEditModalHtml (){
@@ -197,4 +201,17 @@ function addImportPopupHtml (){
 
 		jQuery(myImportModal).appendTo("body");
 	}
+}
+
+function jevIdPopup(id){
+    // close dialog may not exist for monthly calendar
+    try {
+        jQuery('#'+id).modal('hide');
+    }
+    catch (e){
+
+    }
+    launchModal('#'+id);
+
+    return;
 }

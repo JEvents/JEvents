@@ -174,6 +174,10 @@ class iCalEventDetail extends JTable  {
 		$this->processField("geolon","0");
 		$this->processField("geolat","0");
 		$this->processField("location","");
+		if (strpos($this->location, '\n'))
+		{
+			$this->location = str_replace('\n', '<br>', $this->location);
+		}
 		$this->loc_id = (int) $this->location;
 		$this->processField("priority","0");
 		$this->processField("status","");
