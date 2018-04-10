@@ -468,6 +468,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
 		$data["LOCATION"]       = $jinput->getString("location", "");
+		$data["GEOLON"]       = $jinput->getString("geolon", "");
+		$data["GEOLAT"]       = $jinput->getString("geolat", "");
 		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
                 if ($data["allDayEvent"] == 1){
                     $data["allDayEvent"] = "on";
