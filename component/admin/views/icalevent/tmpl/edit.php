@@ -17,7 +17,7 @@ define("EDITING_JEVENT", 1);
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
-$assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isAdmin() ;
+$assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplication()->isClient('administrator') ;
 
 // Load Bootstrap
 JevHtmlBootstrap::framework();
@@ -58,7 +58,7 @@ else if ($params->get("bootstrapcss", 1)==2)
 }
 
 // use JRoute to preseve language selection
-$action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
+$action = JFactory::getApplication()->isClient('administrator') ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
 $user = JFactory::getUser();
 $accesslevels = $user->getAuthorisedViewLevels();
@@ -66,7 +66,7 @@ $accesslevels = "jeval".implode(" jeval", array_unique($accesslevels));
 
 ?>
 <div id="jevents" <?php
-echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
+echo (!JFactory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 ?> >
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data' id="adminForm"   class="form-horizontal jevbootstrap" >
 		<?php
@@ -180,7 +180,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 		<input type="hidden" name="day" value="<?php echo $day; ?>" />
 		<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>" />
 		<input type="hidden" name="valid_dates" id="valid_dates" value="1"  />                
-		<?php if (!JFactory::getApplication()->isAdmin()) { ?>                
+		<?php if (!JFactory::getApplication()->isClient('administrator')) { ?>
 		<input type="hidden" name="Itemid" id="Itemid" value="<?php echo  JEVHelper::getItemid();?>"  />
 		<?php } ?>
 		<?php
@@ -285,7 +285,7 @@ if (  $params->get("checkconflicts", 0) )
 	?>
             // reformat start and end dates  to Y-m-d format
             reformatStartEndDates();
-            checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+            checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
 	<?php
 }
 else

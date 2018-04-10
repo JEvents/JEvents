@@ -147,7 +147,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 	protected function preprocessForm(JForm $form, $data, $group = 'jevents')
 	{
 		// Association content items
-		$assoc = false &&  JLanguageAssociations::isEnabled() && JFactory::getApplication()->isAdmin();
+		$assoc = false &&  JLanguageAssociations::isEnabled() && JFactory::getApplication()->isClient('administrator');
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');

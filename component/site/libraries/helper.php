@@ -93,7 +93,7 @@ class JEVHelper
 			case 'admin':
 				// load new style language
 				// if loading from another component or is frontend then force the load of the admin language file - otherwite done automatically
-				if ($option != JEV_COM_COMPONENT || !JFactory::getApplication()->isAdmin())
+				if ($option != JEV_COM_COMPONENT || !JFactory::getApplication()->isClient('administrator'))
 				{
 					// force load of installed language pack
 					$lang->load(JEV_COM_COMPONENT, JPATH_ADMINISTRATOR);
@@ -812,7 +812,7 @@ class JEVHelper
 		// check if this function is already loaded
 		if (!$cfg->get('loadOverlib'))
 		{
-			if ($cfg->get("com_enableToolTip", 1) || JFactory::getApplication()->isAdmin())
+			if ($cfg->get("com_enableToolTip", 1) || JFactory::getApplication()->isClient('administrator'))
 			{
 				$document = JFactory::getDocument();
 				// RSH 10/11/10 - Check location of overlib files - j!1.6 doesn't include them!
@@ -822,11 +822,11 @@ class JEVHelper
 				// change state so it isnt loaded a second time
 				$cfg->set('loadOverlib', true);
 
-				if ($cfg->get("com_calTTShadow", 1) && !JFactory::getApplication()->isAdmin())
+				if ($cfg->get("com_calTTShadow", 1) && !JFactory::getApplication()->isClient('administrator'))
 				{
 					JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/overlib_shadow.js');
 				}
-				if (!JFactory::getApplication()->isAdmin())
+				if (!JFactory::getApplication()->isClient('administrator'))
 				{
 					// Override Joomla class definitions for overlib decoration - only affects logged in users
 					$ol_script = "  /* <![CDATA[ */\n";
@@ -853,7 +853,7 @@ class JEVHelper
 	public static
 			function getItemid($forcecheck = false, $skipbackend = true)
 	{
-		if (JFactory::getApplication()->isAdmin() && $skipbackend)
+		if (JFactory::getApplication()->isClient('administrator') && $skipbackend)
 			return 0;
 		static $jevitemid;
 		$evid = $forcecheck ? $forcecheck->ev_id() : 0;
@@ -2429,7 +2429,7 @@ class JEVHelper
 		else
 		{
 			$levels = $user->getAuthorisedViewLevels();
-			if (JEVHelper::isAdminUser($user) && JFactory::getApplication()->isAdmin())
+			if (JEVHelper::isAdminUser($user) && JFactory::getApplication()->isClient('administrator'))
 			{
 				// Make sure admin users can see public events
 				$levels = array_merge($levels, JAccess::getAuthorisedViewLevels(0));

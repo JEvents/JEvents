@@ -17,7 +17,7 @@ class JFormFieldJevcolor extends JFormFieldColor
 		$cfg = JEVConfig::getInstance();
 
 		$hideColour = false;
-		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
+		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isClient('administrator')))
 		{
 			$hideColour = true;
 		}

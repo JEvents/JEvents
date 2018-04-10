@@ -56,7 +56,7 @@ $hideActiveFilters = false;
 $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-visible shown';
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="calendarslist">
 	<?php if (!empty($this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="span2">
 			<?php echo $this->sidebar; ?>

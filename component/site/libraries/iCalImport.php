@@ -175,7 +175,7 @@ class iCalImport
 				//echo "first line = $firstLine<br/>";
 				//echo "raw imported data = ".$this->rawData."<br/>";
 				//exit();
-                                if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isAdmin()) {
+                                if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isClient('administrator')) {
                                     $config = JFactory::getConfig();
                                     $debug = (boolean) $config->get('debug');
                                        if ($debug){

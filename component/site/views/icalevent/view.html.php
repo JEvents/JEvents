@@ -170,7 +170,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		<?php
 		$mainframe = JFactory::getApplication();
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
+		echo (!JFactory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
 		?>>
 		    <div id="toolbar-box" >
 			<?php

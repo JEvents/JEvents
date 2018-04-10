@@ -18,7 +18,7 @@ $editor = JFactory::getEditor();
 // clean any existing cache files
 $cache = JFactory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
-$action = JFactory::getApplication()->isAdmin()?"index.php":"index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
+$action = JFactory::getApplication()->isClient('administrator')?"index.php":"index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 ?>
 <div id="jevents">
 <form action="<?php echo $action;?>" method="post" name="adminForm"  accept-charset="UTF-8" enctype="multipart/form-data"  id="adminForm">

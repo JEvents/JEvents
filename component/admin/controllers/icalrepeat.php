@@ -240,7 +240,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		// for Admin interface only
 
-		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isAdmin());
+		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isClient('administrator'));
 
 		$this->view->display();
 
@@ -252,7 +252,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
 			$this->redirect();
@@ -309,7 +309,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt = $this->doSave($msg);
 
 		$msg = JText::_("Event_Saved", true);
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid(), $msg);
 			$this->redirect();
@@ -629,7 +629,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		} catch (RuntimeException $e) {
 
-			if (JFactory::getApplication()->isAdmin())
+			if (JFactory::getApplication()->isClient('administrator'))
 			{
 				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END")."", "error");
 				$this->redirect();
@@ -757,7 +757,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->_deleteFuture();
 
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_UPDATED")."");
 			$this->redirect();
@@ -875,7 +875,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$db->execute();
 		}
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
@@ -905,7 +905,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$this->_deleteFuture();
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $this->rrule->data["eventid"], JText::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();

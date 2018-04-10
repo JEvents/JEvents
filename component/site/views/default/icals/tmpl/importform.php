@@ -9,7 +9,7 @@ $this->queryModel = new JEventsDBModel($this->dataModel);
 
 JFactory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
 
-$action = JFactory::getApplication()->isAdmin()?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
+$action = JFactory::getApplication()->isClient('administrator')?"index.php":JURI::root()."index.php?option=".JEV_COM_COMPONENT."&Itemid=".JEVHelper::getItemid();
 
 ?>
 <div id="jevents">

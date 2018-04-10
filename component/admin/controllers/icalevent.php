@@ -458,7 +458,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$jinput = JFactory::getApplication()->input;
 
 		// get the view
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
 		}
 		else {
@@ -656,7 +656,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->view->assign('glist', $glist);
 		
 		// for Admin interface only
-		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isAdmin());
+		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isClient('administrator'));
 		$this->view->assignRef('dataModel', $this->dataModel);
 		
 		// Keep following fields for backwards compataibility only
@@ -694,7 +694,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// get the view
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
 		}
 		else {
@@ -879,7 +879,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$msg = "";
 		$event = $this->doSave($msg);
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', $msg);
 			$this->redirect();
@@ -997,7 +997,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$jinput = JFactory::getApplication()->input;
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit', $msg);
 			$this->redirect();
@@ -1066,7 +1066,7 @@ class AdminIcaleventController extends JControllerAdmin
         }
 		list($year, $month, $day) = JEVHelper::getYMD();
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalevent.edit&evid=$evid&rp_id=$rp_id&year=$year&month=$month&day=$day", $msg);
 			$this->redirect();
@@ -1098,7 +1098,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function csvimport()
 	{
 
-		if (!JFactory::getApplication()->isAdmin())
+		if (!JFactory::getApplication()->isClient('administrator'))
 		{
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -1373,7 +1373,7 @@ class AdminIcaleventController extends JControllerAdmin
 		JPluginHelper::importPlugin("jevents");
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JTEXT::_("JEV_EVENT_STATE_CHANGED"));
 			$this->redirect();
@@ -1461,7 +1461,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$res = $dispatcher->trigger('onPublishEvent', array($cid, $newstate));
 		$pub_filter = $jinput->get('published_fv', 0);
 
-		if (JFactory::getApplication()->isAdmin())
+		if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.list', JText::_('JEV_EVENT_PUBLISH_STATE_SAVED'));
 			$this->redirect();
@@ -1569,7 +1569,7 @@ class AdminIcaleventController extends JControllerAdmin
 			JPluginHelper::importPlugin("jevents");
 			$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
 
-			if (JFactory::getApplication()->isAdmin())
+			if (JFactory::getApplication()->isClient('administrator'))
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list", JTEXT::_("ICAL_EVENTS_DELETED"));
 				$this->redirect();
@@ -1585,7 +1585,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 		else
 		{
-			if ($app->isAdmin())
+			if ($app->isClient('administrator'))
 			{
 				$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.list");
 				$this->redirect();
@@ -1626,7 +1626,7 @@ class AdminIcaleventController extends JControllerAdmin
 		JSession::checkToken('request') or jexit('Invalid Token');
 
 		// get the view
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
 		}
 		else {
