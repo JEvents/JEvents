@@ -215,15 +215,15 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 8) : JString::substr($row->publish_up(), 0, 10)) . ' <span aria-hidden="true" class="icon-clock"></span></td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 8) : JString::substr($row->publish_down(), 0, 10)) . ' <span aria-hidden="true" class="icon-clock"></span></td></tr>';
-							$times .= "</table>";
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
+							$times .="</table>";
 							echo $times;
 						}
 						?>
 					</td>
-					<td><?php echo $row->created(); ?> <span aria-hidden="true" class="icon-clock"></span></td>
-					<td><?php echo JString::substr($row->modified, 0, 10); ?> <span aria-hidden="true" class="icon-clock"></span></td>
+					<td><?php echo $row->created(); ?> </td>
+					<td><?php echo JString::substr($row->modified, 0, 10); ?> </td>
 					<td><?php echo $row->_groupname; ?></td>
 				</tr>
 				<?php
