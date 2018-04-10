@@ -228,7 +228,10 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				<?php
 				$k = 1 - $k;
 			}
-			?>
+
+			if (count($this->rows) === 0) {
+				echo '<tr class="row0"><td colspan="9">' . JText::_("JEV_NO_EVENTS_FOUND") . '</td></tr>';
+			} ?>
 		</table>
 		<?php echo $this->pageNav->getListFooter(); ?>
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
