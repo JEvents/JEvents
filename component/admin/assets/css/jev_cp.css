@@ -21,6 +21,4 @@ div#sidebar.sidebar {clear:both;}
     border-right: 1px solid #DDD;
     border-left: 1px solid #DDD;
 }
-td.align_center, .align_center {
-    text-align: center !important;
-}
+.customlayouts {padding: 10px 30px;}

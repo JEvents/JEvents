@@ -85,13 +85,13 @@ $fullspan = 12;
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_ACCESS'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ACCESS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_ID'); ?></th>
 				</tr>
 
@@ -110,15 +110,15 @@ $fullspan = 12;
 						<td>
 							<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
 						</td>
-						<td class="align_center">
+						<td class="center">
 							<?php
 							$types = array("Remote", "Uploaded File", "Native");
 							$typeTranslation = 'COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_' . str_replace(' ','_',strtoupper($types[$row->icaltype]));
 							echo JText::_($typeTranslation);
 							?>
 						</td>
-						<td class="align_center"><?php echo $row->category; ?></td>
-						<td class="align_center">
+						<td class="center"><?php echo $row->category; ?></td>
+						<td class="center">
 							<?php
 							// only offer reload for URL based ICS
 							if ($row->srcURL != "")
@@ -132,7 +132,7 @@ $fullspan = 12;
 	?>
 
 						</td>
-						<td class="align_center">
+						<td class="center">
 								<?php
 								$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 								?>
@@ -140,7 +140,7 @@ $fullspan = 12;
 							<?php echo $img; ?>
 							</a>
 						</td>
-						<td class="align_center">
+						<td class="center">
 							<?php
 							if ($row->icaltype == 0)
 							{
@@ -163,7 +163,7 @@ $fullspan = 12;
 							}
 							?>
 						</td>
-						<td class="align_center">
+						<td class="center">
 							<?php
 							if ($row->icaltype == 2)
 							{
@@ -180,15 +180,15 @@ $fullspan = 12;
 	}
 	?>
 						</td>
-						<td class="align_center"><?php echo $row->_groupname; ?></td>
-						<td class="align_center"><?php echo $row->ics_id; ?></td>
+						<td class="center"><?php echo $row->_groupname; ?></td>
+						<td class="center"><?php echo $row->ics_id; ?></td>
 					</tr>
 	<?php
 	$k = 1 - $k;
 }
 ?>
 				<tr>
-					<th class="align_center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
+					<th class="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
 				</tr>
 			</table>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

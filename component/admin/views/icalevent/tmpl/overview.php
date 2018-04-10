@@ -127,12 +127,12 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				<th class="title" width="40%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				</th>
-				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
-				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
+				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 				<?php if (count($this->languages) > 1) { ?>
-					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
 				<?php } ?>
-				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JSTATUS'); ?></th>
+				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JSTATUS'); ?></th>
 				<th width="20%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 				</th>
@@ -168,7 +168,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
-					<td class="align_center">
+					<td class="center">
 						<?php
 						if ($row->hasrepetition())
 						{
@@ -180,12 +180,12 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 							</a>
 						<?php } ?>
 					</td>
-					<td class="align_center"><?php echo $row->creatorName(); ?></td>
+					<td class="center"><?php echo $row->creatorName(); ?></td>
 					<?php if (count($this->languages) > 1) { ?>
-						<td class="align_center"><?php echo $this->translationLinks($row); ?>    </td>
+						<td class="center"><?php echo $this->translationLinks($row); ?>    </td>
 					<?php } ?>
 
-					<td class="align_center">
+					<td class="center">
 						<?php
 						if ($row->state() == 1)
 						{
