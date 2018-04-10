@@ -15,3 +15,12 @@ div#sidebar.sidebar {clear:both;}
     border-left: 1px solid #DDD;
     border-right: 1px solid #DDD;
 }
+
+.adminlist tr:last-child {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+}
+td.align_center, .align_center {
+    text-align: center !important;
+}

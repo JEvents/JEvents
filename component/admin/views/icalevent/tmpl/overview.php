@@ -56,7 +56,7 @@ $hideActiveFilters = false;
 $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-visible shown';
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm" class="calendarslist">
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="eventlist">
 	<?php if (!empty($this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="span2">
 			<?php echo $this->sidebar; ?>
@@ -73,11 +73,12 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 			<div class="clearfix">
 				<div class="js-stools-container-bar">
 					<label for="search" class="element-invisible">
-						Search </label>
+						<?php echo JText::_('JEV_SEARCH'); ?>
+					</label>
 					<div class="btn-wrapper input-append">
 						<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
 						       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
-						       onChange="Joomla.submitform();" />
+						       onChange="Joomla.submitform()" />
 						<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
 						        data-original-title="Search">
 							<span class="icon-search" aria-hidden="true"></span>
@@ -118,7 +119,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 		</div>
 
 		<!-- End Filters Bar -->
-		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
+		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 			<tr>
 				<th width="20" nowrap="nowrap">
 					<?php echo JHtml::_('grid.checkall'); ?>
@@ -126,12 +127,12 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				<th class="title" width="40%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				</th>
-				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
-				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
+				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
+				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
 				<?php if (count($this->languages) > 1) { ?>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
+					<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JEV_EVENT_TRANSLATION'); ?></th>
 				<?php } ?>
-				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+				<th width="10%" nowrap="nowrap" class="align_center"><?php echo JText::_('JSTATUS'); ?></th>
 				<th width="20%" nowrap="nowrap">
 					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 				</th>
@@ -167,7 +168,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
-					<td align="center">
+					<td class="align_center">
 						<?php
 						if ($row->hasrepetition())
 						{
@@ -179,12 +180,12 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 							</a>
 						<?php } ?>
 					</td>
-					<td align="center"><?php echo $row->creatorName(); ?></td>
+					<td class="align_center"><?php echo $row->creatorName(); ?></td>
 					<?php if (count($this->languages) > 1) { ?>
-						<td align="center"><?php echo $this->translationLinks($row); ?>    </td>
+						<td class="align_center"><?php echo $this->translationLinks($row); ?>    </td>
 					<?php } ?>
 
-					<td align="center">
+					<td class="align_center">
 						<?php
 						if ($row->state() == 1)
 						{
@@ -221,9 +222,9 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						}
 						?>
 					</td>
-					<td align="center"><?php echo $row->created(); ?> <span aria-hidden="true" class="icon-clock"></span></td>
-					<td align="center"><?php echo JString::substr($row->modified, 0, 10); ?> <span aria-hidden="true" class="icon-clock"></span></td>
-					<td align="center"><?php echo $row->_groupname; ?></td>
+					<td><?php echo $row->created(); ?> <span aria-hidden="true" class="icon-clock"></span></td>
+					<td><?php echo JString::substr($row->modified, 0, 10); ?> <span aria-hidden="true" class="icon-clock"></span></td>
+					<td><?php echo $row->_groupname; ?></td>
 				</tr>
 				<?php
 				$k = 1 - $k;
