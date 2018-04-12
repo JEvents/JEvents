@@ -55,6 +55,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		if (!$state)
 		{
 			$state = 3;
+			JToolbarHelper::trash('icalevent.delete');
 		} else if ($state == -1){
 			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
