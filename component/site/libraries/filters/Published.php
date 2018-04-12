@@ -70,7 +70,7 @@ class jevPublishedFilter extends jevFilter
 		}
 		else if  (JEVHelper::isEventCreator()){
 			$user = JFactory::getUser();
-			if ($this->filter_value==-1) return "(ev.state=1 OR ev.created_by=".$user->id.")";
+			if ($this->filter_value==-1) return "(ev.state<> -1)";
 			return "ev.state=0 && ev.created_by=".$user->id;
 		}
 		
