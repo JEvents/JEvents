@@ -85,6 +85,10 @@ class ICalEventController extends AdminIcaleventController   {
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail'));
+
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = $this->getView($view,$viewType, $theme."View",
 			array( 'base_path'=>$this->_basePath,
@@ -107,7 +111,7 @@ class ICalEventController extends AdminIcaleventController   {
 		// View caching logic -- simple... are we logged in?
 		$cfg	 = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1) && $viewType != "pdf";
 		$user = JFactory::getUser();
 		if ($user->get('id') || !$useCache) {
 			$this->view->display();
