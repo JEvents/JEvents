@@ -97,6 +97,74 @@ class GetjsonController extends JControllerLegacy
 
 	}
 
+	/**
+	 * function to fetch event data into json format
+	 */
+
+	function eventRangeData()
+	{
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$this->datamodel = new JEventsDataModel();
+
+		list($year, $month, $day) = JEVHelper::getYMD();
+		$start  = $jinput->getString('start', "$year-$month-$day");
+		$end    = $jinput->getString('end', "$year-$month-$day");
+		$limitstart = 0;
+		$limit  = 0;
+
+		$myItemid   = JEVHelper::getItemid();
+
+		// Force repeats to show
+//		$cfg    = JEVConfig::getInstance();
+//		$cfg->set("com_showrepeats", true);
+
+		// TODO Check for sanity of $start and $end
+		$reg    = JevRegistry::getInstance("jevents");
+		$this->datamodel = $reg->getReference("jevents.datamodel", false);
+
+		if (!$this->datamodel){
+			$this->datamodel = new JEventsDataModel();
+			$this->datamodel->setupComponentCatids();
+		}
+
+		$data =  $this->datamodel->queryModel->listIcalEventsByRange($start, $end, $limitstart, $limit);
+
+		$events = array();
+		foreach ($data  as $event)
+		{
+			$eventArray = array();
+			$eventArray['title'] = $event->title();
+			$eventArray['start'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . " " . date("H:i", $event->getUnixStartTime());
+			$eventArray['end'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . " " . date("H:i", $event->getUnixStartTime());
+			$eventArray['textcolor'] = $event->fgcolor();
+			$eventArray['backgroundColor'] = $event->bgcolor();
+			$link = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
+			$eventArray['url'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+
+			if ($event->hasrepetition())
+			{
+				$eventArray['id'] = $event->ev_id();
+			}
+
+			$events[] = $eventArray;
+		}
+
+		// Get the document object.
+		$document =  JFactory::getDocument();
+
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding('application/json');
+
+		// Change the suggested filename.
+		JResponse::setHeader('Content-Disposition', 'attachment;filename="eventdata.json"');
+
+		// Output the JSON data.
+		echo json_encode($events);
+		exit();
+	}
+
 	function monthEvents()
 	{
 		$modid = intval((JRequest::getVar('modid', 0)));
