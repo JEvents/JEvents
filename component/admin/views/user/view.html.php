@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -83,7 +83,7 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$rules = JAccess::getAssetRules("com_jevents", true);

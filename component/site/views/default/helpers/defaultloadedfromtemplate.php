@@ -5,7 +5,7 @@ use Joomla\String\StringHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	static $allcatids;
 	if (!isset($allcatids))
 	{
@@ -470,7 +470,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				    if (!isset($allcat_catids))
 				    {
-					    $db = JFactory::getDBO();
+					    $db = JFactory::getDbo();
 					    $arr_catids = array();
 					    $catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					    $db->setQuery($catsql);
@@ -677,7 +677,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    $search[] = "{{ALLCATEGORYIMGS}}";
 				    if (!isset($allcat_catids))
 				    {
-					    $db = JFactory::getDBO();
+					    $db = JFactory::getDbo();
 					    $arr_catids = array();
 					    $catsql = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					    $db->setQuery($catsql);
@@ -879,7 +879,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    // no need to repeat this for each of the matching 'case's
 				    if (!in_array("{{COUNTDOWN}}", $search, FALSE))
 				    {
-
 					    if ($template_name == "icalevent.detail_body")
 					    {
 						    $search[] = "{{REPEATSUMMARY}}";
@@ -1007,6 +1006,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						    // these would slow things down if not needed in the list
 						    $dorepeatsummary = (JString::strpos($template_value, "{{REPEATSUMMARY}}") !== false);
+
 						    if ($dorepeatsummary)
 						    {
 
@@ -1018,7 +1018,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 							    $row = $event;
 							    $times = "";
-							    if (($showyeardate && $jevtask == "year") || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || ($showyeardate && $jevtask == "range"))
+
+							    if (($showyeardate && $jevtask == "year") || $jevtask == "list.events" || $jevtask == "search.results" || $jevtask == "month.calendar" || $jevtask == "cat" || ($showyeardate && $jevtask == "range"))
 							    {
 
 								    $start_publish = $row->getUnixStartDate();
@@ -1842,6 +1843,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			    if (!is_int($tempreplace))
 			    {
 				    $tempreplace = strtotime(strip_tags($tempreplace));
+			    }
+			    if (strpos($fmt, "%") === false)
+			    {
+				    return date($fmt, $tempreplace);
 			    }
 			    return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
 		    }

@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalevent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -148,7 +148,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function editcopy(){
 		// Must be at least an event creator to edit or create events
-		$is_event_editor = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -164,7 +164,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function save($key = NULL, $urlVar = NULL){
 		// Must be at least an event creator to save events
-		$is_event_editor = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -174,8 +174,8 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function apply(){
 		// Must be at least an event creator to save events
-		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
+		if (!$is_event_editor) {
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}

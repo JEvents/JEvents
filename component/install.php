@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2018 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -103,7 +103,7 @@ class com_jeventsInstallerScript
 	
 	private function createTables() {
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setDebug(0);
 		if (version_compare(JVERSION, "3.3", 'ge')){
 			$charset = ($db->hasUTFSupport()) ?  ' DEFAULT CHARACTER SET `utf8`' : '';
@@ -450,7 +450,7 @@ SQL;
 		
 	private function updateTables() {
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setDebug(0);
 
 		if (version_compare(JVERSION, "3.3", 'ge')){

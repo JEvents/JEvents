@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -257,7 +257,7 @@ class DefaultModLatestView
 			$this->maxEvents = $limit;
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$t_datenow = JEVHelper::getNow();
 		$this->now = $t_datenow->toUnix(true);
@@ -759,8 +759,8 @@ class DefaultModLatestView
                         JFactory::getApplication()->setUserState("jevents.moduleid".$this->_modid.".lastEventDate",$lastEventDate);
 
                         // Navigation
-                        static $scriptloaded = false;
-                        if (!$scriptloaded ){
+			if (!defined('_JEVM_SCRIPTLOADED')) {
+                            define('_JEVM_SCRIPTLOADED', 1);
                             $root = JURI::root();
                             $token= JSession::getFormToken();
                             $script = <<<SCRIPT
@@ -1171,8 +1171,11 @@ SCRIPT;
 						$tempEndDate = $endDate + 1;
 						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
+							$jmatch = new JevDate($tempEndDate);
+							$jmatch->setTime(24,0,0);
 							// if an all day event then we don't want to roll to the next day
-							$tempEndDate -= 86400;
+							$jmatch->sub(new DateInterval('P1D'));
+							$tempEndDate = $jmatch;
 						}
 						$match = "tempEndDate";
 					}

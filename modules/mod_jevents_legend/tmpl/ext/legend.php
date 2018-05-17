@@ -1,6 +1,6 @@
 <?php
 /**
- * copyright (C) 2008-2017 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
  */
 
 // Check to ensure this file is included in Joomla!
@@ -37,7 +37,7 @@ class ExtModLegendView extends DefaultModLegendView{
 		$Itemid = $this->myItemid;
 		$user = JFactory::getUser();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
 		$cfg = JEVConfig::getInstance();
 

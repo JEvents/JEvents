@@ -4,7 +4,7 @@
  *
  * @version     $Id: jevboolean.php 1331 2010-10-19 12:35:49Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,10 +13,12 @@
 
 defined('JPATH_BASE') or die;
 
-if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
+if (version_compare(JVERSION, "3.8.0", 'ge')){
+	\JFormHelper::loadFieldClass('editor');
+}
+else if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
 	include_once(JPATH_SITE."/libraries/joomla/form/fields/editor.php");
 }
-	
 jimport('joomla.html.editor');
 
 class JFormFieldJevhtml extends JFormFieldEditor

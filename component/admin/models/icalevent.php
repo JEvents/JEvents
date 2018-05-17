@@ -177,7 +177,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 		static  $languages;
 		if (!isset($languages)){
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 
 			// get the list of languages first
 			$query	= $db->getQuery(true);

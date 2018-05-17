@@ -3,12 +3,12 @@
 	<name>PLG_FINDER_JEVENTS</name>
 	<name>JEvents - Smart Search Plugin</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>August 2017</creationDate>
-	<copyright>(C) 2010-2017 GWE Systems Ltd. All rights reserved.</copyright>
+	<creationDate>March 2018</creationDate>
+	<copyright>(C) 2010-2018 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail></authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.43</version>
+	<version>3.4.46</version>
 	<description>PLG_FINDER_JEVENTS_XML_DESCRIPTION</description>
 	<files>
 		<file plugin="jevents">jevents.php</file>

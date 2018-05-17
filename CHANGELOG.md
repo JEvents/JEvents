@@ -2,6 +2,62 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 02-03-2018 - Tony Partridge
+### Fixed
+ * event list being filtered after cancelling event creation i.e. events filtered by published state.
+
+#### 27-02-2018 - Tony Partridge
+### Fixed
+ * Saving bug resulting in call on null / rp_id() / location()
+ * Event and event repeat selector not working due to incorrect JSession Check
+ * Emptying trashed events
+ * Joomla 3.6.x fatal error when trying to load Joomla 3.7 new calendar. 
+ * List of Events view return blank on Repeat Summary
+ * Set calendar popup width to be 300px; a nice size rather than 100%.
+ 
+#### 17-02-2018 Geraint Edwards
+ * JEvents 3.4.44
+ * Authorisation check on save should check creator and editor permissions
+ * Fix for colour picker being compromised by Joomla settings
+ * Allow jomsocial group events plugin to be picked up in edit page layout editor
+ * No-op code added to Category filter that can be used by an override to force category filters to apply to ALL selected filters and ANY of the selected filters
+ * Workaround for lack of support for electric calendar in recent Joomla date picker update
+ * Category selector replaced with style category name if only one choice is available
+ * Allow date formatting in layout editor to use date() function syntax as well as strftime format
+ * Replace deprecated Joomla method calls
+ * Improved meta tag setting 
+ * PHP 7.2 Support Changes
+ * Fix for setting published state in iCal and csv import
+ * Update code to current standards in installer
+ * Add default all day event tick selection
+ * fixed nonendtime default selection.
+ * Fix noendtime config option, was not working. 
+ * column selector should show textarea to allow advanced configuration
+ * Fix for default category setting when changing calendar in event creation
+ * Fix for timezone problems when editing repeats of existing events
+ * Add ical and edit dialogs as options for calendar cell
+ * calendar module navigation needs to handle UTF-8 data
+ * csv export should allow all events to be output even if block show all is enabled
+ * iCal export wasn't using maxYear and minYear so DST transitions were not always output
+ * gwejson library needs to add slashes to the message
+ * EXT Theme Fix Legend to show categories names always.
+ * Ext theme legend width to auto so nothing is cut off.
+ * Fix for default category setting when creating new event
+ * Fix guest check, WE only want to show the message IF NOT guest.
+ * Fix for missing cal_day declaration in default layout
+ * Add additional param to getListQuery to allow setting if list or item
+ * Added filtering to iCalRepeat to be same as iCalEvent
+
+#### 29-08-2017 Geraint Edwards
+ * JEvents 3.4.43
+ * New fix for #389 Fix for Authorised Users not being able to edit own events when they hit the event limit
+ * Stop check on freq==none being case sensitive
+
+#### 26-08-2017 Geraint Edwards
+ * JEvents 3.4.42
+ * Reverse Tony's changes on max event creation check for authorised users since it broke Joomla ACL permissions
+ * Fix for timezone specified repeating events which were not adjusted correctly when re-editing an event
+
 #### 22-08-2017 Geraint Edwards
  * JEvents 3.4.41
  * revert changes to JOIN queries on rrule which had exposed a problem with iCal imported events not showing in the frontend.

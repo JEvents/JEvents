@@ -4,7 +4,7 @@
  *
  * @version     $Id: saveIcalEvent.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -39,7 +39,9 @@ class SaveIcalEvent {
 		$data["UID"]				= ArrayHelper::getValue( $array,  "uid",md5(uniqid(rand(),true)));
 
 		$data["X-EXTRAINFO"]	= ArrayHelper::getValue( $array,  "extra_info","");
-		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
+		$data["LOCATION"]	= ArrayHelper::getValue( $array,  "location","");
+		$data["GEOLON"]		= (float) ArrayHelper::getValue( $array,  "geolon","");
+		$data["GEOLAT"]		= (float) ArrayHelper::getValue( $array,  "geolat","");
 		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
 		if ($data["allDayEvent"] == 1)

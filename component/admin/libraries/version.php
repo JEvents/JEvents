@@ -4,7 +4,7 @@
  *
  * @version     $Id: version.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,7 +17,7 @@ class JEventsVersion {
 	/** @var string Product */
 	var $PRODUCT 	= 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.4.43';
+	var $RELEASE 	= '3.4.46';
 	/** @var int Sub Release - backwards compatability only for club addons */
 	var $DEV_LEVEL 	= '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
@@ -26,7 +26,7 @@ class JEventsVersion {
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
-	var $COPYRIGHT 	= 'Copyright &copy; 2006-2017';
+	var $COPYRIGHT 	= 'Copyright &copy; 2006-2018';
 	/** @var string Copyright Text */
 	var $COPYRIGHTBY 	= 'GWE Systems Ltd, JEvents Project Group';
 	/** @var string LINK */

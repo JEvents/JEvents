@@ -1,6 +1,6 @@
 <?php
 /**
-* @copyright	Copyright (C) 2015-2017 GWE Systems Ltd. All rights reserved.
+* @copyright	Copyright (C) 2015-2018 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
@@ -31,7 +31,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 	$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	if (!($jevuser && $jevuser->candeleteall) &&  !$access)
 	{
 		PlgSystemGwejson::throwerror("There was an error - no access");
@@ -47,7 +47,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 		PlgSystemGwejson::throwerror ( "There was an error - no valid argument");
 	}
 
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 
 	$title = JFilterInput::getInstance()->clean($requestObject->typeahead,"string");
 	$text  = $db->Quote( '%'.$db->escape( $title, true ).'%', false );

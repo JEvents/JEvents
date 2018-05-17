@@ -3,7 +3,7 @@
  *
  * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -509,7 +509,7 @@ function toggleAllDayEvent()
 	hide_start = starttime;
 	hide_end   = endtime;
 
-	temp = new Date();
+	var temp = new Date();
 	temp = temp.dateFromYMD(startdate.value);
 
 	if (checked){
@@ -1165,7 +1165,13 @@ function hideEmptyJevTabs() {
 	}
 
 function selectIrregularDate() {
-	var selectElem = jQuery("#irregularDates");
+	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
+
+	// Trap month to month movement!
+	if (calpopup.style.display !== "none")
+	{
+		return;
+	}
 
 	var repeatDate = new Date();
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
@@ -1176,6 +1182,7 @@ function selectIrregularDate() {
 		"text" : jQuery("#irregular").val(),
 		"selected" : true
 	});
+	var selectElem = jQuery("#irregularDates");
 	selectElem.append(option);
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");

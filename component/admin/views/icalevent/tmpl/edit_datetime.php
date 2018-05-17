@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_datetime.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -188,8 +188,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	    if ($params->get("dayselect", 0))
 	    {
 		    ?>
-		    <label for='IRREGULAR' class="btn radio">
-			<input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
+		    <label for='IRREGULARBTN' class="btn radio">
+			<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
 			<?php echo JText::_('IRREGULAR'); ?>
 		    </label>
 	    <?php } ?>
@@ -298,7 +298,19 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			    $attribs["showtime"] = "showtime";
 			    $inputdateformat .= " %H:%M";
 		    }
-		    JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();updateRepeatWarning();", $inputdateformat, $attribs);
+		    JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "setTimeout(function() {selectIrregularDate();updateRepeatWarning();}, 200)", $inputdateformat, $attribs);
+		    //JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "jQuery(this).trigger('calupdate');", $inputdateformat, $attribs);
+		    
+		    //"selectIrregularDate();updateRepeatWarning();"
+		    /*
+		    JFactory::getDocument()->addScriptDeclaration(
+			    'jQuery(document).on("ready", function () {
+				jQuery("#irregular").on("calupdate", function(evt) {
+					alert(evt);
+				});
+			    });'
+			);
+		     */
 		    ?>
 		</div>
 		<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" onchange="updateRepeatWarning()">

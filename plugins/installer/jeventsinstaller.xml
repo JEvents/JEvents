@@ -2,12 +2,12 @@
 <extension version="3.1" type="plugin" group="installer" method="upgrade">
 	<name>plg_installer_jeventsinstaller</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>August 2017</creationDate>
+	<creationDate>March 2018</creationDate>
 	<copyright>(C) 2016 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.43</version>
+	<version>3.4.46</version>
 	<description>PLG_INSTALLER_JEVENTSINSTALLER</description>
 	<files>
 		<filename plugin="jeventsinstaller">jeventsinstaller.php</filename>

@@ -7,8 +7,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-
-include_once(JPATH_SITE."/libraries/joomla/form/fields/text.php");
+JLoader::register('JFormFieldText', JPATH_SITE . '/libraries/joomla/form/fields/text.php');
 
 class JFormFieldJevtext extends JFormFieldText
 {

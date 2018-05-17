@@ -2,12 +2,12 @@
 <extension version="3.1" type="plugin" group="system" method="upgrade">
 	<name>PLG_SYSTEM_GWEJSON</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>August 2017</creationDate>
-	<copyright>(C) 2015-2017 GWE Systems Ltd. All rights reserved.</copyright>
+	<creationDate>March 2018</creationDate>
+	<copyright>(C) 2015-2018 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
 	<authorEmail>via website</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.43</version>
+	<version>3.4.46</version>
 	<description>PLG_SYSTEM_JSON_EXECUTION_WRAPPER</description>
 	<files>
 		<filename plugin="gwejson">gwejson.php</filename>

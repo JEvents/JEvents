@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 global $task, $catid;
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $editor =  JFactory::getEditor();
 
 // clean any existing cache files
@@ -71,7 +71,15 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
         }
 
         var form = document.adminForm;
-        if (form.catid.value == "0"){
+        catid = form.catid.value;
+        icsid = form.icsid.value;
+
+        if (icsid == "0" && catid != "0") {
+            // replace the input
+            form.catid.setAttribute("name", "catid");
+        }
+
+        if (catid == "0"){
         alert( "<?php echo html_entity_decode(JText::_('JEV_E_WARNCAT')); ?>" );
         return(false);
         } else {
