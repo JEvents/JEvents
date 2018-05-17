@@ -115,9 +115,12 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// View caching logic -- simple... are we logged in?
 		$user = JFactory::getUser();
-		if ($user->get('id') || !$useCache) {
+		if ($user->get('id') || !$useCache)
+		{
 			$this->view->display();
-		} else {
+		}
+		else
+		{
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
