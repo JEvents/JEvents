@@ -310,12 +310,12 @@ class JevLibHtmlBootstrap
 			JFactory::getDocument()->addScriptDeclaration(
 				"jQuery(document).ready(function($) {
 					if ($('#$selector')) {
-						// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+						/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap **/
 						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
 							$('#$selector').removeClass('hide');
 					}
-						//$('#$selector').appendTo('body').modal($options);
+						/** $('#$selector').appendTo('body').modal($options);  */
 					}
 				});"
 			);
