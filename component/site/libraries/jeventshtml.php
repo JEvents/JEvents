@@ -381,7 +381,7 @@ class JEventsHTML
 		}
 
 		// sort categories alphabetically
-		//usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
+		// usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
 		$params = JComponentHelper::getParams(JRequest::getCmd("option", "com_jevents"));
@@ -389,12 +389,14 @@ class JEventsHTML
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
 			?>
+			<label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY'); ?></label>
 			<select name="<?php echo $fieldname; ?>[]"  id="<?php echo $fieldname; ?>" <?php echo $args; ?> multiple="multiple" size="<?php echo $size; ?>" style="width:300px;">
 			    <?php
 		    }
 		    else
 		    {
 			    ?>
+			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
 				<option value="0"><?php echo $t_first_entry; ?></option>
 				<?php
