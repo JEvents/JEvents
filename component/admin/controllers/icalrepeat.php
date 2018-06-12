@@ -533,7 +533,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$data["DTEND"] = JevDate::strtotime($publishend);
 		}
 
-		$data["X-COLOR"] = $jinput->get("color", "");
+		$data["X-COLOR"] = $jinput->get("color", "", 'HTML');
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

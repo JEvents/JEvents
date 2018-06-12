@@ -47,20 +47,7 @@ class JEventsDBModel
 		{
 			$catidList = $this->datamodel->catidList;
 		}
-
-                // If the menu of module has been constrained then we need to take account of that here!
-                JEVHelper::forceIntegerArray($catids, false);
-                if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
-                    JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
-                    $catids = array_intersect($this->datamodel->mmcatids, $catids);
-                    $catids = array_values($catids);
-                    $catids[] = -1;
-                    // hardening!
-                    $catidList = JEVHelper::forceIntegerArray($catids,true);
-                }
                 
-		$sectionname = JEV_COM_COMPONENT;
-
 		static $instances;
 
 		if (!$instances)
@@ -80,7 +67,7 @@ class JEventsDBModel
 		$where = "";
 
 		if (!array_key_exists($index, $instances))
-		{
+		{			
 			static $allcats;
 			if (!isset($allcats))
 			{
@@ -89,6 +76,45 @@ class JEventsDBModel
 				// prepopulate the list internally
 				$allcats->get('root');
 			}
+			
+			// If the menu of module has been constrained then we need to take account of that here!
+			JEVHelper::forceIntegerArray($catids, false);
+			$mmcatids = $this->datamodel->mmcatids;
+			$mmcatidList = $this->datamodel->mmcatidList;
+			
+			if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids) > 0)
+			{
+				JEVHelper::forceIntegerArray($this->datamodel->mmcatids, false);
+
+				// Take account of inclusion of subcategories here!
+				if ($this->cfg->get("include_subcats", 1))
+				{
+					$mmcatids = array();
+					$mmcats = JCategories::getInstance("jevents");
+					foreach ($this->datamodel->mmcatids as $mmcatid)
+					{
+						$mmcat = $mmcats->get($mmcatid);
+						$mmcatids[] = $mmcatid;
+						if ($mmcat && $mmcat->hasChildren())
+						{
+							$kids = $mmcat->getChildren(true);
+							foreach ($kids as $kid)
+							{
+								$mmcatids[] = $kid->id;
+							}
+						}
+					}
+					$mmcatidList = implode(",", $mmcatids);
+				}
+
+
+				$catids = array_intersect($mmcatids, $catids);
+				$catids = array_values($catids);
+				$catids[] = -1;
+				// hardening!
+				$catidList = JEVHelper::forceIntegerArray($catids, true);
+			}
+
 			$catids = explode(",", $catidList);
 			$catwhere = array();
 			$hascatid = false;
@@ -107,8 +133,9 @@ class JEventsDBModel
 					}
 				}
 			}
+
                         // trap siguation where we have menu contraint but URL/filter is trying to get categories outside this!
-                        if (count($catids)>0 && !$hascatid  && isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0){
+                        if (count($catids)>0 && !$hascatid  && isset($mmcatids) && count($mmcatids)>0){
                             $hascatid = true;
                         }
 			if (count($catwhere) > 0)
@@ -122,13 +149,13 @@ class JEventsDBModel
 			}
                         // The menu or module may have specified categories but NOT their children 
                         if (isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0 && !$this->cfg->get("include_subcats", 1)) {
-                            $where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
+                            $where .= " AND c.id in (".$mmcatidList.")";
                         }
 			else {
 				$reg =  JFactory::getConfig();
 				$modparams = $reg->get("jev.modparams", false);
 				if ($modparams && isset($this->datamodel->mmcatids) && count($this->datamodel->mmcatids)>0 && !$modparams->get("include_subcats", 1)) {
-					$where .= " AND c.id in (".$this->datamodel->mmcatidList.")";
+					$where .= " AND c.id in (".$mmcatidList.")";
 				}
 			}
                         
@@ -141,24 +168,11 @@ class JEventsDBModel
 				$isedit = true;
 			}
 
-			/*$query = "SELECT c.id"
-				. "\n FROM #__categories AS c"
-				. "\n WHERE c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
-				. $q_published
-				// language filter only applies when not editing
-				. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
-				. "\n AND c.extension = '" . $sectionname . "'"
-				. "\n " . $where
-				. "\n ORDER BY c.lft asc"  ;
-
-			$db->setQuery($query);*/
-			/* This was a fix for Lanternfish/Joomfish - but it really buggers stuff up!! - you don't just get the id back !!!! */
-
 			$whereQuery =($checkAccess ? "c.access  " .  ' IN (' . $aid . ')' : " 1 ")
 					. $q_published
 					// language filter only applies when not editing
 					. ($isedit ? "" : "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
-					. "\n AND c.extension = '" . $sectionname . "'"
+					. "\n AND c.extension = 'com_jevents'"
 					. "\n " . $where;
 
 			$query = $db->getQuery(true);
@@ -3950,7 +3964,8 @@ select @@sql_mode;
 			$filters->setWhereJoin($extrawhere, $extrajoin);
 		}
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$accessibleCategories = $this->accessibleCategoryList();
+		$catwhere = "\n WHERE ev.catid IN(" . $accessibleCategories . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
@@ -3959,7 +3974,7 @@ select @@sql_mode;
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmapcat.id ORDER BY catmapcat.lft ASC SEPARATOR ',' ) as catids";
 			// accessibleCategoryList handles access checks on category
 			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
-			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+			$extrawhere[] = " catmap.catid IN(" . $accessibleCategories . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
 		}
@@ -4105,7 +4120,8 @@ select @@sql_mode;
 		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 
-		$catwhere = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$accessibleCategories = $this->accessibleCategoryList();
+		$catwhere = "\n WHERE ev.catid IN(" . $accessibleCategories . ")";
 		$params = JComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
@@ -4114,7 +4130,7 @@ select @@sql_mode;
 			$extrafields .= ", GROUP_CONCAT(DISTINCT catmapcat.id ORDER BY catmapcat.lft ASC SEPARATOR ',' ) as catids";
 			// accessibleCategoryList handles access checks on category
 			//$extrawhere[] = " catmapcat.access IN (" . JEVHelper::getAid($user) . ")";
-			$extrawhere[] = " catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+			$extrawhere[] = " catmap.catid IN(" . $accessibleCategories . ")";
 			$needsgroup = true;
 			$catwhere = "\n WHERE 1 ";
 		}

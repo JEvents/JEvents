@@ -246,6 +246,25 @@ class JEventsHTML
 			$options = array_values($options);
 		}
 
+		// Needs to be ordered so that selected values appear first when editing an event with sortable multiple categories
+		if (is_array($catid) && $eventediting)
+		{
+            for ($c = 0; $c < count($catid); $c ++)
+            {
+                for ($o = 0; $o < count($options); $o++)
+                {
+                    if ($options[$o]->value == $catid[$c])
+                    {
+                        $options[ - (count($catid) - $c)] = $options[$o];
+                        unset($options[$o]);
+                        break;
+                    }
+                }
+            }
+            $option = ksort($options);
+            $options = array_values($options);
+		}
+
 		// translate where appropriate
 		$count = count($options);
 		for ($o = 0; $o < $count; $o++)
