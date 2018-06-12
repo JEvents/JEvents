@@ -58,7 +58,7 @@ class jevPublishedFilter extends jevFilter
 		// The default is only to show published events
 		if ($this->filter_value==0) return "ev.state=1";	
 		
-		// only show published events to non-logged in users
+		// Only show published events to non-logged in users
 		$user = JFactory::getUser();
 		if ($user->get('id')==0){
 			return "ev.state=1";
@@ -70,7 +70,7 @@ class jevPublishedFilter extends jevFilter
 		}
 		else if  (JEVHelper::isEventCreator()){
 			$user = JFactory::getUser();
-			if ($this->filter_value==-1) return "(ev.state<> -1)";
+			if ($this->filter_value==-1) return "(ev.state=1 OR ev.created_by=".$user->id.")";
 			return "ev.state=0 && ev.created_by=".$user->id;
 		}
 		
