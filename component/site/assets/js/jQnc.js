@@ -11,7 +11,7 @@ checkJQ();
 // See http://www.mintjoomla.com/support/community-forum/user-item/1833-braza/48-cobalt-8/2429.html?start=20
 
 jQuery(document).on('ready', function() {
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 
 	if(window.MooTools && bootstrap3_enabled) {

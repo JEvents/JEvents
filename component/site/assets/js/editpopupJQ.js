@@ -1,41 +1,41 @@
 function jevEditPopup(url){
-	// close dialog may not exist for monthly calendar
+	/** close dialog may not exist for monthly calendar */
 	try {
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
 	}
 	addEditModalHtml();
-	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
+	/** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
 	jQuery('#myEditModal .modal-header').css({  'display':'block'});
 	jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"))
-	//jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'});
+	/** jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'}); */
 	launchModal('#myEditModal',url);
 
-	// consider using https://github.com/noelboss/featherlight/#usage instead !
+	/** consider using https://github.com/noelboss/featherlight/#usage instead ! */
 	return;
 }
 
 function jevEditTranslation(url, title){
-	// close dialog may not exist for monthly calendar
+	/** close dialog may not exist for monthly calendar */
 	try {
 		jQuery('.action_dialogJQ').modal('hide');
 	}
 	catch (e){
 	}
 	addEditModalHtml();
-	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
+	/** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
 	jQuery('#myEditModal .modal-header').css({  'display':'block'});
 	jQuery('#myEditModal .modal-title').html(title)
-	//jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'});
+	/** jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'}); */
 	launchModal('#myEditModal',url);
 
-	// consider using https://github.com/noelboss/featherlight/#usage instead !
+	/** consider using https://github.com/noelboss/featherlight/#usage instead ! */
 	return;
 }
 
 function jevEditPopupNoHeader(url){
-	// close dialog may not exist for monthly calendar
+	/** close dialog may not exist for monthly calendar */
 	try {
 		jQuery('.action_dialogJQ').modal('hide');
 	}
@@ -43,10 +43,10 @@ function jevEditPopupNoHeader(url){
 	}
 	addEditModalHtml();
 
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 
-	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
+	/** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
 	jQuery('#myEditModal .modal-body').css({  'top':'5px'});
 	jQuery('#myEditModal .modal-header').css({  'display':'none'});
 	launchModal('#myEditModal',url);
@@ -54,7 +54,7 @@ function jevEditPopupNoHeader(url){
 }
 
 function jevEditPopupNoTitle(url){
-	// close dialog may not exist for monthly calendar
+	/** close dialog may not exist for monthly calendar */
 	try {
 		jQuery('.action_dialogJQ').modal('hide');
 	}
@@ -62,7 +62,7 @@ function jevEditPopupNoTitle(url){
 	}
 	addEditModalHtml();
 
-	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
+	/** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
 	jQuery('#myEditModal .modal-body').css({  'top':'5px'});
 	jQuery('#myEditModal .modal-header .close').css({'margin-right': '-15px','margin-top':'-15px','opacity': 1,'font-size:':'30px'});
 	jQuery('#myEditModal .modal-header ').css({'height': '0px','z-index':'99','border':'none'});
@@ -73,15 +73,15 @@ function jevEditPopupNoTitle(url){
 }
 
 function launchModal(selector, url) {
-    // Clear the old page!
+    /** Clear the old page! */
     jQuery(selector+' iframe').attr("src","about:blank");
-    // Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+    /** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
     var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
     if (bootstrap3_enabled){
         jQuery(selector).off('shown.bs.modal');
         jQuery(selector).on('shown.bs.modal', function () {
-            //jQuery(selector+' iframe').attr("src","about:blank");
-            // scrolling issue in iOS 11.3
+            /*jQuery(selector+' iframe').attr("src","about:blank");*/
+            /* scrolling issue in iOS 11.3*/
             var scrollT = jQuery(window).scrollTop();
             if (scrollT > 0)
             {
@@ -95,7 +95,7 @@ function launchModal(selector, url) {
             }
         });
         jQuery(selector).on('hidden.bs.modal', function () {
-            // scrolling issue in iOS 11.3
+            /* scrolling issue in iOS 11.3*/
             jQuery('body').css({
                 position:'static'
             });
@@ -109,8 +109,8 @@ function launchModal(selector, url) {
     else {
         jQuery(selector).off('shown');
         jQuery(selector).on('shown', function () {
-            //jQuery(selector+' iframe').attr("src","about:blank");
-            // scrolling issue in iOS 11.3
+            /*jQuery(selector+' iframe').attr("src","about:blank");*/
+            /* scrolling issue in iOS 11.3*/
 			var scrollT = jQuery(window).scrollTop();
 			if (scrollT > 0)
 			{
@@ -124,7 +124,7 @@ function launchModal(selector, url) {
             }
         });
         jQuery(selector).on('hidden', function () {
-			// scrolling issue in iOS 11.3
+			/* scrolling issue in iOS 11.3*/
             jQuery('body').css({
                 position:'static'
 
@@ -136,14 +136,14 @@ function launchModal(selector, url) {
             }
         });
     }
-    jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
-    //reloads parent page on close!
-    //jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();});
+    jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' });   /** initialized with no keyboard */
+    /** reloads parent page on close!
+    ** jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();}); */
     return;
 }
 
 function addEditModalHtml (){
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (!jQuery("#myEditModal").length){
 		if (bootstrap3_enabled){
@@ -178,13 +178,13 @@ function addEditModalHtml (){
 			+'</div>';
 		+'</div>';
 		}
-		// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
+		/** see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background */
 		jQuery(myEditModal).appendTo("body");
 	}
 }
 
 function jevImportPopup(url){
-	// close dialog may not exist for monthly calendar
+	/** close dialog may not exist for monthly calendar */
 	try {
 		jQuery('.action_dialogJQ').modal('hide');
 	}
@@ -193,9 +193,9 @@ function jevImportPopup(url){
 	}
 	addImportPopupHtml();
 
-	// see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
-	//jQuery('#myImportModal .modal-body').css({  'top':'5px'});
-	//jQuery('#myImportModal .modal-header').css({  'display':'block'});
+	/** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content
+	** jQuery('#myImportModal .modal-body').css({  'top':'5px'});
+	** jQuery('#myImportModal .modal-header').css({  'display':'block'}); */
 
 	launchModal('#myImportModal',url);
 
@@ -204,7 +204,7 @@ function jevImportPopup(url){
 
 
 function addImportPopupHtml (){
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	if (!document.getElementById("myImportModal")){
 		if (bootstrap3_enabled){
@@ -245,7 +245,7 @@ function addImportPopupHtml (){
 }
 
 function jevIdPopup(id){
-    // close dialog may not exist for monthly calendar
+    /** close dialog may not exist for monthly calendar */
     try {
         jQuery('#'+id).modal('hide');
     }
