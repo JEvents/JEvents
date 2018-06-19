@@ -233,10 +233,14 @@ class AdminIcalsController extends JControllerForm {
 		$this->redirect();
     }
 
-	function save($key = null, $urlVar = null){
+	function save($key = null, $urlVar = null)
+	{
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
 
 		// Check for request forgeries
-		if (JRequest::getCmd("task") != "icals.reload" && JRequest::getCmd("task") != "icals.reloadall"){
+		if ($jinput->get("task") !== "icals.reload" && $jinput->get("task") !== "icals.reloadall")
+		{
 			JSession::checkToken() or jexit( 'Invalid Token' );
 		}
 
@@ -245,7 +249,7 @@ class AdminIcalsController extends JControllerForm {
 
 		$authorised = false;
 		
-		if (JFactory::getApplication()->isAdmin()){
+		if ($app->isAdmin()){
 			$redirect_task="icals.list";
 		}
 		else {
@@ -254,7 +258,7 @@ class AdminIcalsController extends JControllerForm {
 
 		// clean this up later - this is a quick fix for frontend reloading
 		$autorefresh = 0;
-		$icsid = intval(JRequest::getVar('icsid',0));
+		$icsid = $jinput->getInt('icsid', 0);
 		if ($icsid>0){
 			$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE ics_id=$icsid";
 			$db	= JFactory::getDbo();
@@ -274,8 +278,9 @@ class AdminIcalsController extends JControllerForm {
 			$this->redirect();
 			return;
 		}
-		$cid	= JRequest::getVar(	'cid',	array(0) );
-		$cid = ArrayHelper::toInteger($cid);
+		$cid    = JRequest::getVar(	'cid',	array(0) );
+		$cid    = ArrayHelper::toInteger($cid);
+
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
 		} else {
@@ -346,17 +351,17 @@ class AdminIcalsController extends JControllerForm {
 
 		}
 		else {
-			$catid = JRequest::getInt('catid',0);
-			$ignoreembedcat = JRequest::getInt('ignoreembedcat',0);
+			$catid = $jinput->getInt('catid',0);
+			$ignoreembedcat = $jinput->getInt('ignoreembedcat',0);
 			// Should come from the form or existing item
-			$access = JRequest::getInt('access',0);
+			$access = $jinput->getInt('access',0);
 			$state = 1;
-			$uploadURL = JRequest::getVar('uploadURL','' );
-			$icsLabel = JRequest::getString('icsLabel','' );                        
+			$uploadURL = $jinput->get('uploadURL','' );
+			$icsLabel = $jinput->getString('icsLabel','' );
 		}
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
-			JFactory::getApplication()->enqueueMessage('Fatal Error - ' . JText::_('JEV_E_WARNCAT') , 'error');
+			$app->enqueueMessage('Fatal Error - ' . JText::_('JEV_E_WARNCAT') , 'error');
 
 			$this->setRedirect( "index.php?option=".JEV_COM_COMPONENT."&task=$redirect_task",  JText::_('JEV_E_WARNCAT'));
 			$this->redirect();
@@ -382,9 +387,12 @@ class AdminIcalsController extends JControllerForm {
 		if ($icsFile !== false) {
 			// preserve ownership
 			if (isset($currentICS) && $currentICS->created_by>0 ){
-                            $icsFile->created_by = $currentICS->created_by;
-                        }
-                        else $icsFile->created_by = JRequest::getInt("created_by",0);
+                $icsFile->created_by = $currentICS->created_by;
+            }
+            else
+            {
+            	$icsFile->created_by = $jinput->getInt("created_by",0);
+            }
 
 			$icsFileid = $icsFile->store();
 			$message = JText::_( 'ICS_FILE_IMPORTED' );
