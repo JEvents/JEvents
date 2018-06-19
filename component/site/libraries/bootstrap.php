@@ -398,14 +398,14 @@ class JevHtmlBootstrap
 			return;
 		}
 
-		$opt['animation'] = isset($params['animation']) ? $params['animation'] : null;
+		$opt['animation'] = isset($params['animation']) ? $params['animation'] : false;
 		$opt['html']      = isset($params['html']) ? $params['html'] : true;
-		$opt['placement'] = isset($params['placement']) ? $params['placement'] : null;
-		$opt['selector']  = isset($params['selector']) ? $params['selector'] : null;
-		$opt['title']     = isset($params['title']) ? $params['title'] : null;
+		$opt['placement'] = isset($params['placement']) ? $params['placement'] : false;
+		$opt['selector']  = isset($params['selector']) ? $params['selector'] : false;
+		$opt['title']     = isset($params['title']) ? $params['title'] : '';
 		$opt['trigger']   = isset($params['trigger']) ? $params['trigger'] : 'hover focus';
-		$opt['content']   = isset($params['content']) ? $params['content'] : null;
-		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
+		$opt['content']   = isset($params['content']) ? $params['content'] : '';
+		$opt['delay']     = isset($params['delay']) ? $params['delay'] : false;
 		$opt['container'] = isset($params['container']) ? $params['container'] : 'body';
 		//$opt['template'] = isset($params['template']) ? $params['template'] : '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
 

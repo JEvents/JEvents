@@ -20,9 +20,10 @@ if (is_null($this->data)){
 
 if( array_key_exists('row',$this->data) ){
 	$row=$this->data['row'];
+
 	$mask = $this->data['mask'];
 	$page = 0;
-	
+
 	$cfg	 = JEVConfig::getInstance();
 
 	$dispatcher	= JEventDispatcher::getInstance();
