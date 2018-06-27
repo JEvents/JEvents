@@ -351,13 +351,15 @@ class AdminIcalsController extends JControllerForm {
 
 		}
 		else {
+
 			$catid = $jinput->getInt('catid',0);
 			$ignoreembedcat = $jinput->getInt('ignoreembedcat',0);
 			// Should come from the form or existing item
 			$access = $jinput->getInt('access',0);
 			$state = 1;
-			$uploadURL = $jinput->get('uploadURL','' );
+			$uploadURL = $jinput->getString('uploadURL','');
 			$icsLabel = $jinput->getString('icsLabel','' );
+
 		}
 		if ($catid==0){
 			// Paranoia, should not be here, validation is done by java script
