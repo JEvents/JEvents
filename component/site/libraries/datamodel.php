@@ -728,8 +728,8 @@ class JEventsDataModel {
 				$row=null;
 			}
 		}
-		
-		$num_row = is_object($row) ? 1 : count($row);
+
+		$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 
 		// No matching rows - use uid as alternative
 		if ($num_row==0 && JString::strlen($uid)>0){
