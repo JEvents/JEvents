@@ -202,8 +202,9 @@ class GetjsonController extends JControllerLegacy
 			$eventArray['start'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . "T" . date("H:i:s", $event->getUnixStartTime()) . '+00:00';
 			$eventArray['end'] = $event->ydn() . "-" . $event->mdn() . "-" . $event->ddn() . "T" . date("H:i:s", $event->getUnixEndTime()) . '+00:00';
 			// TODO make event colouring conditional
-			//$eventArray['textcolor'] = $event->fgcolor();
-			//$eventArray['backgroundColor'] = $event->bgcolor();
+			$eventArray['textColor'] = $event->fgcolor();
+			$eventArray['tooltipBody'] = $event->title();
+			$eventArray['color'] = $event->bgcolor();
 			$link = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
 			$eventArray['url'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
 
