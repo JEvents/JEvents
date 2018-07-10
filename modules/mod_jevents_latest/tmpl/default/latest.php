@@ -1169,26 +1169,54 @@ SCRIPT;
 					if ($match == "endDate" && $dayEvent->sdn() == 59)
 					{
 						$tempEndDate = $endDate + 1;
+						
 						if ($dayEvent->alldayevent() || $dayEvent->noendtime())
 						{
-							$jmatch = new JevDate($tempEndDate);
+							//$tempEndDate  -= 86400;
+							
+							$jmatch = new JevDate('now', new DateTimeZone('Europe/Berlin'));
+							$jmatch->setDate($dayEvent->ydn(), $dayEvent->mdn(), $dayEvent->ddn());
+							$jmatch->setTime(0,0,0);
+							$tempEndDate = $jmatch->getTimeStamp();
+							
+							/*							
+							$jmatch = new JevDate($tempEndDate);												
+							// IS THIS IN GMT OR LOCAL ????
 							$jmatch->setTime(24,0,0);
 							// if an all day event then we don't want to roll to the next day
 							$jmatch->sub(new DateInterval('P1D'));
+							
 							$tempEndDate = $jmatch;
+							 */
 						}
+						
 						$match = "tempEndDate";
 					}
 					// if a '%' sign detected in date format string, we assume JevDate::strftime() is to be used,
 					if (preg_match("/\%/", $dateParm))
 					{
-						$jmatch = new JevDate($$match);
-						$content .= $jmatch->toFormat($dateParm);
+						$tempmatch = $$match;
+						if (is_a($tempmatch, "JevDate"))
+						{
+							$content .= $tempmatch->toFormat($dateParm, true);
+						}
+						else 
+						{
+							$jmatch = new JevDate($$match);
+							$content .= $jmatch->toFormat($dateParm);
+						}
 					}
 					// otherwise the date() function is assumed.
 					else
 					{
-						$content .= date($dateParm, $$match);
+						$tempmatch = $$match;
+						if (is_a($tempmatch, "JevDate"))
+						{
+							$content .= $tempmatch->format($dateParm, true);
+						}
+						else {
+							$content .= date($dateParm, $$match);
+						}
 					}
 					if ($match == "tempEndDate")
 					{

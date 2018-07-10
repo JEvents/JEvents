@@ -35,30 +35,76 @@ function jevModalNoTitle(id, url){
 function launchJevModal(selector, url) {
 	// Clear the old page!
 	jQuery(selector+' iframe').attr("src","about:blank");
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
-	if (bootstrap3_enabled){
-		// This is needed to stop multiple page loads
-		jQuery(selector).off('shown.bs.modal');
-		jQuery(selector).on('shown.bs.modal', function () {
-			//jQuery(selector+' iframe').attr("src","about:blank");
-			jQuery(selector+' iframe').attr("src",url);
-		});
-	}
-	else {
-		// This is needed to stop multiple page loads
-		jQuery(selector).off('shown');
-		jQuery(selector).on('shown', function () {
-			//jQuery(selector+' iframe').attr("src","about:blank");
-			jQuery(selector+' iframe').attr("src",url);
-		});
-	}
-	jQuery(selector).modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
+    if (bootstrap3_enabled){
+        jQuery(selector).off('shown.bs.modal');
+        jQuery(selector).on('shown.bs.modal', function () {
+            //jQuery(selector+' iframe').attr("src","about:blank");
+            // scrolling issue in iOS 11.3
+            var scrollT = jQuery(window).scrollTop();
+            if (scrollT > 0)
+            {
+                jQuery(selector).data('scrollTop', scrollT);
+            }
+            jQuery('body').css({
+                position:'fixed'
+            });
+            if (url) {
+                jQuery(selector + ' iframe').attr("src", url);
+            }
+        });
+        jQuery(selector).on('hidden.bs.modal', function () {
+            // scrolling issue in iOS 11.3
+            jQuery('body').css({
+                position:'static'
+            });
+            var scrollT = jQuery(selector).data('scrollTop') || 0;
+            if (scrollT > 0)
+            {
+                jQuery(window).scrollTop(scrollT);
+            }
+        });
+    }
+    else {
+        jQuery(selector).off('shown');
+        jQuery(selector).on('shown', function () {
+            //jQuery(selector+' iframe').attr("src","about:blank");
+            // scrolling issue in iOS 11.3
+            var scrollT = jQuery(window).scrollTop();
+
+            if (scrollT > 0)
+            {
+                jQuery(selector).data('scrollTop', scrollT);
+            }
+            jQuery('body').css({
+                position:'fixed'
+            });
+            if (url) {
+                jQuery(selector + ' iframe').attr("src", url);
+            }
+        });
+        jQuery(selector).on('hidden', function () {
+            // scrolling issue in iOS 11.3
+            jQuery('body').css({
+                position:'static'
+
+            });
+            var scrollT = jQuery(selector).data('scrollTop') || 0;
+            if (scrollT > 0)
+            {
+                jQuery(window).scrollTop(scrollT);
+            }
+        });
+    }
+	jQuery(selector)
+		.modal({ backdrop: true, show:true, keyboard:true, remote:'' })   // initialized with no keyboard
+		;
 	return;
 }
 
 function addJevModalHtml (id){
-	// Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap
+	/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
 	var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
 	var myModal="";
 	var modalsize='jevmodal-full';

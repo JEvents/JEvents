@@ -187,7 +187,20 @@ class CsvLine {
      */
     public function getInICalFormat() {
         $prevTimezone = date_default_timezone_get();
-        date_default_timezone_set($this->timezone);
+
+        // Set timezone as previous if no timezone exists.
+	    if ($this->timezone) {
+            date_default_timezone_set($this->timezone);
+        } else {
+			date_default_timezone_set($prevTimezone);
+		}
+
+		// Check if published is set and if so, are they authorised.
+		if ((!isset($this->published) && JEVHelper::isEventPublisher()) || JEVHelper::isEventPublisher()) {
+			$this->published = 1;
+		} else {
+	    	$this->published = 0;
+		}
 
         $ical = "BEGIN:VEVENT\n";
         $ical .= "UID:".$this->getUid()."\n"

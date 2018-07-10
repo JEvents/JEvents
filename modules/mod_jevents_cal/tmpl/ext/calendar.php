@@ -192,7 +192,9 @@ START;
 		for ($w=0;$w<6 && $dn<$datacount;$w++){
 			$content .="<tr style='height:$rowheight;'>\n";
 			// the week column
-			list($week,$link) = each($data['weeks']);
+			//list($week,$link) = each($data['weeks']);
+			$week = array_keys($data['weeks'])[$w];
+			$link = $data['weeks'][$week];
 			$content .= '<td class="extcal_weekcell">';
 			$content .= $this->htmlLinkCloaking($link, "<img width='5' height='20' border='0' alt='week ".$week."' src='".$viewimages."/icon-mini-week.gif'/>" );
 			$content .= "</td>\n";

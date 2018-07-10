@@ -162,8 +162,13 @@ class iCalImport
 
 		// remove spurious lines before calendar start
 		if (!JString::stristr($this->rawData,'BEGIN:VCALENDAR')) {
+
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onImportCsvFile', array(& $this->rawData));
+
 			// check for CSV format
 			$firstLine = JString::substr($this->rawData,0,JString::strpos($this->rawData,"\n")+1);
+
 			if (JString::stristr($firstLine,'SUMMARY') && JString::stristr($firstLine,'DTSTART')
 				&& JString::stristr($firstLine,'DTEND') && JString::stristr($firstLine,'CATEGORIES')
 				&& JString::stristr($firstLine,'TIMEZONE')) {
@@ -183,7 +188,6 @@ class iCalImport
                                            echo "Raw Data is ".$this->rawData;
                                            exit();
                                        }
-                                    return false;
                                 }
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
