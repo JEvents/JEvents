@@ -707,7 +707,7 @@ class JEVHelper
 			// The static assets for the calendar
 			JHtml::_('script', $localesPath, false, true, false, false, true);
 			JHtml::_('script', $helperPath, false, true, false, false, true);
-			JHtml::_('script', 'system/fields/calendar.min.js', false, true, false, false, true);
+			JHtml::_('script', 'system/fields/calendar.js', false, true, false, false, true);
 			JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
 
 			// Hide button using inline styles for readonly/disabled fields

@@ -67,7 +67,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
 			if ($params->get("multicategory",0)){
 				// get list of categories this event is in - are they all accessible?
-				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id);
+				$db->setQuery("SELECT catid FROM #__jevents_catmap WHERE evid=".$rows[0]->ev_id . " ORDER BY ordering ASC");
 				$catids = $db->loadColumn();
 
 				// are there any catids not in list of accessible Categories 

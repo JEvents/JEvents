@@ -55,12 +55,17 @@ class JEventsDefaultView extends JEventsAbstractView
 		
 		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
-		// attach data model
-		$this->datamodel  =  new JEventsDataModel();
-		$this->datamodel->setupComponentCatids();
-		
 		$reg = JevRegistry::getInstance("jevents");
-		$reg->setReference("jevents.datamodel",$this->datamodel);		
+		$this->datamodel = $reg->getReference("jevents.datamodel");		
+
+		if (!$this->datamodel)
+		{
+			// attach data model
+			$this->datamodel  =  new JEventsDataModel();
+			$this->datamodel->setupComponentCatids();
+			$reg->setReference("jevents.datamodel" , $this->datamodel);
+		}
+		
 
 	}
 

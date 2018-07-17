@@ -254,7 +254,42 @@ class JevLibHtmlBootstrap
 	 */
 	public static function modal($selector = 'modal', $params = array())
 	{
-		JHtml::_('bootstrap.modal', $selector, $params);
+		if (version_compare(JVERSION, "3.0", "ge")) {
+			JHtml::_('bootstrap.modal', $selector, $params);
+			return;
+		}
+
+		$sig = md5(serialize(array($selector, $params)));
+
+		if (!isset(static::$loaded[__METHOD__][$sig]))
+		{
+			// Setup options object
+			$opt['backdrop'] = isset($params['backdrop']) ? (boolean) $params['backdrop'] : true;
+			$opt['keyboard'] = isset($params['keyboard']) ? (boolean) $params['keyboard'] : true;
+			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
+			$opt['remote']   = isset($params['remote']) ?  $params['remote'] : '';
+
+			$options = json_encode($opt); //json_encode($opt);
+
+			// Attach the modal to document
+			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
+			JFactory::getDocument()->addScriptDeclaration(
+				"jQuery(document).ready(function($) {
+					if ($('#$selector')) {
+						/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap **/
+						var bootstrap3_enabled = (typeof jQuery().emulateTransitionEnd == 'function');
+						if (bootstrap3_enabled && $('#$selector').hasClass('hide')){
+							$('#$selector').removeClass('hide');
+					}
+						/** $('#$selector').appendTo('body').modal($options);  */
+					}
+				});"
+			);
+
+			// Set static array
+			static::$loaded[__METHOD__][$sig] = true;
+		}
+
 		return;
 	}
 

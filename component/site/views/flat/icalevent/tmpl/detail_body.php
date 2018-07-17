@@ -22,20 +22,18 @@ if (is_null($this->data)){
 if( array_key_exists('row',$this->data) ){
 	$row=$this->data['row'];
 
-	// Dynamic Page Title
-	$this->setPageTitle($row->title());
-
 	$mask = $this->data['mask'];
 	$page = 0;
-
-	
-	$cfg	 = JEVConfig::getInstance();
 
 	$dispatcher	= JEventDispatcher::getInstance();
 	$params =new JRegistry(null);
 
 	if (isset($row)) {
 		$customresults = $dispatcher->trigger( 'onDisplayCustomFields', array( &$row) );
+
+		// Dynamic Page Title
+		$this->setPageTitle($row->title());
+
 		$templated =  $this->loadedFromTemplate('icalevent.detail_body', $row, $mask);
 		if (!$templated && count($customresults)>0){
 			?>

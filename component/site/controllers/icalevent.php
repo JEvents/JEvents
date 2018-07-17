@@ -35,6 +35,10 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
+		
+		$cfg	 = JEVConfig::getInstance();
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -50,7 +54,9 @@ class ICalEventController extends AdminIcaleventController   {
 		}
 
 		$evid = $jinput->getInt("rp_id", 0);
-		if ($evid==0){
+
+		if ($evid==0)
+		{
 			$evid = $jinput->getInt("evid", 0);
 			// if cancelling from save of copy and edit use the old event id
 			if ($evid==0){
@@ -84,6 +90,10 @@ class ICalEventController extends AdminIcaleventController   {
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = $this->getView($view,$viewType, $theme."View",
 			array( 'base_path'=>$this->_basePath,
@@ -104,13 +114,13 @@ class ICalEventController extends AdminIcaleventController   {
 		$this->view->assign("uid",$uid);
 
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
-		if ($user->get('id') || !$useCache) {
+		if ($user->get('id') || !$useCache)
+		{
 			$this->view->display();
-		} else {
+		}
+		else
+		{
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
