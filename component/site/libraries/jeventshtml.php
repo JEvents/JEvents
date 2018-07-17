@@ -453,7 +453,7 @@ class JEventsHTML
 			    ?>
 			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
-				<option value="0"><?php echo $t_first_entry; ?></option>
+				<option value=""><?php echo $t_first_entry; ?></option>
 				<?php
 			}
 			?>

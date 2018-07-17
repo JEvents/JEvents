@@ -124,7 +124,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
 
 		// Load the tags filter
-		if ($this->tagsFiltering) {
+		if (isset($this->tagsFiltering)) {
 			// Load the tags filter
 			$tagFilterHtml  = jevFilterProcessing::getInstance(array('taglookup'))->getFilterHTML(true)[0]['html'];
 			// We have to use a dirty str_replace since Joomla! clear function requires value to be empty for a clear filters.
