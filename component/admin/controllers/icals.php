@@ -356,7 +356,7 @@ class AdminIcalsController extends JControllerForm {
 			// Should come from the form or existing item
 			$access = $jinput->getInt('access',0);
 			$state = 1;
-			$uploadURL = $jinput->get('uploadURL','' );
+			$uploadURL = $jinput->getString('uploadURL','' );
 			$icsLabel = $jinput->getString('icsLabel','' );
 		}
 		if ($catid==0){
