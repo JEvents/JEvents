@@ -14,6 +14,8 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+JHtml::_('jquery.ui', array('core', 'sortable'));
+
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
@@ -658,7 +660,8 @@ else
 		</div>
 		<?php
 		$output = ob_get_clean();
-		if (!$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
+		$app = JFactory::getApplication();
+		if (($app->isAdmin() && $cfg->get('ignorelayout', 0)) || !$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
 		{
 			echo $output;
 		}   // if (!$this->loadedFromTemplate('icalevent.edit_page', $this->row, 0)){

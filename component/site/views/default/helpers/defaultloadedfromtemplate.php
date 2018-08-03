@@ -429,6 +429,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				    //	$search[]="|{{TRUNCATED_DESC:(.*)}}|";$replace[]=$event->content();
 				    break;
 
+                case "{{DESCRIPTION_ADDSLASHES}}":
+                    $search[] = "{{DESCRIPTION_ADDSLASHES}}";
+                    $replace[] = addslashes($event->content());
+                    $blank[] = "";
+                    break;
+
 			    case "{{DESCRIPTION}}":
 				    $search[] = "{{DESCRIPTION}}";
 				    $replace[] = $event->content();
