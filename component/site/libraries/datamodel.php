@@ -861,11 +861,10 @@ class JEventsDataModel {
 				$db->setQuery($query);
 				$row2 = $db->loadObject();
 				// need to be logged in to see this event?
-				if ($row2 && (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($row2->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) < $row2->access)){
+				if ($row2 && !in_array($row2->access, JEVHelper::getAid($user, 'array'))){
 					$uri = JURI::getInstance();
 					$link = $uri->toString();
-					$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-					$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
+					$link = 'index.php?option=com_users&view=login&return='.base64_encode($link);
 					$link = JRoute::_($link);
 					
 					JFactory::getApplication()->redirect($link,JText::_('JEV_LOGIN_TO_VIEWEVENT'));
@@ -956,8 +955,8 @@ class JEventsDataModel {
 			$user = JFactory::getUser();
 			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description, c.id FROM #__categories AS c' .
-			' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user)) .
-			' AND c.extension = '.$db->Quote(JEV_COM_COMPONENT).
+			' WHERE c.access IN (' . JEVHelper::getAid($user) . ')' .
+			' AND c.extension = '.$db->Quote(JEV_COM_COMPONENT) .
 			' AND c.id = '.$db->Quote($catid);
 			$db->setQuery($catsql);
 			$catdata = $db->loadObject();

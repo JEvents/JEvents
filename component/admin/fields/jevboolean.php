@@ -44,18 +44,10 @@ class JFormFieldJEVBoolean extends JFormFieldRadio
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$params = JComponentHelper::getParams("com_jevents");
 		$value = (int) $this->value;
-		if ($value==-1){
-			if (version_compare(JVERSION, '3.0.0', "<")){
-				$default25 = (string)$this->element["default25"];
-				if ($default25!=""){
-					$this->value = $this->default = intval($default25);
-				}
-			}
-			else if (version_compare(JVERSION, '3.0.0', ">=")){
-				$default30 = (string)$this->element["default30"];
-				if ($default30!=""){
-					$this->value = $this->default = intval($default30);
-				}
+		if ($value === -1){
+			$default30 = (string)$this->element["default30"];
+			if ($default30 != ""){
+				$this->value = $this->default = intval($default30);
 			}
 		}
 		if (!$params->get("bootstrapchosen", 1))

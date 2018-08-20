@@ -183,7 +183,7 @@ class AdminIcalsController extends JControllerForm {
 
 		// for Admin interface only
 		
-		$this->view->assign('with_unpublished_cat',JFactory::getApplication()->isAdmin());
+		$this->view->assign('with_unpublished_cat',JFactory::getApplication()->isClient('administrator'));
 
 		$this->view->assign('editItem',$item);
 		$this->view->assign('option',JEV_COM_COMPONENT);
@@ -196,7 +196,7 @@ class AdminIcalsController extends JControllerForm {
 
 		@set_time_limit(1800);
 
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$redirect_task="icals.list";
 		}
 		else
@@ -249,7 +249,7 @@ class AdminIcalsController extends JControllerForm {
 
 		$authorised = false;
 		
-		if ($app->isAdmin()){
+		if ($app->isClient('administrator')){
 			$redirect_task="icals.list";
 		}
 		else {
@@ -424,7 +424,7 @@ class AdminIcalsController extends JControllerForm {
 		// Check for request forgeries
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$redirect_task="icals.list";
 		}
 		else {

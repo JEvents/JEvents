@@ -25,11 +25,12 @@ class JFormFieldJeveventpublished extends JFormField
 	{
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
+		$app = JFactory::getApplication();
+		if ($app->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			$ev_id= $this->form->jevdata[$this->name]["ev_id"];
 
-			if ($ev_id == 0 && JFactory::getApplication()->input->getCmd("task")!="icalevent.editcopy")
+			if ($ev_id == 0 && $app->input->getCmd("task")!="icalevent.editcopy")
 			{
 				// published by default
 				$this->value = 1;
@@ -39,7 +40,7 @@ class JFormFieldJeveventpublished extends JFormField
 				$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
                                 $poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
 
-				return JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->value);
+				return JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox chzn-color-state" size="1"', 'value', 'text', $this->value);
 
 		}
 		else {
@@ -50,7 +51,7 @@ class JFormFieldJeveventpublished extends JFormField
 
 	protected function getLabel()
 	{
-		if (JFactory::getApplication()->isAdmin() || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
+		if (JFactory::getApplication()->isClient('administrator') || JEVHelper::isEventPublisher() || JEVHelper::canPublishOwnEvents($this->form->jevdata[$this->name]["ev_id"]))
 		{
 			return parent::getLabel();
 		}

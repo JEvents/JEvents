@@ -39,12 +39,9 @@ class JFormFieldJevbreak extends JFormField
         if (isset($this->element['label']) && !empty($this->element['label'])) {
             $label = JText::_((string)$this->element['label']);
             $css   = (string)$this->element['class'];
-            $version = new JVersion();
-            if (version_compare($version->getShortVersion(), '3.0', '>=')) {
-                return '<div class="jev-break ' . $css . '">' . $label . '</div>';
-            } else {
-                return '<label class="jev-break ' . $css . '">' . $label . '</label>';
-            }
+
+            return '<div class="jev-break ' . $css . '">' . $label . '</div>';
+
         } else {
             return;
         }

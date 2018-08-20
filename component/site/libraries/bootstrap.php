@@ -232,44 +232,7 @@ class JevHtmlBootstrap
 	 */
 	public static function framework($debug = null)
 	{
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtmlBootstrap::framework($debug);
-			return;
-		}
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug = (boolean) $config->get('debug');
-		}
-/*
-		if(!JHtml::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
-		{
-			JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
-		}
-		else
-		{
-			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
-		}
-*/
-		// Make loading this conditional on config option ??
-		JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-
-		//JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
-
-		// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
-		//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-
-		JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
-		
-		static::$loaded[__METHOD__] = true;
-
+		JHtmlBootstrap::framework($debug);
 		return;
 	}
 
@@ -291,7 +254,7 @@ class JevHtmlBootstrap
 	public static function modal($selector = 'modal', $params = array())
 	{
 		// Core Joomla modal doesn't handle the grey background problem so we don't use it !!
-		if (false && version_compare(JVERSION, "3.0", "ge")) {
+		if (false) {
 			JHtml::_('bootstrap.modal', $selector, $params);
 			return;
 		}

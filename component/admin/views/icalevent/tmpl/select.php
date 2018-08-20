@@ -113,7 +113,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 						<?php
 						if ($row->hasrepetition())
 						{
-							if (JFactory::getApplication()->isAdmin())
+							if (JFactory::getApplication()->isClient('administrator'))
 							{
 								$img ='<span class="icon-list"> </span>';
 							}

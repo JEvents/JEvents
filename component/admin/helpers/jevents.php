@@ -31,18 +31,10 @@ class JEventsHelper
 		if ($option == 'com_categories')
 		{
 			$doc = JFactory::getDocument();
-			if (!JevJoomlaVersion::isCompatible("3.0"))
-			{
-				$hide_options = '#toolbar-popup-options {'
-						. 'display:none;'
-						. '}';
-			}
-			else
-			{
-				$hide_options = '#toolbar-options {'
-						. 'display:none;'
-						. '}';
-			}
+
+			$hide_options = '#toolbar-options {'
+					. 'display:none;'
+					. '}';
 			$doc->addStyleDeclaration($hide_options);
 			// Category styling 
 			$style = <<<STYLE

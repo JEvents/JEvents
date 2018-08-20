@@ -68,14 +68,14 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 
 		$help = $node['help'];
 
-		if ((!is_null($help)) && (version_compare(JVERSION, '1.6.0', ">=")))
-		{
-			if (is_object($help))
-				$help = (string) $help;
-			$help = ((isset($help)) && (JString::strlen($help) <= 0)) ? null : $help;
-		}
 		if (!is_null($help))
 		{
+			if (is_object($help))
+			{
+				$help = (string) $help;
+				$help = ((isset($help)) && (JString::strlen($help) <= 0)) ? null : $help;
+			}
+
 			$parts = explode(",", $value);
 			$helps = explode(",", $help);
 			foreach ($parts as $key => $valuepart)

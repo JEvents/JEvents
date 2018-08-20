@@ -42,9 +42,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		JHTML::_('behavior.tooltip');
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			$this->sidebar = JHtmlSidebar::render();					
-		}				
+			$this->sidebar = JHtmlSidebar::render();
 	}
 
 	function edit($tpl = null)
@@ -118,23 +116,18 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		else {
 			$created_by = $jevuser->id;
 		}
-		if (count($userOptions)>0){
+		if (count($userOptions) > 0){
 			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1" ', 'value', 'text', $created_by);
 		}
 		else {
 			$userList = "";
 		}
-		$this->assignRef("users",$userlist);
 
+		$this->assignRef("users",$userlist);
 
 		JHTML::_('behavior.tooltip');
                 
-                if (JevJoomlaVersion::isCompatible("3.0")){
-                    $this->setLayout("edit");
-                }
-                else {
-                    $this->setLayout("edit16");
-                }
+        $this->setLayout("edit");
 	}
 
 }

@@ -29,13 +29,6 @@ else
 
 // Import library dependencies
 jimport('joomla.event.plugin');
-
-// Check for 1.6
-if (!(version_compare(JVERSION, '1.6.0', ">=")))
-{
-	JFactory::getApplication()->registerEvent('onSearchAreas', 'plgSearchEventsSearchAreas');
-}
-
 /**
  * @return array An array of search areas
  */
@@ -44,18 +37,9 @@ function plgSearchEventsSearchAreas()
 	$lang = JFactory::getLanguage();
 	$lang->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
 
-	if (version_compare(JVERSION, '1.6.0', ">="))
-	{
-		return array(
-			'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
-		);
-	}
-	else
-	{
-		return array(
-			'events' => JText::_('JEV_EVENTS_SEARCH')
-		);
-	}
+	return array(
+		'eventsearch' => JText::_('JEV_EVENTS_SEARCH')
+	);
 
 }
 
@@ -78,11 +62,6 @@ class plgSearchEventsearch extends JPlugin
 		parent::__construct($subject, $config);  // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
 		JFactory::getLanguage()->load();
 		// load plugin parameters
-		if (!(version_compare(JVERSION, '1.6.0', ">=")))
-		{
-			$this->_plugin =  JPluginHelper::getPlugin('search', 'eventsearch');
-			$this->_params = new JRegistry($this->_plugin->params);
-		}
 		$this->loadLanguage( 'plg_search_eventsearch' );
 	}
 
@@ -116,10 +95,10 @@ class plgSearchEventsearch extends JPlugin
 
 		$db = JFactory::getDbo();
 		$user =  JFactory::getUser();
-		$groups = (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->getAuthorisedViewLevels()) : false;
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
-		$limit = (version_compare(JVERSION, '1.6.0', '>=')) ? $this->params->get('search_limit', 50) : $this->_params->def('search_limit', 50);
-		$dateformat = (version_compare(JVERSION, '1.6.0', ">=")) ? $this->params->get('date_format', "%d %B %Y") : $this->_params->def('date_format', "%d %B %Y");
+		$limit = $this->params->get('search_limit', 50);
+		$dateformat = $this->params->get('date_format', "%d %B %Y");
 		$allLanguages = $this->params->get('all_language_search', true);
 
 		$limit = "\n LIMIT $limit";
@@ -301,10 +280,10 @@ class plgSearchEventsearch extends JPlugin
 				. $extrajoin
 				. "\n WHERE ($where_ical)"
 				. "\n AND icsf.state = 1"
-				. "\n AND icsf.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+				. "\n AND icsf.access IN (" . $groups . ")"
 				. "\n AND ev.state = 1"
-				. "\n AND ev.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
-				. "\n AND b.access " . ((version_compare(JVERSION, '1.6.0', '>=')) ? ' IN (' . $groups . ')' : ' <=  ' . $user->gid)
+				. "\n AND ev.access IN (" . $groups . ")"
+				. "\n AND b.access IN (" . $groups . ")"
 				. "\n AND b.published = '1'"
 				. $extrawhere
 				. $catwhere

@@ -233,41 +233,7 @@ class JevLibHtmlBootstrap
 	public static function framework($debug = null)
 	{
 		// Use Joomla version first
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			JHtmlBootstrap::framework($debug);
-			return;
-		}
-		
-		// Fall back to JEvents version
-		JLoader::register('JevHtmlBootstrap' , JEV_PATH."libraries/bootstrap.php");
-		try {
-			JevHtmlBootstrap::framework($debug);
-			return;
-		}
-		catch (Exception $ex) {
-
-		}
-
-		// Finally use library version as last resort
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// Load jQuery
-		JevHtmlJquery::framework();
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug = (boolean) $config->get('debug');
-		}
-
-		JHtml::_('script', 'libraries/jevents/bootstrap/js/bootstrap.min.js', false, false, false, false, $debug);
-		static::$loaded[__METHOD__] = true;
-
+		JHtmlBootstrap::framework($debug);
 		return;
 	}
 

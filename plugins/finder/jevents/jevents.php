@@ -340,7 +340,6 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		// Index the item.
 		$this->indexer->index($item);
-
 	}
 
 	/**
@@ -380,7 +379,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 		$sql->select('u.name AS author');
 		$sql->select('evt.state AS state');
-		
+
 		$sql->from('#__jevents_vevdetail AS det');
 		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');

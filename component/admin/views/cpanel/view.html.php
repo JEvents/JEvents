@@ -92,12 +92,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 			$app->registeredurlparams = new stdClass();
 		}
 
-		if (!JevJoomlaVersion::isCompatible("3.0")) {
-			$cache->get($this, 'renderJEventsNewsCached25');
-		}
-		else {
-			$cache->get($this, 'renderJEventsNewsCached');
-		}
+		$cache->get($this, 'renderJEventsNewsCached');
 	}
 
 	function renderJEventsNewsCached()
@@ -934,20 +929,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+        if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=1000){
 
-                if (ini_get("max_input_vars")>0 && ini_get("max_input_vars")<=1000){
+			JFactory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")), 'warning');
 
-					JFactory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING",ini_get("max_input_vars")), 'warning');
-
-				}
-                
-
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
 		}
 
+		$this->sidebar = JHtmlSidebar::render();
 	}
 
 	function setUpdateUrls()

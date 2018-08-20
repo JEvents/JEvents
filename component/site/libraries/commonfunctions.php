@@ -306,7 +306,7 @@ class JEV_CommonFunctions {
 		list($year,$month,$day) = JEVHelper::getYMD();
 
 		$uri  = JURI::getInstance(JURI::base());
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$root = $uri->toString( array('scheme', 'host', 'port', 'path') );
 			$root = str_replace("/administrator","",$root);
 			$detaillink = '<a href="' . $root . 'index.php?option=' .JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id='.$evid.'&rp_id='.$rp_id. '&Itemid=' . $Itemid."&year=$year&month=$month&day=$day"  . '">' . $event->title() . '</a>' . "\n";

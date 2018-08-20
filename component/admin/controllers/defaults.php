@@ -206,12 +206,9 @@ class AdminDefaultsController extends JControllerForm {
 		$componentname = explode(".",$value->name ,2);
 		$componentname =  $componentname[0];
 
-		if (JevJoomlaVersion::isCompatible("3.0.0"))
+		if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html"))
 		{
-			if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html"))
-			{
-				$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html");
-			}
+			$defaultvalue = file_get_contents(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".3.html");
 		}
 		if ($defaultvalue == "" && file_exists(JPATH_ADMINISTRATOR . '/components/'.  $componentname   .'/views/defaults/tmpl/' . $value->name . ".html"))
 		{

@@ -288,8 +288,7 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			return;
@@ -421,8 +420,7 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			return;

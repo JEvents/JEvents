@@ -378,7 +378,7 @@ $this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->
 	// simple utility function
 	function _getFilterValue($filterType, $filterNullValue ){
 		
-		if (JFactory::getApplication()->isAdmin()){
+		if (JFactory::getApplication()->isClient('administrator')){
 			$filterValue = JFactory::getApplication()->getUserStateFromRequest( $filterType.'_fv_ses', $filterType.'_fv', $filterNullValue );
 		}
 		else {

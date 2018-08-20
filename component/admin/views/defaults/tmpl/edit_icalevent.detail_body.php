@@ -13,12 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 $lang = JFactory::getLanguage();
 $lang->load("mod_jevents_detail", JPATH_SITE);
 ?>
-<table cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<td><?php echo JText::_("JEV_PLUGIN_INSTRUCTIONS",true);?></td>
-		<td><select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select></td>
-	</tr>
-</table>
+<label><?php echo JText::_("JEV_PLUGIN_INSTRUCTIONS",true);?></label>
+<select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
 
 <script type="text/javascript">
 defaultsEditorPlugin.node('#jevdefaults',"<?php echo JText::_("JEV_PLUGIN_SELECT",true);?>","");

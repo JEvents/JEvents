@@ -52,12 +52,9 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
-		if (version_compare(JVERSION, '3.3.0', '<')){
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
-		}
+
 		if (isset($this->data[$id]))
 		{
 			$this->element['label'] = $this->data[$id]->label;
@@ -80,9 +77,7 @@ class JFormFieldJevextras extends JFormField
 		JPluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
-		if (version_compare(JVERSION, '3.3.0', '>=')){
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
-		}
+		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 
 		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields( $this->element,$this->form->getName());

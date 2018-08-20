@@ -22,30 +22,48 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
+	    $app    = JFactory::getApplication();
 		// Get data from the model
-		$model = $this->getModel();
+		//$model = $this->getModel();
 
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
 		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
-
 		JToolbarHelper::addNew('icalevent.edit');
 		JToolbarHelper::editList('icalevent.edit');
 		JToolbarHelper::publishList('icalevent.publish');
 		JToolbarHelper::unpublishList('icalevent.unpublish');
 		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
-		$state = (int)JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0);
-		if ($state==-1){
+
+		// Filters hidden by default
+		$this->filtersHidden = true;
+
+		// Get fields from request if they exist
+		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 0);
+		$created_by = (int) $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', '');
+		$icsFile    = (int) $app->getUserStateFromRequest("icsFile", "icsFile", 0);
+		$category   = (int) $app->getUserStateFromRequest("catid", "catid", 0);
+		$tags       = $this->tagsFilter; // Already set in /controllers/icalevent.php so no point in gettingstate again
+
+		// Filters shown if any are active
+		if ($state || $created_by || $icsFile || $category || $tags) {
+			$this->filtersHidden = false;
+		}
+
+		if (!$state)
+		{
+			$state = 3;
+			JToolbarHelper::trash('icalevent.delete');
+		} else if ($state == -1){
 			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
 		else {
 			JToolbarHelper::trash('icalevent.delete');
 		}
-		JToolbarHelper::spacer();
-		//JToolbarHelper::help( 'screen.ical', true);
 
+		JToolbarHelper::spacer();
 		JEventsHelper::addSubmenu();
 
 		$showUnpublishedICS = false;
@@ -54,39 +72,46 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 
-		// get list of ics Files
+		// Get list of ics Files
 		$query = "SELECT ics.ics_id as value, ics.label as text FROM #__jevents_icsfile as ics ";
+
 		if (!$showUnpublishedICS)
 		{
 			$query .= " WHERE ics.state=1";
 		}
+
 		$query .= " ORDER BY ics.isdefault DESC, ics.label ASC";
 
 		$db->setQuery($query);
-		$icsfiles = $db->loadObjectList();
-		$icsFile = (int) JFactory::getApplication()->getUserStateFromRequest("icsFile", "icsFile", 0);
+		$icsfiles   = array();
+		$icsfiles[] = array('value' => '', 'text' => JText::_('JEV_SELECT_ISCFILE'));
+		$dbicsfiles = $db->loadAssocList();
 
-		JHtmlSidebar::addFilter(
-				JText::_('ALL_ICS_FILES'), 'icsFile', JHtml::_('select.options', $icsfiles, 'value', 'text', $icsFile)
+		foreach ($dbicsfiles As $iscfile) {
+            $icsfiles[] = $iscfile;
+        }
+
+		$this->filters = array(
+				JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
 		);
 
-		$state = (int) JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 3);
-		$options = array();
-		$options[] = JHTML::_('select.option', '3', JText::_('JOPTION_SELECT_PUBLISHED'));
-		$options[] = JHTML::_('select.option', '1', JText::_('PUBLISHED'));
-		$options[] = JHTML::_('select.option', '2', JText::_('UNPUBLISHED'));
-		$options[] = JHTML::_('select.option', '-1', JText::_('JTRASH'));
-		JHtmlSidebar::addFilter(
-				JText::_('ALL_EVENTS'), 'state', JHtml::_('select.options', $options, 'value', 'text', $state)
-		);
+		$this->filters[] = $this->clist;
+		$options = array(
+		    JHTML::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
+            JHTML::_('select.option', '1', JText::_('PUBLISHED')),
+		    JHTML::_('select.option', '2', JText::_('UNPUBLISHED')),
+		    JHTML::_('select.option', '-1', JText::_('JTRASH'))
+        );
+		$this->filters[] = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $state);
 
-		// get list of creators
-		$created_by = JFactory::getApplication()->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "");
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";
-		$db = JFactory::getDbo();
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
-		$userOptions = array();
+
+		$userOptions = array(
+		        JHTML::_('select.option', '', JText::_('JEV_SELECT_CREATOR')),
+		);
+
 		foreach ($users as $user)
 		{
 			if (!$user->id)
@@ -96,21 +121,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
 
-		JHtmlSidebar::addFilter(
-				JText::_('JEV_EVENT_CREATOR'), 'created_by', JHtml::_('select.options', $userOptions, 'value', 'text', $created_by)
-		);
+		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
+
+		// Load the tags filter
+		if (isset($this->tagsFiltering)) {
+			// Load the tags filter
+			$tagFilterHtml  = jevFilterProcessing::getInstance(array('taglookup'))->getFilterHTML(true)[0]['html'];
+			// We have to use a dirty str_replace since Joomla! clear function requires value to be empty for a clear filters.
+			$earchBtn = '<button type="submit" class="btn hasTooltip" title="" aria-label="' . JText::_('JEV_SEARCH')  . '" data-original-title="' . JText::_('JEV_SEARCH')  . '">
+							<span class="icon-search" aria-hidden="true"></span>
+						</button>';
+			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
+		}
 
 		$this->sidebar = JHtmlSidebar::render();
 
-		JHTML::_('behavior.tooltip');
-
-		// Only offer translations in latest version of Joomla
-		if (JevJoomlaVersion::isCompatible("3.4")){
-			$this->languages = $this->get('Languages');
-		}
-		else {
-			$this->languages = null;
-		}
+		$this->languages = $this->get('Languages');
 
 	}
 
@@ -145,7 +171,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
-		$bar =  JToolBar::getInstance('toolbar');
 		if ($this->id > 0)
 		{
 			if ($this->editCopy)
@@ -279,9 +304,6 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->get("section",0);
-
 		JHTML::_('behavior.tooltip');
 
 	}
@@ -291,6 +313,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
 		$user = JFactory::getUser();
+
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 

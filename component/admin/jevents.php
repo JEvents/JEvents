@@ -30,10 +30,9 @@ jimport('joomla.filesystem.path');
 $version = new JVersion();
 $jver = explode( '.', $version->getShortVersion() );
 
-//version_compare(JVERSION,'1.5.0',">=")
 if (!isset($option))  $option = $jinput->getCmd("option"); // 1.6 mod
-define("JEV_COM_COMPONENT",$option);
-define("JEV_COMPONENT",str_replace("com_","",$option));
+define("JEV_COM_COMPONENT", $option);
+define("JEV_COMPONENT", str_replace("com_","",$option));
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
 
@@ -80,21 +79,6 @@ if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
 // Must also load frontend language files
 $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
-
-if (!version_compare(JVERSION,'1.6.0',">=")){
-	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
-	$db = JFactory::getDbo();
-	$query = 'SELECT template'
-	. ' FROM #__templates_menu'
-	. ' WHERE client_id = 0 AND menuid=0'
-	. ' ORDER BY menuid DESC'
-	. ' LIMIT 1'
-	;
-	$db->setQuery($query);
-	$template = $db->loadResult();
-	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
-}
-
 // Split tasl into command and task
 $cmd    = $jinput->get('task', 'cpanel.show');
 //echo $cmd;die;

@@ -54,7 +54,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. $extrawhere				
 		. "\n AND ev.ev_id = '$agid'";
 		if (!$user->get("isRoot")){
-			$query .= "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
+			$query .= "\n AND ev.access  IN (" . JEVHelper::getAid($user) . ")";
 		}
 		$db->setQuery( $query );
 
@@ -79,7 +79,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 					$jevtask = JRequest::getString("jevtask");
 					$isedit = false;
 					// not only for edit pages but for all backend changes we ignore the language filter on categories
-					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || !$user->get("isRoot"))
+					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isClient('administrator') || !$user->get("isRoot"))
 					{
 						$isedit = true;
 					}
@@ -96,7 +96,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 					}
 					$realcatids = $db->loadColumn();
 					if (count ($realcatids) ){
-						if ($isedit && !JFactory::getApplication()->isAdmin() ){
+						if ($isedit && !JFactory::getApplication()->isClient('administrator') ){
 							$Itemid = JRequest::getInt("Itemid");
 							JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
 						}
@@ -128,9 +128,9 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
 		. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 		. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-		. "\n WHERE ev.catid IN(".$accessibleCategories.")"
+		. "\n WHERE ev.catid IN (" . $accessibleCategories . ")"
 		. "\n AND rpt.rp_id = '$rp_id'"
-		. "\n AND ev.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
+		. "\n AND ev.access IN (" . JEVHelper::getAid($user) . ')';
 
 		$db->setQuery( $query );
 
@@ -197,7 +197,7 @@ class JEventsAdminDBModel extends JEventsDBModel {
 		. "\n AND ical.ics_id = $icsid"
 		*/
 		. "\n WHERE ical.ics_id = $icsid"
-		. "\n AND ical.access  " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' . JEVHelper::getAid($user));
+		. "\n AND ical.access IN (" . JEVHelper::getAid($user) . ")";
 
 		$db->setQuery( $query );
 		$row = $db->loadObject();

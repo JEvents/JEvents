@@ -10,7 +10,13 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+JHTML::_('behavior.modal', 'a.modal');
+
+// Load the jQuery plugin && CSS
+JHtml::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
+JHtml::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
 
 $db = JFactory::getDbo();
 $user = JFactory::getUser();
@@ -27,7 +33,8 @@ JHTML::_('behavior.tooltip');
 // get configuration object
 $cfg = JEVConfig::getInstance();
 $mainspan = 10;
- $fullspan = 12;
+$fullspan = 12;
+
 ?>
 <?php if (!empty($this->sidebar)) : ?>
 <div id="j-sidebar-container" class="span2">
@@ -35,34 +42,56 @@ $mainspan = 10;
 </div>
  <?php endif; ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="calendarlist">
 	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-			<table cellpadding="4" cellspacing="0" border="0" width="100%">
-				<tr>
-					<td width="100%">
-						&nbsp;
-					</td>
-					<td align="right"><?php echo $this->clist; ?> </td>
-					<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
-					<td>
-						<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
-					</td>
-				</tr>
-			</table>
+		<!-- Filter Bar -->
+		<?php
+		// Load search tools
+		JHtml::_('searchtools.form');
+		?>
+		<div class="js-stools clearfix">
+			<div class="clearfix">
+				<div class="js-stools-container-bar">
+					<label for="search" class="element-invisible">
+						<?php echo JText::_('JEV_SEARCH'); ?>
+					</label>
+					<div class="btn-wrapper input-append">
+						<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
+						       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
+						       onChange="Joomla.submitform()" />
+						<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
+						        data-original-title="Search">
+							<span class="icon-search" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="js-stools-field-list">
+						<?php echo $this->clist; ?>
+					</div>
+				</div>
+				<div class="js-stools-container-list hidden-phone hidden-tablet">
+					<div class="hidden-select hidden-phone">
+						<div class="js-stools-field-list">
+							<?php echo $this->pageNav->getLimitBox(); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
+		<!-- End Filters Bar -->
+			<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 				<tr>
 					<th width="20" nowrap="nowrap">
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_CATEGORY_NAME'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ADMIN_REFRESH'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_ANONREFRESH'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_ISDEFAULT'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_ACCESS'); ?></th>
 					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_ID'); ?></th>
 				</tr>
 
@@ -81,15 +110,15 @@ $mainspan = 10;
 						<td>
 							<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icals.edit')" title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->label; ?></a>
 						</td>
-						<td align="center">
+						<td class="center">
 							<?php
 							$types = array("Remote", "Uploaded File", "Native");
 							$typeTranslation = 'COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_' . str_replace(' ','_',strtoupper($types[$row->icaltype]));
 							echo JText::_($typeTranslation);
 							?>
 						</td>
-						<td align="center"><?php echo $row->category; ?></td>
-						<td align="center">
+						<td class="center"><?php echo $row->category; ?></td>
+						<td class="center">
 							<?php
 							// only offer reload for URL based ICS
 							if ($row->srcURL != "")
@@ -103,7 +132,7 @@ $mainspan = 10;
 	?>
 
 						</td>
-						<td align="center">
+						<td class="center">
 								<?php
 								$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 								?>
@@ -111,7 +140,7 @@ $mainspan = 10;
 							<?php echo $img; ?>
 							</a>
 						</td>
-						<td align="center">
+						<td class="center">
 							<?php
 							if ($row->icaltype == 0)
 							{
@@ -134,7 +163,7 @@ $mainspan = 10;
 							}
 							?>
 						</td>
-						<td align="center">
+						<td class="center">
 							<?php
 							if ($row->icaltype == 2)
 							{
@@ -151,21 +180,21 @@ $mainspan = 10;
 	}
 	?>
 						</td>
-						<td align="center"><?php echo $row->_groupname; ?></td>
-						<td align="center"><?php echo $row->ics_id; ?></td>
+						<td class="center"><?php echo $row->_groupname; ?></td>
+						<td class="center"><?php echo $row->ics_id; ?></td>
 					</tr>
 	<?php
 	$k = 1 - $k;
 }
 ?>
 				<tr>
-					<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
+					<th class="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
 				</tr>
 			</table>
-			<?php echo JHtml::_('form.token'); ?>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="icals.list" />
 			<input type="hidden" name="boxchecked" value="0" />
+			<?php echo JHtml::_('form.token'); ?>
 		</div>
 </form>
 

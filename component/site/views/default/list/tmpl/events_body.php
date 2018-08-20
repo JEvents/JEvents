@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 JevHtmlBootstrap::framework();
-if (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
 {
 	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set

@@ -159,11 +159,11 @@ class JEventsDBModel
 				}
 			}
                         
-			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isClient('administrator') ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$jevtask = JRequest::getString("jevtask");
 			$isedit = false;
 			// not only for edit pages but for all backend changes we ignore the language filter on categories
-			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || $allLanguages)
+			if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isClient('administrator') || $allLanguages)
 			{
 				$isedit = true;
 			}
@@ -236,7 +236,7 @@ class JEventsDBModel
 				$where = ' AND c.id IN (' . $catidList . ') ';
 			}
 
-			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isClient('administrator') ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
 					. "\n FROM #__categories AS c"
 					. "\n WHERE c.access IN (" . $aid . ") "
@@ -292,13 +292,13 @@ class JEventsDBModel
 			// TODO check if this should also check abncestry based on $levels
 			$where .= ' AND p.id IS NOT NULL ';
 
-			$q_published = JFactory::getApplication()->isAdmin() ? "\n AND c.published >= 0" : "\n AND c.published = 1";
+			$q_published = JFactory::getApplication()->isClient('administrator') ? "\n AND c.published >= 0" : "\n AND c.published = 1";
 			$query = "SELECT c.*"
 					. "\n FROM #__categories AS c"
 					. ' LEFT JOIN #__categories AS p ON p.id=c.parent_id'
 					. ($levels > 1 ? ' LEFT JOIN #__categories AS gp ON gp.id=p.parent_id ' : '')
 					. ($levels > 2 ? ' LEFT JOIN #__categories AS ggp ON ggp.id=gp.parent_id ' : '')
-					. "\n WHERE c.access " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . $aid . ')' : ' <=  ' . $aid)
+					. "\n WHERE c.access IN (" . $aid . ")"
 					. $q_published
 					. ' AND c.extension ' . ' = ' . $db->Quote($sectionname)
 					. "\n " . $where;
@@ -3530,7 +3530,6 @@ select @@sql_mode;
 				. $catwhere
 				. $extrawhere
 				. $where
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n AND icsf.state=1"
 				. "\n GROUP BY ev.ev_id"
 				. "\n ORDER BY " . ($orderby != "" ? $orderby : "dtstart ASC")
@@ -3688,7 +3687,6 @@ select @@sql_mode;
 					. $extrawhere
 					. $where
 					. "\n  AND icsf.state=1"
-					//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 					. "\n GROUP BY rpt.rp_id"
 					. "\n ORDER BY " . ($orderby != "" ? $orderby : "rpt.startrepeat ASC")
 			;
@@ -3732,7 +3730,6 @@ select @@sql_mode;
 					. $extrajoin
 					. $catwhere
 					. $where
-					//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 					. "\n AND icsf.state=1"
 					. $extrawhere
 					. "\n GROUP BY rpt.rp_id"

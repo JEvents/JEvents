@@ -67,9 +67,9 @@ class JFormFieldJeveventtime extends JFormField
 		else {
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn-group" : "";
-		$btn = (JevJoomlaVersion::isCompatible("3.0")  ||  JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1))? "btn" : "";
-		$timevalue = $event->$time24function();
+		$btngroup   = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn-group" : "";
+		$btn        = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn" : "";
+		$timevalue  = $event->$time24function();
 		list($h,$m) = explode(":", $timevalue);
 		?>
 		<div id="<?php echo $partname;?>_24h_area" class="jev_inline">

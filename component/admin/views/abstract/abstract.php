@@ -23,16 +23,19 @@ class JEventsAbstractView extends JViewLegacy
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
+		$app = JFactory::getApplication();
+
+		if ($app->isClient('administrator'))
+		{
+			JEVHelper::stylesheet('jev_cp.css', '/administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
+
 		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
-		// note that the name config variable is ignored in the parent construct!
 
-		// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
-
-		$app = JFactory::getApplication();
 		// Get current template style ID
-		$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
+		$page_template_id = $app->isClient('administrator') ? "0" : @$app->getMenu()->getActive()->template_style_id;
 
 		// Check it's a valid style with simple check
 		if (!($page_template_id == "" || $page_template_id == "0")) {
@@ -46,17 +49,13 @@ class JEventsAbstractView extends JViewLegacy
 			$template = $db->loadResult();
 
 		} else {
-			$template = JFactory::getApplication()->getTemplate();
+			$template = $app->getTemplate();
 		}
 
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 		$name = $this->getName();
 		$name = str_replace($theme."/", "", $name);
 		$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $name);
-
-		// or could have used
-		//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
-		
 
 	}
 

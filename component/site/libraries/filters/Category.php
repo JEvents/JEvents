@@ -91,7 +91,7 @@ class jevCategoryFilter extends jevFilter
 		$sectionname = JEV_COM_COMPONENT;
 		
 		$db = JFactory::getDbo();
-		$q_published = JFactory::getApplication()->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
+		$q_published = JFactory::getApplication()->isClient('administrator') ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
 		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
 		$query = "SELECT c.id"
 			. "\n FROM #__categories AS c"
