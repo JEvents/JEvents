@@ -741,7 +741,7 @@ class JEventsDataModel {
 						$row=null;
 					}
 				}
-				$num_row = is_object($row) ? 1 : count($row);
+				$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 			}
 		}
 		
