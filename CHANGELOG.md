@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### 10-07-2018 - Tony Partridge
+ * Added language strings for Full Calendar Theme
+ * added {{DESCRIPTION_ADDSLASHES}} shortcode 
+ 
 #### 24-04-2018 - Tony Partridge
 ### Fixed
  * Accessibility improvements to the category select and pagination limit list.
