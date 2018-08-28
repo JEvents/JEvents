@@ -1174,7 +1174,9 @@ SCRIPT;
 						{
 							//$tempEndDate  -= 86400;
 							
-							$jmatch = new JevDate('now', new DateTimeZone('Europe/Berlin'));
+							$jevents_config = JEVConfig::getInstance();
+							
+							$jmatch = new JevDate('now', new DateTimeZone($jevents_config->get('icaltimezonelive','Europe/Berlin')));
 							$jmatch->setDate($dayEvent->ydn(), $dayEvent->mdn(), $dayEvent->ddn());
 							$jmatch->setTime(0,0,0);
 							$tempEndDate = $jmatch->getTimeStamp();
