@@ -825,13 +825,13 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 }
 
 /** Bootstrap Fix since J3.8.12 broke btn-group inline multi-select **/
-.jev-button-group {text-align: center;}
-.jev-button-group input{
+.jevbootstrap .jev-button-group {text-align: center;}
+.jevbootstrap .jev-button-group input{
 	display: none;
 }
 
-.jev-button-group input:checked + label,
-.jev-button-group input:checked + label:active {
+.jevbootstrap .jev-button-group input:checked + label,
+.jevbootstrap .jev-button-group input:checked + label:active {
 	color: #ffffff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	background-color: #5bb75b;
