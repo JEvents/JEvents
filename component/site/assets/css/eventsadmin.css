@@ -794,13 +794,39 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 	margin-top: -5px;
 }
 
-/** Fixes issues with some templates. The inline display: block; always overrides this anyhow**/
+/** Fixes issues with some templates. The inline display: block; always overrides this anyhow **/
 
 .jevbootstrap > div.action_dialogJQ, .jevbootstrap div.ical_dialogJQ  {display:none;}
 
-/* Joomla 3.7.0 backend icon fix for poor bootstrap css issues */
+/** Joomla 3.7.0 backend icon fix for poor bootstrap css issues **/
 
 .com_jevents [class^="icon-"] {
     background-image:none;
     vertical-align:baseline;
+}
+
+}
+
+/** Bootstrap Fix since J3.8.12 broke btn-group inline **/
+.jev-button-group {text-align: center;}
+.jev-button-group input{
+	display: none;
+}
+
+.jev-button-group input:checked + label,
+.jev-button-group input:checked + label:active {
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #5bb75b;
+	background-image: -moz-linear-gradient(top, #62c462, #51a351);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
+	background-image: -webkit-linear-gradient(top, #62c462, #51a351);
+	background-image: -o-linear-gradient(top, #62c462, #51a351);
+	background-image: linear-gradient(to bottom, #62c462, #51a351);
+	background-repeat: repeat-x;
+	border-color: #51a351 #51a351 #387038;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+.jevbootstrap .jev-button-group .btn:hover, .jevbootstrap .jev-button-group .btn:focus {
+	background-position: 0;
 }
