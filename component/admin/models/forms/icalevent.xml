@@ -18,6 +18,8 @@
 		<field name="jevcontent" type="editor" default=""   filter="JComponentHelper::filterText" width="100%" height="250" 
 		layoutfield="DESCRIPTION" labelclass="jeveditor"   label="JEV_EVENT_ACTIVITY" description="JEV_EVENT_ACTIVITY_TIP" />
 		<field name="location" type="jeveventlocation" default=""   layoutfield="LOCN" labelclass=""   label="JEV_EVENT_ADRESSE" description="JEV_EVENT_ADRESSE_TIP" />
+		<field name="geolon" type="text" default="0"   layoutfield="GEOLON" labelclass=""   label="JEV_FIELD_GEOLON" description="JEV_FIELD_GEOLON" />
+		<field name="geolat" type="text" default="0"   layoutfield="GEOLAT" labelclass=""   label="JEV_FIELD_GEOLAT" description="JEV_FIELD_GEOLAT" />
 				
 		<field name="color" type="jevcolor" default=""  layoutfield="COLOUR"   label="JEV_EVENT_COLOR" size="30" description="JEV_EVENT_COLOR_TIP" />
 

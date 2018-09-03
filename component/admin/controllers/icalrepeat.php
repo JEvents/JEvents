@@ -338,7 +338,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function select()
 	{
-		JSession::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit('Invalid Token');
 
 		$app    = JFactory::getApplication();
 		$jinput = $app->input;
@@ -468,6 +468,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
 		$data["LOCATION"]       = $jinput->getString("location", "");
+		$data["GEOLON"]       = $jinput->getString("geolon", "");
+		$data["GEOLAT"]       = $jinput->getString("geolat", "");
 		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
                 if ($data["allDayEvent"] == 1){
                     $data["allDayEvent"] = "on";
@@ -531,7 +533,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$data["DTEND"] = JevDate::strtotime($publishend);
 		}
 
-		$data["X-COLOR"] = $jinput->get("color", "");
+		$data["X-COLOR"] = $jinput->get("color", "", 'HTML');
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);

@@ -97,11 +97,44 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	}
 	 */
 
+	public function onPublishEvent ($ids, $newstate) {
+
+		foreach ($ids as $event_id)
+		{
+			// Get a db connection.
+			$db = JFactory::getDbo();
+
+			// Create a new query object.
+			$query = $db->getQuery(true);
+
+			// Select all records from the user profile table where key begins with "custom.".
+			// Order it by the ordering field.
+			$query->select($db->quoteName('eventdetail_id'));
+			$query->from($db->quoteName('#__jevents_repetition'));
+			$query->where($db->quoteName('eventid') . ' = '. $event_id);
+
+			// Reset the query using our newly populated query object.
+			$db->setQuery($query);
+
+			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
+			$eventdetail_id = (int) $db->loadResult('eventdetail_id');
+
+			// Reindex the item
+			if(!empty($eventdetail_id))
+			{
+				$this->reindex($eventdetail_id);
+			}
+		}
+		return true;
+	}
+
 	public function onAfterSaveEvent (&$vevent, $dryrun) {
+
 		if ($dryrun || !isset($vevent->detail_id) || $vevent->detail_id==0){
 			return;
 		}
 		$detailid = $vevent->detail_id;
+
 
 		// Reindex the item
 		$this->reindex($detailid);
@@ -156,6 +189,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
+
 		// We only want to handle events here
 		if ($context == 'com_jevents.event' || $context == 'com_jevents.form')
 		{
@@ -249,16 +283,42 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;//$this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;
 
+		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");		
+		
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
-
-		$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;
-		$item->publish_end_date	= "2099-12-31 00:00:00" ;
+		// get the data and query models
+		$dataModel = new JEventsDataModel();
+		$queryModel = new JEventsDBModel($dataModel);
+		// get the repeat (allowing for it to be unpublished)
+		$theevent = $queryModel->listEventsById($item->rp_id);
+		
+		if ($this->params->get("future", -1) != -1 && $theevent)
+		{
+			$past = $this->params->get("past", -1);
+			$date = new JDate($theevent->startDate() . " - $past days");
+			$item->publish_start_date = $date->toSql();
+		}
+		else
+		{
+			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;			
+		}
+		if ($this->params->get("past", -1) != -1  && $theevent)
+		{
+			$future = $this->params->get("future", -1);
+			$date = new JDate($theevent->endDate() . " + $future days");
+			$item->publish_end_date = $date->toSql();			
+		}
+		else
+		{
+			$item->publish_end_date	= "2099-12-31 00:00:00" ;
+		}
 
 		// title is already set
 		//$item->title;
 
 		// Events should only be published if the category is published.etc. - do this later
-		//$item->state;
+		$item->state        =  $this->translateState($item->state, $item->cat_state);
+		$item->published    = $item->state;
 
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Event');
@@ -279,12 +339,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		FinderIndexerHelper::getContentExtras($item);
 
 		// Index the item.
-		if (JevJoomlaVersion::isCompatible("3.0.0")){
-			$this->indexer->index($item);
-		}
-		else {
-			FinderIndexer::index($item);
-		}
+		$this->indexer->index($item);
+
 	}
 
 	/**
@@ -323,7 +379,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$sql->select('evt.catid, evt.icsid, evt.created_by, evt.access ');
 		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 		$sql->select('u.name AS author');
-
+		$sql->select('evt.state AS state');
+		
 		$sql->from('#__jevents_vevdetail AS det');
 		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
 		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');

@@ -314,7 +314,7 @@ RAWTEXT;
 				}
 				else {
 					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-					if ($params->get("multicategory",0) ){
+					if ($params->get("multicategory",0) && !is_array($catid)){
 						$vevent->catid = array($catid);
 					}
 					else {
@@ -323,7 +323,6 @@ RAWTEXT;
 				}
 				// These now gets picked up in the event
 				//$vevent->access = $this->access;
-				//$vevent->state =  $this->state;
 				$vevent->icsid = $this->ics_id;
 				// The refreshed field is used to track dropped events on reload
 				$vevent->refreshed = $this->refreshed;
@@ -333,15 +332,16 @@ RAWTEXT;
 					$vevent->_detail->evdet_id = $matchingEvent->evdet_id;
 					
 					unset($existingevents[$vevent->ev_id]);
+				} else {
+					$vevent->state =  $this->state;
 				}
+
+				$vevent->lockevent = 0;
 
 				// if the event is locked then skip this row
 				if ($matchingEvent && $matchingEvent->lockevent){
 					$vevent->lockevent = 1;
 					continue;
-				}
-				else {
-					$vevent->lockevent = 0;
 				}
 
 				// handle events running over midnight

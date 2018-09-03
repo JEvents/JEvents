@@ -278,7 +278,7 @@ class plgSearchEventsearch extends JPlugin
 				break;
 		}
 
-		$eventstitle = JText::_("JEV_EVENT_CALENDAR");
+		$eventstitle = $db->escape(JText::_("JEV_EVENT_CALENDAR"));
 		// Now Search Icals
 		$display2 = array();
 		foreach ($search_ical_attributes as $search_ical_attribute)
@@ -289,7 +289,7 @@ class plgSearchEventsearch extends JPlugin
 		$query = "SELECT det.evdet_id, det.summary as title,"
 				. "\n ev.created as created,"
 				. "\n $display as text,"
-				. "\n CONCAT('$eventstitle','/',det.summary) AS section,"
+				. "\n CONCAT('$eventstitle','/', det.summary) AS section,"
 				. "\n CONCAT('index.php?option=com_jevents&task=icalrepeat.detail&evid=',min(rpt.rp_id)) AS href,"
 				. "\n '2' AS browsernav ,"
 				. "\n rpt.startrepeat, rpt.rp_id "
@@ -314,6 +314,7 @@ class plgSearchEventsearch extends JPlugin
 		;
 
 		$db->setQuery($query);
+
 		$list_ical = $db->loadObjectList('evdet_id');
 
 		jimport('joomla.utilities.date');

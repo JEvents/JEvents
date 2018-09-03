@@ -46,6 +46,10 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION_LABEL",true);?>", "DESCRIPTION_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCN");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCN_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLON",true);?>", "GEOLON");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLON_LABEL",true);?>", "GEOLON_LBL");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLAT",true);?>", "GEOLAT");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GEOLAT_LABEL",true);?>", "GEOLAT_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT",true);?>", "CONTACT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LBL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EXTRAINFO",true);?>", "EXTRAINFO");

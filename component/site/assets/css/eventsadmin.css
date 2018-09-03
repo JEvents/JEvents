@@ -805,9 +805,26 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
     vertical-align:baseline;
 }
 
+  /* Fix for calendar popup width */
+.jevbootstrap .js-calendar .table {
+	width: 280px;
 }
 
-/** Bootstrap Fix since J3.8.12 broke btn-group inline **/
+.jevbootstrap .modal > .modal-dialog {left: 0;right:0;}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap; /* added line */
+	border: 0;
+}
+
+/** Bootstrap Fix since J3.8.12 broke btn-group inline multi-select **/
 .jev-button-group {text-align: center;}
 .jev-button-group input{
 	display: none;
@@ -830,3 +847,4 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 .jevbootstrap .jev-button-group .btn:hover, .jevbootstrap .jev-button-group .btn:focus {
 	background-position: 0;
 }
+

@@ -15,6 +15,7 @@ use Joomla\String\StringHelper;
 
 class EventCalendarCell_default  extends JEventsDefaultView {
 	protected $_datamodel = null;
+	public $datamodel = null;
 	protected $_view = null;
 
 	function __construct($event, $datamodel, $view=false){

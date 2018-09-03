@@ -679,7 +679,7 @@ class JEventsDataModel {
 						$data['hours'][$h]['events'][$count]=$row;
 						$row->alreadyHourSlotted = 1;
 					}
-					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59){
+					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59 && $row->getUnixEndTime() >= $data['hours'][$h]['hour_start']  && $row->getUnixStartTime() <= $data['hours'][$h]['hour_end'] ){
 
 						$count = count($data['hours'][$h]['events']);
 						$data['hours'][$h]['events'][$count]=$row;
@@ -728,8 +728,8 @@ class JEventsDataModel {
 				$row=null;
 			}
 		}
-		
-		$num_row = is_object($row) ? 1 : count($row);
+
+		$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 
 		// No matching rows - use uid as alternative
 		if ($num_row==0 && JString::strlen($uid)>0){
@@ -741,7 +741,7 @@ class JEventsDataModel {
 						$row=null;
 					}
 				}
-				$num_row = is_object($row) ? 1 : count($row);
+				$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 			}
 		}
 		
