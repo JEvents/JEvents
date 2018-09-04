@@ -183,6 +183,11 @@
 		<field name="com_notifyallevents" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFYALL" description="JEV_NOTIFYALL_TIP" difficulty="2"/>
 		<field name="com_notifyauthor" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_NOTIFY_AUTHOR" description="JEV_NOTIFY_AUTHOR_TIP" difficulty="2"/>
 		<field name="showpriority" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOWPRIORITY" description="JEV_SHOWPRIORITY_TIP" difficulty="2"/>
+		<field name="showPriorityACL" type="jevlist" default="0" menu="hide" label="JEV_ACL_OF_WHO_CAN_SET_PRIORITY" description="JEV_ACL_OF_WHO_CAN_SET_PRIORITY_TIP" difficulty="1" showon="showpriority:1">
+			<option value="0">JEV_ACL_OF_WHO_CAN_SET_PRIORITY_0</option>
+			<option value="1">JEV_ACL_OF_WHO_CAN_SET_PRIORITY_1</option>
+			<option value="2">JEV_ACL_OF_WHO_CAN_SET_PRIORITY_2</option>
+		</field>
 		<field name="showtimezone" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_TIMEZONE" description="JEV_SHOW_TIMEZONE_DESC" difficulty="2"/>
 		<field name="offeredtimezones" type="jevtimezone" multiple="true" class="chosen" default="-1" size="5" style="width:250px;"
                        menu="hide" label="JEV_AVAILABLE_TIMEZONES" description="JEV_AVAILABLE_TIMEZONES_DESC" conditional="showtimezone" conditions="1" difficulty="2"/>
