@@ -199,14 +199,23 @@ class GetjsonController extends JControllerLegacy
 			$eventArray = array();
 			$eventArray['title'] = $event->title();
 			// TODO get the UNIX start/end time to be formatted as below
-			$eventArray['start'] = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . "T" . date("H:i:s", $event->getUnixStartTime()) . '+00:00';
-			$eventArray['end'] = $event->ydn() . "-" . $event->mdn() . "-" . $event->ddn() . "T" . date("H:i:s", $event->getUnixEndTime()) . '+00:00';
+			if($event->alldayevent() === 1) :
+				$eventArray['start']    = $event->yup() . "-" . $event->mup() . "-" . $event->dup();
+				$eventArray['end']      = $event->ydn() . "-" . $event->mdn() . "-" . $event->ddn();
+			else :
+				$eventArray['start']    = $event->yup() . "-" . $event->mup() . "-" . $event->dup() . "T" . date("H:i:s", $event->getUnixStartTime()) . '+00:00';
+				$eventArray['end']      = $event->ydn() . "-" . $event->mdn() . "-" . $event->ddn() . "T" . date("H:i:s", $event->getUnixEndTime()) . '+00:00';
+			endif;
+
 			// TODO make event colouring conditional
 			$eventArray['textColor'] = $event->fgcolor();
 			$eventArray['tooltipBody'] = $event->title();
 			$eventArray['color'] = $event->bgcolor();
 			$link = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
 			$eventArray['url'] = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+			$eventArray['allDay'] = $event->alldayevent();
+
+			//var_dump($eventArray);die;
 
 			if ($event->hasrepetition())
 			{
