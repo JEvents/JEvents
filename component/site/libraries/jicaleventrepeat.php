@@ -139,10 +139,16 @@ class jIcalEventRepeat extends jIcalEventDB
 	{
 		#if (isset($this->_rr_id)  && $this->_rr_id>0 ) return true;
 		if (isset($this->_freq) && ($this->_freq != 'none'))
+		{
+			// special case if there is only one idiotic repeat!
+			if ($this->_count == 1 && $this->_untilraw == "" && count($this->_irregulardates) == 0)
+			{
+				return false;
+			}
 			return true;
+		}
 		else
 			return false;
-
 	}
 
 	function editTask()
