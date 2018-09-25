@@ -289,10 +289,13 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// get the data and query models
 		$dataModel = new JEventsDataModel();
 		$queryModel = new JEventsDBModel($dataModel);
-		// get the repeat (allowing for it to be unpublished)
-		$theevent = $queryModel->listEventsById($item->rp_id);
 
-		JEVHelper::onDisplayCustomFieldsMultiRow($theevent);
+		// get the repeat (allowing for it to be unpublished)
+		$theevent = array($queryModel->listEventsById($item->rp_id));
+
+		JPluginHelper::importPlugin('jevents');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
 
