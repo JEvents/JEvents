@@ -450,12 +450,9 @@ function setEndDateWhenNotRepeating(elem){
 	if (id === 'publish_up' && startDate != defaultStartDate) {
         end_date.value = start_date.value;
         normaliseElem(end_date);
-	} else if (startDate != endDate){
+	} else if (startDate > endDate) {
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
-	} else if(startDate !== defaultStartDate && defaultEndDate == endDate) {
-        end_date.value = start_date.value;
-        normaliseElem(end_date);
 	}
 }
 
