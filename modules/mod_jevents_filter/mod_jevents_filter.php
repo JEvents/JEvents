@@ -11,9 +11,9 @@
  */
 
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-require_once (dirname(__FILE__).'/'.'helper.php');
+require_once(dirname(__FILE__) . '/' . 'helper.php');
 
 // reset filters when viewed on non-JEvents page - make this a configurable option
 
@@ -21,22 +21,26 @@ require_once (dirname(__FILE__).'/'.'helper.php');
 $jevhelper = new modJeventsFilterHelper($params);
 
 // record what is running - used by the filters
-$registry	= JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","mod_jevents_filter");
+$registry = JRegistry::getInstance("jevents");
+$registry->set("jevents.activeprocess", "mod_jevents_filter");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 $option = JRequest::getCmd("option");
-if ($params->get("alwaystarget",0) && $params->get("target_itemid",0)>0){
-	JFactory::getApplication()->setUserState("jevents.filtermenuitem",$params->get("target_itemid",0));
+if ($params->get("alwaystarget", 0) && $params->get("target_itemid", 0) > 0)
+{
+	JFactory::getApplication()->setUserState("jevents.filtermenuitem", $params->get("target_itemid", 0));
 }
-else if ($option=="com_jevents"){
-	$menu	= JFactory::getApplication()->getMenu();
+else if ($option == "com_jevents")
+{
+	$menu   = JFactory::getApplication()->getMenu();
 	$active = $menu->getActive();
-	if ($active){
-		JFactory::getApplication()->setUserState("jevents.filtermenuitem",$active->id);
+	if ($active)
+	{
+		JFactory::getApplication()->setUserState("jevents.filtermenuitem", $active->id);
 	}
 }
-if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
+if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0)
+{
 	return;
 }
 JFactory::getApplication()->activeModule = $module;

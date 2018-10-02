@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: listevents.xml 1255 2010-10-06 13:05:26Z royceharding $ --> 
+<!-- $Id: listevents.xml 1255 2010-10-06 13:05:26Z royceharding $ -->
 <metadata>
 
 	<layout title="COM_JEVENTS_CRAWLER_DEFAULT_TITLE">
 		<help
-			key = "JHELP_MENUS_CRAWLER_HELP"
+				key="JHELP_MENUS_CRAWLER_HELP"
 		/>
 		<message>
 			<![CDATA[COM_JEVENTS_CRAWLER_DEFAULT_DESC]]>
 		</message>
 	</layout>
-	
-	<!-- Add fields to the parameters object for the layout. -->
-	<fields name="params" >
 
-		<fieldset name="component" label="JEV_TAB_COMPONENT" addfieldpath="/administrator/components/com_jevents/fields/" >
-		
-			<field name="@spacer1" type="jevinfo" default="JEV_CRAWLER_RESTRICT_CRAWLER" label="" description="" />
-			<field name="@spacer2" type="jevinfo" default="JEV_CRAWLER_LEAVE_BLANK" label="" description="" />			
-			<field name='relstart' type='text' default="-1w" label="JEV_CRAWLER_START" description="JEV_RELSTART_DESC" />
-			<field name='relend' type='text' default="+1m" label="JEV_CRAWLER_END" description="JEV_RELEND_DESC" />
-			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide" label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+
+		<fieldset name="component" label="JEV_TAB_COMPONENT"
+		          addfieldpath="/administrator/components/com_jevents/fields/">
+
+			<field name="@spacer1" type="jevinfo" default="JEV_CRAWLER_RESTRICT_CRAWLER" label="" description=""/>
+			<field name="@spacer2" type="jevinfo" default="JEV_CRAWLER_LEAVE_BLANK" label="" description=""/>
+			<field name='relstart' type='text' default="-1w" label="JEV_CRAWLER_START" description="JEV_RELSTART_DESC"/>
+			<field name='relend' type='text' default="+1m" label="JEV_CRAWLER_END" description="JEV_RELEND_DESC"/>
+			<field name="com_showrepeats" type="list" class="btn-group" default="-1" menu="hide"
+			       label="JEV_VIEW_REPEAT_YEAR_LIST" description="" difficulty="2">
 				<option value="-1">USE_GLOBAL</option>
 				<option value="0">JEV_NO</option>
 				<option value="1">JEV_YES</option>
 			</field>
-			<field name="crawlertarget" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
+			<field name="crawlertarget" type="jevmenu" default="" label="JEV_TARGET_MENU"
+			       description="JEV_TARGET_MENU_TIP"/>
 		</fieldset>
 	</fields>
 </metadata>

@@ -23,11 +23,12 @@ class JFormFieldJevcategory extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
+
 		// Initialize variables.
 		$session = JFactory::getSession();
 		$options = array();
@@ -69,7 +70,7 @@ class JFormFieldJevcategory extends JFormFieldList
 				}
 			}
 
-			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_( 'JEV_SELECT_CATEGORY' ) . ' -'));
+			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_('JEV_SELECT_CATEGORY') . ' -'));
 		}
 		else
 		{
@@ -80,7 +81,7 @@ class JFormFieldJevcategory extends JFormFieldList
 		// if no value exists, try to load a selected filter category from the list view
 		if (!$this->value && ($this->form instanceof JForm))
 		{
-			$context = $this->form->getName();
+			$context     = $this->form->getName();
 			$this->value = $session->get($context . '.filter.category_id', $this->value);
 		}
 

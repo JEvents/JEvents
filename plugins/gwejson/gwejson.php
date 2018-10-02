@@ -28,19 +28,20 @@ class PlgSystemGwejson extends JPlugin
 
 	public function __construct(&$subject, $config)
 	{
+
 		parent::__construct($subject, $config);
 
 		$input = JFactory::getApplication()->input;
-		$task = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
+		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 
 		if ($task != "gwejson")
 		{
 			return true;
 		}
-                // Some plugins set the document type too early which messes up our ouput.
-                $this->doc = JFactory::getDocument();
+		// Some plugins set the document type too early which messes up our ouput.
+		$this->doc = JFactory::getDocument();
 	}
-    
+
 	/**
 	 * Method to catch the onAfterInitialise event.
 	 *
@@ -48,11 +49,11 @@ class PlgSystemGwejson extends JPlugin
 	 *
 	 */
 	public
-			function onAfterInitialise()
+	function onAfterInitialise()
 	{
 
 		$input = JFactory::getApplication()->input;
-		$task = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
+		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 		// in frontend SEF
 		if ($task != "gwejson")
 		{
@@ -65,11 +66,12 @@ class PlgSystemGwejson extends JPlugin
 		{
 			return true;
 		}
-		if ( strpos($file, "gwejson_")!==0){
-			$file = "gwejson_".$file;
+		if (strpos($file, "gwejson_") !== 0)
+		{
+			$file = "gwejson_" . $file;
 		}
 
-		$path = $input->get('path', 'site', 'cmd');
+		$path  = $input->get('path', 'site', 'cmd');
 		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{
@@ -85,8 +87,9 @@ class PlgSystemGwejson extends JPlugin
 			}
 			$path = $paths[$path] . "/$folder/$plugin/";
 		}
-		else if ($path == "module" || $path == "library") {
-			if ($folder == "" )
+		else if ($path == "module" || $path == "library")
+		{
+			if ($folder == "")
 			{
 				return true;
 			}
@@ -99,35 +102,40 @@ class PlgSystemGwejson extends JPlugin
 			{
 				return true;
 			}
-			if ($folder == "" )
+			if ($folder == "")
 			{
 				$path = $paths[$path] . "/components/$extension/libraries/";
 			}
-			else {
+			else
+			{
 				$path = $paths[$path] . "/components/$extension/$folder/";
 			}
 		}
 
 		jimport('joomla.filesystem.file');
-                // Check for a custom version of the file first!
-                $custom_file =  str_replace("gwejson_", "gwejson_custom_", $file);
-                if (JFile::exists($path . $custom_file . ".php"))
-                {
-                        $file = $custom_file;
-                }
-                if (!JFile::exists($path . $file . ".php"))
-                {
-	                PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
-	                return true;
-                }
+		// Check for a custom version of the file first!
+		$custom_file = str_replace("gwejson_", "gwejson_custom_", $file);
+		if (JFile::exists($path . $custom_file . ".php"))
+		{
+			$file = $custom_file;
+		}
+		if (!JFile::exists($path . $file . ".php"))
+		{
+			PlgSystemGwejson::throwerror("Opps we could not find the file: " . $path . $file . ".php");
 
-		include_once ($path . $file . ".php");
+			return true;
+		}
 
-		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken()){
+		include_once($path . $file . ".php");
+
+		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken())
+		{
 			$token = JSession::getFormToken();;
-			if ($token != $input->get('token', '', 'string')){
-				if ($input->get('json', '', 'raw')){
-					
+			if ($token != $input->get('token', '', 'string'))
+			{
+				if ($input->get('json', '', 'raw'))
+				{
+
 				}
 				PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 			}
@@ -137,37 +145,40 @@ class PlgSystemGwejson extends JPlugin
 		//$input->set('tmpl', 'component');
 		$input->set('format', 'json');
 
-		ini_set("display_errors",0);
+		ini_set("display_errors", 0);
 
 		// When setting typeahead in the post it overrides the GET value which the prepare function doesn't replace for some reason :(
-		if ($input->get('typeahead', '', 'string')!="" || $input->get('prefetch', 0, 'int'))
+		if ($input->get('typeahead', '', 'string') != "" || $input->get('prefetch', 0, 'int'))
 		{
-			try {
-				$requestObject = new stdClass();
+			try
+			{
+				$requestObject            = new stdClass();
 				$requestObject->typeahead = $input->get('typeahead', '', 'string');
-				$data = null;
-				$data = ProcessJsonRequest($requestObject, $data);
+				$data                     = null;
+				$data                     = ProcessJsonRequest($requestObject, $data);
 			}
-			catch (Exception $e) {
+			catch (Exception $e)
+			{
 				//PlgSystemGwejson::throwerror("There was an exception ".$e->getMessage()." ".var_export($e->getTrace()));
 				PlgSystemGwejson::throwerror("There was an exception " . addslashes($e->getMessage()));
 			}
 		}
 
 		// Get JSON data
-		else  if ($input->get('json', '', 'raw'))
+		else if ($input->get('json', '', 'raw'))
 		{
 			// Create JSON data structure
-			$data = new stdClass();
-			$data->error = 0;
+			$data         = new stdClass();
+			$data->error  = 0;
 			$data->result = "ERROR";
-			$data->user = "";
+			$data->user   = "";
 
-			$requestData =  $input->get('json', '', 'raw');
+			$requestData = $input->get('json', '', 'raw');
 
 			if (isset($requestData))
 			{
-				try {
+				try
+				{
 					if (ini_get("magic_quotes_gpc"))
 					{
 						$requestData = stripslashes($requestData);
@@ -179,7 +190,8 @@ class PlgSystemGwejson extends JPlugin
 						$requestObject = json_decode(utf8_encode($requestData), 0);
 					}
 				}
-				catch (Exception $e) {
+				catch (Exception $e)
+				{
 					PlgSystemGwejson::throwerror("There was an exception");
 				}
 
@@ -194,10 +206,12 @@ class PlgSystemGwejson extends JPlugin
 				}
 				else
 				{
-					try {
+					try
+					{
 						$data = ProcessJsonRequest($requestObject, $data);
 					}
-					catch (Exception $e) {
+					catch (Exception $e)
+					{
 						//PlgSystemGwejson::throwerror("There was an exception ".$e->getMessage()." ".var_export($e->getTrace()));
 						PlgSystemGwejson::throwerror("There was an exception " . $e->getMessage());
 					}
@@ -215,14 +229,16 @@ class PlgSystemGwejson extends JPlugin
 
 		header("Content-Type: application/javascript; charset=utf-8");
 
-		if (is_object($data)){
+		if (is_object($data))
+		{
 			if (defined('_SC_START'))
 			{
-				list ($usec,$sec) = explode(" ", microtime());
-				$time_end = (float)$usec + (float)$sec;
-				$data->timing = round($time_end - _SC_START,4);
+				list ($usec, $sec) = explode(" ", microtime());
+				$time_end     = (float) $usec + (float) $sec;
+				$data->timing = round($time_end - _SC_START, 4);
 			}
-			else {
+			else
+			{
 				$data->timing = 0;
 			}
 		}
@@ -235,12 +251,14 @@ class PlgSystemGwejson extends JPlugin
 
 	}
 
-	public static function throwerror ($msg){
+	public static function throwerror($msg)
+	{
+
 		$data = new stdClass();
 		//"document.getElementById('products').innerHTML='There was an error - no valid argument'");
-		$data->error = "alert('".$msg."')";
+		$data->error  = "alert('" . $msg . "')";
 		$data->result = "ERROR";
-		$data->user = "";
+		$data->user   = "";
 
 		header("Content-Type: application/javascript");
 		// Must suppress any error messages

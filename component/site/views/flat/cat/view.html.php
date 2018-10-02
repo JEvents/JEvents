@@ -17,14 +17,15 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class flatViewCat extends JEventsflatView 
+class flatViewCat extends JEventsflatView
 {
 	function listevents($tpl = null)
 	{
-		JEVHelper::componentStylesheet($this);
-		$document = JFactory::getDocument();						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	}	
+		JEVHelper::componentStylesheet($this);
+		$document = JFactory::getDocument();
+		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+	}
 
 }

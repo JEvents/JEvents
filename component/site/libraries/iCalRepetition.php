@@ -10,19 +10,22 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 
-class iCalRepetition extends JTable  {
+class iCalRepetition extends JTable
+{
 
 	/** @var int Primary key */
-	var $rp_id		= null;
+	var $rp_id = null;
 	var $eventid = null;
 	var $eventdetail_id = null;
 	var $startrepeat = null;
-	var $endrepeat =null;
+	var $endrepeat = null;
 
-	public function __construct( &$db ) {
-		parent::__construct( '#__jevents_repetition', 'rp_id', $db );
+	public function __construct(&$db)
+	{
+
+		parent::__construct('#__jevents_repetition', 'rp_id', $db);
 	}
 }

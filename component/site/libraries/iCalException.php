@@ -10,18 +10,18 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Class to handle event exceptions - used to RSS and iCal exports
  *
  */
-
-class iCalException extends JTable  {
+class iCalException extends JTable
+{
 
 	/** @var int Primary key */
-	var $ex_id		= null;
-	var $rp_id		= null;
+	var $ex_id = null;
+	var $rp_id = null;
 	var $eventid = null;
 	var $eventdetail_id = null;
 	// exception_type 0=delete, 1=other exception 
@@ -30,22 +30,28 @@ class iCalException extends JTable  {
 	var $oldstartrepeat = '0000-00-00 00:00:00';
 
 
-	public function __construct( &$db ) {
-		parent::__construct( '#__jevents_exception', 'ex_id', $db );
+	public function __construct(&$db)
+	{
+
+		parent::__construct('#__jevents_exception', 'ex_id', $db);
 	}
 
-	public static function loadByRepeatId($rp_id){
-		
-		$db = JFactory::getDbo();
-		$sql = "SELECT * FROM #__jevents_exception WHERE rp_id=".intval($rp_id);
+	public static function loadByRepeatId($rp_id)
+	{
+
+		$db  = JFactory::getDbo();
+		$sql = "SELECT * FROM #__jevents_exception WHERE rp_id=" . intval($rp_id);
 		$db->setQuery($sql);
 		$data = $db->loadObject();
-		if (!$data || is_null($data)){
+		if (!$data || is_null($data))
+		{
 			return false;
 		}
-		else {
+		else
+		{
 			$exception = new iCalException($db);
 			$exception->bind(get_object_vars($data));
+
 			return $exception;
 		}
 	}

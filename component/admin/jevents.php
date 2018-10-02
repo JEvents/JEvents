@@ -9,17 +9,20 @@
  * @link        http://www.jevents.net
  */
 
-defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 $jinput = JFactory::getApplication()->input;
 
-if (version_compare(phpversion(), '5.0.0', '<')===true) {
-	echo  '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">'.JText::_("JEV_INVALID_PHP1").'</h3></div>'.JText::_("JEV_INVALID_PHP2").'</div>';
+if (version_compare(phpversion(), '5.0.0', '<') === true)
+{
+	echo '<div style="font:12px/1.35em arial, helvetica, sans-serif;"><div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;"><h3 style="margin:0; font-size:1.7em; font-weight:normal; text-transform:none; text-align:left; color:#2f2f2f;">' . JText::_("JEV_INVALID_PHP1") . '</h3></div>' . JText::_("JEV_INVALID_PHP2") . '</div>';
+
 	return;
 }
 // remove metadata.xml if its there.
 jimport('joomla.filesystem.file');
-if (JFile::exists(JPATH_COMPONENT_SITE.'/'."metadata.xml")){
-	JFile::delete(JPATH_COMPONENT_SITE.'/'."metadata.xml");
+if (JFile::exists(JPATH_COMPONENT_SITE . '/' . "metadata.xml"))
+{
+	JFile::delete(JPATH_COMPONENT_SITE . '/' . "metadata.xml");
 }
 
 //error_reporting(E_ALL);
@@ -28,14 +31,14 @@ jimport('joomla.filesystem.path');
 
 // Get Joomla version.
 $version = new JVersion();
-$jver = explode( '.', $version->getShortVersion() );
+$jver    = explode('.', $version->getShortVersion());
 
 //version_compare(JVERSION,'1.5.0',">=")
-if (!isset($option))  $option = $jinput->getCmd("option"); // 1.6 mod
-define("JEV_COM_COMPONENT",$option);
-define("JEV_COMPONENT",str_replace("com_","",$option));
+if (!isset($option)) $option = $jinput->getCmd("option"); // 1.6 mod
+define("JEV_COM_COMPONENT", $option);
+define("JEV_COMPONENT", str_replace("com_", "", $option));
 
-include_once(JPATH_COMPONENT_ADMINISTRATOR.'/'.JEV_COMPONENT.".defines.php");
+include_once(JPATH_COMPONENT_ADMINISTRATOR . '/' . JEV_COMPONENT . ".defines.php");
 
 // Load Joomla Core scripts for sites that don't load MooTools;
 JHtml::_('behavior.core', true);
@@ -45,78 +48,90 @@ JHtml::_('jquery.framework');
 JHtml::_('behavior.framework', true);
 JevHtmlBootstrap::framework();
 JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+{
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
 
-$registry	= JRegistry::getInstance("jevents");
+$registry = JRegistry::getInstance("jevents");
 
 // See http://www.php.net/manual/en/timezones.php
 
 // If progressive caching is enabled then remove the component params from the cache!
 /* Bug fixed in Joomla! 3.2.1 ?? - not always it appears */
 $joomlaconfig = JFactory::getConfig();
-if ($joomlaconfig->get("caching",0)){
+if ($joomlaconfig->get("caching", 0))
+{
 	$cacheController = JFactory::getCache('_system', 'callback');
 	$cacheController->cache->remove("com_jevents");
 }
 
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-if ($params->get("icaltimezonelive","")!="" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive","")!=""){
-	$timezone= date_default_timezone_get();
-	date_default_timezone_set($params->get("icaltimezonelive",""));
-	$registry->set("jevents.timezone",$timezone);
+if ($params->get("icaltimezonelive", "") != "" && is_callable("date_default_timezone_set") && $params->get("icaltimezonelive", "") != "")
+{
+	$timezone = date_default_timezone_get();
+	date_default_timezone_set($params->get("icaltimezonelive", ""));
+	$registry->set("jevents.timezone", $timezone);
 }
 
 // Thanks to ssobada
 $authorisedonly = $params->get("authorisedonly", 0);
-$user      = JFactory::getUser();
+$user           = JFactory::getUser();
 //Stop if user is not authorised to access JEvents CPanel
-if (!$authorisedonly && !$user->authorise('core.manage',      'com_jevents')) {
-    return;
+if (!$authorisedonly && !$user->authorise('core.manage', 'com_jevents'))
+{
+	return;
 }
 
 // Must also load frontend language files
 $lang = JFactory::getLanguage();
 $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
-if (!version_compare(JVERSION,'1.6.0',">=")){
+if (!version_compare(JVERSION, '1.6.0', ">="))
+{
 	// Load Site specific language overrides - can't use getTemplate since we are in the admin interface
-	$db = JFactory::getDbo();
+	$db    = JFactory::getDbo();
 	$query = 'SELECT template'
-	. ' FROM #__templates_menu'
-	. ' WHERE client_id = 0 AND menuid=0'
-	. ' ORDER BY menuid DESC'
-	. ' LIMIT 1'
-	;
+		. ' FROM #__templates_menu'
+		. ' WHERE client_id = 0 AND menuid=0'
+		. ' ORDER BY menuid DESC'
+		. ' LIMIT 1';
 	$db->setQuery($query);
 	$template = $db->loadResult();
-	$lang->load(JEV_COM_COMPONENT, JPATH_SITE.'/'."templates".'/'.$template);
+	$lang->load(JEV_COM_COMPONENT, JPATH_SITE . '/' . "templates" . '/' . $template);
 }
 
 // Split tasl into command and task
-$cmd    = $jinput->get('task', 'cpanel.show');
+$cmd = $jinput->get('task', 'cpanel.show');
 //echo $cmd;die;
 
 //Time to handle view switching for our current setup for J3.7
-$view   = $jinput->get('view', '');
+$view = $jinput->get('view', '');
 //Check the view and redirect if any match.
-if ($view === 'customcss') {
+if ($view === 'customcss')
+{
 //	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.custom_css');
-	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0) { $cmd = $view; }
+	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+	{
+		$cmd = $view;
+	}
 	$controllerName = 'CustomCss';
 }
-if ($view === 'supportinfo') {
+if ($view === 'supportinfo')
+{
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
 }
-if ($view === 'config') {
+if ($view === 'config')
+{
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=params.edit');
 }
-if ($view === 'icalevent') {
+if ($view === 'icalevent')
+{
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.list');
 }
-if ($view === 'icaleventform') {
+if ($view === 'icaleventform')
+{
 	JFactory::getApplication()->redirect('index.php?option=com_jevents&task=icalevent.edit');
 }
 if ($view === 'categories')
@@ -125,28 +140,35 @@ if ($view === 'categories')
 }
 
 
-if (strpos($cmd, '.') !== false) {
+if (strpos($cmd, '.') !== false)
+{
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
 	// Define the controller name and path
-	$controllerName	= strtolower($controllerName);
-	$controllerPath	= JPATH_COMPONENT.'/'.'controllers'.'/'.$controllerName.'.php';
+	$controllerName = strtolower($controllerName);
+	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
 	//Ignore controller names array.
 	$ignore = array('customcss');
-	if (!in_array($controllerName, $ignore, FALSE))
+	if (!in_array($controllerName, $ignore, false))
 	{
 		$controllerName = "Admin" . $controllerName;
 	}
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
-	if (file_exists($controllerPath)) {
+	if (file_exists($controllerPath))
+	{
 		require_once($controllerPath);
-	} else {
-		throw new Exception(  'Invalid Controller' . $controllerName, 500);
+	}
+	else
+	{
+		throw new Exception('Invalid Controller' . $controllerName, 500);
+
 		return false;
 	}
-} else {
+}
+else
+{
 	// Base controller, just set the task
 	if (isset($controllerName) && $controllerName !== '')
 	{
@@ -166,8 +188,10 @@ if (strpos($cmd, '.') !== false) {
 
 			return false;
 		}
-	} else {
-		$controllerName = Null;
+	}
+	else
+	{
+		$controllerName = null;
 	}
 	$task = $cmd;
 }
@@ -184,17 +208,21 @@ JPluginHelper::importPlugin("jevents");
 //$db->execute();
 
 // Set the name for the controller and instantiate it
-$controllerClass = ucfirst($controllerName).'Controller';
-if (class_exists($controllerClass)) {
+$controllerClass = ucfirst($controllerName) . 'Controller';
+if (class_exists($controllerClass))
+{
 	$controller = new $controllerClass();
-} else {
-	throw new Exception(  'Invalid Controller Class - '.$controllerClass , 500);
+}
+else
+{
+	throw new Exception('Invalid Controller Class - ' . $controllerClass, 500);
+
 	return false;
 }
 
 // record what is running - used by the filters
-$registry	= JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","administrator");
+$registry = JRegistry::getInstance("jevents");
+$registry->set("jevents.activeprocess", "administrator");
 
 // Perform the Request task
 $controller->execute($task);

@@ -13,13 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 
 include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
-use Joomla\String\StringHelper;
-
 class EventCalendarCell_alternative extends EventCalendarCell_default
 {
 
-	function calendarCell(&$currentDay, $year, $month, $i, $slot="")
+	function calendarCell(&$currentDay, $year, $month, $i, $slot = "")
 	{
+
 		// pass $data by reference in order to update countdisplay
 
 
@@ -27,7 +26,7 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 
 		$Itemid = JEVHelper::getItemid();
 
-		$event_day = $this->event->dup();
+		$event_day   = $this->event->dup();
 		$event_month = $this->event->mup();
 
 		$id = $this->event->id();
@@ -40,7 +39,7 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 		// define start and end
 		$cellStart = '<div';
 		$cellStyle = 'padding:0;';
-		$cellEnd = '</div>' . "\n";
+		$cellEnd   = '</div>' . "\n";
 
 		$linkStyle = "";
 
@@ -48,20 +47,23 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 		$link = $this->event->viewDetailLink($year, $month, $currentDay['d0'], false);
 		$link = JRoute::_($link . $this->_datamodel->getCatidsOutLink());
 
-		$title          = $this->event->title();
-		
+		$title = $this->event->title();
+
 		// [mic] if title is too long, cut 'em for display
 		$tmpTitle = $title;
 		// set truncated title
-		if (!isset($this->event->truncatedtitle)){
-			if( JString::strlen( $title ) >= $cfg->get('com_calCutTitle',50)){
-				$tmpTitle = JString::substr( $title, 0, $cfg->get('com_calCutTitle',50) ) . ' ...';
+		if (!isset($this->event->truncatedtitle))
+		{
+			if (JString::strlen($title) >= $cfg->get('com_calCutTitle', 50))
+			{
+				$tmpTitle = JString::substr($title, 0, $cfg->get('com_calCutTitle', 50)) . ' ...';
 			}
-			$tmpTitle = JEventsHTML::special($tmpTitle);			
+			$tmpTitle                    = JEventsHTML::special($tmpTitle);
 			$this->event->truncatedtitle = $tmpTitle;
 		}
-		else {
-			$tmpTitle = $this->event->truncatedtitle ;
+		else
+		{
+			$tmpTitle = $this->event->truncatedtitle;
 		}
 
 		// [new mic] if amount of displaing events greater than defined, show only a scmall coloured icon
@@ -73,15 +75,16 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 
 		$templatedcell = false;
 		// set truncated title
-		if (!isset($this->event->truncatedtitle)){
-			$this->event->_title = $tmpTitle;
+		if (!isset($this->event->truncatedtitle))
+		{
+			$this->event->_title         = $tmpTitle;
 			$this->event->truncatedtitle = true;
 		}
 		if ($currentDay['countDisplay'] < $cfg->get('com_calMaxDisplay', 5))
 		{
 			ob_start();
 			$templatedcell = $this->loadedFromTemplate('month.calendar_cell', $this->event, 0);
-			$res = ob_get_clean();
+			$res           = ob_get_clean();
 			if ($templatedcell)
 			{
 				$templatedcell = $res;
@@ -100,7 +103,7 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 				if ($title_event_link == "")
 				{
 					$title_event_link = "\n" . '<a class="cal_titlelink" href="' . $link . '" ' . $linkStyle . '>'
-							. ( $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '' ) . ' ' . $tmpTitle . '</a>' . "\n";
+						. ($cfg->get('com_calDisplayStarttime') ? $tmp_start_time : '') . ' ' . $tmpTitle . '</a>' . "\n";
 				}
 				$cellStyle .= "border-left:8px solid " . $this->event->bgcolor() . ";padding-left:2px;";
 			}
@@ -108,10 +111,10 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 		else
 		{
 			$eventIMG = '<img align="left" src="' . JURI::root()
-					. 'components/' . JEV_COM_COMPONENT . '/images/event.png" alt="" style="height:12px;width:8px;border:1px solid white;background-color:' . $this->event->bgcolor() . '" />';
+				. 'components/' . JEV_COM_COMPONENT . '/images/event.png" alt="" style="height:12px;width:8px;border:1px solid white;background-color:' . $this->event->bgcolor() . '" />';
 
 			$title_event_link = "\n" . '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
-			$cellStyle .= ' float:left;width:10px;';
+			$cellStyle        .= ' float:left;width:10px;';
 		}
 
 		$cellString = '';
@@ -149,7 +152,7 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 					$fground = "#ffffff";
 				}
 
-				JevHtmlBootstrap::popover('.hasjevtip' , array("trigger"=>"hover focus", "placement"=>"top", "container"=>"#jevents_body", "delay"=> array( "show"=> 150, "hide"=> 150 )));
+				JevHtmlBootstrap::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
 				//$toolTipArray = array('className' => 'jevtip');
 				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
@@ -162,59 +165,66 @@ class EventCalendarCell_alternative extends EventCalendarCell_default
 
 				if (strpos($tooltip, "templated") === 0)
 				{
-					$cellString = JString::substr($tooltip,9);
-					$dom = new DOMDocument();
-                                        // see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
-                                        $dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
+					$cellString = JString::substr($tooltip, 9);
+					$dom        = new DOMDocument();
+					// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
+					$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
 
 					$classname = 'jevtt_title';
-					$finder = new DomXPath($dom);
-					$nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+					$finder    = new DomXPath($dom);
+					$nodes     = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
 
-					if ($nodes->length){
-						foreach ($nodes as $node){
+					if ($nodes->length)
+					{
+						foreach ($nodes as $node)
+						{
 							$title = $dom->saveHTML($node);
 							$node->parentNode->removeChild($node);
 						}
-						$body = $dom->getElementsByTagName('body')->item(0);
-						$cellString= '';
-						$children = $body->childNodes;
-						foreach ($children as $child) {
-							$cellString .= $child->ownerDocument->saveXML( $child );
+						$body       = $dom->getElementsByTagName('body')->item(0);
+						$cellString = '';
+						$children   = $body->childNodes;
+						foreach ($children as $child)
+						{
+							$cellString .= $child->ownerDocument->saveXML($child);
 						}
 					}
-					else {
-						$title = $cellString;
+					else
+					{
+						$title      = $cellString;
 						$cellString = "";
 					}
 				}
 				else
 				{
 					$cellString .= '<div class="jevtt_text" >' . $tooltip . '</div>';
-					$title = '<div class="jevtt_title" style = "color:' . $fground . ';background-color:' . $bground . '">' . $this->title . '</div>';
+					$title      = '<div class="jevtt_title" style = "color:' . $fground . ';background-color:' . $bground . '">' . $this->title . '</div>';
 				}
 
-				if ($templatedcell){
-					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
-					$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
-					$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
-					$time = $cfg->get('com_calDisplayStarttime')?$tmp_start_time:"";
+				if ($templatedcell)
+				{
+					$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title . $cellString, ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title, ENT_QUOTES), $templatedcell);
+					$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString, ENT_QUOTES), $templatedcell);
+					$time          = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
 					$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
-					return  $templatedcell;
+
+					return $templatedcell;
 				}
 
-				$html = $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip($title , $cellString, $title_event_link) . $cellEnd;
+				$html = $cellStart . ' style="' . $cellStyle . '">' . $this->tooltip($title, $cellString, $title_event_link) . $cellEnd;
 
 				return $html;
 			}
 		}
 		if ($templatedcell)
 		{
-			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title.$cellString,ENT_QUOTES), $templatedcell);
-			$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title,ENT_QUOTES), $templatedcell);
-			$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString,ENT_QUOTES), $templatedcell);
-			$time = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
+			$templatedcell = str_replace("[[TOOLTIP]]", htmlspecialchars($title . $cellString, ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPTITLE]]", htmlspecialchars($title, ENT_QUOTES), $templatedcell);
+			$templatedcell = str_replace("[[TOOLTIPCONTENT]]", htmlspecialchars($cellString, ENT_QUOTES), $templatedcell);
+			$time          = $cfg->get('com_calDisplayStarttime') ? $tmp_start_time : "";
 			$templatedcell = str_replace("[[EVTTIME]]", $time, $templatedcell);
+
 			return $templatedcell;
 		}
 

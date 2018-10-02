@@ -11,10 +11,10 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-include_once(JPATH_SITE."/modules/mod_jevents_cal/tmpl/default/calendar.php");
+include_once(JPATH_SITE . "/modules/mod_jevents_cal/tmpl/default/calendar.php");
 
 
-class AlternativeModCalView extends DefaultModCalView 
+class AlternativeModCalView extends DefaultModCalView
 {
-	
+
 }

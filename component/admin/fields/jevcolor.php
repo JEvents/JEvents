@@ -8,12 +8,25 @@
 defined('_JEXEC') or die();
 
 
-include_once(JPATH_SITE."/libraries/joomla/form/fields/color.php");
+include_once(JPATH_SITE . "/libraries/joomla/form/fields/color.php");
 
 class JFormFieldJevcolor extends JFormFieldColor
 {
+	protected function getLabel()
+	{
+
+		if ($input = $this->getInput())
+		{
+			return parent::getLabel();
+		}
+
+		return "";
+
+	}
+
 	protected function getInput()
 	{
+
 		$cfg = JEVConfig::getInstance();
 
 		$hideColour = false;
@@ -25,7 +38,8 @@ class JFormFieldJevcolor extends JFormFieldColor
 		{
 			$hideColour = true;
 		}
-		else {
+		else
+		{
 			$hideColour = false;
 		}
 
@@ -33,24 +47,15 @@ class JFormFieldJevcolor extends JFormFieldColor
 		{
 
 			$input = parent::getInput();
-			
+
 			// Unswitch the layouts that Joomla has applied!
 			// $this->layout = $this->control === 'simple' ? $this->layout . '.simple' : $this->layout . '.advanced';
 			$this->layout = str_replace(array(".simple", ".advanced"), "", $this->layout);
 
 			return $input;
 		}
-		return "";
-	}
 
-	protected function getLabel()
-	{
-		if ($input = $this->getInput())
-		{
-			return parent::getLabel();
-		}
 		return "";
-
 	}
 
 }

@@ -28,29 +28,39 @@ class TableTranslate extends JTable
 	var $location = null;
 	var $summary = null;
 
-	var $contact= null;
-	var $extra_info= null;
+	var $contact = null;
+	var $extra_info = null;
 
 	var $language = null;
+
 	/**
 	 * Constructor
 	 *
 	 * @param object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct() {
+	function __construct()
+	{
+
 		$db = JFactory::getDbo();
 		parent::__construct('#__jevents_translation', 'translation_id', $db);
 	}
 
-	public static function checkTable(){
+	public static function checkTable()
+	{
+
 		$db = JFactory::getDbo();
 	}
 
-	function bind($array, $ignore = '') {
+	function bind($array, $ignore = '')
+	{
+
 		$data = array();
-		foreach($array as $k => $v){
-			if (strpos($k, "trans_")===0){
+		foreach ($array as $k => $v)
+		{
+			if (strpos($k, "trans_") === 0)
+			{
 				$data[str_replace("trans_", "", $k)] = $v;
 			}
 		}

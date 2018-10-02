@@ -17,20 +17,21 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class DefaultViewAdmin extends JEventsDefaultView 
+class DefaultViewAdmin extends JEventsDefaultView
 {
-	
+
 	function listevents($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+
+	}
 }

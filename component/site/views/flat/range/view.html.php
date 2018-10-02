@@ -17,33 +17,34 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class flatViewRange extends JEventsflatView 
+class flatViewRange extends JEventsflatView
 {
-	
+
 	function listevents($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
-		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		list($startdate, $enddate) = $this->getStartEndDates();
 
-		list($startyear,$startmonth,$startday)=explode("-",$startdate);
-		list($endyear,$endmonth,$endday)=explode("-",$enddate);
-		
-		$this->assign("startdate",$startdate);
-		$this->assign("startyear",$startyear);
-		$this->assign("startmonth",$startmonth);
-		$this->assign("startday",$startday);
-		$this->assign("enddate",$enddate);
-		$this->assign("endyear",$endyear);
-		$this->assign("endmonth",$endmonth);
-		$this->assign("endday",$endday);
+		list($startyear, $startmonth, $startday) = explode("-", $startdate);
+		list($endyear, $endmonth, $endday) = explode("-", $enddate);
+
+		$this->assign("startdate", $startdate);
+		$this->assign("startyear", $startyear);
+		$this->assign("startmonth", $startmonth);
+		$this->assign("startday", $startday);
+		$this->assign("enddate", $enddate);
+		$this->assign("endyear", $endyear);
+		$this->assign("endmonth", $endmonth);
+		$this->assign("endday", $endday);
 
 		$order = $params->get("dataorder", "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC");
-		
+
 		// Note that using a $limit value of -1 the limit is ignored in the query
-		$this->assign("data",$this->datamodel->getRangeData($startdate,$enddate,$this->limit, $this->limitstart, $order));
+		$this->assign("data", $this->datamodel->getRangeData($startdate, $enddate, $this->limit, $this->limitstart, $order));
 
 	}
 }

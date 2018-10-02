@@ -23,16 +23,9 @@ class JFormFieldJevview extends JFormFieldList
 
 	protected $type = 'jevview';
 
-	protected
-			function getInput()
-	{
-		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields($this->element, $this->form->getName());
-		return parent::getInput();
-	}
-
 	public function getOptions()
 	{
+
 		$jinput = JFactory::getApplication()->input;
 
 		// Must load admin language files
@@ -40,28 +33,45 @@ class JFormFieldJevview extends JFormFieldList
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$views = array();
-		include_once(JPATH_ADMINISTRATOR."/components/com_jevents/jevents.defines.php");
+		include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
-		$exceptions_values = (string)$this->element['except'] ? (string) $this->element['except'] : "";
-		$exceptions = array();
-		$exceptions = explode(',', $exceptions_values);
+		$exceptions_values = (string) $this->element['except'] ? (string) $this->element['except'] : "";
+		$exceptions        = array();
+		$exceptions        = explode(',', $exceptions_values);
 
-		foreach (JEV_CommonFunctions::getJEventsViewList((string)$this->element["viewtype"]) as $viewfile) {
-			if (in_array($viewfile, $exceptions)) {
+		foreach (JEV_CommonFunctions::getJEventsViewList((string) $this->element["viewtype"]) as $viewfile)
+		{
+			if (in_array($viewfile, $exceptions))
+			{
 				continue;
 			}
 			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
 		}
-		sort( $views );
-		if ($this->menu !='hide'){
-                    $task = $jinput->get('task');
-                    if ($task == "params.edit") {
-                        unset($views['global']);
-                    } else {
-			array_unshift($views , JHTML::_('select.option', 'global', JText::_( 'USE_GLOBAL' )));
-                    }                        
-                }
+		sort($views);
+		if ($this->menu != 'hide')
+		{
+			$task = $jinput->get('task');
+			if ($task == "params.edit")
+			{
+				unset($views['global']);
+			}
+			else
+			{
+				array_unshift($views, JHTML::_('select.option', 'global', JText::_('USE_GLOBAL')));
+			}
+		}
+
 		return $views;
-		
+
+	}
+
+	protected
+	function getInput()
+	{
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
+		return parent::getInput();
 	}
 }

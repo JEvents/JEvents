@@ -17,14 +17,15 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class AlternativeViewDay extends JEventsAlternativeView 
+class AlternativeViewDay extends JEventsAlternativeView
 {
 	function listevents($tpl = null)
 	{
-		JEVHelper::componentStylesheet($this);
-		$document = JFactory::getDocument();						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	}	
+		JEVHelper::componentStylesheet($this);
+		$document = JFactory::getDocument();
+		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+	}
 
 }

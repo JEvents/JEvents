@@ -19,117 +19,125 @@ class JFormFieldJevcolumns extends JFormFieldText
 {
 
 	protected
-			$type = 'Jevcolumns';
+		$type = 'Jevcolumns';
 
 	protected
-			function getInput()
+	function getInput()
 	{
 
-                // Must also load frontend language files
-                $lang = JFactory::getLanguage();
-                $lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+		// Must also load frontend language files
+		$lang = JFactory::getLanguage();
+		$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		// Mkae sure jQuery is loaded
-                JHtml::_('jquery.framework');
-                JHtml::_('jquery.ui', array("core","sortable"));
-                JHtml::_('bootstrap.framework');
-                JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-                // this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-                JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+		JHtml::_('jquery.framework');
+		JHtml::_('jquery.ui', array("core", "sortable"));
+		JHtml::_('bootstrap.framework');
+		JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
+		JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 
 		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
 
 		$user = JFactory::getUser();
 
-		$collist = array();
-		$collist[] = array(JText::_("JEV_CORE_DATA",true), "disabled");
-		
-		$collist[] = array(JText::_("JEV_FIELD_TITLE",true), "TITLE");
-		$collist[] = array(JText::_("JEV_FIELD_TITLE_LINK",true), "TITLE_LINK");
-		$collist[] = array(JText::_("JEV_FIELD_REPEATSUMMARY",true), "REPEATSUMMARY");
-		$collist[] = array(JText::_("JEV_FIELD_STARTDATE",true), "STARTDATE");
-		$collist[] = array(JText::_("JEV_FIELD_STARTTIME",true), "STARTTIME");
-		$collist[] = array(JText::_("JEV_FIELD_ISOSTARTTIME",true), "ISOSTART");
-		$collist[] = array(JText::_("JEV_FIELD_ENDDATE",true), "ENDDATE");
-		$collist[] = array(JText::_("JEV_FIELD_ENDTIME",true), "ENDTIME");
-		$collist[] = array(JText::_("JEV_FIELD_ISOENDTIME",true), "ISOEND");
-		$collist[] = array(JText::_("JEV_FIELD_MULTIENDDATE",true), "MULTIENDDATE");
-                $collist[] = array(JText::_("JEV_FIRSTREPEATSTART",true), "FIRSTREPEATSTART");
-                $collist[] = array(JText::_("JEV_LASTREPEATEND",true), "LASTREPEATEND");
-		$collist[] = array(JText::_("JEV_FIELD_DURATION",true), "DURATION");
-		$collist[] = array(JText::_("JEV_FIELD_PREVIOUSNEXT",true), "PREVIOUSNEXT");
-		$collist[] = array(JText::_("JEV_FIELD_FIRSTREPEAT",true), "FIRSTREPEAT");
-		$collist[] = array(JText::_("JEV_FIELD_LASTREPEAT",true), "LASTREPEAT");
-		$collist[] = array(JText::_("JEV_FIELD_CREATOR_LABEL",true), "CREATOR_LABEL");
-		$collist[] = array(JText::_("JEV_FIELD_CREATOR",true), "CREATOR");
-		$collist[] = array(JText::_("JEV_FIELD_HITS",true), "HITS");
-		$collist[] = array(JText::_("JEV_FIELD_DESCRIPTION",true), "DESCRIPTION");
-		$collist[] = array(JText::_("JEV_FIELD_LOCATION_LABEL",true), "LOCATION_LABEL");
-		$collist[] = array(JText::_("JEV_FIELD_LOCATION",true), "LOCATION");
-		$collist[] = array(JText::_("JEV_FIELD_CONTACT_LABEL",true), "CONTACT_LABEL");
-		$collist[] = array(JText::_("JEV_FIELD_CONTACT",true), "CONTACT");
-		$collist[] = array(JText::_("JEV_FIELD_EXTRAINFO",true), "EXTRAINFO");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY",true), "CATEGORY");
-		$collist[] = array(JText::_("JEV_FIELD_ALL_CATEGORIES",true), "ALLCATEGORIES");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK",true), "CATEGORYLNK");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK_RAW",true), "CATEGORYLNK_RAW");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGE",true), "CATEGORYIMG");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGES",true), "CATEGORYIMGS");
-		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_DESCRIPTION",true), "CATDESC");
-		$collist[] = array(JText::_("JEV_FIELD_COLOUR",true), "COLOUR");
-		$collist[] = array(JText::_("JEV_FIELD_CALENDAR",true), "CALENDAR");
-		$collist[] = array(JText::_("JEV_FIELD_CREATIONDATE",true), "CREATED");
-		$collist[] = array(JText::_("JEV_FIELD_LINKSTART",true), "LINKSTART");
-		$collist[] = array(JText::_("JEV_FIELD_LINKEND",true), "LINKEND");
-		$collist[] = array(JText::_("JEV_FIELD_URL",true), "URL");
-		$collist[] = array(JText::_("JEV_ACCESS_LEVEL",true), "ACCESS");
-		$collist[] = array(JText::_("JEV_EVENT_PRIORITY",true), "PRIORITY");
-		$collist[] = array(JText::_("JEV_FIELD_ICALBUTTON",true), "ICALBUTTON");
+		$collist   = array();
+		$collist[] = array(JText::_("JEV_CORE_DATA", true), "disabled");
+
+		$collist[] = array(JText::_("JEV_FIELD_TITLE", true), "TITLE");
+		$collist[] = array(JText::_("JEV_FIELD_TITLE_LINK", true), "TITLE_LINK");
+		$collist[] = array(JText::_("JEV_FIELD_REPEATSUMMARY", true), "REPEATSUMMARY");
+		$collist[] = array(JText::_("JEV_FIELD_STARTDATE", true), "STARTDATE");
+		$collist[] = array(JText::_("JEV_FIELD_STARTTIME", true), "STARTTIME");
+		$collist[] = array(JText::_("JEV_FIELD_ISOSTARTTIME", true), "ISOSTART");
+		$collist[] = array(JText::_("JEV_FIELD_ENDDATE", true), "ENDDATE");
+		$collist[] = array(JText::_("JEV_FIELD_ENDTIME", true), "ENDTIME");
+		$collist[] = array(JText::_("JEV_FIELD_ISOENDTIME", true), "ISOEND");
+		$collist[] = array(JText::_("JEV_FIELD_MULTIENDDATE", true), "MULTIENDDATE");
+		$collist[] = array(JText::_("JEV_FIRSTREPEATSTART", true), "FIRSTREPEATSTART");
+		$collist[] = array(JText::_("JEV_LASTREPEATEND", true), "LASTREPEATEND");
+		$collist[] = array(JText::_("JEV_FIELD_DURATION", true), "DURATION");
+		$collist[] = array(JText::_("JEV_FIELD_PREVIOUSNEXT", true), "PREVIOUSNEXT");
+		$collist[] = array(JText::_("JEV_FIELD_FIRSTREPEAT", true), "FIRSTREPEAT");
+		$collist[] = array(JText::_("JEV_FIELD_LASTREPEAT", true), "LASTREPEAT");
+		$collist[] = array(JText::_("JEV_FIELD_CREATOR_LABEL", true), "CREATOR_LABEL");
+		$collist[] = array(JText::_("JEV_FIELD_CREATOR", true), "CREATOR");
+		$collist[] = array(JText::_("JEV_FIELD_HITS", true), "HITS");
+		$collist[] = array(JText::_("JEV_FIELD_DESCRIPTION", true), "DESCRIPTION");
+		$collist[] = array(JText::_("JEV_FIELD_LOCATION_LABEL", true), "LOCATION_LABEL");
+		$collist[] = array(JText::_("JEV_FIELD_LOCATION", true), "LOCATION");
+		$collist[] = array(JText::_("JEV_FIELD_CONTACT_LABEL", true), "CONTACT_LABEL");
+		$collist[] = array(JText::_("JEV_FIELD_CONTACT", true), "CONTACT");
+		$collist[] = array(JText::_("JEV_FIELD_EXTRAINFO", true), "EXTRAINFO");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY", true), "CATEGORY");
+		$collist[] = array(JText::_("JEV_FIELD_ALL_CATEGORIES", true), "ALLCATEGORIES");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK", true), "CATEGORYLNK");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_LINK_RAW", true), "CATEGORYLNK_RAW");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGE", true), "CATEGORYIMG");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_IMAGES", true), "CATEGORYIMGS");
+		$collist[] = array(JText::_("JEV_FIELD_CATEGORY_DESCRIPTION", true), "CATDESC");
+		$collist[] = array(JText::_("JEV_FIELD_COLOUR", true), "COLOUR");
+		$collist[] = array(JText::_("JEV_FIELD_CALENDAR", true), "CALENDAR");
+		$collist[] = array(JText::_("JEV_FIELD_CREATIONDATE", true), "CREATED");
+		$collist[] = array(JText::_("JEV_FIELD_LINKSTART", true), "LINKSTART");
+		$collist[] = array(JText::_("JEV_FIELD_LINKEND", true), "LINKEND");
+		$collist[] = array(JText::_("JEV_FIELD_URL", true), "URL");
+		$collist[] = array(JText::_("JEV_ACCESS_LEVEL", true), "ACCESS");
+		$collist[] = array(JText::_("JEV_EVENT_PRIORITY", true), "PRIORITY");
+		$collist[] = array(JText::_("JEV_FIELD_ICALBUTTON", true), "ICALBUTTON");
 
 		// get list of enabled plugins
 		$jevplugins = JPluginHelper::getPlugin("jevents");
-		foreach ($jevplugins as $jevplugin){
-			if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
-				$classname = "plgJevents".ucfirst($jevplugin->name);
-				if (is_callable(array($classname,"fieldNameArray"))){
+		foreach ($jevplugins as $jevplugin)
+		{
+			if (JPluginHelper::importPlugin("jevents", $jevplugin->name))
+			{
+				$classname = "plgJevents" . ucfirst($jevplugin->name);
+				if (is_callable(array($classname, "fieldNameArray")))
+				{
 					$lang = JFactory::getLanguage();
-					$lang->load("plg_jevents_".$jevplugin->name,JPATH_ADMINISTRATOR);
-					$fieldNameArray = call_user_func(array($classname,"fieldNameArray"),'list');
+					$lang->load("plg_jevents_" . $jevplugin->name, JPATH_ADMINISTRATOR);
+					$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), 'list');
 					if (!isset($fieldNameArray['labels'])) continue;
 
 					$collist[] = array($fieldNameArray["group"], "disabled");
 
-					for ($i=0;$i<count($fieldNameArray['labels']);$i++) {
-						if ($fieldNameArray['labels'][$i]=="" || $fieldNameArray['labels'][$i]==" Label")  continue;
-						$collist[] = array(str_replace(":"," ",$fieldNameArray['labels'][$i]), $fieldNameArray['values'][$i]);
+					for ($i = 0; $i < count($fieldNameArray['labels']); $i++)
+					{
+						if ($fieldNameArray['labels'][$i] == "" || $fieldNameArray['labels'][$i] == " Label") continue;
+						$collist[] = array(str_replace(":", " ", $fieldNameArray['labels'][$i]), $fieldNameArray['values'][$i]);
 					}
 				}
 			}
 		}
 
-		$invalue = array();
+		$invalue       = array();
 		$indexedgroups = array();
-		if ($this->value!=""){
+		if ($this->value != "")
+		{
 			$ingroups = explode("||", $this->value);
-			foreach ($ingroups as $group){
+			foreach ($ingroups as $group)
+			{
 				$group = explode("|", $group);
-				if ($group[0]==""){
+				if ($group[0] == "")
+				{
 					continue;
 				}
-				$invalue[]=$group[0];
+				$invalue[] = $group[0];
 
-				if (count($group)<3){
+				if (count($group) < 3)
+				{
 					$group[2] = $group[0];
 				}
 				list($id, $fieldlabel, $label) = $group;
-				$col = new stdClass();
-				$col->fieldlabel = $fieldlabel;
-				$col->id = $id;
-				$col->label = $label;
-				$col->raw = implode("|", $group);
-				$indexedgroups[$id]=$col;
+				$col                = new stdClass();
+				$col->fieldlabel    = $fieldlabel;
+				$col->id            = $id;
+				$col->label         = $label;
+				$col->raw           = implode("|", $group);
+				$indexedgroups[$id] = $col;
 
 			}
 		}
@@ -139,7 +147,8 @@ class JFormFieldJevcolumns extends JFormFieldText
 			<div id="columnchoices" style="margin-top:10px;padding:5px;min-width:200px;height:150px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($collist as $col)
 		{
-			if (count($col)<3){
+			if (count($col) < 3)
+			{
 				$col[2] = $col[0];
 			}
 			list($fieldlabel, $id, $label) = $col;
@@ -147,28 +156,31 @@ class JFormFieldJevcolumns extends JFormFieldText
 			if (!in_array($id, $invalue))
 			{
 				// we can't handle parameters yet
-				if (strpos($id, ":")){
+				if (strpos($id, ":"))
+				{
 					continue;
 				}
-				if ($id=="disabled"){
-					$input.='<div><strong>' . $fieldlabel . "</strong></div>\n";
+				if ($id == "disabled")
+				{
+					$input .= '<div><strong>' . $fieldlabel . "</strong></div>\n";
 				}
-				else {
-					$input.='<div>' . $fieldlabel . "<span style='display:none'>$id</span></div>\n";
+				else
+				{
+					$input .= '<div>' . $fieldlabel . "<span style='display:none'>$id</span></div>\n";
 				}
 			}
 		}
-		$input .= '</div></td>
+		$input    .= '</div></td>
 		<td><div  style="font-weight:bold;margin-left:20px;">' . JText::_("JEV_COLUMNS_DRAG_TO_REORDER_OR_CLICK_TO_REMOVE") . '</div>
 			<div id="columnmatches" style="margin:10px 0px 0px 20px;padding-top:5px;min-width:250px;">';
-                $input.='<div id="columnmatches_heading" style="clear:left;">'
-                        . '<div style="width:200px;display:inline-block;font-weight:bold">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_NAME"). "</div>"
-                        . '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">'.JText::_("JEV_COLUMNS_SELECTED_FIELD_LABEL"). "</div>"
-                        . "</div>";
+		$input    .= '<div id="columnmatches_heading" style="clear:left;">'
+			. '<div style="width:200px;display:inline-block;font-weight:bold">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_NAME") . "</div>"
+			. '<div style="width:200px;display:inline-block;font-weight:bold;margin-left:20px;">' . JText::_("JEV_COLUMNS_SELECTED_FIELD_LABEL") . "</div>"
+			. "</div>";
 		$invalues = array();
 		foreach ($invalue as $col)
 		{
-			$input.='<div id="column' . $col. '" style="clear:left;"><div style="width:200px;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='".$indexedgroups[$col]->label."' style='margin-left:20px;' /></div>";
+			$input      .= '<div id="column' . $col . '" style="clear:left;"><div style="width:200px;display:inline-block;" class="sortablehandle">' . $indexedgroups[$col]->fieldlabel . "</div><input type='text' value='" . $indexedgroups[$col]->label . "' style='margin-left:20px;' /></div>";
 			$invalues[] = $indexedgroups[$col]->raw;
 		}
 		$invalues = implode("||", $invalues);
@@ -177,8 +189,9 @@ class JFormFieldJevcolumns extends JFormFieldText
 		</tr></table>';
 		$input .= '<textarea style="display:block;margin-top:10px;"  name="' . $this->name . '"  id="jevcolumns">' . $invalues . '</textarea>';
 		$input .= '<div style="clear:left"></div>';
-		
+
 		$input .= '<script type="text/javascript">setupColumnChoices(true);setupColumnLis(true);</script>';
+
 		return $input;
 
 	}
@@ -186,12 +199,13 @@ class JFormFieldJevcolumns extends JFormFieldText
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected
-			function getOptions()
+	function getOptions()
 	{
+
 		// Initialize variables.
 		$session = JFactory::getSession();
 		$options = array();
@@ -242,7 +256,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 		// if no value exists, try to load a selected filter category from the old category filters
 		if (!$this->value && ($this->form instanceof JForm))
 		{
-			$context = $this->form->getName();
+			$context     = $this->form->getName();
 			$this->value = array();
 			for ($i = 0; $i < 20; $i++)
 			{

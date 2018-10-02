@@ -10,30 +10,34 @@ class JFormFieldJeveventpriorities extends JFormField
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'Jeveventpriorities';
 
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return	string	The field input markup.
-	 * @since	1.6
+	 * @return    string    The field input markup.
+	 * @since    1.6
 	 */
 	protected function getInput()
-	{	
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$showpriority = $params->get("showpriority", 0);
+	{
+
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$showpriority   = $params->get("showpriority", 0);
 		$showPriorityTo = (int) $params->get('showPriorityACL', 0);
 
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		$isAuth = JEVHelper::isEventPublisher(true);
-		if ($showPriorityTo === 1) {
+		if ($showPriorityTo === 1)
+		{
 			$isAuth = JEVHelper::isEventCreator(true);
-		} else if ($showPriorityTo === 2) {
+		}
+		else if ($showPriorityTo === 2)
+		{
 			$isAuth = JEVHelper::isEventEditor();
 		}
 
@@ -45,9 +49,11 @@ class JFormFieldJeveventpriorities extends JFormField
 			{
 				$list[] = JHTML::_('select.option', $i, $i, 'val', 'text');
 			}
-			return  JHTML::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
+
+			return JHTML::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
 		}
-		else {
+		else
+		{
 			return "";
 		}
 

@@ -2,7 +2,9 @@
 <extension version="2.5" type="library" method="upgrade">
 	<name>googl Shortener</name>
 	<libraryname>googl</libraryname>
-	<description>Googl Shortener library created by Sebastian Wyder (https://github.com/sebi/googl-php) and package by Carlos Cámara (http://www.jevents.net)</description>
+	<description>Googl Shortener library created by Sebastian Wyder (https://github.com/sebi/googl-php) and package by
+		Carlos Cámara (http://www.jevents.net)
+	</description>
 	<author>Sebastian Wyder package by Carlos Camara</author>
 	<creationDate>September 2018</creationDate>
 	<copyright>(C) 2010-2018 GWE Systems Ltd. All rights reserved.</copyright>

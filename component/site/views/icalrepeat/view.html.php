@@ -12,54 +12,56 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-use Joomla\String\StringHelper;
-
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-include_once(JEV_ADMINPATH."/views/icalrepeat/view.html.php");
+include_once(JEV_ADMINPATH . "/views/icalrepeat/view.html.php");
 
 class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 {
 	var $jevlayout = null;
-	
-	function __construct($config = array()){
-		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
-		parent::__construct($config);	
-		
+
+	function __construct($config = array())
+	{
+
+		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
+		parent::__construct($config);
+
 		// used only for helper functions
-		$this->jevlayout="default";	
-		$this->addHelperPath(realpath(dirname(__FILE__)."/../default/helpers"));		
-		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");		
-	}	
-	
+		$this->jevlayout = "default";
+		$this->addHelperPath(realpath(dirname(__FILE__) . "/../default/helpers"));
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+	}
+
 	function edit($tpl = null)
 	{
+
 		$document = JFactory::getDocument();
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
-		include(JEV_ADMINLIBS."/editStrings.php");		
+		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
 
-		JEVHelper::script('editicalJQ.js',  'components/'.JEV_COM_COMPONENT.'/assets/js/');  
-		JEVHelper::script('view_detailJQ.js', 'components/'.JEV_COM_COMPONENT.'/assets/js/');
-                  JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		
-		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
-		
+		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+
+		$document->setTitle(JText::_('EDIT_ICAL_REPEAT'));
+
 		// Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
-	
-		$bar =  JToolBar::getInstance('toolbar');
-		if (JEVHelper::isEventEditor()) {
+		JToolbarHelper::title(JText::_('EDIT_ICAL_REPEAT'), 'jevents');
+
+		$bar = JToolBar::getInstance('toolbar');
+		if (JEVHelper::isEventEditor())
+		{
 			JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		}
 		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
@@ -69,15 +71,15 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		{
 			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
-		
+
 		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
-	
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		JHTML::_('behavior.tooltip');
 
-		
-		$this->_adminStart();		
+
+		$this->_adminStart();
 
 		// load Joomla javascript classes
 		JHTML::_('behavior.core');
@@ -97,167 +99,198 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		parent::displaytemplate($tpl);
 		$this->_adminEnd();
-	}	
-	
-	function _adminStart(){
-		
-		$dispatcher	= JEventDispatcher::getInstance();
-		list($this->year,$this->month,$this->day) = JEVHelper::getYMD();
-		$this->Itemid	= JEVHelper::getItemid();
-		$this->datamodel =new JEventsDataModel();
-		$dispatcher->trigger( 'onJEventsHeader', array($this));
-
-?>
-	<div style="clear:both"
-				<?php
-				$mainframe = JFactory::getApplication();
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
-				?>>
-		<div id="toolbar-box" >
-<?php
-		$bar =  JToolBar::getInstance('toolbar');
-		$barhtml = $bar->render();
-		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
-		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
-		echo $barhtml;
-		
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			// JFactory::getApplication()->JComponentTitle;
-			$title ="";
-		}
-		else
-		{
-			$title = JFactory::getApplication()->get('JComponentTitle');
-		}
-		echo $title;
-?>
-		</div>
-<?php		
-		$dispatcher	= JEventDispatcher::getInstance();
-		$dispatcher->trigger( 'onJEventsFooter', array($this));
-
-
 	}
 
-	function _adminEnd(){
-?>
-	</div>
-<?php			
-	}
-	
-	function _xadminStart(){
-		
-?>
-	<div id="content-box" style="clear:both">
-		<div class="border">
-			<div class="padding">
-				<div id="toolbar-box" >
-   					<div class="t">
-						<div class="t">
-							<div class="t"></div>
-						</div>
-					</div>
-					<div class="m">
-<?php
-		$bar =  JToolBar::getInstance('toolbar');
-		$barhtml = $bar->render();
-		//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
-		//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
-		echo $barhtml;
-		
-		$title = JFactory::getApplication()->get('JComponentTitle');
-		echo $title;
-?>
-					<div class="clr"></div>
-					</div>
-					<div class="b">
-						<div class="b">
-							<div class="b"></div>	
-						</div>
-					</div>
-  				</div>
-				<div id="toolbar-box2">
-   					<div class="t">
-						<div class="t">
-							<div class="t"></div>
-						</div>
-					</div>
-					<div class="m">
-<?php			
-	}
-
-	function _xadminEnd(){
-?>
-					<div class="clr"></div>
-					</div>
-					<div class="b">
-						<div class="b">
-							<div class="b"></div>	
-						</div>
-					</div>
-  				</div>
-			</div>
-		</div>
-	</div>
-<?php			
-	}
-
-	// This handles all methods where the view is passed as the first argument
-	function __call($name, $arguments){
-		if (strpos($name,"_")===0){
-			$name="ViewHelper".ucfirst(JString::substr($name,1));
-		}
-		$helper = ucfirst($this->jevlayout).ucfirst($name);
-		if (!$this->loadHelper($helper)){
-			$helper = "Default".ucfirst($name);
-			if (!$this->loadHelper($helper)){
-				return;
-			}
-		}
-		$args = array_unshift($arguments,$this);
-		if (class_exists($helper)){
-			if (class_exists("ReflectionClass") ){
-				$reflectionObj = new ReflectionClass($helper);
-				if (method_exists($reflectionObj,"newInstanceArgs")){
-					$var = $reflectionObj->newInstanceArgs($arguments);	
-				}
-				else {
-					$var = $this->CreateClass($helper,$arguments);
-				}
-			}
-			else {
-				$var = $this->CreateClass($helper,$arguments);
-			}
-			return;
-		}
-		else if (is_callable($helper)){
-			return call_user_func_array($helper,$arguments);
-		}
-	}
-	
-	
 	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
 	{
-		$bar =  JToolBar::getInstance('toolbar');
+
+		$bar = JToolBar::getInstance('toolbar');
 
 		// Add a standard button
 		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
 
 	}
 
-	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
+	function _adminStart()
 	{
-		$bar =  JToolBar::getInstance('toolbar');
 
-		// Add a standard button
-		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
+		$dispatcher = JEventDispatcher::getInstance();
+		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
+		$this->Itemid    = JEVHelper::getItemid();
+		$this->datamodel = new JEventsDataModel();
+		$dispatcher->trigger('onJEventsHeader', array($this));
+
+		?>
+		<div style="clear:both"
+		<?php
+		$mainframe = JFactory::getApplication();
+		$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
+		?>>
+		<div id="toolbar-box">
+			<?php
+			$bar     = JToolBar::getInstance('toolbar');
+			$barhtml = $bar->render();
+			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
+			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
+			echo $barhtml;
+
+			if (JevJoomlaVersion::isCompatible("3.0"))
+			{
+				// JFactory::getApplication()->JComponentTitle;
+				$title = "";
+			}
+			else
+			{
+				$title = JFactory::getApplication()->get('JComponentTitle');
+			}
+			echo $title;
+			?>
+		</div>
+		<?php
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onJEventsFooter', array($this));
+
 
 	}
-	
-	protected function CreateClass($className, $params) {
-		switch (count($params)) {
+
+	function _adminEnd()
+	{
+
+		?>
+		</div>
+		<?php
+	}
+
+	function _xadminStart()
+	{
+
+		?>
+		<div id="content-box" style="clear:both">
+		<div class="border">
+		<div class="padding">
+		<div id="toolbar-box">
+			<div class="t">
+				<div class="t">
+					<div class="t"></div>
+				</div>
+			</div>
+			<div class="m">
+				<?php
+				$bar     = JToolBar::getInstance('toolbar');
+				$barhtml = $bar->render();
+				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
+				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
+				echo $barhtml;
+
+				$title = JFactory::getApplication()->get('JComponentTitle');
+				echo $title;
+				?>
+				<div class="clr"></div>
+			</div>
+			<div class="b">
+				<div class="b">
+					<div class="b"></div>
+				</div>
+			</div>
+		</div>
+		<div id="toolbar-box2">
+		<div class="t">
+			<div class="t">
+				<div class="t"></div>
+			</div>
+		</div>
+		<div class="m">
+		<?php
+	}
+
+	// This handles all methods where the view is passed as the first argument
+
+	function _xadminEnd()
+	{
+
+		?>
+		<div class="clr"></div>
+		</div>
+		<div class="b">
+			<div class="b">
+				<div class="b"></div>
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<?php
+	}
+
+	function __call($name, $arguments)
+	{
+
+		if (strpos($name, "_") === 0)
+		{
+			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
+		}
+		$helper = ucfirst($this->jevlayout) . ucfirst($name);
+		if (!$this->loadHelper($helper))
+		{
+			$helper = "Default" . ucfirst($name);
+			if (!$this->loadHelper($helper))
+			{
+				return;
+			}
+		}
+		$args = array_unshift($arguments, $this);
+		if (class_exists($helper))
+		{
+			if (class_exists("ReflectionClass"))
+			{
+				$reflectionObj = new ReflectionClass($helper);
+				if (method_exists($reflectionObj, "newInstanceArgs"))
+				{
+					$var = $reflectionObj->newInstanceArgs($arguments);
+				}
+				else
+				{
+					$var = $this->CreateClass($helper, $arguments);
+				}
+			}
+			else
+			{
+				$var = $this->CreateClass($helper, $arguments);
+			}
+
+			return;
+		}
+		else if (is_callable($helper))
+		{
+			return call_user_func_array($helper, $arguments);
+		}
+	}
+
+	function loadHelper($file = null)
+	{
+
+		if (function_exists($file) || class_exists($file)) return true;
+
+		// load the template script
+		jimport('joomla.filesystem.path');
+		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+
+		if ($helper != false)
+		{
+			// include the requested template filename in the local scope
+			include_once $helper;
+		}
+
+		return $helper;
+	}
+
+	protected function CreateClass($className, $params)
+	{
+
+		switch (count($params))
+		{
 			case 0:
 				return new $className();
 				break;
@@ -293,25 +326,20 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 				break;
 			default:
 				echo "Too many arguments";
+
 				return null;
 				break;
 		}
 	}
 
-	function loadHelper( $file = null)
+	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
 	{
-		if (function_exists($file) || class_exists($file)) return true;
-		
-		// load the template script
-		jimport('joomla.filesystem.path');
-		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
 
-		if ($helper != false)
-		{
-			// include the requested template filename in the local scope
-			include_once $helper;
-		}
-		return $helper;
+		$bar = JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
+
 	}
 
 }

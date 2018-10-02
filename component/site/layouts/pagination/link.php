@@ -23,7 +23,7 @@ switch ((string) $item->text)
 	// Check for "Prev" item
 	case $item->text == JText::_('JPREV') :
 		$item->text = JText::_('JPREVIOUS');
-		$icon = "icon-step-backward";
+		$icon       = "icon-step-backward";
 		break;
 
 	// Check for "Next" item
@@ -66,7 +66,7 @@ if ($displayData['active'])
 		// Always Joomla 3+
 		JHtml::_('bootstrap.tooltip');
 		$cssClasses[] = 'hasTooltip';
-		$title = ' title="' . $item->text . '" ';
+		$title        = ' title="' . $item->text . '" ';
 	}
 
 	$onClick = 'document.adminForm.' . $item->prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : '0') . '; Joomla.submitform();return false;';
@@ -78,7 +78,8 @@ else
 ?>
 <?php if ($displayData['active']) : ?>
 	<li>
-		<a class="<?php echo implode(' ', $cssClasses); ?>" <?php echo $title; ?> href="#" onclick="<?php echo $onClick; ?>">
+		<a class="<?php echo implode(' ', $cssClasses); ?>" <?php echo $title; ?> href="#"
+		   onclick="<?php echo $onClick; ?>">
 			<?php echo $display; ?>
 		</a>
 	</li>

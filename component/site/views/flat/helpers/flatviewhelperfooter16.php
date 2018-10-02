@@ -3,7 +3,8 @@ defined('_JEXEC') or die('Restricted access');
 
 function FlatViewHelperFooter16($view)
 {
-$jinput = JFactory::getApplication()->input;
+
+	$jinput = JFactory::getApplication()->input;
 
 	if ($jinput->get('pop', '0', 'INT'))
 	{
@@ -19,7 +20,8 @@ $jinput = JFactory::getApplication()->input;
 									} catch (e) {
 										self.close();
 										return false;
-									}" title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
+									}"
+				   title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
 			</p></div>
 		<?php
 	}
@@ -45,5 +47,5 @@ $jinput = JFactory::getApplication()->input;
 		// It is definitely now created, lets load it!
 		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
-	
+
 }

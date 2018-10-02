@@ -23,10 +23,11 @@ class JEventsFlatView extends JEventsDefaultView
 {
 
 	var
-			$jevlayout = null;
+		$jevlayout = null;
 
 	function __construct($config = null)
 	{
+
 		parent::__construct($config);
 
 		$this->jevlayout = "flat";
@@ -35,7 +36,7 @@ class JEventsFlatView extends JEventsDefaultView
 
 		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 		$document = JFactory::getDocument();
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		JEVHelper::componentStylesheet($this);
 
 		if ($params->get("darktemplate", 0))

@@ -16,9 +16,6 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-
-use Joomla\String\StringHelper;
-
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
@@ -40,22 +37,22 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		$db = JFactory::getDbo();
-		$uri =  JFactory::getURI();
+		$db  = JFactory::getDbo();
+		$uri = JFactory::getURI();
 
 		// Get data from the model
-		$model = $this->getModel();
-		$items = $this->get('Data');
-		$total = $this->get('Total');
+		$model     = $this->getModel();
+		$items     = $this->get('Data');
+		$total     = $this->get('Total');
 		$languages = $this->get('Languages');
-		$catids = $this->get('Categories');
+		$catids    = $this->get('Categories');
 
 		$language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 		$this->assign('language', $language);
 		$this->assign('languages', $languages);
 
-		$layouttype = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
-		$addonoptions = array();
+		$layouttype     = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
+		$addonoptions   = array();
 		$addonoptions[] = JHTML::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
 		$addonoptions[] = JHTML::_('select.option', 'jevents', JText::_('COM_JEVENTS'));
 		$addonoptions[] = JHTML::_('select.option', 'jevpeople', JText::_('COM_JEVPEOPLE'));
@@ -64,12 +61,14 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$addonoptions = JHtml::_('select.options', $addonoptions, 'value', 'text', $layouttype);
 		$this->assign('addonoptions', $addonoptions);
 
-		if ($layouttype=="jevents"){
-			$catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
+		if ($layouttype == "jevents")
+		{
+			$catid  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
 			$catids = JHtml::_('select.options', $catids, 'value', 'text', $catid);
 		}
-		else {
-			$catid = 0;
+		else
+		{
+			$catid  = 0;
 			$catids = "";
 		}
 		$this->assign('catid', $catid);
@@ -102,7 +101,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$requiredfields = $params->get("com_jeveditionrequiredfields", "");
 		if (!empty($requiredfields))
 		{
@@ -121,13 +120,12 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JHTML::_('behavior.tooltip');
 
 
-
-		$db = JFactory::getDbo();
-		$uri =  JFactory::getURI();
+		$db  = JFactory::getDbo();
+		$uri = JFactory::getURI();
 
 		// Get data from the model
-		$model =  $this->getModel();
-		$item =  $this->get('Data');
+		$model = $this->getModel();
+		$item  = $this->get('Data');
 
 		if (strpos($item->name, "com_") === 0)
 		{
@@ -157,8 +155,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 	function showToolBar()
 	{
+
 		?>
-		<div id="toolbar-box" >
+		<div id="toolbar-box">
 			<div class="t">
 				<div class="t">
 					<div class="t"></div>
@@ -166,7 +165,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			</div>
 			<div class="m">
 				<?php
-				$bar =  JToolBar::getInstance('toolbar');
+				$bar     = JToolBar::getInstance('toolbar');
 				$barhtml = $bar->render();
 				//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
@@ -195,52 +194,57 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	}
 
 	protected
-			function replaceLabels(&$value)
+	function replaceLabels(&$value)
 	{
+
 		// non greedy replacement - because of the ?
 		$value = preg_replace_callback('|{{.*?:|', 'replaceLabelsCallback', $value);
 
 	}
 
-	protected function translationLinks ($row) {
+	protected function translationLinks($row)
+	{
+
 		if ($this->languages)
 		{
 			// Any existing translations ?
 			$db = JFactory::getDbo();
-			$db->setQuery("SELECT id, language, value, state FROM #__jev_defaults where catid=".$row->catid. " and title=".$db->quote($row->title));
+			$db->setQuery("SELECT id, language, value, state FROM #__jev_defaults where catid=" . $row->catid . " and title=" . $db->quote($row->title));
 			$translations = $db->loadObjectList("language");
 
 			?>
 			<ul class="item-associations">
-			<?php foreach ($this->languages as $id => $item) :
+				<?php foreach ($this->languages as $id => $item) :
 
-				$text = strtoupper($item->sef);
-				$hasTranslation = false;
-				$translationid = 0;
-				if (isset($translations[$id])){
-					$translationid = $translations[$id]->id;
-					if ($translations[$id]->value !="" && $translations[$id]->state){
-						$hasTranslation = true;
+					$text = strtoupper($item->sef);
+					$hasTranslation = false;
+					$translationid = 0;
+					if (isset($translations[$id]))
+					{
+						$translationid = $translations[$id]->id;
+						if ($translations[$id]->value != "" && $translations[$id]->state)
+						{
+							$hasTranslation = true;
+						}
 					}
-				}
-				$url = JRoute::_('index.php?option=com_jevents&task=defaults.edit&id='.$translationid, false);
-				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
+					$url          = JRoute::_('index.php?option=com_jevents&task=defaults.edit&id=' . $translationid, false);
+					$img          = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
 						$item->title,
 						array('title' => $item->title),
 						true
 					);
-				$url  = $url;// ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
-				$tooltipParts = array( 	$img,  addslashes($item->title));
-				$item->link = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( $hasTranslation ?" hastranslation":"" ));
-				?>
-				<li>
-				<?php
-				echo $item->link;
-				?>
-				</li>
-			<?php endforeach; ?>
+					$url          = $url;// ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$tooltipParts = array($img, addslashes($item->title));
+					$item->link   = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : ""));
+					?>
+					<li>
+						<?php
+						echo $item->link;
+						?>
+					</li>
+				<?php endforeach; ?>
 			</ul>
-		<?php
+			<?php
 		}
 	}
 
@@ -248,10 +252,12 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 function replaceLabelsCallback($matches)
 {
+
 	if (count($matches) == 1)
 	{
 		return "{{" . JText::_(JString::substr($matches[0], 2, JString::strlen($matches[0]) - 3)) . ":";
 	}
+
 	return "";
 
 }

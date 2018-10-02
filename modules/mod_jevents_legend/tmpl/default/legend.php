@@ -6,8 +6,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-use Joomla\String\StringHelper;
-
 /**
  * HTML View class for the component frontend
  *
@@ -23,20 +21,15 @@ class DefaultModLegendView
 	var $myItemid = 0;
 	var $myTask = null;
 
-	function getViewName()
+	function __construct(&$params = null, $modid)
 	{
-		return "default";
 
-	}
-
-	function __construct(&$params=null, $modid)
-	{
 		$this->_modid = $modid;
 
-		$this->_params = & $params;
+		$this->_params   = &$params;
 		$this->datamodel = new JEventsdatamodel();
-		$this->inccss = $params->get('modlatest_inccss', 1);
-		$this->disable = $params->get('nonjeventsdisable', 1);
+		$this->inccss    = $params->get('modlatest_inccss', 1);
+		$this->disable   = $params->get('nonjeventsdisable', 1);
 
 		if ($this->inccss)
 		{
@@ -47,7 +40,7 @@ class DefaultModLegendView
 		include_once(JEV_LIBS . "/modfunctions.php");
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->_params);
 
-		$menu =  JFactory::getApplication()->getMenu('site');
+		$menu     = JFactory::getApplication()->getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{
@@ -69,19 +62,28 @@ class DefaultModLegendView
 
 	}
 
-	function displayCalendarLegend($style="list")
+	function getViewName()
 	{
+
+		return "default";
+
+	}
+
+	function displayCalendarLegend($style = "list")
+	{
+
 		// do not display normal legend if dynamic legend is visible on this page
-		$registry	= JRegistry::getInstance("jevents");
-		if ($registry->get("jevents.dynamiclegend",0)) {
+		$registry = JRegistry::getInstance("jevents");
+		if ($registry->get("jevents.dynamiclegend", 0))
+		{
 			return;
 		}
 
 		// since this is meant to be a comprehensive legend look for catids from menu first:
-		$cfg = JEVConfig::getInstance();
+		$cfg    = JEVConfig::getInstance();
 		$Itemid = isset($this->myItemid) ? $this->myItemid : JEVHelper::getItemid();
-		
-		$user =  JFactory::getUser();
+
+		$user = JFactory::getUser();
 
 		$db = JFactory::getDbo();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
@@ -94,7 +96,7 @@ class DefaultModLegendView
 
 		$catidList = "";
 
-		$menu =  JFactory::getApplication()->getMenu();
+		$menu   = JFactory::getApplication()->getMenu();
 		$active = $menu->getActive();
 		if ((!is_null($active) && $active->component == JEV_COM_COMPONENT) || !isset($Itemid))
 		{
@@ -107,7 +109,7 @@ class DefaultModLegendView
 		}
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$c = 0;
+		$c      = 0;
 		$catids = array();
 		// New system
 		$newcats = $params->get("catidnew", false);
@@ -117,7 +119,7 @@ class DefaultModLegendView
 			{
 				if (!in_array($newcat, $catids))
 				{
-					$catids[] = $newcat;
+					$catids[]  = $newcat;
 					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
 				}
 			}
@@ -128,8 +130,8 @@ class DefaultModLegendView
 			{
 				if (!in_array($nextCatId, $catids))
 				{
-					$catids[] = $nextCatId;
-					$catidList .= ( JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
+					$catids[]  = $nextCatId;
+					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
 				}
 				$c++;
 			}
@@ -145,11 +147,11 @@ class DefaultModLegendView
 
 		// I should only show legend for items that **can** be shown in calendar so must filter based on GET/POST
 		$catidsIn = JRequest::getVar('catids', "NONE");
-		if ($catidsIn!="NONE" && $catidsIn!="0") 
+		if ($catidsIn != "NONE" && $catidsIn != "0")
 			$catidsGP = explode($separator, $catidsIn);
 		else
 			$catidsGP = array();
-                JArrayHelper::toInteger($catidsGP);
+		JArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
@@ -159,10 +161,10 @@ class DefaultModLegendView
 		$availableCatsIds = "";
 		foreach ($allrows as $row)
 		{
-			$availableCatsIds.= ( JString::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
+			$availableCatsIds .= (JString::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
 		}
 
-		$allcats = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
+		$allcats               = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
 		$allcats->activeBranch = true;
 
 		array_push($allrows, $allcats);
@@ -188,7 +190,8 @@ class DefaultModLegendView
 			}
 			include_once(JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/libraries/colorMap.php");
 
-			switch ($style) {
+			switch ($style)
+			{
 				case 'list':
 					$content = "<div class=\"event_legend_container\"><ul class=\"event_legend_list\">";
 					foreach ($allrows as $row)
@@ -223,10 +226,10 @@ class DefaultModLegendView
 				{
 
 					// This is only displayed when JEvents is the component so I can get the component view
-					$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
+					$component = JComponentHelper::getComponent(JEV_COM_COMPONENT);
 
-					$registry = JRegistry::getInstance("jevents");
-					$controller =  $registry->get("jevents.controller", null);
+					$registry   = JRegistry::getInstance("jevents");
+					$controller = $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
 
@@ -249,29 +252,29 @@ class DefaultModLegendView
 	protected function getCategoryHierarchy($catidList, $catidsGPList)
 	{
 
-		$db = JFactory::getDbo();
-		$aid = $this->datamodel->aid;
-		$user =  JFactory::getUser();
+		$db   = JFactory::getDbo();
+		$aid  = $this->datamodel->aid;
+		$user = JFactory::getUser();
 
 		// Get all the categories
 		$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "'"
-				. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
-				// language filter
-				. "\n  AND c.language in (".$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')'
-				. " AND c.published = 1"
-				. "\n ORDER BY c.lft";
+			. " AND  c.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user))
+			// language filter
+			. "\n  AND c.language in (" . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')'
+			. " AND c.published = 1"
+			. "\n ORDER BY c.lft";
 		$db->setQuery($sql);
 		$catlist = $db->loadObjectList('id');
 		foreach ($catlist as &$cat)
 		{
-			$cat->name = $cat->title;
-			$params = new JRegistry($cat->params);
-			$cat->color = $params->get("catcolour", "");
+			$cat->name     = $cat->title;
+			$params        = new JRegistry($cat->params);
+			$cat->color    = $params->get("catcolour", "");
 			$cat->overlaps = $params->get("overlaps", 0);
-                        $cat->image = $params->get("image", "");
+			$cat->image    = $params->get("image", "");
 		}
 		unset($cat);
-		
+
 		// any plugin based resitrictions
 		$dispatcher = JEventDispatcher::getInstance();
 		// remember NOT to reindex the list
@@ -294,7 +297,7 @@ class DefaultModLegendView
 			$validcats = array_merge($validcats, explode(",", $catidList));
 			if (count($validcats) > 0)
 			{
-				$cattree2 = $this->mapTree($clonedCatList, $validcats);
+				$cattree2        = $this->mapTree($clonedCatList, $validcats);
 				$combinedCatTree = $this->constrainTree($cattree, $cattree2);
 			}
 		}
@@ -304,38 +307,11 @@ class DefaultModLegendView
 
 	}
 
-	function constrainTree(&$cattree, &$constrainTree)
-	{
-		foreach (array_keys($cattree) as $id)
-		{
-			if (array_key_exists($id, $constrainTree))
-			{
-				if (( isset($constrainTree[$id]->activeBranch)) ||
-						($cattree[$id]->parent_id > 0 && isset($constrainTree[$cattree[$id]->parent_id]->activeBranch)))
-				{
-					if (isset($cattree[$id]->subcats) && isset($constrainTree[$id]->subcats))
-					{
-						$this->constrainTree($cattree[$id]->subcats, $constrainTree[$id]->subcats);
-					}
-				}
-				else
-				{
-					unset($cattree[$id]);
-				}
-			}
-			else
-			{
-				unset($cattree[$id]);
-			}
-		}
-
-	}
-
-	// build the tree
 	function mapTree($dataset, $validcats)
 	{
+
 		$treeroot = version_compare(JVERSION, '1.6.0', '>=') ? 1 : 0;
-		$tree = array();
+		$tree     = array();
 		foreach ($dataset as $id => &$node)
 		{
 			if (in_array($node->id, $validcats))
@@ -365,8 +341,11 @@ class DefaultModLegendView
 
 	}
 
+	// build the tree
+
 	function markParentsActive(&$node, $dataset, $validcats)
 	{
+
 		$node->activeBranch = true;
 
 		// if we have selected one node then mark is as active so we can show its children
@@ -380,8 +359,37 @@ class DefaultModLegendView
 
 	}
 
-	function listKids($row, $itm, $tsk, $availableCatsIds, $activeParent = false, $activeSubCat=0)
+	function constrainTree(&$cattree, &$constrainTree)
 	{
+
+		foreach (array_keys($cattree) as $id)
+		{
+			if (array_key_exists($id, $constrainTree))
+			{
+				if ((isset($constrainTree[$id]->activeBranch)) ||
+					($cattree[$id]->parent_id > 0 && isset($constrainTree[$cattree[$id]->parent_id]->activeBranch)))
+				{
+					if (isset($cattree[$id]->subcats) && isset($constrainTree[$id]->subcats))
+					{
+						$this->constrainTree($cattree[$id]->subcats, $constrainTree[$id]->subcats);
+					}
+				}
+				else
+				{
+					unset($cattree[$id]);
+				}
+			}
+			else
+			{
+				unset($cattree[$id]);
+			}
+		}
+
+	}
+
+	function listKids($row, $itm, $tsk, $availableCatsIds, $activeParent = false, $activeSubCat = 0)
+	{
+
 		$catclass = "";
 		if ($row->parent_id > 0)
 			$catclass = "childcat";
@@ -394,17 +402,17 @@ class DefaultModLegendView
 
 		$st1 = "background-color:" . $row->color . ";color:" . JevMapColor($row->color);
 		//$cat = $row->id > 0 ? "&catids=$row->id" : "&catids=$availableCatsIds";
-		$cat = $row->id > 0 ? "&catids=$row->id" : "";
+		$cat     = $row->id > 0 ? "&catids=$row->id" : "";
 		$content = "\n<li style='list-style:none;margin-top:5px;'>"
-				. "<div class='event_legend_name' style='" . $st1 . "'>"
-				//."$row->name ($row->id)</div>"
-				. "<a href='" . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "' style='color:inherit'>"
-				. JEventsHTML::special($row->name) . "</a></div>";
+			. "<div class='event_legend_name' style='" . $st1 . "'>"
+			//."$row->name ($row->id)</div>"
+			. "<a href='" . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "' style='color:inherit'>"
+			. JEventsHTML::special($row->name) . "</a></div>";
 		if (JString::strlen($row->description) > 0)
 		{
-			$content .="<div class='event_legend_desc'>$row->description</div>";
+			$content .= "<div class='event_legend_desc'>$row->description</div>";
 		}
-		$content .="</li>";
+		$content .= "</li>";
 
 		if (isset($row->activeBranch) && isset($row->subcats))
 		{
@@ -426,7 +434,7 @@ class DefaultModLegendView
 
 	}
 
-	function blockKids($row, $itm, $tsk, $availableCatsIds, $activeParent = false, $activeSubCat=0)
+	function blockKids($row, $itm, $tsk, $availableCatsIds, $activeParent = false, $activeSubCat = 0)
 	{
 
 		$catclass = "";
@@ -440,15 +448,15 @@ class DefaultModLegendView
 			$catclass = "childcat";
 
 		//$cat = $row->id > 0 ? "&catids=$row->id" : "&catids=$availableCatsIds";
-		$cat = $row->id > 0 ? "&catids=$row->id" : "";
+		$cat     = $row->id > 0 ? "&catids=$row->id" : "";
 		$content = '<div class="event_legend_item ' . $catclass . '" style="border-color:' . $row->color . '">';
 		$content .= '<div class="event_legend_name" style="border-color:' . $row->color . '">'
-				. '<a href="' . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
-				. JEventsHTML::special($row->name) . '</a>';
+			. '<a href="' . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
+			. JEventsHTML::special($row->name) . '</a>';
 		$content .= '</div>' . "\n";
 		if (JString::strlen($row->description) > 0)
 		{
-			$content .='<div class="event_legend_desc"  style="border-color:' . $row->color . '">' . $row->description . '</div>';
+			$content .= '<div class="event_legend_desc"  style="border-color:' . $row->color . '">' . $row->description . '</div>';
 		}
 		$content .= '</div>' . "\n";
 

@@ -17,13 +17,14 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class ExtViewWeek extends JEventsExtView 
+class ExtViewWeek extends JEventsExtView
 {
 	function listevents($tpl = null)
 	{
-		JEVHelper::componentStylesheet($this);
-		$document = JFactory::getDocument();						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	}	
+		JEVHelper::componentStylesheet($this);
+		$document = JFactory::getDocument();
+		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
+	}
 }

@@ -9,33 +9,42 @@
  * @link        http://www.jevents.net
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-class JEVAccess {
+class JEVAccess
+{
 
 	var $access;
 
-	public function __construct(){
+	public function __construct()
+	{
+
 		// Editor usertype check
 		global $acl;
 		$user = JFactory::getUser();
 
-		$this->access = new stdClass();
-		$acl = JFactory::getACL();
-		$this->access->canEdit	= $acl->acl_check( 'action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'all' );
-		$this->access->canEditOwn = $acl->acl_check( 'action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'own' );
-		$this->access->canPublish = $acl->acl_check( 'action', 'publish', 'users', JEVHelper::getUserType($user), 'content', 'all' );
+		$this->access             = new stdClass();
+		$acl                      = JFactory::getACL();
+		$this->access->canEdit    = $acl->acl_check('action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'all');
+		$this->access->canEditOwn = $acl->acl_check('action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'own');
+		$this->access->canPublish = $acl->acl_check('action', 'publish', 'users', JEVHelper::getUserType($user), 'content', 'all');
 	}
 
-	public function canEdit(){
+	public function canEdit()
+	{
+
 		return $this->access->canEdit;
 	}
 
-	public function canEditOwn(){
+	public function canEditOwn()
+	{
+
 		return $this->access->canEditOwn;
 	}
 
-	public function canPublish(){
+	public function canPublish()
+	{
+
 		return $this->access->canPublish;
 	}
 

@@ -9,40 +9,45 @@
  * @link        http://www.jevents.net
  */
 
-defined('_VALID_MOS') or defined('_JEXEC') or die( 'No Direct Access' );
+defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
 
 // searches event
 class jevSearchFilter extends jevFilter
 {
-	const filterType="search";
+	const filterType = "search";
 
-	function __construct($tablename, $filterfield, $isstring=true){
-		$this->filterType=self::filterType;
-		$this->filterLabel=JText::_( 'SEARCH_EVENT' );
-		$this->filterNullValue="";
+	function __construct($tablename, $filterfield, $isstring = true)
+	{
+
+		$this->filterType        = self::filterType;
+		$this->filterLabel       = JText::_('SEARCH_EVENT');
+		$this->filterNullValue   = "";
 		$this->extrasearchfields = array();
-		$this->extrajoin = "";
-		$this->needsgroup = false;
-		parent::__construct($tablename,$filterfield, true);
+		$this->extrajoin         = "";
+		$this->needsgroup        = false;
+		parent::__construct($tablename, $filterfield, true);
 		// Should these be ignored?
-		$reg = JFactory::getConfig();
-		$modparams = $reg->get("jev.modparams",false);
-		if ($modparams && $modparams->get("ignorefiltermodule",false)){
+		$reg       = JFactory::getConfig();
+		$modparams = $reg->get("jev.modparams", false);
+		if ($modparams && $modparams->get("ignorefiltermodule", false))
+		{
 			$this->filter_value = $this->filterNullValue;
 		}
 	}
 
-	function _createFilter($prefix=""){
-		if (!$this->filterField ) return "";
-		if (trim($this->filter_value)==$this->filterNullValue) return "";
+	function _createFilter($prefix = "")
+	{
 
-		$db = JFactory::getDbo();
-		$text = $db->Quote( '%'.$db->escape( $this->filter_value, true ).'%', false );
-		
+		if (!$this->filterField) return "";
+		if (trim($this->filter_value) == $this->filterNullValue) return "";
+
+		$db   = JFactory::getDbo();
+		$text = $db->Quote('%' . $db->escape($this->filter_value, true) . '%', false);
+
 		$filter = "(det.summary LIKE $text OR det.description LIKE $text OR det.extra_info LIKE $text)";
-		
+
 		return $filter;
-		
+
 		/* Implementing this is more complicated becase of clash between onSearchEvents and onListIcalEvents triggers !
 		// create filter gets called before createjoin !!
 		JPluginHelper::importPlugin('jevents');
@@ -71,7 +76,9 @@ class jevSearchFilter extends jevFilter
 		 */
 	}
 
-	function _createJoinFilter($prefix=""){
+	function _createJoinFilter($prefix = "")
+	{
+
 		/*
 		// search filter code doesn't want 'LEFT JOIN' here
 		if (strpos($this->extrajoin, "LEFT JOIN") <= 1){
@@ -82,20 +89,21 @@ class jevSearchFilter extends jevFilter
 		return "";
 	}
 
-	function _createfilterHTML(){
+	function _createfilterHTML()
+	{
 
 		if (!$this->filterField) return "";
 
 		$db = JFactory::getDbo();
-				
-		$filterList=array();
-		$filterList["title"]="<label class='evsearch_label' for='".$this->filterType."_fv'>".$this->filterLabel."</label>";
-		$filterList["html"] = "<input type='text' name='".$this->filterType."_fv' id='".$this->filterType."_fv'  class='evsearch'  value='".$this->filter_value."' />";
 
-		$script = "try {JeventsFilters.filters.push({id:'".$this->filterType."_fv',value:''});} catch (e) {}";
+		$filterList          = array();
+		$filterList["title"] = "<label class='evsearch_label' for='" . $this->filterType . "_fv'>" . $this->filterLabel . "</label>";
+		$filterList["html"]  = "<input type='text' name='" . $this->filterType . "_fv' id='" . $this->filterType . "_fv'  class='evsearch'  value='" . $this->filter_value . "' />";
+
+		$script   = "try {JeventsFilters.filters.push({id:'" . $this->filterType . "_fv',value:''});} catch (e) {}";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
-		
+
 		return $filterList;
 
 	}

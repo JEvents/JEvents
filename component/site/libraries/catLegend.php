@@ -9,15 +9,17 @@
  * @link        http://www.jevents.net
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-class catLegend {
-	function __construct($id, $name, $color, $description,$parent_id=0)
+class catLegend
+{
+	function __construct($id, $name, $color, $description, $parent_id = 0)
 	{
-		$this->id=$id;
-		$this->name=$name;
-		$this->color=$color;
-		$this->description=$description;
-		$this->parent_id=$parent_id;
+
+		$this->id          = $id;
+		$this->name        = $name;
+		$this->color       = $color;
+		$this->description = $description;
+		$this->parent_id   = $parent_id;
 	}
 }

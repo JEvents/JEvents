@@ -16,7 +16,6 @@ jimport('joomla.access.access');
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\String\StringHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
 include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
@@ -35,37 +34,37 @@ class JEVHelper
 	 * @since  3.0
 	 */
 	protected static
-			$loaded = array();
+		$loaded = array();
 
 	/**
 	 * load language file
 	 *
 	 * @static
 	 * @access public
-	 * @since 1.4
+	 * @since  1.4
 	 */
 	public static
-			function loadLanguage($type = 'default', $lang = '')
+	function loadLanguage($type = 'default', $lang = '')
 	{
 
 		// to be enhanced in future : load by $type (com, modcal, modlatest) [tstahl]
 		$jinput = JFactory::getApplication()->input;
 
 		$option = $jinput->getCmd("option");
-		$cfg = JEVConfig::getInstance();
-		$lang = JFactory::getLanguage();
+		$cfg    = JEVConfig::getInstance();
+		$lang   = JFactory::getLanguage();
 
 		static $isloaded = array();
 
 		$typemap = array(
-			'default' => 'front',
-			'front' => 'front',
-			'admin' => 'admin',
-			'modcal' => 'front',
-			'modlatest' => 'front',
+			'default'     => 'front',
+			'front'       => 'front',
+			'admin'       => 'admin',
+			'modcal'      => 'front',
+			'modlatest'   => 'front',
 			'modfeatured' => 'front'
 		);
-		$type = (isset($typemap[$type])) ? $typemap[$type] : $typemap['default'];
+		$type    = (isset($typemap[$type])) ? $typemap[$type] : $typemap['default'];
 
 		// load language defines only once
 		if (isset($isloaded[$type]))
@@ -73,14 +72,15 @@ class JEVHelper
 			return;
 		}
 
-		$cfg = JEVConfig::getInstance();
+		$cfg             = JEVConfig::getInstance();
 		$isloaded[$type] = true;
 
-		switch ($type) {
+		switch ($type)
+		{
 			case 'front':
 				// load new style language
 				// Always load site component language !
-        			$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
+				$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 				// overload language with components language directory if available
 				//$inibase = JPATH_SITE . '/components/' . JEV_COM_COMPONENT;
@@ -110,9 +110,11 @@ class JEVHelper
 	}
 
 	public static
-			function loadExtensionLanguage($extension, $basePath = JPATH_ADMINISTRATOR)
+	function loadExtensionLanguage($extension, $basePath = JPATH_ADMINISTRATOR)
 	{
+
 		$lang = JFactory::getLanguage();
+
 		return $lang->load(strtolower($extension), $basePath, null, false, true);
 
 	}
@@ -122,11 +124,12 @@ class JEVHelper
 	 *
 	 * @static
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 */
 	public static
-			function & iCalInstance($filename, $rawtext = "")
+	function & iCalInstance($filename, $rawtext = "")
 	{
+
 		static $instances = array();
 		if (is_array($filename))
 		{
@@ -139,7 +142,7 @@ class JEVHelper
 		}
 		else
 		{
-			$import = new iCalImport();
+			$import            = new iCalImport();
 			$instances[$index] = $import->import($filename, $rawtext);
 
 			return $instances[$index];
@@ -152,36 +155,13 @@ class JEVHelper
 	 *
 	 * @static
 	 * @access public
-	 * @return	string				integer with the max year to show in the calendar
+	 * @return    string                integer with the max year to show in the calendar
 	 */
 	public static
-			function getMaxYear()
+	function getMinYear()
 	{
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$maxyear = $params->get("com_latestyear", 2150);
-		$maxyear = JEVHelper::getYearNumber($maxyear);
 
-		//Just in case we got text here.
-		if (!is_numeric($maxyear))
-		{
-			$maxyear = "2150";
-		}
-
-		return $maxyear;
-
-	}
-
-	/**
-	 * Returns the Max year to display from Config
-	 *
-	 * @static
-	 * @access public
-	 * @return	string				integer with the max year to show in the calendar
-	 */
-	public static
-			function getMinYear()
-	{
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$minyear = $params->get("com_earliestyear", 1970);
 
 		$minyear = JEVHelper::getYearNumber($minyear);
@@ -201,27 +181,42 @@ class JEVHelper
 	 *
 	 * @static
 	 * @access public
-	 * @param	string	$month		numeric month
-	 * @return	string				localised long month name
+	 *
+	 * @param    string $month numeric month
+	 *
+	 * @return    string                localised long month name
 	 */
 	public static
-			function getMonthName($month = 12)
+	function getMonthName($month = 12)
 	{
 
-		switch (intval($month)) {
+		switch (intval($month))
+		{
 
-			case 1: return JText::_('JEV_JANUARY');
-			case 2: return JText::_('JEV_FEBRUARY');
-			case 3: return JText::_('JEV_MARCH');
-			case 4: return JText::_('JEV_APRIL');
-			case 5: return JText::_('JEV_MAY');
-			case 6: return JText::_('JEV_JUNE');
-			case 7: return JText::_('JEV_JULY');
-			case 8: return JText::_('JEV_AUGUST');
-			case 9: return JText::_('JEV_SEPTEMBER');
-			case 10: return JText::_('JEV_OCTOBER');
-			case 11: return JText::_('JEV_NOVEMBER');
-			case 12: return JText::_('JEV_DECEMBER');
+			case 1:
+				return JText::_('JEV_JANUARY');
+			case 2:
+				return JText::_('JEV_FEBRUARY');
+			case 3:
+				return JText::_('JEV_MARCH');
+			case 4:
+				return JText::_('JEV_APRIL');
+			case 5:
+				return JText::_('JEV_MAY');
+			case 6:
+				return JText::_('JEV_JUNE');
+			case 7:
+				return JText::_('JEV_JULY');
+			case 8:
+				return JText::_('JEV_AUGUST');
+			case 9:
+				return JText::_('JEV_SEPTEMBER');
+			case 10:
+				return JText::_('JEV_OCTOBER');
+			case 11:
+				return JText::_('JEV_NOVEMBER');
+			case 12:
+				return JText::_('JEV_DECEMBER');
 		}
 
 	}
@@ -231,28 +226,43 @@ class JEVHelper
 	 *
 	 * @static
 	 * @access public
-	 * @param	string	$month		numeric month
-	 * @return	string				localised short month name
+	 *
+	 * @param    string $month numeric month
+	 *
+	 * @return    string                localised short month name
 	 */
 	public static
-			function getShortMonthName($month = 12)
+	function getShortMonthName($month = 12)
 	{
 
-		switch (intval($month)) {
+		switch (intval($month))
+		{
 
 			// Use Joomla translation
-			case 1: return JText::_('JANUARY_SHORT');
-			case 2: return JText::_('FEBRUARY_SHORT');
-			case 3: return JText::_('MARCH_SHORT');
-			case 4: return JText::_('APRIL_SHORT');
-			case 5: return JText::_('MAY_SHORT');
-			case 6: return JText::_('JUNE_SHORT');
-			case 7: return JText::_('JULY_SHORT');
-			case 8: return JText::_('AUGUST_SHORT');
-			case 9: return JText::_('SEPTEMBER_SHORT');
-			case 10: return JText::_('OCTOBER_SHORT');
-			case 11: return JText::_('NOVEMBER_SHORT');
-			case 12: return JText::_('DECEMBER_SHORT');
+			case 1:
+				return JText::_('JANUARY_SHORT');
+			case 2:
+				return JText::_('FEBRUARY_SHORT');
+			case 3:
+				return JText::_('MARCH_SHORT');
+			case 4:
+				return JText::_('APRIL_SHORT');
+			case 5:
+				return JText::_('MAY_SHORT');
+			case 6:
+				return JText::_('JUNE_SHORT');
+			case 7:
+				return JText::_('JULY_SHORT');
+			case 8:
+				return JText::_('AUGUST_SHORT');
+			case 9:
+				return JText::_('SEPTEMBER_SHORT');
+			case 10:
+				return JText::_('OCTOBER_SHORT');
+			case 11:
+				return JText::_('NOVEMBER_SHORT');
+			case 12:
+				return JText::_('DECEMBER_SHORT');
 		}
 
 	}
@@ -261,12 +271,14 @@ class JEVHelper
 	 * Returns name of the day longversion
 	 *
 	 * @static
-	 * @param	int		daynb	# of day
-	 * @param	int		array, 0 return single day, 1 return array of all days
-	 * @return	mixed	localised short day letter or array of names
+	 *
+	 * @param    int        daynb    # of day
+	 * @param    int        array, 0 return single day, 1 return array of all days
+	 *
+	 * @return    mixed    localised short day letter or array of names
 	 * */
 	public static
-			function getDayName($daynb = 0, $array = 0)
+	function getDayName($daynb = 0, $array = 0)
 	{
 
 		static $days = null;
@@ -290,6 +302,7 @@ class JEVHelper
 		}
 
 		$i = $daynb % 7; //modulo 7
+
 		return $days[$i];
 
 	}
@@ -298,12 +311,14 @@ class JEVHelper
 	 * Returns the short day name
 	 *
 	 * @static
-	 * @param	int		daynb	# of day
-	 * @param	int		array, 0 return single day, 1 return array of all days
-	 * @return	mixed	localised short day letter or array of names
+	 *
+	 * @param    int        daynb    # of day
+	 * @param    int        array, 0 return single day, 1 return array of all days
+	 *
+	 * @return    mixed    localised short day letter or array of names
 	 * */
 	public static
-			function getShortDayName($daynb = 0, $array = 0)
+	function getShortDayName($daynb = 0, $array = 0)
 	{
 
 		static $days = null;
@@ -327,19 +342,21 @@ class JEVHelper
 		}
 
 		$i = $daynb % 7; //modulo 7
+
 		return $days[$i];
 
 	}
 
 	public static
-			function getTime($date, $h = -1, $m = -1)
+	function getTime($date, $h = -1, $m = -1)
 	{
+
 		$cfg = JEVConfig::getInstance();
 
 		static $format_type;
 		if (!isset($format_type))
 		{
-			$cfg = JEVConfig::getInstance();
+			$cfg         = JEVConfig::getInstance();
 			$format_type = $cfg->get('com_dateformat');
 		}
 
@@ -349,6 +366,7 @@ class JEVHelper
 			if ($h >= 0 && $m >= 0)
 			{
 				$time = JevDate::mktime($h, $m);
+
 				return JEV_CommonFunctions::jev_strftime(JText::_("JEV_TIME_FORMAT"), $time);
 			}
 			else
@@ -382,20 +400,23 @@ class JEVHelper
 	/**
 	 * Returns name of the day letter
 	 *
-	 * @param	i
-	 * @staticnt		daynb	# of day
-	 * @param	int		array, 0 return single day, 1 return array of all days
-	 * @return	mixed	localised short day letter or array of letters
+	 * @param    i
+	 *
+	 * @staticnt        daynb    # of day
+	 *
+	 * @param    int        array, 0 return single day, 1 return array of all days
+	 *
+	 * @return    mixed    localised short day letter or array of letters
 	 * */
 	public static
-			function getWeekdayLetter($daynb = 0, $array = 0)
+	function getWeekdayLetter($daynb = 0, $array = 0)
 	{
 
 		static $days = null;
 
 		if ($days === null)
 		{
-			$days = array();
+			$days    = array();
 			$days[0] = JText::_('JEV_SUNDAY_CHR');
 			$days[1] = JText::_('JEV_MONDAY_CHR');
 			$days[2] = JText::_('JEV_TUESDAY_CHR');
@@ -411,6 +432,7 @@ class JEVHelper
 		}
 
 		$i = $daynb % 7; //modulo 7
+
 		return $days[$i];
 
 	}
@@ -419,15 +441,16 @@ class JEVHelper
 	 * Function that overwrites meta-tags in mainframe!!
 	 *
 	 * @static
-	 * @param string $name - metatag name
+	 *
+	 * @param string $name    - metatag name
 	 * @param string $content - metatag value
 	 */
 	public static
-			function checkRobotsMetaTag($name = "robots", $content = "index,follow")
+	function checkRobotsMetaTag($name = "robots", $content = "index,follow")
 	{
 
 		// force robots metatag
-		$cfg = JEVConfig::getInstance();
+		$cfg      = JEVConfig::getInstance();
 		$document = JFactory::getDocument();
 		// constrained in some way
 		if ($cfg->get('com_blockRobots', 0) >= 1)
@@ -438,6 +461,7 @@ class JEVHelper
 				if (strpos(JRequest::getString("jevtask", ""), ".detail") > 0)
 				{
 					$document->setMetaData($name, "index,nofollow");
+
 					return;
 				}
 				if (strpos(JRequest::getString("jevtask", ""), "crawler") !== false || $content != "index,follow")
@@ -448,12 +472,14 @@ class JEVHelper
 				{
 					$document->setMetaData($name, "noindex,nofollow");
 				}
+
 				return;
 			}
 			// Always block Robots
 			if ($cfg->get('com_blockRobots', 0) == 1)
 			{
 				$document->setMetaData($name, "noindex,nofollow");
+
 				return;
 			}
 			// conditional on date
@@ -463,12 +489,14 @@ class JEVHelper
 			if ($cdate < $prior && $cfg->get('com_blockRobots', 0))
 			{
 				$document->setMetaData($name, "noindex,nofollow");
+
 				return;
 			}
 			$post = JevDate::strtotime($cfg->get('robotpost', "-1 day"));
 			if ($cdate > $post && $cfg->get('com_blockRobots', 0))
 			{
 				$document->setMetaData($name, "noindex,nofollow");
+
 				return;
 			}
 			//If JEvents is not blocking robots we use menu item configuration
@@ -482,11 +510,66 @@ class JEVHelper
 
 	}
 
+	/**
+	 * Get array Year, Month, Day from current Request, fallback to current date
+	 *
+	 * @return array
+	 */
+	public static
+	function getYMD()
+	{
+
+		static $data;
+
+		if (!isset($data))
+		{
+			$datenow = JEVHelper::getNow();
+			list($yearnow, $monthnow, $daynow) = explode('-', $datenow->toFormat('%Y-%m-%d'));
+
+			$year  = min(2100, abs(intval(JRequest::getVar('year', $yearnow))));
+			$month = min(99, abs(intval(JRequest::getVar('month', $monthnow))));
+			$day   = min(3650, abs(intval(JRequest::getVar('day', $daynow))));
+			if ($day <= 0)
+			{
+				$day = $daynow;
+			}
+			if ($month <= 0)
+			{
+				$month = $monthnow;
+			}
+			if ($year <= 0)
+			{
+				$year = $yearnow;
+			}
+			if ($day <= '9')
+			{
+				$day = '0' . $day;
+			}
+			if ($month <= '9')
+			{
+				$month = '0' . $month;
+			}
+
+			// Make sure $day is not outside the month
+			$lastDayOfMonth = intval(strftime("%d", mktime(6, 0, 0, $month + 1, 1, $year) - 86400));
+			$day            = $lastDayOfMonth < $day ? $lastDayOfMonth : $day;
+
+			$data   = array();
+			$data[] = $year;
+			$data[] = $month;
+			$data[] = $day;
+		}
+
+		return $data;
+
+	}
+
 	//New MetaSet Function, to set the meta tags if they exist in the Menu Item
 
 	static public
-			function SetMetaTags()
+	function SetMetaTags()
 	{
+
 		// Get Global Config
 		$jConfig = JFactory::getConfig();
 
@@ -501,7 +584,7 @@ class JEVHelper
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords') && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords"))
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -509,8 +592,9 @@ class JEVHelper
 	}
 
 	public static
-			function forceIntegerArray(&$cid, $asString = true)
+	function forceIntegerArray(&$cid, $asString = true)
 	{
+
 		$cid = is_null($cid) ? array() : $cid;
 
 		for ($c = 0; $c < count($cid); $c++)
@@ -520,6 +604,7 @@ class JEVHelper
 		if ($asString)
 		{
 			$id_string = implode(",", $cid);
+
 			return $id_string;
 		}
 		else
@@ -535,15 +620,17 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-			function loadCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attributes = array())
+	function loadCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attributes = array())
 	{
-		$document = JFactory::getDocument();
-		$component = "com_jevents";
-		$params = JComponentHelper::getParams($component);
-		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
-		$offset = $params->get("com_starday", 1);
 
-		if ($value == "" ) {
+		$document           = JFactory::getDocument();
+		$component          = "com_jevents";
+		$params             = JComponentHelper::getParams($component);
+		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
+		$offset             = $params->get("com_starday", 1);
+
+		if ($value == "")
+		{
 			$value = strftime("%Y-%m-%d");
 		}
 
@@ -551,7 +638,7 @@ class JEVHelper
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
 		// Build the attributes array.
-		empty($onchange)  ? null : $attributes['onchange'] = $onchange;
+		empty($onchange) ? null : $attributes['onchange'] = $onchange;
 		//$attributes['onselect']="function{this.hide();}";
 		/*
 		empty($this->size)      ? null : $attributes['size'] = $this->size;
@@ -570,9 +657,9 @@ class JEVHelper
 		}
 */
 		// switch back to strftime format to use Joomla calendar tool
-		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
+		$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
 
-		echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
+		echo JHtml::_('calendar', $yearpart . "-" . $monthpart . "-" . $daypart, $fieldname, $fieldid, $format, $attributes);
 
 	}
 
@@ -582,15 +669,17 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-			function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array())
+	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array())
 	{
-		$document = JFactory::getDocument();
-		$component = "com_jevents";
-		$params = JComponentHelper::getParams($component);
-		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
-		$offset = $params->get("com_starday", 1);
 
-		if ($value == "" ) {
+		$document           = JFactory::getDocument();
+		$component          = "com_jevents";
+		$params             = JComponentHelper::getParams($component);
+		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
+		$offset             = $params->get("com_starday", 1);
+
+		if ($value == "")
+		{
 			$value = strftime("%Y-%m-%d");
 		}
 
@@ -598,15 +687,15 @@ class JEVHelper
 		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
 		// Build the attributes array.
-		empty($onchange)  ? null : $attribs['onchange'] = $onchange;
+		empty($onchange) ? null : $attribs['onchange'] = $onchange;
 
 		// switch back to strftime format to use Joomla calendar tool
-		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
+		$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
 
 		//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
 		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
-		$value = $yearpart."-".$monthpart."-".$daypart;
-		$name =  $fieldname;
+		$value = $yearpart . "-" . $monthpart . "-" . $daypart;
+		$name  = $fieldname;
 
 		static $done;
 
@@ -616,23 +705,24 @@ class JEVHelper
 		}
 
 		// new script is disabled if readonly is set so set it on an onload event instead		
-		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly') 
+		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly')
 			|| (isset($attribs[' readonly']) && $attribs[' readonly'] == 'readonly'))
 		{
 			$readonly = true;
 		}
-		else 
+		else
 		{
 			$readonly = false;
 		}
-		
-		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
-                $showtime = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
-                $timeformat = "24";
-                if ($showtime && $params->get("com_calUseStdTime", 1)==0) {
-                   // $timeformat = "12";
-                }
-                $showtime = $showtime? 1 : 0;
+
+		$disabled   = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
+		$showtime   = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
+		$timeformat = "24";
+		if ($showtime && $params->get("com_calUseStdTime", 1) == 0)
+		{
+			// $timeformat = "12";
+		}
+		$showtime = $showtime ? 1 : 0;
 
 		if (is_array($attribs))
 		{
@@ -664,7 +754,7 @@ class JEVHelper
 		//JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
 		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
 
-		$tag       = JFactory::getLanguage()->getTag();
+		$tag = JFactory::getLanguage()->getTag();
 
 		if (version_compare(JVERSION, '3.7.0', '>='))
 		{
@@ -674,7 +764,7 @@ class JEVHelper
 				unset($attribs['readonly']);
 				unset($attribs[' readonly']);
 			}
-			
+
 			$calendar  = JFactory::getLanguage()->getCalendar();
 			$direction = strtolower(JFactory::getDocument()->getDirection());
 
@@ -685,7 +775,7 @@ class JEVHelper
 			{
 				$helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
 			}
-		
+
 			// Get the appropriate locale file for the current language
 			$localesPath = 'system/fields/calendar-locales/en.js';
 
@@ -713,9 +803,9 @@ class JEVHelper
 			// Hide button using inline styles for readonly/disabled fields
 			//$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
 			//$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
-			$btn_style	= $disabled ? ' style="display:none;"' : '';
-			$div_class	= !$disabled ? ' class="input-append"' : '';
-			
+			$btn_style = $disabled ? ' style="display:none;"' : '';
+			$div_class = !$disabled ? ' class="input-append"' : '';
+
 			echo '<div class=" field-calendar">'
 				. '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
@@ -738,15 +828,17 @@ class JEVHelper
 			' . (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") . '
 		><span class="icon-calendar"></span></button>. '
-			. '</div>'
-			. '</div>';
-		
+				. '</div>'
+				. '</div>';
+
 			if ($readonly)
 			{
 				JFactory::getDocument()->addScriptDeclaration("jQuery(window).on('load', function(){jQuery('#" . $fieldid . "').prop('readonly', true);})");
 			}
-		
-		} else {
+
+		}
+		else
+		{
 			JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
 			JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
 
@@ -771,24 +863,24 @@ class JEVHelper
 			// Alignment (defaults to "Bl")
 			align: "Tl",
                         // firstDay   numeric: 0 to 6.  "0" means display Sunday first, "1" means display Monday first, etc.
-                        firstDay: '.$offset.',
+                        firstDay: ' . $offset . ',
 			// Allowable date range for picker
-			range:['.$minyear.','.$maxyear.'],
+			range:[' . $minyear . ',' . $maxyear . '],
 			// electric false means field update ONLY when a day cell is clicked
 			electric:false,
 			singleClick: true,
-                        showsTime:'.$showtime.',
-                        timeFormat:'.$timeformat.',
+                        showsTime:' . $showtime . ',
+                        timeFormat:' . $timeformat . ',
 			});});'
 					);
 				$done[] = $fieldid;
 			}
 
 			// Hide button using inline styles for readonly/disabled fields
-			$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
-			$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+			$btn_style = ($readonly || $disabled) ? ' style="display:none;"' : '';
+			$div_class = (!$readonly && !$disabled) ? ' class="input-append"' : '';
 
-			echo  '<div' . $div_class . '>'
+			echo '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
 				. '" name="' . $name . '" id="' . $fieldid . '" value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
 				. '<button type="button" class="btn" id="' . $fieldid . '_img"' . $btn_style . '><span class="icon-calendar"></span></button>'
@@ -804,7 +896,7 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-			function loadOverlib()
+	function loadOverlib()
 	{
 
 		$cfg = JEVConfig::getInstance();
@@ -844,210 +936,20 @@ class JEVHelper
 
 	}
 
-	/**
-	 * find suitable menu item for displaying an event
-	 *
-	 * @param mixed $forcecheck - false = no check.  jIcalEventRepeat = should we check the access for the event.  Only checks categories at present.
-	 * @return integer - menu item id
-	 */
 	public static
-			function getItemid($forcecheck = false, $skipbackend = true)
+	function getAdminItemid()
 	{
-		if (JFactory::getApplication()->isAdmin() && $skipbackend)
-			return 0;
-		static $jevitemid;
-		$evid = $forcecheck ? $forcecheck->ev_id() : 0;
-		if (!isset($jevitemid))
-		{
-			$jevitemid = array();
-		}
-		if (!isset($jevitemid[$evid]))
-		{
-			$jevitemid[$evid] = 0;
-			$menu = JFactory::getApplication()->getMenu();
-			$active = $menu->getActive();
-			$Itemid = JRequest::getInt("Itemid");
-			if (is_null($active))
-			{
-				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
-				$Itemid = JRequest::getInt("Itemid");
-				if ($Itemid > 0 && $jevitemid[$evid] != $Itemid)
-				{
-					$active = $menu->getItem($Itemid);
-				}
-			}
-			$option = JRequest::getCmd("option");
-			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
-			if ($Itemid == 0)
-				$Itemid = JRequest::getInt("amp;Itemid", 0);
-			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && JRequest::getCmd("task") != "crawler.listevents" && JRequest::getCmd("jevtask") != "crawler.listevents")
-			{
-				$jevitemid[$evid] = $Itemid;
-				return $jevitemid[$evid];
-			}
-			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "edit") === false && strpos($active->link, "crawler") === false)
-			{
-				$jevitemid[$evid] = $active->id;
-				return $jevitemid[$evid];
-			}
-			else
-			{
-				$registry = JRegistry::getInstance("jevents");
-				$user = $registry->get("jevents.icaluser", false);
-				if (!$user) {
-					$user = JFactory::getUser();
-				}
-				$accesslevels = $user->getAuthorisedViewLevels();
-				$jevitems = $menu->getItems(array("component","access"),array( JEV_COM_COMPONENT, $accesslevels));
-				// TODO second level Check on enclosing categories and other constraints
-				if (count($jevitems) > 0)
-				{
-					foreach ($jevitems as $jevitem)
-					{
-                                            // skip manage events and edit events menu items unless we really need them
-                                            if (strpos($jevitem->link, "edit")>0 || strpos($jevitem->link, "admin")>0){
-                                                continue;
-                                            }
-                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
-                                            {
-                                                    $jevitemid[$evid] = $jevitem->id;
 
-                                                    if ($forcecheck)
-                                                    {
-                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
-                                                            $mcatids = array();
-                                                            // New system
-                                                            $newcats = $mparams->get("catidnew", false);
-                                                            if ($newcats && is_array($newcats))
-                                                            {
-                                                                    foreach ($newcats as $newcat)
-                                                                    {
-                                                                            if ($forcecheck->catid() == $newcat)
-                                                                            {
-                                                                                    return $jevitemid[$evid];
-                                                                            }
-
-                                                                            if (!in_array($newcat, $mcatids))
-                                                                            {
-                                                                                    $mcatids[] = $newcat;
-                                                                            }
-                                                                    }
-                                                            }
-                                                            else
-                                                            {
-                                                                    for ($c = 0; $c < 999; $c++)
-                                                                    {
-                                                                            $nextCID = "catid$c";
-                                                                            //  stop looking for more catids when you reach the last one!
-                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
-                                                                            {
-                                                                                    break;
-                                                                            }
-                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
-                                                                            {
-                                                                                    return $jevitemid[$evid];
-                                                                            }
-
-                                                                            if (!in_array($nextCatId, $mcatids))
-                                                                            {
-                                                                                    $mcatids[] = $nextCatId;
-                                                                            }
-                                                                    }
-                                                            }
-                                                            // if no restrictions then can use this
-                                                            if (count($mcatids) == 0)
-                                                            {
-                                                                    return $jevitemid[$evid];
-                                                            }
-                                                            continue;
-                                                    }
-
-                                                    return $jevitemid[$evid];
-                                            }
-
-					}
-                                        // we didn't find them amongst the other menu item so checn the edit and admin ones
-					foreach ($jevitems as $jevitem)
-					{
-                                            if (strpos($jevitem->link, "edit")===false && strpos($jevitem->link, "admin")===false){
-                                                continue;
-                                            }
-                                            if ( in_array($jevitem->access, JEVHelper::getAid($user, 'array')) )
-                                            {
-                                                    $jevitemid[$evid] = $jevitem->id;
-
-                                                    if ($forcecheck)
-                                                    {
-                                                            $mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
-                                                            $mcatids = array();
-                                                            // New system
-                                                            $newcats = $mparams->get("catidnew", false);
-                                                            if ($newcats && is_array($newcats))
-                                                            {
-                                                                    foreach ($newcats as $newcat)
-                                                                    {
-                                                                            if ($forcecheck->catid() == $newcat)
-                                                                            {
-                                                                                    return $jevitemid[$evid];
-                                                                            }
-
-                                                                            if (!in_array($newcat, $mcatids))
-                                                                            {
-                                                                                    $mcatids[] = $newcat;
-                                                                            }
-                                                                    }
-                                                            }
-                                                            else
-                                                            {
-                                                                    for ($c = 0; $c < 999; $c++)
-                                                                    {
-                                                                            $nextCID = "catid$c";
-                                                                            //  stop looking for more catids when you reach the last one!
-                                                                            if (!$nextCatId = $mparams->get($nextCID, null))
-                                                                            {
-                                                                                    break;
-                                                                            }
-                                                                            if ($forcecheck->catid() == $mparams->get($nextCID, null))
-                                                                            {
-                                                                                    return $jevitemid[$evid];
-                                                                            }
-
-                                                                            if (!in_array($nextCatId, $mcatids))
-                                                                            {
-                                                                                    $mcatids[] = $nextCatId;
-                                                                            }
-                                                                    }
-                                                            }
-                                                            // if no restrictions then can use this
-                                                            if (count($mcatids) == 0)
-                                                            {
-                                                                    return $jevitemid[$evid];
-                                                            }
-                                                            continue;
-                                                    }
-
-                                                    return $jevitemid[$evid];
-                                            }
-                                        }
-				}
-			}
-		}
-		return $jevitemid[$evid];
-
-	}
-
-	public static
-			function getAdminItemid()
-	{
 		static $jevitemid;
 		if (!isset($jevitemid))
 		{
 			$jevitemid = 0;
-			$menu = JFactory::getApplication()->getMenu();
-			$active = $menu->getActive();
+			$menu      = JFactory::getApplication()->getMenu();
+			$active    = $menu->getActive();
 			if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin.listevents") > 0)
 			{
 				$jevitemid = $active->id;
+
 				return $jevitemid;
 			}
 			else
@@ -1064,6 +966,7 @@ class JEVHelper
 							if (strpos($jevitem->link, "admin.listevents") > 0)
 							{
 								$jevitemid = $jevitem->id;
+
 								return $jevitemid;
 							}
 						}
@@ -1072,1354 +975,23 @@ class JEVHelper
 			}
 			$jevitemid = JEVHelper::getItemid();
 		}
+
 		return $jevitemid;
 
 	}
 
-	/**
-	 * Get current year number
-	 * @param   string  $year     Year reference or exact number of the year
-	 * @return int
-	 */
-	public static
-			function getYearNumber($year)
-	{
-		$datenow = JEVHelper::getNow();
-		$yearnow = $datenow->toFormat('%Y');
-		$firstpos = JString::substr($year, 0, 1);
-
-		if ($firstpos == "+")
-		{
-			$year = JString::substr($year, 1);
-			$year = $yearnow + $year;
-		}
-		else if ($firstpos == "-")
-		{
-			$year = JString::substr($year, 1);
-			$year = $yearnow - $year;
-		}
-		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (JString::strlen($year) < 4)
-		{
-			$cuenta = count($year);
-			$year = $yearnow + $year;
-		}
-
-		return $year;
-
-	}
-
-	/**
-	 * Get array Year, Month, Day from current Request, fallback to current date
-	 *
-	 * @return array
-	 */
-	public static
-			function getYMD()
-	{
-
-		static $data;
-
-		if (!isset($data))
-		{
-			$datenow = JEVHelper::getNow();
-			list($yearnow, $monthnow, $daynow) = explode('-', $datenow->toFormat('%Y-%m-%d'));
-
-			$year = min(2100, abs(intval(JRequest::getVar('year', $yearnow))));
-			$month = min(99, abs(intval(JRequest::getVar('month', $monthnow))));
-			$day = min(3650, abs(intval(JRequest::getVar('day', $daynow))));
-			if ($day <= 0)
-			{
-				$day = $daynow;
-			}
-			if ($month <= 0)
-			{
-				$month = $monthnow;
-			}
-			if ($year <= 0)
-			{
-				$year = $yearnow;
-			}
-			if ($day <= '9')
-			{
-				$day = '0' . $day;
-			}
-			if ($month <= '9')
-			{
-				$month = '0' . $month;
-			}
-
-			// Make sure $day is not outside the month
-			$lastDayOfMonth = intval(strftime("%d", mktime(6, 0, 0, $month + 1, 1, $year) - 86400));
-			$day = $lastDayOfMonth < $day ? $lastDayOfMonth : $day;
-
-			$data = array();
-			$data[] = $year;
-			$data[] = $month;
-			$data[] = $day;
-		}
-		return $data;
-
-	}
-
-	/**
-	 * Get JevDate object of current time
-	 *
-	 * @return object JevDate
-	 */
-	public static
-			function getNow()
-	{
-
-		/* JevDate object of current time */
-		static $datenow = null;
-
-		if (!isset($datenow))
-		{
-			include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
-			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$tz = $compparams->get("icaltimezonelive", "");
-			// Now in the set timezone!
-			$datenow = JevDate::getDate("+0 seconds");
-		}
-		return $datenow;
-
-	}
-
-	/**
-	 * Test to see if user can add events from the front end
-	 *
-	 * @return boolean
-	 */
-	public static
-			function isEventCreator()
-	{
-		static $isEventCreator;
-		if (!isset($isEventCreator))
-		{
-			$isEventCreator = false;
-			$user = JEVHelper::getAuthorisedUser();
-			if (is_null($user))
-			{
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$juser = JFactory::getUser();
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if (!$authorisedonly)
-				{
-
-					if ($params->get("category_allow_deny",1)==0){
-						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
-						list($usec, $sec) = explode(" ", microtime());
-						$time_start = (float) $usec + (float) $sec;
-						if ($juser->get("id")){
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-							$juser = JFactory::getUser();
-							if (count($okcats)){
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) > 0)
-								{
-									$isEventCreator = true;
-								}
-							}
-						}
-						list ($usec, $sec) = explode(" ", microtime());
-						$time_end = (float) $usec + (float) $sec;
-						//echo "time taken = ". round($time_end -  $time_start, 4)."<Br/>";
-						//if ($isEventCreator) return $isEventCreator;
-					}
-					else
-					{
-						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
-						if ($isEventCreator)
-						{
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
-							if (count($okcats) > 0)
-							{
-								$juser = JFactory::getUser();
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) == 0)
-								{
-									$isEventCreator = false;
-								}
-							}
-							else
-							{
-								$isEventCreator = false;
-							}
-						}
-					}
-				}
-				else if ($juser->id > 0 && JEVHelper::isAdminUser ($juser)) {
-					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
-					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
-
-				}
-			}
-			else if ($user->cancreate)
-			{
-				// Check maxevent count
-				if ($user->eventslimit > 0)
-				{
-					$db = JFactory::getDbo();
-					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=" . $user->user_id);
-					$eventcount = intval($db->loadResult());
-					if ($eventcount < $user->eventslimit)
-					{
-						$isEventCreator = true;
-					}
-					else
-					{
-						$isEventCreator = false;
-					}
-				}
-				else
-				{
-					$isEventCreator = true;
-				}
-				// are we blocked by category or calendar constraints
-				if ($isEventCreator && $user->categories != "" && $user->categories != "all")
-				{
-					$okcats = explode("|", $user->categories);
-
-					$juser = JFactory::getUser();
-					$dataModel = new JEventsDataModel();
-					$dataModel->setupComponentCatids();
-
-					$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-					$intersect = array_intersect($okcats, $allowedcats);
-
-					if (count($intersect) == 0)
-					{
-						$isEventCreator = false;
-					}
-				}
-			}
-
-			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
-		}
-		if (is_null($isEventCreator)) $isEventCreator = false;
-
-		return $isEventCreator;
-
-	}
-
-	/**
-	 * Test to see if user can create event within the specified category
-	 *
-	 * @param unknown_type $row
-	 * @param unknown_type $user
-	 * @return unknown
-	 */
-	public static
-			function canCreateEvent($row, $user = null)
-	{
-		// TODO make this call a plugin
-		if ($user == null)
-		{
-			$user = JFactory::getUser();
-		}
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 0);
-		if (!$authorisedonly)
-		{
-			if ($user->authorise('core.create', 'com_jevents'))
-				return true;
-			$allowedcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.create');
-
-			// anon user event creation
-			if ($user->id == 0 && count($allowedcats)==0){
-				$jevtask = JRequest::getString("task");
-				// This allows savenew through too!
-				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
-				{
-					JRequest::setVar("task", "icalevent.edit");
-					$catids = JEVHelper::rowCatids($row)? JEVHelper::rowCatids($row) :array(intval($row->_catid));
-					$catids = implode(",", $catids);
-					$dispatcher = JEventDispatcher::getInstance();
-					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
-					$allowedcats = explode(",", $catids);
-					JRequest::setVar("task", $jevtask);
-				}
-			}
-
-			if (!in_array($row->_catid, $allowedcats))
-			{
-				return false;
-			}
-			// check multi cats too
-			if (JEVHelper::rowCatids($row))
-			{
-				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
-				{
-					return false;
-				}
-			}
-		}
-		else
-		{
-			// are we authorised to do anything with this category or calendar
-			$jevuser = JEVHelper::getAuthorisedUser();
-			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
-			{
-				$allowedcals = explode("|", $jevuser->calendars);
-				if (!in_array($row->_icsid, $allowedcals))
-					return false;
-			}
-
-			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
-			{
-				$allowedcats = explode("|", $jevuser->categories);
-				if (!in_array($row->_catid, $allowedcats))
-					return false;
-				// check multi cats too
-				if (JEVHelper::rowCatids($row))
-				{
-					if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
-					{
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-
-	}
-
-	// is the user an event editor - i.e. can edit own and other events
-	public static
-			function isEventEditor()
-	{
-		static $isEventEditor;
-		if (!isset($isEventEditor))
-		{
-			$isEventEditor = false;
-
-			$user = JEVHelper::getAuthorisedUser();
-
-			if (is_null($user))
-			{
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if (!$authorisedonly)
-				{
-					$juser = JFactory::getUser();
-					// Never allow unlogged in users to edit events - just in case someone tries to allow this
-					if ($juser->id == 0)
-					{
-						return false;
-					}
-					//$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
-
-					if ($params->get("category_allow_deny",1)==0){
-						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
-						list($usec, $sec) = explode(" ", microtime());
-						$time_start = (float) $usec + (float) $sec;
-						if ($juser->get("id")){
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
-							$juser = JFactory::getUser();
-							if (count($okcats)){
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) > 0)
-								{
-									$isEventEditor = true;
-								}
-							}
-						}
-						list ($usec, $sec) = explode(" ", microtime());
-						$time_end = (float) $usec + (float) $sec;
-					}
-					else
-					{
-						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
-						if ($isEventEditor)
-						{
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
-							if (count($okcats) > 0)
-							{
-								$juser = JFactory::getUser();
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) == 0)
-								{
-									$isEventEditor = false;
-								}
-							}
-							else
-							{
-								$isEventEditor = false;
-							}
-						}
-					}
-
-				}
-			}
-
-			/*
-			  $user = JEVHelper::getAuthorisedUser();
-			  if (is_null($user)){
-			  $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			  $editorLevel= $params->get("jeveditor_level",20);
-			  $juser = JFactory::getUser();
-			  if (JEVHelper::getGid($user)>=$editorLevel){
-			  $isEventEditor = true;
-			  }
-			  }
-			 */
-			else if ($user->canedit)
-			{
-				$isEventEditor = true;
-			} else if ($user->cancreate) {
-				// User can create, lets check the DB for the Creator ID.
-				$jinput = JFactory::getApplication()->input;
-				$ev_id  = $jinput->getInt('evid', 0);
-				if ($ev_id > 0) {
-					// Get the creator ID:
-					$db = JFactory::getDbo();
-					$db->setQuery("SELECT created_by FROM #__jevents_vevent WHERE ev_id = " . $ev_id);
-					$result = $db->loadResult();
-					if ($result === $user->user_id) {
-						$isEventEditor = true;
-					}
-
-				}
-			}
-		}
-		return $isEventEditor;
-
-	}
-
-	/**
-	 * Test to see if user can edit event
-	 *
-	 * @param unknown_type $row
-	 * @param unknown_type $user
-	 * @return unknown
-	 */
-	public static
-			function canEditEvent($row, $user = null)
-	{
-		// store in static to save repeated database calls
-		static $authdata_coreedit = array();
-		static $authdata_editown = array();
-
-		// TODO make this call a plugin
-		if ($user == null)
-		{
-			$user = JFactory::getUser();
-		}
-
-		if ($user->id == 0)
-		{
-			return false;
-		}
-
-		// are we authorised to do anything with this category or calendar
-		$jevuser = JEVHelper::getAuthorisedUser();
-		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
-		{
-			$allowedcals = explode("|", $jevuser->calendars);
-			if (!in_array($row->_icsid, $allowedcals))
-				return false;
-		}
-
-		if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
-		{
-			$allowedcats = explode("|", $jevuser->categories);
-			if (!in_array($row->_catid, $allowedcats))
-				return false;
-			// check multi cats too
-			if (JEVHelper::rowCatids($row))
-			{
-				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
-				{
-					return false;
-				}
-			}
-		}
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 0);
-		if ($authorisedonly)
-		{
-			if ($jevuser && $jevuser->published)
-			{
-				// creator can edit their own event
-				if ($jevuser->cancreate && $row->_created_by == $user->id)
-				{
-					return true;
-				}
-				else if ($jevuser->canedit)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-
-		if (JEVHelper::isEventEditor())
-		{
-			// any category restrictions on this?
-			// This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
-			  $cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
-			  if (in_array($row->_catid, $cats))
-			  return true;
-			  else if (in_array($row->_catid, $cats_own))
-			  return true;
-			  else return false;
-			 */
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_coreedit[$key]))
-			{
-				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
-			}
-			if ($authdata_coreedit[$key])
-			{
-				return true;
-			}
-			else if ($user->id > 0 && $row->created_by() == $user->id)
-			{
-				if (!isset($authdata_editown[$key]))
-				{
-					$authdata_editown[$key] = JEVHelper::authoriseCategories('core.edit.own', $key, $user);
-				}
-				return $authdata_editown[$key];
-			}
-			// category settings trumps overall setting
-			return false;
-
-			return true;
-		}
-		// must stop anon users from editing any events
-		else if ($user->id > 0 && $row->created_by() == $user->id)
-		{
-
-			if ($authorisedonly)
-			{
-				if ($jevuser)
-				{
-					if ($jevuser->published && $jevuser->cancreate)
-					{
-						return true;
-					}
-				}
-				else
-				{
-					return false;
-				}
-			}
-
-
-			// other users can always edit their own unless blocked by category
-			// This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
-			  $cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
-			  if (in_array($row->_catid, $cats))
-			  return true;
-			  else if (in_array($row->_catid, $cats_own))
-			  return true;
-			 */
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_coreedit[$key]))
-			{
-				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
-			}
-			if ($authdata_coreedit[$key])
-			{
-				return true;
-			}
-			else
-			{
-				if (!isset($authdata_editown[$key]))
-				{
-					$authdata_editown[$key] = JEVHelper::authoriseCategories('core.edit.own', $key, $user);
-				}
-				return $authdata_editown[$key];
-			}
-			return false;
-		}
-
-		if ($user->id > 0 && $row->catid() > 0)
-		{
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_coreedit[$key]))
-			{
-				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
-			}
-			return $authdata_coreedit[$key];
-		}
-		return false;
-
-	}
-
-	// is the user an event publisher - i.e. can publish own OR other events
-	public static
-			function isEventPublisher($strict = false)
-	{
-		static $isEventPublisher;
-		if (!isset($isEventPublisher))
-		{
-			$isEventPublisher = array();
-		}
-		$type = $strict ? "strict" : "notstrict";
-		if (!isset($isEventPublisher[$type]))
-		{
-			$isEventPublisher[$type] = false;
-
-			$user = JEVHelper::getAuthorisedUser();
-			if (is_null($user))
-			{
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if (!$authorisedonly)
-				{
-					$juser = JFactory::getUser();
-
-					if ($params->get("category_allow_deny",1)==0){
-						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
-						list($usec, $sec) = explode(" ", microtime());
-						$time_start = (float) $usec + (float) $sec;
-						if ($juser->get("id")){
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
-							$juser = JFactory::getUser();
-							if (count($okcats)){
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) > 0)
-								{
-									$isEventPublisher[$type] = true;
-								}
-							}
-						}
-						list ($usec, $sec) = explode(" ", microtime());
-						$time_end = (float) $usec + (float) $sec;
-					}
-					else
-					{
-						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
-						if ($isEventPublisher[$type])
-						{
-							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
-							if (count($okcats) > 0)
-							{
-								$juser = JFactory::getUser();
-								$dataModel = new JEventsDataModel();
-								$dataModel->setupComponentCatids();
-
-								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
-								$intersect = array_intersect($okcats, $allowedcats);
-
-								if (count($intersect) == 0)
-								{
-									$isEventPublisher[$type] = false;
-								}
-							}
-							else
-							{
-								$isEventPublisher[$type] = false;
-							}
-						}
-					}
-
-
-
-				}
-			}
-			else if ($user->canpublishall)
-			{
-				$isEventPublisher[$type] = true;
-			}
-			else if (!$strict && $user->canpublishown)
-			{
-				$isEventPublisher[$type] = true;
-			}
-
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
-		}
-
-
-		return $isEventPublisher[$type];
-
-	}
-
-	// Fall back test to see if user can publish their own events based on config setting
-	public static
-			function canPublishOwnEvents($evid, $vevent = false)
-	{
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 1);
-		$publishown = $params->get("jevpublishown", 0);
-		$canPublishOwn = false;
-
-		$jevuser = JEVHelper::getAuthorisedUser();
-		$user = JFactory::getUser();
-
-		if (!$authorisedonly && $publishown)
-		{
-
-			// can publish all?
-			if (JEVHelper::isEventPublisher(true))
-			{
-				return true;
-			}
-			else if ($evid == 0  && $publishown==1)
-			{
-				return true;
-			}
-
-            if ($evid==0 && $publishown==2){
-                if ($params->get("category_allow_deny",1)==0){
-                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                    if (isset($vevent->catid)){
-                        $catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
-                        $catids = array_intersect($catids, $okcats);
-                        return count($catids)>0;
-                    }
-                }
-                else {
-                    $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
-	                if ($canPublishOwn)
-                    {
-	                    $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                         if (isset($vevent->catid)){
-                            $catids  = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
-                            $catids = array_intersect($catids, $okcats);
-                            return count($catids)>0;
-                         }
-                    }
-                }
-            }
-            else {
-                $dataModel = new JEventsDataModel("JEventsAdminDBModel");
-                $queryModel = new JEventsDBModel($dataModel);
-
-                $evid = intval($evid);
-                $testevent = $queryModel->getEventById($evid, 1, "icaldb");
-                if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
-                {
-                    if ($publishown==2) {
-                        if ($params->get("category_allow_deny",1)==0){
-                            $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                            $catids = $testevent->catids();
-			    if (!is_array($catids))
-			    {
-				    $catids = array($testevent->catid());
-			    }
-                            $catids = array_intersect($catids, $okcats);
-                            return count($catids)>0;
-                        }
-                        else {
-                            $canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
-                            if ($canPublishOwn)
-                            {
-                                $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
-                                $catids = $testevent->catids();
-			    if (!is_array($catids))
-			    {
-				    $catids = array($testevent->catid());
-			    }
-                                $catids = array_intersect($catids, $okcats);
-                                return count($catids)>0;
-                            }
-                            return false;
-                        }
-                    }
-                    else {
-                        return true;
-                    }
-
-                }
-            }
-		}
-
-		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
-		{
-			if ($evid == 0)
-			{
-				return true;
-			}
-			$dataModel = new JEventsDataModel("JEventsAdminDBModel");
-			$queryModel = new JEventsDBModel($dataModel);
-
-			$evid = intval($evid);
-			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
-			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
-			{
-				return true;
-			}
-		} elseif ($canPublishOwn) {
-			return true;
-		}
-
-		return false;
-
-	}
-
-	// gets a list of categories for which this user is the admin
-	public static
-			function categoryAdmin()
-	{
-		if (!JEVHelper::isEventPublisher())
-			return false;
-		$juser = JFactory::getUser();
-
-		$db = JFactory::getDbo();
-                // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
-                // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
-		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
-		$db->setQuery($sql);
-		$catids = $db->loadColumn();
-		if (count($catids) > 0)
-			return $catids;
-		return false;
-
-	}
-
-	/**
-	 * Test to see if user can publish event
-	 *
-	 * @param unknown_type $row
-	 * @param unknown_type $user
-	 * @return unknown
-	 */
-	public static
-			function canPublishEvent($row, $user = null)
-	{
-		// store in static to save repeated database calls
-		static $authdata_editstate = array();
-
-		// TODO make this call a plugin
-		if ($user == null)
-		{
-			$user = JFactory::getUser();
-		}
-		// are we authorised to do anything with this category or calendar
-		$jevuser = JEVHelper::getAuthorisedUser();
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 0);
-		if ($authorisedonly)
-		{
-			if (!$jevuser)
-			{
-				// paid subs plugin may override this
-				if ($row->created_by() == $user->id && $user->id > 0)
-				{
-					$frontendPublish = JEVHelper::isEventPublisher(false);
-					return $frontendPublish;
-				}
-
-				return false;
-			}
-
-			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
-			{
-				$allowedcals = explode("|", $jevuser->calendars);
-				if (!in_array($row->_icsid, $allowedcals))
-					return false;
-			}
-
-			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
-			{
-				$allowedcats = explode("|", $jevuser->categories);
-				if (!in_array($row->_catid, $allowedcats))
-					return false;
-				// check multi cats too
-				if (JEVHelper::rowCatids($row))
-				{
-					if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
-					{
-						return false;
-					}
-				}
-			}
-			if ($jevuser->canpublishall)
-			{
-				return true;
-			}
-			if ($row->created_by() == $user->id && $jevuser->canpublishown)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		// can publish all?
-		if (JEVHelper::isEventPublisher(true))
-		{
-			// This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
-			  if (in_array($row->_catid, $cats))
-			  return true;
-			 */
-			// allow multi-categories
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-			return $authdata_editstate[$key];
-
-			return true;
-		}
-		else if ($row->created_by() == $user->id)
-		{
-
-			// Use generic helper method that can call the plugin to see if user can publish any events
-			$isEventPublisher = JEVHelper::isEventPublisher();
-			if ($isEventPublisher)
-				return true;
-
-			$jevuser = JEVHelper::getAuthorisedUser();
-			if (!is_null($jevuser))
-			{
-				return $jevuser->canpublishown;
-			}
-
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly", 1);
-			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && $publishown==1)
-			{
-				return true;
-			}
-                        else if (!$authorisedonly && $publishown==2)
-                        {
-                            $publishown = JEVHelper::canPublishOwnEvents($row->ev_id());
-                            if ($publishown )
-                            {
-                                return true;
-                            }
-                        }
-
-			// This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
-			  if (in_array($row->_catid, $cats))
-			  return true;
-			 */
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_editstate[$key]))
-			{
-				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-			}
-			return $authdata_editstate[$key];
-		}
-		if ($user->id > 0 && $row->catid() > 0)
-		{
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_editstate[$key]))
-			{
-				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
-			}
-			return $authdata_editstate[$key];
-		}
-
-		return false;
-
-	}
-
-	// is the user an event publisher - i.e. can publish own OR other events
-	public static
-			function isEventDeletor($strict = false)
-	{
-		static $isEventDeletor;
-		if (!isset($isEventDeletor))
-		{
-			$isEventDeletor = array();
-		}
-		$type = $strict ? "strict" : "notstrict";
-		if (!isset($isEventDeletor[$type]))
-		{
-			$isEventDeletor[$type] = false;
-
-			$user = JEVHelper::getAuthorisedUser();
-			if (is_null($user))
-			{
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$authorisedonly = $params->get("authorisedonly", 0);
-				if (!$authorisedonly)
-				{
-					$juser = JFactory::getUser();
-					$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
-				}
-			}
-			else if ($user->candeleteall)
-			{
-				$isEventDeletor[$type] = true;
-			}
-			else if (!$strict && $user->candeleteown)
-			{
-				$isEventDeletor[$type] = true;
-			}
-		}
-		return $isEventDeletor[$type];
-
-	}
-
-	/**
-	 * Test to see if user can delete event
-	 *
-	 * @param unknown_type $row
-	 * @param unknown_type $user
-	 * @return unknown
-	 */
-	public static
-			function canDeleteEvent($row, $user = null)
-	{
-		// store in static to save repeated database calls
-		static $authdata_coredeleteall = array();
-
-		// TODO make this call a plugin
-		if ($user == null)
-		{
-			$user = JFactory::getUser();
-		}
-
-		// are we authorised to do anything with this category or calendar
-		$jevuser = JEVHelper::getAuthorisedUser();
-		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
-		{
-			$allowedcals = explode("|", $jevuser->calendars);
-			if (!in_array($row->_icsid, $allowedcals))
-				return false;
-		}
-
-		if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
-		{
-			$allowedcats = explode("|", $jevuser->categories);
-			if (!in_array($row->_catid, $allowedcats))
-				return false;
-			// check multi cats too
-			if (JEVHelper::rowCatids($row))
-			{
-				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
-				{
-					return false;
-				}
-			}
-		}
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 1);
-		if ($authorisedonly)
-		{
-			if (!$jevuser)
-			{
-				return false;
-			}
-
-			if (!is_null($jevuser) && $jevuser->candeleteall)
-			{
-				return true;
-			}
-			else if (!is_null($jevuser) && $jevuser->candeleteown && $row->created_by() == $user->id)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		// This involes TOO many database queries in Joomla - one per category which can be a LOT
-		/*
-		  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
-		  if (in_array($row->_catid, $cats))
-		  return true;
-		 */
-		$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-		if (!isset($authdata_coredeleteall[$key]))
-		{
-			$authdata_coredeleteall[$key] = JEVHelper::authoriseCategories('core.deleteall', $key, $user);
-		}
-		if ($authdata_coredeleteall[$key])
-		{
-			return $authdata_coredeleteall[$key];
-		}
-
-		// can delete all?
-		if (JEVHelper::isEventDeletor(true))
-		{
-			// any category restrictions on this?
-			// This involes TOO many database queries in Joomla - one per category which can be a LOT
-			/*
-			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
-			  if (in_array($row->_catid, $cats))
-			  return true;
-			 */
-			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
-			if (!isset($authdata_coredeleteall[$key]))
-			{
-				$authdata_coredeleteall[$key] = JEVHelper::authoriseCategories('core.deleteall', $key, $user);
-			}
-			if ($authdata_coredeleteall[$key])
-			{
-				return $authdata_coredeleteall[$key];
-			}
-		}
-
-		// There seems to be a problem with category permissions - sometimes Joomla ACL set to yes in category but result is false!
-		// fall back to being able to delete own events if a publisher
-		if ($row->created_by() == $user->id)
-		{
-			$jevuser = JEVHelper::getAuthorisedUser();
-			if (!is_null($jevuser))
-			{
-				return $jevuser->candeleteown;
-			}
-			// if a user can publish their own then cal delete their own too
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly", 1);
-			$publishown = $params->get("jevpublishown", 0);
-			if (!$authorisedonly && ($publishown==1 || JEVHelper::canPublishEvent($row, $user)))
-			{
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	/**
-	 * Returns contact details or user details as fall back
-	 *
-	 * @param int id		key of user
-	 * @param string attrib	Requested attribute of the user object
-	 * @return mixed row	Attribute or row object
-	 */
-	public static
-			function getContact($id, $attrib = 'Object')
-	{
-
-		$db = JFactory::getDbo();
-
-		static $rows = array();
-
-		if ($id <= 0)
-		{
-			return null;
-		}
-
-		if (!isset($rows[$id]))
-		{
-			$user = JFactory::getUser();
-			$rows[$id] = null;
-			$query = "SELECT ju.id, ju.name, ju.username, ju.sendEmail, ju.email, cd.name as contactname, "
-					. ' CASE WHEN CHAR_LENGTH(cd.alias) THEN CONCAT_WS(\':\', cd.id, cd.alias) ELSE cd.id END as slug, '
-					. ' CASE WHEN CHAR_LENGTH(cat.alias) THEN CONCAT_WS(\':\', cat.id, cat.alias) ELSE cat.id END AS catslug '
-					. " \n FROM #__users AS ju"
-					. "\n LEFT JOIN #__contact_details AS cd ON cd.user_id = ju.id "
-					. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
-					. "\n WHERE block ='0'"
-					. "\n AND cd.published =1 "
-					. "\n AND cd.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
-					. "\n AND cat.access  " .  ' IN (' . JEVHelper::getAid($user) . ')'
-					. "\n AND ju.id = " . $id;
-
-			$db->setQuery($query);
-			$rows[$id] = $db->loadObject();
-			if (is_null($rows[$id]))
-			{
-				// if the user has been deleted then try to suppress the warning
-				// this causes a problem in Joomla 2.5.1 on some servers
-				if (version_compare(JVERSION, '2.5', '>='))
-				{
-					$rows[$id] = JEVHelper::getUser($id);
-				}
-				else
-				{
-					$handlers = JError::getErrorHandling(2);
-					JError::setErrorHandling(2, "ignore");
-					$rows[$id] = JEVHelper::getUser($id);
-					foreach ($handlers as $handler)
-					{
-						if (!is_array($handler))
-							JError::setErrorHandling(2, $handler);
-					}
-					if ($rows[$id])
-					{
-						$error = JError::getError(true);
-					}
-				}
-			}
-		}
-
-		if ($attrib == 'Object')
-		{
-			return $rows[$id];
-		}
-		elseif (isset($rows[$id]->$attrib))
-		{
-			return $rows[$id]->$attrib;
-		}
-		else
-		{
-			return null;
-		}
-
-	}
-
-	/**
-	 * Get user details for authorisation testing
-	 *
-	 * @param int $id Joomla user id
-	 * @return array TableUser
-	 */
-	public static
-			function getAuthorisedUser($id = null)
-	{
-		static $userarray;
-		if (!isset($userarray))
-		{
-			$userarray = array();
-		}
-		if (is_null($id))
-		{
-			$juser = JFactory::getUser();
-			$id = $juser->id;
-		}
-		if (!array_key_exists($id, $userarray))
-		{
-			JLoader::import("jevuser", JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/tables/");
-
-			$user = new TableUser();
-
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$authorisedonly = $params->get("authorisedonly", 0);
-			// if authorised only then load from database
-			if ($authorisedonly)
-			{
-				$users = $user->getUsersByUserid($id);
-				if (count($users) > 0)
-				{
-					$userarray[$id] = current($users);
-					// user must also be enabled!
-					if (!$userarray[$id]->published)
-					{
-						$userarray[$id] = null;
-					}
-				}
-				else
-				{
-					$userarray[$id] = null;
-				}
-			}
-			else
-			{
-				$userarray[$id] = null;
-			}
-		}
-		return $userarray[$id];
-
-	}
-
-	/*
-	 * Our own version that caches the results - the Joomla one doesn't!!!
-	 */
-
-	public static
-			function getAuthorisedCategories($user, $component, $action)
-	{
-		static $results = array();
-		$key = $user->id . ":component:" . $action;
-		if (!isset($results[$key]))
-		{
-			$results[$key] = $user->getAuthorisedCategories($component, $action);
-		}
-		return $results[$key];
-
-	}
-
 	static public
-			function isAdminUser($user = null)
-	{
-		if (is_null($user))
-		{
-			$user = JFactory::getUser();
-		}
-		//$access = JAccess::check($user->id, "core.admin","com_jevents");
-		// Add a second check incase the getuser failed.
-		if (!$user) {
-			return false;
-		}
-		$access = $user->authorise('core.admin', 'com_jevents');
-		return $access;
-
-	}
-
-	public static
-			function componentStylesheet($view, $filename = 'events_css.css')
+	function getAid($user = null, $type = 'string')
 	{
 
-
-		if (!isset($view->jevlayout))
-		{
-			if (method_exists($view, "getViewName"))
-				$view->jevlayout = $view->getViewName();
-			else if (method_exists($view, "getTheme"))
-				$view->jevlayout = $view->getTheme();
-		}
-
-		if (file_exists(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . '/' . "assets" . '/' . "css" . '/' . $filename))
-		{
-			JEVHelper::stylesheet($filename, 'templates/' . JFactory::getApplication()->getTemplate() . '/html/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . "/assets/css/");
-		}
-		else
-		{
-			JEVHelper::stylesheet($filename, 'components/' . JEV_COM_COMPONENT . "/views/" . $view->jevlayout . "/assets/css/");
-		}
-
-	}
-
-	/**
-	 *
-	 * Joomla 1.6 compatability functions
-	 *
-	 */
-	static public
-			function getGid($user = null)
-	{
-		if (is_null($user))
-		{
-			$user = JFactory::getUser();
-		}
-		return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
-
-	}
-
-	static public
-			function getAid($user = null, $type = 'string')
-	{
 		if (is_null($user) || !$user)
 		{
 			$user = JFactory::getUser();
 		}
-		$registry = JRegistry::getInstance("jevents");
+		$registry  = JRegistry::getInstance("jevents");
 		$adminuser = $registry->get("jevents.icaluser", false);
-		if ($adminuser){
+		if ($adminuser)
+		{
 			$user = $adminuser;
 		}
 
@@ -2476,22 +1048,1604 @@ class JEVHelper
 	}
 
 	static public
-			function getUserType($user = null)
+	function isAdminUser($user = null)
 	{
+
 		if (is_null($user))
 		{
 			$user = JFactory::getUser();
 		}
-		$groups = $user->groups;  // RSH 10/17/10 - Get groups, sort them, get the last one, return the value
-		asort($groups);
-		$last_group = end($groups);
-		return ($last_group == 'Super Users') ? "Super Administrator" : $last_group;
+		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		// Add a second check incase the getuser failed.
+		if (!$user)
+		{
+			return false;
+		}
+		$access = $user->authorise('core.admin', 'com_jevents');
+
+		return $access;
+
+	}
+
+	/**
+	 * find suitable menu item for displaying an event
+	 *
+	 * @param mixed $forcecheck - false = no check.  jIcalEventRepeat = should we check the access for the event.  Only checks categories at present.
+	 *
+	 * @return integer - menu item id
+	 */
+	public static
+	function getItemid($forcecheck = false, $skipbackend = true)
+	{
+
+		if (JFactory::getApplication()->isAdmin() && $skipbackend)
+			return 0;
+		static $jevitemid;
+		$evid = $forcecheck ? $forcecheck->ev_id() : 0;
+		if (!isset($jevitemid))
+		{
+			$jevitemid = array();
+		}
+		if (!isset($jevitemid[$evid]))
+		{
+			$jevitemid[$evid] = 0;
+			$menu             = JFactory::getApplication()->getMenu();
+			$active           = $menu->getActive();
+			$Itemid           = JRequest::getInt("Itemid");
+			if (is_null($active))
+			{
+				// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
+				$Itemid = JRequest::getInt("Itemid");
+				if ($Itemid > 0 && $jevitemid[$evid] != $Itemid)
+				{
+					$active = $menu->getItem($Itemid);
+				}
+			}
+			$option = JRequest::getCmd("option");
+			// wierd bug in Joomla when SEF is disabled but with xhtml urls sometimes &amp;Itemid is misinterpretted !!!
+			if ($Itemid == 0)
+				$Itemid = JRequest::getInt("amp;Itemid", 0);
+			if ($option == JEV_COM_COMPONENT && $Itemid > 0 && JRequest::getCmd("task") != "crawler.listevents" && JRequest::getCmd("jevtask") != "crawler.listevents")
+			{
+				$jevitemid[$evid] = $Itemid;
+
+				return $jevitemid[$evid];
+			}
+			else if (!is_null($active) && $active->component == JEV_COM_COMPONENT && strpos($active->link, "admin") === false && strpos($active->link, "edit") === false && strpos($active->link, "crawler") === false)
+			{
+				$jevitemid[$evid] = $active->id;
+
+				return $jevitemid[$evid];
+			}
+			else
+			{
+				$registry = JRegistry::getInstance("jevents");
+				$user     = $registry->get("jevents.icaluser", false);
+				if (!$user)
+				{
+					$user = JFactory::getUser();
+				}
+				$accesslevels = $user->getAuthorisedViewLevels();
+				$jevitems     = $menu->getItems(array("component", "access"), array(JEV_COM_COMPONENT, $accesslevels));
+				// TODO second level Check on enclosing categories and other constraints
+				if (count($jevitems) > 0)
+				{
+					foreach ($jevitems as $jevitem)
+					{
+						// skip manage events and edit events menu items unless we really need them
+						if (strpos($jevitem->link, "edit") > 0 || strpos($jevitem->link, "admin") > 0)
+						{
+							continue;
+						}
+						if (in_array($jevitem->access, JEVHelper::getAid($user, 'array')))
+						{
+							$jevitemid[$evid] = $jevitem->id;
+
+							if ($forcecheck)
+							{
+								$mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+								$mcatids = array();
+								// New system
+								$newcats = $mparams->get("catidnew", false);
+								if ($newcats && is_array($newcats))
+								{
+									foreach ($newcats as $newcat)
+									{
+										if ($forcecheck->catid() == $newcat)
+										{
+											return $jevitemid[$evid];
+										}
+
+										if (!in_array($newcat, $mcatids))
+										{
+											$mcatids[] = $newcat;
+										}
+									}
+								}
+								else
+								{
+									for ($c = 0; $c < 999; $c++)
+									{
+										$nextCID = "catid$c";
+										//  stop looking for more catids when you reach the last one!
+										if (!$nextCatId = $mparams->get($nextCID, null))
+										{
+											break;
+										}
+										if ($forcecheck->catid() == $mparams->get($nextCID, null))
+										{
+											return $jevitemid[$evid];
+										}
+
+										if (!in_array($nextCatId, $mcatids))
+										{
+											$mcatids[] = $nextCatId;
+										}
+									}
+								}
+								// if no restrictions then can use this
+								if (count($mcatids) == 0)
+								{
+									return $jevitemid[$evid];
+								}
+								continue;
+							}
+
+							return $jevitemid[$evid];
+						}
+
+					}
+					// we didn't find them amongst the other menu item so checn the edit and admin ones
+					foreach ($jevitems as $jevitem)
+					{
+						if (strpos($jevitem->link, "edit") === false && strpos($jevitem->link, "admin") === false)
+						{
+							continue;
+						}
+						if (in_array($jevitem->access, JEVHelper::getAid($user, 'array')))
+						{
+							$jevitemid[$evid] = $jevitem->id;
+
+							if ($forcecheck)
+							{
+								$mparams = is_string($jevitem->params) ? new JRegistry($jevitem->params) : $jevitem->params;
+								$mcatids = array();
+								// New system
+								$newcats = $mparams->get("catidnew", false);
+								if ($newcats && is_array($newcats))
+								{
+									foreach ($newcats as $newcat)
+									{
+										if ($forcecheck->catid() == $newcat)
+										{
+											return $jevitemid[$evid];
+										}
+
+										if (!in_array($newcat, $mcatids))
+										{
+											$mcatids[] = $newcat;
+										}
+									}
+								}
+								else
+								{
+									for ($c = 0; $c < 999; $c++)
+									{
+										$nextCID = "catid$c";
+										//  stop looking for more catids when you reach the last one!
+										if (!$nextCatId = $mparams->get($nextCID, null))
+										{
+											break;
+										}
+										if ($forcecheck->catid() == $mparams->get($nextCID, null))
+										{
+											return $jevitemid[$evid];
+										}
+
+										if (!in_array($nextCatId, $mcatids))
+										{
+											$mcatids[] = $nextCatId;
+										}
+									}
+								}
+								// if no restrictions then can use this
+								if (count($mcatids) == 0)
+								{
+									return $jevitemid[$evid];
+								}
+								continue;
+							}
+
+							return $jevitemid[$evid];
+						}
+					}
+				}
+			}
+		}
+
+		return $jevitemid[$evid];
+
+	}
+
+	/**
+	 * Test to see if user can add events from the front end
+	 *
+	 * @return boolean
+	 */
+	public static
+	function isEventCreator()
+	{
+
+		static $isEventCreator;
+		if (!isset($isEventCreator))
+		{
+			$isEventCreator = false;
+			$user           = JEVHelper::getAuthorisedUser();
+			if (is_null($user))
+			{
+				$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$juser          = JFactory::getUser();
+				$authorisedonly = $params->get("authorisedonly", 0);
+				if (!$authorisedonly)
+				{
+
+					if ($params->get("category_allow_deny", 1) == 0)
+					{
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id"))
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							$juser  = JFactory::getUser();
+							if (count($okcats))
+							{
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventCreator = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+						//echo "time taken = ". round($time_end -  $time_start, 4)."<Br/>";
+						//if ($isEventCreator) return $isEventCreator;
+					}
+					else
+					{
+						$isEventCreator = $juser->authorise('core.create', 'com_jevents');
+						if ($isEventCreator)
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.create');
+							if (count($okcats) > 0)
+							{
+								$juser     = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventCreator = false;
+								}
+							}
+							else
+							{
+								$isEventCreator = false;
+							}
+						}
+					}
+				}
+				else if ($juser->id > 0 && JEVHelper::isAdminUser($juser))
+				{
+					JError::raiseWarning("403", JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"));
+					JFactory::getApplication()->enqueueMessage(JText::_("JEV_AUTHORISED_USER_MODE_ENABLED_BUT_NO_ENTRY_FOR_SUPER_USER"), 'warning');
+
+				}
+			}
+			else if ($user->cancreate)
+			{
+				// Check maxevent count
+				if ($user->eventslimit > 0)
+				{
+					$db = JFactory::getDbo();
+					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=" . $user->user_id);
+					$eventcount = intval($db->loadResult());
+					if ($eventcount < $user->eventslimit)
+					{
+						$isEventCreator = true;
+					}
+					else
+					{
+						$isEventCreator = false;
+					}
+				}
+				else
+				{
+					$isEventCreator = true;
+				}
+				// are we blocked by category or calendar constraints
+				if ($isEventCreator && $user->categories != "" && $user->categories != "all")
+				{
+					$okcats = explode("|", $user->categories);
+
+					$juser     = JFactory::getUser();
+					$dataModel = new JEventsDataModel();
+					$dataModel->setupComponentCatids();
+
+					$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+					$intersect   = array_intersect($okcats, $allowedcats);
+
+					if (count($intersect) == 0)
+					{
+						$isEventCreator = false;
+					}
+				}
+			}
+
+			JPluginHelper::importPlugin("jevents");
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('isEventCreator', array(& $isEventCreator));
+		}
+		if (is_null($isEventCreator)) $isEventCreator = false;
+
+		return $isEventCreator;
+
+	}
+
+	/**
+	 * Get user details for authorisation testing
+	 *
+	 * @param int $id Joomla user id
+	 *
+	 * @return array TableUser
+	 */
+	public static
+	function getAuthorisedUser($id = null)
+	{
+
+		static $userarray;
+		if (!isset($userarray))
+		{
+			$userarray = array();
+		}
+		if (is_null($id))
+		{
+			$juser = JFactory::getUser();
+			$id    = $juser->id;
+		}
+		if (!array_key_exists($id, $userarray))
+		{
+			JLoader::import("jevuser", JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/tables/");
+
+			$user = new TableUser();
+
+			$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 0);
+			// if authorised only then load from database
+			if ($authorisedonly)
+			{
+				$users = $user->getUsersByUserid($id);
+				if (count($users) > 0)
+				{
+					$userarray[$id] = current($users);
+					// user must also be enabled!
+					if (!$userarray[$id]->published)
+					{
+						$userarray[$id] = null;
+					}
+				}
+				else
+				{
+					$userarray[$id] = null;
+				}
+			}
+			else
+			{
+				$userarray[$id] = null;
+			}
+		}
+
+		return $userarray[$id];
+
+	}
+
+	public static
+	function getAuthorisedCategories($user, $component, $action)
+	{
+
+		static $results = array();
+		$key = $user->id . ":component:" . $action;
+		if (!isset($results[$key]))
+		{
+			$results[$key] = $user->getAuthorisedCategories($component, $action);
+		}
+
+		return $results[$key];
+
+	}
+
+	// is the user an event editor - i.e. can edit own and other events
+
+	/**
+	 * Test to see if user can create event within the specified category
+	 *
+	 * @param unknown_type $row
+	 * @param unknown_type $user
+	 *
+	 * @return unknown
+	 */
+	public static
+	function canCreateEvent($row, $user = null)
+	{
+
+		// TODO make this call a plugin
+		if ($user == null)
+		{
+			$user = JFactory::getUser();
+		}
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 0);
+		if (!$authorisedonly)
+		{
+			if ($user->authorise('core.create', 'com_jevents'))
+				return true;
+			$allowedcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.create');
+
+			// anon user event creation
+			if ($user->id == 0 && count($allowedcats) == 0)
+			{
+				$jevtask = JRequest::getString("task");
+				// This allows savenew through too!
+				if (strpos($jevtask, "icalevent.save") !== false || strpos($jevtask, "icalevent.apply") !== false)
+				{
+					JRequest::setVar("task", "icalevent.edit");
+					$catids     = JEVHelper::rowCatids($row) ? JEVHelper::rowCatids($row) : array(intval($row->_catid));
+					$catids     = implode(",", $catids);
+					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher->trigger('onGetAccessibleCategories', array(& $catids));
+					$allowedcats = explode(",", $catids);
+					JRequest::setVar("task", $jevtask);
+				}
+			}
+
+			if (!in_array($row->_catid, $allowedcats))
+			{
+				return false;
+			}
+			// check multi cats too
+			if (JEVHelper::rowCatids($row))
+			{
+				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			// are we authorised to do anything with this category or calendar
+			$jevuser = JEVHelper::getAuthorisedUser();
+			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+			{
+				$allowedcals = explode("|", $jevuser->calendars);
+				if (!in_array($row->_icsid, $allowedcals))
+					return false;
+			}
+
+			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+			{
+				$allowedcats = explode("|", $jevuser->categories);
+				if (!in_array($row->_catid, $allowedcats))
+					return false;
+				// check multi cats too
+				if (JEVHelper::rowCatids($row))
+				{
+					if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
 
 	}
 
 	static public
-			function stylesheet($file, $path = "")
+	function rowCatids(&$row)
 	{
+
+		if (isset($row->_catids))
+		{
+			if (isset($row->_catidsarray))
+			{
+				return $row->_catidsarray;
+			}
+			$catids = $row->_catids;
+			if (is_string($catids) && strpos($catids, ",") > 0)
+			{
+				$catids = str_replace('"', '', $catids);
+				$catids = explode(",", $catids);
+			}
+			if (!is_array($catids))
+			{
+				$catids = array($catids);
+			}
+			$catids            = ArrayHelper::toInteger($catids);
+			$row->_catidsarray = $catids;
+
+			return $catids;
+		}
+
+		return false;
+
+	}
+
+	// is the user an event publisher - i.e. can publish own OR other events
+
+	/**
+	 * Test to see if user can edit event
+	 *
+	 * @param unknown_type $row
+	 * @param unknown_type $user
+	 *
+	 * @return unknown
+	 */
+	public static
+	function canEditEvent($row, $user = null)
+	{
+
+		// store in static to save repeated database calls
+		static $authdata_coreedit = array();
+		static $authdata_editown = array();
+
+		// TODO make this call a plugin
+		if ($user == null)
+		{
+			$user = JFactory::getUser();
+		}
+
+		if ($user->id == 0)
+		{
+			return false;
+		}
+
+		// are we authorised to do anything with this category or calendar
+		$jevuser = JEVHelper::getAuthorisedUser();
+		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+		{
+			$allowedcals = explode("|", $jevuser->calendars);
+			if (!in_array($row->_icsid, $allowedcals))
+				return false;
+		}
+
+		if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+		{
+			$allowedcats = explode("|", $jevuser->categories);
+			if (!in_array($row->_catid, $allowedcats))
+				return false;
+			// check multi cats too
+			if (JEVHelper::rowCatids($row))
+			{
+				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
+				{
+					return false;
+				}
+			}
+		}
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 0);
+		if ($authorisedonly)
+		{
+			if ($jevuser && $jevuser->published)
+			{
+				// creator can edit their own event
+				if ($jevuser->cancreate && $row->_created_by == $user->id)
+				{
+					return true;
+				}
+				else if ($jevuser->canedit)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+
+		if (JEVHelper::isEventEditor())
+		{
+			// any category restrictions on this?
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+			  $cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
+			  if (in_array($row->_catid, $cats))
+			  return true;
+			  else if (in_array($row->_catid, $cats_own))
+			  return true;
+			  else return false;
+			 */
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key]))
+			{
+				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
+			}
+			if ($authdata_coreedit[$key])
+			{
+				return true;
+			}
+			else if ($user->id > 0 && $row->created_by() == $user->id)
+			{
+				if (!isset($authdata_editown[$key]))
+				{
+					$authdata_editown[$key] = JEVHelper::authoriseCategories('core.edit.own', $key, $user);
+				}
+
+				return $authdata_editown[$key];
+			}
+
+			// category settings trumps overall setting
+			return false;
+
+			return true;
+		}
+		// must stop anon users from editing any events
+		else if ($user->id > 0 && $row->created_by() == $user->id)
+		{
+
+			if ($authorisedonly)
+			{
+				if ($jevuser)
+				{
+					if ($jevuser->published && $jevuser->cancreate)
+					{
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+
+			// other users can always edit their own unless blocked by category
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit');
+			  $cats_own = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.own');
+			  if (in_array($row->_catid, $cats))
+			  return true;
+			  else if (in_array($row->_catid, $cats_own))
+			  return true;
+			 */
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key]))
+			{
+				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
+			}
+			if ($authdata_coreedit[$key])
+			{
+				return true;
+			}
+			else
+			{
+				if (!isset($authdata_editown[$key]))
+				{
+					$authdata_editown[$key] = JEVHelper::authoriseCategories('core.edit.own', $key, $user);
+				}
+
+				return $authdata_editown[$key];
+			}
+
+			return false;
+		}
+
+		if ($user->id > 0 && $row->catid() > 0)
+		{
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_coreedit[$key]))
+			{
+				$authdata_coreedit[$key] = JEVHelper::authoriseCategories('core.edit', $key, $user);
+			}
+
+			return $authdata_coreedit[$key];
+		}
+
+		return false;
+
+	}
+
+	// Fall back test to see if user can publish their own events based on config setting
+
+	public static
+	function isEventEditor()
+	{
+
+		static $isEventEditor;
+		if (!isset($isEventEditor))
+		{
+			$isEventEditor = false;
+
+			$user = JEVHelper::getAuthorisedUser();
+
+			if (is_null($user))
+			{
+				$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				if (!$authorisedonly)
+				{
+					$juser = JFactory::getUser();
+					// Never allow unlogged in users to edit events - just in case someone tries to allow this
+					if ($juser->id == 0)
+					{
+						return false;
+					}
+					//$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
+
+					if ($params->get("category_allow_deny", 1) == 0)
+					{
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id"))
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
+							$juser  = JFactory::getUser();
+							if (count($okcats))
+							{
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventEditor = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+					}
+					else
+					{
+						$isEventEditor = $juser->authorise('core.edit', 'com_jevents');
+						if ($isEventEditor)
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit');
+							if (count($okcats) > 0)
+							{
+								$juser     = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventEditor = false;
+								}
+							}
+							else
+							{
+								$isEventEditor = false;
+							}
+						}
+					}
+
+				}
+			}
+
+			/*
+			  $user = JEVHelper::getAuthorisedUser();
+			  if (is_null($user)){
+			  $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			  $editorLevel= $params->get("jeveditor_level",20);
+			  $juser = JFactory::getUser();
+			  if (JEVHelper::getGid($user)>=$editorLevel){
+			  $isEventEditor = true;
+			  }
+			  }
+			 */
+			else if ($user->canedit)
+			{
+				$isEventEditor = true;
+			}
+			else if ($user->cancreate)
+			{
+				// User can create, lets check the DB for the Creator ID.
+				$jinput = JFactory::getApplication()->input;
+				$ev_id  = $jinput->getInt('evid', 0);
+				if ($ev_id > 0)
+				{
+					// Get the creator ID:
+					$db = JFactory::getDbo();
+					$db->setQuery("SELECT created_by FROM #__jevents_vevent WHERE ev_id = " . $ev_id);
+					$result = $db->loadResult();
+					if ($result === $user->user_id)
+					{
+						$isEventEditor = true;
+					}
+
+				}
+			}
+		}
+
+		return $isEventEditor;
+
+	}
+
+	// gets a list of categories for which this user is the admin
+
+	static public
+	function authoriseCategories($action, $catids, $user)
+	{
+
+		if (is_string($catids) && (strpos($catids, "[") === 0 || strpos($catids, '"') === 0))
+		{
+			$catids = json_decode($catids);
+		}
+		else if (is_string($catids) && strpos($catids, ",") > 0)
+		{
+			$catids = str_replace('"', '', $catids);
+			$catids = explode(",", $catids);
+		}
+		if (!is_array($catids))
+		{
+			$catids = array(intval($catids));
+		}
+		$catids = ArrayHelper::toInteger($catids);
+		$result = false; //count($catids)>0;
+		foreach ($catids as $catid)
+		{
+			// this is an invalid category so skip it!
+			if ($catid == 0)
+				continue;
+			$result = $user->authorise($action, 'com_jevents.category.' . $catid) ? true : false;
+			if (!$result)
+				return false;
+		}
+
+		return $result;
+
+	}
+
+	public static
+	function categoryAdmin()
+	{
+
+		if (!JEVHelper::isEventPublisher())
+			return false;
+		$juser = JFactory::getUser();
+
+		$db = JFactory::getDbo();
+		// TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
+		// try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
+		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
+		$db->setQuery($sql);
+		$catids = $db->loadColumn();
+		if (count($catids) > 0)
+			return $catids;
+
+		return false;
+
+	}
+
+	// is the user an event publisher - i.e. can publish own OR other events
+
+	public static
+	function isEventPublisher($strict = false)
+	{
+
+		static $isEventPublisher;
+		if (!isset($isEventPublisher))
+		{
+			$isEventPublisher = array();
+		}
+		$type = $strict ? "strict" : "notstrict";
+		if (!isset($isEventPublisher[$type]))
+		{
+			$isEventPublisher[$type] = false;
+
+			$user = JEVHelper::getAuthorisedUser();
+			if (is_null($user))
+			{
+				$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				if (!$authorisedonly)
+				{
+					$juser = JFactory::getUser();
+
+					if ($params->get("category_allow_deny", 1) == 0)
+					{
+						// this is too heavy on database queries - keep this in the file so that sites that want to use this approach can uncomment this block
+						list($usec, $sec) = explode(" ", microtime());
+						$time_start = (float) $usec + (float) $sec;
+						if ($juser->get("id"))
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							$juser  = JFactory::getUser();
+							if (count($okcats))
+							{
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) > 0)
+								{
+									$isEventPublisher[$type] = true;
+								}
+							}
+						}
+						list ($usec, $sec) = explode(" ", microtime());
+						$time_end = (float) $usec + (float) $sec;
+					}
+					else
+					{
+						$isEventPublisher[$type] = $juser->authorise('core.edit.state', 'com_jevents');
+						if ($isEventPublisher[$type])
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($juser, 'com_jevents', 'core.edit.state');
+							if (count($okcats) > 0)
+							{
+								$juser     = JFactory::getUser();
+								$dataModel = new JEventsDataModel();
+								$dataModel->setupComponentCatids();
+
+								$allowedcats = explode(",", $dataModel->accessibleCategoryList());
+								$intersect   = array_intersect($okcats, $allowedcats);
+
+								if (count($intersect) == 0)
+								{
+									$isEventPublisher[$type] = false;
+								}
+							}
+							else
+							{
+								$isEventPublisher[$type] = false;
+							}
+						}
+					}
+
+
+				}
+			}
+			else if ($user->canpublishall)
+			{
+				$isEventPublisher[$type] = true;
+			}
+			else if (!$strict && $user->canpublishown)
+			{
+				$isEventPublisher[$type] = true;
+			}
+
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('isEventPublisher', array($type, & $isEventPublisher[$type]));
+		}
+
+
+		return $isEventPublisher[$type];
+
+	}
+
+	/**
+	 * Test to see if user can delete event
+	 *
+	 * @param unknown_type $row
+	 * @param unknown_type $user
+	 *
+	 * @return unknown
+	 */
+	public static
+	function canDeleteEvent($row, $user = null)
+	{
+
+		// store in static to save repeated database calls
+		static $authdata_coredeleteall = array();
+
+		// TODO make this call a plugin
+		if ($user == null)
+		{
+			$user = JFactory::getUser();
+		}
+
+		// are we authorised to do anything with this category or calendar
+		$jevuser = JEVHelper::getAuthorisedUser();
+		if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+		{
+			$allowedcals = explode("|", $jevuser->calendars);
+			if (!in_array($row->_icsid, $allowedcals))
+				return false;
+		}
+
+		if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+		{
+			$allowedcats = explode("|", $jevuser->categories);
+			if (!in_array($row->_catid, $allowedcats))
+				return false;
+			// check multi cats too
+			if (JEVHelper::rowCatids($row))
+			{
+				if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
+				{
+					return false;
+				}
+			}
+		}
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 1);
+		if ($authorisedonly)
+		{
+			if (!$jevuser)
+			{
+				return false;
+			}
+
+			if (!is_null($jevuser) && $jevuser->candeleteall)
+			{
+				return true;
+			}
+			else if (!is_null($jevuser) && $jevuser->candeleteown && $row->created_by() == $user->id)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		// This involes TOO many database queries in Joomla - one per category which can be a LOT
+		/*
+		  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
+		  if (in_array($row->_catid, $cats))
+		  return true;
+		 */
+		$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+		if (!isset($authdata_coredeleteall[$key]))
+		{
+			$authdata_coredeleteall[$key] = JEVHelper::authoriseCategories('core.deleteall', $key, $user);
+		}
+		if ($authdata_coredeleteall[$key])
+		{
+			return $authdata_coredeleteall[$key];
+		}
+
+		// can delete all?
+		if (JEVHelper::isEventDeletor(true))
+		{
+			// any category restrictions on this?
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.deleteall');
+			  if (in_array($row->_catid, $cats))
+			  return true;
+			 */
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_coredeleteall[$key]))
+			{
+				$authdata_coredeleteall[$key] = JEVHelper::authoriseCategories('core.deleteall', $key, $user);
+			}
+			if ($authdata_coredeleteall[$key])
+			{
+				return $authdata_coredeleteall[$key];
+			}
+		}
+
+		// There seems to be a problem with category permissions - sometimes Joomla ACL set to yes in category but result is false!
+		// fall back to being able to delete own events if a publisher
+		if ($row->created_by() == $user->id)
+		{
+			$jevuser = JEVHelper::getAuthorisedUser();
+			if (!is_null($jevuser))
+			{
+				return $jevuser->candeleteown;
+			}
+			// if a user can publish their own then cal delete their own too
+			$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 1);
+			$publishown     = $params->get("jevpublishown", 0);
+			if (!$authorisedonly && ($publishown == 1 || JEVHelper::canPublishEvent($row, $user)))
+			{
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	public static
+	function isEventDeletor($strict = false)
+	{
+
+		static $isEventDeletor;
+		if (!isset($isEventDeletor))
+		{
+			$isEventDeletor = array();
+		}
+		$type = $strict ? "strict" : "notstrict";
+		if (!isset($isEventDeletor[$type]))
+		{
+			$isEventDeletor[$type] = false;
+
+			$user = JEVHelper::getAuthorisedUser();
+			if (is_null($user))
+			{
+				$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$authorisedonly = $params->get("authorisedonly", 0);
+				if (!$authorisedonly)
+				{
+					$juser                 = JFactory::getUser();
+					$isEventDeletor[$type] = $juser->authorise('core.deleteall', 'com_jevents');
+				}
+			}
+			else if ($user->candeleteall)
+			{
+				$isEventDeletor[$type] = true;
+			}
+			else if (!$strict && $user->candeleteown)
+			{
+				$isEventDeletor[$type] = true;
+			}
+		}
+
+		return $isEventDeletor[$type];
+
+	}
+
+	/**
+	 * Test to see if user can publish event
+	 *
+	 * @param unknown_type $row
+	 * @param unknown_type $user
+	 *
+	 * @return unknown
+	 */
+	public static
+	function canPublishEvent($row, $user = null)
+	{
+
+		// store in static to save repeated database calls
+		static $authdata_editstate = array();
+
+		// TODO make this call a plugin
+		if ($user == null)
+		{
+			$user = JFactory::getUser();
+		}
+		// are we authorised to do anything with this category or calendar
+		$jevuser        = JEVHelper::getAuthorisedUser();
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 0);
+		if ($authorisedonly)
+		{
+			if (!$jevuser)
+			{
+				// paid subs plugin may override this
+				if ($row->created_by() == $user->id && $user->id > 0)
+				{
+					$frontendPublish = JEVHelper::isEventPublisher(false);
+
+					return $frontendPublish;
+				}
+
+				return false;
+			}
+
+			if ($row->_icsid > 0 && $jevuser && $jevuser->calendars != "" && $jevuser->calendars != "all")
+			{
+				$allowedcals = explode("|", $jevuser->calendars);
+				if (!in_array($row->_icsid, $allowedcals))
+					return false;
+			}
+
+			if ($row->_catid > 0 && $jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
+			{
+				$allowedcats = explode("|", $jevuser->categories);
+				if (!in_array($row->_catid, $allowedcats))
+					return false;
+				// check multi cats too
+				if (JEVHelper::rowCatids($row))
+				{
+					if (count(array_diff(JEVHelper::rowCatids($row), $allowedcats)))
+					{
+						return false;
+					}
+				}
+			}
+			if ($jevuser->canpublishall)
+			{
+				return true;
+			}
+			if ($row->created_by() == $user->id && $jevuser->canpublishown)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		// can publish all?
+		if (JEVHelper::isEventPublisher(true))
+		{
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+			  if (in_array($row->_catid, $cats))
+			  return true;
+			 */
+			// allow multi-categories
+			$key                      = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
+
+			return $authdata_editstate[$key];
+
+			return true;
+		}
+		else if ($row->created_by() == $user->id)
+		{
+
+			// Use generic helper method that can call the plugin to see if user can publish any events
+			$isEventPublisher = JEVHelper::isEventPublisher();
+			if ($isEventPublisher)
+				return true;
+
+			$jevuser = JEVHelper::getAuthorisedUser();
+			if (!is_null($jevuser))
+			{
+				return $jevuser->canpublishown;
+			}
+
+			$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$authorisedonly = $params->get("authorisedonly", 1);
+			$publishown     = $params->get("jevpublishown", 0);
+			if (!$authorisedonly && $publishown == 1)
+			{
+				return true;
+			}
+			else if (!$authorisedonly && $publishown == 2)
+			{
+				$publishown = JEVHelper::canPublishOwnEvents($row->ev_id());
+				if ($publishown)
+				{
+					return true;
+				}
+			}
+
+			// This involes TOO many database queries in Joomla - one per category which can be a LOT
+			/*
+			  $cats = JEVHelper::getAuthorisedCategories($user,'com_jevents', 'core.edit.state');
+			  if (in_array($row->_catid, $cats))
+			  return true;
+			 */
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_editstate[$key]))
+			{
+				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
+			}
+
+			return $authdata_editstate[$key];
+		}
+		if ($user->id > 0 && $row->catid() > 0)
+		{
+			$key = $row->catids() ? json_encode($row->catids()) : json_encode(intval($row->catid()));
+			if (!isset($authdata_editstate[$key]))
+			{
+				$authdata_editstate[$key] = JEVHelper::authoriseCategories('core.edit.state', $key, $user);
+			}
+
+			return $authdata_editstate[$key];
+		}
+
+		return false;
+
+	}
+
+	/*
+	 * Our own version that caches the results - the Joomla one doesn't!!!
+	 */
+
+	public static
+	function canPublishOwnEvents($evid, $vevent = false)
+	{
+
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$authorisedonly = $params->get("authorisedonly", 1);
+		$publishown     = $params->get("jevpublishown", 0);
+		$canPublishOwn  = false;
+
+		$jevuser = JEVHelper::getAuthorisedUser();
+		$user    = JFactory::getUser();
+
+		if (!$authorisedonly && $publishown)
+		{
+
+			// can publish all?
+			if (JEVHelper::isEventPublisher(true))
+			{
+				return true;
+			}
+			else if ($evid == 0 && $publishown == 1)
+			{
+				return true;
+			}
+
+			if ($evid == 0 && $publishown == 2)
+			{
+				if ($params->get("category_allow_deny", 1) == 0)
+				{
+					$okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+					if (isset($vevent->catid))
+					{
+						$catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+						$catids = array_intersect($catids, $okcats);
+
+						return count($catids) > 0;
+					}
+				}
+				else
+				{
+					$canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+					if ($canPublishOwn)
+					{
+						$okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+						if (isset($vevent->catid))
+						{
+							$catids = is_array($vevent->catid) ? $vevent->catid : array($vevent->catid);
+							$catids = array_intersect($catids, $okcats);
+
+							return count($catids) > 0;
+						}
+					}
+				}
+			}
+			else
+			{
+				$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
+				$queryModel = new JEventsDBModel($dataModel);
+
+				$evid      = intval($evid);
+				$testevent = $queryModel->getEventById($evid, 1, "icaldb");
+				if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+				{
+					if ($publishown == 2)
+					{
+						if ($params->get("category_allow_deny", 1) == 0)
+						{
+							$okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+							$catids = $testevent->catids();
+							if (!is_array($catids))
+							{
+								$catids = array($testevent->catid());
+							}
+							$catids = array_intersect($catids, $okcats);
+
+							return count($catids) > 0;
+						}
+						else
+						{
+							$canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+							if ($canPublishOwn)
+							{
+								$okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
+								$catids = $testevent->catids();
+								if (!is_array($catids))
+								{
+									$catids = array($testevent->catid());
+								}
+								$catids = array_intersect($catids, $okcats);
+
+								return count($catids) > 0;
+							}
+
+							return false;
+						}
+					}
+					else
+					{
+						return true;
+					}
+
+				}
+			}
+		}
+
+		if ($authorisedonly && $jevuser && $jevuser->canpublishown)
+		{
+			if ($evid == 0)
+			{
+				return true;
+			}
+			$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
+			$queryModel = new JEventsDBModel($dataModel);
+
+			$evid      = intval($evid);
+			$testevent = $queryModel->getEventById($evid, 1, "icaldb");
+			if ($testevent->ev_id() == $evid && $testevent->created_by() == $user->id)
+			{
+				return true;
+			}
+		}
+		elseif ($canPublishOwn)
+		{
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Returns contact details or user details as fall back
+	 *
+	 * @param int id        key of user
+	 * @param string attrib    Requested attribute of the user object
+	 *
+	 * @return mixed row    Attribute or row object
+	 */
+	public static
+	function getContact($id, $attrib = 'Object')
+	{
+
+		$db = JFactory::getDbo();
+
+		static $rows = array();
+
+		if ($id <= 0)
+		{
+			return null;
+		}
+
+		if (!isset($rows[$id]))
+		{
+			$user      = JFactory::getUser();
+			$rows[$id] = null;
+			$query     = "SELECT ju.id, ju.name, ju.username, ju.sendEmail, ju.email, cd.name as contactname, "
+				. ' CASE WHEN CHAR_LENGTH(cd.alias) THEN CONCAT_WS(\':\', cd.id, cd.alias) ELSE cd.id END as slug, '
+				. ' CASE WHEN CHAR_LENGTH(cat.alias) THEN CONCAT_WS(\':\', cat.id, cat.alias) ELSE cat.id END AS catslug '
+				. " \n FROM #__users AS ju"
+				. "\n LEFT JOIN #__contact_details AS cd ON cd.user_id = ju.id "
+				. "\n LEFT JOIN #__categories AS cat ON cat.id = cd.catid "
+				. "\n WHERE block ='0'"
+				. "\n AND cd.published =1 "
+				. "\n AND cd.access  " . ' IN (' . JEVHelper::getAid($user) . ')'
+				. "\n AND cat.access  " . ' IN (' . JEVHelper::getAid($user) . ')'
+				. "\n AND ju.id = " . $id;
+
+			$db->setQuery($query);
+			$rows[$id] = $db->loadObject();
+			if (is_null($rows[$id]))
+			{
+				// if the user has been deleted then try to suppress the warning
+				// this causes a problem in Joomla 2.5.1 on some servers
+				if (version_compare(JVERSION, '2.5', '>='))
+				{
+					$rows[$id] = JEVHelper::getUser($id);
+				}
+				else
+				{
+					$handlers = JError::getErrorHandling(2);
+					JError::setErrorHandling(2, "ignore");
+					$rows[$id] = JEVHelper::getUser($id);
+					foreach ($handlers as $handler)
+					{
+						if (!is_array($handler))
+							JError::setErrorHandling(2, $handler);
+					}
+					if ($rows[$id])
+					{
+						$error = JError::getError(true);
+					}
+				}
+			}
+		}
+
+		if ($attrib == 'Object')
+		{
+			return $rows[$id];
+		}
+		elseif (isset($rows[$id]->$attrib))
+		{
+			return $rows[$id]->$attrib;
+		}
+		else
+		{
+			return null;
+		}
+
+	}
+
+	/**
+	 * Get an user object.
+	 *
+	 * JEvents version that doesn't throw error message when user doesn't exist
+	 *
+	 * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
+	 *
+	 * @param   integer $id The user to load - Can be an integer or string - If string, it is converted to ID automatically.
+	 *
+	 * @return  JUser object
+	 *
+	 * @see     JUser
+	 * @since   11.1
+	 */
+	public static
+	function getUser($id = null)
+	{
+
+		if (is_null($id) || $id == 0)
+		{
+			// CB sometimes messes up with the session data when logging out - so this is a safe workaround!
+			return JUser::getInstance();
+		}
+		else
+		{
+			static $tested = array();
+			if (!isset($tested[$id]))
+			{
+				// Initialise some variables
+				$db    = JFactory::getDbo();
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName('#__users'));
+				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+				$db->setQuery($query, 0, 1);
+				$tested[$id] = $db->loadResult();
+			}
+			if (!$tested[$id])
+			{
+				return false;
+			}
+
+			return JFactory::getUser($id);
+		}
+
+	}
+
+	public static
+	function componentStylesheet($view, $filename = 'events_css.css')
+	{
+
+
+		if (!isset($view->jevlayout))
+		{
+			if (method_exists($view, "getViewName"))
+				$view->jevlayout = $view->getViewName();
+			else if (method_exists($view, "getTheme"))
+				$view->jevlayout = $view->getTheme();
+		}
+
+		if (file_exists(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . '/' . "assets" . '/' . "css" . '/' . $filename))
+		{
+			JEVHelper::stylesheet($filename, 'templates/' . JFactory::getApplication()->getTemplate() . '/html/' . JEV_COM_COMPONENT . '/' . $view->jevlayout . "/assets/css/");
+		}
+		else
+		{
+			JEVHelper::stylesheet($filename, 'components/' . JEV_COM_COMPONENT . "/views/" . $view->jevlayout . "/assets/css/");
+		}
+
+	}
+
+	static public
+	function stylesheet($file, $path = "")
+	{
+
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		// JHTML::stylesheet($path . $file);
 		//stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
@@ -2525,8 +2679,44 @@ class JEVHelper
 
 	}
 
+	/**
+	 *
+	 * Joomla 1.6 compatability functions
+	 *
+	 */
+	static public
+	function getGid($user = null)
+	{
+
+		if (is_null($user))
+		{
+			$user = JFactory::getUser();
+		}
+
+		return max(JAccess::getGroupsByUser($user->id));  // RSH trying to get a gid for J!1.6
+
+	}
+
+	static public
+	function getUserType($user = null)
+	{
+
+		if (is_null($user))
+		{
+			$user = JFactory::getUser();
+		}
+		$groups = $user->groups;  // RSH 10/17/10 - Get groups, sort them, get the last one, return the value
+		asort($groups);
+		$last_group = end($groups);
+
+		return ($last_group == 'Super Users') ? "Super Administrator" : $last_group;
+
+	}
+
 	//Custom CSS File Helper file - Single place to define location, preparing to move to media folder
-	static public function CustomCSSFile() {
+
+	static public function CustomCSSFile()
+	{
 
 		$filePath = JPATH_ROOT . '/components/com_jevents/assets/css/jevcustom.css';
 
@@ -2538,8 +2728,9 @@ class JEVHelper
 	 * Load JEvents Custom CSS file if any
 	 */
 	static public
-			function loadCustomCSS()
+	function loadCustomCSS()
 	{
+
 		//Check for JEvents Custom CSS file
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
@@ -2548,8 +2739,9 @@ class JEVHelper
 	}
 
 	static public
-			function script($file, $path = "", $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
+	function script($file, $path = "", $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
+
 		$includes = null;
 		// load jQuery versions if present
 		if (strpos($file, "JQ.js") == false)
@@ -2565,7 +2757,7 @@ class JEVHelper
 		//JHTML::script($path . $file);
 		//public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 		// no need to find browser specific versions
-		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser,$detect_debug);
+		$includes = JHTML::script($path . $file, $framework, $relative, true, $detect_browser, $detect_debug);
 		if (!$includes)
 		{
 			return;
@@ -2595,17 +2787,18 @@ class JEVHelper
 	}
 
 	static public
-			function setupJoomla160()
+	function setupJoomla160()
 	{
 
 	}
 
 	static public
-			function getBaseAccess()
+	function getBaseAccess()
 	{
+
 		// Store the ical in the registry so we can retrieve the access level
 		$registry = JRegistry::getInstance("jevents");
-		$icsfile = $registry->get("jevents.icsfile", false);
+		$icsfile  = $registry->get("jevents.icsfile", false);
 		if ($icsfile)
 		{
 			return $icsfile->access;
@@ -2630,171 +2823,31 @@ class JEVHelper
 				$base = $db->loadResult();
 			}
 		}
+
 		return $base;
 
 	}
 
 	static public
-			function imagesite($img, $text)
+	function imagesite($img, $text)
 	{
+
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
-		return JHTML::_('image', 'system/' . $img, $text, NULL, true);
-
-	}
-
-	static public
-			function authoriseCategories($action, $catids, $user)
-	{
-		if (is_string($catids) && (strpos($catids, "[") === 0 || strpos($catids, '"') === 0))
-		{
-			$catids = json_decode($catids);
-		}
-		else if (is_string($catids) && strpos($catids, ",") > 0)
-		{
-			$catids = str_replace('"', '', $catids);
-			$catids = explode(",", $catids);
-		}
-		if (!is_array($catids))
-		{
-			$catids = array(intval($catids));
-		}
-		$catids = ArrayHelper::toInteger($catids);
-		$result = false; //count($catids)>0;
-		foreach ($catids as $catid)
-		{
-			// this is an invalid category so skip it!
-			if ($catid == 0)
-				continue;
-			$result = $user->authorise($action, 'com_jevents.category.' . $catid) ? true : false;
-			if (!$result)
-				return false;
-		}
-		return $result;
-
-	}
-
-	static public
-			function rowCatids(&$row)
-	{
-		if (isset($row->_catids))
-		{
-			if (isset($row->_catidsarray))
-			{
-				return $row->_catidsarray;
-			}
-			$catids = $row->_catids;
-			if (is_string($catids) && strpos($catids, ",") > 0)
-			{
-				$catids = str_replace('"', '', $catids);
-				$catids = explode(",", $catids);
-			}
-			if (!is_array($catids))
-			{
-				$catids = array($catids);
-			}
-			$catids = ArrayHelper::toInteger($catids);
-			$row->_catidsarray = $catids;
-			return $catids;
-		}
-		return false;
-
-	}
-
-	static public
-			function onDisplayCustomFieldsMultiRow(& $icalrows)
-	{
-		//list($usec, $sec) = explode(" ", microtime());
-		//$starttime = (float) $usec + (float) $sec;
-
-		if (!$icalrows || count($icalrows) == 0)
-		{
-			return;
-		}
-		$user = JFactory::getUser();
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		// only unlogged in users and not logged in OR all visitors grouped by access level
-		if (($params->get("com_cache", 1) == 1 && $user->id == 0) || $params->get("com_cache", 1) == 2)
-		{
-
-			$cachecontroller = JFactory::getCache(JEV_COM_COMPONENT);
-			$oldcaching = $cachecontroller->cache->getCaching();
-			$cachecontroller->cache->setCaching(true);
-
-			// if grouped by access level caching then add this to the cache id
-			$cachegroups = ($params->get("com_cache", 1) == 2) ? implode(',', $user->getAuthorisedViewLevels()) : "";
-			$lang = JFactory::getLanguage()->getTag();
-
-			$rows = array();
-			$indexmap = array();
-			foreach ($icalrows as $index => & $row)
-			{
-				$indexmap[$row->rp_id()] = $index;
-				$id = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
-				$data = $cachecontroller->cache->get($id);
-				if ($data)
-				{
-					if (is_callable("gzcompress"))
-					{
-						$data = gzuncompress($data);
-					}
-					$row = unserialize($data);
-				}
-				else
-				{
-					//echo "failed to get $id<br/>";
-					$rows[] = $row;
-				}
-			}
-			unset($row);
-
-			if (count($rows))
-			{
-				JPluginHelper::importPlugin('jevents');
-				$dispatcher = JEventDispatcher::getInstance();
-				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
-				foreach ($rows as $k => $row)
-				{
-					$id = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
-					$data = serialize($row);
-					if (is_callable("gzcompress"))
-					{
-						// 2 seems a good balance between compression and performance
-						$data = gzcompress($data, 2);
-					}
-					$cached = $cachecontroller->cache->store($data, $id);
-					if ($cached)
-					{
-						//echo "stored $id<br/>";
-					}
-					$index = $indexmap[$row->rp_id()];
-					$icalrows[$index] = $row;
-				}
-			}
-			//list ($usec, $sec) = explode(" ", microtime());
-			//$time_end = (float) $usec + (float) $sec;
-			//echo  "onDisplayCustomFieldsMultiRow  = ".round($time_end - $starttime, 4)."<br/>";
-
-			$cachecontroller->cache->setCaching($oldcaching);
-		}
-		else
-		{
-			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
-		}
+		return JHTML::_('image', 'system/' . $img, $text, null, true);
 
 	}
 
 	public static
-			function ConditionalFields($element, $component)
+	function ConditionalFields($element, $component)
 	{
+
 		$conditions = (string) $element["conditional"];
 		if (!$conditions)
 		{
 			return;
 		}
 		$conditional = (string) $element['name'];
-		$condlabel = $element['label'];
+		$condlabel   = $element['label'];
 		if ($conditional == "creator")
 		{
 			$conditional = "jev_creatorid";
@@ -2807,10 +2860,10 @@ class JEVHelper
 		{
 			$conditional = str_replace("@", "_", $conditional);
 		}
-		$condarray = (string) $element['conditions'];
-		$condtype = (string) $element['type'];
+		$condarray    = (string) $element['conditions'];
+		$condtype     = (string) $element['type'];
 		$fielddefault = (string) $element['default'];
-		$multi = (string) $element['multiple'];
+		$multi        = (string) $element['multiple'];
 		if ($component == "jevents.edit.icalevent")
 		{
 			$condparam = "";
@@ -2825,13 +2878,13 @@ class JEVHelper
 		}
 		$fieldparam = ($condtype == "jevcf") ? "" : $condparam;
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$conditionarray = explode(",", $condarray);
-		if (in_array($params->get($conditions, "default"), $conditionarray) == TRUE && $component != "com_config.component")
+		if (in_array($params->get($conditions, "default"), $conditionarray) == true && $component != "com_config.component")
 		{
 			$conditionarray[] = "global";
 		}
-		$condarray = "'" . (string) implode("','", $conditionarray) . "'";
+		$condarray         = "'" . (string) implode("','", $conditionarray) . "'";
 		$fielddefaultarray = "'" . (string) str_replace(",", "','", $fielddefault) . "'";
 
 		JHTML::script('components/' . JEV_COM_COMPONENT . '/assets/js/conditionalfields.js');
@@ -2848,13 +2901,13 @@ SCRIPT;
 	}
 
 	public static
-			function processLiveBookmmarks()
+	function processLiveBookmmarks()
 	{
 
 		$cfg = JEVConfig::getInstance();
 		if ($cfg->get('com_rss_live_bookmarks'))
 		{
-			$Itemid = JRequest::getInt('Itemid', 0);
+			$Itemid   = JRequest::getInt('Itemid', 0);
 			$rssmodid = $cfg->get('com_rss_modid', 0);
 			// do not use JRoute since this creates .rss link which normal sef can't deal with
 			$rssLink = 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;Itemid=' . $Itemid . '&amp;modid=' . $rssmodid;
@@ -2882,66 +2935,70 @@ SCRIPT;
 	 * Get filter values from database based on URL
 	 */
 	public static
-			function getFilterValues()
+	function getFilterValues()
 	{
 
-              //  $session = JFactory::getSession();
-               // $session->set('name', "value");
+		//  $session = JFactory::getSession();
+		// $session->set('name', "value");
 
-                $session = JFactory::getSession();
-                echo $session->get('name');
+		$session = JFactory::getSession();
+		echo $session->get('name');
 
 
-                // Only save/delete filters for non-guests
-                if (JFactory::getUser()->id > 0){
-                    $deletefilter = JFactory::getApplication()->input->getInt("deletefilter", 0);
-                    if ($deletefilter){
-                            $db = JFactory::getDbo();
-                            $db->setQuery("DELETE FROM #__jevents_filtermap where fid = " . $db->quote($deletefilter). " AND userid=".intval(JFactory::getUser()->id));
-                            $db->execute();
-                            return;
-                    }
+		// Only save/delete filters for non-guests
+		if (JFactory::getUser()->id > 0)
+		{
+			$deletefilter = JFactory::getApplication()->input->getInt("deletefilter", 0);
+			if ($deletefilter)
+			{
+				$db = JFactory::getDbo();
+				$db->setQuery("DELETE FROM #__jevents_filtermap where fid = " . $db->quote($deletefilter) . " AND userid=" . intval(JFactory::getUser()->id));
+				$db->execute();
 
-                    // This is new experimental code
-                    $fid = JFactory::getApplication()->input->getString("jfilter", '');
-                    if ($fid != "")
-                    {
-                            // This isn't high security but best to be safe to make sure filter belongs to this user
-                            $db = JFactory::getDbo();
-                            $db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $db->quote($fid). " AND userid=".intval(JFactory::getUser()->id));
-                            $filter = $db->loadObject();
+				return;
+			}
 
-                            if ($filter)
-                            {
-                                    $filtervars = json_decode($filter->filters);
-                                    if (is_object($filtervars))
-                                    {
-                                            $filtervars = get_object_vars($filtervars);
-                                    }
-                                    //var_dump($filtervars);
-                                    if (is_array($filtervars))
-                                    {
-                                            foreach ($filtervars as $fvk => $fvv)
-                                            {
-                                                    if (strpos($fvk, "_fv") > 0)
-                                                    {
-                                                            JFactory::getApplication()->input->set($fvk, $fvv);
-                                                    }
-                                            }
-                                    }
+			// This is new experimental code
+			$fid = JFactory::getApplication()->input->getString("jfilter", '');
+			if ($fid != "")
+			{
+				// This isn't high security but best to be safe to make sure filter belongs to this user
+				$db = JFactory::getDbo();
+				$db->setQuery("SELECT * FROM #__jevents_filtermap where fid = " . $db->quote($fid) . " AND userid=" . intval(JFactory::getUser()->id));
+				$filter = $db->loadObject();
 
-                                    // Also set the saved filter results
-                                    JFactory::getApplication()->input->set('filtername', $filter->name);
-                            }
-                    }
-                    else
-                    {
-                            JEVHelper::setFilterValues();
-                    }
-                }
-                else {
+				if ($filter)
+				{
+					$filtervars = json_decode($filter->filters);
+					if (is_object($filtervars))
+					{
+						$filtervars = get_object_vars($filtervars);
+					}
+					//var_dump($filtervars);
+					if (is_array($filtervars))
+					{
+						foreach ($filtervars as $fvk => $fvv)
+						{
+							if (strpos($fvk, "_fv") > 0)
+							{
+								JFactory::getApplication()->input->set($fvk, $fvv);
+							}
+						}
+					}
+
+					// Also set the saved filter results
+					JFactory::getApplication()->input->set('filtername', $filter->name);
+				}
+			}
+			else
+			{
+				JEVHelper::setFilterValues();
+			}
+		}
+		else
+		{
 			JEVHelper::setFilterValues();
-                }
+		}
 
 	}
 
@@ -2949,24 +3006,27 @@ SCRIPT;
 	 * Set filter values in database based on URL and redirect
 	 */
 	public static
-			function setFilterValues()
+	function setFilterValues()
 	{
-                // Only save filters for non-guests
-                if (!JFactory::getUser()->id){
-                    return;
-                }
 
-                $filtername = JFactory::getApplication()->input->getString("filtername", '');
-                $modid = JFactory::getApplication()->input->getInt("modid",0 );
+		// Only save filters for non-guests
+		if (!JFactory::getUser()->id)
+		{
+			return;
+		}
 
-                if ($filtername==""){
-                    return;
-                }
+		$filtername = JFactory::getApplication()->input->getString("filtername", '');
+		$modid      = JFactory::getApplication()->input->getInt("modid", 0);
+
+		if ($filtername == "")
+		{
+			return;
+		}
 
 		$filtervars = array();
 
 		$input = JFactory::getApplication()->input->getArray();
-		if (is_array($input) && count($input)>0)
+		if (is_array($input) && count($input) > 0)
 		{
 			foreach ($input as $fvk => $fvv)
 			{
@@ -2977,7 +3037,7 @@ SCRIPT;
 			}
 		}
 
-		if (count($filtervars) > 0 && JFactory::getApplication()->input->getMethod()=="POST")
+		if (count($filtervars) > 0 && JFactory::getApplication()->input->getMethod() == "POST")
 		{
 			ksort($filtervars);
 			$filtervars = json_encode($filtervars);
@@ -2992,38 +3052,40 @@ SCRIPT;
 			$db->setQuery("SELECT fid  FROM #__jevents_filtermap where name = " . $db->quote($filtername));
 			$fid = intval($db->loadResult("fid"));
 
-                        if ($fid){
-				$db->setQuery("REPLACE INTO #__jevents_filtermap (fid, filters, md5, userid, name, andor, modid) VALUES ($fid," . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
-				$db->execute();
-                        }
-			else if (!in_array($filtervars, $filters))
+			if ($fid)
 			{
-				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5, userid, name, andor, modid) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) .",".JFactory::getUser()->id.",".$db->quote($filtername).",0,".$modid.")");
+				$db->setQuery("REPLACE INTO #__jevents_filtermap (fid, filters, md5, userid, name, andor, modid) VALUES ($fid," . $db->quote($filtervars) . "," . $db->quote($md5) . "," . JFactory::getUser()->id . "," . $db->quote($filtername) . ",0," . $modid . ")");
 				$db->execute();
 			}
-                        else {
-                            // has name changed!
-                        }
+			else if (!in_array($filtervars, $filters))
+			{
+				$db->setQuery("INSERT INTO #__jevents_filtermap (filters, md5, userid, name, andor, modid) VALUES (" . $db->quote($filtervars) . "," . $db->quote($md5) . "," . JFactory::getUser()->id . "," . $db->quote($filtername) . ",0," . $modid . ")");
+				$db->execute();
+			}
+			else
+			{
+				// has name changed!
+			}
 		}
 
 	}
 
 	public static
-			function parameteriseJoomlaCache()
+	function parameteriseJoomlaCache()
 	{
 
-                // If Joomla! caching is enabled then we have to manage progressive caching
-                // and ensure that session data is taken into account.
+		// If Joomla! caching is enabled then we have to manage progressive caching
+		// and ensure that session data is taken into account.
 		$conf = JFactory::getConfig();
 		if ($conf->get('caching', 1))
 		{
 			// Joomla  3.0 safe cache parameters
-			$safeurlparams = array('catids' => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING',
-                            'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING',
-                            'evid' => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT',
-                            'limit' => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING',
-                            'em2' => 'STRING', 'pop' => 'UINT');
-			$app = JFactory::getApplication();
+			$safeurlparams = array('catids'  => 'STRING', 'Itemid' => 'STRING', 'task' => 'STRING',
+			                       'jevtask' => 'STRING', 'jevcmd' => 'STRING', 'view' => 'STRING', 'layout' => 'STRING',
+			                       'evid'    => 'INT', 'modid' => 'INT', 'year' => 'INT', 'month' => 'INT', 'day' => 'INT',
+			                       'limit'   => 'UINT', 'limitstart' => 'UINT', 'jfilter' => 'STRING', 'em' => 'STRING',
+			                       'em2'     => 'STRING', 'pop' => 'UINT');
+			$app           = JFactory::getApplication();
 
 			$filtervars = JRequest::get();
 			if (is_array($filtervars))
@@ -3045,9 +3107,9 @@ SCRIPT;
 				}
 			}
 
-			$session = JFactory::getSession();
-			$sessionregistry = $session->get('registry');
-			$sessionArray = isset($sessionregistry) ? $sessionregistry->toArray() : false;
+			$session          = JFactory::getSession();
+			$sessionregistry  = $session->get('registry');
+			$sessionArray     = isset($sessionregistry) ? $sessionregistry->toArray() : false;
 			$sessionArrayData = array();
 			if (is_array($sessionArray))
 			{
@@ -3057,7 +3119,7 @@ SCRIPT;
 					if (strpos($sak, "_fv_ses") > 0)
 					{
 						$sessionArrayData[$sak] = $sav;
-						$specialcount += (($sak == "published_fv_ses" || $sak == "justmine_fv_ses") && $sav == 0) ? 1 : 0;
+						$specialcount           += (($sak == "published_fv_ses" || $sak == "justmine_fv_ses") && $sav == 0) ? 1 : 0;
 					}
 				}
 				// special case when published and justmine the only filters and these are the default values
@@ -3080,9 +3142,9 @@ SCRIPT;
 
 				// If we have session data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
-				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
+				$cache_plg  = JPluginHelper::getPlugin('system', 'cache');
 				$dispatcher = JEventDispatcher::getInstance();
-				$observers = @$dispatcher->get("_observers");
+				$observers  = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
 					foreach ($observers as $observer)
@@ -3100,12 +3162,13 @@ SCRIPT;
 				}
 			}
 
-			 if (JRequest::getCmd("em") || JRequest::getCmd("em2")){
+			if (JRequest::getCmd("em") || JRequest::getCmd("em2"))
+			{
 				// If we have RSVP PRo data then need to block page caching too!!
 				// JCache::getInstance('page', $options); doesn't give an instance its always a NEW copy
-				$cache_plg = JPluginHelper::getPlugin('system', 'cache');
+				$cache_plg  = JPluginHelper::getPlugin('system', 'cache');
 				$dispatcher = JEventDispatcher::getInstance();
-				$observers = @$dispatcher->get("_observers");
+				$observers  = @$dispatcher->get("_observers");
 				if ($observers && is_array($observers))
 				{
 					foreach ($observers as $observer)
@@ -3121,7 +3184,7 @@ SCRIPT;
 						}
 					}
 				}
-			 }
+			}
 
 			if (!empty($app->registeredurlparams))
 			{
@@ -3143,54 +3206,8 @@ SCRIPT;
 
 	}
 
-	/**
-	 * Get an user object.
-	 *
-	 * JEvents version that doesn't throw error message when user doesn't exist
-	 *
-	 * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
-	 *
-	 * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 *
-	 * @return  JUser object
-	 *
-	 * @see     JUser
-	 * @since   11.1
-	 */
 	public static
-			function getUser($id = null)
-	{
-		if (is_null($id) || $id == 0)
-		{
-			// CB sometimes messes up with the session data when logging out - so this is a safe workaround!
-			return JUser::getInstance();
-		}
-		else
-		{
-			static $tested = array();
-			if (!isset($tested[$id]))
-			{
-				// Initialise some variables
-				$db = JFactory::getDbo();
-				$query = $db->getQuery(true);
-				$query->select($db->quoteName('id'));
-				$query->from($db->quoteName('#__users'));
-				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-				$db->setQuery($query, 0, 1);
-				$tested[$id] = $db->loadResult();
-			}
-			if (!$tested[$id])
-			{
-				return false;
-			}
-			return JFactory::getUser($id);
-		}
-
-	}
-
-	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifications at present to avoid code duplication.
-	public static
-			function iCalMailGenerator($row, $n_extras, $ics_method = "PUBLISH")
+	function iCalMailGenerator($row, $n_extras, $ics_method = "PUBLISH")
 	{
 
 		$m_ev = $n_extras["m_ev"];
@@ -3208,7 +3225,7 @@ SCRIPT;
 		$icalEvents = array($row);
 		if (ob_get_contents())
 			ob_end_clean();
-		$html = "";
+		$html   = "";
 		$params = JComponentHelper::getParams("com_jevents");
 
 		if ($params->get('outlook2003icalexport'))
@@ -3230,7 +3247,7 @@ SCRIPT;
 
 			// Build Exceptions dataset - all done in big batches to save multiple queries
 			$exceptiondata = array();
-			$ids = array();
+			$ids           = array();
 			foreach ($icalEvents as $a)
 			{
 				$ids[] = $a->ev_id();
@@ -3323,14 +3340,14 @@ SCRIPT;
 						$html .= "X-EXTRAINFO:" . self::wraplines(self::replacetags($row->_extra_info)) . "\r\n";
 					$user = JFactory::getUser($row->created_by());
 
-					$html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
+					$html         .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
 					$alldayprefix = "";
 					// No doing true timezones!
 					if ($tzid == "" && is_callable("date_default_timezone_set"))
 					{
 						// UTC!
 						$start = $row->getUnixStartTime();
-						$end = $row->getUnixEndTime();
+						$end   = $row->getUnixEndTime();
 
 						// in case the first repeat has been changed
 						if (array_key_exists($row->_eventid, $exceptiondata) && array_key_exists($row->rp_id(), $exceptiondata[$row->_eventid]))
@@ -3345,24 +3362,24 @@ SCRIPT;
 						if ($row->alldayevent())
 						{
 							$alldayprefix = ";VALUE=DATE";
-							$startformat = "%Y%m%d";
-							$endformat = "%Y%m%d";
+							$startformat  = "%Y%m%d";
+							$endformat    = "%Y%m%d";
 
 							// add 10 seconds to make sure its not midnight the previous night
 							$start += 10;
-							$end += 10;
+							$end   += 10;
 						}
 						else
 						{
 							date_default_timezone_set("UTC");
 
 							$startformat = "%Y%m%dT%H%M%SZ";
-							$endformat = "%Y%m%dT%H%M%SZ";
+							$endformat   = "%Y%m%dT%H%M%SZ";
 						}
 
 						// Do not use JevDate version since this sets timezone to config value!
 						$start = strftime($startformat, $start);
-						$end = strftime($endformat, $end);
+						$end   = strftime($endformat, $end);
 
 						$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
 
@@ -3372,27 +3389,27 @@ SCRIPT;
 					else
 					{
 						$start = $row->getUnixStartTime();
-						$end = $row->getUnixEndTime();
+						$end   = $row->getUnixEndTime();
 
 						// If all day event then don't show the start time or end time either
 						if ($row->alldayevent())
 						{
 							$alldayprefix = ";VALUE=DATE";
-							$startformat = "%Y%m%d";
-							$endformat = "%Y%m%d";
+							$startformat  = "%Y%m%d";
+							$endformat    = "%Y%m%d";
 
 							// add 10 seconds to make sure its not midnight the previous night
 							$start += 10;
-							$end += 10;
+							$end   += 10;
 						}
 						else
 						{
 							$startformat = "%Y%m%dT%H%M%S";
-							$endformat = "%Y%m%dT%H%M%S";
+							$endformat   = "%Y%m%dT%H%M%S";
 						}
 
 						$start = JevDate::strftime($startformat, $start);
-						$end = JevDate::strftime($endformat, $end);
+						$end   = JevDate::strftime($endformat, $end);
 
 						if (is_callable("date_default_timezone_set"))
 						{
@@ -3416,10 +3433,12 @@ SCRIPT;
 					}
 
 					$html .= "DTSTAMP:" . $stamptime . "\r\n";
-					if ($row->alldayevent()) {
+					if ($row->alldayevent())
+					{
 						$html .= "DTSTART$alldayprefix:" . $start . "\r\n";
 					}
-					else {
+					else
+					{
 						$html .= "DTSTART$tzid$alldayprefix:" . $start . "\r\n";
 					}
 					// events with no end time don't give a DTEND
@@ -3456,20 +3475,23 @@ SCRIPT;
 						{
 							if ($row->_byday != "")
 								$html .= ';BYDAY=' . $row->_byday;
-						} else if ($row->_freq == "MONTHLY")
+						}
+						else if ($row->_freq == "MONTHLY")
 						{
 							if ($row->_bymonthday != "")
 							{
 								$html .= ';BYMONTHDAY=' . $row->_bymonthday;
 								if ($row->_byweekno != "")
 									$html .= ';BYWEEKNO=' . $row->_byweekno;
-							} else if ($row->_byday != "")
+							}
+							else if ($row->_byday != "")
 							{
 								$html .= ';BYDAY=' . $row->_byday;
 								if ($row->_byweekno != "")
 									$html .= ';BYWEEKNO=' . $row->_byweekno;
 							}
-						} else if ($row->_freq == "YEARLY")
+						}
+						else if ($row->_freq == "YEARLY")
 						{
 							if ($row->_byyearday != "")
 								$html .= ';BYYEARDAY=' . $row->_byyearday;
@@ -3484,8 +3506,8 @@ SCRIPT;
 					$exceptions = $exceptiondata[$a->ev_id()];
 				}
 
-				$deletes = array();
-				$changed = array();
+				$deletes           = array();
+				$changed           = array();
 				$changedexceptions = array();
 				if (count($exceptions) > 0)
 				{
@@ -3516,7 +3538,7 @@ SCRIPT;
 						}
 						else
 						{
-							$changed[] = $exception->rp_id;
+							$changed[]                            = $exception->rp_id;
 							$changedexceptions[$exception->rp_id] = $exception;
 						}
 					}
@@ -3569,7 +3591,7 @@ SCRIPT;
 
 						if ($a && isset($a["row"]))
 						{
-							$a = $a["row"];
+							$a             = $a["row"];
 							$changedrows[] = $a;
 						}
 					}
@@ -3609,11 +3631,11 @@ SCRIPT;
 						$html .= "\r\n";
 						$user = JFactory::getUser($a->created_by());
 
-						$html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
-						$exception = $changedexceptions[$rpid];
+						$html          .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
+						$exception     = $changedexceptions[$rpid];
 						$originalstart = JevDate::strtotime($exception->oldstartrepeat);
-						$chstart = $a->getUnixStartTime();
-						$chend = $a->getUnixEndTime();
+						$chstart       = $a->getUnixStartTime();
+						$chend         = $a->getUnixEndTime();
 
 						// No doing true timezones!
 						if ($tzid == "" && is_callable("date_default_timezone_set"))
@@ -3624,18 +3646,18 @@ SCRIPT;
 							date_default_timezone_set("UTC");
 
 							// Do not use JevDate version since this sets timezone to config value!
-							$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
-							$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-							$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+							$chstart       = strftime("%Y%m%dT%H%M%SZ", $chstart);
+							$chend         = strftime("%Y%m%dT%H%M%SZ", $chend);
+							$stamptime     = strftime("%Y%m%dT%H%M%SZ", time());
 							$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
 							// Change back
 							date_default_timezone_set($current_timezone);
 						}
 						else
 						{
-							$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-							$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-							$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+							$chstart       = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
+							$chend         = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
+							$stamptime     = JevDate::strftime("%Y%m%dT%H%M%S", time());
 							$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 						}
 						$html .= "DTSTAMP:" . $stamptime . "\r\n";
@@ -3674,10 +3696,10 @@ SCRIPT;
 					$html .= "\r\n";
 					$user = JFactory::getUser($a->created_by());
 
-					$html .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
+					$html          .= "ORGANIZER;CN=" . $user->name . ":MAILTO:" . $user->email . "\r\n";
 					$originalstart = JevDate::strtotime($a->_startrepeat);
-					$chstart = $a->getUnixStartTime();
-					$chend = $a->getUnixEndTime();
+					$chstart       = $a->getUnixStartTime();
+					$chend         = $a->getUnixEndTime();
 
 					// No doing true timezones!
 					if ($tzid == "" && is_callable("date_default_timezone_set"))
@@ -3688,18 +3710,18 @@ SCRIPT;
 						date_default_timezone_set("UTC");
 
 						// Do not use JevDate version since this sets timezone to config value!
-						$chstart = strftime("%Y%m%dT%H%M%SZ", $chstart);
-						$chend = strftime("%Y%m%dT%H%M%SZ", $chend);
-						$stamptime = strftime("%Y%m%dT%H%M%SZ", time());
+						$chstart       = strftime("%Y%m%dT%H%M%SZ", $chstart);
+						$chend         = strftime("%Y%m%dT%H%M%SZ", $chend);
+						$stamptime     = strftime("%Y%m%dT%H%M%SZ", time());
 						$originalstart = strftime("%Y%m%dT%H%M%SZ", $originalstart);
 						// Change back
 						date_default_timezone_set($current_timezone);
 					}
 					else
 					{
-						$chstart = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
-						$chend = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
-						$stamptime = JevDate::strftime("%Y%m%dT%H%M%S", time());
+						$chstart       = JevDate::strftime("%Y%m%dT%H%M%S", $chstart);
+						$chend         = JevDate::strftime("%Y%m%dT%H%M%S", $chend);
+						$stamptime     = JevDate::strftime("%Y%m%dT%H%M%S", time());
 						$originalstart = JevDate::strftime("%Y%m%dT%H%M%S", $originalstart);
 					}
 					$html .= "DTSTAMP$tzid:" . $stamptime . "\r\n";
@@ -3719,19 +3741,21 @@ SCRIPT;
 		}
 
 		$html .= "END:VCALENDAR\r\n";
+
 		return $html;
 
 	}
 
 	protected static
-			function vtimezone($icalEvents)
+	function vtimezone($icalEvents)
 	{
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$tzid = "";
+		$tzid   = "";
 		if (is_callable("date_default_timezone_set"))
 		{
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-			$tz = $params->get("icaltimezonelive", "");
+			$tz     = $params->get("icaltimezonelive", "");
 			if ($tz == "")
 			{
 				return "";
@@ -3742,7 +3766,7 @@ SCRIPT;
 			// Do the Timezone definition
 			// replace any spaces with _ underscores
 			$current_timezone = str_replace(" ", "_", $current_timezone);
-			$tzid = ";TZID=$current_timezone";
+			$tzid             = ";TZID=$current_timezone";
 			// find the earliest start date
 			$firststart = false;
 			foreach ($icalEvents as $a)
@@ -3752,7 +3776,7 @@ SCRIPT;
 			}
 			// Subtract 1 leap year to make sure we have enough transitions
 			$firststart -= 31622400;
-			$timezone = new DateTimeZone($current_timezone);
+			$timezone   = new DateTimeZone($current_timezone);
 
 			if (version_compare(PHP_VERSION, "5.3.0") >= 0)
 			{
@@ -3776,7 +3800,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ( (int) $transition['isdst'] == 0)
+					if ((int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3788,16 +3812,16 @@ SCRIPT;
 						}
 						// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 						$prev = $t;
-						$prev += ( $t == 0) ? 1 : -1;
+						$prev += ($t == 0) ? 1 : -1;
 
 						$offset = $transitions[$prev]["offset"];
-						$sign = $offset >= 0 ? "+" : "-";
+						$sign   = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETFROM:$offset\r\n";
 
 						$offset = $transitions[$t]["offset"];
-						$sign = $offset >= 0 ? "+" : "-";
+						$sign   = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETTO:$offset\r\n";
@@ -3808,7 +3832,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ( (int)$transition['isdst'] == 1)
+					if ((int) $transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3820,16 +3844,16 @@ SCRIPT;
 						}
 						// if its the first transition then assume the old setting is the same as the next otherwise use the previous value
 						$prev = $t;
-						$prev += ( $t == 0) ? 1 : -1;
+						$prev += ($t == 0) ? 1 : -1;
 
 						$offset = $transitions[$prev]["offset"];
-						$sign = $offset >= 0 ? "+" : "-";
+						$sign   = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETFROM:$offset\r\n";
 
 						$offset = $transitions[$t]["offset"];
-						$sign = $offset >= 0 ? "+" : "-";
+						$sign   = $offset >= 0 ? "+" : "-";
 						$offset = abs($offset);
 						$offset = $sign . sprintf("%04s", (floor($offset / 3600) * 100 + $offset % 60));
 						echo "TZOFFSETTO:$offset\r\n";
@@ -3840,38 +3864,191 @@ SCRIPT;
 				echo "END:VTIMEZONE\r\n";
 			}
 		}
+
 		return $tzid;
 
 	}
 
-	// Special methods ONLY user for iCal invitations
-	protected static
-			function setDescription($desc)
+	/**
+	 * Returns the Max year to display from Config
+	 *
+	 * @static
+	 * @access public
+	 * @return    string                integer with the max year to show in the calendar
+	 */
+	public static
+	function getMaxYear()
 	{
-		// TODO - run this through plugins first ?
 
-		$icalformatted = JRequest::getInt("icf", 0);
-		if (!$icalformatted)
-			$description = self::replacetags($desc);
-		else
-			$description = $desc;
+		$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$maxyear = $params->get("com_latestyear", 2150);
+		$maxyear = JEVHelper::getYearNumber($maxyear);
 
-		// wraplines	from vCard class
-		$cfg = JEVConfig::getInstance();
-		if ($cfg->get("outlook2003icalexport", 0))
+		//Just in case we got text here.
+		if (!is_numeric($maxyear))
 		{
-			return "DESCRIPTION:" . self::wraplines($description, 76, false);
+			$maxyear = "2150";
+		}
+
+		return $maxyear;
+
+	}
+
+	/**
+	 * Get current year number
+	 *
+	 * @param   string $year Year reference or exact number of the year
+	 *
+	 * @return int
+	 */
+	public static
+	function getYearNumber($year)
+	{
+
+		$datenow  = JEVHelper::getNow();
+		$yearnow  = $datenow->toFormat('%Y');
+		$firstpos = JString::substr($year, 0, 1);
+
+		if ($firstpos == "+")
+		{
+			$year = JString::substr($year, 1);
+			$year = $yearnow + $year;
+		}
+		else if ($firstpos == "-")
+		{
+			$year = JString::substr($year, 1);
+			$year = $yearnow - $year;
+		}
+		//If we do not get a 4 digit number and no sign we assume it's +$year
+		else if (JString::strlen($year) < 4)
+		{
+			$cuenta = count($year);
+			$year   = $yearnow + $year;
+		}
+
+		return $year;
+
+	}
+
+	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifications at present to avoid code duplication.
+
+	/**
+	 * Get JevDate object of current time
+	 *
+	 * @return object JevDate
+	 */
+	public static
+	function getNow()
+	{
+
+		/* JevDate object of current time */
+		static $datenow = null;
+
+		if (!isset($datenow))
+		{
+			include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$tz         = $compparams->get("icaltimezonelive", "");
+			// Now in the set timezone!
+			$datenow = JevDate::getDate("+0 seconds");
+		}
+
+		return $datenow;
+
+	}
+
+	static public
+	function onDisplayCustomFieldsMultiRow(& $icalrows)
+	{
+
+		//list($usec, $sec) = explode(" ", microtime());
+		//$starttime = (float) $usec + (float) $sec;
+
+		if (!$icalrows || count($icalrows) == 0)
+		{
+			return;
+		}
+		$user   = JFactory::getUser();
+		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		// only unlogged in users and not logged in OR all visitors grouped by access level
+		if (($params->get("com_cache", 1) == 1 && $user->id == 0) || $params->get("com_cache", 1) == 2)
+		{
+
+			$cachecontroller = JFactory::getCache(JEV_COM_COMPONENT);
+			$oldcaching      = $cachecontroller->cache->getCaching();
+			$cachecontroller->cache->setCaching(true);
+
+			// if grouped by access level caching then add this to the cache id
+			$cachegroups = ($params->get("com_cache", 1) == 2) ? implode(',', $user->getAuthorisedViewLevels()) : "";
+			$lang        = JFactory::getLanguage()->getTag();
+
+			$rows     = array();
+			$indexmap = array();
+			foreach ($icalrows as $index => & $row)
+			{
+				$indexmap[$row->rp_id()] = $index;
+				$id                      = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
+				$data                    = $cachecontroller->cache->get($id);
+				if ($data)
+				{
+					if (is_callable("gzcompress"))
+					{
+						$data = gzuncompress($data);
+					}
+					$row = unserialize($data);
+				}
+				else
+				{
+					//echo "failed to get $id<br/>";
+					$rows[] = $row;
+				}
+			}
+			unset($row);
+
+			if (count($rows))
+			{
+				JPluginHelper::importPlugin('jevents');
+				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$rows));
+				foreach ($rows as $k => $row)
+				{
+					$id   = md5($row->rp_id() . " onDisplayCustomFieldsMultiRow " . $row->uid() . " " . $row->title() . "-" . $cachegroups . $lang);
+					$data = serialize($row);
+					if (is_callable("gzcompress"))
+					{
+						// 2 seems a good balance between compression and performance
+						$data = gzcompress($data, 2);
+					}
+					$cached = $cachecontroller->cache->store($data, $id);
+					if ($cached)
+					{
+						//echo "stored $id<br/>";
+					}
+					$index            = $indexmap[$row->rp_id()];
+					$icalrows[$index] = $row;
+				}
+			}
+			//list ($usec, $sec) = explode(" ", microtime());
+			//$time_end = (float) $usec + (float) $sec;
+			//echo  "onDisplayCustomFieldsMultiRow  = ".round($time_end - $starttime, 4)."<br/>";
+
+			$cachecontroller->cache->setCaching($oldcaching);
 		}
 		else
 		{
-			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+			JPluginHelper::importPlugin('jevents');
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$icalrows));
 		}
 
 	}
 
+	// Special methods ONLY user for iCal invitations
+
 	protected static
-			function wraplines($input, $line_max = 76, $quotedprintable = false)
+	function wraplines($input, $line_max = 76, $quotedprintable = false)
 	{
+
 		$hex = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		$eol = "\r\n";
 
@@ -3882,7 +4059,7 @@ SCRIPT;
 		while (JString::strlen($input) >= $line_max)
 		{
 			$output .= JString::substr($input, 0, $line_max - 1);
-			$input = JString::substr($input, $line_max - 1);
+			$input  = JString::substr($input, $line_max - 1);
 			if (JString::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
@@ -3892,10 +4069,11 @@ SCRIPT;
 		{
 			$output .= $input;
 		}
+
 		return $output;
 
-		$escape = '=';
-		$output = '';
+		$escape  = '=';
+		$output  = '';
 		$outline = "";
 		$newline = ' ';
 
@@ -3920,7 +4098,7 @@ SCRIPT;
 			 */
 			if ((JString::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
-				$output .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
+				$output  .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;
 				//$newline .= " ";
 			}
@@ -3936,8 +4114,9 @@ SCRIPT;
 	}
 
 	protected static
-			function replacetags($description)
+	function replacetags($description)
 	{
+
 		$description = str_replace('<p>', '\n\n', $description);
 		$description = str_replace('<P>', '\n\n', $description);
 		$description = str_replace('</p>', '\n', $description);
@@ -3959,75 +4138,119 @@ SCRIPT;
 
 	}
 
+	protected static
+	function setDescription($desc)
+	{
+
+		// TODO - run this through plugins first ?
+
+		$icalformatted = JRequest::getInt("icf", 0);
+		if (!$icalformatted)
+			$description = self::replacetags($desc);
+		else
+			$description = $desc;
+
+		// wraplines	from vCard class
+		$cfg = JEVConfig::getInstance();
+		if ($cfg->get("outlook2003icalexport", 0))
+		{
+			return "DESCRIPTION:" . self::wraplines($description, 76, false);
+		}
+		else
+		{
+			return "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . self::wraplines($description);
+		}
+
+	}
+
 	/**
 	 * DEPRECATED use JevHtmlBootstrap::modal instead
 	 */
 	public static
-			function modal($selector = 'a.modal', $params = array())
+	function modal($selector = 'a.modal', $params = array())
 	{
 
 		if (version_compare(JVERSION, "3.0", "ge"))
 		{
 			// Load the code Joomla version
-		//	JHtml::_('jquery.framework');
-		//	JHtml::_('bootstrap.modal');
-		//	return;
+			//	JHtml::_('jquery.framework');
+			//	JHtml::_('bootstrap.modal');
+			//	return;
 		}
 
 		JHtml::_('behavior.modal', $selector, $params);
+
 		return;
 
 		return;
 	}
 
-	public static function getCache($option) {
-		$user = JFactory::getUser();
+	public static function getCache($option)
+	{
+
+		$user   = JFactory::getUser();
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		// only unlogged in users and not logged in OR all visitors grouped by access level
-		if ($params->get("com_cache", 1)  && $user->id == 0)
+		if ($params->get("com_cache", 1) && $user->id == 0)
 		{
 			return JFactory::getCache($option);
 		}
-		else {
+		else
+		{
 			include_once("jevCache.php");
+
 			return new jevCache();
 		}
 	}
 
-        /*
-         * Fix config etc. to run in WP with minimal code changes!
-         */
-        public static function setupWordpress() {
-                if (defined ("WPJEVENTS")){
-                    $cfg = JEVConfig::getInstance();
-                    $cfg->set('com_email_icon_view', 0);
-                }
-        }
+	/*
+	 * Fix config etc. to run in WP with minimal code changes!
+	 */
+	public static function setupWordpress()
+	{
 
-        public static function & getMenuFilters() {
-                $registry = JRegistry::getInstance("jevents");
-                $menufilters = $registry->get("jevents.menufilters", false);
-                if (!$menufilters) {
-                    $menufilters = new stdClass();
-                    $registry->set("jevents.menufilters", $menufilters);
-                }
-                return $menufilters;
-        }
+		if (defined("WPJEVENTS"))
+		{
+			$cfg = JEVConfig::getInstance();
+			$cfg->set('com_email_icon_view', 0);
+		}
+	}
 
-        public static function setMenuFilter($key, $value) {
-            $menufilters = JEVHelper::getMenuFilters();
-            $menufilters->$key = $value;
-        }
+	public static function setMenuFilter($key, $value)
+	{
 
-        public static function getMenuFilter($key, $default = null) {
-            $menufilters = JEVHelper::getMenuFilters();
-            return isset($menufilters->$key) ? $menufilters->$key :  $default;
-        }
+		$menufilters       = JEVHelper::getMenuFilters();
+		$menufilters->$key = $value;
+	}
 
-        // TODO - create a stack of previous values and use reset rather than clear to allow recursive type calls
-        public static function clearMenuFilter($key) {
-            $menufilters = JEVHelper::getMenuFilters();
-            unset($menufilters->$key);
-        }
+	public static function & getMenuFilters()
+	{
+
+		$registry    = JRegistry::getInstance("jevents");
+		$menufilters = $registry->get("jevents.menufilters", false);
+		if (!$menufilters)
+		{
+			$menufilters = new stdClass();
+			$registry->set("jevents.menufilters", $menufilters);
+		}
+
+		return $menufilters;
+	}
+
+	public static function getMenuFilter($key, $default = null)
+	{
+
+		$menufilters = JEVHelper::getMenuFilters();
+
+		return isset($menufilters->$key) ? $menufilters->$key : $default;
+	}
+
+	// TODO - create a stack of previous values and use reset rather than clear to allow recursive type calls
+	public static function clearMenuFilter($key)
+	{
+
+		$menufilters = JEVHelper::getMenuFilters();
+		unset($menufilters->$key);
+	}
 
 }

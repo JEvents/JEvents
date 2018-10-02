@@ -3,11 +3,12 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultcopyrightComment($view)
 {
-	$version	= JEventsVersion::getInstance();
+
+	$version = JEventsVersion::getInstance();
 
 	?>
 	<!-- Event Calendar and Lists Powered by JEvents //-->
-	<?php 
+	<?php
 	/*
 	echo "\n" . '<!-- '
 	. $version->getLongVersion() . ', '

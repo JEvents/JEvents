@@ -21,28 +21,33 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 	protected $type = 'Jevcustomlayout';
 
 	protected
-			function getLabel()
+	function getLabel()
 	{
-		if (!JevJoomlaVersion::isCompatible("3.4")){
+
+		if (!JevJoomlaVersion::isCompatible("3.4"))
+		{
 			return "";
 		}
+
 		return parent::getLabel();
 	}
 
 	protected
-			function getInput()
+	function getInput()
 	{
-		if (!JevJoomlaVersion::isCompatible("3.4")){
+
+		if (!JevJoomlaVersion::isCompatible("3.4"))
+		{
 			return "";
 		}
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$layouttype = $this->getAttribute("layouttype");
-		$target = $this->getAttribute("target");
-		$csstarget = $this->getAttribute("csstarget");
+		$target     = $this->getAttribute("target");
+		$csstarget  = $this->getAttribute("csstarget");
 		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
-		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
-		$id = $this->id;
+		$html = "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
+		$id   = $this->id;
 		$html .= <<<DROPDOWN
 <div class="dropdown btn-group" id="$id">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">
@@ -54,17 +59,19 @@ class JFormFieldJevcustomlayout extends JFormFieldList
     </ul>
 </div>
 DROPDOWN;
+
 		return $html;
 	}
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
-	{ 
+	{
+
 		// Initialize variables.
 		$session = JFactory::getSession();
 		$options = array();
@@ -74,7 +81,7 @@ DROPDOWN;
 		$published = (string) $this->element['published'];
 
 		// OLD values
-		
+
 		// Load the category options for a given extension.
 		if (!empty($extension))
 		{
@@ -117,11 +124,13 @@ DROPDOWN;
 		// if no value exists, try to load a selected filter category from the old category filters
 		if (!$this->value && ($this->form instanceof JForm))
 		{
-			$context = $this->form->getName();
-			$this->value =  array();
-			for($i=0; $i<20; $i++){
-				if ($this->form->getValue("catid$i","params",0)){
-					$this->value[] =  $this->form->getValue("catid$i","params",0);
+			$context     = $this->form->getName();
+			$this->value = array();
+			for ($i = 0; $i < 20; $i++)
+			{
+				if ($this->form->getValue("catid$i", "params", 0))
+				{
+					$this->value[] = $this->form->getValue("catid$i", "params", 0);
 				}
 			}
 		}

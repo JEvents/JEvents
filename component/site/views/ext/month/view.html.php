@@ -22,6 +22,7 @@ class ExtViewMonth extends JEventsExtView
 
 	function calendar($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
@@ -39,7 +40,7 @@ class ExtViewMonth extends JEventsExtView
 		{
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-			$this->popup = true;
+			$this->popup  = true;
 			$this->popupw = $params->get("popupw", 800);
 			$this->popuph = $params->get("popuph", 600);
 		}

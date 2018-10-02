@@ -12,20 +12,21 @@ defined('_JEXEC') or die('Restricted access');
 
 function DefaultViewHelperViewNavAdminPanel($view)
 {
+
 	$cfg = JEVConfig::getInstance();
 
 	if ($cfg->get('show_adminpanel', 1) == 1)
 	{
 
 		$is_event_editor = JEVHelper::isEventCreator();
-		$user = JFactory::getUser();
-		$jinput = JFactory::getApplication()->input;
+		$user            = JFactory::getUser();
+		$jinput          = JFactory::getApplication()->input;
 
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 
 		JLoader::register('jevFilterProcessing', JEV_PATH . "/libraries/filters.php");
 		$pluginsDir = JPATH_ROOT . '/' . 'plugins' . '/' . 'jevents';
-		$filters = jevFilterProcessing::getInstance(array("published", "justmine", "category", "reset"));
+		$filters    = jevFilterProcessing::getInstance(array("published", "justmine", "category", "reset"));
 
 		$cfg = JEVConfig::getInstance();
 
@@ -40,12 +41,12 @@ function DefaultViewHelperViewNavAdminPanel($view)
 				JevHtmlBootstrap::framework();
 				JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 			}
-			if ($cfg->get("bootstrapcss", 1)==1)
+			if ($cfg->get("bootstrapcss", 1) == 1)
 			{
 				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
 				JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 			}
-			else if ($cfg->get("bootstrapcss", 1)==2)
+			else if ($cfg->get("bootstrapcss", 1) == 2)
 			{
 				JHtmlBootstrap::loadCss();
 			}
@@ -57,11 +58,11 @@ function DefaultViewHelperViewNavAdminPanel($view)
 				<div align="left" class="nav_bar_cell">
 					<?php
 					$editLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
-									. '&task=icalevent.edit' . '&year=' . $view->year . '&month=' . $view->month . '&day=' . $view->day
-									. '&Itemid=' . $view->Itemid, true);
-					$popup = false;
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-					if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+						. '&task=icalevent.edit' . '&year=' . $view->year . '&month=' . $view->month . '&day=' . $view->day
+						. '&Itemid=' . $view->Itemid, true);
+					$popup    = false;
+					$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 					{
 						//JevHtmlBootstrap::modal();
 						JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
@@ -77,14 +78,15 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					if ($params->get("feimport", 0))
 					{
 						$importLink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
-										. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
+							. '&task=icals.importform&tmpl=component&Itemid=' . $view->Itemid, true);
 						//JevHtmlBootstrap::modal();
 						JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 						$eventimport = "javascript:jevImportPopup('" . $importLink . "');";
 						?>
-						<br/><a href="<?php echo $eventimport; ?>" title="<?php echo JText::_('JEV_IMPORT_ICALEVENT', true); ?>">
-							<b><?php echo JText::_('JEV_IMPORT_ICALEVENT'); ?></b>
-						</a>
+						<br/><a href="<?php echo $eventimport; ?>"
+						        title="<?php echo JText::_('JEV_IMPORT_ICALEVENT', true); ?>">
+						<b><?php echo JText::_('JEV_IMPORT_ICALEVENT'); ?></b>
+					</a>
 						<?php
 					}
 
@@ -96,21 +98,21 @@ function DefaultViewHelperViewNavAdminPanel($view)
 						$datamodel->setupComponentCatids();
 
 						list($year, $month, $day) = JEVHelper::getYMD();
-						$evid = JRequest::getVar("evid", false);
+						$evid    = JRequest::getVar("evid", false);
 						$jevtype = JRequest::getVar("jevtype", false);
 						// FORM for filter submission
 						$form_link = JRoute::_(
-										'index.php?option=' . JEV_COM_COMPONENT
-										. '&task=' . JRequest::getVar("jevtask", "month.calendar")
-										. ($evid ? '&evid=' . $evid : '')
-										. ($jevtype ? '&jevtype=' . $jevtype : '')
-										. ($year ? '&year=' . $year : '')
-										. ($month ? '&month=' . $month : '')
-										. ($day ? '&day=' . $day : '')
-										. "&Itemid=" . $myItemid
-										, false);
+							'index.php?option=' . JEV_COM_COMPONENT
+							. '&task=' . JRequest::getVar("jevtask", "month.calendar")
+							. ($evid ? '&evid=' . $evid : '')
+							. ($jevtype ? '&jevtype=' . $jevtype : '')
+							. ($year ? '&year=' . $year : '')
+							. ($month ? '&month=' . $month : '')
+							. ($day ? '&day=' . $day : '')
+							. "&Itemid=" . $myItemid
+							, false);
 						?>
-						<form action="<?php echo $form_link; ?>"  method="post">
+						<form action="<?php echo $form_link; ?>" method="post">
 							<?php
 							$filterHTML = $filters->getFilterHTML();
 
@@ -135,7 +137,7 @@ function DefaultViewHelperViewNavAdminPanel($view)
 					?>
 				</div>
 			</div>
-		<?php
+			<?php
 		}
 	}
 

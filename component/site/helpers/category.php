@@ -19,17 +19,18 @@ class JEventsCategories extends JCategories
 {
 	public function __construct($options = array())
 	{
-		$options['table'] = '#__jevents_vevent';
-		$options['field'] = 'catid';
-		$options['key'] = 'ev_id';
+
+		$options['table']     = '#__jevents_vevent';
+		$options['field']     = 'catid';
+		$options['key']       = 'ev_id';
 		$options['extension'] = 'com_jevents';
 		parent::__construct($options);
 	}
-	
+
 	/**
 	 * Load method - our version MUST set the access level correctly for iCal exports!
 	 *
-	 * @param   integer  $id  Id of category to load
+	 * @param   integer $id Id of category to load
 	 *
 	 * @return  void
 	 *
@@ -37,22 +38,25 @@ class JEventsCategories extends JCategories
 	 */
 	protected function _load($id)
 	{
+
 		$registry = JRegistry::getInstance("jevents");
 		// need both paths for Joomla 2.5 and 3.0
-		$puser = $registry->get("jevents.icaluser" , $registry->get("icaluser" , false));
+		$puser = $registry->get("jevents.icaluser", $registry->get("icaluser", false));
 
-		if (!$puser){
+		if (!$puser)
+		{
 
 			$this->_options['currentlang'] = 0;
+
 			return parent::_load($id);
 		}
-		
-		$db = JFactory::getDbo();
+
+		$db  = JFactory::getDbo();
 		$app = JFactory::getApplication();
-		
+
 		// overload permissions for iCal Export
 		$user = $puser;
-		
+
 		$extension = $this->_extension;
 		// Record that has this $id has been checked
 		$this->_checkedCategories[$id] = true;
@@ -64,7 +68,7 @@ class JEventsCategories extends JCategories
 		$case_when = ' CASE WHEN ';
 		$case_when .= $query->charLength('c.alias');
 		$case_when .= ' THEN ';
-		$c_id = $query->castAsChar('c.id');
+		$c_id      = $query->castAsChar('c.id');
 		$case_when .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when .= ' ELSE ';
 		$case_when .= $c_id . ' END as slug';
@@ -138,7 +142,7 @@ class JEventsCategories extends JCategories
 
 		// Get the results
 		$db->setQuery($query);
-		$results = $db->loadObjectList('id');
+		$results        = $db->loadObjectList('id');
 		$childrenLoaded = false;
 
 		if (count($results))
@@ -217,5 +221,5 @@ class JEventsCategories extends JCategories
 		}
 	}
 
-	
+
 }

@@ -17,7 +17,7 @@ use Joomla\Utilities\ArrayHelper;
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
-JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
+JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 /**
  * Finder adapter for com_jevents.
@@ -71,13 +71,14 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object &$subject The object to observe
+	 * @param   array  $config   An array that holds the plugin configuration
 	 *
 	 * @since   2.5
 	 */
 	public function __construct(&$subject, $config)
 	{
+
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 	}
@@ -97,7 +98,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	}
 	 */
 
-	public function onPublishEvent ($ids, $newstate) {
+	public function onPublishEvent($ids, $newstate)
+	{
 
 		foreach ($ids as $event_id)
 		{
@@ -111,7 +113,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 			// Order it by the ordering field.
 			$query->select($db->quoteName('eventdetail_id'));
 			$query->from($db->quoteName('#__jevents_repetition'));
-			$query->where($db->quoteName('eventid') . ' = '. $event_id);
+			$query->where($db->quoteName('eventid') . ' = ' . $event_id);
 
 			// Reset the query using our newly populated query object.
 			$db->setQuery($query);
@@ -120,17 +122,20 @@ class plgFinderJEvents extends FinderIndexerAdapter
 			$eventdetail_id = (int) $db->loadResult('eventdetail_id');
 
 			// Reindex the item
-			if(!empty($eventdetail_id))
+			if (!empty($eventdetail_id))
 			{
 				$this->reindex($eventdetail_id);
 			}
 		}
+
 		return true;
 	}
 
-	public function onAfterSaveEvent (&$vevent, $dryrun) {
+	public function onAfterSaveEvent(&$vevent, $dryrun)
+	{
 
-		if ($dryrun || !isset($vevent->detail_id) || $vevent->detail_id==0){
+		if ($dryrun || !isset($vevent->detail_id) || $vevent->detail_id == 0)
+		{
 			return;
 		}
 		$detailid = $vevent->detail_id;
@@ -138,19 +143,15 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		// Reindex the item
 		$this->reindex($detailid);
+
 		return true;
-	}
-
-	private function findEventFromDetail($evdetail)
-	{
-
 	}
 
 	/**
 	 * Method to remove the link information for items that have been deleted.
 	 *
-	 * @param   string  $context  The context of the action being performed.
-	 * @param   JTable  $table    A JTable object containing the record to be deleted
+	 * @param   string $context The context of the action being performed.
+	 * @param   JTable $table   A JTable object containing the record to be deleted
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -159,6 +160,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	public function onFinderAfterDelete($context, $table)
 	{
+
 		if ($context == 'com_jevents.event')
 		{
 			$id = $table->id;
@@ -171,6 +173,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		{
 			return true;
 		}
+
 		// Remove the items.
 		return $this->remove($id);
 	}
@@ -178,9 +181,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	/**
 	 * Method to determine if the access level of an item changed.
 	 *
-	 * @param   string   $context  The context of the jevents passed to the plugin.
-	 * @param   JTable   $row      A JTable object
-	 * @param   boolean  $isNew    If the jevents has just been created
+	 * @param   string  $context The context of the jevents passed to the plugin.
+	 * @param   JTable  $row     A JTable object
+	 * @param   boolean $isNew   If the jevents has just been created
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -205,7 +208,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		}
 
 		// Check for access changes in the category
-		if ($context == 'com_categories.category' && $row->extension=="com_jevents")
+		if ($context == 'com_categories.category' && $row->extension == "com_jevents")
 		{
 			// Check if the access levels are different
 			if (!$isNew && $this->old_cataccess != $row->access)
@@ -223,9 +226,9 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 * from outside the edit screen. This is fired when the item is published,
 	 * unpublished, archived, or unarchived from the list view.
 	 *
-	 * @param   string   $context  The context for the jevents passed to the plugin.
-	 * @param   array    $pks      A list of primary key ids of the jevents that has changed state.
-	 * @param   integer  $value    The value of the state that the jevents has been changed to.
+	 * @param   string  $context The context for the jevents passed to the plugin.
+	 * @param   array   $pks     A list of primary key ids of the jevents that has changed state.
+	 * @param   integer $value   The value of the state that the jevents has been changed to.
 	 *
 	 * @return  void
 	 *
@@ -233,6 +236,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	public function onFinderChangeState($context, $pks, $value)
 	{
+
 		// We only want to handle events here
 		if ($context == 'com_jevents.event' || $context == 'com_jevents.form')
 		{
@@ -248,8 +252,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   FinderIndexerResult  $item    The item to index as an FinderIndexerResult object.
-	 * @param   string               $format  The item format
+	 * @param   FinderIndexerResult $item   The item to index as an FinderIndexerResult object.
+	 * @param   string              $format The item format
 	 *
 	 * @return  void
 	 *
@@ -258,6 +262,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	protected function index(FinderIndexerResult $item, $format = 'html')
 	{
+
 		// Check if the extension is enabled
 		if (JComponentHelper::isEnabled($this->extension) == false)
 		{
@@ -276,49 +281,49 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		// Trigger the onContentPrepare event.
 		$item->summary = FinderIndexerHelper::prepareContent($item->summary, $item->params);
-		$item->body = FinderIndexerHelper::prepareContent($item->body, $item->params);
+		$item->body    = FinderIndexerHelper::prepareContent($item->body, $item->params);
 
 		// Build the necessary route and path information.
-		$itemid= $this->params->get("target_itemid",0);
-		$item->url = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;//$this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=".$item->eventid."&Itemid=".$itemid;
+		$itemid      = $this->params->get("target_itemid", 0);
+		$item->url   = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;//$this->getURL($item->id, $this->extension, $this->layout);
+		$item->route = "index.php?option=com_jevents&task=icalevent.detail&evid=" . $item->eventid . "&Itemid=" . $itemid;
 
-		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");		
-		
+		include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 		// get the data and query models
-		$dataModel = new JEventsDataModel();
+		$dataModel  = new JEventsDataModel();
 		$queryModel = new JEventsDBModel($dataModel);
 		// get the repeat (allowing for it to be unpublished)
 		$theevent = $queryModel->listEventsById($item->rp_id);
-		
+
 		if ($this->params->get("future", -1) != -1 && $theevent)
 		{
-			$past = $this->params->get("past", -1);
-			$date = new JDate($theevent->startDate() . " - $past days");
+			$past                     = $this->params->get("past", -1);
+			$date                     = new JDate($theevent->startDate() . " - $past days");
 			$item->publish_start_date = $date->toSql();
 		}
 		else
 		{
-			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;			
+			$item->publish_start_date = isset($item->modified) ? $item->modified : "2010-01-01 00:00:00";
 		}
-		if ($this->params->get("past", -1) != -1  && $theevent)
+		if ($this->params->get("past", -1) != -1 && $theevent)
 		{
-			$future = $this->params->get("future", -1);
-			$date = new JDate($theevent->endDate() . " + $future days");
-			$item->publish_end_date = $date->toSql();			
+			$future                 = $this->params->get("future", -1);
+			$date                   = new JDate($theevent->endDate() . " + $future days");
+			$item->publish_end_date = $date->toSql();
 		}
 		else
 		{
-			$item->publish_end_date	= "2099-12-31 00:00:00" ;
+			$item->publish_end_date = "2099-12-31 00:00:00";
 		}
 
 		// title is already set
 		//$item->title;
 
 		// Events should only be published if the category is published.etc. - do this later
-		$item->state        =  $this->translateState($item->state, $item->cat_state);
-		$item->published    = $item->state;
+		$item->state     = $this->translateState($item->state, $item->cat_state);
+		$item->published = $item->state;
 
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Event');
@@ -352,52 +357,19 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	protected function setup()
 	{
+
 		// Load dependent classes.
 		include_once JPATH_SITE . '/components/com_jevents/jevents.defines.php';
+
 		//include_once JPATH_SITE . '/components/com_jevents/helpers/route.php';
 
 		return true;
 	}
 
 	/**
-	 * Method to get the SQL query used to retrieve the list of jevents items.
-	 *
-	 * @param   mixed  $sql  A JDatabaseQuery object or null.
-	 *
-	 * @return  JDatabaseQuery  A database object.
-	 *
-	 * @since   2.5
-	 */
-	protected function getListQuery($query = NULL, $type = 'list')
-	{
-		$db = JFactory::getDbo();
-		// Check if we can use the supplied SQL query.
-		$sql = $db->getQuery(true);
-		$sql->select('det.evdet_id, det.summary as title, det.description  AS summary, det.description  AS body');
-		$sql->select('det.state, det.modified ');
-		$sql->select('rpt.rp_id, rpt.eventid ');
-		$sql->select('evt.catid, evt.icsid, evt.created_by, evt.access ');
-		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
-		$sql->select('u.name AS author');
-		$sql->select('evt.state AS state');
-		
-		$sql->from('#__jevents_vevdetail AS det');
-		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
-		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
-		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
-		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
-
-        if ($type === 'list' ) {
-            $sql->where('evt.state = 1');
-        }
-
-		return $sql;
-	}
-
-	/**
 	 * Method to get a event item to index.
 	 *
-	 * @param   integer  $id  The id of the content item.
+	 * @param   integer $id The id of the content item.
 	 *
 	 * @return  FinderIndexerResult  A FinderIndexerResult object.
 	 *
@@ -406,16 +378,17 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	protected function getItem($id)
 	{
+
 		//JLog::add('FinderIndexerAdapter::getItem', JLog::INFO);
 
 		// Get the list query and add the extra WHERE clause.
-		$sql = $this->getListQuery($query = NULL, 'item');
-		$sql->where('det.'. $this->db->quoteName('evdet_id') . ' = ' . (int) $id);
+		$sql = $this->getListQuery($query = null, 'item');
+		$sql->where('det.' . $this->db->quoteName('evdet_id') . ' = ' . (int) $id);
 
 		// Get the item to index.
 		$this->db->setQuery($sql);
-		$row = $this->db->loadAssoc();
-		$query = (string)$this->db->getQuery();
+		$row   = $this->db->loadAssoc();
+		$query = (string) $this->db->getQuery();
 		// Check for a database error.
 		if ($this->db->getErrorNum())
 		{
@@ -435,6 +408,42 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		return $item;
 	}
 
+	/**
+	 * Method to get the SQL query used to retrieve the list of jevents items.
+	 *
+	 * @param   mixed $sql A JDatabaseQuery object or null.
+	 *
+	 * @return  JDatabaseQuery  A database object.
+	 *
+	 * @since   2.5
+	 */
+	protected function getListQuery($query = null, $type = 'list')
+	{
+
+		$db = JFactory::getDbo();
+		// Check if we can use the supplied SQL query.
+		$sql = $db->getQuery(true);
+		$sql->select('det.evdet_id, det.summary as title, det.description  AS summary, det.description  AS body');
+		$sql->select('det.state, det.modified ');
+		$sql->select('rpt.rp_id, rpt.eventid ');
+		$sql->select('evt.catid, evt.icsid, evt.created_by, evt.access ');
+		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
+		$sql->select('u.name AS author');
+		$sql->select('evt.state AS state');
+
+		$sql->from('#__jevents_vevdetail AS det');
+		$sql->leftjoin('#__jevents_repetition  AS rpt ON rpt.eventdetail_id=det.evdet_id');
+		$sql->leftjoin('#__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
+		$sql->leftjoin('#__categories AS c ON c.id=evt.catid');
+		$sql->join('LEFT', '#__users AS u ON u.id = evt.created_by');
+
+		if ($type === 'list')
+		{
+			$sql->where('evt.state = 1');
+		}
+
+		return $sql;
+	}
 
 	/**
 	 * Method to get a SQL query to load the published and access states for
@@ -446,6 +455,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	 */
 	protected function getStateQuery()
 	{
+
 		$sql = $this->db->getQuery(true);
 		// Item ID
 		$sql->select('a.evdet_id as id');
@@ -454,11 +464,16 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// Item and category access levels
 		$sql->select('evt.access, c.access AS cat_access');
 		$sql->from($this->table . ' AS a');
-		$sql->join('LEFT',' #__jevents_repetition AS rpt ON rpt.eventdetail_id=a.evdet_id');
-		$sql->join('LEFT',' #__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
+		$sql->join('LEFT', ' #__jevents_repetition AS rpt ON rpt.eventdetail_id=a.evdet_id');
+		$sql->join('LEFT', ' #__jevents_vevent AS evt ON rpt.eventid=evt.ev_id');
 		$sql->join('LEFT', '#__categories AS c ON c.id = evt.catid');
 
 		return $sql;
+	}
+
+	private function findEventFromDetail($evdetail)
+	{
+
 	}
 
 }

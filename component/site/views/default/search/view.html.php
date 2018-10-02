@@ -17,35 +17,37 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-class DefaultViewSearch extends JEventsDefaultView 
+class DefaultViewSearch extends JEventsDefaultView
 {
-	
+
 	function form($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+
+	}
 
 	function results($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+
+	}
 
 }

@@ -23,7 +23,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 	function edit()
 	{
 
-		$this->editor =  JFactory::getEditor();
+		$this->editor = JFactory::getEditor();
 		if ($this->editor->get("_name") == "codemirror")
 		{
 			$this->editor = JFactory::getEditor("none");
@@ -56,7 +56,7 @@ class AdminParamsViewParams extends JEventsAbstractView
 		$modelForm = $model->getForm();
 
 		//$component = isset($this->component)?$this->component : $this->get('Component');
-		
+
 		$component = $this->get('Component');
 		// Bind the form to the data.
 		if ($modelForm && $component->params)
@@ -74,15 +74,15 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 	function dbsetup($tpl = null)
 	{
-		
-		JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
+
+		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_( 'DB_SETUP' ));
-		
+		$document->setTitle(JText::_('DB_SETUP'));
+
 		// Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );
+		JToolbarHelper::title(JText::_('DB_SETUP'), 'jevents');
 		JToolbarHelper::cancel('cpanel.cpanel');
 		JEventsHelper::addSubmenu();
-	}	
+	}
 }

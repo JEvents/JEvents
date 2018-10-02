@@ -1,8 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\String\StringHelper;
-
 $cfg	 = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype",'joomla')=='overlib'){

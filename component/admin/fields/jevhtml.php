@@ -13,11 +13,13 @@
 
 defined('JPATH_BASE') or die;
 
-if (version_compare(JVERSION, "3.8.0", 'ge')){
+if (version_compare(JVERSION, "3.8.0", 'ge'))
+{
 	\JFormHelper::loadFieldClass('editor');
 }
-else if (file_exists(JPATH_SITE."/libraries/joomla/form/fields/editor.php")){
-	include_once(JPATH_SITE."/libraries/joomla/form/fields/editor.php");
+else if (file_exists(JPATH_SITE . "/libraries/joomla/form/fields/editor.php"))
+{
+	include_once(JPATH_SITE . "/libraries/joomla/form/fields/editor.php");
 }
 jimport('joomla.html.editor');
 
@@ -25,12 +27,13 @@ class JFormFieldJevhtml extends JFormFieldEditor
 {
 	protected function getInput()
 	{
+
 		$this->value = str_replace('<br />', "\n", JText::_($this->value));
-		
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		return parent::getInput();
 	}
-	
+
 }

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: metadata.xml 1909 2011-04-11 10:50:58Z geraintedwards $ --> 
+<!-- $Id: metadata.xml 1909 2011-04-11 10:50:58Z geraintedwards $ -->
 <metadata>
 	<view title="COM_JEVENTS_ICAL_EXPORT_DEFAULT_TITLE">
 		<message><![CDATA[COM_JEVENTS_ICAL_EXPORT_DEFAULT_DESC]]></message>
-		<options var="layout" >
-			<option value='ical' name="COM_JEVENTS_ICAL_EXPORT_DEFAULT_TITLE" msg="COM_JEVENTS_ICAL_EXPORT_DEFAULT_DESC" />
-		</options>		
-		<options var="task" >
-			<option value='icals.ical' name="COM_JEVENTS_ICAL_EXPORT_DEFAULT_TITLE" msg="COM_JEVENTS_ICAL_EXPORT_DEFAULT_DESC" />
+		<options var="layout">
+			<option value='ical' name="COM_JEVENTS_ICAL_EXPORT_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_ICAL_EXPORT_DEFAULT_DESC"/>
+		</options>
+		<options var="task">
+			<option value='icals.ical' name="COM_JEVENTS_ICAL_EXPORT_DEFAULT_TITLE"
+			        msg="COM_JEVENTS_ICAL_EXPORT_DEFAULT_DESC"/>
 		</options>
 	</view>
 	<state>
 		<name>ICal Export</name>
 		<description>ICal Export Layout</description>
-		<params >
+		<params>
 		</params>
 	</state>
 </metadata>

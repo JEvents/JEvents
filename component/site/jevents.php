@@ -39,20 +39,21 @@ JHtml::_('behavior.core', true);
 JevHtmlBootstrap::framework();
 
 // jQnc not only fixes noConflict it creates the jQuery alias we use in JEvents "jevqc" so we always need it
-	JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
-if ( JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery",1)){
+JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("fixjquery", 1))
+{
 	// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-	JFactory::getDocument()->addScriptDeclaration( "checkJQ();");
+	JFactory::getDocument()->addScriptDeclaration("checkJQ();");
 }
 
-if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==1)
+if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 1)
 {
 	// This version of bootstrap has maximum compatibility with JEvents due to enhanced namespacing
 	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
 	// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
 	JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 }
-else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1)==2)
+else if (JComponentHelper::getParams(JEV_COM_COMPONENT)->get("bootstrapcss", 1) == 2)
 {
 	JHtmlBootstrap::loadCss();
 }
@@ -103,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	$newparams->set('com_cache', 0);
 }
 
-$component =  JComponentHelper::getComponent(JEV_COM_COMPONENT);
-$component->params =  $newparams;
+$component         = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+$component->params = $newparams;
 
 JEVHelper::setupWordpress();
 
@@ -131,13 +132,13 @@ if ($isMobile || strpos(JFactory::getApplication()->getTemplate(), 'mobile_') ==
 		JRequest::setVar("jevsmartphone", 1);
 		if (JFolder::exists(JEV_VIEWS . "/smartphone"))
 		{
-                    JRequest::setVar("jEV", "smartphone");
+			JRequest::setVar("jEV", "smartphone");
 		}
 		$params->set('iconicwidth', "scalable");
 		$params->set('extpluswidth', "scalable");
 		$params->set('ruthinwidth', "scalable");
 	}
-        $params->set("isSmartphone",1);
+	$params->set("isSmartphone", 1);
 }
 
 // See http://www.php.net/manual/en/timezones.php
@@ -161,7 +162,7 @@ $cmd = JRequest::getCmd('task', false);
 
 if (!$cmd || !is_string($cmd) || strpos($cmd, '.') == false)
 {
-	$view = JRequest::getCmd('view', false);
+	$view   = JRequest::getCmd('view', false);
 	$layout = JRequest::getCmd('layout', "show");
 	if ($view && $layout)
 	{
@@ -176,11 +177,12 @@ if (strpos($cmd, '.') != false)
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
-        // check view input is compatible - can be a problem on some form submissions
-        if (JRequest::getCmd("view","")!="" &&  JRequest::getCmd("view","")!=$controllerName){
-            JRequest::setVar("view",$controllerName);
-        }
-        
+	// check view input is compatible - can be a problem on some form submissions
+	if (JRequest::getCmd("view", "") != "" && JRequest::getCmd("view", "") != $controllerName)
+	{
+		JRequest::setVar("view", $controllerName);
+	}
+
 	// Define the controller name and path
 	$controllerName = strtolower($controllerName);
 	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
@@ -192,7 +194,7 @@ if (strpos($cmd, '.') != false)
 	}
 	else
 	{
-		JFactory::getApplication()->enqueueMessage('404 - '.  JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
+		JFactory::getApplication()->enqueueMessage('404 - ' . JText::sprintf("JLIB_APPLICATION_ERROR_INVALID_CONTROLLER_CLASS", $controllerName), 'error');
 
 		//JFactory::getApplication()->enqueueMessage('Invalid Controller - ' . $controllerName);
 		$cmd = "month.calendar";
@@ -205,7 +207,7 @@ else
 {
 	// Base controller, just set the task
 	$controllerName = null;
-	$task = $cmd;
+	$task           = $cmd;
 }
 
 // Make the task available later
@@ -214,8 +216,8 @@ JRequest::setVar("jevcmd", $cmd);
 
 // Are all Jevents pages apart from crawler, rss and details pages to be redirected for search engines?
 if (in_array($cmd, array("year.listevents", "month.calendar", "week.listevents", "day.listevents", "cat.listevents", "search.form",
-			"search.results", "admin.listevents", "jevent.edit", "icalevent.edit", "icalevent.publish", "icalevent.unpublish",
-			"icalevent.editcopy", "icalrepeat.edit", "jevent.delete", "icalevent.delete", "icalrepeat.delete", "icalrepeat.deletefuture")))
+	"search.results", "admin.listevents", "jevent.edit", "icalevent.edit", "icalevent.publish", "icalevent.unpublish",
+	"icalevent.editcopy", "icalrepeat.edit", "jevent.delete", "icalevent.delete", "icalrepeat.delete", "icalrepeat.deletefuture")))
 {
 	$browser = JBrowser::getInstance();
 	if ($params->get("redirectrobots", 0) && ($browser->isRobot() || strpos($browser->getAgentString(), "bingbot") !== false))
@@ -256,7 +258,7 @@ else
 	JRequest::setVar("jevtask", $cmd);
 	JRequest::setVar("jevcmd", $cmd);
 	$controllerClass = ucfirst($controllerName) . 'Controller';
-	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
+	$controllerPath  = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
 	require_once($controllerPath);
 	$controller = new $controllerClass();
 }
@@ -274,7 +276,7 @@ $registry->set("jevents.controller", $controller);
 $registry->set("jevents.activeprocess", "component");
 
 // Stop viewing ALL events - it could take VAST amounts of memory.  But allow for CSV export
-if ($cfg->get('blockall', 0) && !$cfg->get("csvexport",0) && ( JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100 ))
+if ($cfg->get('blockall', 0) && !$cfg->get("csvexport", 0) && (JRequest::getInt("limit", -1) == 0 || JRequest::getInt("limit", -1) > 100))
 {
 	JRequest::setVar("limit", 100);
 	JFactory::getApplication()->setUserState("limit", 100);
@@ -303,18 +305,22 @@ $controller->execute($task);
 //echo  "JEvents component post task   = ".round($time_end - $starttime, 4)."<br/>";
 
 // Set the browser title to include site name if required
-$title =  JFactory::getDocument()->GetTitle();
-$app = JFactory::getApplication();
-if (empty($title)) {
+$title = JFactory::getDocument()->GetTitle();
+$app   = JFactory::getApplication();
+if (empty($title))
+{
 	$title = $app->getCfg('sitename');
 }
-elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+{
 	$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 }
-elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+{
 	$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 }
-if (JRequest::getCmd("format")!="feed"){
+if (JRequest::getCmd("format") != "feed")
+{
 	JFactory::getDocument()->SetTitle($title);
 }
 

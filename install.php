@@ -20,115 +20,145 @@ jimport('joomla.application.component.helper');
 
 class Pkg_JeventsInstallerScript
 {
-    public function preflight($type, $parent)
-    {
-        define('JEVENTS_MINIMUM_PHP', '5.6.0');
-
-        if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
-        {
-            Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
-        }
-
-        // Joomla! broke the update call, so we have to create a workaround check.
-        $db = JFactory::getDbo();
-        $db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
-        $is_enabled = $db->loadResult();
-
-        if (!$is_enabled) {
-            $this->hasJEventsInst = 0;
-            if (version_compare(JVERSION, '3.6.3', '<')) {
-                Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.3 before installing JEvents. This will also prevent issues with JEvents' );
-                return false;
-            }
-            return;
-        } else {
-            $this->hasJEventsInst = 1;
-            if (version_compare(JVERSION, '3.6.3', '<')) {
-                Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.6.3 and later.<br/>Please update Joomla! before upgrading JEvents to this version' );
-                return false;
-            }
-            return;
-        }
-    }
-
-    public function update($parent)
-    {
-            $this->postflightHandler("update", $parent);
-            return true;
-    }
-
-	public function install($parent)
+	public function preflight($type, $parent)
 	{
-            $this->postflightHandler("update", $parent);
-            return true;
+
+		define('JEVENTS_MINIMUM_PHP', '5.6.0');
+
+		if (version_compare(PHP_VERSION, JEVENTS_MINIMUM_PHP, '<'))
+		{
+			Jerror::raiseWarning(null, JText::sprintf("COM_JEVENTS_PHP_VERSION_WARNING", PHP_VERSION));
+		}
+
+		// Joomla! broke the update call, so we have to create a workaround check.
+		$db = JFactory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
+		$is_enabled = $db->loadResult();
+
+		if (!$is_enabled)
+		{
+			$this->hasJEventsInst = 0;
+			if (version_compare(JVERSION, '3.6.3', '<'))
+			{
+				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.3 before installing JEvents. This will also prevent issues with JEvents');
+
+				return false;
+			}
+
+			return;
+		}
+		else
+		{
+			$this->hasJEventsInst = 1;
+			if (version_compare(JVERSION, '3.6.3', '<'))
+			{
+				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.6.3 and later.<br/>Please update Joomla! before upgrading JEvents to this version');
+
+				return false;
+			}
+
+			return;
+		}
 	}
 
-	public function uninstall($parent)
+	public function update($parent)
 	{
-                $uninstall_text = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
-                $uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY'); 
-                if ($uninstall_text ==  'JEV_SORRY_THAT_YOU_UNINSTALL'){
-                    $uninstall_text = "We are sorry that you have uninstalled JEvents";
-                    $uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users."; 
-                }
-		echo "<div class='jev_install'>
-				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
-				<div class='version'><h2>". $uninstall_text ."</h2></div>
-				<div class='installed'>
-					<h4>".$uninstall_text2."</h4>
-                                        <br/><br/><br/>
-				</div>";
-            
+
+		$this->postflightHandler("update", $parent);
+
 		return true;
 	}
 
-	/*
-	 * enable the plugins
-	 */
-
-	public function postflight($type, $parent)
-	{
-            return;
-            //return $this->postflightHandler($type, $parent);
-        }
-        
-        /*
-	 * enable the plugins
-	 */
-
 	public function postflightHandler($type, $parent)
 	{
+
 		// CSS Styling:
 		?>
 		<style type="text/css">
-			.adminform tr th:first-child {display:none;}
-			table.adminform tr td {padding:15px;}
-			div.jev_install {background-color:#f4f4f4;border:1px solid #ccc; border-radius:5px; padding:10px;}
-			.installed {clear:both;display:inline-block;}
-			.installed ul { width:350px;padding-left:0px;border: 1px solid #ccc;border-radius: 5px;}
-			.installed ul li:first-child {border-top-left-radius: 5px;border-top-right-radius: 5px;}
-			.installed ul li:last-child {border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
-			.installed ul li {padding:8px;list-style-type:none;}
-			.installed ul li:nth-child(odd) {background-color: #fff;}
-			.installed ul li:nth-child(even) {background-color: #D6D6D6;}
-			.proceed {display:inline-block; vertical-align:top;}
-			div.proceed ul {text-align:center;list-style-type:none;}
-			div.proceed ul li {padding:5px;background-color:#fff;border:1px solid #ccc;margin-bottom:10px;border-radius:5px;}
+			.adminform tr th:first-child {
+				display: none;
+			}
+
+			table.adminform tr td {
+				padding: 15px;
+			}
+
+			div.jev_install {
+				background-color: #f4f4f4;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				padding: 10px;
+			}
+
+			.installed {
+				clear: both;
+				display: inline-block;
+			}
+
+			.installed ul {
+				width: 350px;
+				padding-left: 0px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+
+			.installed ul li:first-child {
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+
+			.installed ul li:last-child {
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+
+			.installed ul li {
+				padding: 8px;
+				list-style-type: none;
+			}
+
+			.installed ul li:nth-child(odd) {
+				background-color: #fff;
+			}
+
+			.installed ul li:nth-child(even) {
+				background-color: #D6D6D6;
+			}
+
+			.proceed {
+				display: inline-block;
+				vertical-align: top;
+			}
+
+			div.proceed ul {
+				text-align: center;
+				list-style-type: none;
+			}
+
+			div.proceed ul li {
+				padding: 5px;
+				background-color: #fff;
+				border: 1px solid #ccc;
+				margin-bottom: 10px;
+				border-radius: 5px;
+			}
 		</style>
 		<?php
 		// End of CSS Styling
-		if ($this->hasJEventsInst == 1) { 
-                    $inst_text = JText::_('JEV_INST_VERSION_UPRG'); 
-                    $logo = "JeventsTransparent3.png";
-                } 
-                else {  
-                    $inst_text = JText::_('JEV_INST_VERSION');
-                    $logo = "JeventsTransparent.png";                    
-                }
+		if ($this->hasJEventsInst == 1)
+		{
+			$inst_text = JText::_('JEV_INST_VERSION_UPRG');
+			$logo      = "JeventsTransparent3.png";
+		}
+		else
+		{
+			$inst_text = JText::_('JEV_INST_VERSION');
+			$logo      = "JeventsTransparent.png";
+		}
 
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
-				<div class='version'><h2>". $inst_text .": ".$parent->get('manifest')->version."</h2></div>
+				<div class='version'><h2>" . $inst_text . ": " . $parent->get('manifest')->version . "</h2></div>
 				<div class='installed'>
 					<ul>
 						<li>JEvents Core Component</li>
@@ -154,11 +184,11 @@ class Pkg_JeventsInstallerScript
 		if ($this->hasJEventsInst == 0)
 		{
 			// enable plugin
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = "SELECT * FROM #__extensions WHERE name='plg_content_finder' and type='plugin' and element='finder'";
 			$db->setQuery($query);
 			$finder_q = $db->loadObject();
-			$finder = $finder_q->enabled;
+			$finder   = $finder_q->enabled;
 
 			$query = 'SHOW TABLES LIKE "' . $db->getPrefix() . 'finder_types"';
 			$db->setQuery($query);
@@ -194,10 +224,11 @@ class Pkg_JeventsInstallerScript
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
 			$db->setQuery($query);
 			$db->execute();
-                        
+
 		}
-		else {
-			jimport( 'joomla.filesystem.file' );
+		else
+		{
+			jimport('joomla.filesystem.file');
 			// Ok Flatplus clean up to remove helpers
 			$file1 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatplusloadedfromtemplate.php';
 			$file2 = JPATH_SITE . '/components/com_jevents/views/flatplus/helpers/flatpluseventmanagementdialog.php';
@@ -211,7 +242,7 @@ class Pkg_JeventsInstallerScript
 			if (JFile::exists($file4)) JFile::delete($file4);
 
 			// Lets make sure our Core plugin is enabled..
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);
 			$db->execute();
@@ -225,10 +256,55 @@ class Pkg_JeventsInstallerScript
 
 		echo "</div>";
 		// Joomla updater special case
-		if (JFactory::getApplication()->input->getCmd("option")=="com_installer" && JFactory::getApplication()->input->getCmd("view")=="update"){
-                    JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>".JText::_('JEV_INST_VERSION_UPRG')." :: ". $parent->get('manifest')->version, 'message');
+		if (JFactory::getApplication()->input->getCmd("option") == "com_installer" && JFactory::getApplication()->input->getCmd("view") == "update")
+		{
+			JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . JText::_('JEV_INST_VERSION_UPRG') . " :: " . $parent->get('manifest')->version, 'message');
 		}
 
+	}
+
+	public function install($parent)
+	{
+
+		$this->postflightHandler("update", $parent);
+
+		return true;
+	}
+
+	/*
+	 * enable the plugins
+	 */
+
+	public function uninstall($parent)
+	{
+
+		$uninstall_text  = JText::_('JEV_SORRY_THAT_YOU_UNINSTALL');
+		$uninstall_text2 = JText::_('JEV_PLEASE_LET_US_KNOW_WHY');
+		if ($uninstall_text == 'JEV_SORRY_THAT_YOU_UNINSTALL')
+		{
+			$uninstall_text  = "We are sorry that you have uninstalled JEvents";
+			$uninstall_text2 = "Please let us know why at our <a href='https://www.jevents.net/forum'>support forum</a>  so we can improve our product offering for future users.";
+		}
+		echo "<div class='jev_install'>
+				<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent2.png' /></div>
+				<div class='version'><h2>" . $uninstall_text . "</h2></div>
+				<div class='installed'>
+					<h4>" . $uninstall_text2 . "</h4>
+                                        <br/><br/><br/>
+				</div>";
+
+		return true;
+	}
+
+	/*
+ * enable the plugins
+ */
+
+	public function postflight($type, $parent)
+	{
+
+		return;
+		//return $this->postflightHandler($type, $parent);
 	}
 
 }

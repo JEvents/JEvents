@@ -1,26 +1,31 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
-		
-function DefaultViewHelperFooter16($view){
-$jinput = JFactory::getApplication()->input;
 
-if ($jinput->getInt('pop', 0)) { ?>
-	<div class="ev_noprint"><p align="center">
-	<a href="#close" onclick="if (window.parent==window){self.close();} else {try {window.parent.jQuery('#myEditModal').modal('hide');}catch (e){}try {window.parent.SqueezeBox.close(); return false;} catch(e) {self.close();return false;}}" title="<?php echo JText::_('JEV_CLOSE');?>"><?php echo JText::_('JEV_CLOSE');?></a>
-	</p></div>
-<?php
-}
-$view->loadHelper("JevViewCopyright");
-JevViewCopyright(); ?>
-</div>
-</div> <!-- close #jevents //-->
-<?php
-	$dispatcher	= JEventDispatcher::getInstance();
-	$dispatcher->trigger( 'onJEventsFooter');
+function DefaultViewHelperFooter16($view)
+{
+
+	$jinput = JFactory::getApplication()->input;
+
+	if ($jinput->getInt('pop', 0))
+	{ ?>
+		<div class="ev_noprint"><p align="center">
+				<a href="#close"
+				   onclick="if (window.parent==window){self.close();} else {try {window.parent.jQuery('#myEditModal').modal('hide');}catch (e){}try {window.parent.SqueezeBox.close(); return false;} catch(e) {self.close();return false;}}"
+				   title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
+			</p></div>
+		<?php
+	}
+	$view->loadHelper("JevViewCopyright");
+	JevViewCopyright(); ?>
+	</div>
+	</div> <!-- close #jevents //-->
+	<?php
+	$dispatcher = JEventDispatcher::getInstance();
+	$dispatcher->trigger('onJEventsFooter');
 
 	$task = $jinput->getString("jevtask");
 	$view->loadModules("jevpostjevents");
-	$view->loadModules("jevpostjevents_".$task);
+	$view->loadModules("jevpostjevents_" . $task);
 
 	JEVHelper::componentStylesheet($view, "extra.css");
 	jimport('joomla.filesystem.file');
@@ -31,5 +36,5 @@ JevViewCopyright(); ?>
 		// It is definitely now created, lets load it!
 		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
-	
+
 }

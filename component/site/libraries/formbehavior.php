@@ -25,69 +25,12 @@ abstract class JevHtmlFormbehavior
 	protected static $loaded = array();
 
 	/**
-	 * Method to load the Chosen JavaScript framework and supporting CSS into the document head
-	 *
-	 * If debugging mode is on an uncompressed version of Chosen is included for easier debugging.
-	 *
-	 * @param   string  $selector  Class for Chosen elements.
-	 * @param   mixed   $debug     Is debugging mode on? [optional]
-	 * @param   array   $options   the possible Chosen options as name => value [optional]
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public static function chosen($selector = '.advancedSelect', $debug = null, $options = array())
-	{
-		if (isset(static::$loaded[__METHOD__][$selector]))
-		{
-			return;
-		}
-
-		// Include jQuery
-		//JHtml::_('jquery.framework');
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
-
-		// Default settings
-		$options['disable_search_threshold']  = isset($options['disable_search_threshold']) ? $options['disable_search_threshold'] : 10;
-		$options['allow_single_deselect']     = isset($options['allow_single_deselect']) ? $options['allow_single_deselect'] : true;
-		$options['placeholder_text_multiple'] = isset($options['placeholder_text_multiple']) ? $options['placeholder_text_multiple']: JText::_('JGLOBAL_SELECT_SOME_OPTIONS');
-		$options['placeholder_text_single']   = isset($options['placeholder_text_single']) ? $options['placeholder_text_single'] : JText::_('JGLOBAL_SELECT_AN_OPTION');
-		$options['no_results_text']           = isset($options['no_results_text']) ? $options['no_results_text'] : JText::_('JGLOBAL_SELECT_NO_RESULTS_MATCH');
-
-		// Options array to json options string
-		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));
-
-		JEVHelper::script("components/com_jevents/assets/js/chosen.jquery.js");
-		JHTML::stylesheet("components/com_jevents/assets/css/chosen.css");
-
-		//JHtml::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
-		//JHtml::_('stylesheet', 'jui/chosen.css', false, true);
-		JFactory::getDocument()->addScriptDeclaration("
-				jQuery(document).ready(function (){
-					jQuery('" . $selector . "').chosen(" . $options_str . ");
-				});
-			"
-		);
-
-		static::$loaded[__METHOD__][$selector] = true;
-
-		return;
-	}
-
-	/**
 	 * Method to load the AJAX Chosen library
 	 *
 	 * If debugging mode is on an uncompressed version of AJAX Chosen is included for easier debugging.
 	 *
-	 * @param   JRegistry  $options  Options in a JRegistry object
-	 * @param   mixed      $debug    Is debugging mode on? [optional]
+	 * @param   JRegistry $options Options in a JRegistry object
+	 * @param   mixed     $debug   Is debugging mode on? [optional]
 	 *
 	 * @return  void
 	 *
@@ -95,6 +38,7 @@ abstract class JevHtmlFormbehavior
 	 */
 	public static function ajaxchosen(JRegistry $options, $debug = null)
 	{
+
 		// Retrieve options/defaults
 		$selector       = $options->get('selector', '.tagfield');
 		$type           = $options->get('type', 'GET');
@@ -148,6 +92,64 @@ abstract class JevHtmlFormbehavior
 
 			static::$loaded[__METHOD__][$selector] = true;
 		}
+
+		return;
+	}
+
+	/**
+	 * Method to load the Chosen JavaScript framework and supporting CSS into the document head
+	 *
+	 * If debugging mode is on an uncompressed version of Chosen is included for easier debugging.
+	 *
+	 * @param   string $selector Class for Chosen elements.
+	 * @param   mixed  $debug    Is debugging mode on? [optional]
+	 * @param   array  $options  the possible Chosen options as name => value [optional]
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public static function chosen($selector = '.advancedSelect', $debug = null, $options = array())
+	{
+
+		if (isset(static::$loaded[__METHOD__][$selector]))
+		{
+			return;
+		}
+
+		// Include jQuery
+		//JHtml::_('jquery.framework');
+
+		// If no debugging value is set, use the configuration setting
+		if ($debug === null)
+		{
+			$config = JFactory::getConfig();
+			$debug  = (boolean) $config->get('debug');
+		}
+
+		// Default settings
+		$options['disable_search_threshold']  = isset($options['disable_search_threshold']) ? $options['disable_search_threshold'] : 10;
+		$options['allow_single_deselect']     = isset($options['allow_single_deselect']) ? $options['allow_single_deselect'] : true;
+		$options['placeholder_text_multiple'] = isset($options['placeholder_text_multiple']) ? $options['placeholder_text_multiple'] : JText::_('JGLOBAL_SELECT_SOME_OPTIONS');
+		$options['placeholder_text_single']   = isset($options['placeholder_text_single']) ? $options['placeholder_text_single'] : JText::_('JGLOBAL_SELECT_AN_OPTION');
+		$options['no_results_text']           = isset($options['no_results_text']) ? $options['no_results_text'] : JText::_('JGLOBAL_SELECT_NO_RESULTS_MATCH');
+
+		// Options array to json options string
+		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));
+
+		JEVHelper::script("components/com_jevents/assets/js/chosen.jquery.js");
+		JHTML::stylesheet("components/com_jevents/assets/css/chosen.css");
+
+		//JHtml::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
+		//JHtml::_('stylesheet', 'jui/chosen.css', false, true);
+		JFactory::getDocument()->addScriptDeclaration("
+				jQuery(document).ready(function (){
+					jQuery('" . $selector . "').chosen(" . $options_str . ");
+				});
+			"
+		);
+
+		static::$loaded[__METHOD__][$selector] = true;
 
 		return;
 	}

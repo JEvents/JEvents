@@ -17,13 +17,12 @@ defined('_JEXEC') or die();
  *
  * @static
  */
-
-use Joomla\String\StringHelper;
-
-class CustomcssViewCustomcss extends JViewLegacy {
+class CustomcssViewCustomcss extends JViewLegacy
+{
 
 	function display($cachable = false)
 	{
+
 		jimport('joomla.html.pane');
 
 		$document = JFactory::getDocument();
@@ -48,11 +47,11 @@ class CustomcssViewCustomcss extends JViewLegacy {
 			$filepath = JPATH_ROOT . $filepath . '.new';
 		}
 
-		$this->file     = $filepath;
-		$this->form     = $this->get('Form');
+		$this->file = $filepath;
+		$this->form = $this->get('Form');
 		$this->form->setFieldAttribute('source', 'syntax', 'css');
-		$this->source   = $this->get('Customcss');
-		$this->type     = 'file';
+		$this->source = $this->get('Customcss');
+		$this->type   = 'file';
 
 		JEventsHelper::addSubmenu();
 

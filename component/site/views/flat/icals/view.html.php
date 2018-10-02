@@ -22,6 +22,7 @@ class flatViewIcals extends JEventsflatView
 
 	function ical($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
@@ -35,11 +36,11 @@ class flatViewIcals extends JEventsflatView
 
 		// for adding events in day cell
 		$this->popup = false;
-		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-			$this->popup = true;
+			$this->popup  = true;
 			$this->popupw = $params->get("popupw", 800);
 			$this->popuph = $params->get("popuph", 600);
 		}
@@ -50,12 +51,12 @@ class flatViewIcals extends JEventsflatView
 
 	function export($tpl = null)
 	{
-		
+
 	}
 
 	function importform($tpl = null)
 	{
-		
+
 	}
 
 }

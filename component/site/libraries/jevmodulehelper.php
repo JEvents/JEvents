@@ -19,6 +19,7 @@ class JevModuleHelper extends JModuleHelper
 
 	static public function getVisibleModules()
 	{
+
 		return self::_load();
 
 	}

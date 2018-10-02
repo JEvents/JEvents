@@ -31,14 +31,16 @@ class JFormFieldRssmod extends JFormFieldList
 
 		$this->dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		// get list of latest_events modules
-		$modules = $this->dataModel->queryModel->getModulesByName("mod_jevents_latest");
-		$seloptions = array();
+		$modules      = $this->dataModel->queryModel->getModulesByName("mod_jevents_latest");
+		$seloptions   = array();
 		$seloptions[] = JHTML::_('select.option', 0, JTEXT::_('JEV_RSS_MODID_MAIN'));
-		for ($i=0;$i<count($modules);$i++) {
-			$seloptions[] = JHTML::_('select.option', $modules[$i]->id, $modules[$i]->title );
+		for ($i = 0; $i < count($modules); $i++)
+		{
+			$seloptions[] = JHTML::_('select.option', $modules[$i]->id, $modules[$i]->title);
 		}
+
 		return $seloptions;
 
 	}
-	
+
 }

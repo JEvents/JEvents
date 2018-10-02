@@ -9,6 +9,6 @@
  * @link        http://www.jevents.net
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JEV_VIEWS."/".$this->jevlayout."/month/tmpl/calendar_cell.php");
+include_once(JEV_VIEWS . "/" . $this->jevlayout . "/month/tmpl/calendar_cell.php");

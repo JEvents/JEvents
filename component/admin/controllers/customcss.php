@@ -18,10 +18,12 @@ class CustomCssController extends JControllerLegacy
 
 	/**
 	 * Controler for the Custom CSS Editor
-	 * @param array		configuration
+	 *
+	 * @param array        configuration
 	 */
 	function __construct($config = array())
 	{
+
 		parent::__construct($config);
 
 		$this->registerTask('show', 'customcss');
@@ -32,6 +34,7 @@ class CustomCssController extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
+
 		// get the view
 		$this->view = $this->getView('customcss', 'html', 'customcssView');
 
@@ -41,16 +44,19 @@ class CustomCssController extends JControllerLegacy
 		$user = JFactory::getUser();
 
 		// Get/Create the model
-		if ($model = $this->getModel()) {
+		if ($model = $this->getModel())
+		{
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
 		}
 
-		if (!$user->authorise('core.admin')) {
-			$msg = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
+		if (!$user->authorise('core.admin'))
+		{
+			$msg     = JTExt::_('JEV_ERROR_NOT_AUTH_CSS');
 			$msgType = 'error';
 			$mainframe->enqueueMessage($msg, $msgType);
 			$mainframe->redirect('index.php?option=com_jevents&msg=' . $msg . '&msgtype=' . $msgType . '');
+
 			return;
 		}
 
@@ -64,6 +70,7 @@ class CustomCssController extends JControllerLegacy
 	//Cancel Function
 	public function cancel()
 	{
+
 		$this->setRedirect(JRoute::_('index.php?option=com_jevents&view=cpanel', false));
 	}
 
@@ -85,6 +92,7 @@ class CustomCssController extends JControllerLegacy
 		if (!$this->allowSave())
 		{
 			$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
+
 			return false;
 		}
 
@@ -145,21 +153,26 @@ class CustomCssController extends JControllerLegacy
 			// Redirect back to the edit screen.
 			$url = 'index.php?option=com_jevents&view=customcss';
 			$this->setRedirect(JRoute::_($url, false));
-		} else {
+		}
+		else
+		{
 			// Redirect to the list screen.
-			$url  = 'index.php?option=com_jevents';
+			$url = 'index.php?option=com_jevents';
 			$this->setRedirect(JRoute::_($url, false));
 		}
-	return '';
+
+		return '';
 	}
 
 	protected function allowSave()
 	{
+
 		return $this->allowEdit();
 	}
 
 	protected function allowEdit()
 	{
+
 		return JFactory::getUser()->authorise('core.admin', 'com_jevents');
 	}
 }

@@ -11,12 +11,30 @@
 defined('_JEXEC') or die('Restricted access');
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
-use Joomla\String\StringHelper;
-
 // TODO replace with JevDate
 
 class JEventsHTML
 {
+	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
+	{
+
+		// get array
+		$day_name = JEVHelper::getWeekdayLetter(null, 1);
+		$day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
+		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
+
+		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />');
+
+		for ($a = 0; $a < 7; $a++)
+		{
+			$name_of_day = '&nbsp;' . $day_name[$a]; //getDayName($a);
+			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day);
+		}
+
+		$tosend = JEventsHTML::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
+		echo $tosend;
+	}
+
 	public static function buildRadioOption($arr, $tag_name, $tag_attribs, $key, $text, $selected)
 	{
 		$html = ''; //"\n<div name=\"$tag_name\" $tag_attribs>";
@@ -58,26 +76,6 @@ class JEventsHTML
 		}
 		//$html .= "\n</select>\n";
 		return $html;
-	}
-
-	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
-	{
-
-		// get array
-		$day_name = JEVHelper::getWeekdayLetter(null, 1);
-		$day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
-		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
-
-		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />');
-
-		for ($a = 0; $a < 7; $a++)
-		{
-			$name_of_day = '&nbsp;' . $day_name[$a]; //getDayName($a);
-			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day);
-		}
-
-		$tosend = JEventsHTML::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
-		echo $tosend;
 	}
 
 	public static function buildMonthSelect($month, $args)
@@ -697,6 +695,7 @@ class JEventsHTML
 
 	    /**
 	     * returns name of the day longversion
+	     *
 	     * @param	daynb		int		# of day
 	     * @param	colored		bool	color sunday	[ new mic, because inside tooltips a color forces an error! ]
 	     * */
@@ -1008,7 +1007,9 @@ class JEventsHTML
 	     * Required for edit fields containing html code
 	     *
 	     * @static
+	     *
 	     * @param $html	string	html text
+	     *
 	     * @return		string	html string
 	     */
 	    public static function special($html = '')
@@ -1021,7 +1022,9 @@ class JEventsHTML
 	     * Generate javascript start and end tags
 	     *
 	     * @access public
+	     *
 	     * @param string $type 'start' or 'end' tag
+	     *
 	     * @return string html sequence
 	     */
 	    public static function buildScriptTag($type = 'start')

@@ -9,7 +9,7 @@
 
 defined('JPATH_BASE') or die;
 
-$list = $displayData['list'];
+$list  = $displayData['list'];
 $pages = $list['pages'];
 
 $options = new JRegistry($displayData['options']);
@@ -20,8 +20,8 @@ $showLimitStart = $options->get('showLimitStart', true);
 
 // Calculate to display range of pages
 $currentPage = 1;
-$range = 1;
-$step = 5;
+$range       = 1;
+$step        = 5;
 
 if (!empty($pages['pages']))
 {
@@ -58,13 +58,13 @@ if ($currentPage >= $step)
 	<?php if ($showPagesLinks && (!empty($pages))) : ?>
 		<ul class="pagination-list">
 			<?php
-				echo JLayoutHelper::render('pagination.crawlerlink', $pages['start']);
-				echo JLayoutHelper::render('pagination.crawlerlink', $pages['previous']); ?>
+			echo JLayoutHelper::render('pagination.crawlerlink', $pages['start']);
+			echo JLayoutHelper::render('pagination.crawlerlink', $pages['previous']); ?>
 			<?php foreach ($pages['pages'] as $k => $page) : ?>
 
 				<?php $output = JLayoutHelper::render('pagination.crawlerlink', $page); ?>
 				<?php if (in_array($k, range($range * $step - ($step + 1), $range * $step))) : ?>
-					<?php if (($k % $step == 0 || $k == $range * $step - ($step + 1)) && $k != $currentPage && $k != $range * $step - $step) :?>
+					<?php if (($k % $step == 0 || $k == $range * $step - ($step + 1)) && $k != $currentPage && $k != $range * $step - $step) : ?>
 						<?php $output = preg_replace('#(<a.*?>).*?(</a>)#', '$1...$2', $output); ?>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -72,13 +72,14 @@ if ($currentPage >= $step)
 				<?php echo $output; ?>
 			<?php endforeach; ?>
 			<?php
-				echo JLayoutHelper::render('pagination.crawlerlink', $pages['next']);
-				echo JLayoutHelper::render('pagination.crawlerlink', $pages['end']); ?>
+			echo JLayoutHelper::render('pagination.crawlerlink', $pages['next']);
+			echo JLayoutHelper::render('pagination.crawlerlink', $pages['end']); ?>
 		</ul>
 	<?php endif; ?>
 
 	<?php if ($showLimitStart) : ?>
-		<input type="hidden" name="<?php echo $list['prefix']; ?>limitstart" value="<?php echo $list['limitstart']; ?>" />
+		<input type="hidden" name="<?php echo $list['prefix']; ?>limitstart"
+		       value="<?php echo $list['limitstart']; ?>"/>
 	<?php endif; ?>
 
 </div>

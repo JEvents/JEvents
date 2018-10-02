@@ -2,7 +2,7 @@
 
 /**
  * JEvents Component for Joomla! 3.x
- * 
+ *
  * This file based on Joomla config component Copyright (C) 2005 - 2008 Open Source Matters.
  *
  * @version     $Id: params.php 2214 2011-06-20 13:42:27Z geraintedwards $
@@ -30,6 +30,7 @@ if (!defined("JEVADPARMOD"))
 		 */
 		function &getParams()
 		{
+
 			static $instance;
 			$jinput = JFactory::getApplication()->input;
 
@@ -37,11 +38,12 @@ if (!defined("JEVADPARMOD"))
 			{
 				$component = JEV_COM_COMPONENT;
 
-				$table =  JTable::getInstance('extension');
+				$table = JTable::getInstance('extension');
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{
 					JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
+
 					return false;
 				}
 
@@ -53,8 +55,8 @@ if (!defined("JEVADPARMOD"))
 				}
 				else
 				{
-					$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option );
-					$path = JPATH_ADMINISTRATOR . '/' . 'components' . '/' . $option . '/' . 'config.xml';
+					$option = preg_replace('#\W#', '', isset($table->element) ? $table->element : $table->option);
+					$path   = JPATH_ADMINISTRATOR . '/' . 'components' . '/' . $option . '/' . 'config.xml';
 				}
 
 				// Use our own class to add more functionality!
@@ -68,6 +70,7 @@ if (!defined("JEVADPARMOD"))
 					$instance = new JevParameter($table->params);
 				}
 			}
+
 			return $instance;
 
 		}
@@ -75,13 +78,15 @@ if (!defined("JEVADPARMOD"))
 		/**
 		 * Method to get the record form.
 		 *
-		 * @param	array	$data		Data for the form.
-		 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-		 * @return	mixed	A JForm object on success, false on failure
-		 * @since	1.6
+		 * @param    array   $data     Data for the form.
+		 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
+		 *
+		 * @return    mixed    A JForm object on success, false on failure
+		 * @since    1.6
 		 */
 		public function getForm($data = array(), $loadData = true)
 		{
+
 			// Get the form.
 			$form = $this->loadForm('com_jevents.params', 'config', array('control' => 'jform', 'load_data' => $loadData), false, "//config");
 			if (empty($form))
@@ -96,12 +101,14 @@ if (!defined("JEVADPARMOD"))
 		/**
 		 * Method to save the configuration data.
 		 *
-		 * @param	array	An array containing all global config data.
-		 * @return	bool	True on success, false on failure.
-		 * @since	1.6
+		 * @param    array    An array containing all global config data.
+		 *
+		 * @return    bool    True on success, false on failure.
+		 * @since    1.6
 		 */
 		public function save($data)
 		{
+
 			$table = JTable::getInstance('extension');
 
 			// Save the rules.
@@ -115,7 +122,7 @@ if (!defined("JEVADPARMOD"))
 				{
 					$root = JTable::getInstance('asset');
 					$root->loadByName('root.1');
-					$asset->name = $data['option'];
+					$asset->name  = $data['option'];
 					$asset->title = $data['option'];
 					$asset->setLocation($root->id, 'last-child');
 				}
@@ -124,6 +131,7 @@ if (!defined("JEVADPARMOD"))
 				if (!$asset->check() || !$asset->store())
 				{
 					$this->setError($asset->getError());
+
 					return false;
 				}
 				// We don't need this anymore
@@ -135,6 +143,7 @@ if (!defined("JEVADPARMOD"))
 			if (!$table->load($data['id']))
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 			unset($data['id']);
@@ -143,6 +152,7 @@ if (!defined("JEVADPARMOD"))
 			if (!$table->bind($data))
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -150,6 +160,7 @@ if (!defined("JEVADPARMOD"))
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -157,6 +168,7 @@ if (!defined("JEVADPARMOD"))
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -170,6 +182,7 @@ if (!defined("JEVADPARMOD"))
 
 		public function saveRules($data)
 		{
+
 			$table = JTable::getInstance('extension');
 
 			// Save the rules.
@@ -183,7 +196,7 @@ if (!defined("JEVADPARMOD"))
 				{
 					$root = JTable::getInstance('asset');
 					$root->loadByName('root.1');
-					$asset->name = $data['option'];
+					$asset->name  = $data['option'];
 					$asset->title = $data['option'];
 					$asset->setLocation($root->id, 'last-child');
 				}
@@ -192,6 +205,7 @@ if (!defined("JEVADPARMOD"))
 				if (!$asset->check() || !$asset->store())
 				{
 					$this->setError($asset->getError());
+
 					return false;
 				}
 				// We don't need this anymore

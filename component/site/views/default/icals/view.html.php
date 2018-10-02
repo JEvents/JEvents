@@ -22,6 +22,7 @@ class DefaultViewIcals extends JEventsDefaultView
 
 	function ical($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
@@ -39,7 +40,7 @@ class DefaultViewIcals extends JEventsDefaultView
 		{
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-			$this->popup = true;
+			$this->popup  = true;
 			$this->popupw = $params->get("popupw", 800);
 			$this->popuph = $params->get("popuph", 600);
 		}
@@ -50,12 +51,12 @@ class DefaultViewIcals extends JEventsDefaultView
 
 	function export($tpl = null)
 	{
-		
+
 	}
 
 	function importform($tpl = null)
 	{
-		
+
 	}
 
 }

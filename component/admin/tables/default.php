@@ -13,11 +13,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
-* User Table class
-*
-* @subpackage	Users
-* @since 1.0
-*/
+ * User Table class
+ *
+ * @subpackage    Users
+ * @since         1.0
+ */
 class TableDefault extends JTable
 {
 	/**
@@ -38,9 +38,12 @@ class TableDefault extends JTable
 	 * Constructor
 	 *
 	 * @param object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct() {
+	function __construct()
+	{
+
 		$db = JFactory::getDbo();
 		parent::__construct('#__jev_defaults', 'id', $db);
 	}

@@ -15,12 +15,12 @@ var JevStdRequiredFields = {
         // This is a Javascript each over an array !
         JevStdRequiredFields.fields.forEach(function (item, i) {
             var name = item.name;
-            var value = "";            
+            var value = "";
             if (item.preAction) {
                 try {
                     eval(item.preAction);
                 }
-                catch (ex){
+                catch (ex) {
                     //alert(ex.message);
                 }
             }
@@ -28,12 +28,12 @@ var JevStdRequiredFields = {
                 try {
                     value = eval(item.getValue);
                 }
-                catch (e){
-                    alert("failed "+e.message);
-                    
+                catch (e) {
+                    alert("failed " + e.message);
+
                 }
             }
-                       
+
             var noncustomname = name.replace("custom_jform", "jform");
             // to test field id we must NOT have [ or ] in the name
             var nosquarename = name.replace(/\[/g, "");

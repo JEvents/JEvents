@@ -15,11 +15,11 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 
 /**
-* User Table class
-*
-* @subpackage	Users
-* @since 1.0
-*/
+ * User Table class
+ *
+ * @subpackage    Users
+ * @since         1.0
+ */
 class TableUser extends JTable
 {
 	/**
@@ -62,119 +62,149 @@ class TableUser extends JTable
 	 * Constructor
 	 *
 	 * @param object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct() {
+	function __construct()
+	{
+
 		$db = JFactory::getDbo();
 		parent::__construct('#__jev_users', 'id', $db);
 	}
 
-	public static function checkTable(){
+	public static function checkTable()
+	{
+
 		$db = JFactory::getDbo();
 	}
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since 1.0
-	 */
-	function check()
+	public static function getUsers($ids = array())
 	{
-		return true;
-	}
-
-	public static function getUsers($ids=array()){
 
 		$where = array();
-		$join = array();
-		if (is_array($ids)){
-			if (count($ids)>0){
-				$ids = ArrayHelper::toInteger($ids);
-				$idstring = implode(",",$ids);
-				$where[] = " tl.id in ($idstring)";
+		$join  = array();
+		if (is_array($ids))
+		{
+			if (count($ids) > 0)
+			{
+				$ids      = ArrayHelper::toInteger($ids);
+				$idstring = implode(",", $ids);
+				$where[]  = " tl.id in ($idstring)";
 			}
 		}
-		else {
+		else
+		{
 			$idstring = intval($ids);
-			$where[] = "tl.id in ($idstring)";
+			$where[]  = "tl.id in ($idstring)";
 		}
 
-		$db = JFactory::getDbo();
-		$search		= JFactory::getApplication()->getUserStateFromRequest( "usersearch{".JEV_COM_COMPONENT."}", 'search', '' );
-		$search		= $db->escape( trim( strtolower( $search ) ) );		
-		if($search != ""){
+		$db     = JFactory::getDbo();
+		$search = JFactory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
+		$search = $db->escape(trim(strtolower($search)));
+		if ($search != "")
+		{
 			$where[] = " ( ju.name like '$search%' OR ju.username like '$search%')";
 		}
-		
-		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
 
-		$orderdir = JRequest::getCmd("filter_order_Dir",'asc');
-		$order = JRequest::getCmd("filter_order",'tl.id');
-		$dir = $orderdir=="asc" ? "asc" : "desc";
-		$order = " ORDER BY ".$order." ".$orderdir;
-		
+		JPluginHelper::importPlugin("jevents");
+		$dispatcher = JEventDispatcher::getInstance();
+		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
+
+		$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
+		$order    = JRequest::getCmd("filter_order", 'tl.id');
+		$dir      = $orderdir == "asc" ? "asc" : "desc";
+		$order    = " ORDER BY " . $order . " " . $orderdir;
+
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-		$sql .= count($join)>0?implode(" ",$join):"";
-		$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
+		$sql .= count($join) > 0 ? implode(" ", $join) : "";
+		$sql .= count($where) > 0 ? " WHERE " . implode(" AND ", $where) : "";
 		$sql .= $order;
 
-		$db->setQuery( $sql	);
+		$db->setQuery($sql);
 		$users = $db->loadObjectList('id');
 		echo $db->getErrorMsg();
 
 		$total = count($users);
 
-		$option = JEV_COM_COMPONENT;
-		$app	= JFactory::getApplication();
-		$limit		= $app->getUserStateFromRequest( 'global.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
-		$limitstart	= $app->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
+		$option     = JEV_COM_COMPONENT;
+		$app        = JFactory::getApplication();
+		$limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+		$limitstart = $app->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
 
-		if ($limit>0 || $limitstart>0){
-			if ($limitstart>$total) {
+		if ($limit > 0 || $limitstart > 0)
+		{
+			if ($limitstart > $total)
+			{
 				$limitstart = 0;
 			}
 
 			$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 			$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-			$sql .= count($join)>0?implode(" ",$join):"";
-			$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
+			$sql .= count($join) > 0 ? implode(" ", $join) : "";
+			$sql .= count($where) > 0 ? " WHERE " . implode(" AND ", $where) : "";
 			$sql .= $order;
 			$sql .= " LIMIT $limitstart, $limit";
 
-			$db->setQuery( $sql	);
+			$db->setQuery($sql);
 			$users = $db->loadObjectList('id');
 		}
 
-		foreach ($users as $key=>$val){
+		foreach ($users as $key => $val)
+		{
 			$user = new TableUser();
 			$user->bind(get_object_vars($val));
-			$user->jname = $val->jname;
+			$user->jname    = $val->jname;
 			$user->username = $val->username;
-			$users[$key]=$user;
+			$users[$key]    = $user;
 		}
+
 		return $users;
 	}
 
-	public static function getUserCount() {
+	function bind($array, $ignore = '')
+	{
+
+		$success = parent::bind($array, $ignore);
+
+		if (key_exists('categories', $array))
+		{
+			if ($array['categories'] == 'all' || $array['categories'] == 'none') $this->categories = $array['categories'];
+			else if (is_array($array['categories']))
+			{
+				$array['categories'] = ArrayHelper::toInteger($array['categories']);
+				$this->categories    = implode("|", $array['categories']);
+			}
+		}
+		if (key_exists('calendars', $array))
+		{
+			if ($array['calendars'] == 'all' || $array['calendars'] == 'none') $this->calendars = $array['calendars'];
+			else if (is_array($array['calendars']))
+			{
+				$array['calendars'] = ArrayHelper::toInteger($array['calendars']);
+				$this->calendars    = implode("|", $array['calendars']);
+			}
+		}
+
+		return $success;
+	}
+
+	public static function getUserCount()
+	{
 
 		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
-		$where = array();
-		$join = array();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
+		$dispatcher = JEventDispatcher::getInstance();
+		$where      = array();
+		$join       = array();
+		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
 
-		$db = JFactory::getDbo();
+		$db  = JFactory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-		$sql .= count($join)>0?implode(" ",$join):"";
-		$sql .= count($where)>0?" WHERE ".implode(" AND ",$where):"";
+		$sql .= count($join) > 0 ? implode(" ", $join) : "";
+		$sql .= count($where) > 0 ? " WHERE " . implode(" AND ", $where) : "";
 
-		$db->setQuery( $sql	);
+		$db->setQuery($sql);
 		$users = $db->loadObjectList('id');
 		echo $db->getErrorMsg();
 
@@ -182,125 +212,146 @@ class TableUser extends JTable
 
 	}
 
-	public static function getUsersByUserid($userid,$index="id"){
-		if (is_array($userid)){
-			$userid = ArrayHelper::toInteger($userid);
-			$userids = implode(",",$userid);
-		}
-		else {
-			$userids = intval($userid);
-		}
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 * @return boolean True on success
+	 * @since  1.0
+	 */
+	function check()
+	{
 
-		JPluginHelper::importPlugin("jevents");
-		$dispatcher	= JEventDispatcher::getInstance();
-		$where = array();
-		$join = array();
-		$set = $dispatcher->trigger('getAuthorisedUser', array (& $where, & $join));
-
-		$db = JFactory::getDbo();
-		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
-		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
-		$sql .= count($join)>0?implode(" ",$join):"";
-		$sql .= " WHERE ju.id IN ( ".$userids." )";
-		$sql .= count($where)>0?" AND ".implode(" AND ",$where):"";
-
-		$db->setQuery( $sql	);
-		$users = $db->loadObjectList($index);
-		echo $db->getErrorMsg();
-		foreach ($users as $key=>$val){
-			$user = new TableUser();
-			$user->bind(get_object_vars($val));
-			$user->jname = $val->jname;
-			$user->username = $val->username;
-			$users[$key]=$user;
-		}
-		return $users;
+		return true;
 	}
 
-	function authorisedUser($lang=0){
-		$user = JFactory::getUser();
-		$users = TableUser::getUsersByUserid($user->id,"langid");
-		if (count($users)>0 && $lang<=0) return true;
-		if (array_key_exists($lang,$users)) return $users[$lang];
-		if (count($users)>0 ){
-			foreach ($users as $user) {
+	function authorisedUser($lang = 0)
+	{
 
-				if ($user->langid == $lang && $user->published){
+		$user  = JFactory::getUser();
+		$users = TableUser::getUsersByUserid($user->id, "langid");
+		if (count($users) > 0 && $lang <= 0) return true;
+		if (array_key_exists($lang, $users)) return $users[$lang];
+		if (count($users) > 0)
+		{
+			foreach ($users as $user)
+			{
+
+				if ($user->langid == $lang && $user->published)
+				{
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 
-	function canpublishown(){
-		if ($this->canpublishown){
+	public static function getUsersByUserid($userid, $index = "id")
+	{
+
+		if (is_array($userid))
+		{
+			$userid  = ArrayHelper::toInteger($userid);
+			$userids = implode(",", $userid);
+		}
+		else
+		{
+			$userids = intval($userid);
+		}
+
+		JPluginHelper::importPlugin("jevents");
+		$dispatcher = JEventDispatcher::getInstance();
+		$where      = array();
+		$join       = array();
+		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
+
+		$db  = JFactory::getDbo();
+		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
+		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
+		$sql .= count($join) > 0 ? implode(" ", $join) : "";
+		$sql .= " WHERE ju.id IN ( " . $userids . " )";
+		$sql .= count($where) > 0 ? " AND " . implode(" AND ", $where) : "";
+
+		$db->setQuery($sql);
+		$users = $db->loadObjectList($index);
+		echo $db->getErrorMsg();
+		foreach ($users as $key => $val)
+		{
+			$user = new TableUser();
+			$user->bind(get_object_vars($val));
+			$user->jname    = $val->jname;
+			$user->username = $val->username;
+			$users[$key]    = $user;
+		}
+
+		return $users;
+	}
+
+	function canpublishown()
+	{
+
+		if ($this->canpublishown)
+		{
 			return true;
 		}
+
 		return false;
 	}
 
-	function candeleteown(){
-		if ($this->candeleteown){
+	function candeleteown()
+	{
+
+		if ($this->candeleteown)
+		{
 			return true;
 		}
+
 		return false;
 	}
 
-	function canpublishall(){
-		if ($this->canpublishall){
+	function canpublishall()
+	{
+
+		if ($this->canpublishall)
+		{
 			return true;
 		}
+
 		return false;
 	}
 
-	function candeleteall(){
-		if ($this->candeleteall){
+	function candeleteall()
+	{
+
+		if ($this->candeleteall)
+		{
 			return true;
 		}
+
 		return false;
 	}
 
+	function disableAll()
+	{
 
-	function disableAll(){
 		$this->cancreate = 0;
-		$this->canedit = 0;
+		$this->canedit   = 0;
 
 		$this->canpublishown = 0;
-		$this->candeleteown = 0;
+		$this->candeleteown  = 0;
 
 		$this->canpublishall = 0;
-		$this->candeleteall = 0;
+		$this->candeleteall  = 0;
 
 		$this->canuploadimages = 0;
 		$this->canuploadmovies = 0;
 
 		// extras
-		$this->cancreateown = 0;
+		$this->cancreateown    = 0;
 		$this->cancreateglobal = 0;
-		$this->eventslimit = 0;
-		$this->extraslimit = 0;
-	}
-
-	function bind($array, $ignore = '') {
-		$success = parent::bind($array, $ignore);
-
-		if (key_exists('categories', $array)) {
-			if($array['categories']=='all' || $array['categories']=='none') $this->categories = $array['categories'];
-			else if (is_array($array['categories'])){
-				$array['categories'] = ArrayHelper::toInteger($array['categories']);
-				$this->categories = implode("|",$array['categories']);
-			}
-		}
-		if (key_exists('calendars', $array)) {
-			if($array['calendars']=='all' || $array['calendars']=='none') $this->calendars = $array['calendars'];
-			else if (is_array($array['calendars'])){
-				$array['calendars'] = ArrayHelper::toInteger($array['calendars']);
-				$this->calendars = implode("|",$array['calendars']);
-			}
-		}
-
-		return $success;
+		$this->eventslimit     = 0;
+		$this->extraslimit     = 0;
 	}
 
 }

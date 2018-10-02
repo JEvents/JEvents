@@ -21,17 +21,17 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields/">
 				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
 				<field
-					name="dynmodid"
-					type="text"
-					label="JEV_DEFAULTS_MODULE_ID"
-					description="JEV_DEFAULTS_MODULE_ID_DESC" />
+						name="dynmodid"
+						type="text"
+						label="JEV_DEFAULTS_MODULE_ID"
+						description="JEV_DEFAULTS_MODULE_ID_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

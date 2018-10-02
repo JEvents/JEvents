@@ -13,33 +13,35 @@
 defined('_JEXEC') or die();
 
 // This view extends the icalevent view
-include_once(dirname(__FILE__)."/../icalevent/view.html.php");
+include_once(dirname(__FILE__) . "/../icalevent/view.html.php");
 
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class DefaultJevent extends DefaultICalEvent 
+class DefaultJevent extends DefaultICalEvent
 {
 	function __construct($config = null)
-	{		
+	{
+
 		parent::__construct($config);
 
-		$this->addTemplatePath($this->_basePath.'/'."views".'/'.$this->jevlayout.'/'."icalevent".'/'.'tmpl');
+		$this->addTemplatePath($this->_basePath . '/' . "views" . '/' . $this->jevlayout . '/' . "icalevent" . '/' . 'tmpl');
 	}
-	
+
 	function detail($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
 		$document = JFactory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+
+	}
 }

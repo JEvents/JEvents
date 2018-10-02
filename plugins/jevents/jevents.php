@@ -1,70 +1,77 @@
 <?php
 
 /**
- * @copyright	Copyright (c) 2014-2018 GWE Systems Ltd. All rights reserved.
- * @license	GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright    Copyright (c) 2014-2018 GWE Systems Ltd. All rights reserved.
+ * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
-defined('_JEXEC') or die( ' Restricted Access ' );
+defined('_JEXEC') or die(' Restricted Access ');
 
 jimport('joomla.plugin.plugin');
 
 /**
  * content - JEvents Plugin
  *
- * @package		Joomla.Plugin
- * @subpakage	jevents.JEvents
+ * @package        Joomla.Plugin
+ * @subpakage      jevents.JEvents
  */
 class plgContentJEvents extends JPlugin
 {
 
 	public
-			function onContentBeforeSave($context, $data)
+	function onContentBeforeSave($context, $data)
 	{
 
-		if (intval($data->id)==0){
+		if (intval($data->id) == 0)
+		{
 			return true;
 		}
-		
-		if ($context == "com_categories.category" && $data->extension == "com_jevents" && ( $data->published != 1 || $data->published != 0 ))
+
+		if ($context == "com_categories.category" && $data->extension == "com_jevents" && ($data->published != 1 || $data->published != 0))
 		{
 			$lang = JFactory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
-			 $catids = $data->id;
+			$catids = $data->id;
 
 			// Get a db connection & new query object.
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
 			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
-            if ($data->published == "-2" || $data->published == "2") {
-                if ($params->get("multicategory", 0)) {
-                    $query->select($db->quoteName('map.catid'));
-                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
-                    $query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
-                    $query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
-                } else {
-                    $query->select($db->quoteName('ev.catid'));
-                    $query->from($db->quoteName('#__jevents_vevent', 'ev'));
-                    $query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
-                }
+			if ($data->published == "-2" || $data->published == "2")
+			{
+				if ($params->get("multicategory", 0))
+				{
+					$query->select($db->quoteName('map.catid'));
+					$query->from($db->quoteName('#__jevents_vevent', 'ev'));
+					$query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
+					$query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
+				}
+				else
+				{
+					$query->select($db->quoteName('ev.catid'));
+					$query->from($db->quoteName('#__jevents_vevent', 'ev'));
+					$query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
+				}
 
-                // Reset the query using our newly populated query object.
-                $db->setQuery($query);
+				// Reset the query using our newly populated query object.
+				$db->setQuery($query);
 
-                // Load the results as a list of stdClass objects (see later for more options on retrieving data).
-                $results = $db->loadColumn();
+				// Load the results as a list of stdClass objects (see later for more options on retrieving data).
+				$results = $db->loadColumn();
 
-                $result_count = count($results);
-            } else {
-                $result_count = 0;
-            }
+				$result_count = count($results);
+			}
+			else
+			{
+				$result_count = 0;
+			}
 
 			if ($result_count >= 1)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS',  $result_count), 'Warning');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
 				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
 				return false;
@@ -78,8 +85,9 @@ class plgContentJEvents extends JPlugin
 	}
 
 	public
-			function onCategoryChangeState($extension, $pks, $value)
+	function onCategoryChangeState($extension, $pks, $value)
 	{
+
 		//We need to use on categoryChangeState
 		// Only run on JEvents
 		if ($extension == "com_jevents" && ($value == "-2" || $value == "2"))
@@ -96,7 +104,7 @@ class plgContentJEvents extends JPlugin
 			$catids = implode(',', $pks);
 
 			// Get a db connection & new query object.
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
@@ -108,7 +116,8 @@ class plgContentJEvents extends JPlugin
 				$query->join('INNER', $db->quoteName('#__jevents_catmap', 'map') . ' ON (' . $db->quoteName('ev.ev_id') . ' = ' . $db->quoteName('map.evid') . ' )');
 				$query->where($db->quoteName('map.catid') . ' IN (' . $catids . ')');
 			}
-			else {
+			else
+			{
 				$query->select($db->quoteName('ev.catid'));
 				$query->from($db->quoteName('#__jevents_vevent', 'ev'));
 				$query->where($db->quoteName('ev.catid') . ' IN (' . $catids . ')');
@@ -125,7 +134,7 @@ class plgContentJEvents extends JPlugin
 
 			$result_count = count($results);
 
-			if ($result_count  >= 1)
+			if ($result_count >= 1)
 			{
 
 				// Ok so we are trying to change the published category that has events! STOP
@@ -147,7 +156,7 @@ class plgContentJEvents extends JPlugin
 				//Quick way to query debug without launching netbeans.
 				//JFactory::getApplication()->enqueueMessage($query, 'Error');
 
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS',  $result_count), 'Warning');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
 				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 			}
 		}

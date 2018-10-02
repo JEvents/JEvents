@@ -13,13 +13,12 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
-use Joomla\String\StringHelper;
-
 class JEventsAbstractView extends JViewLegacy
 {
 
 	function __construct($config = null)
 	{
+
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
@@ -35,9 +34,10 @@ class JEventsAbstractView extends JViewLegacy
 		$page_template_id = $app->isAdmin() ? "0" : @$app->getMenu()->getActive()->template_style_id;
 
 		// Check it's a valid style with simple check
-		if (!($page_template_id == "" || $page_template_id == "0")) {
+		if (!($page_template_id == "" || $page_template_id == "0"))
+		{
 			// Load the valid style:
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true)
 				->select('template')
 				->from('#__template_styles')
@@ -45,18 +45,20 @@ class JEventsAbstractView extends JViewLegacy
 			$db->setQuery($query);
 			$template = $db->loadResult();
 
-		} else {
+		}
+		else
+		{
 			$template = JFactory::getApplication()->getTemplate();
 		}
 
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		$name = $this->getName();
-		$name = str_replace($theme."/", "", $name);
+		$name  = $this->getName();
+		$name  = str_replace($theme . "/", "", $name);
 		$this->addTemplatePath(JPATH_BASE . '/' . 'templates' . '/' . $template . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . $theme . '/' . $name);
 
 		// or could have used
 		//$this->addTemplatePath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'.$config['name'] );
-		
+
 
 	}
 
@@ -67,6 +69,7 @@ class JEventsAbstractView extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
+
 		$layout = $this->getLayout();
 
 		if (method_exists($this, $layout))
@@ -78,7 +81,7 @@ class JEventsAbstractView extends JViewLegacy
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// layout may get re-assigned by $this->$layout($tpl); for handle different versions of Joomla
-		$layout = $this->getLayout();
+		$layout    = $this->getLayout();
 		$newlayout = $params->get("overridelayout", $layout);
 
 		// check the template layout is valid for this task
@@ -95,6 +98,7 @@ class JEventsAbstractView extends JViewLegacy
 
 	function displaytemplate($tpl = null)
 	{
+
 		return parent::display($tpl);
 
 	}
@@ -108,6 +112,7 @@ class JEventsAbstractView extends JViewLegacy
 	 */
 	function _quickiconButton($link, $image, $text, $path = '/administrator/images/', $target = '', $onclick = '')
 	{
+
 		if ($target != '')
 		{
 			$target = 'target="' . $target . '"';
@@ -124,7 +129,8 @@ class JEventsAbstractView extends JViewLegacy
 		?>
 		<div style="float:left;">
 			<div class="icon">
-				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?> title="<?php echo $alttext; ?>">
+				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?>
+				   title="<?php echo $alttext; ?>">
 					<?php
 					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text ); 
 					if (strpos($path, '/') === 0)
@@ -141,8 +147,10 @@ class JEventsAbstractView extends JViewLegacy
 		<?php
 
 	}
+
 	function _quickiconButtonWHover($link, $image, $image_hover, $text, $path = '/administrator/images/', $target = '', $onclick = '')
 	{
+
 		if ($target != '')
 		{
 			$target = 'target="' . $target . '"';
@@ -159,14 +167,15 @@ class JEventsAbstractView extends JViewLegacy
 		?>
 		<div id="cp_icon_container">
 			<div class="cp_icon">
-				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?> title="<?php echo $alttext; ?>">
+				<a href="<?php echo $link; ?>" <?php echo $target; ?>  <?php echo $onclick; ?>
+				   title="<?php echo $alttext; ?>">
 					<?php
 					//echo JHTML::_('image.administrator', $image, $path, NULL, NULL, $text );
 					if (strpos($path, '/') === 0)
 					{
 						$path = JString::substr($path, 1);
 					}
-					$atributes = array('title' => $alttext, 'onmouseover' => 'this.src=\'../' . $path . $image_hover . '\'', 'onmouseout' => 'this.src=\'../' . $path . $image . '\'' );
+					$atributes = array('title' => $alttext, 'onmouseover' => 'this.src=\'../' . $path . $image_hover . '\'', 'onmouseout' => 'this.src=\'../' . $path . $image . '\'');
 
 					echo JHTML::_('image', $path . $image, $alttext, $atributes, false);
 					//JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true)
@@ -175,7 +184,7 @@ class JEventsAbstractView extends JViewLegacy
 				</a>
 			</div>
 		</div>
-	<?php
+		<?php
 
 	}
 
@@ -184,9 +193,11 @@ class JEventsAbstractView extends JViewLegacy
 	 * if label is empty, a (i) icon is used
 	 *
 	 * @static
-	 * @param $tip	string	tool tip text declaring label
-	 * @param $label	string	label text
-	 * @return		string	html string
+	 *
+	 * @param $tip      string    tool tip text declaring label
+	 * @param $label    string    label text
+	 *
+	 * @return        string    html string
 	 */
 	function tip($tip = '', $label = '')
 	{
@@ -208,9 +219,10 @@ class JEventsAbstractView extends JViewLegacy
 		else
 		{
 			$str = '<span class="editlinktip">'
-					. JHTML::_('tooltip', $tip, $label, null, $label, '', 0)
-					. '</span>';
+				. JHTML::_('tooltip', $tip, $label, null, $label, '', 0)
+				. '</span>';
 		}
+
 		return $str;
 
 	}
@@ -220,13 +232,14 @@ class JEventsAbstractView extends JViewLegacy
 	 */
 	function loadEditFromTemplate($template_name = 'icalevent.edit_page', $event, $mask, $search = array(), $replace = array(), $blank = array())
 	{
+
 		$db = JFactory::getDbo();
 		// find published template
 		static $templates;
 		static $fieldNameArray;
 		if (!isset($templates))
 		{
-			$templates = array();
+			$templates      = array();
 			$fieldNameArray = array();
 		}
 
@@ -280,7 +293,7 @@ class JEventsAbstractView extends JViewLegacy
 		$template = $templates[$template_name];
 
 		$template_value = $template->value;
-		$matchesarray = $templates[$template_name]->matchesarray;
+		$matchesarray   = $templates[$template_name]->matchesarray;
 
 		if ($template_value == "")
 			return;
@@ -304,10 +317,10 @@ class JEventsAbstractView extends JViewLegacy
 			// translation string
 			if (strpos($strippedmatch, "{{_") === 0 && strpos($strippedmatch, " ") === false)
 			{
-				$search[] = $strippedmatch;
+				$search[]      = $strippedmatch;
 				$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
-				$replace[] = JText::_($strippedmatch);
-				$blank[] = "";
+				$replace[]     = JText::_($strippedmatch);
+				$blank[]       = "";
 				continue;
 			}
 			// Built in fields	
@@ -344,19 +357,19 @@ class JEventsAbstractView extends JViewLegacy
 				$tabreplace = '<ul class="nav nav-tabs" id="myEditTabs">';
 				for ($tab = 0; $tab < $tabstartarray0Count; $tab++)
 				{
-					$paneid = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
+					$paneid   = str_replace(" ", "_", htmlspecialchars($tabstartarray[1][$tab]));
 					$tablabel = ($paneid == JText::_($paneid)) ? $tabstartarray[1][$tab] : JText::_($paneid);
 					if ($tab == 0)
 					{
-						$tabreplace .= '<li class="active" id="tab'.$paneid.'" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						$tabreplace .= '<li class="active" id="tab' . $paneid . '" ><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 					}
 					else
 					{
-						$tabreplace .= '<li  id="tab'.$paneid.'"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
+						$tabreplace .= '<li  id="tab' . $paneid . '"><a data-toggle="tab" href="#' . $paneid . '">' . $tablabel . '</a></li>';
 					}
 				}
-				$tabreplace.= "</ul>\n";
-				$tabreplace = $tabreplace . $tabstartarray[0][0];
+				$tabreplace     .= "</ul>\n";
+				$tabreplace     = $tabreplace . $tabstartarray[0][0];
 				$template_value = str_replace($tabstartarray[0][0], $tabreplace, $template_value);
 			}
 		}
@@ -377,9 +390,9 @@ class JEventsAbstractView extends JViewLegacy
 				$template_value = str_replace($tabstartarray[0][$tab], $tabcode, $template_value);
 			}
 			// Manually close the tabs
-			$template_value = str_replace("{{TABSEND}}",JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
+			$template_value = str_replace("{{TABSEND}}", JHtml::_('bootstrap.endPanel') . JHtml::_('bootstrap.endPane'), $template_value);
 		}
-	
+
 
 		// Now do the plugins
 		// get list of enabled plugins
@@ -450,10 +463,10 @@ class JEventsAbstractView extends JViewLegacy
 		for ($s = 0; $s < $searchCount; $s++)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
-			$tempreplace = $replace[$s];
-			$tempblank = $blank[$s];
-			$tempsearch = str_replace("}}", "#", $search[$s]);
-			$tempevent = $event;
+			$tempreplace    = $replace[$s];
+			$tempblank      = $blank[$s];
+			$tempsearch     = str_replace("}}", "#", $search[$s]);
+			$tempevent      = $event;
 			$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", array($this, 'jevSpecialHandling2'), $template_value);
 		}
 
@@ -476,6 +489,7 @@ class JEventsAbstractView extends JViewLegacy
 
 	function cleanEditLabels($matches)
 	{
+
 		if (count($matches) == 1)
 		{
 			$parts = explode(":", $matches[0]);
@@ -486,16 +500,20 @@ class JEventsAbstractView extends JViewLegacy
 					return "{{" . $parts[count($parts) - 1];
 				}
 				array_shift($parts);
+
 				return "{{" . implode(":", $parts);
 			}
+
 			return "";
 		}
+
 		return "";
 
 	}
 
 	function jevSpecialHandling2($matches)
 	{
+
 		if (count($matches) == 2 && strpos($matches[0], "#") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -521,20 +539,23 @@ class JEventsAbstractView extends JViewLegacy
 
 	function cleanUnpublished($matches)
 	{
+
 		if (count($matches) == 1)
 		{
 			return "";
 		}
+
 		return $matches;
 
 	}
 
 	protected
-			function setupEditForm()
+	function setupEditForm()
 	{
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$this->editor =  JFactory::getEditor();
+		$this->editor = JFactory::getEditor();
 		if ($this->editor->get("_name") == "codemirror")
 		{
 			$this->editor = JFactory::getEditor("none");
@@ -542,7 +563,7 @@ class JEventsAbstractView extends JViewLegacy
 		}
 
 		// clean any existing cache files
-		$cache =  JFactory::getCache(JEV_COM_COMPONENT);
+		$cache = JFactory::getCache(JEV_COM_COMPONENT);
 		$cache->clean(JEV_COM_COMPONENT);
 
 		/*
@@ -570,7 +591,7 @@ class JEventsAbstractView extends JViewLegacy
 		$this->form = JForm::getInstance("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
 		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 		*/
-		
+
 		$rowdata = array();
 		foreach ($this->row as $k => $v)
 		{
@@ -586,7 +607,7 @@ class JEventsAbstractView extends JViewLegacy
 			$rowdata[$newk] = $v;
 		}
 		// some variables have fieldnames with camel case names in the form
-		$rowdata["allDayEvent"] = $rowdata["alldayevent"];
+		$rowdata["allDayEvent"]  = $rowdata["alldayevent"];
 		$rowdata["contact_info"] = $rowdata["contact"];
 
 		// set creator based on created_by input
@@ -594,7 +615,7 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->bind($rowdata);
 
-		$this->form->setValue("view12Hour", null,$params->get('com_calUseStdTime', 0) ? 1 : 0);
+		$this->form->setValue("view12Hour", null, $params->get('com_calUseStdTime', 0) ? 1 : 0);
 
 		$this->catid = $this->row->catid();
 		if ($this->catid == 0 && $this->defaultCat > 0)
@@ -617,14 +638,14 @@ class JEventsAbstractView extends JViewLegacy
 		if ($this->editCopy)
 		{
 			$this->old_ev_id = $this->ev_id;
-			$this->ev_id = 0;
-			$this->repeatId = 0;
-			$this->rp_id = 0;
+			$this->ev_id     = 0;
+			$this->repeatId  = 0;
+			$this->rp_id     = 0;
 			unset($this->row->_uid);
 			$this->row->id(0);
 		}
 
-		$native = true;
+		$native  = true;
 		$thisCal = null;
 		if ($this->row->icsid() > 0)
 		{
@@ -653,10 +674,10 @@ class JEventsAbstractView extends JViewLegacy
 		}
 
 		// Make data available to the form
-		$this->form->jevdata["catid"]["dataModel"] = $this->dataModel;
+		$this->form->jevdata["catid"]["dataModel"]            = $this->dataModel;
 		$this->form->jevdata["catid"]["with_unpublished_cat"] = $this->with_unpublished_cat;
-		$this->form->jevdata["catid"]["repeatId"] = $this->repeatId;
-		$this->form->jevdata["catid"]["excats"] = false;
+		$this->form->jevdata["catid"]["repeatId"]             = $this->repeatId;
+		$this->form->jevdata["catid"]["excats"]               = false;
 		if (JRequest::getCmd("task") == "icalevent.edit" && isset($this->excats))
 		{
 			$this->form->jevdata["catid"]["excats"] = $this->excats;
@@ -667,44 +688,44 @@ class JEventsAbstractView extends JViewLegacy
 
 		$this->form->jevdata["creator"]["users"] = false;
 		if ((JRequest::getCmd("task") == "icalevent.edit" || JRequest::getCmd("task") == "icalevent.editcopy"
-				|| JRequest::getCmd("jevtask") == "icalevent.edit" || JRequest::getCmd("jevtask") == "icalevent.editcopy")  && isset($this->users))
+				|| JRequest::getCmd("jevtask") == "icalevent.edit" || JRequest::getCmd("jevtask") == "icalevent.editcopy") && isset($this->users))
 		{
 			$this->form->jevdata["creator"]["users"] = $this->users;
 		}
 
-		$this->form->jevdata["ics_id"]["clist"] = $this->clist;
+		$this->form->jevdata["ics_id"]["clist"]       = $this->clist;
 		$this->form->jevdata["ics_id"]["clistChoice"] = $this->clistChoice;
-		$this->form->jevdata["ics_id"]["thisCal"] = $thisCal;
-		$this->form->jevdata["ics_id"]["native"] = $native;
-		$this->form->jevdata["ics_id"]["nativeCals"] = $this->nativeCals;
+		$this->form->jevdata["ics_id"]["thisCal"]     = $thisCal;
+		$this->form->jevdata["ics_id"]["native"]      = $native;
+		$this->form->jevdata["ics_id"]["nativeCals"]  = $this->nativeCals;
 
 		$this->form->jevdata["lockevent"]["offerlock"] = isset($this->offerlock) ? 1 : 0;
 
 		$this->form->jevdata["access"]["event"] = $this->row;
 		//$this->form->jevdata["access"]["glist"] = isset($this->glist) ? $this->glist : false;
 
-		$this->form->jevdata["state"]["ev_id"] = $this->ev_id;
+		$this->form->jevdata["state"]["ev_id"]     = $this->ev_id;
 		$this->form->jevdata["published"]["ev_id"] = $this->ev_id;
-		
-		$this->form->jevdata["location"]["event"] = $this->row;
-		$this->form->jevdata["publish_up"]["event"] = $this->row;
+
+		$this->form->jevdata["location"]["event"]     = $this->row;
+		$this->form->jevdata["publish_up"]["event"]   = $this->row;
 		$this->form->jevdata["publish_down"]["event"] = $this->row;
-		$this->form->jevdata["start_time"]["event"] = $this->row;
-		$this->form->jevdata["end_time"]["event"] = $this->row;
+		$this->form->jevdata["start_time"]["event"]   = $this->row;
+		$this->form->jevdata["end_time"]["event"]     = $this->row;
 
 		//custom requiredfields selected by the user in configuration
 		$requiredFields = $params->get('com_jeveditionrequiredfields', array());
 
 		// replacement values
-		$this->searchtags = array();
-		$this->replacetags = array();
-		$this->blanktags = array();
+		$this->searchtags   = array();
+		$this->replacetags  = array();
+		$this->blanktags    = array();
 		$this->requiredtags = array();
-                
-		$requiredTags['id'] = "title";
+
+		$requiredTags['id']            = "title";
 		$requiredTags['default_value'] = "";
-		$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ". JText::_("JEV_FIELD_TITLE",true);
-		$this->requiredtags[] = $requiredTags;
+		$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_("JEV_FIELD_TITLE", true);
+		$this->requiredtags[]          = $requiredTags;
 
 		$fields = $this->form->getFieldSet();
 		foreach ($fields as $key => $field)
@@ -713,21 +734,21 @@ class JEventsAbstractView extends JViewLegacy
 
 			if ($fieldAttribute)
 			{
-				$searchtag = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
-				$this->searchtags[] = $searchtag;
+				$searchtag           = '{{' . $this->form->getFieldAttribute($key, "layoutfield") . "_LBL}}";
+				$this->searchtags[]  = $searchtag;
 				$this->replacetags[] = $field->label;
-				$this->blanktags[] = "";
+				$this->blanktags[]   = "";
 
-				$this->searchtags[] = '{{' . $fieldAttribute . "}}";
+				$this->searchtags[]  = '{{' . $fieldAttribute . "}}";
 				$this->replacetags[] = $field->input;
-				$this->blanktags[] = "";
+				$this->blanktags[]   = "";
 
 				if (in_array($fieldAttribute, $requiredFields))
 				{
-					$requiredTags['id'] = $key;
+					$requiredTags['id']            = $key;
 					$requiredTags['default_value'] = $this->form->getFieldAttribute($key, "default");
-					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ". JText::_("JEV_FIELD_".$fieldAttribute,true);
-					$this->requiredtags[] = $requiredTags;
+					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_("JEV_FIELD_" . $fieldAttribute, true);
+					$this->requiredtags[]          = $requiredTags;
 				}
 			}
 		}
@@ -735,28 +756,31 @@ class JEventsAbstractView extends JViewLegacy
 		// Plugins CAN BE LAYERED IN HERE - In Joomla 3.0 we need to call it earlier to get the tab titles
 		// append array to extratabs keys content, title, paneid
 		$this->extraTabs = array();
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher      = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onEventEdit', array(&$this->extraTabs, &$this->row, &$params), true);
 
 		foreach ($this->extraTabs as $extraTab)
 		{
-			if (trim($extraTab['content'])=="") {
+			if (trim($extraTab['content']) == "")
+			{
 				continue;
 			}
 
-			$extraTab['title'] = str_replace(" ", "_", strtoupper($extraTab['title']));
-			$this->searchtags[] = "{{" . $extraTab['title'] . "}}";
+			$extraTab['title']   = str_replace(" ", "_", strtoupper($extraTab['title']));
+			$this->searchtags[]  = "{{" . $extraTab['title'] . "}}";
 			$this->replacetags[] = $extraTab['content'];
-			$this->blanktags[] = "";
-			if (JText::_($extraTab['title']) !==$extraTab['title']){
-				$this->searchtags[] = "{{" . JText::_($extraTab['title']) . "}}";
+			$this->blanktags[]   = "";
+			if (JText::_($extraTab['title']) !== $extraTab['title'])
+			{
+				$this->searchtags[]  = "{{" . JText::_($extraTab['title']) . "}}";
 				$this->replacetags[] = $extraTab['content'];
-				$this->blanktags[] = "";
+				$this->blanktags[]   = "";
 			}
-			if (isset($extraTab['rawtitle'])) {
-				$this->searchtags[] = "{{" . $extraTab['rawtitle'] . "}}";
+			if (isset($extraTab['rawtitle']))
+			{
+				$this->searchtags[]  = "{{" . $extraTab['rawtitle'] . "}}";
 				$this->replacetags[] = $extraTab['content'];
-				$this->blanktags[] = "";
+				$this->blanktags[]   = "";
 			}
 
 		}
@@ -764,15 +788,16 @@ class JEventsAbstractView extends JViewLegacy
 
 		// load any custom fields
 		$this->customfields = array();
-		$res = $dispatcher->trigger('onEditCustom', array(&$this->row, &$this->customfields));
+		$res                = $dispatcher->trigger('onEditCustom', array(&$this->row, &$this->customfields));
 
 		ob_start();
 		foreach ($this->customfields as $key => $val)
 		{
-                    // skip custom fields that are already displayed on other tabs
-                    if (isset($val["group"]) && $val["group"]!="default"){
-                        continue;
-                    }
+			// skip custom fields that are already displayed on other tabs
+			if (isset($val["group"]) && $val["group"] != "default")
+			{
+				continue;
+			}
 			/*
 			static $firstperson = false;
 			if (!$firstperson && strpos($key, "people") && $key!=$people && isset($this->customfields["people"])){
@@ -781,60 +806,61 @@ class JEventsAbstractView extends JViewLegacy
 			}
 			 */
 			// not ideal it creates duplicate ULS - but if we don't duplicate they may not show
-			if (strpos($key, "people")===0 && $key!="people" && isset($this->customfields["people"])){
+			if (strpos($key, "people") === 0 && $key != "people" && isset($this->customfields["people"]))
+			{
 				//$this->customfields[$key]["input"] = $this->customfields["people"]["input"] . $this->customfields[$key]["input"];
 			}
-			$this->searchtags[] = '{{' . $key . '}}';
+			$this->searchtags[]  = '{{' . $key . '}}';
 			$this->replacetags[] = $this->customfields[$key]["input"];
-			$this->blanktags[] = "";
-			$this->searchtags[] = '{{' . $key . '_lbl}}';
+			$this->blanktags[]   = "";
+			$this->searchtags[]  = '{{' . $key . '_lbl}}';
 			$this->replacetags[] = $this->customfields[$key]["label"];
-			$this->blanktags[] = "";
-			$this->searchtags[] = '{{' . $key . '_showon}}';
+			$this->blanktags[]   = "";
+			$this->searchtags[]  = '{{' . $key . '_showon}}';
 			$this->replacetags[] = isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : "";
-			$this->blanktags[] = "";
+			$this->blanktags[]   = "";
 
 			if (in_array($key, $requiredFields))
 			{
-				if( isset($this->customfields[$key]["default_value"]) && isset($this->customfields[$key]["id_to_check"]) )
+				if (isset($this->customfields[$key]["default_value"]) && isset($this->customfields[$key]["id_to_check"]))
 				{
 					$requiredTags['default_value'] = $this->customfields[$key]["default_value"];
-					$requiredTags['id'] = $this->customfields[$key]["id_to_check"];
-					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD',true)." ".JText::_($requiredTags['id']);
+					$requiredTags['id']            = $this->customfields[$key]["id_to_check"];
+					$requiredTags['alert_message'] = JText::_('JEV_ADD_REQUIRED_FIELD', true) . " " . JText::_($requiredTags['id']);
 				}
-/*				else
-				{
-						if ($key ==="agenda" || $key ==="minutes")
-						{
-							$requiredTags['id'] = "custom_".$key;
-						}
-						else if (preg_match("/image[0-9]{1,2}/", $key) === 1)
-						{
-								$requiredTags['id'] = "custom_upload_" . $key;
-						}
-						else
-						{
-								$requiredTags['id'] = $key;
-						}
-						$requiredTags['default_value'] = "";
+				/*				else
+								{
+										if ($key ==="agenda" || $key ==="minutes")
+										{
+											$requiredTags['id'] = "custom_".$key;
+										}
+										else if (preg_match("/image[0-9]{1,2}/", $key) === 1)
+										{
+												$requiredTags['id'] = "custom_upload_" . $key;
+										}
+										else
+										{
+												$requiredTags['id'] = $key;
+										}
+										$requiredTags['default_value'] = "";
 
-				}*/
+								}*/
 				$requiredTags['label'] = $this->customfields[$key]["label"];
-				$this->requiredtags[] = $requiredTags;
+				$this->requiredtags[]  = $requiredTags;
 			}
-                        ?>
-                        <div class="control-group jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"])?$this->customfields[$key]["showon"]:""; ?>>
-                                <label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
-                                <div class="controls" >
-                                        <?php echo $this->customfields[$key]["input"]; ?>
-                                </div>
-                        </div>
-                        <?php
+			?>
+			<div class="control-group jevplugin_<?php echo $key; ?>" <?php echo isset($this->customfields[$key]["showon"]) ? $this->customfields[$key]["showon"] : ""; ?>>
+				<label class="control-label "><?php echo $this->customfields[$key]["label"]; ?></label>
+				<div class="controls">
+					<?php echo $this->customfields[$key]["input"]; ?>
+				</div>
+			</div>
+			<?php
 		}
-		$this->searchtags[] = "{{CUSTOMFIELDS}}";
-		$output = ob_get_clean();
+		$this->searchtags[]  = "{{CUSTOMFIELDS}}";
+		$output              = ob_get_clean();
 		$this->replacetags[] = $output;
-		$this->blanktags[] = "";
+		$this->blanktags[]   = "";
 
 	}
 

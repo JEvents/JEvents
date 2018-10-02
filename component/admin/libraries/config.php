@@ -16,15 +16,20 @@ defined('_JEXEC') or die('Restricted access');
  * convenience wrapper for config - to ensure backwards compatability
  */
 // on some servers with Xcache both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
-if (!defined("JEVCONFIG")) {
-    define("JEVCONFIG", 1);
+if (!defined("JEVCONFIG"))
+{
+	define("JEVCONFIG", 1);
 
-    class JEVConfig {
+	class JEVConfig
+	{
 
-        // 1.6 mod
-        static function &getInstance($inifile = '') {
-            $params = JComponentHelper::getParams("com_jevents");
-            return $params;
-        }
-    }
+		// 1.6 mod
+		static function &getInstance($inifile = '')
+		{
+
+			$params = JComponentHelper::getParams("com_jevents");
+
+			return $params;
+		}
+	}
 }

@@ -22,8 +22,8 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 	/**
 	 * Method to get the associations for a given item
 	 *
-	 * @param   integer  $id    Id of the item
-	 * @param   string   $view  Name of the view
+	 * @param   integer $id   Id of the item
+	 * @param   string  $view Name of the view
 	 *
 	 * @return  array   Array of associations for the item
 	 *
@@ -32,12 +32,13 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 	public static function getAssociations($id = 0, $view = null)
 	{
+
 		jimport('helper.route', JPATH_COMPONENT_SITE);
 
-		$app = JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$jinput = $app->input;
-		$view = is_null($view) ? $jinput->get('view') : $view;
-		$id = empty($id) ? $jinput->getInt('id') : $id;
+		$view   = is_null($view) ? $jinput->get('view') : $view;
+		$id     = empty($id) ? $jinput->getInt('id') : $id;
 
 		if ($view == 'article')
 		{
@@ -47,7 +48,7 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 				$return = array();
 
-			JLoader::register('ContentHelper', JPATH_ADMINISTRATOR . '/components/com_content/helpers/content.php');
+				JLoader::register('ContentHelper', JPATH_ADMINISTRATOR . '/components/com_content/helpers/content.php');
 
 				foreach ($associations as $tag => $item)
 				{

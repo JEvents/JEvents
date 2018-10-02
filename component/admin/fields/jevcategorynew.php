@@ -21,22 +21,25 @@ class JFormFieldJevcategorynew extends JFormFieldList
 	protected $type = 'Jevcategorynew';
 
 	protected
-			function getInput()
+	function getInput()
 	{
+
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
 		return parent::getInput();
-		
+
 	}
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
+
 		// Initialize variables.
 		$session = JFactory::getSession();
 		$options = array();
@@ -46,7 +49,7 @@ class JFormFieldJevcategorynew extends JFormFieldList
 		$published = (string) $this->element['published'];
 
 		// OLD values
-		
+
 		// Load the category options for a given extension.
 		if (!empty($extension))
 		{
@@ -89,11 +92,13 @@ class JFormFieldJevcategorynew extends JFormFieldList
 		// if no value exists, try to load a selected filter category from the old category filters
 		if (!$this->value && ($this->form instanceof JForm))
 		{
-			$context = $this->form->getName();
-			$this->value =  array();
-			for($i=0; $i<20; $i++){
-				if ($this->form->getValue("catid$i","params",0)){
-					$this->value[] =  $this->form->getValue("catid$i","params",0);
+			$context     = $this->form->getName();
+			$this->value = array();
+			for ($i = 0; $i < 20; $i++)
+			{
+				if ($this->form->getValue("catid$i", "params", 0))
+				{
+					$this->value[] = $this->form->getValue("catid$i", "params", 0);
 				}
 			}
 		}

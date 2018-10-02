@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form >
+<form>
 	<fields
-		name="params">
+			name="params">
 		<fieldset
-			name="basic" 
-			addfieldpath="/administrator/components/com_jevents/fields"
-			>
+				name="basic"
+				addfieldpath="/administrator/components/com_jevents/fields"
+		>
 			<field
-				name="catcolour"
-				type="color"
-				label="JEV_COLOR_PICKER"
-				description="JEV_CHOOSE_CATEGORY_COLOUR"
-				/>
-        			<!-- implement later
+					name="catcolour"
+					type="color"
+					label="JEV_COLOR_PICKER"
+					description="JEV_CHOOSE_CATEGORY_COLOUR"
+			/>
+			<!-- implement later
+	<field
+		name="preferred_itemid"
+		type="jevmenu"
+		label="JEV_PREFERRED_MENU_ITEM"
+		description="JEV_PREFERRED_MENU_ITEM_DESC"
+		strict="1"
+		/>
+		//-->
 			<field
-				name="preferred_itemid"
-				type="jevmenu"
-				label="JEV_PREFERRED_MENU_ITEM"
-				description="JEV_PREFERRED_MENU_ITEM_DESC"
-				strict="1"
-				/>
-				//-->
-			<field
-				name="overlaps"
-				type="jevboolean"
-				default="0"
-				class="btn-group"
-				label="JEV_BLOCK_OVERLAPS"
-				description="JEV_BLOCK_OVERLAPS_CATEGORY_DESC"
-				/>
+					name="overlaps"
+					type="jevboolean"
+					default="0"
+					class="btn-group"
+					label="JEV_BLOCK_OVERLAPS"
+					description="JEV_BLOCK_OVERLAPS_CATEGORY_DESC"
+			/>
 			<!--//
 			<field
 				name="caticon"
@@ -38,12 +38,12 @@
 				/>
 				//-->
 			<field
-				name="admin"
-				type="jevuser"
-				label="JEV_CATEGORY_ADMIN"
-				description="JEV_CHOOSE_CATEGORY_ADMIN"
-				/>
+					name="admin"
+					type="jevuser"
+					label="JEV_CATEGORY_ADMIN"
+					description="JEV_CHOOSE_CATEGORY_ADMIN"
+			/>
 
-			</fieldset>
+		</fieldset>
 	</fields>
 </form>

@@ -9,55 +9,61 @@
  * @link        http://www.jevents.net
  */
 
-defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
-include_once(JEV_ADMINPATH."/controllers/icalrepeat.php");
+include_once(JEV_ADMINPATH . "/controllers/icalrepeat.php");
 
-class ICalRepeatController extends AdminIcalrepeatController   {
+class ICalRepeatController extends AdminIcalrepeatController
+{
 
 	function __construct($config = array())
 	{
+
 		parent::__construct($config);
 		// TODO get this from config
-		$this->registerDefaultTask( 'detail' );
+		$this->registerDefaultTask('detail');
 
 		// Load abstract "view" class
-		$cfg = JEVConfig::getInstance();
+		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
-		if (!isset($this->_basePath)){
+		JLoader::register('JEvents' . ucfirst($theme) . 'View', JEV_VIEWS . "/$theme/abstract/abstract.php");
+		if (!isset($this->_basePath))
+		{
 			$this->_basePath = $this->basePath;
-			$this->_task = $this->task;
+			$this->_task     = $this->task;
 		}
-		
+
 	}
 
-	function detail() {
+	function detail()
+	{
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
 
-		$cfg	 = JEVConfig::getInstance();
+		$cfg        = JEVConfig::getInstance();
 		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 
 		$jinput = JFactory::getApplication()->input;
 
 		if ($jinput->getInt("login", 0) && $user->id == 0)
-		{			
-			$uri = JURI::getInstance();
-			$link = $uri->toString();
-			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
-			$link = JRoute::_($link, false);
-			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
+		{
+			$uri     = JURI::getInstance();
+			$link    = $uri->toString();
+			$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
+			$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
+			$link    = JRoute::_($link, false);
+			$this->setRedirect($link, JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			$this->redirect();
+
 			return;
 		}
-		
+
 		$evid = $jinput->getInt("rp_id", 0);
-		if ($evid==0){
-			$evid =$jinput->getInt("evid", 0);
+		if ($evid == 0)
+		{
+			$evid = $jinput->getInt("evid", 0);
 			// In this case I do not have a repeat id so I 
 		}
 
@@ -92,32 +98,35 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 		 *
 		 */
-                
-                // If cancelling edit in popup then stay in popup
-                $popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
-                if ($popupdetail) {
-                        $popuppluginparams = new JRegistry($popupdetail->params);
-                        $popupdetail = $popuppluginparams->get("detailinpopup",1);
-                        if ($popupdetail) {
-                                $jinput->set("pop",1);
-                                $jinput->set("tmpl","component");
-                        }
-                }
-                
-		// if cancelling from save of copy and edit use the old event id
-		if ($evid==0){
-			$evid =$jinput->getInt("old_evid", 0);
+
+		// If cancelling edit in popup then stay in popup
+		$popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+		if ($popupdetail)
+		{
+			$popuppluginparams = new JRegistry($popupdetail->params);
+			$popupdetail       = $popuppluginparams->get("detailinpopup", 1);
+			if ($popupdetail)
+			{
+				$jinput->set("pop", 1);
+				$jinput->set("tmpl", "component");
+			}
 		}
-		$pop = intval($jinput->getInt( 'pop', 0));
-		list($year,$month,$day) = JEVHelper::getYMD();
-		$Itemid	= JEVHelper::getItemid();
+
+		// if cancelling from save of copy and edit use the old event id
+		if ($evid == 0)
+		{
+			$evid = $jinput->getInt("old_evid", 0);
+		}
+		$pop = intval($jinput->getInt('pop', 0));
+		list($year, $month, $day) = JEVHelper::getYMD();
+		$Itemid = JEVHelper::getItemid();
 
 		$uid = urldecode(($jinput->getString('uid', "")));
 
 		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		
-		$cfg = JEVConfig::getInstance();
+		$viewType = $document->getType();
+
+		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
@@ -125,27 +134,27 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
 
-		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = $this->getView($view,$viewType, $theme."View", 
-			array( 'base_path'=>$this->_basePath, 
-				"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
-				"name"=>$theme.'/'.$view));
+		$this->addViewPath($this->_basePath . '/' . "views" . '/' . $theme);
+		$this->view = $this->getView($view, $viewType, $theme . "View",
+			array('base_path'     => $this->_basePath,
+			      "template_path" => $this->_basePath . '/' . "views" . '/' . $theme . '/' . $view . '/' . 'tmpl',
+			      "name"          => $theme . '/' . $view));
 
 		// Set the layout
 		$this->view->setLayout("detail");
 
-		$this->view->assign("Itemid",$Itemid);
-		$this->view->assign("month",$month);
-		$this->view->assign("day",$day);
-		$this->view->assign("year",$year);
-		$this->view->assign("task",$this->_task);
-		$this->view->assign("pop",$pop);
-		$this->view->assign("evid",$evid);
-		$this->view->assign("jevtype","icaldb");
-		$this->view->assign("uid",$uid);
-		
+		$this->view->assign("Itemid", $Itemid);
+		$this->view->assign("month", $month);
+		$this->view->assign("day", $day);
+		$this->view->assign("year", $year);
+		$this->view->assign("task", $this->_task);
+		$this->view->assign("pop", $pop);
+		$this->view->assign("evid", $evid);
+		$this->view->assign("jevtype", "icaldb");
+		$this->view->assign("uid", $uid);
+
 		// View caching logic -- simple... are we logged in?
-		
+
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
@@ -157,78 +166,106 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		}
 	}
 
-	function edit($key = NULL, $urlVar = NULL){
+	function edit($key = null, $urlVar = null)
+	{
+
 		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
+		if (!$is_event_editor)
+		{
 			$user = JFactory::getUser();
-			if ($user->id){
-				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+			if ($user->id)
+			{
+				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
-			else {
-				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+			else
+			{
+				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
+
 			return;
 		}
-		
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("editpopup",0)) JRequest::setVar("tmpl","component");
-		
+		if ($params->get("editpopup", 0)) JRequest::setVar("tmpl", "component");
+
 		parent::edit();
 	}
-	
-	function save($key = NULL, $urlVar = NULL){
+
+	function save($key = null, $urlVar = null)
+	{
+
 		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		if (!$is_event_editor)
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
 			return false;
 		}
 		parent::save();
 	}
-	
-	function apply(){
+
+	function apply()
+	{
+
 		// Must be at least an event creator to save events
 		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		if (!$is_event_editor)
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
 			return false;
 		}
 		parent::apply();
 	}
-	
-	function delete(){
+
+	function delete()
+	{
+
 		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		if (!$is_event_editor)
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
 			return false;
 		}
-		parent::delete();		
-	}
-	
-	function deletefuture(){
-		$is_event_editor = JEVHelper::isEventDeletor();
-		if (!$is_event_editor){
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
-			return false;
-		}
-		parent::deletefuture();		
+		parent::delete();
 	}
 
-	function select() {
+	function deletefuture()
+	{
+
+		$is_event_editor = JEVHelper::isEventDeletor();
+		if (!$is_event_editor)
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
+			return false;
+		}
+		parent::deletefuture();
+	}
+
+	function select()
+	{
+
 		JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 		parent::select();
 	}
 
-	protected  function toggleICalEventPublish($cid,$newstate) {
+	protected function toggleICalEventPublish($cid, $newstate)
+	{
+
 		$is_event_editor = JEVHelper::isEventPublisher();
-		if (!$is_event_editor){
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+		if (!$is_event_editor)
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
 			return false;
 		}
-		parent::toggleICalEventPublish($cid,$newstate);		
+		parent::toggleICalEventPublish($cid, $newstate);
 	}
 
 }

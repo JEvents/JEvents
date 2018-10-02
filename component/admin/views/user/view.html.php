@@ -43,17 +43,17 @@ class AdminUserViewUser extends JEventsAbstractView
 		JToolbarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
 		//JToolbarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
 		JToolbarHelper::spacer();
-		
+
 		JEventsHelper::addSubmenu();
 
 		$search = JFactory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
-		$db = JFactory::getDbo();
+		$db     = JFactory::getDbo();
 		$search = $db->escape(trim(strtolower($search)));
 
 		$option = $jinput->getCmd('option', JEV_COM_COMPONENT);
 
-		$pagination =  $this->get('Pagination');
-		$users = $this->get('users');
+		$pagination = $this->get('Pagination');
+		$users      = $this->get('users');
 
 		$this->assignRef('pagination', $pagination);
 		$this->assignRef('users', $users);
@@ -61,9 +61,10 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		JHTML::_('behavior.tooltip');
 
-		if (JevJoomlaVersion::isCompatible("3.0")){
-			$this->sidebar = JHtmlSidebar::render();					
-		}		
+		if (JevJoomlaVersion::isCompatible("3.0"))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 	}
 
 	function edit($tpl = null)
@@ -85,9 +86,9 @@ class AdminUserViewUser extends JEventsAbstractView
 
 		$db = JFactory::getDbo();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$rules = JAccess::getAssetRules("com_jevents", true);
-		$data = $rules->getData();
+		$params        = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$rules         = JAccess::getAssetRules("com_jevents", true);
+		$data          = $rules->getData();
 		$creatorgroups = $data["core.create"]->getData();
 		foreach ($data["core.admin"]->getData() as $creatorgroup => $permission)
 		{
@@ -109,24 +110,24 @@ class AdminUserViewUser extends JEventsAbstractView
 		$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
-		
+
 		$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
 		foreach ($users as $user)
 		{
 			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
-		$jevuser = $this->get('user');
+		$jevuser  = $this->get('user');
 		$userlist = JHTML::_('select.genericlist', $userOptions, 'user_id', 'class="inputbox" size="1" ', 'value', 'text', $jevuser->user_id);
 
 		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 
-		$categories = JEventsCategory::categoriesTree();
+		$categories          = JEventsCategory::categoriesTree();
 		$lists['categories'] = JHTML::_('select.genericlist', $categories, 'categories[]', 'multiple="multiple" size="15"', 'value', 'text', explode("|", $jevuser->categories));
 
 		// get calendars
 		$sql = "SELECT label as text, ics_id as value FROM #__jevents_icsfile where icaltype=2";
 		$db->setQuery($sql);
-		$calendars = $db->loadObjectList();
+		$calendars          = $db->loadObjectList();
 		$lists['calendars'] = JHTML::_('select.genericlist', $calendars, 'calendars[]', 'multiple="multiple" size="15"', 'value', 'text', explode("|", $jevuser->calendars));
 
 		$this->assignRef('lists', $lists);

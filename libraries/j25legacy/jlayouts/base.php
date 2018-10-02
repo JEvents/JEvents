@@ -36,9 +36,28 @@ class JLayoutBase implements JLayout
 	protected $debugMessages = array();
 
 	/**
+	 * Get the options
+	 *
+	 * @return  Registry  Object with the options
+	 *
+	 * @since   3.2
+	 */
+	public function getOptions()
+	{
+
+		// Always return a Registry instance
+		if (!($this->options instanceof Registry))
+		{
+			$this->resetOptions();
+		}
+
+		return $this->options;
+	}
+
+	/**
 	 * Set the options
 	 *
-	 * @param   array|Registry  $options  Array / Registry object with the options to load
+	 * @param   array|Registry $options Array / Registry object with the options to load
 	 *
 	 * @return  JLayoutBase  Instance of $this to allow chaining.
 	 *
@@ -46,6 +65,7 @@ class JLayoutBase implements JLayout
 	 */
 	public function setOptions($options = null)
 	{
+
 		// Received Registry
 		if ($options instanceof Registry)
 		{
@@ -65,24 +85,6 @@ class JLayoutBase implements JLayout
 	}
 
 	/**
-	 * Get the options
-	 *
-	 * @return  Registry  Object with the options
-	 *
-	 * @since   3.2
-	 */
-	public function getOptions()
-	{
-		// Always return a Registry instance
-		if (!($this->options instanceof Registry))
-		{
-			$this->resetOptions();
-		}
-
-		return $this->options;
-	}
-
-	/**
 	 * Function to empty all the options
 	 *
 	 * @return  JLayoutBase  Instance of $this to allow chaining.
@@ -91,13 +93,14 @@ class JLayoutBase implements JLayout
 	 */
 	public function resetOptions()
 	{
+
 		return $this->setOptions(null);
 	}
 
 	/**
 	 * Method to escape output.
 	 *
-	 * @param   string  $output  The output to escape.
+	 * @param   string $output The output to escape.
 	 *
 	 * @return  string  The escaped output.
 	 *
@@ -105,6 +108,7 @@ class JLayoutBase implements JLayout
 	 */
 	public function escape($output)
 	{
+
 		return htmlspecialchars($output, ENT_COMPAT, 'UTF-8');
 	}
 
@@ -117,13 +121,14 @@ class JLayoutBase implements JLayout
 	 */
 	public function getDebugMessages()
 	{
+
 		return $this->debugMessages;
 	}
 
 	/**
 	 * Method to render the layout.
 	 *
-	 * @param   object  $displayData  Object which properties are used inside the layout file to build displayed output
+	 * @param   object $displayData Object which properties are used inside the layout file to build displayed output
 	 *
 	 * @return  string  The necessary HTML to display the layout
 	 *
@@ -131,6 +136,7 @@ class JLayoutBase implements JLayout
 	 */
 	public function render($displayData)
 	{
+
 		return '';
 	}
 
@@ -143,13 +149,14 @@ class JLayoutBase implements JLayout
 	 */
 	public function renderDebugMessages()
 	{
+
 		return implode($this->debugMessages, "\n");
 	}
 
 	/**
 	 * Add a debug message to the debug messages array
 	 *
-	 * @param   string  $message  Message to save
+	 * @param   string $message Message to save
 	 *
 	 * @return  void
 	 *
@@ -157,6 +164,7 @@ class JLayoutBase implements JLayout
 	 */
 	public function addDebugMessage($message)
 	{
+
 		$this->debugMessages[] = $message;
 	}
 }

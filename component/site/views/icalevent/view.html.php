@@ -11,8 +11,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-use Joomla\String\StringHelper;
-
 /**
  * HTML View class for the component frontend
  *
@@ -44,6 +42,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 	function edit($tpl = null)
 	{
+
 		$document = JFactory::getDocument();
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
@@ -91,10 +90,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		else
 		{
 			$canEditOwn = false;
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
 			if (!$params->get("authorisedonly", 0))
 			{
-				$juser = JFactory::getUser();
+				$juser      = JFactory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
@@ -110,7 +109,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		//Set previous page
 		$session = JFactory::getSession();
-		$input = new JInput($_SERVER);
+		$input   = new JInput($_SERVER);
 		$session->set('jev_referrer', $input->getString('HTTP_REFERER', null), 'extref');
 
 		if ($params->get("editpopup", 0))
@@ -157,24 +156,42 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$this->_adminEnd();
 	}
 
+	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
+	{
+
+		$bar = JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
+	}
+
+	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
+	{
+
+		$bar = JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
+	}
+
 	function _adminStart()
 	{
 
 		$dispatcher = JEventDispatcher::getInstance();
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
-		$this->Itemid = JEVHelper::getItemid();
+		$this->Itemid    = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
 		$dispatcher->trigger('onJEventsHeader', array($this));
 		?>
-		<div style="clear:both"  
+		<div style="clear:both"
 		<?php
 		$mainframe = JFactory::getApplication();
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
 		?>>
-		    <div id="toolbar-box" >
+		<div id="toolbar-box">
 			<?php
-			$bar = JToolBar::getInstance('toolbar');
+			$bar     = JToolBar::getInstance('toolbar');
 			$barhtml = $bar->render();
 			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
@@ -189,146 +206,139 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 			echo $title;
 			?>
-		    </div>
-		    <?php
-	    }
-
-	    function _adminEnd()
-	    {
-		    ?>
 		</div>
-		    <?php
-		    $dispatcher = JEventDispatcher::getInstance();
-		    $dispatcher->trigger('onJEventsFooter', array($this));
-	    }
+		<?php
+	}
 
-	    function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
-	    {
-		    $bar = JToolBar::getInstance('toolbar');
+	function _adminEnd()
+	{
 
-		    // Add a standard button
-		    $bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
-	    }
+		?>
+		</div>
+		<?php
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onJEventsFooter', array($this));
+	}
 
-	    function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
-	    {
-		    $bar = JToolBar::getInstance('toolbar');
+	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
+	{
 
-		    // Add a standard button
-		    $bar->appendButton('Jevlink', $icon, $alt, $task, false);
-	    }
+		$bar = JToolBar::getInstance('toolbar');
 
-	    function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)
-	    {
-		    $bar = JToolBar::getInstance('toolbar');
+		// Add a standard button
+		$bar->appendButton('Jevlink', $icon, $alt, $task, false);
+	}
 
-		    // Add a standard button
-		    $bar->appendButton('Jevconfirm', $msg, $icon, $alt, $task, $listSelect, false, "document.adminForm.updaterepeats.value");
-	    }
+	// This handles all methods where the view is passed as the first argument
 
-	    // This handles all methods where the view is passed as the first argument
-	    function __call($name, $arguments)
-	    {
-		    if (strpos($name, "_") === 0)
-		    {
-			    $name = "ViewHelper" . ucfirst(JString::substr($name, 1));
-		    }
-		    $helper = ucfirst($this->jevlayout) . ucfirst($name);
-		    if (!$this->loadHelper($helper))
-		    {
-			    $helper = "Default" . ucfirst($name);
-			    if (!$this->loadHelper($helper))
-			    {
-				    return;
-			    }
-		    }
-		    $args = array_unshift($arguments, $this);
-		    if (class_exists($helper))
-		    {
-			    if (class_exists("ReflectionClass"))
-			    {
-				    $reflectionObj = new ReflectionClass($helper);
-				    if (method_exists($reflectionObj, "newInstanceArgs"))
-				    {
-					    $var = $reflectionObj->newInstanceArgs($arguments);
-				    }
-				    else
-				    {
-					    $var = $this->CreateClass($helper, $arguments);
-				    }
-			    }
-			    else
-			    {
-				    $var = $this->CreateClass($helper, $arguments);
-			    }
-			    return;
-		    }
-		    else if (is_callable($helper))
-		    {
-			    return call_user_func_array($helper, $arguments);
-		    }
-	    }
+	function __call($name, $arguments)
+	{
 
-	    protected function CreateClass($className, $params)
-	    {
-		    switch (count($params))
-		    {
-			    case 0:
-				    return new $className();
-				    break;
-			    case 1:
-				    return new $className($params[0]);
-				    break;
-			    case 2:
-				    return new $className($params[0], $params[1]);
-				    break;
-			    case 3:
-				    return new $className($params[0], $params[1], $params[2]);
-				    break;
-			    case 4:
-				    return new $className($params[0], $params[1], $params[2], $params[3]);
-				    break;
-			    case 5:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4]);
-				    break;
-			    case 6:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
-				    break;
-			    case 7:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]);
-				    break;
-			    case 8:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]);
-				    break;
-			    case 9:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]);
-				    break;
-			    case 10:
-				    return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8], $params[9]);
-				    break;
-			    default:
-				    echo "Too many arguments";
-				    return null;
-				    break;
-		    }
-	    }
+		if (strpos($name, "_") === 0)
+		{
+			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
+		}
+		$helper = ucfirst($this->jevlayout) . ucfirst($name);
+		if (!$this->loadHelper($helper))
+		{
+			$helper = "Default" . ucfirst($name);
+			if (!$this->loadHelper($helper))
+			{
+				return;
+			}
+		}
+		$args = array_unshift($arguments, $this);
+		if (class_exists($helper))
+		{
+			if (class_exists("ReflectionClass"))
+			{
+				$reflectionObj = new ReflectionClass($helper);
+				if (method_exists($reflectionObj, "newInstanceArgs"))
+				{
+					$var = $reflectionObj->newInstanceArgs($arguments);
+				}
+				else
+				{
+					$var = $this->CreateClass($helper, $arguments);
+				}
+			}
+			else
+			{
+				$var = $this->CreateClass($helper, $arguments);
+			}
 
-	    function loadHelper($file = null)
-	    {
-		    if (function_exists($file) || class_exists($file))
-			    return true;
+			return;
+		}
+		else if (is_callable($helper))
+		{
+			return call_user_func_array($helper, $arguments);
+		}
+	}
 
-		    // load the template script
-		    jimport('joomla.filesystem.path');
-		    $helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+	function loadHelper($file = null)
+	{
 
-		    if ($helper != false)
-		    {
-			    // include the requested template filename in the local scope
-			    include_once $helper;
-		    }
-		    return $helper;
-	    }
+		if (function_exists($file) || class_exists($file))
+			return true;
 
-    }
+		// load the template script
+		jimport('joomla.filesystem.path');
+		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
+
+		if ($helper != false)
+		{
+			// include the requested template filename in the local scope
+			include_once $helper;
+		}
+
+		return $helper;
+	}
+
+	protected function CreateClass($className, $params)
+	{
+
+		switch (count($params))
+		{
+			case 0:
+				return new $className();
+				break;
+			case 1:
+				return new $className($params[0]);
+				break;
+			case 2:
+				return new $className($params[0], $params[1]);
+				break;
+			case 3:
+				return new $className($params[0], $params[1], $params[2]);
+				break;
+			case 4:
+				return new $className($params[0], $params[1], $params[2], $params[3]);
+				break;
+			case 5:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4]);
+				break;
+			case 6:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+				break;
+			case 7:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6]);
+				break;
+			case 8:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7]);
+				break;
+			case 9:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8]);
+				break;
+			case 10:
+				return new $className($params[0], $params[1], $params[2], $params[3], $params[4], $params[5], $params[6], $params[7], $params[8], $params[9]);
+				break;
+			default:
+				echo "Too many arguments";
+
+				return null;
+				break;
+		}
+	}
+
+}
     

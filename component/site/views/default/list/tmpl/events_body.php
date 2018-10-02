@@ -18,10 +18,10 @@ JEVHelper::script("components/com_jevents/assets/js/jquery.resizableColumns.js")
 
 $data = $this->data;
 
-$Itemid = JEVHelper::getItemid();
+$Itemid     = JEVHelper::getItemid();
 $compparams = JComponentHelper::getParams("com_jevents");
 
-$app = JFactory::getApplication('site');
+$app    = JFactory::getApplication('site');
 $params = $app->getParams();
 $active = $app->getMenu()->getActive();
 if ($active)
@@ -30,59 +30,60 @@ if ($active)
 }
 
 $infields = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
-$cols = array();
-$titles = array();
+$cols     = array();
+$titles   = array();
 foreach ($infields as $infield)
 {
-	$parts = explode("|", $infield);
-	$cols[] = $parts[0];
+	$parts    = explode("|", $infield);
+	$cols[]   = $parts[0];
 	$titles[] = $parts[2];
 }
 ?>
 
-<form action="<?php echo JRoute::_("index.php?option=com_jevents&task=list.events&layout=events&Itemid=$Itemid"); ?>" method="post" name="adminForm" id="adminForm" >
+<form action="<?php echo JRoute::_("index.php?option=com_jevents&task=list.events&layout=events&Itemid=$Itemid"); ?>"
+      method="post" name="adminForm" id="adminForm">
 
 	<div id="eventlist">
 		<table class="eventlist table table-bordered" data-resizable-columns-id="demo-table">
 			<thead>
-				<tr>
-					<?php
-					$i = 0;
-					foreach ($titles as $title)
-					{
-						?>
-						<th data-resizable-column-id="<?php echo $titles[$i];
-						$i++; ?>">
+			<tr>
+				<?php
+				$i = 0;
+				foreach ($titles as $title)
+				{
+					?>
+					<th data-resizable-column-id="<?php echo $titles[$i];
+					$i++; ?>">
 						<?php
 						echo $title;
 						?>
-						</th>
+					</th>
 					<?php
 				}
 				?>
-				</tr>
+			</tr>
 			</thead>
 			<tbody>
-				<?php
-				$template = "<tr>";
-				foreach ($cols as $col)
-				{
-					$template .= "<td class='eventlist_col'>{{xx:$col}}</td>";
-				}
-				$template .= "</tr>";
+			<?php
+			$template = "<tr>";
+			foreach ($cols as $col)
+			{
+				$template .= "<td class='eventlist_col'>{{xx:$col}}</td>";
+			}
+			$template .= "</tr>";
 
-				$num_events = count($data['rows']);
-				$chdate = "";
-				if ($num_events > 0)
+			$num_events = count($data['rows']);
+			$chdate     = "";
+			if ($num_events > 0)
+			{
+				for ($r = 0; $r < $num_events; $r++)
 				{
-					for ($r = 0; $r < $num_events; $r++)
-					{
-						$row = $data['rows'][$r];
-						$this->loadedFromTemplate('icalevent.list_row', $row, 0, $template);
-						//($view, $template_name, $event, $mask, $template_value = false)
-					}
+					$row = $data['rows'][$r];
+					$this->loadedFromTemplate('icalevent.list_row', $row, 0, $template);
+					//($view, $template_name, $event, $mask, $template_value = false)
 				}
-				?>
+			}
+			?>
 			</tbody>
 		</table>
 		<?php
@@ -95,10 +96,10 @@ foreach ($infields as $infield)
 	</div>
 </form>
 <script>
-	(function ($) {
-		$("table.eventlist").resizableColumns(
-			{store: window.store}
-		);
-	})(jevjq);
+    (function ($) {
+        $("table.eventlist").resizableColumns(
+            {store: window.store}
+        );
+    })(jevjq);
 </script>
 

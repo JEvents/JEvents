@@ -21,7 +21,8 @@ JFactory::getDocument()->addScriptDeclaration('
 echo JToolbar::getInstance('toolbar')->render('toolbar');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_jevents&task=icalevent.savetranslation');?>" method="post" name="adminForm" id="translate-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_jevents&task=icalevent.savetranslation'); ?>" method="post"
+      name="adminForm" id="translate-form" class="form-validate">
 
 	<div class="form-horizontal">
 		<div class="row-fluid">
@@ -103,27 +104,31 @@ echo JToolbar::getInstance('toolbar')->render('toolbar');
 						<?php echo $this->form->getInput('trans_extra_info'); ?>
 					</div>
 				</div>
-                                <?php if (isset($this->row->customfieldTranslations) ) {
-                                    foreach ($this->row->customfieldTranslations as $fieldid => $translation) {
-                                        ?>
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span12">
-                                            <label title="" class="control-label hasTooltip" for="<?php "cf".$fieldid."translation";?>" id="<?php "cf".$fieldid."translation";?>-lbl" >
-                                                <?php echo $translation->label; ?>
-                                            </label>						
-					</div>
-				</div>                            
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">                                           						
-                                                <?php echo $translation->original; ?>
-					</div>
-					<div class="span6">
-						<?php echo $translation->translation; ?>
-					</div>
-				</div>                            
-                                        <?php
-                                    }
-                                    $script = <<< SCRIPT
+				<?php if (isset($this->row->customfieldTranslations))
+				{
+					foreach ($this->row->customfieldTranslations as $fieldid => $translation)
+					{
+						?>
+						<div class="row-fluid form-horizontal-desktop">
+							<div class="span12">
+								<label title="" class="control-label hasTooltip"
+								       for="<?php "cf" . $fieldid . "translation"; ?>"
+								       id="<?php "cf" . $fieldid . "translation"; ?>-lbl">
+									<?php echo $translation->label; ?>
+								</label>
+							</div>
+						</div>
+						<div class="row-fluid form-horizontal-desktop">
+							<div class="span6">
+								<?php echo $translation->original; ?>
+							</div>
+							<div class="span6">
+								<?php echo $translation->translation; ?>
+							</div>
+						</div>
+						<?php
+					}
+					$script = <<< SCRIPT
 	window.setTimeout("setupTranslationBootstrap()", 500);
 
 	function setupTranslationBootstrap(){
@@ -236,13 +241,13 @@ echo JToolbar::getInstance('toolbar')->render('toolbar');
 		})(jQuery);
 	}
 SCRIPT;
-                                    JFactory::getDocument()->addScriptDeclaration($script);
-                                }
-                                ?>
+					JFactory::getDocument()->addScriptDeclaration($script);
+				}
+				?>
 			</div>
 		</div>
 
 	</div>
-	<input type="hidden" name="task" value="icalevent.savetranslation" />
+	<input type="hidden" name="task" value="icalevent.savetranslation"/>
 	<?php echo JHtml::_('form.token'); ?>
 </form>
