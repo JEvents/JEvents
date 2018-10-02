@@ -307,7 +307,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		{
 			if ($this->params->get("future", -1) != -1 && $theevent)
 			{
-				$past                     = $this->params->get("past", -1);
+				$past                     = str_replace('-', '', $this->params->get("past", -1));
 				$date                     = new JDate($theevent->startDate() . " - $past days");
 				$item->publish_start_date = $date->toSql();
 			}
@@ -317,7 +317,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 			}
 			if ($this->params->get("past", -1) != -1 && $theevent)
 			{
-				$future                 = $this->params->get("future", -1);
+				$future                 = str_replace('+', '', $this->params->get("future", -1));
 				$date                   = new JDate($theevent->endDate() . " + $future days");
 				$item->publish_end_date = $date->toSql();
 			}
