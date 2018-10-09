@@ -170,7 +170,8 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 
 							<span class="icon-out-2 small"></span>
 						</a>
-						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
+						<a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
+						   onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
 					<td class="center">
