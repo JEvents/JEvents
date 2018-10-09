@@ -64,7 +64,11 @@ foreach ($infields as $infield)
 			</thead>
 			<tbody>
 				<?php
-				$template = "<tr>";
+				$style = '';
+				if ($params->get('setrowbgcolor', 0)) {
+					$style = "style='background-color:{{Event background colour:COLOUR}}'";
+				}
+				$template = "<tr $style>";
 				foreach ($cols as $col)
 				{
 					$template .= "<td class='eventlist_col'>{{xx:$col}}</td>";
