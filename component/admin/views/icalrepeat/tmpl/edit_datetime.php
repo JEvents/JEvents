@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * JEvents Component for Joomla! 3.x
  *
@@ -8,6 +8,6 @@
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
-include(JEV_VIEWS."/icalevent/tmpl/".basename(__FILE__));
+include(JEV_VIEWS . "/icalevent/tmpl/" . basename(__FILE__));

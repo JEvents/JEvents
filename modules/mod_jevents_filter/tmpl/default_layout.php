@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 if (count($filterHTML) > 0)
@@ -19,14 +20,15 @@ if (count($filterHTML) > 0)
 
 	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", true);
 	?>
-	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post" class="jevfiltermodule" >
-		<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut); ?>' />
-		<input type='hidden' name='option'  value='com_jevents' />		
+	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post"
+	      class="jevfiltermodule">
+		<input type='hidden' name='catids' id='catidsfv' value='<?php echo trim($datamodel->catidsOut); ?>'/>
+		<input type='hidden' name='option' value='com_jevents'/>
 		<?php
 		// This forces category settings in URL to reset too since they could be set by SEF
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 		$style = <<<STYLE
 .jevfiltertable, .jevfiltertable td, .jevfiltertable tr {
@@ -50,10 +52,11 @@ if (count($filterHTML) > 0)
 }
 STYLE;
 		$document->addStyleDeclaration($style);
-		switch ($params->get("filterlayout", "vt")) {
+		switch ($params->get("filterlayout", "vt"))
+		{
 			case "vt":
 				?>
-				<table class="jevfiltertable" >
+				<table class="jevfiltertable">
 					<?php
 					$hasreset = false;
 					foreach ($filterHTML as $filter)
@@ -65,7 +68,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -88,12 +91,14 @@ STYLE;
 					}
 					?>
 					<tr>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" />
+						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+						           value="<?php echo JText::_('RESET'); ?>"/>
 							<?php if ($params->get("showlabels", 1)) { ?>
 						</td>
-						<td >
+						<td>
 							<?php } ?>
-						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" /></td>
+							<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+							       name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
 				<?php
@@ -101,7 +106,7 @@ STYLE;
 
 			case "ht":
 				?>
-				<table class="jevfiltertable" >
+				<table class="jevfiltertable">
 					<tr>
 						<?php
 						$hasreset = false;
@@ -111,7 +116,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -131,9 +136,11 @@ STYLE;
 								$hasreset = true;
 							}
 						}
-						if ($params->get("showlabels", 1)) {
-						?>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
+						if ($params->get("showlabels", 1))
+						{
+							?>
+							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							           value="<?php echo JText::_('RESET'); ?>"/></td>
 						<?php } ?>
 					</tr>
 					<tr>
@@ -152,11 +159,14 @@ STYLE;
 								$hasreset = true;
 							}
 						}
-						if (!$params->get("showlabels", 1)) {
-						?>
-						<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" /></td>
+						if (!$params->get("showlabels", 1))
+						{
+							?>
+							<td><input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							           value="<?php echo JText::_('RESET'); ?>"/></td>
 						<?php } ?>
-						<td ><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" /></td>
+						<td><input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+						           name="jevents_filter_submit"/></td>
 					</tr>
 				</table>
 
@@ -166,7 +176,7 @@ STYLE;
 			case "ul":
 			case "ful":
 				?>
-				<ul class="<?php echo $params->get("filterlayout", "vt")=="ul"?"jevfilterlist":"jevfilterfloatlist";?>" >
+				<ul class="<?php echo $params->get("filterlayout", "vt") == "ul" ? "jevfilterlist" : "jevfilterfloatlist"; ?>">
 					<?php
 					$hasreset = false;
 					foreach ($filterHTML as $filter)
@@ -178,7 +188,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (JString::strlen($filter["title"]) > 0  && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>
@@ -204,17 +214,20 @@ STYLE;
 					?>
 					<li>
 						<div class="jevfilterinput">
-						<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)" value="<?php echo JText::_('RESET'); ?>" />
-						<?php 	if ($params->get("showlabels", 1)) {?>
+							<input class="modfilter_button" type="button" onclick="JeventsFilters.reset(this.form)"
+							       value="<?php echo JText::_('RESET'); ?>"/>
+							<?php if ($params->get("showlabels", 1)) { ?>
 						</div>
 						<div class="jevfilterinput">
-						<?php } ?>
-						<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>" name="jevents_filter_submit" />
+							<?php } ?>
+							<input class="modfilter_button" type="submit" value="<?php echo JText::_('ok'); ?>"
+							       name="jevents_filter_submit"/>
 						</div>
 					</li>
 				</ul>
 				<?php
-				if ($params->get("filterlayout", "vt")=="ful"){
+				if ($params->get("filterlayout", "vt") == "ful")
+				{
 					echo "<div style='clear:left'></div>";
 				}
 				break;
@@ -230,7 +243,8 @@ STYLE;
 		?>
 	</form>
 	<?php
-	if (JRequest::getCmd("jevents_filter_submit")=="ok") {
-	//	JFactory::getApplication()->enqueueMessage("Search Filters applied successfully");
+	if (Factory::getApplication()->input->getCmd("jevents_filter_submit") == "ok")
+	{
+		//	Factory::getApplication()->enqueueMessage("Search Filters applied successfully");
 	}
 }

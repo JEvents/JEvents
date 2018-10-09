@@ -6,21 +6,21 @@
  */
 
 var JevStdRequiredFields = {
-    fields: new Array(),
+    fields: [],
     verify: function (form) {
         valid = true;
 
         form = jevjq(form);
-        var messages = new Array();
+        var messages = [];
         // This is a Javascript each over an array !
         JevStdRequiredFields.fields.forEach(function (item, i) {
             var name = item.name;
-            var value = "";            
+            var value = "";
             if (item.preAction) {
                 try {
                     eval(item.preAction);
                 }
-                catch (ex){
+                catch (ex) {
                     //alert(ex.message);
                 }
             }
@@ -28,12 +28,12 @@ var JevStdRequiredFields = {
                 try {
                     value = eval(item.getValue);
                 }
-                catch (e){
-                    alert("failed "+e.message);
-                    
+                catch (e) {
+                    alert("failed " + e.message);
+
                 }
             }
-                       
+
             var noncustomname = name.replace("custom_jform", "jform");
             // to test field id we must NOT have [ or ] in the name
             var nosquarename = name.replace(/\[/g, "");
@@ -48,7 +48,7 @@ var JevStdRequiredFields = {
             // should we skip this test because of category restrictions?
             if (typeof (JevrCategoryFields) != 'undefined' && JevrCategoryFields.skipVerify(name))
                 return;
-            var matches = new Array();
+            var matches = [];
             /*
              form.serializeArray().forEach( function(  testitem, testi) {
              if (testitem.name == name || "custom_" + testitem.name == name || (testitem.id && testitem.id == name) || ("#" + testitem.id) == name || jevjq(testitem).hasClass(name.substr(1))) {
@@ -117,4 +117,4 @@ var JevStdRequiredFields = {
         }
         return valid;
     }
-}
+};

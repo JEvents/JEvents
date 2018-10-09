@@ -7,19 +7,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-
-include_once(JPATH_SITE."/libraries/joomla/form/fields/textarea.php");
+include_once(JPATH_SITE . "/libraries/joomla/form/fields/textarea.php");
+//J4 = include_once(JPATH_SITE . "/libraries/src/Form/Field/TextareaField.php");
 
 class JFormFieldJevtextarea extends JFormFieldTextarea
 {
 	protected function getInput()
 	{
-		$this->value = str_replace('<br />', "\n", strpos($this->value, " ")>0 ? $this->value : JText::_($this->value));
 
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+		$this->value = str_replace('<br />', "\n", strpos($this->value, " ") > 0 ? $this->value : JText::_($this->value));
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		return parent::getInput();
 	}
-	
+
 }

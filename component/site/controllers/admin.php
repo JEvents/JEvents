@@ -9,89 +9,102 @@
  * @link        http://www.jevents.net
  */
 
-defined( 'JPATH_BASE' ) or die( 'Direct Access to this location is not allowed.' );
+defined('JPATH_BASE') or die('No Direct Access.');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.controller');
 
-class AdminController extends JControllerLegacy   {
+class AdminController extends Joomla\CMS\MVC\Controller\BaseController
+{
 
 	function __construct($config = array())
 	{
+
 		parent::__construct($config);
 		// TODO get this from config
-		$this->registerDefaultTask( 'listevents' );
+		$this->registerDefaultTask('listevents');
 		//		$this->registerTask( 'show',  'showContent' );
 
 		// Load abstract "view" class
-		$cfg = JEVConfig::getInstance();
+		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		JLoader::register('JEvents'.ucfirst($theme).'View',JEV_VIEWS."/$theme/abstract/abstract.php");
+		JLoader::register('JEvents' . ucfirst($theme) . 'View', JEV_VIEWS . "/$theme/abstract/abstract.php");
 		$this->_basePath = $this->basePath;
-		$this->_task = $this->task;
+		$this->_task     = $this->task;
 	}
 
-	function listevents() {
-		$jinput = JFactory::getApplication()->input;
+	function listevents()
+	{
+
+		$input = Factory::getApplication()->input;
 
 		$is_event_editor = JEVHelper::isEventCreator();
 
-		$Itemid	= JEVHelper::getItemid();
+		$Itemid = JEVHelper::getItemid();
 
-		$user = JFactory::getUser();
-		if( !$is_event_editor ){
-			$returnlink = JRoute::_( 'index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false );
-			$this->setRedirect( $returnlink, html_entity_decode( JText::_('JEV_NOPERMISSION') ));
+		$user = Factory::getUser();
+		if (!$is_event_editor)
+		{
+			$returnlink = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false);
+			$this->setRedirect($returnlink, html_entity_decode(JText::_('JEV_NOPERMISSION')));
 			$this->redirect();
+
 			return;
 		}
 
-		list($year,$month,$day) = JEVHelper::getYMD();
+		list($year, $month, $day) = JEVHelper::getYMD();
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval( $jinput->getInt('start', $jinput->getInt('limitstart', 	0)));
-		
-		$params = JComponentHelper::getParams( JEV_COM_COMPONENT );
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest( 'jevlistlimit.admin','limit', $params->get("com_calEventListRowsPpg",15)));
+		$limitstart = intval($input->getInt('start', $input->getInt('limitstart', 0)));
 
-		$Itemid	= JEVHelper::getItemid();
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$limit  = intval(Factory::getApplication()->getUserStateFromRequest('jevlistlimit.admin', 'limit', $params->get("com_calEventListRowsPpg", 15)));
 
-		$task=$this->_task;
+		$Itemid = JEVHelper::getItemid();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$adminuser = $params->get("jevadmin",-1);
-		
-		if(JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor() ||$user->id==$adminuser) {
+		$task = $this->_task;
+
+		$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$adminuser = $params->get("jevadmin", -1);
+
+		if (JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor() || $user->id == $adminuser)
+		{
 			$creator_id = 'ADMIN';
-		}else{
+		}
+		else
+		{
 			$creator_id = $user->id;
 		}
 
 		// get the view
 
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
+		$document = Factory::getDocument();
+		$viewType = $document->getType();
 
-		$cfg = JEVConfig::getInstance();
+		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "admin";
-		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
-		$this->view = $this->getView($view,$viewType, $theme."View",
-		array( 'base_path'=>$this->_basePath,
-		"template_path"=>$this->_basePath.'/'."views".'/'.$theme.'/'.$view.'/'.'tmpl',
-		"name"=>$theme.'/'.$view));
+		$this->addViewPath($this->_basePath . '/' . "views" . '/' . $theme);
+		$this->view = $this->getView($view, $viewType, $theme . "View",
+			array('base_path'     => $this->_basePath,
+			      "template_path" => $this->_basePath . '/' . "views" . '/' . $theme . '/' . $view . '/' . 'tmpl',
+			      "name"          => $theme . '/' . $view));
 
 		// Set the layout
 		$this->view->setLayout('listevents');
 
-		$this->view->assign("Itemid",$Itemid);
-		$this->view->assign("limitstart",$limitstart);
-		$this->view->assign("limit",$limit);
-		$this->view->assign("month",$month);
-		$this->view->assign("day",$day);
-		$this->view->assign("year",$year);
-		$this->view->assign("task",$task);
-		$this->view->assign("creator_id",$creator_id);
+		$this->view->Itemid     = $Itemid;
+		$this->view->limitstart = $limitstart;
+		$this->view->limit      = $limit;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $task;
+		$this->view->creator_id = $creator_id;
 
 		$this->view->display();
 

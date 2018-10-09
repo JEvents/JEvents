@@ -9,14 +9,37 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
-use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 // TODO replace with JevDate
 
 class JEventsHTML
 {
+	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
+	{
+
+		// get array
+		$day_name = JEVHelper::getWeekdayLetter(null, 1);
+		$day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
+		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
+
+		$daynamelist[] = HTMLHelper::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />');
+
+		for ($a = 0; $a < 7; $a++)
+		{
+			$name_of_day = '&nbsp;' . $day_name[$a]; //getDayName($a);
+			$daynamelist[] = HTMLHelper::_('select.option', $a, $name_of_day);
+		}
+
+		$tosend = JEventsHTML::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
+		echo $tosend;
+	}
+
 	public static function buildRadioOption($arr, $tag_name, $tag_attribs, $key, $text, $selected)
 	{
 		$html = ''; //"\n<div name=\"$tag_name\" $tag_attribs>";
@@ -60,26 +83,6 @@ class JEventsHTML
 		return $html;
 	}
 
-	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
-	{
-
-		// get array
-		$day_name = JEVHelper::getWeekdayLetter(null, 1);
-		$day_name[0] = '<span class="sunday">' . $day_name[0] . '</span>';
-		$day_name[6] = '<span class="saturday">' . $day_name[6] . '</span>';
-
-		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('JEV_BYDAYNUMBER') . '<br />');
-
-		for ($a = 0; $a < 7; $a++)
-		{
-			$name_of_day = '&nbsp;' . $day_name[$a]; //getDayName($a);
-			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day);
-		}
-
-		$tosend = JEventsHTML::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
-		echo $tosend;
-	}
-
 	public static function buildMonthSelect($month, $args)
 	{
 		for ($a = 1; $a < 13; $a++)
@@ -90,10 +93,10 @@ class JEventsHTML
 				$mnh = '0' . $mnh;
 			}
 			$name_of_month = JEVHelper::getMonthName($mnh);
-			$monthslist[] = JHTML::_('select.option', $mnh, $name_of_month);
+			$monthslist[] = HTMLHelper::_('select.option', $mnh, $name_of_month);
 		}
 
-		$tosend = JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month);
+		$tosend = HTMLHelper::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month);
 		echo $tosend;
 	}
 
@@ -108,10 +111,10 @@ class JEventsHTML
 			{
 				$dys = '0' . $dys;
 			}
-			$dayslist[] = JHTML::_('select.option', $dys, $dys);
+			$dayslist[] = HTMLHelper::_('select.option', $dys, $dys);
 		}
 
-		$tosend = JHTML::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day);
+		$tosend = HTMLHelper::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day);
 		echo $tosend;
 	}
 
@@ -125,23 +128,23 @@ class JEventsHTML
 
 		if ($year < $y - 2 && $year >= $earliestyear && $year <= $latestyear)
 		{
-			$yearslist[] = JHTML::_('select.option', $year, $year);
+			$yearslist[] = HTMLHelper::_('select.option', $year, $year);
 		}
 
 		for ($i = $y - 2; $i <= $y + 5; $i++)
 		{
 			if ($i >= $earliestyear && $i <= $latestyear)
 			{
-				$yearslist[] = JHTML::_('select.option', $i, $i);
+				$yearslist[] = HTMLHelper::_('select.option', $i, $i);
 			}
 		}
 
 		if ($year > $y + 5 && $year >= $earliestyear && $year <= $latestyear)
 		{
-			$yearslist[] = JHTML::_('select.option', $year, $year);
+			$yearslist[] = HTMLHelper::_('select.option', $year, $year);
 		}
 
-		$tosend = JHTML::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year);
+		$tosend = HTMLHelper::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year);
 		echo $tosend;
 	}
 
@@ -154,19 +157,19 @@ class JEventsHTML
 		$viewlist = array();
 
 		if (in_array("byday", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'day.listevents', JText::_('JEV_VIEWBYDAY'));
+			$viewlist[] = HTMLHelper::_('select.option', 'day.listevents', JText::_('JEV_VIEWBYDAY'));
 		if (in_array("byweek", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'week.listevents', JText::_('JEV_VIEWBYWEEK'));
+			$viewlist[] = HTMLHelper::_('select.option', 'week.listevents', JText::_('JEV_VIEWBYWEEK'));
 		if (in_array("bymonth", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'month.calendar', JText::_('JEV_VIEWBYMONTH'));
+			$viewlist[] = HTMLHelper::_('select.option', 'month.calendar', JText::_('JEV_VIEWBYMONTH'));
 		if (in_array("byyear", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'year.listevents', JText::_('JEV_VIEWBYYEAR'));
+			$viewlist[] = HTMLHelper::_('select.option', 'year.listevents', JText::_('JEV_VIEWBYYEAR'));
 		if (in_array("bycat", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT'));
+			$viewlist[] = HTMLHelper::_('select.option', 'cat.listevents', JText::_('JEV_VIEWBYCAT'));
 		if (in_array("search", $iconstoshow))
-			$viewlist[] = JHTML::_('select.option', 'search.form', JText::_('JEV_SEARCH_TITLE'));
+			$viewlist[] = HTMLHelper::_('select.option', 'search.form', JText::_('JEV_SEARCH_TITLE'));
 
-		$tosend = JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype);
+		$tosend = HTMLHelper::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype);
 		echo $tosend;
 	}
 
@@ -200,38 +203,36 @@ class JEventsHTML
 			}
 
 			$fi = $format ? sprintf($format, $i) : $i;
-			$arr[] = JHTML::_('select.option', $fi, $tmpi);
+			$arr[] = HTMLHelper::_('select.option', $fi, $tmpi);
 		}
 
-		return JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected);
+		return HTMLHelper::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected);
 	}
 
 	/**
 	 * Build HTML selection list of categories
 	 *
-     * @since  2.x
 	 * @param int $catid				Selected catid
 	 * @param string $args				Additional HTML attributes for the <select> tag
 	 * @param string $catidList			Restriction list of categories
 	 * @param boolean $with_unpublished	Set true to build list with unpublished categories
 	 * @param boolean $require_sel		First entry: true = Choose one category, false = All categories
 	 * @param int $catidtop				Top level category ancestor
-	 *
-	 * @return  $html
 	 */
-
 	public static function buildCategorySelect($catid, $args, $catidList = null, $with_unpublished = false, $require_sel = false, $catidtop = 0, $fieldname = "catid", $sectionname = JEV_COM_COMPONENT, $excludeid = false, $order = "ordering", $eventediting = false)
 	{
-		// We need to declare this because of bug in Joomla JHtml::_('select.options', on content pages - it loads the WRONG CLASS!
+		// need to declare this because of bug in Joomla HTMLHelper::_('select.options', on content pages - it loade the WRONG CLASS!
 		include_once(JPATH_SITE . "/libraries/cms/html/category.php");
 
 		ob_start();
 		$t_first_entry = ($require_sel) ? JText::_('JEV_EVENT_CHOOSE_CATEG') : JText::_('JEV_EVENT_ALLCAT');
 
-		//$options = JHtml::_('category.options', $sectionname);
+		//$options = HTMLHelper::_('category.options', $sectionname);
 
-        $db     = JFactory::getDbo();
-        $user   = JFactory::getUser();
+        $db     = Factory::getDbo();
+        $app    = Factory::getApplication();
+        $input  = $app->input;
+        $user   = Factory::getUser();
         $groups = implode(',', $user->getAuthorisedViewLevels());
 
         $query = $db->getQuery(true)
@@ -264,7 +265,7 @@ class JEventsHTML
                 $item->title .= ' (' . $item->language . ')';
             }
 
-            $option =  JHtml::_('select.option', $item->id, $item->title);
+            $option = HTMLHelper::_('select.option', $item->id, $item->title);
             $option->level = $item->level;
             $option->parent_id = $item->parent_id;
             if ($option->parent_id > 1 && !array_key_exists($option->parent_id, $parents))
@@ -295,7 +296,7 @@ class JEventsHTML
             {
                 for ($o = 0; $o < count($options); $o++)
                 {
-                    if ($options[$o]->value == $catid[$c])
+                	if (isset($options[$o]->value) && $options[$o]->value == $catid[$c])
                     {
                         $options[ - (count($catid) - $c)] = $options[$o];
                         unset($options[$o]);
@@ -307,7 +308,7 @@ class JEventsHTML
             $options = array_values($options);
 		}
 
-		// Translate where appropriate
+		// translate where appropriate
 		$count = count($options);
 		for ($o = 0; $o < $count; $o++)
 		{
@@ -315,16 +316,12 @@ class JEventsHTML
 		}
 
 		// Thanks to ssobada
-		// When editing events we restrict the available list!
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-
-		$jevtask = $jinput->getString("jevtask");
-
+		// when editing events we restrict the available list!
+		$jevtask = $input->getString("jevtask");
 		if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false)
 		{
-			$user = JFactory::getUser();
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$user = Factory::getUser();
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 0);
 			if ($authorisedonly)
 			{
@@ -345,7 +342,7 @@ class JEventsHTML
 					}
 					else
 					{
-						if ($jinput->getInt("evid", 0) > 0)
+						if ($input->getInt("evid", 0) > 0)
 						{
 							// TODO - this should check the creator of the event
 							$action = 'core.edit';
@@ -362,7 +359,7 @@ class JEventsHTML
 				}
 				else
 				{
-					if ($jinput->getInt("evid", 0) > 0)
+					if ($input->getInt("evid", 0) > 0)
 					{
 						// TODO - this should check the creator of the event
 						$action = 'core.edit';
@@ -379,7 +376,7 @@ class JEventsHTML
 			}
 			else
 			{
-				if ($jinput->getInt("evid", 0) > 0)
+				if ($input->getInt("evid", 0) > 0)
 				{
 					// TODO - this should check the creator of the event
 					$action = 'core.edit';
@@ -394,10 +391,9 @@ class JEventsHTML
 				}
 			}
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetAccessibleCategoriesForEditing', array(& $cats));
+			$app->triggerEvent('onGetAccessibleCategoriesForEditing', array(& $cats));
 
-			// Allow anon-user event creation through
+			// allow anon-user event creation through
 			if (isset($user->id) && $user->id > 0)
 			{
 				$count = count($options);
@@ -412,7 +408,7 @@ class JEventsHTML
 			}
 
 			// Do we disable top level categories
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("blocktoplevelcategories", 0))
 			{
 				$count = count($options);
@@ -428,8 +424,11 @@ class JEventsHTML
 				}
 			}
 		}
-
-		// If only one category then preselect it
+		else
+		{
+			
+		}
+		// if only one category then preselect it
 		if (count($options) == 1)
 		{
 			$catid = current($options)->value;
@@ -439,7 +438,7 @@ class JEventsHTML
 		// usort($options, function($a, $b) { return strcmp($a->text,$b->text);});
 		// should we offer multi-choice categories?
 		// do not use jev_com_component incase we call this from locations etc.
-		$params = JComponentHelper::getParams(JRequest::getCmd("option", "com_jevents"));
+		$params = ComponentHelper::getParams($input->getCmd("option", "com_jevents"));
 		if ($eventediting && $params->get("multicategory", 0))
 		{
 			$size = count($options) > 6 ? 6 : count($options) + 1;
@@ -453,20 +452,19 @@ class JEventsHTML
 			    ?>
 			    <label class="sr-only" for="<?php echo $fieldname;?>"><?php echo JText::_('JEV_CATEGORY_SELECT_LBL'); ?></label>
 			    <select name="<?php echo $fieldname; ?>" <?php echo $args; ?>  id="<?php echo $fieldname; ?>" >
-				<option value=""><?php echo $t_first_entry; ?></option>
+				<option value="0"><?php echo $t_first_entry; ?></option>
 				<?php
 			}
 			?>
-			<?php echo JHtml::_('select.options', $options, 'value', 'text', $catid); ?>
+			<?php echo HTMLHelper::_('select.options', $options, 'value', 'text', $catid); ?>
 		    </select>
 		    <?php
-		    $html =  ob_get_clean();
+		    $html = ob_get_clean();
 		    if (count($options) == 1)
 		    {
-			$html   =   "<div class='catname'>".  $options[0]->text. "</div>";
+			$html   =  "<div class='catname'>".  $options[0]->text. "</div>";
 			$html  .= "<input type='hidden' id='" . $fieldname . "' name='" . $fieldname . "[]' value='$catid' />";
 		    }
-
 		return $html;
 	    }
 
@@ -605,7 +603,7 @@ class JEventsHTML
 	    public static function getUserMailtoLink($evid, $userid, $admin = false, $event)
 	    {
 
-		    $db = JFactory::getDbo();
+		    $db = Factory::getDbo();
 
 		    static $arr_userids;
 		    static $arr_evids;
@@ -629,7 +627,7 @@ class JEventsHTML
 		    {
 			    if (!isset($arr_userids[$userid]))
 			    {
-				    $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				    $params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				    $userdet = JEVHelper::getContact($userid);
 
 				    $contactlink = "";
@@ -637,7 +635,7 @@ class JEventsHTML
 				    {
 					    if (isset($userdet->slug) && $userdet->slug && $agenda_viewmail == '1')
 					    {
-						    $contactlink = JRoute::_('index.php?option=com_contact&view=contact&id=' . $userdet->slug . '&catid=' . $userdet->catslug);
+						    $contactlink = Route::_('index.php?option=com_contact&view=contact&id=' . $userdet->slug . '&catid=' . $userdet->catslug);
 						    $contactlink = '<a href="' . $contactlink . '" title="' . JText::_('JEV_EMAIL_TO_AUTHOR') . '" target="_blank" >' . $userdet->contactname . '</a>';
 					    }
 					    else if ($userdet->email && $agenda_viewmail == '1')
@@ -647,11 +645,11 @@ class JEventsHTML
 						    //. $userdet->username . '</a>';
 						    if ($params->get('contact_display_name', 0) == 1)
 						    {
-							    $contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
+							    $contactlink = HTMLHelper::_('email.cloak', $userdet->email, 1, $userdet->name, 0);
 						    }
 						    else
 						    {
-							    $contactlink = JHTML::_('email.cloak', $userdet->email, 1, $userdet->username, 0);
+							    $contactlink = HTMLHelper::_('email.cloak', $userdet->email, 1, $userdet->username, 0);
 						    }
 					    }
 					    else
@@ -675,17 +673,17 @@ class JEventsHTML
 			    if (!isset($arr_evids[$evid]))
 			    {
 				    $contactlink = JText::_('JEV_ANONYME');
-				    $anonplugin = JPluginHelper::getPlugin("jevents", "jevanonuser");
+				    $anonplugin = PluginHelper::getPlugin("jevents", "jevanonuser");
 				    if ($anonplugin)
 				    {
-					    $db = JFactory::getDbo();
+					    $db = Factory::getDbo();
 					    $db->setQuery("SELECT a.* FROM #__jev_anoncreator as a LEFT JOIN #__jevents_repetition as r on a.ev_id=r.eventid where r.rp_id=" . intval($evid) . " LIMIT 1");
 					    $anonrow = $db->loadObject();
 					    if ($anonrow)
 					    {
 						    if ($agenda_viewmail == '1')
 						    {
-							    $contactlink = JHTML::_('email.cloak', $anonrow->email, 1, $anonrow->name, 0);
+							    $contactlink = HTMLHelper::_('email.cloak', $anonrow->email, 1, $anonrow->name, 0);
 						    }
 						    else
 						    {
@@ -703,6 +701,7 @@ class JEventsHTML
 
 	    /**
 	     * returns name of the day longversion
+	     *
 	     * @param	daynb		int		# of day
 	     * @param	colored		bool	color sunday	[ new mic, because inside tooltips a color forces an error! ]
 	     * */
@@ -727,7 +726,7 @@ class JEventsHTML
 
 	    public static function getColorBar($event_id = null, $newcolor)
 	    {
-		    $db = JFactory::getDbo();
+		    $db = Factory::getDbo();
 
 		    $cfg = JEVConfig::getInstance();
 
@@ -1014,7 +1013,9 @@ class JEventsHTML
 	     * Required for edit fields containing html code
 	     *
 	     * @static
+	     *
 	     * @param $html	string	html text
+	     *
 	     * @return		string	html string
 	     */
 	    public static function special($html = '')
@@ -1027,7 +1028,9 @@ class JEventsHTML
 	     * Generate javascript start and end tags
 	     *
 	     * @access public
+	     *
 	     * @param string $type 'start' or 'end' tag
+	     *
 	     * @return string html sequence
 	     */
 	    public static function buildScriptTag($type = 'start')
@@ -1054,9 +1057,9 @@ class JEventsHTML
 
 	    public static function buildAccessSelect($access, $attribs = 'class="inputbox" onchange="this.form.submit()"', $text = "", $fieldname = "access")
 	    {
-		    $assetGroups = JHtml::_('access.assetgroups');
+		    $assetGroups = HTMLHelper::_('access.assetgroups');
 		    // only offer access levels the user has access to
-		    $user = JFactory::getUser();
+		    $user = Factory::getUser();
 		    if (!$user->get("isRoot", 0))
 		    {
 			    $viewlevels = $user->getAuthorisedViewLevels();
@@ -1083,7 +1086,7 @@ class JEventsHTML
 				<option value=""><?php echo $text; ?></option>
 				<?php
 			}
-			echo JHtml::_('select.options', $assetGroups, 'value', 'text', $access);
+			echo HTMLHelper::_('select.options', $assetGroups, 'value', 'text', $access);
 			?>
 		    </select>
 		    <?php
@@ -1091,4 +1094,4 @@ class JEventsHTML
 	    }
 
     }
-
+    

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * JEvents Component for Joomla! 3.x
  *
@@ -11,4 +11,4 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-include(JPATH_COMPONENT_ADMINISTRATOR."/views/icalevent/tmpl/select.php");
+include(JPATH_COMPONENT_ADMINISTRATOR . "/views/icalevent/tmpl/select.php");

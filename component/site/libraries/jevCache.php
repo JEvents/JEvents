@@ -17,16 +17,17 @@ class jevCache
 {
 
 	public
-			function __construct()
+	function __construct()
 	{
 
 	}
 
 	public
-			function call()
+	function call()
 	{
+
 		// Get callback and arguments
-		$args = func_get_args();
+		$args     = func_get_args();
 		$callback = array_shift($args);
 
 		// Normalize callback
@@ -76,6 +77,7 @@ class jevCache
 		ob_end_clean();
 
 		echo $output;
+
 		return $result;
 
 	}

@@ -11,6 +11,9 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 jimport('joomla.application.component.controlleradmin');
 
 class AdminPluginController extends JControllerAdmin
@@ -18,26 +21,28 @@ class AdminPluginController extends JControllerAdmin
 
 	/**
 	 * Controler for the Control Panel
-	 * @param array		configuration
+	 *
+	 * @param array        configuration
 	 */
 	function __construct($config = array())
 	{
+
 		parent::__construct($config);
 		$this->registerDefaultTask("plugin");
 	}
 
 	function plugin()
 	{
-		$dispatcher = JEventDispatcher::getInstance();
-		// just incase we don't have jevents plugins registered yet
-		JPluginHelper::importPlugin("jevents");
-		$action = JFactory::getApplication()->input->get("task", "", "cmd");
-		$parts = explode(".", $action);
-		if (count($parts)==3){
-			list($controller, $plugin, $task) = $parts;
-			$res = $dispatcher->trigger('onJEventsPluginController', array($plugin, $task));
-		}
 
+		// Just in case we don't have jevents plugins registered yet
+		PluginHelper::importPlugin("jevents");
+		$app    = Factory::getApplication();
+		$action = $app->input->get("task", "", "cmd");
+		$parts  = explode(".", $action);
+		if (count($parts) == 3)
+		{
+			list($controller, $plugin, $task) = $parts;
+			$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+		}
 	}
-	
 }

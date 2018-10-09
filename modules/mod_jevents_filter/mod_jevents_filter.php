@@ -10,36 +10,45 @@
  * @link        http://www.gwesystems.com
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-require_once (dirname(__FILE__).'/'.'helper.php');
+require_once(dirname(__FILE__) . '/' . 'helper.php');
 
-// reset filters when viewed on non-JEvents page - make this a configurable option
-
+// Reset filters when viewed on non-JEvents page - make this a configurable option
 
 $jevhelper = new modJeventsFilterHelper($params);
 
+$app    = Factory::getApplication();
+$input  = $app->input;
+
 // record what is running - used by the filters
-$registry	= JRegistry::getInstance("jevents");
-$registry->set("jevents.activeprocess","mod_jevents_filter");
+$registry = JevRegistry::getInstance("jevents");
+$registry->set("jevents.activeprocess", "mod_jevents_filter");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
-$option = JRequest::getCmd("option");
-if ($params->get("alwaystarget",0) && $params->get("target_itemid",0)>0){
-	JFactory::getApplication()->setUserState("jevents.filtermenuitem",$params->get("target_itemid",0));
+$option = $input->getCmd("option");
+if ($params->get("alwaystarget", 0) && $params->get("target_itemid", 0) > 0)
+{
+	$app->setUserState("jevents.filtermenuitem", $params->get("target_itemid", 0));
 }
-else if ($option=="com_jevents"){
-	$menu	= JFactory::getApplication()->getMenu();
+else if ($option == "com_jevents")
+{
+	$menu   = $app->getMenu();
 	$active = $menu->getActive();
-	if ($active){
-		JFactory::getApplication()->setUserState("jevents.filtermenuitem",$active->id);
+	if ($active)
+	{
+		$app->setUserState("jevents.filtermenuitem", $active->id);
 	}
 }
-if (JRequest::getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0){ 
+if ($input->getCmd("task") == "icalrepeat.detail" && $params->get('showindetails', 0) == 0)
+{
 	return;
 }
-JFactory::getApplication()->activeModule = $module;
-require(JModuleHelper::getLayoutPath('mod_jevents_filter'));
+
+$app->activeModule = $module;
+require(ModuleHelper::getLayoutPath('mod_jevents_filter'));
 
 

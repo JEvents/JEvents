@@ -1,10 +1,13 @@
 <?php
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Component\ComponentHelper;
 
 class IcaleventsModelicalevent extends JModelAdmin
 {
@@ -15,34 +18,36 @@ class IcaleventsModelicalevent extends JModelAdmin
 	 */
 	function __construct()
 	{
+
 		parent::__construct();
 	}
 
-		/**
+	/**
 	 * Method to get a form object.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @param    array   $data     Data for the form.
+	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @return    mixed    A Form object on success, false on failure
+	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app    = JFactory::getApplication();
+
 		// Prepare the data
-		// Experiment in the use of JForm and template override for forms and fields
-		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
-		$template = $app->getTemplate();
-		JForm::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
-		//JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+		// Experiment in the use of Form and template override for forms and fields
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = Factory::getApplication()->getTemplate();
+		Form::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
+		//Form::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 
 		$xpath = false;
-		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
+		// leave form control blank since we want the fields as ev_id and not Form[ev_id]
 		$form = $this->loadForm("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
-		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
-		
-		if (empty($form)) {
+		Form::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
+
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -51,19 +56,20 @@ class IcaleventsModelicalevent extends JModelAdmin
 
 	public function getTranslateForm($data = array(), $loadData = true)
 	{
-		$app    = JFactory::getApplication();
+
 		// Prepare the data
-		// Experiment in the use of JForm and template override for forms and fields
-		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
-		$template = $app->getTemplate();
-		JForm::addFormPath(JPATH_THEMES."/$template/html/com_jevents/forms");
+		// Experiment in the use of Form and template override for forms and fields
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = Factory::getApplication()->getTemplate();
+		Form::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
 
 		$xpath = false;
-		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
+		// leave form control blank since we want the fields as ev_id and not Form[ev_id]
 		$form = $this->loadForm("jevents.translate.icalevent", 'translate', array('control' => '', 'load_data' => false), false, $xpath);
-		JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+		Form::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
 
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -72,68 +78,98 @@ class IcaleventsModelicalevent extends JModelAdmin
 
 	public function getOriginal()
 	{
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-		$db = JFactory::getDbo();
 
-		$evdet_id = $jinput->getInt("evdet_id", 0);
-		$db->setQuery("SELECT * FROM #__jevents_vevdetail where evdet_id = ".$evdet_id);
+		$db = Factory::getDbo();
+		$input  = Factory::getApplication()->input;
+
+		$evdet_id = $input->getInt("evdet_id", 0);
+		$db->setQuery("SELECT * FROM #__jevents_vevdetail where evdet_id = " . $evdet_id);
 		$data = $db->loadAssoc();
+
 		return $data;
 	}
 
 	public function getTranslation()
 	{
-		$app    = JFactory::getApplication();
-		$jinput =   $app->input;
-		$db = JFactory::getDbo();
 
-		$evdet_id = $jinput->getInt("evdet_id", 0);
-		$lang = $jinput->getString("lang", "");
-		$db->setQuery("SELECT * FROM #__jevents_translation where evdet_id = ".$evdet_id . " AND language = ". $db->quote($lang));
+		$db = Factory::getDbo();
+
+		$input  = Factory::getApplication()->input;
+
+		$evdet_id = $input->getInt("evdet_id", 0);
+		$lang     = $input->getString("lang", "");
+		$db->setQuery("SELECT * FROM #__jevents_translation where evdet_id = " . $evdet_id . " AND language = " . $db->quote($lang));
 		$tempdata = $db->loadAssoc();
-		$data  = array();
-		if ($tempdata){
-			foreach ($tempdata as $key => $val) {
-				$data["trans_".$key] = $val;
+		$data     = array();
+		if ($tempdata)
+		{
+			foreach ($tempdata as $key => $val)
+			{
+				$data["trans_" . $key] = $val;
 			}
 		}
+
 		return $data;
 	}
 
 	public function saveTranslation()
 	{
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-		$array = $jinput->get('request', JREQUEST_ALLOWHTML);
+
+		$input  = Factory::getApplication()->input;
+
+		$array = JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
 
 		// Should we allow raw content through unfiltered
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("allowraw", 0))
 		{
-			$array['trans_description'] = $jinput->getString("trans_description", "", "POST", JREQUEST_ALLOWRAW);
-			$array['trans_extra_info'] = $jinput->getString("trans_extra_info", "", "POST", JREQUEST_ALLOWRAW);
+
+			$array['trans_description'] = $input->post->get("trans_description", "", 'RAW');
+			$array['trans_extra_info']  = $input->post->get("trans_extra_info", "", 'RAW');
 		}
 
-		include_once JPATH_COMPONENT."/tables/translate.php";
+		include_once JPATH_COMPONENT . "/tables/translate.php";
 		$translation = new TableTranslate();
-		$success =  $translation->save($array);
-                
-                if ($success) {
-                    $dispatcher = JEventDispatcher::getInstance();
-                    $dispatcher->trigger('onSaveTranslation', array($array), true);
-                }                    
+		$success     = $translation->save($array);
+
+		if ($success)
+		{
+			Factory::getApplication()->triggerEvent('onSaveTranslation', array($array), true);
+		}
 
 		return $success;
 	}
 
 	public function deleteTranslation()
 	{
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-		include_once JPATH_COMPONENT."/tables/translate.php";
+
+		$input  = Factory::getApplication()->input;
+
+		include_once JPATH_COMPONENT . "/tables/translate.php";
 		$translation = new TableTranslate();
-		$translation->delete($jinput->getInt("trans_translation_id"));
+		$translation->delete($input->getInt("trans_translation_id"));
+	}
+
+	function getLanguages()
+	{
+
+		static $languages;
+		if (!isset($languages))
+		{
+			$db = Factory::getDbo();
+
+			// get the list of languages first
+			$query = $db->getQuery(true);
+			$query->select("l.*");
+			$query->from("#__languages as l");
+			$query->where('l.lang_code <> "xx-XX"');
+			$query->order("l.lang_code asc");
+
+			$db->setQuery($query);
+			$languages = $db->loadObjectList('lang_code');
+		}
+
+		return $languages;
 	}
 
 	/**
@@ -144,15 +180,17 @@ class IcaleventsModelicalevent extends JModelAdmin
 	 * @return  void
 	 * @since    3.0
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'jevents')
+	protected function preprocessForm(Form $form, $data, $group = 'jevents')
 	{
+
 		// Association content items
-		$assoc = false &&  JLanguageAssociations::isEnabled() && JFactory::getApplication()->isClient('administrator');
+		$app   = Factory::getApplication();
+		$assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication()->isClient('administrator');
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');
-			$addform = new SimpleXMLElement('<form />');
-			$fields = $addform->addChild('fields');
+			$addform   = new SimpleXMLElement('<form />');
+			$fields    = $addform->addChild('fields');
 			$fields->addAttribute('name', 'associations');
 			$fieldset = $fields->addChild('fieldset');
 			$fieldset->addAttribute('name', 'item_associations');
@@ -162,7 +200,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 			{
 				if (empty($data->language) || $tag != $data->language)
 				{
-					$add = true;
+					$add   = true;
 					$field = $fieldset->addChild('field');
 					$field->addAttribute('name', $tag);
 					$field->addAttribute('type', 'modal_article');
@@ -180,25 +218,6 @@ class IcaleventsModelicalevent extends JModelAdmin
 		}
 
 		parent::preprocessForm($form, $data, $group);
-	}
-
-	function getLanguages()
-	{
-		static  $languages;
-		if (!isset($languages)){
-			$db = JFactory::getDbo();
-
-			// get the list of languages first
-			$query	= $db->getQuery(true);
-			$query->select("l.*");
-			$query->from("#__languages as l");
-			$query->where('l.lang_code <> "xx-XX"');
-			$query->order("l.lang_code asc");
-
-			$db->setQuery($query);
-			$languages  = $db->loadObjectList('lang_code');
-		}
-		return $languages;
 	}
 
 }

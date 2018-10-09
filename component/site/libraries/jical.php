@@ -9,18 +9,21 @@
  * @link        http://www.jevents.net
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Utility class that holds an instanceof an iCalICSFile and its associated collection
  * of iCalEvent
  *
  */
-class jIcal {
+class jIcal
+{
 	var $icalFile;
 	var $icalEvents;
 
-	function iCal(){
-		$this->icalEvents=array();
+	function iCal()
+	{
+
+		$this->icalEvents = array();
 	}
 }

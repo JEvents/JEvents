@@ -9,82 +9,104 @@
  * @link        http://www.jevents.net
  */
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 // functions used by the modules
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\String\StringHelper;
 
-function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall){
+function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams, &$showall)
+{
+
 	// Itemid, search for menuid with lowest access rights
-	$user = JFactory::getUser();
-	$db	= JFactory::getDbo();
-	$jinput = JFactory::getApplication()->input;
+	$user   = Factory::getUser();
+	$db     = Factory::getDbo();
+	$input = Factory::getApplication()->input;
 
 	// Do we ignore category filters?
 	$ignorecatfilter = 0;
-	if (isset($modparams->ignorecatfilter) && $modparams->ignorecatfilter){
+	if (isset($modparams->ignorecatfilter) && $modparams->ignorecatfilter)
+	{
 		$ignorecatfilter = $modparams->ignorecatfilter;
-		$jinput->set("category_fv", 0);
+		$input->set("category_fv", 0);
 	}
-	
-	$menu = JFactory::getApplication()->getMenu();
-	$menuitems = $menu->getItems("component",JEV_COM_COMPONENT);
+
+	$menu      = Factory::getApplication()->getMenu();
+	$menuitems = $menu->getItems("component", JEV_COM_COMPONENT);
 	// restrict this list to those accessible by the user
-	if (!is_null($menuitems)){
-		foreach ($menuitems as $index=>$menuitem) {
-			if (!in_array($menuitem->access,JEVHelper::getAid($user, 'array'))){
+	if (!is_null($menuitems))
+	{
+		foreach ($menuitems as $index => $menuitem)
+		{
+			if (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($menuitem->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) < $menuitem->access)
+			{
 				unset($menuitems[$index]);
 			}
 			// also drop admin functions
-			else if (array_key_exists("task",$menuitem->query) && strpos($menuitem->query['task'],'admin')===0){
+			else if (array_key_exists("task", $menuitem->query) && strpos($menuitem->query['task'], 'admin') === 0)
+			{
 				unset($menuitems[$index]);
 			}
 		}
 	}
-	else {
+	else
+	{
 		$menuitems = array();
 	}
 	$activeMenu = $menu->getActive();
 
-	if (isset($modparams->target_itemid) && $modparams->target_itemid != '' && intval($modparams->target_itemid)>0){
+	if (isset($modparams->target_itemid) && $modparams->target_itemid != '' && intval($modparams->target_itemid) > 0)
+	{
 		$targetid = intval($modparams->target_itemid);
 
 		$myItemid = 0;
-		foreach ($menuitems as $item) {
-			if ($targetid == $item->id) {
+		foreach ($menuitems as $item)
+		{
+			if ($targetid == $item->id)
+			{
 				$myItemid = $targetid;
 				break;
 			}
 		}
 	}
-	else if ($activeMenu && $activeMenu->component==JEV_COM_COMPONENT){
+	else if ($activeMenu && $activeMenu->component == JEV_COM_COMPONENT)
+	{
 
 		// use result by reference
 		$myItemid = $activeMenu->id;
 	}
-	else {
-		if (count($menuitems)>0){
+	else
+	{
+		if (count($menuitems) > 0)
+		{
 			reset($menuitems);
 			$myItemid = current($menuitems);
 			$myItemid = $myItemid->id;
 		}
-		else {
+		else
+		{
 			// if no menu pointing the JEvents use itemid of home page and set empty menu array
-			$myItemid = 1;
+			$myItemid  = 1;
 			$menuitems = array();
 		}
 	}
-	
+
 	// put the best guess first for checking category selections
-	if ($myItemid>0){
-		$newmenuitems =array();
-		foreach ($menuitems as $item) {
-			if ($myItemid == $item->id) {
+	if ($myItemid > 0)
+	{
+		$newmenuitems = array();
+		foreach ($menuitems as $item)
+		{
+			if ($myItemid == $item->id)
+			{
 				array_unshift($newmenuitems, $item);
 			}
-			else {
+			else
+			{
 				array_push($newmenuitems, $item);
 			}
 		}
@@ -94,144 +116,180 @@ function findAppropriateMenuID (&$catidsOut, &$modcatids, &$catidList, $modparam
 	//Finds the first enclosing setof catids from menu item if it exists !
 	//
 	// First of all get the module paramaters
-	$c=0;
+	$c         = 0;
 	$modcatids = array();
 	$catidList = "";
 	// New system
-	$newcats = isset($modparams->catidnew)?$modparams->catidnew: false;
-	if ($newcats && is_array($newcats )){
-		foreach ($newcats as $newcat){
-			if ( !in_array( $newcat,$modcatids )){
-				$modcatids[]=$newcat;
-				$catidList .= (JString::strlen($catidList)>0?",":"").$newcat;
+	$newcats = isset($modparams->catidnew) ? $modparams->catidnew : false;
+	if ($newcats && is_array($newcats))
+	{
+		foreach ($newcats as $newcat)
+		{
+			if (!in_array($newcat, $modcatids))
+			{
+				$modcatids[] = $newcat;
+				$catidList   .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $newcat;
 			}
-		}				
+		}
 	}
-	else {	
-		for ($c=0;$c<999;$c++){
-			$nextCID="catid$c";
+	else
+	{
+		for ($c = 0; $c < 999; $c++)
+		{
+			$nextCID = "catid$c";
 			//  stop looking for more catids when you reach the last one!
 			if (!isset($modparams->$nextCID)) break;
-			if ($modparams->$nextCID>0 && !in_array($modparams->$nextCID,$modcatids)){
-				$modcatids[]=$modparams->$nextCID;
-				$catidList .= (JString::strlen($catidList)>0?",":"").$modparams->$nextCID;
+			if ($modparams->$nextCID > 0 && !in_array($modparams->$nextCID, $modcatids))
+			{
+				$modcatids[] = $modparams->$nextCID;
+				$catidList   .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $modparams->$nextCID;
 			}
 		}
 	}
 
-	if (count($modcatids)==0){
+	if (count($modcatids) == 0)
+	{
 		$showall = true;
 	}
-	$catidsOut = str_replace(",","|",$catidList);
+	$catidsOut = str_replace(",", "|", $catidList);
 
-	$params	=  JComponentHelper::getParams(JEV_COM_COMPONENT);
-	$separator = $params->get("catseparator","|");
-	$catidsOut = str_replace("|", $separator,$catidsOut);
+	$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
+	$separator = $params->get("catseparator", "|");
+	$catidsOut = str_replace("|", $separator, $catidsOut);
 
 	// Now check the catids from the URL
-	$catidsin = JRequest::getString("catids","");
+	$catidsin = Factory::getApplication()->input->getString("catids", "");
 	// if ignoring catid filter then force to blank
 	if ($ignorecatfilter) $catidsin = "";
-	
-	if (JString::strlen($catidsin)>0){
-		$catidsin = explode($separator,$catidsin);
+
+	if (StringHelper::strlen($catidsin) > 0)
+	{
+		$catidsin = explode($separator, $catidsin);
 		$catidsin = ArrayHelper::toInteger($catidsin);
 	}
-	else {
+	else
+	{
 		// if no catids from the URL then stick to the module catids
 		$catidsin = $modcatids;
 	}
 
 	// if  we have no modcatids then the enclosing set MUST be all categories and catids must therefore also be empty!
-	if (count($modcatids)==0){
-		if (count($catidsin)>0){
-			$modcatids=$catidsin;
+	if (count($modcatids) == 0)
+	{
+		if (count($catidsin) > 0)
+		{
+			$modcatids = $catidsin;
 		}
 		//return $myItemid;
 	}
-	else {
-		foreach ($modcatids as $key=>$modcatid) {
-			if (!in_array($modcatid,$catidsin)){
+	else
+	{
+		foreach ($modcatids as $key => $modcatid)
+		{
+			if (!in_array($modcatid, $catidsin))
+			{
 				unset($modcatids[$key]);
 			}
 		}
 		// if we have no categories left then we have to force the result set to be empty so add a -1 category
 		// since accessibleCategoryList uses a count of zero catids to allow them all!
-		if (count($modcatids)==0){
-			$modcatids[]=-1;
+		if (count($modcatids) == 0)
+		{
+			$modcatids[] = -1;
 		}
 	}
-	$catidsOut=implode("|",$modcatids);
-	$catidList=implode(",",$modcatids);
-	$catidsOut = str_replace("|", $separator,$catidsOut);
+	$catidsOut = implode("|", $modcatids);
+	$catidList = implode(",", $modcatids);
+	$catidsOut = str_replace("|", $separator, $catidsOut);
 
-	if ($myItemid == 0){
+	if ($myItemid == 0)
+	{
 		// User has specified a non JEvents menu so catid filters won't work
 		$myItemid = intval($modparams->target_itemid);
+
 		return $myItemid;
 	}
-	
+
 	// if we are not inside a real module i.e. in the legend beneath the calendar we just use the Itemid we are currently on
-	if ((!isset($modparams->target_itemid) || $modparams->target_itemid=="") && $activeMenu && $activeMenu->component==JEV_COM_COMPONENT){
+	if ((!isset($modparams->target_itemid) || $modparams->target_itemid == "") && $activeMenu && $activeMenu->component == JEV_COM_COMPONENT)
+	{
 		return $activeMenu->id;
 	}
 
 	// now find an appropriate enclosing set and associated menu item
 	$possibleset = array();
-	foreach ($menuitems as $testparms) {
-		$test = new JRegistry( $testparms->params);
-		$c=0;
+	foreach ($menuitems as $testparms)
+	{
+		$test   = new JevRegistry($testparms->params);
+		$c      = 0;
 		$catids = array();
 		// New system
 		$newcats = $test->get("catidnew", false);
-		if ($newcats && is_array($newcats )){
-			foreach ($newcats as $newcat){
-				if ( !in_array( $newcat,$catids )){
-					$catids[]=$newcat;
+		if ($newcats && is_array($newcats))
+		{
+			foreach ($newcats as $newcat)
+			{
+				if (!in_array($newcat, $catids))
+				{
+					$catids[] = $newcat;
 				}
-			}				
+			}
 		}
-		else {			
-			while ($nextCatId = $test->get( "catid$c", null )){
-				if (!in_array($nextCatId,$catids)){
-					$catids[]=$nextCatId;
+		else
+		{
+			while ($nextCatId = $test->get("catid$c", null))
+			{
+				if (!in_array($nextCatId, $catids))
+				{
+					$catids[] = $nextCatId;
 				}
 				$c++;
 			}
 		}
 		// Now check if its an enclosing set of catids so we use this one if the targetid has not been explicitly set
-		if (count($catids)==0 && !isset($targetid) && !($activeMenu && $activeMenu->component==JEV_COM_COMPONENT)) {
-			$Itemid = JEVHelper::getItemid();
+		if (count($catids) == 0 && !isset($targetid) && !($activeMenu && $activeMenu->component == JEV_COM_COMPONENT))
+		{
+			$Itemid   = JEVHelper::getItemid();
 			$myItemid = intval($testparms->id);
+
 			return $myItemid;
 			break;
 		}
-		else {
+		else
+		{
 			// if  we have no modcatids then the enclosing set MUST be all categories and catids must therefore also be empty!
-			if (count($modcatids)>0){
+			if (count($modcatids) > 0)
+			{
 				$enclosed = true;
-				foreach ($modcatids as $cid){
-					if (!in_array($cid,$catids)) {
+				foreach ($modcatids as $cid)
+				{
+					if (!in_array($cid, $catids))
+					{
 						$enclosed = false;
 					}
 				}
 				// if enclosed or menu item is not constrained
-				if ($enclosed) {
-					$possibleset[]=intval($testparms->id);
+				if ($enclosed)
+				{
+					$possibleset[] = intval($testparms->id);
 					break;
 				}
-				else if ( count($catids)==0){
-					$possibleset[]=intval($testparms->id);
+				else if (count($catids) == 0)
+				{
+					$possibleset[] = intval($testparms->id);
 				}
 			}
 		}
 	}
 
-	if (in_array($myItemid,$possibleset)){
+	if (in_array($myItemid, $possibleset))
+	{
 		return $myItemid;
 	}
-	else if (count($possibleset)>0){
+	else if (count($possibleset) > 0)
+	{
 		return $possibleset[0];
 	}
+
 	return $myItemid;
 }

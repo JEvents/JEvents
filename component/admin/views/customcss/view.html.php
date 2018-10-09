@@ -12,21 +12,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
  * @static
  */
-
-use Joomla\String\StringHelper;
-
-class CustomcssViewCustomcss extends JViewLegacy {
+class CustomcssViewCustomcss extends Joomla\CMS\MVC\View\HtmlView
+{
 
 	function display($cachable = false)
 	{
+
 		jimport('joomla.html.pane');
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'));
 
 		$bar = JToolbar::getInstance('toolbar');
@@ -48,15 +50,15 @@ class CustomcssViewCustomcss extends JViewLegacy {
 			$filepath = JPATH_ROOT . $filepath . '.new';
 		}
 
-		$this->file     = $filepath;
-		$this->form     = $this->get('Form');
+		$this->file = $filepath;
+		$this->form = $this->get('Form');
 		$this->form->setFieldAttribute('source', 'syntax', 'css');
-		$this->source   = $this->get('Customcss');
-		$this->type     = 'file';
+		$this->source = $this->get('Customcss');
+		$this->type   = 'file';
 
 		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		return parent::display();
 

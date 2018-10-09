@@ -22,3 +22,5 @@ div#sidebar.sidebar {clear:both;}
     border-left: 1px solid #DDD;
 }
 .customlayouts {padding: 10px 30px;}
+
+.adminlist foot tr {background-color:grey;}

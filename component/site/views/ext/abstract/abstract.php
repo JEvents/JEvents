@@ -12,32 +12,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+
 /**
  * HTML Abstract view class for the component frontend
  *
  * @static
  */
-JLoader::register('JEventsDefaultView',JEV_VIEWS."/default/abstract/abstract.php");
+JLoader::register('JEventsDefaultView', JEV_VIEWS . "/default/abstract/abstract.php");
 
-class JEventsExtView extends JEventsDefaultView 
+class JEventsExtView extends JEventsDefaultView
 {
 	var $jevlayout = null;
 
 	function __construct($config = null)
 	{
+
 		parent::__construct($config);
 
-		$this->jevlayout="ext";	
+		$this->jevlayout = "ext";
 
-		$this->addHelperPath(dirname(__FILE__)."/../helpers/");
-		
-		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
+		$this->addHelperPath(dirname(__FILE__) . "/../helpers/");
+
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 
 	}
 
-	function viewNavTableBarIconic( $today_date, $this_date, $dates, $alts, $option, $task, $Itemid ){
+	function viewNavTableBarIconic($today_date, $this_date, $dates, $alts, $option, $task, $Itemid)
+	{
+
 		$this->loadHelper("ExtViewNavTableBarIconic");
-		$var = new ExtViewNavTableBarIconic($this, $today_date, $this_date, $dates, $alts, $option, $task, $Itemid );
+		$var = new ExtViewNavTableBarIconic($this, $today_date, $this_date, $dates, $alts, $option, $task, $Itemid);
 	}
 
 }

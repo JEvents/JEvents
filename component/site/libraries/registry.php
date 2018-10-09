@@ -16,11 +16,12 @@ if (!defined("JEVREGISTRY"))
 {
 	define("JEVREGISTRY", 1);
 
-	class JevRegistry extends JRegistry
+	class JevRegistry extends \Joomla\Registry\Registry
 	{
 
 		static function &getInstance($id, $namespace = 'default')
 		{
+
 			static $instances;
 
 			if (!isset($instances))
@@ -39,6 +40,7 @@ if (!defined("JEVREGISTRY"))
 
 		function setReference($regpath, & $value)
 		{
+
 			// Explode the registry path into an array
 			$nodes = explode('.', $regpath);
 
@@ -88,6 +90,7 @@ if (!defined("JEVREGISTRY"))
 
 		function & getReference($regpath, $default = null)
 		{
+
 			$result = $default;
 
 			// Explode the registry path into an array
@@ -135,6 +138,7 @@ if (!defined("JEVREGISTRY"))
 
 		function makeNameSpace($namespace)
 		{
+
 			$this->_registry[$namespace] = array('data' => new stdClass());
 
 			return true;

@@ -10,47 +10,55 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //class JEvents_Version extends JObject {
-class JEventsVersion {
+class JEventsVersion
+{
 	/** @var string Product */
-	var $PRODUCT 	= 'JEvents';
+	var $PRODUCT = 'JEvents';
 	/** @var string Release Level */
-	var $RELEASE 	= '3.4.48';
+	var $RELEASE = '3.5.0alpha1';
 	/** @var int Sub Release - backwards compatability only for club addons */
-	var $DEV_LEVEL 	= '0';
+	var $DEV_LEVEL = '0';
 	/** @var string Patch Level  - backwards compatability only for club addons */
 	var $PATCH_LEVEL = '0';
-	
+
 	/** @var string Development Status */
 	var $DEV_STATUS = 'Stable';
 	/** @var string Copyright Text */
-	var $COPYRIGHT 	= 'Copyright &copy; 2006-2018';
+	var $COPYRIGHT = 'Copyright &copy; 2006-2018';
 	/** @var string Copyright Text */
-	var $COPYRIGHTBY 	= 'GWE Systems Ltd, JEvents Project Group';
+	var $COPYRIGHTBY = 'GWE Systems Ltd, JEvents Project Group';
 	/** @var string LINK */
-	var $LINK 		= 'http://www.jevents.net';
+	var $LINK = 'http://www.jevents.net';
 
-	public static function &getInstance() {
+	public static function &getInstance()
+	{
 
 		static $instance;
 
-		if ($instance == null) {
+		if ($instance == null)
+		{
 			$instance = new JEventsVersion();
 		}
+
 		return $instance;
 	}
 
 	/**
 	 * access instance properties
-	 * @var    string		property name
-	 * @return mixed		property content
+	 * @var    string        property name
+	 * @return mixed        property content
 	 */
-	public function get($property) {
-		if(isset($this->$property)) {
+	public function get($property)
+	{
+
+		if (isset($this->$property))
+		{
 			return $this->$property;
 		}
+
 		return null;
 	}
 
@@ -60,47 +68,62 @@ class JEventsVersion {
 	 *
 	 * @static
 	 * @access public
-	 * @return object  			The EventsVersion object.
+	 * @return object            The EventsVersion object.
 	 */
 
 	/**
 	 * @return string URL
 	 */
-	public function getUrl() {
+	public function getUrl()
+	{
+
 		return $this->LINK;
 	}
+
 	/**
 	 * @return string short Copyright
 	 */
-	public function getShortCopyright() {
+	public function getShortCopyright()
+	{
+
 		return $this->COPYRIGHT;
 	}
+
 	/**
 	 * @return string long Copyright
 	 */
-	public function getLongCopyright() {
+	public function getLongCopyright()
+	{
+
 		return $this->COPYRIGHT . ' ' . $this->COPYRIGHTBY;
 	}
+
 	/**
 	 * @return string Long format version
 	 */
-	public function getLongVersion() {
-		return $this->PRODUCT .' '. $this->getShortVersion();
+	public function getLongVersion()
+	{
+
+		return $this->PRODUCT . ' ' . $this->getShortVersion();
 	}
 
 	/**
 	 * @return string Short version format
 	 */
-	public function getShortVersion() {
+	public function getShortVersion()
+	{
+
 		return 'v' . $this->RELEASE . ' ' . $this->DEV_STATUS;
 	}
-	
+
 }
 
-class JevJoomlaVersion {
-	
+class JevJoomlaVersion
+{
+
 	public static function isCompatible($minimum)
 	{
+
 		return version_compare(JVERSION, $minimum, 'ge');
 	}
 

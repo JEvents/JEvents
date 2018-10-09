@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="search" method="upgrade">
-    <name>PLG_JEV_SEARCH_TITLE</name>
+	<name>PLG_JEV_SEARCH_TITLE</name>
 	<creationDate>September 2018</creationDate>
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
@@ -8,45 +8,45 @@
 	<authorEmail></authorEmail>
 	<authorUrl>www.jevents.net</authorUrl>
 	<version>3.4.48</version>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <description>PLG_JEV_SEARCH_DESC</description>
-    <files>
-        <filename plugin="eventsearch">eventsearch.php</filename>
-    </files>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<description>PLG_JEV_SEARCH_DESC</description>
+	<files>
+		<filename plugin="eventsearch">eventsearch.php</filename>
+	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_search_eventsearch.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_search_eventsearch.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
-		
+
 			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields">
 				<field
-					name="search_limit"
-					type="text"
-					default="50"
-					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
-					size="50"
-					description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC" />
+						name="search_limit"
+						type="text"
+						default="50"
+						label="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+						size="50"
+						description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"/>
 				<field
-					name="date_format"
-					type="text"
-					default="%Y-%m-%d"
-					label="JEV_EVENTS_SEARCH_DATE_FORMAT_LBL"
-					description="JEV_EVENTS_SEARCH_DATE_FORMAT_DESC" />
+						name="date_format"
+						type="text"
+						default="%Y-%m-%d"
+						label="JEV_EVENTS_SEARCH_DATE_FORMAT_LBL"
+						description="JEV_EVENTS_SEARCH_DATE_FORMAT_DESC"/>
 				<field
-					name="target_itemid"
-					type="jevmenu"
-					default=""
-					label="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_LBL"
-					description="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_DESC" />
-			    <field
-					name="all_language_search"
-					type="checkbox"
-					default="1"
-					label="JEV_EVENTS_SEARCH_ALL_LANGUAGES_LBL"
-					description="JEV_EVENTS_SEARCH_ALL_LANGUAGES_DESC"/>
-			</fieldset>		
+						name="target_itemid"
+						type="jevmenu"
+						default=""
+						label="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_LBL"
+						description="JEV_EVENTS_SEARCH_TARGET_MENU_ITEM_DESC"/>
+				<field
+						name="all_language_search"
+						type="checkbox"
+						default="1"
+						label="JEV_EVENTS_SEARCH_ALL_LANGUAGES_LBL"
+						description="JEV_EVENTS_SEARCH_ALL_LANGUAGES_DESC"/>
+			</fieldset>
 		</fields>
-	</config>	
+	</config>
 </extension>

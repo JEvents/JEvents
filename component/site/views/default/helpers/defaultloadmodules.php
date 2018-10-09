@@ -2,27 +2,33 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultLoadModules($view, $position)
 {
 
-
 	$cfg = JEVConfig::getInstance();
 
-	$article = JTable::getInstance('content');
+	$article       = Table::getInstance('content');
 	$article->text = "{loadposition $position}";
 
-	$app = JFactory::getApplication();
-	$params = JComponentHelper::getParams("com_content");
+	$app    = Factory::getApplication();
+	$params = ComponentHelper::getParams("com_content");
 
-	JPluginHelper::importPlugin('content');
-	$dispatcher	= JEventDispatcher::getInstance();
-	$results = $dispatcher->trigger('onContentPrepare', array('com_content.article', &$article, &$params, 0));
+	PluginHelper::importPlugin('content');
 
-        if ($article->text == "{loadposition $position}"){
+	$results    = Factory::getApplication()->triggerEvent('onContentPrepare', array('com_content.article', &$article, &$params, 0));
+
+	if ($article->text == "{loadposition $position}")
+	{
 		// in case the content plugin is not enabled
 		return "";
 	}
-	else {
+	else
+	{
 		echo $article->text;
 	}
 

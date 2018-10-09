@@ -13,23 +13,27 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('spacer');
+FormHelper::loadFieldClass('spacer');
 
 // Must load admin language files
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load("com_jevents", JPATH_ADMINISTRATOR);
-
-use Joomla\String\StringHelper;
 
 /**
  * JEVMenu Field class for the JEvents Component
  *
  * @package        JEvents.fields
- * @subpackage    com_banners
- * @since        1.6
+ * @subpackage     com_banners
+ * @since          1.6
  */
 class JFormFieldJEVInfo extends JFormFieldSpacer
 {
@@ -41,7 +45,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	 * @since    1.6
 	 */
 	protected
-			$type = 'JEVInfo';
+		$type = 'JEVInfo';
 
 	/**
 	 * Method to get the field options.
@@ -50,39 +54,40 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	 * @since    1.6
 	 */
 	public
-			function getInput()
+	function getInput()
 	{
+
 		// load core and extra mootools
-		JHTML::_('behavior.framework');
+		HTMLHelper::_('behavior.framework');
 		JHtmlBehavior::framework();
 		JHtmlBehavior::framework(true);
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
-		$node = $this->element;
-		$value = $this->value;
-		$name = $this->name;
+		$node         = $this->element;
+		$value        = $this->value;
+		$name         = $this->name;
 		$control_name = $this->type;
 
 		$help = $node['help'];
 
-		if (!is_null($help))
+		if ((!is_null($help)) && (version_compare(JVERSION, '1.6.0', ">=")))
 		{
 			if (is_object($help))
-			{
 				$help = (string) $help;
-				$help = ((isset($help)) && (JString::strlen($help) <= 0)) ? null : $help;
-			}
-
+			$help = ((isset($help)) && (StringHelper::strlen($help) <= 0)) ? null : $help;
+		}
+		if (!is_null($help))
+		{
 			$parts = explode(",", $value);
 			$helps = explode(",", $help);
 			foreach ($parts as $key => $valuepart)
 			{
 				$help = $helps[$key];
 				list($helpfile, $varname, $part) = explode("::", $help);
-				$lang = JFactory::getLanguage();
+				$lang    = Factory::getLanguage();
 				$langtag = $lang->getTag();
 				if (file_exists(JPATH_COMPONENT_ADMINISTRATOR . '/help/' . $langtag . '/' . $helpfile))
 				{
@@ -97,7 +102,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 					return "";
 				}
 				include($jeventHelpPopup);
-				$help = $this->help($$varname, $part);
+				$help        = $this->help($$varname, $part);
 				$parts[$key] = JText::_($valuepart) . $help;
 			}
 			$value = implode(", ", $parts);
@@ -106,7 +111,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
-		return "<strong style='color:#993300' id='".$this->id."' >" . JText::_($value) . "</strong>";
+		return "<strong style='color:#993300' id='" . $this->id . "' >" . JText::_($value) . "</strong>";
 
 	}
 
@@ -117,15 +122,17 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	 * if $help is text, text is shown in a sticky overlib window with close button
 	 *
 	 * @static
+	 *
 	 * @param    $help        string    help text (html text or url to target)
-	 * @param    $caption    string    caption of overlib window
+	 * @param    $caption     string    caption of overlib window
+	 *
 	 * @return                string    html sting
 	 */
 	public
-			function help($help = 'help text', $caption = '')
+	function help($help = 'help text', $caption = '')
 	{
 
-		$compath = JURI::root() . 'administrator/components/' . JEV_COM_COMPONENT;
+		$compath = Uri::root() . 'administrator/components/' . JEV_COM_COMPONENT;
 		$imgpath = $compath . '/assets/images';
 
 		if (empty($caption))
@@ -134,7 +141,7 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 		static $counthelps = 0;
 		$counthelps++;
 
-		if (JString::substr($help, 0, 7) == 'http://' || JString::substr($help, 0, 8) == 'https://')
+		if (StringHelper::substr($help, 0, 7) == 'http://' || StringHelper::substr($help, 0, 8) == 'https://')
 		{
 			//help text is url, open new window
 			$onclick_cmd = "window.open(\"$help\", \"help\", \"height=700,width=800,resizable=yes,scrollbars\");return false";
@@ -153,11 +160,11 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 
 		// RSH 10/11/10 - Added float:none for 1.6 compatiblity - The default template was floating images to the left
 		$str = '<img border="0" class="jev_help" alt="' . JText::_('JEV_HELP') . '"'
-				. ' title="' . JText::_('JEV_HELP') . '"'
-				. ' src="' . $imgpath . '/help_ques_inact.gif"'
-				//. ' onmouseover="this.src="' . $imgpath . '/help_ques.gif'.'" '
-				//. ' onmouseout="this.src="' . $imgpath . '/help_ques_inact.gif'.'" '
-				. ' onclick="' . $onclick_cmd . '" /><div class="jev_none"><div id="helpdiv' . $counthelps . '" >' . $help . '</div></div>';
+			. ' title="' . JText::_('JEV_HELP') . '"'
+			. ' src="' . $imgpath . '/help_ques_inact.gif"'
+			//. ' onmouseover="this.src="' . $imgpath . '/help_ques.gif'.'" '
+			//. ' onmouseout="this.src="' . $imgpath . '/help_ques_inact.gif'.'" '
+			. ' onclick="' . $onclick_cmd . '" /><div class="jev_none"><div id="helpdiv' . $counthelps . '" >' . $help . '</div></div>';
 
 		return $str;
 

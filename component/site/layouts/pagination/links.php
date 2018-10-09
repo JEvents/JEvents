@@ -9,10 +9,10 @@
 
 defined('JPATH_BASE') or die;
 
-$list = $displayData['list'];
+$list  = $displayData['list'];
 $pages = $list['pages'];
 
-$options = new JRegistry($displayData['options']);
+$options = new JevRegistry($displayData['options']);
 
 $showLimitBox   = $options->get('showLimitBox', true);
 $showPagesLinks = $options->get('showPagesLinks', true);
@@ -20,8 +20,8 @@ $showLimitStart = $options->get('showLimitStart', true);
 
 // Calculate to display range of pages
 $currentPage = 1;
-$range = 1;
-$step = 5;
+$range       = 1;
+$step        = 5;
 
 if (!empty($pages['pages']))
 {
@@ -51,7 +51,7 @@ if ($currentPage >= $step)
 
 	<?php if ($showLimitBox) : ?>
 		<div class="limit pull-right">
-            <label class="sr-only" for="limit"><?php echo JText::_('JEV_PAGINATION_LIMIT_LBL'); ?></label>
+			<label class="sr-only" for="limit"><?php echo JText::_('JEV_PAGINATION_LIMIT_LBL'); ?></label>
 			<?php echo JText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield']; ?>
 		</div>
 	<?php endif; ?>
@@ -59,13 +59,13 @@ if ($currentPage >= $step)
 	<?php if ($showPagesLinks && (!empty($pages))) : ?>
 		<ul class="pagination-list">
 			<?php
-				echo JLayoutHelper::render('joomla.pagination.link', $pages['start']);
-				echo JLayoutHelper::render('joomla.pagination.link', $pages['previous']); ?>
+			echo JLayoutHelper::render('joomla.pagination.link', $pages['start']);
+			echo JLayoutHelper::render('joomla.pagination.link', $pages['previous']); ?>
 			<?php foreach ($pages['pages'] as $k => $page) : ?>
 
 				<?php $output = JLayoutHelper::render('joomla.pagination.link', $page); ?>
 				<?php if (in_array($k, range($range * $step - ($step + 1), $range * $step))) : ?>
-					<?php if (($k % $step == 0 || $k == $range * $step - ($step + 1)) && $k != $currentPage && $k != $range * $step - $step) :?>
+					<?php if (($k % $step == 0 || $k == $range * $step - ($step + 1)) && $k != $currentPage && $k != $range * $step - $step) : ?>
 						<?php $output = preg_replace('#(<a.*?>).*?(</a>)#', '$1...$2', $output); ?>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -73,13 +73,14 @@ if ($currentPage >= $step)
 				<?php echo $output; ?>
 			<?php endforeach; ?>
 			<?php
-				echo JLayoutHelper::render('joomla.pagination.link', $pages['next']);
-				echo JLayoutHelper::render('joomla.pagination.link', $pages['end']); ?>
+			echo JLayoutHelper::render('joomla.pagination.link', $pages['next']);
+			echo JLayoutHelper::render('joomla.pagination.link', $pages['end']); ?>
 		</ul>
 	<?php endif; ?>
 
 	<?php if ($showLimitStart) : ?>
-		<input type="hidden" name="<?php echo $list['prefix']; ?>limitstart" value="<?php echo $list['limitstart']; ?>" />
+		<input type="hidden" name="<?php echo $list['prefix']; ?>limitstart"
+		       value="<?php echo $list['limitstart']; ?>"/>
 	<?php endif; ?>
 
 </div>

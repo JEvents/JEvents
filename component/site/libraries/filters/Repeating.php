@@ -10,27 +10,34 @@
  */
 
 // ensure this file is being included by a parent file
-defined('_JEXEC') or die( 'Direct Access to this location is not allowed.' );
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
 class jevRepeatingFilter extends jevBooleanFilter
 {
 	const filterType = "repeating";
 
-	function __construct($tablename, $filterfield, $isstring=true,$yesLabel="Jev_Yes", $noLabel="Jev_No"){
-		$this->filterType=self::filterType;
-		$this->filterLabel = JText::_("JEV_SHOW_REPEATING_EVENTS");
-		parent::__construct($tablename,$filterfield, true);
-        }
+	function __construct($tablename, $filterfield, $isstring = true, $yesLabel = "Jev_Yes", $noLabel = "Jev_No")
+	{
 
-	function _createFilter($prefix=""){
-		if (!$this->filterField ) return "";
-		if ($this->filter_value ==0){
-		$filter = "(rr.freq='none' OR rr.freq is null)";
-                }
-                else if ($this->filter_value ==1){
-		$filter = "rr.freq<>'none'";
-                }
-                else $filter="";
-		return $filter;	
+		$this->filterType  = self::filterType;
+		$this->filterLabel = JText::_("JEV_SHOW_REPEATING_EVENTS");
+		parent::__construct($tablename, $filterfield, true);
+	}
+
+	function _createFilter($prefix = "")
+	{
+
+		if (!$this->filterField) return "";
+		if ($this->filter_value == 0)
+		{
+			$filter = "(rr.freq='none' OR rr.freq is null)";
+		}
+		else if ($this->filter_value == 1)
+		{
+			$filter = "rr.freq<>'none'";
+		}
+		else $filter = "";
+
+		return $filter;
 	}
 }

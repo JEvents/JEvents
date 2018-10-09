@@ -1,18 +1,22 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultViewEventRowAdmin($view, $row, $manage = false)
 {
 
-    $jinput = JFactory::getApplication()->input;
-    $pub_filter = $jinput->get('published_fv', 0);
-	$popup = false;
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$input     = Factory::getApplication()->input;
+	$pub_filter = $input->get('published_fv', 0);
+	$popup      = false;
+	$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 	{
 		JevHtmlBootstrap::modal();
 		JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-		$popup = true;
+		$popup  = true;
 		$popupw = $params->get("popupw", 800);
 		$popuph = $params->get("popuph", 600);
 	}
@@ -50,12 +54,13 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	}
 
 	$eventlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
-	$eventlink = JRoute::_($eventlink . $view->datamodel->getCatidsOutLink());
-	$border = "border-color:" . $row->bgcolor() . ";";
+	$eventlink = Route::_($eventlink . $view->datamodel->getCatidsOutLink());
+	$border    = "border-color:" . $row->bgcolor() . ";";
 	?>
 
 	<li class="ev_td_li" style="<?php echo $border; ?>">
-		<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" href="<?php echo $eventlink; ?>" title="<?php echo JEventsHTML::special($row->title()) . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') ); ?>"><?php echo $row->title() . ( $row->state() ? '' : JText::_('JEV_UNPUBLISHED') ); ?></a>
+		<a class="<?php echo $row->state() ? 'ev_link_row' : 'ev_link_unpublished'; ?>" href="<?php echo $eventlink; ?>"
+		   title="<?php echo JEventsHTML::special($row->title()) . ($row->state() ? '' : JText::_('JEV_UNPUBLISHED')); ?>"><?php echo $row->title() . ($row->state() ? '' : JText::_('JEV_UNPUBLISHED')); ?></a>
 		&nbsp;<?php echo JText::_('JEV_BY'); ?>
 		&nbsp;<i><?php echo $row->contactlink('', true); ?></i>
 		&nbsp;&nbsp;<?php echo $deletelink; ?>

@@ -12,8 +12,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 
-class TableTranslate extends JTable
+class TableTranslate extends Joomla\CMS\Table\Table
 {
 	/**
 	 * Primary Key
@@ -28,29 +29,39 @@ class TableTranslate extends JTable
 	var $location = null;
 	var $summary = null;
 
-	var $contact= null;
-	var $extra_info= null;
+	var $contact = null;
+	var $extra_info = null;
 
 	var $language = null;
+
 	/**
 	 * Constructor
 	 *
 	 * @param object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct() {
-		$db = JFactory::getDbo();
+	function __construct()
+	{
+
+		$db = Factory::getDbo();
 		parent::__construct('#__jevents_translation', 'translation_id', $db);
 	}
 
-	public static function checkTable(){
-		$db = JFactory::getDbo();
+	public static function checkTable()
+	{
+
+		$db = Factory::getDbo();
 	}
 
-	function bind($array, $ignore = '') {
+	function bind($array, $ignore = '')
+	{
+
 		$data = array();
-		foreach($array as $k => $v){
-			if (strpos($k, "trans_")===0){
+		foreach ($array as $k => $v)
+		{
+			if (strpos($k, "trans_") === 0)
+			{
 				$data[str_replace("trans_", "", $k)] = $v;
 			}
 		}

@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * HTML View class for the component
  *
@@ -22,15 +25,17 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 	function edit()
 	{
+		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		$this->editor =  JFactory::getEditor();
-		if ($this->editor->get("_name") == "codemirror")
+		if ($uEditor === 'codemirror')
 		{
-			$this->editor = JFactory::getEditor("none");
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
+			Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+		} else {
+			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('COM_JEVENTS_CONFIGURATION'));
 
 		// Set toolbar items for the page
@@ -42,21 +47,16 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 		$model = $this->getModel();
 
-		JHTML::_('behavior.tooltip');
-
-		// Get the actions for the asset.
-		$actions = JAccess::getActions(JEV_COM_COMPONENT, "component");
+		HTMLHelper::_('behavior.tooltip');
 
 		jimport('joomla.form.form');
 
 		// Add the search path for the admin component config.xml file.
-		JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
+		\Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . JEV_COM_COMPONENT);
 
 		// Get the form.
 		$modelForm = $model->getForm();
 
-		//$component = isset($this->component)?$this->component : $this->get('Component');
-		
 		$component = $this->get('Component');
 		// Bind the form to the data.
 		if ($modelForm && $component->params)
@@ -64,8 +64,8 @@ class AdminParamsViewParams extends JEventsAbstractView
 			$modelForm->bind($component->params);
 		}
 
-		$this->assignRef("form", $modelForm);
-		$this->assignRef("component", $component);
+		$this->form         = $modelForm;
+		$this->component    = $component;
 
 		// Set the layout
 		$this->setLayout('edit');
@@ -74,15 +74,15 @@ class AdminParamsViewParams extends JEventsAbstractView
 
 	function dbsetup($tpl = null)
 	{
-		
-		JEVHelper::stylesheet( 'eventsadmin.css',  'components/'.JEV_COM_COMPONENT.'/assets/css/' );
 
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_( 'DB_SETUP' ));
-		
+		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
+
+		$document = Factory::getDocument();
+		$document->setTitle(JText::_('DB_SETUP'));
+
 		// Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'DB_SETUP' ), 'jevents' );
+		JToolbarHelper::title(JText::_('DB_SETUP'), 'jevents');
 		JToolbarHelper::cancel('cpanel.cpanel');
 		JEventsHelper::addSubmenu();
-	}	
+	}
 }

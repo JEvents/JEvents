@@ -20,101 +20,154 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="@spacer" type="jevinfo" default="MODULE_PARAMETERS"   label="" description="" />
-				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
-				<field name="catidnew" type="jevcategorynew"  default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
-                                <field name="include_subcats" class="btn-group" type="jevboolean" default="1"  label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />                        
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS" description="JEV_LATEST_USE_SETTINGS_DESC">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="@spacer" type="jevinfo" default="MODULE_PARAMETERS" label="" description=""/>
+				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU"
+				       description="JEV_TARGET_MENU_TIP"/>
+				<field name="catidnew" type="jevcategorynew" default="" size="10" multiple="multiple"
+				       extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL"
+				       description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC"/>
+				<field name="include_subcats" class="btn-group" type="jevboolean" default="1"
+				       label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC"/>
+				<field name="@spacer" type="spacer" default="" label="" description=""/>
+				<field name="modcal_useLocalParam" type="list" default="0" label="JEV_LATEST_USE_SETTINGS"
+				       description="JEV_LATEST_USE_SETTINGS_DESC">
 					<option value="0">JEV_LATEST_USE_COMPONENT_SETTINGS</option>
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
-				<field name="showtooltips" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_TOOLTIPS_CLUB_ONLY" description="JEV_SHOW_TOOLTIPS_CLUB_ONLY_DESC" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="noeventcheck" type="jevmultilist" default="0" label="JEV_NO_EVENT_CHECK" description="JEV_NO_EVENT_CHECK_TIP"  conditional="modcal_useLocalParam" conditions="1" >
-					<option value="0">Jev_no</option>										
-					<option value="1">Jev_yes</option>										
+				<field name="showtooltips" type="jevboolean" class="btn-group" default="0"
+				       label="JEV_SHOW_TOOLTIPS_CLUB_ONLY" description="JEV_SHOW_TOOLTIPS_CLUB_ONLY_DESC"
+				       conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="noeventcheck" type="jevmultilist" default="0" label="JEV_NO_EVENT_CHECK"
+				       description="JEV_NO_EVENT_CHECK_TIP" conditional="modcal_useLocalParam" conditions="1">
+					<option value="0">Jev_no</option>
+					<option value="1">Jev_yes</option>
 				</field>
-				<field name="ignorecatfilter" type="jevboolean" class="btn-group"  default="0" label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="ignorefiltermodule" type="jevboolean" class="btn-group"  default="1" label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="@spacer" type="jevinfo"  default="JEV_HEADER_LINKS"/>
-				<field name="minical_showlink" type="jevradio" class="btn-group"  default="1" label="JEV_TITLE_AS" description="JEV_TITLE_AS_TIP" conditional="modcal_useLocalParam" conditions="1" >
+				<field name="ignorecatfilter" type="jevboolean" class="btn-group" default="0"
+				       label="JEV_LOCK_CAT_FILTERS" description="JEV_LOCK_CAT_FILTERS_TIP"
+				       conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="ignorefiltermodule" type="jevboolean" class="btn-group" default="1"
+				       label="JEV_IGNORE_FILTER_MOD" description="JEV_IGNORE_FILTER_MOD_TIP"
+				       conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="@spacer" type="jevinfo" default="JEV_HEADER_LINKS"/>
+				<field name="minical_showlink" type="jevradio" class="btn-group" default="1" label="JEV_TITLE_AS"
+				       description="JEV_TITLE_AS_TIP" conditional="modcal_useLocalParam" conditions="1">
 					<option value="0">None</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_prevyear" type="jevboolean" class="btn-group"  default="1" label="JEV_PREV_YEAR" description="JEV_PREV_YEAR_TIP"  conditional="modcal_useLocalParam" conditions="1" />
-				<field name="minical_prevmonth" type="jevboolean" class="btn-group"  default="1" label="JEV_PREV_MONTH" description="JEV_PREV_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="minical_actmonth" type="jevradio" class="btn-group"  default="1" label="JEV_CURR_MONTH" description="JEV_CURR_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1" >
+				<field name="minical_prevyear" type="jevboolean" class="btn-group" default="1" label="JEV_PREV_YEAR"
+				       description="JEV_PREV_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="minical_prevmonth" type="jevboolean" class="btn-group" default="1" label="JEV_PREV_MONTH"
+				       description="JEV_PREV_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="minical_actmonth" type="jevradio" class="btn-group" default="1" label="JEV_CURR_MONTH"
+				       description="JEV_CURR_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_actyear" type="jevradio" class="btn-group"  default="1" label="JEV_CURR_YEAR" description="JEV_CURR_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1" >
+				<field name="minical_actyear" type="jevradio" class="btn-group" default="1" label="JEV_CURR_YEAR"
+				       description="JEV_CURR_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1">
 					<option value="0">Jev_no</option>
 					<option value="1">JEV_AS_LINK</option>
 					<option value="2">JEV_AS_TEXT</option>
 				</field>
-				<field name="minical_nextmonth" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_MONTH" description="JEV_NEXT_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="minical_nextyear" type="jevboolean" class="btn-group"  default="1" label="JEV_NEXT_YEAR" description="JEV_NEXT_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="minical_usedate" type="jevboolean" class="btn-group"  default="1" label="JEV_USE_DATE" description="JEV_USE_DATE_TIP" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="modcal_DispLastMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_LAST_MONTH" description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC" conditional="modcal_useLocalParam" conditions="1" >
+				<field name="minical_nextmonth" type="jevboolean" class="btn-group" default="1" label="JEV_NEXT_MONTH"
+				       description="JEV_NEXT_MONTH_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="minical_nextyear" type="jevboolean" class="btn-group" default="1" label="JEV_NEXT_YEAR"
+				       description="JEV_NEXT_YEAR_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="minical_usedate" type="jevboolean" class="btn-group" default="1" label="JEV_USE_DATE"
+				       description="JEV_USE_DATE_TIP" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="@spacer" type="spacer" default="" label="" description=""/>
+				<field name="modcal_DispLastMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_LAST_MONTH"
+				       description="JEV_MINICAL_DISPLAY_LAST_MONTH_DESC" conditional="modcal_useLocalParam"
+				       conditions="1">
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispLastMonthDays" type="jevtext" size="2" default="0" label="JEV_DLM_STOP_DAY" description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1" />
-				<field name="modcal_DispNextMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_NEXT_MONTH" description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" conditional="modcal_useLocalParam" conditions="1" >
+				<field name="modcal_DispLastMonthDays" type="jevtext" size="2" default="0" label="JEV_DLM_STOP_DAY"
+				       description="JEV_TIP_DLM_STOP_DAY" conditional="modcal_useLocalParam" conditions="1"/>
+				<field name="modcal_DispNextMonth" type="jevmultilist" default="NO" label="JEV_DISPLAY_NEXT_MONTH"
+				       description="JEV_MINICAL_DISPLAY_NEXT_MONTH_DESC" conditional="modcal_useLocalParam"
+				       conditions="1">
 					<option value="NO">JEV_NO</option>
 					<option value="YES_stop">JEV_DLM_YES_STOP_DAY</option>
 					<option value="YES_stop_events">JEV_DLM_YES_EVENT_SDAY</option>
 					<option value="ALWAYS">JEV_ALWAYS</option>
 					<option value="ALWAYS_events">JEV_DLM_ALWAYS_IF_EVENTS</option>
 				</field>
-				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3" label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam" conditions="1" />
-                                <field name="emptydaylinks" type="jevboolean" class="btn-group"  default="1" label="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS" description="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS_DESC" conditional="modcal_useLocalParam" conditions="1" />
+				<field name="modcal_DispNextMonthDays" type="jevtext" default="0" menu="hide" size="3"
+				       label="JEV_DNM_START_DAY" description="JEV_TIP_DNM_START_DAY" conditional="modcal_useLocalParam"
+				       conditions="1"/>
+				<field name="emptydaylinks" type="jevboolean" class="btn-group" default="1"
+				       label="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS" description="JEV_SHOW_EMPTY_CAL_DAYS_AS_LINKS_DESC"
+				       conditional="modcal_useLocalParam" conditions="1"/>
 			</fieldset>
-			<fieldset name="JEV_CLUB_ADDONS"  label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL" addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL"   label="JEV_LATEST_INFO" description="JEV_LATEST_EXTRAS_TAB_LABEL" />
-				<field name="extras0" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras1" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras2" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras3" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras4" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras5" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras6" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras7" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras8" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras9" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras10" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras11" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras12" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
-				<field name="extras13" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS" description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC" />
+			<fieldset name="JEV_CLUB_ADDONS" label="COM_MODULES_JEV_CLUB_ADDONS_FIELDSET_LABEL"
+			          addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="@spacer" type="jevinfo" default="JEV_LATEST_EXTRAS_TAB_LABEL" label="JEV_LATEST_INFO"
+				       description="JEV_LATEST_EXTRAS_TAB_LABEL"/>
+				<field name="extras0" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras1" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras2" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras3" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras4" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras5" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras6" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras7" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras8" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras9" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras10" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras11" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras12" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
+				<field name="extras13" type="jevextras" default="" label="JEV_MINICAL_ADDITIONAL_CONSTRAINTS"
+				       description="JEV_MINICAL_ADDITIONAL_CONSTRAINTS_DESC"/>
 			</fieldset>
-			<fieldset name="JEV_THEME_AND_SIZES"  addfieldpath="/administrator/components/com_jevents/fields/">
-				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME"/>
-				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX" description="PARAMMODULECLASSSUFFIX" />
-				<field name="inc_ec_css" type="jevradio" class="btn-group"  default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+			<fieldset name="JEV_THEME_AND_SIZES" addfieldpath="/administrator/components/com_jevents/fields/">
+				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME"
+				       description="JEV_TIP_VIEWNAME"/>
+				<field name="moduleclass_sfx" type="text" default="" label="JEV_LATEST_MODULE_CLASS_SUFFIX"
+				       description="PARAMMODULECLASSSUFFIX"/>
+				<field name="inc_ec_css" type="jevradio" class="btn-group" default="1" label="EVENTS_CAL_CSS"
+				       description="EVENTS_CAL_CSS_TIP">
 					<option value="0">Jev_no</option>
 					<option value="1">Jev_yes</option>
 				</field>
-				<field name="inc_ec_css" type="jevradio" class="btn-group"  default="1" label="EVENTS_CAL_CSS" description="EVENTS_CAL_CSS_TIP">
+				<field name="inc_ec_css" type="jevradio" class="btn-group" default="1" label="EVENTS_CAL_CSS"
+				       description="EVENTS_CAL_CSS_TIP">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_YES</option>
 				</field>
-				<field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH" description="COM_MODULES_CAL_WIDTH_DESC" />
-				<field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT" description="COM_MODULES_CAL_HEIGHT_DESC" />
-				<field name="mod_cal_rowheight" type="text" default="" label="COM_MODULES_CAL_ROW_HEIGHT" description="COM_MODULES_CAL_ROW_HEIGHT_DESC" />
+				<field name="mod_cal_width" type="text" default="" label="COM_MODULES_CAL_WIDTH"
+				       description="COM_MODULES_CAL_WIDTH_DESC"/>
+				<field name="mod_cal_height" type="text" default="" label="COM_MODULES_CAL_HEIGHT"
+				       description="COM_MODULES_CAL_HEIGHT_DESC"/>
+				<field name="mod_cal_rowheight" type="text" default="" label="COM_MODULES_CAL_ROW_HEIGHT"
+				       description="COM_MODULES_CAL_ROW_HEIGHT_DESC"/>
 			</fieldset>
 			<fieldset name="advanced">
 				<field name="cache" type="list" default="1" label="JEV_CACHING" description="JEV_CACHING_DESC">
 					<option value="1">USE_GLOBAL</option>
 					<option value="0">JEV_NO_CACHING</option>
 				</field>
-				<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group"  default="0" label="JEV_HIDE_LINKS" description="JEV_HIDE_LINKS_TIP" />
+				<field name="modcal_LinkCloaking" type="jevboolean" class="btn-group" default="0" label="JEV_HIDE_LINKS"
+				       description="JEV_HIDE_LINKS_TIP"/>
 			</fieldset>
 		</fields>
 	</config>

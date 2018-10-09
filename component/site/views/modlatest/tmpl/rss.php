@@ -12,34 +12,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
-// setup document
-$doc = JFactory::getDocument();
+// Setup the document
+$doc = Factory::getDocument();
 
 $doc->setLink($this->info['link']);
 $doc->setBase($this->info['base']);
 $doc->setTitle($this->info['title']);
 $doc->setDescription($this->info['description']);
 
-$docimage =new JFeedImage();
-$docimage->description= $this->info['description'];
-$docimage->title=$this->info['title'];
-$docimage->url= $this->info['image_url'];
-$docimage->link= $this->info['imagelink'];
-$doc->image =  $docimage;
+$docimage              = new JFeedImage();
+$docimage->description = $this->info['description'];
+$docimage->title       = $this->info['title'];
+$docimage->url         = $this->info['image_url'];
+$docimage->link        = $this->info['imagelink'];
+$doc->image            = $docimage;
 
-foreach ($this->eventsByRelDay as $relDay => $ebrd) {
-	foreach ($ebrd as $row) {
+foreach ($this->eventsByRelDay as $relDay => $ebrd)
+{
+	foreach ($ebrd as $row)
+	{
 		// title for particular item
-		$item_title = htmlspecialchars( $row->title() );
-		$item_title = html_entity_decode( $item_title );
+		$item_title = htmlspecialchars($row->title());
+		$item_title = html_entity_decode($item_title);
 
 		// url link to article
 		$startDate = $row->publish_up();
 		//$eventDate = JevDate::mktime(JString::substr($startDate,11,2),JString::substr($startDate,14,2), JString::substr($startDate,17,2),$this->jeventCalObject->now_m,$this->jeventCalObject->now_d + $relDay,$this->jeventCalObject->now_Y);
 		$eventDate = JevDate::strtotime($startDate);
-		$datenow = JEVHelper::getNow();
+		$datenow   = JEVHelper::getNow();
 		if ($relDay > 0)
 		{
 			$eventDate = JevDate::strtotime($datenow->toFormat('%Y-%m-%d ') . JevDate::strftime('%H:%M', $eventDate) . " +$relDay days");
@@ -50,10 +53,10 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		}
 
 
-		$targetid = $this->modparams->get("target_itemid",0);
-		$link = $row->viewDetailLink(date("Y", $eventDate),date("m", $eventDate),date("d", $eventDate),false,$targetid);
-		$link = str_replace("&tmpl=component","",$link );
-		$item_link  = JRoute::_($link.$this->jeventCalObject->datamodel->getCatidsOutLink());
+		$targetid  = $this->modparams->get("target_itemid", 0);
+		$link      = $row->viewDetailLink(date("Y", $eventDate), date("m", $eventDate), date("d", $eventDate), false, $targetid);
+		$link      = str_replace("&tmpl=component", "", $link);
+		$item_link = Route::_($link . $this->jeventCalObject->datamodel->getCatidsOutLink());
 
 		// removes all formating from the intro text for the description text
 		$item_description = $row->content();
@@ -61,26 +64,33 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		// remove dodgy border e.g. "diamond/question mark"
 		$item_description = preg_replace('#border=[\"\'][^0-9]*[\"\']#i', '', $item_description);
 
-		if ( $this->info[ 'limit_text' ] ) {
-			if ( $this->info[ 'text_length' ] ) {
-				$item_description = JFilterOutput::cleanText( $item_description );
+		if ($this->info['limit_text'])
+		{
+			if ($this->info['text_length'])
+			{
+				$item_description = JFilterOutput::cleanText($item_description);
 				// limits description text to x words
-				$item_description_array = explode( ' ', $item_description );
-				$count = count( $item_description_array );
-				if ( $count > $this->info[ 'text_length' ] ) {
+				$item_description_array = explode(' ', $item_description);
+				$count                  = count($item_description_array);
+				if ($count > $this->info['text_length'])
+				{
 					$item_description = '';
-					for ( $a = 0; $a < $this->info[ 'text_length' ]; $a++ ) {
-						$item_description .= $item_description_array[$a]. ' ';
+					for ($a = 0; $a < $this->info['text_length']; $a++)
+					{
+						$item_description .= $item_description_array[$a] . ' ';
 					}
-					$item_description = trim( $item_description );
+					$item_description = trim($item_description);
 					$item_description .= '...';
 				}
-			} else  {
+			}
+			else
+			{
 				// do not include description when text_length = 0
-				$item_description = NULL;
+				$item_description = null;
 			}
 		}
-		else {
+		else
+		{
 			// this can lead to double CDATA wrapping which is a problem in Firefox 13+
 			//$item_description = "<![CDATA[$item_description]]>"  ;
 		}
@@ -107,21 +117,26 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd) {
 		// load individual item creator class
 		$item = new JFeedItem();
 		// item info
-		if ($row->alldayevent()) {
-			$temptime = new JevDate($eventDate);
-			$item->title =  $temptime->toFormat(JText::_('JEV_RSS_DATE')) ." : " .$item_title;
-		} else {
-			$temptime = new JevDate($eventDate);
-			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) ." : " .$item_title;
+
+		$temptime    = new JevDate($eventDate);
+		if ($row->alldayevent())
+		{
+			$temptime    = new JevDate($eventDate);
+			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATE')) . " : " . $item_title;
 		}
-		$item->link = $item_link;
+		else
+		{
+			$temptime    = new JevDate($eventDate);
+			$item->title = $temptime->toFormat(JText::_('JEV_RSS_DATETIME')) . " : " . $item_title;
+		}
+		$item->link        = $item_link;
 		$item->description = $item_description;
-		$item->category = $item_type;
-		
+		$item->category    = $item_type;
+
 		$eventcreated = new JevDate($row->created());
-		$item->date= $eventcreated->toUnix(true);
+		$item->date   = $eventcreated->toUnix(true);
 
 		// add item info to RSS document
-		$doc->addItem( $item );
+		$doc->addItem($item);
 	}
 }

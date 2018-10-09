@@ -13,60 +13,67 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('radio');
+FormHelper::loadFieldClass('radio');
 
 /**
  * JEVMenu Field class for the JEvents Component
  *
- * @package		JEvents.fields
- * @subpackage	com_banners
- * @since		1.6
+ * @package        JEvents.fields
+ * @subpackage     com_banners
+ * @since          1.6
  */
 class JFormFieldJEVBoolmsg extends JFormFieldRadio
 {
 	/**
 	 * The form field type.s
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'JEVBoolmsg';
 
-	protected function getInput()
-	{
-		$style=' class="jev_none" ';
-		// if not showing copyright show message
-		if (!$this->value){
-			$style=' class="jev_block" ';
-		}
-
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
-
-		return parent::getInput().'<div id="jevcopymsg" '.$style.'>'.JText::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.").'</div>';
-	}
-	
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	public function getOptions()
-	{		
+	{
+
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
-		
-		$options = array ();
-		$options[] = JHTML::_('select.option', 0, JText::_("Jev_No"));
-		$options[] = JHTML::_('select.option', 1, JText::_("jev_Yes"));
+
+		$options   = array();
+		$options[] = HTMLHelper::_('select.option', 0, JText::_("Jev_No"));
+		$options[] = HTMLHelper::_('select.option', 1, JText::_("jev_Yes"));
 
 		return $options;
 
-		
+
+	}
+
+	protected function getInput()
+	{
+
+		$style = ' class="jev_none" ';
+		// if not showing copyright show message
+		if (!$this->value)
+		{
+			$style = ' class="jev_block" ';
+		}
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
+		return parent::getInput() . '<div id="jevcopymsg" ' . $style . '>' . JText::_("Before removing the copyright footer please read this important message at the <a href='https://www.jevents.net/hidecopyright?tmpl=component' title='get hide copyright code' class='modal' rel='{handler: \"iframe\", size: {x: 650, y: 450}}'>JEvents website</a>.") . '</div>';
 	}
 }

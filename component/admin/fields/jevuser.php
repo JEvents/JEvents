@@ -13,10 +13,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJEVuser extends JFormFieldList
 {
@@ -25,39 +29,47 @@ class JFormFieldJEVuser extends JFormFieldList
 
 	protected function getInput()
 	{
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		// if no value set then default to zero
-		if (intval($this->value) == 0){
+		if (intval($this->value) == 0)
+		{
 
 			$options = (array) $this->getOptions();
-			foreach ($options as $option){
-				if ($option->sendEmail){
+			foreach ($options as $option)
+			{
+				if ($option->sendEmail)
+				{
 					$this->value = $option->value;
 					break;
 				}
 			}
 		}
+
 		return parent::getInput();
 	}
 
 	public function getOptions()
 	{
-		$params = JComponentHelper::getParams("com_jevents");
 
-		$db = JFactory::getDbo();
+		$params = ComponentHelper::getParams("com_jevents");
 
-                // if editing category then find the rules for a specific category
-                if ($this->name == "jform[params][admin]" 
-                        && JFactory::getApplication()->input->getCmd("option")=="com_categories"
-                        && JFactory::getApplication()->input->getInt("id")>0){
-                    $rules = JAccess::getAssetRules("com_jevents.category.".JFactory::getApplication()->input->getInt("id"), true);
-                }
-                else {
-                    //JAccess::preload(array("com_jevents"));
-                    $rules = JAccess::getAssetRules("com_jevents", true);
-                }
+		$db = Factory::getDbo();
+
+		// if editing category then find the rules for a specific category
+		if ($this->name == "jform[params][admin]"
+			&& Factory::getApplication()->input->getCmd("option") == "com_categories"
+			&& Factory::getApplication()->input->getInt("id") > 0)
+		{
+			$rules = JAccess::getAssetRules("com_jevents.category." . Factory::getApplication()->input->getInt("id"), true);
+		}
+		else
+		{
+			//JAccess::preload(array("com_jevents"));
+			$rules = JAccess::getAssetRules("com_jevents", true);
+		}
 		$creatorgroups = $rules->getData();
 		if (strpos($this->name, "jevadmin") === 0)
 		{
@@ -88,8 +100,9 @@ class JFormFieldJEVuser extends JFormFieldList
 		// take the higher permission setting
 		foreach ($creatorgroups[$action]->getData() as $creatorgroup => $permission)
 		{
-			if ($permission){
-				$creatorgroupsdata[$creatorgroup]=$permission;
+			if ($permission)
+			{
+				$creatorgroupsdata[$creatorgroup] = $permission;
 			}
 		}
 
@@ -97,22 +110,22 @@ class JFormFieldJEVuser extends JFormFieldList
 		foreach ($creatorgroupsdata as $creatorgroup => $permission)
 		{
 			if ($permission == 1)
-								{
+			{
 				$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 			}
 		}
-				
+
 		$sql = "SELECT id AS value, name AS text , sendEmail FROM #__users where id IN (" . implode(",", array_values($users)) . ") ORDER BY name asc";
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
-		
-		$nulluser = new stdClass();
-		$nulluser->value = 0;
+
+		$nulluser            = new stdClass();
+		$nulluser->value     = 0;
 		$nulluser->sendEmail = 0;
-		$nulluser->text = JText::_("SELECT_ADMIN");
+		$nulluser->text      = JText::_("SELECT_ADMIN");
 		array_unshift($users, $nulluser);
-		
+
 		return $users;
-		
+
 	}
 }

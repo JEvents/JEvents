@@ -2,15 +2,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$jinput = Jfactory::getApplication()->input;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
 
-if ($jinput->getInt("limit", 0) < 1000)
+$input = Factory::getApplication()->input;
+
+if ($input->getInt("limit", 0) < 1000)
 {
-	$uri = JUri::getInstance();
+	$uri = Uri::getInstance();
 	$uri->setVar("limit", 99999);
 	global $mainframe;
 	$url = $uri->toString();
-	JFactory::getApplication()->redirect($url);
+	Factory::getApplication()->redirect($url);
 	//echo $url;
 	exit();
 }
@@ -26,17 +30,17 @@ $rows = array();
 
 $fields = array();
 
-$compparams = JComponentHelper::getParams("com_jevents");
-$infields = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
-$cols = array();
-$titles = array();
+$compparams = ComponentHelper::getParams("com_jevents");
+$infields   = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
+$cols       = array();
+$titles     = array();
 
 foreach ($infields as $infield)
 {
-	$parts = explode("|", $infield);
-	$cols[] = $parts[0];
-	$titles[] = $parts[2];
-        $fields[$parts[2]] = $parts[0];
+	$parts             = explode("|", $infield);
+	$cols[]            = $parts[0];
+	$titles[]          = $parts[2];
+	$fields[$parts[2]] = $parts[0];
 }
 
 $rows[] = array_keys($fields);
@@ -45,33 +49,38 @@ $rows[] = array_keys($fields);
 $template = "";
 foreach ($cols as $col)
 {
-    if (strlen($template)>0){
-        $template .= "##@@##";
-    }
-    $template .= "{{xx:$col}}";
+	if (strlen($template) > 0)
+	{
+		$template .= "##@@##";
+	}
+	$template .= "{{xx:$col}}";
 }
 if ($num_events > 0)
 {
-        for ($r = 0; $r < $num_events; $r++)
-        {
-            ob_start();
-            $this->loadedFromTemplate('icalevent.list_row', $data['rows'][$r], 0, $template);
-            $rowdata = ob_get_clean();
-	        if ($compparams->get("csvexportfiler", 0) == 1)
-	        {
-		        $rows[] = explode("##@@##", strip_tags($rowdata));
+	for ($r = 0; $r < $num_events; $r++)
+	{
+		ob_start();
+		$this->loadedFromTemplate('icalevent.list_row', $data['rows'][$r], 0, $template);
+		$rowdata = ob_get_clean();
+		if ($compparams->get("csvexportfiler", 0) == 1)
+		{
+			$rows[] = explode("##@@##", strip_tags($rowdata));
 
-	        } elseif($compparams->get("csvexportfiler", 0) == 2) {
+		}
+		elseif ($compparams->get("csvexportfiler", 0) == 2)
+		{
 
-		        $rows[] = explode("##@@##", htmlentities($rowdata));
+			$rows[] = explode("##@@##", htmlentities($rowdata));
 
-	        } else {
-		        $rows[] = explode("##@@##", $rowdata);
-	        }
-        }
+		}
+		else
+		{
+			$rows[] = explode("##@@##", $rowdata);
+		}
+	}
 }
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->setMimeEncoding("text/csv");
 
 
@@ -100,25 +109,27 @@ outputCSV($rows);
 
 function outputCSV($data)
 {
+
 	ob_start();
 	$outstream = fopen("php://output", 'w');
 
 	function __outputCSV(&$row, $key, $filehandler)
 	{
+
 		if (is_object($row))
 		{
 			$data = array();
 			global $fields;
 			foreach ($fields as $key => $field)
 			{
-                                if (isset($row->$field))
+				if (isset($row->$field))
 				{
 					$data[$key] = $row->$field;
-				}				
+				}
 				if (is_array($data[$key]))
 				{
 					$data[$key] = implode(", ", $data[$key]);
-				}				
+				}
 			}
 		}
 		else
@@ -133,12 +144,14 @@ function outputCSV($data)
 	array_walk($data, '__outputCSV', $outstream);
 
 	fclose($outstream);
+
 	return ob_get_clean();
 
 }
 
 function exportAsCSV(&$exportData)
 {
+
 	return outputCSV($exportData);
 
 }

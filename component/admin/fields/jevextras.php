@@ -12,6 +12,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -23,64 +26,94 @@ class JFormFieldJevextras extends JFormField
 	/**
 	 * The form field type.s
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected
-			$type = 'JEVExtras';
+		$type = 'JEVExtras';
 	protected
-			$extra = null;
+		$extra = null;
 	protected
-			$data = null;
+		$data = null;
 	protected
-			$labeldata = null;
+		$labeldata = null;
 
 	function __construct($form = null)
 	{
+
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($form);
-		$this->data = array();
+		$this->data      = array();
 		$this->labeldata = array();
 
 	}
 
+	public
+	function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+
+		$success = parent:: setup($element, $value, $group);
+		if (!$success)
+		{
+			return false;
+		}
+
+		//echo var_export($this->form);die();
+		return true;
+
+		// load any custom fields
+		PluginHelper::importPlugin("jevents");
+		$id  = intval(str_replace("extras", "", $this->name));
+		$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+
+		return true;
+
+	}
+
 	protected
-			function getLabel()
+	function getLabel()
 	{
 
 		// load any custom fields
-		JPluginHelper::importPlugin("jevents");
+		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
-
+		if (version_compare(JVERSION, '3.3.0', '<'))
+		{
+			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+		}
 		if (isset($this->data[$id]))
 		{
 			$this->element['label'] = $this->data[$id]->label;
-			$this->description = $this->data[$id]->description;
+			$this->description      = $this->data[$id]->description;
 		}
 		else
 		{
 			$this->element['label'] = "";
-			$this->description = "";
+			$this->description      = "";
 		}
+
 		return parent::getLabel();
 
 	}
 
 	protected
-			function getInput()
+	function getInput()
 	{
+
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
+		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
-		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+		if (version_compare(JVERSION, '3.3.0', '>='))
+		{
+			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+		}
 
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		if (array_key_exists($id, $this->data))
 		{
@@ -93,37 +126,17 @@ class JFormFieldJevextras extends JFormField
 
 	}
 
-	public
-			function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$success = parent:: setup($element, $value, $group);
-		if (!$success)
-		{
-			return false;
-		}
-		//echo var_export($this->form);die();
-		return true;
-
-		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
-		$id = intval(str_replace("extras", "", $this->name));
-		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
-
-		return true;
-
-	}
-
 	private
-			function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
+	function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
 	{
+
 		$id = intval(str_replace("extras", "", $name));
 		if (array_key_exists($id, $this->data))
 		{
-			$item = $this->data[$id];
-			$label = $item->label;
+			$item        = $this->data[$id];
+			$label       = $item->label;
 			$description = $item->description;
-			$output = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
+			$output      = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
 			if ($description)
 			{
 				$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';

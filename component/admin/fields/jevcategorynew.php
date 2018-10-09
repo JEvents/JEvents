@@ -12,8 +12,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevcategorynew extends JFormFieldList
 {
@@ -21,24 +26,27 @@ class JFormFieldJevcategorynew extends JFormFieldList
 	protected $type = 'Jevcategorynew';
 
 	protected
-			function getInput()
+	function getInput()
 	{
+
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
+
 		return parent::getInput();
-		
+
 	}
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
+
 		// Initialize variables.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$options = array();
 
 		// Initialize some field attributes.
@@ -46,7 +54,7 @@ class JFormFieldJevcategorynew extends JFormFieldList
 		$published = (string) $this->element['published'];
 
 		// OLD values
-		
+
 		// Load the category options for a given extension.
 		if (!empty($extension))
 		{
@@ -54,11 +62,11 @@ class JFormFieldJevcategorynew extends JFormFieldList
 			// Filter over published state or not depending upon if it is present.
 			if ($published)
 			{
-				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+				$options = HTMLHelper::_('category.options', $extension, array('filter.published' => explode(',', $published)));
 			}
 			else
 			{
-				$options = JHtml::_('category.options', $extension);
+				$options = HTMLHelper::_('category.options', $extension);
 			}
 
 			// Verify permissions.  If the action attribute is set, then we scan the options.
@@ -66,7 +74,7 @@ class JFormFieldJevcategorynew extends JFormFieldList
 			{
 
 				// Get the current user object.
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 
 				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
 				// eg JAccess::preload('core.create', 'com_content.category')
@@ -83,17 +91,19 @@ class JFormFieldJevcategorynew extends JFormFieldList
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters
-		if (!$this->value && ($this->form instanceof JForm))
+		if (!$this->value && ($this->form instanceof Form))
 		{
-			$context = $this->form->getName();
-			$this->value =  array();
-			for($i=0; $i<20; $i++){
-				if ($this->form->getValue("catid$i","params",0)){
-					$this->value[] =  $this->form->getValue("catid$i","params",0);
+			$context     = $this->form->getName();
+			$this->value = array();
+			for ($i = 0; $i < 20; $i++)
+			{
+				if ($this->form->getValue("catid$i", "params", 0))
+				{
+					$this->value[] = $this->form->getValue("catid$i", "params", 0);
 				}
 			}
 		}

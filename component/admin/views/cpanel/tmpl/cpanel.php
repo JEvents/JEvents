@@ -10,9 +10,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
 
 JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -20,7 +21,7 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
 if (!empty($this->sidebar))
 {
 	?>
-	<div id="j-sidebar-container" class="j-sidebar-container j-toggle-transition j-sidebar-visible">
+	<div id="j-sidebar-container" class="span2">
 
 		<?php echo $this->sidebar; ?>
 
@@ -28,19 +29,19 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', JString::substr($version->getShortVersion(), 1)); ?>
+			<?php echo JText::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
-<?php
+	<?php
 }
 $mainspan = 10;
 $fullspan = 12;
 ?>
 
-<div id="jevents" class="span<?php echo $fullspan; ?> j-toggle-main">
-    <form action="index.php" method="post" name="adminForm" id="adminForm">
-        <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
-            <div id="cpanel" class="well well-small clearfix ">
+<div id="jevents" class="span12">
+	<form action="index.php" method="post" name="adminForm" id="adminForm">
+		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
+			<div id="cpanel" class="well well-small clearfix ">
 				<?php
 				if (JEVHelper::isAdminUser())
 				{
@@ -57,10 +58,11 @@ $fullspan = 12;
 
 				if (JEVHelper::isAdminUser())
 				{
-                                    if ($params->get("authorisedonly", 0)) {
-					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
-					$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
-                                    }
+					if ($params->get("authorisedonly", 0))
+					{
+						$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=user.list";
+						$this->_quickiconButtonWHover($link, "cpanel/AuthorisedCool.png", "cpanel/AuthorisedHot.png", JText::_('JEV_MANAGE_USERS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					}
 					// new version - Joomla 3.5 does its stuff using AJAX and assumes its ONLY called from com_config :(
 					$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit&view=component&component=com_jevents";
 					$this->_quickiconButtonWHover($link, "cpanel/ConfigCool.png", "cpanel/ConfigHot.png", JText::_('JEV_INSTAL_CONFIG'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
@@ -84,50 +86,57 @@ $fullspan = 12;
 				}
 				// Links to addons
 				// Managed Locations
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
+				$db = Factory::getDbo();
+				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' ");
+				$is_enabled = $db->loadResult();
+				if ($is_enabled)
+				{
 					$link = "index.php?option=com_jevlocations";
-					JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Managed People
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
+				$db = Factory::getDbo();
+				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' ");
+				$is_enabled = $db->loadResult();
+				if ($is_enabled)
+				{
 					$link = "index.php?option=com_jevpeople";
-					JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", JText::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// RSVP Pro
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' " );
-				$is_enabled = $db->loadResult ();
-				if ($is_enabled) {
+				$db = Factory::getDbo();
+				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' ");
+				$is_enabled = $db->loadResult();
+				if ($is_enabled)
+				{
 					$link = "index.php?option=com_rsvppro";
-					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Custom Fields				
-				$db = JFactory::getDbo ();
-				$db->setQuery ( "SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' " );
+				$db = Factory::getDbo();
+				$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 				$extension = $db->loadObject();
 				// Stop if user is not authorised to manage JEvents
-				if ($extension && $extension->enabled && JEVHelper::isAdminUser()) {
+				if ($extension && $extension->enabled && JEVHelper::isAdminUser())
+				{
 					$manifestCache = json_decode($extension->manifest_cache);
-					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-					JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
-					$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					if (version_compare($manifestCache->version, "3.5.0RC", "ge"))
+					{
+						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
+						Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
+					}
 				}
 
 				?>
-                <div class="clear"></div>
-            </div>
-        </div>
+				<div class="clear"></div>
+			</div>
+		</div>
 		<?php
-		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && JFactory::getLanguage()->getTag() != "en-GB")
+		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "en-GB")
 		{
 			?>
 			<div class="span12 center">
@@ -137,17 +146,17 @@ $fullspan = 12;
 			<?php
 		}
 		?>
-        <div class="span12 center">
-            <a href="<?php
-			   echo $version->getUrl();
-			   ?>" target="_blank" style="font-size:xx-small;"
-               title="Events Website"><?php echo $version->getLongVersion(); ?></a>
-            &nbsp;
-            <span style="color:#999999; font-size:9px;"><?php echo $version->getShortCopyright(); ?></span>
-        </div>
+		<div class="span12 center">
+			<a href="<?php
+			echo $version->getUrl();
+			?>" target="_blank" style="font-size:xx-small;"
+			   title="Events Website"><?php echo $version->getLongVersion(); ?></a>
+			&nbsp;
+			<span style="color:#999999; font-size:9px;"><?php echo $version->getShortCopyright(); ?></span>
+		</div>
 
-        <input type="hidden" name="task" value="cpanel"/>
-        <input type="hidden" name="act" value=""/>
-        <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
-    </form>
+		<input type="hidden" name="task" value="cpanel"/>
+		<input type="hidden" name="act" value=""/>
+		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
+	</form>
 </div>

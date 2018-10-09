@@ -11,6 +11,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+
 /**
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.
@@ -32,19 +34,29 @@ class JFormFieldJevbreak extends JFormField
 	 */
 	protected function getLabel()
 	{
-        $doc = JFactory::getDocument();
-        $version = new JVersion();
-        $doc->addStyleDeclaration(".jev-break {border-bottom:1px solid #eee;font-size:16px;color:#0088CC;margin-top:15px;padding:2px 0;width:100%}");
 
-        if (isset($this->element['label']) && !empty($this->element['label'])) {
-            $label = JText::_((string)$this->element['label']);
-            $css   = (string)$this->element['class'];
+		$doc     = Factory::getDocument();
+		$version = new JVersion();
+		$doc->addStyleDeclaration(".jev-break {border-bottom:1px solid #eee;font-size:16px;color:#0088CC;margin-top:15px;padding:2px 0;width:100%}");
 
-            return '<div class="jev-break ' . $css . '">' . $label . '</div>';
-
-        } else {
-            return;
-        }
+		if (isset($this->element['label']) && !empty($this->element['label']))
+		{
+			$label   = JText::_((string) $this->element['label']);
+			$css     = (string) $this->element['class'];
+			$version = new JVersion();
+			if (version_compare($version->getShortVersion(), '3.0', '>='))
+			{
+				return '<div class="jev-break ' . $css . '">' . $label . '</div>';
+			}
+			else
+			{
+				return '<label class="jev-break ' . $css . '">' . $label . '</label>';
+			}
+		}
+		else
+		{
+			return;
+		}
 
 	}
 
@@ -53,7 +65,8 @@ class JFormFieldJevbreak extends JFormField
 	 */
 	protected function getInput()
 	{
-        return;
+
+		return;
 	}
 
 }

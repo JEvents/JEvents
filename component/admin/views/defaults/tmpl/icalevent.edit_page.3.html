@@ -10,21 +10,23 @@
 			{{Title:TITLE}}
 		</div>
 	</div>
-	<div {{Priority:PRIORITY# class="row jevpriority" #class="row jevpriority jev_none"}}>
+	<div {{Priority:PRIORITY# class="row jevpriority" #class="row jevpriority jev_none" }}>
 		<div class="span2">
 			{{Priority Label:PRIORITY_LBL}}
 		</div>
-		{{Priority:PRIORITY#<div class="span10">%s</div>}}
+		{{Priority:PRIORITY#
+		<div class="span10">%s</div>
+		}}
 	</div>
-	<div {{Creator:CREATOR# class="row jevcreator" #class="row jevcreator jev_none"}}>
+	<div {{Creator:CREATOR# class="row jevcreator" #class="row jevcreator jev_none" }}>
 		<div class="span2">
 			{{Creator label:CREATOR_LBL}}
 		</div>
 		<div class="span10">
 			{{Creator:CREATOR}}
 		</div>
-	</div>			
-	<div {{Calendar label:ICAL_LBL#class="row jevical" #class="row jevical jev_none"}}>
+	</div>
+	<div {{Calendar label:ICAL_LBL#class="row jevical" #class="row jevical jev_none" }}>
 		<div class="span2">
 			{{Calendar label:ICAL_LBL}}
 		</div>
@@ -32,7 +34,7 @@
 			{{Calendar:ICAL}}
 		</div>
 	</div>
-	<div {{Lock Event:LOCK#class="row jevlock" #class="row jevlock jev_none"}}>
+	<div {{Lock Event:LOCK#class="row jevlock" #class="row jevlock jev_none" }}>
 		<div class="span2">
 			{{Lock Event label:LOCK_LBL}}
 		</div>
@@ -40,7 +42,7 @@
 			{{Lock Event:LOCK}}
 		</div>
 	</div>
-	<div {{Category:CATEGORY# class="row jevcategory"#class="row jevcategory jev_none"}}>
+	<div {{Category:CATEGORY# class="row jevcategory" #class="row jevcategory jev_none" }}>
 		<div class="span2">
 			{{Category label:CATEGORY_LBL}}
 		</div>
@@ -48,7 +50,7 @@
 			{{Category:CATEGORY}}
 		</div>
 	</div>
-	<div {{Access:ACCESS# class="row jevaccess" #class="row jevaccess jev_none"}} >
+	<div {{Access:ACCESS# class="row jevaccess" #class="row jevaccess jev_none" }}>
 		<div class="span2">
 			{{Access label:ACCESS_LBL}}
 		</div>
@@ -56,7 +58,7 @@
 			{{Access:ACCESS}}
 		</div>
 	</div>
-	<div {{Published State:STATE# class="row jevstate" #class="row jevstate jev_none"}} >
+	<div {{Published State:STATE# class="row jevstate" #class="row jevstate jev_none" }}>
 		<div class="span2">
 			{{State label:STATE_LBL}}
 		</div>
@@ -64,7 +66,7 @@
 			{{State:STATE}}
 		</div>
 	</div>
-	<div {{Event Colour:COLOUR#class="row jevcolour"  #class=" row jevcolour jev_none"}} >
+	<div {{Event Colour:COLOUR#class="row jevcolour" #class=" row jevcolour jev_none" }}>
 		<div class="span2">
 			{{Colour label:COLOUR_LBL}}
 		</div>
@@ -73,7 +75,7 @@
 		</div>
 	</div>
 
-	<div class="row jev_description" id='jeveditor' >
+	<div class="row jev_description" id='jeveditor'>
 		<div class="span2">
 			{{Description label:DESCRIPTION_LBL}}
 		</div>
@@ -82,7 +84,7 @@
 		</div>
 	</div>
 
-	<div class="row jeveditlocation"  id="jeveditlocation">
+	<div class="row jeveditlocation" id="jeveditlocation">
 		<div class="span2">
 			{{LOCATION label:LOCN_LBL}}
 		</div>
@@ -118,7 +120,7 @@
 		</div>
 	</div>
 
-	{{Custom Fields:CUSTOMFIELDS}} 
+	{{Custom Fields:CUSTOMFIELDS}}
 
 	{{Tab Start:TABSTART#JEV_TAB_CALENDAR}}
 	{{Calendar tab content:CALTAB}}

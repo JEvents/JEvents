@@ -9,7 +9,7 @@
  * @link        http://www.jevents.net
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 
 

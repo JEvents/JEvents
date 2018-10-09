@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * JEvents Component for Joomla! 3.x
  *
@@ -10,15 +10,18 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$db	= JFactory::getDbo();
-$user = JFactory::getUser();
+HTMLHelper::_('behavior.tooltip');
+
+$db   = Factory::getDbo();
+$user = Factory::getUser();
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm">
 	<?php
-	echo $this->callist."<br/>";
+	echo $this->callist . "<br/>";
 	?>
-    <input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT;?>" />
-    <input type="hidden" name="task" value="icalevent.csvimport2" />
+	<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
+	<input type="hidden" name="task" value="icalevent.csvimport2"/>
 </form>

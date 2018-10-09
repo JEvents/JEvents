@@ -13,44 +13,43 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 jimport('cms.toolbar.button');
-JLoader::register('JevJoomlaVersion',JPATH_ADMINISTRATOR."/components/com_jevents/libraries/version.php");
-/* 
- * 
- * Joomla 3.0 version
- * 
- */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 
 class JToolbarButtonJev extends JToolbarButton
 {
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @access    protected
+	 * @var        string
 	 */
 	var $_name = 'Jev';
 
 	function fetchButton($type = 'Jev', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
 	{
-		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($name);
-		$doTask	= $this->_getCommand($text, $task, $list);
+
+		$i18n_text = JText::_($text);
+		$class     = $this->fetchIconClass($name);
+		$doTask    = $this->_getCommand($text, $task, $list);
 
 		if ($name == "apply" || $name == "new" || $name == "save")
 		{
-			$btnClass = "btn btn-small btn-success";
+			$btnClass  = "btn btn-small btn-success";
 			$iconWhite = "icon-white";
 		}
 		else
 		{
-			$btnClass = "btn btn-small";
+			$btnClass  = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
+		$btnClass = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
 
-		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"" . $btnClass . "\">\n";
 		$html .= "<i class=\"$class $iconWhite\">\n";
 		$html .= "</i>\n";
 		$html .= "$i18n_text\n";
@@ -60,44 +59,51 @@ class JToolbarButtonJev extends JToolbarButton
 	}
 
 	/**
-	 * Get the button CSS Id
-	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
-	 */
-	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
-	{
-		return $this->_parent->getName().'-'.$icon;
-	}
-	
-	/**
 	 * Get the JavaScript command for the button
 	 *
-	 * @access	private
-	 * @param	string	$name	The task name as seen by the user
-	 * @param	string	$task	The task used by the application
-	 * @param	???		$list
-	 * @param	boolean	$hide
-	 * @return	string	JavaScript command string
-	 * @since	1.5
+	 * @access    private
+	 *
+	 * @param    string  $name The task name as seen by the user
+	 * @param    string  $task The task used by the application
+	 * @param     ???        $list
+	 * @param    boolean $hide
+	 *
+	 * @return    string    JavaScript command string
+	 * @since     1.5
 	 */
 	function _getCommand($name, $task, $list)
 	{
-		$todo		= JString::strtolower(JText::_( $name ));
-		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
-		$message	= addslashes($message);
+
+		$todo    = StringHelper::strtolower(JText::_($name));
+		$message = JText::sprintf('Please make a selection from the list to', $todo);
+		$message = addslashes($message);
 
 		$submitbutton = "Joomla.submitbutton";
-		if ($list) {
+		if ($list)
+		{
 			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{  $submitbutton('$task')};return false;";
-		} else {
+		}
+		else
+		{
 			$cmd = "javascript:$submitbutton('$task');return false;";
 		}
 
 
 		return $cmd;
-	}	
+	}
+
+	/**
+	 * Get the button CSS Id
+	 *
+	 * @access    public
+	 * @return    string    Button CSS Id
+	 * @since     1.5
+	 */
+	function fetchId($type = 'Js', $icon = '', $text = '', $task = '', $listSelect = '', $js = '')
+	{
+
+		return $this->_parent->getName() . '-' . $icon;
+	}
 }
 
 class JToolbarButtonJevlink extends JToolbarButton
@@ -105,69 +111,74 @@ class JToolbarButtonJevlink extends JToolbarButton
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @access    protected
+	 * @var        string
 	 */
 	var $_name = 'Jevlink';
 
 
-	function fetchButton( $type='Jevlink', $name = '', $text='',$task='', $list='')
+	function fetchButton($type = 'Jevlink', $name = '', $text = '', $task = '', $list = '')
 	{
-		$i18n_text	= JText::_($text);
-		$class	= $this->fetchIconClass($name);
-		$doTask	= $this->_getCommand($text, $task, $list);
 
-		if ($name == "cancel" )
+		$i18n_text = JText::_($text);
+		$class     = $this->fetchIconClass($name);
+		$doTask    = $this->_getCommand($text, $task, $list);
+
+		if ($name == "cancel")
 		{
-			$btnClass = "btn btn-small btn-danger";
+			$btnClass  = "btn btn-small btn-danger";
 			$iconWhite = "icon-white";
 		}
 		else
 		{
-			$btnClass = "btn btn-small";
+			$btnClass  = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
-		
-		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"".$btnClass."\">\n";
+		$btnClass = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? $btnClass : "";
+
+		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"" . $btnClass . "\">\n";
 		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
 		$html .= "</i>\n";
 		$html .= "$i18n_text\n";
 		$html .= "</button>\n";
-		
+
 		return $html;
+	}
+
+	/**
+	 * Get the JavaScript command for the button
+	 *
+	 * @access    private
+	 *
+	 * @param    string  $name The task name as seen by the user
+	 * @param    string  $task The task used by the application
+	 * @param     ???        $list
+	 * @param    boolean $hide
+	 *
+	 * @return    string    JavaScript command string
+	 * @since     1.5
+	 */
+	function _getCommand($name, $task, $list)
+	{
+
+		$Itemid = Factory::getApplication()->input->getInt("Itemid");
+		$link   = Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task&Itemid=$Itemid");
+
+		return $link;
 	}
 
 	/**
 	 * Get the button CSS Id
 	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
+	 * @access    public
+	 * @return    string    Button CSS Id
+	 * @since     1.5
 	 */
-	function fetchId( $type='Js', $icon = '', $text = '', $task='', $listSelect='', $js='' )
+	function fetchId($type = 'Js', $icon = '', $text = '', $task = '', $listSelect = '', $js = '')
 	{
-		return $this->_parent->getName().'-'.$icon;
-	}
-	
-	/**
-	 * Get the JavaScript command for the button
-	 *
-	 * @access	private
-	 * @param	string	$name	The task name as seen by the user
-	 * @param	string	$task	The task used by the application
-	 * @param	???		$list
-	 * @param	boolean	$hide
-	 * @return	string	JavaScript command string
-	 * @since	1.5
-	 */
-	function _getCommand($name, $task, $list)
-	{
-		$Itemid = JRequest::getInt("Itemid");
-		$link = JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=$task&Itemid=$Itemid");
 
-		return $link;
-	}	
+		return $this->_parent->getName() . '-' . $icon;
+	}
 }
 
 
@@ -176,19 +187,20 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	/**
 	 * Button type
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @access    protected
+	 * @var        string
 	 */
 	var $_name = 'JevConfirm';
 
-	function fetchButton( $type='Confirm', $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
+	function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $jstestvar = false)
 	{
-		$text	= JText::_($text);
-		$msg	= JText::_($msg, true);
-		$class	= $this->fetchIconClass($name);
-		$doTask	= $this->_getCommand($msg, $name, $task, $list, $hideMenu,$jstestvar);
 
-		$btnClass = JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn btn-small" : "";
+		$text   = JText::_($text);
+		$msg    = JText::_($msg, true);
+		$class  = $this->fetchIconClass($name);
+		$doTask = $this->_getCommand($msg, $name, $task, $list, $hideMenu, $jstestvar);
+
+		$btnClass = ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1) ? "btn btn-small" : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"$btnClass\">\n";
 		$html .= "<span class=\"$class\">\n";
@@ -200,34 +212,27 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	}
 
 	/**
-	 * Get the button CSS Id
-	 *
-	 * @access	public
-	 * @return	string	Button CSS Id
-	 * @since	1.5
-	 */
-	function fetchId( $type='Confirm',  $msg='', $name = '', $text = '', $task = '', $list = true, $hideMenu = false , $jstestvar = false)
-	{
-		return $this->_parent->getName().'-'.$name;
-	}
-
-	/**
 	 * Get the JavaScript command for the button
 	 *
-	 * @access	private
-	 * @param	object	$definition	Button definition
-	 * @return	string	JavaScript command string
-	 * @since	1.5
+	 * @access    private
+	 *
+	 * @param    object $definition Button definition
+	 *
+	 * @return    string    JavaScript command string
+	 * @since     1.5
 	 */
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
-		$todo	 = JString::strtolower(JText::_( $name ));
-		$message = JText::sprintf( 'Please make a selection from the list to %s', $todo );
-		$message = addslashes($message);
+
+		$todo         = StringHelper::strtolower(JText::_($name));
+		$message      = JText::sprintf('Please make a selection from the list to %s', $todo);
+		$message      = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";
-		
-		if ($hide) {
-			if ($list) {
+
+		if ($hide)
+		{
+			if ($list)
+			{
 				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
 					alert('$message');
 				}
@@ -241,7 +246,9 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 					}
 					$submitbutton('$task');
 				}";
-			} else {
+			}
+			else
+			{
 				$cmd = "javascript:
 					if($jstestvar==1) {
 						if (confirm('$msg')){
@@ -252,8 +259,11 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 					$submitbutton('$task');
 				";
 			}
-		} else {
-			if ($list) {
+		}
+		else
+		{
+			if ($list)
+			{
 				$cmd = "javascript:if(document.adminForm.boxchecked.value==0){
 					alert('$message');
 				}
@@ -266,7 +276,9 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 					}
 					$submitbutton('$task');
 				}";
-			} else {
+			}
+			else
+			{
 				$cmd = "javascript:
 				if($jstestvar==1) {
 					if (confirm('$msg')){
@@ -280,5 +292,18 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		}
 
 		return $cmd;
+	}
+
+	/**
+	 * Get the button CSS Id
+	 *
+	 * @access    public
+	 * @return    string    Button CSS Id
+	 * @since     1.5
+	 */
+	function fetchId($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $jstestvar = false)
+	{
+
+		return $this->_parent->getName() . '-' . $name;
 	}
 }

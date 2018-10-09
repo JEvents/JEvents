@@ -12,40 +12,45 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class DefaultViewSearch extends JEventsDefaultView 
+class DefaultViewSearch extends JEventsDefaultView
 {
-	
+
 	function form($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		//$this->assign("introduction", $params->get("intro",""));
+
+
+	}
 
 	function results($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		//$this->assign("introduction", $params->get("intro",""));
+
+
+	}
 
 }

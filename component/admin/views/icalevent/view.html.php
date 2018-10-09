@@ -11,6 +11,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
@@ -22,11 +27,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-	    $app    = JFactory::getApplication();
+		$app    = Factory::getApplication();
 		// Get data from the model
 		//$model = $this->getModel();
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
@@ -68,7 +73,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$showUnpublishedICS = false;
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		JHtmlSidebar::setAction('index.php?option=com_jevents&task=icalevent.list');
 
@@ -88,28 +93,28 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$dbicsfiles = $db->loadAssocList();
 
 		foreach ($dbicsfiles As $iscfile) {
-            $icsfiles[] = $iscfile;
-        }
+			$icsfiles[] = $iscfile;
+		}
 
 		$this->filters = array(
-				JHTML::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
+			HTMLHelper::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
 		);
 
 		$this->filters[] = $this->clist;
 		$options = array(
-		    JHTML::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
-            JHTML::_('select.option', '1', JText::_('PUBLISHED')),
-		    JHTML::_('select.option', '2', JText::_('UNPUBLISHED')),
-		    JHTML::_('select.option', '-1', JText::_('JTRASH'))
-        );
-		$this->filters[] = JHTML::_('select.genericlist', $options, 'state', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $state);
+			HTMLHelper::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
+			HTMLHelper::_('select.option', '1', JText::_('PUBLISHED')),
+			HTMLHelper::_('select.option', '2', JText::_('UNPUBLISHED')),
+			HTMLHelper::_('select.option', '-1', JText::_('JTRASH'))
+		);
+		$this->filters[] = HTMLHelper::_('select.genericlist', $options, 'state', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $state);
 
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";
 		$db->setQuery($sql);
 		$users = $db->loadObjectList();
 
 		$userOptions = array(
-		        JHTML::_('select.option', '', JText::_('JEV_SELECT_CREATOR')),
+			HTMLHelper::_('select.option', '', JText::_('JEV_SELECT_CREATOR')),
 		);
 
 		foreach ($users as $user)
@@ -118,10 +123,11 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			{
 				$user->id = 0;
 			}
-			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
+			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
 
-		$this->filters[] = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
+		$this->filters[] = HTMLHelper::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
+
 
 		// Load the tags filter
 		if (isset($this->tagsFiltering)) {
@@ -142,9 +148,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	public function edit($tpl = null)
 	{
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		//Define to keep editor happy that it is defined.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "editStrings.php");
@@ -152,7 +158,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-        JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
+		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
 		if ($this->row->title() === '')
 		{
@@ -197,10 +203,10 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		else
 		{
 			$canEditOwn = false;
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if (!$params->get("authorisedonly", 0))
 			{
-				$juser = JFactory::getUser();
+				$juser = Factory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
@@ -220,7 +226,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->setCreatorLookup();
 
 		// load Joomla javascript classes
-		JHTML::_('behavior.core');
+		HTMLHelper::_('behavior.core');
 		$this->setLayout("edit");
 
 		$this->setupEditForm();
@@ -229,20 +235,25 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function translate($tpl = null)
 	{
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$this->editor =  JFactory::getEditor();
-		if ($this->editor->get("_name") == "codemirror")
+		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+
+		if ($uEditor === 'codemirror')
 		{
-			$this->editor = JFactory::getEditor("none");
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
+			$app->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+		} else {
+			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
 
 		// Get the form && data
 		$this->form = $this->get('TranslateForm');
 		$this->original = $this->get("Original");
 		$this->translation = $this->get("Translation");
-		$lang = JRequest::getString("lang", "");
+		$lang = $input->getString("lang", "");
 
 		$this->form->bind($this->original);
 		$this->form->bind($this->translation);
@@ -250,7 +261,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$this->form->setValue("trans_language",null,  $lang);
 		$this->form->setValue("language",null,  $lang);
 		$this->form->setValue("trans_evdet_id", null, $this->original["evdet_id"]);
-		$this->form->setValue("ev_id", null, JRequest::getInt("ev_id", 0));
+		$this->form->setValue("ev_id", null, $input->getInt("ev_id", 0));
 
 		// Event editing buttons
 		if ($params->get('com_show_editor_buttons'))
@@ -263,10 +274,8 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 		$this->form->setFieldAttribute("description", "buttons", "false");
 
-                
-                $dispatcher = JEventDispatcher::getInstance();
-                $dispatcher->trigger('onTranslateEvent', array(&$this->row, $lang), true);
-                                
+		$app->triggerEvent('onTranslateEvent', array(&$this->row, $lang));
+
 		$this->addTranslationToolbar();
 	}
 
@@ -279,7 +288,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	 */
 	protected function addTranslationToolbar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
 		JToolbarHelper::save('icalevent.savetranslation');
 		JToolbarHelper::cancel('icalevent.close');
@@ -288,13 +297,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		// Add a standard button
 		$bar->appendButton('confirm', JText::_("JEV_DELETE_TRANSLATION_WARNING"),  'trash',  'JEV_DELETE', "icalevent.deletetranslation", false);
-		
+
 	}
-	
+
 	function csvimport($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('CSV_IMPORT'));
 
 		// Set toolbar items for the page
@@ -304,7 +313,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 	}
 
@@ -312,15 +321,15 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 	{
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 0);
 			// if authorised only then load from database
 			if ($authorisedonly)
@@ -359,22 +368,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 						$users = array_merge(JAccess::getUsersByGroup($creatorgroup, true), $users);
 					}
 				}
-                                if (count($users)>200){
-                                    return null;
-                                }
+				if (count($users)>200){
+					return null;
+				}
 				$sql = "SELECT count(id) FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
 				$db->setQuery($sql);
 				$userCount = $db->loadResult();
 
-				if ($userCount<=200) {                                
-                                    $sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
-                                    $db->setQuery($sql);
-                                    $users = $db->loadObjectList();
-                                }
-                                else {
-                                    return null;
-                                }
-                                    
+				if ($userCount<=200) {
+					$sql = "SELECT * FROM #__users where id IN (" . implode(",", array_values($users)) . ") and block=0 ORDER BY name asc";
+					$db->setQuery($sql);
+					$users = $db->loadObjectList();
+				}
+				else {
+					return null;
+				}
+
 			}
 
 			// get list of creators - if fewer than 200
@@ -382,13 +391,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				return null;
 			}
 
-			$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
+			$userOptions[] = HTMLHelper::_('select.option', '-1', JText::_('SELECT_USER'));
 			foreach ($users as $user)
 			{
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
+				$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
 			}
 			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
-			$userlist = JHTML::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
+			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
 
 			$this->assignRef("users", $userlist);
 		}
@@ -420,7 +429,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 			// Any existing translations ?  Do NOT use isset here since there is a magic __get that will return false if its not defined
 			if ($row->evdet_id) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT language FROM #__jevents_translation where evdet_id= " . $row->evdet_id);
 				$translations = $db->loadColumn();
 			}
@@ -428,27 +437,27 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			//$translations[] = "cy-GB";
 			?>
 			<ul class="item-associations">
-			<?php foreach ($this->languages as $id => $item) :
+				<?php foreach ($this->languages as $id => $item) :
 
-				$text = strtoupper($item->sef);
-				$url = JRoute::_('index.php?option=com_jevents&task=icalevent.translate&evdet_id='.$row->evdet_id.'&ev_id='.$row->ev_id.'&pop=1&tmpl=component&lang=' . $item->lang_code);
-				$img = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
+					$text = strtoupper($item->sef);
+					$url = Route::_('index.php?option=com_jevents&task=icalevent.translate&evdet_id='.$row->evdet_id.'&ev_id='.$row->ev_id.'&pop=1&tmpl=component&lang=' . $item->lang_code);
+					$img = HTMLHelper::_('image', 'mod_languages/' . $item->image . '.gif',
 						$item->title,
 						array('title' => $item->title),
 						true
 					);
-				$url  = "javascript:jevEditTranslation('".$url ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
-				$tooltipParts = array( 	$img,  $item->title);
-				$item->link = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
-				?>
-				<li>
-				<?php
-				echo $item->link;
-				?>
-				</li>
-			<?php endforeach; ?>
+					$url  = "javascript:jevEditTranslation('".$url ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
+					$tooltipParts = array( 	$img,  $item->title);
+					$item->link = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef .( in_array($item->lang_code, $translations)?" hastranslation":"" ));
+					?>
+					<li>
+						<?php
+						echo $item->link;
+						?>
+					</li>
+				<?php endforeach; ?>
 			</ul>
-		<?php
+			<?php
 		}
 	}
 

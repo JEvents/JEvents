@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -22,24 +25,25 @@ class flatViewIcals extends JEventsflatView
 
 	function ical($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 
 		$this->data = $this->datamodel->getCalendarData($this->year, $this->month, $this->day);
 
 		// for adding events in day cell
 		$this->popup = false;
-		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
+		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			JevHtmlBootstrap::modal();
 			JEVHelper::script('editpopupJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
-			$this->popup = true;
+			$this->popup  = true;
 			$this->popupw = $params->get("popupw", 800);
 			$this->popuph = $params->get("popuph", 600);
 		}
@@ -50,12 +54,12 @@ class flatViewIcals extends JEventsflatView
 
 	function export($tpl = null)
 	{
-		
+
 	}
 
 	function importform($tpl = null)
 	{
-		
+
 	}
 
 }

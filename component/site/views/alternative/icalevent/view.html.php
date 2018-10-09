@@ -12,44 +12,50 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class AlternativeViewICalevent extends JEventsAlternativeView 
+class AlternativeViewICalevent extends JEventsAlternativeView
 {
-	
+
 	function detail($tpl = null)
 	{
+
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$jinput = JFactory::getApplication()->input;
-
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
-		
-		$this->data = $this->datamodel->getEventData( $this->evid, $this->jevtype, $this->year, $this->month, $this->day );
+
+		$this->data = $this->datamodel->getEventData($this->evid, $this->jevtype, $this->year, $this->month, $this->day);
 
 		// Dynamic pathway
-		if (isset($this->data['row'])){
-			$pathway = JFactory::getApplication()->getPathway();
+		if (isset($this->data['row']))
+		{
+			$pathway = $app->getPathway();
 
-			$pathway->addItem($this->data['row']->title() ,"");
+			$pathway->addItem($this->data['row']->title(), "");
 
 			// Set date in view for use in navigation icons
-			$this->year = $this->data['row']->yup();
+			$this->year  = $this->data['row']->yup();
 			$this->month = $this->data['row']->mup();
-			$this->day = $this->data['row']->dup();
+			$this->day   = $this->data['row']->dup();
 
 			// seth month and year to be used by mini-calendar if needed
-			if (!$jinput->getInt("month",0)) $jinput->set("month", $this->month);
-			if (!$jinput->getInt("year",0))  $jinput->set("year", $this->year);
+			if (!$input->getInt("month", 0)) $input->set("month", $this->month);
+			if (!$input->getInt("year", 0)) $input->set("year", $this->year);
 		}
-		
-	}	
+
+	}
 }

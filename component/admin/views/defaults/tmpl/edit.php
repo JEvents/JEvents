@@ -9,11 +9,12 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('formbehavior.chosen', 'select');
 jimport('joomla.filesystem.file');
-
-JHtml::_('formbehavior.chosen', 'select');
-
-
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
 {
@@ -21,13 +22,13 @@ if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.ca
 }
 else
 {
-	$editor = JFactory::getConfig()->get('editor');
+	$editor = Factory::getConfig()->get('editor');
 	$editor = JEditor::getInstance($editor);
 }
 
 if (strpos($this->item->name, "com_") === 0)
 {
-	$lang  = JFactory::getLanguage();
+	$lang  = Factory::getLanguage();
 	$parts = explode(".", $this->item->name);
 	$lang->load($parts[0]);
 }
@@ -38,7 +39,7 @@ if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->ite
 if ($this->item->value == "" && file_exists(dirname(__FILE__) . '/' . $this->item->name . ".html"))
 	$this->item->value = file_get_contents(dirname(__FILE__) . '/' . $this->item->name . ".html");
 
-// Float layout check to load default value
+//Float layout check to load default value
 if ($this->item->name == 'icalevent.list_block1' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html'))
 {
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block1.html');
@@ -50,18 +51,6 @@ if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && 
 
 $this->replaceLabels($this->item->value);
 ?>
-<script type="text/javascript">
-    <!--//
-    Joomla.submitbutton = function (pressbutton) {
-        var form = document.adminForm;
-		<?php
-		// in case editor is toggled off - needed for TinyMCE
-		echo $editor->save('value');
-		?>
-        submitform(pressbutton);
-    }
-    //-->
-</script>
 <div id="jevents">
 	<form action="index.php" method="post" name="adminForm" id="adminForm" class="customlayouts">
 		<div class="container-fluid">
@@ -96,10 +85,10 @@ $this->replaceLabels($this->item->value);
 					<label for="published"><?php echo JText::_("JSTATUS"); ?></label>
 					<?php
 					$poptions   = array();
-					$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
-					$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
-					$poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
-					echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control chzn-color-state"', 'value', 'text', $this->item->state);
+					$poptions[] = HTMLHelper::_('select.option', 0, JText::_("JUNPUBLISHED"));
+					$poptions[] = HTMLHelper::_('select.option', 1, JText::_("JPUBLISHED"));
+					$poptions[] = HTMLHelper::_('select.option', -1, JText::_("JTRASHED"));
+					echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox form-control chzn-color-state"', 'value', 'text', $this->item->state);
 					?>
 				</div>
 				<div class="form-group span9">
@@ -138,7 +127,7 @@ $this->replaceLabels($this->item->value);
 					<h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_MODULES"); ?></h3>
 				</div>
 				<?php
-				$params  = new JRegistry($this->item->params);
+				$params  = new JevRegistry($this->item->params);
 				$modids  = $params->get("modid", array());
 				$modvals = $params->get("modval", array());
 

@@ -12,19 +12,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
  * @static
  */
-class AlternativeViewYear extends JEventsAlternativeView 
+class AlternativeViewYear extends JEventsAlternativeView
 {
 	function listevents($tpl = null)
 	{
-		JEVHelper::componentStylesheet($this);
-		$document = JFactory::getDocument();						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-	}	
-	
+		JEVHelper::componentStylesheet($this);
+		$document = Factory::getDocument();
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
+	}
+
 }

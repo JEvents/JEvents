@@ -1,11 +1,16 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 function FlatViewHelperFooter16($view)
 {
-$jinput = JFactory::getApplication()->input;
 
-	if ($jinput->get('pop', '0', 'INT'))
+	$app   = Factory::getApplication();
+	$input = $app->input;
+
+	if ($input->get('pop', '0', 'INT'))
 	{
 		?>
 		<div class="ev_noprint"><p align="center">
@@ -19,7 +24,8 @@ $jinput = JFactory::getApplication()->input;
 									} catch (e) {
 										self.close();
 										return false;
-									}" title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
+									}"
+				   title="<?php echo JText::_('JEV_CLOSE'); ?>"><?php echo JText::_('JEV_CLOSE'); ?></a>
 			</p></div>
 		<?php
 	}
@@ -29,13 +35,12 @@ $jinput = JFactory::getApplication()->input;
 	</div>
 	</div>
 	<?php
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsFooter');
+	$app->triggerEvent('onJEventsFooter');
 
-	$task = $jinput->getString('jevtask', '');
+	$task = $input->getString('jevtask', '');
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	JEVHelper::componentStylesheet($view, "extra.css");
 	jimport('joomla.filesystem.file');
 
@@ -45,5 +50,5 @@ $jinput = JFactory::getApplication()->input;
 		// It is definitely now created, lets load it!
 		JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 	}
-	
+
 }

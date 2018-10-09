@@ -12,7 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-JLoader::register('DefaultViewAdmin',JEV_PATH."/views/default/admin/view.html.php");
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
+JLoader::register('DefaultViewAdmin', JEV_PATH . "/views/default/admin/view.html.php");
 
 /**
  * HTML View class for the component frontend
@@ -21,18 +24,19 @@ JLoader::register('DefaultViewAdmin',JEV_PATH."/views/default/admin/view.html.ph
  */
 class GeraintViewAdmin extends JEventsGeraintView
 {
-	
+
 	function listevents($tpl = null)
 	{
+
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
-						
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$this->assign("introduction", $params->get("intro",""));
-		
 
-	}	
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		//$this->assign("introduction", $params->get("intro",""));
+
+
+	}
 }

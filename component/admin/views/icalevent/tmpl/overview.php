@@ -10,30 +10,35 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
-JHtml::_('behavior.multiselect');
-JHtml::_('formbehavior.chosen', 'select');
-JHTML::_('behavior.modal', 'a.modal');
+
+HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('formbehavior.chosen', 'select');
+HTMLHelper::_('behavior.modal', 'a.modal');
 
 // Load the jQuery plugin && CSS
-JHtml::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
-JHtml::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('stylesheet', 'jui/jquery.searchtools.css', array('version' => 'auto', 'relative' => true));
+HTMLHelper::_('script', 'jui/jquery.searchtools.min.js', array('version' => 'auto', 'relative' => true));
 
 // we would use this to add custom data to the output here
 //JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
 
-$app    = JFactory::getApplication();
-$db     = JFactory::getDbo();
-$user   = JFactory::getUser();
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$app    = Factory::getApplication();
+$db     = Factory::getDbo();
+$user   = Factory::getUser();
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 // get configuration object
 $cfg                 = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
 $orderdir            = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
 $order               = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-$pathIMG             = JUri::root() . 'administrator/images/';
+$pathIMG             = Uri::root() . 'administrator/images/';
 $mainspan            = 10;
 $fullspan            = 12;
 
@@ -67,7 +72,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 		<!-- Filter Bar -->
 		<?php
 		// Load search tools
-		JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+		HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 		?>
 		<div class="js-stools clearfix">
 			<div class="clearfix">
@@ -122,10 +127,10 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist table table-striped">
 			<tr>
 				<th width="20" nowrap="nowrap">
-					<?php echo JHtml::_('grid.checkall'); ?>
+					<?php echo HTMLHelper::_('grid.checkall'); ?>
 				</th>
 				<th class="title" width="40%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('ICAL_EVENT_REPEATS'); ?></th>
 				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -134,13 +139,13 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				<?php } ?>
 				<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JSTATUS'); ?></th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
 			</tr>
@@ -156,16 +161,17 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 				?>
 				<tr class="row<?php echo $k; ?>">
 					<td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
-						<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
+						<?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
 					</td>
 					<td>
-						<a href="<?php  echo JURI::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false, $itemId);?>"
+						<a href="<?php  echo Uri::root() . $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false, $itemId);?>"
 						   id="modal_preview" title="Preview" class="modal"
 						   rel="{size: {x: 1200, y: 900}, handler:'iframe'}">
 
-						<span class="icon-out-2 small"></span>
+							<span class="icon-out-2 small"></span>
 						</a>
-						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
+						<a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>"
+						   onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
 					<td class="center">
@@ -189,15 +195,15 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<?php
 						if ($row->state() == 1)
 						{
-							$img = JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true);
 						}
 						else if ($row->state() == 0)
 						{
-							$img = JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						}
 						else
 						{
-							$img = JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/trash.png', '', array('title' => ''), true);
 						}
 						?>
 						<a href="javascript: void(0);"
@@ -215,15 +221,15 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(),0,16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(),0,16)) . '</td></tr>';
 							$times .="</table>";
 							echo $times;
 						}
 						?>
 					</td>
 					<td><?php echo $row->created(); ?> </td>
-					<td><?php echo JString::substr($row->modified, 0, 10); ?> </td>
+					<td><?php echo StringHelper::substr($row->modified, 0, 10); ?> </td>
 					<td><?php echo $row->_groupname; ?></td>
 				</tr>
 				<?php
@@ -240,11 +246,11 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 		<input type="hidden" name="boxchecked" value="0"/>
 		<input type="hidden" name="filter_order" value="<?php echo $order; ?>"/>
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $orderdir; ?>"/>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>
 <script>
-	/** Make the Preview Modal Responsive **/
+    /** Make the Preview Modal Responsive **/
     jQuery(document).ready(function() {
         var width = jQuery(window).width();
         var height = jQuery(window).height();

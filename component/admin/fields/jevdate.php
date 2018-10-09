@@ -13,19 +13,22 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('calendar');
+FormHelper::loadFieldClass('calendar');
 
 class JFormFieldJEVDate extends JFormFieldCalendar
 {
 	public $type = 'JEVDate';  // must be public as per JFormFieldCalendar!! 
-	
+
 	public function getInput()
 	{
-		JLoader::register('JEVHelper',JPATH_SITE."/components/com_jevents/libraries/helper.php");
-		JEVHelper::ConditionalFields( $this->element,$this->form->getName());
+
+		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
+		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		parent::getInput();
 	}
 
