@@ -90,47 +90,9 @@ class JevHtmlBootstrap
 	public static function framework($debug = null)
 	{
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			JHtmlBootstrap::framework($debug);
-
-			return;
-		}
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = Factory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
-		/*
-				if(!HTMLHelper::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
-				{
-					HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
-				}
-				else
-				{
-					HTMLHelper::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
-				}
-		*/
-		// Make loading this conditional on config option ??
-		Factory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-
-		//HTMLHelper::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
-
-		// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
-		//Factory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
-
-		JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
-
-		static::$loaded[__METHOD__] = true;
-
+		JHtmlBootstrap::framework($debug);
 		return;
+
 	}
 
 	/**

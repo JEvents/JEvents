@@ -28,12 +28,6 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 	protected
 	function getLabel()
 	{
-
-		if (!JevJoomlaVersion::isCompatible("3.4"))
-		{
-			return "";
-		}
-
 		return parent::getLabel();
 	}
 
@@ -41,10 +35,6 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 	function getInput()
 	{
 
-		if (!JevJoomlaVersion::isCompatible("3.4"))
-		{
-			return "";
-		}
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$layouttype = $this->getAttribute("layouttype");

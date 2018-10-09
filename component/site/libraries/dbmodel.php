@@ -3627,7 +3627,6 @@ class JEventsDBModel
 			. $catwhere
 			. $extrawhere
 			. $where
-			//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 			. "\n AND icsf.state=1"
 			. "\n GROUP BY ev.ev_id"
 			. "\n ORDER BY " . ($orderby != "" ? $orderby : "dtstart ASC")
@@ -3761,7 +3760,6 @@ class JEventsDBModel
 				. $extrawhere
 				. $where
 				. "\n  AND icsf.state=1"
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n GROUP BY rpt.rp_id"
 				. "\n ORDER BY " . ($orderby != "" ? $orderby : "rpt.startrepeat ASC")
 				. "\n $limit";
@@ -3789,7 +3787,6 @@ class JEventsDBModel
 				. $extrawhere
 				. $where
 				. "\n  AND icsf.state=1"
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n GROUP BY rpt.rp_id"
 				. "\n ORDER BY " . ($orderby != "" ? $orderby : "rpt.startrepeat ASC");
 		}
@@ -3807,7 +3804,6 @@ class JEventsDBModel
 				. $extrawhere
 				. "\n AND icsf.state=1"
 				. $where
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n GROUP BY rpt.rp_id"
 				. "\n ORDER BY " . ($orderby != "" ? $orderby : "rpt.startrepeat ASC")
 				. "\n $limit";
@@ -3831,7 +3827,6 @@ class JEventsDBModel
 				. $extrajoin
 				. $catwhere
 				. $where
-				//. "\n AND ev.access " . (version_compare(JVERSION, '1.6.0', '>=') ?  ' IN (' . JEVHelper::getAid($user) . ')'  :  ' <=  ' .JEVHelper::getAid($user))
 				. "\n AND icsf.state=1"
 				. $extrawhere
 				. "\n GROUP BY rpt.rp_id"

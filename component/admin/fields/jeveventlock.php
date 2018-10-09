@@ -3,7 +3,6 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 class JFormFieldJeveventlock extends JFormField
 {
@@ -41,8 +40,8 @@ class JFormFieldJeveventlock extends JFormField
 		ob_start();
 		$offerlock = $this->form->jevdata[$this->name]["offerlock"];
 
-		$btngroup = JevJoomlaVersion::isCompatible("3.0") ? "btn-group" : "";
-		$btn      = JevJoomlaVersion::isCompatible("3.0") ? "btn" : "";
+		$btngroup = "btn-group";
+		$btn      = "btn";
 		if ($offerlock)
 		{
 			?>

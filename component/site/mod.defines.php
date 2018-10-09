@@ -42,7 +42,6 @@ JLoader::register('JevDate', JEV_PATH . "/libraries/jevdate.php");
 JLoader::register('JEventsHTML', JEV_PATH . "/libraries/jeventshtml.php");
 
 JLoader::register('JEventsVersion', JEV_ADMINPATH . "/libraries/version.php");
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 JLoader::register('catLegend', JEV_PATH . "/libraries/catLegend.php");
 

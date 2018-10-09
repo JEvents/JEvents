@@ -1,21 +1,26 @@
 /*** New JEvents CSS for cPanel ***/
 #cp_icon_container {
-    width: 120px;
-    height: 100px;
-    padding: 10px;
-    float: left;
-    text-align: center;
+    width:120px;
+    height:100px;
+    padding:10px;
+    float:left;
+    text-align:center;
+}
+#cp_icon_container a:hover {text-decoration: none;font-weight:bold;}
+
+#jevents.span12 {margin-left: 0px;}
+div#sidebar.sidebar {clear:both;}
+
+.adminlist .row1, .adminlist .row0 {
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
 }
 
-#cp_icon_container a:hover {
-    text-decoration: none;
-    font-weight: bold;
+.adminlist tr:last-child {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
 }
+.customlayouts {padding: 10px 30px;}
 
-#jevents.span12 {
-    margin-left: 0px;
-}
-
-div#sidebar.sidebar {
-    clear: both;
-}
+.adminlist foot tr {background-color:grey;}

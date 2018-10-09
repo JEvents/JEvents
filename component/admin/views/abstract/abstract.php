@@ -27,6 +27,12 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 		parent::__construct($config);
 		jimport('joomla.filesystem.file');
 
+		$app = Factory::getApplication();
+
+		if ($app->isClient('administrator'))
+		{
+			JEVHelper::stylesheet('jev_cp.css', '/administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+		}
 		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 		$this->_addPath('template', $this->_basePath . '/' . 'views' . '/' . 'abstract' . '/' . 'tmpl');
@@ -34,7 +40,6 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		// Ok getTemplate doesn't seem to get the active menu item's template, so lets do it ourselves if it exists
 
-		$app = Factory::getApplication();
 		// Get current template style ID
 		$page_template_id = $app->isClient('administrator') ? "0" : @$app->getMenu()->getActive()->template_style_id;
 
@@ -564,14 +569,14 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$uEdtior    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+		$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-		if ($uEdtior === 'codemirror')
+		if ($uEditor === 'codemirror')
 		{
 			$this->editor = \Joomla\CMS\Editor\Editor::getInstance('none');
 			Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
 		} else {
-			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEdtior);
+			$this->editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 		}
 
 		// clean any existing cache files

@@ -5,8 +5,6 @@ defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
-
 // Class to fix Joomla 1.6 date class bugs
 jimport("joomla.utilities.date");
 
@@ -59,11 +57,6 @@ if (!defined("JEVDATE"))
 				if ($tz === null)
 				{
 					$tz = self::$gmt;
-				}
-				elseif (is_numeric($tz) && !JevJoomlaVersion::isCompatible("3.0"))
-				{
-					// Translate from offset.
-					$tz = new DateTimeZone(self::$offsets[(string) $tz]);
 				}
 				elseif (is_numeric($tz))
 				{

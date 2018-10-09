@@ -41,10 +41,8 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 
 		HTMLHelper::_('behavior.tooltip');
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
+
 	}
 
 	function edit($tpl = null)

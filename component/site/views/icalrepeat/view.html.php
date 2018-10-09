@@ -138,15 +138,8 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
 
-			if (JevJoomlaVersion::isCompatible("3.0"))
-			{
-				// Factory::getApplication()->JComponentTitle;
-				$title = "";
-			}
-			else
-			{
-				$title = $app->get('JComponentTitle');
-			}
+			$title = "";
+
 			echo $title;
 			?>
 		</div>

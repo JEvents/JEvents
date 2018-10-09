@@ -16,14 +16,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 global $task, $catid;
 $db     = Factory::getDbo();
 
-$uEdtior    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+$uEditor    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
 
-if ($uEdtior === 'codemirror')
+if ($uEditor === 'codemirror')
 {
 	$editor = \Joomla\CMS\Editor\Editor::getInstance('none');
 	Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
 } else {
-	$editor = \Joomla\CMS\Editor\Editor::getInstance($uEdtior);
+	$editor = \Joomla\CMS\Editor\Editor::getInstance($uEditor);
 }
 // clean any existing cache files
 $cache = Factory::getCache(JEV_COM_COMPONENT);

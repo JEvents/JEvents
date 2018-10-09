@@ -16,8 +16,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
-
 // Event repeat startdate fitler
 class jevStartdateFilter extends jevFilter
 {

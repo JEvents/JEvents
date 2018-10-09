@@ -3,7 +3,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
 
 use Joomla\CMS\Factory;
@@ -36,18 +35,11 @@ class JEventsHelper
 		if ($option == 'com_categories')
 		{
 			$doc = Factory::getDocument();
-			if (!JevJoomlaVersion::isCompatible("3.0"))
-			{
-				$hide_options = '#toolbar-popup-options {'
-					. 'display:none;'
-					. '}';
-			}
-			else
-			{
-				$hide_options = '#toolbar-options {'
-					. 'display:none;'
-					. '}';
-			}
+
+			$hide_options = '#toolbar-options {'
+				. 'display:none;'
+				. '}';
+
 			$doc->addStyleDeclaration($hide_options);
 			// Category styling 
 			$style = <<<STYLE

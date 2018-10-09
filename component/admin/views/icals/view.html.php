@@ -46,10 +46,9 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		//$section = $params->get("section",0);
 
 		HTMLHelper::_('behavior.tooltip');
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+
+		$this->sidebar = JHtmlSidebar::render();
+
 	}
 
 	function edit($tpl = null)
@@ -142,14 +141,8 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 		HTMLHelper::_('behavior.tooltip');
 
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->setLayout("edit");
-		}
-		else
-		{
-			$this->setLayout("edit16");
-		}
+		$this->setLayout("edit");
+
 	}
 
 }

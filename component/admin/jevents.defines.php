@@ -35,7 +35,6 @@ JLoader::register('JEVConfig', JEV_ADMINLIBS . "config.php");
 JLoader::register('SaveIcalEvent', JEV_ADMINLIBS . "saveIcalEvent.php");
 
 JLoader::register('JEventsVersion', JEV_ADMINLIBS . "version.php");
-JLoader::register('JevJoomlaVersion', JEV_ADMINLIBS . "version.php");
 JLoader::register('JEventsDBModel', JEV_PATH . "libraries/dbmodel.php");
 JLoader::register('JEventsDataModel', JEV_PATH . "libraries/datamodel.php");
 

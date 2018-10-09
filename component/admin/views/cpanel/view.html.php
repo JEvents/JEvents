@@ -539,14 +539,8 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$app->registeredurlparams = new stdClass();
 		}
 
-		if (!JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$cache->get($this, 'renderJEventsNewsCached25');
-		}
-		else
-		{
-			$cache->get($this, 'renderJEventsNewsCached');
-		}
+		$cache->get($this, 'renderJEventsNewsCached');
+
 	}
 
 	function renderJEventsNewsCached()
@@ -1410,12 +1404,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		}
 
-
-		if (JevJoomlaVersion::isCompatible("3.0"))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
-
+		$this->sidebar = JHtmlSidebar::render();
 	}
 
 }

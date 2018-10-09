@@ -20,8 +20,6 @@ use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.access.access');
 
-JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
-
 use Joomla\Utilities\ArrayHelper;
 
 /** Should already be defined within JEvents, however it does no harm and resolves issue with pop-up details */
@@ -2683,14 +2681,7 @@ class JEVHelper
 
 		foreach ($includes as $include)
 		{
-			if (JevJoomlaVersion::isCompatible("3.3"))
-			{
-				$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
-			}
-			else
-			{
-				$document->addStyleSheet($include . "?" . $release, 'text/css', null, array());
-			}
+			$document->addStyleSheetVersion($include, $release, 'text/css', null, array());
 		}
 
 	}
@@ -2790,14 +2781,7 @@ class JEVHelper
 
 		foreach ($includes as $include)
 		{
-			if (JevJoomlaVersion::isCompatible("3.3"))
-			{
-				$document->addScriptVersion($include, $release);
-			}
-			else
-			{
-				$document->addScript($include . "?" . $release);
-			}
+			$document->addScriptVersion($include, $release);
 		}
 
 	}

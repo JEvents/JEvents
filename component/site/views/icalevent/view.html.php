@@ -200,16 +200,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			$bar     = JToolBar::getInstance('toolbar');
 			$barhtml = $bar->render();
 			echo $barhtml;
-
-			if (JevJoomlaVersion::isCompatible("3.0"))
-			{
-				$title = "";
-			}
-			else
-			{
-				$title = $app->get('JComponentTitle');
-			}
-			echo $title;
 			?>
 		</div>
 		<?php

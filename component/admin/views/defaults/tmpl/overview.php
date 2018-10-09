@@ -5,8 +5,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.core');
-HTMLHelper::_('bootstrap.tooltip');
+HtmlHelper::_('behavior.core');
+HtmlHelper::_('bootstrap.tooltip');
 
 $pathIMG  = Uri::root() . '/administrator/images/';
 $mainspan = 10;
@@ -54,14 +54,11 @@ $fullspan = 12;
 
 
 		<div id="editcell">
-			<table class="adminlist   table table-striped">
-				<thead>
+			<table class="adminlist table table-striped">
+				<tbody>
 				<tr>
 					<th width="20" nowrap="nowrap">
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
-					</th>
-					<th width="5">
-						<?php echo JText::_('NUM'); ?>
 					</th>
 					<th class="title">
 						<?php echo JText::_('TITLE'); ?>
@@ -72,21 +69,22 @@ $fullspan = 12;
 					<?php
 					if (count($this->languages) > 1)
 					{ ?>
-						<th>
+						<th class="center">
 							<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
 						</th>
 						<?php
 					}
 					if ($this->catids)
 					{ ?>
-						<th>
+						<th class="center">
 							<?php echo JText::_('JCATEGORY'); ?>
 						</th>
 					<?php } ?>
-					<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+					<th width="10%" nowrap="nowrap" class="center"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
+					<th width="5">
+						<?php echo JText::_('ID'); ?>
+					</th>
 				</tr>
-				</thead>
-				<tbody>
 				<?php
 				$k = 0;
 				for ($i = 0, $n = count($this->items); $i < $n; $i++)
@@ -104,9 +102,6 @@ $fullspan = 12;
 					<tr class="<?php echo "row$k"; ?>">
 						<td width="20">
 							<?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
-						</td>
-						<td>
-							<?php echo $i + 1; ?>
 						</td>
 						<td>
 									<span class="editlinktip hasTip"
@@ -145,18 +140,24 @@ $fullspan = 12;
 							</td>
 						<?php } ?>
 
-						<td align="center">
+						<td class="center">
 							<?php
 							$img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
 							<a href="javascript: void(0);"
 							   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
 						</td>
+						<td>
+							<?php echo $i + 1; ?>
+						</td>
 					</tr>
 					<?php
 					$k = 1 - $k;
 				}
 				?>
+				<tr>
+					<th align="center" colspan="10"> </th>
+				</tr>
 				</tbody>
 			</table>
 		</div>
