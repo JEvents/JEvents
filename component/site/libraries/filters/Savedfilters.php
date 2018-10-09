@@ -12,6 +12,9 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 class jevSavedfiltersFilter extends jevFilter
 {
 	function __construct($contentElement)
@@ -37,25 +40,25 @@ class jevSavedfiltersFilter extends jevFilter
 	{
 
 		// Only save filters for non-guests
-		if (JFactory::getUser()->id == 0)
+		if (Factory::getUser()->id == 0)
 		{
 			return false;
 		}
-		$app          = JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$activeModule = isset($app->activeModule) ? $app->activeModule : false;
 		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
 
 		$filter          = array();
 		$filter["title"] = JText::_("JEV_SAVED_FILTERS");
-		$db              = JFactory::getDbo();
-		$db->setQuery("SELECT * FROM #__jevents_filtermap where userid = " . $db->quote(JFactory::getUser()->id . " and modid=" . $activemodid));
+		$db              = Factory::getDbo();
+		$db->setQuery("SELECT * FROM #__jevents_filtermap where userid = " . $db->quote(Factory::getUser()->id . " and modid=" . $activemodid));
 		$filters        = $db->loadObjectList();
 		$filter["html"] = '<input type="hidden" name="deletefilter" id="deletefilter" value="0"  />';
 		if ($filters)
 		{
 			foreach ($filters as $fltr)
 			{
-				$base = JUri::current();
+				$base = Uri::current();
 				$base .= (strpos($base, "?") > 0 ? "&" : "?") . "jfilter=" . $fltr->fid;
 				// OR USE this
 				/*

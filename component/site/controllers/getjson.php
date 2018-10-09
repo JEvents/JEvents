@@ -11,9 +11,12 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.application.component.controller');
 
-class GetjsonController extends JControllerLegacy
+class GetjsonController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	var
@@ -46,13 +49,13 @@ class GetjsonController extends JControllerLegacy
 	function eventdata()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$this->datamodel = new JEventsDataModel();
 
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$start      = $jinput->getString('start', "$year-$month-$day");
-		$end        = $jinput->getString('end', "$year-$month-$day");
+		$start      = $input->getString('start', "$year-$month-$day");
+		$end        = $input->getString('end', "$year-$month-$day");
 		$limitstart = 0;
 		$limit      = 0;
 
@@ -76,7 +79,7 @@ class GetjsonController extends JControllerLegacy
 			$eventArray['textcolor']       = $event->fgcolor();
 			$eventArray['backgroundColor'] = $event->bgcolor();
 			$link                          = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
-			$eventArray['url']             = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+			$eventArray['url']             = Route::_($link . $this->datamodel->getCatidsOutLink());
 			if ($event->hasrepetition())
 			{
 				$eventArray['id'] = $event->ev_id();
@@ -85,7 +88,7 @@ class GetjsonController extends JControllerLegacy
 		}
 
 		// Get the document object.
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding('application/json');
@@ -103,16 +106,18 @@ class GetjsonController extends JControllerLegacy
 	function monthEvents()
 	{
 
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$input  = Factory::getApplication()->input;
 
-		$user  = JFactory::getUser();
+		$modid = intval(($input->getInt('modid', 0)));
+
+		$user  = Factory::getUser();
 		$query = "SELECT id, params"
 			. "\n FROM #__modules AS m"
 			. "\n WHERE m.published = 1"
 			. "\n AND m.id = " . $modid
 			. "\n AND m.access IN (" . JEVHelper::getAid($user, 'string') . ")"
 			. "\n AND m.client_id != 1";
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
 		if (count($modules) <= 0)
@@ -122,16 +127,16 @@ class GetjsonController extends JControllerLegacy
 				return new JResponseJson(array());
 			}
 		}
-		$params = new JRegistry(isset($modules[0]->params) ? $modules[0]->params : null);
+		$params = new JevRegistry(isset($modules[0]->params) ? $modules[0]->params : null);
 
-		$reg = JFactory::getConfig();
+		$reg = Factory::getConfig();
 		$reg->set("jev.modparams", $params);
 
 		$this->datamodel = new JEventsDataModel();
 		$myItemid        = $this->datamodel->setupModuleCatids($params);
 
-		$year  = JRequest::getVar('jev_current_year', 0);
-		$month = JRequest::getVar('jev_current_month', 0);
+		$year  = $input->getInt('jev_current_year', 0);
+		$month = $input->getInt('jev_current_month', 0);
 
 		if ($year == 0)
 		{
@@ -152,7 +157,7 @@ class GetjsonController extends JControllerLegacy
 				$eventArray['date']  = $day_index['year'] . "-" . $day_index['month'] . "-" . $day_index['d0'] . " " . date("H:i", $event->getUnixStartTime());
 				$eventArray['title'] = $event->title();
 				$link                = $event->viewDetailLink($day_index['year'], $day_index['month'], $day_index['d0'], false, $myItemid);
-				$eventArray['link']  = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+				$eventArray['link']  = Route::_($link . $this->datamodel->getCatidsOutLink());
 				$events[]            = $eventArray;
 			}
 		}
@@ -170,7 +175,7 @@ class GetjsonController extends JControllerLegacy
 	function eventRangeData()
 	{
 
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$input = $app->input;
 
 		$this->datamodel = new JEventsDataModel();
@@ -218,7 +223,7 @@ class GetjsonController extends JControllerLegacy
 			$eventArray['tooltipBody'] = $event->title();
 			$eventArray['color']       = $event->bgcolor();
 			$link                      = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), false, $myItemid);
-			$eventArray['url']         = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+			$eventArray['url']         = Route::_($link . $this->datamodel->getCatidsOutLink());
 			$eventArray['allDay']      = $event->alldayevent();
 
 			//var_dump($eventArray);die;
@@ -232,7 +237,7 @@ class GetjsonController extends JControllerLegacy
 		}
 
 		// Get the document object.
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding('application/json');

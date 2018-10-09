@@ -1,6 +1,12 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * Creates mini event dialog for view detail page etc.
  * note this must be contained in a position:relative block element in order to work
@@ -11,15 +17,15 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 {
 
 	JevHtmlBootstrap::modal("action_dialogJQ" . $row->rp_id());
-	$jinput = JFactory::getApplication()->input;
-	$user   = JFactory::getUser();
+	$input = Factory::getApplication()->input;
+	$user   = Factory::getUser();
 
 	if ($user->get("id") == 0) return "";
 	if ((JEVHelper::canEditEvent($row) || JEVHelper::canPublishEvent($row) || JEVHelper::canDeleteEvent($row)))
 	{
 
 		$popup  = false;
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			JevHtmlBootstrap::modal();
@@ -28,37 +34,37 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 			$popupw = $params->get("popupw", 800);
 			$popuph = $params->get("popuph", 600);
 		}
-		if ($jinput->getInt("pop", 0))
+		if ($input->getInt("pop", 0))
 		{
 			// do not call the modal scripts if already in a popup window!
 			$popup = false;
 		}
 
 		$hasrepeat    = false;
-		$pathIMG      = JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images';
-		$editImg      = JHtml::image('com_jevents/icons-32/edit.png', JText::_("EDIT_EVENT"), null, true);
+		$pathIMG      = Uri::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images';
+		$editImg      = HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("EDIT_EVENT"), null, true);
 		$editLink     = $row->editLink();
 		$editLink     = $popup ? "javascript:jevEditPopupNoHeader('" . $editLink . "');" : $editLink;
-		$editCopyImg  = JHtml::image('com_jevents/icons-32/copy.png', JText::_("COPY_AND_EDIT_EVENT"), null, true);
+		$editCopyImg  = HTMLHelper::image('com_jevents/icons-32/copy.png', JText::_("COPY_AND_EDIT_EVENT"), null, true);
 		$editCopyLink = $row->editCopyLink();
 		$editCopyLink = $popup ? "javascript:jevEditPopupNoHeader('" . $editCopyLink . "');" : $editCopyLink;
-		$deleteImg    = JHtml::image('com_jevents/icons-32/discard.png', JText::_("DELETE_EVENT"), null, true);
+		$deleteImg    = HTMLHelper::image('com_jevents/icons-32/discard.png', JText::_("DELETE_EVENT"), null, true);
 		$deleteLink   = $row->deleteLink();
 		if ($row->until() != $row->dtstart() || $row->count() > 1 || $row->freq() == "IRREGULAR")
 		{
 
 			$hasrepeat = true;
 
-			$editRepeatImg    = JHtml::image('com_jevents/icons-32/edit.png', JText::_("EDIT_REPEAT"), null, true);
+			$editRepeatImg    = HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("EDIT_REPEAT"), null, true);
 			$editRepeatLink   = $row->editRepeatLink();
 			$editRepeatLink   = $popup ? "javascript:jevEditPopupNoHeader('" . $editRepeatLink . "');" : $editRepeatLink;
-			$deleteRepeatImg  = JHtml::image('com_jevents/icons-32/discard.png', JText::_("DELETE_THIS_REPEAT"), null, true);
+			$deleteRepeatImg  = HTMLHelper::image('com_jevents/icons-32/discard.png', JText::_("DELETE_THIS_REPEAT"), null, true);
 			$deleteRepeatLink = $row->deleteRepeatLink();
 			//$deleteRepeatLink = $row->deleteRepeatLink(false);
 			//$deleteRepeatLink = JRoute::_($deleteRepeatLink."&rettask=month.calendar", true);
-			$deleteFutureImg  = JHtml::image('com_jevents/icons-32/discards.png', JText::_("JEV_DELETE_FUTURE_REPEATS"), null, true);
+			$deleteFutureImg  = HTMLHelper::image('com_jevents/icons-32/discards.png', JText::_("JEV_DELETE_FUTURE_REPEATS"), null, true);
 			$deleteFutureLink = $row->deleteFutureLink();
-			$deleteImg        = JHtml::image('com_jevents/icons-32/discards.png', JText::_("DELETE_ALL_REPEATS"), null, true);
+			$deleteImg        = HTMLHelper::image('com_jevents/icons-32/discards.png', JText::_("DELETE_ALL_REPEATS"), null, true);
 		}
 		else
 		{
@@ -86,13 +92,13 @@ function DefaultEventManagementDialog($view, $row, $mask, $bootstrap = false)
 		{
 			if ($row->published() > 0)
 			{
-				$publishImg  = JHtml::image('com_jevents/icons-32/cancel.png', JText::_("UNPUBLISH_EVENT"), null, true);
+				$publishImg  = HTMLHelper::image('com_jevents/icons-32/cancel.png', JText::_("UNPUBLISH_EVENT"), null, true);
 				$publishLink = $row->unpublishLink();
 				$publishText = JText::_('UNPUBLISH_EVENT');
 			}
 			else
 			{
-				$publishImg  = JHtml::image('com_jevents/icons-32/accept.png', JText::_("PUBLISH_EVENT"), null, true);
+				$publishImg  = HTMLHelper::image('com_jevents/icons-32/accept.png', JText::_("PUBLISH_EVENT"), null, true);
 				$publishLink = $row->publishLink();
 				$publishText = JText::_('PUBLISH_EVENT');
 			}

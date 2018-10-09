@@ -1,23 +1,28 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 function FlatViewHelperHeader16($view)
 {
 
-	$jinput = JFactory::getApplication()->input;
-	$task   = $jinput->getString('jevtask');
+	$app   = Factory::getApplication();
+	$input = $app->input;
+	$task   = $input->getString('jevtask');
 	$view->loadModules("jevprejevents");
 	$view->loadModules("jevprejevents_" . $task);
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsHeader', array($view));
+	$app->triggerEvent('onJEventsHeader', array($view));
 
 	$cfg     = JEVConfig::getInstance();
 	$version = JEventsVersion::getInstance();
-	$jevtype = $jinput->get('jevtype', null, null);
-	$evid    = $jinput->getInt('evid');
-	$pop     = $jinput->getInt('pop', '0');
-	$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$jevtype = $input->get('jevtype', null, null);
+	$evid    = $input->getInt('evid');
+	$pop     = $input->getInt('pop', '0');
+	$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	$view->copyrightComment();
 
@@ -30,7 +35,7 @@ function FlatViewHelperHeader16($view)
 		JEVHelper::SetMetaTags();
 	}
 
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	?>
 	<div id="jevents">
 	<div class="contentpaneopen jeventpage<?php echo $params->get('pageclass_sfx');
@@ -49,7 +54,7 @@ function FlatViewHelperHeader16($view)
 				$t_headline = '';
 				break;
 			case 'menu':
-				$menu2 = JFactory::getApplication()->getMenu();
+				$menu2 = Factory::getApplication()->getMenu();
 				$menu  = $menu2->getActive();
 				if (isset($menu) && isset($menu->title))
 				{
@@ -66,7 +71,7 @@ function FlatViewHelperHeader16($view)
 			<h2 class="contentheading"><?php echo $t_headline; ?></h2>
 			<?php
 		}
-		$task = $jinput->getString('jevtask', '');
+		$task = $input->getString('jevtask', '');
 
 		$info = "";
 
@@ -88,13 +93,13 @@ function FlatViewHelperHeader16($view)
 						. $view->datamodel->getCatidsOutLink()
 						. '&pop=1'
 						. '&tmpl=component';
-					$print_link = JRoute::_($print_link);
+					$print_link = Route::_($print_link);
 
 					if ($pop)
 					{ ?>
 						<li class="print-icon">
 							<a href="javascript:void(0);" rel="nofollow"
-							   onclick="javascript:window.print(); return false;"
+							   onclick="window.print(); return false;"
 							   title="<?php echo JText::_('JEV_CMN_PRINT'); ?>">
 								<span class="icon-print"> </span>
 							</a>
@@ -114,7 +119,7 @@ function FlatViewHelperHeader16($view)
 				if ($cfg->get('com_email_icon_view', 1))
 				{
 
-					$task = $jinput->getString('jevtask', '');
+					$task = $input->getString('jevtask', '');
 
 					$link = 'index.php?option=' . JEV_COM_COMPONENT
 						. '&task=' . $task
@@ -125,19 +130,19 @@ function FlatViewHelperHeader16($view)
 						. ($view->day ? '&day=' . $view->day : '')
 						. $view->datamodel->getItemidLink()
 						. $view->datamodel->getCatidsOutLink();
-					$link = JRoute::_($link);
+					$link = Route::_($link);
 					//if (strpos($link,"/")===0) $link = JString::substr($link,1);
-					$uri  = JURI::getInstance(JURI::base());
+					$uri  = Uri::getInstance(Uri::base());
 					$root = $uri->toString(array('scheme', 'host', 'port'));
 
 					$link = $root . $link;
 					require_once(JPATH_SITE . '/' . 'components' . '/' . 'com_mailto' . '/' . 'helpers' . '/' . 'mailto.php');
-					$url = JRoute::_('index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link));
+					$url = Route::_('index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link));
 
 					?>
 					<li class="email-icon">
 						<a href="javascript:void(0);" rel="nofollow"
-						   onclick="javascript:window.open('<?php echo $url; ?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;"
+						   onclick="window.open('<?php echo $url; ?>','emailwin','width=400,height=350,menubar=yes,resizable=yes'); return false;"
 						   title="<?php echo JText::_('EMAIL'); ?>">
 							<span class="icon-envelope"> </span>
 						</a>

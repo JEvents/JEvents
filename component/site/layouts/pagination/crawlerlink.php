@@ -9,6 +9,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
+$displayData = (!isset($displayData)) ? $displayData = array() : $displayData;
+
 $item = $displayData['data'];
 
 $display = $item->text;
@@ -64,7 +68,7 @@ if ($displayData['active'])
 	if (!is_numeric($item->text))
 	{
 		// Always Joomla 3+
-		JHtml::_('bootstrap.tooltip');
+		HTMLHelper::_('bootstrap.tooltip');
 		$cssClasses[] = 'hasTooltip';
 		$title        = ' title="' . $item->text . '" ';
 	}

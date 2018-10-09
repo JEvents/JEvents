@@ -1,7 +1,9 @@
 <?php
 defined('JPATH_BASE') or die;
 
-JFormHelper::loadFieldClass('text');
+use Joomla\CMS\Form\FormHelper;
+
+FormHelper::loadFieldClass('text');
 
 class JFormFieldJeveventtext extends JFormFieldText
 {

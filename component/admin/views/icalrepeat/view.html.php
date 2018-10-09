@@ -11,6 +11,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
@@ -22,7 +26,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENT_REPEATS'));
 
 		// Set toolbar items for the page
@@ -32,10 +36,10 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
 		JToolbarHelper::cancel('icalevent.list');
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		JEventsHelper::addSubmenu();
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
@@ -46,7 +50,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 
-		$document    = JFactory::getDocument();
+		$document    = Factory::getDocument();
 		$editStrings = '';
 
 		include(JEV_ADMINLIBS . "editStrings.php");
@@ -71,13 +75,13 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolbarHelper::cancel('icalrepeat.list');
 		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 		// load Joomla javascript classes
-		JHTML::_('behavior.core');
+		HTMLHelper::_('behavior.core');
 		$this->setLayout("edit");
 
 		$this->setupEditForm();
@@ -117,7 +121,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 						?>
 						<div class="icalrepeat-saveoptions">
 							<div style="margin-bottom:10px;">
-								<button onclick="javascript:<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;"
+								<button onclick="<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;"
 								        class="btn btn-small">
 									<span class="icon-save" style='margin:0px'
 									      title="<?php echo strip_tags($buttontext); ?>"></span>
@@ -137,7 +141,7 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 							$buttontask = "icalevent.save";
 							?>
 							<div>
-								<button onclick="javascript:<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;"
+								<button onclick="<?php echo $submitbutton; ?>('<?php echo $buttontask; ?>');return false;"
 								        class="btn btn-small">
 								<span class="icon-save" style='margin:0px'
 								      title="<?php echo strip_tags($buttontext); ?>">

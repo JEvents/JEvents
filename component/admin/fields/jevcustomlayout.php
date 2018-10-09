@@ -12,8 +12,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevcustomlayout extends JFormFieldList
 {
@@ -45,7 +50,7 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		$layouttype = $this->getAttribute("layouttype");
 		$target     = $this->getAttribute("target");
 		$csstarget  = $this->getAttribute("csstarget");
-		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
+		HTMLHelper::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
 		$html = "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
 		$id   = $this->id;
 		$html .= <<<DROPDOWN
@@ -73,7 +78,7 @@ DROPDOWN;
 	{
 
 		// Initialize variables.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$options = array();
 
 		// Initialize some field attributes.
@@ -89,11 +94,11 @@ DROPDOWN;
 			// Filter over published state or not depending upon if it is present.
 			if ($published)
 			{
-				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+				$options = HTMLHelper::_('category.options', $extension, array('filter.published' => explode(',', $published)));
 			}
 			else
 			{
-				$options = JHtml::_('category.options', $extension);
+				$options = HTMLHelper::_('category.options', $extension);
 			}
 
 			// Verify permissions.  If the action attribute is set, then we scan the options.
@@ -101,7 +106,7 @@ DROPDOWN;
 			{
 
 				// Get the current user object.
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 
 				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
 				// eg JAccess::preload('core.create', 'com_content.category')
@@ -118,11 +123,11 @@ DROPDOWN;
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters
-		if (!$this->value && ($this->form instanceof JForm))
+		if (!$this->value && ($this->form instanceof Form))
 		{
 			$context     = $this->form->getName();
 			$this->value = array();

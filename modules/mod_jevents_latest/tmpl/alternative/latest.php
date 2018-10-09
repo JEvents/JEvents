@@ -6,6 +6,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+
 /**
  * HTML View class for the module  frontend
  *
@@ -23,7 +26,6 @@ class AlternativeModLatestView extends DefaultModLatestView
 		$cfg      = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
 
-		$dispatcher = JEventDispatcher::getInstance();
 		$datenow    = JEVHelper::getNow();
 
 		$this->getLatestEventsData();
@@ -129,7 +131,7 @@ class AlternativeModLatestView extends DefaultModLatestView
 
 		if ($this->displayRSS)
 		{
-			$rssimg = JURI::root() . "media/system/images/livemarks.png";
+			$rssimg = Uri::root() . "media/system/images/livemarks.png";
 
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 				. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
@@ -142,11 +144,10 @@ class AlternativeModLatestView extends DefaultModLatestView
 
 		if ($this->modparams->get("contentplugins", 0))
 		{
-			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata  = new stdClass();
 			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			Factory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
 			$content = $eventdata->text;
 		}
 

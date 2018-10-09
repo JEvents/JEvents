@@ -13,9 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controllerform');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
-class AdminIcalsController extends JControllerForm
+class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 {
 
 	var $_debug = false;
@@ -51,24 +54,26 @@ class AdminIcalsController extends JControllerForm
 	function overview()
 	{
 
-		// get the view
+		// Get the view
 		$this->view = $this->getView("icals", "html");
 
 		$this->_checkValidCategories();
 
 		$option = JEV_COM_COMPONENT;
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
-		$catid      = intval(JFactory::getApplication()->getUserStateFromRequest("catid{$option}", 'catid', 0));
-		$limit      = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
-		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
-		$search     = JFactory::getApplication()->getUserStateFromRequest("search{$option}", 'search', '');
+		$catid      = intval($app->getUserStateFromRequest("catid{$option}", 'catid', 0));
+		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', $app->get('list_limit', 10)));
+		$limitstart = intval($app->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
+		$search     = $app->getUserStateFromRequest("search{$option}", 'search', '');
 		$search     = $db->escape(trim(strtolower($search)));
 		$where      = array();
 
 		// Trap cancelled edit and reset category ID.
-		$icsid = intval(JRequest::getVar('icsid', -1));
+		$icsid = intval($input->getInt('icsid', -1));
 		if ($icsid > -1)
 		{
 			$catid = 0;
@@ -86,8 +91,15 @@ class AdminIcalsController extends JControllerForm
 			. "\n FROM #__jevents_icsfile AS icsf"
 			. (count($where) ? "\n WHERE " . implode(' AND ', $where) : '');
 		$db->setQuery($query);
-		$total = $db->loadResult();
-		echo $db->getErrorMsg();
+		$total = 0;
+
+		try
+		{
+			$total = $db->loadResult();
+		} catch (Exception $e) {
+			echo $e;
+		}
+
 
 		if ($limitstart > $total)
 		{
@@ -136,29 +148,20 @@ class AdminIcalsController extends JControllerForm
 			//die( 'userbreak - mic ' );
 		}
 
-		if ($db->getErrorNum())
-		{
-			echo $db->stderr();
-
-			return false;
-		}
-
 		// get list of categories
 		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
 		$clist   = JEventsHTML::buildCategorySelect($catid, $attribs, null, true, false, 0, 'catid');
 
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
+		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 
 		// Set the layout
 		$this->view->setLayout('overview');
-
-		$this->view->assign('option', JEV_COM_COMPONENT);
-		$this->view->assign('rows', $rows);
-		$this->view->assign('clist', $clist);
-		$this->view->assign('search', $search);
-		$this->view->assign('pageNav', $pageNav);
+		$this->view->rows    = $rows;
+		$this->view->clist   = $clist;
+		$this->view->search  = $search;
+		$this->view->pageNav = $pageNav;
 
 		$this->view->display();
 	}
@@ -169,7 +172,7 @@ class AdminIcalsController extends JControllerForm
 		// TODO switch this after migration
 		$component_name = "com_jevents";
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = "SELECT COUNT(*) AS count FROM #__categories WHERE extension = '$component_name' AND `published` = 1;";  // RSH 9/28/10 added check for valid published, J!1.6 sets deleted categoris to published = -2
 		$db->setQuery($query);
 		$count = intval($db->loadResult());
@@ -185,7 +188,6 @@ class AdminIcalsController extends JControllerForm
 	function edit($key = null, $urlVar = null)
 	{
 
-		$user = JFactory::getUser();
 		if (!JEVHelper::isAdminUser())
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be super admin");
@@ -194,10 +196,13 @@ class AdminIcalsController extends JControllerForm
 			return;
 		}
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		// get the view
 		$this->view = $this->getView("icals", "html");
 
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0) $editItem = $cid[0];
 		else $editItem = 0;
@@ -205,7 +210,7 @@ class AdminIcalsController extends JControllerForm
 		$item = new stdClass();
 		if ($editItem != null)
 		{
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = "SELECT * FROM #__jevents_icsfile as ics where ics.ics_id=$editItem";
 
 			$db->setQuery($query);
@@ -219,10 +224,8 @@ class AdminIcalsController extends JControllerForm
 
 		// for Admin interface only
 
-		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isAdmin());
-
-		$this->view->assign('editItem', $item);
-		$this->view->assign('option', JEV_COM_COMPONENT);
+		$this->view->with_unpublished_cat = $app->isClient('administrator');
+		$this->view->editItem   = $item;
 
 		$this->view->display();
 
@@ -233,7 +236,10 @@ class AdminIcalsController extends JControllerForm
 
 		@set_time_limit(1800);
 
-		if (JFactory::getApplication()->isAdmin())
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
+		if ($app->isClient('administrator'))
 		{
 			$redirect_task = "icals.list";
 		}
@@ -244,7 +250,7 @@ class AdminIcalsController extends JControllerForm
 		}
 
 		$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf";
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$db->setQuery($query);
 		$allICS = $db->loadObjectList();
 
@@ -253,12 +259,12 @@ class AdminIcalsController extends JControllerForm
 			//only update cals from url
 			if ($currentICS->icaltype == '0' && $currentICS->autorefresh == 1)
 			{
-				JRequest::setVar('icsid', $currentICS->ics_id);
+				$input->set('icsid', $currentICS->ics_id);
 				$this->save();
 			}
 		}
 
-		$user  = JFactory::getUser();
+		$user  = Factory::getUser();
 		$guest = (int) $user->get('guest');
 
 		$link    = "index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task";
@@ -279,21 +285,22 @@ class AdminIcalsController extends JControllerForm
 	function save($key = null, $urlVar = null)
 	{
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
+		$app    = Factory::getApplication();
+		$input = $app->input;
 
+		$icsFile = false;
 		// Check for request forgeries
-		if ($jinput->get("task") !== "icals.reload" && $jinput->get("task") !== "icals.reloadall")
+		if ($input->get("task") !== "icals.reload" && $input->get("task") !== "icals.reloadall")
 		{
-			JSession::checkToken() or jexit('Invalid Token');
+			Session::checkToken() or jexit('Invalid Token');
 		}
 
-		$user  = JFactory::getUser();
+		$user  = Factory::getUser();
 		$guest = (int) $user->get('guest');
 
 		$authorised = false;
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$redirect_task = "icals.list";
 		}
@@ -304,11 +311,11 @@ class AdminIcalsController extends JControllerForm
 
 		// clean this up later - this is a quick fix for frontend reloading
 		$autorefresh = 0;
-		$icsid       = $jinput->getInt('icsid', 0);
+		$icsid       = $input->getInt('icsid', 0);
 		if ($icsid > 0)
 		{
 			$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE ics_id=$icsid";
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$db->setQuery($query);
 			$currentICS = $db->loadObjectList();
 			if (count($currentICS) > 0)
@@ -329,7 +336,7 @@ class AdminIcalsController extends JControllerForm
 
 			return;
 		}
-		$cid = JRequest::getVar('cid', array(0));
+		$cid = $input->input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
@@ -341,7 +348,7 @@ class AdminIcalsController extends JControllerForm
 			$cid = 0;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// include ical files
 
@@ -368,25 +375,26 @@ class AdminIcalsController extends JControllerForm
 				$this->redirect();
 			}
 
-			$catid = JRequest::getInt('catid', $currentICS->catid);
+			$catid = $input->getInt('catid', $currentICS->catid);
+
 			if ($catid <= 0 && $currentICS->catid > 0)
 			{
 				$catid = intval($currentICS->catid);
 			}
-			$access = intval(JRequest::getVar('access', $currentICS->access));
+			$access = intval($input->getCmd('access', $currentICS->access));
 			if ($access < 0 && $currentICS->access >= 0)
 			{
 				$access = intval($currentICS->access);
 			}
-			$icsLabel = JRequest::getVar('icsLabel', $currentICS->label);
-			if (($icsLabel == "" || JRequest::getCmd("task") == "icals.reload") && JString::strlen($currentICS->label) >= 0)
+			$icsLabel = $input->get('icsLabel', $currentICS->label);
+			if (($icsLabel == "" || $input->getCmd("task") == "icals.reload") && StringHelper::strlen($currentICS->label) >= 0)
 			{
 				$icsLabel = $currentICS->label;
 			}
-			$isdefault      = JRequest::getInt('isdefault', $currentICS->isdefault);
-			$overlaps       = JRequest::getInt('overlaps', $currentICS->overlaps);
-			$autorefresh    = JRequest::getInt('autorefresh', $autorefresh);
-			$ignoreembedcat = JRequest::getInt('ignoreembedcat', $currentICS->ignoreembedcat);
+			$isdefault      = $input->getInt('isdefault', $currentICS->isdefault);
+			$overlaps       = $input->getInt('overlaps', $currentICS->overlaps);
+			$autorefresh    = $input->getInt('autorefresh', $autorefresh);
+			$ignoreembedcat = $input->getInt('ignoreembedcat', $currentICS->ignoreembedcat);
 
 			// This is a native ical - so we are only updating identifiers etc
 			if ($currentICS->icaltype == 2)
@@ -405,7 +413,7 @@ class AdminIcalsController extends JControllerForm
 			}
 
 			$state = 1;
-			if (JString::strlen($currentICS->srcURL) == 0)
+			if (StringHelper::strlen($currentICS->srcURL) == 0)
 			{
 				echo "Can only reload URL based subscriptions";
 
@@ -417,13 +425,13 @@ class AdminIcalsController extends JControllerForm
 		else
 		{
 
-			$catid          = $jinput->getInt('catid', 0);
-			$ignoreembedcat = $jinput->getInt('ignoreembedcat', 0);
+			$catid          = $input->getInt('catid', 0);
+			$ignoreembedcat = $input->getInt('ignoreembedcat', 0);
 			// Should come from the form or existing item
-			$access    = $jinput->getInt('access', 0);
+			$access    = $input->getInt('access', 0);
 			$state     = 1;
-			$uploadURL = $jinput->getString('uploadURL', '');
-			$icsLabel  = $jinput->getString('icsLabel', '');
+			$uploadURL = $input->getString('uploadURL', '');
+			$icsLabel  = $input->getString('icsLabel', '');
 
 		}
 		if ($catid == 0)
@@ -438,7 +446,7 @@ class AdminIcalsController extends JControllerForm
 		}
 
 		// I need a better check and expiry information etc.
-		if (JString::strlen($uploadURL) > 0)
+		if (StringHelper::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -447,7 +455,7 @@ class AdminIcalsController extends JControllerForm
 			$file = $_FILES['upload'];
 			if ($file['size'] == 0)
 			{//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				JFactory::getApplication()->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
+				$app->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else
@@ -466,13 +474,13 @@ class AdminIcalsController extends JControllerForm
 			}
 			else
 			{
-				$icsFile->created_by = $jinput->getInt("created_by", 0);
+				$icsFile->created_by = $input->getInt("created_by", 0);
 			}
 
 			$icsFileid = $icsFile->store();
 			$message   = JText::_('ICS_FILE_IMPORTED');
 		}
-		if (JRequest::getCmd("task") !== "icals.reloadall")
+		if ($input->getCmd("task") !== "icals.reloadall")
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task";
 
@@ -495,13 +503,16 @@ class AdminIcalsController extends JControllerForm
 	function savedetails()
 	{
 
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		$authorised = false;
 
-		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
-		if (JFactory::getApplication()->isAdmin())
+		// Check for request forgeries
+		Session::checkToken() or jexit('Invalid Token');
+
+		if ($app->isClient('administrator'))
 		{
 			$redirect_task = "icals.list";
 		}
@@ -518,8 +529,8 @@ class AdminIcalsController extends JControllerForm
 			return;
 		}
 
-		$icsid = intval(JRequest::getVar('icsid', 0));
-		$cid   = JRequest::getVar('cid', array(0));
+		$icsid = intval($input->getInt('icsid', 0));
+		$cid   = $input->get('cid', array(), 'array');
 		$cid   = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 		{
@@ -530,10 +541,7 @@ class AdminIcalsController extends JControllerForm
 			$cid = 0;
 		}
 
-		$db = JFactory::getDbo();
-
-		// include ical files
-
+		$db = Factory::getDbo();
 
 		if ($icsid > 0 || $cid != 0)
 		{
@@ -551,35 +559,35 @@ class AdminIcalsController extends JControllerForm
 				$this->redirect();
 			}
 
-			$catid = JRequest::getInt('catid', $currentICS->catid);
+			$catid = $input->getInt('catid', $currentICS->catid);
 			if ($catid <= 0 && $currentICS->catid > 0)
 			{
 				$catid = intval($currentICS->catid);
 			}
-			$access = intval(JRequest::getVar('access', $currentICS->access));
+			$access = intval($input->getInt('access', $currentICS->access));
 			if ($access < 0 && $currentICS->access >= 0)
 			{
 				$access = intval($currentICS->access);
 			}
-			$state = intval(JRequest::getVar('state', $currentICS->state));
+			$state = intval($input->getInt('state', $currentICS->state));
 			if ($state < 0 && $currentICS->state >= 0)
 			{
 				$state = intval($currentICS->state);
 			}
-			$icsLabel = JRequest::getVar('icsLabel', $currentICS->label);
-			if ($icsLabel == "" && JString::strlen($currentICS->icsLabel) >= 0)
+			$icsLabel = $input->getString('icsLabel', $currentICS->label);
+			if ($icsLabel == "" && StringHelper::strlen($currentICS->icsLabel) >= 0)
 			{
 				$icsLabel = $currentICS->icsLabel;
 			}
-			$uploadURL = JRequest::getVar('uploadURL', $currentICS->srcURL);
-			if ($uploadURL == "" && JString::strlen($currentICS->srcURL) >= 0)
+			$uploadURL = $input->getString('uploadURL', $currentICS->srcURL);
+			if ($uploadURL == "" && StringHelper::strlen($currentICS->srcURL) >= 0)
 			{
 				$uploadURL = $currentICS->srcURL;
 			}
-			$isdefault   = JRequest::getInt('isdefault', $currentICS->isdefault);
-			$overlaps    = JRequest::getInt('overlaps', $currentICS->overlaps);
-			$autorefesh  = JRequest::getInt('autorefresh', $currentICS->autorefresh);
-			$ignoreembed = JRequest::getInt('ignoreembedcat', $currentICS->ignoreembedcat);
+			$isdefault   = $input->getInt('isdefault', $currentICS->isdefault);
+			$overlaps    = $input->getInt('overlaps', $currentICS->overlaps);
+			$autorefesh  = $input->getInt('autorefresh', $currentICS->autorefresh);
+			$ignoreembed = $input->getInt('ignoreembedcat', $currentICS->ignoreembedcat);
 
 			// We are only updating identifiers etc
 			$ics = new iCalICSFile($db);
@@ -587,7 +595,7 @@ class AdminIcalsController extends JControllerForm
 			$ics->catid          = $catid;
 			$ics->isdefault      = $isdefault;
 			$ics->overlaps       = $overlaps;
-			$ics->created_by     = JRequest::getInt("created_by", $currentICS->created_by);
+			$ics->created_by     = $input->getInt("created_by", $currentICS->created_by);
 			$ics->state          = $state;
 			$ics->access         = $access;
 			$ics->label          = $icsLabel;
@@ -602,8 +610,8 @@ class AdminIcalsController extends JControllerForm
 
 	function publish()
 	{
-
-		$cid = JRequest::getVar('cid', array(0));
+		$input  = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid, 1);
 	}
@@ -611,7 +619,7 @@ class AdminIcalsController extends JControllerForm
 	function toggleICalPublish($cid, $newstate)
 	{
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!JEVHelper::isAdminUser($user))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be super admin");
@@ -620,7 +628,7 @@ class AdminIcalsController extends JControllerForm
 			return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($cid as $id)
 		{
 			$sql = "UPDATE #__jevents_icsfile SET state=$newstate where ics_id='" . $id . "'";
@@ -634,7 +642,8 @@ class AdminIcalsController extends JControllerForm
 	function unpublish()
 	{
 
-		$cid = JRequest::getVar('cid', array(0));
+		$input  = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleICalPublish($cid, 0);
 	}
@@ -642,7 +651,8 @@ class AdminIcalsController extends JControllerForm
 	function autorefresh()
 	{
 
-		$cid = JRequest::getVar('cid', array(0));
+		$input = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid, 1);
 	}
@@ -650,7 +660,7 @@ class AdminIcalsController extends JControllerForm
 	function toggleAutorefresh($cid, $newstate)
 	{
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!JEVHelper::isAdminUser($user))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be super admin");
@@ -659,7 +669,7 @@ class AdminIcalsController extends JControllerForm
 			return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($cid as $id)
 		{
 			$sql = "UPDATE #__jevents_icsfile SET autorefresh=$newstate where ics_id='" . $id . "'";
@@ -673,7 +683,8 @@ class AdminIcalsController extends JControllerForm
 	function noautorefresh()
 	{
 
-		$cid = JRequest::getVar('cid', array(0));
+		$input = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleAutorefresh($cid, 0);
 	}
@@ -681,7 +692,8 @@ class AdminIcalsController extends JControllerForm
 	function isdefault()
 	{
 
-		$cid = JRequest::getVar('cid', array(0));
+		$input = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid, 1);
 	}
@@ -689,7 +701,7 @@ class AdminIcalsController extends JControllerForm
 	function toggleDefault($cid, $newstate)
 	{
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!JEVHelper::isAdminUser($user))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be super admin");
@@ -698,7 +710,7 @@ class AdminIcalsController extends JControllerForm
 			return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// set all to not default first
 		$sql = "UPDATE #__jevents_icsfile SET isdefault=0";
 		$db->setQuery($sql);
@@ -715,7 +727,8 @@ class AdminIcalsController extends JControllerForm
 	function notdefault()
 	{
 
-		$cid = JRequest::getVar('cid', array(0));
+		$input  = Factory::getApplication()->input;
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 		$this->toggleDefault($cid, 0);
 	}
@@ -727,35 +740,37 @@ class AdminIcalsController extends JControllerForm
 	{
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 
+		$app  = Factory::getApplication();
+		$input  = $app->input;
 		// include ical files
-		$catid = intval(JRequest::getVar('catid', 0));
+		$catid = intval($input->input->get('cid', array(), 'array'));
 		// Should come from the form or existing item
-		$access   = JRequest::getInt('access', 0);
+		$access   = $input->getInt('access', 0);
 		$state    = 1;
-		$icsLabel = JRequest::getVar('icsLabel', '');
+		$icsLabel = $input->getString('icsLabel', '');
 
 		if ($catid == 0)
 		{
 			// Paranoia, should not be here, validation is done by java script
-			JFactory::getApplication()->enqueueMessage('Fatal Error - ' . JText::_("JEV_E_WARNCAT"), 'error');
+			$app->enqueueMessage('Fatal Error - ' . JText::_("JEV_E_WARNCAT"), 'error');
 
 			// Set option variable.
 			$option = JEV_COM_COMPONENT;
-			JFactory::getApplication()->redirect('index.php?option=' . $option);
+			$app->redirect('index.php?option=' . $option);
 
 			return;
 		}
 
 		// Check for duplicates
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE label=" . $db->quote($icsLabel);
 		$db->setQuery($query);
 		$existing = $db->loadObject();
 		if ($existing)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('JEV_DUPLICATE_CALENDAR'), 'error');
+			$app->enqueueMessage(JText::_('JEV_DUPLICATE_CALENDAR'), 'error');
 
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.edit");
 			$this->redirect();
@@ -766,7 +781,7 @@ class AdminIcalsController extends JControllerForm
 
 		$icsid               = 0;
 		$icsFile             = iCalICSFile::editICalendar($icsid, $catid, $access, $state, $icsLabel);
-		$icsFile->created_by = JRequest::getInt("created_by", 0);
+		$icsFile->created_by = $input->getInt("created_by", 0);
 		$icsFileid           = $icsFile->store();
 
 		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('ICAL_FILE_CREATED'));
@@ -777,12 +792,15 @@ class AdminIcalsController extends JControllerForm
 	{
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 
-		$cid = JRequest::getVar('cid', array(0));
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
+		$cid = $input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// check this won't create orphan events
 		$query = "SELECT ev_id FROM #__jevents_vevent WHERE icsid in (" . implode(",", $cid) . ")";
@@ -808,7 +826,7 @@ class AdminIcalsController extends JControllerForm
 	function _deleteICal($cid)
 	{
 
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 		$icsids = implode(",", $cid);
 
 		$query = "SELECT ev_id FROM #__jevents_vevent WHERE icsid IN ($icsids)";

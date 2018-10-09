@@ -112,7 +112,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  
 #### 11-05-2017 Tony Partridge
 * JEvents 3.4.38 
-* Fixed issue with JInputFilter saving on pre J3.7.1
+* Fixed issue with inputFilter saving on pre J3.7.1
 
 #### 10-05-2017 Geraint Edwards
 * JEvents 3.4.37
@@ -125,7 +125,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Added published_fv to the publish/unpublish links within Manage Events View, this keeps the manage events filter state i.e. all events, published or un-published.
 
 #### 03-05-2017 Tony Partridge
-*Fixed issue with 504 Gateway timeout when saving on some servers, caused but using JRequest, replaced with JInput
+*Fixed issue with 504 Gateway timeout when saving on some servers, caused but using JRequest, replaced with input
 
 ####26-04-2017 Geraint Edwards
 * JEvents 3.4.36 

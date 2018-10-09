@@ -4,6 +4,10 @@
  * @license        By negoriation with author via http://www.gwesystems.com
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
+
 function ProcessJsonRequest(&$requestObject, $returnData)
 {
 
@@ -14,13 +18,13 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
-	$token = JSession::getFormToken();;
-	if ((isset($requestObject->token) && $requestObject->token != $token) || JFactory::getApplication()->input->get('token', '', 'string') != $token)
+	$token = Session::getFormToken();
+	if ((isset($requestObject->token) && $requestObject->token != $token) || Factory::getApplication()->input->get('token', '', 'string') != $token)
 	{
 		PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 	}
 
-	$user = JFactory::getUser();
+	$user = Factory::getUser();
 	if ($user->id == 0)
 	{
 		PlgSystemGwejson::throwerror("There was an error");
@@ -28,11 +32,11 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	// If user is jevents can deleteall or has backend access then allow them to specify the creator
 	$jevuser = JEVHelper::getAuthorisedUser();
-	$user    = JFactory::getUser();
+	$user    = Factory::getUser();
 	//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 	$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-	$db = JFactory::getDbo();
+	$db = Factory::getDbo();
 	if (!($jevuser && $jevuser->candeleteall) && !$access)
 	{
 		PlgSystemGwejson::throwerror("There was an error - no access");
@@ -51,7 +55,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		PlgSystemGwejson::throwerror("There was an error - no valid argument");
 	}
 
-	$db = JFactory::getDbo();
+	$db = Factory::getDbo();
 
 	$title = JFilterInput::getInstance()->clean($requestObject->typeahead, "string");
 	$text  = $db->Quote('%' . $db->escape($title, true) . '%', false);
@@ -69,7 +73,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		PlgSystemGwejson::throwerror("There was an error - no valid argument");
 	}
 
-	$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$authorisedonly = $params->get("authorisedonly", 0);
 	// if authorised only then load from database
 	if ($authorisedonly)

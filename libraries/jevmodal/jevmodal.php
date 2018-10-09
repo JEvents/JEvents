@@ -7,6 +7,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Utility class for Bootstrap Modal Popups especially URL based Modals which bootstrap usually fails on
  *
@@ -74,10 +76,10 @@ class JevModal
 		}
 
 		// Load jQuery
-		JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 
-		JHtml::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array(), true);
-		JHtml::script('com_jevents/lib_jevmodal/jevmodal.js', false, true, false, false, true);
+		HTMLHelper::stylesheet('com_jevents/lib_jevmodal/jevmodal.css', array(), true);
+		HTMLHelper::script('com_jevents/lib_jevmodal/jevmodal.js', false, true, false, false, true);
 
 		static::$loaded[__METHOD__] = true;
 

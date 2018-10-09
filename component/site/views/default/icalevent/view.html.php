@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -24,13 +27,13 @@ class DefaultViewICalevent extends JEventsDefaultView
 	{
 
 		JEVHelper::componentStylesheet($this);
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 
 		$this->data = $this->datamodel->getEventData($this->evid, $this->jevtype, $this->year, $this->month, $this->day, $this->uid);
@@ -38,7 +41,7 @@ class DefaultViewICalevent extends JEventsDefaultView
 		// Dynamic pathway
 		if (isset($this->data['row']))
 		{
-			$pathway = JFactory::getApplication()->getPathway();
+			$pathway = Factory::getApplication()->getPathway();
 
 			$pathway->addItem($this->data['row']->title(), "");
 
@@ -48,8 +51,8 @@ class DefaultViewICalevent extends JEventsDefaultView
 			$this->day   = $this->data['row']->dup();
 
 			// seth month and year to be used by mini-calendar if needed
-			if (!$jinput->getInt("month", 0)) $jinput->set("month", $this->month);
-			if (!$jinput->getInt("year", 0)) $jinput->set("year", $this->year);
+			if (!$input->getInt("month", 0)) $input->set("month", $this->month);
+			if (!$input->getInt("year", 0)) $input->set("year", $this->year);
 		}
 	}
 }

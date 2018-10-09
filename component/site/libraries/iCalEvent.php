@@ -12,7 +12,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class iCalEvent extends JTable
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
+class iCalEvent extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */
@@ -66,7 +70,7 @@ class iCalEvent extends JTable
 	public static function iCalEventFromData($ice)
 	{
 
-		$db         = JFactory::getDbo();
+		$db         = Factory::getDbo();
 		$temp       = new iCalEvent($db);
 		$temp->data = $ice;
 		if (array_key_exists("RRULE", $temp->data))
@@ -121,7 +125,7 @@ class iCalEvent extends JTable
 		// old events access and published state
 		$this->processField("x-access", JEVHelper::getBaseAccess(), "access");
 		$this->processField("x-state", 1, "state");
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$this->processField("x-createdby", $user->id, "created_by");
 		$this->processField("x-createdbyalias", "", "created_by_alias");
 		$this->processField("x-modifiedby", $user->id, "modified_by");
@@ -183,7 +187,7 @@ else $this->_detail = false;
 	public static function iCalEventFromDB($icalrowAsArray)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalEvent($db);
 		foreach ($icalrowAsArray as $key => $val)
 		{
@@ -217,11 +221,12 @@ else $this->_detail = false;
 	function store($updateNulls = false, $overwriteCreator = false)
 	{
 
-		$user = JFactory::getUser();
+		$app    = Factory::getApplication();
+		$user   = Factory::getUser();
 
-		$jinput      = JFactory::getApplication()->input;
-		$curr_task   = $jinput->getCmd('task');
-		$ical_access = $jinput->getInt('access');
+		$input      = $app->input;
+		$curr_task   = $input->getCmd('task');
+		$ical_access = $input->getInt('access');
 
 		if ($curr_task == "icals.save")
 		{
@@ -255,7 +260,7 @@ else $this->_detail = false;
 		// if existing row preserve created by - unless being overwritten by authorised user
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser   = JEVHelper::getAuthorisedUser();
-		$creatorid = JRequest::getInt("jev_creatorid", 0);
+		$creatorid = $input->getInt("jev_creatorid", 0);
 
 		$access = false;
 		if ($user->get('id') > 0)
@@ -279,20 +284,21 @@ else $this->_detail = false;
 		// place private reference to created_by in event detail in case needed by plugins
 		$this->_detail->_created_by = $this->created_by;
 
-		$db       = JFactory::getDbo();
-		$detailid = $this->_detail->store($updateNulls);
-
-		if (!$detailid)
+		$db       = Factory::getDbo();
+		try
 		{
+			$detailid = $this->_detail->store($updateNulls);
 
-			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
+		} catch (Exception $e) {
 
-			//TODO Setup a exception catch
-			echo $db->getErrorMsg() . "<br/>";
-
+			$app->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT_DETAIL"), 'error');
+			echo $e. "<br/>";
 			return false;
 		}
+
+
 		$this->detail_id = $detailid;
+
 		// Keep the multiple catids for storing after this
 		$catids = false;
 		if (is_array($this->catid))
@@ -300,15 +306,18 @@ else $this->_detail = false;
 			$catids      = $this->catid;
 			$this->catid = $this->catid[0];
 		}
-		if (!parent::store($updateNulls))
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT"), 'error');
 
-			//TODO Setup a exception catch
-			echo $db->getErrorMsg() . "<br/>";
+		try {
 
+			parent::store($updateNulls);
+
+		} catch (Exception $e) {
+
+			$app->enqueueMessage(JText::_("PROBLEMS_STORING_EVENT"), 'error');
+			echo $e . "<br/>";
 			return false;
 		}
+
 		if ($catids)
 		{
 			$pairs = array();
@@ -336,11 +345,10 @@ else $this->_detail = false;
 			}
 		}
 
+		// Just in case we don't have jevents plugins registered yet
+		PluginHelper::importPlugin("jevents");
 		// I also need to store custom data - when we need the event itself and not just the detail
-		$dispatcher = JEventDispatcher::getInstance();
-		// just incase we don't have jevents plugins registered yet
-		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger('onStoreCustomEvent', array(&$this));
+		$res = $app->triggerEvent('onStoreCustomEvent', array(&$this));
 
 		// some iCal imports do not provide an RRULE entry so create an empty one here
 		if (!isset($this->rrule))
@@ -352,8 +360,12 @@ else $this->_detail = false;
 		{
 			$this->rrule->rr_id = $id;
 		}
-		$this->rrule->store($updateNulls);
-		echo $db->getErrorMsg() . "<br/>";
+		try
+		{
+			$this->rrule->store($updateNulls);
+		} catch (Exception $e) {
+			echo $e . "<br/>";
+		}
 
 		return true;
 	}
@@ -424,7 +436,7 @@ else $this->_detail = false;
 
 		// TODO if I implement this outsite of upload I need to clean the detail table too
 		$duplicatecheck = md5($eventid . $start);
-		$db             = JFactory::getDbo();
+		$db             = Factory::getDbo();
 		$sql            = "DELETE FROM #__jevents_repetition WHERE duplicatecheck='" . $duplicatecheck . "'";
 		$db->setQuery($sql);
 
@@ -441,7 +453,7 @@ else $this->_detail = false;
 		$eventid = $this->ev_id;
 
 		$tz = false;
-		if (JString::stristr($this->recurrence_id, "TZID"))
+		if (StringHelper::stristr($this->recurrence_id, "TZID"))
 		{
 			list($tz, $this->recurrence_id) = explode(";", $this->recurrence_id);
 			$tz = str_replace("TZID=", "", $tz);
@@ -451,7 +463,7 @@ else $this->_detail = false;
 		$duplicatecheck = md5($eventid . $start);
 
 		// find the existing repetition in order to get the detailid
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$sql = "SELECT * FROM #__jevents_repetition WHERE duplicatecheck='$duplicatecheck'";
 		$db->setQuery($sql);
 		$matchingRepetition = $db->loadObject();
@@ -496,7 +508,7 @@ else $this->_detail = false;
 		}
 
 		$duplicatecheck = md5($eventid . $start);
-		$db             = JFactory::getDbo();
+		$db             = Factory::getDbo();
 		$sql            = "UPDATE #__jevents_repetition SET eventdetail_id=" . $newDetail->evdet_id
 			. ", startrepeat='" . $start . "'"
 			. ", endrepeat='" . $end . "'"
@@ -513,7 +525,7 @@ else $this->_detail = false;
 
 		if (!isset($this->_repetitions)) $this->getRepetitions(true);
 		if (count($this->_repetitions) == 0) return false;
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// I must delete the eventdetails for repetitions not matching the global event detail
 		// these will be recreated later to match the new adjusted repetitions
 
@@ -530,11 +542,10 @@ else $this->_detail = false;
 			$db->setQuery($sql);
 			$db->execute();
 
+			// Just in case we don't have jevents plugins registered yet
+			PluginHelper::importPlugin("jevents");
 			// I also need to clean out associated custom data
-			$dispatcher = JEventDispatcher::getInstance();
-			// just incase we don't have jevents plugins registered yet
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventDetails', array($idlist));
+			$res = Factory::getApplication()->triggerEvent('onDeleteEventDetails', array($idlist));
 
 		}
 
@@ -546,7 +557,7 @@ else $this->_detail = false;
 		foreach ($oldrepeats as &$oldrepeat)
 		{
 			// find matching day
-			$oldrepeat->startday = JString::substr($oldrepeat->startrepeat, 0, 10);
+			$oldrepeat->startday = StringHelper::substr($oldrepeat->startrepeat, 0, 10);
 			// free the reference
 			unset($oldrepeat);
 		}
@@ -565,7 +576,7 @@ else $this->_detail = false;
 		{
 			$repeat =& $this->_repetitions[$r];
 			// find matching day and only one!!
-			$repeat->startday = JString::substr($repeat->startrepeat, 0, 10);
+			$repeat->startday = StringHelper::substr($repeat->startrepeat, 0, 10);
 			$matched          = false;
 			foreach ($oldrepeats as & $oldrepeat)
 			{
@@ -636,7 +647,7 @@ else $this->_detail = false;
 		// if no rrule then only one instance
 		if (!isset($this->rrule) || strtolower($this->rrule->freq) == "none")
 		{
-			$db              = JFactory::getDbo();
+			$db              = Factory::getDbo();
 			$repeat          = new iCalRepetition($db);
 			$repeat->eventid = $this->ev_id;
 			// is it in a non-default timezone?

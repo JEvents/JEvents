@@ -1108,7 +1108,7 @@ var NewCalendar = new Class({
             n: '([0-9]{1,2})',
             Y: '([0-9]{4})',
             y: '([0-9]{2})'
-        }
+        };
 
         var arr = []; // array of indexes
 

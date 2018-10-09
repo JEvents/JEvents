@@ -1,6 +1,8 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -43,7 +45,7 @@ class JFormFieldJeveventcalendar extends JFormField
 		$clist       = $this->form->jevdata[$this->name]["clist"];
 		$nativeCals  = $this->form->jevdata[$this->name]["nativeCals"];
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 

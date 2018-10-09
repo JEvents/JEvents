@@ -28,7 +28,6 @@ $fullspan = 12;
 							<?php
 							$clubnews = $this->renderVersionsForClipboard();
 							$label    = JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT");
-							//echo JHtml::_('sliders.panel', $label, 'cpanelstatustextarea');
 							?>
 							<div style="width: 100%;padding:0px;">
 								<strong><?php echo JText::_("JEV_VERSION_INFORMATION_FOR_SUPPORT_DESCRIPTION"); ?></strong>
@@ -39,24 +38,6 @@ $fullspan = 12;
 					</td>
 					<td width="50%" valign="top">
 
-						<?php
-						// Lets check if SH404 is enabled.
-						//$db = JFactory::getDbo();
-						//$query = $db->getQuery(true);
-						//$query->select('enabled');
-						//$query->from('#__extensions');
-						//$query->where('name = \'sh404sef\'');
-						//$db->setQuery($query);
-						//$enabled = $db->loadresult();
-						//if ($enabled == '0') {
-						?>
-						<!--<h3> Your SH404 configuration may cause problems with JEvents.</h3> -->
-
-						<?php
-						//} else { 
-						//echo "<p><strong style='color:green;'>No issues detected</strong></p>";
-						//}
-						?>
 					</td>
 				</tr>
 			</table>

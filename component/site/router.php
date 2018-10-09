@@ -11,6 +11,11 @@
  */
 defined('_JEXEC') or die('No Direct Access');
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 JLoader::register('JEVConfig', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/config.php");
 JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
@@ -18,9 +23,9 @@ JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
 function JEventsBuildRoute(&$query)
 {
 
-	$params = JComponentHelper::getParams("com_jevents");
+	$params = ComponentHelper::getParams("com_jevents");
 	// Must also load backend language files
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$lang->load("com_jevents", JPATH_SITE);
 
 	$segments = array();
@@ -47,7 +52,7 @@ function JEventsBuildRoute(&$query)
 	{
 		if (isset($query["Itemid"]))
 		{
-			$menu     = JFactory::getApplication()->getMenu();
+			$menu     = Factory::getApplication()->getMenu();
 			$menuitem = $menu->getItem($query["Itemid"]);
 			if (!is_null($menuitem) && isset($menuitem->query["task"]))
 			{
@@ -76,9 +81,8 @@ function JEventsBuildRoute(&$query)
 		unset($query['task']);
 	}
 
-	JPluginHelper::importPlugin("jevents");
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsRoute');
+	PluginHelper::importPlugin("jevents");
+	Factory::getApplication()->triggerEvent('onJEventsRoute');
 
 	// Translatable URLs
 	if ($params->get("newsef", 1))
@@ -101,18 +105,14 @@ function JEventsBuildRoute(&$query)
 		case "admin.listevents":
 			{
 				$segments[] = $task;
-				$config     = JFactory::getConfig();
+				$config     = Factory::getConfig();
 				$t_datenow  = JEVHelper::getNow();
 
 				// if no date in the query then use TODAY not the calendar date
 				$nowyear  = JevDate::strftime('%Y', $t_datenow->toUnix(true));
 				$nowmonth = JevDate::strftime('%m', $t_datenow->toUnix(true));
 				$nowday   = JevDate::strftime('%d', $t_datenow->toUnix(true));
-				/*
-				  $year	= intval( JRequest::getVar( 'year',	 $nowyear ));
-				  $month	= intval( JRequest::getVar( 'month', $nowmonth ));
-				  $day	= intval( JRequest::getVar( 'day',	 $nowday ));
-				 */
+
 				if (isset($query['year']))
 				{
 					$segments[] = $query['year'];
@@ -162,14 +162,14 @@ function JEventsBuildRoute(&$query)
 							if (isset($query["Itemid"]))
 							{
 								// event detail menu item
-								$menu     = JFactory::getApplication()->getMenu();
+								$menu     = Factory::getApplication()->getMenu();
 								$menuitem = $menu->getItem($query["Itemid"]);
 								if (!is_null($menuitem) && isset($menuitem->query["evid"]))
 								{
 									$segments[] = $menuitem->query["evid"];
 									if (!isset($query['title']))
 									{
-										//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+										//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 									}
 								}
 								else
@@ -197,7 +197,7 @@ function JEventsBuildRoute(&$query)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
+				if (isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -218,7 +218,7 @@ function JEventsBuildRoute(&$query)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -257,14 +257,14 @@ function JEventsBuildRoute(&$query)
 				if (isset($query["Itemid"]))
 				{
 					// event detail menu item
-					$menu     = JFactory::getApplication()->getMenu();
+					$menu     = Factory::getApplication()->getMenu();
 					$menuitem = $menu->getItem($query["Itemid"]);
 					if (!is_null($menuitem) && isset($menuitem->query["evid"]))
 					{
 						$segments[] = $menuitem->query["evid"];
 						if (!isset($query['title']))
 						{
-							//$query['title'] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							//$query['title'] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 						}
 					}
 					else
@@ -350,7 +350,7 @@ function JEventsParseRoute($segments)
 	{
 
 		// Must also load backend language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_SITE);
 
 		$translatedTasks = array();
@@ -391,7 +391,7 @@ function JEventsParseRoute($segments)
 	}
 
 	//Get the active menu item
-	$menu = JFactory::getApplication()->getMenu();
+	$menu = Factory::getApplication()->getMenu();
 	$item = $menu->getActive();
 
 	// Count route segments
@@ -582,11 +582,11 @@ function JEventsBuildRouteNew(&$query, $task)
 
 	$transtask = translatetask($task, $query);
 
-	$params             = JComponentHelper::getParams("com_jevents");
+	$params             = ComponentHelper::getParams("com_jevents");
 	$noeventdetailinurl = $params->get("noeventdetailinurl", 0);
 
 	// get a menu item based on Itemid or currently active
-	$app  = JFactory::getApplication();
+	$app  = Factory::getApplication();
 	$menu = $app->getMenu();
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid']))
@@ -608,7 +608,7 @@ function JEventsBuildRouteNew(&$query, $task)
 
 		// special case where we do not need any information since its a menu item
 		// as long as the task matches up!
-		$menu     = JFactory::getApplication()->getMenu();
+		$menu     = Factory::getApplication()->getMenu();
 		$menuitem = $menu->getItem($query["Itemid"]);
 		if (!is_null($menuitem) && (isset($menuitem->query["task"]) || (isset($menuitem->query["view"]) && isset($menuitem->query["layout"]))))
 		{
@@ -648,7 +648,7 @@ function JEventsBuildRouteNew(&$query, $task)
 				{
 					$segments[] = $transtask;
 				}
-				$config    = JFactory::getConfig();
+				$config    = Factory::getConfig();
 				$t_datenow = JEVHelper::getNow();
 
 				// if no date in the query then use TODAY not the calendar date
@@ -749,7 +749,7 @@ function JEventsBuildRouteNew(&$query, $task)
 							}
 						}
 
-						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && JString::strlen($query['catids']) > 0)
+						if ($params->get("nocatindetaillink", 0) && isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 						{
 							unset($query['catids']);
 						}
@@ -758,7 +758,7 @@ function JEventsBuildRouteNew(&$query, $task)
 					default:
 						break;
 				}
-				if (isset($query['catids']) && JString::strlen($query['catids']) > 0)
+				if (isset($query['catids']) && StringHelper::strlen($query['catids']) > 0)
 				{
 					$segments[] = $query['catids'];
 					unset($query['catids']);
@@ -785,7 +785,7 @@ function JEventsBuildRouteNew(&$query, $task)
 						}
 						if (isset($query['title']))
 						{
-							$segments[] = JString::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
+							$segments[] = StringHelper::substr(JApplicationHelper::stringURLSafe($query['title']), 0, 150);
 							unset($query['title']);
 						}
 						else
@@ -915,7 +915,7 @@ function JEventsParseRouteNew(&$segments, $task)
 	$vars = array();
 
 	$vars["task"] = $task;
-	$params       = JComponentHelper::getParams("com_jevents");
+	$params       = ComponentHelper::getParams("com_jevents");
 
 	// Count route segments
 	$count     = count($segments);
@@ -1110,7 +1110,7 @@ function translatetask($task, $query = false)
 	$transtask = JText::_("JEV_SEF_" . $task);
 
 	// does it need a translated task in another language
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	if ($query && isset($query["lang"]) && $lang->get("tag") != $query["lang"])
 	{
 		$sefs      = JLanguageHelper::getLanguages('sef');

@@ -12,6 +12,9 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 class jevCategoryFilter extends jevFilter
 {
 	const filterType = "category";
@@ -63,14 +66,16 @@ class jevCategoryFilter extends jevFilter
 		/*
 		 * code to allow filter to force events to be in ALL selected categories
 		 */
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		if ($this->filter_value == $this->filterNullValue || $this->filter_value == "")
 		{
-			$catidsIn = JRequest::getVar('catids', 'NONE');
+			$input  = Factory::getApplication()->input;
+
+			$catidsIn = $input->getString('catids', 'NONE');
 			if ($catidsIn == "NONE" || $catidsIn == 0)
 			{
-				$catidsIn = JRequest::getVar('category_fv', 'NONE');
+				$catidsIn = $input->getString('category_fv', 'NONE');
 			}
 
 			$separator = $params->get("catseparator", "|");
@@ -101,8 +106,8 @@ class jevCategoryFilter extends jevFilter
 		/*
 		$sectionname = JEV_COM_COMPONENT;
 		
-		$db = JFactory::getDbo();
-		$q_published = JFactory::getApplication()->isAdmin() ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
+		$db = Factory::getDbo();
+		$q_published = Factory::getApplication()->isClient('administrator') ? "\n WHERE c.published >= 0" : "\n WHERE c.published = 1";
 		$where = ' AND (c.id =' . $this->filter_value .' OR p.id =' . $this->filter_value .' OR gp.id =' . $this->filter_value .' OR ggp.id =' . $this->filter_value .')';		
 		$query = "SELECT c.id"
 			. "\n FROM #__categories AS c"
@@ -115,14 +120,14 @@ class jevCategoryFilter extends jevFilter
 			;
 			
 			$db->setQuery($query);
-			$catlist =  $db->loadColumn();
+			$catlist = $db->loadColumn();
 			array_unshift($catlist,-1);
 		
 		$filter = " ev.catid IN (".implode(",",$catlist).")";
 		*/
 		$filter = " ev.catid IN (" . $this->accessibleCategories . ")";
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if ($params->get("multicategory", 0))
 		{
 			// access will already be checked
@@ -140,7 +145,7 @@ class jevCategoryFilter extends jevFilter
 		if (intval($this->filter_value)==$this->filterNullValue) return "";
 
 		$filter = "";
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("multicategory",0)){
 			$filter .= "\n #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
 			$filter .=  "\n LEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
@@ -161,12 +166,14 @@ class jevCategoryFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		$filter_value = $this->filter_value;
+		$input        = Factory::getApplication()->input;
+
 		// if catids come from the URL then use this if filter is blank
 		if ($filter_value == $this->filterNullValue || $filter_value == "")
 		{
-			if (JRequest::getInt("catids", 0) > 0)
+			if ($input->getInt("catids", 0) > 0)
 			{
-				$filter_value = JRequest::getInt("catids", 0);
+				$filter_value = $input->getInt("catids", 0);
 			}
 		}
 
@@ -219,7 +226,7 @@ try {
 catch (e) {}
 SCRIPT;
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 
 		return $filterList;

@@ -1,6 +1,8 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -26,8 +28,7 @@ class JFormFieldJeveventlocation extends JFormField
 
 		ob_start();
 		$event      = $this->form->jevdata[$this->name]["event"];
-		$dispatcher = JEventDispatcher::getInstance();
-		$res        = $dispatcher->trigger('onEditLocation', array(&$event));
+		$res        = Factory::getApplication()->triggerEvent('onEditLocation', array(&$event));
 		if (count($res) == 0 || !$res[0])
 		{
 			?>

@@ -6,6 +6,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -30,7 +36,7 @@ class GeraintModLegendView extends DefaultModLegendView
 	{
 
 		// do not display normal legend if dynamic legend is visible on this page
-		$registry = JRegistry::getInstance("jevents");
+		$registry = JevRegistry::getInstance("jevents");
 		if ($registry->get("jevents.dynamiclegend", 0))
 		{
 			return;
@@ -39,31 +45,22 @@ class GeraintModLegendView extends DefaultModLegendView
 		// since this is meant to be a comprehensive legend look for catids from menu first:
 		$cfg    = JEVConfig::getInstance();
 		$Itemid = $this->myItemid;
-		$user   = JFactory::getUser();
+		$user   = Factory::getUser();
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
 		$cfg = JEVConfig::getInstance();
 
-		$option = JRequest::getCmd('option');
+		$option = $input->getCmd('option');
 		if ($this->disable && $option != JEV_COM_COMPONENT) return;
 
 		$catidList = "";
 
 		include_once(JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/libraries/colorMap.php");
 
-		$menu   = JFactory::getApplication()->getMenu();
-		$active = $menu->getActive();
-		if ((!is_null($active) && $active->component == JEV_COM_COMPONENT) || !isset($Itemid))
-		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		}
-		else
-		{
-			// If accessing this function from outside the component then I must load suitable parameters
-			$params = $menu->getParams($Itemid);
-		}
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$c      = 0;
 		$catids = array();
@@ -76,7 +73,7 @@ class GeraintModLegendView extends DefaultModLegendView
 				if (!in_array($newcat, $catids))
 				{
 					$catids[]  = $newcat;
-					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
+					$catidList .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $newcat;
 				}
 			}
 		}
@@ -87,7 +84,7 @@ class GeraintModLegendView extends DefaultModLegendView
 				if (!in_array($nextCatId, $catids))
 				{
 					$catids[]  = $nextCatId;
-					$catidList .= (JString::strlen($catidList) > 0 ? "," : "") . $nextCatId;
+					$catidList .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $nextCatId;
 				}
 				$c++;
 			}
@@ -102,10 +99,10 @@ class GeraintModLegendView extends DefaultModLegendView
 		$catidsOut = str_replace(",", $separator, $catidList);
 
 		// I should only show legend for items that **can** be shown in calendar so must filter based on GET/POST
-		$catidsIn = JRequest::getVar('catids', "NONE");
+		$catidsIn = $input->getString('catids', "NONE");
 		if ($catidsIn != "NONE" && $catidsIn != "0") $catidsGP = explode($separator, $catidsIn);
 		else $catidsGP = array();
-		JArrayHelper::toInteger($catidsGP);
+		ArrayHelper::toInteger($catidsGP);
 		$catidsGPList = implode(",", $catidsGP);
 
 		// This produces a full tree of categories
@@ -115,7 +112,7 @@ class GeraintModLegendView extends DefaultModLegendView
 		$availableCatsIds = "";
 		foreach ($allrows as $row)
 		{
-			$availableCatsIds .= (JString::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
+			$availableCatsIds .= (StringHelper::strlen($availableCatsIds) > 0 ? $separator : "") . $row->id;
 		}
 
 		$allcats               = new catLegend("0", JText::_('JEV_LEGEND_ALL_CATEGORIES'), "#d3d3d3", JText::_('JEV_LEGEND_ALL_CATEGORIES_DESC'));
@@ -127,7 +124,7 @@ class GeraintModLegendView extends DefaultModLegendView
 		{
 
 			if ($Itemid < 999999) $itm = "&Itemid=$Itemid";
-			$task = JRequest::getVar('jevcmd', $cfg->get('com_startview'));
+			$task = $input->getString('jevcmd', $cfg->get('com_startview'));
 
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$tsk = "";
@@ -178,9 +175,9 @@ class GeraintModLegendView extends DefaultModLegendView
 				{
 
 					// This is only displayed when JEvents is the component so I can get the component view
-					$component = JComponentHelper::getComponent(JEV_COM_COMPONENT);
+					$component = ComponentHelper::getComponent(JEV_COM_COMPONENT);
 
-					$registry   = JRegistry::getInstance("jevents");
+					$registry   = JevRegistry::getInstance("jevents");
 					$controller =& $registry->get("jevents.controller", null);
 					if (!$controller) return $content;
 					$view = $controller->view;
@@ -212,7 +209,7 @@ class GeraintModLegendView extends DefaultModLegendView
 		$cat     = $row->id > 0 ? "&catids=$row->id" : "";
 		$content = "<tr><td style='border:solid 1px #000000;height:5px;width:5px;background-color:" . $row->color . "'></td>\n"
 			. "<td class='legend' >"
-			. "<a style='text-decoration:none' href='" . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "'>"
+			. "<a style='text-decoration:none' href='" . Route::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . "' title='" . JEventsHTML::special($row->name) . "'>"
 			. JEventsHTML::special($row->name) . "</a></td></tr>\n";
 
 		if (isset($row->activeBranch) && isset($row->subcats))
@@ -246,15 +243,15 @@ class GeraintModLegendView extends DefaultModLegendView
 		if ($row->parent_id > 0 && $activeSubCat > 0 && $row->id != $activeSubCat && !isset($row->activeNode)) $catclass = "childcat";
 
 		$cat = $row->id > 0 ? "&catids=$row->id" : "";
-		//$rowparams = new JRegistry(isset($row->params)?$row->params:null);
+		//$rowparams = new JevRegistry(isset($row->params)?$row->params:null);
 		//$image = $rowparams->get("image",false);
 		//$image = $image? "<img src = '".JURI::root().$image."' class='catimage'  alt='categoryimage' />" : "";
 		$content = '<div class="event_legend_item ' . $catclass . '" style="border-color:' . $row->color . '">';
 		$content .= '<div class="event_legend_name" style="border-color:' . $row->color . '">'
-			. '<a href="' . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
+			. '<a href="' . Route::_("index.php?option=" . JEV_COM_COMPONENT . "$cat$itm$tsk") . '" title="' . JEventsHTML::special($row->name) . '">'
 			. JEventsHTML::special($row->name) . '</a>';
 		$content .= '</div>' . "\n";
-		if (JString::strlen($row->description) > 0)
+		if (StringHelper::strlen($row->description) > 0)
 		{
 			$content .= '<div class="event_legend_desc"  style="border-color:' . $row->color . '">' . $row->description . '</div>';
 		}

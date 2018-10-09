@@ -118,7 +118,7 @@ else {
 
 // Funciton that creates the actual shadow
     function generateShadow(content) {
-        var wd, ht, X = 0, Y = 0, zIdx = 0, txt, dpObj, puObj, bS = '', aPos, posStr = new Array();
+        var wd, ht, X = 0, Y = 0, zIdx = 0, txt, dpObj, puObj, bS = '', aPos, posStr = [];
 
         if (!o3_shadow || (o3_shadowx == 0 && o3_shadowy == 0)) return;
 

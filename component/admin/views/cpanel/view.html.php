@@ -12,6 +12,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
@@ -30,7 +36,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		jimport('joomla.html.pane');
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('JEVENTS_CORE_CPANEL'));
 
 		// Set toolbar items for the page
@@ -38,7 +44,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 		$this->sidebar = JHtmlSidebar::render();
 
@@ -52,13 +58,13 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	protected function checkForAddons()
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		if ($params->get("clubcode", "") && JString::strlen($params->get("clubcode", "") > 20))
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("clubcode", "") && Joomla\String\StringHelper::strlen($params->get("clubcode", "") > 20))
 		{
 			return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// find list of installed addons
 		$installed = 'element="com_jevlocations"  OR element="com_jeventstags"  OR element="com_jevpeople"  OR element="com_rsvppro" ';
 		$installed .= ' OR element="extplus"  OR element="ruthin"  OR element="iconic"  OR element="flatplus"   OR element="smartphone" OR element="float"';
@@ -72,7 +78,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		if (count($installed))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_SET_UPDATER_CODE") . "<br/><br/>" . JText::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
+			Factory::getApplication()->enqueueMessage(JText::_("JEV_SET_UPDATER_CODE") . "<br/><br/>" . JText::_("JEV_JOOMLA_UPDATE_CLUBCODE_INFO"), "warning");
 
 			return;
 		}
@@ -81,7 +87,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	function setUpdateUrls()
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$updates = array(
 			array("element" => "pkg_jevents", "name" => "com_jevents", "type" => "package"),
@@ -192,7 +198,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 
 		);
 		// Do the language files for Joomla
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__extensions where type='file' AND element LIKE '%_JEvents' AND element NOT LIKE '%_JEvents_Addons' and element NOT LIKE '%_JEventsAddons' ");
 		$translations = $db->loadObjectList();
 		foreach ($translations as $translation)
@@ -228,10 +234,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$folder = isset($package["folder"]) ? $package["folder"] : "";
 		$type   = $package["type"];
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Process the package
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// Do we already have a record for the update URL for the component - we should remove this in JEvents 3.0!!
 		if ($folder == "" && $package['type'] != "file" && $package['type'] != "module" && $package['type'] != "plugin")
 		{
@@ -323,7 +329,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 	function removeComponentUpdate($com)
 	{
 
-		$db      = JFactory::getDbo();
+		$db      = Factory::getDbo();
 		$version = JEventsVersion::getInstance();
 		$release = $version->get("RELEASE");
 
@@ -353,11 +359,11 @@ and exn.element='$pkg' and exn.folder='$folder'
 	function setPackageUpdateUrl($pkgupdate)
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
-		$sitedomain = rtrim(str_replace(array('https://', 'http://'), "", JURI::root()), '/');
+		$sitedomain = rtrim(str_replace(array('https://', 'http://'), "", Uri::root()), '/');
 
-		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$clubcode = $params->get("clubcode", "");
 		$filter   = new JFilterInput();
 		$clubcode = $filter->clean($clubcode, "CMD");
@@ -413,8 +419,12 @@ and exn.element='$pkg' and exn.folder='$folder'
 			if ($pkgupdate->name != ucwords($extension->name) || $pkgupdate->location != "$domain/updates/$clubcode/$extensionname-update-$version.xml" || $pkgupdate->enabled != 1)
 			{
 				$db->setQuery("UPDATE #__update_sites set name=" . $db->quote(ucwords($extension->name)) . ", location=" . $db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml") . ", enabled = 1 WHERE update_site_id=" . $pkgupdate->update_site_id);
-				$db->execute();
-				echo $db->getErrorMsg();
+
+				try {
+					$db->execute();
+				} catch (Exception $e) {
+					echo $e;
+				}
 			}
 		}
 		else
@@ -438,14 +448,28 @@ and exn.element='$pkg' and exn.folder='$folder'
 			}
 
 			$db->setQuery("INSERT INTO #__update_sites (name, type, location, enabled, last_check_timestamp) VALUES (" . $db->quote(ucwords($extension->name)) . ",'extension'," . $db->quote("$domain/updates/$clubcode/$extensionname-update-$version.xml") . ",'1','0')");
-			$db->execute();
-			echo $db->getErrorMsg();
-			$id = $db->insertid();
-			echo $db->getErrorMsg();
+
+			try {
+				$db->execute();
+			} catch (Exception $e) {
+				echo $e;
+			}
+
+			$id = 0;
+
+			try {
+				$id = $db->insertid();
+			} catch (Exception $e) {
+				echo $e;
+			}
 
 			$db->setQuery("REPLACE INTO #__update_sites_extensions (update_site_id, extension_id) VALUES ($id, $pkgupdate->extension_id)");
-			$db->execute();
-			echo $db->getErrorMsg();
+
+			try {
+				$db->execute();
+			} catch (Exception $e) {
+				echo $e;
+			}
 		}
 
 	}
@@ -457,7 +481,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 		$version = $version->get('RELEASE');
 		$version = str_replace(" ", "", $version);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__update_sites where location like '%jevents.net%' and location not like '%$version%'");
 		$strays = $db->loadObjectList('update_site_id');
 		if (count($strays) > 0)
@@ -470,7 +494,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		// remove duplicate entries created by Joomla installer that assumes the updateserver will not change
 		//$db->setQuery('SELECT * FROM #__update_sites where location like "%www.jevents.net%/%/'.$package['element'].'-update-%.xml" ');
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery('SELECT * FROM #__update_sites where location like "%www.jevents.net%/%/%-update-%.xml" order by update_site_id asc');
 		$cleanupRows = $db->loadObjectList('update_site_id');
 		if (count($cleanupRows) > 1)
@@ -504,12 +528,12 @@ and exn.element='$pkg' and exn.folder='$folder'
 	function renderJEventsNews()
 	{
 
-		$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+		$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 		$cache->setLifeTime(86400);
 		// In Joomla 1.7 caching of feeds doesn't work!
 		$cache->setCaching(true);
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		if (!isset($app->registeredurlparams))
 		{
 			$app->registeredurlparams = new stdClass();
@@ -636,9 +660,9 @@ and exn.element='$pkg' and exn.folder='$folder'
 		error_reporting(0);
 		ini_set('display_errors', 0);
 
-		$rssDoc = JFactory::getFeedParser($options['rssUrl'], $options['cache_time']);
+		$rssDoc = Factory::getFeedParser($options['rssUrl'], $options['cache_time']);
 
-		//$rssDoc =  JFactory::getXMLparser('RSS', $options);
+		//$rssDoc = Factory::getXMLparser('RSS', $options);
 
 		if ($rssDoc == false)
 		{
@@ -702,7 +726,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			jimport('simplepie.simplepie');
 
 			// this caching doesn't work!!!
-			//$cache = JFactory::getCache('feed_parser', 'callback');
+			//$cache = Factory::getCache('feed_parser', 'callback');
 			//$cache->setLifeTime($cache_time);
 			//$cache->setCaching(true);
 
@@ -904,7 +928,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 	function generateVersionsFile($rssDoc)
 	{
 
-		if (JRequest::getInt("versions", 0) == 0)
+		$input    = Factory::getApplication()->input;
+
+
+		if ($input->getInt("versions", 0) == 0)
 		{
 			return;
 		}
@@ -912,7 +939,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		$apps = array();
 
-// club layouts
+		// Club layouts
 		$xmlfiles1 = JFolder::files(JEV_PATH . "views", "manifest\.xml", true, true);
 		foreach ($xmlfiles1 as $manifest)
 		{
@@ -1310,7 +1337,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$app->version = $manifestdata["version"];
 			$name         = str_replace(".xml", "", basename($manifest));
 			$group        = basename(dirname(dirname($manifest)));
-			$plugin       = JPluginHelper::getPlugin($group, $name);
+			$plugin       = PluginHelper::getPlugin($group, $name);
 			if (!$plugin)
 			{
 				$app->version .= " (not enabled)";
@@ -1322,10 +1349,10 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		$output = "<textarea rows='40' cols='80' class='versionsinfo'>[code]\n";
 		$output .= "PHP Version : " . phpversion() . "\n";
-		$output .= "MySQL Version : " . JFactory::getDbo()->getVersion() . "\n";
+		$output .= "MySQL Version : " . Factory::getDbo()->getVersion() . "\n";
 		$output .= "Server Information : " . php_uname() . "\n";
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("fixjquery", -1) == -1)
 		{
 			$output .= "*** CONFIG NOT SAVED*** \n";
@@ -1338,7 +1365,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 			$output .= "Max Input Vars ? : " . ini_get("max_input_vars") . "\n";
 		}
 		$output    .= "Club code set? : " . ($params->get("clubcode", false) ? "Yes" : "No") . "  \n";
-		$server    = new JInput($_SERVER);
+		$server    = new \Joomla\Input\Input($_SERVER);
 		$useragent = $server->get('HTTP_USER_AGENT', false, "string");
 		$output    .= $useragent ? "User Agent : " . $useragent . "  \n" : "";
 		foreach ($apps as $appname => $app)
@@ -1367,19 +1394,19 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		jimport('joomla.html.pane');
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		JToolbarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		if (ini_get("max_input_vars") > 0 && ini_get("max_input_vars") <= 1000)
 		{
 
-			JFactory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING", ini_get("max_input_vars")), 'warning');
+			Factory::getApplication()->enqueueMessage('234 - ' . JText::sprintf("MAX_INPUT_VARS_LOW_WARNING", ini_get("max_input_vars")), 'warning');
 
 		}
 

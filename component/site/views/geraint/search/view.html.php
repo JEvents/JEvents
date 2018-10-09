@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 /**
  * HTML View class for the component frontend
  *
@@ -25,11 +27,11 @@ class GeraintViewSearch extends JEventsGeraintView
 
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 
 
@@ -40,11 +42,11 @@ class GeraintViewSearch extends JEventsGeraintView
 
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 
 

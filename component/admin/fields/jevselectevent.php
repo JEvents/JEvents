@@ -13,6 +13,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
@@ -57,17 +60,17 @@ class JFormFieldJEVselectEvent extends JFormField
 		}";
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration($js);
+		Factory::getDocument()->addScriptDeclaration($js);
 
 
 		// Setup variables for display.
 		$html = array();
-		$link = 'index.php?option=com_jevents&amp;task=icalevent.select&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1&amp;nomenu=1&function=jSelectEvent_' . $this->id;
+		$link = 'index.php?option=com_jevents&amp;task=icalevent.select&amp;tmpl=component&amp;' . Session::getFormToken() . '=1&amp;nomenu=1&function=jSelectEvent_' . $this->id;
 
 		// get the repeat id
 		$rpidfield = $this->form->getField("rp_id", "request");
 		$rp_id     = $rpidfield->value;
-		$db        = JFactory::getDbo();
+		$db        = Factory::getDbo();
 		$query     = $db->getQuery(true);
 		$query
 			->select($db->quoteName('det.summary', 'title'))
@@ -86,7 +89,7 @@ class JFormFieldJEVselectEvent extends JFormField
 		catch (RuntimeException $e)
 		{
 			throw new Exception($e->getMessage());
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'errpr');
+			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'errpr');
 		}
 
 		if (empty($title))

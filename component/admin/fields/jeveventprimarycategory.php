@@ -2,6 +2,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -34,8 +36,8 @@ class JFormFieldJeveventprimarycategory extends JFormField
 			}
 			$primarycatid     = $this->value;
 			$options          = array();
-			$options[]        = JHTML::_('select.option', '0', JText::_("JEV_SELECT_PRIMARY_CATEGORY"));
-			$allcategories    = JHtml::_('category.categories', "com_jevents");
+			$options[]        = HTMLHelper::_('select.option', '0', JText::_("JEV_SELECT_PRIMARY_CATEGORY"));
+			$allcategories    = HTMLHelper::_('category.categories', "com_jevents");
 			$sortedcategories = array();
 			foreach ($allcategories as $cat)
 			{
@@ -45,10 +47,10 @@ class JFormFieldJeveventprimarycategory extends JFormField
 			{
 				if (isset($sortedcategories[$cat]))
 				{
-					$options[] = JHTML::_('select.option', $cat, $sortedcategories[$cat]);
+					$options[] = HTMLHelper::_('select.option', $cat, $sortedcategories[$cat]);
 				}
 			}
-			$input = JHTML::_('select.genericlist', $options, $this->name, "", 'value', 'text', $primarycatid);
+			$input = HTMLHelper::_('select.genericlist', $options, $this->name, "", 'value', 'text', $primarycatid);
 
 			return $input;
 		}

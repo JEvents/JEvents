@@ -13,6 +13,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
@@ -26,13 +30,13 @@ class JFormFieldJEVmenu extends JFormFieldList
 	public function getOptions()
 	{
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
+		$app    = Factory::getApplication();
+		$input = $app->input;
 
 		// Trap to stop the config from being editing from the categories page
 		// Updated to redirect to the correct edit page, Joomla 3.x Config actually loads this page when configuration components.
 		// Only do the redirect in the backend since in the frontend module editing uses com_config (go figure!!!)
-		if ($jinput->getString("option") == "com_config" && $app->isAdmin())
+		if ($input->getString("option") == "com_config" && $app->isClient('administrator'))
 		{
 			$redirect_url = "index.php?option=com_jevents&task=params.edit"; // get rid of any ampersands
 			$app->redirect($redirect_url); //redirect
@@ -40,18 +44,18 @@ class JFormFieldJEVmenu extends JFormFieldList
 		}
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$node = $this->element;
 
 		$strict = $this->getAttribute("strict", 0);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// assemble menu items to the array
 		$options   = array();
-		$options[] = JHTML::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
 
 		// load the list of menu types
 		// TODO: move query to model
@@ -103,7 +107,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 		}
 
 		// second pass - get an indent list of the items
-		$list = JHTML::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
+		$list = HTMLHelper::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
 
 		// assemble into menutype groups
 		$n           = count($list);
@@ -115,7 +119,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 
 		foreach ($menuTypes as $type)
 		{
-			$options[] = JHTML::_('select.option', $type->menutype, $type->title, 'value', 'text', true);  // these are disabled! (true)
+			$options[] = HTMLHelper::_('select.option', $type->menutype, $type->title, 'value', 'text', true);  // these are disabled! (true)
 			if (isset($groupedList[$type->menutype]))
 			{
 				$n = count($groupedList[$type->menutype]);
@@ -124,11 +128,11 @@ class JFormFieldJEVmenu extends JFormFieldList
 					$item = &$groupedList[$type->menutype][$i];
 
 					//If menutype is changed but item is not saved yet, use the new type in the list
-					if ($jinput->getString('option', '', 'get') == 'com_menus')
+					if ($input->getString('option', '', 'get') == 'com_menus')
 					{
-						$currentItemArray = $jinput->get('cid', array(0), "array");
+						$currentItemArray = $input->get('cid', array(0), "array");
 						$currentItemId    = (int) $currentItemArray[0];
-						$currentItemType  = $jinput->getString('type', $item->type, 'get');
+						$currentItemType  = $input->getString('type', $item->type, 'get');
 						if ($currentItemId == $item->id && $currentItemType != $item->type)
 						{
 							$item->type = $currentItemType;
@@ -139,7 +143,7 @@ class JFormFieldJEVmenu extends JFormFieldList
 					$disable   = $item->disabled;
 					$text      = '     ' . html_entity_decode($item->treename);
 					$text      = str_repeat("&nbsp;", (isset($item->level) ? $item->level : $item->sublevel) * 4) . $text;
-					$options[] = JHTML::_('select.option', $item->id, $text, 'value', 'text', $disable);
+					$options[] = HTMLHelper::_('select.option', $item->id, $text, 'value', 'text', $disable);
 
 				}
 			}

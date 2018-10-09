@@ -11,9 +11,11 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
-class ModLatestController extends JControllerLegacy
+class ModLatestController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 
@@ -43,9 +45,10 @@ class ModLatestController extends JControllerLegacy
 	function rss()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$jinput->setVar("tmpl", "component");
+		$input->setVar("tmpl", "component");
+		$input->setVar("jEV", "flat");
 
 		// get the view
 		$this->view = $this->getView("modlatest", "feed");
@@ -55,9 +58,9 @@ class ModLatestController extends JControllerLegacy
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		// Stupid Joomla 3.1 problem where its not possible to use the view cache on RSS feed output!
 		if (JevJoomlaVersion::isCompatible("3.1") || $user->get('id') || !$useCache)
 		{
@@ -65,7 +68,7 @@ class ModLatestController extends JControllerLegacy
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'rss');
 		}
 	}

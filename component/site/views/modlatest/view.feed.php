@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -22,6 +24,10 @@ defined('_JEXEC') or die();
 
 include_once(JEV_ADMINPATH . "/views/icalrepeat/view.html.php");
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+
 class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 
 {
@@ -29,9 +35,9 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 	function rss($tpl = null)
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$modid = intval(($jinput->getInt('modid', 0)));
+		$modid = intval(($input->getInt('modid', 0)));
 		if ($modid < 0)
 		{
 			$modid = 0;
@@ -39,7 +45,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 
 		$cfg = JEVConfig::getInstance();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -49,7 +55,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		JEVHelper::loadLanguage('modlatest');
 
 		// Check document type
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		if ($doc->getType() != 'feed')
 		{
 			JError::raiseError('E999', 'Fatal error, document type: "' . $doc->getType() . '" not supported.');
@@ -57,35 +63,35 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 
 		if ($modid > 0)
 		{
-			$user  = JFactory::getUser();
+			$user  = Factory::getUser();
 			$query = "SELECT id, params"
 				. "\n FROM #__modules AS m"
 				. "\n WHERE m.published = 1"
 				. "\n AND m.id = " . $modid
 				. "\n AND m.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user, 'string') . ')' : ' <=  ' . JEVHelper::getAid($user))
 				. "\n AND m.client_id != 1";
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$db->setQuery($query);
 			$modules = $db->loadObjectList();
 			if (count($modules) <= 0)
 			{
 				// fake module parameter
-				$params = new JRegistry('');
+				$params = new JevRegistry('');
 			}
 			else
 			{
-				$params = new JRegistry($modules[0]->params);
+				$params = new JevRegistry($modules[0]->params);
 			}
 		}
 		else
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		}
 
 		// parameter intialization
-		$info['link']       = str_replace('&', '&amp;', JURI::root(true));
-		$info['imagelink']  = str_replace('&', '&amp;', JURI::root());
-		$info['base']       = str_replace('&', '&amp;', JURI::root());
+		$info['link']       = str_replace('&', '&amp;', Uri::root(true));
+		$info['imagelink']  = str_replace('&', '&amp;', Uri::root());
+		$info['base']       = str_replace('&', '&amp;', Uri::root());
 		$info['cache']      = $cfg->get('com_rss_cache', 1);
 		$info['cache_time'] = $cfg->get('com_rss_cache_time', 3600);
 		$info['count']      = $cfg->get('com_rss_count', 5);
@@ -105,8 +111,8 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		{
 			$info['description'] = $t_description;
 		}
-		$info['image_url'] = htmlspecialchars($cfg->get('com_rss_logo', JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/JeventsTransparent.png'));
-		if ($info['image_url'] == "") $info['image_url'] = htmlspecialchars(JURI::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/JeventsTransparent.png');
+		$info['image_url'] = htmlspecialchars($cfg->get('com_rss_logo', Uri::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/JeventsTransparent.png'));
+		if ($info['image_url'] == "") $info['image_url'] = htmlspecialchars(Uri::root() . 'components/' . JEV_COM_COMPONENT . '/assets/images/JeventsTransparent.png');
 		$info['image_alt'] = $info['title'];
 
 		$info['limit_text']  = $cfg->get('com_rss_limit_text', 1);
@@ -118,7 +124,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$viewclass = ucfirst($theme) . "ModLatestView";
 
 		jimport('joomla.application.module.helper');
-		require_once(JModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
+		require_once(ModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
 		$jeventCalObject = new $viewclass($params, $modid);
 
 		$jeventCalObject->getLatestEventsData($info["count"]);

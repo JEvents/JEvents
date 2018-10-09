@@ -11,6 +11,12 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 include_once(JEV_ADMINPATH . "/controllers/icalevent.php");
 
 class ICalEventController extends AdminIcaleventController
@@ -38,35 +44,35 @@ class ICalEventController extends AdminIcaleventController
 	{
 
 		// Do we have to be logged in to see this event
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		if ($jinput->getInt("login", 0) && $user->id == 0)
+		if ($input->getInt("login", 0) && $user->id == 0)
 		{
-			$uri  = JURI::getInstance();
+			$uri  = Uri::getInstance();
 			$link = $uri->toString();
 			$link = 'index.php?option=com_users&view=login&return=' . base64_encode($link);
-			$link = JRoute::_($link, false);
+			$link = Route::_($link, false);
 			$this->setRedirect($link, JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			$this->redirect();
 
 			return;
 		}
 
-		$evid = $jinput->getInt("rp_id", 0);
+		$evid = $input->getInt("rp_id", 0);
 
 		if ($evid == 0)
 		{
-			$evid = $jinput->getInt("evid", 0);
+			$evid = $input->getInt("evid", 0);
 			// if cancelling from save of copy and edit use the old event id
 			if ($evid == 0)
 			{
-				$evid = $jinput->getInt("old_evid", 0);
+				$evid = $input->getInt("old_evid", 0);
 			}
 			// In this case I do not have a repeat id so I find the first one that matches
 			$datamodel = new JEventsDataModel("JEventsAdminDBModel");
@@ -79,19 +85,19 @@ class ICalEventController extends AdminIcaleventController
 				$evid = $repeat->rp_id();
 			}
 		}
-		$pop = intval($jinput->getInt('pop', 0));
-		$uid = urldecode(($jinput->getString('uid', "")));
+		$pop = intval($input->getInt('pop', 0));
+		$uid = urldecode(($input->getString('uid', "")));
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$Itemid = JEVHelper::getItemid();
 
 		// seth month and year to be used by mini-calendar if needed
 		if (isset($repeat))
 		{
-			if (!$jinput->getInt("month", 0)) $jinput->set("month", $repeat->mup());
-			if (!$jinput->getInt("year", 0)) $jinput->set("year", $repeat->yup());
+			if (!$input->getInt("month", 0)) $input->set("month", $repeat->mup());
+			if (!$input->getInt("year", 0)) $input->set("year", $repeat->yup());
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -99,8 +105,7 @@ class ICalEventController extends AdminIcaleventController
 
 		$view = "icalevent";
 
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+		Factory::getApplication()->triggerEvent('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
 
 		$this->addViewPath($this->_basePath . '/' . "views" . '/' . $theme);
 		$this->view = $this->getView($view, $viewType, $theme . "View",
@@ -111,25 +116,25 @@ class ICalEventController extends AdminIcaleventController
 		// Set the layout
 		$this->view->setLayout("detail");
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $this->_task);
-		$this->view->assign("pop", $pop);
-		$this->view->assign("evid", $evid);
-		$this->view->assign("jevtype", "icaldb");
-		$this->view->assign("uid", $uid);
+		$this->view->Itemid     = $Itemid;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $this->_task;
+		$this->view->pop        = $pop;
+		$this->view->evid       = $evid;
+		$this->view->jevtype    = "icaldb";
+		$this->view->uid        = $uid;
 
 		// View caching logic -- simple... are we logged in?
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}
@@ -137,25 +142,26 @@ class ICalEventController extends AdminIcaleventController
 	function edit($key = null, $urlVar = null)
 	{
 
+		$input  = Factory::getApplication()->input;
 		// Must be at least an event creator to edit or create events
 		// We check specific event editing permissions in the parent class
 		$is_event_creator = JEVHelper::isEventCreator();
 		$is_event_editor  = JEVHelper::isEventEditor();
 
-		$user = JFactory::getUser();
-		if ((!$is_event_creator && !$is_event_editor) || ($user->id == 0 && JRequest::getInt("evid", 0) > 0))
+		$user = Factory::getUser();
+		if ((!$is_event_creator && !$is_event_editor) || ($user->id == 0 && $input->getInt("evid", 0) > 0))
 		{
 			if ($user->id)
 			{
-				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else
 			{
-				$uri  = JURI::getInstance();
+				$uri  = Uri::getInstance();
 				$link = $uri->toString();
-				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=" . base64_encode($link)), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login&return=" . base64_encode($link)), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 
@@ -219,15 +225,15 @@ class ICalEventController extends AdminIcaleventController
 	function select()
 	{
 
-		JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+		HTMLHelper::_('stylesheet', 'system/adminlist.css', array(), true);
 		parent::select();
 	}
 
 	public function edit_cancel()
 	{
 
-		$session = JFactory::getSession();
-		$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$session = Factory::getSession();
+		$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		-$fallback = $params->get("editreturnto", "day.listevents");
 		$ref = $session->get('jev_referrer', $fallback, 'extref');
 

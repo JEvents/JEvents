@@ -12,7 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-class JevParameter extends JRegistry
+use Joomla\String\StringHelper;
+
+class JevParameter extends JevRegistry
 {
 
 	/**
@@ -58,7 +60,7 @@ class JevParameter extends JRegistry
 					break;
 				}
 			}
-			if (JString::strlen($class) > 0)
+			if (StringHelper::strlen($class) > 0)
 			{
 				$class = " class='$class'";
 			}

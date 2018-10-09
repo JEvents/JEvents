@@ -12,7 +12,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * User Table class
@@ -20,7 +23,7 @@ use Joomla\Utilities\ArrayHelper;
  * @subpackage    Users
  * @since         1.0
  */
-class TableUser extends JTable
+class TableUser extends Table
 {
 	/**
 	 * Primary Key
@@ -68,18 +71,21 @@ class TableUser extends JTable
 	function __construct()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		parent::__construct('#__jev_users', 'id', $db);
 	}
 
 	public static function checkTable()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 	}
 
 	public static function getUsers($ids = array())
 	{
+
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		$where = array();
 		$join  = array();
@@ -98,20 +104,20 @@ class TableUser extends JTable
 			$where[]  = "tl.id in ($idstring)";
 		}
 
-		$db     = JFactory::getDbo();
-		$search = JFactory::getApplication()->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
+		$db     = Factory::getDbo();
+		$search = $app->getUserStateFromRequest("usersearch{" . JEV_COM_COMPONENT . "}", 'search', '');
 		$search = $db->escape(trim(strtolower($search)));
 		if ($search != "")
 		{
 			$where[] = " ( ju.name like '$search%' OR ju.username like '$search%')";
 		}
 
-		JPluginHelper::importPlugin("jevents");
-		$dispatcher = JEventDispatcher::getInstance();
-		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
+		PluginHelper::importPlugin("jevents");
+		$set        = $app->triggerEvent('getAuthorisedUser', array(& $where, & $join));
 
-		$orderdir = JRequest::getCmd("filter_order_Dir", 'asc');
-		$order    = JRequest::getCmd("filter_order", 'tl.id');
+		$orderdir = $input->getCmd("filter_order_Dir", 'asc');
+		$order    = $input->getCmd("filter_order", 'tl.id');
+
 		$dir      = $orderdir == "asc" ? "asc" : "desc";
 		$order    = " ORDER BY " . $order . " " . $orderdir;
 
@@ -122,13 +128,16 @@ class TableUser extends JTable
 		$sql .= $order;
 
 		$db->setQuery($sql);
-		$users = $db->loadObjectList('id');
-		echo $db->getErrorMsg();
+
+		try {
+			$users = $db->loadObjectList('id');
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		$total = count($users);
 
 		$option     = JEV_COM_COMPONENT;
-		$app        = JFactory::getApplication();
 		$limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
 
@@ -192,21 +201,28 @@ class TableUser extends JTable
 	public static function getUserCount()
 	{
 
-		JPluginHelper::importPlugin("jevents");
-		$dispatcher = JEventDispatcher::getInstance();
+		PluginHelper::importPlugin("jevents");
 		$where      = array();
 		$join       = array();
-		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
+		$set        = Factory::getApplication()->triggerEvent('getAuthorisedUser', array(& $where, & $join));
 
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join) > 0 ? implode(" ", $join) : "";
 		$sql .= count($where) > 0 ? " WHERE " . implode(" AND ", $where) : "";
 
 		$db->setQuery($sql);
-		$users = $db->loadObjectList('id');
-		echo $db->getErrorMsg();
+
+		$users  = 0;
+
+		try
+		{
+			$users = $db->loadObjectList('id');
+
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		return count($users);
 
@@ -228,7 +244,7 @@ class TableUser extends JTable
 	function authorisedUser($lang = 0)
 	{
 
-		$user  = JFactory::getUser();
+		$user  = Factory::getUser();
 		$users = TableUser::getUsersByUserid($user->id, "langid");
 		if (count($users) > 0 && $lang <= 0) return true;
 		if (array_key_exists($lang, $users)) return $users[$lang];
@@ -260,13 +276,12 @@ class TableUser extends JTable
 			$userids = intval($userid);
 		}
 
-		JPluginHelper::importPlugin("jevents");
-		$dispatcher = JEventDispatcher::getInstance();
+		PluginHelper::importPlugin("jevents");
 		$where      = array();
 		$join       = array();
-		$set        = $dispatcher->trigger('getAuthorisedUser', array(& $where, & $join));
+		$set        = Factory::getApplication()->triggerEvent('getAuthorisedUser', array(& $where, & $join));
 
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$sql = "SELECT tl.*, ju.name as jname, ju.username  FROM #__jev_users AS tl ";
 		$sql .= " LEFT JOIN #__users as ju ON tl.user_id=ju.id ";
 		$sql .= count($join) > 0 ? implode(" ", $join) : "";
@@ -274,8 +289,16 @@ class TableUser extends JTable
 		$sql .= count($where) > 0 ? " AND " . implode(" AND ", $where) : "";
 
 		$db->setQuery($sql);
-		$users = $db->loadObjectList($index);
-		echo $db->getErrorMsg();
+		$users = 0;
+
+		try
+		{
+			$users = $db->loadObjectList($index);
+
+		} catch (Exception $e) {
+			echo $e;
+		}
+
 		foreach ($users as $key => $val)
 		{
 			$user = new TableUser();

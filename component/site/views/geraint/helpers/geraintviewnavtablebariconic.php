@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 JLoader::register('DefaultViewNavTableBarIconic', JEV_VIEWS . "/default/helpers/defaultviewnavtablebariconic.php");
 
 class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic
@@ -13,12 +16,12 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic
 
 		//parent::DefaultViewNavTableBarIconic($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid);
 		$this->view           = $view;
-		$this->transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
+		$this->transparentGif = Uri::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
 		$this->Itemid         = JEVHelper::getItemid();
 		$this->cat            = $this->view->datamodel->getCatidsOutLink();
 		$this->task           = $task;
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$cfg = JEVConfig::getInstance();
 		//Lets check if we should show the nav on event details 
@@ -30,7 +33,7 @@ class GeraintViewNavTableBarIconic extends DefaultViewNavTableBarIconic
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 
 
-		if ($jinput->getInt('pop', 0)) return;
+		if ($input->getInt('pop', 0)) return;
 
 		$colspan = 1;
 

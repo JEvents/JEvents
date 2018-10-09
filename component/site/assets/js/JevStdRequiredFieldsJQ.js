@@ -6,12 +6,12 @@
  */
 
 var JevStdRequiredFields = {
-    fields: new Array(),
+    fields: [],
     verify: function (form) {
         valid = true;
 
         form = jevjq(form);
-        var messages = new Array();
+        var messages = [];
         // This is a Javascript each over an array !
         JevStdRequiredFields.fields.forEach(function (item, i) {
             var name = item.name;
@@ -48,7 +48,7 @@ var JevStdRequiredFields = {
             // should we skip this test because of category restrictions?
             if (typeof (JevrCategoryFields) != 'undefined' && JevrCategoryFields.skipVerify(name))
                 return;
-            var matches = new Array();
+            var matches = [];
             /*
              form.serializeArray().forEach( function(  testitem, testi) {
              if (testitem.name == name || "custom_" + testitem.name == name || (testitem.id && testitem.id == name) || ("#" + testitem.id) == name || jevjq(testitem).hasClass(name.substr(1))) {
@@ -117,4 +117,4 @@ var JevStdRequiredFields = {
         }
         return valid;
     }
-}
+};

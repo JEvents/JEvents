@@ -12,7 +12,13 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+$app    = Factory::getApplication();
 
 @ob_end_clean();
 @ob_end_clean();
@@ -44,7 +50,7 @@ if (!empty($this->icalEvents))
 		$ids[] = $a->ev_id();
 		if (count($ids) > 100)
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 			$rows = $db->loadObjectList();
 			foreach ($rows as $row)
@@ -61,7 +67,7 @@ if (!empty($this->icalEvents))
 	// mop up the last ones
 	if (count($ids) > 0)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 		$rows = $db->loadObjectList();
 		foreach ($rows as $row)
@@ -78,7 +84,6 @@ if (!empty($this->icalEvents))
 	$this->icalEvents = array_values($this->icalEvents);
 
 	// Call plugin on each event
-	$dispatcher = JEventDispatcher::getInstance();
 	ob_start();
 	JEVHelper::onDisplayCustomFieldsMultiRow($this->icalEvents);
 	ob_end_clean();
@@ -161,9 +166,9 @@ if (!empty($this->icalEvents))
 		if ($params->get('source_url', 0) == 1)
 		{
 			$link = $a->viewDetailLink($a->yup(), $a->mup(), $a->dup(), true, $params->get('default_itemid', 0));
-			$uri  = JURI::getInstance(JURI::base());
+			$uri  = Uri::getInstance(Uri::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
-			$html .= $this->setDescription($a->content() . ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . JRoute::_($link, true, -1)) . "\r\n";
+			$html .= $this->setDescription($a->content() . ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1)) . "\r\n";
 		}
 		else
 		{
@@ -406,7 +411,7 @@ if (!empty($this->icalEvents))
 			}
 
 			ob_start();
-			$dispatcher->trigger('onDisplayCustomFieldsMultiRow', array(&$changedrows));
+			$app->triggerEvent('onDisplayCustomFieldsMultiRow', array(&$changedrows));
 			ob_end_clean();
 
 			foreach ($changedrows as $a)

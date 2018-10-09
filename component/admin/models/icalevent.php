@@ -5,6 +5,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modeladmin');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Component\ComponentHelper;
 
 class IcaleventsModelicalevent extends JModelAdmin
 {
@@ -25,23 +28,23 @@ class IcaleventsModelicalevent extends JModelAdmin
 	 * @param    array   $data     Data for the form.
 	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return    mixed    A JForm object on success, false on failure
+	 * @return    mixed    A Form object on success, false on failure
 	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 
 		// Prepare the data
-		// Experiment in the use of JForm and template override for forms and fields
-		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
-		$template = JFactory::getApplication()->getTemplate();
-		JForm::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
-		//JForm::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
+		// Experiment in the use of Form and template override for forms and fields
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = Factory::getApplication()->getTemplate();
+		Form::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
+		//Form::addFieldPath(JPATH_THEMES."/$template/html/com_jevents/fields");
 
 		$xpath = false;
-		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
+		// leave form control blank since we want the fields as ev_id and not Form[ev_id]
 		$form = $this->loadForm("jevents.edit.icalevent", 'icalevent', array('control' => '', 'load_data' => false), false, $xpath);
-		JForm::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
+		Form::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
 
 		if (empty($form))
 		{
@@ -55,15 +58,15 @@ class IcaleventsModelicalevent extends JModelAdmin
 	{
 
 		// Prepare the data
-		// Experiment in the use of JForm and template override for forms and fields
-		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
-		$template = JFactory::getApplication()->getTemplate();
-		JForm::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
+		// Experiment in the use of Form and template override for forms and fields
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . "/models/forms/");
+		$template = Factory::getApplication()->getTemplate();
+		Form::addFormPath(JPATH_THEMES . "/$template/html/com_jevents/forms");
 
 		$xpath = false;
-		// leave form control blank since we want the fields as ev_id and not jform[ev_id]
+		// leave form control blank since we want the fields as ev_id and not Form[ev_id]
 		$form = $this->loadForm("jevents.translate.icalevent", 'translate', array('control' => '', 'load_data' => false), false, $xpath);
-		JForm::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
+		Form::addFieldPath(JPATH_THEMES . "/$template/html/com_jevents/fields");
 
 		if (empty($form))
 		{
@@ -76,9 +79,10 @@ class IcaleventsModelicalevent extends JModelAdmin
 	public function getOriginal()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
+		$input  = Factory::getApplication()->input;
 
-		$evdet_id = JRequest::getInt("evdet_id", 0);
+		$evdet_id = $input->getInt("evdet_id", 0);
 		$db->setQuery("SELECT * FROM #__jevents_vevdetail where evdet_id = " . $evdet_id);
 		$data = $db->loadAssoc();
 
@@ -88,10 +92,12 @@ class IcaleventsModelicalevent extends JModelAdmin
 	public function getTranslation()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
-		$evdet_id = JRequest::getInt("evdet_id", 0);
-		$lang     = JRequest::getString("lang", "");
+		$input  = Factory::getApplication()->input;
+
+		$evdet_id = $input->getInt("evdet_id", 0);
+		$lang     = $input->getString("lang", "");
 		$db->setQuery("SELECT * FROM #__jevents_translation where evdet_id = " . $evdet_id . " AND language = " . $db->quote($lang));
 		$tempdata = $db->loadAssoc();
 		$data     = array();
@@ -109,14 +115,17 @@ class IcaleventsModelicalevent extends JModelAdmin
 	public function saveTranslation()
 	{
 
-		$array = JRequest::get('request', JREQUEST_ALLOWHTML);
+		$input  = Factory::getApplication()->input;
+
+		$array = JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
 
 		// Should we allow raw content through unfiltered
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("allowraw", 0))
 		{
-			$array['trans_description'] = JRequest::getString("trans_description", "", "POST", JREQUEST_ALLOWRAW);
-			$array['trans_extra_info']  = JRequest::getString("trans_extra_info", "", "POST", JREQUEST_ALLOWRAW);
+
+			$array['trans_description'] = $input->post->get("trans_description", "", 'RAW');
+			$array['trans_extra_info']  = $input->post->get("trans_extra_info", "", 'RAW');
 		}
 
 		include_once JPATH_COMPONENT . "/tables/translate.php";
@@ -125,8 +134,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 
 		if ($success)
 		{
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onSaveTranslation', array($array), true);
+			Factory::getApplication()->triggerEvent('onSaveTranslation', array($array), true);
 		}
 
 		return $success;
@@ -135,9 +143,11 @@ class IcaleventsModelicalevent extends JModelAdmin
 	public function deleteTranslation()
 	{
 
+		$input  = Factory::getApplication()->input;
+
 		include_once JPATH_COMPONENT . "/tables/translate.php";
 		$translation = new TableTranslate();
-		$translation->delete(JRequest::getInt("trans_translation_id"));
+		$translation->delete($input->getInt("trans_translation_id"));
 	}
 
 	function getLanguages()
@@ -146,7 +156,7 @@ class IcaleventsModelicalevent extends JModelAdmin
 		static $languages;
 		if (!isset($languages))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// get the list of languages first
 			$query = $db->getQuery(true);
@@ -170,12 +180,12 @@ class IcaleventsModelicalevent extends JModelAdmin
 	 * @return  void
 	 * @since    3.0
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'jevents')
+	protected function preprocessForm(Form $form, $data, $group = 'jevents')
 	{
 
 		// Association content items
-		$app   = JFactory::getApplication();
-		$assoc = false && JLanguageAssociations::isEnabled() && JFactory::getApplication()->isAdmin();
+		$app   = Factory::getApplication();
+		$assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication()->isClient('administrator');
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');

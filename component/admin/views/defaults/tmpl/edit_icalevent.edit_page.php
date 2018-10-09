@@ -11,7 +11,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-// Disable for now
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <table cellpadding="0" cellspacing="0" border="0">
@@ -57,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
     defaultsEditorPlugin.node(optgroup, "<?php echo JText::_("JEV_FIELD_CUSTOMFIELDS", true);?>", "CUSTOMFIELDS");
     defaultsEditorPlugin.node(optgroup, "<?php echo JText::_("JEV_FIELD_CALTAB", true);?>", "CALTAB");
 	<?php
-	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$jevparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($jevparams->get("showpriority", 0)){
 	?>
     defaultsEditorPlugin.node(optgroup, "<?php echo JText::_("JEV_EVENT_PRIORITY", true);?>", "PRIORITY");
@@ -93,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
             var defaultsLayout = <?php echo $editor->getContent('value'); ?>;
             if (defaultsLayout == '') {
                 if (!confirm('<?php echo JText::_("JEV_LAYOUT_DEFAULTS_EMPTY_ALERT", true);?>')) {
-                    return;
+
                 }
                 else {
                     submitform(pressbutton);
@@ -137,12 +139,12 @@ defined('_JEXEC') or die('Restricted access');
         else {
             submitform(pressbutton);
         }
-    }
+    };
 	<?php
 	// get list of enabled plugins
-	$jevplugins = JPluginHelper::getPlugin("jevents");
+	$jevplugins = PluginHelper::getPlugin("jevents");
 	foreach ($jevplugins as $jevplugin){
-	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
+	if (PluginHelper::importPlugin("jevents", $jevplugin->name)){
 	// At present only some plugins support secondary tabs and special input formats
 	if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople", "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser", "jevrsvp", "jevgroupevent")))
 	{
@@ -150,7 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	$classname = "plgJevents" . ucfirst($jevplugin->name);
 	if (is_callable(array($classname, "fieldNameArray"))){
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$lang->load("plg_jevents_" . $jevplugin->name, JPATH_ADMINISTRATOR);
 	$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), "edit");
 	if (!isset($fieldNameArray['labels'])) continue;

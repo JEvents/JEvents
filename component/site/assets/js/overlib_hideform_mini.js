@@ -73,12 +73,12 @@ if (typeof olInfo == 'undefined' || typeof olInfo.meets == 'undefined' || !olInf
     }
 
     function pageLocation(o, t) {
-        var x = 0
+        var x = 0;
         while (o.offsetParent) {
-            x += o['offset' + t]
+            x += o['offset' + t];
             o = o.offsetParent
         }
-        x += o['offset' + t]
+        x += o['offset' + t];
         return x
     }
 

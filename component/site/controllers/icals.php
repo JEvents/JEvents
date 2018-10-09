@@ -12,7 +12,15 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 include_once(JEV_ADMINPATH . "/controllers/icals.php");
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 class ICalsController extends AdminIcalsController
 {
@@ -29,7 +37,7 @@ class ICalsController extends AdminIcalsController
 		if ($cfg->get("disableicalexport", 0) && !$cfg->get("feimport", 0))
 		{
 			$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf where icsf.autorefresh=1";
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$db->setQuery($query);
 			$allICS = $db->loadObjectList();
 			if (count($allICS) == 0)
@@ -69,7 +77,7 @@ class ICalsController extends AdminIcalsController
 
 		// get the view
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -85,24 +93,24 @@ class ICalsController extends AdminIcalsController
 		// Set the layout
 		$this->view->setLayout('ical');
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $this->_task);
+		$this->view->Itemid = $Itemid;
+		$this->view->month  = $month;
+		$this->view->day    = $day;
+		$this->view->year   = $year;
+		$this->view->task   = $this->_task;
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 
@@ -111,24 +119,26 @@ class ICalsController extends AdminIcalsController
 	function export()
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$years = JRequest::getVar('years', 'NONE');
-		$cats  = JRequest::getVar('catids', 'NONE');
+		$years = $input->getCmd('years', 'NONE');
+		$cats  = $input->getCmd('catids', 'NONE');
 
 		// validate the key
 		$icalkey = $params->get("icalkey", "secret phrase");
 
-		$outlook2003icalexport = JRequest::getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
+		$outlook2003icalexport = $input->getInt("outlook2003", 0) && $params->get("outlook2003icalexport", 0);
 		if ($outlook2003icalexport)
 		{
-			JRequest::setVar("icf", 1);
+			$input->set("icf", 1);
 		}
 
 		$privatecalendar = false;
-		$k               = JRequest::getString("k", "NONE");
-		$pk              = JRequest::getString("pk", "NONE");
-		$userid          = JRequest::getInt("i", 0);
+		$k               = $input->getString("k", "NONE");
+		$pk              = $input->getString("pk", "NONE");
+		$userid          = $input->getInt("i", 0);
 		if ($pk != "NONE")
 		{
 			if (!$userid)
@@ -152,7 +162,7 @@ class ICalsController extends AdminIcalsController
 			$this->dataModel->aid        = JEVHelper::getAid($puser);
 			$this->dataModel->accessuser = $puser->get('id');
 
-			$registry = JRegistry::getInstance("jevents");
+			$registry = JevRegistry::getInstance("jevents");
 			$registry->set("jevents.icaluser", $puser);
 		}
 		else if ($k != "NONE")
@@ -185,11 +195,11 @@ class ICalsController extends AdminIcalsController
 		JEVHelper::forceIntegerArray($cats, false);
 		if ($cats != array(0))
 		{
-			JRequest::setVar("catids", implode("|", $cats));
+			$input->set("catids", implode("|", $cats));
 		}
 		else
 		{
-			JRequest::setVar("catids", '');
+			$input->set("catids", '');
 		}
 
 		//Parsing variables from URL
@@ -197,7 +207,7 @@ class ICalsController extends AdminIcalsController
 		// All years
 		if ($years == 0)
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$years  = array();
 			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
 			{
@@ -208,7 +218,7 @@ class ICalsController extends AdminIcalsController
 		}
 		else if ($years != "NONE")
 		{
-			$years = explode(",", JRequest::getVar('years'));
+			$years = explode(",", $input->getCmd('years', ''));
 			if (!is_array($years) || count($years) == 0)
 			{
 				list($y, $m, $d) = JEVHelper::getYMD();
@@ -223,18 +233,17 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// Lockin hte categories from the URL
-		$Itemid = JRequest::getInt("Itemid", 0);
+		$Itemid = $input->getInt("Itemid", 0);
 		if (!$Itemid)
 		{
-			JRequest::setVar("Itemid", 1);
+			$input->set("Itemid", 1);
 		}
 		$this->dataModel->setupComponentCatids();
 
-		$dispatcher = JEventDispatcher::getInstance();
-		// just incase we don't have jevents plugins registered yet
-		JPluginHelper::importPlugin("jevents");
+		// Just in case we don't have jevents plugins registered yet
+		PluginHelper::importPlugin("jevents");
 
-		//And then the real work
+		// And then the real work
 		// Force all only the one repeat
 		$cfg = JEVConfig::getInstance();
 		$cfg->set('com_showrepeats', 0);
@@ -251,24 +260,23 @@ class ICalsController extends AdminIcalsController
 				if (!array_key_exists($row->ev_id(), $icalEvents))
 				{
 
-					$dispatcher->trigger('onExportRow', array(&$row));
+					$app->triggerEvent('onExportRow', array(&$row));
 					$icalEvents[$row->ev_id()] = $row;
 				}
 			}
 			unset($rows);
 		}
+
 		if ($userid)
 			$user = JUser::getInstance($userid);
-
-		$mainframe = JFactory::getApplication();
 
 		// get the view
 		$this->view = $this->getView("icals", "html");
 		$this->view->setLayout("export");
-		$this->view->assign("dataModel", $this->dataModel);
-		$this->view->assign("outlook2003icalexport", $outlook2003icalexport);
-		$this->view->assign("icalEvents", $icalEvents);
-		$this->view->assign("withrepeats", true);
+		$this->view->dataModel              = $this->dataModel;
+		$this->view->outlook2003icalexport  = $outlook2003icalexport;
+		$this->view->icalEvents             = $icalEvents;
+		$this->view->withrepeats            = true;
 
 		$this->view->export();
 
@@ -286,7 +294,8 @@ class ICalsController extends AdminIcalsController
 	private function exportEvent($withrepeats = true)
 	{
 
-		$rpid = JRequest::getInt("evid", 0);
+		$input  = Factory::getApplication()->input;
+		$rpid = $input->getInt("evid", 0);
 		if (!$rpid)
 			return;
 
@@ -304,11 +313,11 @@ class ICalsController extends AdminIcalsController
 			}
 			if (!$a) return;
 
-			JRequest::setVar("tmpl", "component");
+			$input->set("tmpl", "component");
 
 			//$dispatcher = JEventDispatcher::getInstance();
 			// just incase we don't have jevents plugins registered yet
-			//JPluginHelper::importPlugin("jevents");
+			//PluginHelper::importPlugin("jevents");
 			//$dispatcher->trigger('onExportRow', array(&$row));
 			$icalEvents              = array();
 			$icalEvents[$a->ev_id()] = $a;
@@ -316,10 +325,10 @@ class ICalsController extends AdminIcalsController
 			// get the view
 			$this->view = $this->getView("icals", "html");
 			$this->view->setLayout("export");
-			$this->view->assign("dataModel", $this->dataModel);
-			$this->view->assign("outlook2003icalexport", false);
-			$this->view->assign("icalEvents", $icalEvents);
-			$this->view->assign("withrepeats", $withrepeats);
+			$this->view->dataModel              = $this->dataModel;
+			$this->view->outlook2003icalexport  = false;
+			$this->view->icalEvents             = $icalEvents;
+			$this->view->withrepeats            = $withrepeats;
 
 			$this->view->export();
 
@@ -343,29 +352,29 @@ class ICalsController extends AdminIcalsController
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 
 			return;
 		}
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if (!$params->get("feimport", 0))
 		{
 			return;
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -380,11 +389,9 @@ class ICalsController extends AdminIcalsController
 
 		// Set the layout
 		$this->view->setLayout('importform');
+		$this->view->task = $this->_task;
 
-		$this->view->assign("task", $this->_task);
-
-
-		// get all the raw native calendars
+		// Get all the raw native calendars
 		$nativeCals = $this->dataModel->queryModel->getNativeIcalendars();
 
 		// Strip this list down based on user permissions
@@ -404,7 +411,7 @@ class ICalsController extends AdminIcalsController
 		if ($jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
 		{
 			// Find which categories to exclude
-			$db     = JFactory::getDbo();
+			$db     = Factory::getDbo();
 			$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
 
 			$db->setQuery($catsql);
@@ -416,52 +423,52 @@ class ICalsController extends AdminIcalsController
 		if (count($nativeCals) > 1)
 		{
 			$icalList   = array();
-			$icalList[] = JHTML::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
+			$icalList[] = HTMLHelper::_('select.option', '0', JText::_('JEV_EVENT_CHOOSE_ICAL'), 'ics_id', 'label');
 			$icalList   = array_merge($icalList, $nativeCals);
-			$clist      = JHTML::_('select.genericlist', $icalList, 'icsid', " onchange='preselectCategory(this);'", 'ics_id', 'label', 0);
-			$this->view->assign('clistChoice', true);
-			$this->view->assign('defaultCat', 0);
+			$clist      = HTMLHelper::_('select.genericlist', $icalList, 'icsid', " onchange='preselectCategory(this);'", 'ics_id', 'label', 0);
+			$this->view->clistChoice    = true;
+			$this->view->defaultCat     = 0;
 		}
 		else
 		{
 			if (count($nativeCals) == 0 || !is_array($nativeCals))
 			{
 
-				JFactory::getApplication()->enqueueMessage(JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
+				Factory::getApplication()->enqueueMessage(JText::_('INVALID_CALENDAR_STRUCTURE'), 'warning');
 
 			}
 
 			$icsid = current($nativeCals)->ics_id;
 
 			$clist = '<input type="hidden" name="icsid" value="' . $icsid . '" />';
-			$this->view->assign('clistChoice', false);
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$this->view->clistChoice = false;
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("defaultcat", false))
 			{
-				$this->view->assign('defaultCat', current($nativeCals)->catid);
+				$this->view->defaultCat = current($nativeCals)->catid;
 			}
 			else
 			{
-				$this->view->assign('defaultCat', 0);
+				$this->view->defaultCat = 0;
 			}
 		}
 
-		$this->view->assign('excats', $excats);
-		$this->view->assign('nativeCals', $nativeCals);
-		$this->view->assign('clist', $clist);
+		$this->view->excats         = $excats;
+		$this->view->nativeCals     = $nativeCals;
+		$this->view->clist          = $clist;
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 
@@ -471,43 +478,47 @@ class ICalsController extends AdminIcalsController
 	{
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
+
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		// Can only do this if can add an event
 		// Must be at least an event creator to edit or create events
 		$is_event_editor = JEVHelper::isEventCreator();
 		if (!$is_event_editor)
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
 				$this->redirect();
 			}
 
 			return;
 		}
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if (!$params->get("feimport", 0))
 		{
 			return;
 		}
 
-		$catid          = JRequest::getInt('catid', 0);
-		$ignoreembedcat = JRequest::getInt('ignoreembedcat', 0);
+		$catid          = $input->getInt('catid', 0);
+		$ignoreembedcat = $input->getInt('ignoreembedcat', 0);
 		// Should come from the form or existing item
 		$access      = 0;
 		$state       = 1;
-		$uploadURL   = JRequest::getVar('uploadURL', '');
+		$uploadURL   = $input->getString('uploadURL', '');
 		$icsLabel    = uniqid('icsLabel');
-		$icsid       = JRequest::getInt('icsid', 0);
+		$icsid       = $input->getInt('icsid', 0);
+		$icsFile     = false;
 		$autorefresh = 0;
 
 		if ($catid == 0)
@@ -515,7 +526,7 @@ class ICalsController extends AdminIcalsController
 			// Paranoia, should not be here, validation is done by java script
 			// Just load the ical event list on redirect for now.
 			$redirect_task = "icalevent.list";
-			JFactory::getApplication()->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') . JText::_('JEV_E_WARNCAT'), 'error');
+			$app->enqueueMessage(JTExt::_('JEV_FATAL_ERROR') . JText::_('JEV_E_WARNCAT'), 'error');
 
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('JEV_E_WARNCAT'));
 			$this->redirect();
@@ -524,7 +535,7 @@ class ICalsController extends AdminIcalsController
 		}
 
 		// I need a better check and expiry information etc.
-		if (JString::strlen($uploadURL) > 0)
+		if (StringHelper::strlen($uploadURL) > 0)
 		{
 			$icsFile = iCalICSFile::newICSFileFromURL($uploadURL, $icsid, $catid, $access, $state, $icsLabel, $autorefresh, $ignoreembedcat);
 		}
@@ -533,7 +544,7 @@ class ICalsController extends AdminIcalsController
 			$file = $_FILES['upload'];
 			if ($file['size'] == 0)
 			{//|| !($file['type']=="text/calendar" || $file['type']=="application/octet-stream")){
-				JFactory::getApplication()->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
+				$app->enqueueMessage(JText::_('JEV_EMPTY_FILE_UPLOAD'), 'warning');
 				$icsFile = false;
 			}
 			else
@@ -576,7 +587,9 @@ class ICalsController extends AdminIcalsController
 
 		// TODO - run this through plugins first ?
 
-		$icalformatted = JRequest::getInt("icf", 0);
+		$input  = Factory::getApplication()->input;
+
+		$icalformatted = $input->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
 		else
@@ -630,16 +643,16 @@ class ICalsController extends AdminIcalsController
 		// new version
 
 		$output = '';
-		while (JString::strlen($input) >= $line_max)
+		while (StringHelper::strlen($input) >= $line_max)
 		{
-			$output .= JString::substr($input, 0, $line_max - 1);
-			$input  = JString::substr($input, $line_max - 1);
-			if (JString::strlen($input) > 0)
+			$output .= StringHelper::substr($input, 0, $line_max - 1);
+			$input  = StringHelper::substr($input, $line_max - 1);
+			if (StringHelper::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (JString::strlen($input) > 0)
+		if (StringHelper::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -651,12 +664,12 @@ class ICalsController extends AdminIcalsController
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = JString::strlen($input);
+		$linlen = StringHelper::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = JString::substr($input, $i, 1);
+			$c = StringHelper::substr($input, $i, 1);
 
 			/*
 			  $dec = ord($c);
@@ -670,7 +683,7 @@ class ICalsController extends AdminIcalsController
 			  }
 			  }
 			 */
-			if ((JString::strlen($outline) + 1) >= $line_max)
+			if ((StringHelper::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output  .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;
@@ -690,7 +703,7 @@ class ICalsController extends AdminIcalsController
 	private function vtimezone($icalEvents)
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$tzid = "";
 		if (is_callable("date_default_timezone_set"))

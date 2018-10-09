@@ -8,12 +8,12 @@ function jevEditPopup(url) {
     addEditModalHtml();
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-header').css({'display': 'block'});
-    jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"))
+    jQuery('#myEditModal .modal-title').html(Joomla.JText._("JEV_ADD_EVENT"));
     /** jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'}); */
     launchModal('#myEditModal', url);
 
     /** consider using https://github.com/noelboss/featherlight/#usage instead ! */
-    return;
+
 }
 
 function jevEditTranslation(url, title) {
@@ -26,12 +26,12 @@ function jevEditTranslation(url, title) {
     addEditModalHtml();
     /** see http://stackoverflow.com/questions/16152275/how-to-resize-twitter-bootstrap-modal-dynamically-based-on-the-content */
     jQuery('#myEditModal .modal-header').css({'display': 'block'});
-    jQuery('#myEditModal .modal-title').html(title)
+    jQuery('#myEditModal .modal-title').html(title);
     /** jQuery('#myEditModal .modal-body').css({  'overflow-y':'auto'}); */
     launchModal('#myEditModal', url);
 
     /** consider using https://github.com/noelboss/featherlight/#usage instead ! */
-    return;
+
 }
 
 function jevEditPopupNoHeader(url) {
@@ -50,7 +50,7 @@ function jevEditPopupNoHeader(url) {
     jQuery('#myEditModal .modal-body').css({'top': '5px'});
     jQuery('#myEditModal .modal-header').css({'display': 'none'});
     launchModal('#myEditModal', url);
-    return;
+
 }
 
 function jevEditPopupNoTitle(url) {
@@ -74,7 +74,7 @@ function jevEditPopupNoTitle(url) {
     jQuery('#myEditModal .modal-header .modal-title').css({'display': 'none'});
 
     launchModal('#myEditModal', url);
-    return;
+
 }
 
 function launchModal(selector, url) {
@@ -141,7 +141,7 @@ function launchModal(selector, url) {
     /** initialized with no keyboard */
     /** reloads parent page on close!
      ** jQuery(selector).on('hidden.bs.modal', function (e) { location.reload();}); */
-    return;
+
 }
 
 function addEditModalHtml() {
@@ -201,7 +201,7 @@ function jevImportPopup(url) {
 
     launchModal('#myImportModal', url);
 
-    return;
+
 }
 
 
@@ -256,5 +256,5 @@ function jevIdPopup(id) {
     }
     launchModal('#' + id);
 
-    return;
+
 }

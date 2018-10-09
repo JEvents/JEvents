@@ -10,19 +10,23 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$db   = JFactory::getDbo();
-$user = JFactory::getUser();
+HTMLHelper::_('behavior.tooltip');
+
+$db   = Factory::getDbo();
+$user = Factory::getUser();
 
 // get configuration object
 $cfg = JEVConfig::getInstance();
 
-$pathIMG        = JURI::root() . 'administrator/images/';
-$pathJeventsIMG = JURI::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
+$pathIMG        = Uri::root() . 'administrator/images/';
+$pathJeventsIMG = Uri::root() . "administrator/components/" . JEV_COM_COMPONENT . "/assets/images/";
 
 global $task;
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 // get configuration object
 $cfg      = JEVConfig::getInstance();
@@ -54,7 +58,7 @@ $fullspan = 12;
 		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 			<tr>
 				<th width="20" nowrap="nowrap">
-					<?php echo JHtml::_('grid.checkall'); ?>
+					<?php echo HTMLHelper::_('grid.checkall'); ?>
 				</th>
 				<th class="title" width="30%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_SUMMARY'); ?></th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ICAL_TYPE'); ?></th>
@@ -109,7 +113,7 @@ $fullspan = 12;
 					</td>
 					<td align="center">
 						<?php
-						$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+						$img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						?>
 						<a href="javascript: void(0);"
 						   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'icals.unpublish' : 'icals.publish'; ?>')">
@@ -120,7 +124,7 @@ $fullspan = 12;
 						<?php
 						if ($row->icaltype == 0)
 						{
-							$img = $row->autorefresh ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = $row->autorefresh ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
 							<a href="javascript: void(0);"
 							   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->autorefresh ? 'icals.noautorefresh' : 'icals.autorefresh'; ?>')">
@@ -131,7 +135,7 @@ $fullspan = 12;
 							{
 								?>
 								<br/><a
-									href="<?php echo JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>"
+									href="<?php echo Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&icsid=" . $row->ics_id . "&task=icals.reload"; ?>"
 									title="<?php echo JText::_("JEV_AUTOREFRESH_LINK") ?>"><?php echo JText::_("JEV_AUTOREFRESH_LINK") ?></a>
 								<?php
 							}
@@ -146,7 +150,7 @@ $fullspan = 12;
 						<?php
 						if ($row->icaltype == 2)
 						{
-							$img = $row->isdefault ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = $row->isdefault ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
 							<a href="javascript: void(0);"
 							   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->isdefault ? 'icals.notdefault' : 'icals.isdefault'; ?>')">
@@ -171,8 +175,8 @@ $fullspan = 12;
 				<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
 			</tr>
 		</table>
-		<?php echo JHtml::_('form.token'); ?>
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>"/>
+		<?php echo HTMLHelper::_('form.token'); ?>
+		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 		<input type="hidden" name="task" value="icals.list"/>
 		<input type="hidden" name="boxchecked" value="0"/>
 	</div>

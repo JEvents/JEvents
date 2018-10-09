@@ -12,13 +12,16 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+
 /**
  * User Table class
  *
  * @subpackage    Users
  * @since         1.0
  */
-class TableDefault extends JTable
+class TableDefault extends Table
 {
 	/**
 	 * Primary Key
@@ -44,7 +47,7 @@ class TableDefault extends JTable
 	function __construct()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		parent::__construct('#__jev_defaults', 'id', $db);
 	}
 

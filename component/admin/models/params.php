@@ -14,9 +14,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
+jimport('joomla.application.component.model');
 jimport('joomla.application.component.modeladmin');
+
 // on some servers with Xcode both classes seem to be 'compiled' and it throws an error but if we add this second test its ok - go figure .
 if (!defined("JEVADPARMOD"))
 {
@@ -32,23 +35,23 @@ if (!defined("JEVADPARMOD"))
 		{
 
 			static $instance;
-			$jinput = JFactory::getApplication()->input;
+			$input = Factory::getApplication()->input;
 
 			if ($instance == null)
 			{
 				$component = JEV_COM_COMPONENT;
 
-				$table = JTable::getInstance('extension');
+				$table = Table::getInstance('extension');
 				//if (!$table->loadByOption( $component ))
 				if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 				{
-					JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
+					Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JEV_NOT_A_VALID_COM'), 'warning');
 
 					return false;
 				}
 
 				// work out file path
-				if ($path = $jinput->getString('path'))
+				if ($path = $input->getString('path'))
 				{
 					$path = JPath::clean(JPATH_SITE . '/' . $path);
 					JPath::check($path);
@@ -109,18 +112,18 @@ if (!defined("JEVADPARMOD"))
 		public function save($data)
 		{
 
-			$table = JTable::getInstance('extension');
+			$table = Table::getInstance('extension');
 
 			// Save the rules.
 			if (isset($data['params']) && isset($data['params']['rules']))
 			{
 				jimport('joomla.access.rules');
 				$rules = new JAccessRules($data['params']['rules']);
-				$asset = JTable::getInstance('asset');
+				$asset = Table::getInstance('asset');
 
 				if (!$asset->loadByName($data['option']))
 				{
-					$root = JTable::getInstance('asset');
+					$root = Table::getInstance('asset');
 					$root->loadByName('root.1');
 					$asset->name  = $data['option'];
 					$asset->title = $data['option'];
@@ -173,7 +176,7 @@ if (!defined("JEVADPARMOD"))
 			}
 
 			// Clean the cache.
-			$cache = JFactory::getCache('com_config');
+			$cache = Factory::getCache('com_config');
 			$cache->clean();
 
 			return true;
@@ -183,18 +186,18 @@ if (!defined("JEVADPARMOD"))
 		public function saveRules($data)
 		{
 
-			$table = JTable::getInstance('extension');
+			$table = Table::getInstance('extension');
 
 			// Save the rules.
 			if (isset($data['params']) && isset($data['params']['rules']))
 			{
 				jimport('joomla.access.rules');
 				$rules = new JAccessRules($data['params']['rules']);
-				$asset = JTable::getInstance('asset');
+				$asset = Table::getInstance('asset');
 
 				if (!$asset->loadByName($data['option']))
 				{
-					$root = JTable::getInstance('asset');
+					$root = Table::getInstance('asset');
 					$root->loadByName('root.1');
 					$asset->name  = $data['option'];
 					$asset->title = $data['option'];
@@ -214,7 +217,7 @@ if (!defined("JEVADPARMOD"))
 			}
 
 			// Clean the cache.
-			$cache = JFactory::getCache('com_config');
+			$cache = Factory::getCache('com_config');
 			$cache->clean();
 
 			return true;

@@ -5,6 +5,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 function DefaultExportScript()
 {
 
@@ -62,6 +64,6 @@ function clearAllIcalYears(){
 
 SCRIPT;
 
-	$doc = JFactory::getDocument();
+	$doc = Factory::getDocument();
 	$doc->addScriptDeclaration($script);
 }

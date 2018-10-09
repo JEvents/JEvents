@@ -11,9 +11,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 global $task;
 $option = JEV_COM_COMPONENT;
-$index  = JRoute::_("index.php");
+$index  = Route::_("index.php");
 ?>
 <script type="text/javascript">
     <!--
@@ -46,7 +49,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "published", null, $this->jevuser->published);
+					echo HTMLHelper::_("select.booleanlist", "published", null, $this->jevuser->published);
 					?>
 				</fieldset>
 			</td>
@@ -56,7 +59,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "cancreate", null, $this->jevuser->cancreate);
+					echo HTMLHelper::_("select.booleanlist", "cancreate", null, $this->jevuser->cancreate);
 					?>
 				</fieldset>
 			</td>
@@ -73,7 +76,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "canpublishown", null, $this->jevuser->canpublishown);
+					echo HTMLHelper::_("select.booleanlist", "canpublishown", null, $this->jevuser->canpublishown);
 					?>
 				</fieldset>
 			</td>
@@ -83,7 +86,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "candeleteown", null, $this->jevuser->candeleteown);
+					echo HTMLHelper::_("select.booleanlist", "candeleteown", null, $this->jevuser->candeleteown);
 					?>
 				</fieldset>
 			</td>
@@ -93,7 +96,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "canedit", null, $this->jevuser->canedit);
+					echo HTMLHelper::_("select.booleanlist", "canedit", null, $this->jevuser->canedit);
 					?>
 				</fieldset>
 			</td>
@@ -103,7 +106,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "canpublishall", null, $this->jevuser->canpublishall);
+					echo HTMLHelper::_("select.booleanlist", "canpublishall", null, $this->jevuser->canpublishall);
 					?>
 				</fieldset>
 			</td>
@@ -113,7 +116,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "candeleteall", null, $this->jevuser->candeleteall);
+					echo HTMLHelper::_("select.booleanlist", "candeleteall", null, $this->jevuser->candeleteall);
 					?>
 				</fieldset>
 			</td>
@@ -123,7 +126,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "canuploadimages", null, $this->jevuser->canuploadimages);
+					echo HTMLHelper::_("select.booleanlist", "canuploadimages", null, $this->jevuser->canuploadimages);
 					?>
 				</fieldset>
 			</td>
@@ -133,7 +136,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "canuploadmovies", null, $this->jevuser->canuploadmovies);
+					echo HTMLHelper::_("select.booleanlist", "canuploadmovies", null, $this->jevuser->canuploadmovies);
 					?>
 				</fieldset>
 			</td>
@@ -143,7 +146,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "cancreateown", null, $this->jevuser->cancreateown);
+					echo HTMLHelper::_("select.booleanlist", "cancreateown", null, $this->jevuser->cancreateown);
 					?>
 				</fieldset>
 			</td>
@@ -153,7 +156,7 @@ $index  = JRoute::_("index.php");
 			<td>
 				<fieldset class="radio btn-group">
 					<?php
-					echo JHTML::_("select.booleanlist", "cancreateglobal", null, $this->jevuser->cancreateglobal);
+					echo HTMLHelper::_("select.booleanlist", "cancreateglobal", null, $this->jevuser->cancreateglobal);
 					?>
 				</fieldset>
 			</td>
@@ -280,6 +283,6 @@ $index  = JRoute::_("index.php");
 	<input type="hidden" name="hidemainmenu" value=""/>
 	<input type="hidden" name="task" value="<?php echo $task; ?>"/>
 	<input type="hidden" name="option" value="<?php echo $option; ?>"/>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 	

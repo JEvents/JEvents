@@ -12,11 +12,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /**
  * Class to handle event exceptions - used to RSS and iCal exports
  *
  */
-class iCalException extends JTable
+class iCalException extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */
@@ -39,7 +41,7 @@ class iCalException extends JTable
 	public static function loadByRepeatId($rp_id)
 	{
 
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$sql = "SELECT * FROM #__jevents_exception WHERE rp_id=" . intval($rp_id);
 		$db->setQuery($sql);
 		$data = $db->loadObject();

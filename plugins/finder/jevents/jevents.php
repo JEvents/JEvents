@@ -8,6 +8,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 // SEE  http://docs.joomla.org/Creating_a_Smart_Search_plug-in
 
 jimport('joomla.application.component.helper');
@@ -83,28 +86,13 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$this->loadLanguage();
 	}
 
-	/*
-	public function onStoreCustomDetails($evdetail)
-	{
-		// Only use this method when editing and saving a specific repeat
-		if (JRequest::getCmd("task")!="icalrepeat.save" && JRequest::getCmd("task")!="icalrepeat.apply" ){
-			return true;
-		}
-		$detailid = $evdetail->evdet_id;
-
-		// Reindex the item
-		$this->reindex($detailid);
-		return true;
-	}
-	 */
-
 	public function onPublishEvent($ids, $newstate)
 	{
 
 		foreach ($ids as $event_id)
 		{
 			// Get a db connection.
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// Create a new query object.
 			$query = $db->getQuery(true);
@@ -264,18 +252,18 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	{
 
 		// Check if the extension is enabled
-		if (JComponentHelper::isEnabled($this->extension) == false)
+		if (ComponentHelper::isEnabled($this->extension) == false)
 		{
 			return;
 		}
 
 		// Initialize the item parameters.
-		$registry = new JRegistry;
+		$registry = new JevRegistry;
 		$registry->loadString($item->params);
-		$item->params = JComponentHelper::getParams('com_jevents', true);
+		$item->params = ComponentHelper::getParams('com_jevents', true);
 		$item->params->merge($registry);
 
-		$registry = new JRegistry;
+		$registry = new JevRegistry;
 		$registry->loadString($item->metadata);
 		$item->metadata = $registry;
 
@@ -387,14 +375,15 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		// Get the item to index.
 		$this->db->setQuery($sql);
-		$row   = $this->db->loadAssoc();
-		$query = (string) $this->db->getQuery();
-		// Check for a database error.
-		if ($this->db->getErrorNum())
+
+		try
 		{
-			// Throw database error exception.
-			throw new Exception($this->db->getErrorMsg(), 500);
+			$row   = $this->db->loadAssoc();
+		} catch (Exception $e) {
+			throw new Exception($e, 500);
+
 		}
+
 
 		// Convert the item to a result object.
 		$item = ArrayHelper::toObject($row, 'FinderIndexerResult');
@@ -420,7 +409,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 	protected function getListQuery($query = null, $type = 'list')
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// Check if we can use the supplied SQL query.
 		$sql = $db->getQuery(true);
 		$sql->select('det.evdet_id, det.summary as title, det.description  AS summary, det.description  AS body');

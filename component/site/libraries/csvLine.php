@@ -339,7 +339,7 @@ class CsvLine
 
 		$newdatetime = JevDate::strtotime($datetime);
 		$tempdate    = new JevDate($newdatetime);
-		if (JString::strlen($datetime) <= 10 && $tempdate->toFormat("%H:%M:%S") == "00:00:00")
+		if (Joomla\String\StringHelper::strlen($datetime) <= 10 && $tempdate->toFormat("%H:%M:%S") == "00:00:00")
 		{
 			// in this case we have not time element so don't set it otherwise iCal import will think a time is actually set and not process all day or no end time events correctly
 			return date("Ymd", $newdatetime);

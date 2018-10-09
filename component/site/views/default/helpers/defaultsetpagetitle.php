@@ -5,22 +5,25 @@
  * and open the template in the editor.
  */
 
+use Joomla\CMS\Factory;
+
 function DefaultSetPageTitle($view, $ev_title)
 {
 
-	//get menu item id
+	// Get menu item id
 
-	$newparams = JFactory::getApplication('site')->getParams();
+	$newparams = Factory::getApplication('site')->getParams();
 	// Because the application sets a default page title,
 	// we need to get it from the menu item itself
-	$menu = JFactory::getApplication()->getMenu()->getActive();
+	$menu = Factory::getApplication()->getMenu()->getActive();
+
 	if (isset($menu->query["layout"]) && $menu->query["layout"] == "detail")
 	{
 		$newparams->def('page_heading', $newparams->get('page_title', $menu->title));
 	}
 	else
 	{
-		JFactory::getDocument()->SetTitle($ev_title);
+		Factory::getDocument()->SetTitle($ev_title);
 	}
 }
 

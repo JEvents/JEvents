@@ -4,6 +4,10 @@
 defined('_JEXEC') or die;
 
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
+JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries/registry.php");
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JEvents component helper.
@@ -24,14 +28,14 @@ class JEventsHelper
 	public static function addSubmenu($vName = "")
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$task   = $jinput->getCmd("task", "cpanel.cpanel");
-		$option = $jinput->getCmd("option", "com_categories");
+		$task   = $input->getCmd("task", "cpanel.cpanel");
+		$option = $input->getCmd("option", "com_categories");
 
 		if ($option == 'com_categories')
 		{
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			if (!JevJoomlaVersion::isCompatible("3.0"))
 			{
 				$hide_options = '#toolbar-popup-options {'
@@ -51,11 +55,11 @@ class JEventsHelper
     border:none;
 }
 STYLE;
-			JFactory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
-			$categories = JFactory::getDbo()->loadObjectList('id');
+			Factory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
+			$categories = Factory::getDbo()->loadObjectList('id');
 			foreach ($categories as $cat)
 			{
-				$catparams = new JRegistry($cat->params);
+				$catparams = new JevRegistry($cat->params);
 				if ($catparams->get("catcolour"))
 				{
 					$style .= "tr[item-id='$cat->id'] a {  border-left:solid 3px  " . $catparams->get("catcolour") . ";padding-left:5px;}\n";
@@ -91,7 +95,7 @@ STYLE;
 		);
 		if (JEVHelper::isAdminUser())
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("authorisedonly", 0))
 			{
 				JHtmlSidebar::addEntry(
@@ -115,46 +119,46 @@ STYLE;
 
 			// Links to addons
 			// Managed Locations
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' ");
 			$is_enabled = $db->loadResult();
 			if ($is_enabled)
 			{
 				$link = "index.php?option=com_jevlocations";
-				JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
+				Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
 					JText::_('COM_JEVLOCATIONS'), $link, $vName == 'cpanel.managed_locations'
 				);
 			}
 
 			// Managed People
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' ");
 			$is_enabled = $db->loadResult();
 			if ($is_enabled)
 			{
 				$link = "index.php?option=com_jevpeople";
-				JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+				Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
 					JText::_('COM_JEVPEOPLE'), $link, $vName == 'cpanel.managed_people'
 				);
 
 			}
 			// RSVP Pro
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' ");
 			$is_enabled = $db->loadResult();
 			if ($is_enabled)
 			{
 				$link = "index.php?option=com_rsvppro";
-				JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+				Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 				JHtmlSidebar::addEntry(
 					JText::_('COM_RSVPPRO'), $link, $vName == 'cpanel.rsvppro'
 				);
 
 			}
 			// Custom Fields				
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 			$extension = $db->loadObject();
 			// Stop if user is not authorised to manage JEvents
@@ -164,7 +168,7 @@ STYLE;
 				if (version_compare($manifestCache->version, "3.5.0RC", "ge"))
 				{
 					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-					JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
 					JHtmlSidebar::addEntry(
 						JText::_('JEV_CUSTOM_FIELDS'), $link, $vName == 'plugin.jev_customfields.overview'
 					);
@@ -184,11 +188,11 @@ STYLE;
 	 *
 	 * @return    JObject
 	 */
-	public static function getActions($categoryId = 0, $articleId = 0)
+	public function getActions($categoryId = 0, $articleId = 0)
 	{
 
-		$user   = JFactory::getUser();
-		$result = new JObject;
+		$user   = Factory::getUser();
+		$result = new stdClass;
 
 		if (empty($articleId) && empty($categoryId))
 		{
@@ -209,11 +213,29 @@ STYLE;
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result = JEventsHelper::ObjectSettter($action, $user->authorise($action, $assetName));
 		}
 
 		return $result;
 
+	}
+
+	/**
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $value     The value of the property to set.
+	 *
+	 * @return  mixed  Previous value of the property.
+	 *
+	 * @since   11.1
+	 */
+	public function ObjectSettter($property, $value = null)
+	{
+		$previous = isset($this->$property) ? $this->$property : null;
+		$this->$property = $value;
+
+		return $previous;
 	}
 
 }

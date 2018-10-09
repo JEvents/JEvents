@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 JLoader::register('DefaultViewAdmin', JEV_PATH . "/views/default/admin/view.html.php");
 
 /**
@@ -27,11 +30,11 @@ class AlternativeViewAdmin extends JEventsAlternativeView
 
 		JEVHelper::componentStylesheet($this);
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// TODO do this properly
 		//$document->setTitle(JText::_( 'BROWSER_TITLE' ));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$this->assign("introduction", $params->get("intro",""));
 
 

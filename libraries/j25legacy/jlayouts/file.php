@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * Base class for rendering a display layout
  * loaded from from a layout file
@@ -151,7 +154,7 @@ class JLayoutFile extends JLayoutBase
 			if (substr_count($component, 'com_'))
 			{
 				// Latest check: component exists and is enabled
-				return JComponentHelper::isEnabled($component);
+				return ComponentHelper::isEnabled($component);
 			}
 		}
 
@@ -175,7 +178,7 @@ class JLayoutFile extends JLayoutBase
 		$this->addIncludePaths(JPATH_ROOT . '/layouts');
 
 		// (2) Standard Joomla! layouts overriden
-		$this->addIncludePaths(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts');
+		$this->addIncludePaths(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts');
 
 		// Component layouts & overrides if exist
 		$component = $this->options->get('component', null);
@@ -193,7 +196,7 @@ class JLayoutFile extends JLayoutBase
 			}
 
 			// (4) Component template overrides path
-			$this->addIncludePath(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/layouts/' . $component);
+			$this->addIncludePath(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/layouts/' . $component);
 		}
 
 		// (5 - highest priority) Received a custom high priority path ?
@@ -269,7 +272,7 @@ class JLayoutFile extends JLayoutBase
 				break;
 
 			default:
-				$client = (int) JFactory::getApplication()->isAdmin();
+				$client = (int) Factory::getApplication()->isClient('administrator');
 				break;
 		}
 

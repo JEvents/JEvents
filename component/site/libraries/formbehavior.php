@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Utility class for form related behaviors
  *
@@ -29,14 +32,14 @@ abstract class JevHtmlFormbehavior
 	 *
 	 * If debugging mode is on an uncompressed version of AJAX Chosen is included for easier debugging.
 	 *
-	 * @param   JRegistry $options Options in a JRegistry object
+	 * @param   JevRegistry $options Options in a JevRegistry object
 	 * @param   mixed     $debug   Is debugging mode on? [optional]
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0
 	 */
-	public static function ajaxchosen(JRegistry $options, $debug = null)
+	public static function ajaxchosen(JevRegistry $options, $debug = null)
 	{
 
 		// Retrieve options/defaults
@@ -60,13 +63,13 @@ abstract class JevHtmlFormbehavior
 			}
 
 			// Include jQuery
-			JHtml::_('jquery.framework');
+			HTMLHelper::_('jquery.framework');
 
 			// Requires chosen to work
 			static::chosen($selector, $debug);
 
-			JHtml::_('script', 'jui/ajax-chosen.min.js', false, true, false, false, $debug);
-			JFactory::getDocument()->addScriptDeclaration("
+			HTMLHelper::_('script', 'jui/ajax-chosen.min.js', false, true, false, false, $debug);
+			Factory::getDocument()->addScriptDeclaration("
 				(function($){
 					$(document).ready(function () {
 						$('" . $selector . "').ajaxChosen({
@@ -118,12 +121,12 @@ abstract class JevHtmlFormbehavior
 		}
 
 		// Include jQuery
-		//JHtml::_('jquery.framework');
+		//HTMLHelper::_('jquery.framework');
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 
@@ -138,11 +141,11 @@ abstract class JevHtmlFormbehavior
 		$options_str = json_encode($options, ($debug && defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false));
 
 		JEVHelper::script("components/com_jevents/assets/js/chosen.jquery.js");
-		JHTML::stylesheet("components/com_jevents/assets/css/chosen.css");
+		HTMLHelper::stylesheet("components/com_jevents/assets/css/chosen.css");
 
-		//JHtml::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
-		//JHtml::_('stylesheet', 'jui/chosen.css', false, true);
-		JFactory::getDocument()->addScriptDeclaration("
+		//HTMLHelper::_('script', 'jui/chosen.jquery.min.js', false, true, false, false, $debug);
+		//HTMLHelper::_('stylesheet', 'jui/chosen.css', false, true);
+		Factory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('" . $selector . "').chosen(" . $options_str . ");
 				});

@@ -12,7 +12,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class iCalRRule extends JTable
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
+class iCalRRule extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */
@@ -48,7 +51,7 @@ class iCalRRule extends JTable
 	public static function iCalRRuleFromData($rrule)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $rrule;
@@ -118,7 +121,7 @@ class iCalRRule extends JTable
 	public function iCalRRuleFromDB($icalrowAsArray)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $icalrowAsArray;
@@ -261,7 +264,7 @@ class iCalRRule extends JTable
 							$details = array();
 							preg_match("/(\+|-?)(\d*)/", $day, $details);
 							list($temp, $plusminus, $daynumber) = $details;
-							if (JString::strlen($plusminus) == 0) $plusminus = "+";
+							if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
 
 							// do not go over year end
 							if ($daynumber > $currentYearDays) continue;
@@ -404,6 +407,7 @@ class iCalRRule extends JTable
 					$start        = $dtstart;
 					$end          = $dtend;
 					$countRepeats = 0;
+					$currentYear = JevDate::strftime("%Y", $start);
 
 					// do the current month first
 					while ($countRepeats < $this->count && !$this->_afterUntil($start))
@@ -431,8 +435,8 @@ class iCalRRule extends JTable
 							else
 							{
 								list($temp, $plusminus, $weeknumber, $dayname) = $details;
-								if (JString::strlen($plusminus) == 0) $plusminus = "+";
-								if (JString::strlen($weeknumber) == 0) $weeknumber = 1;
+								if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+								if (StringHelper::strlen($weeknumber) == 0) $weeknumber = 1;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus == "-")
@@ -451,7 +455,7 @@ class iCalRRule extends JTable
 									$testStart = JevDate::mktime($h, $min, $s, $m, $targetstartDay, $y);
 									if ($currentMonth == JevDate::strftime("%m", $testStart))
 									{
-										$currentYear = JevDate::strftime("%Y", $start);
+
 										$targetStart = $testStart;
 										// WE can't just add the duration since if summer time starts/ends within the event length then the end and possibly the date could be wrong
 										$targetEnd = $targetStart + $duration;
@@ -561,8 +565,8 @@ class iCalRRule extends JTable
 							else
 							{
 								list($temp, $plusminus, $daynumber) = $details;
-								if (JString::strlen($plusminus) == 0) $plusminus = "+";
-								if (JString::strlen($daynumber) == 0) $daynumber = $startDay;
+								if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+								if (StringHelper::strlen($daynumber) == 0) $daynumber = $startDay;
 
 								// always check for dtstart (nothing is allowed earlier)
 								if ($plusminus == "-")
@@ -675,8 +679,8 @@ class iCalRRule extends JTable
 							else
 							{
 								list($temp, $plusminus, $weeknumber, $dayname) = $details;
-								if (JString::strlen($plusminus) == 0) $plusminus = "+";
-								if (JString::strlen($weeknumber) == 0) $weeknumber = 1;
+								if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
+								if (StringHelper::strlen($weeknumber) == 0) $weeknumber = 1;
 
 								$multiplier = $plusminus == "+" ? 1 : -1;
 								// always check for dtstart (nothing is allowed earlier)
@@ -765,9 +769,9 @@ class iCalRRule extends JTable
 						else
 						{
 							list($temp, $plusminus, $daynumber, $dayname) = $details;
-							if (JString::strlen($plusminus) == 0) $plusminus = "+";
+							if (StringHelper::strlen($plusminus) == 0) $plusminus = "+";
 							// this is not relevant for weekly recurrence ?!?!?
-							//if (JString::strlen($daynumber)==0) $daynumber=1;
+							//if (StringHelper::strlen($daynumber)==0) $daynumber=1;
 							$multiplier = $plusminus == "+" ? 1 : -1;
 							if ($plusminus == "-")
 							{
@@ -881,7 +885,7 @@ class iCalRRule extends JTable
 	{
 
 		if (!isset($this->_repetitions)) $this->_repetitions = array();
-		$db              = JFactory::getDbo();
+		$db              = Factory::getDbo();
 		$repeat          = new iCalRepetition($db);
 		$repeat->eventid = $this->eventid;
 		// TODO CHECK THIS logic
@@ -930,13 +934,13 @@ class iCalRRule extends JTable
 	public function _afterUntil($testDate)
 	{
 
-		if (JString::strlen($this->until) == 0) return false;
+		if (StringHelper::strlen($this->until) == 0) return false;
 		if (!isset($this->_untilMidnight))
 		{
 			list ($d, $m, $y) = explode(":", JevDate::strftime("%d:%m:%Y", $this->until));
 			$this->_untilMidnight = JevDate::mktime(23, 59, 59, $m, $d, $y);
 		}
-		if (JString::strlen($this->until) > 0 && $testDate > intval($this->_untilMidnight))
+		if (StringHelper::strlen($this->until) > 0 && $testDate > intval($this->_untilMidnight))
 		{
 			return true;
 		}
@@ -1033,7 +1037,7 @@ class iCalRRule extends JTable
 					if (count($details) != 4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else
 					{
-						if (JString::strlen($details[1]) == 0) $details[1] = "+";
+						if (StringHelper::strlen($details[1]) == 0) $details[1] = "+";
 						echo "Event repeat details<br/>";
 						if ($details[1] == "-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";
@@ -1052,7 +1056,7 @@ class iCalRRule extends JTable
 					if (count($details) != 4) echo "<br/><br/><b>PROBLEMS with $day</b><br/><br/>";
 					else
 					{
-						if (JString::strlen($details[1]) == 0) $details[1] = "+";
+						if (StringHelper::strlen($details[1]) == 0) $details[1] = "+";
 						echo "Event repeat details<br/>";
 						if ($details[1] == "-") echo "count back $details[2] weeks on $details[3]<br/>";
 						else echo "count forward $details[2] weeks on $details[3]<br/>";

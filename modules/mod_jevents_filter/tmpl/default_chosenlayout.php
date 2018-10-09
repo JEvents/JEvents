@@ -12,13 +12,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+
 if (count($filterHTML) > 0)
 {
 	// chosen is already setup within default.php
 	/*
 	if ($params->get("bootstrapchosen", 1))
 	{
-		JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+		HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	}
 	 */
 	if ($params->get("bootstrapcss", 1) == 2)
@@ -31,7 +35,7 @@ if (count($filterHTML) > 0)
 		if ($cfg->get("bootstrapcss", 1) == 1)
 		{
 			// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-			JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+			HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
 		}
 		else if ($cfg->get("bootstrapcss", 1) == 2)
 		{
@@ -49,7 +53,7 @@ if (count($filterHTML) > 0)
 		// This forces category settings in URL to reset too since they could be set by SEF
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 		$style = <<<STYLE
 .jevfiltertable, .jevfiltertable td, .jevfiltertable tr {
@@ -92,7 +96,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -140,7 +144,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -212,7 +216,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>
@@ -267,8 +271,8 @@ STYLE;
 		?>
 	</form>
 	<?php
-	if (JRequest::getCmd("jevents_filter_submit") == "ok")
+	if (Factory::getApplication()->input->getCmd("jevents_filter_submit") == "ok")
 	{
-		//	JFactory::getApplication()->enqueueMessage("Search Filters applied successfully");
+		//	Factory::getApplication()->enqueueMessage("Search Filters applied successfully");
 	}
 }

@@ -13,9 +13,12 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 
-class AdminUserController extends JControllerLegacy
+class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	/** @var string        current used task */
@@ -29,10 +32,10 @@ class AdminUserController extends JControllerLegacy
 
 		parent::__construct();
 		$this->registerDefaultTask('showUser');
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$this->task = $jinput->get('task', '', "cmd");
-		$this->cid  = $jinput->get('cid', array(0), "array");
+		$this->task = $input->get('task', '', "cmd");
+		$this->cid  = $input->get('cid', array(0), "array");
 		if (!is_array($this->cid))
 		{
 			$this->cid = array(0);
@@ -52,7 +55,7 @@ class AdminUserController extends JControllerLegacy
 		$this->view = $this->getView("user", "html");
 
 		// Assign data for view
-		$this->view->assignRef('task', $this->task);
+		$this->view->task   = $this->task;
 	}
 
 	function showUsers()
@@ -77,7 +80,7 @@ class AdminUserController extends JControllerLegacy
 		if (!JEVHelper::isAdminUser())
 		{
 			$msg  = "Not Authorised";
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 			$this->setRedirect($link, $msg);
 			$this->redirect();
 
@@ -95,22 +98,24 @@ class AdminUserController extends JControllerLegacy
 
 	function saveUser()
 	{
-
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
+
+		$input  = Factory::getApplication()->input;
 
 		if (!JEVHelper::isAdminUser())
 		{
 			$msg  = "Not Authorised";
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 			$this->setRedirect($link, $msg);
 			$this->redirect();
 
 			return;
 		}
 
-		$post = JRequest::get('post');
-		$cid  = JRequest::getVar('cid', array(0), 'post', 'array');
+		$post = $input->post->get('jform', null, 'RAW');
+		$cid  = $input->post->get('cid', array(), 'array');
+
 		$cid  = (int) $cid[0];
 
 		$model = $this->getModel('user');
@@ -124,7 +129,7 @@ class AdminUserController extends JControllerLegacy
 			$msg = JText::_('ERROR_SAVING_USER');
 		}
 
-		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 		$this->setRedirect($link, $msg);
 		$this->redirect();
 
@@ -134,12 +139,12 @@ class AdminUserController extends JControllerLegacy
 	{
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 
 		if (!JEVHelper::isAdminUser())
 		{
 			$msg  = "Not Authorised";
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 			$this->setRedirect($link, $msg);
 			$this->redirect();
 
@@ -163,7 +168,7 @@ class AdminUserController extends JControllerLegacy
 			$msg = JText::_('NOT_ALL_USERS_DELETED');
 		}
 
-		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 		$this->setRedirect($link, $msg);
 		$this->redirect();
 
@@ -179,12 +184,12 @@ class AdminUserController extends JControllerLegacy
 	{
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit('Invalid Token');
+		Session::checkToken() or jexit('Invalid Token');
 
 		if (!JEVHelper::isAdminUser())
 		{
 			$msg  = "Not Authorised";
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 			$this->setRedirect($link, $msg);
 			$this->redirect();
 
@@ -203,7 +208,7 @@ class AdminUserController extends JControllerLegacy
 			$msg = JText::_('ERROR_UPDATING_USER');
 		}
 
-		$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
+		$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=user.list', false);
 		$this->setRedirect($link, $msg);
 		$this->redirect();
 	}

@@ -4,18 +4,27 @@
  * @license        By negoriation with author via http://www.gwesystems.com
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
+
 function ProcessJsonRequest(&$requestObject, $returnData)
 {
 
 	//$file4 = JPATH_SITE . '/components/com_jevents/libraries/checkconflict.php';
 	//if (JFile::exists($file4)) JFile::delete($file4);
 
+	$app    = Factory::getApplication();
+	$input  = $app->input;
+
 	// Some SEF addons leave Itemid blank here so force the active menu!
-	$ttItemid = JRequest::getVar("ttItemid", 0);
-	if ($ttItemid > 0 && JRequest::getVar("Itemid", 0) == 0)
+	$ttItemid = $input->getInt("ttItemid", 0);
+
+	if ($ttItemid > 0 && $input->getInt("Itemid", 0) == 0)
 	{
-		$menu = JFactory::getApplication()->getMenu();
-		JRequest::setVar("Itemid", $ttItemid);
+		$menu = $app->getMenu();
+		$input->set("Itemid", $ttItemid);
 		$menu->setActive($ttItemid);
 	}
 
@@ -23,13 +32,13 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	ini_set("display_errors", 0);
 
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$lang->load("com_jevents", JPATH_SITE);
 	$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 	include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
 
-	$params = JComponentHelper::getParams("com_jevents");
+	$params = ComponentHelper::getParams("com_jevents");
 
 	if (!$params->get("checkconflicts", 0))
 		return $returnData;
@@ -62,17 +71,17 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		$timezone = date_default_timezone_get();
 		$tz       = $params->get("icaltimezonelive", "");
 		date_default_timezone_set($tz);
-		$registry = JRegistry::getInstance("jevents");
+		$registry = JevRegistry::getInstance("jevents");
 		$registry->set("jevents.timezone", $timezone);
 	}
 
-	$token = JSession::getFormToken();
+	$token = Session::getFormToken();
 	if (!isset($requestObject->token) || strcmp($requestObject->token, $token) !== 0)
 	{
 		PlgSystemGwejson::throwerror("There was an error - bad token.  Please refresh the page and try again.");
 	}
 
-	$user = JFactory::getUser();
+	$user = Factory::getUser();
 	if (!JEVHelper::isEventCreator())
 	{
 		PlgSystemGwejson::throwerror("There was an error - not an event creator");
@@ -80,7 +89,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	if (intval($requestObject->formdata->evid) > 0)
 	{
-		$db         = JFactory::getDbo();
+		$db         = Factory::getDbo();
 		$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
 		$queryModel = new JEventsDBModel($dataModel);
 		$event      = $queryModel->getEventById(intval($requestObject->formdata->evid), 1, "icaldb");
@@ -127,7 +136,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 			$tstring                  = JText::_("JEV_OVERLAP_MESSAGE");
 			$overlap->conflictMessage = sprintf($tstring, $olp->summary, JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"), JevDate::strtotime($olp->startrepeat)), JEV_CommonFunctions::jev_strftime(JText::_("DATE_FORMAT_4"), JevDate::strtotime($olp->endrepeat)), $olp->conflictCause);
 			$overlap->conflictMessage = addslashes($overlap->conflictMessage);
-			$overlap->url             = JURI::root() . "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $olp->rp_id . "&year=$y&month=$m&day=$d";
+			$overlap->url             = Uri::root() . "index.php?option=com_jevents&task=icalrepeat.detail&evid=" . $olp->rp_id . "&year=$y&month=$m&day=$d";
 			$overlap->url             = str_replace("components/com_jevents/libraries/", "", $overlap->url);
 			$returnData->overlaps[]   = $overlap;
 		}
@@ -162,7 +171,6 @@ function simulateSaveEvent($requestObject)
 	}
 
 	// If the allow HTML flag is set, apply a safe HTML filter to the variable
-	//	$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
 	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
@@ -225,7 +233,7 @@ function simulateSaveRepeat($requestObject)
 		$k            = str_replace("[]", "", $k);
 		$formdata[$k] = $v;
 	}
-	//$array = JRequest::_cleanVar($formdata, JREQUEST_ALLOWHTML);
+
 	$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
 	$array          = $safeHtmlFilter->clean($formdata, null);
 
@@ -246,7 +254,7 @@ function simulateSaveRepeat($requestObject)
 		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
-	$db  = JFactory::getDbo();
+	$db  = Factory::getDbo();
 	$rpt = new iCalRepetition($db);
 	$rpt->load($rp_id);
 
@@ -350,8 +358,9 @@ function valueIfExists($array, $key, $default)
 function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 {
 
-	$params   = JComponentHelper::getParams("com_jevents");
-	$db       = JFactory::getDbo();
+	$params   = ComponentHelper::getParams("com_jevents");
+	$app      = Factory::getApplication();
+	$db       = Factory::getDbo();
 	$overlaps = array();
 
 
@@ -470,7 +479,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 		}
 
 		// Next check for Calendar overlaps
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_icsfile WHERE ics_id = " . $testevent->icsid());
 		$calinfo = $db->loadObject();
 		if ($calinfo && intval($calinfo->overlaps) == 1)
@@ -500,8 +509,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 
 	}
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
+	$app->triggerEvent('onCheckEventOverlaps', array(&$testevent, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
 
@@ -510,8 +518,8 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 {
 
-	$params   = JComponentHelper::getParams("com_jevents");
-	$db       = JFactory::getDbo();
+	$params   = ComponentHelper::getParams("com_jevents");
+	$db       = Factory::getDbo();
 	$overlaps = array();
 	if ($params->get("checkconflicts", 0) == 2)
 	{
@@ -614,7 +622,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 						}
 					}
 					//TODO $testevent is not set? We need to look at actually setting it as it is pointless at present.
-					$cat                     = count($catname) > 0 ? implode(", ", $catname) : $testevent->getCategoryName();
+					$cat                     = count($catname) > 0 ? implode(", ", $catname) : '';
 					$conflict->conflictCause = JText::sprintf("JEV_CATEGORY_CLASH", $cat);
 				}
 				unset($conflict);
@@ -623,8 +631,7 @@ function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 		}
 	}
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
+	Factory::getApplication()->triggerEvent('onCheckRepeatOverlaps', array(&$repeat, &$overlaps, $eventid, $requestObject));
 
 	return $overlaps;
 

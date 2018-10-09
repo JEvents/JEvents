@@ -1,5 +1,5 @@
 var JeventsFilters = {
-    filters: new Array(),
+    filters: [],
     reset: function (form) {
         // native array
         JeventsFilters.filters.each(function (item, i) {
@@ -31,4 +31,4 @@ var JeventsFilters = {
         }
         form.submit();
     }
-}
+};

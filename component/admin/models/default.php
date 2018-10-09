@@ -3,8 +3,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
 
+jimport('joomla.application.component.model');
 
 class DefaultsModelDefault extends JModelLegacy
 {
@@ -31,9 +32,9 @@ class DefaultsModelDefault extends JModelLegacy
 	{
 
 		parent::__construct();
-		$jinput = JFactory::getApplication()->input;
-		$id     = $jinput->getInt("id");
-		$edit   = $jinput->getBool('edit', true);
+		$input = Factory::getApplication()->input;
+		$id     = $input->getInt("id");
+		$edit   = $input->getBool('edit', true);
 		if ($edit)
 		{
 			$this->setId($id);

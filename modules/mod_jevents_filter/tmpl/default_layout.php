@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 if (count($filterHTML) > 0)
 {
 
@@ -25,7 +28,7 @@ if (count($filterHTML) > 0)
 		// This forces category settings in URL to reset too since they could be set by SEF
 		$script = "try {JeventsFilters.filters.push({id:'catidsfv',value:0});} catch (e) {}\n";
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 		$style = <<<STYLE
 .jevfiltertable, .jevfiltertable td, .jevfiltertable tr {
@@ -65,7 +68,7 @@ STYLE;
 						?>
 						<tr>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -113,7 +116,7 @@ STYLE;
 							{
 								continue;
 							}
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<td><?php echo $filter["title"]; ?></td>
@@ -185,7 +188,7 @@ STYLE;
 						?>
 						<li>
 							<?php
-							if (JString::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
+							if (StringHelper::strlen($filter["title"]) > 0 && $params->get("showlabels", 1))
 							{
 								?>
 								<?php echo $filter["title"]; ?>
@@ -240,8 +243,8 @@ STYLE;
 		?>
 	</form>
 	<?php
-	if (JRequest::getCmd("jevents_filter_submit") == "ok")
+	if (Factory::getApplication()->input->getCmd("jevents_filter_submit") == "ok")
 	{
-		//	JFactory::getApplication()->enqueueMessage("Search Filters applied successfully");
+		//	Factory::getApplication()->enqueueMessage("Search Filters applied successfully");
 	}
 }

@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 $cfg = JEVConfig::getInstance();
 
 if ($cfg->get("tooltiptype", 'overlib') == 'overlib')
@@ -168,5 +170,5 @@ jQuery(document).ready(function(){
 
 });
 SCRIPT;
-$doc    = JFactory::getDocument();
+$doc    = Factory::getDocument();
 $doc->addScriptDeclaration($script);

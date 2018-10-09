@@ -10,6 +10,12 @@
  */
 
 defined('_VALID_MOS') or defined('_JEXEC') or die('No Direct Access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 // Event repeat startdate fitler
@@ -37,12 +43,12 @@ class jevStartdateFilter extends jevFilter
 		parent::__construct($tablename, $filterfield, true);
 
 		// This filter is special and always remembers for logged in users
-		if (JFactory::getUser()->id > 0)
+		if (Factory::getUser()->id > 0)
 		{
-			$this->filter_value = JFactory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
+			$this->filter_value = Factory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
-				$this->filter_values[$v] = JFactory::getApplication()->getUserStateFromRequest($this->filterType . '_fvs_ses' . $v, $this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
+				$this->filter_values[$v] = Factory::getApplication()->getUserStateFromRequest($this->filterType . '_fvs_ses' . $v, $this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
 			}
 		}
 
@@ -62,7 +68,7 @@ class jevStartdateFilter extends jevFilter
 			$this->filter_values[0] = 1;
 			// default scenario is only events starting after 2 weeeks ago			
 			$fulldate               = date('Y-m-d H:i:s', JevDate::strtotime("-2 weeks"));
-			$this->filter_values[1] = JString::substr($fulldate, 0, 10);
+			$this->filter_values[1] = StringHelper::substr($fulldate, 0, 10);
 			$this->filter_values[2] = 1;
 
 			return $this->dmap . ".startrepeat>='$fulldate'";
@@ -75,13 +81,13 @@ class jevStartdateFilter extends jevFilter
 		else if ($this->filter_values[0] == -1 && $this->filter_values[1] == "")
 		{
 			$fulldate               = date('Y-m-d H:i:s', JevDate::strtotime("+2 weeks"));
-			$this->filter_values[1] = JString::substr($fulldate, 0, 10);
+			$this->filter_values[1] = StringHelper::substr($fulldate, 0, 10);
 			$this->_date            = $this->filter_values[1];
 		}
 		else if ($this->filter_values[0] == 1 && $this->filter_values[1] == "")
 		{
 			$fulldate               = date('Y-m-d H:i:s', JevDate::strtotime("-2 weeks"));
-			$this->filter_values[1] = JString::substr($fulldate, 0, 10);
+			$this->filter_values[1] = StringHelper::substr($fulldate, 0, 10);
 			$this->_date            = $this->filter_values[1];
 		}
 		$filter = "";
@@ -114,7 +120,7 @@ class jevStartdateFilter extends jevFilter
 		if (!$this->filterField) return "";
 
 		// only works on admin list events pages
-		if (JRequest::getCmd("jevtask") != "admin.listevents")
+		if (Factory::getApplication()->input->getCmd("jevtask") != "admin.listevents")
 		{
 			$filterList          = array();
 			$filterList["title"] = "";
@@ -130,17 +136,17 @@ class jevStartdateFilter extends jevFilter
 		$filterList["html"] = "";
 
 		$options            = array();
-		$options[]          = JHTML::_('select.option', '0', JText::_('WHEN'));
-		$options[]          = JHTML::_('select.option', '1', JText::_('On_or_after'));
-		$options[]          = JHTML::_('select.option', '-1', JText::_('BEFORE'));
-		$filterList["html"] .= JHTML::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0]);
+		$options[]          = HTMLHelper::_('select.option', '0', JText::_('WHEN'));
+		$options[]          = HTMLHelper::_('select.option', '1', JText::_('On_or_after'));
+		$options[]          = HTMLHelper::_('select.option', '-1', JText::_('BEFORE'));
+		$filterList["html"] .= HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fvs0', 'onchange="form.submit()" class="inputbox" size="1" ', 'value', 'text', $this->filter_values[0]);
 
-		//$filterList["html"] .=  JHTML::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
+		//$filterList["html"] .=  HTMLHelper::calendar($this->filter_values[1],$this->filterType.'_fvs1', $this->filterType.'_fvs1', '%Y-%m-%d',array('size'=>'12','maxlength'=>'10','onchange'=>'form.submit()'));
 
-		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$minyear  = JEVHelper::getMinYear();
 		$maxyear  = JEVHelper::getMaxYear();
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		$calendar = 'calendar14.js';
 

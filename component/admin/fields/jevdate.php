@@ -13,10 +13,12 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('calendar');
+FormHelper::loadFieldClass('calendar');
 
 class JFormFieldJEVDate extends JFormFieldCalendar
 {

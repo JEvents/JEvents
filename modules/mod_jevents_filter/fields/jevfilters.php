@@ -12,12 +12,15 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-include_once(JPATH_SITE . '/libraries/joomla/form/fields/text.php');
+include_once(JPATH_SITE . '/libraries/src/Form/Field/TextField.php');
 include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
 
 class JFormFieldJevfilters extends JFormFieldText
@@ -30,7 +33,7 @@ class JFormFieldJevfilters extends JFormFieldText
 	{
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($form);
@@ -42,8 +45,8 @@ class JFormFieldJevfilters extends JFormFieldText
 	{
 
 		// Mkae sure jQuery is loaded
-		JHtml::_('jquery.framework');
-		JHtml::_('jquery.ui', array("core", "sortable"));
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('jquery.ui', array("core", "sortable"));
 
 		jimport('joomla.filesystem.folder');
 
@@ -78,10 +81,10 @@ class JFormFieldJevfilters extends JFormFieldText
 			{
 				if (!array_key_exists($filtername, $filters))
 				{
-					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != JString::strlen($filtername) - 4)
+					if (strpos($filtername, "-") > 0 || strpos($filtername, ".zip") > 0 || strpos($filtername, ".php") != StringHelper::strlen($filtername) - 4)
 						continue;
 					$filterpath = $path . "/" . $filtername;
-					$filtername = JString::substr($filtername, 0, JString::strlen($filtername) - 4);
+					$filtername = StringHelper::substr($filtername, 0, StringHelper::strlen($filtername) - 4);
 					// skip special function filters
 					if ($filtername == "startdate" || $filtername == "Startdate")
 						continue;
@@ -102,7 +105,7 @@ class JFormFieldJevfilters extends JFormFieldText
 		$validvalues = array();
 		$input       = '<div style="clear:left"></div><table><tr valign="top">
 			<td><div style="font-weight:bold">' . JText::_("JEV_CLICK_TO_ADD_FILTER") . '</div>
-			<div id="filterchoices" style="width:150px;margin-top:10px;height:100px;;border:solid 1px #ccc;overflow-y:auto" >';
+			<div id="filterchoices" style="width:150px;margin-top:10px;height:100px;border:solid 1px #ccc;overflow-y:auto" >';
 		foreach ($filters as $filter => $filterpath)
 		{
 			if (!in_array($filter, $invalue) && !in_array(strtolower($filter), $invalue))
@@ -131,7 +134,7 @@ class JFormFieldJevfilters extends JFormFieldText
 			</tr></table>';
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 
 		JEVHelper::script('modules/mod_jevents_filter/fields/filterSelect.js');
 

@@ -12,6 +12,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -39,7 +42,7 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		parent::__construct($form);
@@ -62,10 +65,9 @@ class JFormFieldJevextras extends JFormField
 		return true;
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
+		PluginHelper::importPlugin("jevents");
 		$id  = intval(str_replace("extras", "", $this->name));
-		$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+		$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 
 		return true;
 
@@ -76,12 +78,11 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
+		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
 		if (version_compare(JVERSION, '3.3.0', '<'))
 		{
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 		if (isset($this->data[$id]))
 		{
@@ -103,13 +104,12 @@ class JFormFieldJevextras extends JFormField
 	{
 
 		// load any custom fields
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
+		PluginHelper::importPlugin("jevents");
 		$id = $this->id;
 
 		if (version_compare(JVERSION, '3.3.0', '>='))
 		{
-			$res = $dispatcher->trigger('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
+			$res = Factory::getApplication()->triggerEvent('onEditMenuItem', array(&$this->data, &$this->value, $this->type, $this->name, $this->id, $this->form));
 		}
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");

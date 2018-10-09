@@ -1,12 +1,16 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 function FlatViewHelperFooter16($view)
 {
 
-	$jinput = JFactory::getApplication()->input;
+	$app   = Factory::getApplication();
+	$input = $app->input;
 
-	if ($jinput->get('pop', '0', 'INT'))
+	if ($input->get('pop', '0', 'INT'))
 	{
 		?>
 		<div class="ev_noprint"><p align="center">
@@ -31,13 +35,12 @@ function FlatViewHelperFooter16($view)
 	</div>
 	</div>
 	<?php
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsFooter');
+	$app->triggerEvent('onJEventsFooter');
 
-	$task = $jinput->getString('jevtask', '');
+	$task = $input->getString('jevtask', '');
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	JEVHelper::componentStylesheet($view, "extra.css");
 	jimport('joomla.filesystem.file');
 

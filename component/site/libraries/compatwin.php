@@ -25,7 +25,7 @@ class JEV_CompatWin
 
 		if (!$timestamp) $timestamp = time();
 
-		$registry = JRegistry::getInstance('jevents');
+		$registry = JevRegistry::getInstance('jevents');
 		$registry->set('jevents.strftime', $timestamp);
 
 		$patterns = array('/%C/', '/%D/', '/%e/', '/%g/', '/%G/',
@@ -52,7 +52,7 @@ class JEV_CompatWin
 	{
 
 		// timestamp used during callback
-		$registry = JRegistry::getInstance('jevents');
+		$registry = JevRegistry::getInstance('jevents');
 		$ts       = $registry->get('jevents.strftime', time());
 
 		switch ($pattern[0])

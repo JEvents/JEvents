@@ -2,6 +2,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -24,7 +27,7 @@ class JFormFieldJeveventpriorities extends JFormField
 	protected function getInput()
 	{
 
-		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$showpriority   = $params->get("showpriority", 0);
 		$showPriorityTo = (int) $params->get('showPriorityACL', 0);
 
@@ -47,10 +50,10 @@ class JFormFieldJeveventpriorities extends JFormField
 			$list = array();
 			for ($i = 0; $i < 10; $i++)
 			{
-				$list[] = JHTML::_('select.option', $i, $i, 'val', 'text');
+				$list[] = HTMLHelper::_('select.option', $i, $i, 'val', 'text');
 			}
 
-			return JHTML::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
+			return HTMLHelper::_('select.genericlist', $list, 'priority', "style='width:50px'", 'val', 'text', $this->value);
 		}
 		else
 		{

@@ -9,6 +9,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * Utility class for Bootstrap elements.
  *
@@ -54,10 +58,10 @@ class JevHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Attach the carousel to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					if ($('#$selector')){
 						$('#$selector').affix($options);
@@ -101,26 +105,26 @@ class JevHtmlBootstrap
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 		/*
-				if(!JHtml::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
+				if(!HTMLHelper::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
 				{
-					JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
+					HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, true, false, false, $debug);
 				}
 				else
 				{
-					JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
+					HTMLHelper::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
 				}
 		*/
 		// Make loading this conditional on config option ??
-		JFactory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+		Factory::getDocument()->addScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
 
-		//JHtml::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
+		//HTMLHelper::_('script', 'com_jevents/jquery.min.js', false, true, false, false, $debug);
 
 		// use bootstrap from CDN instead of our copy of it - problem though that target elements disappear when popover appears in Joomla 2.5
-		//JFactory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
+		//Factory::getDocument()->addScript("//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.js");
 
 		JEVHelper::script("bootstrap.js", "com_jevents/", false, true);
 
@@ -151,7 +155,7 @@ class JevHtmlBootstrap
 		static::framework();
 
 		// Attach the alerts to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').alert();
@@ -186,7 +190,7 @@ class JevHtmlBootstrap
 		static::framework();
 
 		// Attach the alerts to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').button();
@@ -228,10 +232,10 @@ class JevHtmlBootstrap
 			$opt['interval'] = isset($params['interval']) ? (int) $params['interval'] : 5000;
 			$opt['pause']    = isset($params['pause']) ? $params['pause'] : 'hover';
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Attach the carousel to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					if ($('#$selector').length){
 						$('.$selector').carousel($options);
@@ -268,7 +272,7 @@ class JevHtmlBootstrap
 		static::framework();
 
 		// Attach the dropdown to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"(function($){
 				if ($('#$selector').length){
 					$('.$selector').dropdown();
@@ -338,7 +342,7 @@ class JevHtmlBootstrap
 		// Core Joomla modal doesn't handle the grey background problem so we don't use it !!
 		if (false && version_compare(JVERSION, "3.0", "ge"))
 		{
-			JHtml::_('bootstrap.modal', $selector, $params);
+			HTMLHelper::_('bootstrap.modal', $selector, $params);
 
 			return;
 		}
@@ -353,11 +357,11 @@ class JevHtmlBootstrap
 			$opt['show']     = isset($params['show']) ? (boolean) $params['show'] : true;
 			$opt['remote']   = isset($params['remote']) ? $params['remote'] : '';
 
-			$options = json_encode($opt); //JHtml::getJSObject($opt);
+			$options = json_encode($opt); //HTMLHelper::getJSObject($opt);
 
 			// Attach the modal to document
 			// see http://stackoverflow.com/questions/10636667/bootstrap-modal-appearing-under-background
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"jQuery(document).ready(function($) {
 					if ($('#$selector').length) {
 						/** Will be true if bootstrap 3 is loaded, false if bootstrap 2 or no bootstrap */
@@ -425,10 +429,10 @@ class JevHtmlBootstrap
 		// Custom option to control display on touch devices
 		$opt['mouseonly'] = isset($params['mouseonly']) ? $params['mouseonly'] : false;
 
-		$options = json_encode($opt); //JHtml::getJSObject($opt);
+		$options = json_encode($opt); //HTMLHelper::getJSObject($opt);
 
 		// Attach the popover to the document
-		JFactory::getDocument()->addScriptDeclaration(
+		Factory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function()
 			{
 				if (" . $options . ".mouseonly && 'ontouchstart' in document.documentElement) {
@@ -488,10 +492,10 @@ class JevHtmlBootstrap
 			// Setup options object
 			$opt['offset'] = isset($params['offset']) ? (int) $params['offset'] : 10;
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Attach ScrollSpy to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					$('#$selector').scrollspy($options);
 					})(jQuery);"
@@ -552,7 +556,7 @@ class JevHtmlBootstrap
 			$onHide           = isset($params['onHide']) ? (string) $params['onHide'] : null;
 			$onHidden         = isset($params['onHidden']) ? (string) $params['onHidden'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Build the script.
 			$script   = array();
@@ -582,7 +586,7 @@ class JevHtmlBootstrap
 			$script[] = "});";
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+			Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;
@@ -634,10 +638,10 @@ class JevHtmlBootstrap
 			$opt['updater']     = isset($params['updater']) ? (string) $params['updater'] : null;
 			$opt['highlighter'] = isset($params['highlighter']) ? (int) $params['highlighter'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"jQuery(document).ready(function()
 				{
 					jQuery('" . $selector . "').typeahead(" . $options . ");
@@ -681,10 +685,10 @@ class JevHtmlBootstrap
 			$opt['toggle'] = isset($params['toggle']) ? (boolean) $params['toggle'] : true;
 			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
 
-			$options = JHtml::getJSObject($opt);
+			$options = HTMLHelper::getJSObject($opt);
 
 			// Attach accordion to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"(function($){
 					$('#$selector').collapse($options);
 				})(jQuery);"
@@ -778,7 +782,7 @@ class JevHtmlBootstrap
 			$opt['active'] = (isset($params['active']) && ($params['active'])) ? (string) $params['active'] : '';
 
 			// Attach tabs to document
-			JFactory::getDocument()
+			Factory::getDocument()
 				->addScriptDeclaration(JLayoutHelper::render('libraries.cms.html.bootstrap.starttabsetscript', array('selector' => $selector)));
 
 			// Set static array
@@ -829,7 +833,7 @@ class JevHtmlBootstrap
 		$active = (static::$loaded['JHtmlBootstrap::startTabSet'][$selector]['active'] == $id) ? ' active' : '';
 
 		// Inject tab into UL
-		JFactory::getDocument()
+		Factory::getDocument()
 			->addScriptDeclaration($tabScriptLayout->render(array('selector' => $selector, 'id' => $id, 'active' => $active, 'title' => $title)));
 
 		$html = $tabLayout->render(array('id' => $id, 'active' => $active));
@@ -861,7 +865,7 @@ class JevHtmlBootstrap
 	 * @return  string
 	 *
 	 * @since       3.0
-	 * @deprecated  4.0    Use JHtml::_('bootstrap.startTabSet') instead.
+	 * @deprecated  4.0    Use HTMLHelper::_('bootstrap.startTabSet') instead.
 	 */
 	public static function startPane($selector = 'myTab', $params = array())
 	{
@@ -877,7 +881,7 @@ class JevHtmlBootstrap
 			$opt['active'] = isset($params['active']) ? (string) $params['active'] : '';
 
 			// Attach tooltips to document
-			JFactory::getDocument()->addScriptDeclaration(
+			Factory::getDocument()->addScriptDeclaration(
 				"jevjq(document).on('ready',function(){
 					jevjq('#$selector a').on('click', function (e) {
 						e.preventDefault();
@@ -901,7 +905,7 @@ class JevHtmlBootstrap
 	 * @return  string  HTML to close the pane
 	 *
 	 * @since       3.0
-	 * @deprecated  4.0    Use JHtml::_('bootstrap.endTabSet') instead.
+	 * @deprecated  4.0    Use HTMLHelper::_('bootstrap.endTabSet') instead.
 	 */
 	public static function endPane()
 	{
@@ -918,7 +922,7 @@ class JevHtmlBootstrap
 	 * @return  string  HTML to start a new panel
 	 *
 	 * @since       3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.addTab') instead.
+	 * @deprecated  4.0 Use HTMLHelper::_('bootstrap.addTab') instead.
 	 */
 	public static function addPanel($selector, $id)
 	{
@@ -934,7 +938,7 @@ class JevHtmlBootstrap
 	 * @return  string  HTML to close the pane
 	 *
 	 * @since       3.0
-	 * @deprecated  4.0 Use JHtml::_('bootstrap.endTab') instead.
+	 * @deprecated  4.0 Use HTMLHelper::_('bootstrap.endTab') instead.
 	 */
 	public static function endPanel()
 	{
@@ -947,7 +951,7 @@ class JevHtmlBootstrap
 	 *
 	 * @param   boolean $includeMainCss If true, main bootstrap.css files are loaded
 	 * @param   string  $direction      rtl or ltr direction. If empty, ltr is assumed
-	 * @param   array   $attribs        Optional array of attributes to be passed to JHtml::_('stylesheet')
+	 * @param   array   $attribs        Optional array of attributes to be passed to HTMLHelper::_('stylesheet')
 	 *
 	 * @return  void
 	 *
@@ -956,27 +960,27 @@ class JevHtmlBootstrap
 	public static function loadCss($includeMainCss = true, $direction = 'ltr', $attribs = array())
 	{
 
-		$params = JComponentHelper::getParams('com_jevents');
+		$params = ComponentHelper::getParams('com_jevents');
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
 			switch ($params->get("bootstrapcss", 1))
 			{
 				case 1:
-					JHtml::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
-					JHtml::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
+					HTMLHelper::_('stylesheet', 'com_jevents/bootstrap.css', $attribs, true);
+					HTMLHelper::_('stylesheet', 'com_jevents/bootstrap-responsive.css', $attribs, true);
 					break;
 				case 2:
 					JHtmlBootstrap::loadCss();
 					break;
 			}
-			//JHtml::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
+			//HTMLHelper::_('stylesheet', 'com_jevents/jevbootstrap/bootstrap-extended.css', $attribs, true);
 		}
 
 		// Load Bootstrap RTL CSS
 		if ($direction === 'rtl')
 		{
-			JHtml::_('stylesheet', 'jui/bootstrap-rtl.css', $attribs, true);
+			HTMLHelper::_('stylesheet', 'jui/bootstrap-rtl.css', $attribs, true);
 		}
 	}
 }

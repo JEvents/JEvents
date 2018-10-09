@@ -12,6 +12,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 // This class doesn't yet deal with repeating events
 
 class iCalImport
@@ -156,7 +160,7 @@ class iCalImport
 								$this->rawData .= fread($fh, 4096);
 							}
 							fclose($fh);
-							$this->rawData = JString::substr($this->rawData, JString::strpos($this->rawData, "\r\n\r\n") + 4);
+							$this->rawData = StringHelper::substr($this->rawData, StringHelper::strpos($this->rawData, "\r\n\r\n") + 4);
 						}
 					}
 				}
@@ -183,18 +187,17 @@ class iCalImport
 		$this->rawData = str_replace("\r\n", "\n", trim($this->rawData));
 
 		// remove spurious lines before calendar start
-		if (!JString::stristr($this->rawData, 'BEGIN:VCALENDAR'))
+		if (!StringHelper::stristr($this->rawData, 'BEGIN:VCALENDAR'))
 		{
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onImportCsvFile', array(& $this->rawData));
+			Factory::getApplication()->triggerEvent('onImportCsvFile', array(& $this->rawData));
 
 			// check for CSV format
-			$firstLine = JString::substr($this->rawData, 0, JString::strpos($this->rawData, "\n") + 1);
+			$firstLine = StringHelper::substr($this->rawData, 0, StringHelper::strpos($this->rawData, "\n") + 1);
 
-			if (JString::stristr($firstLine, 'SUMMARY') && JString::stristr($firstLine, 'DTSTART')
-				&& JString::stristr($firstLine, 'DTEND') && JString::stristr($firstLine, 'CATEGORIES')
-				&& JString::stristr($firstLine, 'TIMEZONE'))
+			if (StringHelper::stristr($firstLine, 'SUMMARY') && StringHelper::stristr($firstLine, 'DTSTART')
+				&& StringHelper::stristr($firstLine, 'DTEND') && StringHelper::stristr($firstLine, 'CATEGORIES')
+				&& StringHelper::stristr($firstLine, 'TIMEZONE'))
 			{
 				$timezone      = date_default_timezone_get();
 				$csvTrans      = new CsvToiCal($file, ",", $this->rawData);
@@ -206,9 +209,9 @@ class iCalImport
 				//echo "first line = $firstLine<br/>";
 				//echo "raw imported data = ".$this->rawData."<br/>";
 				//exit();
-				if (JFactory::getUser()->get('isRoot') && JFactory::getApplication()->isAdmin())
+				if (Factory::getUser()->get('isRoot') && Factory::getApplication()->isClient('administrator'))
 				{
-					$config = JFactory::getConfig();
+					$config = Factory::getConfig();
 					$debug  = (boolean) $config->get('debug');
 					if ($debug)
 					{
@@ -223,8 +226,8 @@ class iCalImport
 				return false;
 			}
 		}
-		$begin         = JString::strpos($this->rawData, "BEGIN:VCALENDAR", 0);
-		$this->rawData = JString::substr($this->rawData, $begin);
+		$begin         = StringHelper::strpos($this->rawData, "BEGIN:VCALENDAR", 0);
+		$this->rawData = StringHelper::substr($this->rawData, $begin);
 		//		$this->rawData = preg_replace('/^.*\n(BEGIN:VCALENDAR)/s', '$1', $this->rawData, 1);
 
 		// unfold content lines according the unfolding procedure of rfc2445
@@ -318,6 +321,7 @@ class iCalImport
 								$skipuntil = 'END:' . $value;
 								break;
 							}
+
 							// Generic processing
 							$this->add_to_cal($parent, $this->key, $value, $append);
 							break;
@@ -368,18 +372,18 @@ class iCalImport
 		}
 
 		$rawkey = "";
-		if (JString::stristr($key, "DTSTART") || JString::stristr($key, "DTEND") || JString::stristr($key, "EXDATE"))
+		if (StringHelper::stristr($key, "DTSTART") || StringHelper::stristr($key, "DTEND") || StringHelper::stristr($key, "EXDATE"))
 		{
 			list($key, $value, $rawkey, $rawvalue) = $this->handleDate($key, $value);
 
 			// if midnight then move back one day (ISO 8601 uses seconds past midnight http://www.iso.org/iso/date_and_time_format)
 			// because of the odd way we record midnights
-			if (JString::stristr($key, "DTEND") == "DTEND" && JString::strlen($rawvalue) >= 15 && JString::substr($rawvalue, 9, 6) == "000000")
+			if (StringHelper::stristr($key, "DTEND") == "DTEND" && StringHelper::strlen($rawvalue) >= 15 && StringHelper::substr($rawvalue, 9, 6) == "000000")
 			{
 				$value -= 1;  // 1 second
 				//$value -= 86400;  // 1 day
 			}
-			if (JString::stristr($key, "DTEND") == "DTEND" && JString::strlen($rawvalue) == 8)
+			if (StringHelper::stristr($key, "DTEND") == "DTEND" && StringHelper::strlen($rawvalue) == 8)
 			{
 				// all day event detected YYYYMMDD, set DTEND to last second of previous day
 				/* see section 3.6.1 of RFC https://tools.ietf.org/html/rfc5545
@@ -402,7 +406,7 @@ class iCalImport
 				$value -= 1;  // 1 second
 			}
 		}
-		if (JString::stristr($key, "DURATION"))
+		if (StringHelper::stristr($key, "DURATION"))
 		{
 			list($key, $value, $rawkey, $rawvalue) = $this->handleDuration($key, $value);
 		}
@@ -431,7 +435,7 @@ class iCalImport
 				}
 
 				// Special treatment of
-				if (JString::strpos($key, "EXDATE") === false)
+				if (StringHelper::strpos($key, "EXDATE") === false)
 				{
 					$target    =& $this->cal[$parent][$this->eventCount][$key];
 					$rawtarget =& $this->cal[$parent][$this->eventCount][$rawkey];
@@ -466,7 +470,7 @@ class iCalImport
 				//$value = preg_replace('@(?<![">])\b(?:(?:https?|ftp)://|www\.|ftp\.)[-A-Z0-9+&@#/%=~_|$?!:,.]*[A-Z0-9+&@#/%=~_|$]@',"<a href=\"\\0\">\\0</a>", $value);
 				if (is_string($value) && $key != "UID" && $key != "X-EXTRAINFO")
 				{
-					if (JString::strpos(str_replace(" ", "", JString::strtolower($value)), "<ahref=") === false && JString::strpos(str_replace(" ", "", JString::strtolower($value)), "<img") === false && (JString::strpos(JString::strtolower($value), "http://") !== false || JString::strpos(JString::strtolower($value), "https://") !== false))
+					if (StringHelper::strpos(str_replace(" ", "", StringHelper::strtolower($value)), "<ahref=") === false && StringHelper::strpos(str_replace(" ", "", StringHelper::strtolower($value)), "<img") === false && (StringHelper::strpos(StringHelper::strtolower($value), "http://") !== false || StringHelper::strpos(StringHelper::strtolower($value), "https://") !== false))
 					{
 						// See http://stackoverflow.com/questions/8414675/preg-replace-for-url-and-download-links and http://regexr.com/3bup3 to test this
 						$value = preg_replace('@(https?://([\w-.]+)+(:\d+)?(/([\w/_\.%\-+~=]*(\?\S+)?)?)?)@u', '<a href="$1">$1</a>', $value);
@@ -478,7 +482,7 @@ class iCalImport
 				if ($key == "DESCRIPTION" || $key == "SUMMARY")
 				{
 					$len  = strlen($value);
-					$ulen = JString::strlen($value);
+					$ulen = StringHelper::strlen($value);
 					// Can cause problems with multibyte strings so skip this
 					// we need to check this since some UTF-8 characters from Google get truncates otherwise
 					if ($len == $ulen)
@@ -489,7 +493,7 @@ class iCalImport
 
 
 				// Strip http:// from UID !!!
-				if ($key == "UID" && JString::strpos($value, "http://") !== false)
+				if ($key == "UID" && StringHelper::strpos($value, "http://") !== false)
 				{
 					$value = str_replace('http://', "http", $value);
 				}
@@ -500,7 +504,7 @@ class iCalImport
 					{
 						for ($i = 1; $i < count($parts); $i++)
 						{
-							if (JString::stristr($parts[$i], "TZID"))
+							if (StringHelper::stristr($parts[$i], "TZID"))
 							{
 								$value = $parts[$i] . ";" . $value;
 							}
@@ -537,9 +541,9 @@ class iCalImport
 		$parts  = explode(';', $value);
 		foreach ($parts as $part)
 		{
-			if (JString::strlen($part) == 0) continue;
+			if (StringHelper::strlen($part) == 0) continue;
 			$portion = explode('=', $part);
-			if (JString::stristr($portion[0], "UNTIL"))
+			if (StringHelper::stristr($portion[0], "UNTIL"))
 			{
 				$untilArray             = $this->handleDate($portion[0], $portion[1]);
 				$result[$untilArray[0]] = $untilArray[1];
@@ -557,7 +561,7 @@ class iCalImport
 
 		$rawvalue = $value;
 		// we have an array of exdates
-		if (JString::strpos($key, "EXDATE") === 0 && JString::strpos($value, ",") > 0)
+		if (StringHelper::strpos($key, "EXDATE") === 0 && StringHelper::strpos($value, ",") > 0)
 		{
 			$parts = explode(",", $value);
 			$value = array();
@@ -569,10 +573,10 @@ class iCalImport
 		else
 		{
 			$tz = false;
-			if (JString::strpos($key, "TZID=") > 0)
+			if (StringHelper::strpos($key, "TZID=") > 0)
 			{
 				$parts = explode(";", $key);
-				if (count($parts) >= 2 && JString::strpos($parts[1], "TZID=") !== false)
+				if (count($parts) >= 2 && StringHelper::strpos($parts[1], "TZID=") !== false)
 				{
 					$tz = str_replace("TZID=", "", $parts[1]);
 					$tz = iCalImport::convertWindowsTzid($tz);
@@ -582,7 +586,7 @@ class iCalImport
 		}
 		$parts = explode(";", $key);
 
-		if (count($parts) < 2 || JString::strlen($parts[1]) == 0)
+		if (count($parts) < 2 || StringHelper::strlen($parts[1]) == 0)
 		{
 			$rawkey = $key . "RAW";
 
@@ -611,7 +615,7 @@ class iCalImport
 		static $offset = null;
 		if (is_null($offset))
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$offset = $config->get('config.offset', 0);
 
 		}
@@ -619,13 +623,13 @@ class iCalImport
 		{
 			$t = JevDate::strtotime($ical_date);
 
-			if (JString::strpos($ical_date, "Z") > 0)
+			if (StringHelper::strpos($ical_date, "Z") > 0)
 			{
 				if (is_callable("date_default_timezone_set"))
 				{
 					$timezone = date_default_timezone_get();
 					// See http://www.php.net/manual/en/timezones.php
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					// server offset tiemzone
 					if ($params->get("icaltimezone", "") != "")
 					{
@@ -711,7 +715,7 @@ class iCalImport
 			}
 			else
 			{
-				$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				$jtz        = $compparams->get("icaltimezonelive", "");
 				if ($jtz)
 				{
@@ -729,7 +733,7 @@ class iCalImport
 		}
 
 		$isUTC = false;
-		if (JString::strpos($ical_date, "Z") !== false)
+		if (StringHelper::strpos($ical_date, "Z") !== false)
 		{
 			$isUTC = true;
 		}

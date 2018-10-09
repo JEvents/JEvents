@@ -13,7 +13,7 @@ class modDetailHelper
 		{
 			return false;
 		}
-		$reg     = JRegistry::getInstance("com_jevents");
+		$reg     = JevRegistry::getInstance("com_jevents");
 		$moddata = $reg->get("dynamicmodules");
 		if (isset($moddata[$modid]))
 		{

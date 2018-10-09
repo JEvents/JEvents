@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 // get configuration object
 $cfg = JEVConfig::getInstance();
 if ($this->editCopy || $this->repeatId == 0)
@@ -22,7 +24,7 @@ else
 }
 
 // Disable event repeats for non-full editors if disable repeats is enabled
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 {
 	$repeatStyle = "style='display:none;' class='jeveditrepeats' ";
@@ -201,7 +203,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<?php echo JText::_('YEARLY'); ?>
 			</label>
 			<?php
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("dayselect", 0))
 			{
 				?>
@@ -238,7 +240,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				                                   onclick="toggleCountUntil('cu_until');"/><?php echo JText::_('REPEAT_UNTIL'); ?>
 				</legend>
 				<?php
-				$params          = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$params          = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				$minyear         = JEVHelper::getMinYear();
 				$maxyear         = JEVHelper::getMaxYear();
 				$inputdateformat = $params->get("com_editdateformat", "d.m.Y");
@@ -330,7 +332,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 				<legend><?php echo JText::_('JEV_SELECT_REPEAT_DATES'); ?></legend>
 				<div class="irregularDateSelector">
 					<?php
-					$params           = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params           = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					$minyear          = JEVHelper::getMinYear();
 					$maxyear          = JEVHelper::getMaxYear();
 					$inputdateformat  = $params->get("com_editdateformat", "d.m.Y");
@@ -347,7 +349,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 
 					//"selectIrregularDate();updateRepeatWarning();"
 					/*
-					JFactory::getDocument()->addScriptDeclaration(
+					Factory::getDocument()->addScriptDeclaration(
 						'jQuery(document).on("ready", function () {
 						jQuery("#irregular").on("calupdate", function(evt) {
 							alert(evt);

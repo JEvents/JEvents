@@ -11,7 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 class SaveIcalEvent
 {
@@ -21,14 +26,14 @@ class SaveIcalEvent
 	{
 
 		$cfg    = JEVConfig::getInstance();
-		$db     = JFactory::getDbo();
-		$user   = JFactory::getUser();
-		$jinput = JFactory::getApplication()->input;
+		$db     = Factory::getDbo();
+		$user   = Factory::getUser();
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		// Allow plugins to check data validity
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger('onBeforeSaveEvent', array(&$array, &$rrule, $dryrun));
+		PluginHelper::importPlugin("jevents");
+		$res = $app->triggerEvent('onBeforeSaveEvent', array(&$array, &$rrule, $dryrun));
 
 		// TODO do error and hack checks here
 		$ev_id    = (int) ArrayHelper::getValue($array, "evid", 0);
@@ -69,7 +74,7 @@ class SaveIcalEvent
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser   = JEVHelper::getAuthorisedUser();
-		$creatorid = $jinput->getInt("jev_creatorid", 0);
+		$creatorid = $input->getInt("jev_creatorid", 0);
 		if ($creatorid > 0)
 		{
 			$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
@@ -204,7 +209,7 @@ class SaveIcalEvent
 			}
 		}
 
-		$db      = JFactory::getDbo();
+		$db      = Factory::getDbo();
 		$success = true;
 		//echo "class = ".get_class($vevent);
 		if (!$dryrun)
@@ -218,7 +223,7 @@ class SaveIcalEvent
 			{
 				throw new Exception($e->getMessage());
 				$success = false;
-				JFactory::getApplication()->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_EVENT_'), 'warning');
+				$app->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_EVENT_'), 'warning');
 			}
 		}
 		else
@@ -233,7 +238,7 @@ class SaveIcalEvent
 
 		// Only update the repetitions if the event edit says the repetitions will have changed or a new event or ONLY 1 repetition
 		$repetitions = $vevent->getRepetitions(true);
-		if ($newevent || JRequest::getInt("updaterepeats", 1) || count($repetitions) == 1)
+		if ($newevent || $input->getInt("updaterepeats", 1) || count($repetitions) == 1)
 		{
 			if (!$dryrun)
 			{
@@ -246,14 +251,14 @@ class SaveIcalEvent
 				{
 					throw new Exception($e->getMessage());
 					$success = false;
-					JFactory::getApplication()->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_REPETITIONS'), 'warning');
+					$app->enqueueMessage('101 - ' . JText::_('COULD_NOT_SAVE_REPETITIONS'), 'warning');
 				}
 			}
 		}
 
 		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
 		$vevent->published = $vevent->state;
-		$res               = $dispatcher->trigger('onAfterSaveEvent', array(&$vevent, $dryrun));
+		$res               = $app->triggerEvent('onAfterSaveEvent', array(&$vevent, $dryrun));
 		if ($dryrun) return $vevent;
 
 		// Do the repeats overlap each other
@@ -281,7 +286,7 @@ class SaveIcalEvent
 		}
 		if ($overlaprepeats)
 		{
-			JFactory::getApplication()->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
+			$app->enqueueMessage(JTExt::_("JEV_CHECK_OVERLAPPING_REPEATS"), "warning");
 		}
 
 		// If not authorised to publish in the frontend then notify the administrator
@@ -309,14 +314,14 @@ class SaveIcalEvent
 
 			list($year, $month, $day) = JEVHelper::getYMD();
 			//http://joomlacode1.5svn/index.php?option=com_jevents&task=icalevent.edit&evid=1&Itemid=68&rp_id=72&year=2008&month=09&day=10&lang=cy
-			$uri  = JURI::getInstance(JURI::base());
+			$uri  = Uri::getInstance(Uri::base());
 			$root = $uri->toString(array('scheme', 'host', 'port'));
 
 			if ($testevent)
 			{
 				$rp_id      = $testevent->rp_id();
-				$modifylink = '<a href="' . $root . JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
-				$viewlink   = '<a href="' . $root . JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&evid=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
+				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
+				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&evid=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
 				$title      = $testevent->title();
 				$content    = $testevent->content();
 				$catids     = $testevent->catids() ? $testevent->catids() : array();
@@ -345,8 +350,8 @@ class SaveIcalEvent
 			}
 			else
 			{
-				$modifylink = '<a href="' . $root . JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
-				$viewlink   = '<a href="' . $root . JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.detail&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
+				$modifylink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.edit&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '"><b>' . JText::_('JEV_MODIFY') . '</b></a>' . "\n";
+				$viewlink   = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalevent.detail&evid=' . $evid . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day&login=1") . '"><b>' . JText::_('JEV_VIEW') . '</b></a>' . "\n";
 				$title      = $data["SUMMARY"];
 				$content    = $data["DESCRIPTION"];
 				$subject    .= " PROBLEMS SAVING THIS EVENT";
@@ -357,13 +362,13 @@ class SaveIcalEvent
 			if ($created_by == null || $created_by == " ()")
 			{
 				$created_by = "Anonymous";
-				if (JRequest::getString("custom_anonusername", "") != "")
+				if ($input->getString("custom_anonusername", "") != "")
 				{
-					$created_by = JRequest::getString("custom_anonusername", "") . " (" . JRequest::getString("custom_anonemail", "") . ")";
+					$created_by = $input->getString("custom_anonusername", "") . " (" . $input->getString("custom_anonemail", "") . ")";
 				}
 			}
-			//JFactory::getApplication()->enququeMessage("Sending Admin mail to ".$adminEmail);
-			JEV_CommonFunctions::sendAdminMail($sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, JURI::root(), $modifylink, $viewlink, $testevent, $cc);
+
+			JEV_CommonFunctions::sendAdminMail($sitename, $adminEmail, $subject, $title, $content, $day, $month, $year, $start_time, $end_time, $created_by, Uri::root(), $modifylink, $viewlink, $testevent, $cc);
 
 		}
 		if ($success)
@@ -448,7 +453,7 @@ class SaveIcalEvent
 					// special case for weekly repeats which don't specify week of a month
 					foreach ($weekdays as $wd)
 					{
-						if (JString::strlen($byday) > 0) $byday .= ",";
+						if (StringHelper::strlen($byday) > 0) $byday .= ",";
 						$byday .= $weekdayReverseMap[$wd];
 					}
 				}
@@ -456,7 +461,7 @@ class SaveIcalEvent
 				{
 					foreach ($weekdays as $wd)
 					{
-						if (JString::strlen($byday) > 0) $byday .= ",";
+						if (StringHelper::strlen($byday) > 0) $byday .= ",";
 						$byday .= $bd_direction . $week . $weekdayReverseMap[$wd];
 					}
 				}

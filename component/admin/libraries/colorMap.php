@@ -9,6 +9,8 @@
  * @link        http://www.jevents.net
  */
 
+use Joomla\String\StringHelper;
+
 defined('_JEXEC') or die('Restricted access');
 
 function JevMapColor($background)
@@ -97,9 +99,9 @@ function JevMapColor($background)
 
 	// see http://24ways.org/2010/calculating-color-contrast/
 	$hexcolor = str_replace("#", "", $background);
-	$r        = hexdec(JString::substr($hexcolor, 0, 2));
-	$g        = hexdec(JString::substr($hexcolor, 2, 2));
-	$b        = hexdec(JString::substr($hexcolor, 4, 2));
+	$r        = hexdec(StringHelper::substr($hexcolor, 0, 2));
+	$g        = hexdec(StringHelper::substr($hexcolor, 2, 2));
+	$b        = hexdec(StringHelper::substr($hexcolor, 4, 2));
 	$yiq      = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
 
 	return ($yiq >= 128) ? '#000' : '#fff';

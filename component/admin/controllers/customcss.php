@@ -11,9 +11,12 @@
  */
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.application.component.controlleradmin');
 
-class CustomCssController extends JControllerLegacy
+class CustomCssController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	/**
@@ -38,10 +41,10 @@ class CustomCssController extends JControllerLegacy
 		// get the view
 		$this->view = $this->getView('customcss', 'html', 'customcssView');
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 
 		//Hold on... Are you a super user?
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// Get/Create the model
 		if ($model = $this->getModel())
@@ -62,7 +65,7 @@ class CustomCssController extends JControllerLegacy
 
 		// Set the layout
 		$this->view->setLayout('default');
-		$this->view->assign('title', JText::_('JEV_CUSTOM_CSS'));
+		$this->view->title = JText::_('JEV_CUSTOM_CSS');
 
 		$this->view->display();
 	}
@@ -71,7 +74,7 @@ class CustomCssController extends JControllerLegacy
 	public function cancel()
 	{
 
-		$this->setRedirect(JRoute::_('index.php?option=com_jevents&view=cpanel', false));
+		$this->setRedirect(Route::_('index.php?option=com_jevents&view=cpanel', false));
 	}
 
 	//Save, apply, Save & Close Function
@@ -79,9 +82,9 @@ class CustomCssController extends JControllerLegacy
 	{
 
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		\Joomla\CMS\Session\Session::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		$app          = JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$data         = $this->input->post->get('jform', array(), 'array');
 		$task         = $this->getTask();
 		$model        = $this->getModel();
@@ -129,7 +132,7 @@ class CustomCssController extends JControllerLegacy
 
 			// Redirect back to the edit screen.
 			$url = 'index.php?option=com_templates&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 
 			return false;
 		}
@@ -140,7 +143,7 @@ class CustomCssController extends JControllerLegacy
 			// Redirect back to the edit screen.
 			$this->setMessage(JText::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
 			$url = 'index.php?option=com_jevents&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 
 			return false;
 		}
@@ -152,13 +155,13 @@ class CustomCssController extends JControllerLegacy
 		{
 			// Redirect back to the edit screen.
 			$url = 'index.php?option=com_jevents&view=customcss';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 		}
 		else
 		{
 			// Redirect to the list screen.
 			$url = 'index.php?option=com_jevents';
-			$this->setRedirect(JRoute::_($url, false));
+			$this->setRedirect(Route::_($url, false));
 		}
 
 		return '';
@@ -173,6 +176,6 @@ class CustomCssController extends JControllerLegacy
 	protected function allowEdit()
 	{
 
-		return JFactory::getUser()->authorise('core.admin', 'com_jevents');
+		return Factory::getUser()->authorise('core.admin', 'com_jevents');
 	}
 }

@@ -12,8 +12,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevcategory extends JFormFieldList
 {
@@ -30,7 +35,7 @@ class JFormFieldJevcategory extends JFormFieldList
 	{
 
 		// Initialize variables.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$options = array();
 
 		// Initialize some field attributes.
@@ -44,11 +49,11 @@ class JFormFieldJevcategory extends JFormFieldList
 			// Filter over published state or not depending upon if it is present.
 			if ($published)
 			{
-				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+				$options = HTMLHelper::_('category.options', $extension, array('filter.published' => explode(',', $published)));
 			}
 			else
 			{
-				$options = JHtml::_('category.options', $extension);
+				$options = HTMLHelper::_('category.options', $extension);
 			}
 
 			// Verify permissions.  If the action attribute is set, then we scan the options.
@@ -56,7 +61,7 @@ class JFormFieldJevcategory extends JFormFieldList
 			{
 
 				// Get the current user object.
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 
 				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
 				// eg JAccess::preload('core.create', 'com_content.category')
@@ -70,16 +75,16 @@ class JFormFieldJevcategory extends JFormFieldList
 				}
 			}
 
-			array_unshift($options, JHTML::_('select.option', '0', '- ' . JText::_('JEV_SELECT_CATEGORY') . ' -'));
+			array_unshift($options, HTMLHelper::_('select.option', '0', '- ' . JText::_('JEV_SELECT_CATEGORY') . ' -'));
 		}
 		else
 		{
 
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the list view
-		if (!$this->value && ($this->form instanceof JForm))
+		if (!$this->value && ($this->form instanceof Form))
 		{
 			$context     = $this->form->getName();
 			$this->value = $session->get($context . '.filter.category_id', $this->value);

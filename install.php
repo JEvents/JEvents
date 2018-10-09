@@ -3,7 +3,7 @@
 /**
  * JEvents Component for Joomla 2.5.x
  *
- * @version     3.4.48
+ * @version     3.5.0alpha1
  * @releasedate September 2018
  * @package     JEvents
  * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
@@ -13,6 +13,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -31,16 +33,16 @@ class Pkg_JeventsInstallerScript
 		}
 
 		// Joomla! broke the update call, so we have to create a workaround check.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevents'");
 		$is_enabled = $db->loadResult();
 
 		if (!$is_enabled)
 		{
 			$this->hasJEventsInst = 0;
-			if (version_compare(JVERSION, '3.6.3', '<'))
+			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.6.3 before installing JEvents. This will also prevent issues with JEvents');
+				Jerror::raiseWarning(null, 'Warning! You are running a very insecure version of Joomla! <br/>Please update Joomla! to at least 3.8.0 before installing JEvents. This will also prevent issues with JEvents');
 
 				return false;
 			}
@@ -50,9 +52,9 @@ class Pkg_JeventsInstallerScript
 		else
 		{
 			$this->hasJEventsInst = 1;
-			if (version_compare(JVERSION, '3.6.3', '<'))
+			if (version_compare(JVERSION, '3.8.0', '<'))
 			{
-				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.6.3 and later.<br/>Please update Joomla! before upgrading JEvents to this version');
+				Jerror::raiseWarning(null, 'This version of JEvents is designed for Joomla 3.8.0 and later.<br/>Please update Joomla! before upgrading JEvents to this version');
 
 				return false;
 			}
@@ -71,6 +73,8 @@ class Pkg_JeventsInstallerScript
 
 	public function postflightHandler($type, $parent)
 	{
+
+		$app    = Factory::getApplication();
 
 		// CSS Styling:
 		?>
@@ -156,9 +160,10 @@ class Pkg_JeventsInstallerScript
 			$logo      = "JeventsTransparent.png";
 		}
 
+		// TODO Replace ADD_VERSION
 		echo "<div class='jev_install'>
 				<div class='jev_logo'><img src='https://www.jevents.net/logo/$logo' /></div>
-				<div class='version'><h2>" . $inst_text . ": " . $parent->get('manifest')->version . "</h2></div>
+				<div class='version'><h2>" . $inst_text . ": ADD_VERSION </h2></div>
 				<div class='installed'>
 					<ul>
 						<li>JEvents Core Component</li>
@@ -184,7 +189,7 @@ class Pkg_JeventsInstallerScript
 		if ($this->hasJEventsInst == 0)
 		{
 			// enable plugin
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = "SELECT * FROM #__extensions WHERE name='plg_content_finder' and type='plugin' and element='finder'";
 			$db->setQuery($query);
 			$finder_q = $db->loadObject();
@@ -242,7 +247,7 @@ class Pkg_JeventsInstallerScript
 			if (JFile::exists($file4)) JFile::delete($file4);
 
 			// Lets make sure our Core plugin is enabled..
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = "UPDATE #__extensions SET enabled=1 WHERE folder='content' and type='plugin' and element='jevents'";
 			$db->setQuery($query);
 			$db->execute();
@@ -256,9 +261,9 @@ class Pkg_JeventsInstallerScript
 
 		echo "</div>";
 		// Joomla updater special case
-		if (JFactory::getApplication()->input->getCmd("option") == "com_installer" && JFactory::getApplication()->input->getCmd("view") == "update")
+		if ($app->input->getCmd("option") == "com_installer" && $app->input->getCmd("view") == "update")
 		{
-			JFactory::getApplication()->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . JText::_('JEV_INST_VERSION_UPRG') . " :: " . $parent->get('manifest')->version, 'message');
+			$app->enqueueMessage("<div class='jev_logo'><img src='https://www.jevents.net/logo/JeventsTransparent3.png' /></div>" . JText::_('JEV_INST_VERSION_UPRG') . " :: ADD_VERSION", 'message');
 		}
 
 	}

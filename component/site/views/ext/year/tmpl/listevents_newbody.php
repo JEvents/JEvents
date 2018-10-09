@@ -1,16 +1,19 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 // Note that using a $limit value of -1 the limit is ignored in the query
 $this->data = $data = $this->datamodel->getYearData($this->year, $this->limit, $this->limitstart);
 
-$params      = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params      = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $row         = $params->get("row", "");
 $rowstripped = strip_tags($row);
 
 $regex = "#{(.*?)}#i";
 preg_match_all($regex, $rowstripped, $matches);
 $cols = count($matches);
+
 if ($cols == 0) return;
 
 echo "<div id='cal_title'>" . JText::_('JEV_EVENTSFOR') . "</div>\n";
@@ -47,7 +50,4 @@ for ($month = 1; $month <= 12; $month++)
 }
 echo '</table><br />' . "\n";
 
-// Create the pagination object
-//if ($data["total"]>$data["limit"]){
 $this->paginationForm($data["total"], $data["limitstart"], $data["limit"]);
-//}

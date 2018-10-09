@@ -77,7 +77,7 @@ var jevConditional = {
 
         var checkboxElements = condition.prop('type') == "checkbox" ? new Array(condition) : condition.find('input[type=checkbox]');
         if (checkboxElements.length > 0) {
-            condition.val(new Array());
+            condition.val([]);
             checkboxElements.each(function (i, cbe) {
                 if (jQuery(cbe).prop('checked') && conditionsarray.indexOf(jQuery(cbe).val()) >= 0) {
                     condition.val(conditionsarray[jQuery(cbe).val()]);

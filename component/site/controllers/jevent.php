@@ -11,9 +11,11 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
-class JEventController extends JControllerLegacy
+class JEventController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	function __construct($config = array())
@@ -38,16 +40,16 @@ class JEventController extends JControllerLegacy
 	function detail()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$evid = $jinput->getInt("evid", 0);
-		$pop  = intval($jinput->getVar('pop', 0));
+		$evid = $input->getInt("evid", 0);
+		$pop  = $input->getInt('pop', 0);
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$Itemid = JEVHelper::getItemid();
 
 		// get the view
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -63,27 +65,27 @@ class JEventController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout("detail");
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $this->_task);
-		$this->view->assign("pop", $pop);
-		$this->view->assign("evid", $evid);
-		$this->view->assign("jevtype", "jevent");
+		$this->view->Itemid     = $Itemid;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $this->_task;
+		$this->view->pop        = $pop;
+		$this->view->evid       = $evid;
+		$this->view->jevtype    = "jevent";
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}

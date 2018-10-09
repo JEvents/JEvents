@@ -11,6 +11,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 class jEventCal
@@ -191,7 +195,7 @@ class jEventCal
 	function getOrSet($field, $val = "")
 	{
 
-		if (JString::strlen($val) == 0) return $this->get($field);
+		if (StringHelper::strlen($val) == 0) return $this->get($field);
 		else $this->set($field, $val);
 	}
 
@@ -245,7 +249,7 @@ class jEventCal
 			static $levels;
 			if (!isset($levels))
 			{
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT id, title FROM #__viewlevels order by ordering ");
 				$levels = $db->loadObjectList('id');
 			}
@@ -390,7 +394,7 @@ class jEventCal
 	function contactLink($val = "", $admin = false)
 	{
 
-		if (JString::strlen($val) == 0)
+		if (StringHelper::strlen($val) == 0)
 		{
 			if (!isset($this->_contactLink) || $this->_contactLink == "") $this->_contactLink = JEventsHTML::getUserMailtoLink($this->id(), $this->created_by(), $admin, $this);
 		}
@@ -413,7 +417,7 @@ class jEventCal
 					$oldrand = $matches[1];
 					// Joomla 3.6.1 changed this YET again!
 					$rand = md5($oldrand . rand(1, 100000));
-					foreach (JFactory::getDocument()->_script as &$script)
+					foreach (Factory::getDocument()->_script as &$script)
 					{
 						if (strpos($script, $oldrand) > 0)
 						{
@@ -427,7 +431,7 @@ class jEventCal
 							//$script = str_replace("cloak$oldrand", "cloak$rand", $script);
 						}
 					}
-					//if (strpos(JFactory, $oldrand))
+					//if (strpos(Factory, $oldrand))
 					$return = 'id="cloak' . $rand . '" class="cloak' . $oldrand . '" ';
 
 					return $return;
@@ -452,7 +456,7 @@ class jEventCal
 	function catname($val = "")
 	{
 
-		if (JString::strlen($val) == 0)
+		if (StringHelper::strlen($val) == 0)
 		{
 			if (!isset($this->_catname)) $this->_catname = $this->getCategoryName();
 
@@ -490,7 +494,7 @@ class jEventCal
 
 		if (!isset($arr_catids))
 		{
-			$db         = JFactory::getDbo();
+			$db         = Factory::getDbo();
 			$arr_catids = array();
 			$catsql     = "SELECT cat.id, cat.title as name, pcat.title as pname, cat.description, cat.params  FROM #__categories  as cat LEFT JOIN #__categories as pcat on pcat.id=cat.parent_id WHERE cat.extension='com_jevents' ORDER BY cat.lft";
 			$db->setQuery($catsql);
@@ -558,7 +562,7 @@ class jEventCal
 	function allcategories($val = "")
 	{
 
-		if (JString::strlen($val) == 0)
+		if (StringHelper::strlen($val) == 0)
 		{
 			if (!isset($this->_catname)) $this->_catname = $this->getCategoryName();
 
@@ -570,7 +574,7 @@ class jEventCal
 	function fgcolor($val = "")
 	{
 
-		if (JString::strlen($val) == 0)
+		if (StringHelper::strlen($val) == 0)
 		{
 			include_once(JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/libraries/colorMap.php");
 			if (!isset($this->_fgcolor)) $this->_fgcolor = JevMapColor($this->bgcolor());
@@ -583,7 +587,7 @@ class jEventCal
 	function bgcolor($val = "")
 	{
 
-		if (JString::strlen($val) == 0)
+		if (StringHelper::strlen($val) == 0)
 		{
 			if (!isset($this->_bgcolor)) $this->_bgcolor = JEV_CommonFunctions::setColor($this);
 
@@ -632,7 +636,7 @@ class jEventCal
 					if (isset($params->image) && $params->image != "")
 					{
 						$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
-						$output   .= "<img src = '" . JURI::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
+						$output   .= "<img src = '" . Uri::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
 					}
 				}
 
@@ -650,7 +654,7 @@ class jEventCal
 			{
 				$alt_text = ($params->image_alt == '') ? JText::_('JEV_CAT_ALT_DEFAULT_TEXT', true) : $params->image_alt;
 
-				return "<img src = '" . JURI::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
+				return "<img src = '" . Uri::root() . $params->image . "' class='catimage'  alt='" . $alt_text . "' />";
 			}
 		}
 
@@ -671,7 +675,7 @@ class jEventCal
 					$params = json_decode($cat->params);
 					if (isset($params->image) && $params->image != "")
 					{
-						$output .= JURI::root() . $params->image;
+						$output .= Uri::root() . $params->image;
 					}
 				}
 
@@ -686,7 +690,7 @@ class jEventCal
 				$params = json_decode($data->params);
 				if (isset($params->image) && $params->image != "")
 				{
-					return JURI::root() . $params->image;
+					return Uri::root() . $params->image;
 				}
 			}
 			else
@@ -697,7 +701,7 @@ class jEventCal
 					$params = json_decode($cat->params);
 					if (isset($params->image) && $params->image != "")
 					{
-						return JURI::root() . $params->image;
+						return Uri::root() . $params->image;
 					}
 				}
 
@@ -1055,7 +1059,7 @@ class jEventCal
 		list($y,$m,$d) = explode(":",JevDate::strftime("%Y:%m:%d",$this_currentdate));
 		$dayEndSecond = JevDate::mktime( 23,59,59, $m, $d , $y);
 
-		$this->eventDaysDay =  $this->getRepeatArray($this_currentdate, $this_currentdate, $dayEndSecond);
+		$this->eventDaysDay = $this->getRepeatArray($this_currentdate, $this_currentdate, $dayEndSecond);
 		}
 		return (array_key_exists($this_currentdate,$this->eventDaysDay));
 		*/
@@ -1071,7 +1075,7 @@ class jEventCal
 
 		// after testing set showBR = 0
 		//$link .= "&showBR=1";
-		$link = $sef ? JRoute::_($link) : $link;
+		$link = $sef ? Route::_($link) : $link;
 
 		return $link;
 	}
@@ -1081,7 +1085,7 @@ class jEventCal
 
 		$Itemid = JEVHelper::getItemid();
 		$link   = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->editTask() . '&evid=' . $this->id() . '&Itemid=' . $Itemid;
-		$link   = $sef ? JRoute::_($link) : $link;
+		$link   = $sef ? Route::_($link) : $link;
 
 		return $link;
 	}
@@ -1104,7 +1108,7 @@ class jEventCal
 
 		$Itemid = JEVHelper::getItemid();
 		$link   = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->deleteTask() . '&evid=' . $this->id() . '&Itemid=' . $Itemid;
-		$link   = $sef ? JRoute::_($link) : $link;
+		$link   = $sef ? Route::_($link) : $link;
 
 		return $link;
 	}
@@ -1132,15 +1136,21 @@ class jEventCal
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
 
+		$input  = Factory::getApplication()->input;
+
 		$Itemid = $Itemid > 0 ? $Itemid : JEVHelper::getItemid($this);
 		$title  = JApplicationHelper::stringURLSafe($this->title());
 		$link   = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $this->id() . '&Itemid=' . $Itemid
 			. "&year=$year&month=$month&day=$day";
-		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("jevtask", "") != "crawler.listevents")
+		if ($input->getCmd("tmpl", "") == "component" &&
+			$input->getCmd('task', 'selectfunction') != 'icalevent.select' &&
+			$input->getCmd("option", "") != "com_acymailing" &&
+			$input->getCmd("option", "") != "com_jnews" &&
+			$input->getCmd("jevtask", "") != "crawler.listevents")
 		{
 			$link .= "&tmpl=component";
 		}
-		$link = $sef ? JRoute::_($link) : $link;
+		$link = $sef ? Route::_($link) : $link;
 
 		return $link;
 	}
@@ -1161,7 +1171,7 @@ class jEventCal
 	{
 
 		$is_event_creator = JEVHelper::isEventCreator();
-		$user             = JFactory::getUser();
+		$user             = Factory::getUser();
 
 		// are we authorised to do anything with this category or calendar
 		$jevuser = JEVHelper::getAuthorisedUser();
@@ -1288,7 +1298,7 @@ class jEventCal
 						$each = strtolower($each);
 					}
 					$daystring = "";
-					if (JString::strlen($this->reccurweeks()) == 0)
+					if (StringHelper::strlen($this->reccurweeks()) == 0)
 					{
 						$days = explode("|", $this->reccurweekdays());
 						for ($d = 0; $d < count($days); $d++)
@@ -1433,9 +1443,8 @@ class jEventCal
 			{
 				ob_start();
 				$name       = substr($field, 1);
-				$dispatcher = JEventDispatcher::getInstance();
 				$available  = false;
-				$dispatcher->trigger('onJeventsGetter', array(&$this, $name, &$available));
+				Factory::getApplication()->triggerEvent('onJeventsGetter', array(&$this, $name, &$available));
 				$value = ob_get_clean();
 				if ($available)
 				{

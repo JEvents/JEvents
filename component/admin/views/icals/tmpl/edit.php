@@ -10,15 +10,25 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 global $task, $catid;
-$db     = JFactory::getDbo();
-$editor = JFactory::getEditor();
+$db     = Factory::getDbo();
 
+$uEdtior    = Factory::getUser()->getParam('editor',  Factory::getConfig()->get('editor', 'none'));
+
+if ($uEdtior === 'codemirror')
+{
+	$editor = \Joomla\CMS\Editor\Editor::getInstance('none');
+	Factory::getApplication()->enqueueMessage(JText::_("JEV_CODEMIRROR_NOT_COMPATIBLE_EDITOR", "WARNING"));
+} else {
+	$editor = \Joomla\CMS\Editor\Editor::getInstance($uEdtior);
+}
 // clean any existing cache files
-$cache = JFactory::getCache(JEV_COM_COMPONENT);
+$cache = Factory::getCache(JEV_COM_COMPONENT);
 $cache->clean(JEV_COM_COMPONENT);
-$action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
+$action = Factory::getApplication()->isClient('administrator') ? "index.php" : "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
 ?>
 <div id="jevents">
 	<form action="<?php echo $action; ?>" method="post" name="adminForm" accept-charset="UTF-8"
@@ -168,11 +178,11 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
 			<?php
 		}
 		// Tabs
-		echo JHtml::_('bootstrap.startPane', 'myicalTabs', array('active' => 'from_scratch'));
+		echo HTMLHelper::_('bootstrap.startPane', 'myicalTabs', array('active' => 'from_scratch'));
 
 		if ($id == 0 || $icaltype == 2)
 		{
-			echo JHtml::_('bootstrap.addPanel', "myicalTabs", "from_scratch");
+			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_scratch");
 			if (!isset($this->editItem->isdefault) || $this->editItem->isdefault == 0)
 			{
 				$checked0 = ' checked="checked"';
@@ -232,8 +242,8 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
 
 		if ($id == 0 || $icaltype == 1)
 		{
-			echo JHtml::_('bootstrap.endPanel');
-			echo JHtml::_('bootstrap.addPanel', "myicalTabs", "from_file");
+			echo HTMLHelper::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_file");
 			?>
 			<?php if ($id == 0) { ?>
 			<h3><?php echo $filename; ?></h3>
@@ -246,8 +256,8 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
 
 		if ($id == 0 || $icaltype == 0)
 		{
-			echo JHtml::_('bootstrap.endPanel');
-			echo JHtml::_('bootstrap.addPanel', "myicalTabs", "from_url");
+			echo HTMLHelper::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.addPanel', "myicalTabs", "from_url");
 			?>
 			<?php
 			$urlsAllowed = ini_get("allow_url_fopen");
@@ -296,11 +306,11 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
 			<?php
 		}
 		}
-		echo JHtml::_('bootstrap.endPanel');
-		echo JHtml::_('bootstrap.endPane', 'myicalTabs');
+		echo HTMLHelper::_('bootstrap.endPanel');
+		echo HTMLHelper::_('bootstrap.endPane', 'myicalTabs');
 		?>
 		<input type="hidden" name="icsid" id="icsid" <?php echo $disabled; ?> value="<?php echo $id; ?>"/>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="boxchecked" value="0"/>
 		<input type="hidden" name="task" value="icals.edit"/>
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

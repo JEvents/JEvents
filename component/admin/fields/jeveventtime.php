@@ -1,6 +1,8 @@
 <?php
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
@@ -71,8 +73,8 @@ class JFormFieldJeveventtime extends JFormField
 		{
 			$test = $event->alldayevent() || $event->noendtime();
 		}
-		$btngroup  = (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn-group" : "";
-		$btn       = (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn" : "";
+		$btngroup  = (JevJoomlaVersion::isCompatible("3.0") || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn-group" : "";
+		$btn       = (JevJoomlaVersion::isCompatible("3.0") || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn" : "";
 		$timevalue = $event->$time24function();
 		list($h, $m) = explode(":", $timevalue);
 		?>

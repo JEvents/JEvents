@@ -2,6 +2,9 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -30,7 +33,7 @@ class JFormFieldJeveventdate extends JFormField
 		ob_start();
 		$event      = $this->form->jevdata[$this->name]["event"];
 		$eventfield = $this->name == "publish_up" ? "startDate" : "endDate";
-		$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$minyear    = JEVHelper::getMinYear();
 		$maxyear    = JEVHelper::getMaxYear();
 
@@ -88,7 +91,7 @@ class JFormFieldJeveventdate extends JFormField
 		static $firsttime = true;
 		if ($firsttime)
 		{
-			$document = JFactory::getDocument();
+			$document = Factory::getDocument();
 			$js       = "\n eventEditDateFormat='$inputdateformat';//Date.defineParser(eventEditDateFormat.replace('d','%d').replace('m','%m').replace('Y','%Y'));";
 			$document->addScriptDeclaration($js);
 			$firsttime = false;

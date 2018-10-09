@@ -12,6 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -32,13 +36,13 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		// used only for helper functions
 		$this->jevlayout = "default";
 		$this->addHelperPath(realpath(dirname(__FILE__) . "/../default/helpers"));
-		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 	}
 
 	function edit($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
@@ -60,12 +64,12 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		}
 		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
-			JRequest::setVar('tmpl', 'component'); //force the component template
+			Factory::getApplication()->input->set('tmpl', 'component'); //force the component template
 		}
 		else
 		{
@@ -74,15 +78,15 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 
 		$this->_adminStart();
 
 		// load Joomla javascript classes
-		JHTML::_('behavior.core');
+		HTMLHelper::_('behavior.core');
 		$this->setLayout("edit");
 
 		$this->setupEditForm();
@@ -114,18 +118,17 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	function _adminStart()
 	{
 
-		$dispatcher = JEventDispatcher::getInstance();
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
+		$app             = Factory::getApplication();
 		$this->Itemid    = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
-		$dispatcher->trigger('onJEventsHeader', array($this));
+		$app->triggerEvent('onJEventsHeader', array($this));
 
 		?>
 		<div style="clear:both"
 		<?php
-		$mainframe = JFactory::getApplication();
-		$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
+		$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		echo (!$app->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
 		?>>
 		<div id="toolbar-box">
 			<?php
@@ -137,19 +140,19 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 			if (JevJoomlaVersion::isCompatible("3.0"))
 			{
-				// JFactory::getApplication()->JComponentTitle;
+				// Factory::getApplication()->JComponentTitle;
 				$title = "";
 			}
 			else
 			{
-				$title = JFactory::getApplication()->get('JComponentTitle');
+				$title = $app->get('JComponentTitle');
 			}
 			echo $title;
 			?>
 		</div>
 		<?php
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onJEventsFooter', array($this));
+
+		$app->triggerEvent('onJEventsFooter', array($this));
 
 
 	}
@@ -183,7 +186,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 				//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 				echo $barhtml;
 
-				$title = JFactory::getApplication()->get('JComponentTitle');
+				$title = Factory::getApplication()->get('JComponentTitle');
 				echo $title;
 				?>
 				<div class="clr"></div>
@@ -229,7 +232,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+
 $cfg = JEVConfig::getInstance();
 
 $view = $this->getViewName();
@@ -58,17 +62,21 @@ function clearAllIcalYears(){
 }
 
 SCRIPT;
-$doc    = JFactory::getDocument();
+$doc    = Factory::getDocument();
 $doc->addScriptDeclaration($script);
+
+
+$app    = Factory::getApplication();
+$input  = $app->input;
 
 $accessiblecats = explode(",", $this->datamodel->accessibleCategoryList());
 
 echo "<h2 id='cal_title'>" . JText::_('JEV_ICAL_EXPORT') . "</h2>\n";
 
-if (JRequest::getString("submit", "") != "")
+if ($input->getString("submit", "") != "")
 {
 
-	$categories = JRequest::getVar('categories', array(0), 'POST');
+	$categories = $input->post->get('categories', array(0), 'ARRAY');
 
 	$cats = array();
 	foreach ($categories AS $cid)
@@ -82,33 +90,30 @@ if (JRequest::getString("submit", "") != "")
 	if (count($cats) == 0)
 		$cats[] = 0;
 
-
-	//$years  = str_replace(",","|",JEVHelper::forceIntegerArray(JRequest::getVar('years','','POST'),true));
-	//$cats = implode("|",$cats);
-	$years = JEVHelper::forceIntegerArray(JRequest::getVar('years', array(0), 'POST'), true);
+	$years = JEVHelper::forceIntegerArray($input->post->getString('years', array(0), 'ARRAY'), true);
 	$cats  = implode(",", $cats);
 
-	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
+	$link = Uri::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
 	if (count($cats) > 0)
 	{
 		$link .= "&catids=" . $cats;
 	}
 	$link .= "&years=" . $years;
-	if (JRequest::getInt("icalformatted", 0))
+	if ($input->getInt("icalformatted", 0))
 	{
 		$link .= "&icf=1";
 	}
 
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("constrained", 0))
 	{
-		$link .= "&Itemid=" . JRequest::getInt("Itemid", 1);
+		$link .= "&Itemid=" . $input->getInt("Itemid", 1);
 	}
 
 	$icalkey    = $params->get("icalkey", "secret phrase");
 	$publiclink = $link . "&k=" . md5($icalkey . $cats . $years);
 
-	$user = JFactory::getUser();
+	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
 		$privatelink = $link . "&pk=" . md5($icalkey . $cats . $years . $user->password . $user->username . $user->id) . "&i=" . $user->id;
@@ -143,12 +148,12 @@ if (JRequest::getString("submit", "") != "")
 		// All categories
 		$cb      = "<input name=\"categories[]\" value=\"0\" type=\"checkbox\" onclick='clearIcalCategories(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('categories', 0, 'POST'))
+		if (!$input->post->get('categories', 0))
 		{
 			$cb      = $cb . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('categories', 0, 'POST') && in_array(0, JRequest::getVar('categories', '', 'POST')))
+		else if ($input->post->get('categories', 0) && in_array(0, $input->post->get('categories', '')))
 		{
 			$cb      = $cb . " CHECKED";
 			$checked = true;
@@ -163,11 +168,11 @@ if (JRequest::getString("submit", "") != "")
 				if (!in_array($c->id, $accessiblecats))
 					continue;
 				$cb = "<input name=\"categories[]\" value=\"" . $c->id . "\" type=\"checkbox\" onclick='clearAllIcalCategories(this);' ";
-				if (!JRequest::getVar('categories', 0))
+				if (!$input->get('categories', 0))
 				{
 					//$cb=$cb." CHECKED";
 				}
-				else if (JRequest::getVar('categories', 0) && in_array($c->id, JRequest::getVar('categories', '', 'POST')))
+				else if ($input->get('categories', 0) && in_array($c->id, $input->post->get('categories', '', 'ARRAY')))
 				{
 					$cb = $cb . " CHECKED";
 				}
@@ -184,12 +189,12 @@ if (JRequest::getString("submit", "") != "")
 		// All years
 		$yt      = "<input name=\"years[]\" type=\"checkbox\" value=\"0\"  onclick='clearIcalYears(this);' ";
 		$checked = false;
-		if (!JRequest::getVar('years', 0))
+		if (!$input->get('years', 0))
 		{
 			$yt      = $yt . " CHECKED";
 			$checked = true;
 		}
-		else if (JRequest::getVar('years', 0) && in_array(0, JRequest::getVar('years', '', 'POST')))
+		else if ($input->get('years', 0) && in_array(0, $input->post->get('years', '')))
 		{
 			$yt      = $yt . " CHECKED";
 			$checked = true;
@@ -200,7 +205,7 @@ if (JRequest::getString("submit", "") != "")
 		<div id='otheryears' <?php echo $checked ? '' : ''; ?> >
 			<?php
 			//consturc years array, easy to add own kind of selection
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$year   = array();
 			for ($y = JEVHelper::getMinYear(); $y <= JEVHelper::getMaxYear(); $y++)
 			{
@@ -211,11 +216,11 @@ if (JRequest::getString("submit", "") != "")
 			foreach ($year AS $y)
 			{
 				$yt = "<input name=\"years[]\" type=\"checkbox\" value=\"" . $y . "\" onclick='clearAllIcalYears(this);' ";
-				if (!JRequest::getVar('years', 0))
+				if (!$input->get('years', 0))
 				{
 					//$yt = $yt . " CHECKED";
 				}
-				else if (JRequest::getVar('years', 0) && in_array($y, JRequest::getVar('years', '', 'POST')))
+				else if ($input->get('years', 0) && in_array($y, $input->post->get('years', '')))
 				{
 					$yt = $yt . " CHECKED";
 				}
@@ -230,7 +235,7 @@ if (JRequest::getString("submit", "") != "")
 	echo "<h3>" . JText::_('JEV_ICAL_FORMATTING') . "</h3>\n";
 	?>
 	<label><input name="icalformatted" type="checkbox"
-	              value="1" <?php echo JRequest::getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
+	              value="1" <?php echo $input->getInt("icalformatted", 0) ? "checked='checked'" : ""; ?>/><?php echo JText::_("JEV_PRESERVE_HTML_FORMATTING"); ?>
 	</label>
 	<br/>
 	<br/>

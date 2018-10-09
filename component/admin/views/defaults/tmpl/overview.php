@@ -1,10 +1,14 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php defined('_JEXEC') or die('Restricted access');
 
-<?php
-JHtml::_('behavior.core');
-JHtml::_('bootstrap.tooltip');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$pathIMG  = JURI::root() . '/administrator/images/';
+HTMLHelper::_('behavior.core');
+HTMLHelper::_('bootstrap.tooltip');
+
+$pathIMG  = Uri::root() . '/administrator/images/';
 $mainspan = 10;
 $fullspan = 12;
 
@@ -25,10 +29,10 @@ $fullspan = 12;
 				{ ?>
 										<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 											<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
-										<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
+										<?php echo HTMLHelper::_('select.options', HTMLHelper::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
 										</select>
 										<?php
-				} 
+				}
 				 */
 				?>
 				<?php if ($this->catids)
@@ -43,7 +47,7 @@ $fullspan = 12;
 				</select>
 				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 					<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-					<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array("trash" => 0, "archived" => 0, "all" => 0)), 'value', 'text', $this->filter_published, true); ?>
+					<?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array("trash" => 0, "archived" => 0, "all" => 0)), 'value', 'text', $this->filter_published, true); ?>
 				</select>
 			</div>
 		</fieldset>
@@ -54,7 +58,7 @@ $fullspan = 12;
 				<thead>
 				<tr>
 					<th width="20" nowrap="nowrap">
-						<?php echo JHtml::_('grid.checkall'); ?>
+						<?php echo HTMLHelper::_('grid.checkall'); ?>
 					</th>
 					<th width="5">
 						<?php echo JText::_('NUM'); ?>
@@ -91,15 +95,15 @@ $fullspan = 12;
 
 					if (strpos($row->name, "com_") === 0)
 					{
-						$lang  = JFactory::getLanguage();
+						$lang  = Factory::getLanguage();
 						$parts = explode(".", $row->name);
 						$lang->load($parts[0]);
 					}
-					$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=defaults.edit&id=' . $row->id);
+					$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=defaults.edit&id=' . $row->id);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td width="20">
-							<?php echo JHtml::_('grid.id', $i, $row->id); ?>
+							<?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
 						</td>
 						<td>
 							<?php echo $i + 1; ?>
@@ -121,11 +125,11 @@ $fullspan = 12;
 							<td class="center">
 								<?php echo $this->translationLinks($row);
 								/*
-								if ($row->language == '*'): 
+								if ($row->language == '*'):
 									 echo JText::alt('JALL', 'language');
 								else:
-									echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED'); 
-								endif; 
+									echo $row->language_title ? $this->escape($row->language_title) : JText::_('JUNDEFINED');
+								endif;
 								 */
 								?>
 							</td>
@@ -143,7 +147,7 @@ $fullspan = 12;
 
 						<td align="center">
 							<?php
-							$img = $row->state ? JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true) : JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = $row->state ? HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true) : HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 							?>
 							<a href="javascript: void(0);"
 							   onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'defaults.unpublish' : 'defaults.publish'; ?>')"><?php echo $img; ?></a>
@@ -160,6 +164,6 @@ $fullspan = 12;
 		<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 		<input type="hidden" name="task" value="defaults.list"/>
 		<input type="hidden" name="boxchecked" value="0"/>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>

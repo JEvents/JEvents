@@ -2,6 +2,10 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 if (isset($moddata))
 {
 	if (is_array($moddata))
@@ -10,13 +14,12 @@ if (isset($moddata))
 		$mode  = 0;
 		foreach ($moddata as $md)
 		{
-			JPluginHelper::importPlugin('content');
-			$dispatcher = JEventDispatcher::getInstance();
+			PluginHelper::importPlugin('content');
 
 			$eventdata       = new stdClass();
 			$eventdata->text = $md;
-			$params          = new JRegistry(null);
-			$results         = $dispatcher->trigger('onContentPrepare', array('com_jevents', & $eventdata, & $params, 0));
+			$params          = new JevRegistry(null);
+			$results         = Factory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', & $eventdata, & $params, 0));
 			$md              = $eventdata->text;
 
 			echo "<div class='jevmodrowcount$count jevmodrow$mode' >" . $md . "</div>";

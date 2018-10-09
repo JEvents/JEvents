@@ -9,6 +9,7 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
 
 class PlgInstallerJeventsinstaller extends JPlugin
 {
@@ -23,9 +24,6 @@ class PlgInstallerJeventsinstaller extends JPlugin
 		$pos = strpos($url, "www.jevents.net/updates/download");
 		if ($pos > 0)
 		{
-			// echo "Matched JEvents sourced update<br/>";
-			//  echo $url."<br/>";
-			// split into parts
 			$downloadroot = "https://www.jevents.net/updates/download/";
 			$updatesroot  = "https://www.jevents.net/updates/";
 
@@ -36,7 +34,7 @@ class PlgInstallerJeventsinstaller extends JPlugin
 				list($codepart, $filepart) = $parts;
 				$filename = substr($filepart, 0, strpos($filepart, "-update-"));
 				//echo $filename."<Br/>";
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT * FROM #__update_sites WHERE location LIKE " . $db->quote("%" . $filename . "-update-%"));
 				$updatesite = $db->loadObject();
 				if ($updatesite)

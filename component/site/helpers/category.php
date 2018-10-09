@@ -14,8 +14,10 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.categories');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Categories\CategoryNode;
 
-class JEventsCategories extends JCategories
+class JEventsCategories extends Joomla\CMS\Categories\Categories
 {
 	public function __construct($options = array())
 	{
@@ -39,7 +41,7 @@ class JEventsCategories extends JCategories
 	protected function _load($id)
 	{
 
-		$registry = JRegistry::getInstance("jevents");
+		$registry = JevRegistry::getInstance("jevents");
 		// need both paths for Joomla 2.5 and 3.0
 		$puser = $registry->get("jevents.icaluser", $registry->get("icaluser", false));
 
@@ -51,8 +53,8 @@ class JEventsCategories extends JCategories
 			return parent::_load($id);
 		}
 
-		$db  = JFactory::getDbo();
-		$app = JFactory::getApplication();
+		$db  = Factory::getDbo();
+		$app = Factory::getApplication();
 
 		// overload permissions for iCal Export
 		$user = $puser;
@@ -94,9 +96,9 @@ class JEventsCategories extends JCategories
 		{
 			// Get the selected category
 			$query->where('s.id=' . (int) $id);
-			if ($app->isSite() && $app->getLanguageFilter())
+			if ($app->isClient('site') && $app->getLanguageFilter())
 			{
-				$query->leftJoin('#__categories AS s ON (s.lft < c.lft AND s.rgt > c.rgt AND c.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')) OR (s.lft >= c.lft AND s.rgt <= c.rgt)');
+				$query->leftJoin('#__categories AS s ON (s.lft < c.lft AND s.rgt > c.rgt AND c.language in (' . $db->Quote(Factory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')) OR (s.lft >= c.lft AND s.rgt <= c.rgt)');
 			}
 			else
 			{
@@ -105,9 +107,9 @@ class JEventsCategories extends JCategories
 		}
 		else
 		{
-			if ($app->isSite() && $app->getLanguageFilter())
+			if ($app->isClient('site') && $app->getLanguageFilter())
 			{
-				$query->where('c.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+				$query->where('c.language in (' . $db->Quote(Factory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
 			}
 		}
 
@@ -166,7 +168,7 @@ class JEventsCategories extends JCategories
 				if (!isset($this->_nodes[$result->id]))
 				{
 					// Create the JCategoryNode and add to _nodes
-					$this->_nodes[$result->id] = new JCategoryNode($result, $this);
+					$this->_nodes[$result->id] = new CategoryNode($result, $this);
 
 					// If this is not root and if the current node's parent is in the list or the current node parent is 0
 					if ($result->id != 'root' && (isset($this->_nodes[$result->parent_id]) || $result->parent_id == 1))
@@ -192,7 +194,7 @@ class JEventsCategories extends JCategories
 				elseif ($result->id == $id || $childrenLoaded)
 				{
 					// Create the JCategoryNode
-					$this->_nodes[$result->id] = new JCategoryNode($result, $this);
+					$this->_nodes[$result->id] = new CategoryNode($result, $this);
 
 					if ($result->id != 'root' && (isset($this->_nodes[$result->parent_id]) || $result->parent_id))
 					{

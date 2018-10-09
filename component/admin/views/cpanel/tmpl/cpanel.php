@@ -10,7 +10,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
+$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $version = JEventsVersion::getInstance();
 
 JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
@@ -26,7 +29,7 @@ if (!empty($this->sidebar))
 		//Version Checking etc
 		?>
 		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', JString::substr($version->getShortVersion(), 1)); ?>
+			<?php echo JText::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
 		</div>
 	</div>
 	<?php
@@ -83,37 +86,37 @@ $fullspan = 12;
 				}
 				// Links to addons
 				// Managed Locations
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' ");
 				$is_enabled = $db->loadResult();
 				if ($is_enabled)
 				{
 					$link = "index.php?option=com_jevlocations";
-					JFactory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/LocationsCool.png", "cpanel/LocationsHot.png", JText::_('COM_JEVLOCATIONS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Managed People
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' ");
 				$is_enabled = $db->loadResult();
 				if ($is_enabled)
 				{
 					$link = "index.php?option=com_jevpeople";
-					JFactory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/PeopleCool.png", "cpanel/PeopleHot.png", JText::_('COM_JEVPEOPLE'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// RSVP Pro
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' ");
 				$is_enabled = $db->loadResult();
 				if ($is_enabled)
 				{
 					$link = "index.php?option=com_rsvppro";
-					JFactory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+					Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
 					$this->_quickiconButtonWHover($link, "cpanel/RSVPCool.png", "cpanel/RSVPHot.png", JText::_('COM_RSVPPRO'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 				}
 				// Custom Fields				
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
 				$extension = $db->loadObject();
 				// Stop if user is not authorised to manage JEvents
@@ -123,7 +126,7 @@ $fullspan = 12;
 					if (version_compare($manifestCache->version, "3.5.0RC", "ge"))
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
-						JFactory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+						Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
 						$this->_quickiconButtonWHover($link, "cpanel/CustomFieldsCool.png", "cpanel/CustomFieldsHot.png", JText::_('JEV_CUSTOM_FIELDS'), "/administrator/components/" . JEV_COM_COMPONENT . "/assets/images/");
 					}
 				}
@@ -133,7 +136,7 @@ $fullspan = 12;
 			</div>
 		</div>
 		<?php
-		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && JFactory::getLanguage()->getTag() != "en-GB")
+		if (JText::_("JEV_TRANSLATION_CREDITS") != "JEV_TRANSLATION_CREDITS" && Factory::getLanguage()->getTag() != "en-GB")
 		{
 			?>
 			<div class="span12 center">

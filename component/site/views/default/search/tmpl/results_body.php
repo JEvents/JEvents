@@ -1,7 +1,13 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
+$app        = Factory::getApplication();
+$input      = $app->input;
+$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $useRegX    = intval($params->get("regexsearch", 0));
 $this->data = $data = $this->datamodel->getKeywordData($this->keyword, $this->limit, $this->limitstart, $useRegX);
 
@@ -75,21 +81,21 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS') . 
 <table cellpadding="0" cellspacing="0" class="w100 b0">
 	<tr>
 		<td align="center" class="w100">
-			<form action="<?php echo JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=search.results&Itemid=" . $this->Itemid); ?>"
+			<form action="<?php echo Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=search.results&Itemid=" . $this->Itemid); ?>"
 			      method="post" class="fs1px">
 				<input type="text" name="keyword" size="30" maxlength="50" class="inputbox"
 				       value="<?php echo $this->keyword; ?>"/>
 				<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>"/>
 				<input type="hidden" name="task" value="search.results"/>
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
-				<input type="hidden" name="pop" value="<?php echo JRequest::getInt("pop", 0); ?>"/>
-				<?php if (JRequest::getString("tmpl", "") == "component")
+				<input type="hidden" name="pop" value="<?php echo $input->getInt("pop", 0); ?>"/>
+				<?php if ($input->getCmd("tmpl", "") == "component")
 				{
 					echo '<input type="hidden" name="tmpl" value="component" />';
 				} ?>
 				<label for="showpast"><?php echo JText::_("JEV_SHOW_PAST"); ?></label>
 				<input type="checkbox" id="showpast" name="showpast"
-				       value="1" <?php echo JRequest::getInt('showpast', 0) ? 'checked="checked"' : '' ?> />
+				       value="1" <?php echo $input->getInt('showpast', 0) ? 'checked="checked"' : '' ?> />
 				<input class="button" type="submit" name="push" value="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"/>
 				<br/>
 				<br/>

@@ -11,6 +11,11 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * @package        Joomla.Administrator
  * @subpackage     com_config
@@ -32,12 +37,12 @@ class AdminparamsModelComponent extends JModelForm
 		if ($path = $this->getState('component.path'))
 		{
 			// Add the search path for the admin component config.xml file.
-			JForm::addFormPath($path);
+			Form::addFormPath($path);
 		}
 		else
 		{
 			// Add the search path for the admin component config.xml file.
-			JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . $this->getState('component.option'));
+			Form::addFormPath(JPATH_ADMINISTRATOR . '/components/' . $this->getState('component.option'));
 		}
 
 		// Get the form.
@@ -70,13 +75,13 @@ class AdminparamsModelComponent extends JModelForm
 		$option = $this->getState('component.option');
 
 		// Load common and local language files.
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load($option, JPATH_BASE, null, false, false)
 		|| $lang->load($option, JPATH_BASE . "/components/$option", null, false, false)
 		|| $lang->load($option, JPATH_BASE, $lang->getDefault(), false, false)
 		|| $lang->load($option, JPATH_BASE . "/components/$option", $lang->getDefault(), false, false);
 
-		$result = JComponentHelper::getComponent($option);
+		$result = ComponentHelper::getComponent($option);
 
 		return $result;
 	}
@@ -92,17 +97,17 @@ class AdminparamsModelComponent extends JModelForm
 	public function save($data)
 	{
 
-		$table = JTable::getInstance('extension');
+		$table = Table::getInstance('extension');
 
 		// Save the rules.
 		if (isset($data['params']) && isset($data['params']['rules']))
 		{
 			$rules = new JAccessRules($data['params']['rules']);
-			$asset = JTable::getInstance('asset');
+			$asset = Table::getInstance('asset');
 
 			if (!$asset->loadByName($data['option']))
 			{
-				$root = JTable::getInstance('asset');
+				$root = Table::getInstance('asset');
 				$root->loadByName('root.1');
 				$asset->name  = $data['option'];
 				$asset->title = $data['option'];
@@ -174,12 +179,12 @@ class AdminparamsModelComponent extends JModelForm
 	{
 
 		// Set the component (option) we are dealing with.
-		$jinput    = JFactory::getApplication()->input;
-		$component = $jinput->getCmd('option');
+		$input    = Factory::getApplication()->input;
+		$component = $input->getCmd('option');
 		$this->setState('component.option', $component);
 
 		// Set an alternative path for the configuration file.
-		if ($path = $jinput->getString('path'))
+		if ($path = $input->getString('path'))
 		{
 			$path = JPath::clean(JPATH_SITE . '/' . $path);
 			JPath::check($path);

@@ -12,7 +12,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class iCalEventDetail extends JTable
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
+class iCalEventDetail extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */
@@ -78,7 +82,7 @@ class iCalEventDetail extends JTable
 	public static function iCalEventDetailFromData($ice)
 	{
 
-		$db          = JFactory::getDbo();
+		$db          = Factory::getDbo();
 		$temp        = new iCalEventDetail($db);
 		$temp->_data = $ice;
 		$temp->convertData();
@@ -107,7 +111,7 @@ class iCalEventDetail extends JTable
 		$this->processField("description", "");
 		if (strpos($this->description, "##migration##") === 0)
 		{
-			$this->description = JString::substr($this->description, JString::strlen("##migration##"));
+			$this->description = StringHelper::substr($this->description, StringHelper::strlen("##migration##"));
 			$this->description = base64_decode($this->description);
 		}
 		else
@@ -142,7 +146,7 @@ class iCalEventDetail extends JTable
 		// The description and summary may need escaping !!!
 		// But this will be done by the SQL update function as part of the store so don't do it twice
 		/*
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$this->description = $db->escape($this->description);
 		$this->summary = $db->escape($this->summary);
 		*/
@@ -169,14 +173,14 @@ class iCalEventDetail extends JTable
 			$icimport        = new iCalImport();
 			$this->dtend     = $icimport->unixTime($this->dtstartraw);
 			// an all day event
-			if ($this->dtend == $this->dtstart && JString::strlen($this->dtstartraw) == 8)
+			if ($this->dtend == $this->dtstart && StringHelper::strlen($this->dtstartraw) == 8)
 			{
 				// convert to JEvents all day event mode!
 				//$this->allday = 1;
 				$this->dtend += 86399;
 			}
 		}
-		if ($this->dtend < $this->dtstart && JString::strlen($this->dtstartraw) == 8)
+		if ($this->dtend < $this->dtstart && StringHelper::strlen($this->dtstartraw) == 8)
 		{
 			// convert to JEvents all day event mode!
 			$this->noendtime = 1;
@@ -228,7 +232,7 @@ class iCalEventDetail extends JTable
 		{
 			if (strpos($key, "custom_") === 0)
 			{
-				$field                       = JString::substr($key, 7);
+				$field                       = StringHelper::substr($key, 7);
 				$this->_customFields[$field] = $value;
 			}
 		}
@@ -244,7 +248,7 @@ class iCalEventDetail extends JTable
 	public static function iCalEventDetailFromDB($icalrowAsArray)
 	{
 
-		$db          = JFactory::getDbo();
+		$db          = Factory::getDbo();
 		$temp        = new iCalEventDetail($db);
 		$temp->_data = $icalrowAsArray;
 		$temp->convertData();
@@ -263,17 +267,16 @@ class iCalEventDetail extends JTable
 		$date           = JevDate::getDate();
 		$this->modified = $date->toMySQL();
 
-		if (parent::store($updateNulls))
-		{
+		try {
+			parent::store($updateNulls);
+			// just in case we don't have jevents plugins registered yet
+			PluginHelper::importPlugin("jevents");
 			// I also need to store custom data
-			$dispatcher = JEventDispatcher::getInstance();
-			// just incase we don't have jevents plugins registered yet
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onStoreCustomDetails', array(&$this));
-		}
-		else
-		{
-			JError::raiseError(321, "Problem saving event " . $this->_db->getErrorMsg());
+			$res = Factory::getApplication()->triggerEvent('onStoreCustomDetails', array(&$this));
+
+		} catch (Exception $e) {
+			JError::raiseError(321, "Problem saving event " . $e);
+
 		}
 
 		return $this->evdet_id;

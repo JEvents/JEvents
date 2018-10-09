@@ -12,6 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component
  *
@@ -23,7 +27,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('ICALS'));
 
 		// Set toolbar items for the page
@@ -38,10 +42,10 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
 			$this->sidebar = JHtmlSidebar::render();
@@ -53,7 +57,7 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('EDIT_ICS'));
 
 		// Set toolbar items for the page
@@ -68,15 +72,15 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JToolbarHelper::cancel('icals.list');
 		//JToolbarHelper::help( 'screen.icals.edit', true);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		//$section = $params->get("section",0);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		if ($params->get("authorisedonly", 0))
 		{
 			// get authorised users
 			$sql = "SELECT u.* FROM #__jev_users as jev LEFT JOIN #__users as u on u.id=jev.user_id where jev.published=1 and jev.cancreate=1";
-			$db  = JFactory::getDbo();
+			$db  = Factory::getDbo();
 			$db->setQuery($sql);
 			$users = $db->loadObjectList();
 		}
@@ -114,9 +118,9 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		$userOptions = array();
 		foreach ($users as $user)
 		{
-			$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ($user->username)");
+			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
-		$jevuser = JFactory::getUser();
+		$jevuser = Factory::getUser();
 		if ($this->editItem && isset($this->editItem->ics_id) && $this->editItem->ics_id > 0 && $this->editItem->created_by > 0)
 		{
 			$created_by = $this->editItem->created_by;
@@ -127,16 +131,16 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		}
 		if (count($userOptions) > 0)
 		{
-			$userlist = JHTML::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1" ', 'value', 'text', $created_by);
+			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" size="1" ', 'value', 'text', $created_by);
 		}
 		else
 		{
 			$userList = "";
 		}
-		$this->assignRef("users", $userlist);
+		$this->users = $userlist;
 
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{

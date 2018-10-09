@@ -12,6 +12,10 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+
 class jevFilterProcessing
 {
 	static public $visiblefilters;
@@ -66,7 +70,7 @@ class jevFilterProcessing
 				if ($module->module == "mod_jevents_filter" || (!is_array($module->params) && strpos($module->params, "jevfilters")))
 				{
 
-					$modparams = new JRegistry($module->params);
+					$modparams = new JevRegistry($module->params);
 					if ($module->module == "mod_jevents_filter")
 					{
 						$filters = $modparams->get("filters", "");
@@ -89,7 +93,7 @@ class jevFilterProcessing
 
 			// Make sure the visible filters are preloaded before they appear in the modules - I need to know their filtertype values!!
 			self::$indexedvisiblefilters = array();
-			$registry                    = JRegistry::getInstance("jevents");
+			$registry                    = JevRegistry::getInstance("jevents");
 			$registry->set("indexedvisiblefilters", false);
 
 			foreach (self::$visiblefilters as $filtername)
@@ -124,7 +128,7 @@ class jevFilterProcessing
 
 			}
 
-			$registry = JRegistry::getInstance("jevents");
+			$registry = JevRegistry::getInstance("jevents");
 			$registry->set("indexedvisiblefilters", self::$indexedvisiblefilters);
 		}
 
@@ -190,7 +194,7 @@ class jevFilterProcessing
 		if ($uid == "")
 		{
 			// find what is running - used by the filters
-			$registry      = JRegistry::getInstance("jevents");
+			$registry      = JevRegistry::getInstance("jevents");
 			$activeprocess = $registry->get("jevents.activeprocess", "");
 			$moduleid      = $registry->get("jevents.moduleid", "");
 			$moduleparams  = $registry->get("jevents.moduleparams", false);
@@ -350,7 +354,7 @@ class jevFilter
 	{
 
 
-		$registry              = JRegistry::getInstance("jevents");
+		$registry              = JevRegistry::getInstance("jevents");
 		$indexedvisiblefilters = $registry->get("indexedvisiblefilters", array());
 		if (!is_array($indexedvisiblefilters)) $indexedvisiblefilters = array();
 
@@ -361,66 +365,69 @@ class jevFilter
 
 		// If using caching should disable session filtering if not logged in
 		//$cfg	 = JEVConfig::getInstance();
-		//$joomlaconf = JFactory::getConfig();
+		//$joomlaconf = Factory::getConfig();
 		//$useCache = (int)$cfg->get('com_cache', 0) && $joomlaconf->get('caching', 1);
 
 		// New special code in jevents.php sets the session variables in the cache id calculation!
 		$useCache = false;
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		// Is the filter module setup to reset automatically
-		$module = JModuleHelper::getModule("mod_jevents_filter");
+		$module = ModuleHelper::getModule("mod_jevents_filter");
 		if ($module)
 		{
-			$modparams = new JRegistry($module->params);
-			$option    = JRequest::getCmd("option");
+			$modparams = new JevRegistry($module->params);
+			$option    = $input->getCmd("option");
 			if ($modparams->get("resetfilters") == "nonjevents" && $option != "com_jevents" && $option != "com_jevlocations" && $option != "com_jevpeople" && $option != "com_rsvppro" && $option != "com_jevtags")
 			{
-				JRequest::setVar('filter_reset', 1);
-				JFactory::getApplication()->setUserState('active_filter_menu ', JRequest::getInt("Itemid", 0));
+				$input->set('filter_reset', 1);
+				$app->setUserState('active_filter_menu ', $input->getInt("Itemid", 0));
 			}
 			// DO NOT RESET if posting a filter form!
-			else if ($modparams->get("resetfilters") == "newmenu" && JRequest::getCmd("jevents_filter_submit", false, "POST") !== false)
+			else if ($modparams->get("resetfilters") == "newmenu" && $input->post->getCmd("jevents_filter_submit", false) !== false)
 			{
-				// Must use JRequest::getInt("Itemid") since missing event finder resets active menu item!
-				if (JRequest::getInt("Itemid", 0) && JRequest::getInt("Itemid", 0) != JFactory::getApplication()->getUserState("jevents.filtermenuitem", 0))
+				// Must use input since missing event finder resets active menu item!
+				if ($input->getInt("Itemid", 0) && $input->getInt("Itemid", 0) != $app->getUserState("jevents.filtermenuitem", 0))
 				{
-					JRequest::setVar('filter_reset', 1);
-					JFactory::getApplication()->setUserState('active_filter_menu ', JRequest::getInt("Itemid", 0));
+					$input->set('filter_reset', 1);
+					$app->setUserState('active_filter_menu ', $input->getInt("Itemid", 0));
 				}
 			}
 		}
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// TODO chek this logic
-		if ((int) JRequest::getVar('filter_reset', 0))
+		if ((int) $input->getInt('filter_reset', 0))
 		{
 			$this->filter_value = $this->filterNullValue;
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
 				$this->filter_values[$v] = $this->filterNullValues[$v];
 			}
-			$this->filter_value = JFactory::getApplication()->setUserState($this->filterType . '_fv_ses', $this->filterNullValue);
+			$this->filter_value = $app->setUserState($this->filterType . '_fv_ses', $this->filterNullValue);
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
-				$this->filter_values[$v] = JFactory::getApplication()->setUserState($this->filterType . '_fvs_ses' . $v, $this->filterNullValues[$v]);
+				$this->filter_values[$v] = $app->setUserState($this->filterType . '_fvs_ses' . $v, $this->filterNullValues[$v]);
 			}
 		}
 		// if not logged in and using cache then do not use session data
 		// ALSO if this filter is not visible on the page then should not use filter value - does this supersede the previous condition ???
 		else if (($user->get('id') == 0 && $useCache) || !$this->visible)
 		{
-			$this->filter_value = JRequest::getVar($this->filterType . '_fv', $this->filterNullValue);
+			$this->filter_value = $input->getString($this->filterType . '_fv', $this->filterNullValue);
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
-				$this->filter_values[$v] = JRequest::getVar($this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
+				$this->filter_values[$v] = $input->getString($this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
 			}
 		}
 		else
 		{
-			$this->filter_value = JFactory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
+			$this->filter_value = $app->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
 			for ($v = 0; $v < $this->valueNum; $v++)
 			{
-				$this->filter_values[$v] = JFactory::getApplication()->getUserStateFromRequest($this->filterType . '_fvs_ses' . $v, $this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
+				$this->filter_values[$v] = $app->getUserStateFromRequest($this->filterType . '_fvs_ses' . $v, $this->filterType . '_fvs' . $v, $this->filterNullValues[$v]);
 			}
 		}
 		$menuFilterValue = JEVHelper::getMenuFilter($this->filterType . '_fv', "@something abstract@");
@@ -428,15 +435,7 @@ class jevFilter
 		{
 			$this->filter_value = $menuFilterValue;
 		}
-		/*
-}
-else {
-$this->filter_value = JRequest::getString($this->filterType.'_fv', $this->filterNullValue );
-for ($v=0;$v<$this->valueNum;$v++){
-$this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->filterNullValues[$v] );
-}
-}
-*/
+
 		$this->tableName      = $tablename;
 		$this->filterField    = $filterfield;
 		$this->filterIsString = $isString;
@@ -459,13 +458,16 @@ $this->filter_values[$v] = JRequest::getInt($this->filterType."_fvs".$v, $this->
 	function _getFilterValue($filterType, $filterNullValue)
 	{
 
-		if (JFactory::getApplication()->isAdmin())
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
+		if ($app->isClient('administrator'))
 		{
-			$filterValue = JFactory::getApplication()->getUserStateFromRequest($filterType . '_fv_ses', $filterType . '_fv', $filterNullValue);
+			$filterValue = $app->getUserStateFromRequest($filterType . '_fv_ses', $filterType . '_fv', $filterNullValue);
 		}
 		else
 		{
-			$filterValue = JRequest::getInt($filterType . '_fv', $filterNullValue);
+			$filterValue = $input->getInt($filterType . '_fv', $filterNullValue);
 		}
 
 		return $filterValue;
@@ -561,10 +563,10 @@ class jevBooleanFilter extends jevFilter
 		$filterList          = array();
 		$filterList["title"] = $this->filterLabel;
 		$options             = array();
-		$options[]           = JHTML::_('select.option', "-1", $this->bothLabel, "value", "yesno");
-		$options[]           = JHTML::_('select.option', "0", $this->noLabel, "value", "yesno");
-		$options[]           = JHTML::_('select.option', "1", $this->yesLabel, "value", "yesno");
-		$filterList["html"]  = JHTML::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
+		$options[]           = HTMLHelper::_('select.option', "-1", $this->bothLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
+		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
 
 		return $filterList;
 	}

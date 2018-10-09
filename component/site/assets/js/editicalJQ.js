@@ -78,12 +78,12 @@ Date.prototype.jeventsParseDate = function (from) {
         if ('m' in bits || bits.b || bits.B) date.setMonth(bits.m - 1);
 
         return date;
-    }
+    };
 
     var bits = re.exec(from);
     return (bits) ? (parsed = handler(bits)) : false;
 
-}
+};
 
 
 Date.prototype.getYMD = function () {
@@ -382,8 +382,6 @@ function checkDates(elem) {
     }
     catch (e) {
     }
-    ;
-
 }
 
 function reformatStartEndDates() {
@@ -493,7 +491,7 @@ function toggleAllDayEvent() {
     var spm = document.getElementById("startPM");
     var sam = document.getElementById("startAM");
     var epm = document.getElementById("endPM");
-    document.adminForm.noendtime.checked
+    document.adminForm.noendtime.checked;
     var eam = document.getElementById("endAM");
 
     if (document.adminForm.view12Hour.checked) {
@@ -599,8 +597,6 @@ function toggleAllDayEvent() {
     }
     catch (e) {
     }
-    ;
-
 }
 
 function toggleNoEndTime() {
@@ -666,8 +662,6 @@ function toggleNoEndTime() {
     }
     catch (e) {
     }
-    ;
-
 }
 
 function toggleGreyBackground(inputtype, inputelem, tomatch) {
@@ -733,7 +727,6 @@ function toggleWhichBy(wb) {
     }
     catch (e) {
     }
-    ;
 }
 
 function toggleFreq(freq, setup) {
@@ -1013,7 +1006,7 @@ jQuery.fn.formToJson = function () {
         else json[name] = value;
     });
     return json;
-}
+};
 
 function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid, redirect) {
     var requestObject = {};

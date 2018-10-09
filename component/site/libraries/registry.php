@@ -16,7 +16,7 @@ if (!defined("JEVREGISTRY"))
 {
 	define("JEVREGISTRY", 1);
 
-	class JevRegistry extends JRegistry
+	class JevRegistry extends \Joomla\Registry\Registry
 	{
 
 		static function &getInstance($id, $namespace = 'default')

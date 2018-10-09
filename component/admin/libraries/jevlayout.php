@@ -14,6 +14,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.base.adapterinstance');
 
 /**
@@ -117,7 +119,7 @@ class JInstallerJevlayout extends JAdapterInstance
 
 
 		// Load the language file
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("jevlayout", $basePath);
 
 		// We don't copy the manifest file since there is no uninstall mechanism

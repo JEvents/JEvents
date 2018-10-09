@@ -1,15 +1,18 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 function DefaultViewEventRowNew($view, $row, $args = "")
 {
 
 	$cfg     = JEVConfig::getInstance();
-	$jinput  = JFactory::getApplication()->input;
+	$input  = Factory::getApplication()->input;
 	$rowlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
-	$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
+	$rowlink = Route::_($rowlink . $view->datamodel->getCatidsOutLink());
 
-	// I choost not to use $row->fgcolor
+	// I choose not to use $row->fgcolor
 	$fgcolor  = "inherit";
 	$tmpTitle = $row->title();
 
@@ -20,7 +23,7 @@ function DefaultViewEventRowNew($view, $row, $args = "")
 	}
 	*/
 
-	$jevtask = $jinput->getString("jevtask");
+	$jevtask = $input->getString("jevtask");
 	$jevtask = str_replace(".listevents", "", $jevtask);
 
 	$showyeardate = $cfg->get("showyeardate", 0);

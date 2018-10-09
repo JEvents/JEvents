@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 class DefaultViewNavTableBar
 {
 
@@ -9,16 +13,16 @@ class DefaultViewNavTableBar
 	public function __construct($view, $today_date, $view_date, $dates, $alts, $option, $task, $Itemid)
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$cfg                  = JEVConfig::getInstance();
 		$this->view           = $view;
-		$this->transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
+		$this->transparentGif = Uri::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
 		$this->Itemid         = JEVHelper::getItemid();
 		$this->cat            = $this->view->datamodel->getCatidsOutLink();
 		$this->task           = $task;
 
-		if ($jinput->getInt('pop', 0))
+		if ($input->getInt('pop', 0))
 			return;
 
 		list($year, $month, $day) = JEVHelper::getYMD();
@@ -28,19 +32,19 @@ class DefaultViewNavTableBar
 			<table class="ev_navtable" align="center">
 				<tr align="center">
 					<td align="right" class="h1 vtop">
-						<a href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><?php echo JText::_('JEV_VIEWTODAY'); ?></a>
 					</td>
 					<td align="center" class="h1 vbotom">
-						<form name="ViewSelect" action="<?php echo JURI::root() . "index.php"; ?>" method="get">
+						<form name="ViewSelect" action="<?php echo Uri::root() . "index.php"; ?>" method="get">
 							<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>"/>
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 							<input type="hidden" name="year" value="<?php echo $year; ?>"/>
 							<input type="hidden" name="month" value="<?php echo $month; ?>"/>
 							<input type="hidden" name="day" value="<?php echo $day; ?>"/>
 							<?php
-							$jinput = JFactory::getApplication()->input;
-							$v      = $jinput->get('task', 'none');
+							$input = Factory::getApplication()->input;
+							$v      = $input->get('task', 'none');
 							?>
 							<select name="task" id="task" onchange="submit(this.form);">
 								<?php if (in_array("byday", $iconstoshow))
@@ -95,7 +99,7 @@ class DefaultViewNavTableBar
 						</form>
 					</td>
 					<td align="left" class="w100 vtop h1">
-						<a href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWTOCOME'); ?>">
 							<?php echo JText::_('JEV_VIEWTOCOME'); ?>
 						</a>
@@ -115,7 +119,7 @@ class DefaultViewNavTableBar
 					}
 					?>
 					<td align="center" class="vtop">
-						<form name="BarNav" action="<?php echo JURI::root() . "index.php"; ?>" method="get">
+						<form name="BarNav" action="<?php echo Uri::root() . "index.php"; ?>" method="get">
 							<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 							<input type="hidden" name="task" value="<?php echo $this->task; ?>"/>
 							<?php
@@ -162,11 +166,11 @@ class DefaultViewNavTableBar
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid . '&';
 
 		$gg = "<img border='0' src='"
-			. JURI::root()
+			. Uri::root()
 			. "components/" . JEV_COM_COMPONENT . "/views/default/assets/images/$icon" . "_"
 			. $cfg->get('com_navbarcolor') . ".gif' alt='" . $alts[$which] . "'/>";
 
-		$thelink = '<a href="' . JRoute::_($link . $dates[$which]->toDateURL()) . '" title="' . $alts[$which] . '">' . $gg . '</a>' . "\n";
+		$thelink = '<a href="' . Route::_($link . $dates[$which]->toDateURL()) . '" title="' . $alts[$which] . '">' . $gg . '</a>' . "\n";
 		if ($dates[$which]->getYear() >= JEVHelper::getMinYear() && $dates[$which]->getYear() <= JEVHelper::getMaxYear())
 		{
 			?>

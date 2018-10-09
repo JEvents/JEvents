@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 class JEVAccess
 {
 
@@ -21,10 +23,10 @@ class JEVAccess
 
 		// Editor usertype check
 		global $acl;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$this->access             = new stdClass();
-		$acl                      = JFactory::getACL();
+		$acl                      = Factory::getACL();
 		$this->access->canEdit    = $acl->acl_check('action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'all');
 		$this->access->canEditOwn = $acl->acl_check('action', 'edit', 'users', JEVHelper::getUserType($user), 'content', 'own');
 		$this->access->canPublish = $acl->acl_check('action', 'publish', 'users', JEVHelper::getUserType($user), 'content', 'all');

@@ -11,6 +11,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+
 class EventCalendarCell_default extends JEventsDefaultView
 {
 	public $datamodel = null;
@@ -49,7 +54,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 		$this->jevlayout = isset($view->jevlayout) ? $view->jevlayout : "default";
 
 		$this->addHelperPath(JEV_VIEWS . "/default/helpers");
-		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 
 		// attach data model
 		$reg             = JevRegistry::getInstance("jevents");
@@ -75,18 +80,19 @@ class EventCalendarCell_default extends JEventsDefaultView
 
 		// The title is printed as a link to the event's detail page
 		$link = $this->event->viewDetailLink($year, $month, $currentDay['d0'], false);
-		$link = JRoute::_($link . $this->_datamodel->getCatidsOutLink());
+		$link = Route::_($link . $this->_datamodel->getCatidsOutLink());
 
 		$title = $this->event->title();
+		$title_event_link = '';
 
 		// [mic] if title is too long, cut 'em for display
 		$tmpTitle = $title;
 		// set truncated title
 		if (!isset($this->event->truncatedtitle))
 		{
-			if (JString::strlen($title) >= $cfg->get('com_calCutTitle', 50))
+			if (StringHelper::strlen($title) >= $cfg->get('com_calCutTitle', 50))
 			{
-				$tmpTitle = JString::substr($title, 0, $cfg->get('com_calCutTitle', 50)) . ' ...';
+				$tmpTitle = StringHelper::substr($title, 0, $cfg->get('com_calCutTitle', 50)) . ' ...';
 			}
 			$tmpTitle                    = JEventsHTML::special($tmpTitle);
 			$this->event->truncatedtitle = $tmpTitle;
@@ -118,10 +124,10 @@ class EventCalendarCell_default extends JEventsDefaultView
 			{
 				if ($this->_view)
 				{
-					$this->_view->assignRef("link", $link);
-					$this->_view->assignRef("linkStyle", $linkStyle);
-					$this->_view->assignRef("tmp_start_time", $tmp_start_time);
-					$this->_view->assignRef("tmpTitle", $tmpTitle);
+					$this->_view->link              = $link;
+					$this->_view->linkStyle         = $linkStyle;
+					$this->_view->tmp_start_time    = $tmp_start_time;
+					$this->_view->tmpTitle          = $tmpTitle;
 				}
 				$title_event_link = $this->loadOverride("cellcontent");
 				// allow fallback to old method
@@ -135,7 +141,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 		}
 		else
 		{
-			$eventIMG = '<img align="left" class="b1sw" src="' . JURI::root()
+			$eventIMG = '<img align="left" class="b1sw" src="' . Uri::root()
 				. 'components/' . JEV_COM_COMPONENT . '/images/event.png" class="h12px w8px" alt=""' . ' />';
 
 			$title_event_link = '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
@@ -147,8 +153,8 @@ class EventCalendarCell_default extends JEventsDefaultView
 		// only try override if we have a view reference
 		if ($this->_view)
 		{
-			$this->_view->assignRef("ecc", $this);
-			$this->_view->assignRef("cellDate", $currentDay["cellDate"]);
+			$this->_view->ecc       = $this;
+			$this->_view->cellDate  = $currentDay["cellDate"];
 		}
 
 		if ($cfg->get("com_enableToolTip", 1))
@@ -167,8 +173,6 @@ class EventCalendarCell_default extends JEventsDefaultView
 			{
 
 				JevHtmlBootstrap::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
-				//$toolTipArray = array('className' => 'jevtip');
-				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method
@@ -180,7 +184,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 
 				if (strpos($tooltip, "templated") === 0)
 				{
-					$cellString = JString::substr($tooltip, 9);
+					$cellString = StringHelper::substr($tooltip, 9);
 					$dom        = new DOMDocument();
 					// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
 					$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
@@ -473,7 +477,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 		}
 
 		$link = $this->event->viewDetailLink($this->event->yup(), $this->event->mup(), $this->event->dup(), false);
-		$link = JRoute::_($link . $this->_datamodel->getCatidsOutLink());
+		$link = Route::_($link . $this->_datamodel->getCatidsOutLink());
 
 		$cellString .= '<hr   class="jev-click-to-open"/>'
 			. '<small class="jev-click-to-open"><a href="' . $link . '"   title="' . JText::_('JEV_CLICK_TO_OPEN_EVENT', true) . '" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>'
@@ -600,7 +604,7 @@ class EventCalendarCell_default extends JEventsDefaultView
 
 		//$cellString .= '<br />'.$this->event->content();
 		$link = $this->event->viewDetailLink($this->event->yup(), $this->event->mup(), $this->event->dup(), false);
-		$link = JRoute::_($link . $this->_datamodel->getCatidsOutLink());
+		$link = Route::_($link . $this->_datamodel->getCatidsOutLink());
 
 		$cellString .= '<hr   class="jev-click-to-open"/>'
 			. '<small   class="jev-click-to-open"><a href="' . $link . '" title="' . JText::_('JEV_CLICK_TO_OPEN_EVENT', true) . '" >' . JText::_('JEV_CLICK_TO_OPEN_EVENT') . '</a></small>';

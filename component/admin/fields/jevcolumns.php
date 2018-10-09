@@ -12,8 +12,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('text');
+FormHelper::loadFieldClass('text');
 
 class JFormFieldJevcolumns extends JFormFieldText
 {
@@ -26,22 +32,22 @@ class JFormFieldJevcolumns extends JFormFieldText
 	{
 
 		// Must also load frontend language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load(JEV_COM_COMPONENT, JPATH_SITE);
 
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 
 		// Mkae sure jQuery is loaded
-		JHtml::_('jquery.framework');
-		JHtml::_('jquery.ui', array("core", "sortable"));
-		JHtml::_('bootstrap.framework');
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('jquery.ui', array("core", "sortable"));
+		HTMLHelper::_('bootstrap.framework');
 		JEVHelper::script("components/com_jevents/assets/js/jQnc.js");
 		// this script should come after all the URL based scripts in Joomla so should be a safe place to know that noConflict has been set
-		JFactory::getDocument()->addScriptDeclaration("checkJQ();");
+		Factory::getDocument()->addScriptDeclaration("checkJQ();");
 
 		JEVHelper::script('administrator/components/com_jevents/assets/js/columns.js');
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$collist   = array();
 		$collist[] = array(JText::_("JEV_CORE_DATA", true), "disabled");
@@ -89,15 +95,15 @@ class JFormFieldJevcolumns extends JFormFieldText
 		$collist[] = array(JText::_("JEV_FIELD_ICALBUTTON", true), "ICALBUTTON");
 
 		// get list of enabled plugins
-		$jevplugins = JPluginHelper::getPlugin("jevents");
+		$jevplugins = PluginHelper::getPlugin("jevents");
 		foreach ($jevplugins as $jevplugin)
 		{
-			if (JPluginHelper::importPlugin("jevents", $jevplugin->name))
+			if (PluginHelper::importPlugin("jevents", $jevplugin->name))
 			{
 				$classname = "plgJevents" . ucfirst($jevplugin->name);
 				if (is_callable(array($classname, "fieldNameArray")))
 				{
-					$lang = JFactory::getLanguage();
+					$lang = Factory::getLanguage();
 					$lang->load("plg_jevents_" . $jevplugin->name, JPATH_ADMINISTRATOR);
 					$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), 'list');
 					if (!isset($fieldNameArray['labels'])) continue;
@@ -207,7 +213,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 	{
 
 		// Initialize variables.
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$options = array();
 
 		// Initialize some field attributes.
@@ -222,11 +228,11 @@ class JFormFieldJevcolumns extends JFormFieldText
 			// Filter over published state or not depending upon if it is present.
 			if ($published)
 			{
-				$options = JHtml::_('category.options', $extension, array('filter.published' => explode(',', $published)));
+				$options = HTMLHelper::_('category.options', $extension, array('filter.published' => explode(',', $published)));
 			}
 			else
 			{
-				$options = JHtml::_('category.options', $extension);
+				$options = HTMLHelper::_('category.options', $extension);
 			}
 
 			// Verify permissions.  If the action attribute is set, then we scan the options.
@@ -234,7 +240,7 @@ class JFormFieldJevcolumns extends JFormFieldText
 			{
 
 				// Get the current user object.
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 
 				// TODO: Add a preload method to JAccess so that we can get all the asset rules in one query and cache them.
 				// eg JAccess::preload('core.create', 'com_content.category')
@@ -250,11 +256,11 @@ class JFormFieldJevcolumns extends JFormFieldText
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
+			Factory::getApplication()->enqueueMessage('500 - ' . JText::_('JLIB_FORM_ERROR_FIELDS_CATEGORY_ERROR_EXTENSION_EMPTY'), 'warning');
 		}
 
 		// if no value exists, try to load a selected filter category from the old category filters
-		if (!$this->value && ($this->form instanceof JForm))
+		if (!$this->value && ($this->form instanceof Form))
 		{
 			$context     = $this->form->getName();
 			$this->value = array();

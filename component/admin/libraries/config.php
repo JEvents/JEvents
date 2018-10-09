@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * convenience wrapper for config - to ensure backwards compatability
  */
@@ -27,7 +29,7 @@ if (!defined("JEVCONFIG"))
 		static function &getInstance($inifile = '')
 		{
 
-			$params = JComponentHelper::getParams("com_jevents");
+			$params = ComponentHelper::getParams("com_jevents");
 
 			return $params;
 		}

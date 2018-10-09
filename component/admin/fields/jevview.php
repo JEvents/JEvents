@@ -13,10 +13,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJevview extends JFormFieldList
 {
@@ -26,10 +30,10 @@ class JFormFieldJevview extends JFormFieldList
 	public function getOptions()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$views = array();
@@ -45,19 +49,19 @@ class JFormFieldJevview extends JFormFieldList
 			{
 				continue;
 			}
-			$views[] = JHTML::_('select.option', $viewfile, $viewfile);
+			$views[] = HTMLHelper::_('select.option', $viewfile, $viewfile);
 		}
 		sort($views);
 		if ($this->menu != 'hide')
 		{
-			$task = $jinput->get('task');
+			$task = $input->get('task');
 			if ($task == "params.edit")
 			{
 				unset($views['global']);
 			}
 			else
 			{
-				array_unshift($views, JHTML::_('select.option', 'global', JText::_('USE_GLOBAL')));
+				array_unshift($views, HTMLHelper::_('select.option', 'global', JText::_('USE_GLOBAL')));
 			}
 		}
 

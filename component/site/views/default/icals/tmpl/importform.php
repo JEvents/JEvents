@@ -1,15 +1,19 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 $cfg = JEVConfig::getInstance();
 
 $view             = $this->getViewName();
 $this->dataModel  = new JEventsDataModel("JEventsAdminDBModel");
 $this->queryModel = new JEventsDBModel($this->dataModel);
 
-JFactory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
+Factory::getDocument()->addStyleDeclaration("#main {min-height:auto;}");
 
-$action = JFactory::getApplication()->isAdmin() ? "index.php" : JURI::root() . "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
+$action = Factory::getApplication()->isClient('administrator') ? "index.php" : Uri::root() . "index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid();
 
 ?>
 	<div id="jevents">
@@ -53,7 +57,7 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : JURI::root() . "
 				<?php if ($this->clistChoice) { ?>
 					<script type="text/javascript">
                         function preselectCategory(select) {
-                            var lookup = new Array();
+                            var lookup = [];
                             lookup[0] = 0;
 							<?php
 							foreach ($this->nativeCals as $nc)
@@ -93,7 +97,7 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : JURI::root() . "
 
 				<input type="hidden" name="task" value="icals.importdata"/>
 				<input type="hidden" name="option" value="com_jevents"/>
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo HTMLHelper::_('form.token'); ?>
 			</form>
 		</div>
 	</div>
@@ -102,16 +106,16 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : JURI::root() . "
 // Load Bootstrap
 JevHtmlBootstrap::framework();
 
-//JHtml::_('behavior.formvalidation');
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+//HTMLHelper::_('behavior.formvalidation');
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 if ($params->get("bootstrapchosen", 1))
 {
-	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 }
 if ($params->get("bootstrapcss", 1)==1)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
 }
 else if ($params->get("bootstrapcss", 1)==2)
 {

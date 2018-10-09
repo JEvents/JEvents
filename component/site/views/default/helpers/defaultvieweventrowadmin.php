@@ -1,13 +1,17 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultViewEventRowAdmin($view, $row, $manage = false)
 {
 
-	$jinput     = JFactory::getApplication()->input;
-	$pub_filter = $jinput->get('published_fv', 0);
+	$input     = Factory::getApplication()->input;
+	$pub_filter = $input->get('published_fv', 0);
 	$popup      = false;
-	$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("editpopup", 0) && JEVHelper::isEventCreator())
 	{
 		JevHtmlBootstrap::modal();
@@ -50,7 +54,7 @@ function DefaultViewEventRowAdmin($view, $row, $manage = false)
 	}
 
 	$eventlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
-	$eventlink = JRoute::_($eventlink . $view->datamodel->getCatidsOutLink());
+	$eventlink = Route::_($eventlink . $view->datamodel->getCatidsOutLink());
 	$border    = "border-color:" . $row->bgcolor() . ";";
 	?>
 

@@ -11,12 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, "3.2.0", "lt"))
-{
-	JLoader::register('JTableCategory', JPATH_PLATFORM . '/joomla/database/table/category.php');
-}
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
-class JEventsCategory extends JTableCategory
+class JEventsCategory extends Joomla\CMS\Table\Category
 {
 
 	var $_catextra = null;
@@ -29,12 +29,19 @@ class JEventsCategory extends JTableCategory
 	public static function categoriesTree()
 	{
 
-		$db    = JFactory::getDbo();
-		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '" . JEV_COM_COMPONENT . "' and published>=0";
+		$db    = Factory::getDbo();
+		$query = "SELECT *, parent_id as parent FROM #__categories  WHERE extension = '" . JEV_COM_COMPONENT . "' and published >= 0";
 		$query .= " ORDER BY parent, lft";
 		$db->setQuery($query);
-		$mitems = $db->loadObjectList();
-		echo $db->getErrorMsg();
+		$mitems = 0;
+
+		try
+		{
+			$mitems = $db->loadObjectList();
+		} catch (Exception $e) {
+			echo $e;
+		}
+
 		$children = array();
 		if ($mitems)
 		{
@@ -51,12 +58,12 @@ class JEventsCategory extends JTableCategory
 				$children[$pt] = $list;
 			}
 		}
-		$list   = JHTML::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
+		$list   = HTMLHelper::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
 		$mitems = array();
 		foreach ($list as $item)
 		{
 			$item->treename = str_replace("&#160;", "  ", $item->treename);
-			$mitems[]       = JHTML::_('select.option', $item->id, $item->treename);
+			$mitems[]       = HTMLHelper::_('select.option', $item->id, $item->treename);
 		}
 
 		return $mitems;
@@ -69,7 +76,7 @@ class JEventsCategory extends JTableCategory
 		$array['id'] = isset($array['id']) ? intval($array['id']) : 0;
 		parent::bind($array);
 
-		$params = new JRegistry($this->params);
+		$params = new JevRegistry($this->params);
 		if (!$params->get("catcolour", false))
 		{
 			$color = array_key_exists("color", $array) ? $array['color'] : "#000000";
@@ -109,7 +116,7 @@ class JEventsCategory extends JTableCategory
 	{
 
 		parent::load($oid);
-		$params         = new JRegistry($this->params);
+		$params         = new JevRegistry($this->params);
 		$this->color    = $params->get("catcolour", "#000000");
 		$this->overlaps = $params->get("overlaps", 0);
 		$this->admin    = $params->get("admin", 0);
@@ -122,15 +129,14 @@ class JEventsCategory extends JTableCategory
 		$success = parent::store();
 		if ($success)
 		{
-			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JEventDispatcher::getInstance();
-			$set        = $dispatcher->trigger('afterSaveCategory', array($this));
+			PluginHelper::importPlugin("jevents");
+			$set = Factory::getApplication()->triggerEvent('afterSaveCategory', array($this));
 			/*
-						$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
-						if (!$table->rebuild())
-						{
-							throw new Exception( $table->getError(), 500);
-						}
+				$table = JTable::getInstance('Category', 'JTable', array('dbo' => JFactory::getDbo()));
+				if (!$table->rebuild())
+				{
+					throw new Exception( $table->getError(), 500);
+				}
 			*/
 		}
 
@@ -161,7 +167,7 @@ class JEventsCategory extends JTableCategory
 		}
 		else
 		{
-			$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$adminuser = new  JUser($params->get("jevadmin", 62));
 
 			return $adminuser;

@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Utility class for jQuery JavaScript behaviors
  *
@@ -48,7 +51,7 @@ class JevHtmlJquery
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 
@@ -58,9 +61,9 @@ class JevHtmlJquery
 			// Only attempt to load the component if it's supported in core and hasn't already been loaded
 			if (in_array($component, $supported) && empty(static::$loaded[__METHOD__][$component]))
 			{
-				if (!JHtml::_('script', 'jui/jquery.ui.' . $component . '.min.js', false, true, false, false, $debug))
+				if (!HTMLHelper::_('script', 'jui/jquery.ui.' . $component . '.min.js', false, true, false, false, $debug))
 				{
-					JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.ui.' . $component . '.min.js', false, false, false, false, $debug);
+					HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.ui.' . $component . '.min.js', false, false, false, false, $debug);
 				}
 				static::$loaded[__METHOD__][$component] = true;
 			}
@@ -94,44 +97,44 @@ class JevHtmlJquery
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 
 		//We try to load Joomla's version first (will make it faster if caching)
 
-		if (!JHtml::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
+		if (!HTMLHelper::_('script', 'jui/jquery.min.js', false, true, true, false, $debug))
 		{
-			JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, false, false, false, $debug);
+			HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery.min.js', false, false, false, false, $debug);
 		}
 		else
 		{
-			JHtml::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
+			HTMLHelper::_('script', 'jui/jquery.min.js', false, true, false, false, $debug);
 		}
 
 		// Check if we are loading in noConflict
 		if ($noConflict)
 		{
-			if (!JHtml::_('script', 'jui/jquery-noconflict.js', false, true, true, false, false))
+			if (!HTMLHelper::_('script', 'jui/jquery-noconflict.js', false, true, true, false, false))
 			{
-				JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery-noconflict.js', false, false, false, false, false);
+				HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery-noconflict.js', false, false, false, false, false);
 			}
 			else
 			{
-				JHtml::_('script', 'jui/jquery-noconflict.js', false, true, false, false, false);
+				HTMLHelper::_('script', 'jui/jquery-noconflict.js', false, true, false, false, false);
 			}
 		}
 
 		// Check if we are loading Migrate
 		if ($migrate)
 		{
-			if (!JHtml::_('script', 'jui/jquery-migrate.min.js', false, true, true, false, $debug))
+			if (!HTMLHelper::_('script', 'jui/jquery-migrate.min.js', false, true, true, false, $debug))
 			{
-				JHtml::_('script', 'libraries/jevents/bootstrap/js/jquery-migrate.min.js', false, false, false, false, $debug);
+				HTMLHelper::_('script', 'libraries/jevents/bootstrap/js/jquery-migrate.min.js', false, false, false, false, $debug);
 			}
 			else
 			{
-				JHtml::_('script', 'jui/jquery-migrate.min.js', false, true, false, false, $debug);
+				HTMLHelper::_('script', 'jui/jquery-migrate.min.js', false, true, false, false, $debug);
 			}
 		}
 

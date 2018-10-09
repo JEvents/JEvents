@@ -9,6 +9,10 @@
  * @link        http://www.jevents.net
  */
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 // functions used by the modules
 
 defined('_JEXEC') or die('Restricted access');
@@ -19,19 +23,19 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 {
 
 	// Itemid, search for menuid with lowest access rights
-	$user   = JFactory::getUser();
-	$db     = JFactory::getDbo();
-	$jinput = JFactory::getApplication()->input;
+	$user   = Factory::getUser();
+	$db     = Factory::getDbo();
+	$input = Factory::getApplication()->input;
 
 	// Do we ignore category filters?
 	$ignorecatfilter = 0;
 	if (isset($modparams->ignorecatfilter) && $modparams->ignorecatfilter)
 	{
 		$ignorecatfilter = $modparams->ignorecatfilter;
-		$jinput->set("category_fv", 0);
+		$input->set("category_fv", 0);
 	}
 
-	$menu      = JFactory::getApplication()->getMenu();
+	$menu      = Factory::getApplication()->getMenu();
 	$menuitems = $menu->getItems("component", JEV_COM_COMPONENT);
 	// restrict this list to those accessible by the user
 	if (!is_null($menuitems))
@@ -124,7 +128,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 			if (!in_array($newcat, $modcatids))
 			{
 				$modcatids[] = $newcat;
-				$catidList   .= (JString::strlen($catidList) > 0 ? "," : "") . $newcat;
+				$catidList   .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $newcat;
 			}
 		}
 	}
@@ -138,7 +142,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 			if ($modparams->$nextCID > 0 && !in_array($modparams->$nextCID, $modcatids))
 			{
 				$modcatids[] = $modparams->$nextCID;
-				$catidList   .= (JString::strlen($catidList) > 0 ? "," : "") . $modparams->$nextCID;
+				$catidList   .= (StringHelper::strlen($catidList) > 0 ? "," : "") . $modparams->$nextCID;
 			}
 		}
 	}
@@ -149,16 +153,16 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 	}
 	$catidsOut = str_replace(",", "|", $catidList);
 
-	$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$separator = $params->get("catseparator", "|");
 	$catidsOut = str_replace("|", $separator, $catidsOut);
 
 	// Now check the catids from the URL
-	$catidsin = JRequest::getString("catids", "");
+	$catidsin = Factory::getApplication()->input->getString("catids", "");
 	// if ignoring catid filter then force to blank
 	if ($ignorecatfilter) $catidsin = "";
 
-	if (JString::strlen($catidsin) > 0)
+	if (StringHelper::strlen($catidsin) > 0)
 	{
 		$catidsin = explode($separator, $catidsin);
 		$catidsin = ArrayHelper::toInteger($catidsin);
@@ -216,7 +220,7 @@ function findAppropriateMenuID(&$catidsOut, &$modcatids, &$catidList, $modparams
 	$possibleset = array();
 	foreach ($menuitems as $testparms)
 	{
-		$test   = new JRegistry($testparms->params);
+		$test   = new JevRegistry($testparms->params);
 		$c      = 0;
 		$catids = array();
 		// New system

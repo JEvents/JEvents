@@ -2,6 +2,11 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
@@ -36,14 +41,14 @@ class JFormFieldJeveventcreator extends JFormField
 
 		// If user is jevents can deleteall or has backend access then allow them to specify the creator
 		$jevuser = JEVHelper::getAuthorisedUser();
-		$user    = JFactory::getUser();
+		$user    = Factory::getUser();
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
-			$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$authorisedonly = $params->get("authorisedonly", 0);
 			// if authorised only then load from database
 			if ($authorisedonly)
@@ -131,8 +136,8 @@ class JFormFieldJeveventcreator extends JFormField
 					</div>
 					<?php
 					JLoader::register('JevTypeahead', JPATH_LIBRARIES . "/jevents/jevtypeahead/jevtypeahead.php");
-					$datapath = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator", false);
-					//$prefetchdatapath = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator&prefetch=1", false);
+					$datapath = Route::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator", false);
+					//$prefetchdatapath = Route::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=findcreator&prefetch=1", false);
 					JevTypeahead::typeahead('#ta_creatorid', array('remote'         => $datapath,
 						//'prefetch'=>  $prefetchdatapath,
 						                                           'data_value'     => 'title',
@@ -148,16 +153,16 @@ class JFormFieldJeveventcreator extends JFormField
 				return "";
 			}
 
-			$userOptions[] = JHTML::_('select.option', '-1', JText::_('SELECT_USER'));
+			$userOptions[] = HTMLHelper::_('select.option', '-1', JText::_('SELECT_USER'));
 			foreach ($users as $user)
 			{
 				if ($user->id == 0)
 				{
 					continue;
 				}
-				$userOptions[] = JHTML::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
+				$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
 			}
-			$userlist = JHTML::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
+			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
 
 			return $userlist;
 		}

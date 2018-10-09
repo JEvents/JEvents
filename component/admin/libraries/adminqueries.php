@@ -11,7 +11,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 // load language constants
+
+use Joomla\CMS\Factory;
+
 JEVHelper::loadLanguage('admin');
 
 class JEventsAdminDBModel extends JEventsDBModel
@@ -28,16 +34,19 @@ class JEventsAdminDBModel extends JEventsDBModel
 	function getVEventById($agid)
 	{
 
-		$db   = JFactory::getDbo();
-		$user = JFactory::getUser();
-		// force state value to event state!
-		$accessibleCategories = $this->accessibleCategoryList();
+		$db   = Factory::getDbo();
+		$user = Factory::getUser();
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
+		// Force state value to event state!
+		$accessibleCategories = $this->accessibleCategoryList();
 
 		$catwhere   = "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")";
 		$extrajoin  = "";
 		$extrawhere = "";
-		$params     = JComponentHelper::getParams("com_jevents");
+		$params     = ComponentHelper::getParams("com_jevents");
 		if ($params->get("multicategory", 0))
 		{
 			$extrajoin  = "\n LEFT JOIN #__jevents_catmap as catmap ON catmap.evid = ev.ev_id";
@@ -68,9 +77,9 @@ class JEventsAdminDBModel extends JEventsDBModel
 		if (count($rows) > 0)
 		{
 
-			// check multi-category access
+			// Check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = ComponentHelper::getParams($input->getCmd("option"));
 			if ($params->get("multicategory", 0))
 			{
 				// get list of categories this event is in - are they all accessible?
@@ -84,10 +93,10 @@ class JEventsAdminDBModel extends JEventsDBModel
 					$inaccessiblecats[] = -1;
 					$inaccessiblecats   = implode(",", $inaccessiblecats);
 
-					$jevtask = JRequest::getString("jevtask");
+					$jevtask = $input->getString("jevtask");
 					$isedit  = false;
 					// not only for edit pages but for all backend changes we ignore the language filter on categories
-					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || JFactory::getApplication()->isAdmin() || !$user->get("isRoot"))
+					if (strpos($jevtask, "icalevent.edit") !== false || strpos($jevtask, "icalrepeat.edit") !== false || $app->isClient('administrator') || !$user->get("isRoot"))
 					{
 						$isedit = true;
 					}
@@ -107,10 +116,10 @@ class JEventsAdminDBModel extends JEventsDBModel
 					$realcatids = $db->loadColumn();
 					if (count($realcatids))
 					{
-						if ($isedit && !JFactory::getApplication()->isAdmin())
+						if ($isedit && $app->isClient('site'))
 						{
-							$Itemid = JRequest::getInt("Itemid");
-							JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
+							$Itemid = $input->getInt("Itemid");
+							$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$Itemid", false), JText::_("JEV_SORRY_CANT_EDIT_FROM_THAT_MENU_ITEM"));
 						}
 
 						return null;
@@ -132,9 +141,11 @@ class JEventsAdminDBModel extends JEventsDBModel
 	function getVEventRepeatById($rp_id)
 	{
 
-		$db                   = JFactory::getDbo();
-		$user                 = JFactory::getUser();
+		$db                   = Factory::getDbo();
+		$user                 = Factory::getUser();
 		$accessibleCategories = $this->accessibleCategoryList();
+		$app                  = Factory::getApplication();
+		$input                = $app->input;
 		$query                = "SELECT ev.*, rpt.*, rr.*, det.*"
 			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -157,7 +168,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 
 			// check multi-category access
 			// do not use jev_com_component incase we call this from locations etc.
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = ComponentHelper::getParams($input->getCmd("option"));
 			if ($params->get("multicategory", 0))
 			{
 				// get list of categories this event is in - are they all accessible?
@@ -190,8 +201,8 @@ class JEventsAdminDBModel extends JEventsDBModel
 	function getNativeIcalendars()
 	{
 
-		$db    = JFactory::getDbo();
-		$user  = JFactory::getUser();
+		$db    = Factory::getDbo();
+		$user  = Factory::getUser();
 		$query = "SELECT *"
 			. "\n FROM #__jevents_icsfile as ical"
 			. "\n WHERE ical.icaltype = '2'"
@@ -199,8 +210,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 			. "\n AND ical.access  " . ' IN (' . JEVHelper::getAid($user) . ')';
 		$query .= "\n ORDER BY isdefault desc, label asc";
 
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onSelectIcals', array(&$query));
+		Factory::getApplication()->triggerEvent('onSelectIcals', array(&$query));
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList("ics_id");
@@ -211,8 +221,8 @@ class JEventsAdminDBModel extends JEventsDBModel
 	function getIcalByIcsid($icsid)
 	{
 
-		$db    = JFactory::getDbo();
-		$user  = JFactory::getUser();
+		$db    = Factory::getDbo();
+		$user  = Factory::getUser();
 		$query = "SELECT *"
 			. "\n FROM #__jevents_icsfile as ical"
 			/*
@@ -238,7 +248,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 	function getModulesByName($module = 'mod_events_latest')
 	{
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = "select *"
 			. "\n from #__modules"
 			. "\n where module='" . $module . "'";

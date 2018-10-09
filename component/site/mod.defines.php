@@ -26,6 +26,7 @@ if (!defined("JEV_LIBS"))
 	define("JEV_ABSTRACTEMPLATES", JEV_VIEWS . "/abstract/tmpl/");
 	define("JEV_ADMINLIBS", JEV_ADMINPATH . "libraries/");
 }
+
 JLoader::register('JSite', JPATH_SITE . '/includes/application.php');
 JLoader::register('JevRegistry', JEV_PATH . "/libraries/registry.php");
 

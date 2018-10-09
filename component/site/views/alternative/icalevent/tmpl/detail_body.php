@@ -1,14 +1,18 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 $cfg    = JEVConfig::getInstance();
-$jinput = JFactory::getApplication()->input;
+$app    = Factory::getApplication();
+$input  = $app->input;
 
 if (0 == $this->evid)
 {
-	$Itemid = $jinput->getInt('Itemid', 0);
+	$Itemid = $input->getInt('Itemid', 0);
 
-	JFactory::getApplication()->redirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid", false));
+	$app->redirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$this->year&month=$this->month&day=$this->day&Itemid=$Itemid", false));
 
 	return;
 }
@@ -16,7 +20,7 @@ if (0 == $this->evid)
 if (is_null($this->data))
 {
 
-	JFactory::getApplication()->redirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), JText::_("JEV_SORRY_UPDATED"));
+	$app->redirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=$this->Itemid", false), JText::_("JEV_SORRY_UPDATED"));
 }
 
 if (array_key_exists('row', $this->data))
@@ -29,12 +33,11 @@ if (array_key_exists('row', $this->data))
 
 	$cfg = JEVConfig::getInstance();
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$params     = new JRegistry(null);
+	$params     = new JevRegistry(null);
 
 	if (isset($row))
 	{
-		$customresults = $dispatcher->trigger('onDisplayCustomFields', array(&$row));
+		$customresults = $app->triggerEvent('onDisplayCustomFields', array(&$row));
 
 		// Dynamic Page Title
 		$this->setPageTitle($row->title());
@@ -47,7 +50,7 @@ if (array_key_exists('row', $this->data))
 				<?php
 				foreach ($customresults as $result)
 				{
-					if (is_string($result) && JString::strlen($result) > 0)
+					if (is_string($result) && \Joomla\String\StringHelper::strlen($result) > 0)
 					{
 						echo "<div>" . $result . "</div>";
 					}
@@ -56,7 +59,7 @@ if (array_key_exists('row', $this->data))
 			</div>
 			<?php
 		}
-		$results = $dispatcher->trigger('onAfterDisplayContent', array(&$row, &$params, $page));
+		$results = $app->triggerEvent('onAfterDisplayContent', array(&$row, &$params, $page));
 		echo trim(implode("\n", $results));
 	}
 	else

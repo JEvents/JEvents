@@ -12,11 +12,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
-
-JLoader::import("jevuser", JPATH_COMPONENT_ADMINISTRATOR . "/tables/");
-
+use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
+jimport('joomla.application.component.model');
+JLoader::import("jevuser", JPATH_COMPONENT_ADMINISTRATOR . "/tables/");
 
 /**
  * @package        Joom!Fish
@@ -50,10 +51,10 @@ class AdminUserModelUser extends JModelLegacy
 	{
 
 		parent::__construct();
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$app    = JFactory::getApplication();
-		$option = $jinput->get('option', '');
+		$app    = Factory::getApplication();
+		$option = $input->get('option', '');
 		// Get the pagination request variables
 		$limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
@@ -88,7 +89,7 @@ class AdminUserModelUser extends JModelLegacy
 		if (empty($this->_pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+			$this->_pagination = new \Joomla\CMS\Pagination\Pagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
 		}
 
 		return $this->_pagination;
@@ -133,8 +134,9 @@ class AdminUserModelUser extends JModelLegacy
 	 */
 	function getUser()
 	{
+		$input  = Factory::getApplication()->input;
 
-		$cid = JRequest::getVar("cid", array(0));
+		$cid = $input->get("cid", array(), "array");
 		$cid = ArrayHelper::toInteger($cid);
 		if (count($cid) > 0)
 		{
@@ -167,9 +169,8 @@ class AdminUserModelUser extends JModelLegacy
 		$success = $user->save($data);
 		if ($success)
 		{
-			JPluginHelper::importPlugin("jevents");
-			$dispatcher = JEventDispatcher::getInstance();
-			$set        = $dispatcher->trigger('afterSaveUser', array($user));
+			PluginHelper::importPlugin("jevents");
+			$set        = Factory::getApplication()->triggerEvent('afterSaveUser', array($user));
 		}
 
 		return $success;

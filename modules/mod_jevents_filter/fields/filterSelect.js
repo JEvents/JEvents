@@ -18,7 +18,6 @@ function setupFilterChoices() {
                 uls.append(li);
                 setupFilterLis();
             }
-            ;
             setupCustomFilterField();
         });
     });
@@ -67,7 +66,6 @@ function setupFilterLis() {
                 sel.append(opt);
                 setupFilterChoices();
             }
-            ;
             setupCustomFilterField();
         });
     });

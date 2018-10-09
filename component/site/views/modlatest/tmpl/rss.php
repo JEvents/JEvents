@@ -12,8 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-// setup document
-$doc = JFactory::getDocument();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
+// Setup the document
+$doc = Factory::getDocument();
 
 $doc->setLink($this->info['link']);
 $doc->setBase($this->info['base']);
@@ -53,7 +56,7 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 		$targetid  = $this->modparams->get("target_itemid", 0);
 		$link      = $row->viewDetailLink(date("Y", $eventDate), date("m", $eventDate), date("d", $eventDate), false, $targetid);
 		$link      = str_replace("&tmpl=component", "", $link);
-		$item_link = JRoute::_($link . $this->jeventCalObject->datamodel->getCatidsOutLink());
+		$item_link = Route::_($link . $this->jeventCalObject->datamodel->getCatidsOutLink());
 
 		// removes all formating from the intro text for the description text
 		$item_description = $row->content();
@@ -114,6 +117,8 @@ foreach ($this->eventsByRelDay as $relDay => $ebrd)
 		// load individual item creator class
 		$item = new JFeedItem();
 		// item info
+
+		$temptime    = new JevDate($eventDate);
 		if ($row->alldayevent())
 		{
 			$temptime    = new JevDate($eventDate);

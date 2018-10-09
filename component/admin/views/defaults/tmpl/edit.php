@@ -9,6 +9,10 @@
  * @link        http://www.jevents.net
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.filesystem.file');
 
 if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
@@ -17,13 +21,13 @@ if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.ca
 }
 else
 {
-	$editor = JFactory::getConfig()->get('editor');
+	$editor = Factory::getConfig()->get('editor');
 	$editor = JEditor::getInstance($editor);
 }
 
 if (strpos($this->item->name, "com_") === 0)
 {
-	$lang  = JFactory::getLanguage();
+	$lang  = Factory::getLanguage();
 	$parts = explode(".", $this->item->name);
 	$lang->load($parts[0]);
 }
@@ -59,18 +63,6 @@ $this->replaceLabels($this->item->value);
 					<input type="hidden" name="language" value="<?php echo $this->item->language; ?>">
 					<input type="hidden" name="catid" value="<?php echo $this->item->catid; ?>">
 
-					<script type="text/javascript">
-                        <!--//
-                        Joomla.submitbutton = function (pressbutton) {
-                            var form = document.adminForm;
-							<?php
-							// in case editor is toggled off - needed for TinyMCE
-							echo $editor->save('value');
-							?>
-                            submitform(pressbutton);
-                        }
-                        //-->
-					</script>
 					<div class="adminform" align="left">
 						<div style="margin-bottom:20px;">
 							<table cellpadding="5" cellspacing="0" border="0">
@@ -104,10 +96,10 @@ $this->replaceLabels($this->item->value);
 									<td colspan="3">
 										<?php
 										$poptions   = array();
-										$poptions[] = JHTML::_('select.option', 0, JText::_("JUNPUBLISHED"));
-										$poptions[] = JHTML::_('select.option', 1, JText::_("JPUBLISHED"));
-										$poptions[] = JHTML::_('select.option', -1, JText::_("JTRASHED"));
-										echo JHTML::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->item->state);
+										$poptions[] = HTMLHelper::_('select.option', 0, JText::_("JUNPUBLISHED"));
+										$poptions[] = HTMLHelper::_('select.option', 1, JText::_("JPUBLISHED"));
+										$poptions[] = HTMLHelper::_('select.option', -1, JText::_("JTRASHED"));
+										echo HTMLHelper::_('select.genericlist', $poptions, 'state', 'class="inputbox" size="1"', 'value', 'text', $this->item->state);
 										?>
 									</td>
 								</tr>
@@ -142,7 +134,7 @@ $this->replaceLabels($this->item->value);
 						<h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_MODULES"); ?></h3>
 						<?php
 
-						$params  = new JRegistry($this->item->params);
+						$params  = new JevRegistry($this->item->params);
 						$modids  = $params->get("modid", array());
 						$modvals = $params->get("modval", array());
 						// not sure how this can arise :(
@@ -154,7 +146,7 @@ $this->replaceLabels($this->item->value);
 						$modvals = array_values($modvals);
 
 						$count     = 0;
-						$conf      = JFactory::getConfig();
+						$conf      = Factory::getConfig();
 						$modeditor = $editor;
 
 						foreach ($modids as $modid)

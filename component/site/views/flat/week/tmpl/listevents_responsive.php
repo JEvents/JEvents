@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-$cfg = JEVConfig::getInstance();
+use Joomla\CMS\Uri\Uri;
 
 $cfg    = JEVConfig::getInstance();
 $option = JEV_COM_COMPONENT;
@@ -9,7 +9,7 @@ $Itemid = JEVHelper::getItemid();
 
 $compname   = JEV_COM_COMPONENT;
 $viewname   = $this->getViewName();
-$viewpath   = JURI::root() . "components/$compname/views/" . $viewname . "/assets";
+$viewpath   = Uri::root() . "components/$compname/views/" . $viewname . "/assets";
 $viewimages = $viewpath . "/images";
 
 $view = $this->getViewName();

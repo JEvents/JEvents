@@ -13,10 +13,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('radio');
+FormHelper::loadFieldClass('radio');
 
 /**
  * JEVMenu Field class for the JEvents Component
@@ -45,12 +49,12 @@ class JFormFieldJEVBoolmsg extends JFormFieldRadio
 	{
 
 		// Must load admin language files
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 		$options   = array();
-		$options[] = JHTML::_('select.option', 0, JText::_("Jev_No"));
-		$options[] = JHTML::_('select.option', 1, JText::_("jev_Yes"));
+		$options[] = HTMLHelper::_('select.option', 0, JText::_("Jev_No"));
+		$options[] = HTMLHelper::_('select.option', 1, JText::_("jev_Yes"));
 
 		return $options;
 

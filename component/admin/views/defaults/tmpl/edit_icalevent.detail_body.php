@@ -10,7 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-$lang = JFactory::getLanguage();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
+$lang = Factory::getLanguage();
 $lang->load("mod_jevents_detail", JPATH_SITE);
 ?>
 <table cellpadding="0" cellspacing="0" border="0">
@@ -82,12 +86,12 @@ $lang->load("mod_jevents_detail", JPATH_SITE);
 
 	<?php
 	// get list of enabled plugins
-	$jevplugins = JPluginHelper::getPlugin("jevents");
+	$jevplugins = PluginHelper::getPlugin("jevents");
 	foreach ($jevplugins as $jevplugin){
-	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
+	if (PluginHelper::importPlugin("jevents", $jevplugin->name)){
 	$classname = "plgJevents" . ucfirst($jevplugin->name);
 	if (is_callable(array($classname, "fieldNameArray"))){
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$lang->load("plg_jevents_" . $jevplugin->name, JPATH_ADMINISTRATOR);
 	$fieldNameArray = call_user_func(array($classname, "fieldNameArray"));
 	if (!isset($fieldNameArray['labels'])) continue;

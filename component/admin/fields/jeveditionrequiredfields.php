@@ -12,6 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+
 jimport('joomla.form.formfield');
 
 class JFormFieldJeveditionrequiredfields extends JFormFieldList
@@ -29,12 +33,15 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 
 		parent::getOptions();
 
+		$input = '';
+		$options = array();
+
 		$availableFields = array();
 
-		$jevplugins = JPluginHelper::getPlugin("jevents");
+		$jevplugins = PluginHelper::getPlugin("jevents");
 		//we dinamically get the size of the select box
 		$size = 5;
-		//$options['CATEGORY'] =  JText::_("JEV_FIELD_CATEGORY",true);
+		//$options['CATEGORY'] = JText::_("JEV_FIELD_CATEGORY",true);
 		// title is always required
 		//$options['TITLE'] = JText::_("JEV_FIELD_TITLE",true);
 		$options['DESCRIPTION'] = JText::_("JEV_FIELD_DESCRIPTION", true);
@@ -57,7 +64,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 			$classname = "plgJevents" . ucfirst($jevplugin->name);
 			if (is_callable(array($classname, "fieldNameArray")))
 			{
-				$lang = JFactory::getLanguage();
+				$lang = Factory::getLanguage();
 				$lang->load("plg_jevents_" . $jevplugin->name, JPATH_ADMINISTRATOR);
 				$fieldNameArray = call_user_func(array($classname, "fieldNameArray"), "edit");
 				if (!isset($fieldNameArray['labels'])) continue;
@@ -70,7 +77,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 						if ($fieldNameArray['labels'][$i] == "" || $fieldNameArray['labels'][$i] == " Label") continue;
 						if ($fieldNameArray['values'][$i] == 'people_selfallocation') continue;
 						$options[$fieldNameArray['values'][$i]] = $fieldNameArray['labels'][$i];
-						$availableFields[$jevplugin->name][]    = JHtml::_('select.option', $fieldNameArray['values'][$i], $fieldNameArray['labels'][$i]);
+						$availableFields[$jevplugin->name][]    = HTMLHelper::_('select.option', $fieldNameArray['values'][$i], $fieldNameArray['labels'][$i]);
 					}
 					$group          = array();
 					$group['value'] = $fieldNameArray['group'];
@@ -87,7 +94,7 @@ class JFormFieldJeveditionrequiredfields extends JFormFieldList
 			$attr = array('list.attr'   => 'multiple="true"' . 'size="' . $size . '"',
 			              'list.select' => $this->value, 'id' => $this->id);
 
-			$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name, $attr);
+			$input = HTMLHelper::_('select.groupedlist', $optionsGroup, $this->name, $attr);
 		}
 
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");

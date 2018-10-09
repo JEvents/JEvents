@@ -11,6 +11,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -32,7 +36,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		// used only for helper functions
 		$this->jevlayout = "default";
 		$this->addHelperPath(realpath(dirname(__FILE__) . "/../default/helpers"));
-		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 		// stop crawler and set meta tag.
 		JEVHelper::checkRobotsMetaTag();
 
@@ -43,8 +47,11 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function edit($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
-		// Set editstrings var just incase and to avoid IDE reporting not set.
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
+		$document = Factory::getDocument();
+		// Set editstrings var just in case and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);
@@ -90,10 +97,10 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		else
 		{
 			$canEditOwn = false;
-			$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if (!$params->get("authorisedonly", 0))
 			{
-				$juser      = JFactory::getUser();
+				$juser      = Factory::getUser();
 				$canEditOwn = $juser->authorise('core.edit.own', 'com_jevents');
 			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
@@ -103,20 +110,20 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
 		}
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$evedrd = 'icalevent.edit_cancel';
 
 		//Set previous page
-		$session = JFactory::getSession();
-		$input   = new JInput($_SERVER);
+		$session = Factory::getSession();
+		$input   = new \Joomla\Input\Input($_SERVER);
 		$session->set('jev_referrer', $input->getString('HTTP_REFERER', null), 'extref');
 
 		if ($params->get("editpopup", 0))
 		{
 			$document->addStyleDeclaration("div#toolbar-box{margin:10px 10px 0px 10px;} div#jevents {margin:0px 10px 10px 10px;} ");
 			$this->toolbarButton("icalevent.close", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
-			JRequest::setVar('tmpl', 'component'); //force the component template
+			$input->set('tmpl', 'component'); //force the component template
 		}
 		else
 		{
@@ -131,12 +138,12 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		}
 
 		// I pass in the rp_id so that I can return to the repeat I was viewing before editing
-		$this->assign("rp_id", JRequest::getInt("rp_id", 0));
+		$this->rp_id = $input->getInt("rp_id", 0);
 
 		$this->_adminStart();
 
 		// load Joomla javascript classes
-		JHTML::_('behavior.core');
+		HTMLHelper::_('behavior.core');
 		$this->setLayout("edit");
 
 		JEVHelper::componentStylesheet($this, "editextra.css");
@@ -177,32 +184,30 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function _adminStart()
 	{
 
-		$dispatcher = JEventDispatcher::getInstance();
 		list($this->year, $this->month, $this->day) = JEVHelper::getYMD();
+		$app             = Factory::getApplication();
 		$this->Itemid    = JEVHelper::getItemid();
 		$this->datamodel = new JEventsDataModel();
-		$dispatcher->trigger('onJEventsHeader', array($this));
+		$app->triggerEvent('onJEventsHeader', array($this));
 		?>
 		<div style="clear:both"
 		<?php
-		$mainframe = JFactory::getApplication();
-		$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
+		$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		echo (!$app->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark'" : "class='jeventslight'";
 		?>>
 		<div id="toolbar-box">
 			<?php
 			$bar     = JToolBar::getInstance('toolbar');
 			$barhtml = $bar->render();
-			//$barhtml = str_replace('href="#"','href="javascript void();"',$barhtml);
-			//$barhtml = str_replace('submitbutton','return submitbutton',$barhtml);
 			echo $barhtml;
+
 			if (JevJoomlaVersion::isCompatible("3.0"))
 			{
-				$title = ""; // JFactory::getApplication()->JComponentTitle;
+				$title = "";
 			}
 			else
 			{
-				$title = JFactory::getApplication()->get('JComponentTitle');
+				$title = $app->get('JComponentTitle');
 			}
 			echo $title;
 			?>
@@ -216,8 +221,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		?>
 		</div>
 		<?php
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onJEventsFooter', array($this));
+
+		Factory::getApplication()->triggerEvent('onJEventsFooter', array($this));
 	}
 
 	function toolbarLinkButton($task = '', $icon = '', $iconOver = '', $alt = '')
@@ -236,7 +241,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

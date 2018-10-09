@@ -6,6 +6,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 /**
  * HTML View class for the component frontend
  *
@@ -62,17 +66,17 @@ class DefaultModCalView
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
-			$document = JFactory::getDocument();
+			$document = Factory::getDocument();
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		$this->_modid = $modid;
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$cfg                = JEVConfig::getInstance();
 		$jev_component_name = JEV_COM_COMPONENT;
-		$db                 = JFactory::getDbo();
+		$db                 = Factory::getDbo();
 
 		$this->datamodel = new JEventsDataModel();
 
@@ -81,18 +85,18 @@ class DefaultModCalView
 
 		$this->modparams = &$params;
 		$this->aid       = isset($user->aid) ? $user->aid : 0;
-		$tmplang         = JFactory::getLanguage();
+		$tmplang         = Factory::getLanguage();
 
 		// get params exclusive to module
 		$this->inc_ec_css       = $this->modparams->get('inc_ec_css', 1);
-		$this->minical_showlink = $this->modparams->get('minical_showlink', 1);;
-		$this->minical_prevyear = $this->modparams->get('minical_prevyear', 1);;
-		$this->minical_prevmonth = $this->modparams->get('minical_prevmonth', 1);;
-		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);;
-		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);;
-		$this->minical_actyear = $this->modparams->get('minical_actyear', 1);;
-		$this->minical_nextmonth = $this->modparams->get('minical_nextmonth', 1);;
-		$this->minical_nextyear = $this->modparams->get('minical_nextyear', 1);;
+		$this->minical_showlink = $this->modparams->get('minical_showlink', 1);
+		$this->minical_prevyear = $this->modparams->get('minical_prevyear', 1);
+		$this->minical_prevmonth = $this->modparams->get('minical_prevmonth', 1);
+		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);
+		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);
+		$this->minical_actyear = $this->modparams->get('minical_actyear', 1);
+		$this->minical_nextmonth = $this->modparams->get('minical_nextmonth', 1);
+		$this->minical_nextyear = $this->modparams->get('minical_nextyear', 1);
 
 		// get params exclusive to component
 		$this->com_starday = intval($jevents_config->get('com_starday', 0));
@@ -181,9 +185,9 @@ public function getCal($modid = 0)
 		{
 			$this->_modid = $modid;
 		}
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// this will get the viewname based on which classes have been implemented
 		$viewname = $this->getTheme();
@@ -248,9 +252,11 @@ public function getCal($modid = 0)
 	public function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent = false, $basedate = false)
 	{
 
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 		$cfg    = JEVConfig::getInstance();
 		$option = JEV_COM_COMPONENT;
+		$app      = Factory::getApplication();
+		$input    = $app->input;
 
 		if (!$basedate) $basedate = $time;
 		$base_year          = date("Y", $basedate);
@@ -272,12 +278,12 @@ public function getCal($modid = 0)
 			$base_next_month_year += 1;
 		}
 
-		$requestYear  = JRequest::getInt("year", 0);
-		$requestMonth = JRequest::getInt("month", 0);
+		$requestYear  = $input->getInt("year", 0);
+		$requestMonth = $input->getInt("month", 0);
 		// special case when site link set the dates for the mini-calendar in the URL but not in the ajax request
-		if ($requestMonth && $requestYear && JRequest::getString("task", "") != "modcal.ajax" && $this->modparams->get("minical_usedate", 0))
+		if ($requestMonth && $requestYear && $input->getString("task", "") != "modcal.ajax" && $this->modparams->get("minical_usedate", 0))
 		{
-			$requestDay = JRequest::getInt("day", 1);
+			$requestDay = $input->getInt("day", 1);
 
 			$requestTime = JevDate::mktime(0, 0, 0, $requestMonth, $requestDay, $requestYear);
 			if ($time - $basedate > 100000) $requestTime = JevDate::strtotime("+1 month", $requestTime);
@@ -298,7 +304,7 @@ public function getCal($modid = 0)
 			$cal_day   = date("d", $time);
 		}
 
-		$reg = JFactory::getConfig();
+		$reg = Factory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
 		if ($this->modparams->get("showtooltips", 0))
 		{
@@ -320,13 +326,14 @@ public function getCal($modid = 0)
 
 		$content = '';
 
+		$scriptlinks = '';
+
 		if ($this->minical_showlink)
 		{
 
 			$content .= "\n" . '<table style="width:' . $width . ';" cellpadding="0" cellspacing="0" align="center" class="mod_events_monthyear" >' . "\n"
 				. '<tr >' . "\n";
 
-			$scriptlinks = "";
 			if ($this->minical_showlink == 1)
 			{
 
@@ -337,7 +344,7 @@ public function getCal($modid = 0)
 
 				if ($this->minical_prevmonth)
 				{
-					$linkprevious = htmlentities(JURI::base() . "index.php?option=$option&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
+					$linkprevious = htmlentities(Uri::base() . "index.php?option=$option&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
 					$scriptlinks  .= "linkprevious = '" . $linkprevious . "';\n";
 					$content      .= $this->monthYearNavigation($basefirst_of_month, "-1 month", '&lt;', JText::_('JEV_CLICK_TOSWITCH_PM'));
 				}
@@ -345,7 +352,7 @@ public function getCal($modid = 0)
 				if ($this->minical_actmonth == 1)
 				{
 					// combination of actual month and year: view month
-					$seflinkActMonth = JRoute::_($this->linkpref . 'month.calendar&month=' . $cal_month . '&year=' . $cal_year);
+					$seflinkActMonth = Route::_($this->linkpref . 'month.calendar&month=' . $cal_month . '&year=' . $cal_year);
 
 					$content .= '<td align="center">';
 					$content .= $this->htmlLinkCloaking($seflinkActMonth, $month_name, array('class' => "mod_events_link", 'title' => JText::_('JEV_CLICK_TOSWITCH_MON'))) . " ";
@@ -361,7 +368,7 @@ public function getCal($modid = 0)
 				if ($this->minical_actyear == 1)
 				{
 					// combination of actual month and year: view year
-					$seflinkActYear = JRoute::_($this->linkpref . 'year.listevents' . '&month=' . $cal_month
+					$seflinkActYear = Route::_($this->linkpref . 'year.listevents' . '&month=' . $cal_month
 						. '&year=' . $cal_year);
 
 					if ($this->minical_actmonth < 1) $content .= '<td align="center">';
@@ -377,7 +384,7 @@ public function getCal($modid = 0)
 
 				if ($this->minical_nextmonth)
 				{
-					$linknext    = htmlentities(JURI::base() . "index.php?option=$$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
+					$linknext    = htmlentities(Uri::base() . "index.php?option=$$option&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
 					$scriptlinks .= "linknext = '" . $linknext . "';\n";
 					$content     .= $this->monthYearNavigation($basefirst_of_month, "+1 month", '&gt;', JText::_('JEV_CLICK_TOSWITCH_NM'));
 				}
@@ -388,7 +395,7 @@ public function getCal($modid = 0)
 				}
 
 				// combination of actual month and year: view year & month [ mic: not used here ]
-				// $seflinkActYM   = JRoute::_( $link . 'month.calendar' . '&month=' . $cal_month
+				// $seflinkActYM   = Route::_( $link . 'month.calendar' . '&month=' . $cal_month
 				// . '&year=' . $cal_year );
 			}
 			else
@@ -487,13 +494,13 @@ public function getCal($modid = 0)
 		$jev_component_name = JEV_COM_COMPONENT;
 		$adjDate            = JevDate::strtotime($adj, $cal_today);
 		list($year, $month) = explode(":", JevDate::strftime("%Y:%m", $adjDate));
-		$link = JRoute::_($this->linkpref . $action . "&day=1&month=$month&year=$year" . $this->cat);
+		$link = Route::_($this->linkpref . $action . "&day=1&month=$month&year=$year" . $this->cat);
 
 		$content = "";
 		if (isset($this->_modid) && $this->_modid > 0)
 		{
 			$this->_navigationJS($this->_modid);
-			$link    = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component" . $this->cat);
+			$link    = htmlentities(Uri::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$month&year=$year&modid=$this->_modid&tmpl=component" . $this->cat);
 			$content = '<td>';
 			$content .= '<div class="mod_events_link" onmousedown="callNavigation(\'' . $link . '\');" ontouchstart="callNavigation(\'' . $link . '\');">' . $symbol . "</div>\n";
 			$content .= '</td>';
@@ -530,7 +537,7 @@ public function getCal($modid = 0)
 	protected function htmlLinkCloaking($url = '', $text = '', $attribs = array())
 	{
 
-		$link = JRoute::_($url);
+		$link = Route::_($url);
 
 		if ($this->linkCloaking)
 		{
@@ -566,9 +573,9 @@ public function getAjaxCal($modid = 0, $month, $year)
 		{
 			$this->_modid = $modid;
 		}
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		static $isloaded_css = false;
 		// this will get the viewname based on which classes have been implemented

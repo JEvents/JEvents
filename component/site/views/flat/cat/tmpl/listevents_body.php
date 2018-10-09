@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 $cfg = JEVConfig::getInstance();
 
 $data       = $this->datamodel->getCatData($this->catids, $cfg->get('com_showrepeats', 0), $this->limit, $this->limitstart);
@@ -19,9 +21,9 @@ $Itemid = JEVHelper::getItemid();
 			?>
 		</div>
 		<?php
-		if (JString::strlen($data ['catdesc']) > 0)
+		if (\Joomla\String\StringHelper::strlen($data ['catdesc']) > 0)
 		{
-			echo "<div class='jev_catdesc'>" . JHtml::_('content.prepare', $data ['catdesc']) . "</div>";
+			echo "<div class='jev_catdesc'>" . HTMLHelper::_('content.prepare', $data ['catdesc']) . "</div>";
 		}
 		echo "</div>";
 		$num_events = count($data ['rows']);

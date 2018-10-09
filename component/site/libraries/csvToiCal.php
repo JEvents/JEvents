@@ -14,6 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 
 include_once("csvLine.php");
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 if (!function_exists('str_getcsv'))
 {
 
@@ -66,19 +69,19 @@ class CsvToiCal
 
 		if (!$this->detectHeadersValidity())
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
+			Factory::getApplication()->enqueueMessage(JText::_('JEV_NOT_A_VALID_CSV_UPLOADED'), 'warning');
 
 			return false;
 		}
 
 		if (!$this->convertFile())
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
+			Factory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CORRUPT_CANCELLED'), 'warning');
 
 			return false;
 		}
 
-		JFactory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
+		Factory::getApplication()->enqueueMessage(JText::_('JEV_IMPORT_CSV_CONVERTED'), 'notice');
 
 	}
 
@@ -90,7 +93,7 @@ class CsvToiCal
 
 		if ($this->data)
 		{
-			$line = JString::substr($this->data, 0, JString::strpos($this->data, "\n") + 1);
+			$line = StringHelper::substr($this->data, 0, StringHelper::strpos($this->data, "\n") + 1);
 		}
 		else
 		{
@@ -219,7 +222,7 @@ foreach ($this->data as $buffer){
 	private function createNewTmpICal()
 	{
 
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
 		$path   = $config->get('config.tmp_path') ? $config->get('config.tmp_path') : $config->get('tmp_path');
 		echo "create temp CSV conversion file in " . $path . "<br/>";
 		$this->tmpFileName = tempnam($path, "phpJE");
@@ -324,7 +327,7 @@ foreach ($this->data as $buffer){
 	public function getConvertedTempFile()
 	{
 
-		$file = array("name"     => JString::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
+		$file = array("name"     => StringHelper::substr($this->tmpFileName, strrpos($this->tmpFileName, DIRECTORY_SEPARATOR) + 1),
 		              "tmp_name" => $this->tmpFileName);
 
 		return $file;

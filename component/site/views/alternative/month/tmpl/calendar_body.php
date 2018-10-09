@@ -7,7 +7,7 @@ if ($cfg->get("tooltiptype",'joomla')=='overlib'){
 	JEVHelper::loadOverlib();
 }
 
-$view =  $this->getViewName();
+$view = $this->getViewName();
 echo $this->loadTemplate('cell' );
 $eventCellClass = "EventCalendarCell_".$view;
 

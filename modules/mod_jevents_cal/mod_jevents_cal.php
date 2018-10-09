@@ -11,20 +11,23 @@
  */
 defined('_JEXEC') or die ('Restricted access');
 
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 require_once(dirname(__FILE__) . '/' . 'helper.php');
 
 $jevhelper = new modJeventsCalHelper ();
 
-JPluginHelper::importPlugin("jevents");
+PluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
-$registry = JRegistry::getInstance("jevents");
+$registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "mod_jevents_cal");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 
 // See http://www.php.net/manual/en/timezones.php
-$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $tz         = $compparams->get("icaltimezonelive", "");
 if ($tz != "" && is_callable("date_default_timezone_set"))
 {

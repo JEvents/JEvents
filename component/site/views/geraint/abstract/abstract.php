@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+
+
 /**
  * HTML Abstract view class for the component frontend
  *
@@ -32,7 +35,7 @@ class JEventsGeraintView extends JEventsDefaultView
 
 		$this->addHelperPath(dirname(__FILE__) . "/../helpers/");
 
-		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 
 	}
 

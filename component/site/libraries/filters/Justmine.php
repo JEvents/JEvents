@@ -12,6 +12,8 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Filters events to restrict events for administration - used for administration of events in the frontend
@@ -28,7 +30,7 @@ class jevJustmineFilter extends jevFilter
 	function __construct($tablename, $filterfield, $isstring = true, $yesLabel = "Jev_Yes", $noLabel = "Jev_No")
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$this->filterType      = self::filterType;
 		$this->filterNullValue = "0";
@@ -38,8 +40,8 @@ class jevJustmineFilter extends jevFilter
 
 		// this is a special filter - we always want memory here since only used in frontend management
 
-		$this->filter_value = JFactory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
-		$jinput->set($this->filterType . '_fv', $this->filter_value);
+		$this->filter_value = Factory::getApplication()->getUserStateFromRequest($this->filterType . '_fv_ses', $this->filterType . '_fv', $this->filterNullValue);
+		$input->set($this->filterType . '_fv', $this->filter_value);
 
 		parent::__construct($tablename, "state", $isstring);
 
@@ -51,7 +53,7 @@ class jevJustmineFilter extends jevFilter
 		if (!$this->filterField) return "";
 		if ($this->filter_value == $this->filterNullValue) return "";
 		// The default to show all events
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		return "ev.created_by=" . $user->id;
 	}
@@ -62,9 +64,9 @@ class jevJustmineFilter extends jevFilter
 		$filterList          = array();
 		$filterList["title"] = $this->filterLabel;
 		$options             = array();
-		$options[]           = JHTML::_('select.option', "0", $this->noLabel, "value", "yesno");
-		$options[]           = JHTML::_('select.option', "1", $this->yesLabel, "value", "yesno");
-		$filterList["html"]  = JHTML::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
+		$options[]           = HTMLHelper::_('select.option', "0", $this->noLabel, "value", "yesno");
+		$options[]           = HTMLHelper::_('select.option', "1", $this->yesLabel, "value", "yesno");
+		$filterList["html"]  = HTMLHelper::_('select.genericlist', $options, $this->filterType . '_fv', 'class="inputbox" size="1" onchange="form.submit();"', 'value', 'yesno', $this->filter_value);
 
 		return $filterList;
 	}

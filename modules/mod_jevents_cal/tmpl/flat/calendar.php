@@ -6,6 +6,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die ();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 /**
  * HTML View class for the component frontend
  *
@@ -20,9 +24,12 @@ class FlatModCalView extends DefaultModCalView
 	function _displayCalendarMod($time, $startday, $linkString, &$day_name, $monthMustHaveEvent = false, $basedate = false)
 	{
 
-		$db       = JFactory::getDbo();
+		$db       = Factory::getDbo();
 		$cfg      = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
+
+		$app      = Factory::getApplication();
+		$input    = $app->input;
 
 		$cal_day = date("d", $time);
 		// $cal_year=date("Y",$time);
@@ -35,12 +42,12 @@ class FlatModCalView extends DefaultModCalView
 		$base_month         = date("m", $basedate);
 		$basefirst_of_month = JevDate::mktime(0, 0, 0, $base_month, 1, $base_year);
 
-		$requestYear  = JRequest::getInt("year", 0);
-		$requestMonth = JRequest::getInt("month", 0);
+		$requestYear  = $input->getInt("year", 0);
+		$requestMonth = $input->getInt("month", 0);
 		// special case when site link set the dates for the mini-calendar in the URL but not in the ajax request
-		if ($requestMonth && $requestYear && JRequest::getString("task", "") != "modcal.ajax" && $this->modparams->get("minical_usedate", 0))
+		if ($requestMonth && $requestYear && $input->getString("task", "") != "modcal.ajax" && $this->modparams->get("minical_usedate", 0))
 		{
-			$requestDay = JRequest::getInt("day", 1);
+			$requestDay = $input->getInt("day", 1);
 
 			$requestTime = JevDate::mktime(0, 0, 0, $requestMonth, $requestDay, $requestYear);
 			if ($time - $basedate > 100000)
@@ -77,7 +84,7 @@ class FlatModCalView extends DefaultModCalView
 			$base_next_month_year += 1;
 		}
 
-		$reg = JFactory::getConfig();
+		$reg = Factory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
 		if ($this->modparams->get("showtooltips", 0))
 		{
@@ -117,7 +124,7 @@ class FlatModCalView extends DefaultModCalView
 		}
 
 		$viewname   = $this->getTheme();
-		$viewpath   = JURI::root(true) . "/components/$compname/views/" . $viewname . "/assets";
+		$viewpath   = Uri::root(true) . "/components/$compname/views/" . $viewname . "/assets";
 		$viewimages = $viewpath . "/images";
 		$linkpref   = "index.php?option=$compname&Itemid=" . $this->myItemid . $this->cat . "&task=";
 
@@ -127,7 +134,7 @@ class FlatModCalView extends DefaultModCalView
 		$scriptlinks = "";
 		if ($this->minical_prevmonth)
 		{
-			$linkprevious = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
+			$linkprevious = htmlentities(Uri::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_prev_month&year=$base_prev_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
 			$scriptlinks  .= "linkprevious = '" . $linkprevious . "';\n";
 			$linkprevious = '<img border="0" title="' . JText::_("JEV_PREVIOUSMONTH") . '" alt="' . JText::_("JEV_LAST_MONTH") . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowleft.gif" onmousedown="callNavigation(\'' . $linkprevious . '\');" ontouchstart="callNavigation(\'' . $linkprevious . '\');" />';
 		}
@@ -139,7 +146,7 @@ class FlatModCalView extends DefaultModCalView
 		if ($this->minical_actmonth == 1)
 		{
 			$linkcurrent = $linkpref . "month.calendar&day=$cal_day&month=$cal_month&year=$cal_year";
-			$linkcurrent = JRoute::_($linkcurrent);
+			$linkcurrent = Route::_($linkcurrent);
 			$linkcurrent = $this->htmlLinkCloaking($linkcurrent, $month_name . " " . $cal_year, array(
 				"style" => "text-decoration:none;color:inherit;"
 			));
@@ -153,12 +160,12 @@ class FlatModCalView extends DefaultModCalView
 			$linkcurrent = "";
 		}
 		/*
-		 * $linknext = $linkpref."month.calendar&day=$cal_day&month=$cal_next_month&year=$cal_next_month_year"; $linknext = JRoute::_($linknext); $linknext = $this->htmlLinkCloaking($linknext, '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="' . JText::_("JEV_NEXT_MONTH") . '" src="'.$viewimages.'/mini_arrowright.gif"/>' );
+		 * $linknext = $linkpref."month.calendar&day=$cal_day&month=$cal_next_month&year=$cal_next_month_year"; $linknext = Route::_($linknext); $linknext = $this->htmlLinkCloaking($linknext, '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="' . JText::_("JEV_NEXT_MONTH") . '" src="'.$viewimages.'/mini_arrowright.gif"/>' );
 		 */
 		$this->_navigationJS($this->_modid);
 		if ($this->minical_nextmonth)
 		{
-			$linknext    = htmlentities(JURI::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
+			$linknext    = htmlentities(Uri::base() . "index.php?option=$jev_component_name&task=modcal.ajax&day=1&month=$base_next_month&year=$base_next_month_year&modid=$this->_modid&tmpl=component" . $this->cat);
 			$scriptlinks .= "linknext = '" . $linknext . "';\n";
 			$linknext    = '<img border="0" title="' . JText::_("JEV_NEXT_MONTH") . '" alt="' . JText::_("JEV_NEXT_MONTH") . '" class="mod_events_link" src="' . $viewimages . '/mini_arrowright.gif" onmousedown="callNavigation(\'' . $linknext . '\');"  ontouchstart="callNavigation(\'' . $linknext . '\');" />';
 		}
@@ -208,8 +215,6 @@ class FlatModCalView extends DefaultModCalView
 		for ($w = 0; $w < 6 && $dn < $datacount; $w++)
 		{
 			$content .= "<tr style='height:$rowheight;'>\n";
-			// the week column
-			list ($week, $link) = each($data ['weeks']);
 
 			for ($d = 0; $d < 7 && $dn < $datacount; $d++)
 			{

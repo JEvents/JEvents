@@ -2,7 +2,7 @@
 /**
  * JEvents Component for Joomla! 3.x
  *
- * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
+ * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraint edwards $
  * @package     JEvents
  * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,24 +14,34 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
-JHtml::_('jquery.ui', array('core', 'sortable'));
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
 
-$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+HTMLHelper::_('jquery.ui', array('core', 'sortable'));
+
+
+$app    = Factory::getApplication();
+$input  = $app->input;
+$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg   = JEVConfig::getInstance();
-$assoc = false && JLanguageAssociations::isEnabled() && JFactory::getApplication()->isAdmin();
+$assoc = false && JLanguageAssociations::isEnabled() && Factory::getApplication()->isClient('administrator');
 
 // Load Bootstrap
 JevHtmlBootstrap::framework();
-JHtml::_('behavior.keepalive');
-//JHtml::_('behavior.calendar');
-//JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.keepalive');
+//HTMLHelper::_('behavior.calendar');
+//HTMLHelper::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
-	JHtml::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
+	HTMLHelper::_('formbehavior.chosen', '#jevents select:not(.notchosen)');
 	// Use this as a basis for setting the primary category
 	/*
-	JHtml::_('jquery.ui', array("core","sortable"));
+	HTMLHelper::_('jquery.ui', array("core","sortable"));
 	$script = <<< SCRIPT
 window.setTimeout(function() {
 	jQuery("#catid").chosen().change(
@@ -46,13 +56,13 @@ window.setTimeout(function() {
 	);
 }, 1000);
 SCRIPT;
-	JFactory::getDocument()->addScriptDeclaration($script);
+	Factory::getDocument()->addScriptDeclaration($script);
 	 */
 }
 if ($params->get("bootstrapcss", 1) == 1)
 {
 	// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-	JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+	HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
 }
 else if ($params->get("bootstrapcss", 1) == 2)
 {
@@ -60,15 +70,15 @@ else if ($params->get("bootstrapcss", 1) == 2)
 }
 
 // use JRoute to preseve language selection
-$action = JFactory::getApplication()->isAdmin() ? "index.php" : JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
+$action = Factory::getApplication()->isClient('administrator') ? "index.php" : Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . JEVHelper::getItemid());
 
-$user         = JFactory::getUser();
+$user         = Factory::getUser();
 $accesslevels = $user->getAuthorisedViewLevels();
 $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 ?>
 	<div id="jevents" <?php
-	echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
+	echo (!Factory::getApplication()->isClient('administrator') && $params->get("darktemplate", 0)) ? "class='jeventsdark $accesslevels'" : "class='$accesslevels' ";
 	?> >
 		<form action="<?php echo $action; ?>" method="post" name="adminForm" enctype='multipart/form-data'
 		      id="adminForm" class="form-horizontal jevbootstrap">
@@ -178,7 +188,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			<input type="hidden" name="jevtype" value="icaldb"/>
 			<input type="hidden" name="boxchecked" value="0"/>
 			<input type="hidden" name="updaterepeats" value="0"/>
-			<input type="hidden" name="task" value="<?php echo JRequest::getCmd("task", "icalevent.edit"); ?>"/>
+			<input type="hidden" name="task" value="<?php echo $input->getCmd("task", "icalevent.edit"); ?>"/>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 			<input type="hidden" name="rp_id" value="<?php echo isset($this->rp_id) ? $this->rp_id : -1; ?>"/>
 			<input type="hidden" name="year" value="<?php echo $year; ?>"/>
@@ -186,7 +196,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 			<input type="hidden" name="day" value="<?php echo $day; ?>"/>
 			<input type="hidden" name="evid" id="evid" value="<?php echo $this->ev_id; ?>"/>
 			<input type="hidden" name="valid_dates" id="valid_dates" value="1"/>
-			<?php if (!JFactory::getApplication()->isAdmin()) { ?>
+			<?php if ($app->isClient('site')) { ?>
 				<input type="hidden" name="Itemid" id="Itemid" value="<?php echo JEVHelper::getItemid(); ?>"/>
 			<?php } ?>
 			<?php
@@ -279,17 +289,17 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                         }
 						<?php
 						// Do we have to check for conflicting events i.e. overlapping times etc. BUT ONLY FOR EVENTS INITIALLY
-						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+						$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 						if (  $params->get("checkconflicts", 0) )
 						{
-						$checkURL = JURI::root() . "components/com_jevents/libraries/checkconflict.php";
+						$checkURL = Uri::root() . "components/com_jevents/libraries/checkconflict.php";
 						$urlitemid = JEVHelper::getItemid() > 0 ? "&Itemid=" . JEVHelper::getItemid() : "";
 						$ttitemid = JEVHelper::getItemid() > 0 ? "&ttItemid=" . JEVHelper::getItemid() : "";
-						$checkURL = JRoute::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=" . JSession::getFormToken() . $urlitemid . $ttitemid, false);
+						$checkURL = Route::_("index.php?option=com_jevents&ttoption=com_jevents&typeaheadtask=gwejson&file=checkconflict&token=" . Session::getFormToken() . $urlitemid . $ttitemid, false);
 						?>
                         // reformat start and end dates  to Y-m-d format
                         reformatStartEndDates();
-                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo JSession::getFormToken(); ?>', '<?php echo JFactory::getApplication()->isAdmin() ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
+                        checkConflict('<?php echo $checkURL; ?>', pressbutton, '<?php echo Session::getFormToken(); ?>', '<?php echo Factory::getApplication()->isClient('administrator') ? 'administrator' : 'site'; ?>', <?php echo $this->repeatId; ?>);
 						<?php
 						}
 						else
@@ -302,7 +312,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						}
 						?>
                     }
-                }
+                };
 
                 function submit2(pressbutton) {
                     // sets the date for the page after save
@@ -371,8 +381,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					</ul>
 					<?php
 					// Tabs
-					echo JHtml::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
-					echo JHtml::_('bootstrap.addPanel', 'myEditTabs', "common");
+					echo HTMLHelper::_('bootstrap.startPane', 'myEditTabs', array('active' => 'common'));
+					echo HTMLHelper::_('bootstrap.addPanel', 'myEditTabs', "common");
 				}
 				?>
 				<div class="row jevtitle">
@@ -629,8 +639,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
-					echo JHtml::_('bootstrap.endPanel');
-					echo JHtml::_('bootstrap.addPanel', "myEditTabs", "calendar");
+					echo HTMLHelper::_('bootstrap.endPanel');
+					echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "calendar");
 				}
 				if (!$cfg->get('timebeforedescription', 0))
 				{
@@ -655,8 +665,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 						if (!$cfg->get('com_single_pane_edit', 0))
 						{
-							echo JHtml::_('bootstrap.endPanel');
-							echo JHtml::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
+							echo HTMLHelper::_('bootstrap.endPanel');
+							echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", $extraTab['paneid']);
 						}
 						echo "<div class='jevextrablock'>";
 						echo $extraTab['content'];
@@ -667,22 +677,22 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 
 				if (!$cfg->get('com_single_pane_edit', 0))
 				{
-					echo JHtml::_('bootstrap.endPanel');
+					echo HTMLHelper::_('bootstrap.endPanel');
 					if ($assoc)
 					{
-						echo JHtml::_('bootstrap.addPanel', "myEditTabs", "associations");
+						echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "associations");
 						echo $this->loadTemplate('associations');
-						echo JHtml::_('bootstrap.endPanel');
+						echo HTMLHelper::_('bootstrap.endPanel');
 					}
 
-					echo JHtml::_('bootstrap.endPane', 'myEditTabs');
+					echo HTMLHelper::_('bootstrap.endPane', 'myEditTabs');
 				}
 				?>
 			</div>
 			<?php
 			$output = ob_get_clean();
-			$app    = JFactory::getApplication();
-			if (($app->isAdmin() && $cfg->get('ignorelayout', 0)) || !$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
+			$app    = Factory::getApplication();
+			if (($app->isClient('administrator') && $cfg->get('ignorelayout', 0)) || !$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
 			{
 				echo $output;
 			}   // if (!$this->loadedFromTemplate('icalevent.edit_page', $this->row, 0)){
@@ -691,8 +701,8 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 		</form>
 	</div>
 <?php
-$app = JFactory::getApplication();
-if ($app->isSite())
+$app = Factory::getApplication();
+if ($app->isClient('site'))
 {
 	if ($params->get('com_edit_toolbar', 0) == 1 || $params->get('com_edit_toolbar', 0) == 2)
 	{

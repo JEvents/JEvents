@@ -5,7 +5,7 @@ function DefaultPaginationSearchForm($total, $limitstart, $limit)
 {
 
 	jimport('joomla.html.pagination');
-	$pageNav = new JPagination($total, $limitstart, $limit);
+	$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 	?>
 	<div class="jev_pagination">
 		<?php

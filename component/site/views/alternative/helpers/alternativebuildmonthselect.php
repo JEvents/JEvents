@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
 class AlternativeBuildMonthSelect
 {
 
@@ -10,6 +13,8 @@ class AlternativeBuildMonthSelect
 	public function __construct($view, $link, $month, $year)
 	{
 
+		$monthsList = array();
+		
 		for ($a = -6; $a < 6; $a++)
 		{
 			$m = $month + $a;
@@ -25,7 +30,7 @@ class AlternativeBuildMonthSelect
 				$y += 1;
 			}
 			$name_of_month = JEVHelper::getMonthName($m) . " $y";
-			$monthslist[]  = JHTML::_('select.option', "$m|$y", $name_of_month);
+			$monthsList[]  = HTMLHelper::_('select.option', "$m|$y", $name_of_month);
 		}
 		$link = str_replace(array("day.listevents", "week.listevents", "year.listevents", "cat.listevents", "icalrepeat.detail", "icalevent.detail"), "month.calendar", $link);
 
@@ -35,7 +40,7 @@ class AlternativeBuildMonthSelect
         var ym = elem.options[elem.selectedIndex].value.split('|');\n";
 
 		$link   .= "day=1&month=MMMMmmmm&year=YYYYyyyy";
-		$link2  = JRoute::_($link, false);
+		$link2  = Route::_($link, false);
 		$tosend .= "var link = '$link2';\n";
 		// This is needed in case SEF is not activated
 		$tosend       .= "link = link.replace(/&/g,'&');\n";
@@ -45,7 +50,7 @@ class AlternativeBuildMonthSelect
 		$tosend       .= "}\n";
 		$tosend       .= "/* ]]> */\n";
 		$tosend       .= "</script>\n";
-		$tosend       .= JHTML::_('select.genericlist', $monthslist, 'monthyear', "onchange=\"selectMD(this);\"", 'value', 'text', "$month|$year");
+		$tosend       .= HTMLHelper::_('select.genericlist', $monthsList, 'monthyear', "onchange=\"selectMD(this);\"", 'value', 'text', "$month|$year");
 		$this->result = $tosend;
 	}
 

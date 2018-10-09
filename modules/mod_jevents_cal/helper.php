@@ -12,6 +12,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+
 class modJeventsCalHelper
 {
 
@@ -39,11 +42,11 @@ class modJeventsCalHelper
 	{
 
 		// If we have a specified over ride then use it here
-		if ($params && JString::strlen($params->get("layout", "")) > 0)
+		if ($params && StringHelper::strlen($params->get("layout", "")) > 0)
 		{
 			$speciallayout = strtolower($params->get("layout", ""));
 			// Build the template and base path for the layout
-			$tPath = JPATH_SITE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . $module . '/' . $theme . '/' . $speciallayout . '.php';
+			$tPath = JPATH_SITE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . $module . '/' . $theme . '/' . $speciallayout . '.php';
 
 			// If the template has a layout override use it
 			if (file_exists($tPath))
@@ -58,11 +61,11 @@ class modJeventsCalHelper
 		}
 		if ($layout == "" || $layout == "global")
 		{
-			$layout = JEV_CommonFunctions::getJEventsViewName();;
+			$layout = JEV_CommonFunctions::getJEventsViewName();
 		}
 
 		// Build the template and base path for the layout
-		$tPath = JPATH_SITE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . $module . '/' . $layout . '.php';
+		$tPath = JPATH_SITE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . $module . '/' . $layout . '.php';
 		$bPath = JPATH_SITE . '/' . 'modules' . '/' . $module . '/' . 'tmpl' . '/' . $layout . '.php';
 
 		jimport('joomla.filesystem.file');

@@ -11,6 +11,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+
 include_once(JEV_VIEWS . "/default/month/tmpl/calendar_cell.php");
 
 class EventCalendarCell_ext extends EventCalendarCell_default
@@ -69,7 +73,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 
 		// The title is printed as a link to the event's detail page
 		$link = $this->event->viewDetailLink($year, $month, $currentDay['d0'], false);
-		$link = JRoute::_($link . $this->_datamodel->getCatidsOutLink());
+		$link = Route::_($link . $this->_datamodel->getCatidsOutLink());
 
 		$title = $event->title();
 
@@ -78,9 +82,9 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 		// set truncated title
 		if (!isset($this->event->truncatedtitle))
 		{
-			if (JString::strlen($title) >= $cfg->get('com_calCutTitle', 50))
+			if (StringHelper::strlen($title) >= $cfg->get('com_calCutTitle', 50))
 			{
-				$tmpTitle = JString::substr($title, 0, $cfg->get('com_calCutTitle', 50)) . ' ...';
+				$tmpTitle = StringHelper::substr($title, 0, $cfg->get('com_calCutTitle', 50)) . ' ...';
 			}
 			$tmpTitle                    = JEventsHTML::special($tmpTitle);
 			$this->event->truncatedtitle = $tmpTitle;
@@ -89,6 +93,8 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 		{
 			$tmpTitle = $this->event->truncatedtitle;
 		}
+
+		$title_event_link = '';
 
 		// [new mic] if amount of displaing events greater than defined, show only a scmall coloured icon
 		// instead of full text - the image could also be "recurring dependig", which means
@@ -118,10 +124,10 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 			{
 				if ($this->_view)
 				{
-					$this->_view->assignRef("link", $link);
-					$this->_view->assignRef("linkStyle", $linkStyle);
-					$this->_view->assignRef("tmp_start_time", $tmp_start_time);
-					$this->_view->assignRef("tmpTitle", $tmpTitle);
+					$this->_view->link              = $link;
+					$this->_view->linkStyle         = $linkStyle;
+					$this->_view->tmp_start_time    = $tmp_start_time;
+					$this->_view->tmpTitle          = $tmpTitle;
 				}
 				$title_event_link = $this->loadOverride("cellcontent");
 				// allow fallback to old method
@@ -135,7 +141,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 		}
 		else
 		{
-			$eventIMG = '<img align="left" src="' . JURI::root()
+			$eventIMG = '<img align="left" src="' . Uri::root()
 				. 'components/' . $compname . '/images/event.png" alt="" style="height:12px;width:8px;border:1px solid white;background-color:' . $bgeventcolor . '" />';
 
 			$title_event_link = "\n" . '<a class="cal_titlelink" href="' . $link . '">' . $eventIMG . '</a>' . "\n";
@@ -147,8 +153,8 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 		// only try override if we have a view reference
 		if ($this->_view)
 		{
-			$this->_view->assignRef("ecc", $this);
-			$this->_view->assignRef("cellDate", $currentDay["cellDate"]);
+			$this->_view->ecc       = $this;
+			$this->_view->cellDate  = $currentDay["cellDate"];
 		}
 
 		if ($cfg->get("com_enableToolTip", 1))
@@ -180,7 +186,6 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 
 				JevHtmlBootstrap::popover('.hasjevtip', array("trigger" => "hover focus", "placement" => "top", "container" => "#jevents_body", "delay" => array("show" => 150, "hide" => 150)));
 				//$toolTipArray = array('className' => 'jevtip');
-				//JHTML::_('behavior.tooltip', '.hasjevtip', $toolTipArray);
 
 				$tooltip = $this->loadOverride("tooltip");
 				// allow fallback to old method
@@ -191,7 +196,7 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 
 				if (strpos($tooltip, "templated") === 0)
 				{
-					$cellString = JString::substr($tooltip, 9);
+					$cellString = StringHelper::substr($tooltip, 9);
 					$dom        = new DOMDocument();
 					// see http://php.net/manual/en/domdocument.savehtml.php cathexis dot de ¶
 					$dom->loadHTML('<html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body>' . htmlspecialchars($cellString) . '</body>');
@@ -259,4 +264,4 @@ class EventCalendarCell_ext extends EventCalendarCell_default
 		return $cellStart . ' style="' . $cellStyle . '" ' . $cellString . ">\n" . $title_event_link . $cellEnd;
 	}
 
-} ?>
+}

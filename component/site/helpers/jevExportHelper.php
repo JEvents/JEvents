@@ -12,6 +12,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * JEvents component helper.
  *
@@ -42,7 +48,7 @@ class JevExportHelper
 	{
 
 		$urlString['title'] = urlencode($row->title());
-		$params             = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params             = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$tz                 = $params->get("icaltimezonelive", "");
 		if ($tz)
 		{
@@ -57,21 +63,21 @@ class JevExportHelper
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
 		$urlString['duration']   = (int) $row->getUnixEndTime() - (int) $row->getUnixStartTime();
 		$urlString['location']   = urlencode(isset($row->_locationaddress) ? $row->_locationaddress : $row->location());
-		$urlString['sitename']   = urlencode(JFactory::getApplication()->get('sitename'));
-		$urlString['siteurl']    = urlencode(JUri::root());
+		$urlString['sitename']   = urlencode(Factory::getApplication()->get('sitename'));
+		$urlString['siteurl']    = urlencode(Uri::root());
 		$urlString['rawdetails'] = urlencode($row->get('description'));
 		$urlString['details']    = strip_tags($row->get('description'));
-		if (JString::strlen($urlString['details']) > 500)
+		if (StringHelper::strlen($urlString['details']) > 500)
 		{
-			$urlString['details'] = JString::substr($urlString['details'], 0, 500) . ' ...';
+			$urlString['details'] = StringHelper::substr($urlString['details'], 0, 500) . ' ...';
 
 			//Check if we should include the link to the event
 			if ($params->get('source_url', 0) == 1)
 			{
 				$link                 = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), true, $params->get('default_itemid', 0));
-				$uri                  = JURI::getInstance(JURI::base());
+				$uri                  = Uri::getInstance(Uri::base());
 				$root                 = $uri->toString(array('scheme', 'host', 'port'));
-				$urlString['details'] .= ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . JRoute::_($link, true, -1);
+				$urlString['details'] .= ' ' . JText::_('JEV_EVENT_IMPORTED_FROM') . $root . Route::_($link, true, -1);
 			}
 		}
 		$urlString['details'] = urlencode($urlString['details']);

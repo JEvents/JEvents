@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 function DefaultEventManagementButton($view, $row)
 {
 
@@ -10,7 +12,7 @@ function DefaultEventManagementButton($view, $row)
 	?>
 	<a href="javascript:jevIdPopup('action_dialogJQ<?php echo $row->rp_id(); ?>');"
 	   title="<?php echo JText::_('JEV_E_EDIT', true); ?>">
-		<?php echo JHtml::image('com_jevents/icons-32/edit.png', JText::_("JEV_E_EDIT"), null, true); ?>
+		<?php echo HTMLHelper::image('com_jevents/icons-32/edit.png', JText::_("JEV_E_EDIT"), null, true); ?>
 	</a>
 	<?php
 }

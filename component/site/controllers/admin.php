@@ -9,11 +9,15 @@
  * @link        http://www.jevents.net
  */
 
-defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
+defined('JPATH_BASE') or die('No Direct Access.');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.controller');
 
-class AdminController extends JControllerLegacy
+class AdminController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	function __construct($config = array())
@@ -35,16 +39,16 @@ class AdminController extends JControllerLegacy
 	function listevents()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$is_event_editor = JEVHelper::isEventCreator();
 
 		$Itemid = JEVHelper::getItemid();
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$is_event_editor)
 		{
-			$returnlink = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false);
+			$returnlink = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&Itemid=' . $Itemid, false);
 			$this->setRedirect($returnlink, html_entity_decode(JText::_('JEV_NOPERMISSION')));
 			$this->redirect();
 
@@ -54,16 +58,16 @@ class AdminController extends JControllerLegacy
 		list($year, $month, $day) = JEVHelper::getYMD();
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval($jinput->getInt('start', $jinput->getInt('limitstart', 0)));
+		$limitstart = intval($input->getInt('start', $input->getInt('limitstart', 0)));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$limit  = intval(JFactory::getApplication()->getUserStateFromRequest('jevlistlimit.admin', 'limit', $params->get("com_calEventListRowsPpg", 15)));
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$limit  = intval(Factory::getApplication()->getUserStateFromRequest('jevlistlimit.admin', 'limit', $params->get("com_calEventListRowsPpg", 15)));
 
 		$Itemid = JEVHelper::getItemid();
 
 		$task = $this->_task;
 
-		$params    = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params    = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$adminuser = $params->get("jevadmin", -1);
 
 		if (JEVHelper::isAdminUser($user) || JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor() || $user->id == $adminuser)
@@ -77,7 +81,7 @@ class AdminController extends JControllerLegacy
 
 		// get the view
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -93,14 +97,14 @@ class AdminController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout('listevents');
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("limitstart", $limitstart);
-		$this->view->assign("limit", $limit);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $task);
-		$this->view->assign("creator_id", $creator_id);
+		$this->view->Itemid     = $Itemid;
+		$this->view->limitstart = $limitstart;
+		$this->view->limit      = $limit;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $task;
+		$this->view->creator_id = $creator_id;
 
 		$this->view->display();
 

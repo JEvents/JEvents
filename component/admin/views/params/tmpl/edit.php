@@ -10,11 +10,16 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+
 jimport('joomla.html.html.bootstrap');
 // We need to get the params first
 
-//JHtml::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
-JHtml::_('formbehavior.chosen', '#adminForm select.chosen');
+//HTMLHelper::_('formbehavior.chosen', '#adminForm select:not(.notchosen)');
+HTMLHelper::_('formbehavior.chosen', '#adminForm select.chosen');
 
 $version = JEventsVersion::getInstance();
 
@@ -28,7 +33,7 @@ foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 	}
 }
 $hasPlugins = false;
-$db         = JFactory::getDbo();
+$db         = Factory::getDbo();
 $query      = $db->getQuery(true)
 	->select('folder AS type, element AS name, params, enabled, manifest_cache ')
 	->from('#__extensions')
@@ -41,7 +46,7 @@ $query      = $db->getQuery(true)
 
 $jevplugins = $db->setQuery($query)->loadObjectList();
 //echo $db->getQuery();
-//$jevplugins = JPluginHelper::getPlugin("jevents");
+//$jevplugins = PluginHelper::getPlugin("jevents");
 if (count($jevplugins))
 {
 	$hasPlugins = true;
@@ -158,7 +163,7 @@ if (count($jevplugins))
 		</ul>
 
 		<?php
-		echo JHtml::_('bootstrap.startPane', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
+		echo HTMLHelper::_('bootstrap.startPane', 'myParamsTabs', array('active' => 'JEV_TAB_COMPONENT'));
 		$fieldSets = $this->form->getFieldsets();
 
 		foreach ($fieldSets as $name => $fieldSet)
@@ -168,7 +173,7 @@ if (count($jevplugins))
 				continue;
 			}
 			$label = empty($fieldSet->label) ? $name : $fieldSet->label;
-			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", $name);
+			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", $name);
 
 			$html = array();
 
@@ -201,7 +206,7 @@ if (count($jevplugins))
 				// Hide club update field if no club addons are installed
 				//if ($field->fieldname=="clubcode_spacer" || $field->fieldname=="clubcode"){
 				//	// disable if no club addons are installed
-				//	$plugins = JPluginHelper::getPlugin("jevents");
+				//	$plugins = PluginHelper::getPlugin("jevents");
 				//	if (count($plugins)==0 && !$haslayouts){
 				//		continue;
 				//	}
@@ -215,7 +220,7 @@ if (count($jevplugins))
 					$difficultyClass .= " hiddenDifficulty";
 				}
 
-				if (JString::strlen($class) > 0)
+				if (StringHelper::strlen($class) > 0)
 				{
 					$class = " class='$class $difficultyClass'";
 				}
@@ -245,7 +250,7 @@ if (count($jevplugins))
 				{
 					$class = isset($field->class) ? $field->class : "";
 
-					if (JString::strlen($class) > 0)
+					if (StringHelper::strlen($class) > 0)
 					{
 						$class = " class='$class'";
 					}
@@ -262,12 +267,12 @@ if (count($jevplugins))
 			?>
 
 			<?php
-			echo JHtml::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endPanel');
 		}
 
 		if ($haslayouts)
 		{
-			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
+			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "club_layouts");
 			?>
 			<ul class="nav nav-tabs" id="myLayoutTabs">
 				<?php
@@ -296,7 +301,7 @@ if (count($jevplugins))
 				?>
 			</ul>
 			<?php
-			echo JHtml::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
+			echo HTMLHelper::_('bootstrap.startPane', "myLayoutTabs", array('active' => $first));
 
 			// Now get layout specific parameters
 			//JForm::addFormPath(JPATH_COMPONENT ."/views/");
@@ -307,7 +312,7 @@ if (count($jevplugins))
 				if (file_exists($config))
 				{
 
-					$layoutform = JForm::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
+					$layoutform = Form::getInstance("com_jevent.config.layouts." . $viewfile, $config, array('control' => 'jform', 'load_data' => true), true, "/config");
 					$layoutform->bind($this->component->params);
 
 					if (JFile::exists(JPATH_ADMINISTRATOR . "/manifests/files/$viewfile.xml"))
@@ -315,7 +320,7 @@ if (count($jevplugins))
 						$xml        = simplexml_load_file(JPATH_ADMINISTRATOR . "/manifests/files/$viewfile.xml");
 						$layoutname = (string) $xml->name;
 						$langfile   = 'files_' . str_replace('files_', '', strtolower(JFilterInput::getInstance()->clean((string) $layoutname, 'cmd')));
-						$lang       = JFactory::getLanguage();
+						$lang       = Factory::getLanguage();
 						$lang->load($langfile, JPATH_SITE, null, false, true);
 					}
 
@@ -355,7 +360,7 @@ if (count($jevplugins))
 							/*
 $class = isset($field->class) ? $field->class : "";
 
-if (JString::strlen($class) > 0)
+if (StringHelper::strlen($class) > 0)
 {
 	$class = " class='$class'";
 }
@@ -381,24 +386,24 @@ $html[] = '</tr>';
 					}
 					if ($hasconfig)
 					{
-						echo JHtml::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
-						//echo JHtml::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
+						echo HTMLHelper::_('bootstrap.addPanel', 'myLayoutTabs', $viewfile);
+						//echo HTMLHelper::_('bootstrap.addPanel', 'myParamsTabs', $viewfile);
 
 						echo implode("\n", $html);
 
-						echo JHtml::_('bootstrap.endPanel');
-						//echo JHtml::_('bootstrap.endPanel');
+						echo HTMLHelper::_('bootstrap.endPanel');
+						//echo HTMLHelper::_('bootstrap.endPanel');
 					}
 				}
 			}
-			echo JHtml::_('bootstrap.endPane', 'myLayoutTabs');
-			echo JHtml::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endPane', 'myLayoutTabs');
+			echo HTMLHelper::_('bootstrap.endPanel');
 		}
 
 		if ($hasPlugins)
 		{
-			echo JHtml::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
-			echo JHtml::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
+			echo HTMLHelper::_('bootstrap.addPanel', "myParamsTabs", "plugin_options");
+			echo HTMLHelper::_('bootstrap.startAccordion', 'myPluginAccordion', array('active' => 'collapsexx', 'parent' => 'plugin_options'));
 			$script = <<<SCRIPT
 jQuery(document).ready(function(){    
     jQuery('#myPluginAccordion').on('show', function (evt) {
@@ -411,7 +416,7 @@ jQuery(document).ready(function(){
 SCRIPT;
 
 			JevHtmlBootstrap::popover('#myPluginAccordion .icon-info', array("trigger" => "hover focus", "placement" => "top", "container" => "#plugin_options", "delay" => array("show" => 150, "hide" => 150)));
-			JFactory::getDocument()->addScriptDeclaration($script);
+			Factory::getDocument()->addScriptDeclaration($script);
 
 			$i = 0;
 			foreach ($jevplugins as $plugin)
@@ -420,17 +425,17 @@ SCRIPT;
 				if (file_exists($config))
 				{
 					// Load language file
-					$lang     = JFactory::getLanguage();
+					$lang     = Factory::getLanguage();
 					$langfile = "plg_" . $plugin->type . "_" . $plugin->name . ".sys";
 					$lang->load($langfile, JPATH_ADMINISTRATOR, null, false, true);
 					$langfile = "plg_" . $plugin->type . "_" . $plugin->name;
 					$lang->load($langfile, JPATH_ADMINISTRATOR, null, false, true);
 
 					// Now get plugin specific parameters
-					//JFactory::getApplication()->setUserState('com_plugins.edit.plugin.data', array());
-					$pluginform = JForm::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
+					//Factory::getApplication()->setUserState('com_plugins.edit.plugin.data', array());
+					$pluginform = Form::getInstance("com_jevents.config.plugins." . $plugin->name, $config, array('control' => 'jform_plugin[' . $plugin->type . '][' . $plugin->name . ']', 'load_data' => true), true, "/extension/config/fields");
 					//$pluginform = JForm::getInstance('com_plugins.plugin', $config, array('control' => 'jform_plugin['.$plugin->name.']', 'load_data' => true), true, "/extension/config/fields");
-					$pluginparams = new JRegistry($plugin->params);
+					$pluginparams = new JevRegistry($plugin->params);
 
 					// Load the whole XML config file to get the plugin name in plain english
 					$xml = new SimpleXMLElement($config, 0, true);
@@ -482,7 +487,7 @@ SCRIPT;
 
 					if ($hasfields)
 					{
-						echo JHtml::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));
+						echo HTMLHelper::_('bootstrap.addSlide', 'myPluginAccordion', JText::_($label), 'collapse' . ($i++));
 
 						$fieldSets = $pluginform->getFieldsets();
 						$html      = array();
@@ -509,7 +514,7 @@ SCRIPT;
 									continue;
 								}
 
-								// Set the value for the form 
+								// Set the value for the form
 								$paramsval = $pluginparams->get($field->fieldname, $field->default);
 								if (is_object($paramsval))
 								{
@@ -539,7 +544,7 @@ SCRIPT;
 								/*
 								$class = $field->class;
 
-								if (JString::strlen($class) > 0)
+								if (StringHelper::strlen($class) > 0)
 								{
 										$class = " class='$class'";
 								}
@@ -555,13 +560,13 @@ SCRIPT;
 								}
 
 								$html[] = '</tr>';
-								 * 
+								 *
 								 */
 							}
 							$html[] = '</div>';
 							echo implode("\n", $html);
 						}
-						echo JHtml::_('bootstrap.endSlide');
+						echo HTMLHelper::_('bootstrap.endSlide');
 					}
 					else
 					{
@@ -583,8 +588,8 @@ SCRIPT;
 					//echo $plugin->name;
 				}
 			}
-			echo JHtml::_('bootstrap.endAccordion');
-			echo JHtml::_('bootstrap.endPanel');
+			echo HTMLHelper::_('bootstrap.endAccordion');
+			echo HTMLHelper::_('bootstrap.endPanel');
 		}
 		?>
 
@@ -597,7 +602,7 @@ SCRIPT;
 	<input type="hidden" name="controller" value="component"/>
 	<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 	<input type="hidden" name="task" value=""/>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 
 </form>
 

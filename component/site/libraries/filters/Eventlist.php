@@ -12,13 +12,16 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 class jevEventlistFilter extends jevFilter
 {
 
 	function _createfilterHTML()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -40,9 +43,9 @@ class jevEventlistFilter extends jevFilter
 		$options = array();
 
 		// only if other filters are active to we offer a choice
-		if ($jinput->getInt("eventlist") == 1)
+		if ($input->getInt("eventlist") == 1)
 		{
-			$options[] = JHTML::_('select.option', "0", JText::_("JEV_SELECT_MATCHING_EVENT"), "value", "text");
+			$options[] = HTMLHelper::_('select.option', "0", JText::_("JEV_SELECT_MATCHING_EVENT"), "value", "text");
 
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$tenyear = $year + 10;
@@ -54,21 +57,21 @@ class jevEventlistFilter extends jevFilter
 				foreach ($events as $event)
 				{
 					$link      = $event->viewDetailLink($event->yup(), $event->mup(), $event->dup(), true, $Itemid);
-					$options[] = JHTML::_('select.option', $link, $event->title(), "value", "text");
+					$options[] = HTMLHelper::_('select.option', $link, $event->title(), "value", "text");
 				}
 			}
 		}
 		else
 		{
-			$options[] = JHTML::_('select.option', "0", JText::_("JEV_NO_MATCHING_EVENTS"), "value", "text");
+			$options[] = HTMLHelper::_('select.option', "0", JText::_("JEV_NO_MATCHING_EVENTS"), "value", "text");
 		}
-		$filterList["html"] = JHTML::_('select.genericlist', $options, 'eventlist_fv', 'class="inputbox" size="1" onchange="document.location.replace(this.value);"', 'value', 'text', 0);
+		$filterList["html"] = HTMLHelper::_('select.genericlist', $options, 'eventlist_fv', 'class="inputbox" size="1" onchange="document.location.replace(this.value);"', 'value', 'text', 0);
 		$filterList["html"] .= "<input type='hidden' name='eventlist' id='eventlistid' value='1'  />";
 
 		$script = "function resetEventlist(){document.getElementById('eventlistid').value=0;}\n";
 		$script .= "try {JeventsFilters.filters.push({action:'resetEventlist()',id:'eventlist_fv',value:0});} catch (e) {}\n";
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration($script);
 
 		return $filterList;

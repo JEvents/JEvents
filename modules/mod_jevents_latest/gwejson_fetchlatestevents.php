@@ -2,6 +2,10 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * @copyright      Copyright (C) 2015-2018 GWE Systems Ltd. All rights reserved.
  * @license        By negoriation with author via http://www.gwesystems.com
@@ -22,7 +26,8 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	ob_clean();
 	ob_start();
-	$db = JFactory::getDbo();
+	$app    = Factory::getApplication();
+	$db  = Factory::getDbo();
 
 	$query = 'SELECT id, title, module, position, content, showtitle,  params'
 		. ' FROM #__modules AS m'
@@ -36,18 +41,20 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 
 	$db->setQuery($query);
 
-	if (null === ($module = $db->loadObject()))
-	{
-		echo $db->getErrorMsg();
+	try {
+		$db->loadObject();
+	} catch (Exception $e) {
+		echo $e;
 		PlgSystemGwejson::throwerror("There was an error - no valid module id 2");
 	}
+
 
 	require_once(dirname(__FILE__) . '/' . 'helper.php');
 
 	$jevhelper = new modJeventsLatestHelper();
 	JEVHelper::loadLanguage('admin');
 	$theme    = JEV_CommonFunctions::getJEventsViewName();
-	$params   = new JRegistry($module->params);
+	$params   = new JevRegistry($module->params);
 	$modtheme = $params->get("com_calViewName", $theme);
 	if ($modtheme == "" || $modtheme == "global")
 	{
@@ -55,21 +62,21 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	}
 	$theme = $modtheme;
 
-	JPluginHelper::importPlugin("jevents");
+	PluginHelper::importPlugin("jevents");
 
 // record what is running - used by the filters
-	$registry = JRegistry::getInstance("jevents");
+	$registry = JevRegistry::getInstance("jevents");
 	$registry->set("jevents.activeprocess", "mod_jevents_latest");
 	$registry->set("jevents.moduleid", $requestObject->modid);
 	$registry->set("jevents.moduleparams", $params);
 	$registry->set("jevents.fetchlatestevents", 1);
 
 	// Set new constraints on dates for pagination!
-	//$firstEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".firstEventDate",false);
-	//$lastEventDate = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".lastEventDate",false);
-	//$firstEventId = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".firstEventId",false);
-	//$lastEventId = JFactory::getApplication()->getUserState("jevents.moduleid".$requestObject->modid.".lastEventId",false);
-	$page = (int) JFactory::getApplication()->getUserState("jevents.moduleid" . $requestObject->modid . ".page", 0);
+	//$firstEventDate = $app->getUserState("jevents.moduleid".$requestObject->modid.".firstEventDate",false);
+	//$lastEventDate = $app->getUserState("jevents.moduleid".$requestObject->modid.".lastEventDate",false);
+	//$firstEventId = $app->getUserState("jevents.moduleid".$requestObject->modid.".firstEventId",false);
+	//$lastEventId = $app->getUserState("jevents.moduleid".$requestObject->modid.".lastEventId",false);
+	$page = (int) $app->getUserState("jevents.moduleid" . $requestObject->modid . ".page", 0);
 	// Based on direction we are moving change the constraints!
 	if ($requestObject->direction == 1)
 	{
@@ -79,18 +86,18 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	{
 		$page--;
 	}
-	//JFactory::getApplication()->setUserState("jevents.moduleid".$requestObject->modid.".firstEventDate",$firstEventDate);
-	//JFactory::getApplication()->setUserState("jevents.moduleid".$requestObject->modid.".lastEventDate",$lastEventDate);
-	//JFactory::getApplication()->setUserState("jevents.moduleid".$requestObject->modid.".firstEventId",$firstEventId);
-	//JFactory::getApplication()->setUserState("jevents.moduleid".$requestObject->modid.".lastEventId",$lastEventId);
-	JFactory::getApplication()->setUserState("jevents.moduleid" . $requestObject->modid . ".page", $page);
-	JFactory::getApplication()->setUserState("jevents.moduleid" . $requestObject->modid . ".direction", $requestObject->direction);
+	//$app->setUserState("jevents.moduleid".$requestObject->modid.".firstEventDate",$firstEventDate);
+	//$app->setUserState("jevents.moduleid".$requestObject->modid.".lastEventDate",$lastEventDate);
+	//$app->setUserState("jevents.moduleid".$requestObject->modid.".firstEventId",$firstEventId);
+	//$app->setUserState("jevents.moduleid".$requestObject->modid.".lastEventId",$lastEventId);
+	$app->setUserState("jevents.moduleid" . $requestObject->modid . ".page", $page);
+	$app->setUserState("jevents.moduleid" . $requestObject->modid . ".direction", $requestObject->direction);
 
 	$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_latest', $theme . '/' . "latest", $params);
 
-	$registry = JRegistry::getInstance("jevents");
+	$registry = JevRegistry::getInstance("jevents");
 // See http://www.php.net/manual/en/timezones.php
-	$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$tz         = $compparams->get("icaltimezonelive", "");
 	if ($tz != "" && is_callable("date_default_timezone_set"))
 	{
@@ -110,8 +117,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 		date_default_timezone_set($timezone);
 	}
 
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsLatestFooter');
+	$app->triggerEvent('onJEventsLatestFooter');
 
 	$returnData->html = ob_get_clean();
 

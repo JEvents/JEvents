@@ -1,6 +1,11 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 class DefaultViewNavTableBarIconic
 {
 
@@ -10,11 +15,11 @@ class DefaultViewNavTableBarIconic
 	{
 
 		$this->view           = $view;
-		$this->transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
+		$this->transparentGif = Uri::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/transp.gif";
 		$this->Itemid         = JEVHelper::getItemid();
 		$this->cat            = $this->view->datamodel->getCatidsOutLink();
 		$this->task           = $task;
-		$jinput               = JFactory::getApplication()->input;
+		$input               = Factory::getApplication()->input;
 
 		$cfg = JEVConfig::getInstance();
 
@@ -26,7 +31,7 @@ class DefaultViewNavTableBarIconic
 
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
 
-		if ($jinput->getInt('pop', 0)) return;
+		if ($input->getInt('pop', 0)) return;
 
 		?>
 		<div class="ev_navigation">
@@ -89,16 +94,16 @@ class DefaultViewNavTableBarIconic
 	public function _genericMonthNavigation($dates, $alts, $which, $icon)
 	{
 
-		$cfg  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$cfg  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$task = $this->task;
 		$link = 'index.php?option=' . JEV_COM_COMPONENT . '&task=' . $task . $this->cat . '&Itemid=' . $this->Itemid . '&';
 
 		$gg = "<img border='0' src='"
-			. JURI::root()
+			. Uri::root()
 			. "components/" . JEV_COM_COMPONENT . "/views/" . $this->view->getViewName() . "/assets/images/$icon" . "_"
 			. $cfg->get('com_navbarcolor') . ".gif' alt='" . $alts[$which] . "'/>";
 
-		$thelink = '<a href="' . JRoute::_($link . $dates[$which]->toDateURL()) . '" title="' . $alts[$which] . '">' . $gg . '</a>' . "\n";
+		$thelink = '<a href="' . Route::_($link . $dates[$which]->toDateURL()) . '" title="' . $alts[$which] . '">' . $gg . '</a>' . "\n";
 		if ($dates[$which]->getYear() >= JEVHelper::getMinYear() && $dates[$which]->getYear() <= JEVHelper::getMaxYear())
 		{
 			?>
@@ -125,7 +130,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_yearly" class="nav_bar_cal"><a
-						href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=year.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=year.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						title="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
 					     alt="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>"/></a>
@@ -140,7 +145,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_monthly" class="nav_bar_cal"><a
-						href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=month.calendar&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						title="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
 					     alt="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>"/></a>
@@ -155,7 +160,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_weekly" class="nav_bar_cal"><a
-						href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=week.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=week.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						title="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>">
 					<img src="<?php echo $this->transparentGif; ?>"
 					     alt="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>"/></a>
@@ -170,7 +175,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_daily" class="nav_bar_cal"><a
-						href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						title="<?php echo JText::_('JEV_VIEWTODAY'); ?>"><img src="<?php echo $this->transparentGif; ?>"
 			                                                                  alt="<?php echo JText::_('JEV_VIEWBYDAY'); ?>"/></a>
 			</div>
@@ -184,7 +189,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_search" class="nav_bar_cal"><a
-						href="<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=search.form&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
+						href="<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . $this->cat . '&task=search.form&' . $today_date->toDateURL() . '&Itemid=' . $this->Itemid); ?>"
 						title="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"><img
 							src="<?php echo $this->transparentGif; ?>"
 							alt="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>"/></a>
@@ -199,7 +204,7 @@ class DefaultViewNavTableBarIconic
 		?>
 		<td class="iconic_td" align="center" valign="middle">
 			<div id="ev_icon_jumpto" class="nav_bar_cal"><a href="#"
-			                                                onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;"
+			                                                onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')}return false;"
 			                                                title="<?php echo JText::_('JEV_JUMPTO'); ?>"><img
 							src="<?php echo $this->transparentGif; ?>" alt="<?php echo JText::_('JEV_JUMPTO'); ?>"/></a>
 			</div>
@@ -237,7 +242,7 @@ class DefaultViewNavTableBarIconic
 				{ ?>
 			<td colspan="6" align="center" valign="top">
 				<?php }
-				$index = JRoute::_("index.php");
+				$index = Route::_("index.php");
 				?>
 				<div id="jumpto" class="jev_none">
 					<form name="BarNav" action="<?php echo $index; ?>" method="get">

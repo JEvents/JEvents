@@ -10,23 +10,27 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+
 global $task;
-$db   = JFactory::getDbo();
-$user = JFactory::getUser();
-JHTML::_('behavior.tooltip');
+$db   = Factory::getDbo();
+$user = Factory::getUser();
+HTMLHelper::_('behavior.tooltip');
 
-$jinput = JFactory::getApplication()->input;
+$input = Factory::getApplication()->input;
 
-$pathIMG        = JURI::Root() . 'administrator/images/';
-$pathJeventsIMG = JURI::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
-$document       = JFactory::getDocument();
+$pathIMG        = Uri::Root() . 'administrator/images/';
+$pathJeventsIMG = Uri::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
+$document       = Factory::getDocument();
 $document->addStyleDeclaration("body, input, select, table {font-size:11px;}
 	table.filters, table.filters tr,table.filters td {border-width:0px!important;font-size:11px;}
 	table.filters {margin-bottom:10px}");
-$function = $jinput->getCmd('function', 'jSelectEvent');
+$function = $input->getCmd('function', 'jSelectEvent');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<?php if (!$jinput->getInt("nomenu")) { ?>
+	<?php if (!$input->getInt("nomenu")) { ?>
 		<table cellpadding="4" cellspacing="0" class="filters">
 			<tr>
 				<td align="right"><?php echo JText::_('JEV_TARGET_MENU'); ?> </td>
@@ -74,7 +78,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 			<th align="center" colspan="9"><?php echo $this->pageNav->getListFooter(); ?></th>
 		</tr>
 	</table>
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 	<input type="hidden" name="evid" value="<?php echo $this->evid; ?>"/>
 	<input type="hidden" name="function" value="<?php echo $function; ?>"/>

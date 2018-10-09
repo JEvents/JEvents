@@ -10,20 +10,25 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // we would use this to add custom data to the output here
 //JEVHelper::onDisplayCustomFieldsMultiRow($this->rows);
 
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
-$db   = JFactory::getDbo();
-$user = JFactory::getUser();
+$db   = Factory::getDbo();
+$user = Factory::getUser();
 
 // get configuration object
 $cfg                 = JEVConfig::getInstance();
 $this->_largeDataSet = $cfg->get('largeDataSet', 0);
-$orderdir            = JFactory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
-$order               = JFactory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-$pathIMG             = JURI::root() . 'administrator/images/';
+$orderdir            = Factory::getApplication()->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
+$order               = Factory::getApplication()->getUserStateFromRequest("eventsorder", "filter_order", 'start');
+$pathIMG             = Uri::root() . 'administrator/images/';
 $mainspan            = 10;
 $fullspan            = 12;
 ?>
@@ -69,10 +74,10 @@ $fullspan            = 12;
 		<table cellpadding="4" cellspacing="0" border="0" width="100%" class="adminlist  table table-striped">
 			<tr>
 				<th width="20" nowrap="nowrap">
-					<?php echo JHtml::_('grid.checkall'); ?>
+					<?php echo HTMLHelper::_('grid.checkall'); ?>
 				</th>
 				<th class="title" width="40%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_ICAL_SUMMARY', 'title', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('REPEATS'); ?></th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_EVENT_CREATOR'); ?></th>
@@ -92,13 +97,13 @@ $fullspan            = 12;
 				?>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_PUBLISHED'); ?></th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_TIME_SHEET', 'starttime', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_FIELD_CREATIONDATE', 'created', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="20%" nowrap="nowrap">
-					<?php echo JHTML::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
+					<?php echo HTMLHelper::_('grid.sort', 'JEV_MODIFIED', 'modified', $orderdir, $order, "icalevent.list"); ?>
 				</th>
 				<th width="10%" nowrap="nowrap"><?php echo JText::_('JEV_ACCESS'); ?></th>
 			</tr>
@@ -113,10 +118,10 @@ $fullspan            = 12;
 				?>
 				<tr class="row<?php echo $k; ?>">
 					<td width="20" style="background-color:<?php echo JEV_CommonFunctions::setColor($row); ?>">
-						<?php echo JHtml::_('grid.id', $i, $row->ev_id()); ?>
+						<?php echo HTMLHelper::_('grid.id', $i, $row->ev_id()); ?>
 					</td>
 					<td>
-						<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
+						<a href="index.php?option=com_jevents&task=icalevent.edit&cid=<?php echo $row->ev_id(); ?>" onclick="return listItemTask('cb<?php echo $i; ?>','icalevent.edit')"
 						   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 					</td>
 					<td align="center">
@@ -154,15 +159,15 @@ $fullspan            = 12;
 						<?php
 						if ($row->state() == 1)
 						{
-							$img = JHTML::_('image', 'admin/tick.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/tick.png', '', array('title' => ''), true);
 						}
 						else if ($row->state() == 0)
 						{
-							$img = JHTML::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/publish_x.png', '', array('title' => ''), true);
 						}
 						else
 						{
-							$img = JHTML::_('image', 'admin/trash.png', '', array('title' => ''), true);
+							$img = HTMLHelper::_('image', 'admin/trash.png', '', array('title' => ''), true);
 						}
 						?>
 						<a href="javascript: void(0);"
@@ -180,8 +185,8 @@ $fullspan            = 12;
 						else
 						{
 							$times = '<table style="border: 1px solid #666666; width:100%;">';
-							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(), 0, 16)) . '</td></tr>';
-							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(), 0, 16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? StringHelper::substr($row->publish_up(), 0, 10) : StringHelper::substr($row->publish_up(), 0, 16)) . '</td></tr>';
+							$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? StringHelper::substr($row->publish_down(), 0, 10) : StringHelper::substr($row->publish_down(), 0, 16)) . '</td></tr>';
 							$times .= "</table>";
 							echo $times;
 						}

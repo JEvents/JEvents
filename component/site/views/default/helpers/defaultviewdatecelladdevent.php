@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 {
 
@@ -9,9 +12,9 @@ function DefaultViewDatecellAddEvent($view, $year, $month, $day)
 		JEVHelper::script('view_detailJQ.js', 'components/' . JEV_COM_COMPONENT . "/assets/js/");
 		// no events on Saturday or Sunday!
 		//if (date("N",mktime(0,0,0,$month,$day, $year))>5) return;
-		$editLink       = JRoute::_('index.php?option=' . JEV_COM_COMPONENT
+		$editLink       = Route::_('index.php?option=' . JEV_COM_COMPONENT
 			. '&task=icalevent.edit' . '&year=' . $year . '&month=' . $month . '&day=' . $day . '&Itemid=' . $view->Itemid, true);
-		$transparentGif = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $view->getViewName() . "/assets/images/transp.gif";
+		$transparentGif = Uri::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $view->getViewName() . "/assets/images/transp.gif";
 		$eventlinkadd   = $editLink;
 
 		if ($view->popup)

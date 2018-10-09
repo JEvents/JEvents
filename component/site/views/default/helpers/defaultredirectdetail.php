@@ -2,15 +2,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultRedirectDetail($view)
 {
 
-	$params            = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params            = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	$redirect_to_event = $params->get("redirect_detail", 0);
 
 	if ($redirect_to_event == 1)
 	{
-		$activeEvents = array();
+		$activeEvents = Factory();
 		$countevents  = count($view->data['hours']['timeless']['events']);
 		if ($countevents > 1) return;
 		if ($countevents == 1)
@@ -32,9 +36,9 @@ function DefaultRedirectDetail($view)
 		{
 			$row     = $activeEvents[0];
 			$rowlink = $row->viewDetailLink($row->yup(), $row->mup(), $row->dup(), false);
-			$rowlink = JRoute::_($rowlink . $view->datamodel->getCatidsOutLink());
+			$rowlink = Route::_($rowlink . $view->datamodel->getCatidsOutLink());
 			$rowlink = str_replace("&", "&", $rowlink);
-			JFactory::getApplication()->redirect($rowlink);
+			Factory::getApplication()->redirect($rowlink);
 		}
 	}
 

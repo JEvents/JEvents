@@ -13,6 +13,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 // Joomla 1.5
 // tasker/controller
 jimport('joomla.application.component.controller');
@@ -24,7 +30,7 @@ class JEV_CommonFunctions
 	{
 
 		$jEventsView = JEV_CommonFunctions::getJEventsViewName();
-		$lang        = JFactory::getLanguage();
+		$lang        = Factory::getLanguage();
 		$lang->load(JEV_COM_COMPONENT . "_" . $jEventsView);
 		$lang->load("files_jevents" . $jEventsView . "layout");
 	}
@@ -37,11 +43,11 @@ class JEV_CommonFunctions
 		if (!isset($jEventsView))
 		{
 			$cfg    = JEVConfig::getInstance();
-			$jinput = JFactory::getApplication()->input;
+			$input = Factory::getApplication()->input;
 			// priority of view setting is url, cookie, config,
 			$jEventsView = $cfg->get('com_calViewName', "flat");
-			$jEventsView = $jinput->cookie->getString("jevents_view", $jEventsView, null);
-			$jEventsView = $jinput->getString("jEV", $jEventsView);
+			$jEventsView = $input->cookie->getString("jevents_view", $jEventsView, null);
+			$jEventsView = $input->getString("jEV", $jEventsView);
 			// security check
 			if (!in_array($jEventsView, JEV_CommonFunctions::getJEventsViewList()))
 			{
@@ -102,7 +108,7 @@ class JEV_CommonFunctions
 		static $catData;
 		if (!isset($catData)) $catData = JEV_CommonFunctions::getCategoryData();
 
-		$colours = array();
+		$colors = array();
 
 		foreach ($row->catids() as $catid)
 		{
@@ -171,9 +177,12 @@ class JEV_CommonFunctions
 	{
 
 		static $cats;
+
+		$app    = Factory::getApplication();
+
 		if (!isset($cats))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			$sql = "SELECT c.* FROM #__categories as c WHERE extension='" . JEV_COM_COMPONENT . "' order by c.lft asc";
 			$db->setQuery($sql);
@@ -181,18 +190,17 @@ class JEV_CommonFunctions
 			foreach ($cats as &$cat)
 			{
 				$cat->name     = $cat->title;
-				$params        = new JRegistry($cat->params);
+				$params        = new JevRegistry($cat->params);
 				$cat->color    = $params->get("catcolour", "");
 				$cat->overlaps = $params->get("overlaps", 0);
 			}
 			unset ($cat);
 
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetCategoryData', array(& $cats));
+			$app->triggerEvent('onGetCategoryData', array(& $cats));
 
 		}
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onGetAccessibleCategories', array(& $cats, false));
+
+		$app->triggerEvent('onGetAccessibleCategories', array(& $cats, false));
 
 
 		return $cats;
@@ -224,20 +232,20 @@ class JEV_CommonFunctions
 		}
 		if ($linkCloaking)
 		{
-			$cloakattribs = array('onclick' => '"window.location.href=\'' . JRoute::_($url) . '\';return false;"');
+			$cloakattribs = array('onclick' => '"window.location.href=\'' . Route::_($url) . '\';return false;"');
 
 			return JEV_CommonFunctions::jEventsDoLink("", $text, array_merge($cloakattribs, $attribs));
 		}
 		else
 		{
-			return JEV_CommonFunctions::jEventsDoLink(JRoute::_($url), "$text", $attribs);
+			return JEV_CommonFunctions::jEventsDoLink(Route::_($url), "$text", $attribs);
 		}
 	}
 
 	public static function jEventsDoLink($url = "", $alt = "alt", $attr = array())
 	{
 
-		if (JString::strlen($url) == 0) $url = "javascript:void(0)";
+		if (Joomla\String\StringHelper::strlen($url) == 0) $url = "javascript:void(0)";
 		$link = "<a href='" . $url . "' ";
 		if (count($attr) > 0)
 		{
@@ -306,7 +314,7 @@ class JEV_CommonFunctions
 		// TODO make this call a plugin
 		if ($user == null)
 		{
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 		}
 
 		// strictt publishing test
@@ -333,9 +341,11 @@ class JEV_CommonFunctions
 
 		JLoader::register('JEventsCategory', JEV_ADMINPATH . "/libraries/categoryClass.php");
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$db  = JFactory::getDbo();
+		$app   = Factory::getApplication();
+
+		$db  = Factory::getDbo();
 		$cat = new JEventsCategory($db);
 		$cat->load($event->catid());
 		$adminuser = $cat->getAdminUser();
@@ -357,16 +367,16 @@ class JEV_CommonFunctions
 		$testevent = $queryModel->getEventById($evid, 1, "icaldb");
 
 		// attach anonymous creator etc.
-		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onDisplayCustomFields', array(&$event));
+		PluginHelper::importPlugin('jevents');
+
+		$app->triggerEvent('onDisplayCustomFields', array(&$event));
 
 		$rp_id = $testevent->rp_id();
 
 		list($year, $month, $day) = JEVHelper::getYMD();
 
-		$uri = JURI::getInstance(JURI::base());
-		if (JFactory::getApplication()->isAdmin())
+		$uri = Uri::getInstance(Uri::base());
+		if ($app->isClient('administrator'))
 		{
 			$root       = $uri->toString(array('scheme', 'host', 'port', 'path'));
 			$root       = str_replace("/administrator", "", $root);
@@ -375,7 +385,7 @@ class JEV_CommonFunctions
 		else
 		{
 			$root       = $uri->toString(array('scheme', 'host', 'port'));
-			$detaillink = '<a href="' . $root . JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '">' . $event->title() . '</a>' . "\n";
+			$detaillink = '<a href="' . $root . Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.detail&rp_id=' . $evid . '&rp_id=' . $rp_id . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day") . '">' . $event->title() . '</a>' . "\n";
 		}
 
 		$content = sprintf(JText::_('JEV_NOTIFY_AUTHOR_Message'), $detaillink, $sitename);
@@ -397,7 +407,7 @@ class JEV_CommonFunctions
 		if ($authoremail == "") return;
 
 		// mail function
-		$mail          = JFactory::getMailer();
+		$mail          = Factory::getMailer();
 		$sender_config = $params->get('sender_config', 9);
 		if ($sender_config == 0)
 		{
@@ -433,11 +443,15 @@ class JEV_CommonFunctions
 
 		$config = new JConfig();
 
+		$app    = Factory::getApplication();
 
 		if (!$adminEmail) return;
+
+		$recipient = $adminEmail;
+		
 		if ((strpos($adminEmail, '@example.com') !== false)) return;
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("com_notifyboth", 0) == 3)
 		{
 			return; // no notifications
@@ -454,9 +468,9 @@ class JEV_CommonFunctions
 			$messagetemplate .= sprintf(JText::_('JEV_MANAGE_EVENTS'), "{MANAGEEVENTS}") . "<br/>";
 		}
 
-		$uri       = JURI::getInstance(JURI::base());
+		$uri       = Uri::getInstance(Uri::base());
 		$root      = $uri->toString(array('scheme', 'host', 'port'));
-		$adminLink = $root . JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=admin.listevents&Itemid=" . JEVHelper::getAdminItemid());
+		$adminLink = $root . Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=admin.listevents&Itemid=" . JEVHelper::getAdminItemid());
 
 		$messagetemplate = str_replace("{TITLE}", $title, $messagetemplate);
 		$messagetemplate = str_replace("{DESCRIPTION}", $content, $messagetemplate);
@@ -481,7 +495,6 @@ class JEV_CommonFunctions
 		// JEvents category admin only or both get notifications
 		if ($params->get("com_notifyboth", 0) == 0 || $params->get("com_notifyboth", 0) == 1)
 		{
-			$recipient = $adminEmail;
 			if ($params->get("com_notifyboth", 0) == 1)
 			{
 				$jevadminuser = new  JUser($params->get("jevadmin", 62));
@@ -508,7 +521,7 @@ class JEV_CommonFunctions
 				$recipient = $adminEmail;
 			}
 			//Check not emailing the same user who is editing:
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			if ($user->email === $adminEmail)
 			{
 				// Get out of here we don't want to notify the admin of their own change
@@ -516,7 +529,7 @@ class JEV_CommonFunctions
 			}
 		}
 
-		$mail          = JFactory::getMailer();
+		$mail          = Factory::getMailer();
 		$sender_config = $params->get('sender_config', 0);
 		if ($sender_config == 0)
 		{
@@ -537,9 +550,8 @@ class JEV_CommonFunctions
 
 
 		// attach anonymous creator etc.
-		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onDisplayCustomFields', array(&$event));
+		PluginHelper::importPlugin('jevents');
+		$app->triggerEvent('onDisplayCustomFields', array(&$event));
 
 		if (!isset($event->authoremail) && $params->get('email_replyto', 0) == 1)
 		{
@@ -573,9 +585,8 @@ class JEV_CommonFunctions
 
 		if ($event)
 		{
-			$dispatcher = JEventDispatcher::getInstance();
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onSendAdminMail', array(&$mail, $event));
+			PluginHelper::importPlugin("jevents");
+			$res = $app->triggerEvent('onSendAdminMail', array(&$mail, $event));
 		}
 
 		if ($cc != "")

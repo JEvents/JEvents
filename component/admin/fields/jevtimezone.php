@@ -12,6 +12,10 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
@@ -29,11 +33,11 @@ class JFormFieldJevtimezone extends JFormField
 
 		if (class_exists("DateTimeZone"))
 		{
-			$params     = JComponentHelper::getParams("com_jevents");
+			$params     = ComponentHelper::getParams("com_jevents");
 			$choosefrom = $params->get("offeredtimezones", array());
 			//? explode(",",$this->getAttribute("choosefrom", "")) : array();
 
-			if (!is_array($choosefrom) || (count($choosefrom) == 1 && $choosefrom[0] == "") || JFactory::getApplication()->input->getCmd("task") == "params.edit")
+			if (!is_array($choosefrom) || (count($choosefrom) == 1 && $choosefrom[0] == "") || Factory::getApplication()->input->getCmd("task") == "params.edit")
 			{
 				$choosefrom = array();
 			}
@@ -42,7 +46,7 @@ class JFormFieldJevtimezone extends JFormField
 			if (!isset($options))
 			{
 				$options   = array();
-				$options[] = JHTML::_('select.option', '', '- ' . JText::_('SELECT_TIMEZONE') . ' -');
+				$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_TIMEZONE') . ' -');
 				foreach ($zones as $zone)
 				{
 					if (strpos($zone, "/") === false && strpos($zone, "UTC") === false)
@@ -60,7 +64,7 @@ class JFormFieldJevtimezone extends JFormField
 					{
 						$zone = $translatedzone;
 					}
-					$options[] = JHTML::_('select.option', $zonevalue, $zone);
+					$options[] = HTMLHelper::_('select.option', $zonevalue, $zone);
 				}
 			}
 			$attr = array('list.attr'   => 'class="' . $this->class . '" ',
@@ -79,9 +83,9 @@ class JFormFieldJevtimezone extends JFormField
 				unset($attr["list.select"]);
 			}
 
-			//$input = JHTML::_('select.groupedlist', $optionsGroup, $this->name,$attr);
+			//$input = HTMLHelper::_('select.groupedlist', $optionsGroup, $this->name,$attr);
 
-			return JHTML::_('select.genericlist', $options, $this->name, $attr); //'class="inputbox"', 'value', 'text', $this->value, $this->id);
+			return HTMLHelper::_('select.genericlist', $options, $this->name, $attr); //'class="inputbox"', 'value', 'text', $this->value, $this->id);
 		}
 		else
 		{

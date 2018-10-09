@@ -6,10 +6,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 function DefaultExportOutlook2003($view, $publiclink, $privatelink)
 {
 
-	$user = JFactory::getUser();
+	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
 		echo "<div class='ical_form_button export_public'><h3>" . JText::_('JEV_ICAL_OUTLOOK_SPECIFIC') . "</h3></div>";

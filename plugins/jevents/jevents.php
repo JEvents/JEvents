@@ -7,6 +7,9 @@
 // no direct access
 defined('_JEXEC') or die(' Restricted Access ');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.plugin.plugin');
 
 /**
@@ -27,19 +30,22 @@ class plgContentJEvents extends JPlugin
 			return true;
 		}
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		if ($context == "com_categories.category" && $data->extension == "com_jevents" && ($data->published != 1 || $data->published != 0))
 		{
-			$lang = JFactory::getLanguage();
+			$lang = Factory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 			$catids = $data->id;
 
 			// Get a db connection & new query object.
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = ComponentHelper::getParams($input->getCmd("option"));
 			if ($data->published == "-2" || $data->published == "2")
 			{
 				if ($params->get("multicategory", 0))
@@ -71,8 +77,8 @@ class plgContentJEvents extends JPlugin
 
 			if ($result_count >= 1)
 			{
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				$app->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
+				$app->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 
 				return false;
 			}
@@ -97,18 +103,20 @@ class plgContentJEvents extends JPlugin
 			// 0  = Unpublished
 			// 2  = Archived
 			// -2 = Transhed
+			$app    = Factory::getApplication();
+			$input  = $app->inpt;
 
-			$lang = JFactory::getLanguage();
+			$lang = Factory::getLanguage();
 			$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 
 			$catids = implode(',', $pks);
 
 			// Get a db connection & new query object.
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			// So lets see if there are any events in the categories selected
-			$params = JComponentHelper::getParams(JRequest::getCmd("option"));
+			$params = ComponentHelper::getParams($input->getCmd("option"));
 			if ($params->get("multicategory", 0))
 			{
 				$query->select($db->quoteName('map.catid'));
@@ -130,7 +138,7 @@ class plgContentJEvents extends JPlugin
 			// Load the results as a list of stdClass objects (see later for more options on retrieving data).
 			$results = $db->loadColumn();
 			//Quick way to query debug without launching netbeans.
-			//JFactory::getApplication()->enqueueMessage($query, 'Error');
+			//Factory::getApplication()->enqueueMessage($query, 'Error');
 
 			$result_count = count($results);
 
@@ -154,10 +162,10 @@ class plgContentJEvents extends JPlugin
 				$db->loadObjectList();
 
 				//Quick way to query debug without launching netbeans.
-				//JFactory::getApplication()->enqueueMessage($query, 'Error');
+				//Factory::getApplication()->enqueueMessage($query, 'Error');
 
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
+				$app->enqueueMessage(JText::sprintf('JEV_CAT_MAN_DELETE_WITH_IDS', $result_count), 'Warning');
+				$app->enqueueMessage(JText::sprintf('JEV_CAT_DELETE_MSG_EVENTS_FIRST'), 'Warning');
 			}
 		}
 

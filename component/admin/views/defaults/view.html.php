@@ -11,6 +11,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Service\Provider\Toolbar;
+
 /**
  * HTML View class for the component
  *
@@ -27,7 +34,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	function overview($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$app    = Factory::getApplication();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULTS'));
 
 		// Set toolbar items for the page
@@ -35,10 +43,10 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		JHTML::_('behavior.tooltip');
+		HTMLHelper::_('behavior.tooltip');
 
-		$db  = JFactory::getDbo();
-		$uri = JFactory::getURI();
+		$db  = Factory::getDbo();
+		$uri = \Joomla\CMS\Uri\Uri::getInstance();
 
 		// Get data from the model
 		$model     = $this->getModel();
@@ -47,39 +55,39 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$languages = $this->get('Languages');
 		$catids    = $this->get('Categories');
 
-		$language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
-		$this->assign('language', $language);
-		$this->assign('languages', $languages);
+		$language = $app->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
+		$this->language     = $language;
+		$this->languages    = $languages;
 
-		$layouttype     = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
+		$layouttype     = $app->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
 		$addonoptions   = array();
-		$addonoptions[] = JHTML::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
-		$addonoptions[] = JHTML::_('select.option', 'jevents', JText::_('COM_JEVENTS'));
-		$addonoptions[] = JHTML::_('select.option', 'jevpeople', JText::_('COM_JEVPEOPLE'));
-		$addonoptions[] = JHTML::_('select.option', 'jevlocations', JText::_('COM_JEVLOCATIONS'));
+		$addonoptions[] = HTMLHelper::_('select.option', '', JText::_('JEV_SELECT_LAYOUT_TYPE'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevents', JText::_('COM_JEVENTS'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevpeople', JText::_('COM_JEVPEOPLE'));
+		$addonoptions[] = HTMLHelper::_('select.option', 'jevlocations', JText::_('COM_JEVLOCATIONS'));
 
-		$addonoptions = JHtml::_('select.options', $addonoptions, 'value', 'text', $layouttype);
-		$this->assign('addonoptions', $addonoptions);
+		$addonoptions = HTMLHelper::_('select.options', $addonoptions, 'value', 'text', $layouttype);
+		$this->addonoptions = $addonoptions;
 
 		if ($layouttype == "jevents")
 		{
-			$catid  = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
-			$catids = JHtml::_('select.options', $catids, 'value', 'text', $catid);
+			$catid  = $app->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "");
+			$catids = HTMLHelper::_('select.options', $catids, 'value', 'text', $catid);
 		}
 		else
 		{
 			$catid  = 0;
 			$catids = "";
 		}
-		$this->assign('catid', $catid);
-		$this->assign('catids', $catids);
+		$this->catid    = $catid;
+		$this->catids   = $catids;
 
-		$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
-		$this->assign('filter_published', $filter_published);
+		$filter_published = $app->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
+		$this->filter_published = $filter_published;
 
-		$user = JFactory::getUser();
-		$this->assignRef('user', $user);
-		$this->assignRef('items', $items);
+		$user = Factory::getUser();
+		$this->user     = $user;
+		$this->items    = $items;
 
 		if (JevJoomlaVersion::isCompatible("3.0"))
 		{
@@ -93,15 +101,13 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 	function edit($tpl = null)
 	{
 
-		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
-
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editdefaults.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(JText::_('JEV_LAYOUT_DEFAULT_EDIT'));
 
-		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$requiredfields = $params->get("com_jeveditionrequiredfields", "");
 		if (!empty($requiredfields))
 		{
@@ -117,14 +123,9 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		JEventsHelper::addSubmenu();
 
-		JHTML::_('behavior.tooltip');
-
-
-		$db  = JFactory::getDbo();
-		$uri = JFactory::getURI();
+		HTMLHelper::_('behavior.tooltip');
 
 		// Get data from the model
-		$model = $this->getModel();
 		$item  = $this->get('Data');
 
 		if (strpos($item->name, "com_") === 0)
@@ -146,8 +147,8 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 			}
 		}
 
-		$this->assignRef('item', $item);
-		$this->assignRef('requiredfields', $requiredfields);
+		$this->item             = $item;
+		$this->requiredfields   = $requiredfields;
 
 		parent::displaytemplate($tpl);
 
@@ -173,11 +174,11 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 				if (JevJoomlaVersion::isCompatible("3.0"))
 				{
-					$title = JFactory::getApplication()->JComponentTitle;
+					$title = Factory::getApplication()->JComponentTitle;
 				}
 				else
 				{
-					$title = JFactory::getApplication()->get('JComponentTitle');
+					$title = Factory::getApplication()->get('JComponentTitle');
 				}
 				echo $title;
 				?>
@@ -208,7 +209,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		if ($this->languages)
 		{
 			// Any existing translations ?
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery("SELECT id, language, value, state FROM #__jev_defaults where catid=" . $row->catid . " and title=" . $db->quote($row->title));
 			$translations = $db->loadObjectList("language");
 
@@ -227,15 +228,15 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 							$hasTranslation = true;
 						}
 					}
-					$url          = JRoute::_('index.php?option=com_jevents&task=defaults.edit&id=' . $translationid, false);
-					$img          = JHtml::_('image', 'mod_languages/' . $item->image . '.gif',
+					$url          = Route::_('index.php?option=com_jevents&task=defaults.edit&id=' . $translationid, false);
+					$img          = HTMLHelper::_('image', 'mod_languages/' . $item->image . '.gif',
 						$item->title,
 						array('title' => $item->title),
 						true
 					);
 					$url          = $url;// ."', '". JText::sprintf("JEV_TRANSLATE_EVENT_TO" ,  addslashes($item->title),  array('jsSafe'=>true) ) . "'); ";
 					$tooltipParts = array($img, addslashes($item->title));
-					$item->link   = JHtml::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : ""));
+					$item->link   = HTMLHelper::_('tooltip', implode(' ', $tooltipParts), null, null, $text, $url, null, 'hasTooltip label label-association label-' . $item->sef . ($hasTranslation ? " hastranslation" : ""));
 					?>
 					<li>
 						<?php
@@ -255,7 +256,7 @@ function replaceLabelsCallback($matches)
 
 	if (count($matches) == 1)
 	{
-		return "{{" . JText::_(JString::substr($matches[0], 2, JString::strlen($matches[0]) - 3)) . ":";
+		return "{{" . JText::_(StringHelper::substr($matches[0], 2, StringHelper::strlen($matches[0]) - 3)) . ":";
 	}
 
 	return "";

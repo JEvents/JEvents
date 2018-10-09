@@ -2,6 +2,9 @@
 
 // No direct access
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Component\ComponentHelper;
+
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
 // Class to fix Joomla 1.6 date class bugs
@@ -38,7 +41,7 @@ if (!defined("JEVDATE"))
 				//self::$stz = new DateTimeZone(@date_default_timezone_get());
 			}
 			// Must get this each time otherwise modules can't set their own timezone
-			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$jtz        = $compparams->get("icaltimezonelive", "");
 			if ($jtz != "")
 			{
@@ -297,7 +300,7 @@ if (!defined("JEVDATE"))
 
 			if (is_callable($name))
 			{
-				return call_user_func_array($name, $arg);
+				return call_user_func_array($name, $args);
 			}
 
 		}

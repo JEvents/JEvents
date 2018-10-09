@@ -12,6 +12,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
@@ -545,14 +547,14 @@ class JFormFieldJevfaicon extends JFormField
 		if (!isset($options))
 		{
 			$options   = array();
-			$options[] = JHTML::_('select.option', '', '- ' . JText::_('SELECT_FONTAWESOME_ICON') . ' -');
+			$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_FONTAWESOME_ICON') . ' -');
 			foreach ($falist as $name => $faicon)
 			{
-				$options[] = JHTML::_('select.option', $faicon, $faicon . " " . $name);
+				$options[] = HTMLHelper::_('select.option', $faicon, $faicon . " " . $name);
 			}
 		}
 
-		return JHTML::_('select.genericlist', $options, $this->name, 'class="inputbox" style="font-family:\'FontAwesome\', Arial;" ', 'value', 'text', $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist', $options, $this->name, 'class="inputbox" style="font-family:\'FontAwesome\', Arial;" ', 'value', 'text', $this->value, $this->id);
 
 	}
 

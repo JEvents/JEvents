@@ -13,6 +13,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 class JEventsDataModel
 {
 
@@ -36,7 +43,7 @@ class JEventsDataModel
 
 		$cfg = JEVConfig::getInstance();
 
-		$user      = JFactory::getUser();
+		$user      = Factory::getUser();
 		$this->aid = JEVHelper::getAid($user);
 
 		if (is_null($dbmodel))
@@ -96,21 +103,23 @@ class JEventsDataModel
 
 		// if no catids from GET or POST default to the menu values
 		// Note that module links must pass a non default value
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		$Itemid         = JEVHelper::getItemid();
 		$this->myItemid = $Itemid;
 
-		$menu   = JFactory::getApplication()->getMenu();
+		$menu   = $app->getMenu();
 		$active = $menu->getActive();
 		if (!is_null($active) && $active->component == JEV_COM_COMPONENT)
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		}
 		else
 		{
 			// If accessing this function from outside the component then I must load suitable parameters
 			// We may be calling from a Jevents module so we should use the target menu item if available
-			$registry     = JRegistry::getInstance("jevents");
+			$registry     = JevRegistry::getInstance("jevents");
 			$moduleparams = $registry->get("jevents.moduleparams", false);
 			$moduleid     = $registry->get("jevents.moduleid", "");
 			if ($moduleparams && $moduleparams->get("target_itemid", 0) > 0 && $moduleid)
@@ -126,10 +135,10 @@ class JEventsDataModel
 
 		$separator = $params->get("catseparator", "|");
 
-		$catidsIn = JRequest::getVar('catids', 'NONE');
+		$catidsIn = $input->getString('catids', 'NONE');
 		if ($catidsIn == "NONE" || $catidsIn == 0)
 		{
-			$catidsIn = JRequest::getVar('category_fv', 'NONE');
+			$catidsIn = $input->getString('category_fv', 'NONE');
 		}
 
 		// set menu/module constraint values for later use
@@ -165,7 +174,7 @@ class JEventsDataModel
 		$this->mmcatidList = implode(",", $this->mmcatids);
 
 		// if resettting then always reset to module/menu value
-		if (intval(JRequest::getVar('filter_reset', 0)))
+		if (intval($input->getInt('filter_reset', 0)))
 		{
 			$this->catids    = $this->mmcatids;
 			$this->catidList = $this->mmcatidList;
@@ -256,7 +265,7 @@ class JEventsDataModel
 		$data['year']  = $year;
 		$data['month'] = $month;
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		if (!isset($this->myItemid) || is_null($this->myItemid))
 		{
@@ -283,7 +292,7 @@ class JEventsDataModel
 		}
 		$rowcount = count($rows);
 
-		if (JString::strlen($this->catidsOut) > 0)
+		if (StringHelper::strlen($this->catidsOut) > 0)
 		{
 			$cat = "&catids=$this->catidsOut";
 		}
@@ -372,7 +381,7 @@ class JEventsDataModel
 
 			$data["dates"][$dayCount]["today"] = false;
 
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
 				. $priorYear . '&month=' . $priorMonth . '&day=' . $do . $cat . '&Itemid=' . $this->myItemid);
 
 			$data["dates"][$dayCount]["link"] = $link;
@@ -424,7 +433,7 @@ class JEventsDataModel
 			$data["dates"][$dayCount]['d']  = $d;
 			$data["dates"][$dayCount]['d0'] = $do;
 
-			$link                             = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
+			$link                             = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
 				. $year . '&month=' . $month . '&day=' . $do . $cat . '&Itemid=' . $this->myItemid);
 			$data["dates"][$dayCount]["link"] = $link;
 
@@ -509,7 +518,7 @@ class JEventsDataModel
 
 			$data["dates"][$dayCount]["today"] = false;
 
-			$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
+			$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year='
 				. $followYear . '&month=' . $followMonth . '&day=' . $do . $cat . '&Itemid=' . $this->myItemid);
 
 			$data["dates"][$dayCount]["link"] = $link;
@@ -526,7 +535,7 @@ class JEventsDataModel
 			$year  = $data["dates"][$w * 7]["year"];
 			// get week number from second weekday to avoid confusion with week start sunday + 1 day + 3 hours to avoid DST change problems
 			$week                 = intval(JEV_CommonFunctions::jev_strftime("%V", $date + 97200));
-			$link                 = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=week.listevents&year='
+			$link                 = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=week.listevents&year='
 				. $year . '&month=' . $month . '&day=' . $day . $cat . '&Itemid=' . $this->myItemid);
 			$data["weeks"][$week] = $link;
 		}
@@ -541,7 +550,7 @@ class JEventsDataModel
 		$data          = array();
 		$data ["year"] = $year;
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -599,7 +608,7 @@ class JEventsDataModel
 
 		$data = array();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -647,7 +656,7 @@ class JEventsDataModel
 
 
 		$Itemid = JEVHelper::getItemid();
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 
 		$cat = "";
 		if ($this->catidsOut != 0)
@@ -688,7 +697,7 @@ class JEventsDataModel
 			$data['days'][$d]['week_year']  = JevDate::strftime("%Y", $this_currentdate);
 
 			// This is really view specific - remove it later
-			$data['days'][$d]['link'] = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year=' . $data['days'][$d]['week_year'] . '&month=' . $data['days'][$d]['week_month'] . '&day=' . $data['days'][$d]['week_day'] . '&Itemid=' . $Itemid . $cat);
+			$data['days'][$d]['link'] = Route::_('index.php?option=' . JEV_COM_COMPONENT . '&task=day.listevents&year=' . $data['days'][$d]['week_year'] . '&month=' . $data['days'][$d]['week_month'] . '&day=' . $data['days'][$d]['week_day'] . '&Itemid=' . $Itemid . $cat);
 
 			$t_datenow    = JEVHelper::getNow();
 			$now_adjusted = $t_datenow->toUnix(true);
@@ -731,7 +740,7 @@ class JEventsDataModel
 	{
 
 		$num_events                          = count($rows);
-		$params                              = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params                              = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$data['hours']                       = array();
 		$data['hours']['timeless']           = array();
 		$data['hours']['timeless']['events'] = array();
@@ -809,13 +818,14 @@ class JEventsDataModel
 	function getEventData($rpid, $jevtype, $year, $month, $day, $uid = "")
 	{
 
-		$data = array();
+		$data   = array();
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
-
-		$pop    = intval(JRequest::getVar('pop', 0));
+		$pop    = intval($input->getInt('pop', 0));
 		$Itemid = JEVHelper::getItemid();
-		$db     = JFactory::getDbo();
-		$user   = JFactory::getUser();
+		$db     = Factory::getDbo();
+		$user   = Factory::getUser();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -833,7 +843,7 @@ class JEventsDataModel
 		$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 
 		// No matching rows - use uid as alternative
-		if ($num_row == 0 && JString::strlen($uid) > 0)
+		if ($num_row == 0 && StringHelper::strlen($uid) > 0)
 		{
 			$rpid = $this->queryModel->findMatchingRepeat($uid, $year, $month, $day);
 			if (isset($rpid) && $rpid > 0)
@@ -853,11 +863,10 @@ class JEventsDataModel
 		if ($num_row)
 		{
 
-			// process the new plugins
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onGetEventData', array(& $row));
+			// Process the new plugins
+			$app->triggerEvent('onGetEventData', array(& $row));
 
-			$params           = new JRegistry(null);
+			$params           = new JevRegistry(null);
 			$row->contactlink = JEventsHTML::getUserMailtoLink($row->id(), $row->created_by(), false, $row);
 
 			$event_up        = new JEventDate($row->publish_up());
@@ -881,7 +890,7 @@ class JEventsDataModel
 
 			// Parse http and  wrap in <a> tag
 			// trigger content plugin
-			JPluginHelper::importPlugin('content');
+			PluginHelper::importPlugin('content');
 
 			$pattern = '[a-zA-Z0-9&?_.,=%\-\/]';
 
@@ -896,9 +905,7 @@ class JEventsDataModel
 				$tmprow       = new stdClass();
 				$tmprow->text = $row->location();
 
-				$dispatcher = JEventDispatcher::getInstance();
-
-				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+				$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 
 				$row->location($tmprow->text);
 			}
@@ -911,7 +918,7 @@ class JEventsDataModel
 			$tmprow       = new stdClass();
 			$tmprow->text = $row->contact_info();
 
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+			$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 
 			$row->contact_info($tmprow->text);
 
@@ -924,20 +931,20 @@ class JEventsDataModel
 			$tmprow       = new stdClass();
 			$tmprow->text = $row->extra_info();
 
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+			$app->triggerEvent('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
 
 			$row->extra_info($tmprow->text);
 
-			$mask = JFactory::getApplication()->getCfg('hideAuthor') ? MASK_HIDEAUTHOR : 0;
-			$mask |= JFactory::getApplication()->getCfg('hideCreateDate') ? MASK_HIDECREATEDATE : 0;
-			$mask |= JFactory::getApplication()->getCfg('hideModifyDate') ? MASK_HIDEMODIFYDATE : 0;
+			$mask  = $app->getCfg('hideAuthor') ? MASK_HIDEAUTHOR : 0;
+			$mask |= $app->getCfg('hideCreateDate') ? MASK_HIDECREATEDATE : 0;
+			$mask |= $app->getCfg('hideModifyDate') ? MASK_HIDEMODIFYDATE : 0;
 
-			$mask |= JFactory::getApplication()->getCfg('hidePdf') ? MASK_HIDEPDF : 0;
-			$mask |= JFactory::getApplication()->getCfg('hidePrint') ? MASK_HIDEPRINT : 0;
-			$mask |= JFactory::getApplication()->getCfg('hideEmail') ? MASK_HIDEEMAIL : 0;
+			$mask |= $app->getCfg('hidePdf') ? MASK_HIDEPDF : 0;
+			$mask |= $app->getCfg('hidePrint') ? MASK_HIDEPRINT : 0;
+			$mask |= $app->getCfg('hideEmail') ? MASK_HIDEEMAIL : 0;
 
-			//$mask |= JFactory::getApplication()->getCfg( 'vote' ) ? MASK_VOTES : 0;
-			$mask |= JFactory::getApplication()->getCfg('vote') ? (MASK_VOTES | MASK_VOTEFORM) : 0;
+			//$mask |= $app->getCfg( 'vote' ) ? MASK_VOTES : 0;
+			$mask |= $app->getCfg('vote') ? (MASK_VOTES | MASK_VOTEFORM) : 0;
 			$mask |= $pop ? MASK_POPUP | MASK_IMAGES | MASK_BACKTOLIST : 0;
 
 			// Do main mambot processing here
@@ -946,7 +953,7 @@ class JEventsDataModel
 			$params->set("image", 1);
 			$row->text = $row->content();
 
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$row, &$params, 0));
+			$app->triggerEvent('onContentPrepare', array('com_jevents', &$row, &$params, 0));
 
 			$row->content($row->text);
 
@@ -962,10 +969,10 @@ class JEventsDataModel
 		{
 			// Do we have to be logged in to see this event?
 			// If we set the access user for ical export (as an example) then use this user id for access checks!
-			$user = isset($this->accessuser) ? JEVHelper::getUser($this->accessuser) : JFactory::getUser();
+			$user = isset($this->accessuser) ? JEVHelper::getUser($this->accessuser) : Factory::getUser();
 			if ($user->id == 0)
 			{
-				$db    = JFactory::getDbo();
+				$db    = Factory::getDbo();
 				$query = "SELECT ev.*"
 					. "\n FROM #__jevents_vevent as ev "
 					. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -975,22 +982,21 @@ class JEventsDataModel
 				// need to be logged in to see this event?
 				if ($row2 && (version_compare(JVERSION, '1.6.0', '>=') ? !in_array($row2->access, JEVHelper::getAid($user, 'array')) : JEVHelper::getAid($user) < $row2->access))
 				{
-					$uri     = JURI::getInstance();
+					$uri     = Uri::getInstance();
 					$link    = $uri->toString();
 					$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
 					$link    = 'index.php?option=' . $comuser . '&view=login&return=' . base64_encode($link);
-					$link    = JRoute::_($link);
+					$link    = Route::_($link);
 
-					JFactory::getApplication()->redirect($link, JText::_('JEV_LOGIN_TO_VIEWEVENT'));
+					$app->redirect($link, JText::_('JEV_LOGIN_TO_VIEWEVENT'));
 
 					return null;
 				}
 			}
 
 			// See if a plugin can find our missing event - maybe on another menu item
-			JPluginHelper::importPlugin('jevents');
-			$dispatcher = JEventDispatcher::getInstance();
-			$dispatcher->trigger('onMissingEvent', array(& $row, $rpid, $jevtype, $year, $month, $day, $uid));
+			PluginHelper::importPlugin('jevents');
+			$app->triggerEvent('onMissingEvent', array(& $row, $rpid, $jevtype, $year, $month, $day, $uid));
 
 			return null;
 		}
@@ -1005,10 +1011,12 @@ class JEventsDataModel
 	function getCatData($catids, $showRepeats = true, $limit = 0, $limitstart = 0, $order = "rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC")
 	{
 
-		$data = array();
+		$data   = array();
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 		$Itemid = JEVHelper::getItemid();
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 		include_once(JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/libraries/colorMap.php");
 
 		$cfg = JEVConfig::getInstance();
@@ -1032,7 +1040,7 @@ class JEventsDataModel
 		if (count($catids) == 0 || (count($catids) == 1 && $catids[0] == ""))
 		{
 			// We are using the filter instead
-			$tempcat  = JRequest::getVar("category_fv", 0);
+			$tempcat  = $input->getString("category_fv", 0);
 			$catids   = array();
 			$catids[] = $tempcat;
 		}
@@ -1040,7 +1048,7 @@ class JEventsDataModel
 		{
 			// Override multiple categories using the filter instead
 
-			$tempcat = JFactory::getApplication()->getUserStateFromRequest('category_fv_ses', 'category_fv', 0);
+			$tempcat = $app->getUserStateFromRequest('category_fv_ses', 'category_fv', 0);
 			if ($tempcat > 0)
 			{
 				$catids   = array();
@@ -1082,8 +1090,8 @@ class JEventsDataModel
 		else if ((count($catids) == 1 && $catids[0] != 0) || (count($this->catids) == 1 && $this->catids[0] != 0))
 		{
 			// get the cat name from the database
-			$db     = JFactory::getDbo();
-			$user   = JFactory::getUser();
+			$db     = Factory::getDbo();
+			$user   = Factory::getUser();
 			$catid  = (count($catids) == 1 && $catids[0] != 0) ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description, c.id FROM #__categories AS c' .
 				' WHERE c.access  ' . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' . JEVHelper::getAid($user) . ')' : ' <=  ' . JEVHelper::getAid($user)) .
@@ -1127,11 +1135,11 @@ class JEventsDataModel
 
 		$data = array();
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
-		$user   = JFactory::getUser();
+		$user   = Factory::getUser();
 		$Itemid = JEVHelper::getItemid();
-		$db     = JFactory::getDbo();
+		$db     = Factory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -1147,7 +1155,7 @@ class JEventsDataModel
 		$searchisValid = false;
 		$total         = 0;
 
-		if (empty($keyword) || JString::strlen($keywordcheck) < 3 || $keyword == '%%' || $keywordcheck == '')
+		if (empty($keyword) || StringHelper::strlen($keywordcheck) < 3 || $keyword == '%%' || $keywordcheck == '')
 		{
 			$keyword            = JText::_('JEV_KEYWORD_NOT_VALID');
 			$num_events         = 0;
@@ -1212,10 +1220,10 @@ class JEventsDataModel
 		$data = array();
 
 		$is_event_editor = JEVHelper::isEventCreator();
-		$user            = JFactory::getUser();
+		$user            = Factory::getUser();
 		$Itemid          = JEVHelper::getItemid();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -1288,13 +1296,13 @@ class JEventsDataModel
 		$month                = JevDate::strftime("%m", $d1);
 		$monthResult['month'] = $month;
 		$monthResult['name']  = JEVHelper::getMonthName($month);
-		$task                 = JRequest::getString('jevtask');
+		$task                 = Factory::getApplication()->input->getString('jevtask');
 		$Itemid               = JEVHelper::getItemid();
 		if (isset($Itemid)) $item = "&Itemid=$Itemid";
 		else $item = "";
 		// URL suffix to preserver catids!
 		$cat                 = $this->getCatidsOutLink();
-		$monthResult['link'] = JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month" . $cat);
+		$monthResult['link'] = Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month" . $cat);
 
 		return $monthResult;
 	}
@@ -1344,14 +1352,14 @@ class JEventsDataModel
 		}
 
 		$month  = JevDate::strftime("%m", $d1);
-		$task   = JRequest::getString('jevtask');
+		$task   = Factory::getApplication()->input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item = "&Itemid=$Itemid";
 		else $item = "";
 		// URL suffix to preserver catids!
 		$cat = $this->getCatidsOutLink();
 
-		return JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day" . $cat);
+		return Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day" . $cat);
 	}
 
 	function getFollowingWeek($year, $month, $day)
@@ -1382,14 +1390,14 @@ class JEventsDataModel
 		}
 
 		$month  = JevDate::strftime("%m", $d1);
-		$task   = JRequest::getString('jevtask');
+		$task   = Factory::getApplication()->input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item = "&Itemid=$Itemid";
 		else $item = "";
 		// URL suffix to preserver catids!
 		$cat = $this->getCatidsOutLink();
 
-		return JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day" . $cat);
+		return Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day" . $cat);
 	}
 
 	function getFollowingDay($year, $month, $day)

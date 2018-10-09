@@ -6,6 +6,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 function DefaultExportWebcal($view, $publiclink, $privatelink)
 {
 
@@ -14,7 +16,7 @@ function DefaultExportWebcal($view, $publiclink, $privatelink)
 	$webcalurl_pub = str_replace(array('http:', 'https:'), 'webcal:', $publiclink);
 	echo "<div class='ical_form_button export_public'><a href='$webcalurl_pub'>" . JText::_('JEV_REP_ICAL_PUBLIC_WEBCAL') . "</a></div>";
 
-	$user = JFactory::getUser();
+	$user = Factory::getUser();
 	if ($user->id != 0)
 	{
 		//Webcal Subscribe button:

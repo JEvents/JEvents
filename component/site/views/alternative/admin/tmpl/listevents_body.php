@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Router\Route;
+
 $cfg = JEVConfig::getInstance();
 
 $this->data = $data = $this->datamodel->getDataForAdmin($this->creator_id, $this->limit, $this->limitstart);
@@ -13,7 +15,7 @@ $chdate     = '';
 echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_ADMINPANEL') . '</legend><br />' . "\n";
 
 $myItemid  = JEVHelper::getAdminItemid();
-$form_link = JRoute::_(
+$form_link = Route::_(
 	'index.php?option=' . JEV_COM_COMPONENT
 	. '&task=admin.listevents'
 	. "&Itemid=" . $myItemid

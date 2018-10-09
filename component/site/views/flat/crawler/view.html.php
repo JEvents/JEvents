@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -25,7 +27,7 @@ class flatViewCrawler extends JEventsflatView
 
 		JEVHelper::componentStylesheet($this);
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$value = trim($params->get("relstart", ""));
 		if ($value != "")
@@ -66,17 +68,17 @@ class flatViewCrawler extends JEventsflatView
 			$endday   = 31;
 		}
 
-		$this->assign("startdate", $startdate);
-		$this->assign("startyear", $startyear);
-		$this->assign("startmonth", $startmonth);
-		$this->assign("startday", $startday);
-		$this->assign("enddate", $enddate);
-		$this->assign("endyear", $endyear);
-		$this->assign("endmonth", $endmonth);
-		$this->assign("endday", $endday);
+		$this->startdate    = $startdate;
+		$this->startyear    = $startyear;
+		$this->startmonth   = $startmonth;
+		$this->startday     = $startday;
+		$this->enddate      = $enddate;
+		$this->endyear      = $endyear;
+		$this->endmonth     = $endmonth;
+		$this->endday       = $endday;
 
 		// Note that using a $limit value of -1 the limit is ignored in the query
-		$this->assign("data", $this->datamodel->getRangeData($startdate, $enddate, $this->limit, $this->limitstart));
+		$this->data = $this->datamodel->getRangeData($startdate, $enddate, $this->limit, $this->limitstart);
 
 	}
 }

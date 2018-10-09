@@ -12,6 +12,11 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+
 jimport('joomla.html.toolbar.button');
 jimport('cms.toolbar.button');
 
@@ -57,7 +62,7 @@ class JButtonJev extends JToolbarButton
 	function _getCommand($name, $task, $list)
 	{
 
-		$todo    = JString::strtolower(JText::_($name));
+		$todo    = StringHelper::strtolower(JText::_($name));
 		$message = JText::sprintf('Please make a selection from the list to', $todo);
 		$message = addslashes($message);
 
@@ -132,8 +137,8 @@ class JButtonJevlink extends JToolbarButton
 	function _getCommand($name, $task, $list)
 	{
 
-		$Itemid = JRequest::getInt("Itemid");
-		$link   = JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task&Itemid=$Itemid");
+		$Itemid = Factory::getApplication()->input->getInt("Itemid");
+		$link   = Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task&Itemid=$Itemid");
 
 		return $link;
 	}
@@ -192,7 +197,7 @@ class JButtonJevconfirm extends JtoolbarButton
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
 
-		$todo         = JString::strtolower(JText::_($name));
+		$todo         = StringHelper::strtolower(JText::_($name));
 		$message      = JText::sprintf('Please make a selection from the list to %s', $todo);
 		$message      = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";

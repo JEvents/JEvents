@@ -15,11 +15,11 @@ defined('JPATH_BASE') or die();
 jimport('cms.toolbar.button');
 JLoader::register('JevJoomlaVersion', JPATH_ADMINISTRATOR . "/components/com_jevents/libraries/version.php");
 
-/*
- * 
- * Joomla 3.0 version
- * 
- */
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 
 class JToolbarButtonJev extends JToolbarButton
 {
@@ -48,7 +48,7 @@ class JToolbarButtonJev extends JToolbarButton
 			$btnClass  = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? $btnClass : "";
+		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? $btnClass : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"" . $btnClass . "\">\n";
 		$html .= "<i class=\"$class $iconWhite\">\n";
@@ -75,7 +75,7 @@ class JToolbarButtonJev extends JToolbarButton
 	function _getCommand($name, $task, $list)
 	{
 
-		$todo    = JString::strtolower(JText::_($name));
+		$todo    = StringHelper::strtolower(JText::_($name));
 		$message = JText::sprintf('Please make a selection from the list to', $todo);
 		$message = addslashes($message);
 
@@ -135,7 +135,7 @@ class JToolbarButtonJevlink extends JToolbarButton
 			$btnClass  = "btn btn-small";
 			$iconWhite = "";
 		}
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? $btnClass : "";
+		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? $btnClass : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"" . $btnClass . "\">\n";
 		$html .= "<i class=\"$class\" title=\"$i18n_text\">\n";
@@ -162,8 +162,8 @@ class JToolbarButtonJevlink extends JToolbarButton
 	function _getCommand($name, $task, $list)
 	{
 
-		$Itemid = JRequest::getInt("Itemid");
-		$link   = JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task&Itemid=$Itemid");
+		$Itemid = Factory::getApplication()->input->getInt("Itemid");
+		$link   = Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task&Itemid=$Itemid");
 
 		return $link;
 	}
@@ -201,7 +201,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 		$class  = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($msg, $name, $task, $list, $hideMenu, $jstestvar);
 
-		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || JComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn btn-small" : "";
+		$btnClass = (JevJoomlaVersion::isCompatible("3.0") || ComponentHelper::getParams(JEV_COM_COMPONENT)->get("useboostrap", 1)) ? "btn btn-small" : "";
 
 		$html = "<button href=\"#\" onclick=\"$doTask\" class=\"$btnClass\">\n";
 		$html .= "<span class=\"$class\">\n";
@@ -225,7 +225,7 @@ class JToolbarButtonJevconfirm extends JToolbarButton
 	function _getCommand($msg, $name, $task, $list, $hide, $jstestvar = false)
 	{
 
-		$todo         = JString::strtolower(JText::_($name));
+		$todo         = StringHelper::strtolower(JText::_($name));
 		$message      = JText::sprintf('Please make a selection from the list to %s', $todo);
 		$message      = addslashes($message);
 		$submitbutton = "Joomla.submitbutton";

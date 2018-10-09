@@ -15,6 +15,10 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 // setup for all required function and classes
 $file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
 if (file_exists($file))
@@ -33,7 +37,7 @@ jimport('joomla.event.plugin');
 // Check for 1.6
 if (!(version_compare(JVERSION, '1.6.0', ">=")))
 {
-	JFactory::getApplication()->registerEvent('onSearchAreas', 'plgSearchEventsSearchAreas');
+	Factory::getApplication()->registerEvent('onSearchAreas', 'plgSearchEventsSearchAreas');
 }
 
 /**
@@ -42,7 +46,7 @@ if (!(version_compare(JVERSION, '1.6.0', ">=")))
 function plgSearchEventsSearchAreas()
 {
 
-	$lang = JFactory::getLanguage();
+	$lang = Factory::getLanguage();
 	$lang->load("plg_search_eventsearch", JPATH_ADMINISTRATOR);
 
 	if (version_compare(JVERSION, '1.6.0', ">="))
@@ -79,12 +83,12 @@ class plgSearchEventsearch extends JPlugin
 	{
 
 		parent::__construct($subject, $config);  // RSH 10/4/10 added config array to args, needed for plugin parameter registration!
-		JFactory::getLanguage()->load();
+		Factory::getLanguage()->load();
 		// load plugin parameters
 		if (!(version_compare(JVERSION, '1.6.0', ">=")))
 		{
-			$this->_plugin = JPluginHelper::getPlugin('search', 'eventsearch');
-			$this->_params = new JRegistry($this->_plugin->params);
+			$this->_plugin = PluginHelper::getPlugin('search', 'eventsearch');
+			$this->_params = new JevRegistry($this->_plugin->params);
 		}
 		$this->loadLanguage('plg_search_eventsearch');
 	}
@@ -120,8 +124,9 @@ class plgSearchEventsearch extends JPlugin
 	function onSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 
-		$db     = JFactory::getDbo();
-		$user   = JFactory::getUser();
+		$db     = Factory::getDbo();
+		$user   = Factory::getUser();
+		$app    = Factory::getApplication();
 		$groups = (version_compare(JVERSION, '1.6.0', '>=')) ? implode(',', $user->getAuthorisedViewLevels()) : false;
 
 		$limit        = (version_compare(JVERSION, '1.6.0', '>=')) ? $this->params->get('search_limit', 50) : $this->_params->def('search_limit', 50);
@@ -145,7 +150,7 @@ class plgSearchEventsearch extends JPlugin
 			}
 		}
 
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = ComponentHelper::getParams("com_jevents");
 
 		// See http://www.php.net/manual/en/timezones.php
 		$tz = $params->get("icaltimezonelive", "");
@@ -167,7 +172,7 @@ class plgSearchEventsearch extends JPlugin
 		$filterarray = array("published");
 
 		$dataModel  = new JEventsDataModel();
-		$compparams = JComponentHelper::getParams("com_jevents");
+		$compparams = ComponentHelper::getParams("com_jevents");
 		if ($compparams->get("multicategory", 0))
 		{
 			$catwhere = "\n AND catmap.catid IN(" . $dataModel->accessibleCategoryList(null, null, null, $allLanguages) . ")";
@@ -182,7 +187,7 @@ class plgSearchEventsearch extends JPlugin
 		}
 
 		// If there are extra filters from the module then apply them now
-		$reg       = JFactory::getConfig();
+		$reg       = Factory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
@@ -193,15 +198,16 @@ class plgSearchEventsearch extends JPlugin
 		$filters->setWhereJoin($extrawhere, $extrajoin);
 		$needsgroup = $filters->needsGroupBy();
 
-		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
+		PluginHelper::importPlugin('jevents');
+		$extrafields = "";  // must have comma prefix
+		$extratables = "";  // must have comma prefix
+		$app->triggerEvent('onListIcalEvents', array(& $extrafields, & $extratables, & $extrawhere, & $extrajoin, & $needsgroup));
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
 		$extrasearchfields = array();
 		// NB extrajoin is a string from now on
-		$dispatcher->trigger('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
+		$app->triggerEvent('onSearchEvents', array(& $extrasearchfields, & $extrajoin, & $needsgroup));
 
 		$wheres      = array();
 		$wheres_ical = array();
@@ -332,7 +338,7 @@ class plgSearchEventsearch extends JPlugin
 			foreach ($list_ical as $id => $item)
 			{
 
-				$user  = JFactory::getUser();
+				$user  = Factory::getUser();
 				$query = "SELECT ev.*, ev.state as published, rpt.*, rr.*, det.*, ev.created as created, ex_id, exception_type "
 					. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 					. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -369,8 +375,8 @@ class plgSearchEventsearch extends JPlugin
 					// I must find the itemid that allows this event to be shown
 					$catidsOut = $modcatids = $catidList = $modparams = $showall = "";
 					// Use the plugin params to ensure menu item is picked up
-					//$modparams = new JRegistry($this->_plugin->params);
-					$modparams = new JRegistry(null);
+					//$modparams = new JevRegistry($this->_plugin->params);
+					$modparams = new JevRegistry(null);
 					// pretend to have category restriction
 					$modparams->set("catid0", $row->catid);
 					$modparams->set("ignorecatfilter", 1);

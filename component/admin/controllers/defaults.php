@@ -11,9 +11,12 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 jimport('joomla.application.component.controllerform');
 
-class AdminDefaultsController extends JControllerForm
+class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 {
 	/**
 	 * Controler for the Control Panel
@@ -27,7 +30,7 @@ class AdminDefaultsController extends JControllerForm
 
 		if (!JEVHelper::isAdminUser())
 		{
-			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
+			Factory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
 
 			return;
 		}
@@ -38,7 +41,7 @@ class AdminDefaultsController extends JControllerForm
 		$this->registerDefaultTask("overview");
 
 		// Make sure DB is up to date
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__jev_defaults");
 		$defaults = $db->loadObjectList("name");
 		if (!isset($defaults['icalevent.detail_body']))
@@ -47,7 +50,8 @@ class AdminDefaultsController extends JControllerForm
 						title=" . $db->Quote("JEV_EVENT_DETAIL_PAGE") . ",
 						subject='',
 						value='',
-						state=0");
+						state=0,
+						params='{}'");
 			$db->execute();
 		}
 		else
@@ -62,7 +66,8 @@ class AdminDefaultsController extends JControllerForm
 						title=" . $db->Quote("JEV_EVENT_EDIT_PAGE") . ",
 						subject='',
 						value='',
-						state=0");
+						state=0,
+						params='{}'");
 			$db->execute();
 		}
 		else
@@ -77,7 +82,8 @@ class AdminDefaultsController extends JControllerForm
 						title=" . $db->Quote("JEV_EVENT_LIST_ROW") . ",
 						subject='',
 						value='',
-						state=0");
+						state=0,
+						params='{}'");
 			$db->execute();
 		}
 		else
@@ -92,7 +98,8 @@ class AdminDefaultsController extends JControllerForm
 						title=" . $db->Quote("JEV_EVENT_MONTH_CALENDAR_CELL") . ",
 						subject='',
 						value='',
-						state=0");
+						state=0,
+						params='{}'");
 			$db->execute();
 		}
 		else
@@ -107,7 +114,8 @@ class AdminDefaultsController extends JControllerForm
 						title=" . $db->Quote("JEV_EVENT_MONTH_CALENDAR_TIP") . ",
 						subject='',
 						value='',
-						state=0");
+						state=0,
+						params='{}'");
 			$db->execute();
 		}
 		else
@@ -163,7 +171,7 @@ class AdminDefaultsController extends JControllerForm
 		private function populateLanguages()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// get the list of languages first
 		$query = $db->getQuery(true);
@@ -329,7 +337,7 @@ class AdminDefaultsController extends JControllerForm
 	private function populateCategories()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// get the list of categories first
 		$query = $db->getQuery(true);
@@ -466,16 +474,22 @@ class AdminDefaultsController extends JControllerForm
 		{
 			$query = $db->getQuery(true);
 			$query->insert("#__jev_defaults")->columns("title, name, subject,value,state,params,language, catid");
+
 			foreach ($missingDefaults as $md)
 			{
 				$values = array($db->quote($md["name"]->title), $db->quote($md["name"]->name), $db->quote($md["name"]->subject), $db->quote($md["name"]->value), 0, $db->quote($md["name"]->params), $db->quote($md["lang_code"]), $md["catid"]);
 				$query->values(implode(",", $values));
 			}
-			$db->setQuery($query);
-			$db->execute();
-		}
 
-		echo $db->getErrorMsg();
+			$db->setQuery($query);
+
+			try
+			{
+				$db->execute();
+			} catch (Exception $e) {
+				echo $e;
+			}
+		}
 
 	}
 
@@ -502,20 +516,20 @@ function edit($key = null, $urlVar = null)
 	function cancel($key = null)
 	{
 
-		$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+		$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 		$this->redirect();
 	}
 
 	function unpublish()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$db  = JFactory::getDbo();
-		$cid = $jinput->get("cid", array(), "array");
+		$db  = Factory::getDbo();
+		$cid = $input->get("cid", array(), "array");
 		if (count($cid) != 1)
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
 			return;
@@ -525,20 +539,20 @@ function edit($key = null, $urlVar = null)
 		$db->setQuery($sql);
 		$db->execute();
 
-		$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+		$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 		$this->redirect();
 	}
 
 	function publish()
 	{
 
-		$db     = JFactory::getDbo();
-		$jinput = JFactory::getApplication()->input;
+		$db     = Factory::getDbo();
+		$input = Factory::getApplication()->input;
 
-		$cid = $jinput->get("cid", array(), "array");
+		$cid = $input->get("cid", array(), "array");
 		if (count($cid) != 1)
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
 			return;
@@ -568,8 +582,8 @@ function edit($key = null, $urlVar = null)
 
 		if (str_replace(" ", "", $defaultvalue) == str_replace(" ", "", $value->value) || $value->value == "")
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+			Factory::getApplication()->enqueueMessage(JText::_("JEV_LAYOUT_IS_DEFAULT_NOT_PUBLISHED", "WARNING"));
+			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 			$this->redirect();
 
 			return;
@@ -579,7 +593,7 @@ function edit($key = null, $urlVar = null)
 		$db->setQuery($sql);
 		$db->execute();
 
-		$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
+		$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.overview", false));
 		$this->redirect();
 	}
 
@@ -589,19 +603,19 @@ function edit($key = null, $urlVar = null)
 	function save($key = null, $urlVar = null)
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$id = $jinput->getInt("id", 0);
+		$id = $input->getInt("id", 0);
 		if ($id > 0)
 		{
 
 			// Get/Create the model
 			if ($model = $this->getModel("default", "defaultsModel"))
 			{
-				//TODO find a work around for getting post array with JInput.
-				if ($model->store(JRequest::get("post", JREQUEST_ALLOWRAW)))
+				//TODO find a work around for getting post array with input.
+				if ($model->store($input->getArray(array(), null, 'RAW')))
 				{
-					if ($jinput->getCmd("task") == "defaults.apply")
+					if ($input->getCmd("task") == "defaults.apply")
 					{
 						$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=defaults.edit&id=$id", JText::_("JEV_TEMPLATE_SAVED"));
 						$this->redirect();

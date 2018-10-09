@@ -12,8 +12,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
 
-class TableTranslate extends JTable
+class TableTranslate extends Joomla\CMS\Table\Table
 {
 	/**
 	 * Primary Key
@@ -43,14 +44,14 @@ class TableTranslate extends JTable
 	function __construct()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		parent::__construct('#__jevents_translation', 'translation_id', $db);
 	}
 
 	public static function checkTable()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 	}
 
 	function bind($array, $ignore = '')

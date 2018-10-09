@@ -12,9 +12,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
-class AdminIcalrepeatController extends JControllerLegacy
+
+class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	var $_debug = false;
@@ -38,8 +44,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->dataModel  = new JEventsDataModel("JEventsAdminDBModel");
 		$this->queryModel = new JEventsDBModel($this->dataModel);
 
-		$dispatcher = JEventDispatcher::getInstance();
-		JPluginHelper::importPlugin('finder');
+		PluginHelper::importPlugin('finder');
 
 	}
 
@@ -50,11 +55,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function overview()
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$db            = JFactory::getDbo();
+		$db            = Factory::getDbo();
 		$publishedOnly = false;
-		$cid           = $jinput->get('cid', array(0), "array");
+		$cid           = $input->get('cid', array(0), "array");
 		$cid           = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
@@ -63,15 +68,15 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$id = $cid;
 
 		// if cancelling a repeat edit then I get the event id a different way
-		$evid = $jinput->getInt("evid", 0);
+		$evid = $input->getInt("evid", 0);
 		if ($evid > 0)
 		{
 			$id = $evid;
 		}
 
 
-		$limit      = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', JFactory::getApplication()->getCfg('list_limit', 10)));
-		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$limit      = intval(Factory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', Factory::getApplication()->getCfg('list_limit', 10)));
+		$limitstart = intval(Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
 
 		$query = "SELECT count( DISTINCT rpt.rp_id)"
 			. "\n FROM #__jevents_vevent as ev"
@@ -121,7 +126,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
+		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -129,9 +134,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout('overview');
 
-		$this->view->assign('icalrows', $icalrows);
-		$this->view->assign('pageNav', $pageNav);
-		$this->view->assign('evid', $id);
+		$this->view->icalrows = $icalrows;
+		$this->view->pageNav = $pageNav;
+		$this->view->evid = $id;
 
 		$this->view->display();
 
@@ -139,6 +144,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function edit($key = null, $urlVar = null)
 	{
+
+		$app    = Factory::getApplication();
+		$input = $app->input;
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -150,11 +158,8 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$this->view->setModel($model, true);
 		}
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-
-		$db  = JFactory::getDbo();
-		$cid = $jinput->get('cid', array(0), "array");
+		$db  = Factory::getDbo();
+		$cid = $input->get('cid', array(0), "array");
 		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
@@ -171,10 +176,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// front end passes the id as evid
 		if ($id == 0)
 		{
-			$id = $jinput->getInt("evid", 0);
+			$id = $input->getInt("evid", 0);
 		}
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = "SELECT rpt.eventid"
 			. "\n FROM (#__jevents_vevent as ev, #__jevents_icsfile as icsf)"
 			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -210,21 +215,20 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$icsid = $row->icsid() > 0 ? $row->icsid() : current($nativeCals)->ics_id;
 		$clist = '<input type="hidden" name="ics_id" value="' . $icsid . '" />';
 
-		$this->view->assign('clistChoice', false);
-		$this->view->assign('defaultCat', 0);
+		$this->view->clistChoice    = false;
+		$this->view->defaultCat     = 0;
 
 		// Set the layout
 		$this->view->setLayout('edit');
 
-		$this->view->assign('ev_id', $ev_id);
-		$this->view->assign('rp_id', $repeatId);
-		$this->view->assign('row', $row);
-		$this->view->assign('nativeCals', $nativeCals);
-		$this->view->assign('clist', $clist);
-		$this->view->assign('repeatId', $repeatId);
-		//$this->view->assign('glist', $glist);
-		$this->view->assignRef('dataModel', $this->dataModel);
-		$this->view->assign('editCopy', false);
+		$this->view->ev_id      = $ev_id;
+		$this->view->rp_id      = $repeatId;
+		$this->view->row        = $row;
+		$this->view->nativeCals = $nativeCals;
+		$this->view->clist      = $clist;
+		$this->view->repeatId   = $repeatId;
+		$this->view->dataModel  = $this->dataModel;
+		$this->view->editCopy   = false;
 
 		// only those who can publish globally can set priority field
 		if (JEVHelper::isEventPublisher(true))
@@ -232,20 +236,20 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$list = array();
 			for ($i = 0; $i < 10; $i++)
 			{
-				$list[] = JHTML::_('select.option', $i, $i, 'val', 'text');
+				$list[] = HTMLHelper::_('select.option', $i, $i, 'val', 'text');
 			}
-			$priorities = JHTML::_('select.genericlist', $list, 'priority', "", 'val', 'text', $row->priority());
-			$this->view->assign('setPriority', true);
-			$this->view->assign('priority', $priorities);
+			$priorities = HTMLHelper::_('select.genericlist', $list, 'priority', "", 'val', 'text', $row->priority());
+			$this->view->setPriority    = true;
+			$this->view->priority       = $priorities;
 		}
 		else
 		{
-			$this->view->assign('setPriority', false);
+			$this->view->setPriority    = false;
 		}
 
 		// for Admin interface only
 
-		$this->view->assign('with_unpublished_cat', JFactory::getApplication()->isAdmin());
+		$this->view->with_unpublished_cat   = $app->isClient('administrator');
 
 		$this->view->display();
 
@@ -254,20 +258,22 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function save($key = null, $urlVar = null)
 	{
 
+		$app    = Factory::getApplication();
+
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		if (JFactory::getApplication()->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_ICAL_RPT_DETAILS_SAVED") . "");
 			$this->redirect();
 		}
 		else
 		{
-			$popupdetail = JPluginHelper::getPlugin("jevents", "jevpopupdetail");
+			$popupdetail = PluginHelper::getPlugin("jevents", "jevpopupdetail");
 			if ($popupdetail)
 			{
-				$pluginparams = new JRegistry($popupdetail->params);
+				$pluginparams = new JevRegistry($popupdetail->params);
 				$popupdetail  = $pluginparams->get("detailinpopup", 1);
 				if ($popupdetail)
 				{
@@ -284,10 +290,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 			}
 
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0) || $popupdetail)
 			{
-				$link = JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
+				$link = Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.detail&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day$popupdetail", false);
 				$msg  = JText::_("JEV_ICAL_RPT_UPDATED", true);
 				if ($popupdetail != "")
 				{
@@ -325,15 +331,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$jinput = JFactory::getApplication()->input;
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		$option = JEV_COM_COMPONENT;
-		$rp_id  = $jinput->getInt("rp_id", 0);
-		$cid    = $jinput->get("cid", array());
+		$rp_id  = $input->getInt("rp_id", 0);
+		$cid    = $input->get("cid", array());
 
 		if (count($cid) > 0 && $rp_id == 0)
 			$rp_id = (int) $cid[0];
@@ -352,7 +359,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$rpt = new iCalRepetition($db);
 		$rpt->load($rp_id);
 
@@ -360,40 +367,40 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$db->setQuery($query);
 		$eventdetailid = $db->loadResult();
 
-		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
+		$data["UID"] = $input->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"] = $jinput->getString("extra_info", "");
-		$data["LOCATION"]    = $jinput->getString("location", "");
-		$data["GEOLON"]      = $jinput->getString("geolon", "");
-		$data["GEOLAT"]      = $jinput->getString("geolat", "");
-		$data["allDayEvent"] = $jinput->get("allDayEvent", "off");
+		$data["X-EXTRAINFO"] = $input->getString("extra_info", "");
+		$data["LOCATION"]    = $input->getString("location", "");
+		$data["GEOLON"]      = $input->getString("geolon", "");
+		$data["GEOLAT"]      = $input->getString("geolat", "");
+		$data["allDayEvent"] = $input->get("allDayEvent", "off");
 		if ($data["allDayEvent"] == 1)
 		{
 			$data["allDayEvent"] = "on";
 		}
-		$data["CONTACT"] = $jinput->getString("contact_info", "");
+		$data["CONTACT"] = $input->getString("contact_info", "");
 		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"]  = $jinput->get('jevcontent', '', 'RAW'); //JRequest::getVar("jevcontent", "", 'request', 'html', 2); No option for raw html in JInput, so just RAW the jinput instead.
-		$data["publish_down"] = $jinput->getString("publish_down", "2006-12-12");
-		$data["publish_up"]   = $jinput->getString("publish_up", "2006-12-12");
+		$data["DESCRIPTION"]  = $input->get('jevcontent', '', 'RAW');
+		$data["publish_down"] = $input->getString("publish_down", "2006-12-12");
+		$data["publish_up"]   = $input->getString("publish_up", "2006-12-12");
 
 		// Alternative date format handling
-		if ($jinput->get("publish_up2", false))
+		if ($input->get("publish_up2", false))
 		{
-			$data["publish_up"] = $jinput->getString("publish_up2", $data["publish_up"]);
+			$data["publish_up"] = $input->getString("publish_up2", $data["publish_up"]);
 		}
-		if ($jinput->get("publish_down2", false))
+		if ($input->get("publish_down2", false))
 		{
-			$data["publish_down"] = $jinput->getString("publish_down2", $data["publish_down"]);
+			$data["publish_down"] = $input->getString("publish_down2", $data["publish_down"]);
 		}
 
-		$interval        = $jinput->get("rinterval", 1); //Not current in use
-		$data["SUMMARY"] = $jinput->getString("title", "");
+		$interval        = $input->get("rinterval", 1); //Not current in use
+		$data["SUMMARY"] = $input->getString("title", "");
 
-		$data["MULTIDAY"]  = $jinput->get("multiday", "1");
-		$data["NOENDTIME"] = $jinput->get("noendtime", 0);
+		$data["MULTIDAY"]  = $input->get("multiday", "1");
+		$data["NOENDTIME"] = $input->get("noendtime", 0);
 
-		$ics_id = $jinput->get("ics_id", 0);
+		$ics_id = $input->get("ics_id", 0);
 
 		if ($data["allDayEvent"] == "on")
 		{
@@ -401,7 +408,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 		else
 		{
-			$start_time = $jinput->getString("start_time", "08:00");
+			$start_time = $input->getString("start_time", "08:00");
 		}
 
 		$publishstart    = $data["publish_up"] . ' ' . $start_time . ':00';
@@ -420,7 +427,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			}
 			else
 			{
-				$end_time = $jinput->getString("end_time", "15:00") . ':00';
+				$end_time = $input->getString("end_time", "15:00") . ':00';
 			}
 			$publishend = $data["publish_down"] . ' ' . $end_time;
 		}
@@ -434,49 +441,12 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$data["DTEND"] = JevDate::strtotime($publishend);
 		}
 
-		$data["X-COLOR"] = $jinput->get("color", "", 'HTML');
+		$data["X-COLOR"] = $input->get("color", "", 'HTML');
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$array = $jinput->getArray(array(), null, 'RAW');
-
-		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
-		{
-
-			$filter = JFilterInput::getInstance(null, null, 1, 1);
-
-			//Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
-			//Then filter on through with JFilterInput to HTML
-
-			foreach ($array as $key => $row)
-			{
-				//Single row check
-				if (!is_array($row))
-				{
-					$array[$key] = $filter->clean($row, 'HTML');
-				}
-				else
-				{
-					//1 Deep row check
-					foreach ($array[$key] as $key1 => $sub_row)
-					{
-						//2 Deep row check
-						if (!is_array($sub_row))
-						{
-							$array[$key][$key1] = $filter->clean($sub_row, 'HTML');
-						}
-						else
-						{
-							foreach ($sub_row as $key2 => $sub_sub_row)
-							{
-								$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
-							}
-						}
-					}
-				}
-			}
-		}
+		$array = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
 
 		foreach ($array as $key => $value)
 		{
@@ -535,7 +505,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		catch (RuntimeException $e)
 		{
 
-			if (JFactory::getApplication()->isAdmin())
+			if ($app->isClient('administrator'))
 			{
 				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
 				$this->redirect();
@@ -543,17 +513,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 			else
 			{
 				list($year, $month, $day) = JEVHelper::getYMD();
-				$rettask = $jinput->getString("rettask", "day.listevents");
+				$rettask = $input->getString("rettask", "day.listevents");
 				$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_COULD_NOT_SAVE_REPEAT_SAME_START_END") . "", "error");
 				$this->redirect();
 			}
 		}
 
+		// Just in case we don't have JEvents plugins registered yet
+		PluginHelper::importPlugin("jevents");
 		// I may also need to process repeat changes
-		$dispatcher = JEventDispatcher::getInstance();
-		// just in case we don't have JEvents plugins registered yet
-		JPluginHelper::importPlugin("jevents");
-		$res = $dispatcher->trigger('onStoreCustomRepeat', array(&$rpt));
+		$res = $app->triggerEvent('onStoreCustomRepeat', array(&$rpt));
 
 		$exception = iCalException::loadByRepeatId($rp_id);
 		if (!$exception)
@@ -577,7 +546,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$rpt = $this->doSave($msg);
 
 		$msg = JText::_("Event_Saved", true);
-		if (JFactory::getApplication()->isAdmin())
+		if (Factory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid(), $msg);
 			$this->redirect();
@@ -585,20 +554,20 @@ class AdminIcalrepeatController extends JControllerLegacy
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			if ($params->get("editpopup", 0))
 			{
 				ob_end_clean();
 				?>
 				<script type="text/javascript">
                     window.alert("<?php echo $msg; ?>");
-                    window.location = "<?php echo JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false); ?>";
+                    window.location = "<?php echo Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false); ?>";
 				</script>
 				<?php
 				exit();
 			}
 			// return to the event repeat
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false), $msg);
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=icalrepeat.edit&evid=" . $rpt->rp_id . "&year=$year&month=$month&day=$day&Itemid=" . JEVHelper::getItemid(), false), $msg);
 			$this->redirect();
 		}
 
@@ -607,19 +576,19 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function select()
 	{
 
-		JSession::checkToken('request') or jexit('Invalid Token');
+		\Joomla\CMS\Session\Session::checkToken('request') or jexit('Invalid Token');
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
+		$app    = Factory::getApplication();
+		$input = $app->input;
 
-		$db            = JFactory::getDbo();
+		$db            = Factory::getDbo();
 		$publishedOnly = true;
-		$id            = $jinput->getInt('evid', 0);
+		$id            = $input->getInt('evid', 0);
 
-		$limit      = (int) JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10);
-		$limitstart = (int) JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
+		$limit      = (int) Factory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10);
+		$limitstart = (int) Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
 
-		$user    = JFactory::getUser();
+		$user    = Factory::getUser();
 		$where[] = "\n ev.access IN ('" . JEVHelper::getAid($user) . "')";
 		$where[] = "\n icsf.state=1 AND icsf.access IN ('" . JEVHelper::getAid($user) . "')";
 
@@ -671,10 +640,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 
-		$menulist = $this->targetMenu($jinput->getInt("Itemid"), "Itemid");
+		$menulist = $this->targetMenu($input->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $limitstart, $limit);
+		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -682,10 +651,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout('select');
 
-		$this->view->assign('menulist', $menulist);
-		$this->view->assign('icalrows', $icalrows);
-		$this->view->assign('pageNav', $pageNav);
-		$this->view->assign('evid', $id);
+		$this->view->menulist   = $menulist;
+		$this->view->icalrows   = $icalrows;
+		$this->view->pageNav    = $pageNav;
+		$this->view->evid       = $id;
 
 		$this->view->display();
 
@@ -696,11 +665,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 	private function targetMenu($itemid = 0, $name)
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// assemble menu items to the array
 		$options   = array();
-		$options[] = JHTML::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . JText::_('SELECT_ITEM') . ' -');
 
 		// load the list of menu types
 		// TODO: move query to model
@@ -710,7 +679,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$db->setQuery($query);
 		$menuTypes = $db->loadObjectList();
 
-		$menu      = JFactory::getApplication()->getMenu('site');
+		$menu      = Factory::getApplication()->getMenu('site');
 		$menuItems = $menu->getMenu();
 		foreach ($menuItems as &$item)
 		{
@@ -745,7 +714,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		// second pass - get an indent list of the items
-		$list = JHTML::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
+		$list = HTMLHelper::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0);
 
 		// assemble into menutype groups
 		$n           = count($list);
@@ -757,7 +726,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		foreach ($menuTypes as $type)
 		{
-			$options[] = JHTML::_('select.option', $type->menutype, $type->title, 'value', 'text', true);  // these are disabled! (true)
+			$options[] = HTMLHelper::_('select.option', $type->menutype, $type->title, 'value', 'text', true);  // these are disabled! (true)
 			if (isset($groupedList[$type->menutype]))
 			{
 				$n = count($groupedList[$type->menutype]);
@@ -768,21 +737,20 @@ class AdminIcalrepeatController extends JControllerLegacy
 					$disable   = false;
 					$text      = (version_compare(JVERSION, '1.6.0', ">=")) ? '     ' . html_entity_decode($item->treename) : '&nbsp;&nbsp;&nbsp;' . $item->treename;
 					$text      = str_repeat("&nbsp;", (isset($item->level) ? $item->level : $item->sublevel) * 4) . $text;
-					$options[] = JHTML::_('select.option', $item->id, $text, 'value', 'text', $disable);
+					$options[] = HTMLHelper::_('select.option', $item->id, $text, 'value', 'text', $disable);
 				}
 			}
 		}
 
-		return JHTML::_('select.genericlist', $options, '' . $name, 'class="inputbox"', 'value', 'text', $itemid, $name);
+		return HTMLHelper::_('select.genericlist', $options, '' . $name, 'class="inputbox"', 'value', 'text', $itemid, $name);
 
 	}
 
 	function savefuture()
 	{
 
-		// experimentaal code disabled for count (startthe time being
+		// Experimentaal code disabled for count (start the time being
 		throw new Exception(JText::_('ALERTNOTAUTH'), 403);
-
 		return false;
 
 		if (!JEVHelper::isEventCreator())
@@ -792,19 +760,22 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		echo "<pre>";
-		$rpid  = JRequest::getInt("rp_id", 0);
+		$rpid  = $input->getInt("rp_id", 0);
 		$event = $this->queryModel->listEventsById($rpid, 1, "icaldb");
 		$data  = array();
 		foreach (get_object_vars($event) as $key => $val)
 		{
 			if (strpos($key, "_") == 0)
 			{
-				$data[JString::substr($key, 1)] = $val;
+				$data[\Joomla\String\StringHelper::substr($key, 1)] = $val;
 			}
 		}
 		echo var_export($data, true);
@@ -813,7 +784,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		// Change the underlying event repeat rule details  !!
 		$query = "SELECT * FROM #__jevents_rrule WHERE rr_id=" . $event->_rr_id;
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$db->setQuery($query);
 		$this->rrule = null;
 		$this->rrule = $db->loadObject();
@@ -872,7 +843,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$this->_deleteFuture();
 
 
-		if (JFactory::getApplication()->isAdmin())
+		if (Factory::getApplication()->isClient('administrator'))
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "" . JText::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
@@ -880,7 +851,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		else
 		{
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$rettask = JRequest::getString("rettask", "day.listevents");
+			$rettask = $input->getString("rettask", "day.listevents");
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&evid=" . $rpt->rp_id . "&Itemid=" . JEVHelper::getItemid() . "&year=$year&month=$month&day=$day", "" . JText::_("JEV_ICAL_RPT_UPDATED") . "");
 			$this->redirect();
 		}
@@ -890,15 +861,15 @@ class AdminIcalrepeatController extends JControllerLegacy
 	function _deleteFuture()
 	{
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
+		$app    = Factory::getApplication();
+		$input = $app->input;
 
-		$cid = $jinput->getVar('cid', array(0));
+		$cid = $input->get('cid', array(0), "array");
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 		$cid = ArrayHelper::toInteger($cid);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($cid as $id)
 		{
 
@@ -939,11 +910,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 			foreach ($rp_ids as $rp_id)
 			{
+				// Just in case we don't have jevents plugins registered yet
+				PluginHelper::importPlugin("jevents");
 				// May want to send notification messages etc.
-				$dispatcher = JEventDispatcher::getInstance();
-				// just incase we don't have jevents plugins registered yet
-				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventRepeat', $rp_id);
+				$res = $app->triggerEvent('onDeleteEventRepeat', $rp_id);
 			}
 
 
@@ -977,11 +947,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->setQuery($query);
 				$db->execute();
 
+				// Just in case we don't have jevents plugins registered yet
+				PluginHelper::importPlugin("jevents");
 				// I also need to clean out associated custom data
-				$dispatcher = JEventDispatcher::getInstance();
-				// just incase we don't have jevents plugins registered yet
-				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventDetails', array(implode(",", $detailids)));
+				$res = $app->triggerEvent('onDeleteEventDetails', array(implode(",", $detailids)));
 			}
 
 			// setup exception data
@@ -1044,7 +1013,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		if (!JEVHelper::isEventCreator())
@@ -1054,15 +1023,15 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-		$cid    = $jinput->get('cid', array(0), "array");
+		$app    = Factory::getApplication();
+		$input = $app->input;
+		$cid    = $input->get('cid', array(0), "array");
 
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 		$cid = ArrayHelper::toInteger($cid);
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		foreach ($cid as $id)
 		{
 
@@ -1078,11 +1047,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 				return false;
 			}
 
+			// Just in case we don't have jevents plugins registered yet
+			PluginHelper::importPlugin("jevents");
 			// May want to send notification messages etc.
-			$dispatcher = JEventDispatcher::getInstance();
-			// just incase we don't have jevents plugins registered yet
-			JPluginHelper::importPlugin("jevents");
-			$res = $dispatcher->trigger('onDeleteEventRepeat', $id);
+			$res = $app->triggerEvent('onDeleteEventRepeat', $id);
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -1100,11 +1068,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 				$db->setQuery($query);
 				$db->execute();
 
+				// Just in case we don't have jevents plugins registered yet
+				PluginHelper::importPlugin("jevents");
 				// I also need to clean out associated custom data
-				$dispatcher = JEventDispatcher::getInstance();
-				// just incase we don't have jevents plugins registered yet
-				JPluginHelper::importPlugin("jevents");
-				$res = $dispatcher->trigger('onDeleteEventDetails', array($data->eventdetail_id));
+				$res = $app->triggerEvent('onDeleteEventDetails', array($data->eventdetail_id));
 			}
 
 			// create exception based on deleted repetition
@@ -1123,16 +1090,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$db->execute();
 		}
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
-			$Itemid = $jinput->getInt("Itemid");
+			$Itemid = $input->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 
@@ -1142,8 +1109,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
+
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		if (!JEVHelper::isEventCreator())
 		{
@@ -1154,16 +1124,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$this->_deleteFuture();
 
-		if (JFactory::getApplication()->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $this->rrule->data["eventid"], JText::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
-			$Itemid = JRequest::getInt("Itemid");
+			$Itemid = $input->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
-			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), JText::_("JEV_ICAL_REPEATS_DELETED"));
+			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid"), JText::_("JEV_ICAL_REPEATS_DELETED"));
 			$this->redirect();
 		}
 

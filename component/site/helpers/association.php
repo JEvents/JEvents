@@ -10,6 +10,8 @@ JLoader::register('CategoryHelperAssociation', JPATH_ADMINISTRATOR . '/component
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 /**
  * Content Component Association Helper
  *
@@ -35,10 +37,10 @@ abstract class JEventsHelperAssociation extends CategoryHelperAssociation
 
 		jimport('helper.route', JPATH_COMPONENT_SITE);
 
-		$app    = JFactory::getApplication();
-		$jinput = $app->input;
-		$view   = is_null($view) ? $jinput->get('view') : $view;
-		$id     = empty($id) ? $jinput->getInt('id') : $id;
+		$app    = Factory::getApplication();
+		$input = $app->input;
+		$view   = is_null($view) ? $input->get('view') : $view;
+		$id     = empty($id) ? $input->getInt('id') : $id;
 
 		if ($view == 'article')
 		{

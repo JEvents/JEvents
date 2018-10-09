@@ -3,6 +3,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.application.component.model');
 
 class DefaultsModelDefaults extends JModelLegacy
@@ -20,7 +23,7 @@ class DefaultsModelDefaults extends JModelLegacy
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data))
 		{
-			$db    = JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select("def.*");
@@ -33,7 +36,7 @@ class DefaultsModelDefaults extends JModelLegacy
 			$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON BINARY l.lang_code = BINARY def.language');
 			$query->join('LEFT', $db->quoteName('#__categories') . ' AS c ON c.id = def.catid');
 
-			$language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
+			$language = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 			if (count($this->getLanguages()) == 1)
 			{
 				$language = "*";
@@ -43,13 +46,13 @@ class DefaultsModelDefaults extends JModelLegacy
 				$query->where('def.language = ' . $db->quote($language));
 			}
 
-			$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
+			$filter_published = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "");
 			if ($filter_published != "")
 			{
 				$query->where('def.state = ' . intval($filter_published));
 			}
 
-			$layouttype = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
+			$layouttype = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_layout_type", 'filter_layout_type', "jevents");
 			if ($layouttype != "")
 			{
 				if ($layouttype == "jevlocations")
@@ -66,7 +69,7 @@ class DefaultsModelDefaults extends JModelLegacy
 				}
 			}
 
-			$filter_catid = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "0");
+			$filter_catid = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_catid", 'filter_catid', "0");
 			if ($filter_catid != "0" && $layouttype == "jevents")
 			{
 				$query->where('def.catid = ' . intval($filter_catid));
@@ -99,7 +102,7 @@ class DefaultsModelDefaults extends JModelLegacy
 		static $languages;
 		if (!isset($languages))
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			// get the list of languages first 
 			$query = $db->getQuery(true);
@@ -128,8 +131,8 @@ class DefaultsModelDefaults extends JModelLegacy
 		if (empty($this->_total))
 		{
 			// Manually add the form data which is not stored in the database in the same way
-			$db       = JFactory::getDbo();
-			$language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
+			$db       = Factory::getDbo();
+			$language = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
 
 			$query = $db->getQuery(true);
 
@@ -155,7 +158,7 @@ class DefaultsModelDefaults extends JModelLegacy
 	function getCategories()
 	{
 
-		$filter_published = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1");
+		$filter_published = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1");
 		if ($filter_published == "")
 		{
 			$filter_published = "0,1";
@@ -163,14 +166,14 @@ class DefaultsModelDefaults extends JModelLegacy
 
 		// Do not filter on category being published or not!
 		$filter_published = "0,1";
-		//$filter_language = JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
-		//$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published), 'filter.language' => explode(',', $filter_language)));
-		$options = JHtml::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published)));
+		//$filter_language = Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_language", 'filter_language', "*");
+		//$options = HTMLHelper::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published), 'filter.language' => explode(',', $filter_language)));
+		$options = HTMLHelper::_('category.options', JEV_COM_COMPONENT, array('filter.published' => explode(',', $filter_published)));
 
 		// if only published entries then allow option to look across all categories
-		if (JFactory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1") == 1)
+		if (Factory::getApplication()->getUserStateFromRequest("jevdefaults.filter_published", 'filter_published', "0,1") == 1)
 		{
-			array_unshift($options, JHtml::_('select.option', '0', JText::_('JEV_ANY_CATEGORY')));
+			array_unshift($options, HTMLHelper::_('select.option', '0', JText::_('JEV_ANY_CATEGORY')));
 		}
 
 		return $options;

@@ -2,10 +2,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 function DefaultdateFormattedDateRange($view)
 {
 
-	$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+	$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 	if ($params->get("daterangeformat", "") == "")
 	{
 		$return = JEventsHTML::getDateFormat($view->startyear, $view->startmonth, $view->startday, 1)

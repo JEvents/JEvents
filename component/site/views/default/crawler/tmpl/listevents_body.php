@@ -1,10 +1,12 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+
 $data = $this->data;
 
 $Itemid     = JEVHelper::getItemid();
-$params     = JComponentHelper::getParams(JEV_COM_COMPONENT);
+$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
 $Itemid     = $params->get("crawlertarget", $Itemid);
 $num_events = count($data['rows']);
 if ($num_events > 0)

@@ -11,16 +11,15 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Helper\ModuleHelper;
 
-jimport("joomla.application.module.helper");
-
-class JevModuleHelper extends JModuleHelper
+class JevModuleHelper extends ModuleHelper
 {
 
 	static public function getVisibleModules()
 	{
 
-		return self::_load();
+		return self::load();
 
 	}
 

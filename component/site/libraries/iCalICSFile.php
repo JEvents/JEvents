@@ -12,7 +12,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class iCalICSFile extends JTable
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+class iCalICSFile extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */
@@ -62,7 +67,7 @@ class iCalICSFile extends JTable
 	public static function newICSFileFromURL($uploadURL, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat);
 		if ($access == 0)
@@ -94,7 +99,7 @@ class iCalICSFile extends JTable
 
 				$pathParts = pathinfo($urlParts['path']);
 
-				if (isset($pathParts['basename'])) $temp->filename =  $pathParts['basename'];
+				if (isset($pathParts['basename'])) $temp->filename = $pathParts['basename'];
 				else $temp->filename = $uploadURL;
 		*/
 		$temp->filename = 'Remote-' . md5($uploadURL);
@@ -106,7 +111,7 @@ class iCalICSFile extends JTable
 		$temp->srcURL = $uploadURL;
 
 		// Store the ical in the registry so we can retrieve the access level
-		$registry = JRegistry::getInstance("jevents");
+		$registry = JevRegistry::getInstance("jevents");
 		$registry->set("jevents.icsfile", $temp);
 
 		if (false === ($temp->_icalInfo = JEVHelper::iCalInstance($uploadURL)))
@@ -120,7 +125,7 @@ class iCalICSFile extends JTable
 	public static function newICSFileFromFile($file, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid, $catid, $access, $state, $autorefresh, $ignoreembedcat);
 		if ($access == 0)
@@ -145,7 +150,7 @@ class iCalICSFile extends JTable
 	public function editICalendar($icsid, $catid, $access = 0, $state = 1, $label = "")
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = new iCalICSFile($db);
 		$temp->_setup($icsid, $catid, $access, $state);
 		$temp->filename = "_from_scratch_";
@@ -206,7 +211,7 @@ RAWTEXT;
 	public function newICSFileFromString($rawtext, $icsid, $catid, $access = 0, $state = 1, $label = "", $autorefresh = 0, $ignoreembedcat = 0)
 	{
 
-		$db   = JFactory::getDbo();
+		$db   = Factory::getDbo();
 		$temp = null;
 		$temp = new iCalICSFile($db);
 		if ($icsid > 0)
@@ -240,7 +245,7 @@ RAWTEXT;
 		if (parent::store() && $this->isdefault == 1 && $this->icaltype == 2)
 		{
 			// set all the others to 0
-			$db  = JFactory::getDbo();
+			$db  = Factory::getDbo();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>" . $this->ics_id;
 			$db->setQuery($sql);
 			$db->execute();
@@ -255,21 +260,23 @@ RAWTEXT;
 	public function store($catid = false, $cleanup = true, $flush = true)
 	{
 
-		$user  = JFactory::getUser();
+		$app   = Factory::getApplication();
+		$input = $app->input;
+		$user  = Factory::getUser();
 		$guest = $user->get('guest');
 
 		@ini_set("memory_limit", "256M");
 		@ini_set("max_execution_time", "300");
 
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
 		static $categories;
 		if (is_null($categories))
 		{
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
-			$db  = JFactory::getDbo();
+			$db  = Factory::getDbo();
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
 		}
@@ -293,14 +300,14 @@ RAWTEXT;
 		else if ($this->isdefault == 1 && $this->icaltype == 2)
 		{
 			// set all the others to 0
-			$db  = JFactory::getDbo();
+			$db  = Factory::getDbo();
 			$sql = "UPDATE #__jevents_icsfile SET isdefault=0 WHERE icaltype=2 AND ics_id<>" . $this->ics_id;
 			$db->setQuery($sql);
 			$db->execute();
 		}
 
 		// find the full set of ids currently in the calendar so taht we can remove cancelled ones
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 		$sql = "SELECT ev_id, uid, lockevent FROM #__jevents_vevent WHERE icsid=" . $this->ics_id;//. " AND catid=".$catid;
 		$db->setQuery($sql);
 		$existingevents = $db->loadObjectList('ev_id');
@@ -312,7 +319,7 @@ RAWTEXT;
 			if (!$vevent->isCancelled() && !$vevent->isRecurrence())
 			{
 				// if existing category then use it
-				if (!$this->ignoreembedcat && JString::strlen($vevent->_detail->categories) > 0)
+				if (!$this->ignoreembedcat && StringHelper::strlen($vevent->_detail->categories) > 0)
 				{
 					$evcat = explode(",", $vevent->_detail->categories);
 					if (count($evcat) > 0)
@@ -339,7 +346,7 @@ RAWTEXT;
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
-						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+						$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 						if ($params->get("multicategory", 0))
 						{
 							$vevent->catid = array();
@@ -356,7 +363,7 @@ RAWTEXT;
 				}
 				else
 				{
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("multicategory", 0) && !is_array($catid))
 					{
 						$vevent->catid = array($catid);
@@ -394,7 +401,7 @@ RAWTEXT;
 				}
 
 				// handle events running over midnight
-				$params          = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$params          = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				$icalmultiday    = $params->get("icalmultiday", 0);
 				$icalmultiday24h = $params->get("icalmultiday24h", 0);
 				// These booleans are the wrong way around.
@@ -417,15 +424,14 @@ RAWTEXT;
 				}
 
 				// trigger post save plugins e.g. AutoTweet
-				$dispatcher = JEventDispatcher::getInstance();
-				JPluginHelper::importPlugin("jevents");
+				PluginHelper::importPlugin("jevents");
 				if ($matchingEvent)
 				{
-					JRequest::setVar("evid", $vevent->ev_id);
+					$input->set("evid", $vevent->ev_id);
 				}
 				else
 				{
-					JRequest::setVar("evid", 0);
+					$input->set("evid", 0);
 				}
 
 				$repetitions = $vevent->getRepetitions(true);
@@ -436,7 +442,7 @@ RAWTEXT;
 					$vevent->published = $vevent->state;
 				}
 				// not a dry run of course!
-				$res = $dispatcher->trigger('onAfterSaveEvent', array(&$vevent, false));
+				$res = $app->triggerEvent('onAfterSaveEvent', array(&$vevent, false));
 
 				// Save memory by clearing out the repetitions we no longer need
 				$repetitions          = null;
@@ -463,7 +469,7 @@ RAWTEXT;
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence()))
 			{
 				// if existing category then use it
-				if (JString::strlen($vevent->_detail->categories) > 0)
+				if (StringHelper::strlen($vevent->_detail->categories) > 0)
 				{
 					if (count($evcat) > 0)
 					{
@@ -485,7 +491,7 @@ RAWTEXT;
 						$db->setQuery($sql);
 						$categories = $db->loadObjectList('title');
 
-						$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+						$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 						if ($params->get("multicategory", 0) && count($evcat) > 1)
 						{
 							$vevent->catid = array();
@@ -502,7 +508,7 @@ RAWTEXT;
 				}
 				else
 				{
-					$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+					$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 					if ($params->get("multicategory", 0))
 					{
 						$vevent->catid = array($catid);
@@ -561,7 +567,7 @@ RAWTEXT;
 				$db->setQuery($query);
 				$db->execute();
 
-				if (JString::strlen($detailidstring) > 0)
+				if (StringHelper::strlen($detailidstring) > 0)
 				{
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery($query);
@@ -575,7 +581,7 @@ RAWTEXT;
 				$ex_count = count($existingevents);
 				if ($guest !== 1)
 				{
-					JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
+					Factory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_DELETED_EVENTS', $ex_count));
 				}
 			}
 		}
@@ -583,7 +589,7 @@ RAWTEXT;
 		unset($this->_icalInfo->vevents);
 		if ($guest !== 1)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
+			Factory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 		}
 	}
 
@@ -608,14 +614,16 @@ RAWTEXT;
 	{
 
 		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
+		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		static $categories;
+
+		$db  = Factory::getDbo();
+
 		if (is_null($categories))
 		{
-			$db  = JFactory::getDbo();
 			$sql = "SELECT * FROM #__categories WHERE extension='com_jevents'";
 			$db->setQuery($sql);
 			$categories = $db->loadObjectList('title');
@@ -658,17 +666,16 @@ RAWTEXT;
 				$db->setQuery($query);
 				$db->execute();
 
-				if (JString::strlen($detailidstring) > 0)
+				if (StringHelper::strlen($detailidstring) > 0)
 				{
 					$query = "DELETE FROM #__jevents_vevdetail WHERE evdet_id IN ($detailidstring)";
 					$db->setQuery($query);
 					$db->execute();
 
-					// I also need to clean out associated custom data
-					$dispatcher = JEventDispatcher::getInstance();
 					// just incase we don't have jevents plugins registered yet
-					JPluginHelper::importPlugin("jevents");
-					$res = $dispatcher->trigger('onDeleteEventDetails', array($detailidstring));
+					PluginHelper::importPlugin("jevents");
+					// I also need to clean out associated custom data
+					$res = Factory::getApplication()->triggerEvent('onDeleteEventDetails', array($detailidstring));
 				}
 
 				$query = "DELETE FROM #__jevents_vevent WHERE ev_id IN ($veventidstring)";
@@ -676,7 +683,7 @@ RAWTEXT;
 				$db->execute();
 
 				// I also need to delete custom data
-				$res = $dispatcher->trigger('onDeleteCustomEvent', array(&$veventidstring));
+				$res = Factory::getApplication()->triggerEvent('onDeleteCustomEvent', array(&$veventidstring));
 
 			}
 
@@ -684,7 +691,7 @@ RAWTEXT;
 			if (!$vevent->isCancelled() && !$vevent->isRecurrence())
 			{
 				// if existing category then use it
-				if (!$this->ignoreembedcat && JString::strlen($vevent->_detail->categories) > 0)
+				if (!$this->ignoreembedcat && StringHelper::strlen($vevent->_detail->categories) > 0)
 				{
 					$evcat = explode(",", $vevent->_detail->categories);
 					if (count($evcat) > 0 && array_key_exists($evcat[0], $categories))
@@ -746,7 +753,7 @@ RAWTEXT;
 				$vevent->refreshed = $this->refreshed;
 
 				// handle events running over midnight
-				$params          = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$params          = ComponentHelper::getParams(JEV_COM_COMPONENT);
 				$icalmultiday    = $params->get("icalmultiday", 0);
 				$icalmultiday24h = $params->get("icalmultiday24h", 0);
 				// These booleans are the wrong way around.
@@ -792,7 +799,7 @@ RAWTEXT;
 			if (!is_null($vevent) && ($vevent->isCancelled() || $vevent->isRecurrence()))
 			{
 				// if existing category then use it
-				if (JString::strlen($vevent->_detail->categories) > 0)
+				if (StringHelper::strlen($vevent->_detail->categories) > 0)
 				{
 					$evcat = explode(",", $vevent->_detail->categories);
 					if (count($evcat) > 0 && array_key_exists($evcat[0], $categories))

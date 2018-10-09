@@ -7,6 +7,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+
 class com_jeventsInstallerScript
 {
 
@@ -19,7 +23,7 @@ class com_jeventsInstallerScript
 
 		if (version_compare(PHP_VERSION, '5.3.10', '<'))
 		{
-			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			Factory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
 
 			return false;
 		}
@@ -35,8 +39,8 @@ class com_jeventsInstallerScript
 	private function createTables()
 	{
 
-		$db = JFactory::getDbo();
-		$db->setDebug(0);
+		$db = Factory::getDbo();
+
 		if (version_compare(JVERSION, "3.3", 'ge'))
 		{
 			$charset    = ($db->hasUTFSupport()) ? ' DEFAULT CHARACTER SET `utf8`' : '';
@@ -88,8 +92,12 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevent(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		/**
@@ -141,8 +149,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_vevdetail(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		$sql = <<<SQL
 CREATE TABLE IF NOT EXISTS #__jevents_rrule (
@@ -169,8 +180,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_rrule (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		$sql = <<<SQL
@@ -193,8 +207,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_repetition (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// exception_type 0=delete, 1=other exception
 		$sql = <<<SQL
@@ -213,8 +230,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_exception (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		/**
 		 * create table if it doesn't exit
@@ -254,8 +274,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_icsfile(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// 1. Make sure users table exists
 		$sql = <<<SQL
@@ -291,9 +314,10 @@ CREATE TABLE IF NOT EXISTS #__jev_users (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		if (!$db->execute())
-		{
-			echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
 		}
 
 		$sql = <<<SQL
@@ -314,8 +338,11 @@ CREATE TABLE IF NOT EXISTS #__jev_defaults (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 
 		// Multi-category Mapping table
@@ -328,8 +355,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_catmap(
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// Filter module mapping table
 		// Maps filter values to URL keys
@@ -347,8 +377,11 @@ CREATE TABLE IF NOT EXISTS #__jevents_filtermap (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		/**
 		 * create table if it doesn't exit
@@ -377,16 +410,18 @@ CREATE TABLE IF NOT EXISTS #__jevents_translation (
 ) $charset;
 SQL;
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 	}
 
 	private function updateTables()
 	{
 
-		$db = JFactory::getDbo();
-		$db->setDebug(0);
+		$db = Factory::getDbo();
 
 		if (version_compare(JVERSION, "3.3", 'ge'))
 		{
@@ -850,17 +885,19 @@ SQL;
 	public function postflight($action, $adapter)
 	{
 
-		$table     = JTable::getInstance('extension');
+		$app        = Factory::getApplication();
+
+		$table     = Table::getInstance('extension');
 		$component = "com_jevents";
 
 		if (!$table->load(array("element" => "com_jevents", "type" => "component"))) // 1.6 mod
 		{
-			JFactory::getApplication()->enqueueMessage('Not a valid component', 'error');
+			$app->enqueueMessage('Not a valid component', 'error');
 
 			return false;
 		}
 
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = ComponentHelper::getParams("com_jevents");
 
 		$checkClashes = $params->get("checkclashes", 0);
 
@@ -884,7 +921,7 @@ SQL;
 		// pre-save checks
 		if (!$table->check())
 		{
-			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
+			$app->enqueueMessage($table->getError(), 'error');
 
 			return false;
 		}
@@ -892,7 +929,7 @@ SQL;
 		// save the changes
 		if (!$table->store())
 		{
-			JFactory::getApplication()->enqueueMessage($table->getError(), 'error');
+			$app->enqueueMessage($table->getError(), 'error');
 
 			return false;
 		}
@@ -911,7 +948,7 @@ SQL;
 
 		if (version_compare(PHP_VERSION, '5.3.10', '<'))
 		{
-			JFactory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
+			Factory::getApplication()->enqueueMessage('Your webhost needs to use PHP 5.3.10 or higher to run this version of JEvents.  Please see http://php.net/eol.php', 'error');
 
 			return false;
 		}

@@ -69,7 +69,7 @@ function setupMiniCalTouchInteractions() {
         jQuery(".extcal_weekdays").parent().on("touchend", function (evt) {
             //jevlog("touchend/touchend.");
             //jevlog('changed touches '+ evt.originalEvent.changedTouches.length);
-            var touchobj = evt.originalEvent.changedTouches[0]
+            var touchobj = evt.originalEvent.changedTouches[0];
             var vdist = touchobj.pageY - jevMiniTouchStartY;
             if (Math.abs(vdist) > 50) {
                 evt.preventDefault();
@@ -87,19 +87,19 @@ function setupMiniCalTouchInteractions() {
         });
         jQuery(".extcal_weekdays").parent().on("touchstart", function (evt) {
             //evt.preventDefault();
-            var touchobj = evt.originalEvent.changedTouches[0]
+            var touchobj = evt.originalEvent.changedTouches[0];
             jevMiniTouchStartX = touchobj.pageX;
             jevMiniTouchStartY = touchobj.pageY;
         });
         jQuery(".extcal_weekdays").parent().on("touchmove", function (evt) {
             // top stop scrolling etc. but only in the horizontal
-            var touchobj = evt.originalEvent.changedTouches[0]
+            var touchobj = evt.originalEvent.changedTouches[0];
 
             var distX = touchobj.pageX - jevMiniTouchStartX;
             //jevlog(distX + " "+Math.abs(distX));
             if (Math.abs(distX) > 5) {
                 evt.preventDefault();
-                return;
+
             }
             /*
              var vdist = touchobj.pageY - jevMiniTouchStartY ;

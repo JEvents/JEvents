@@ -9,6 +9,10 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+
 /**
  * Utility class for Bootstrap elements.
  *
@@ -70,7 +74,7 @@ class JevTypeahead
 
 			if ($opt['scrollable'])
 			{
-				JFactory::getDocument()->addStyleDeclaration(".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; }");
+				Factory::getDocument()->addStyleDeclaration(".scrollable-dropdown-menu .tt-menu, .scrollable-dropdown-menu .tt-dropdown-menu, #scrollable-dropdown-menu .tt-menu, #scrollable-dropdown-menu .tt-dropdown-menu{max-height: 150px; overflow-y: auto; }");
 			}
 
 			$options = json_encode($opt);
@@ -86,7 +90,7 @@ class JevTypeahead
 				if ($opt['prefetch'])
 				{
 					$typeaheadLoad .= "prefetch: {
-							url:'" . $opt['prefetch'] . "&token=" . JSession::getFormToken() . "',
+							url:'" . $opt['prefetch'] . "&token=" . Session::getFormToken() . "',
 							ttl:10000 // 10 seconds cache time - increase in production
 							},";
 				}
@@ -111,7 +115,7 @@ class JevTypeahead
                 settings.url = settings.url.replace(settings.wildcard, encodeURIComponent(query));
                 settings.dataType = 'json';
                 settings.type = 'POST';
-                settings.data = {json:" . $opt['json'] . ", typeahead:query, token:'" . JSession::getFormToken() . "'};
+                settings.data = {json:" . $opt['json'] . ", typeahead:query, token:'" . Session::getFormToken() . "'};
                 return settings;
             },
 ";
@@ -121,7 +125,7 @@ class JevTypeahead
 				if ($opt['remote'])
 				{
 					$typeaheadLoad .= "remote: {
-										url: '" . $opt['remote'] . "&token=" . JSession::getFormToken() . "&typeahead=PQRZYX',
+										url: '" . $opt['remote'] . "&token=" . Session::getFormToken() . "&typeahead=PQRZYX',
 										wildcard: 'PQRZYX'
 										$callback
 										$prepare
@@ -162,7 +166,7 @@ class JevTypeahead
 			}
 
 			// Attach script to document
-			JFactory::getDocument()->addScriptDeclaration($typeaheadLoad);
+			Factory::getDocument()->addScriptDeclaration($typeaheadLoad);
 
 			// Set static array
 			static::$loaded[__METHOD__][$selector] = true;
@@ -192,14 +196,14 @@ class JevTypeahead
 		}
 
 		// Load jQuery
-		JHtml::_('jquery.framework');
-		JHtml::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css', array(), true);
-		JHtml::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js', false, true, false, false, true);
+		HTMLHelper::_('jquery.framework');
+		HTMLHelper::stylesheet('com_jevents/lib_jevtypeahead/jevtypeahead.css', array(), true);
+		HTMLHelper::script('com_jevents/lib_jevtypeahead/typeahead.bundle.min.js', false, true, false, false, true);
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
-			$config = JFactory::getConfig();
+			$config = Factory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
 

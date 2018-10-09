@@ -1,13 +1,15 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 function DefaultViewHelperShowNavTableBar($view)
 {
 
-	// this, previous and next date handling
+	// This, previous and next date handling
 
 	$cfg    = JEVConfig::getInstance();
-	$jinput = JFactory::getApplication()->input;
+	$input = Factory::getApplication()->input;
 	// Optionally display no nav bar
 	if ($cfg->get('com_calUseIconic', 1) == -1) return "";
 
@@ -21,11 +23,11 @@ function DefaultViewHelperShowNavTableBar($view)
 	$today_date = clone($this_date);
 	$today_date->setDate($regs[1], $regs[2], $regs[3]);
 
-	$task = $jinput->getString("jevtask");
+	$task = $input->getString("jevtask");
 	if ($task == "")
 	{
 		// I think xdebug messes up this variable in the memory so when debugging this is helpful
-		$task = $jinput->getString("jevtask", $jinput->getString("task", $jinput->getString("view") . "." . $jinput->getString("layout")));
+		$task = $input->getString("jevtask", $input->getString("task", $input->getString("view") . "." . $input->getString("layout")));
 	}
 	echo "<div class='jev_pretoolbar'>";
 	$view->loadModules("jevpretoolbar");

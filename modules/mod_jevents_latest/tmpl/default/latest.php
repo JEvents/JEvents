@@ -6,6 +6,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the module  frontend
  *
@@ -86,10 +94,10 @@ class DefaultModLatestView
 		$this->myItemid = $this->datamodel->setupModuleCatids($this->modparams);
 		$this->catout   = $this->datamodel->getCatidsOutLink(true);
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		// Can't use getCfg since this cannot be changed by Joomfish etc.
-		$tmplang       = JFactory::getLanguage();
+		$tmplang       = Factory::getLanguage();
 		$this->langtag = $tmplang->getTag();
 
 		// get params exclusive to module
@@ -99,7 +107,7 @@ class DefaultModLatestView
 			$modtheme = $params->get("com_calViewName", "");
 			if ($modtheme == "" || $modtheme == "global")
 			{
-				$modtheme = JEV_CommonFunctions::getJEventsViewName();;
+				$modtheme = JEV_CommonFunctions::getJEventsViewName();
 			}
 			$this->jevlayout = $modtheme;
 
@@ -150,9 +158,9 @@ class DefaultModLatestView
 			if ($cfg->get("bootstrapcss", 1) == 1)
 			{
 				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-				JHTML::stylesheet("com_jevents/bootstrap.css", array(), true);
+				HELP::stylesheet("com_jevents/bootstrap.css", array(), true);
 				// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
-				JHTML::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
+				HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 			}
 			else if ($cfg->get("bootstrapcss", 1) == 2)
 			{
@@ -166,13 +174,13 @@ class DefaultModLatestView
 
 		if (JFile::exists(JPATH_SITE . "/components/com_jevents/assets/css/jevcustom.css"))
 		{
-			$document = JFactory::getDocument();
+			$document = Factory::getDocument();
 			JEVHelper::stylesheet('jevcustom.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 
 		if ($myparam->get("modlatest_customcss", false))
 		{
-			JFactory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
+			Factory::getDocument()->addStyleDeclaration($myparam->get("modlatest_customcss", false));
 		}
 
 		if ($this->dispMode > 8)
@@ -186,8 +194,8 @@ class DefaultModLatestView
 		{
 			if ($modid > 0)
 			{
-				// do not use JRoute since this creates .rss link which normal sef can't deal with
-				$this->rsslink = JURI::root() . 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;modid=' . $modid;
+				// Do not use JRoute since this creates .rss link which normal sef can't deal with
+				$this->rsslink = Uri::root() . 'index.php?option=' . JEV_COM_COMPONENT . '&amp;task=modlatest.rss&amp;format=feed&amp;type=rss&amp;modid=' . $modid;
 			}
 			else
 			{
@@ -277,7 +285,7 @@ class DefaultModLatestView
 		$cfg = JEVConfig::getInstance();
 
 		// override global start now setting so that timelimit plugin can use it!
-		$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$startnow   = $compparams->get("startnow", 0);
 		$compparams->set("startnow", $this->modparams->get("startnow", 0));
 		$this->getLatestEventsData();
@@ -393,7 +401,7 @@ class DefaultModLatestView
 
 		if ($this->displayRSS)
 		{
-			$rssimg       = JURI::root() . "media/system/images/livemarks.png";
+			$rssimg       = Uri::root() . "media/system/images/livemarks.png";
 			$callink_HTML = '<div class="mod_events_latest_rsslink">'
 				. '<a href="' . $this->rsslink . '" title="' . JText::_("RSS_FEED") . '" target="_blank">'
 				. '<img src="' . $rssimg . '" alt="' . JText::_("RSS_FEED") . '" />'
@@ -405,11 +413,9 @@ class DefaultModLatestView
 
 		if ($this->modparams->get("contentplugins", 0))
 		{
-			$dispatcher = JEventDispatcher::getInstance();
 			$eventdata  = new stdClass();
-			//$eventdata->text = str_replace("{/toggle","{/toggle}",$content);
 			$eventdata->text = $content;
-			$dispatcher->trigger('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
+			Factory::getApplication()->triggerEvent('onContentPrepare', array('com_jevents', &$eventdata, &$this->modparams, 0));
 			$content = $eventdata->text;
 		}
 
@@ -429,16 +435,19 @@ class DefaultModLatestView
 	function getLatestEventsData($limit = "")
 	{
 
+		$app    = Factory::getApplication();
+		$input  = $app->input;
+
 		// Find the repeat ids to ignore because of pagination
 		// when not loading data using JSON we need to reset the shownEventIds array and the page variable in the session
-		$registry = JRegistry::getInstance("jevents");
+		$registry = JevRegistry::getInstance("jevents");
 		if (!$registry->get("jevents.fetchlatestevents", 0))
 		{
-			JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", array());
-			JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".page", 0);
+			$app->setUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", array());
+			$app->setUserState("jevents.moduleid" . $this->_modid . ".page", 0);
 		}
-		$shownEventIds = JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", array());
-		$page          = (int) JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
+		$shownEventIds = $app->getUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", array());
+		$page          = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
 
 		// RSS situation overrides maxecents
 		$limit = intval($limit);
@@ -447,7 +456,7 @@ class DefaultModLatestView
 			$this->maxEvents = $limit;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$t_datenow       = JEVHelper::getNow();
 		$this->now       = $t_datenow->toUnix(true);
@@ -558,15 +567,15 @@ $t_datenowSQL = $t_datenow->toMysql();
 			}
 		}
 
-		$periodStart = $beginDate; //JString::substr($beginDate,0,10);
-		$periodEnd   = $endDate; //JString::substr($endDate,0,10);
+		$periodStart = $beginDate;
+		$periodEnd   = $endDate;
 
-		$reg = JFactory::getConfig();
+		$reg = Factory::getConfig();
 		$reg->set("jev.modparams", $this->modparams);
 
 		//We get filter value to set it up again after getting the module data adn set the published_fv value to 0
-		$filter_value = JFactory::getApplication()->getUserStateFromRequest('published_fv_ses', 'published_fv', "0");
-		JRequest::setVar('published_fv', "0");
+		$filter_value = $app->getUserStateFromRequest('published_fv_ses', 'published_fv', "0");
+		$input->set('published_fv', "0");
 		if ($this->dispMode == 5)
 		{
 			$rows = $this->datamodel->queryModel->recentIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions);
@@ -588,11 +597,11 @@ $t_datenowSQL = $t_datenow->toMysql();
 		{
 			$rows = $this->datamodel->queryModel->listLatestIcalEvents($periodStart, $periodEnd, $this->maxEvents, $this->repeatdisplayoptions, $this->multiday);
 		}
-		JRequest::setVar('published_fv', $filter_value);
+		$input->set('published_fv', $filter_value);
 		$reg->set("jev.modparams", false);
 
 		// Time limit plugin constraints
-		$reg        = JFactory::getConfig();
+		$reg        = Factory::getConfig();
 		$pastdate   = $reg->get("jev.timelimit.past", false);
 		$futuredate = $reg->get("jev.timelimit.future", false);
 		if ($this->dispMode !== 5 && $this->dispMode !== 8)
@@ -607,7 +616,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 			}
 		}
 		$timeLimitNow = $todayBegin < $beginDate ? $beginDate : $todayBegin;
-		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(JString::substr($timeLimitNow, 5, 2)), intval(JString::substr($timeLimitNow, 8, 2)), intval(JString::substr($timeLimitNow, 0, 4)));
+		$timeLimitNow = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($timeLimitNow, 5, 2)), intval(StringHelper::substr($timeLimitNow, 8, 2)), intval(StringHelper::substr($timeLimitNow, 0, 4)));
 
 		// determine the events that occur each day within our range
 
@@ -615,7 +624,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 		// I need the date not the time of day !!
 		//$date = $this->now;
 		$date     = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d, $this->now_Y);
-		$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($endDate, 5, 2)), intval(JString::substr($endDate, 8, 2)), intval(JString::substr($endDate, 0, 4)));
+		$lastDate = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($endDate, 5, 2)), intval(StringHelper::substr($endDate, 8, 2)), intval(StringHelper::substr($endDate, 0, 4)));
 		$i        = 0;
 
 		$seenThisEvent        = array();
@@ -783,7 +792,7 @@ $t_datenowSQL = $t_datenow->toMysql();
 					// start from yesterday
 					// I need the date not the time of day !!
 					$date     = JevDate::mktime(0, 0, 0, $this->now_m, $this->now_d - 1, $this->now_Y);
-					$lastDate = JevDate::mktime(0, 0, 0, intval(JString::substr($beginDate, 5, 2)), intval(JString::substr($beginDate, 8, 2)), intval(JString::substr($beginDate, 0, 4)));
+					$lastDate = JevDate::mktime(0, 0, 0, intval(StringHelper::substr($beginDate, 5, 2)), intval(StringHelper::substr($beginDate, 8, 2)), intval(StringHelper::substr($beginDate, 0, 4)));
 					$i        = -1;
 
 					// Timelimit plugin constraints
@@ -911,8 +920,8 @@ $t_datenowSQL = $t_datenow->toMysql();
 			}
 		}
 
-		$page      = (int) JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
-		$direction = (int) JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".direction", 1);
+		$page      = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
+		$direction = (int) $app->getUserState("jevents.moduleid" . $this->_modid . ".direction", 1);
 
 		if (isset($this->eventsByRelDay) && count($this->eventsByRelDay))
 		{
@@ -952,16 +961,16 @@ $t_datenowSQL = $t_datenow->toMysql();
 				}
 			}
 
-			JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", $shownEventIds);
-			JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", $firstEventDate);
-			JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", $lastEventDate);
+			$app->setUserState("jevents.moduleid" . $this->_modid . ".shownEventIds", $shownEventIds);
+			$app->setUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", $firstEventDate);
+			$app->setUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", $lastEventDate);
 
 			// Navigation
 			if (!defined('_JEVM_SCRIPTLOADED'))
 			{
 				define('_JEVM_SCRIPTLOADED', 1);
-				$root   = JURI::root();
-				$token  = JSession::getFormToken();
+				$root   = Uri::root();
+				$token  = \Joomla\CMS\Session\Session::getFormToken();
 				$script = <<<SCRIPT
 function fetchMoreLatestEvents(modid, direction)
 {        
@@ -986,22 +995,22 @@ function fetchMoreLatestEvents(modid, direction)
                 });
 }
 SCRIPT;
-				JFactory::getDocument()->addScriptDeclaration($script);
+				Factory::getDocument()->addScriptDeclaration($script);
 			}
 		}
 		else
 		{
-			$firstEventDate = JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", false);
-			$lastEventDate  = JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", false);
+			$firstEventDate = $app->getUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", false);
+			$lastEventDate  = $app->getUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", false);
 
 			if ($direction == 1)
 			{
 				// fix the start and end dates for navigation
-				JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", $lastEventDate);
+				$app->setUserState("jevents.moduleid" . $this->_modid . ".firstEventDate", $lastEventDate);
 			}
 			else if ($direction == -1)
 			{
-				JFactory::getApplication()->setUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", $firstEventDate);
+				$app->setUserState("jevents.moduleid" . $this->_modid . ".lastEventDate", $firstEventDate);
 			}
 
 		}
@@ -1011,14 +1020,14 @@ SCRIPT;
 	function checkCreateDay($date, $row)
 	{
 
-		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->created(), 0, 10));
+		return (JevDate::strftime("%Y-%m-%d", $date) == StringHelper::substr($row->created(), 0, 10));
 
 	}
 
 	function checkModificationDay($date, $row)
 	{
 
-		return (JevDate::strftime("%Y-%m-%d", $date) == JString::substr($row->modified(), 0, 10));
+		return (JevDate::strftime("%Y-%m-%d", $date) == StringHelper::substr($row->modified(), 0, 10));
 
 	}
 
@@ -1113,8 +1122,8 @@ SCRIPT;
 	{
 
 		$datenow    = JEVHelper::getNow();
-		$dispatcher = JEventDispatcher::getInstance();
 		$compname   = JEV_COM_COMPONENT;
+		$app        = Factory::getApplication();
 
 		// get the title and start time
 		$startDate = JevDate::strtotime($dayEvent->publish_up());
@@ -1236,9 +1245,9 @@ SCRIPT;
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && JString::strlen($title) > intval($parts[0]))
+					if (count($parts) > 0 && StringHelper::strlen($title) > intval($parts[0]))
 					{
-						$title = JString::substr($title, 0, intval($parts[0]));
+						$title = StringHelper::substr($title, 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$title .= $parts[1];
@@ -1252,11 +1261,11 @@ SCRIPT;
 					$link = $dayEvent->viewDetailLink($ev_year, $ev_month, $ev_day, false, $this->myItemid);
 					if ($this->modparams->get("ignorefiltermodule", 0))
 					{
-						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1", false);
+						$link = Route::_($link . $this->datamodel->getCatidsOutLink() . "&filter_reset=1", false);
 					}
 					else
 					{
-						$link = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+						$link = Route::_($link . $this->datamodel->getCatidsOutLink());
 					}
 					$content .= $this->_htmlLinkCloaking($link, JEventsHTML::special($title));
 				}
@@ -1287,14 +1296,14 @@ SCRIPT;
 				// Also want to cloak contact details so
 				$this->modparams->set("image", 1);
 				$dayEvent->text = $dayEvent->contact_info();
-				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
+				$app->triggerEvent('onContentPrepare', array('com_jevents', &$dayEvent, &$this->modparams, 0));
 
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->text)) > intval($parts[0]))
+					if (count($parts) > 0 && StringHelper::strlen(strip_tags($dayEvent->text)) > intval($parts[0]))
 					{
-						$dayEvent->text = JString::substr(strip_tags($dayEvent->text), 0, intval($parts[0]));
+						$dayEvent->text = StringHelper::substr(strip_tags($dayEvent->text), 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$dayEvent->text .= $parts[1];
@@ -1309,14 +1318,14 @@ SCRIPT;
 			case 'content':  // Added by Kaz McCoy 1-10-2004
 				$this->modparams->set("image", 1);
 				$dayEvent->data->text = $dayEvent->content();
-				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				$app->triggerEvent('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 
 				if (!empty($dateParm))
 				{
 					$parts = explode("|", $dateParm);
-					if (count($parts) > 0 && JString::strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
+					if (count($parts) > 0 && StringHelper::strlen(strip_tags($dayEvent->data->text)) > intval($parts[0]))
 					{
-						$dayEvent->data->text = JString::substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
+						$dayEvent->data->text = StringHelper::substr(strip_tags($dayEvent->data->text), 0, intval($parts[0]));
 						if (count($parts) > 1)
 						{
 							$dayEvent->data->text .= $parts[1];
@@ -1325,7 +1334,7 @@ SCRIPT;
 				}
 
 				$dayEvent->content($dayEvent->data->text);
-				//$content .= JString::substr($dayEvent->content, 0, 150);
+				//$content .= StringHelper::substr($dayEvent->content, 0, 150);
 				$content .= $dayEvent->content();
 				break;
 
@@ -1333,7 +1342,7 @@ SCRIPT;
 			case 'location':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->location();
-				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				$app->triggerEvent('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 				$dayEvent->location($dayEvent->data->text);
 				$content .= $dayEvent->location();
 				break;
@@ -1408,7 +1417,7 @@ SCRIPT;
 			case 'extraInfo':
 				$this->modparams->set("image", 0);
 				$dayEvent->data->text = $dayEvent->extra_info();
-				$dispatcher->trigger('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
+				$app->triggerEvent('onContentPrepare', array('com_jevents', &$dayEvent->data, &$this->modparams, 0));
 				$dayEvent->extra_info($dayEvent->data->text);
 				$content .= $dayEvent->extra_info();
 				break;
@@ -1485,7 +1494,7 @@ SCRIPT;
 
 			case 'createdByUserEmailLink':
 				// Note that users email address will NOT be available if they don't want to receive email
-				$content .= JRoute::_("index.php?option="
+				$content .= Route::_("index.php?option="
 					. $compname
 					. "&task=" . $task_events
 					. "&agid=" . $dayEvent->id()
@@ -1501,26 +1510,15 @@ SCRIPT;
 
 			case 'eventDetailLink':
 				$link    = $dayEvent->viewDetailLink($st_year, $st_month, $st_day, false, $this->myItemid);
-				$link    = JRoute::_($link . $this->datamodel->getCatidsOutLink());
+				$link    = Route::_($link . $this->datamodel->getCatidsOutLink());
 				$content .= $link;
-
-				/*
-				  $content .= JRoute::_("index.php?option="
-				  . $compname
-				  . "&task=".$task_events
-				  . "&agid=".$dayEvent->id()
-				  . "&year=".$st_year
-				  . "&month=".$st_month
-				  . "&day=".$st_day
-				  . "&Itemid=".$this->myItemid . $this->catout);
-				 */
 				break;
 
 			case 'siteroot':
-				$content .= JUri::root();
+				$content .= Uri::root();
 				break;
 			case 'sitebase':
-				$content .= Juri::base();
+				$content .= Uri::base();
 				break;
 
 			default:
@@ -1577,7 +1575,7 @@ SCRIPT;
 									$matchedByPlugin = false;
 									$layout          = "list";
 									static $fieldNameArrays = array();
-									$jevplugins = JPluginHelper::getPlugin("jevents");
+									$jevplugins = PluginHelper::getPlugin("jevents");
 									foreach ($jevplugins as $jevplugin)
 									{
 										$classname = "plgJevents" . ucfirst($jevplugin->name);
@@ -1693,8 +1691,7 @@ SCRIPT;
 	function _htmlLinkCloaking($url = '', $text = '', $class = '')
 	{
 
-		//$link = JRoute::_($url);
-		// sef already should be already called below
+		// Sef already should be already called below
 		$link = $url;
 
 		if ($this->linkCloaking)
@@ -1719,7 +1716,7 @@ SCRIPT;
 	function getCalendarLink()
 	{
 
-		$menu     = JFactory::getApplication()->getMenu('site');
+		$menu     = Factory::getApplication()->getMenu('site');
 		$menuItem = $menu->getItem($this->myItemid);
 		if ($menuItem && $menuItem->component == JEV_COM_COMPONENT)
 		{
@@ -1731,20 +1728,20 @@ SCRIPT;
 			$task = "month.calendar";
 		}
 
-		return $this->_htmlLinkCloaking(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
+		return $this->_htmlLinkCloaking(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&Itemid=" . $this->myItemid . "&task=" . $task . $this->catout, true), JText::_('JEV_CLICK_TOCOMPONENT'));
 
 	}
 
 	protected function getNavigationIcons()
 	{
 
-		$registry = JRegistry::getInstance("jevents");
-		$params   = $registry->get("jevents.moduleparams", new JRegistry);
+		$registry = JevRegistry::getInstance("jevents");
+		$params   = $registry->get("jevents.moduleparams", new JevRegistry);
 		$content  = "";
 		if ($params->get("showNavigation", 0))
 		{
 			$content .= '<div class="mod_events_latest_navigation">';
-			$page    = (int) JFactory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
+			$page    = (int) Factory::getApplication()->getUserState("jevents.moduleid" . $this->_modid . ".page", 0);
 			if ($page > 0 || $params->get("modlatest_Mode", 0) != 2)
 			{
 				$content .= '<a class="btn btn-default" href="#" onclick="fetchMoreLatestEvents(' . $this->_modid . ',-1);return false;">' . JText::_('JEV_PRIOR_EVENTS') . '</a>';

@@ -10,10 +10,13 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-$db   = JFactory::getDbo();
-$user = JFactory::getUser();
+HTMLHelper::_('behavior.tooltip');
+
+$db   = Factory::getDbo();
+$user = Factory::getUser();
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm">
 	<?php

@@ -9,10 +9,12 @@
 
 defined('JPATH_BASE') or die;
 
+$displayData = (!isset($displayData)) ? $displayData = array() : $displayData;
+
 $list  = $displayData['list'];
 $pages = $list['pages'];
 
-$options = new JRegistry($displayData['options']);
+$options = new JevRegistry($displayData['options']);
 
 $showLimitBox   = $options->get('showLimitBox', true);
 $showPagesLinks = $options->get('showPagesLinks', true);

@@ -11,6 +11,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
 class jIcalEventRepeat extends jIcalEventDB
 {
 
@@ -142,9 +146,9 @@ class jIcalEventRepeat extends jIcalEventDB
 		// I need $year,$month,$day So that I can return to an appropriate date after saving an event (the repetition ids have all changed so I can't go back there!!)
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . parent::editTask() . '&evid=' . parent::id() . '&Itemid=' . $Itemid . '&rp_id=' . $this->rp_id() . "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link .= Factory::getApplication()->input->getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -166,9 +170,9 @@ class jIcalEventRepeat extends jIcalEventDB
 		// I need $year,$month,$day So that I can return to an appropriate date after saving an event (the repetition ids have all changed so I can't go back there!!)
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . parent::editCopyTask() . '&evid=' . parent::id() . '&Itemid=' . $Itemid . '&rp_id=' . $this->rp_id() . "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link .= Factory::getApplication()->input->getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -181,9 +185,9 @@ class jIcalEventRepeat extends jIcalEventDB
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->editTask() . '&evid=' . $this->id() . '&Itemid=' . $Itemid
 			. "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link .= JRequest::getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link .= Factory::getApplication()->input->getInt("pop", 0) ? "&tmpl=component&pop=1" : "";
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -214,8 +218,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		// I need $year,$month,$day So that I can return to an appropriate date after deleting a repetition!!!
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . parent::deleteTask() . '&evid=' . parent::id() . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -228,8 +232,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		// I need $year,$month,$day So that I can return to an appropriate date after deleting a repetition!!!
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->deleteTask() . '&cid=' . $this->id() . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -249,8 +253,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		// I need $year,$month,$day So that I can return to an appropriate date after deleting a repetition!!!
 		list($year, $month, $day) = JEVHelper::getYMD();
 		$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->deleteFutureTask() . '&cid=' . $this->id() . '&Itemid=' . $Itemid . "&year=$year&month=$month&day=$day";
-		//$link = $sef?JRoute::_( $link ,true ):$link;
-		$link = JRoute::_($link, true);
+		//$link = $sef?Route::_( $link ,true ):$link;
+		$link = Route::_($link, true);
 
 		return $link;
 
@@ -266,7 +270,8 @@ class jIcalEventRepeat extends jIcalEventDB
 	function viewDetailLink($year, $month, $day, $sef = true, $Itemid = 0)
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$input  = Factory::getApplication()->input;
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("permatarget", 0))
 		{
 			$Itemid = (int) $params->get("permatarget", 0);
@@ -287,12 +292,18 @@ class jIcalEventRepeat extends jIcalEventDB
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=icalevent.detail&evid=" . $this->ev_id() . '&Itemid=' . $Itemid
 				. "&year=$year&month=$month&day=$day&title=" . $title . "&uid=" . urlencode($this->uid());
 		}
-		if (JRequest::getCmd("tmpl", "") == "component" && JRequest::getCmd('task', 'selectfunction') != 'icalevent.select' && JRequest::getCmd("option", "") != "com_acymailing" && JRequest::getCmd("option", "") != "com_jnews" && JRequest::getCmd("option", "") != "com_search" && JRequest::getCmd("jevtask", "") != "crawler.listevents" && JRequest::getCmd("jevtask", "") != "modcal.ajax")
+		if ($input->getCmd("tmpl", "") == "component" &&
+			$input->getCmd('task', 'selectfunction') != 'icalevent.select' &&
+			$input->getCmd("option", "") != "com_acymailing" &&
+			$input->getCmd("option", "") != "com_jnews" &&
+			$input->getCmd("option", "") != "com_search" &&
+			$input->getCmd("jevtask", "") != "crawler.listevents" &&
+			$input->getCmd("jevtask", "") != "modcal.ajax")
 		{
 			$link .= "&tmpl=component";
 		}
 		// SEF is applied later
-		$link = $sef ? JRoute::_($link, true) : $link;
+		$link = $sef ? Route::_($link, true) : $link;
 
 		return $link;
 
@@ -395,8 +406,8 @@ class jIcalEventRepeat extends jIcalEventDB
 	function getAdjacentRepeats()
 	{
 
-		$jinput = JFactory::getApplication()->input;
-		$pop    = $jinput->getInt('pop', 0);
+		$input = Factory::getApplication()->input;
+		$pop    = $input->getInt('pop', 0);
 		$tmpl   = '';
 		$popc   = "&pop=" . $pop;
 
@@ -408,7 +419,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$Itemid = JEVHelper::getItemid();
 		list($year, $month, $day) = JEVHelper::getYMD();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
 			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat<='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
@@ -418,7 +429,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		{
 			$link              = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->rp_id . '&Itemid=' . $Itemid
 				. "&year=$prior->yup&month=$prior->mup&day=$prior->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($prior->title) . $tmpl . $popc;
-			$link              = JRoute::_($link);
+			$link              = Route::_($link);
 			$this->_prevRepeat = $link;
 		}
 		else
@@ -434,7 +445,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		{
 			$link              = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
 				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title) . $tmpl . $popc;
-			$link              = JRoute::_($link);
+			$link              = Route::_($link);
 			$this->_nextRepeat = $link;
 		}
 		else
@@ -541,7 +552,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		}
 		else
 		{
-			$params  = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$minyear = $params->get("com_earliestyear", 1970);
 			$maxyear = $params->get("com_latestyear", 2150);
 		}
@@ -576,7 +587,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		{
 			$link             = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->_rp_id . '&Itemid=' . $Itemid
 				. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplicationHelper::stringURLSafe($prior->_title);
-			$link             = JRoute::_($link);
+			$link             = Route::_($link);
 			$this->_prevEvent = $link;
 		}
 		else
@@ -616,7 +627,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		{
 			$link             = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $post->rp_id . '&Itemid=' . $Itemid
 				. "&year=$post->yup&month=$post->mup&day=$post->dup&uid=" . urlencode($this->uid()) . "&title=" . JApplicationHelper::stringURLSafe($post->title);
-			$link             = JRoute::_($link);
+			$link             = Route::_($link);
 			$this->_nextEvent = $link;
 		}
 		else

@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+
 class FlatViewNavTableBarIconic
 {
 
@@ -10,9 +14,9 @@ class FlatViewNavTableBarIconic
 	{
 
 		global $catidsOut;
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		if ($jinput->getInt('pop', 0))
+		if ($input->getInt('pop', 0))
 			return;
 		$cfg      = JEVConfig::getInstance();
 		$compname = JEV_COM_COMPONENT;
@@ -24,7 +28,7 @@ class FlatViewNavTableBarIconic
 		}
 
 		$this->iconstoshow = $cfg->get('iconstoshow', array('byyear', 'bymonth', 'byweek', 'byday', 'search'));
-		$viewimages        = JURI::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $view->getViewName() . "/assets/images";
+		$viewimages        = Uri::root() . "components/" . JEV_COM_COMPONENT . "/views/" . $view->getViewName() . "/assets/images";
 
 		$cat       = "";
 		$hiddencat = "";
@@ -55,7 +59,7 @@ class FlatViewNavTableBarIconic
 						echo ' class="active"';
 					}
 					?> >
-						<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=year.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=year.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWBYYEAR'); ?>">
 							<?php echo JText::_('JEV_VIEWBYYEAR'); ?></a>
 					</div>
@@ -70,7 +74,7 @@ class FlatViewNavTableBarIconic
 						echo ' class="active"';
 					}
 					?>>
-						<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=month.calendar&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=month.calendar&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWBYMONTH'); ?>">                            <?php echo JText::_('JEV_VIEWBYMONTH'); ?></a>
 					</div>
 				<?php } ?>
@@ -84,7 +88,7 @@ class FlatViewNavTableBarIconic
 						echo ' class="active"';
 					}
 					?>>
-						<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=week.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=week.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWBYWEEK'); ?>">
 							<?php echo JText::_('JEV_VIEWBYWEEK'); ?></a>
 					</div>
@@ -99,7 +103,7 @@ class FlatViewNavTableBarIconic
 						echo ' class="active"';
 					}
 					?>>
-						<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+						<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=day.listevents&' . $today_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 						   title="<?php echo JText::_('JEV_VIEWTODAY'); ?>">
 							<?php echo JText::_('JEV_VIEWTODAY'); ?></a>
 					</div>
@@ -126,7 +130,7 @@ class FlatViewNavTableBarIconic
 							echo ' class="active"';
 						}
 						?>>
-							<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=cat.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+							<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=cat.listevents&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 							   title="<?php echo JText::_('JEV_VIEWBYCAT'); ?>">
 								<?php echo JText::_('JEV_VIEWBYCAT'); ?></a>
 						</div>
@@ -138,7 +142,7 @@ class FlatViewNavTableBarIconic
 			{
 				?>
 				<div id="nav-search">
-					<a href="<?php echo JRoute::_('index.php?option=' . $option . $cat . '&task=search.form&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
+					<a href="<?php echo Route::_('index.php?option=' . $option . $cat . '&task=search.form&' . $view_date->toDateURL() . '&Itemid=' . $Itemid); ?>"
 					   title="<?php echo JText::_('JEV_SEARCH_TITLE'); ?>">
 						<img src="<?php echo $viewimages; ?>/icon-search.gif" alt="Search"/></a>
 				</div>
@@ -159,7 +163,7 @@ class FlatViewNavTableBarIconic
 		?>
 		<div id="nav-jumpto">
 			<a href="#"
-			   onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')};return false;"
+			   onclick="if (jevjq('#jumpto').hasClass('jev_none')) {jevjq('#jumpto').removeClass('jev_none');} else {jevjq('#jumpto').addClass('jev_none')}return false;"
 			   title="<?php echo JText::_('JEV_JUMPTO'); ?>">
 				<?php echo JText::_('JEV_JUMPTO'); ?>
 			</a>
@@ -177,7 +181,7 @@ class FlatViewNavTableBarIconic
 			$hiddencat = '<input type="hidden" name="catids" value="' . $view->datamodel->catidsOut . '"/>';
 		}
 
-		$index = JRoute::_("index.php");
+		$index = Route::_("index.php");
 		?>
 		<div id="jumpto" class="jev_none">
 			<form name="BarNav" action="<?php echo $index; ?>" method="get">

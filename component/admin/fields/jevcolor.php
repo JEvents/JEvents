@@ -7,8 +7,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
 
 include_once(JPATH_SITE . "/libraries/joomla/form/fields/color.php");
+// J4 => include_once(JPATH_SITE . "/libraries/src/Form/Field/ColorField.php");
 
 class JFormFieldJevcolor extends JFormFieldColor
 {
@@ -30,7 +32,7 @@ class JFormFieldJevcolor extends JFormFieldColor
 		$cfg = JEVConfig::getInstance();
 
 		$hideColour = false;
-		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!JFactory::getApplication()->isAdmin()))
+		if (($cfg->get('com_calForceCatColorEventForm', 0) == 1) && (!Factory::getApplication()->isClient('administrator')))
 		{
 			$hideColour = true;
 		}

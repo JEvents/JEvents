@@ -12,8 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-
-class iCalRepetition extends JTable
+class iCalRepetition extends Joomla\CMS\Table\Table
 {
 
 	/** @var int Primary key */

@@ -1,12 +1,14 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 function DefaultViewHelperFooter16($view)
 {
+	$app   = Factory::getApplication();
+	$input = $app->input;
 
-	$jinput = JFactory::getApplication()->input;
-
-	if ($jinput->getInt('pop', 0))
+	if ($input->getInt('pop', 0))
 	{ ?>
 		<div class="ev_noprint"><p align="center">
 				<a href="#close"
@@ -20,10 +22,9 @@ function DefaultViewHelperFooter16($view)
 	</div>
 	</div> <!-- close #jevents //-->
 	<?php
-	$dispatcher = JEventDispatcher::getInstance();
-	$dispatcher->trigger('onJEventsFooter');
+	$app->triggerEvent('onJEventsFooter');
 
-	$task = $jinput->getString("jevtask");
+	$task = $input->getString("jevtask");
 	$view->loadModules("jevpostjevents");
 	$view->loadModules("jevpostjevents_" . $task);
 

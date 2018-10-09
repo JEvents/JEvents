@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
@@ -22,7 +24,7 @@ class CustomcssModelCustomcss extends JModelForm
 	public function getForm($data = array(), $loadData = true)
 	{
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Codemirror or Editor None should be enabled
 		$db    = $this->getDbo();
@@ -58,7 +60,7 @@ class CustomcssModelCustomcss extends JModelForm
 	{
 
 		jimport('joomla.filesystem.file');
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$fileName    = 'jevcustom.css';
 		$filepath    = JPATH_ROOT . '/components/com_jevents/assets/css/' . $fileName;
@@ -129,7 +131,7 @@ class CustomcssModelCustomcss extends JModelForm
 	public function &getSource()
 	{
 
-		$app  = JFactory::getApplication();
+		$app  = Factory::getApplication();
 		$item = new stdClass;
 
 		//Define a check for both locations

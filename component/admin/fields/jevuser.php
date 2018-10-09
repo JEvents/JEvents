@@ -13,10 +13,14 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 class JFormFieldJEVuser extends JFormFieldList
 {
@@ -50,16 +54,16 @@ class JFormFieldJEVuser extends JFormFieldList
 	public function getOptions()
 	{
 
-		$params = JComponentHelper::getParams("com_jevents");
+		$params = ComponentHelper::getParams("com_jevents");
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// if editing category then find the rules for a specific category
 		if ($this->name == "jform[params][admin]"
-			&& JFactory::getApplication()->input->getCmd("option") == "com_categories"
-			&& JFactory::getApplication()->input->getInt("id") > 0)
+			&& Factory::getApplication()->input->getCmd("option") == "com_categories"
+			&& Factory::getApplication()->input->getInt("id") > 0)
 		{
-			$rules = JAccess::getAssetRules("com_jevents.category." . JFactory::getApplication()->input->getInt("id"), true);
+			$rules = JAccess::getAssetRules("com_jevents.category." . Factory::getApplication()->input->getInt("id"), true);
 		}
 		else
 		{

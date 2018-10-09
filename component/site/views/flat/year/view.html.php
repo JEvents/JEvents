@@ -12,6 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
+
+
 /**
  * HTML View class for the component frontend
  *
@@ -23,8 +28,8 @@ class flatViewYear extends JEventsflatView
 	{
 
 		JEVHelper::componentStylesheet($this);
-		$document = JFactory::getDocument();
-		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$document = Factory::getDocument();
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	}
 
@@ -37,12 +42,12 @@ class flatViewYear extends JEventsflatView
 	function getAdjacentYear($year, $month, $day, $direction = 1)
 	{
 
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		$d1     = JevDate::mktime(0, 0, 0, $month, $day, $year + $direction);
 		$day    = JevDate::strftime("%d", $d1);
 		$year   = JevDate::strftime("%Y", $d1);
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$cfg    = JEVConfig::getInstance();
 		if (method_exists("JEVHelper", "getMinYear"))
 		{
@@ -61,12 +66,12 @@ class flatViewYear extends JEventsflatView
 		}
 
 		$month  = JevDate::strftime("%m", $d1);
-		$task   = $jinput->getString('jevtask');
+		$task   = $input->getString('jevtask');
 		$Itemid = JEVHelper::getItemid();
 		if (isset($Itemid)) $item = "&Itemid=$Itemid";
 		else $item = "";
 
-		return JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day");
+		return Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=$task$item&year=$year&month=$month&day=$day");
 	}
 
 	function getFollowingYear($year, $month, $day)

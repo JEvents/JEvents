@@ -217,7 +217,7 @@ class vEvent// extends JObject
 
 		$output = "";
 		$output .= "BEGIN:VEVENT\r\n";
-		$showBR = (int) JRequest::getVar('showBR', '0');
+		$showBR = Factory::getApplication()->input->getInt('showBR', 0);
 		if ($showBR) $output .= "<br/>";
 
 		foreach ($this->properties as $key => $value)
@@ -271,7 +271,7 @@ class vCal //extends JObject
 	public function getVCal()
 	{
 
-		$showBR = (int) JRequest::getVar('showBR', '0');
+		$showBR = Factory::getApplication()->input->getInt('showBR', 0);
 
 		$output = "";
 		$output .= "BEGIN:VCALENDAR\r\n";

@@ -13,6 +13,13 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 jimport('joomla.application.component.controlleradmin');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 class AdminCpanelController extends JControllerAdmin
 {
 
@@ -33,19 +40,15 @@ class AdminCpanelController extends JControllerAdmin
 	function cpanel()
 	{
 
-		$db = JFactory::getDbo();
-
-		// Enable Jevents Installer Plugin
-		// $query = "UPDATE #__extensions SET enabled=1 WHERE folder='installer' and type='plugin' and element='jeventsinstaller'";
-		// $db->setQuery($query);
-		// $db->execute();
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
 
 		// Make sure RSVP Pro and RSVP are not both enabled
-		$rsvpplugin    = JPluginHelper::isEnabled("jevents", "jevrsvp");
-		$rsvpproplugin = JPluginHelper::isEnabled("jevents", "jevrsvppro");
+		$rsvpplugin    = PluginHelper::isEnabled("jevents", "jevrsvp");
+		$rsvpproplugin = PluginHelper::isEnabled("jevents", "jevrsvppro");
 		if ($rsvpproplugin && $rsvpplugin)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
+			$app->enqueueMessage(JText::_("JEV_INSTALLED_RSVP_AND_RSVPPRO_INCOMPATIBLE"), "ERROR");
 		}
 
 		// Add one category by default if none exist already
@@ -71,23 +74,27 @@ class AdminCpanelController extends JControllerAdmin
 		{
 			$sql = "INSERT INTO #__jevents_icsfile (label,filename,	icaltype,state,	access,	catid, isdefault) VALUES ('Default','Initial ICS File',2,1,1,$catid,1)";
 			$db->setQuery($sql);
-			$db->execute();
-			echo $db->getErrorMsg();
+			try {
+				$db->execute();
+			} catch (Exception $e) {
+				echo $e;
+			}
 		}
 
-		if (false && file_exists(JEV_ADMINPATH . "install.php"))
+		if (file_exists(JEV_ADMINPATH . "install.php"))
 		{
 			include_once(JEV_ADMINPATH . "install.php");
 			$installer = new com_jeventsInstallerScript();
 			$installer->update(false);
 		}
 
-		// are config values setup correctyl
-		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		// Are the config values setup correct
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$jevadmin = $params->get("jevadmin", -1);
+
 		if ($jevadmin == -1)
 		{
-			$this->setRedirect(JRoute::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
+			$this->setRedirect(Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=params.edit", false), JText::_('PLEASE_CHECK_CONFIGURATION_AND_SAVE'));
 			$this->redirect();
 		}
 
@@ -115,11 +122,11 @@ class AdminCpanelController extends JControllerAdmin
 		$tables = $db->loadObjectList();
 		if (count($tables) > 0)
 		{
-			$this->view->assign('migrated', 1);
+			$this->view->migrated = 1;
 		}
 		else
 		{
-			$this->view->assign('migrated', 0);
+			$this->view->migrated = 0;
 		}
 		$this->checkCategoryAssets();
 
@@ -144,7 +151,7 @@ class AdminCpanelController extends JControllerAdmin
 
 		// Set the layout
 		$this->view->setLayout('cpanel');
-		$this->view->assign('title', JText::_('CONTROL_PANEL'));
+		$this->view->title = JText::_('CONTROL_PANEL');
 
 		$this->view->display();
 
@@ -153,8 +160,9 @@ class AdminCpanelController extends JControllerAdmin
 	private function mergeMenus()
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$db     = JFactory::getDbo();
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$db     = Factory::getDbo();
+
 		// merge/unmerge menu items?
 		// Joomla 2.5 version
 		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and (title="com_jevents" OR title="COM_JEVENTS_MENU")';
@@ -168,7 +176,8 @@ class AdminCpanelController extends JControllerAdmin
 		$sql = 'SELECT id, title, alias, link FROM #__menu where client_id=1 AND (
 		' . $toexist . '
 		)';
-		// order by parent id to remove the appropriate duplicate - list the ones we want to keep first
+
+		// Order by parent id to remove the appropriate duplicate - list the ones we want to keep first
 		$sql .= ' ORDER BY parent_id ' . ($params->get("mergemenus", 1) ? 'desc' : 'asc');
 		$db->setQuery($sql);
 		$existingmenus = $db->loadObjectList();
@@ -197,9 +206,9 @@ class AdminCpanelController extends JControllerAdmin
 		}
 		if ($updatemenus)
 		{
-			JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
 			// rebuild the menus
-			$menu = JTable::getInstance('Menu');
+			$menu = Table::getInstance('Menu');
 			$menu->rebuild();
 		}
 
@@ -208,6 +217,7 @@ class AdminCpanelController extends JControllerAdmin
 		$sql       = 'SELECT element,extension_id FROM #__extensions  where type="component" AND (
 		' . $installed . '
 		)';
+
 		$db->setQuery($sql);
 		$installed = $db->loadObjectList();
 
@@ -217,8 +227,8 @@ class AdminCpanelController extends JControllerAdmin
 			{
 				continue;
 			}
-			JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
-			$table                   = JTable::getInstance('Menu', 'JTable');
+			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			$table                   = Table::getInstance('Menu', 'Table');
 			$table->id               = 0;
 			$table->title            = $missingmenu->element;
 			$table->alias            = str_replace("_", "-", $missingmenu->element);
@@ -243,16 +253,22 @@ class AdminCpanelController extends JControllerAdmin
 		where client_id=1 AND alias="jevents-tags"';
 
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// Fix Managed People menu item if needed
 		$sql = 'UPDATE  #__menu
 		set menutype = "main" where client_id=1 AND menutype="" AND alias="com-jevpeople"';
 
 		$db->setQuery($sql);
-		$db->execute();
-		echo $db->getErrorMsg();
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		// Is the JEvents menu item completely missing or corrupted - if so then skip the rest
 		if (!$parent)
@@ -311,8 +327,11 @@ class AdminCpanelController extends JControllerAdmin
 				' . $tochange . '
 				)';
 				$db->setQuery($sql);
-				$db->execute();
-				echo $db->getErrorMsg();
+				try {
+					$db->execute();
+				} catch (Exception $e) {
+					echo $e;
+				}
 			}
 		}
 		else
@@ -333,16 +352,19 @@ class AdminCpanelController extends JControllerAdmin
 					' . $tochange . '
 					)';
 				$db->setQuery($sql);
-				$db->execute();
-				echo $db->getErrorMsg();
+				try {
+					$db->execute();
+				} catch (Exception $e) {
+					echo $e;
+				}
 			}
 		}
 
 		if ($updatemenus)
 		{
-			JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
+			JLoader::register('TableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
 			// rebuild the menus
-			$menu = JTable::getInstance('Menu');
+			$menu = Table::getInstance('Menu');
 			$menu->rebuild();
 		}
 	}
@@ -350,7 +372,7 @@ class AdminCpanelController extends JControllerAdmin
 	public function checkCategoryAssets()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__categories WHERE asset_id=0 and extension='com_jevents' order by level , id");
 		$missingassets = $db->loadObjectList();
 		if (count($missingassets) > 0)
@@ -376,7 +398,7 @@ class AdminCpanelController extends JControllerAdmin
 		foreach ($blankparentassets as $blankparentasset)
 		{
 			$catid = str_replace('com_jevents.category.', "", $blankparentasset->name);
-			$cat   = JTable::getInstance("category");
+			$cat   = Table::getInstance("category");
 			$cat->load($catid);
 			$cat->store();
 		}
@@ -387,7 +409,7 @@ class AdminCpanelController extends JControllerAdmin
 		foreach ($blankparentassets as $blankparentasset)
 		{
 			$catid = str_replace('com_jevpeople.category.', "", $blankparentasset->name);
-			$cat   = JTable::getInstance("category");
+			$cat   = Table::getInstance("category");
 			$cat->load($catid);
 			$cat->store();
 		}
@@ -397,9 +419,9 @@ class AdminCpanelController extends JControllerAdmin
 	private function insertAsset($object)
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		// Getting the asset table
-		$table = JTable::getInstance('Asset', 'JTable', array('dbo' => $db));
+		$table = Table::getInstance('Asset', 'Table', array('dbo' => $db));
 
 		// Getting the categories id's
 		$db->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");
@@ -464,17 +486,14 @@ class AdminCpanelController extends JControllerAdmin
 		$query       = "UPDATE {$updatetable} SET asset_id = {$table->id}"
 			. " WHERE id = {$id}";
 		$db->setQuery($query);
-		$db->execute();
 
-		// Check for query error.
-		$error = $db->getErrorMsg();
-
-		if ($error)
-		{
-			throw new Exception($error);
-
+		try {
+			$db->execute();
+		} catch (Exception $e) {
+			throw new Exception($e);
 			return false;
 		}
+
 
 		return true;
 
@@ -483,7 +502,7 @@ class AdminCpanelController extends JControllerAdmin
 	private function fixOrphanEvents()
 	{
 
-		$db         = JFactory::getDbo();
+		$db         = Factory::getDbo();
 		$hasOrphans = false;
 
 		$sql = "SELECT ev.ev_id from #__jevents_vevent as ev
@@ -505,7 +524,7 @@ WHERE cat.id is null
 			}
 		}
 
-		$params        = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params        = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$multicategory = $params->get("multicategory", 0);
 		if ($multicategory)
 		{
@@ -589,7 +608,7 @@ WHERE ics.ics_id is null
 
 		if ($hasOrphans)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_("JEV_ORPHAN_EVENTS_DETECTED_AND_PLACED_IN_SPECIAL_ORPHAN_EVENT_CATEGORY_OR_CALENDAR"));
+			Factory::getApplication()->enqueueMessage(JText::_("JEV_ORPHAN_EVENTS_DETECTED_AND_PLACED_IN_SPECIAL_ORPHAN_EVENT_CATEGORY_OR_CALENDAR"));
 		}
 
 
@@ -598,7 +617,7 @@ WHERE ics.ics_id is null
 	private function createOrphanCategory()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$sql = "SELECT id from #__categories where extension='com_jevents' AND title='Orphans'";
 		$db->setQuery($sql);
@@ -622,7 +641,7 @@ WHERE ics.ics_id is null
 	{
 
 		$catid = $this->createOrphanCategory();
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		// Add orphan native calendar by default if none exist already
 		$sql = "SELECT ics_id from #__jevents_icsfile WHERE icaltype=2 and label='Orphans'";
 		$db->setQuery($sql);
@@ -650,7 +669,7 @@ WHERE ics.ics_id is null
 
 		// Set the layout
 		$this->view->setLayout('support');
-		$this->view->assign('title', JText::_('CONTROL_PANEL'));
+		$this->view->title = JText::_('CONTROL_PANEL');
 
 		$this->view->display();
 	}
@@ -658,11 +677,15 @@ WHERE ics.ics_id is null
 	function fixExceptions()
 	{
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 AND (oldstartrepeat='0000-00-00 00:00:00' OR  oldstartrepeat is null) ORDER BY eventid ASC, startrepeat asc");
 		//$db->setQuery("SELECT * FROM #__jevents_exception where exception_type=1 ORDER BY eventid ASC, startrepeat asc");
-		$rows = $db->loadObjectList("rp_id");
-		echo $db->getErrorMsg();
+		try
+		{
+			$rows = $db->loadObjectList("rp_id");
+		} catch (Exception $e) {
+			echo $e;
+		}
 
 		$eventexceptions = array();
 		foreach ($rows as $row)
@@ -880,15 +903,16 @@ WHERE ics.ics_id is null
 
 	public function fixcollations()
 	{
+		$app    = Factory::getApplication();
+		$input  = $app->input;
 
 		if (!JEVHelper::isAdminUser())
 		{
-			JFactory::getApplication()->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
-
+			$app->redirect("index.php?option=" . JEV_COM_COMPONENT . "&task=cpanel.cpanel", "Not Authorised - must be admin");
 			return;
 		}
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery("SHOW TABLES LIKE '" . $db->getPrefix() . "jev_%'");
 		$alltables = $db->loadResultArray();
 
@@ -900,7 +924,7 @@ WHERE ics.ics_id is null
 		$db->setQuery("SHOW TABLE STATUS LIKE '" . $db->getPrefix() . "jev_%'");
 		$tables = $db->loadObjectList('Name');
 
-		if (JRequest::getInt("ft", 0))
+		if ($input->getInt("ft", 0))
 		{
 			foreach ($tables as $tablename => $table)
 			{
@@ -935,7 +959,7 @@ WHERE ics.ics_id is null
 		}
 		if ($fixtables)
 		{
-			echo "<hr/><br/><strong><a href='" . JURI::root() . "/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1" . "'>Click here to fix these tables</a></strong>
+			echo "<hr/><br/><strong><a href='" . Uri::root() . "/administrator/index.php?option=com_jevents&task=cpanel.fixcollations&ft=1" . "'>Click here to fix these tables</a></strong>
 				<h2>MAKE SURE YOU DATABASE IS BACKED UP BEFORE YOU DO THIS</h2>";
 		}
 	}
@@ -954,7 +978,7 @@ WHERE ics.ics_id is null
 				{
 					$oldPackage = true;
 
-					$db = JFactory::getDbo();
+					$db = Factory::getDbo();
 					// Add one category by default if none exist already
 					$sql = "SELECT element from #__extensions WHERE type = 'file'";
 					$db->setQuery($sql);

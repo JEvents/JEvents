@@ -11,9 +11,11 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 
-class ModCalController extends JControllerLegacy
+class ModCalController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	var $modid = null;
@@ -82,8 +84,9 @@ class ModCalController extends JControllerLegacy
 
 	function ajax()
 	{
+		$input  = Factory::getApplication()->input;
 
-		$modid = intval((JRequest::getVar('modid', 0)));
+		$modid = intval(($input->getInt('modid', 0)));
 		if ($modid <= 0)
 		{
 			echo "<script>alert('bad mod id');</script>";
@@ -96,14 +99,14 @@ class ModCalController extends JControllerLegacy
 
 		list($year, $month, $day) = JEVHelper::getYMD();
 
-		$user  = JFactory::getUser();
+		$user  = Factory::getUser();
 		$query = "SELECT id, params"
 			. "\n FROM #__modules AS m"
 			. "\n WHERE m.published = 1"
 			. "\n AND m.id = " . $modid
 			. "\n AND m.access IN (" . JEVHelper::getAid($user, 'string') . ")"
 			. "\n AND m.client_id != 1";
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
 		if (count($modules) <= 0)
@@ -115,7 +118,7 @@ class ModCalController extends JControllerLegacy
 				return;
 			}
 		}
-		$params = new JRegistry($modules[0]->params);
+		$params = new JevRegistry($modules[0]->params);
 
 		$cfg       = JEVConfig::getInstance();
 		$theme     = JEV_CommonFunctions::getJEventsViewName();
@@ -128,7 +131,6 @@ class ModCalController extends JControllerLegacy
 		}
 		$theme = $modtheme;
 
-		//require(JModuleHelper::getLayoutPath('mod_jevents_cal',$theme.'/'."calendar"));
 		require_once(JPATH_SITE . '/modules/mod_jevents_cal/helper.php');
 		$jevhelper = new modJeventsCalHelper();
 		$viewclass = $jevhelper->getViewClass($theme, 'mod_jevents_cal', $theme . '/' . "calendar", $params);
@@ -150,12 +152,12 @@ class ModCalController extends JControllerLegacy
 		ob_end_clean();
 		// commmended out - see https://www.jevents.net/forum/viewtopic.php?f=24&t=40917&p=192337#p192337
 		//ob_end_flush();
-		if (JRequest::getCmd("callback", 0))
+		if ($input->getCmd("callback", 0))
 		{
-			echo JRequest::getCmd("callback", 0) . "(" . json_encode($json), ");";
+			echo $input->getCmd("callback", 0) . "(" . json_encode($json), ");";
 			exit();
 		}
-		else if (JRequest::getInt("json") == 1)
+		else if ($input->getInt("json") == 1)
 		{
 			$encoded = json_encode($json);
 			if ($encoded === false && json_last_error() == JSON_ERROR_UTF8)
@@ -231,10 +233,10 @@ class ModCalController extends JControllerLegacy
 		$this->modid = $modid;
 
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$cfg = JEVConfig::getInstance();
-		$db  = JFactory::getDbo();
+		$db  = Factory::getDbo();
 
 		$this->datamodel = new JEventsDataModel();
 
@@ -243,18 +245,18 @@ class ModCalController extends JControllerLegacy
 
 		$this->modparams = &$params;
 		$this->aid       = JEVHelper::getAid($user, 'string');   // RSH modified getAid to handle different return types 10/26/10
-		$tmplang         = JFactory::getLanguage();
+		$tmplang         = Factory::getLanguage();
 
 		// get params exclusive to module
 		$this->inc_ec_css       = $this->modparams->get('inc_ec_css', 0);
-		$this->minical_showlink = $this->modparams->get('minical_showlink', 1);;
-		$this->minical_prevyear = $this->modparams->get('minical_prevyear', 1);;
-		$this->minical_prevmonth = $this->modparams->get('minical_prevmonth', 1);;
-		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);;
-		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);;
-		$this->minical_actyear = $this->modparams->get('minical_actyear', 1);;
-		$this->minical_nextmonth = $this->modparams->get('minical_nextmonth', 1);;
-		$this->minical_nextyear = $this->modparams->get('minical_nextyear', 1);;
+		$this->minical_showlink = $this->modparams->get('minical_showlink', 1);
+		$this->minical_prevyear = $this->modparams->get('minical_prevyear', 1);
+		$this->minical_prevmonth = $this->modparams->get('minical_prevmonth', 1);
+		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);
+		$this->minical_actmonth = $this->modparams->get('minical_actmonth', 1);
+		$this->minical_actyear = $this->modparams->get('minical_actyear', 1);
+		$this->minical_nextmonth = $this->modparams->get('minical_nextmonth', 1);
+		$this->minical_nextyear = $this->modparams->get('minical_nextyear', 1);
 
 		// get params exclusive to component
 		$this->com_starday = intval($jevents_config->get('com_starday', 0));

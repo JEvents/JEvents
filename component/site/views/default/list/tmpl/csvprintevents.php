@@ -2,15 +2,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$jinput = Jfactory::getApplication()->input;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
 
-if ($jinput->getInt("limit", 0) < 1000)
+$input = Factory::getApplication()->input;
+
+if ($input->getInt("limit", 0) < 1000)
 {
-	$uri = JUri::getInstance();
+	$uri = Uri::getInstance();
 	$uri->setVar("limit", 99999);
 	global $mainframe;
 	$url = $uri->toString();
-	JFactory::getApplication()->redirect($url);
+	Factory::getApplication()->redirect($url);
 	//echo $url;
 	exit();
 }
@@ -26,7 +30,7 @@ $rows = array();
 
 $fields = array();
 
-$compparams = JComponentHelper::getParams("com_jevents");
+$compparams = ComponentHelper::getParams("com_jevents");
 $infields   = explode("||", $compparams->get("columns", "TITLE_LINK|Title Link|Title"));
 $cols       = array();
 $titles     = array();
@@ -76,7 +80,7 @@ if ($num_events > 0)
 	}
 }
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->setMimeEncoding("text/csv");
 
 

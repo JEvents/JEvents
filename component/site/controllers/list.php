@@ -11,9 +11,12 @@
 
 defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.application.component.controller');
 
-class ListController extends JControllerLegacy
+class ListController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	function __construct($config = array())
@@ -38,19 +41,19 @@ class ListController extends JControllerLegacy
 	{
 
 		list($year, $month, $day) = JEVHelper::getYMD();
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		// Joomla unhelpfully switched limitstart to start when sef is enabled!  includes/router.php line 390
-		$limitstart = intval($jinput->getInt('start', $jinput->getInt('limitstart', 0)));
+		$limitstart = intval($input->getInt('start', $input->getInt('limitstart', 0)));
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-		$limit  = intval(JFactory::getApplication()->getUserStateFromRequest('jevlistlimit.list', 'limit', $params->get("com_calEventListRowsPpg", 15)));
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$limit  = intval(Factory::getApplication()->getUserStateFromRequest('jevlistlimit.list', 'limit', $params->get("com_calEventListRowsPpg", 15)));
 
 		$Itemid = JEVHelper::getItemid();
 
 		// get the view
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -70,26 +73,26 @@ class ListController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout('events');
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("limitstart", $limitstart);
-		$this->view->assign("limit", $limit);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $this->_task);
+		$this->view->Itemid     = $Itemid;
+		$this->view->limitstart = $limitstart;
+		$this->view->limit      = $limit;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $this->_task;
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}

@@ -9,11 +9,14 @@
  * @link        http://www.jevents.net
  */
 
-defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
+defined('JPATH_BASE') or die('No Direct Access.');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.controller');
 
-class DayController extends JControllerLegacy
+class DayController extends Joomla\CMS\MVC\Controller\BaseController
 {
 
 	function __construct($config = array())
@@ -38,7 +41,7 @@ class DayController extends JControllerLegacy
 	function listevents()
 	{
 
-		$params   = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		$fixedDay = $params->get('fixedday', '');
 		if ($fixedDay)
 		{
@@ -54,7 +57,7 @@ class DayController extends JControllerLegacy
 
 		// get the view
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$viewType = $document->getType();
 
 		$cfg   = JEVConfig::getInstance();
@@ -70,24 +73,24 @@ class DayController extends JControllerLegacy
 		// Set the layout
 		$this->view->setLayout('listevents');
 
-		$this->view->assign("Itemid", $Itemid);
-		$this->view->assign("month", $month);
-		$this->view->assign("day", $day);
-		$this->view->assign("year", $year);
-		$this->view->assign("task", $this->_task);
+		$this->view->Itemid     = $Itemid;
+		$this->view->month      = $month;
+		$this->view->day        = $day;
+		$this->view->year       = $year;
+		$this->view->task       = $this->_task;
 
 		// View caching logic -- simple... are we logged in?
 		$cfg        = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
+		$joomlaconf = Factory::getConfig();
 		$useCache   = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		$user       = JFactory::getUser();
+		$user       = Factory::getUser();
 		if ($user->get('id') || !$useCache)
 		{
 			$this->view->display();
 		}
 		else
 		{
-			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
+			$cache = Factory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
 	}

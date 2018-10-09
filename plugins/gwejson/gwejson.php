@@ -9,6 +9,8 @@
  */
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+
 /*
   if (defined('_SC_START')){
   list ($usec, $sec) = explode(" ", microtime());
@@ -31,7 +33,7 @@ class PlgSystemGwejson extends JPlugin
 
 		parent::__construct($subject, $config);
 
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 
 		if ($task != "gwejson")
@@ -39,7 +41,7 @@ class PlgSystemGwejson extends JPlugin
 			return true;
 		}
 		// Some plugins set the document type too early which messes up our ouput.
-		$this->doc = JFactory::getDocument();
+		$this->doc = Factory::getDocument();
 	}
 
 	/**
@@ -52,7 +54,7 @@ class PlgSystemGwejson extends JPlugin
 	function onAfterInitialise()
 	{
 
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		$task  = $input->get('task', $input->get('typeaheadtask', '', 'cmd'), 'cmd');
 		// in frontend SEF
 		if ($task != "gwejson")
@@ -130,7 +132,7 @@ class PlgSystemGwejson extends JPlugin
 
 		if (!function_exists("gwejson_skiptoken") || !gwejson_skiptoken())
 		{
-			$token = JSession::getFormToken();;
+			$token = \Joomla\CMS\Session\Session::getFormToken();
 			if ($token != $input->get('token', '', 'string'))
 			{
 				if ($input->get('json', '', 'raw'))

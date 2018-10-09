@@ -12,6 +12,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // CHECK EVENTS COMPONENT 
 $file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -27,12 +31,12 @@ else
 }
 
 // record what is running - used by the filters
-$registry = JRegistry::getInstance("jevents");
+$registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "mod_jevents_switchview");
 $registry->set("jevents.moduleid", $module->id);
 $registry->set("jevents.moduleparams", $params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $style    = "select#jos_change_view {width:100%;}";
 $document->addStyleDeclaration($style);
 
@@ -55,7 +59,7 @@ $show_preview   = $params->get('show_preview', 1);
 $darray = array();
 foreach (JEV_CommonFunctions::getJEventsViewList() as $viewfile)
 {
-	$darray[] = JHTML::_('select.option', $viewfile, $viewfile);
+	$darray[] = HTMLHelper::_('select.option', $viewfile, $viewfile);
 }
 sort($darray);
 
@@ -66,7 +70,7 @@ if ($show_preview)
 {
 	$onchange = "showimage();";
 	?>
-	<img src="<?php echo JURI::root() . "components/com_jevents/views/$cur_view/assets/images/view_thumbnail.png"; ?>"
+	<img src="<?php echo Uri::root() . "components/com_jevents/views/$cur_view/assets/images/view_thumbnail.png"; ?>"
 	     name="preview" border="1" width="<?php echo $preview_width; ?>" height="<?php echo $preview_height; ?>"
 	     alt="<?php echo $cur_view; ?>"/>
 	<?php
@@ -77,7 +81,7 @@ if ($show_preview)
     <!--
     function showimage() {
         //if (!document.images) return;
-        document.images.preview.src = '<?php echo JURI::root();?>components/com_jevents/views/' + getSelectedValue('jeventviewform', 'jos_change_view') + '/assets/images/view_thumbnail.png';
+        document.images.preview.src = '<?php echo Uri::root();?>components/com_jevents/views/' + getSelectedValue('jeventviewform', 'jos_change_view') + '/assets/images/view_thumbnail.png';
     }
 
     function setJViewcookie(index) {
@@ -113,11 +117,11 @@ else
 {
 	$myItemid = $params->get("target_itemid", JEVHelper::getItemid());
 }
-$target = JRoute::_("index.php?option=com_jevents&Itemid=" . $myItemid);
+$target = Route::_("index.php?option=com_jevents&Itemid=" . $myItemid);
 ?>
 <form action="<?php echo $target; ?>" name="jeventviewform" method="post">
 	<?php
-	echo JHTML::_('select.genericlist', $darray, 'jos_change_view', " class=\"button\" onchange=\"$onchange\"", 'value', 'text', $cur_view);
+	echo HTMLHelper::_('select.genericlist', $darray, 'jos_change_view', " class=\"button\" onchange=\"$onchange\"", 'value', 'text', $cur_view);
 	?>
 	<input class="button" type="submit" value="<?php echo JText::_('JEV_CMN_SELECT'); ?>"
 	       onclick="setJViewcookie(this.selectedIndex);"/>

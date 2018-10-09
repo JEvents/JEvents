@@ -12,6 +12,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * HTML View class for the component frontend
  *
@@ -34,9 +38,9 @@ class ICalsViewIcals extends JEventsAbstractView
 
 		// See http://www.jevents.net/forum/viewtopic.php?f=23&t=21939&p=115231#wrap
 		// can we use 	X-ALT-DESC;FMTTYPE=text/html: as well as DESCRIPTION
-		$jinput = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
-		$icalformatted = $jinput->getInt("icf", 0);
+		$icalformatted = $input->getInt("icf", 0);
 		if (!$icalformatted)
 			$description = $this->replacetags($desc);
 		else
@@ -90,16 +94,16 @@ class ICalsViewIcals extends JEventsAbstractView
 		// new version
 
 		$output = '';
-		while (JString::strlen($input) >= $line_max)
+		while (StringHelper::strlen($input) >= $line_max)
 		{
-			$output .= JString::substr($input, 0, $line_max - 1);
-			$input  = JString::substr($input, $line_max - 1);
-			if (JString::strlen($input) > 0)
+			$output .= StringHelper::substr($input, 0, $line_max - 1);
+			$input  = StringHelper::substr($input, $line_max - 1);
+			if (StringHelper::strlen($input) > 0)
 			{
 				$output .= $eol . " ";
 			}
 		}
-		if (JString::strlen($input) > 0)
+		if (StringHelper::strlen($input) > 0)
 		{
 			$output .= $input;
 		}
@@ -111,12 +115,12 @@ class ICalsViewIcals extends JEventsAbstractView
 		$outline = "";
 		$newline = ' ';
 
-		$linlen = JString::strlen($input);
+		$linlen = StringHelper::strlen($input);
 
 
 		for ($i = 0; $i < $linlen; $i++)
 		{
-			$c = JString::substr($input, $i, 1);
+			$c = StringHelper::substr($input, $i, 1);
 
 			/*
 			$dec = ord($c);
@@ -130,7 +134,7 @@ class ICalsViewIcals extends JEventsAbstractView
 			  }
 			  }
 			 */
-			if ((JString::strlen($outline) + 1) >= $line_max)
+			if ((StringHelper::strlen($outline) + 1) >= $line_max)
 			{ // CRLF is not counted
 				$output  .= $outline . $eol . $newline; // soft line break; "\r\n" is okay
 				$outline = $c;
@@ -150,12 +154,12 @@ class ICalsViewIcals extends JEventsAbstractView
 	protected function vtimezone($icalEvents)
 	{
 
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$tzid = "";
 		if (is_callable("date_default_timezone_set"))
 		{
-			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 			$tz     = $params->get("icaltimezonelive", "");
 			if ($tz == "")
 			{

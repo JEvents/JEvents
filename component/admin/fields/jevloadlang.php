@@ -13,10 +13,13 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('spacer');
+FormHelper::loadFieldClass('spacer');
 
 /**
  * JevModule Load Language class for the JEvents Component
@@ -33,7 +36,7 @@ class JFormFieldJevloadlang extends JFormFieldSpacer
 	{
 
 		include_once(JPATH_ADMINISTRATOR . "/components/com_jevents/jevents.defines.php");
-		$lang = jfactory::getLanguage();
+		$lang = Factory::getLanguage();
 
 		$lang->load("com_jevents", JPATH_ADMINISTRATOR);
 		$lang->load("mod_jevents_latest", JPATH_SITE);

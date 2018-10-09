@@ -12,8 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
 
-// option masks
+// Option masks
 define('MASK_BACKTOLIST', 0x0001);
 define('MASK_READON', 0x0002);
 define('MASK_POPUP', 0x0004);
@@ -52,7 +53,7 @@ class JEventsDefaultView extends JEventsAbstractView
 
 		$this->addHelperPath(realpath(dirname(__FILE__) . "/../helpers"));
 
-		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . JFactory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
+		$this->addHelperPath(JPATH_BASE . '/' . 'templates' . '/' . Factory::getApplication()->getTemplate() . '/' . 'html' . '/' . JEV_COM_COMPONENT . '/' . "helpers");
 
 		$reg             = JevRegistry::getInstance("jevents");
 		$this->datamodel = $reg->getReference("jevents.datamodel");
@@ -147,7 +148,7 @@ class JEventsDefaultView extends JEventsAbstractView
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(JString::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

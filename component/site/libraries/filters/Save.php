@@ -12,6 +12,8 @@
 // ensure this file is being included by a parent file
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
+use Joomla\CMS\Factory;
+
 class jevSaveFilter extends jevFilter
 {
 	function __construct($contentElement)
@@ -37,16 +39,16 @@ class jevSaveFilter extends jevFilter
 	{
 
 		// Only save filters for non-guests
-		if (JFactory::getUser()->id == 0)
+		if (Factory::getUser()->id == 0)
 		{
 			return false;
 		}
 
-		$app          = JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$activeModule = isset($app->activeModule) ? $app->activeModule : false;
 		$activemodid  = (isset($activeModule) ? $activeModule->id : 0);
 
-		$value           = JFactory::getApplication()->input->getString("filtername", "");
+		$value           = Factory::getApplication()->input->getString("filtername", "");
 		$value           = htmlspecialchars($value);
 		$filter["title"] = JText::_("JEV_SAVE_FILTER");
 		$filter["html"]  = '<input type="text" name="filtername" id="filtername" value="' . $value . '" placeholder="' . JText::_("JEV_SAVE_FILTER_AS") . '" />';
