@@ -262,7 +262,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	<div id="byday">
 	    <fieldset >
 		<legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>
-		<div class="checkbox btn-group ">
+		<div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 		    <?php
 		    JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
 		    ?>
@@ -270,7 +270,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	    </fieldset>
 	    <fieldset  id="weekofmonth">
 		<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>
-		<div class="checkbox btn-group ">
+            <div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 		    <?php
 		    JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
 		    ?>

@@ -502,6 +502,17 @@ class JEventsHTML
 				    }
 			    }
 			    // bootstrap version
+			    if (version_compare(JVERSION, '3.8.12', '>=')){
+			    $tosend .= ''
+				    . '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
+				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
+				    . '<label for="cb_wd' . $a . '" class="checkbox btn">'
+				    . $day_name[$a]
+				    . '</label>' . "\n"
+			    ;
+			    }
+			    else
+			        {
 			    $tosend .= ''
 				    . '<label for="cb_wd' . $a . '" class="checkbox btn">'
 				    . '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
@@ -509,6 +520,7 @@ class JEventsHTML
 				    . $day_name[$a]
 				    . '</label>' . "\n"
 			    ;
+			        }
 		    }
 		    echo $tosend;
 	    }

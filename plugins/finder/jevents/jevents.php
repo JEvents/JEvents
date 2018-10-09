@@ -289,29 +289,48 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// get the data and query models
 		$dataModel = new JEventsDataModel();
 		$queryModel = new JEventsDBModel($dataModel);
+
 		// get the repeat (allowing for it to be unpublished)
-		$theevent = $queryModel->listEventsById($item->rp_id);
-		
+		$theevent = array($queryModel->listEventsById($item->rp_id));
+
+		JPluginHelper::importPlugin('jevents');
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+
+		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
+
 		if ($this->params->get("future", -1) != -1 && $theevent)
 		{
-			$past = $this->params->get("past", -1);
-			$date = new JDate($theevent->startDate() . " - $past days");
+			$past                     = str_replace('-', '', $this->params->get("past", -1));
+			$date                     = new JDate($theevent->startDate() . " - $past days");
 			$item->publish_start_date = $date->toSql();
 		}
 		else
 		{
-			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;			
+			$item->publish_start_date = isset($item->modified) ? $item->modified : "2010-01-01 00:00:00";
 		}
-		if ($this->params->get("past", -1) != -1  && $theevent)
+		if ($this->params->get("past", -1) != -1 && $theevent)
 		{
-			$future = $this->params->get("future", -1);
-			$date = new JDate($theevent->endDate() . " + $future days");
-			$item->publish_end_date = $date->toSql();			
+			$future                 = str_replace('+', '', $this->params->get("future", -1));
+			$date                   = new JDate($theevent->endDate() . " + $future days");
+			$item->publish_end_date = $date->toSql();
 		}
 		else
 		{
-			$item->publish_end_date	= "2099-12-31 00:00:00" ;
+			$item->publish_end_date = "2099-12-31 00:00:00";
 		}
+		
+		// If the timelimit plugin has values set let's overrride the previous values.
+		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
+			
+			if ($theevent->timelimits->startlimit !== '') {
+				$item->publish_start_date   = $theevent->timelimits->startlimit;
+			} 
+			if ($theevent->timelimits->endlimit) {
+				$item->publish_end_date     = $theevent->timelimits->endlimit;
+			}
+		}
+		
 
 		// title is already set
 		//$item->title;

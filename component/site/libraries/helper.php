@@ -632,7 +632,7 @@ class JEVHelper
                 if ($showtime && $params->get("com_calUseStdTime", 1)==0) {
                    // $timeformat = "12";
                 }
-                $showtime = $showtime? "true": "false";
+                $showtime = $showtime? 1 : 0;
 
 		if (is_array($attribs))
 		{
@@ -731,10 +731,10 @@ class JEVHelper
 			data-weekend="' . JFactory::getLanguage()->getWeekEnd() . '"
 			data-today-btn="1"
 			data-week-numbers="0"
-			data-show-time="0"
+			data-show-time="' . $showtime . '"
 			data-show-others="1"
 			data-only-months-nav="0"
-			data-time-24="24" 
+			data-time-24="' . $timeformat . '" 
 			' . (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") . '
 			' . (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") . '
 		><span class="icon-calendar"></span></button>. '
