@@ -21,8 +21,6 @@
 
 			<field name="columns" type="jevcolumns" default="" extension="com_jevents" label="JEV_SELECT_COLUMNS" description="JEV_SELECT_COLUMNS_DESC"/>
 
-			<field name="setrowbgcolor" type="jevboolean" class="btn-group" default="0"  label="JEV_LIST_OF_EVENTS_SET_ROW_BGCOLOR" description="JEV_LIST_OF_EVENTS_SET_ROW_BGCOLOR_DESC"/>
-
 			<field name="catidnew" type="jevcategorynew" default="" size="10" multiple="multiple" extension="com_jevents" label="COM_JEVENTS_SPECIFIED_CATEGORIES_LABEL" description="COM_JEVENTS_SPECIFIED_CATEGORIES_DESC" />
 			<field name="include_subcats" class="btn-group" type="jevboolean" default="1" extension="com_jevents" label="JEV_INCLUDE_SUBCATEGORIES" description="JEV_INCLUDE_SUBCATEGORIES_DESC" />
 
