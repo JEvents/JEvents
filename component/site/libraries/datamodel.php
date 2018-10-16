@@ -34,8 +34,6 @@ class JEventsDataModel {
 
 	public function __construct($dbmodel=null){
 
-		$cfg = JEVConfig::getInstance();
-
 		$user = JFactory::getUser();
 		$this->aid = JEVHelper::getAid($user);
 
@@ -679,7 +677,10 @@ class JEventsDataModel {
 						$data['hours'][$h]['events'][$count]=$row;
 						$row->alreadyHourSlotted = 1;
 					}
-					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59 && $row->getUnixEndTime() >= $data['hours'][$h]['hour_start']  && $row->getUnixStartTime() <= $data['hours'][$h]['hour_end'] ){
+					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59)
+					{
+						// Why did we introduce this change? It breaks on daylight savings change dates!
+						// && $row->getUnixEndTime() >= $data['hours'][$h]['hour_start']  && $row->getUnixStartTime() <= $data['hours'][$h]['hour_end'] ){
 
 						$count = count($data['hours'][$h]['events']);
 						$data['hours'][$h]['events'][$count]=$row;
