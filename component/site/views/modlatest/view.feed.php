@@ -105,11 +105,17 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		// include the appropriate VIEW - this should be based on config and/or URL?
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		$viewclass = ucfirst($theme)."ModLatestView";
 
 		jimport('joomla.application.module.helper');
-		require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',$theme.'/'."latest"));
-		$jeventCalObject = new $viewclass($params,$modid);
+		if (file_exists(JModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest")))
+		{
+			$viewclass = ucfirst($theme)."ModLatestView";
+			require_once(JModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);
+		} else {
+			$viewclass = ucfirst('default')."ModLatestView";
+			require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',  'default/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);		}
 
 		$jeventCalObject->getLatestEventsData($info["count"]);
 		$this->set("eventsByRelDay" ,$jeventCalObject->eventsByRelDay);
