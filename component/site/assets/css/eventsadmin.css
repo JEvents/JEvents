@@ -269,9 +269,10 @@ div.icon-48-jevents { height: 45px; width:170px; }
 	width:100%;
 	margin-top:10px;
 }
-.adminlist.table.table-striped tr:first-child {
+.adminlist.table.table-striped tr{
     border-left:1px solid #DDD;
     border-right: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
 }
 table.versionstatuslist tr:nth-child(odd)		{ background-color:#f5f5f5;}
 table.versionstatuslist tr:nth-child(even)		{ background-color:#fff; }

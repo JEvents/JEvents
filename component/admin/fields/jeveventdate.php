@@ -29,6 +29,9 @@ class JFormFieldJeveventdate extends JFormField
 		ob_start();
 		$event = $this->form->jevdata[$this->name]["event"];
 		$eventfield = $this->name=="publish_up"?"startDate":"endDate";
+
+		$showtime = in_array($eventfield, array("starttimelimit", "endtimelimit"));
+
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$minyear = JEVHelper::getMinYear();
 		$maxyear = JEVHelper::getMaxYear();
@@ -89,7 +92,7 @@ class JFormFieldJeveventdate extends JFormField
 			$document->addScriptDeclaration($js);
 			$firsttime = false;
 		}
-		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat);
+		$cal = JEVHelper::loadElectricCalendar($this->name, $this->name, $event->$eventfield(), $minyear, $maxyear, 'var elem =jevjq(this);'.$this->element['onhidestart'], "var elem = jevjq(this);".$this->element['onchange'], $inputdateformat, array(), $showtime);
 		echo $cal;
 		?>
 		<input type="hidden"  name="<?php echo $this->name;?>2" id="<?php echo $this->name;?>2" value="" />
