@@ -119,13 +119,20 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$info['text_length'] = $cfg->get('com_rss_text_length', 20);
 
 		// include the appropriate VIEW - this should be based on config and/or URL?
-		$cfg       = JEVConfig::getInstance();
-		$theme     = JEV_CommonFunctions::getJEventsViewName();
-		$viewclass = ucfirst($theme) . "ModLatestView";
+		$cfg = JEVConfig::getInstance();
+		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		jimport('joomla.application.module.helper');
-		require_once(ModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
-		$jeventCalObject = new $viewclass($params, $modid);
+		if (file_exists(ModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest")))
+		{
+			$viewclass = ucfirst($theme)."ModLatestView";
+			require_once(ModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);
+		} else {
+			$viewclass = ucfirst('default')."ModLatestView";
+			require_once(ModuleHelper::getLayoutPath('mod_jevents_latest',  'default/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);
+		}
 
 		$jeventCalObject->getLatestEventsData($info["count"]);
 		$this->set("eventsByRelDay", $jeventCalObject->eventsByRelDay);

@@ -41,9 +41,9 @@ class DayController extends Joomla\CMS\MVC\Controller\BaseController
 	function listevents()
 	{
 
-		$params   = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		$fixedDay = $params->get('fixedday', '');
-		if ($fixedDay)
+		$params     = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		$fixedDay   = $params->get('fixedday','');
+		if($fixedDay && $fixedDay !== '0000-00-00 00:00:00')
 		{
 			$year  = date('Y', strtotime($fixedDay));
 			$month = date('m', strtotime($fixedDay));

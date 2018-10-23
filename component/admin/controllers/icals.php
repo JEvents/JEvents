@@ -329,13 +329,11 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			}
 		}
 
-		if (!($authorised || JEVHelper::isAdminUser($user)))
-		{
-			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", "Not Authorised - must be super admin");
-			$this->redirect();
-
-			return;
+		if (!($authorised || JEVHelper::isAdminUser($user))) {
+			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
+			return false;
 		}
+
 		$cid = $input->input->get('cid', array(), 'array');
 		$cid = ArrayHelper::toInteger($cid);
 

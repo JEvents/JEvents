@@ -1263,12 +1263,11 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 }
 
 /** Bootstrap Fix since J3.8.12 broke btn-group inline multi-select **/
-.jevbootstrap .jev-button-group label {
+.jevbootstrap .jev-button-group, .jevbootstrap .jev-button-group * {
     text-align: center;
 }
-
-.jevbootstrap .jev-button-group input {
-    display: none;
+.jevbootstrap .jev-button-group input{
+	display: none;
 }
 
 .jevbootstrap .jev-button-group input:checked + label,
