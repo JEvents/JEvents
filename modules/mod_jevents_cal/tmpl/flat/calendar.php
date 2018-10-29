@@ -182,7 +182,9 @@ class FlatModCalView extends DefaultModCalView {
 		for($w = 0; $w < 6 && $dn < $datacount; $w ++) {
 			$content .= "<tr style='height:$rowheight;'>\n";
 			// the week column
-			list ( $week, $link ) = each ( $data ['weeks'] );
+			//list ( $week, $link ) = each ( $data ['weeks'] );
+            $week = array_keys($data['weeks'])[$w];
+            $link = $data['weeks'][$week];
 
 			for($d = 0; $d < 7 && $dn < $datacount; $d ++) {
 				$currentDay = $data ["dates"] [$dn];
