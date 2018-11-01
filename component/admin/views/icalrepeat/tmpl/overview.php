@@ -20,6 +20,20 @@ $db   = Factory::getDbo();
 $user = Factory::getUser();
 HTMLHelper::_('behavior.tooltip');
 
+// Receive overridable options for Filters
+$data['options'] = !empty($data['options']) ? $data['options'] : array();
+$selectorFieldName = isset($data['options']['selectorFieldName']) ? $data['options']['selectorFieldName'] : 'client_id';
+$showSelector = true;
+// Set some basic options.
+$customOptions = array(
+	'filtersHidden'       => true,
+	'defaultLimit'        => 20,
+	'searchFieldSelector' => '#search',
+	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
+);
+// Merge custom options in the options array Filters
+$data['options'] = array_merge($customOptions, $data['options']);
+
 $pathIMG        = Uri::Root() . 'administrator/images/';
 $pathJeventsIMG = Uri::Root() . "administrator/components/" . JEV_COM_COMPONENT . "/images/";
 $mainspan       = 10;
@@ -33,6 +47,44 @@ $fullspan       = 12;
 
 	<form action="index.php" method="post" name="adminForm" id="adminForm">
 		<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
+			<?php 		// Load search tools
+			HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+			?>
+			<div class="js-stools clearfix">
+				<div class="clearfix">
+					<div class="js-stools-container-bar">
+						<label for="search" class="element-invisible">
+							<?php echo JText::_('JEV_SEARCH'); ?>
+						</label>
+						<div class="btn-wrapper input-append">
+							<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
+							       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
+							       onChange="Joomla.submitform()" />
+							<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
+							        data-original-title="Search">
+								<span class="icon-search" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div class="btn-wrapper">
+							<button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
+							        data-original-title="Clear">
+								<?php echo JText::_('JCLEAR'); ?>
+							</button>
+						</div>
+					</div>
+					<div class="js-stools-container-list hidden-phone hidden-tablet">
+						<div class="hidden-select hidden-phone">
+							<div class="js-stools-field-list">
+								<?php echo $this->plist; ?>
+							</div>
+							<div class="js-stools-field-list">
+								<?php echo $this->pageNav->getLimitBox(); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<table cellpadding="4" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td width="100%">
@@ -80,7 +132,7 @@ $fullspan       = 12;
 					$k = 1 - $k;
 				} ?>
 				<tr>
-					<th align="center" colspan="3"><?php echo $this->pageNav->getListFooter(); ?></th>
+					<th align="center" colspan="3" style="text-align:center;"><?php echo $this->pageNav->getListFooter(); ?></th>
 				</tr>
 			</table>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

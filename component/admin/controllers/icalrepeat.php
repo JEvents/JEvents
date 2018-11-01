@@ -77,6 +77,13 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$limit      = intval(Factory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', Factory::getApplication()->getCfg('list_limit', 10)));
 		$limitstart = intval(Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$searchText = Factory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}search", 'search', '');
+
+		$searchTextQuery =  '';
+
+		if (!empty(($searchText))) {
+			$searchTextQuery = "\n AND LOWER(det.summary) LIKE '%$searchText%'";
+		}
 
 		$query = "SELECT count( DISTINCT rpt.rp_id)"
 			. "\n FROM #__jevents_vevent as ev"
@@ -85,6 +92,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. "\n WHERE ev.ev_id=" . $id
+			. $searchTextQuery
 			. "\n AND icsf.state=1"
 			. ($publishedOnly ? "\n AND ev.state=1" : "");
 		$db->setQuery($query);
@@ -106,6 +114,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
 			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
 			. "\n WHERE ev.ev_id=" . $id
+			. $searchTextQuery
 			. "\n AND icsf.state=1"
 			. ($publishedOnly ? "\n AND ev.state=1" : "")
 			. "\n GROUP BY rpt.rp_id"
@@ -134,9 +143,10 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		// Set the layout
 		$this->view->setLayout('overview');
 
-		$this->view->icalrows = $icalrows;
-		$this->view->pageNav = $pageNav;
-		$this->view->evid = $id;
+		$this->view->icalrows   = $icalrows;
+		$this->view->pageNav    = $pageNav;
+		$this->view->evid       = $id;
+		$this->view->search     = $searchText;
 
 		$this->view->display();
 
