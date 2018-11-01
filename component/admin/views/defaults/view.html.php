@@ -19,7 +19,6 @@ defined('_JEXEC') or die();
 
 use Joomla\String\StringHelper;
 
-
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
