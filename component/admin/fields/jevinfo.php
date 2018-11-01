@@ -58,9 +58,9 @@ class JFormFieldJEVInfo extends JFormFieldSpacer
 	{
 
 		// load core and extra mootools
-		HTMLHelper::_('behavior.framework');
-		JHtmlBehavior::framework();
-		JHtmlBehavior::framework(true);
+//		HTMLHelper::_('behavior.framework');
+//		JHtmlBehavior::framework();
+//		JHtmlBehavior::framework(true);
 
 		// Must load admin language files
 		$lang = Factory::getLanguage();

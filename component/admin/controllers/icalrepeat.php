@@ -521,6 +521,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		// Just in case we don't have JEvents plugins registered yet
 		PluginHelper::importPlugin("jevents");
+
 		// I may also need to process repeat changes
 		$res = $app->triggerEvent('onStoreCustomRepeat', array(&$rpt));
 
@@ -532,11 +533,18 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			// ONLY set the old start repeat when first creating the exception
 			$exception->oldstartrepeat = $original_start;
 		}
-		$exception->exception_type = 1; // modified
-		$exception->store();
+
+		$exception->exception_type = 1; // Modified
+
+		if ($exception->store()) {
+			$exceptionData          = $data;
+			$exceptionData['RP_ID']  = $rp_id;
+			$exceptionData['EX_ID']  = $exception->ex_id;
+
+			$app->triggerEvent('onAfterStoreRepeatException', array(&$exceptionData));
+		}
 
 		return $rpt;
-
 	}
 
 	function apply()
@@ -913,7 +921,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 				// Just in case we don't have jevents plugins registered yet
 				PluginHelper::importPlugin("jevents");
 				// May want to send notification messages etc.
-				$res = $app->triggerEvent('onDeleteEventRepeat', $rp_id);
+				$res = $app->triggerEvent('onDeleteEventRepeat', array($rp_id));
 			}
 
 
@@ -1050,7 +1058,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			// Just in case we don't have jevents plugins registered yet
 			PluginHelper::importPlugin("jevents");
 			// May want to send notification messages etc.
-			$res = $app->triggerEvent('onDeleteEventRepeat', $id);
+			$res = $app->triggerEvent('onDeleteEventRepeat', array($id));
 
 			$query = "SELECT * FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
@@ -1088,6 +1096,9 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$query = "DELETE FROM #__jevents_repetition WHERE rp_id=$id";
 			$db->setQuery($query);
 			$db->execute();
+
+			$app->triggerEvent('onAfterDeleteEventRepeat', array(&$event));
+
 		}
 
 		if ($app->isClient('administrator'))

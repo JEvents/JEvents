@@ -63,7 +63,7 @@ $fullspan       = 12;
 							<?php echo HTMLHelper::_('grid.id', $i, $row->rp_id()); ?>
 						</td>
 						<td width="30%">
-							<a href="#edit" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
+							<a href="index.php?option=com_jevents&task=icalrepeat.edit&cid[]=<?php echo $row->rp_id(); ?>" onclick="return listItemTask('cb<?php echo $i; ?>','icalrepeat.edit')"
 							   title="<?php echo JText::_('JEV_CLICK_TO_EDIT'); ?>"><?php echo $row->title(); ?></a>
 						</td>
 						<td width="40%">

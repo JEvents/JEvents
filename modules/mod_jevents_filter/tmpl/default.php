@@ -19,6 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 
 $datamodel = new JEventsDataModel();
+
 // find appropriate Itemid and setup catids for datamodel
 $app     = Factory::getApplication();
 $input   = $app->input;
@@ -93,8 +94,8 @@ if ($params->get("disablenonjeventspages", 0) && $option != "com_jevents" && $op
 	return;
 }
 
-//Check if in event details
-//We never need filters in an edit page, this could cause user issues, so if there remove to.
+// Check if in event details
+// We never need filters in an edit page, this could cause user issues, so if there remove to.
 if (
 	(($input->getCmd("task") == "icalrepeat.detail" ||
 		$input->getCmd("task") == "icalevent.detail") &&
@@ -111,13 +112,13 @@ $filterHTML      = $filters->getFilterHTML($allowAutoSubmit);
 
 if ($params->get("bootstrapchosen", 1))
 {
-	// Load Bookstrap
+	// Load Bootstrap
 	JevHtmlBootstrap::framework();
 	HTMLHelper::_('formbehavior.chosen', '.jevfiltermodule select');
 	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_chosenlayout'));
 }
 else
 {
-//Check if creating / editing an event
+	//Check if creating / editing an event
 	require(ModuleHelper::getLayoutPath('mod_jevents_filter', 'default_layout'));
 }

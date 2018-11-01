@@ -158,15 +158,21 @@ class AdminUserModelUser extends JModelLegacy
 	function store($cid, $data)
 	{
 
-		$user = new TableUser();
+		$isNew  = 1;
+		$user   = new TableUser();
+
 		if ($cid > 0)
 		{
+			$isNew = 0;
 			$user->load($cid);
 		}
 		// fix the calendars and categories fields
 		if ($data['calendars'] == 'select') $data['calendars'] = array();
 		if ($data['categories'] == 'select') $data['categories'] = array();
 		$success = $user->save($data);
+
+		$user->isNew = $isNew;
+
 		if ($success)
 		{
 			PluginHelper::importPlugin("jevents");
@@ -175,5 +181,6 @@ class AdminUserModelUser extends JModelLegacy
 
 		return $success;
 	}
+
 
 }

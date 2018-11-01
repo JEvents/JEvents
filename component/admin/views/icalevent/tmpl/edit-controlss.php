@@ -115,7 +115,7 @@ $action = $app->isClient('administrator') ? "index.php" : Route::_("index.php?op
 					<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
 					<?php
 					// event deletors get the right to override this
-					if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
+					if (JEVHelper::isEventPublisher(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE") != "JEV_OVERLAPPING_EVENTS_OVERRIDE")
 					{
 						?>
 						<div>

@@ -1094,7 +1094,7 @@ class AdminIcaleventController extends JControllerAdmin
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		// clean out the cache
+		// Clean out the cache
 		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 		$input = Factory::getApplication()->input;
@@ -1106,7 +1106,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$array['jevcontent'] = $input->post->get("jevcontent", "", RAW);
 			$array['extra_info'] = $input->post->get("extra_info", "", RAW);
 		}
-		// convert nl2br if there is no HTML
+		// Convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
 		{
 			$array['jevcontent'] = nl2br($array['jevcontent']);
@@ -1116,7 +1116,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$array['extra_info'] = nl2br($array['extra_info']);
 		}
 
-		// convert event data to objewct so we can test permissions
+		// Convert event data to objewct so we can test permissions
 		$eventobj = new stdClass();
 		foreach ($array as $key => $val)
 		{
@@ -1496,7 +1496,7 @@ class AdminIcaleventController extends JControllerAdmin
 	function delete()
 	{
 
-		// clean out the cache
+		// Clean out the cache
 		$cache = Factory::getCache('com_jevents');
 		$cache->clean(JEV_COM_COMPONENT);
 
@@ -1536,8 +1536,9 @@ class AdminIcaleventController extends JControllerAdmin
 
 		}
 
-		// just incase we don't have jevents plugins registered yet
+		// Just incase we don't have JEvents plugins registered yet
 		PluginHelper::importPlugin("jevents");
+
 		// I also need to trigger any onpublish event triggers
 
 		$res = $app->triggerEvent('onPublishEvent', array($cid, $newstate));
@@ -1552,6 +1553,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$Itemid = $input->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$rettask = $input->getString("rettask", "day.listevents");
+
 			// Don't return to the event detail since we may be filtering on published state!
 			//$this->setRedirect( Route::_('index.php?option=' . JEV_COM_COMPONENT. "&task=icalrepeat.detail&evid=$id&year=$year&month=$month&day=$day&Itemid=$Itemid",false),"IcalEvent  : New published state Saved");
 			$this->setRedirect(Route::_('index.php?option=' . JEV_COM_COMPONENT . "&task=$rettask&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_('JEV_EVENT_DELETE_STATE_SAVED'));
@@ -1592,12 +1594,19 @@ class AdminIcaleventController extends JControllerAdmin
 		foreach ($cid as $key => $id)
 		{
 			// I should be able to do this in one operation but that can come later
-			$event = $this->queryModel->getEventById(intval($id), 1, "icaldb");
+			$events     = array();
+			$event      = $this->queryModel->getEventById(intval($id), 1, "icaldb");
+
 			if (is_null($event) || !JEVHelper::canDeleteEvent($event))
 			{
 				$app->enqueueMessage('534 -' . JText::_('JEV_NO_DELETE_ROW'), 'warning');
 
 				unset($cid[$key]);
+			} else {
+				$events[$key]['title']      = $event->title();
+				$events[$key]['id']         = $event->id();
+				$events[$key]['startDate']  = $event->publish_up();
+
 			}
 		}
 
@@ -1649,6 +1658,8 @@ class AdminIcaleventController extends JControllerAdmin
 			// I also need to delete custom data
 
 			$res = $app->triggerEvent('onDeleteCustomEvent', array(&$veventidstring));
+
+			$app->triggerEvent('onAfterDeleteEvent', array(&$events));
 
 			if ($app->isClient('administrator'))
 			{

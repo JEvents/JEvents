@@ -113,7 +113,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 			return;
 		}
 
-		$post = $input->post->get('jform', null, 'RAW');
+		$post = $input->post->getArray();
 		$cid  = $input->post->get('cid', array(), 'array');
 
 		$cid  = (int) $cid[0];
@@ -161,6 +161,7 @@ class AdminUserController extends Joomla\CMS\MVC\Controller\BaseController
 		}
 		if ($countdeleted = count($users))
 		{
+			$set        = Factory::getApplication()->triggerEvent('onAfterRemoveUser', array($users));
 			$msg = JText::_('USERS_DELETED');
 		}
 		else

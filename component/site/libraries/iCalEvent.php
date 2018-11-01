@@ -224,18 +224,21 @@ else $this->_detail = false;
 		$app    = Factory::getApplication();
 		$user   = Factory::getUser();
 
-		$input      = $app->input;
+		$input       = $app->input;
 		$curr_task   = $input->getCmd('task');
 		$ical_access = $input->getInt('access');
 
+		$isNew       = 0;
 		if ($curr_task == "icals.save")
 		{
 			$this->access = $ical_access;
 		}
+
 		if ($this->ev_id == 0)
 		{
 			$date          = JevDate::getDate("+0 seconds");
 			$this->created = $date->toMySQL();
+			$isNew         = 1;
 		}
 
 		if (!isset($this->created_by) || is_null($this->created_by) || $this->created_by == 0)
@@ -310,6 +313,7 @@ else $this->_detail = false;
 		try {
 
 			parent::store($updateNulls);
+			$this->isNew    = $isNew;
 
 		} catch (Exception $e) {
 
@@ -350,7 +354,7 @@ else $this->_detail = false;
 		// I also need to store custom data - when we need the event itself and not just the detail
 		$res = $app->triggerEvent('onStoreCustomEvent', array(&$this));
 
-		// some iCal imports do not provide an RRULE entry so create an empty one here
+		// Some iCal imports do not provide an RRULE entry so create an empty one here
 		if (!isset($this->rrule))
 		{
 			$this->rrule = iCalRRule::iCalRRuleFromData(array("FREQ" => "none"));

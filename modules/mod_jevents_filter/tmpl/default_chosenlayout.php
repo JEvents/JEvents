@@ -43,7 +43,7 @@ if (count($filterHTML) > 0)
 		}
 	}
 
-	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", true);
+	JEVHelper::script("mod_jevents_filter.js", "modules/mod_jevents_filter/", false);
 	?>
 	<form action="<?php echo $form_link; ?>" id="jeventspost" name="jeventspost<?php echo $module->id; ?>" method="post"
 	      class="jevfiltermodule">
