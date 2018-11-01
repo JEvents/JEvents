@@ -26,8 +26,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	var $jevlayout = null;
 	
 	function __construct($config = array()){
-		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
-		parent::__construct($config);	
+		parent::__construct($config);
 		
 		// used only for helper functions
 		$this->jevlayout="default";	

@@ -19,6 +19,7 @@ defined('_JEXEC') or die();
 
 use Joomla\String\StringHelper;
 
+
 class AdminDefaultsViewDefaults extends JEventsAbstractView
 {
 
@@ -93,8 +94,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 	function edit($tpl = null)
 	{
-
-		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 
 		// WHY THE HELL DO THEY BREAK PUBLIC FUNCTIONS !!!
 		JEVHelper::script('editdefaults.js', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/js/');
