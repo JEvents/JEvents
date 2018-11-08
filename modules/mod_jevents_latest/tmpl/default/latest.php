@@ -158,7 +158,7 @@ class DefaultModLatestView
 			if ($cfg->get("bootstrapcss", 1) == 1)
 			{
 				// This version of bootstrap has maximum compatability with JEvents due to enhanced namespacing
-				HELP::stylesheet("com_jevents/bootstrap.css", array(), true);
+				HTMLHelper::stylesheet("com_jevents/bootstrap.css", array(), true);
 				// Responsive version of bootstrap with maximum compatibility with JEvents due to enhanced namespacing
 				HTMLHelper::stylesheet("com_jevents/bootstrap-responsive.css", array(), true);
 			}
