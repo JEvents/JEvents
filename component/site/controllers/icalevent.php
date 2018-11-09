@@ -136,14 +136,14 @@ class ICalEventController extends AdminIcaleventController   {
 		$user = JFactory::getUser();
 		if ((!$is_event_creator && !$is_event_editor) || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
-				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
 				$uri = JURI::getInstance();
 				$link = $uri->toString();
-				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			return;

@@ -28,7 +28,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function __construct($config = array())
 	{
 
-		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 		parent::__construct($config);
 
 		// used only for helper functions
@@ -45,6 +44,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		$user = JFactory::getUser();
+
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
@@ -73,7 +74,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			if ($this->editCopy)
 			{
 
-				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				if (($user->id !==0) && (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row)))
 				{
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
@@ -81,7 +82,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 			else
 			{
-				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				if (($user->id !==0) && (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row)))
 				{
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
