@@ -12,6 +12,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\String\StringHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * HTML View class for the component frontend
@@ -28,7 +29,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function __construct($config = array())
 	{
 
-		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 		parent::__construct($config);
 
 		// used only for helper functions
