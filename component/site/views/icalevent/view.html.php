@@ -51,7 +51,9 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		$input  = $app->input;
 
 		$document = Factory::getDocument();
-		// Set editstrings var just in case and to avoid IDE reporting not set.
+		$user = Factory::getUser();
+
+		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
 		$document->addScriptDeclaration($editStrings);

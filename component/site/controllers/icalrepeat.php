@@ -182,14 +182,13 @@ class ICalRepeatController extends AdminIcalrepeatController
 			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'ERROR'));
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else
 			{
-				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(Route::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'ERROR'));
 				$this->redirect();
 			}
 

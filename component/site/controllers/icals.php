@@ -360,8 +360,7 @@ class ICalsController extends AdminIcalsController
 			}
 			else
 			{
-				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(Route::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 
@@ -491,13 +490,12 @@ class ICalsController extends AdminIcalsController
 			$user = Factory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Uri::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 			else
 			{
-				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(Route::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(Route::_("index.php?option=com_users&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT', 'error'));
 				$this->redirect();
 			}
 

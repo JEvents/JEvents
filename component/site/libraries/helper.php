@@ -678,7 +678,7 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array())
+	function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false)
 	{
 
 		$document           = Factory::getDocument();
@@ -687,24 +687,51 @@ class JEVHelper
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
 		$offset             = $params->get("com_starday", 1);
 
-		if ($value == "")
+
+		if ($showtime)
 		{
-			$value = strftime("%Y-%m-%d");
+			if (empty($value))
+			{
+				$value = date($format);
+			}
+
+			$datetime = date_create_from_format($format, $value);
+			// This is probably because we have mysql formatted value
+			if (!$datetime)
+			{
+				$datetime = date_create_from_format('Y-m-d', $value);
+				if (!$datetime)
+				{
+					$value = date($format);
+					$datetime = date_create_from_format($format, $value);
+				}
+			}
+
+			$value = $datetime->format("Y-m-d H:i");
+
+			// switch back to strftime format to use Joomla calendar tool
+			$format = str_replace(array("Y", "m", "d", "H", "h", "i", "a"), array("%Y", "%m", "%d", "%H", "%I", "%M", "%P"), $format);
+
+		}
+		else
+		{
+			if ($value == "")
+			{
+				$value = strftime("%Y-%m-%d");
+			}
+			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+			// switch back to strftime format to use Joomla calendar tool
+			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
+			$value = $yearpart . "-" . $monthpart . "-" . $daypart;
+
 		}
 
-		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
 		// Build the attributes array.
 		empty($onchange) ? null : $attribs['onchange'] = $onchange;
 
-		// switch back to strftime format to use Joomla calendar tool
-		$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
-
-		//echo HTMLHelper::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
-		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
-		$value = $yearpart . "-" . $monthpart . "-" . $daypart;
-		$name  = $fieldname;
+		$name = $fieldname;
 
 		static $done;
 
@@ -725,13 +752,19 @@ class JEVHelper
 		}
 
 		$disabled   = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
-		$showtime   = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
+		$showtime   = (isset($attribs['showtime']) && $attribs['showtime'] == 'showtime') || $showtime;
 		$timeformat = "24";
+
 		if ($showtime && $params->get("com_calUseStdTime", 1) == 0)
 		{
 			// $timeformat = "12";
 		}
-		$showtime = $showtime ? 1 : 0;
+
+		if ($showtime && strpos($format, "%P"))
+		{
+			$timeformat = "12";
+		}
+        $showtime = $showtime? 1 : 0;
 
 		if (is_array($attribs))
 		{
