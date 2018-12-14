@@ -117,7 +117,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
 				<?php
 				// event deletors get the right to override this
-				if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
+				if (JEVHelper::isEventPublisher(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
 					?>
 				<div>
 					<strong>

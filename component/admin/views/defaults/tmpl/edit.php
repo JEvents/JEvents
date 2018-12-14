@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.filesystem.file' );
 
-if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
+if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3")
 {
 	$editor =  JEditor::getInstance("none");
 }
@@ -43,6 +43,9 @@ if ($this->item->name == 'icalevent.list_block1' && $this->item->value == "" && 
 }
 if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html')) {
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html');
+}
+if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html')) {
+	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
 }
 
 $this->replaceLabels($this->item->value);
