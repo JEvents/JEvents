@@ -82,7 +82,7 @@ class DefaultsModelDefault extends JModelLegacy
 					if (!is_array($oldparams)){
 						$keys = array_keys(get_object_vars($oldparams));
 						foreach ($keys as $key){
-							if ($key == "modid" || $key=="modval"){
+							if ($key == "modid" || $key=="modval" || $key=="customcss" || $key=="customjs"){
 								continue;
 							}
 							$data["params"][$key] = $oldparams->$key;

@@ -89,9 +89,41 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$templates[$template_name]['*'] = array();
 					}
-					$templates[$template_name]['*'][0]           = new stdClass();
-					$templates[$template_name]['*'][0]->value    = file_get_contents($templatefile);
-					$templates[$template_name]['*'][0]->params   = null;
+					$templates[$template_name]['*'][0]        = new stdClass();
+					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
+
+					$templateparams = new stdClass();
+					// is there custom css or js - if so push into the params
+					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMJS}') !== false)
+                    {
+	                    preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+	                    if (count($matches) == 2)
+	                    {
+		                    $templateparams->customjs = $matches[1];
+		                    $templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
+	                    }
+                    }
+					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMCSS}') !== false)
+					{
+						preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+						if (count($matches) == 2)
+						{
+							$templateparams->customcss = $matches[1];
+							$templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
+						}
+					}
+					if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
+					{
+						JFactory::getDocument()->addStyleDeclaration($templateparams->customcss);
+					}
+					if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
+					{
+						JFactory::getDocument()->addScriptDeclaration($templateparams->customjs);
+					}
+
+					$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
 					$templates[$template_name]['*'][0]->fromfile = true;
 				}
 				else
