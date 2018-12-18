@@ -51,6 +51,9 @@ if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && 
 $this->replaceLabels($this->item->value);
 
 $templateparams = new stdClass();
+if (isset($this->item->params) && !empty($this->item->params)) {
+	$templateparams = @json_decode($this->item->params);
+}
 // is there custom css or js - if so push into the params
 if (strpos($this->item->value, '{{CUSTOMJS}') !== false)
 {
@@ -72,11 +75,8 @@ if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
 		$this->item->value = str_replace($matches[0], "",	$this->item->value);
 	}
 }
-if (!isset($this->item->params) || !is_object($this->item->params))
-{
-	$this->item->params = new stdClass();
-}
-$this->item->params  = json_encode($templateparams);
+
+$this->item->params = json_encode($templateparams);
 
 ?>		
 <div id="jevents">
