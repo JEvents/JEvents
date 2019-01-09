@@ -55,7 +55,10 @@
 	</media>
 	<administration>
 		<menu>COM_JEVENTS_MENU</menu>
-
+		<submenu>
+			<menu link="option=com_jevents&task=icalevent.edit" view="icalevent"
+				  img="" alt="Mycomponent/Clientadverts">JEV_ADD_EVENT</menu>
+		</submenu>
 		<files folder="admin">
 			<folder>assets</folder>
 			<folder>controllers</folder>
