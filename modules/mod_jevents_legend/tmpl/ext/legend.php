@@ -47,7 +47,7 @@ class ExtModLegendView extends DefaultModLegendView
 		$Itemid = $this->myItemid;
 		$user   = Factory::getUser();
 		$app    = Factory::getApplication();
-		$input  = $app->inpuit;
+		$input  = $app->input;
 
 		$db = Factory::getDbo();
 		// Parameters - This module should only be displayed alongside a com_jevents calendar component!!!
@@ -60,17 +60,6 @@ class ExtModLegendView extends DefaultModLegendView
 
 		include_once(JPATH_ADMINISTRATOR . "/components/" . JEV_COM_COMPONENT . "/libraries/colorMap.php");
 
-		$menu   = $app->getMenu();
-		$active = $menu->getActive();
-		if ((!is_null($active) && $active->component == JEV_COM_COMPONENT) || !isset($Itemid))
-		{
-			$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		}
-		else
-		{
-			// If accessing this function from outside the component then I must load suitable parameters
-			$params = $menu->getParams($Itemid);
-		}
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		$c      = 0;

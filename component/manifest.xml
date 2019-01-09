@@ -5,7 +5,7 @@
 	<author>GWE Systems Ltd</author>
 	<copyright>(C) 2009-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail></authorEmail>
+	<authorEmail>tony@jevents.net</authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
 	<description>COM_JEVENTS_DESC</description>
 	<version>3.4.48</version>
@@ -56,7 +56,7 @@
 	<administration>
 		<menu>COM_JEVENTS_MENU</menu>
 		<submenu>
-			<menu link="option=com_jevents&task=icalevent.edit" view="icalevent"
+			<menu link="option=com_jevents&amp;task=icalevent.edit" view="icalevent"
 				  img="" alt="Mycomponent/Clientadverts">JEV_ADD_EVENT</menu>
 		</submenu>
 		<files folder="admin">

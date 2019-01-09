@@ -102,7 +102,7 @@ div#position-icon.pane-sliders div.pane-down .icon-wrapper .icon {
 
 .versionsinfo {
     width: 100%;
-    margin: 0px;
+    margin: 0;
 }
 
 /* -- CONTROL PANEL STYLES ----------------------------- */
@@ -188,13 +188,13 @@ textarea.jevtextarea {
 
 /* Form styling for checkboxes etc. */
 fieldset.checkboxes ul {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 fieldset.checkboxes li {
     float: left;
     margin-left: 5px;
-    margin-right: 0px;
+    margin-right: 0;
     list-style: none;
 }
 
@@ -210,7 +210,7 @@ fieldset.checkboxes li {
 
 /* new Joomla calendar */
 #jevents .jevbootstrap .adminform .js-calendar div {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 /* Custom fields */
@@ -225,7 +225,7 @@ fieldset.checkboxes li {
 
 td.r1, span.r1 {
     background-color: #eeeeee !important;
-    padding: 5px 5px 0px 0px;
+    padding: 5px 5px 0 0;
 }
 
 td.r2, span.r2 {
@@ -236,7 +236,7 @@ div#jevents .adminform input, div#jevents .adminformtextarea, div#jevents .admin
 div#jevents .adminform#rinterval, div#jevents .adminform#count, div#jevents .adminform#until {
     padding: 3px 5px;
     width: auto;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 div#jevents .adminformselect {
@@ -255,7 +255,7 @@ div#jevoverlapwarning {
 
 div#jevoverlapwarning h4 {
     font-weight: bold;
-    margin: 5px 0px;
+    margin: 5px 0;
 }
 
 .jev_edit_event_notice {
@@ -446,7 +446,7 @@ table.versionstatuslist a {
 
 div#jevents .adminform #start_ampm, div#jevents .adminform #end_ampm {
     display: inline-block;
-    padding: 0px;
+    padding: 0;
 }
 
 div#jevents .adminform #start_ampm label, div#jevents .adminform #end_ampm label {
@@ -485,7 +485,7 @@ table.settings_level label#jform_com_difficulty-lbl {
 .jevconfig #myParamsTabsContent.tab-content {
     width: 75%;
     float: left;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 /* We need to hide links from print views, it looks silly with so many events */
@@ -505,7 +505,7 @@ table.settings_level label#jform_com_difficulty-lbl {
 #jevents #adminForm label {
     width: auto;
     font-weight: bold;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 /* Rockettheme messes up padding on chosen radio/checkbox replacements so need padding left 15px */
@@ -615,7 +615,7 @@ img.jev_help {
 
 span.jev_help_close {
     border: solid white 1px;
-    padding: 0px;
+    padding: 0;
     margin: 1px;
 }
 
@@ -632,7 +632,7 @@ span.jev_help_close {
 /* Removed Inline CSS and added the below */
 
 form.search_form {
-    padding: 30px 0px;
+    padding: 30px 0;
 }
 
 td.ev_td_right ul.ev_ul {
@@ -658,14 +658,14 @@ td.ev_td_right ul.ev_ul {
 }
 
 .jevbootstrap .ical_dialogJQ, .jevbootstrap .action_dialogJQ {
-    right: 0px;
+    right: 0;
     margin-left: -40%;
 }
 
 .jevbootstrap .ical_dialogJQ {
     max-width: 300px;
     bottom: auto !important;
-    padding-right: 0px !important;
+    padding-right: 0 !important;
     margin-left: -150px !important;
 }
 
@@ -680,20 +680,20 @@ td.ev_td_right ul.ev_ul {
 }
 
 .jevbootstrap .ical_dialogJQ #unstyledical {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 .jevbootstrap .ical_dialogJQ #styledical {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     display: none;
 }
 
 .jevbootstrap .action_dialogJQ {
     max-width: 300px;
     bottom: auto !important;
-    padding-right: 0px !important;
+    padding-right: 0 !important;
     margin-left: -150px !important;
 }
 
@@ -713,7 +713,7 @@ td.ev_td_right ul.ev_ul {
 .jevbootstrap .action_dialogJQ #delete_event img {
     width: 20px;
     height: 20px;
-    border: 0px;
+    border: 0;
     margin-right: 1em;
     vertical-align: middle;
 }
@@ -729,7 +729,7 @@ td.ev_td_right ul.ev_ul {
 
 .jevbootstrap .action_dialogJQ .modal-dialog, jevbootstrap .ical_dialogJQ .modal-dialog {
     width: auto;
-    margin: 0px;
+    margin: 0;
 }
 
 div.ev_navigation {
@@ -738,7 +738,7 @@ div.ev_navigation {
 
 table.ev_navtable {
     width: 300px;
-    border: 0px;
+    border: 0;
     text-align: center;
     margin: auto auto
 }
@@ -804,7 +804,7 @@ table.ev_navtable tr {
 }
 
 .b0 {
-    border: 0px;
+    border: 0;
 }
 
 .b1sw {
@@ -883,7 +883,6 @@ table.ev_navtable tr {
     position: fixed;
     z-index: 1050;
     background-color: #ffffff;
-    border: 1px solid #999;
     border: 1px solid rgba(0, 0, 0, 0.3);
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -893,7 +892,7 @@ table.ev_navtable tr {
     -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     -webkit-background-clip: padding-box;
-    -moz-background-clip: padding-box;
+    -moz-background-clip: padding;
     background-clip: padding-box;
     text-align: left;
 }
@@ -903,7 +902,7 @@ table.ev_navtable tr {
     bottom: 5%;
     top: 5%;
     left: 5%;
-    margin: 0px;
+    margin: 0;
     z-index: 1050;
     width: 90%;
     background-color: #ffffff;
@@ -1023,7 +1022,7 @@ table.ev_navtable tr {
 }
 
 #myEditModal h4, #myImportModal h4 {
-    margin: 0px;
+    margin: 0;
     font-family: inherit;
     font-weight: bold;
     font-size: 17.5px;
@@ -1034,13 +1033,13 @@ table.ev_navtable tr {
 
 #myEditModal .modal-body, #myImportModal .modal-body {
     position: absolute;
-    left: 0px;
-    right: 0px;
+    left: 0;
+    right: 0;
     bottom: 10px;
     top: 36px;
     overflow-y: auto;
     max-height: none;
-    padding: 10px 0px 5px 0px;
+    padding: 10px 0 5px 0;
     width: 100%;
     /*	http://dev.magnolia-cms.com/blog/2012/05/strategies-for-the-iframe-on-the-ipad-problem/ */
     -webkit-overflow-scrolling: touch;
@@ -1058,7 +1057,7 @@ table.ev_navtable tr {
 #myEditModal .modal-dialog {
     height: 100%;
     width: auto;
-    margin: 0px;
+    margin: 0;
 }
 
 #myImportModal .modal-dialog {
@@ -1078,7 +1077,7 @@ table.ev_navtable tr {
 /* Backwards compatible CSS for old club layouts */
 #jevents_body #ical_dialog {
     position: absolute;
-    right: 0px;
+    right: 0;
     background-color: #dedede;
     border: solid 1px #000000;
     width: 200px;
@@ -1092,7 +1091,7 @@ table.ev_navtable tr {
 }
 
 #jevents_body #ical_dialog img {
-    border: 0px;
+    border: 0;
     margin-right: 1em;
     height: 16px;
 }
@@ -1114,13 +1113,13 @@ table.ev_navtable tr {
 }
 
 #jevents_body #ical_dialog #unstyledical {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 #jevents_body #ical_dialog #styledical {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     display: none;
 }
 
@@ -1136,7 +1135,7 @@ table.ev_navtable tr {
 #jevents_body #action_dialog #publish_reccur img, #jevents_body #action_dialog #edit_reccur img, #jevents_body #action_dialog #edit_event img, #jevents_body #action_dialog #edit_eventcopy img, #jevents_body #action_dialog #delete_repeat img, #jevents_body #action_dialog #delete_eventfuture img, #jevents_body #action_dialog #delete_event img {
     width: 20px;
     height: 20px;
-    border: 0px;
+    border: 0;
     margin-right: 1em;
     vertical-align: middle;
 }
