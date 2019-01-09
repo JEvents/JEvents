@@ -70,6 +70,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALBUTTON"
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICALDIALOG",true);?>", "ICALDIALOG");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON",true);?>", "EDITBUTTON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
 
 <?php
 // get list of enabled plugins

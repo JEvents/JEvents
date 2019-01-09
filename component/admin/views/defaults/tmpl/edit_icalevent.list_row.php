@@ -44,6 +44,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",tr
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_HITS",true);?>", "HITS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCATED_DESCRIPTION",true);?>", "TRUNCATED_DESC:20");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCTITLE",true);?>", "TRUNCATED_TITLE:20");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCATION_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCATION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LABEL");
@@ -76,6 +77,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON"
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_ROOT",true);?>", "SITEROOT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_BASE",true);?>", "SITEBASE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
 
 <?php
 // get list of enabled plugins

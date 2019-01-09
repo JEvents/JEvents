@@ -99,9 +99,41 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$templates[$template_name]['*'] = array();
 					}
-					$templates[$template_name]['*'][0]           = new stdClass();
-					$templates[$template_name]['*'][0]->value    = file_get_contents($templatefile);
-					$templates[$template_name]['*'][0]->params   = null;
+					$templates[$template_name]['*'][0]        = new stdClass();
+					$templates[$template_name]['*'][0]->value = file_get_contents($templatefile);
+
+					$templateparams = new stdClass();
+					// is there custom css or js - if so push into the params
+					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMJS}') !== false)
+                    {
+	                    preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+	                    if (count($matches) == 2)
+	                    {
+		                    $templateparams->customjs = $matches[1];
+		                    $templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
+	                    }
+                    }
+					if (strpos($templates[$template_name]['*'][0]->value, '{{CUSTOMCSS}') !== false)
+					{
+						preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $templates[$template_name]['*'][0]->value, $matches);
+
+						if (count($matches) == 2)
+						{
+							$templateparams->customcss = $matches[1];
+							$templates[$template_name]['*'][0]->value = str_replace($matches[0], "",	$templates[$template_name]['*'][0]->value);
+						}
+					}
+					if (isset($templateparams->customcss) && !empty($templateparams->customcss) )
+					{
+						JFactory::getDocument()->addStyleDeclaration($templateparams->customcss);
+					}
+					if (isset($templateparams->customjs) && !empty($templateparams->customjs) )
+					{
+						JFactory::getDocument()->addScriptDeclaration($templateparams->customjs);
+					}
+
+					$templates[$template_name]['*'][0]->params   = json_encode($templateparams);
 					$templates[$template_name]['*'][0]->fromfile = true;
 				}
 				else
@@ -152,6 +184,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$templates[$template_name][$catid]->params = new JevRegistry($templates[$template_name][$catid]->params);
 						$specialmodules                            = $templates[$template_name][$catid]->params;
+
 					}
 
 					// Adjust template_value to include dynamic module output then strip it out afterwards
@@ -278,8 +311,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			static $pluginscalled = array();
 			if (!isset($pluginscalled[$event->rp_id()]))
 			{
-				PluginHelper::importPlugin("jevents");
-				$customresults                  = $app->triggerEvent('onDisplayCustomFields', array(&$event));
+				$dispatcher = JEventDispatcher::getInstance();
+				JPluginHelper::importPlugin("jevents");
+				$customresults                  = $dispatcher->trigger('onDisplayCustomFields', array(&$event));
 				$pluginscalled[$event->rp_id()] = $event;
 			}
 			else
@@ -348,7 +382,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (StringHelper::strpos($strippedmatch, "{{_") === 0 && StringHelper::strpos($strippedmatch, " ") === false)
 		{
 			$search[]      = $strippedmatch;
-			$strippedmatch = StringHelper::substr($strippedmatch, 3, StringHelper::strlen($strippedmatch) - 5);
+			$strippedmatch = JString::substr($strippedmatch, 3, JString::strlen($strippedmatch) - 5);
 			$replace[]     = JText::_($strippedmatch);
 			$blank[]       = "";
 			continue;
@@ -387,7 +421,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 					ob_start();
 					?>
-					<a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
+                    <a class="ev_link_row" href="<?php echo $rowlink; ?>" title="<?php echo JEventsHTML::special($event->title()); ?>">
 					<?php
 					$linkstart = ob_get_clean();
 					$search[]  = "{{LINK}}";
@@ -471,7 +505,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 			case "{{CATEGORY_ALIAS}}":
-				$db     = Factory::getDbo();
+				$db     = JFactory::getDbo();
 				$catsql = "SELECT alias FROM #__categories WHERE extension = 'com_jevents' AND id = '" . $event->catid() . "'";
 				$db->setQuery($catsql);
 				$cat_alias = $db->loadResult();
@@ -485,13 +519,13 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 				if (!isset($allcat_catids))
 				{
-					$db         = Factory::getDbo();
+					$db         = JFactory::getDbo();
 					$arr_catids = array();
 					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
 				}
-				$db = Factory::getDbo();
+				$db = JFactory::getDbo();
 				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
 				$allcat_eventcats = $db->loadColumn();
 
@@ -534,7 +568,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					list($r, $g, $b) = array($bgcolor[0] . $bgcolor[1],
 						$bgcolor[2] . $bgcolor[3],
 						$bgcolor[4] . $bgcolor[5]);
-				elseif (strlen($bgcolor) == 3)
+                elseif (strlen($bgcolor) == 3)
 					list($r, $g, $b) = array($bgcolor[0] . $bgcolor[0], $bgcolor[1] . $bgcolor[1], $bgcolor[2] . $bgcolor[2]);
 				else
 					return false;
@@ -600,10 +634,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$catdata = array($event->getCategoryData());
 				}
 				// Is this being called from the latest events module - if so then use the target item instead of current Itemid
-				$reg       = JevRegistry::getInstance("jevents");
-				$modparams = $reg->get("jevents.moduleparams", new JevRegistry);
-				$modItemid = $modparams->get("target_itemid", $input->getInt("Itemid", 0));
-				$menuItem  = $app->getMenu('site')->getItem($modItemid);
+				$reg       = JRegistry::getInstance("jevents");
+				$modparams = $reg->get("jevents.moduleparams", new JRegistry);
+				$modItemid = $modparams->get("target_itemid", JFactory::getApplication()->input->getInt("Itemid", 0));
+				$menuItem  = JFactory::getApplication()->getMenu('site')->getItem($modItemid);
 				$vars      = $menuItem->query;
 				foreach ($catids as $cat)
 				{
@@ -659,9 +693,9 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					{
 						$eventlink .= "Itemid=" . $modItemid . "&";
 					}
-					$eventlink = StringHelper::substr($eventlink, 0, StringHelper::strlen($eventlink) - 1);
+					$eventlink = JString::substr($eventlink, 0, JString::strlen($eventlink) - 1);
 
-					$eventlink = Route::_($eventlink);
+					$eventlink = JRoute::_($eventlink);
 
 					$catlinks_raw[] = $eventlink;
 
@@ -692,14 +726,14 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$search[] = "{{ALLCATEGORYIMGS}}";
 				if (!isset($allcat_catids))
 				{
-					$db         = Factory::getDbo();
+					$db         = JFactory::getDbo();
 					$arr_catids = array();
 					$catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
 					$db->setQuery($catsql);
 					$allcat_catids = $db->loadObjectList('id');
 				}
 
-				$db = Factory::getDbo();
+				$db = JFactory::getDbo();
 				$db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
 				$allcat_eventcats = $db->loadColumn();
 
@@ -852,6 +886,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $created->toFormat(JText::_("DATE_FORMAT_CREATED"));
 				$blank[]   = "";
 				break;
+			case "{{ICALSAVE}}":
+				$search[] = "{{ICALSAVE}}";
+				$replace[] = $event->vCalExportLink(false, true);
+				$blank[] = "";
+			    break;;
+
+			case "{{ICALGOOGLE}}":
+				$search[] = "{{ICALGOOGLE}}";
+				include_once JEV_HELPERS.'/jevExportHelper.php';
+				$replace[] = JevExportHelper::getAddToGCal($event);
+				$blank[] = "";
+				break;;
 
 			case "{{ACCESS}}":
 				$search[]  = "{{ACCESS}}";
@@ -1565,12 +1611,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					foreach ($fieldNameArray[$classname][$layout]["values"] as $fieldname)
 					{
 						$fieldnames = array();
-						// Special case where $fieldname has option value in it e.g. sizedimages 
+						// Special case where $fieldname has option value in it e.g. sizedimages
 						if (strpos($fieldname, ";") > 0)
 						{
 							$temp = explode(";", $fieldname);
 							$fn   = $temp[0];
-							// What is the list of them 
+							// What is the list of them
 							$temp = array();
 							preg_match_all('@\{{' . $fn . ';(.*?)[#|}}]@', $template_value, $temp);
 							if (count($temp) == 2 && count($temp[1]))
@@ -1638,16 +1684,19 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	{
 		if (StringHelper::strpos($search[$s], "STARTDATE") > 0 || StringHelper::strpos($search[$s], "STARTTIME") > 0 || StringHelper::strpos($search[$s], "ENDDATE") > 0 || StringHelper::strpos($search[$s], "ENDTIME") > 0 || StringHelper::strpos($search[$s], "ENDTZ") > 0 || StringHelper::strpos($search[$s], "STARTTZ") > 0 || StringHelper::strpos($search[$s], "MULTIENDDATE") > 0 || StringHelper::strpos($search[$s], "FIRSTREPEATSTART") > 0 || StringHelper::strpos($search[$s], "LASTREPEATEND") > 0)
 		{
+			global $tempreplace, $tempevent, $tempsearch, $tempblank;
+			$tempreplace = $rawreplace[$search[$s]];
+			$tempblank   = $blank[$s];
+			$tempsearch  = str_replace("}}", ";.*?}}", $search[$s]);
+			$tempevent   = $event;
 			if (!isset($rawreplace[$search[$s]]) || !$rawreplace[$search[$s]])
 			{
-				continue;
+				$template_value = preg_replace_callback("~$tempsearch~", 'jevStripDateFormatting', $template_value);
 			}
-			global $tempreplace, $tempevent, $tempsearch, $tempblank;
-			$tempreplace    = $rawreplace[$search[$s]];
-			$tempblank      = $blank[$s];
-			$tempsearch     = str_replace("}}", ";.*?}}", $search[$s]);
-			$tempevent      = $event;
-			$template_value = preg_replace_callback("~$tempsearch~", 'jevSpecialDateFormatting', $template_value);
+			else
+			{
+				$template_value = preg_replace_callback("~$tempsearch~", 'jevSpecialDateFormatting', $template_value);
+			}
 		}
 	}
 

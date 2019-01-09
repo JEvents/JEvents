@@ -211,7 +211,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			}
 			if (JEVHelper::isEventEditor() || $canEditOwn)
 			{
-				$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
+				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			}
 			$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);

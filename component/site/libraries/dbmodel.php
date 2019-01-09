@@ -226,6 +226,14 @@ class JEventsDBModel
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
 
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
+
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
 
@@ -794,6 +802,13 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
 
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
@@ -966,6 +981,13 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
 
 		$extrajoin  = (count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '');
 		$extrawhere = (count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '');
@@ -1104,6 +1126,8 @@ class JEventsDBModel
 
 	function listLatestIcalEvents($startdate, $enddate, $limit = 10, $repeatdisplayoptions = 0, $multidayTreatment = 0)
 	{
+		//list($usec, $sec) = explode(" ", microtime());
+		//$starttime = (float) $usec + (float) $sec;
 
 		$app    = Factory::getApplication();
 		$input  = $app->input;
@@ -1172,6 +1196,14 @@ class JEventsDBModel
 		else if ($repeatdisplayoptions == 4)
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
+		}
+
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
 		}
 
 		// What if join multiplies the rows?
@@ -1911,6 +1943,13 @@ class JEventsDBModel
 		else if ($repeatdisplayoptions == 4)
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
+		}
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
 		}
 
 		//list ($usec, $sec) = explode(" ", microtime());
