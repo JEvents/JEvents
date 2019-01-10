@@ -389,6 +389,14 @@ class JEventsDBModel
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
 
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
+
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -559,6 +567,14 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
+
 				
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
@@ -729,7 +745,15 @@ class JEventsDBModel
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
-				
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
+
+
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -872,7 +896,7 @@ class JEventsDBModel
 	{
 		//list($usec, $sec) = explode(" ", microtime());
 		//$starttime = (float) $usec + (float) $sec;
-            
+
 		$userid = JRequest::getVar('jev_userid',"0");
 
 		if($userid=="0")
@@ -930,17 +954,24 @@ class JEventsDBModel
 		//list ($usec, $sec) = explode(" ", microtime());
 		//$time_end = (float) $usec + (float) $sec;
 		//echo  "post onListIcalEvents= ".round($time_end - $starttime, 4)."<br/>";
-		
+
 		// showing NO repeating events - in which case MUST search for events with freq=none
-		if ($repeatdisplayoptions==3) 
+		if ($repeatdisplayoptions==3)
 		{
 			$extrawhere[] = "LOWER(rr.freq) = 'none'";
 		}
-		else if ($repeatdisplayoptions==4) 
+		else if ($repeatdisplayoptions==4)
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
 		}
-		
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
+		}
+
 		// What if join multiplies the rows?
 		// Useful MySQL link http://forums.mysql.com/read.php?10,228378,228492#msg-228492
 		// concat with group
@@ -974,9 +1005,9 @@ class JEventsDBModel
                 // Are we responding to pagination request  - if so ignore the repeats already shown
                 $ignoreRepeatIds = $this->getIgnoreRepeatIds();
                 if ($ignoreRepeatIds){
-                    $extrawhere[] = $ignoreRepeatIds ;                            
+                    $extrawhere[] = $ignoreRepeatIds ;
                 }
-                                
+
 		$extrajoin = ( count($extrajoin) ? " \n LEFT JOIN " . implode(" \n LEFT JOIN ", $extrajoin) : '' );
 		$extrawhere = ( count($extrawhere) ? ' AND ' . implode(' AND ', $extrawhere) : '' );
 
@@ -1671,6 +1702,13 @@ class JEventsDBModel
 		else if ($repeatdisplayoptions==4) 
 		{
 			$extrawhere[] = "LOWER(rr.freq) <> 'none'";
+		}
+		// special case for only showing first repeat (i.e. if the first repeat has passed then show nothing!)
+		else if ($repeatdisplayoptions == 2)
+		{
+			$extrawhere[] = "rpt.startrepeat=(
+				SELECT MIN(rpt3.startrepeat) FROM #__jevents_repetition as rpt3 WHERE rpt3.eventid=rpt.eventid
+			)";
 		}
 				
 		//list ($usec, $sec) = explode(" ", microtime());

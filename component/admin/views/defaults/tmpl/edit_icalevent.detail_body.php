@@ -79,6 +79,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "
 //defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_MODULE_END",true);?>", "MODULEEND");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_ROOT",true);?>", "SITEROOT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_BASE",true);?>", "SITEBASE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
 
 <?php
 // get list of enabled plugins

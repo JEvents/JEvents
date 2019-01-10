@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.filesystem.file' );
 
-if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page")
+if ($this->item->name == "month.calendar_cell" || $this->item->name == "month.calendar_tip" || $this->item->name == "icalevent.edit_page"  || $this->item->name == "icalevent.list_block3")
 {
 	$editor =  JEditor::getInstance("none");
 }
@@ -44,8 +44,40 @@ if ($this->item->name == 'icalevent.list_block1' && $this->item->value == "" && 
 if ($this->item->name == 'icalevent.list_block2' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html')) {
 	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block2.html');
 }
+if ($this->item->name == 'icalevent.list_block3' && $this->item->value == "" && Jfile::exists(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html')) {
+	$this->item->value = file_get_contents(JPATH_SITE . '/components/com_jevents/views/float/defaults/icalevent.list_block3.html');
+}
 
 $this->replaceLabels($this->item->value);
+
+$templateparams = new stdClass();
+if (isset($this->item->params) && !empty($this->item->params)) {
+	$templateparams = @json_decode($this->item->params);
+}
+// is there custom css or js - if so push into the params
+if (strpos($this->item->value, '{{CUSTOMJS}') !== false)
+{
+	preg_match('|' . preg_quote('{{CUSTOMJS}}') . '(.+?)' . preg_quote('{{/CUSTOMJS}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->customjs = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+}
+if (strpos($this->item->value, '{{CUSTOMCSS}') !== false)
+{
+	preg_match('|' . preg_quote('{{CUSTOMCSS}}') . '(.+?)' . preg_quote('{{/CUSTOMCSS}}') . '|s', $this->item->value, $matches);
+
+	if (count($matches) == 2)
+	{
+		$templateparams->customcss = $matches[1];
+		$this->item->value = str_replace($matches[0], "",	$this->item->value);
+	}
+}
+
+$this->item->params = json_encode($templateparams);
+
 ?>		
 <div id="jevents">
 	<form action="index.php" method="post" name="adminForm" id="adminForm" >
@@ -190,7 +222,17 @@ echo $editor->save('value');
 					</table>
 					<?php
 					}
+					// Custom CSS and Javascript
+					$params = new JRegistry($this->item->params);
+					$customcss = $params->get("customcss", '');
+					$customjs = $params->get("customjs", '');
+					$customeditor =  JEditor::getInstance("none");
+
 					?>
+                    <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_CSS");?></h3>
+					<?php echo $customeditor->display('params[customcss]', htmlspecialchars($customcss, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false,'customcss' );?>
+                    <h3><?php echo JText::_("JEV_DEFAULTS_CUSTOM_JS");?></h3>
+					<?php echo $customeditor->display('params[customjs]', htmlspecialchars($customjs, ENT_QUOTES, 'UTF-8'), 700, 450, '70', '15', false,'customjs' );?>
 				</td>
 			</tr>
 		</table>
