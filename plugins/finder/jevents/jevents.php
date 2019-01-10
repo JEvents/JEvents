@@ -342,8 +342,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		$item->published    = $item->state;
 
 		if ($item->state !== 1) {
-			// Ok Finder is weird, although we set puboished and state = 0 it still publishes it.
-			// So we will set the puboish end date the same as the start so it's not found.
+			// Ok Finder is weird, although we set published and state = 0 it still publishes it.
+			// So we will set the publish end date the same as the start so it's not found.
 			$item->publish_end_date = $item->publish_start_date;
 		}
 
