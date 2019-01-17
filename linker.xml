@@ -36,7 +36,7 @@
         <delete dir="${p}/modules/mod_jevents_legend/" includeemptydirs="true" verbose="true" failonerror="false" />
         <delete dir="${p}/modules/mod_jevents_switchview/" includeemptydirs="true" verbose="true" failonerror="false" />
 
-        <!-- Create System links -->
+        <!-- Create System Links -->
         <symlink target="${rootPath}/component/admin" link="${p}/administrator/components/${component}"  overwrite="true" />
         <symlink target="${rootPath}/component/site" link="${p}/components/${component}"  overwrite="true"/>
         <symlink target="${rootPath}/component/media/js" link="${p}/media/${component}/js" overwrite="true" />
@@ -48,9 +48,9 @@
         <symlink target="${rootPath}/plugins/jevents" link="${p}/plugins/content/jevents" overwrite="true" />
         <symlink target="${rootPath}/plugins/system/gwejson" link="${p}/plugins/system/gwejson" overwrite="true" />
         <symlink target="${rootPath}/libraries/googl" link="${p}/libraries/googl" overwrite="true" />
-        <symlink target="${rootPath}/libraries/jevents/jevmodal" link="${p}/libraries/jevents/jevmodal" overwrite="true" />
-        <symlink target="${rootPath}/libraries/jevents/bootstrap" link="${p}/libraries/jevents/bootstrap" overwrite="true" />
-        <symlink target="${rootPath}/libraries/jevents/jevtypeahead" link="${p}/libraries/jevents/jevtypeahead" overwrite="true" />
+        <symlink target="${rootPath}/libraries/jevmodal" link="${p}/libraries/jevents/jevmodal" overwrite="true" />
+        <symlink target="${rootPath}/libraries/bootstrap" link="${p}/libraries/jevents/bootstrap" overwrite="true" />
+        <symlink target="${rootPath}/libraries/jevtypeahead" link="${p}/libraries/jevents/jevtypeahead" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_cal" link="${p}/modules/mod_jevents_cal" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_custom" link="${p}/modules/mod_jevents_custom" overwrite="true" />
         <symlink target="${rootPath}/modules/mod_jevents_filter" link="${p}/modules/mod_jevents_filter" overwrite="true" />
