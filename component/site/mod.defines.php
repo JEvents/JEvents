@@ -21,6 +21,7 @@ if (!defined("JEV_LIBS")){
 	define("JEV_PATH",JPATH_SITE."/components/".JEV_COM_COMPONENT."/");
 	define("JEV_VIEWS",JEV_PATH."views");
 	define("JEV_LIBS",JEV_PATH."libraries");
+	define("JEV_HELPERS",JEV_PATH."helpers/");
 	define("JEV_ABSTRACTEMPLATES",JEV_VIEWS."/abstract/tmpl/");
 	define("JEV_ADMINLIBS",JEV_ADMINPATH."libraries/");
 }
