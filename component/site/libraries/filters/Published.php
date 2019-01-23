@@ -70,7 +70,25 @@ class jevPublishedFilter extends jevFilter
 		}
 		else if  (JEVHelper::isEventCreator()){
 			$user = JFactory::getUser();
-			if ($this->filter_value==-1) return "(ev.state=1 OR ev.created_by=".$user->id.")";
+			if ($this->filter_value==-1) {
+				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
+				$canPublishOwn = $params->get("jevpublishown", 0);
+				if ($canPublishOwn == 2)
+				{
+					$user          = JFactory::getUser();
+					$canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
+				}
+				if ($canPublishOwn)
+				{
+					// User can publish their own events so show them all
+					return "(ev.state=1 OR ev.created_by=".$user->id.")";
+				}
+				else
+				{
+					// User can't publish own so don't show trashed events
+					return "(ev.state=1 OR (ev.created_by=".$user->id." AND ev.state <> -1))";
+				}
+			}
 			return "ev.state=0 && ev.created_by=".$user->id;
 		}
 		

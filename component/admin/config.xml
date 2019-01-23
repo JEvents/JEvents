@@ -104,8 +104,52 @@
 		<field name="jevunlock" type="jevunlock" default="" menu="hide" size="40" label='COPYRIGHT_UNLOCK_CODE'  description='YOU_CAN_OBTAIN_THIS_FREE_CODE_FROM_THE_JEVENTS_WEBSITE'  />
 		//-->
 	</fieldset>
-	
-	
+
+	<fieldset name="JEV_STRUCTURED_EVENT_DATA" difficulty="1">
+
+		<field name="sevdnote" type="note"
+			   menu="hide"
+			   label="JEV_STRUCTURED_EVENT_DATA_LABEL"
+			   description="JEV_STRUCTURED_EVENT_DATA_DESC"
+			   difficulty="1"
+		/>
+
+		<field name="enable_gsed" type="jevboolean"
+			   class="btn-group" default="0"
+			   menu="hide"
+			   label="JEV_ENABLE_STRUCTURED_EVENT_DATA"
+			   description=""
+			   difficulty="1"/>
+
+		<field
+				name="sevd_imagename"
+				type="jevimagename"
+				default="0"
+				label="STRUCTURED_EVENT_DATA_IMAGE_LABEL"
+				description="STRUCTURED_EVENT_DATA_IMAGE_DESC"
+				conditional="enable_gsed" conditions="1"
+		/>
+
+        <field
+                name="sevd_defaultimage"
+                type="text"
+                default=""
+                label="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_LABEL"
+                description="STRUCTURED_EVENT_DATA_DEFAULT_IMAGE_DESC"
+                conditional="enable_gsed" conditions="1"
+        />
+
+        <field
+				name="sevd_peopletype"
+				type="jevpeople"
+				default="0"
+				label="STRUCTURED_EVENT_DATA_PERSON_TYPE_LABEL"
+				description="STRUCTURED_EVENT_DATA__PERSON_TYPE_DESC"
+				conditional="enable_gsed" conditions="1"
+		/>
+
+	</fieldset>
+
 	
 	<fieldset  name="JEV_PERMISSIONS" difficulty="1">	
 		<field name="jevadmin" type="jevuser" default="62"  menu="hide" label='ADMIN_USER'  description='ADMIN_USER_DESC' difficulty="1"/>
@@ -251,7 +295,9 @@
 		<field name="spacer_cv1" type="jevinfo" default='SETTINGS_RELATED_TO_DAY_VIEW'   menu="hide" label="" description="" difficulty="2"/>	
 		<field name="redirect_detail" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DAY_REDIRECT_TO_EVENT" description="JEV_DAY_REDIRECT_TO_EVENT_DESC" difficulty="2"/>		
 		<field name="shownavbar_detail" type="jevboolean" class="btn-group" default="1" menu="hide" label="JEV_DETAIL_SHOW_NAV_BAR" description="JEV_DETAIL_SHOW_NAV_BAR_DESC" difficulty="2"/>
-                <field name="permatarget" type="jevmenu" default="" label="JEV_PERMALINK_MENU_ITEM" description="JEV_PERMALINK_MENU_ITEM_TIP" />
+        <field name="permatarget" type="jevmenu" default="" label="JEV_PERMALINK_MENU_ITEM"
+               strict="1"
+               description="JEV_PERMALINK_MENU_ITEM_TIP" />
         </fieldset>
 	
 	<fieldset name="JEV_MAIN_MONTHLY_CALENDAR" difficulty="1">

@@ -123,6 +123,14 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$this->set("modparams" ,$params);
 		$this->set("jeventCalObject",$jeventCalObject);
 
+		$document = JFactory::getDocument();
+
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			$document->_styleSheets = array();
+		}
+
 		parent::displaytemplate($tpl);
 	}
 

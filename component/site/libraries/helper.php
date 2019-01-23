@@ -2547,6 +2547,11 @@ class JEVHelper
 
 		$document = JFactory::getDocument();
 
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			return;
+		}
 		foreach ($includes as $include)
 		{
 			if (JevJoomlaVersion::isCompatible("3.3"))
