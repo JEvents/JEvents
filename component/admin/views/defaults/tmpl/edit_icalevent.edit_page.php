@@ -153,7 +153,7 @@ $jevplugins = JPluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
 	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
 		// At present only some plugins support secondary tabs and special input formats
-		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser", "jevrsvp","jevgroupevent"))){
+		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser", "jevrsvp","jevgroupevent","jevtimelimit"))){
 			continue;
 		}
 		$classname = "plgJevents".ucfirst($jevplugin->name);
