@@ -665,7 +665,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						if ($key == "task" && ($val == "icalrepeat.detail" || $val == "icalevent.detail"))
 						{
-							$val = "week.listevents";
+							$val = "cat.listevents";
 						}
 						if ($key == "Itemid" && $modItemid)
 						{
