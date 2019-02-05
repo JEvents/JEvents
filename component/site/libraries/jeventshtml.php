@@ -241,7 +241,7 @@ class JEventsHTML
         // Filter on user access level
         $query->where('a.access IN (' . $groups . ')');
 
-        if ($with_unpublished === false) {
+        if (!$with_unpublished) {
             $query->where('a.published = 1');
         }
 
