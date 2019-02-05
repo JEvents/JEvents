@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   copyright (C) 2012-2018 GWE Systems Ltd - All rights reserved
+ * @copyright   copyright (C) 2012-2019 GWE Systems Ltd - All rights reserved
  *
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
