@@ -60,7 +60,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->_checkValidCategories();
 
 		$showUnpublishedICS = true;
-		$showUnpublishedCategories = true;
+		$showUnpublishedCategories = false; // We shouldn't show unpublished categories in the category select.
 
 		$jinput = JFactory::getApplication()->input;
 
