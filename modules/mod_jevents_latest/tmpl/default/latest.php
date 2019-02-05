@@ -879,7 +879,7 @@ SCRIPT;
 	{
 		// see if $customFormatStr has been specified.  If not, set it to the default format
 		// of date followed by event title.
-		if ($this->customFormatStr == NULL)
+		if ($this->customFormatStr == null)
 			$this->customFormatStr = $this->defaultfFormatStr;
 		else
 		{
@@ -895,8 +895,15 @@ SCRIPT;
 		// parse the event variables and reformat them into php syntax with special handling
 		// for the startDate and endDate fields.
 		//asdbg_break();
-		// interpret linefeed as <br />
-		$customFormat = nl2br($this->customFormatStr);
+		// interpret linefeed as <br /> if not disabled
+		if (!$this->modparams->get("modlatest_ignorebr", 0))
+		{
+			$customFormat = nl2br($this->customFormatStr);
+		}
+		else
+		{
+			$customFormat = $this->customFormatStr;
+		}
 
 		$keywords = array(
 			'content', 'eventDetailLink', 'createdByAlias', 'color',

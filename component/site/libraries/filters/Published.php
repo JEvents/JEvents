@@ -53,43 +53,59 @@ class jevPublishedFilter extends jevFilter
 	}
 
 	function _createFilter($prefix=""){
-		if (!$this->filterField ) return "ev.state=1";	
-
 		// The default is only to show published events
-		if ($this->filter_value==0) return "ev.state=1";	
-		
-		// Only show published events to non-logged in users
+		if (!$this->filterField || $this->filter_value==0) return "ev.state=1";
+
+		// Always only show published events to non-logged in users
 		$user = JFactory::getUser();
 		if ($user->get('id')==0){
 			return "ev.state=1";
 		}
-		
-		if (JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor()){
+
+		// Can delete own events?
+		if (JEVHelper::isEventDeletor(false))
+		{
+			if ($this->filter_value==-1)
+			{
+				// Do not show other user's trashed events show all of your own
+				return "ev.state <> -1 OR ev.created_by = " . $user->id;
+			}
+			else
+			{
+				// Show Any unpublished events
+				return "ev.state = 0";
+			}
+		}
+		// Can delete all events
+		else if (JEVHelper::isEventDeletor(true))
+		{
+			if ($this->filter_value==-1)
+			{
+				// show everything
+				return "";
+			}
+			else
+			{
+				// Show Any unpublished events
+				return "ev.state = 0";
+			}
+		}
+		else if (JEVHelper::isEventPublisher(true) || JEVHelper::isEventEditor()){
+			// Show all should not include trashed events
 			if ($this->filter_value==-1) return "ev.state<>-1";
 			return "ev.state=0";
 		}
+		// publish own checks
 		else if  (JEVHelper::isEventCreator()){
-			$user = JFactory::getUser();
-			if ($this->filter_value==-1) {
-				$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-				$canPublishOwn = $params->get("jevpublishown", 0);
-				if ($canPublishOwn == 2)
-				{
-					$user          = JFactory::getUser();
-					$canPublishOwn = $user->authorise('core.edit.state.own', 'com_jevents');
-				}
-				if ($canPublishOwn)
-				{
-					// User can publish their own events so show them all
-					return "(ev.state=1 OR ev.created_by=".$user->id.")";
-				}
-				else
-				{
-					// User can't publish own so don't show trashed events
-					return "(ev.state=1 OR (ev.created_by=".$user->id." AND ev.state <> -1))";
-				}
+			if ($this->filter_value==-1)
+			{
+				// Only show unpublished (ex trashed) events if created by this user
+				return "(ev.state=1 OR (ev.created_by=" . $user->id . " AND ev.state <> -1))";
 			}
-			return "ev.state=0 && ev.created_by=".$user->id;
+			else
+			{
+				return "(ev.created_by=" . $user->id . " AND ev.state = 0)";
+			}
 		}
 		
 		return "ev.state=1";	

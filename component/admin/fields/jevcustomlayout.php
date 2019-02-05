@@ -40,8 +40,17 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		$layouttype = $this->getAttribute("layouttype");
 		$target = $this->getAttribute("target");
 		$csstarget = $this->getAttribute("csstarget");
-		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
-		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
+		$ignorebrtarget = $this->getAttribute("ignorebrtarget");
+		$ttop = $this->getAttribute("templatetop");
+		$trow = $this->getAttribute("templaterow");
+		$tbot = $this->getAttribute("templatebottom");
+		$inccss = $this->getAttribute("inccss");
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+		JHtml::script("https://www.jevents.net/jevlayouts/LatestEvents.js?$release");
+		//JHtml::script("http://ubu.j33jq.com/jevlayouts/LatestEvents.js?$release");
+
+		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
 		$id = $this->id;
 		$html .= <<<DROPDOWN
 <div class="dropdown btn-group" id="$id">

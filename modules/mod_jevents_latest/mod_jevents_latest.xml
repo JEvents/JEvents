@@ -23,7 +23,13 @@
 		<fields name="params">
 			<fieldset name="basic"  addfieldpath="/administrator/components/com_jevents/fields/">
 				<field name="@spacer" type="jevinfo" default="JEV PARAMS"   label="" description="" />
-				<field name="com_calViewName" type="jevview" except="float" default="" label="JEV_VIEWNAME" description="JEV_TIP_VIEWNAME" viewtype="mod_jevents_latest"/>
+				<field name="com_calViewName"
+					   type="jevview"
+					   except="smartphone"
+					   default=""
+					   label="JEV_VIEWNAME"
+					   description="JEV_TIP_VIEWNAME"
+					   viewtype="mod_jevents_latest"/>
 				<field name="cache" type="radio" class="btn-group" default="0" label="JEV_LATEST_CACHE_ENABLE" description="JEV_LATEST_CACHE_CONTENT">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
@@ -45,7 +51,7 @@
 					<option value="1">JEV_Yes</option>
 				</field>
 				<field name="target_itemid" type="jevmenu" default="" label="JEV_TARGET_MENU" description="JEV_TARGET_MENU_TIP" />
-				<field name="modlatest_inccss" type="radio" class="btn-group"  default="1" label="JEV_LATEST_INC_CSS" description="JEV_LATEST_INC_CSS_DESC">
+				<field name="modlatest_inccss" type="list" default="1" label="JEV_LATEST_INC_CSS" description="JEV_LATEST_INC_CSS_DESC">
 					<option value="0">JEV_NO</option>
 					<option value="1">JEV_Yes</option>
 				</field>
@@ -56,8 +62,31 @@
 					<option value="1">JEV_LATEST_USE_SETTINGS_BELOW</option>
 				</field>
                                 <field name="showNavigation" type="jevboolean" class="btn-group"  default="0" label="JEV_SHOW_NAVIGATION_CLUB_ONLY" description="JEV_SHOW_NAVIGATION_CLUB_ONLY_DESC" conditional="modlatest_useLocalParam" conditions="1" />
-				<field name="CustomFromTemplate" type="jevcustomlayout" layouttype="LatestEvents"  default='1'  target='jform_params_modlatest_CustFmtStr'  csstarget='jform_params_modlatest_customcss'  label="JEV_LEV_CUSTOM_LAYOUT_IMPORT" description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="CustomFromTemplate"
+					   type="jevcustomlayout"
+					   layouttype="LatestEvents"
+					   default='1'
+					   target='jform_params_modlatest_CustFmtStr'
+					   csstarget='jform_params_modlatest_customcss'
+					   ignorebrtarget='jform_params_modlatest_ignorebr'
+					   templatetop='jform_params_modlatest_templatetop'
+					   templaterow='jform_params_modlatest_templaterow'
+					   templatebottom='jform_params_modlatest_templatebottom'
+					   inccss='jform_params_modlatest_inccss'
+					   label="JEV_LEV_CUSTOM_LAYOUT_IMPORT"
+					   description="JEV_LEV_CUSTOM_LAYOUT_IMPORT_TIP"
+					   conditional="modlatest_useLocalParam"
+					   conditions="1" />
 				<field name="modlatest_CustFmtStr" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default='&lt;span class="icon-calendar"&gt;&lt;/span&gt;${startDate(%d %b %Y)};&lt;br /&gt;&lt;span class="icon-time"&gt;&lt;/span&gt;${startDate(%I:%M%p)}[!a: - ${endDate(%I:%M%p)}]&lt;br /&gt;&lt;span class="icon-hand-right"&gt;&lt;/span&gt;${title}'  label="JEV_LEV_CUST_FORM_STRING" description="JEV_LEV_CUST_FORM_STRING_TIP" conditional="modlatest_useLocalParam" conditions="1" />
+				<field name="modlatest_ignorebr"
+					   type="list"
+					   default="0"
+					   label="JEV_LATEST_FORMAT_STRING_INGNORE_CARRIAGE_RETURNS"
+					   description="JEV_LATEST_FORMAT_STRING_INGNORE_CARRIAGE_RETURNS_DESC">
+					<option value="0">JEV_NO</option>
+					<option value="1">JEV_Yes</option>
+				</field>
+
 				<field name="modlatest_customcss" type="jevtextarea" filter="raw" cols="50" rows="5"  class="jevtextarea" default=''  label="JEV_LEV_CUSTOM_CSS" description="JEV_LEV_CUSTOM_CSS_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_MaxEvents" type="jevtext" size="3" default="10" label="JEV_LEV_MAX_DISPLAY" description="JEV_LEV_MAX_DISPLAY_TIP" conditional="modlatest_useLocalParam" conditions="1" />
 				<field name="modlatest_Mode" type="jevmultilist" default="3" label="JEV_LEV_DISPLAY_MODE" description="JEV_LEV_DISPLAY_MODE_TIP" conditional="modlatest_useLocalParam" conditions="1" >
