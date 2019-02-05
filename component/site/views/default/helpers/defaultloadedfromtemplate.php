@@ -1616,7 +1616,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$resetparams = true;
 						}
 
-						$lddata["image"] =  plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "0x0", $imgpluginparams);
+						$lddata["image"] =  plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "1920x1920", $imgpluginparams);
 						if (strpos($lddata["image"], "/") === 0)
 						{
 							$lddata["image"] = substr($lddata["image"], 1);
@@ -1716,6 +1716,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		foreach ($jevplugins as $jevplugin)
 		{
+
 			$classname = "plgJevents" . ucfirst($jevplugin->name);
 			if (is_callable(array($classname, "substitutefield")))
 			{
@@ -1815,7 +1816,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (JString::strpos($search[$s], "STARTDATE") > 0 || JString::strpos($search[$s], "STARTTIME") > 0 || JString::strpos($search[$s], "ENDDATE") > 0 || JString::strpos($search[$s], "ENDTIME") > 0 || JString::strpos($search[$s], "ENDTZ") > 0 || JString::strpos($search[$s], "STARTTZ") > 0 || JString::strpos($search[$s], "MULTIENDDATE") > 0 || JString::strpos($search[$s], "FIRSTREPEATSTART") > 0 || JString::strpos($search[$s], "LASTREPEATEND") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
-			$tempreplace = $rawreplace[$search[$s]];
+			$tempreplace = isset($rawreplace[$search[$s]]) ? $rawreplace[$search[$s]] : $blank[$s];
 			$tempblank   = $blank[$s];
 			$tempsearch  = str_replace("}}", ";.*?}}", $search[$s]);
 			$tempevent   = $event;
@@ -1829,7 +1830,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			}
 		}
 	}
-
 	for ($s = 0; $s < count($search); $s++)
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -1839,7 +1839,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
 	}
-
 	// The universal search and replace to finish
 	$template_value = str_replace($search, $replace, $template_value);
 
@@ -1920,6 +1919,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$dispatcher     = JEventDispatcher::getInstance();
 	JPluginHelper::importPlugin('content');
 	$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);
 
