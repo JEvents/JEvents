@@ -42,6 +42,9 @@
 				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
 				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
 				<option value="ev.created DESC" >JEV_MOST_RECENT</option>
+				<option value="ev.created ASC" >JEV_MOST_RECENT_ASC</option>
+				<option value="det.modified DESC" >JEV_MOST_RECENT_MODIFIED_DESC</option>
+				<option value="det.modified ASC" >JEV_MOST_RECENT_MODIFIED_ASC</option>
 			</field>
 
 			<field name='daterangeformat' type='text' default='{START(%d %B %Y)} - {END(%d %B %Y)}'  size="30" label="COM_JEVENTS_DATE_RANGE_FORMAT" description="COM_JEVENTS_DATE_RANGE_FORMAT_DESC" />
