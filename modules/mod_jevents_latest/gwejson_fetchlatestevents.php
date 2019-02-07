@@ -42,7 +42,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	$db->setQuery($query);
 
 	try {
-		$db->loadObject();
+		$module = $db->loadObject();
 	} catch (Exception $e) {
 		echo $e;
 		PlgSystemGwejson::throwerror("There was an error - no valid module id 2");
