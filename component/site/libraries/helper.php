@@ -5,7 +5,7 @@
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -794,7 +794,7 @@ class JEVHelper
 		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
 		//$tag      = Factory::getLanguage()->getTag();
 		//HTMLHelper::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
-		//HTMLHelper::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
+		//HTMLHelper::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
 
 		$tag = Factory::getLanguage()->getTag();
 
@@ -2712,6 +2712,11 @@ class JEVHelper
 
 		$document = Factory::getDocument();
 
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			return;
+		}
 		foreach ($includes as $include)
 		{
 			$document->addStyleSheetVersion($include, $release, 'text/css', null, array());

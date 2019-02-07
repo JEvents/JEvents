@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2008-2018 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2008-2019 GWE Systems Ltd - All rights reserved
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -1052,8 +1052,15 @@ SCRIPT;
 		// parse the event variables and reformat them into php syntax with special handling
 		// for the startDate and endDate fields.
 		//asdbg_break();
-		// interpret linefeed as <br />
-		$customFormat = nl2br($this->customFormatStr);
+		// interpret linefeed as <br /> if not disabled
+		if (!$this->modparams->get("modlatest_ignorebr", 0))
+		{
+			$customFormat = nl2br($this->customFormatStr);
+		}
+		else
+		{
+			$customFormat = $this->customFormatStr;
+		}
 
 		$keywords    = array(
 			'content', 'eventDetailLink', 'createdByAlias', 'color',

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   copyright (C) 2012-2018 GWE Systems Ltd - All rights reserved
+ * @copyright   copyright (C) 2012-2019 GWE Systems Ltd - All rights reserved
  *
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
@@ -284,9 +284,11 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// get the repeat (allowing for it to be unpublished)
 		$theevent = array($queryModel->listEventsById($item->rp_id));
 
-		JPluginHelper::importPlugin('jevents');
-		$dispatcher = JEventDispatcher::getInstance();
-		$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+		if (isset($theevent[0]) && $theevent[0]) {
+			JPluginHelper::importPlugin('jevents');
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onJevFinderIndexing', array(&$theevent));
+		}
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
 
@@ -329,6 +331,12 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// Events should only be published if the category is published.etc. - do this later
 		$item->state     = $this->translateState($item->state, $item->cat_state);
 		$item->published = $item->state;
+
+		if ($item->state !== 1) {
+			// Ok Finder is weird, although we set published and state = 0 it still publishes it.
+			// So we will set the publish end date the same as the start so it's not found.
+			$item->publish_end_date = $item->publish_start_date;
+		}
 
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Event');

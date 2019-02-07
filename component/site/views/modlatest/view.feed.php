@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.feed.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -139,6 +139,14 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		$this->set("info", $info);
 		$this->set("modparams", $params);
 		$this->set("jeventCalObject", $jeventCalObject);
+
+		$document = JFactory::getDocument();
+
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			$document->_styleSheets = array();
+		}
 
 		parent::displaytemplate($tpl);
 	}

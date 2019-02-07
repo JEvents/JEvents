@@ -7,8 +7,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * @copyright      Copyright (C) 2015-2018 GWE Systems Ltd. All rights reserved.
- * @license        By negoriation with author via http://www.gwesystems.com
+ * @copyright	Copyright (C) 2015-2019 GWE Systems Ltd. All rights reserved.
+ * @license		By negotiation with author via http://www.gwesystems.com
  */
 
 function ProcessJsonRequest(&$requestObject, $returnData)

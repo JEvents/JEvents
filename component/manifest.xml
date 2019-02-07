@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="component" version="2.5" method="upgrade">
 	<name>COM_JEVENTS</name>
-	<creationDate>September 2018</creationDate>
+	<creationDate>September 2019</creationDate>
 	<author>GWE Systems Ltd</author>
-	<copyright>(C) 2009-2018 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
+	<copyright>(C) 2009-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>tony@jevents.net</authorEmail>
 	<authorUrl>http://www.jevents.net</authorUrl>
 	<description>COM_JEVENTS_DESC</description>
-	<version>3.4.48</version>
+	<version>3.4.49</version>
 	<scriptfile>install.php</scriptfile>
 	<files folder="site">
 		<folder>assets</folder>
