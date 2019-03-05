@@ -477,7 +477,9 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 				$icsFile->created_by = $input->getInt("created_by", 0);
 			}
 
-			$icsFileid = $icsFile->store();
+            $icsFile->autorefresh = $input->getInt('autorefresh', 0);
+
+            $icsFileid = $icsFile->store();
 			$message   = JText::_('ICS_FILE_IMPORTED');
 		}
 		if ($input->getCmd("task") !== "icals.reloadall")
