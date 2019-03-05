@@ -5,7 +5,7 @@
  *
  * @version     $Id: jevcategorynew.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -38,11 +38,20 @@ class JFormFieldJevcustomlayout extends JFormFieldList
 		JLoader::register('JEVHelper', JPATH_SITE . "/components/com_jevents/libraries/helper.php");
 		JEVHelper::ConditionalFields($this->element, $this->form->getName());
 		$layouttype = $this->getAttribute("layouttype");
-		$target     = $this->getAttribute("target");
-		$csstarget  = $this->getAttribute("csstarget");
-		HTMLHelper::script("https://www.jevents.net/jevlayouts/LatestEvents.js");
-		$html = "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget');});</script>";
-		$id   = $this->id;
+		$target = $this->getAttribute("target");
+		$csstarget = $this->getAttribute("csstarget");
+		$ignorebrtarget = $this->getAttribute("ignorebrtarget");
+		$ttop = $this->getAttribute("templatetop");
+		$trow = $this->getAttribute("templaterow");
+		$tbot = $this->getAttribute("templatebottom");
+		$inccss = $this->getAttribute("inccss");
+		$version = JEventsVersion::getInstance();
+		$release = $version->get("RELEASE", "1.0.0");
+		HTMLHelper::script("https://www.jevents.net/jevlayouts/LatestEvents.js?$release");
+		//JHtml::script("http://ubu.j33jq.com/jevlayouts/LatestEvents.js?$release");
+
+		$html =  "<script>jQuery(document).ready(function ($){loadJevPreview('$target', '$csstarget', '$ignorebrtarget', '$ttop', '$trow', '$tbot', '$inccss');});</script>";
+		$id = $this->id;
 		$html .= <<<DROPDOWN
 <div class="dropdown btn-group" id="$id">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdown$target" data-toggle="dropdown" aria-expanded="false">

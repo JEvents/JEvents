@@ -7,8 +7,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * @copyright      Copyright (C) 2015-2018 GWE Systems Ltd. All rights reserved.
- * @license        By negoriation with author via http://www.gwesystems.com
+ * @copyright	Copyright (C) 2015-2019 GWE Systems Ltd. All rights reserved.
+ * @license		By negotiation with author via http://www.gwesystems.com
  */
 
 function ProcessJsonRequest(&$requestObject, $returnData)
@@ -42,7 +42,7 @@ function ProcessJsonRequest(&$requestObject, $returnData)
 	$db->setQuery($query);
 
 	try {
-		$db->loadObject();
+		$module = $db->loadObject();
 	} catch (Exception $e) {
 		echo $e;
 		PlgSystemGwejson::throwerror("There was an error - no valid module id 2");

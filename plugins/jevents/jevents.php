@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @copyright    Copyright (c) 2014-2018 GWE Systems Ltd. All rights reserved.
- * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright (c) 2014-2019 GWE Systems Ltd. All rights reserved.
+ * @license	GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
 defined('_JEXEC') or die(' Restricted Access ');
