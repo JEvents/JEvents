@@ -82,7 +82,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		{
 			$where[] = "LOWER(icsf.label) LIKE '%$search%'";
 		}
-		if ($catid > 0)
+		// Weird bug? catid is set somewhere as 1, can never be 1 as Joomla! has a category by default.
+		if ($catid > 1)
 		{
 			$where[] = "catid = $catid";
 		}
@@ -312,12 +313,14 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		// clean this up later - this is a quick fix for frontend reloading
 		$autorefresh = 0;
 		$icsid       = $input->getInt('icsid', 0);
+
 		if ($icsid > 0)
 		{
 			$query = "SELECT icsf.* FROM #__jevents_icsfile as icsf WHERE ics_id=$icsid";
 			$db    = Factory::getDbo();
 			$db->setQuery($query);
 			$currentICS = $db->loadObjectList();
+
 			if (count($currentICS) > 0)
 			{
 				$currentICS = $currentICS[0];
@@ -349,7 +352,6 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		$db = Factory::getDbo();
 
 		// include ical files
-
 
 		if ($icsid > 0 || $cid != 0)
 		{
@@ -530,7 +532,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		$icsid = intval($input->getInt('icsid', 0));
 		$cid   = $input->get('cid', array(), 'array');
 		$cid   = ArrayHelper::toInteger($cid);
-		if (is_array($cid) && count($cid) > 0)
+
+        if (is_array($cid) && count($cid) > 0)
 		{
 			$cid = $cid[0];
 		}
@@ -599,6 +602,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			$ics->label          = $icsLabel;
 			$ics->srcURL         = $uploadURL;
 			$ics->ignoreembedcat = $ignoreembed;
+			$ics->autorefresh    = $autorefesh;
 			// TODO update access and state
 			$ics->updateDetails();
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('ICS_SAVED'));
