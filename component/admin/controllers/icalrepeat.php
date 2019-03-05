@@ -466,7 +466,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
+		$data["X-EXTRAINFO"]    = $jinput->get("extra_info", "", 'RAW');
 		$data["LOCATION"]       = $jinput->getString("location", "");
 		$data["GEOLON"]       = $jinput->getString("geolon", "");
 		$data["GEOLAT"]       = $jinput->getString("geolat", "");
