@@ -10,8 +10,8 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	//if (JFile::exists($file4)) JFile::delete($file4);
 
         // Some SEF addons leave Itemid blank here so force the active menu!
-	$ttItemid = 	JRequest::getVar("ttItemid", 0);
-	if ($ttItemid>0 && JRequest::getVar("Itemid", 0)==0){
+	$ttItemid = 	JRequest::getInt("ttItemid", 0);
+	if ($ttItemid>0 && JRequest::getInt("Itemid", 0)==0){
 		$menu = JFactory::getApplication()->getMenu();
 		JRequest::setVar("Itemid", $ttItemid);
 		$menu->setActive($ttItemid);
