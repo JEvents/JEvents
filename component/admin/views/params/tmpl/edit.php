@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit16.php 2983 2011-11-10 14:02:23Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2018 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -223,7 +223,11 @@ if (count($jevplugins)){
 				}
 
 				$html[] = "<tr $class>";
-				if (!isset($field->label) || $field->label == "")
+				if (strtolower($field->type) == "note")
+                {
+	                $html[] = '<td class="paramlist_value" colspan="2">' . $field->label . "<div>" . $field->input . '<br></div></td>';
+                }
+				else if (!isset($field->label) || $field->label == "")
 				{
 					$html[] = '<td class="paramlist_key"><span class="editlinktip">' . $field->label . '</span></td>';
 					$html[] = '<td class="paramlist_value">' . $field->input . '</td>';

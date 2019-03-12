@@ -5,6 +5,8 @@ use Joomla\String\StringHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
+	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+
 	$db = JFactory::getDbo();
 	static $allcatids;
 	if (!isset($allcatids))
@@ -170,6 +172,18 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			{
 				if ($templates[$template_name][$catid]->value != "")
 				{
+                    // Add structured data output
+					if ($template_name === "icalevent.detail_body"
+                        && $jevparams->get("enable_gsed", 0)
+                        && $jevparams->get("sevd_imagename", 0)
+						&& $jevparams->get("permatarget", 0)
+						&& isset($event->_jevlocation)
+						&& !empty($event->_jevlocation)
+                    )
+					{
+						$templates[$template_name][$catid]->value .= "<script type='application/ld+json'>{{Structured Data:LDJSON}}</script>";
+					}
+
 					if (isset($templates[$template_name][$catid]->params))
 					{
 						$templates[$template_name][$catid]->params = new JRegistry($templates[$template_name][$catid]->params);
@@ -356,8 +370,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$replace    = array();
 	$blank      = array();
 	$rawreplace = array();
-
-	$jevparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 	for ($i = 0; $i < count($matchesarray[0]); $i++)
 	{
@@ -1564,6 +1576,132 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					$blank[]   = "";
 				}
 				break;
+
+			case "{{LDJSON}}" :
+				if ($template_name === "icalevent.detail_body"
+                    && $jevparams->get("enable_gsed", 0)
+                    && $jevparams->get("sevd_imagename", 0)
+					&& $jevparams->get("permatarget", 0)
+                    && isset($event->_jevlocation)
+                    && !empty($event->_jevlocation)
+                )
+				{
+					$lddata = array();
+					$lddata["@context"] = "https://schema.org";
+					$lddata["@type"] =  "Event";
+					$lddata["name"] =  $event->title();
+					$lddata["description"] =  $event->content();
+					$lddata["startDate"] = $event->alldayevent() ?
+						JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d")  :
+						JEventsHTML::getDateFormat($event->yup(), $event->mup(), $event->dup(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hup(), $event->minup()) ;
+					if (true || $event->endDate() > $event->startDate())
+					{
+						$lddata["endDate"] = ($event->noendtime() || $event->alldayevent()) ?
+						    JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d")  :
+							JEventsHTML::getDateFormat($event->ydn(), $event->mdn(), $event->ddn(), "%Y-%m-%d") . "T" . sprintf('%02d:%02d:00', $event->hdn(), $event->mindn()) ;
+					}
+
+					$imageurl = "_imageurl" . $jevparams->get("sevd_imagename", 0);
+					if (isset($event->$imageurl))
+					{
+
+						$imgplugin  = JPluginHelper::getPlugin("jevents", "jevfiles");
+						$imgpluginparams = new JRegistry($imgplugin->params);
+
+						$resetparams = false;
+						if ($jevparams->get("sevd_defaultimage", false) && empty($imgpluginparams->get("defaultimage", false)))
+						{
+							$imgpluginparams->set("defaultimage", $jevparams->get("sevd_defaultimage", false));
+							$imgplugin->params = json_encode($imgpluginparams);
+							$resetparams = true;
+						}
+
+						$lddata["image"] =  plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "1920x1920", $imgpluginparams);
+						if (strpos($lddata["image"], "/") === 0)
+						{
+							$lddata["image"] = substr($lddata["image"], 1);
+						}
+						$lddata["image"] = array(JURI::root(false)  . $lddata["image"]);
+
+						if ($resetparams)
+                        {
+	                        $imgpluginparams->set("defaultimage", "");
+	                        $imgplugin->params = json_encode($imgpluginparams);
+                        }
+					}
+
+					if (isset($event->_jevlocation))
+                    {
+                        $loc = array();
+	                    $loc["@type"] = "Place";
+	                    $loc["name"] = $event->_jevlocation->title;
+	                    $address = array();
+	                    if (isset($event->_jevlocation->street) && !empty($event->_jevlocation->street))
+	                    {
+		                    $address["streetAddress"] = $event->_jevlocation->street;
+	                    }
+	                    if (isset($event->_jevlocation->postcode) && !empty($event->_jevlocation->postcode))
+	                    {
+		                    $address["postalCode"] = $event->_jevlocation->postcode;
+	                    }
+	                    if (isset($event->_jevlocation->city) && !empty($event->_jevlocation->city))
+	                    {
+		                    $address["addressLocality"] = $event->_jevlocation->city;
+	                    }
+	                    if (isset($event->_jevlocation->state) && !empty($event->_jevlocation->state))
+	                    {
+		                    $address["addressRegion"] = $event->_jevlocation->state;
+	                    }
+	                    if (isset($event->_jevlocation->country) && !empty($event->_jevlocation->country))
+	                    {
+		                    $address["addressCountry"] = $event->_jevlocation->country;
+	                    }
+	                    // Structured data needs a valid address
+	                    if (!empty($address))
+                        {
+	                        $address["@type"] = "PostalAddress";
+	                        $loc["address"] = $address;
+
+	                        $lddata["location"] = $loc;
+                        }
+                    }
+
+                    if (isset($event->_jevpeople) && count($event->_jevpeople))
+                    {
+                        foreach ($event->_jevpeople as $person)
+                        {
+                            if ($person->type_id == $jevparams->get("sevd_peopletype", -1))
+                            {
+                                $pdata = array();
+                                $pdata["@type"] = "PerformingGroup";
+                                $pdata["name"] = $person->title;
+
+                                $lddata["performer"] = $pdata;
+                                break;
+                            }
+                        }
+                    }
+
+                    // TODO RSVP Pro
+                    /*
+                    $offer = array();
+					$offer["@type"] = "Offer";
+					//$offer["price"] = 0;
+					//$offer["priceCurrency"] = "USD";
+					$offer["availability"] = "https://schema.org/InStock";
+					//$offer["availability"] = "https://schema.org/SoldOut";
+					$offer["validFrom"] = "2017-01-20T16:20-08:00";
+
+					$lddata["offers"] = array($offer);
+                    */
+
+					$search[]  = "{{LDJSON}}";
+					// Structured data needs a valid address
+					$replace[] = isset($lddata["location"]) ? json_encode($lddata) : "";
+					$blank[]   = "";
+				}
+				break;
+
 		}
 	}
 
@@ -1578,6 +1716,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 		foreach ($jevplugins as $jevplugin)
 		{
+
 			$classname = "plgJevents" . ucfirst($jevplugin->name);
 			if (is_callable(array($classname, "substitutefield")))
 			{
@@ -1677,7 +1816,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		if (JString::strpos($search[$s], "STARTDATE") > 0 || JString::strpos($search[$s], "STARTTIME") > 0 || JString::strpos($search[$s], "ENDDATE") > 0 || JString::strpos($search[$s], "ENDTIME") > 0 || JString::strpos($search[$s], "ENDTZ") > 0 || JString::strpos($search[$s], "STARTTZ") > 0 || JString::strpos($search[$s], "MULTIENDDATE") > 0 || JString::strpos($search[$s], "FIRSTREPEATSTART") > 0 || JString::strpos($search[$s], "LASTREPEATEND") > 0)
 		{
 			global $tempreplace, $tempevent, $tempsearch, $tempblank;
-			$tempreplace = $rawreplace[$search[$s]];
+			$tempreplace = isset($rawreplace[$search[$s]]) ? $rawreplace[$search[$s]] : $blank[$s];
 			$tempblank   = $blank[$s];
 			$tempsearch  = str_replace("}}", ";.*?}}", $search[$s]);
 			$tempevent   = $event;
@@ -1691,7 +1830,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			}
 		}
 	}
-
 	for ($s = 0; $s < count($search); $s++)
 	{
 		global $tempreplace, $tempevent, $tempsearch, $tempblank;
@@ -1701,7 +1839,6 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 		$tempevent      = $event;
 		$template_value = preg_replace_callback("|$tempsearch(.+?)}}|", 'jevSpecialHandling2', $template_value);
 	}
-
 	// The universal search and replace to finish
 	$template_value = str_replace($search, $replace, $template_value);
 
@@ -1782,6 +1919,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 	$dispatcher     = JEventDispatcher::getInstance();
 	JPluginHelper::importPlugin('content');
 	$dispatcher->trigger('onContentPrepare', array('com_jevents', &$tmprow, &$params, 0));
+
 	$template_value = $tmprow->text;
 	$template_value = str_replace("@£@", "@", $template_value);
 
