@@ -12,7 +12,9 @@
 defined('_JEXEC') or die();
 
 use Joomla\String\StringHelper;
-
+if (JFile::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
+    require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
+}
 /**
  * HTML View class for the component frontend
  *
