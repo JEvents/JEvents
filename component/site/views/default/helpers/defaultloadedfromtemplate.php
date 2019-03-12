@@ -1616,7 +1616,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 							$resetparams = true;
 						}
 
-						$lddata["image"] =  plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "1920x1920", $imgpluginparams);
+						try
+						{
+							$lddata["image"] = plgJEventsjevfiles::getSizedImageUrl($event, $imageurl, "1920x1920", $imgpluginparams);
+						}
+						catch (Exception $e)
+                        {
+                            // for sites that haven't upgraded standard images
+	                        $lddata["image"] = $event->$imageurl;
+                        }
 						if (strpos($lddata["image"], "/") === 0)
 						{
 							$lddata["image"] = substr($lddata["image"], 1);

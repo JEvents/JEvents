@@ -33,7 +33,7 @@ $action = JFactory::getApplication()->isAdmin() ? "index.php" : "index.php?optio
             $srcURL = $this->editItem->srcURL;
             $filename = $this->editItem->filename;
             $overlaps = $this->editItem->overlaps;
-            $label = $this->editItem->label;
+            $label = htmlspecialchars($this->editItem->label);
             $icaltype = $this->editItem->icaltype;
             if ($srcURL == "")
 			{
