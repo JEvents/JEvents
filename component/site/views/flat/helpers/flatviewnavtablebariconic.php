@@ -174,19 +174,16 @@ class FlatViewNavTableBarIconic
 	function _viewHiddenJumpto($this_date, $view, $Itemid)
 	{
 
-		$cfg       = JEVConfig::getInstance();
 		$hiddencat = "";
 		if ($view->datamodel->catidsOut != 0)
 		{
 			$hiddencat = '<input type="hidden" name="catids" value="' . $view->datamodel->catidsOut . '"/>';
 		}
 
-		$index = Route::_("index.php");
+        $index = Route::_("index.php?option=com_jevents&view=month&layout=calendar&Itemid=$Itemid");
 		?>
 		<div id="jumpto" class="jev_none">
 			<form name="BarNav" action="<?php echo $index; ?>" method="get">
-				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
-				<input type="hidden" name="task" value="month.calendar"/>
 				<?php
 				echo $hiddencat;
 				/* Day Select */
@@ -197,7 +194,6 @@ class FlatViewNavTableBarIconic
 				JEventsHTML::buildYearSelect($this_date->getYear(1), '');
 				?>
 				<button onclick="submit(this.form)"><?php echo JText::_('JEV_JUMPTO'); ?></button>
-				<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>"/>
 			</form>
 		</div>
 		<?php
