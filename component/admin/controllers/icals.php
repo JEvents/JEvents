@@ -283,7 +283,7 @@ class AdminIcalsController extends JControllerForm {
 			return;
 */
 		}
-		$cid    = JRequest::getVar(	'cid',	array(0) );
+		$cid    = $jinput->get(	'cid',	array(0) );
 		$cid    = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid)>0) {
@@ -315,22 +315,22 @@ class AdminIcalsController extends JControllerForm {
 				$this->redirect();
 			}
 
-			$catid = JRequest::getInt('catid',$currentICS->catid);
+			$catid = $jinput->getInt('catid',$currentICS->catid);
 			if ($catid<=0 && $currentICS->catid>0){
 				$catid = intval($currentICS->catid);
 			}
-			$access = intval(JRequest::getVar('access',$currentICS->access));
+			$access = $jinput->getInt('access',$currentICS->access);
 			if ($access<0 && $currentICS->access>=0){
 				$access = intval($currentICS->access);
 			}
-			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
-			if (($icsLabel=="" || JRequest::getCmd("task") == "icals.reload") && JString::strlen($currentICS->label)>=0){
+			$icsLabel = $jinput->getString('icsLabel',$currentICS->label );
+			if (($icsLabel=="" || $jinput->getCmd("task") == "icals.reload") && JString::strlen($currentICS->label)>=0){
 				$icsLabel = $currentICS->label;
 			}
-			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
-			$overlaps = JRequest::getInt('overlaps',$currentICS->overlaps);
-			$autorefresh = JRequest::getInt('autorefresh',$autorefresh);
-			$ignoreembedcat = JRequest::getInt('ignoreembedcat',$currentICS->ignoreembedcat);
+			$isdefault = $jinput->getInt('isdefault',$currentICS->isdefault);
+			$overlaps = $jinput->getInt('overlaps',$currentICS->overlaps);
+			$autorefresh = $jinput->getInt('autorefresh',$autorefresh);
+			$ignoreembedcat = $jinput->getInt('ignoreembedcat',$currentICS->ignoreembedcat);
 
 			// This is a native ical - so we are only updating identifiers etc
 			if ($currentICS->icaltype==2){
@@ -426,6 +426,9 @@ class AdminIcalsController extends JControllerForm {
 		$user = JFactory::getUser();
 		$authorised = false;
 
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
 		// Check for request forgeries
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
@@ -442,8 +445,8 @@ class AdminIcalsController extends JControllerForm {
 			return;
 		}
 
-		$icsid = intval(JRequest::getVar('icsid',0));
-		$cid	= JRequest::getVar(	'cid',	array(0) );
+		$icsid = $jinput->getInt('icsid',0);
+		$cid	= $jinput->get(	'cid',	array(0) );
 		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid)>0) {
 			$cid=$cid[0];
@@ -469,30 +472,30 @@ class AdminIcalsController extends JControllerForm {
 				$this->redirect();
 			}
 
-			$catid = JRequest::getInt('catid',$currentICS->catid);
+			$catid = $jinput->getInt('catid',$currentICS->catid);
 			if ($catid<=0 && $currentICS->catid>0){
 				$catid = intval($currentICS->catid);
 			}
-			$access = intval(JRequest::getVar('access',$currentICS->access));
+			$access = $jinput->getInt('access',$currentICS->access);
 			if ($access<0 && $currentICS->access>=0){
 				$access = intval($currentICS->access);
 			}
-			$state = intval(JRequest::getVar('state',$currentICS->state));
+			$state = $jinput->getInt('state',$currentICS->state);
 			if ($state<0 && $currentICS->state>=0){
 				$state = intval($currentICS->state);
 			}
-			$icsLabel = JRequest::getVar('icsLabel',$currentICS->label );
+			$icsLabel = $jinput->getString('icsLabel',$currentICS->label );
 			if ($icsLabel=="" && JString::strlen($currentICS->icsLabel)>=0){
 				$icsLabel = $currentICS->icsLabel;
 			}
-			$uploadURL = JRequest::getVar('uploadURL',$currentICS->srcURL );
+			$uploadURL = $jinput->getString('uploadURL',$currentICS->srcURL );
 			if ($uploadURL=="" && JString::strlen($currentICS->srcURL)>=0){
 				$uploadURL = $currentICS->srcURL;
 			}
-			$isdefault = JRequest::getInt('isdefault',$currentICS->isdefault);
-			$overlaps = JRequest::getInt('overlaps',$currentICS->overlaps);
-			$autorefesh = JRequest::getInt('autorefresh',$currentICS->autorefresh);
-			$ignoreembed = JRequest::getInt('ignoreembedcat',$currentICS->ignoreembedcat);
+			$isdefault = $jinput->getInt('isdefault',$currentICS->isdefault);
+			$overlaps = $jinput->getInt('overlaps',$currentICS->overlaps);
+			$autorefesh = $jinput->getInt('autorefresh',$currentICS->autorefresh);
+			$ignoreembed = $jinput->getInt('ignoreembedcat',$currentICS->ignoreembedcat);
 
 			// We are only updating identifiers etc
 			$ics = new iCalICSFile($db);
@@ -500,7 +503,7 @@ class AdminIcalsController extends JControllerForm {
 			$ics->catid=$catid;
 			$ics->isdefault=$isdefault;
 			$ics->overlaps=$overlaps;
-			$ics->created_by=JRequest::getInt("created_by",$currentICS->created_by);
+			$ics->created_by=$jinput->getInt("created_by",$currentICS->created_by);
 			$ics->state=$state;
 			$ics->access=$access;
 			$ics->label=$icsLabel;

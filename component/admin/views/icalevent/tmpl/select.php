@@ -43,7 +43,7 @@ $function = $jinput->getCmd('function', 'jSelectEvent');
 			<td align="right"><?php echo $this->userlist; ?> </td>
 			<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 			<td>
-				<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
+				<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox" onChange="document.adminForm.submit();" />
 			</td>
 		</tr>
 <?php if (!$jinput->getInt("nomenu", null))

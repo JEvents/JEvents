@@ -53,7 +53,7 @@ $mainspan = 10;
 <?php } ?>
 					<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 					<td>
-						<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
+						<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox" onChange="document.adminForm.submit();" />
 					</td>
 						<?php if (JevJoomlaVersion::isCompatible("3.0"))
 						{ ?>
