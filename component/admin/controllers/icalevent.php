@@ -14,6 +14,7 @@ jimport('joomla.application.component.controlleradmin');
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Filter\InputFilter;
 
 class AdminIcaleventController extends JControllerAdmin
 {
