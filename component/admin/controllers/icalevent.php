@@ -1180,6 +1180,17 @@ class AdminIcaleventController extends JControllerAdmin
 			$array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
 			$array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
 		}
+        else
+        {
+            // getHTML doesn't work - it drops ALL tags as of Joomla 3.9.4
+            $array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
+            $array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
+
+            $filter = new InputFilter(array(), array(), 1);
+            $array["extra_info"] = $filter->clean($array["extra_info"] , 'html');
+            $array["jevcontent"] = $filter->clean($array["jevcontent"] , 'html');
+        }
+
 		// convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
 		{

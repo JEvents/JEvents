@@ -14,6 +14,7 @@ jimport('joomla.application.component.controller');
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Filter\InputFilter;
 
 class AdminIcalrepeatController extends JControllerLegacy
 {
@@ -469,17 +470,27 @@ class AdminIcalrepeatController extends JControllerLegacy
 
         if ($params->get("allowraw", 0)) {
             $data["X-EXTRAINFO"] = $jinput->get("extra_info", "", 'RAW');
+	        $data["DESCRIPTION"]    = $jinput->get('jevcontent', '', 'RAW');
         }
+        else
+        {
+            // getHTML doesn't work - it drops ALL tags as of Joomla 3.9.4
+	        $data["X-EXTRAINFO"] = $jinput->getRaw("extra_info", "");
+	        $data["DESCRIPTION"]    = $jinput->getRaw('jevcontent', '');
+
+	        $filter = new InputFilter(array(), array(), 1);
+	        $data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
+	        $data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
+        }
+
 		$data["LOCATION"]       = $jinput->getString("location", "");
 		$data["GEOLON"]       = $jinput->getString("geolon", "");
 		$data["GEOLAT"]       = $jinput->getString("geolat", "");
 		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
-                if ($data["allDayEvent"] == 1){
-                    $data["allDayEvent"] = "on";
-                }
+        if ($data["allDayEvent"] == 1){
+            $data["allDayEvent"] = "on";
+        }
 		$data["CONTACT"]        = $jinput->getString("contact_info", "");
-		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"]    = $jinput->get('jevcontent', '', 'RAW'); //JRequest::getVar("jevcontent", "", 'request', 'html', 2); No option for raw html in JInput, so just RAW the jinput instead.
 		$data["publish_down"]   = $jinput->getString("publish_down", "2006-12-12");
 		$data["publish_up"]     = $jinput->getString("publish_up", "2006-12-12");
 
