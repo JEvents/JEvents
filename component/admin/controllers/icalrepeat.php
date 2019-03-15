@@ -431,6 +431,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		$jinput = JFactory::getApplication()->input;
+        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
@@ -466,7 +467,9 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
+        if ($params->get("allowraw", 0)) {
+            $data["X-EXTRAINFO"] = $jinput->get("extra_info", "", 'RAW');
+        }
 		$data["LOCATION"]       = $jinput->getString("location", "");
 		$data["GEOLON"]       = $jinput->getString("geolon", "");
 		$data["GEOLAT"]       = $jinput->getString("geolat", "");
@@ -536,8 +539,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$data["X-COLOR"] = $jinput->get("color", "", 'HTML');
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-
 		$array  = $jinput->getArray(array(), null, 'RAW');
 
 		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))

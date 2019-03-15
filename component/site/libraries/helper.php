@@ -1134,10 +1134,9 @@ class JEVHelper
 			$year = JString::substr($year, 1);
 			$year = $yearnow - $year;
 		}
-		//If we do not get a 4 digit number and no sign we assume it's +$year
+		// If we do not get a 4 digit number and no sign we assume it's +$year
 		else if (JString::strlen($year) < 4)
 		{
-			$cuenta = count($year);
 			$year = $yearnow + $year;
 		}
 

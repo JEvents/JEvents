@@ -60,7 +60,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->_checkValidCategories();
 
 		$showUnpublishedICS = true;
-		$showUnpublishedCategories = true;
+		$showUnpublishedCategories = false; // We shouldn't show unpublished categories in the category select.
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -1177,8 +1177,8 @@ class AdminIcaleventController extends JControllerAdmin
 		// Should we allow raw content through unfiltered
 		if ($params->get("allowraw", 0))
 		{
-			$array['jevcontent'] = $jinput->post->get("jevcontent", "", RAW);
-			$array['extra_info'] = $jinput->post->get("extra_info", "", RAW);
+			$array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
+			$array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
 		}
 		// convert nl2br if there is no HTML
 		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
