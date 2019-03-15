@@ -1187,7 +1187,7 @@ class AdminIcaleventController extends JControllerAdmin
             $array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
             $array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
 
-            $filter = new InputFilter(array(), array(), 1);
+            $filter = new InputFilter(array(), array(), 1,1);
             $array["extra_info"] = $filter->clean($array["extra_info"] , 'html');
             $array["jevcontent"] = $filter->clean($array["jevcontent"] , 'html');
         }

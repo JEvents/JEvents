@@ -478,7 +478,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	        $data["X-EXTRAINFO"] = $jinput->getRaw("extra_info", "");
 	        $data["DESCRIPTION"]    = $jinput->getRaw('jevcontent', '');
 
-	        $filter = new InputFilter(array(), array(), 1);
+	        $filter = new InputFilter(array(), array(), 1, 1);
 	        $data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
 	        $data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
         }
