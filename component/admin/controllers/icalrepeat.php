@@ -13,8 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\String\StringHelper;
-use Joomla\CMS\Filter\InputFilter;
 
 class AdminIcalrepeatController extends JControllerLegacy
 {
@@ -478,7 +476,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	        $data["X-EXTRAINFO"] = $jinput->getRaw("extra_info", "");
 	        $data["DESCRIPTION"]    = $jinput->getRaw('jevcontent', '');
 
-	        $filter = new InputFilter(array(), array(), 1, 1);
+	        $filter = JFilterInput::getInstance(array(), array(), 1, 1);
 	        $data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
 	        $data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
         }
