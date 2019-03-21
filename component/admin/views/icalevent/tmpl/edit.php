@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -14,6 +14,8 @@ if (defined("EDITING_JEVENT"))
 	return;
 define("EDITING_JEVENT", 1);
 
+JHtml::_('jquery.ui', array('core', 'sortable'));
+
 $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 // get configuration object
 $cfg = JEVConfig::getInstance();
@@ -22,7 +24,7 @@ $assoc = false && JLanguageAssociations::isEnabled()  && JFactory::getApplicatio
 // Load Bootstrap
 JevHtmlBootstrap::framework();
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.calendar');
+//JHtml::_('behavior.calendar');
 //JHtml::_('behavior.formvalidation');
 if ($params->get("bootstrapchosen", 1))
 {
@@ -115,7 +117,7 @@ echo (!JFactory::getApplication()->isAdmin() && $params->get("darktemplate", 0))
 				<div><?php echo JText::_("JEV_OVERLAPPING_EVENTS_WARNING"); ?></div>
 				<?php
 				// event deletors get the right to override this
-				if (JEVHelper::isEventDeletor(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
+				if (JEVHelper::isEventPublisher(true) && JText::_("JEV_OVERLAPPING_EVENTS_OVERRIDE")!= "JEV_OVERLAPPING_EVENTS_OVERRIDE"){
 					?>
 				<div>
 					<strong>
@@ -658,7 +660,8 @@ else
 		</div>
 		<?php
 		$output = ob_get_clean();
-		if (!$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
+		$app = JFactory::getApplication();
+		if (($app->isAdmin() && $cfg->get('ignorelayout', 0)) || !$this->loadEditFromTemplate('icalevent.edit_page', $this->row, 0, $this->searchtags, $this->replacetags, $this->blanktags))
 		{
 			echo $output;
 		}   // if (!$this->loadedFromTemplate('icalevent.edit_page', $this->row, 0)){

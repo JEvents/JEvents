@@ -63,7 +63,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 </div>
 <div class="jev_pagination">
 	<form action="<?php echo JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=search.results&Itemid=".$this->Itemid);?>" method="post" style="font-size:1;">
-		<input type="text" name="keyword" size="30" maxlength="50" class="inputbox" value="<?php echo $this->keyword;?>" />
+		<input type="text" name="keyword" size="30" maxlength="50" class="inputbox" value="<?php echo htmlspecialchars($this->keyword);?>" />
 		<input type="hidden" name="pop" value="<?php echo JRequest::getInt("pop",0);?>" />
 		<?php if (JRequest::getString("tmpl","")=="component"){
 			echo '<input type="hidden" name="tmpl" value="component" />';

@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -29,22 +29,22 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->setTitle(JText::_('ICAL_EVENTS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
+		JToolbarHelper::title(JText::_('ICAL_EVENTS'), 'jevents');
 
-		JToolBarHelper::addNew('icalevent.edit');
-		JToolBarHelper::editList('icalevent.edit');
-		JToolBarHelper::publishList('icalevent.publish');
-		JToolBarHelper::unpublishList('icalevent.unpublish');
-		JToolBarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
+		JToolbarHelper::addNew('icalevent.edit');
+		JToolbarHelper::editList('icalevent.edit');
+		JToolbarHelper::publishList('icalevent.publish');
+		JToolbarHelper::unpublishList('icalevent.unpublish');
+		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 		$state = (int)JFactory::getApplication()->getUserStateFromRequest("stateIcalEvents", 'state', 0);
 		if ($state==-1){
-			JToolBarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
+			JToolbarHelper::deleteList("JEV_EMPTY_TRASH_DELETE_EVENT_AND_ALL_REPEATS", 'icalevent.emptytrash',"JTOOLBAR_EMPTY_TRASH");
 		}
 		else {
-			JToolBarHelper::trash('icalevent.delete');
+			JToolbarHelper::trash('icalevent.delete');
 		}
-		JToolBarHelper::spacer();
-		//JToolBarHelper::help( 'screen.ical', true);
+		JToolbarHelper::spacer();
+		//JToolbarHelper::help( 'screen.ical', true);
 
 		JEventsHelper::addSubmenu();
 
@@ -132,7 +132,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		{
 			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
 
 			// Set default noendtime
 			$this->row->noendtime((int) $params->get('default_noendtime', '0'));
@@ -142,7 +142,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
 		}
 
 		$bar =  JToolBar::getInstance('toolbar');
@@ -182,14 +182,14 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			{
 				$this->toolbarButton("icalevent.apply", 'apply', 'apply', 'JEV_SAVE', false);
 			}
-			$this->toolbarButton("icalevent.save", 'save', 'save', 'JEV_SAVE_CLOSE', false);
+			$this->toolbarConfirmButton("icalevent.save", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'save', 'save', 'JEV_SAVE_CLOSE', false);
 			$this->toolbarConfirmButton("icalevent.savenew", JText::_("JEV_SAVE_COPY_WARNING"), 'save', 'save', 'JEV_SAVE_NEW', false);
 		}
 
 
 
-		JToolBarHelper::cancel('icalevent.list');
-		//JToolBarHelper::help( 'screen.icalevent.edit', true);
+		JToolbarHelper::cancel('icalevent.cancel');
+		//JToolbarHelper::help( 'screen.icalevent.edit', true);
 
 		// TODO move this into JForm field type!
 		$this->setCreatorLookup();
@@ -273,9 +273,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		$document->setTitle(JText::_('CSV_IMPORT'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('CSV_IMPORT'), 'jevents');
+		JToolbarHelper::title(JText::_('CSV_IMPORT'), 'jevents');
 
-		JToolBarHelper::cancel('icalevent.list');
+		JToolbarHelper::cancel('icalevent.list');
 
 		JEventsHelper::addSubmenu();
 
@@ -294,7 +294,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		//$access = JAccess::check($user->id, "core.deleteall", "com_jevents");
 		$access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		if (($jevuser && $jevuser->candeleteall) || $access)
 		{
 			$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
@@ -370,6 +370,13 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->assignRef("users", $userlist);
 		}
 
+	}
+
+	function toolbarButton($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true) {
+		$bar = JToolBar::getInstance('toolbar');
+
+		// Add a standard button
+		$bar->appendButton('Jev', $icon, $alt, $task, $listSelect);
 	}
 
 	function toolbarConfirmButton($task = '', $msg = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true)

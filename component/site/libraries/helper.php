@@ -5,7 +5,7 @@
  *
  * @version     $Id: helper.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -487,18 +487,21 @@ class JEVHelper
 	static public
 			function SetMetaTags()
 	{
+		// Get Global Config
+		$jConfig = JFactory::getConfig();
+
 		//Get Document to set the Meta Tags to.
 		$document = JFactory::getDocument();
 
 		//Get the Params.
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		if ($params->get('menu-meta_description') && !$document->getDescription())
+		if ($params->get('menu-meta_description') && (string) $jConfig->get('MetaDesc', '') === (string) $document->getDescription())
 		{
 			$document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')  && !$document->getMetaData("keywords") )
+		if ($params->get('menu-meta_keywords')  && $jConfig->get('MetaKeys', '') === $document->getMetaData("keywords") )
 		{
 			$document->setMetaData('keywords', $params->get('menu-meta_keywords'));
 		}
@@ -508,6 +511,8 @@ class JEVHelper
 	public static
 			function forceIntegerArray(&$cid, $asString = true)
 	{
+		$cid = is_null($cid) ? array() : $cid;
+
 		for ($c = 0; $c < count($cid); $c++)
 		{
 			$cid[$c] = intval($cid[$c]);
@@ -577,31 +582,60 @@ class JEVHelper
 	 * @static
 	 */
 	public static
-			function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array())
+			function loadElectricCalendar($fieldname, $fieldid, $value, $minyear, $maxyear, $onhidestart = "", $onchange = "", $format = 'Y-m-d', $attribs = array(), $showtime = false)
 	{
-		$document = JFactory::getDocument();
-		$component = "com_jevents";
-		$params = JComponentHelper::getParams($component);
+		$document           = JFactory::getDocument();
+		$component          = "com_jevents";
+		$params             = JComponentHelper::getParams($component);
 		$forcepopupcalendar = $params->get("forcepopupcalendar", 1);
-		$offset = $params->get("com_starday", 1);
+		$offset             = $params->get("com_starday", 1);
 
-		if ($value == "" ) {
-			$value = strftime("%Y-%m-%d");
+		if ($showtime)
+		{
+			if (empty($value))
+			{
+				$value = date($format);
+			}
+
+			$datetime = date_create_from_format($format, $value);
+			// This is probably because we have mysql formatted value
+			if (!$datetime)
+			{
+				$datetime = date_create_from_format('Y-m-d', $value);
+				if (!$datetime)
+				{
+					$value = date($format);
+					$datetime = date_create_from_format($format, $value);
+				}
+			}
+
+			$value = $datetime->format("Y-m-d H:i");
+
+			// switch back to strftime format to use Joomla calendar tool
+			$format = str_replace(array("Y", "m", "d", "H", "h", "i", "a"), array("%Y", "%m", "%d", "%H", "%I", "%M", "%P"), $format);
+
+		}
+		else
+		{
+			if ($value == "")
+			{
+				$value = strftime("%Y-%m-%d");
+			}
+			list ($yearpart, $monthpart, $daypart) = explode("-", $value);
+			$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
+
+			// switch back to strftime format to use Joomla calendar tool
+			$format = str_replace(array("Y", "m", "d"), array("%Y", "%m", "%d"), $format);
+
+			$value = $yearpart . "-" . $monthpart . "-" . $daypart;
+
 		}
 
-		list ($yearpart, $monthpart, $daypart) = explode("-", $value);
-		$value = str_replace(array("Y", "m", "d"), array($yearpart, $monthpart, $daypart), $format);
 
 		// Build the attributes array.
-		empty($onchange)  ? null : $attribs['onchange'] = $onchange;
+		empty($onchange) ? null : $attribs['onchange'] = $onchange;
 
-		// switch back to strftime format to use Joomla calendar tool
-		$format = str_replace(array("Y","m","d"), array("%Y","%m","%d"), $format);
-
-		//echo JHtml::_('calendar', $yearpart."-".$monthpart."-".$daypart, $fieldname, $fieldid, $format, $attributes);
-		//calendar($value, $name, $id, $format = '%Y-%m-%d', $attribs = null)
-		$value = $yearpart."-".$monthpart."-".$daypart;
-		$name =  $fieldname;
+		$name = $fieldname;
 
 		static $done;
 
@@ -610,14 +644,31 @@ class JEVHelper
 			$done = array();
 		}
 
-		$readonly = isset($attribs['readonly']) && $attribs['readonly'] == 'readonly';
-		$disabled = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
-                $showtime = isset($attribs['showtime']) && $attribs['showtime'] == 'showtime';
-                $timeformat = "24";
-                if ($showtime && $params->get("com_calUseStdTime", 1)==0) {
-                   // $timeformat = "12";
-                }
-                $showtime = $showtime? "true": "false";
+		// new script is disabled if readonly is set so set it on an onload event instead		
+		if ((isset($attribs['readonly']) && $attribs['readonly'] == 'readonly')
+			|| (isset($attribs[' readonly']) && $attribs[' readonly'] == 'readonly'))
+		{
+			$readonly = true;
+		}
+		else
+		{
+			$readonly = false;
+		}
+
+		$disabled   = isset($attribs['disabled']) && $attribs['disabled'] == 'disabled';
+		$showtime   = (isset($attribs['showtime']) && $attribs['showtime'] == 'showtime') || $showtime;
+		$timeformat = "24";
+
+		if ($showtime && $params->get("com_calUseStdTime", 1) == 0)
+		{
+			// $timeformat = "12";
+		}
+
+		if ($showtime && strpos($format, "%P"))
+		{
+			$timeformat = "12";
+		}
+        $showtime = $showtime? 1 : 0;
 
 		if (is_array($attribs))
 		{
@@ -643,19 +694,105 @@ class JEVHelper
 		}
 
 		// Load the calendar behavior
-		JHtml::_('behavior.calendar');
+		//JHtml::_('behavior.calendar');
 		// TODO remove these Joomla 3.7.0 bug workarounds when fixed in Joomla
-		$tag      = JFactory::getLanguage()->getTag();
-		JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
-		JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
+		//$tag      = JFactory::getLanguage()->getTag();
+		//JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+		//JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);	
 
-		// Only display the triggers once for each control.
-		if (!in_array($fieldid, $done))
+		$tag       = JFactory::getLanguage()->getTag();
+
+		if (version_compare(JVERSION, '3.7.0', '>='))
 		{
-			$document = JFactory::getDocument();
-			$document
-				->addScriptDeclaration(
-				'jQuery(document).ready(function($) {
+			if (is_array($attribs))
+			{
+				// Joomla readonly workaround
+				unset($attribs['readonly']);
+				unset($attribs[' readonly']);
+			}
+			
+			$calendar  = JFactory::getLanguage()->getCalendar();
+			$direction = strtolower(JFactory::getDocument()->getDirection());
+
+			// Get the appropriate file for the current language date helper
+			$helperPath = 'system/fields/calendar-locales/date/gregorian/date-helper.min.js';
+
+			if (!empty($calendar) && is_dir(JPATH_ROOT . '/media/system/js/fields/calendar-locales/date/' . strtolower($calendar)))
+			{
+				$helperPath = 'system/fields/calendar-locales/date/' . strtolower($calendar) . '/date-helper.min.js';
+			}
+		
+			// Get the appropriate locale file for the current language
+			$localesPath = 'system/fields/calendar-locales/en.js';
+
+			if (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower($tag) . '.js'))
+			{
+				$localesPath = 'system/fields/calendar-locales/' . strtolower($tag) . '.js';
+			}
+			elseif (is_file(JPATH_ROOT . '/media/system/js/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js'))
+			{
+				$localesPath = 'system/fields/calendar-locales/' . strtolower(substr($tag, 0, -3)) . '.js';
+			}
+
+			$direction  = strtolower(JFactory::getDocument()->getDirection());
+			$cssFileExt = ($direction === 'rtl') ? '-rtl.css' : '.css';
+
+			// Load polyfills for older IE
+			JHtml::_('behavior.polyfill', array('event', 'classlist', 'map'), 'lte IE 11');
+
+			// The static assets for the calendar
+			JHtml::_('script', $localesPath, false, true, false, false, true);
+			JHtml::_('script', $helperPath, false, true, false, false, true);
+			JHtml::_('script', 'system/fields/calendar.js', false, true, false, false, true);
+			JHtml::_('stylesheet', 'system/fields/calendar' . $cssFileExt, array(), true);
+
+			// Hide button using inline styles for readonly/disabled fields
+			//$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
+			//$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+			$btn_style	= $disabled ? ' style="display:none;"' : '';
+			$div_class	= !$disabled ? ' class="input-append"' : '';
+			
+			echo '<div class=" field-calendar">'
+				. '<div' . $div_class . '>'
+				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
+				. '" name="' . $name . '" id="' . $fieldid . '" '
+				. 'value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" '
+				. 'data-alt-value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
+				. '<button type="button" class="btn btn-secondary ' . $btn_style . '"
+			id="' . $fieldid . '_btn"
+			data-inputfield="' . $fieldid . '"
+			data-dayformat="' . $format . '"
+			data-button="' . $fieldid . '_btn"
+			data-firstday="' . $offset . '"
+			data-weekend="' . JFactory::getLanguage()->getWeekEnd() . '"
+			data-today-btn="1"
+			data-week-numbers="0"
+			data-show-time="' . $showtime . '"
+			data-show-others="1"
+			data-only-months-nav="0"
+			data-time-24="' . $timeformat . '" 
+			' . (!empty($minYear) ? 'data-min-year="' . $minYear . '"' : "") . '
+			' . (!empty($maxYear) ? 'data-max-year="' . $maxYear . '"' : "") . '
+		><span class="icon-calendar"></span></button>. '
+			. '</div>'
+			. '</div>';
+		
+			if ($readonly)
+			{
+				JFactory::getDocument()->addScriptDeclaration("jQuery(window).on('load', function(){jQuery('#" . $fieldid . "').prop('readonly', true);})");
+			}
+		
+		} else {
+			JHtml::_('script', $tag . '/calendar-setup.js', array('version' => 'auto', 'relative' => true));
+			JHtml::_('stylesheet', 'system/calendar-jos.css', array('version' => 'auto', 'relative' => true), $attribs);
+
+			// Only display the triggers once for each control.
+			if (!in_array($fieldid, $done))
+			{
+				$document = JFactory::getDocument();
+				$document
+					->addScriptDeclaration(
+						'jQuery(document).ready(function($) {
 					if (!jQuery("#' . $fieldid . '").length) {
 						alert("' . JText::sprintf("JEV_MISSING_CALENDAR_FIELD_IN_PAGE", true) . '\n\n" + "' . $fieldid . '"  );
 						return;
@@ -679,19 +816,21 @@ class JEVHelper
                         showsTime:'.$showtime.',
                         timeFormat:'.$timeformat.',
 			});});'
-			);
-			$done[] = $fieldid;
-		}
+					);
+				$done[] = $fieldid;
+			}
 
-		// Hide button using inline styles for readonly/disabled fields
-		$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
-		$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
+			// Hide button using inline styles for readonly/disabled fields
+			$btn_style	= ($readonly || $disabled) ? ' style="display:none;"' : '';
+			$div_class	= (!$readonly && !$disabled) ? ' class="input-append"' : '';
 
-		echo  '<div' . $div_class . '>'
+			echo  '<div' . $div_class . '>'
 				. '<input type="text" title="' . ($inputvalue ? JHtml::_('date', $value, null, null) : '')
 				. '" name="' . $name . '" id="' . $fieldid . '" value="' . htmlspecialchars($inputvalue, ENT_COMPAT, 'UTF-8') . '" ' . $attribs . ' />'
 				. '<button type="button" class="btn" id="' . $fieldid . '_img"' . $btn_style . '><span class="icon-calendar"></span></button>'
-			. '</div>';
+				. '</div>';
+
+		}
 
 	}
 
@@ -995,10 +1134,9 @@ class JEVHelper
 			$year = JString::substr($year, 1);
 			$year = $yearnow - $year;
 		}
-		//If we do not get a 4 digit number and no sign we assume it's +$year
+		// If we do not get a 4 digit number and no sign we assume it's +$year
 		else if (JString::strlen($year) < 4)
 		{
-			$cuenta = count($year);
 			$year = $yearnow + $year;
 		}
 
@@ -1167,7 +1305,7 @@ class JEVHelper
 				// Check maxevent count
 				if ($user->eventslimit > 0)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT count(*) FROM #__jevents_vevent where created_by=" . $user->user_id);
 					$eventcount = intval($db->loadResult());
 					if ($eventcount < $user->eventslimit)
@@ -1726,6 +1864,10 @@ class JEVHelper
                         if ($params->get("category_allow_deny",1)==0){
                             $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
                             $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
                             $catids = array_intersect($catids, $okcats);
                             return count($catids)>0;
                         }
@@ -1735,6 +1877,10 @@ class JEVHelper
                             {
                                 $okcats = JEVHelper::getAuthorisedCategories($user, 'com_jevents', 'core.edit.state.own');
                                 $catids = $testevent->catids();
+			    if (!is_array($catids))
+			    {
+				    $catids = array($testevent->catid());
+			    }
                                 $catids = array_intersect($catids, $okcats);
                                 return count($catids)>0;
                             }
@@ -1780,7 +1926,7 @@ class JEVHelper
 			return false;
 		$juser = JFactory::getUser();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
                 // TODO make this query tighter to stop uers with ids starting with $juser->id from matching -
                 // try using word boundaries RLIKE [[:<:]] and [[;>:]]  see http://dev.mysql.com/doc/refman/5.7/en/regexp.html
 		$sql = "SELECT id FROM #__categories WHERE extension='com_jevents' AND params like ('%\"admin\":\"" . $juser->id . "\"%')";
@@ -2103,7 +2249,7 @@ class JEVHelper
 			function getContact($id, $attrib = 'Object')
 	{
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		static $rows = array();
 
@@ -2319,7 +2465,7 @@ class JEVHelper
 			if (!$rootlevels)
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Build the base query.
 				$query = $db->getQuery(true);
@@ -2400,6 +2546,11 @@ class JEVHelper
 
 		$document = JFactory::getDocument();
 
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			return;
+		}
 		foreach ($includes as $include)
 		{
 			if (JevJoomlaVersion::isCompatible("3.3"))
@@ -2512,7 +2663,7 @@ class JEVHelper
 			else
 			{
 				// Get a database object.
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 
 				// Set the query for execution.
 				$db->setQuery("SELECT id FROM #__viewlevels order by ordering limit 1");
@@ -3125,7 +3276,7 @@ SCRIPT;
 				$ids[] = $a->ev_id();
 				if (count($ids) > 100)
 				{
-					$db = JFactory::getDBO();
+					$db = JFactory::getDbo();
 					$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 					$rows = $db->loadObjectList();
 					foreach ($rows as $row)
@@ -3142,7 +3293,7 @@ SCRIPT;
 			// mop up the last ones
 			if (count($ids) > 0)
 			{
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery("SELECT * FROM #__jevents_exception where eventid IN (" . implode(",", $ids) . ")");
 				$rows = $db->loadObjectList();
 				foreach ($rows as $row)
@@ -3659,13 +3810,13 @@ SCRIPT;
 			$transitions = array_slice($transitions, $tzindex);
 			if (count($transitions) >= 2)
 			{
-				$lastyear = $params->get("com_latestyear", 2020);
+				$lastyear = JEVHelper::getMaxYear();
 				echo "BEGIN:VTIMEZONE\r\n";
 				echo "TZID:$current_timezone\r\n";
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 0)
+					if ( (int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -3697,7 +3848,7 @@ SCRIPT;
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 1)
+					if ( (int)$transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;

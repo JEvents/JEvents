@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_icalevent.list_row.php 3333 2012-03-12 09:36:35Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -40,11 +40,15 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PAST_OR_FUT
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXT",true);?>", "PREVIOUSNEXT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_FIRSTREPEAT",true);?>", "FIRSTREPEAT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LASTREPEAT",true);?>", "LASTREPEAT");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIRSTREPEATSTART",true);?>", "FIRSTREPEATSTART");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_LASTREPEATEND",true);?>", "LASTREPEATEND");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_PREVIOUSNEXTEVENT",true);?>", "PREVIOUSNEXTEVENT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR_LABEL",true);?>", "CREATOR_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CREATOR",true);?>", "CREATOR");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_HITS",true);?>", "HITS");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_DESCRIPTION",true);?>", "DESCRIPTION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCATED_DESCRIPTION",true);?>", "TRUNCATED_DESC:20");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_TRUNCTITLE",true);?>", "TRUNCATED_TITLE:20");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION_LABEL",true);?>", "LOCATION_LABEL");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LOCATION",true);?>", "LOCATION");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_CONTACT_LABEL",true);?>", "CONTACT_LABEL");
@@ -77,6 +81,8 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITBUTTON"
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_EDITDIALOG",true);?>", "EDITDIALOG");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_ROOT",true);?>", "SITEROOT");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_BASE",true);?>", "SITEBASE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
+defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
 
 <?php
 // get list of enabled plugins

@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalrepeat.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd,2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd,2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\String\StringHelper;
 
 class AdminIcalrepeatController extends JControllerLegacy
 {
@@ -50,7 +49,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 	{
 		$jinput = JFactory::getApplication()->input;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$publishedOnly = false;
 		$cid = $jinput->get('cid', array(0),"array");
 		$cid = ArrayHelper::toInteger($cid);
@@ -147,8 +146,11 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$this->view->setModel($model, true);
 		}
 
-		$db = JFactory::getDBO();
-		$cid = JRequest::getVar('cid', array(0));
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$db = JFactory::getDbo();
+		$cid = $jinput->get('cid', array(0), "array");
 		$cid = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 			$id = $cid[0];
@@ -164,10 +166,10 @@ class AdminIcalrepeatController extends JControllerLegacy
 		// front end passes the id as evid
 		if ($id == 0)
 		{
-			$id = JRequest::getInt("evid", 0);
+			$id = $jinput->getInt("evid", 0);
 		}
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT rpt.eventid"
 				. "\n FROM (#__jevents_vevent as ev, #__jevents_icsfile as icsf)"
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -249,8 +251,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		$Itemid = JRequest::getInt("Itemid");
-		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
 			$this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $rpt->eventid, "".JText::_("JEV_ICAL_RPT_DETAILS_SAVED")."");
@@ -307,7 +307,6 @@ class AdminIcalrepeatController extends JControllerLegacy
 		$msg = "";
 		$rpt = $this->doSave($msg);
 
-		$Itemid = JRequest::getInt("Itemid");
 		$msg = JText::_("Event_Saved", true);
 		if (JFactory::getApplication()->isAdmin())
 		{
@@ -338,14 +337,17 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function select()
 	{
-		JRequest::checkToken('default') or jexit('Invalid Token');
+		JSession::checkToken('request') or jexit('Invalid Token');
 
-		$db = JFactory::getDBO();
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+
+		$db = JFactory::getDbo();
 		$publishedOnly = true;
-		$id = JRequest::getInt('evid', 0);
+		$id = $jinput->getInt('evid', 0);
 
-		$limit = intval(JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10));
-		$limitstart = intval(JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
+		$limit = (int) JFactory::getApplication()->getUserStateFromRequest("viewlistlimit", 'limit', 10);
+		$limitstart = (int) JFactory::getApplication()->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0);
 
 		$user = JFactory::getUser();
 		$where[] = "\n ev.access IN ('" . JEVHelper::getAid($user) . "')";
@@ -399,7 +401,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$icalrows[$i] = new jIcalEventRepeat($icalrows[$i]);
 		}
 
-		$menulist = $this->targetMenu(JRequest::getInt("Itemid"), "Itemid");
+		$menulist = $this->targetMenu($jinput->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
@@ -428,6 +430,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 		}
 
 		$jinput = JFactory::getApplication()->input;
+        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// clean out the cache
 		$cache = JFactory::getCache('com_jevents');
@@ -463,15 +466,29 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		$data["UID"] = $jinput->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"]    = $jinput->getString("extra_info", "");
+        if ($params->get("allowraw", 0)) {
+            $data["X-EXTRAINFO"] = $jinput->get("extra_info", "", 'RAW');
+	        $data["DESCRIPTION"]    = $jinput->get('jevcontent', '', 'RAW');
+        }
+        else
+        {
+            // getHTML doesn't work - it drops ALL tags as of Joomla 3.9.4
+	        $data["X-EXTRAINFO"] = $jinput->getRaw("extra_info", "");
+	        $data["DESCRIPTION"]    = $jinput->getRaw('jevcontent', '');
+
+	        $filter = JFilterInput::getInstance(array(), array(), 1, 1);
+	        $data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
+	        $data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
+        }
+
 		$data["LOCATION"]       = $jinput->getString("location", "");
+		$data["GEOLON"]       = $jinput->getString("geolon", "");
+		$data["GEOLAT"]       = $jinput->getString("geolat", "");
 		$data["allDayEvent"]    = $jinput->get("allDayEvent", "off");
-                if ($data["allDayEvent"] == 1){
-                    $data["allDayEvent"] = "on";
-                }
+        if ($data["allDayEvent"] == 1){
+            $data["allDayEvent"] = "on";
+        }
 		$data["CONTACT"]        = $jinput->getString("contact_info", "");
-		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"]    = $jinput->get('jevcontent', '', 'RAW'); //JRequest::getVar("jevcontent", "", 'request', 'html', 2); No option for raw html in JInput, so just RAW the jinput instead.
 		$data["publish_down"]   = $jinput->getString("publish_down", "2006-12-12");
 		$data["publish_up"]     = $jinput->getString("publish_up", "2006-12-12");
 
@@ -528,10 +545,47 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$data["DTEND"] = JevDate::strtotime($publishend);
 		}
 
-		$data["X-COLOR"] = $jinput->get("color", "");
+		$data["X-COLOR"] = $jinput->get("color", "", 'HTML');
 
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
-		$array = $jinput->post->getArray();
+		$array  = $jinput->getArray(array(), null, 'RAW');
+
+		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
+		{
+
+		    $filter = JFilterInput::getInstance(null, null, 1, 1);
+
+		    //Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
+		    //Then filter on through with JFilterInput to HTML
+
+		    foreach ($array as $key => $row)
+		    {
+			//Single row check
+			if (!is_array($row))
+			{
+			    $array[$key] = $filter->clean($row, 'HTML');
+			}
+			else
+			{
+			    //1 Deep row check
+			    foreach ($array[$key] as $key1 => $sub_row)
+			    {
+				//2 Deep row check
+				if (!is_array($sub_row))
+				{
+				    $array[$key][$key1] = $filter->clean($sub_row, 'HTML');
+				}
+				else
+				{
+				    foreach ($sub_row as $key2 => $sub_sub_row)
+				    {
+					$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+				    }
+				}
+			    }
+			}
+		    }
+		}
 
 		foreach ($array as $key => $value)
 		{
@@ -654,7 +708,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 		// Change the underlying event repeat rule details  !!
 		$query = "SELECT * FROM #__jevents_rrule WHERE rr_id=" . $event->_rr_id;
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$this->rrule = null;
 		$this->rrule = $db->loadObject();
@@ -763,16 +817,18 @@ class AdminIcalrepeatController extends JControllerLegacy
 			return false;
 		}
 
-		$cid = JRequest::getVar('cid', array(0));
+		$app    = JFactory::getApplication();
+		$jinput = $app->input;
+		$cid    = $jinput->get('cid', array(0), "array");
+
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 			$cid = ArrayHelper::toInteger($cid);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		foreach ($cid as $id)
 		{
 
-			$evid = JRequest::getInt("evid", 0);
 			if ($id == 0)
 				continue;
 
@@ -829,14 +885,14 @@ class AdminIcalrepeatController extends JControllerLegacy
 			$db->execute();
 		}
 
-		if (JFactory::getApplication()->isAdmin())
+		if ($app->isAdmin())
 		{
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icalrepeat.list&cid[]=" . $data->eventid, JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
 		}
 		else
 		{
-			$Itemid = JRequest::getInt("Itemid");
+			$Itemid = $jinput->getInt("Itemid");
 			list($year, $month, $day) = JEVHelper::getYMD();
 			$this->setRedirect(JRoute::_('index.php?option=' . JEV_COM_COMPONENT . "&task=day.listevents&year=$year&month=$month&day=$day&Itemid=$Itemid", false), JText::_("JEV_ICAL_REPEAT_DELETED"));
 			$this->redirect();
@@ -876,12 +932,16 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	function _deleteFuture()
 	{
-		$cid = JRequest::getVar('cid', array(0));
+
+	    $app    = JFactory::getApplication();
+	    $jinput = $app->input;
+
+		$cid = $jinput->getVar('cid', array(0));
 		if (!is_array($cid))
 			$cid = array(intval($cid));
 		$cid = ArrayHelper::toInteger($cid);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		foreach ($cid as $id)
 		{
 
@@ -996,7 +1056,7 @@ class AdminIcalrepeatController extends JControllerLegacy
 
 	private function targetMenu($itemid = 0, $name)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// assemble menu items to the array
 		$options = array();

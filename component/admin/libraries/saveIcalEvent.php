@@ -4,7 +4,7 @@
  *
  * @version     $Id: saveIcalEvent.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -39,7 +39,9 @@ class SaveIcalEvent {
 		$data["UID"]				= ArrayHelper::getValue( $array,  "uid",md5(uniqid(rand(),true)));
 
 		$data["X-EXTRAINFO"]	= ArrayHelper::getValue( $array,  "extra_info","");
-		$data["LOCATION"]		= ArrayHelper::getValue( $array,  "location","");
+		$data["LOCATION"]	= ArrayHelper::getValue( $array,  "location","");
+		$data["GEOLON"]		= (float) ArrayHelper::getValue( $array,  "geolon","");
+		$data["GEOLAT"]		= (float) ArrayHelper::getValue( $array,  "geolat","");
 		$data["allDayEvent"]	= ArrayHelper::getValue( $array,  "allDayEvent","off");
 		// Joomla 3.2 fix !!  The form doesn't respect the checkbox value in the form xml file being "on" instead of 1
 		if ($data["allDayEvent"] == 1)
@@ -67,14 +69,14 @@ class SaveIcalEvent {
 		$creatorid = $jinput->getInt("jev_creatorid", 0);
 		if ( $creatorid>0){
                         $access = $user->authorise('core.admin', 'com_jevents') || $user->authorise('core.deleteall', 'com_jevents');
-		
+
 			if (($jevuser && $jevuser->candeleteall) || $access) {
 				$data["X-CREATEDBY"]	= $creatorid;
 			}
 
 		}
 
-		$ics_id				= ArrayHelper::getValue( $array,  "ics_id",0);
+		$ics_id				= intval(ArrayHelper::getValue( $array,  "ics_id",0));
 
 		if ($data["allDayEvent"]=="on"){
 			$start_time="00:00";
@@ -82,6 +84,7 @@ class SaveIcalEvent {
 		else $start_time			= ArrayHelper::getValue( $array,  "start_time","08:00");
 		$publishstart		= $data["publish_up"] . ' ' . $start_time . ':00';
 		$data["DTSTART"]	= JevDate::strtotime( $publishstart );
+		$data["X-PUBLISHSTART"]	= $publishstart;
 
 		if ($data["allDayEvent"]=="on"){
 			$end_time="00:00";
@@ -94,12 +97,14 @@ class SaveIcalEvent {
 		}
 
 		$data["DTEND"]		= JevDate::strtotime( $publishend );
+
 		// iCal for whole day uses 00:00:00 on the next day JEvents uses 23:59:59 on the same day
 		list ($h,$m,$s) = explode(":",$end_time . ':00');
 		if (($h+$m+$s)==0 && $data["allDayEvent"]=="on" && $data["DTEND"]>=$data["DTSTART"]) {
 			$publishend = JevDate::strftime('%Y-%m-%d 23:59:59',($data["DTEND"]));
 			$data["DTEND"]		= JevDate::strtotime( $publishend );
 		}
+		$data["X-PUBLISHEND"]	= $publishend;
 
 		$data["RRULE"]	= $rrule;
 
@@ -122,7 +127,7 @@ class SaveIcalEvent {
 			}
 		}
 
-		
+
 		$vevent = iCalEvent::iCalEventFromData($data);
 
 		$vevent->catid = ArrayHelper::getValue( $array,  "catid",0);
@@ -144,17 +149,17 @@ class SaveIcalEvent {
 
         // Set Timezone where required
         $vevent->tzid = ArrayHelper::getValue( $array,  "tzid", "");
-                
-		// FRONT END AUTO PUBLISHING CODE
-		$frontendPublish = JEVHelper::isEventPublisher();
 
-		if (!$frontendPublish){
-			$frontendPublish = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
+		// FRONT END AUTO PUBLISHING CODE
+		$isPublisher = JEVHelper::isEventPublisher();
+
+		if (!$isPublisher){
+			$isPublisher = JEVHelper::canPublishOwnEvents($ev_id, $vevent);
 		}
 		// Always un-publish if no Publisher otherwise publish automatically (for new events)
 		// Should we always notify of new events
 		$notifyAdmin = $cfg->get("com_notifyallevents", 0);
-		if (!$frontendPublish){
+		if (!$isPublisher){
 			if($newevent || (int) $cfg->get('jevunpublishonedit', '1') === 1)
 			{
 				$vevent->state = 0;
@@ -199,10 +204,10 @@ class SaveIcalEvent {
 			}
 			$vevent->rrule->eventid = $vevent->ev_id;
 		}
-		
+
 		// Only update the repetitions if the event edit says the repetitions will have changed or a new event or ONLY 1 repetition
 		$repetitions = $vevent->getRepetitions(true);
-		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){			
+		if ($newevent || JRequest::getInt("updaterepeats",1) || count($repetitions)==1){
 			if (!$dryrun){
 				try {
 					$vevent->storeRepetitions();
@@ -215,7 +220,7 @@ class SaveIcalEvent {
 				}
 			}
 		}
-		
+
 		// whilst the DB field is called 'state' we use the variable 'published' in all of JEvents so must set it before the plugin
 		$vevent->published =  $vevent->state;
 		$res = $dispatcher->trigger( 'onAfterSaveEvent' , array(&$vevent, $dryrun));
@@ -244,7 +249,7 @@ class SaveIcalEvent {
         }
 
 		// If not authorised to publish in the frontend then notify the administrator
-		if (!$dryrun && $success && $notifyAdmin && !JFactory::getApplication()->isAdmin()) {
+		if (!$dryrun && $success && $notifyAdmin) {
 
 
 			JLoader::register('JEventsCategory',JEV_ADMINPATH."/libraries/categoryClass.php");
@@ -345,7 +350,7 @@ public static function generateRRule($array){
 				$until = $until2;
 			}
 			$rrule["UNTIL"] = JevDate::strtotime($until." 00:00:00");
-			
+
 		}
 		$rrule["INTERVAL"] = $interval;
 		$rrule["IRREGULARDATES"] =  ArrayHelper::getValue( $array,  "irregularDates",array(),"ARRAY");

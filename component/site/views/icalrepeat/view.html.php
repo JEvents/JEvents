@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 3012 2011-11-16 10:29:35Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -26,8 +26,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 	var $jevlayout = null;
 	
 	function __construct($config = array()){
-		include_once(JPATH_ADMINISTRATOR.'/'."includes".'/'."toolbar.php");
-		parent::__construct($config);	
+		parent::__construct($config);
 		
 		// used only for helper functions
 		$this->jevlayout="default";	
@@ -50,13 +49,13 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 		$document->setTitle(JText::_( 'EDIT_ICAL_REPEAT' ));
 		
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
+		JToolbarHelper::title( JText::_( 'EDIT_ICAL_REPEAT' ), 'jevents' );
 	
 		$bar =  JToolBar::getInstance('toolbar');
 		if (JEVHelper::isEventEditor()) {
-			JToolBarHelper::apply('icalrepeat.apply', "JEV_SAVE");
+			JToolbarHelper::apply('icalrepeat.apply', "JEV_SAVE");
 		}
-		JToolBarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
+		JToolbarHelper::apply('icalrepeat.save', "JEV_SAVE_CLOSE");
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		if ($params->get("editpopup",0) && JEVHelper::isEventCreator())
@@ -70,7 +69,7 @@ class IcalrepeatViewIcalrepeat extends AdminIcalrepeatViewIcalrepeat
 			$this->toolbarButton("icalevent.detail", 'cancel', 'cancel', 'JEV_SUBMITCANCEL', false);
 		}
 		
-		//JToolBarHelper::help( 'screen.icalrepeat.edit', true);		
+		//JToolbarHelper::help( 'screen.icalrepeat.edit', true);
 	
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 

@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit.php 3229 2012-01-30 12:06:34Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 global $task,$catid;
-$db	= JFactory::getDBO();
+$db	= JFactory::getDbo();
 $editor = JFactory::getEditor();
 
 // clean any existing cache files
@@ -87,7 +87,7 @@ echo JEventsHTML::buildScriptTag('end');
 <table style="width:90%">
 	<tr>
     	<td style="font-weight:bold">        <?php echo JText::_("Unique_Identifier");?>        </td>
-        <td><input class="inputbox" type="text" name="icsLabel" id="icsLabel" value="<?php echo $label;?>" size="80" />        </td>
+        <td><input class="inputbox" type="text" name="icsLabel" id="icsLabel" value="<?php echo htmlspecialchars($label);?>" size="80" />        </td>
 	</tr>
 	<tr>
     	<td style="font-weight:bold">        <?php echo JText::_("JEV_CALENDAR_OWNER");?></td>

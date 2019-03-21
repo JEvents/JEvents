@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalrepeat.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,6 +36,11 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
+
+		$cfg	 = JEVConfig::getInstance();
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
+
 		$jinput = JFactory::getApplication()->input;
 
 		if ($jinput->getInt("login", 0) && $user->id == 0)
@@ -116,6 +121,10 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = $this->getView($view,$viewType, $theme."View", 
 			array( 'base_path'=>$this->_basePath, 
@@ -136,12 +145,13 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		$this->view->assign("uid",$uid);
 		
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
-		if ($user->get('id') || !$useCache) {
+		
+		if ($user->get('id') || !$useCache)
+		{
 			$this->view->display();
-		} else {
+		}
+		else
+		{
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
@@ -152,13 +162,13 @@ class ICalRepeatController extends AdminIcalrepeatController   {
 		if (!$is_event_editor){
 			$user = JFactory::getUser();
 			if ($user->id){
-				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
 				$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			return;

@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalImport.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -162,8 +162,13 @@ class iCalImport
 
 		// remove spurious lines before calendar start
 		if (!JString::stristr($this->rawData,'BEGIN:VCALENDAR')) {
+
+			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher->trigger('onImportCsvFile', array(& $this->rawData));
+
 			// check for CSV format
 			$firstLine = JString::substr($this->rawData,0,JString::strpos($this->rawData,"\n")+1);
+
 			if (JString::stristr($firstLine,'SUMMARY') && JString::stristr($firstLine,'DTSTART')
 				&& JString::stristr($firstLine,'DTEND') && JString::stristr($firstLine,'CATEGORIES')
 				&& JString::stristr($firstLine,'TIMEZONE')) {
@@ -183,7 +188,6 @@ class iCalImport
                                            echo "Raw Data is ".$this->rawData;
                                            exit();
                                        }
-                                    return false;
                                 }
 				JError::raiseWarning(0, 'Not a valid VCALENDAR data file: ' . $this->srcURL);
 				//JError::raiseWarning(0, 'Not a valid VCALENDAR or CSV data file: ' . $this->srcURL);
@@ -734,7 +738,7 @@ class iCalImport
 		// Lets check if a file for custom timezones exists
 		if (JFile::exists(JPATH_COMPONENT_SITE . '/libraries/ical_custom_timezones.php')) {
 			//Load the custom file once
-			include_once('ical_custom_timezones.php');
+			include('ical_custom_timezones.php');
 		}
 
 		$wtzid = str_replace('"','',$wtzid);

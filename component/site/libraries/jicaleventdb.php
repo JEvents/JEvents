@@ -4,7 +4,7 @@
  *
  * @version     $Id: jicaleventdb.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -54,7 +54,20 @@ class jIcalEventDB extends jEventCal {
 		}
 
 		if (isset($vevent->irregulardates) &&  is_string($vevent->irregulardates) && $vevent->irregulardates!=""){
-			$this->_irregulardates = @json_decode($vevent->irregulardates);
+			$this->_irregulardates = @json_decode(str_replace("'",'"',trim($vevent->irregulardates,'"')));
+			if (is_array($this->_irregulardates))
+			{
+				array_walk($this->_irregulardates, function(& $item, $index ){
+					if (!is_int($item)){
+						$item = JevDate::strtotime($item." 00:00:00");
+					}
+				});					
+			}
+			else {
+				$this->_irregulardates = array();
+			}
+			//$this->_irregulardates = @json_decode($vevent->irregulardates);
+				
 		}
 		else {
 			$this->_irregulardates = array();
@@ -495,7 +508,7 @@ class jIcalEventDB extends jEventCal {
 	}
 
 	function getCalendarName( ){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		static $arr_calids;
 
@@ -637,7 +650,7 @@ class jIcalEventDB extends jEventCal {
 	// Gets repeats for this event from databases
 	function getFirstRepeat($allowexceptions=true){
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -666,7 +679,7 @@ class jIcalEventDB extends jEventCal {
 	// Gets repeats for this event from databases
 	function getLastRepeat($allowexceptions=true){
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -697,7 +710,7 @@ class jIcalEventDB extends jEventCal {
 
 		$t_datenow = JEVHelper::getNow();
 		$now = $t_datenow->toMysql();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -766,7 +779,7 @@ class jIcalEventDB extends jEventCal {
 		$extrajoin = ( count( $extrajoin  ) ?  " \n LEFT JOIN ".implode( " \n LEFT JOIN ", $extrajoin ) : '' );
 		$extrawhere = ( count( $extrawhere ) ? ' AND '. implode( ' AND ', $extrawhere ) : '' );
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT ev.*, rpt.*, rr.*, det.* $extrafields , ev.state as state,  ev.state as published"
 		. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
 		. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
@@ -810,7 +823,7 @@ class jIcalEventDB extends jEventCal {
 		}
 		$done[$this->evdet_id()]=1;
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Should this happen here?
 		$query = "UPDATE #__jevents_vevdetail SET hits=(hits+1) WHERE evdet_id='".$this->evdet_id()."'"	;
@@ -854,15 +867,15 @@ class jIcalEventDB extends jEventCal {
 		
 		$this->dtfixed = 1;
 		
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Now get the first repeat since dtstart may have been set in a different timezeone and since it is a unixdate it would then be wrong
 		if (strtolower($this->freq())=="none"){
-			$repeat = $this->getFirstRepeat();
-			$this->dtstart($repeat->getUnixStartTime());
-			$this->dtend( $repeat->getUnixEndTime());
-			list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
-			list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
+				$repeat = $this->getFirstRepeat();
+				$this->dtstart($repeat->getUnixStartTime());
+				$this->dtend( $repeat->getUnixEndTime());
+				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
 		}
 		else {
 			$repeat = $this->getFirstRepeat();
@@ -873,7 +886,7 @@ class jIcalEventDB extends jEventCal {
 				$this->dtstart($repeat->getUnixStartTime());
 				$this->dtend( $repeat->getUnixEndTime());
 				list($this->_yup, $this->_mup, $this->_dup, $this->_hup, $this->_minup, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_up()));
-				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));
+				list($this->_ydn, $this->_mdn, $this->_ddn, $this->_hdn, $this->_mindn, $this->_sup) = explode(":", str_replace(array("-"," "),":", $repeat->publish_down()));					
 			}
 			else {
 				// This is the scenario where the first repeat is an exception so check to see if we need to be worried

@@ -4,7 +4,7 @@
  *
  * @version     $Id: abstract.php 3153 2012-01-05 10:11:45Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -55,12 +55,17 @@ class JEventsDefaultView extends JEventsAbstractView
 		
 		$this->addHelperPath( JPATH_BASE.'/'.'templates'.'/'.JFactory::getApplication()->getTemplate().'/'.'html'.'/'.JEV_COM_COMPONENT.'/'."helpers");
 
-		// attach data model
-		$this->datamodel  =  new JEventsDataModel();
-		$this->datamodel->setupComponentCatids();
-		
 		$reg = JevRegistry::getInstance("jevents");
-		$reg->setReference("jevents.datamodel",$this->datamodel);		
+		$this->datamodel = $reg->getReference("jevents.datamodel");		
+
+		if (!$this->datamodel)
+		{
+			// attach data model
+			$this->datamodel  =  new JEventsDataModel();
+			$this->datamodel->setupComponentCatids();
+			$reg->setReference("jevents.datamodel" , $this->datamodel);
+		}
+		
 
 	}
 

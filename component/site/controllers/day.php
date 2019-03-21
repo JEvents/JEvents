@@ -4,7 +4,7 @@
  *
  * @version     $Id: day.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,7 +36,7 @@ class DayController extends JControllerLegacy   {
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$fixedDay = $params->get('fixedday','');
-		if($fixedDay)
+		if($fixedDay && $fixedDay !== '0000-00-00 00:00:00')
 		{
 			$year = date('Y',strtotime($fixedDay));
 			$month = date('m',strtotime($fixedDay));

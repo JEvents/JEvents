@@ -4,7 +4,7 @@
  *
  * @version     $Id: datamodel.php 3553 2012-04-20 10:18:59Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -33,8 +33,6 @@ class JEventsDataModel {
 	var $queryModel;
 
 	public function __construct($dbmodel=null){
-
-		$cfg = JEVConfig::getInstance();
 
 		$user = JFactory::getUser();
 		$this->aid = JEVHelper::getAid($user);
@@ -228,7 +226,7 @@ class JEventsDataModel {
 		$data['year']=$year;
 		$data['month']=$month;
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		if (!isset($this->myItemid) || is_null($this->myItemid)) {
 			$Itemid = JEVHelper::getItemid();
@@ -524,7 +522,7 @@ class JEventsDataModel {
 		
 		$data = array();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -567,7 +565,7 @@ class JEventsDataModel {
 
 		
 		$Itemid = JEVHelper::getItemid();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$cat = "";
 		if ($this->catidsOut != 0){
@@ -679,7 +677,10 @@ class JEventsDataModel {
 						$data['hours'][$h]['events'][$count]=$row;
 						$row->alreadyHourSlotted = 1;
 					}
-					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59){
+					else if ($row->hup()==$h && $row->minup()<=59 && $row->sup()<=59)
+					{
+						// Why did we introduce this change? It breaks on daylight savings change dates!
+						// && $row->getUnixEndTime() >= $data['hours'][$h]['hour_start']  && $row->getUnixStartTime() <= $data['hours'][$h]['hour_end'] ){
 
 						$count = count($data['hours'][$h]['events']);
 						$data['hours'][$h]['events'][$count]=$row;
@@ -715,7 +716,7 @@ class JEventsDataModel {
 		
 		$pop = intval(JRequest::getVar( 'pop', 0 ));
 		$Itemid = JEVHelper::getItemid();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$user= JFactory::getUser();
 
 		$cfg = JEVConfig::getInstance();
@@ -728,8 +729,8 @@ class JEventsDataModel {
 				$row=null;
 			}
 		}
-		
-		$num_row = count($row);
+
+		$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 
 		// No matching rows - use uid as alternative
 		if ($num_row==0 && JString::strlen($uid)>0){
@@ -741,7 +742,7 @@ class JEventsDataModel {
 						$row=null;
 					}
 				}
-				$num_row = count($row);
+				$num_row = (is_object($row) ? 1 : (is_array($row) ? count($row) : 0));
 			}
 		}
 		
@@ -853,7 +854,7 @@ class JEventsDataModel {
 			$user = isset($this->accessuser)? JEVHelper::getUser($this->accessuser) : JFactory::getUser();
 			if ($user->id==0)
 			{
-				$db=JFactory::getDBO();
+				$db=JFactory::getDbo();
 				$query = "SELECT ev.*"
 				. "\n FROM #__jevents_vevent as ev "
 				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
@@ -890,7 +891,7 @@ class JEventsDataModel {
 		$data = array();
 
 		$Itemid = JEVHelper::getItemid();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		include_once(JPATH_ADMINISTRATOR."/components/".JEV_COM_COMPONENT."/libraries/colorMap.php");
 
 		$cfg = JEVConfig::getInstance();
@@ -952,7 +953,7 @@ class JEventsDataModel {
 		}
 		else if ((count($catids)==1 && $catids[0]!=0)  || (count($this->catids)==1 && $this->catids[0]!=0)  ){
 			// get the cat name from the database
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$user = JFactory::getUser();
 			$catid = (count($catids)==1 && $catids[0]!=0)  ? intval($catids[0]) : $this->catids[0];
 			$catsql = 'SELECT c.title, c.description, c.id FROM #__categories AS c' .
@@ -995,7 +996,7 @@ class JEventsDataModel {
 
 		$user = JFactory::getUser();
 		$Itemid = JEVHelper::getItemid();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 
@@ -1072,7 +1073,7 @@ class JEventsDataModel {
 		$user = JFactory::getUser();
 		$Itemid = JEVHelper::getItemid();
 
-		$db	= JFactory::getDBO();		
+		$db	= JFactory::getDbo();
 
 		$cfg = JEVConfig::getInstance();
 

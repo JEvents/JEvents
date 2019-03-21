@@ -4,7 +4,7 @@
  *
  * @version     $Id: icalevent.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -35,6 +35,10 @@ class ICalEventController extends AdminIcaleventController   {
 
 		// Do we have to be logged in to see this event
 		$user = JFactory::getUser();
+		
+		$cfg	 = JEVConfig::getInstance();
+		$joomlaconf = JFactory::getConfig();
+		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 
 		$jinput = JFactory::getApplication()->input;
 
@@ -42,8 +46,7 @@ class ICalEventController extends AdminIcaleventController   {
 		{
 			$uri = JURI::getInstance();
 			$link = $uri->toString();
-			$comuser= version_compare(JVERSION, '1.6.0', '>=') ? "com_users":"com_user";
-			$link = 'index.php?option='.$comuser.'&view=login&return='.base64_encode($link);
+			$link = 'index.php?option=com_users&view=login&return='.base64_encode($link);
 			$link = JRoute::_($link, false);
 			$this->setRedirect($link,JText::_('JEV_LOGIN_TO_VIEW_EVENT'));
 			$this->redirect();
@@ -51,7 +54,9 @@ class ICalEventController extends AdminIcaleventController   {
 		}
 
 		$evid = $jinput->getInt("rp_id", 0);
-		if ($evid==0){
+
+		if ($evid==0)
+		{
 			$evid = $jinput->getInt("evid", 0);
 			// if cancelling from save of copy and edit use the old event id
 			if ($evid==0){
@@ -85,6 +90,10 @@ class ICalEventController extends AdminIcaleventController   {
 		$theme = JEV_CommonFunctions::getJEventsViewName();
 
 		$view = "icalevent";
+
+		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher->trigger('onBeforeLoadView', array($view, $theme, $viewType, 'icalrepeat.detail', $useCache));
+
 		$this->addViewPath($this->_basePath.'/'."views".'/'.$theme);
 		$this->view = $this->getView($view,$viewType, $theme."View",
 			array( 'base_path'=>$this->_basePath,
@@ -105,13 +114,13 @@ class ICalEventController extends AdminIcaleventController   {
 		$this->view->assign("uid",$uid);
 
 		// View caching logic -- simple... are we logged in?
-		$cfg	 = JEVConfig::getInstance();
-		$joomlaconf = JFactory::getConfig();
-		$useCache = intval($cfg->get('com_cache', 0)) && $joomlaconf->get('caching', 1);
 		$user = JFactory::getUser();
-		if ($user->get('id') || !$useCache) {
+		if ($user->get('id') || !$useCache)
+		{
 			$this->view->display();
-		} else {
+		}
+		else
+		{
 			$cache = JFactory::getCache(JEV_COM_COMPONENT, 'view');
 			$cache->get($this->view, 'display');
 		}
@@ -119,25 +128,22 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function edit($key = NULL, $urlVar = NULL){
 
-		$jinput = JFactory::getApplication()->input;
-		$ev_id  = $jinput->getInt("rp_id", 0);
-		if ($ev_id > 0) {
-			$is_event_editor = JEVHelper::isEventEditor();
-		} else {
-			$is_event_editor = JEVHelper::isEventCreator();
-		}
 		// Must be at least an event creator to edit or create events
+		// We check specific event editing permissions in the parent class
+		$is_event_creator = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventEditor();
+		
 		$user = JFactory::getUser();
-		if (!$is_event_editor || ($user->id == 0 && JRequest::getInt("evid",0)>0)){
+		if ((!$is_event_creator && !$is_event_editor) || ($user->id==0 && JRequest::getInt("evid",0)>0)){
 			if ($user->id){
-				$this->setRedirect(JURI::root(),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 				//throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			}
 			else {
 				$uri = JURI::getInstance();
 				$link = $uri->toString();
-				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=com_users&view=login&return=".base64_encode($link)),JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			return;
@@ -151,7 +157,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function editcopy(){
 		// Must be at least an event creator to edit or create events
-		$is_event_editor = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -167,7 +173,7 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function save($key = NULL, $urlVar = NULL){
 		// Must be at least an event creator to save events
-		$is_event_editor = JEVHelper::isEventCreator();
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
 		if (!$is_event_editor){
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
@@ -177,8 +183,8 @@ class ICalEventController extends AdminIcaleventController   {
 
 	function apply(){
 		// Must be at least an event creator to save events
-		$is_event_editor = JEVHelper::isEventCreator();
-		if (!$is_event_editor){
+		$is_event_editor = JEVHelper::isEventCreator() || JEVHelper::isEventEditor();
+		if (!$is_event_editor) {
 			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
 			return false;
 		}

@@ -69,7 +69,8 @@ class PlgSystemGwejson extends JPlugin
 			$file = "gwejson_".$file;
 		}
 
-		$path = $input->get('path', 'site', 'cmd');
+		$path = $input->getCmd('path', 'site');
+		if (empty($path)) {$path = 'site';} // Additional check, we have had some systems returning empty values on jinput instead of the default value.
 		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{
@@ -150,7 +151,7 @@ class PlgSystemGwejson extends JPlugin
 			}
 			catch (Exception $e) {
 				//PlgSystemGwejson::throwerror("There was an exception ".$e->getMessage()." ".var_export($e->getTrace()));
-				PlgSystemGwejson::throwerror("There was an exception " . $e->getMessage());
+				PlgSystemGwejson::throwerror("There was an exception " . addslashes($e->getMessage()));
 			}
 		}
 
@@ -188,7 +189,7 @@ class PlgSystemGwejson extends JPlugin
 					//file_put_contents(dirname(__FILE__) . "/cache/error.txt", var_export($requestData, true));
 					PlgSystemGwejson::throwerror("There was an error - no request object ");
 				}
-				else if ($requestObject->error)
+				else if (isset($requestObject->error) && $requestObject->error)
 				{
 					PlgSystemGwejson::throwerror("There was an error - Request object error " . $requestObject->error);
 				}

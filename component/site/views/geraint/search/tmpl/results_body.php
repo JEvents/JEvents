@@ -67,7 +67,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS'). '
 	<tr>
 		<td align="center" width="100%">
 			<form action="<?php echo JRoute::_("index.php?option=".JEV_COM_COMPONENT."&task=search.results&Itemid=".$this->Itemid);?>" method="post" style="font-size:1;">
-				<input type="text" name="keyword" size="30" maxlength="50" class="inputbox" value="<?php echo $this->keyword;?>" />
+				<input type="text" name="keyword" size="30" maxlength="50" class="inputbox" value="<?php echo htmlspecialchars($this->keyword);?>" />
 				<label for="showpast"><?php echo JText::_("JEV_SHOW_PAST");?></label>
 				<input type="checkbox" id="showpast" name="showpast" value="1" <?php echo JRequest::getInt('showpast',0)?'checked="checked"':''?> />
 				<input type="hidden" name="pop" value="<?php echo JRequest::getInt("pop",0);?>" />

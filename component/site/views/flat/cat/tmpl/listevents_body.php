@@ -22,7 +22,7 @@ $Itemid = JEVHelper::getItemid();
         </div>
         <?php
         if (JString::strlen($data ['catdesc']) > 0) {
-            echo "<div class='jev_catdesc'>" . $data ['catdesc'] . "</div>";
+            echo "<div class='jev_catdesc'>" . JHtml::_('content.prepare', $data ['catdesc']) . "</div>";
         }
         echo "</div>";
         $num_events = count($data ['rows']);

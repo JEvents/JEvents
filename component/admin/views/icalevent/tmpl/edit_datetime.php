@@ -4,7 +4,7 @@
  *
  * @version     $Id: edit_datetime.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -30,6 +30,24 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 ?>
 <div style="clear:both;" class="jevdatetime">
     <fieldset class="jev_sed"><legend><?php echo JText::_("Start_End_Duration"); ?></legend>
+	<?php
+	if ($params->get("showtimezone", 0))
+	{
+		?>
+		<div style="margin:0px;clear:left;">
+		    <div class="row jevtimezone">
+			<div class="span2">
+			    <?php echo $this->form->getLabel("tzid"); ?>
+			</div>
+			<div class="span10">
+			    <?php echo $this->form->getInput("tzid"); ?>
+			</div>
+		    </div>
+		</div>                    
+		<?php
+	}
+	?>
+
 	<div  class=" allDayEvent">
 	    <div class='alldayinput' style="margin:10px 20px 0px 0px ;display:inline-block;" >
 		<div style="display:inline-block;" >
@@ -138,23 +156,6 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		</label>
 	    </div>
 	</div>
-	<?php
-	if ($params->get("showtimezone", 0))
-	{
-		?>
-		<div style="margin:0px;clear:left;">
-		    <div class="row jevtimezone">
-			<div class="span2">
-			    <?php echo $this->form->getLabel("tzid"); ?>
-			</div>
-			<div class="span10">
-			    <?php echo $this->form->getInput("tzid"); ?>
-			</div>
-		    </div>
-		</div>                    
-		<?php
-	}
-	?>
     </fieldset>
 </div>
 
@@ -187,8 +188,8 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	    if ($params->get("dayselect", 0))
 	    {
 		    ?>
-		    <label for='IRREGULAR' class="btn radio">
-			<input type="radio" name="freq" id="IRREGULAR" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
+		    <label for='IRREGULARBTN' class="btn radio">
+			<input type="radio" name="freq" id="IRREGULARBTN" value="IRREGULAR" onclick="toggleFreq('IRREGULAR');"  <?php if ($this->row->freq() == "IRREGULAR") echo 'checked="checked"'; ?>/>
 			<?php echo JText::_('IRREGULAR'); ?>
 		    </label>
 	    <?php } ?>
@@ -261,7 +262,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	<div id="byday">
 	    <fieldset >
 		<legend><input type="radio" name="whichby"  id="jevbd" value="bd"  onclick="toggleWhichBy('byday');" /><?php echo JText::_('BY_DAY'); ?></legend>
-		<div class="checkbox btn-group ">
+		<div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 		    <?php
 		    JEventsHTML::buildWeekDaysCheck($this->row->getByDay_days(), '', "weekdays");
 		    ?>
@@ -269,7 +270,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 	    </fieldset>
 	    <fieldset  id="weekofmonth">
 		<legend><?php echo JText::_('WHICH_WEEK'); ?></legend>
-		<div class="checkbox btn-group ">
+            <div class="checkbox <?php echo version_compare(JVERSION, '3.8.12', '<') ? "btn" : "jev-button"; ?>-group">
 		    <?php
 		    JEventsHTML::buildWeeksCheck($this->row->getByDay_weeks(), "", "weeknums", $this->row->getByDirection("byday"));
 		    ?>
@@ -297,7 +298,19 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 			    $attribs["showtime"] = "showtime";
 			    $inputdateformat .= " %H:%M";
 		    }
-		    JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "selectIrregularDate();updateRepeatWarning();", $inputdateformat, $attribs);
+		    JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "setTimeout(function() {selectIrregularDate();updateRepeatWarning();}, 200)", $inputdateformat, $attribs);
+		    //JEVHelper::loadElectricCalendar("irregular", "irregular", "", $minyear, $maxyear, '', "jQuery(this).trigger('calupdate');", $inputdateformat, $attribs);
+		    
+		    //"selectIrregularDate();updateRepeatWarning();"
+		    /*
+		    JFactory::getDocument()->addScriptDeclaration(
+			    'jQuery(document).on("ready", function () {
+				jQuery("#irregular").on("calupdate", function(evt) {
+					alert(evt);
+				});
+			    });'
+			);
+		     */
 		    ?>
 		</div>
 		<select  id="irregularDates" name="irregularDates[]" multiple="multiple" size="5" onchange="updateRepeatWarning()">

@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.feed.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -37,7 +37,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		
 		$cfg = JEVConfig::getInstance();
 
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 
 		// setup for all required function and classes
 		$file = JPATH_SITE . '/components/com_jevents/mod.defines.php';
@@ -60,7 +60,7 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 			. "\n AND m.id = ". $modid
 			. "\n AND m.access  " . (version_compare(JVERSION, '1.6.0', '>=') ? ' IN (' .  JEVHelper::getAid($user, 'string') . ')' : ' <=  ' .  JEVHelper::getAid($user))
 			. "\n AND m.client_id != 1";
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$db->setQuery( $query );
 			$modules = $db->loadObjectList();
 			if (count($modules)<=0){
@@ -105,17 +105,31 @@ class ModlatestViewModlatest extends AdminICalRepeatViewICalRepeat
 		// include the appropriate VIEW - this should be based on config and/or URL?
 		$cfg = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();
-		$viewclass = ucfirst($theme)."ModLatestView";
 
 		jimport('joomla.application.module.helper');
-		require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',$theme.'/'."latest"));
-		$jeventCalObject = new $viewclass($params,$modid);
+		if (file_exists(JModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest")))
+		{
+			$viewclass = ucfirst($theme)."ModLatestView";
+			require_once(JModuleHelper::getLayoutPath('mod_jevents_latest', $theme . '/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);
+		} else {
+			$viewclass = ucfirst('default')."ModLatestView";
+			require_once(JModuleHelper::getLayoutPath('mod_jevents_latest',  'default/' . "latest"));
+			$jeventCalObject = new $viewclass($params, $modid);		}
 
 		$jeventCalObject->getLatestEventsData($info["count"]);
 		$this->set("eventsByRelDay" ,$jeventCalObject->eventsByRelDay);
 		$this->set("info" ,$info);
 		$this->set("modparams" ,$params);
 		$this->set("jeventCalObject",$jeventCalObject);
+
+		$document = JFactory::getDocument();
+
+		// No need for CSS files in XML file
+		if ($document->getType() == 'feed')
+		{
+			$document->_styleSheets = array();
+		}
 
 		parent::displaytemplate($tpl);
 	}

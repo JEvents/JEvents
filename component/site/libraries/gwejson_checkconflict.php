@@ -1,6 +1,6 @@
 <?php
 /**
-* @copyright	Copyright (C) 2015-2017 GWE Systems Ltd. All rights reserved.
+* @copyright	Copyright (C) 2015-2019 GWE Systems Ltd. All rights reserved.
  * @license		By negoriation with author via http://www.gwesystems.com
 */
 
@@ -10,8 +10,8 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 	//if (JFile::exists($file4)) JFile::delete($file4);
 
         // Some SEF addons leave Itemid blank here so force the active menu!
-	$ttItemid = 	JRequest::getVar("ttItemid", 0);
-	if ($ttItemid>0 && JRequest::getVar("Itemid", 0)==0){
+	$ttItemid = 	JRequest::getInt("ttItemid", 0);
+	if ($ttItemid>0 && JRequest::getInt("Itemid", 0)==0){
 		$menu = JFactory::getApplication()->getMenu();
 		JRequest::setVar("Itemid", $ttItemid);
 		$menu->setActive($ttItemid);
@@ -77,7 +77,7 @@ function ProcessJsonRequest(&$requestObject, $returnData){
 
 	if (intval($requestObject->formdata->evid) > 0)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$dataModel = new JEventsDataModel("JEventsAdminDBModel");
 		$queryModel = new JEventsDBModel($dataModel);
 		$event = $queryModel->getEventById(intval($requestObject->formdata->evid), 1, "icaldb");
@@ -240,7 +240,7 @@ function simulateSaveRepeat($requestObject)
 		PlgSystemGwejson::throwerror(JText::_('ALERTNOTAUTH'));
 	}
 
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$rpt = new iCalRepetition($db);
 	$rpt->load($rp_id);
 
@@ -339,7 +339,7 @@ function valueIfExists($array, $key, $default)
 function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 {
 	$params = JComponentHelper::getParams("com_jevents");
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$overlaps = array();
 
 
@@ -492,7 +492,7 @@ function checkEventOverlaps($testevent, & $returnData, $eventid, $requestObject)
 function checkRepeatOverlaps($repeat, & $returnData, $eventid, $requestObject)
 {
 	$params = JComponentHelper::getParams("com_jevents");
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$overlaps = array();
 	if ( $params->get("checkconflicts", 0) == 2 )
 	{

@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -31,11 +31,11 @@ class CustomcssViewCustomcss extends JViewLegacy {
 
 		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
+		JToolbarHelper::title(JText::_('COM_JEVENTS') . ': ' . JText::_('JEV_CUSTOM_CSS'), 'jevents');
 
-		JToolBarHelper::apply('customcss.apply');
-		JToolBarHelper::save('customcss.save');
-		JToolBarHelper::cancel('customcss.cancel');
+		JToolbarHelper::apply('customcss.apply');
+		JToolbarHelper::save('customcss.save');
+		JToolbarHelper::cancel('customcss.cancel');
 		JToolbarHelper::divider();
 
 

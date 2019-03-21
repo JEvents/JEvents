@@ -4,7 +4,7 @@
  *
  * @version     $Id: overview.php 3548 2012-04-20 09:25:43Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $user = JFactory::getUser();
 
 // get configuration object
@@ -45,7 +45,7 @@ $mainspan = 10;
 					<td align="right"><?php echo $this->clist; ?> </td>
 					<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 					<td>
-						<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
+						<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox" onChange="document.adminForm.submit();" />
 					</td>
 				</tr>
 			</table>

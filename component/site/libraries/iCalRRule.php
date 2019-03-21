@@ -4,7 +4,7 @@
  *
  * @version     $Id: iCalRRule.php 3467 2012-04-03 09:36:16Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -47,7 +47,7 @@ class iCalRRule extends JTable  {
 	 * @return n/a
 	 */
 	public function iCalRRuleFromDB($icalrowAsArray){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $icalrowAsArray;
@@ -97,7 +97,7 @@ class iCalRRule extends JTable  {
 	 * @return n/a
 	 */
 	public static  function iCalRRuleFromData($rrule){
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$temp = new iCalRRule($db);
 
 		$temp->data = $rrule;
@@ -152,7 +152,7 @@ class iCalRRule extends JTable  {
 	 */
 	public function _makeRepeat($start,$end){
 		if (!isset($this->_repetitions)) $this->_repetitions = array();
-		$db	= JFactory::getDBO();
+		$db	= JFactory::getDbo();
 		$repeat = new iCalRepetition($db);
 		$repeat->eventid = $this->eventid;
 		// TODO CHECK THIS logic
@@ -832,7 +832,15 @@ class iCalRRule extends JTable  {
 				$processedDates[] = $dtstart;
 				$this->_makeRepeat($dtstart,$dtend);
 				if (is_string($this->irregulardates) && $this->irregulardates!=""){
-					$this->irregulardates = @json_decode($this->irregulardates);
+					$this->irregulardates = @json_decode(str_replace("'",'"',trim($this->irregulardates,'"')));
+					if (is_array($this->_irregulardates))
+					{
+						array_walk($this->irregulardates, function(& $item, $index ){
+							if (!is_int($item)){
+								$item = JevDate::strtotime($item." 00:00:00");
+							}
+						});					
+					}
 				}
 				if (!is_array($this->irregulardates)){
 					$this->irregulardates = array();

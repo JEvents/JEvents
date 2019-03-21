@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3543 2012-04-20 08:17:42Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -36,7 +36,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document->setTitle(JText::_('JEVENTS_CORE_CPANEL'));
 
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
+		JToolbarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 
@@ -930,7 +930,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
-		JToolBarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
+		JToolbarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 

@@ -5,7 +5,7 @@
  *
  * @version     $Id: jicaleventrepeat.php 2992 2011-11-10 15:15:22Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -139,10 +139,16 @@ class jIcalEventRepeat extends jIcalEventDB
 	{
 		#if (isset($this->_rr_id)  && $this->_rr_id>0 ) return true;
 		if (isset($this->_freq) && ($this->_freq != 'none'))
+		{
+			// special case if there is only one idiotic repeat!
+			if ($this->_count == 1 && $this->_untilraw == "" && count($this->_irregulardates) == 0)
+			{
+				return false;
+			}
 			return true;
+		}
 		else
 			return false;
-
 	}
 
 	function editTask()
@@ -401,7 +407,7 @@ class jIcalEventRepeat extends jIcalEventDB
 		$Itemid = JEVHelper::getItemid();
 		list($year, $month, $day) = JEVHelper::getYMD();
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$sql = "SELECT rpt.*,det.summary as title , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup FROM #__jevents_repetition  as rpt
 			 LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id WHERE rpt.eventid=" . $this->ev_id() . " AND rpt.rp_id <> " . $this->rp_id() . " AND rpt.startrepeat<='" . $this->_startrepeat . "' ORDER BY rpt.startrepeat DESC limit 1";
@@ -527,7 +533,7 @@ class jIcalEventRepeat extends jIcalEventDB
 			}
 			$limit = $limit * 2;
 		}
-		if (!is_null($prior))
+		if (isset($prior) && !is_null($prior))
 		{
 			$link = "index.php?option=" . JEV_COM_COMPONENT . "&task=" . $this->detailTask() . "&evid=" . $prior->_rp_id . '&Itemid=' . $Itemid
 					. "&year=" . $prior->_yup . "&month=" . $prior->_mup . "&day=" . $prior->_dup . "&uid=" . urlencode($prior->_uid) . "&title=" . JApplicationHelper::stringURLSafe($prior->_title);

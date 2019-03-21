@@ -4,7 +4,7 @@
  *
  * @version     $Id: icals.php 3549 2012-04-20 09:26:21Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -29,7 +29,7 @@ class ICalsController extends AdminIcalsController
 		if ($cfg->get("disableicalexport", 0) && !$cfg->get("feimport", 0))
 		{
 	                 $query = "SELECT icsf.* FROM #__jevents_icsfile as icsf where icsf.autorefresh=1";
-			$db	= JFactory::getDBO();
+			$db	= JFactory::getDbo();
 			$db->setQuery($query);
 			$allICS = $db->loadObjectList();
 			if (count($allICS)==0){
@@ -289,7 +289,7 @@ class ICalsController extends AdminIcalsController
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			return;
@@ -340,7 +340,7 @@ class ICalsController extends AdminIcalsController
 		if ($jevuser && $jevuser->categories != "" && $jevuser->categories != "all")
 		{
 			// Find which categories to exclude
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$catsql = 'SELECT id  FROM #__categories WHERE id NOT IN (' . str_replace("|", ",", $jevuser->categories) . ') AND extension="com_jevents"';
 			
 			$db->setQuery($catsql);
@@ -406,7 +406,7 @@ class ICalsController extends AdminIcalsController
 	function importdata()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JSession::checkToken() or jexit('Invalid Token');
 
 		// Can only do this if can add an event
 		// Must be at least an event creator to edit or create events
@@ -416,13 +416,13 @@ class ICalsController extends AdminIcalsController
 			$user = JFactory::getUser();
 			if ($user->id)
 			{
-				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JURI::root(), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			else
 			{
 				$comuser = version_compare(JVERSION, '1.6.0', '>=') ? "com_users" : "com_user";
-				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'));
+				$this->setRedirect(JRoute::_("index.php?option=$comuser&view=login"), JText::_('JEV_NOTAUTH_CREATE_EVENT'), 'ERROR');
 				$this->redirect();
 			}
 			return;
@@ -700,7 +700,7 @@ class ICalsController extends AdminIcalsController
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 0)
+					if ( (int) $transition['isdst'] == 0)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;
@@ -732,7 +732,7 @@ class ICalsController extends AdminIcalsController
 				for ($t = 0; $t < count($transitions); $t++)
 				{
 					$transition = $transitions[$t];
-					if ($transition['isdst'] == 1)
+					if ( (int) $transition['isdst'] == 1)
 					{
 						if (JevDate::strftime("%Y", $transition['ts']) > $lastyear)
 							continue;

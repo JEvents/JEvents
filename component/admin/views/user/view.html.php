@@ -5,7 +5,7 @@
  *
  * @version     $Id: view.html.php 3401 2012-03-22 15:35:38Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -35,14 +35,14 @@ class AdminUserViewUser extends JEventsAbstractView
 		$jinput = JFactory::getApplication()->input;
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('USERS'), 'jevents');
-		JToolBarHelper::addNew("user.edit");
-		JToolBarHelper::editList("user.edit");
-		//JToolBarHelper::publish("user.publish");
-		//JToolBarHelper::unpublish("user.unpublish");
-		JToolBarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
-		//JToolBarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
-		JToolBarHelper::spacer();
+		JToolbarHelper::title(JText::_('USERS'), 'jevents');
+		JToolbarHelper::addNew("user.edit");
+		JToolbarHelper::editList("user.edit");
+		//JToolbarHelper::publish("user.publish");
+		//JToolbarHelper::unpublish("user.unpublish");
+		JToolbarHelper::deleteList("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_USER", "user.remove");
+		//JToolbarHelper::preferences(JEV_COM_COMPONENT, '580', '750');
+		JToolbarHelper::spacer();
 		
 		JEventsHelper::addSubmenu();
 
@@ -74,16 +74,16 @@ class AdminUserViewUser extends JEventsAbstractView
 		$document->setTitle(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'));
 
 		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('JEV_EDIT_USER'), 'jevents');
+		JToolbarHelper::title(JText::_('JEV_EDIT_USER'), 'jevents');
 
-		JToolBarHelper::save("user.save");
-		JToolBarHelper::cancel("user.overview");
+		JToolbarHelper::save("user.save");
+		JToolbarHelper::cancel("user.overview");
 
-		//JToolBarHelper::help( 'edit.user', true);
+		//JToolbarHelper::help( 'edit.user', true);
 
 		$option = JRequest::getCmd('option', JEV_COM_COMPONENT);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 		$rules = JAccess::getAssetRules("com_jevents", true);

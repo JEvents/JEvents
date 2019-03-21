@@ -4,7 +4,7 @@
  *
  * @version     $Id: view.html.php 2979 2011-11-10 13:50:14Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -12,7 +12,9 @@
 defined('_JEXEC') or die();
 
 use Joomla\String\StringHelper;
-
+if (JFile::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
+    require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
+}
 /**
  * HTML View class for the component frontend
  *
@@ -28,7 +30,6 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function __construct($config = array())
 	{
 
-		include_once(JPATH_ADMINISTRATOR . '/' . "includes" . '/' . "toolbar.php");
 		parent::__construct($config);
 
 		// used only for helper functions
@@ -45,6 +46,8 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 	function edit($tpl = null)
 	{
 		$document = JFactory::getDocument();
+		$user = JFactory::getUser();
+
 		// Set editstrings var just incase and to avoid IDE reporting not set.
 		$editStrings = "";
 		include(JEV_ADMINLIBS . "/editStrings.php");
@@ -53,16 +56,16 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 		JEVHelper::script('editicalJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 		JEVHelper::script('JevStdRequiredFieldsJQ.js', 'components/' . JEV_COM_COMPONENT . '/assets/js/');
 
-		if (strlen($this->row->title()) <= 0)
+		if (strlen($this->row->title()) > 0)
 		{
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(JText::_('EDIT_ICAL_EVENT'), 'jevents');
 			$document->setTitle(JText::_('EDIT_ICAL_EVENT'));
 		}
 		else
 		{
 			// Set toolbar items for the page
-			JToolBarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
+			JToolbarHelper::title(JText::_('CREATE_ICAL_EVENT'), 'jevents');
 			$document->setTitle(JText::_('CREATE_ICAL_EVENT'));
 		}
 
@@ -73,7 +76,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			if ($this->editCopy)
 			{
 
-				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				if (($user->id !==0) && (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row)))
 				{
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_COPY_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}
@@ -81,7 +84,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 			}
 			else
 			{
-				if (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row))
+				if (($user->id !==0) && (JEVHelper::isEventEditor() || JEVHelper::canEditEvent($this->row)))
 				{
 					$this->toolbarConfirmButton("icalevent.apply", JText::_("JEV_SAVE_ICALEVENT_WARNING"), 'apply', 'apply', 'JEV_SAVE', false);
 				}

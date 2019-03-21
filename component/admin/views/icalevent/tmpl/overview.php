@@ -4,7 +4,7 @@
  *
  * @version     $Id: overview.php 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C)  2008-2017 GWE Systems Ltd
+ * @copyright   Copyright (C)  2008-2019 GWE Systems Ltd
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -17,7 +17,7 @@ use Joomla\String\StringHelper;
 
 JHTML::_('behavior.tooltip');
 
-$db = JFactory::getDBO();
+$db = JFactory::getDbo();
 $user = JFactory::getUser();
 
 // get configuration object
@@ -53,7 +53,7 @@ $mainspan = 10;
 <?php } ?>
 					<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 					<td>
-						<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox" onChange="document.adminForm.submit();" />
+						<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox" onChange="document.adminForm.submit();" />
 					</td>
 						<?php if (JevJoomlaVersion::isCompatible("3.0"))
 						{ ?>
@@ -170,9 +170,14 @@ $mainspan = 10;
 							}
 							else
 							{
+
+								$firstRepeat = $row->getFirstRepeat();
 								$times = '<table style="border: 1px solid #666666; width:100%;">';
-								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+								$times .= '<tr><td>' . JText::_('JEV_FROM') . ' : ' . ($firstRepeat->alldayevent() ? JString::substr($firstRepeat->publish_up(), 0, 10) : JString::substr($firstRepeat->publish_up(),0,16)) . '</td></tr>';
 								$times .= '<tr><td>' . JText::_('JEV_TO') . ' : ' . (($row->noendtime() || $row->alldayevent()) ? JString::substr($row->publish_down(), 0, 10) : JString::substr($row->publish_down(),0,16)) . '</td></tr>';
+								if ($row->hasrepetition() && $firstRepeat->publish_up() !== $row->publish_up()) {
+									$times .= '<tr><td>' . JText::_('JEV_NEXT_REPEAT') . ' : ' . ($row->alldayevent() ? JString::substr($row->publish_up(), 0, 10) : JString::substr($row->publish_up(),0,16)) . '</td></tr>';
+								}
 								$times .="</table>";
 								echo $times;
 							}

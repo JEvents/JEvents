@@ -3,7 +3,7 @@
  *
  * @version     $Id: editicalJQ.js 3576 2012-05-01 14:11:04Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -372,7 +372,7 @@ function check12hTime(time12h){
 
 function checkDates(elem){
 	forceValidDate(elem);
-	setEndDateWhenNotRepeating();
+	setEndDateWhenNotRepeating(elem);
 	checkEndTime();
 	checkUntil();
 	updateRepeatWarning();
@@ -421,24 +421,36 @@ function checkUntil(){
 
 }
 
-function setEndDateWhenNotRepeating(){
+function setEndDateWhenNotRepeating(elem){
+	var id = elem[0].id;
 	var norepeat = document.getElementById("NONE");
 	start_date = document.getElementById("publish_up");
 	end_date = document.getElementById("publish_down");
 
 	startDate = new Date();
-	startDate = startDate.dateFromYMD(start_date.value);	
+	startDate = startDate.dateFromYMD(start_date.value);
+
+	defaultStartDate = new Date();
+    defaultStartDate = startDate.dateFromYMD(start_date.defaultValue);
 	
 	endDate = new Date();
-	endDate = endDate.dateFromYMD(end_date.value);	
+	endDate = endDate.dateFromYMD(end_date.value);
 
-	// if the end date is not visible then always set the end date to match the start date
+    defaultEndDate = new Date();
+    defaultEndDate = endDate.dateFromYMD(end_date.defaultValue);
+
+	/** If the end date is not visible then always set the end date to match the start date **/
 	enddate_container = jQuery('.jevenddate');
 	if (enddate_container.css("display")=="none"){
 		end_date.value = start_date.value;
 	}
 
-	if (startDate>endDate){
+	/** New way of handling publidh_up and publish_down calendar inputs **/
+
+	if (id === 'publish_up' && startDate != defaultStartDate) {
+        end_date.value = start_date.value;
+        normaliseElem(end_date);
+	} else if (startDate > endDate) {
 		end_date.value = start_date.value;
 		normaliseElem(end_date);
 	}
@@ -509,7 +521,7 @@ function toggleAllDayEvent()
 	hide_start = starttime;
 	hide_end   = endtime;
 
-	temp = new Date();
+	var temp = new Date();
 	temp = temp.dateFromYMD(startdate.value);
 
 	if (checked){
@@ -1078,7 +1090,7 @@ function checkConflict(checkurl, pressbutton, jsontoken, client, repeatid,  redi
 				// Make sure the message is visible
 				//jQuery("#jevoverlapwarning").get(0).scrollIntoView();
 				//jQuery('html, body').animate({	scrollTop: jQuery("#jevoverlapwarning").offset().top	}, 200);
-				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top	}, 200);
+				jQuery('html, body').animate({	scrollTop: jQuery("#jevents").offset().top-80	}, 200);
 			}
 		}
 	})
@@ -1165,7 +1177,13 @@ function hideEmptyJevTabs() {
 	}
 
 function selectIrregularDate() {
-	var selectElem = jQuery("#irregularDates");
+	var calpopup = document.querySelector(".irregularDateSelector .js-calendar");
+
+	// Trap month to month movement!
+	if (calpopup.style.display !== "none")
+	{
+		return;
+	}
 
 	var repeatDate = new Date();
 	repeatDate  = repeatDate.dateFromYMD(jQuery("#irregular").val());
@@ -1176,8 +1194,53 @@ function selectIrregularDate() {
 		"text" : jQuery("#irregular").val(),
 		"selected" : true
 	});
+	var selectElem = jQuery("#irregularDates");
 	selectElem.append(option);
 	//selectElem.chosen();
 	selectElem.trigger("chosen:updated");
 	selectElem.trigger("liszt:updated");
+}
+
+// Set up multi-catid sorting
+jevjq(document).on('ready', function() {
+	var catids = jQuery('.jevcategory select[name="catid[]"]');
+	if(catids.length){
+        var chosenCatids = jQuery('.jevcategory #catid_chzn .chzn-choices');
+        if(chosenCatids.length) {
+            chosenCatids.sortable({
+                update: function( event, ui ) {
+                    reorderCategorySelections();
+				}
+			});
+        }
+	}
+    catids.on('change', reorderCategorySelections);
+});
+
+function reorderCategorySelections()
+{
+    // Make sure we fetch these fresh each time!
+    var catids = jQuery('.jevcategory select[name="catid[]"]');
+    var chosenCatids = jQuery('.jevcategory #catid_chzn .chzn-choices');
+
+    //catids.css('display', 'block');
+    // find all the selected categories
+    var ccats = chosenCatids.find('a');
+
+    var selectedCats = [];
+    for (var c = 0; c < ccats.length; c++)
+    {
+        var cat = ccats[c];
+        var catindex = jQuery(cat).data('optionArrayIndex');
+        selectedCats.push(catids.find('option:eq(' + catindex + ')'));
+    }
+
+    for (var sc = 0; sc < selectedCats.length; sc ++)
+    {
+        jQuery(selectedCats[sc]).insertBefore(catids.find('option:eq(' + sc + ')'));
+    }
+
+    catids.trigger("chosen:updated");
+    // old style version - still needed!
+    catids.trigger("liszt:updated");
 }

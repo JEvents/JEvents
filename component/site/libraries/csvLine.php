@@ -4,7 +4,7 @@
  *
  * @version     $Id: csvLine.php 3285 2012-02-21 14:56:25Z geraintedwards $
  * @package     JEvents
- * @copyright   Copyright (C) 2008-2017 GWE Systems Ltd, 2006-2008 JEvents Project Group
+ * @copyright   Copyright (C) 2008-2019 GWE Systems Ltd, 2006-2008 JEvents Project Group
  * @license     GNU/GPLv2, see http://www.gnu.org/licenses/gpl-2.0.html
  * @link        http://www.jevents.net
  */
@@ -115,6 +115,14 @@ class CsvLine {
         $this->noendtime = intval($noendtime);
     }
 
+    public function getPublished() {
+        return $this->published;
+    }
+
+    public function setPublished($published) {
+        $this->published = intval($published);
+    }
+    
     public function getMultiday() {
         return $this->multiday;
     }
@@ -179,7 +187,20 @@ class CsvLine {
      */
     public function getInICalFormat() {
         $prevTimezone = date_default_timezone_get();
-        date_default_timezone_set($this->timezone);
+
+        // Set timezone as previous if no timezone exists.
+	    if ($this->timezone) {
+            date_default_timezone_set($this->timezone);
+        } else {
+			date_default_timezone_set($prevTimezone);
+		}
+
+		// Check if published is set and if so, are they authorised.
+		if ((!isset($this->published) && JEVHelper::isEventPublisher()) || JEVHelper::isEventPublisher()) {
+			$this->published = 1;
+		} else {
+	    	$this->published = 0;
+		}
 
         $ical = "BEGIN:VEVENT\n";
         $ical .= "UID:".$this->getUid()."\n"
@@ -187,15 +208,16 @@ class CsvLine {
                ."SUMMARY:".$this->summary."\n"
                ."DTSTART".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtstart)."\n";
 
-	if($this->dtend != "") $ical .= "DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
-        if($this->dtstamp != "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
-        if($this->location != "") $ical .= "LOCATION:".$this->location."\n";
-        if($this->description != "") $ical .= "DESCRIPTION:".$this->description."\n";
-        if($this->contact != "") $ical .= "CONTACT:".$this->contact."\n";
-        if($this->extraInfo != "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
-        if($this->rrule != "") $ical .= "RRULE:".$this->rrule."\n";
-        if($this->noendtime!= "") $ical .= "NOENDTIME:".$this->noendtime."\n";
-        if($this->multiday!= "") $ical .= "MULTIDAY:".$this->multiday."\n";
+	if($this->dtend !== "") $ical .= "DTEND".$this->timezoneoutput().":".$this->datetimeToIcsFormat($this->dtend)."\n";
+        if($this->dtstamp !== "") $ical .= "DTSTAMP:".$this->datetimeToUtcIcsFormat($this->dtstamp)."\n";
+        if($this->location !== "") $ical .= "LOCATION:".$this->location."\n";
+        if($this->description !== "") $ical .= "DESCRIPTION:".$this->description."\n";
+        if($this->contact !== "") $ical .= "CONTACT:".$this->contact."\n";
+        if($this->extraInfo !== "") $ical .= "X-EXTRAINFO:".$this->extraInfo."\n";
+        if($this->rrule !=="") $ical .= "RRULE:".$this->rrule."\n";
+        if($this->noendtime!== "") $ical .= "NOENDTIME:".$this->noendtime."\n";
+        if($this->published!== "") $ical .= "X-STATE:".$this->published."\n";
+        if($this->multiday!== "") $ical .= "MULTIDAY:".$this->multiday."\n";
 
 	if (count($this->cf)>0){
 		foreach($this->cf as $key => $cf){
