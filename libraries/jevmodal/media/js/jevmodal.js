@@ -82,9 +82,11 @@ function launchJevModal(selector, url) {
             });
             if (url) {
                 jQuery(selector + ' iframe').attr("src", url);
-            }
+			}
+			jQuery(selector).removeClass('hide');
         });
         jQuery(selector).on('hidden', function () {
+			jQuery(selector).addClass('hide');
             // scrolling issue in iOS 11.3
             jQuery('body').css({
                 position:'static'
@@ -125,7 +127,7 @@ function addJevModalHtml (id){
 			+'</div>';
 		}
 		else {
-			myModal = '<div class="modal  hide fade ' + modalsize + ' jevmodal" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="'+id+'Label" aria-hidden="true" >'
+			myModal = '<div class="modal  hide' + modalsize + ' jevmodal" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="'+id+'Label" aria-hidden="true" >'
 				+'<div class="modal-dialog modal-lg">'
 					+'<div class="modal-content">'
 						+'<div class="modal-header">'
