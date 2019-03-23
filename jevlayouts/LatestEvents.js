@@ -56,7 +56,7 @@ jevpreview.push({'id':4,
 jevpreview.push({
 	'id': 5,
 	'name': 'UIKit Float Popup',
-	'image': 'http://www.jevents.net/jevlayouts/latest3.png',
+	'image': 'http://www.jevents.net/jevlayouts/latest5.png',
 	'code': '<div id=\'jeviso_item${RPID}\' class=\'jeviso_item w3 style3\'>\n' +
 	'    <div class=\'jfloat-event ng-scope ng-isolate-scope\' itemscope=\'\' itemtype=\'http://schema.org/Event\'>\n' +
 	'        <div class=\'jeviso_item_image uk-height-small\' uk-toggle=\'target: #modal-event${RPID}\'>\n' +

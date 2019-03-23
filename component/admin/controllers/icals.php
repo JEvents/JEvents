@@ -334,8 +334,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			return false;
 		}
 
-		$cid = $input->input->get('cid', array(), 'array');
-		$cid = ArrayHelper::toInteger($cid);
+		$cid    = $input->get(	'cid',	array(0) );
+		$cid    = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
 		{
@@ -379,11 +379,13 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			{
 				$catid = intval($currentICS->catid);
 			}
+
 			$access = intval($input->getCmd('access', $currentICS->access));
 			if ($access < 0 && $currentICS->access >= 0)
 			{
 				$access = intval($currentICS->access);
 			}
+
 			$icsLabel = $input->get('icsLabel', $currentICS->label);
 			if (($icsLabel == "" || $input->getCmd("task") == "icals.reload") && StringHelper::strlen($currentICS->label) >= 0)
 			{
@@ -527,8 +529,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			return;
 		}
 
-		$icsid = intval($input->getInt('icsid', 0));
-		$cid   = $input->get('cid', array(), 'array');
+		$icsid = $input->getInt('icsid', 0);
+		$cid   = $input->get('cid', array(0));
 		$cid   = ArrayHelper::toInteger($cid);
 		if (is_array($cid) && count($cid) > 0)
 		{
@@ -560,14 +562,14 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			$catid = $input->getInt('catid', $currentICS->catid);
 			if ($catid <= 0 && $currentICS->catid > 0)
 			{
-				$catid = intval($currentICS->catid);
+				$catid = (int) $currentICS->catid;
 			}
 			$access = intval($input->getInt('access', $currentICS->access));
 			if ($access < 0 && $currentICS->access >= 0)
 			{
 				$access = intval($currentICS->access);
 			}
-			$state = intval($input->getInt('state', $currentICS->state));
+			$state = (int) $input->getInt('state', $currentICS->state);
 			if ($state < 0 && $currentICS->state >= 0)
 			{
 				$state = intval($currentICS->state);
@@ -599,6 +601,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			$ics->label          = $icsLabel;
 			$ics->srcURL         = $uploadURL;
 			$ics->ignoreembedcat = $ignoreembed;
+			$ics->autorefresh    = $autorefesh;
 			// TODO update access and state
 			$ics->updateDetails();
 			$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=$redirect_task", JText::_('ICS_SAVED'));

@@ -45,8 +45,9 @@ $action = Factory::getApplication()->isClient('administrator') ? "index.php" : "
 			$srcURL   = $this->editItem->srcURL;
 			$filename = $this->editItem->filename;
 			$overlaps = $this->editItem->overlaps;
-			$label    = $this->editItem->label;
+			$label    = htmlspecialchars($this->editItem->label);
 			$icaltype = $this->editItem->icaltype;
+
 			if ($srcURL == "")
 			{
 				$filemessage = JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_LOADED_FROM_LOCAL_FILE_CALLLED") . " ";

@@ -18,7 +18,7 @@ $input = Factory::getApplication()->input;
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>
 
 				<input type="text" name="keyword" size="30" maxlength="50" class="inputbox"
-				       value="<?php echo $this->keyword; ?>"/>
+				       value="<?php echo htmlspecialchars($this->keyword); ?>"/>
 				<label for="showpast"><?php echo JText::_("JEV_SHOW_PAST"); ?></label>
 				<input type="checkbox" id="showpast" name="showpast"
 				       value="1" <?php echo $input->getInt('showpast', 0) ? 'checked="checked"' : '' ?> />

@@ -73,7 +73,8 @@ class PlgSystemGwejson extends JPlugin
 			$file = "gwejson_" . $file;
 		}
 
-		$path  = $input->get('path', 'site', 'cmd');
+		$path = $input->getCmd('path', 'site');
+		if (empty($path)) {$path = 'site';} // Additional check, we have had some systems returning empty values on jinput instead of the default value.
 		$paths = array("site" => JPATH_SITE, "admin" => JPATH_ADMINISTRATOR, "plugin" => JPATH_SITE . "/plugins", "module" => JPATH_SITE . "/modules", "library" => JPATH_LIBRARIES);
 		if (!in_array($path, array_keys($paths)))
 		{

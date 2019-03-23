@@ -343,6 +343,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$app    = Factory::getApplication();
 		$input  = $app->input;
+        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// clean out the cache
 		$cache = Factory::getCache('com_jevents');
@@ -379,7 +380,19 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$data["UID"] = $input->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"] = $input->getString("extra_info", "");
+		if ($params->get("allowraw", 0))
+		{
+			$data["X-EXTRAINFO"] = $input->get("extra_info", '', 'RAW');
+			$data["DESCRIPTION"] = $input->get('jevcontent', '', 'RAW');
+		} else {
+			$data["X-EXTRAINFO"] = $input->getRaw("extra_info", "");
+			$data["DESCRIPTION"] = $input->getRaw('jevcontent', '');
+
+			$filter = JFilterInput::getInstance(array(), array(), 1, 1);
+			$data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
+			$data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
+		}
+
 		$data["LOCATION"]    = $input->getString("location", "");
 		$data["GEOLON"]      = $input->getString("geolon", "");
 		$data["GEOLAT"]      = $input->getString("geolat", "");
@@ -389,8 +402,6 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 			$data["allDayEvent"] = "on";
 		}
 		$data["CONTACT"] = $input->getString("contact_info", "");
-		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"]  = $input->get('jevcontent', '', 'RAW');
 		$data["publish_down"] = $input->getString("publish_down", "2006-12-12");
 		$data["publish_up"]   = $input->getString("publish_up", "2006-12-12");
 
@@ -456,7 +467,43 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$array = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
+		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
+		{
+			$array  = $input->getArray(array(), null, 'RAW');
+			$filter = JFilterInput::getInstance(null, null, 1, 1);
+
+			//Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
+			//Then filter on through with JFilterInput to HTML
+
+			foreach ($array as $key => $row)
+			{
+				//Single row check
+				if (!is_array($row))
+				{
+					$array[$key] = $filter->clean($row, 'HTML');
+				}
+				else
+				{
+					//1 Deep row check
+					foreach ($array[$key] as $key1 => $sub_row)
+					{
+						//2 Deep row check
+						if (!is_array($sub_row))
+						{
+							$array[$key][$key1] = $filter->clean($sub_row, 'HTML');
+						}
+						else
+						{
+							foreach ($sub_row as $key2 => $sub_sub_row)
+							{
+								$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+							}
+						}
+					}
+				}
+			}
+		}
+
 
 		foreach ($array as $key => $value)
 		{

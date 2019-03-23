@@ -48,14 +48,14 @@
 			<field name='strend' type='text' default='TOMORROW' label="COM_JEVENTS_DATE_RANGE_STR_END_LABEL"
 			       description="" showon="relative:strtotime[AND]usedates:both,end"/>
 
-			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"
-			       label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
-				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC">JEV_STARTDATE_INCREASING
-				</option>
-				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC">JEV_STARTDATE_DECREASING
-				</option>
-				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc ">JEV_ALPHABETICAL</option>
-				<option value="ev.created DESC">JEV_MOST_RECENT</option>
+			<field name="dataorder" type="list" default="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC"  label="JEV_DATA_ORDER" description="JEV_DATA_ORDER_DESC">
+				<option value="rpt.startrepeat asc, rpt.endrepeat ASC, det.summary ASC" >JEV_STARTDATE_INCREASING</option>
+				<option value="rpt.startrepeat desc, rpt.endrepeat desc, det.summary ASC" >JEV_STARTDATE_DECREASING</option>
+				<option value="det.summary ASC, rpt.startrepeat desc, rpt.endrepeat desc " >JEV_ALPHABETICAL</option>
+				<option value="ev.created DESC" >JEV_MOST_RECENT</option>
+				<option value="ev.created ASC" >JEV_MOST_RECENT_ASC</option>
+				<option value="det.modified DESC" >JEV_MOST_RECENT_MODIFIED_DESC</option>
+				<option value="det.modified ASC" >JEV_MOST_RECENT_MODIFIED_ASC</option>
 			</field>
 
 			<field name='daterangeformat' type='text' default='{START(%d %B %Y)} - {END(%d %B %Y)}' size="30"

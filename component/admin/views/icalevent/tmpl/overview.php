@@ -81,7 +81,7 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 						<?php echo JText::_('JEV_SEARCH'); ?>
 					</label>
 					<div class="btn-wrapper input-append">
-						<input type="text" id="search" name="search" value="<?php echo $this->search; ?>"
+						<input type="text" id="search" name="search" value="<?php echo htmlspecialchars($this->search); ?>"
 						       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
 						       onChange="Joomla.submitform()" />
 						<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
