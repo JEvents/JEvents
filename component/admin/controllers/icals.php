@@ -751,7 +751,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		$app  = Factory::getApplication();
 		$input  = $app->input;
 		// include ical files
-		$catid = intval($input->input->get('cid', array(), 'array'));
+		$catid = (int) $input->get('catid', array());
 		// Should come from the form or existing item
 		$access   = $input->getInt('access', 0);
 		$state    = 1;
@@ -785,10 +785,17 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 
 		}
 
-		$icsid               = 0;
-		$icsFile             = iCalICSFile::editICalendar($icsid, $catid, $access, $state, $icsLabel);
-		$icsFile->created_by = $input->getInt("created_by", 0);
-		$icsFileid           = $icsFile->store();
+		$icsid                      = 0;
+		$icsFile                    = iCalICSFile::editICalendar($icsid, $catid, $access, $state, $icsLabel);
+		$icsFile->created_by        = $input->getInt("created_by", 0);
+		$icsFile->catid             = $catid;
+		$icsFile->isdefault         = $input->getInt('isdefault', 0);
+		$icsFile->overlaps          = $input->getInt('overlaps', 0);
+		$icsFile->ignoreembedcat    = $input->getInt('ignoreembedcat', 0);
+		$icsFile->access            = $access;
+		$icsFile->label             = $icsLabel;
+
+		$icsFile->store();
 
 		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('ICAL_FILE_CREATED'));
 		$this->redirect();
