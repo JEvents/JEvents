@@ -124,6 +124,14 @@ if ($view === 'customcss')
 	}
 	$controllerName = 'CustomCss';
 }
+if($view === 'import') {
+	if ($cmd === 'cpanel.show' || strpos($cmd, '.') === 0)
+	{
+		$cmd = $view;
+	}
+	$controllerName = 'Import';
+}
+
 if ($view === 'supportinfo')
 {
 	Factory::getApplication()->redirect('index.php?option=com_jevents&task=cpanel.support');
@@ -155,7 +163,7 @@ if (strpos($cmd, '.') !== false)
 	$controllerName = strtolower($controllerName);
 	$controllerPath = JPATH_COMPONENT . '/' . 'controllers' . '/' . $controllerName . '.php';
 	//Ignore controller names array.
-	$ignore = array('customcss');
+	$ignore = array('customcss', 'import');
 	if (!in_array($controllerName, $ignore, false))
 	{
 		$controllerName = "Admin" . $controllerName;
@@ -215,6 +223,7 @@ PluginHelper::importPlugin("jevents");
 
 // Set the name for the controller and instantiate it
 $controllerClass = ucfirst($controllerName) . 'Controller';
+
 if (class_exists($controllerClass))
 {
 	$controller = new $controllerClass();

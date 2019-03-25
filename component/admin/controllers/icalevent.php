@@ -67,7 +67,7 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->_checkValidCategories();
 
 		$showUnpublishedICS        = true;
-		$showUnpublishedCategories = true; // We shouldn't show unpublished categories in the category select.
+		$showUnpublishedCategories = true;
 
 		$app   = Factory::getApplication();
 		$input = $app->input;
@@ -1082,6 +1082,111 @@ class AdminIcaleventController extends JControllerAdmin
 
 	}
 
+	private function doSave(& $msg)
+	{
+
+		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
+			return false;
+		}
+
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+
+		// Clean out the cache
+		$cache = Factory::getCache('com_jevents');
+		$cache->clean(JEV_COM_COMPONENT);
+		$input = Factory::getApplication()->input;
+		$array  = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : $input->getArray(array(), null, 'RAW');
+
+		// Should we allow raw content through unfiltered
+		if ($params->get("allowraw", 0))
+		{
+			$array['jevcontent'] = $input->post->get("jevcontent", "", RAW);
+			$array['extra_info'] = $input->post->get("extra_info", "", RAW);
+		}
+		// Convert nl2br if there is no HTML
+		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
+		{
+			$array['jevcontent'] = nl2br($array['jevcontent']);
+		}
+		if (strip_tags($array['extra_info']) == $array['extra_info'])
+		{
+			$array['extra_info'] = nl2br($array['extra_info']);
+		}
+
+		// Convert event data to objewct so we can test permissions
+		$eventobj = new stdClass();
+		foreach ($array as $key => $val)
+		{
+			$newkey            = "_" . $key;
+			$eventobj->$newkey = $val;
+		}
+		$eventobj->_icsid = $eventobj->_ics_id;
+		if (isset($eventobj->_catid) && is_array($eventobj->_catid))
+		{
+			$eventobj->_catid = current($eventobj->_catid);
+		}
+
+		if (!JEVHelper::canCreateEvent($eventobj) && !JEVHelper::isEventEditor())
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
+			return false;
+		}
+
+		$rrule = SaveIcalEvent::generateRRule($array);
+
+		// ensure authorised
+		if (isset($array["evid"]) && intval($array["evid"]) > 0)
+		{
+			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
+			if (!$event || !JEVHelper::canEditEvent($event))
+			{
+				throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
+				return false;
+			}
+		}
+
+		$clearout = false;
+		// remove all exceptions since they are no longer needed
+		if (isset($array["evid"]) && intval($array["evid"]) > 0 && $input->getInt("updaterepeats", 1))
+		{
+			$clearout = true;
+		}
+
+		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
+		{
+			$row = new jIcalEventRepeat($event);
+			if (!JEVHelper::canPublishEvent($row) && !$event->state)
+			{
+				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
+			}
+			else
+			{
+				$msg = JText::_("Event_Saved", true);
+			}
+			if ($clearout)
+			{
+				$db    = Factory::getDbo();
+				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
+				$db->setQuery($query);
+				$db->execute();
+				// TODO clear out old exception details
+			}
+		}
+		else
+		{
+			$msg = JText::_("Event Not Saved", true);
+			$row = null;
+		}
+
+		return $row;
+
+	}
+
 	function savenew()
 	{
 
@@ -1243,156 +1348,6 @@ class AdminIcaleventController extends JControllerAdmin
 		$this->view->setLayout('csvimport');
 
 		$this->view->display();
-
-	}
-
-	private function doSave(& $msg)
-	{
-		if (!JEVHelper::isEventCreator() && !JEVHelper::isEventEditor())
-		{
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
-			return false;
-		}
-
-		$params = JComponentHelper::getParams(JEV_COM_COMPONENT);
-                
-		// clean out the cache
-		$cache = JFactory::getCache('com_jevents');
-		$cache->clean(JEV_COM_COMPONENT);
-		$jinput = JFactory::getApplication()->input;
-		$array  = $jinput->getArray(array(), null, 'RAW');
-
-		if (version_compare(JVERSION, '3.7.1', '>=') && !$params->get('allowraw', 0))
-        {
-
-			$filter = JFilterInput::getInstance(null, null, 1, 1);
-
-			//Joomla! no longer provides HTML allowed in JInput so we need to fetch raw
-			//Then filter on through with JFilterInput to HTML
-
-			foreach ($array as $key => $row)
-			{
-				//Single row check
-				if (!is_array($row))
-				{
-					$array[$key] = $filter->clean($row, 'HTML');
-				}
-				else
-				{
-					//1 Deep row check
-					foreach ($array[$key] as $key1 => $sub_row)
-					{
-						//2 Deep row check
-						if (!is_array($sub_row))
-						{
-							$array[$key][$key1] = $filter->clean($sub_row, 'HTML');
-						}
-						else
-						{
-							foreach ($sub_row as $key2 => $sub_sub_row)
-							{
-								$array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
-							}
-						}
-					}
-				}
-			}
-		}
-
-		// Should we allow raw content through unfiltered
-		// Should we allow raw content through unfiltered
-		if ($params->get("allowraw", 0))
-		{
-			$array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
-			$array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
-		}
-		else
-		{
-			// getHTML doesn't work - it drops ALL tags as of Joomla 3.9.4
-			$array['jevcontent'] = $jinput->post->get("jevcontent", "", 'RAW');
-			$array['extra_info'] = $jinput->post->get("extra_info", "", 'RAW');
-
-			$filter = JFilterInput::getInstance(array(), array(), 1,1);
-			$array["extra_info"] = $filter->clean($array["extra_info"] , 'html');
-			$array["jevcontent"] = $filter->clean($array["jevcontent"] , 'html');
-		}
-
-		// convert nl2br if there is no HTML
-		if (strip_tags($array['jevcontent']) == $array['jevcontent'])
-		{
-			$array['jevcontent'] = nl2br($array['jevcontent']);
-		}
-		if (strip_tags($array['extra_info']) == $array['extra_info'])
-		{
-			$array['extra_info'] = nl2br($array['extra_info']);
-		}
-
-		// convert event data to objewct so we can test permissions
-		$eventobj = new stdClass();
-		foreach ($array as $key => $val)
-		{
-			$newkey = "_" . $key;
-			$eventobj->$newkey = $val;
-		}
-		$eventobj->_icsid = $eventobj->_ics_id;
-		if (isset($eventobj->_catid) && is_array($eventobj->_catid))
-		{
-			$eventobj->_catid = current($eventobj->_catid);
-		}
-
-		if (!JEVHelper::canCreateEvent($eventobj) && !JEVHelper::isEventEditor())
-		{
-			throw new Exception( JText::_('ALERTNOTAUTH'), 403);
-			return false;
-		}
-
-		$rrule = SaveIcalEvent::generateRRule($array);
-
-		// ensure authorised
-		if (isset($array["evid"]) && intval($array["evid"]) > 0)
-		{
-			$event = $this->queryModel->getEventById(intval($array["evid"]), 1, "icaldb");
-			if (!$event || !JEVHelper::canEditEvent($event))
-			{
-				throw new Exception( JText::_('ALERTNOTAUTH'), 403);
-				return false;
-			}
-		}
-
-		$clearout = false;
-		// remove all exceptions since they are no longer needed
-		if (isset($array["evid"]) && intval($array["evid"])> 0 && $jinput->getInt("updaterepeats", 1))
-		{
-			$clearout = true;
-		}
-
-		if ($event = SaveIcalEvent::save($array, $this->queryModel, $rrule))
-		{
-			$row = new jIcalEventRepeat($event);
-			if (!JEVHelper::canPublishEvent($row) && !$event->state)
-			{
-				$msg = JText::_("EVENT_SAVED_UNDER_REVIEW", true);
-			}
-			else
-			{
-				$msg = JText::_("Event_Saved", true);
-			}
-			if ($clearout)
-			{
-				$db = JFactory::getDbo();
-				$query = "DELETE FROM #__jevents_exception WHERE eventid = " . intval($array["evid"]);
-				$db->setQuery($query);
-				$db->execute();
-				// TODO clear out old exception details
-			}
-		}
-		else
-		{
-			$msg = JText::_("Event Not Saved", true);
-			$row = null;
-		}
-
-		return $row;
 
 	}
 

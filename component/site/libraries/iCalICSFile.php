@@ -291,6 +291,7 @@ RAWTEXT;
 			// TODO return warning about duplicate file name  VERY IMPORTANT TO DECIDE WHAT TO DO
 			// UIDs for the vcalendar itself are not compulsory
 		}
+
 		// There is a better way to find
 		// duplicate key info trap repeated insertions - I should
 		if (!parent::store())
@@ -585,9 +586,10 @@ RAWTEXT;
 				}
 			}
 		}
+
 		$count = count($this->_icalInfo->vevents);
 		unset($this->_icalInfo->vevents);
-		if ($guest !== 1)
+		if ($guest !== 1 && $this->icaltype != 2)
 		{
 			Factory::getApplication()->enqueueMessage(JText::plural('COM_JEVENTS_MANAGE_CALENDARS_ICAL_IMPORT_N_EVENTS_PROCESSED', $count));
 		}
