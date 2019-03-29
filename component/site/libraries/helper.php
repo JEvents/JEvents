@@ -675,6 +675,10 @@ class JEVHelper
 			$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'input-medium';
 			$attribs['class'] = trim($attribs['class'] . ' hasTooltip');
 
+			// Joomla readonly workaround
+			unset($attribs['readonly']);
+			unset($attribs[' readonly']);
+
 			$attribs = ArrayHelper::toString($attribs);
 		}
 
