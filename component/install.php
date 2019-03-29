@@ -1,7 +1,7 @@
 <?php
 
 /**
- * copyright (C) 2012-2019 GWE Systems Ltd - All rights reserved
+ * copyright (C) 2012-2018 GWE Systems Ltd - All rights reserved
  * @license GNU/GPLv3 www.gnu.org/licenses/gpl-3.0.html
  * */
 // Check to ensure this file is included in Joomla!
@@ -522,15 +522,19 @@ SQL;
 
 		if (!array_key_exists("evaccess", $icols))
 		{
+                    // What is curtent value of sql_mode
+                    $db->setQuery("SELECT @@sql_mode");
+                    $sql_mode = @$db->loadResult();
+                    
                     $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
                     @$db->execute();
                     $sql = "ALTER TABLE #__jevents_vevent ADD INDEX evaccess (access)";
                     $db->setQuery($sql);
                     @$db->execute();
-                    $db->setQuery("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode,',NO_ZERO_DATE'))");
-                    @$db->execute();
-                    $db->setQuery("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''))");
-                    @$db->execute();
+                    
+                    // Return to old value
+                    $db->setQuery("SET SESSION sql_mode=(".$db->quote($sql_mode).")");
+                    @$db->execute();                    
 		}
                                 
 		$sql = "SHOW COLUMNS FROM #__jevents_vevdetail";
