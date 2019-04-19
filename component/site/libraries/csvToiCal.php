@@ -166,6 +166,9 @@ class CsvToiCal
 				case "X-EXTRAINFO":
 					$dataLine->setExtraInfo($data[$order]);
 					break;
+				case "X-COLOR":
+					$dataLine->setColor($data[$order]);
+					break;
 				case "CONTACT":
 					$dataLine->setContact($data[$order]);
 					break;
