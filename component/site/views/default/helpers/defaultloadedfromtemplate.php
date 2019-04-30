@@ -1430,7 +1430,10 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				$blank[] = "";
 				break;
-
+            case "{{CREATORID}}":
+                $search[]   = "{{CREATORID}}";
+                $replace[]  = $event->created_by();
+                break;
 			case "{{HITS}}":
 				$search[] = "{{HITS}}";
 				if ($jevparams->get("com_hitsview", 1) || $template_name != "icalevent.detail_body")
