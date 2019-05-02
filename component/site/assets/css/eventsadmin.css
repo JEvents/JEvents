@@ -801,7 +801,7 @@ div#jevents .jevcolour .minicolors-theme-bootstrap .minicolors-input {
 
 /** Joomla 3.7.0 backend icon fix for poor bootstrap css issues **/
 
-body.admin.com_jevents .com_jevents [class^="icon-"] {
+body.admin.com_jevents [class^="icon-"] {
     background-image:none;
     vertical-align:baseline;
 }
