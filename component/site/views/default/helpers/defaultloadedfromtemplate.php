@@ -1430,8 +1430,8 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				}
 				$blank[] = "";
 				break;
-            case "{{CREATORID}}":
-                $search[]   = "{{CREATORID}}";
+            case "{{CREATOR_ID}}":
+                $search[]   = "{{CREATOR_ID}}";
                 $replace[]  = $event->created_by();
                 break;
 			case "{{HITS}}":
