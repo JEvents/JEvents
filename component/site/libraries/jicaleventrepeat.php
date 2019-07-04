@@ -509,7 +509,7 @@ class jIcalEventRepeat extends jIcalEventDB
 
 		$pastev = 0;
 		$limit = 10;
-		while ($pastev == 0)
+		while ($pastev == 0 && $limit < 320)
 		{
 			$prev = $this->datamodel->queryModel->listIcalEvents($minyear.'-01-01 00:00:00', $this->_startrepeat, "rpt.startrepeat DESC, rpt.rp_id DESC", false, "", "", $limit);
 			for ($i = 0; $i < count($prev); $i++)
@@ -548,7 +548,8 @@ class jIcalEventRepeat extends jIcalEventDB
 		$pastevpost = 0;
                 $post = null;
 		$limit = 10;
-		while ($pastevpost == 0) {
+		// Limit memory usage!
+		while ($pastevpost == 0 && $limit < 320) {
 			$next = $this->datamodel->queryModel->listIcalEvents($this->_startrepeat, $maxyear.'-12-31 00:00:00', "rpt.startrepeat ASC, rpt.rp_id ASC", false, "", "", $limit);
 			for ($i = 0; $i < count($next); $i++)
 			{

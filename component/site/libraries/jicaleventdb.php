@@ -757,6 +757,58 @@ class jIcalEventDB extends jEventCal {
 		return $row;
 	}
 
+	// Gets most recent repeat for this event from database
+	function getMostRecentRepeat($allowexceptions=true){
+
+		$t_datenow = JEVHelper::getNow();
+		$now = $t_datenow->toMysql();
+		$db = JFactory::getDbo();
+		$query = "SELECT ev.*, rpt.*, rr.*, det.* "
+			. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+			. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+			. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+			. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+			. "\n FROM #__jevents_vevent as ev "
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+			. ((!$allowexceptions)?"\n LEFT JOIN #__jevents_exception as exc ON exc.rp_id=rpt.rp_id":"")
+			. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
+			. ((!$allowexceptions)?"\n AND exc.rp_id IS NULL":"")
+			. "\n AND  rpt.endrepeat < '".$now."' "
+			. "\n ORDER BY rpt.startrepeat desc LIMIT 1" ;
+
+		$db->setQuery( $query );
+		$rows = $db->loadObjectList();
+		if (!$rows || count($rows)==0){
+			// Look backwards as fallback
+			$query = "SELECT ev.*, rpt.*, rr.*, det.* "
+				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
+				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
+				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
+				. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn"
+				. "\n FROM #__jevents_vevent as ev "
+				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+				. "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
+				. ((!$allowexceptions)?"\n LEFT JOIN #__jevents_exception as exc ON exc.rp_id=rpt.rp_id":"")
+				. "\n WHERE ev.ev_id = '".$this->ev_id()."' "
+				. ((!$allowexceptions)?"\n AND exc.rp_id IS NULL":"")
+				. "\n AND  rpt.endrepeat < '".$now."' "
+				. "\n ORDER BY rpt.startrepeat desc LIMIT 1" ;
+
+			$db->setQuery( $query );
+			$rows = $db->loadObjectList();
+		}
+
+		$row = null;
+		// iCal agid uses GUID or UUID as identifier
+		if( $rows ){
+			$row = new jIcalEventRepeat($rows[0]);
+		}
+		return $row;
+	}
+
 	// Gets first repeat for this event from databases before it was tampered as an exception
 	function getOriginalFirstRepeat(){
 

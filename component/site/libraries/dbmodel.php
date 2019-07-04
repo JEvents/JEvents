@@ -934,11 +934,19 @@ class JEventsDBModel
 		$extratables = "";  // must have comma prefix
 		$needsgroup = false;
 
-		$filterarray = array("published", "justmine", "category", "search", "repeating");
-
-		// If there are extra filters from the module then apply them now
 		$reg =  JFactory::getConfig();
 		$modparams = $reg->get("jev.modparams", false);
+
+		if ($modparams && $modparams->get('ignorecatfilter',0) == 2 )
+		{
+			$filterarray = array("published", "justmine", "search", "repeating");
+		}
+		else
+		{
+			$filterarray = array("published", "justmine", "category", "search", "repeating");
+		}
+
+		// If there are extra filters from the module then apply them now
 		if ($modparams && $modparams->get("extrafilters", false))
 		{
 			$filterarray = array_merge($filterarray, explode(",", $modparams->get("extrafilters", false)));
@@ -2602,6 +2610,14 @@ class JEventsDBModel
 		$db->setQuery($query);
 		if ($adminuser)
 		{
+			/*
+			if (strpos($db->getQuery(), '2560' )>0)
+			{
+				echo $db->getQuery()."<br/>";
+				echo $db->explain();
+				exit();
+			}
+			*/
 			//echo $db->getQuery()."<br/>";
 			//echo $db->explain();
 			//exit();
