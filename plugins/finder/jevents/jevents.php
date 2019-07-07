@@ -292,6 +292,8 @@ class plgFinderJEvents extends FinderIndexerAdapter
 
 		$theevent = count($theevent) === 1 ? $theevent[0] : $theevent;
 
+		JLoader::register('JevDate', JPATH_SITE . "/components/com_jevents/libraries/jevdate.php");
+
 		if ($this->params->get("future", -1) != -1 && $theevent)
 		{
 			$past                     = str_replace('-', '', $this->params->get("past", -1));
@@ -300,7 +302,7 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		}
 		else
 		{
-			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;			
+			$item->publish_start_date	= isset($item->modified) ?$item->modified : "2010-01-01 00:00:00" ;
 		}
 		if ($this->params->get("past", -1) != -1  && $theevent)
 		{
@@ -316,11 +318,19 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// If the timelimit plugin has values set let's overrride the previous values.
 		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
 
+			// Must change to correct timezone
 			if ($theevent->timelimits->startlimit !== '') {
-				$item->publish_start_date   = $theevent->timelimits->startlimit;
+
+				$date   = new JevDate($theevent->timelimits->startlimit);
+				$sql    = $date->toMySQL();
+				$item->publish_start_date   = $sql;
 			}
+
 			if ($theevent->timelimits->endlimit) {
-				$item->publish_end_date     = $theevent->timelimits->endlimit;
+
+				$date   = new JevDate($theevent->timelimits->endlimit);
+				$sql    = $date->toMySQL();
+				$item->publish_end_date     = $sql;
 			}
 		}
 
