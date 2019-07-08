@@ -413,9 +413,11 @@ class JevHtmlBootstrap
     var oldHide = $.fn.popover.Constructor.prototype.hide;
 
     $.fn.popover.Constructor.prototype.hide = function() {
-        // Bootstrap 4
+        // Bootstrap 4         
         if (this.config)
         {
+            //- This is not needed for recent versions of Bootstrap 4
+            /*
 	        if (this.config.container == '#jevents_body' && this.config.trigger.indexOf('hover') >=0) {
 	            var that = this;
 	            // try again after what would have been the delay
@@ -424,6 +426,7 @@ class JevHtmlBootstrap
 	            }, that.config.delay.hide);
 	            return;
 	        }
+	        */
         }
         // Earlier Bootstraps 
         else
