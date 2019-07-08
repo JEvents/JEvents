@@ -32,11 +32,11 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolbarHelper::title(JText::_('ICAL_EVENT_REPEATS'), 'jevents');
 
+		JToolbarHelper::addNew('icalrepeat.addRepeat', 'Add repeat');
 		JToolbarHelper::editList('icalrepeat.edit');
 		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
 		JToolbarHelper::cancel('icalevent.list');
 
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 		JEventsHelper::addSubmenu();
 
 		HTMLHelper::_('behavior.tooltip');

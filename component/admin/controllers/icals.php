@@ -337,8 +337,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			return false;
 		}
 
-		$cid = $input->input->get('cid', array(), 'array');
-		$cid = ArrayHelper::toInteger($cid);
+		$cid = $input->input->get('cid', array(0), 'array');
+		$cid    = ArrayHelper::toInteger($cid);
 
 		if (is_array($cid) && count($cid) > 0)
 		{
@@ -531,8 +531,8 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			return;
 		}
 
-		$icsid = intval($input->getInt('icsid', 0));
-		$cid   = $input->get('cid', array(), 'array');
+		$icsid = $input->getInt('icsid', 0);
+		$cid   = $input->get('cid', array(0), 'array');
 		$cid   = ArrayHelper::toInteger($cid);
 
         if (is_array($cid) && count($cid) > 0)
@@ -565,14 +565,14 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 			$catid = $input->getInt('catid', $currentICS->catid);
 			if ($catid <= 0 && $currentICS->catid > 0)
 			{
-				$catid = intval($currentICS->catid);
+				$catid = (int) $currentICS->catid;
 			}
 			$access = intval($input->getInt('access', $currentICS->access));
 			if ($access < 0 && $currentICS->access >= 0)
 			{
 				$access = intval($currentICS->access);
 			}
-			$state = intval($input->getInt('state', $currentICS->state));
+			$state = (int) $input->getInt('state', $currentICS->state);
 			if ($state < 0 && $currentICS->state >= 0)
 			{
 				$state = intval($currentICS->state);
@@ -749,7 +749,7 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 		$app  = Factory::getApplication();
 		$input  = $app->input;
 		// include ical files
-		$catid = intval($input->input->get('cid', array(), 'array'));
+		$catid = (int) $input->get('catid', array());
 		// Should come from the form or existing item
 		$access   = $input->getInt('access', 0);
 		$state    = 1;
@@ -783,10 +783,17 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 
 		}
 
-		$icsid               = 0;
-		$icsFile             = iCalICSFile::editICalendar($icsid, $catid, $access, $state, $icsLabel);
-		$icsFile->created_by = $input->getInt("created_by", 0);
-		$icsFileid           = $icsFile->store();
+		$icsid                      = 0;
+		$icsFile                    = iCalICSFile::editICalendar($icsid, $catid, $access, $state, $icsLabel);
+		$icsFile->created_by        = $input->getInt("created_by", 0);
+		$icsFile->catid             = $catid;
+		$icsFile->isdefault         = $input->getInt('isdefault', 0);
+		$icsFile->overlaps          = $input->getInt('overlaps', 0);
+		$icsFile->ignoreembedcat    = $input->getInt('ignoreembedcat', 0);
+		$icsFile->access            = $access;
+		$icsFile->label             = $icsLabel;
+
+		$icsFile->store();
 
 		$this->setRedirect("index.php?option=" . JEV_COM_COMPONENT . "&task=icals.list", JText::_('ICAL_FILE_CREATED'));
 		$this->redirect();

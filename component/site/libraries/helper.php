@@ -1313,6 +1313,62 @@ class JEVHelper
 	}
 
 	/**
+	 * Get current year number
+	 * @param   string  $year     Year reference or exact number of the year
+	 * @return int
+	 */
+	public static
+			function getYearNumber($year)
+	{
+		$datenow = JEVHelper::getNow();
+		$yearnow = $datenow->toFormat('%Y');
+		$firstpos = JString::substr($year, 0, 1);
+
+		if ($firstpos == "+")
+		{
+			$year = JString::substr($year, 1);
+			$year = $yearnow + $year;
+		}
+		else if ($firstpos == "-")
+		{
+			$year = JString::substr($year, 1);
+			$year = $yearnow - $year;
+		}
+		// If we do not get a 4 digit number and no sign we assume it's +$year
+		else if (JString::strlen($year) < 4)
+		{
+			$year = $yearnow + $year;
+		}
+
+		return $year;
+
+	}
+
+	/**
+	 * Get JevDate object of current time
+	 *
+	 * @return object JevDate
+	 */
+	public static
+			function getNow()
+	{
+
+		/* JevDate object of current time */
+		static $datenow = null;
+
+		if (!isset($datenow))
+		{
+			include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
+			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$tz = $compparams->get("icaltimezonelive", "");
+			// Now in the set timezone!
+			$datenow = JevDate::getDate("+0 seconds");
+		}
+		return $datenow;
+
+	}
+
+	/**
 	 * Test to see if user can add events from the front end
 	 *
 	 * @return boolean
@@ -3930,69 +3986,6 @@ SCRIPT;
 		}
 
 		return $maxyear;
-
-	}
-
-	/**
-	 * Get current year number
-	 *
-	 * @param   string $year Year reference or exact number of the year
-	 *
-	 * @return int
-	 */
-	public static
-	function getYearNumber($year)
-	{
-
-		$datenow  = JEVHelper::getNow();
-		$yearnow  = $datenow->toFormat('%Y');
-		$firstpos = StringHelper::substr($year, 0, 1);
-
-		if ($firstpos == "+")
-		{
-			$year = StringHelper::substr($year, 1);
-			$year = $yearnow + $year;
-		}
-		else if ($firstpos == "-")
-		{
-			$year = StringHelper::substr($year, 1);
-			$year = $yearnow - $year;
-		}
-		//If we do not get a 4 digit number and no sign we assume it's +$year
-		else if (StringHelper::strlen($year) < 4)
-		{
-			$cuenta = count($year);
-			$year   = $yearnow + $year;
-		}
-
-		return $year;
-
-	}
-
-	// We use this for RSVP Pro Invites with iCal mail and New & Event change notifications at present to avoid code duplication.
-
-	/**
-	 * Get JevDate object of current time
-	 *
-	 * @return object JevDate
-	 */
-	public static
-	function getNow()
-	{
-
-		/* JevDate object of current time */
-		static $datenow = null;
-
-		if (!isset($datenow))
-		{
-			include_once(JPATH_SITE . "/components/com_jevents/jevents.defines.php");
-			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
-			$tz         = $compparams->get("icaltimezonelive", "");
-			// Now in the set timezone!
-			$datenow = JevDate::getDate("+0 seconds");
-		}
-
-		return $datenow;
 
 	}
 

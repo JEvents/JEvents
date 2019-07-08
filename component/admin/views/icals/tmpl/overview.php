@@ -49,7 +49,7 @@ $fullspan = 12;
 				<td align="right"><?php echo $this->clist; ?> </td>
 				<td><?php echo JText::_('JEV_SEARCH'); ?>&nbsp;</td>
 				<td>
-					<input type="text" name="search" value="<?php echo $this->search; ?>" class="inputbox"
+					<input type="text" name="search" value="<?php echo htmlspecialchars($this->search); ?>" class="inputbox"
 					       onChange="document.adminForm.submit();"/>
 				</td>
 			</tr>

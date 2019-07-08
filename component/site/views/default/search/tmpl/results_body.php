@@ -84,7 +84,7 @@ echo '<fieldset><legend class="ev_fieldset">' . JText::_('JEV_SEARCHRESULTS') . 
 			<form action="<?php echo Route::_("index.php?option=" . JEV_COM_COMPONENT . "&task=search.results&Itemid=" . $this->Itemid); ?>"
 			      method="post" class="fs1px">
 				<input type="text" name="keyword" size="30" maxlength="50" class="inputbox"
-				       value="<?php echo $this->keyword; ?>"/>
+				       value="<?php echo htmlspecialchars($this->keyword); ?>"/>
 				<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>"/>
 				<input type="hidden" name="task" value="search.results"/>
 				<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

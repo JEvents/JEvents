@@ -13,7 +13,12 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+
+if (JFile::exists(JPATH_ADMINISTRATOR . '/includes/toolbar.php')) {
+    require_once(JPATH_ADMINISTRATOR . '/includes/toolbar.php');
+}
 
 /**
  * HTML View class for the component frontend
@@ -233,7 +238,7 @@ class ICalEventViewIcalevent extends AdminIcaleventViewIcalevent
 
 		if (strpos($name, "_") === 0)
 		{
-			$name = "ViewHelper" . ucfirst(\Joomla\String\StringHelper::substr($name, 1));
+			$name = "ViewHelper" . ucfirst(StringHelper::substr($name, 1));
 		}
 		$helper = ucfirst($this->jevlayout) . ucfirst($name);
 		if (!$this->loadHelper($helper))

@@ -331,6 +331,92 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 	}
 
+	// Simple function to add a repeat to the series.
+
+	function addRepeat() {
+		if (!JEVHelper::isEventCreator())
+		{
+			throw new Exception(JText::_('ALERTNOTAUTH'), 403);
+
+			return false;
+		}
+
+		$app    = JFactory::getApplication();
+		$input  = $app->input;
+		$evid   = $input->getInt('evid', 0);
+
+		$dataModel  = new JEventsDataModel("JEventsAdminDBModel");
+		$queryModel = new JEventsDBModel($dataModel);
+
+		// First repeat data for inserting a new repeat to end
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
+		$query->select('*')
+		    ->from($db->quoteName('#__jevents_repetition', 'rp'))
+		    ->where($db->quoteName('eventid') . ' = ' . $evid);
+		echo $query->dump();
+		$db->setQuery($query);
+		$repeats = $db->loadObjectList();
+
+		$start          = strtotime('now');
+		$irregularDates = array();
+
+		foreach ($repeats AS $repeat) {
+		    $irregularDates[] = $repeat->startrepeat;
+        }
+
+		$irregularsCount = count($irregularDates);
+
+		if($irregularsCount <= 0) {
+		    throw new Exception('Error, no repeats could be found?', 500);
+		    return false;
+        }
+
+		// Add in our new date for additional repeat
+		$irregularDates[]   =  $start;
+
+		// Set Irregular Rules
+		$rruleVals = new stdClass();
+		$rruleVals->eventid         = $evid;
+		$rruleVals->freq            = 'IRREGULAR';
+		$rruleVals->irregulardates  = implode(',', $irregularDates);
+		$rruleVals->count           = count($irregularDates);
+
+		// Update the repeat rule to be irregular
+        $db     = Factory::getDbo();
+        $result = $db->updateObject('#__jevents_rrule', $rruleVals, 'eventid');
+
+        if($result) {
+            // Now to insert the the additional repeat
+            $repeatToInsert = $repeats[count($repeats) -1];
+
+            $start          = strtotime($repeatToInsert->startrepeat . '+1 hour');
+            $end            = strtotime($repeatToInsert->endrepeat . '+2 hour');
+            $repeatToInsert->rp_id          = '';
+            $repeatToInsert->duplicatecheck = md5($repeatToInsert->eventid . $start);
+            $repeatToInsert->startrepeat    = JevDate::strftime('%Y-%m-%d %H:%M:%S', $start);
+            $repeatToInsert->endrepeat      = JevDate::strftime('%Y-%m-%d %H:%M:%S', $end);
+
+            $insertResult = JFactory::getDbo()->insertObject('#__jevents_repetition', $repeatToInsert);
+
+            if ($app->isClient('administrator'))
+            {
+                $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . JText::_("JEVENTS_REPEAT_ADDED") . "", "success");
+                $this->redirect();
+            }
+        }
+        else
+        {
+	        if ($app->isClient('administrator'))
+	        {
+		        $this->setRedirect('index.php?option=' . JEV_COM_COMPONENT . '&task=icalrepeat.list&cid[]=' . $evid, "" . JText::_("JEVENT_REPEAT_RRULE_ERROR") . "", "success");
+		        $this->redirect();
+	        }
+        }
+
+
+	}
+
 	private function doSave(& $msg)
 	{
 
@@ -343,6 +429,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$app    = Factory::getApplication();
 		$input  = $app->input;
+        $params = JComponentHelper::getParams(JEV_COM_COMPONENT);
 
 		// clean out the cache
 		$cache = Factory::getCache('com_jevents');
@@ -379,7 +466,19 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$data["UID"] = $input->get("uid", md5(uniqid(rand(), true)));
 
-		$data["X-EXTRAINFO"] = $input->getString("extra_info", "");
+		if ($params->get("allowraw", 0))
+		{
+			$data["X-EXTRAINFO"] = $input->get("extra_info", '', 'RAW');
+			$data["DESCRIPTION"] = $input->get('jevcontent', '', 'RAW');
+		} else {
+			$data["X-EXTRAINFO"] = $input->getRaw("extra_info", "");
+			$data["DESCRIPTION"] = $input->getRaw('jevcontent', '');
+
+			$filter = JFilterInput::getInstance(array(), array(), 1, 1);
+			$data["X-EXTRAINFO"] = $filter->clean($data["X-EXTRAINFO"] , 'html');
+			$data["DESCRIPTION"] = $filter->clean($data["DESCRIPTION"] , 'html');
+		}
+
 		$data["LOCATION"]    = $input->getString("location", "");
 		$data["GEOLON"]      = $input->getString("geolon", "");
 		$data["GEOLAT"]      = $input->getString("geolat", "");
@@ -388,9 +487,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			$data["allDayEvent"] = "on";
 		}
-		$data["CONTACT"] = $input->getString("contact_info", "");
-		// allow raw HTML (mask =2)
-		$data["DESCRIPTION"]  = $input->get('jevcontent', '', 'RAW');
+		$data["CONTACT"]      = $input->getString("contact_info", "");
 		$data["publish_down"] = $input->getString("publish_down", "2006-12-12");
 		$data["publish_up"]   = $input->getString("publish_up", "2006-12-12");
 
@@ -456,7 +553,40 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		// Add any custom fields into $data array - allowing HTML (which can be cleaned up later by plugins)
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
-		$array = !$params->get('allowraw', 0) ? JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) : JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
+		// This test is a no-op
+        $array = !$params->get('allowraw', 0) ?
+            JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW')) :
+            JEVHelper::arrayFiltered($input->getArray(array(), null, 'RAW'));
+        // We need to filter for valid HTML
+        foreach ($array as $key => $row)
+        {
+            //Single row check
+            if (!is_array($row))
+            {
+                $array[$key] = $filter->clean($row, 'HTML');
+            }
+            else
+            {
+                //1 Deep row check
+                foreach ($array[$key] as $key1 => $sub_row)
+                {
+                    //2 Deep row check
+                    if (!is_array($sub_row))
+                    {
+                        $array[$key][$key1] = $filter->clean($sub_row, 'HTML');
+                    }
+                    else
+                    {
+                        foreach ($sub_row as $key2 => $sub_sub_row)
+                        {
+                            $array[$key][$key1][$key2] = $filter->clean($sub_sub_row, 'HTML');
+                        }
+                    }
+                }
+            }
+        }
+
+
 
 		foreach ($array as $key => $value)
 		{

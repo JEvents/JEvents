@@ -59,7 +59,7 @@ class SearchController extends Joomla\CMS\MVC\Controller\BaseController
 		{
 			$keyword = StringHelper::substr($keyword, 0, $upper_limit - 1);
 		}
-		$keyword = $db->escape($input->getString('keyword', ''));
+		$keyword = $db->escape($keyword);
 
 		$cfg   = JEVConfig::getInstance();
 		$theme = JEV_CommonFunctions::getJEventsViewName();

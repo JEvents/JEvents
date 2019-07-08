@@ -86,7 +86,7 @@ class SaveIcalEvent
 
 		}
 
-		$ics_id = ArrayHelper::getValue($array, "ics_id", 0);
+		$ics_id				= (int) ArrayHelper::getValue( $array,  "ics_id",0);
 
 		if ($data["allDayEvent"] == "on")
 		{

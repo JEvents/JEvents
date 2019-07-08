@@ -176,9 +176,19 @@ if (!empty($this->icalEvents))
 		}
 
 		if ($a->hasContactInfo())
+		{
 			$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";
+		}
+
 		if ($a->hasExtraInfo())
+		{
 			$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)) . "\r\n";
+		}
+
+		if ($a->hasColor())
+		{
+			$html .= "X-COLOR:" . $this->wraplines($this->replacetags($a->_color)) . "\r\n";
+		}
 
 		$alldayprefix = "";
 		// No doing true timezones!
@@ -430,8 +440,11 @@ if (!empty($this->icalEvents))
 				if ($a->hasContactInfo())
 					$html .= "CONTACT:" . $this->replacetags($a->contact_info()) . "\r\n";
 				if ($a->hasExtraInfo())
-					$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info));
-				$html .= "\r\n";
+					$html .= "X-EXTRAINFO:" . $this->wraplines($this->replacetags($a->_extra_info)); $html .= "\r\n";
+				if ($a->hasColor())
+				{
+					$html .= "X-COLOR:" . $this->wraplines($this->replacetags($a->_color)) . "\r\n";
+				}
 
 				$exception     = $changedexceptions[$a->rp_id()];
 				$originalstart = JevDate::strtotime($exception->oldstartrepeat);

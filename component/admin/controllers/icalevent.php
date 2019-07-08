@@ -97,7 +97,7 @@ class AdminIcaleventController extends JControllerAdmin
 			$tags       = implode(',', $tagsArray);
 			$this->view->tagsFiltering = true;
 		}
-		
+
 		// Is this a large dataset ?
 		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
 		$db->setQuery($query);
