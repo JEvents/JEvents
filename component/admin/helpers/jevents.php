@@ -32,8 +32,17 @@ class JEventsHelper
 		$task   = $input->getCmd("task", "cpanel.cpanel");
 		$option = $input->getCmd("option", "com_categories");
 
+		if ($option !== 'com_categories')
+		{
+			return;
+		}
 		if ($option == 'com_categories')
 		{
+			$controller = JControllerLegacy::getInstance("Categories");
+			$view = $controller->getView("categories", 'html', 'categoriesView');
+
+			$view->addTemplatePath(JPATH_ADMINISTRATOR. "/components/com_jevents/views/categories/tmpl/");
+
 			$doc = Factory::getDocument();
 
 			$hide_options = '#toolbar-options {'
@@ -157,7 +166,7 @@ STYLE;
 			if ($extension && $extension->enabled && JEVHelper::isAdminUser())
 			{
 				$manifestCache = json_decode($extension->manifest_cache);
-				if (version_compare($manifestCache->version, "3.5.0RC", "ge"))
+				if (version_compare($manifestCache->version, "3.5.0dev", "ge"))
 				{
 					$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 					Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);

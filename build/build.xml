@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="JEvents" default="buildall">
+
+    <property name="rootdir" value="../" override="true" />
+    <property name="builddir" value="./build" override="true" />
+    <property name="uikitdir" value="../../bitbucket/uikit" override="true" />
+
+    <!-- Load path properties -->
+    <!--
+    <property file="paths.build.properties" />
+    -->
+
+    <exec command="git rev-parse --abbrev-ref HEAD" dir="./" outputProperty="git-branch"/>
+    <exec command="git describe --tags" dir="./" outputProperty="git-tag"/>
+    <property name="version" value="${git-tag}" override="false">
+        <filterchain>
+            <replaceregexp>
+                <regexp pattern="v([0-9]{1}\.[0-9]{1,2}\.[0-9]{1,2})(-.+)?" replace="\1" ignoreCase="true"/>
+            </replaceregexp>
+        </filterchain>
+    </property>
+    <tstamp>
+        <format property="build.date" pattern="%B %Y" locale="en_GB" />
+    </tstamp>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directory ./build" />
+        <mkdir dir="${builddir}" />
+        <!--
+        <phingcall target="fetch-gwejson-plugin" />
+        //-->
+        <!-- build uikit before component since its the component that installs the media files -->
+        <phingcall target="build-uikit" />
+        <phingcall target="build-jevents" />
+    </target>
+                
+
+    <!-- ==================================================  -->
+    <!-- Target: Build UIkit    -->
+    <!-- ==================================================  -->
+    <target name="build-uikit" description="Build UIkit">
+        <echo msg="Building UI Kit ..." />
+
+        <!-- copy our repository version of custom files to uikit repository -->
+        <copy todir="${uikitdir}/custom" >
+            <fileset dir="${rootdir}/custom_uikit">
+            </fileset>
+        </copy>
+
+        <!-- delete dist files -->
+        <delete file="${uikitdir}/dist/css/uikit.gsl.css" failonerror="false" />
+        <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
+
+        <!-- execute yarn scripts there -->
+        <exec command="yarn compile" dir="${uikitdir}" outputProperty="yarn.output" >
+        </exec>
+        <echo msg="${yarn.output}" />
+        <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >
+        </exec>
+        <echo msg="${yarn.output2}" />
+        <exec command="yarn scope -s 'gsl-scope'" dir="${uikitdir}"  outputProperty="yarn.output3" >
+        </exec>
+        <echo msg="${yarn.output3}" />
+
+        <!-- copy the dist files back from uikit repository -->
+        <copy todir="${rootdir}/component/media" >
+            <fileset dir="${uikitdir}/dist">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <exclude name="**/*.zip"></exclude>
+                <exclude name="js/components/**"></exclude>
+            </fileset>
+        </copy>
+
+        <!-- replace colours with CSS variables -->
+        <!-- primary -->
+        <!-- primary hover -->
+        <!-- primary active -->
+        <!--
+        ** REMEMBER TO CHANGE - - in var to remove the space if using this!
+        <reflexive>
+            <fileset dir="${rootdir}/com_jevents/media">
+                <include pattern="**/*.gsl.css" />
+                <include pattern="**/*.gsl.min.css" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="#123456" replace="var(- -defaultbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#234567" replace="var(- -mutedbackground)"     ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#34567a" replace="var(- -primarybackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#4567ab" replace="var(- -secondarybackground)" ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#567abc" replace="var(- -successbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#67abcd" replace="var(- -warningbackground)"   ignoreCase="true" multiline="true"/>
+                    <regexp pattern="#7abcde" replace="var(- -dangerbackground)"    ignoreCase="true" multiline="true"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        -->
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: Build JEvents   -->
+    <!-- ============================================  -->
+    <target name="build-jevents" description="Build JEvents">
+        <echo msg="Building JEvents ..." />
+        <phingcall target="build-component"/>
+        <phingcall target="build-libraries"/>
+        <phingcall target="build-modules"/>
+        <phingcall target="build-plugins"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents Component   -->
+    <!-- ============================================  -->
+    <target name="build-component" description="Build Component">
+        <echo msg="Building JEvents Component..."/>
+        <copy todir="${builddir}/component">
+            <fileset dir="../component">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+
+        <fileset dir="${builddir}/component" id="componentZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/com_jevents.zip" >
+            <fileset refid="componentZip"/>
+        </zip>
+    </target>
+
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents Plugins     -->
+    <!-- ============================================  -->
+    <target name="build-plugins" description="Build Plugins">
+        <echo msg="Building JEvents Plugins..."/>
+        <phingcall target="build-actionlog-plugin"/>
+        <phingcall target="build-finder-plugin"/>
+        <phingcall target="build-gwejson-plugin"/>
+        <phingcall target="build-installer-plugin"/>
+        <phingcall target="build-jevents-plugin"/>
+        <phingcall target="build-search-plugin"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents Libraries     -->
+    <!-- ============================================  -->
+    <target name="build-libraries" description="Build Libraries">
+        <echo msg="Building JEvents Libraries ..."/>
+        <phingcall target="build-googl-library"/>
+        <phingcall target="build-jevmodal-library"/>
+        <phingcall target="build-jevtypeahead-library"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: JEvents modules     -->
+    <!-- ============================================  -->
+    <target name="build-modules" description="Build Modules">
+        <echo msg="Building JEvents Modules ..."/>
+        <phingcall target="build-cal-module"/>
+        <phingcall target="build-custom-module"/>
+        <phingcall target="build-filter-module"/>
+        <phingcall target="build-latest-module"/>
+        <phingcall target="build-legend-module"/>
+        <phingcall target="build-switchview-module"/>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents ActionLogs Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-actionlog-plugin" description="Build ActionLogs Plugin">
+        <echo msg="Building JEvents ActionLogs Plugin..."/>
+        <copy todir="${builddir}/plugins/actionlog">
+            <fileset dir="../plugins/actionlog">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/actionlog" id="pluginactionlogZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/actionlog_jevents.zip">
+            <fileset refid="pluginactionlogZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Finder Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-finder-plugin" description="Build Finder Plugin">
+        <echo msg="Building JEvents Finder Plugin..."/>
+        <copy todir="${builddir}/plugins/finder">
+            <fileset dir="../plugins/finder">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/finder" id="pluginfinderZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/finder.zip">
+            <fileset refid="pluginfinderZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents GWEJson Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-gwejson-plugin" description="Build GWEJson Plugin">
+        <echo msg="Building JEvents GWEJson Plugin..."/>
+        <copy todir="${builddir}/plugins/gwejson">
+            <fileset dir="../plugins/gwejson">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/gwejson" id="plugingwejsonZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/gwejson.zip">
+            <fileset refid="plugingwejsonZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Installer Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-installer-plugin" description="Build Installer Plugin">
+        <echo msg="Building JEvents Installer Plugin..."/>
+        <copy todir="${builddir}/plugins/installer">
+            <fileset dir="../plugins/installer">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/installer" id="plugininstallerZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/installer.zip">
+            <fileset refid="plugininstallerZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents JEvents Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-jevents-plugin" description="Build JEvents Plugin">
+        <echo msg="Building JEvents JEvents Plugin..."/>
+        <copy todir="${builddir}/plugins/jevents">
+            <fileset dir="../plugins/jevents">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/jevents" id="pluginjeventsZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/jevents.zip">
+            <fileset refid="pluginjeventsZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Search Plugin    -->
+    <!-- ==================================================  -->
+    <target name="build-search-plugin" description="Build Search Plugin">
+        <echo msg="Building JEvents Search Plugin..."/>
+        <copy todir="${builddir}/plugins/search">
+            <fileset dir="../plugins/search">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/plugins/search" id="pluginsearchZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/search.zip">
+            <fileset refid="pluginsearchZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Googl Library                       -->
+    <!-- ==================================================  -->
+    <target name="build-googl-library" description="Build Googl Library">
+        <echo msg="Building Googl Library ..."/>
+        <copy todir="${builddir}/libraries/googl">
+            <fileset dir="../libraries/googl">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/libraries/googl" id="librarygooglZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/googl.zip">
+            <fileset refid="librarygooglZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents JevModal Library                       -->
+    <!-- ==================================================  -->
+    <target name="build-jevmodal-library" description="Build JevModal Library">
+        <echo msg="Building JevModal Library ..."/>
+        <copy todir="${builddir}/libraries/jevmodal">
+            <fileset dir="../libraries/jevmodal">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/libraries/jevmodal" id="libraryjevmodalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/jevmodal.zip">
+            <fileset refid="libraryjevmodalZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents JevTypeahead Library                       -->
+    <!-- ==================================================  -->
+    <target name="build-jevtypeahead-library" description="Build JevTypeahead Library">
+        <echo msg="Building JevTypeahead Library ..."/>
+        <copy todir="${builddir}/libraries/jevtypeahead">
+            <fileset dir="../libraries/jevtypeahead">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/libraries/jevtypeahead" id="libraryjevtypeaheadZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/jevtypeahead.zip">
+            <fileset refid="libraryjevtypeaheadZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Calendar Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-cal-module" description="Build Calendar Module">
+        <echo msg="Building Calendar Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_cal">
+            <fileset dir="../modules/mod_jevents_cal">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_cal" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_cal.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Custom Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-custom-module" description="Build Custom Module">
+        <echo msg="Building Custom Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_custom">
+            <fileset dir="../modules/mod_jevents_custom">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_custom" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_custom.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Filter Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-filter-module" description="Build Filter Module">
+        <echo msg="Building Filter Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_filter">
+            <fileset dir="../modules/mod_jevents_filter">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_filter" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_filter.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Latest Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-latest-module" description="Build Latest Module">
+        <echo msg="Building Latest Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_latest">
+            <fileset dir="../modules/mod_jevents_latest">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_latest" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_latest.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents Legend Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-legend-module" description="Build Legend Module">
+        <echo msg="Building Legend Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_legend">
+            <fileset dir="../modules/mod_jevents_legend">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_legend" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_legend.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+
+    <!-- ==================================================  -->
+    <!-- Target: JEvents SwitchView Module                     -->
+    <!-- ==================================================  -->
+    <target name="build-switchview-module" description="Build SwitchView Module">
+        <echo msg="Building SwitchView Module ..."/>
+        <copy todir="${builddir}/modules/mod_jevents_switchview">
+            <fileset dir="../modules/mod_jevents_switchview">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+                <excludesfile name="excludedfiles.build"></excludesfile>
+            </fileset>
+        </copy>
+        <fileset dir="${builddir}/modules/mod_jevents_switchview" id="modulecalZip">
+            <include name="**"/>
+            <excludesfile name="excludedfiles.build"></excludesfile>
+        </fileset>
+        <zip ignorelinks="true" destfile="${builddir}/mod_jevents_switchview.zip">
+            <fileset refid="modulecalZip"/>
+        </zip>
+    </target>
+    <!-- ============================================  -->
+    <!-- Target: buildall                                 -->
+    <!-- ============================================  -->
+
+    <target name="buildall" description="Build all targets !! ">
+        <phingcall target="build"></phingcall>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+
+    <target name="build" depends="prepare">
+        
+        <echo msg="Creating Package..." />
+        <copy todir="${builddir}/package">
+            <fileset dir="../package">
+                <include name="**"></include>
+                <exclude name="**/.svn/**"></exclude>
+            </fileset>
+        </copy>
+        <xmlproperty file="${builddir}/package/pkg_jevents.xml" />
+	
+        <copy file="${builddir}/com_jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/finder.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/search.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/gwejson.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/installer.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/actionlog_jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/googl.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevtypeahead.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevents.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_cal.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_custom.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_filter.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_latest.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_legend.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/mod_jevents_switchview.zip" todir="${builddir}/package/" />
+
+
+        <fileset dir="${builddir}/package" id="packagedir">
+            <include name="**"></include>
+            <exclude name="**/.svn/**"></exclude>
+        </fileset>
+
+        <zip ignorelinks="true" destfile="${builddir}/../pkg_JEvents_${extension.version}.zip">
+            <fileset refid="packagedir" />
+        </zip>
+        <delete dir="${builddir}" includeemptydirs="true" verbose="false" failonerror="true" />
+
+
+    </target>
+
+
+</project>

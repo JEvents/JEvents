@@ -69,7 +69,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		}
 
 		JToolbarHelper::spacer();
-		JEventsHelper::addSubmenu();
+		
 
 		$showUnpublishedICS = false;
 
@@ -140,7 +140,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
-		$this->sidebar = JHtmlSidebar::render();
+
 
 		$this->languages = $this->get('Languages');
 
@@ -311,7 +311,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		JToolbarHelper::cancel('icalevent.list');
 
-		JEventsHelper::addSubmenu();
+		
 
 		HTMLHelper::_('behavior.tooltip');
 

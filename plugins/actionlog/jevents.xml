@@ -2,12 +2,12 @@
 <extension version="3.9" type="plugin" group="actionlog" method="upgrade">
 	<name>JEvents - Action Log</name>
 	<author>GWE Systems Ltd</author>
-	<creationDate>October 2018</creationDate>
-	<copyright>(C) 2010-2018 GWE Systems Ltd. All rights reserved.</copyright>
+	<creationDate>July 2019</creationDate>
+	<copyright>(C) 2010-2019 GWE Systems Ltd. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>tony@jevents.net</authorEmail>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.5.0</version>
+	<version>3.5.0dev</version>
 	<description>Action Log Plugin for JEvents Core - Club Addons, need their own action log plugin.</description>
 	<files>
 		<filename plugin="jevents">jevents.php</filename>

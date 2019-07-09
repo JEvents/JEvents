@@ -165,7 +165,7 @@ class AdminDefaultsController extends Joomla\CMS\MVC\Controller\FormController
 			$this->view->setModel($model, true);
 		}
 
-		$this->view->overview();
+		$this->view->display();
 	}
 
 		private function populateLanguages()
@@ -509,7 +509,8 @@ function edit($key = null, $urlVar = null)
 			$this->view->setModel($model, true);
 		}
 
-		$this->view->edit();
+		$this->view->display();
+		//$this->view->edit();
 
 	}
 

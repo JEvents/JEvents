@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 jimport('joomla.application.component.view');
 
@@ -102,7 +103,9 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$this->setLayout($newlayout);
 		}
 
+		echo LayoutHelper::render('gslframework.header');
 		parent::display($tpl);
+		echo LayoutHelper::render('gslframework.footer');
 
 	}
 

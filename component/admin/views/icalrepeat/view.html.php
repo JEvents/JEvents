@@ -37,11 +37,11 @@ class AdminIcalrepeatViewIcalrepeat extends JEventsAbstractView
 		JToolbarHelper::deleteList('Delete this repeat?', 'icalrepeat.delete');
 		JToolbarHelper::cancel('icalevent.list');
 
-		JEventsHelper::addSubmenu();
+
 
 		HTMLHelper::_('behavior.tooltip');
 
-		$this->sidebar = JHtmlSidebar::render();
+
 
 	}
 

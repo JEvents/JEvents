@@ -40,8 +40,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 
 		// Set toolbar items for the page
 		JToolbarHelper::title(JText::_('JEV_LAYOUT_DEFAULTS'), 'jevents');
-
-		JEventsHelper::addSubmenu();
+		//JToolbarHelper::addNew('icalevent.edit');
 
 		HTMLHelper::_('behavior.tooltip');
 
@@ -88,9 +87,6 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$user = Factory::getUser();
 		$this->user     = $user;
 		$this->items    = $items;
-		$this->sidebar = JHtmlSidebar::render();
-
-		parent::displaytemplate($tpl);
 
 	}
 
@@ -117,7 +113,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		JToolbarHelper::save("defaults.save");
 		JToolbarHelper::cancel("defaults.cancel");
 
-		JEventsHelper::addSubmenu();
+
 
 		HTMLHelper::_('behavior.tooltip');
 
@@ -146,7 +142,7 @@ class AdminDefaultsViewDefaults extends JEventsAbstractView
 		$this->item             = $item;
 		$this->requiredfields   = $requiredfields;
 
-		parent::displaytemplate($tpl);
+		//parent::displaytemplate($tpl);
 
 	}
 

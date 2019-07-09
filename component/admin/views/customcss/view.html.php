@@ -20,7 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * @static
  */
-class CustomcssViewCustomcss extends Joomla\CMS\MVC\View\HtmlView
+class CustomcssViewCustomcss extends JEventsAbstractView
 {
 
 	function display($cachable = false)
@@ -56,7 +56,7 @@ class CustomcssViewCustomcss extends Joomla\CMS\MVC\View\HtmlView
 		$this->source = $this->get('Customcss');
 		$this->type   = 'file';
 
-		JEventsHelper::addSubmenu();
+		
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 

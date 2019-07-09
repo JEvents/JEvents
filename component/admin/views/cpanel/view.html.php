@@ -33,7 +33,6 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 	 */
 	function cpanel($tpl = null)
 	{
-
 		jimport('joomla.html.pane');
 
 		$document = Factory::getDocument();
@@ -42,11 +41,11 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolbarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
 
-		JEventsHelper::addSubmenu();
+
 
 		HTMLHelper::_('behavior.tooltip');
 
-		$this->sidebar = JHtmlSidebar::render();
+		//
 
 		$this->checkForAddons();
 
@@ -1393,7 +1392,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		JToolbarHelper::title(JText::_('JEVENTS') . ' :: ' . JText::_('JEVENTS'), 'jevents');
 
-		JEventsHelper::addSubmenu();
+
 
 		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
 
@@ -1404,7 +1403,7 @@ and exn.element='$pkg' and exn.folder='$folder'
 
 		}
 
-		$this->sidebar = JHtmlSidebar::render();
+
 	}
 
 }

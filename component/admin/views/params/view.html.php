@@ -83,6 +83,6 @@ class AdminParamsViewParams extends JEventsAbstractView
 		// Set toolbar items for the page
 		JToolbarHelper::title(JText::_('DB_SETUP'), 'jevents');
 		JToolbarHelper::cancel('cpanel.cpanel');
-		JEventsHelper::addSubmenu();
+
 	}
 }

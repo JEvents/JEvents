@@ -10,7 +10,7 @@
 	<authorEmail>carcam@jevents.net</authorEmail>
 	<packager>JEvents</packager>
 	<authorUrl>www.gwesystems.com</authorUrl>
-	<version>3.4.50</version>
+	<version>3.5.0dev</version>
 	<files>
 		<file>jevtypeahead.php</file>
 		<file>index.html</file>

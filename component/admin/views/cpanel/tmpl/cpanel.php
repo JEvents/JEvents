@@ -123,7 +123,7 @@ $fullspan = 12;
 				if ($extension && $extension->enabled && JEVHelper::isAdminUser())
 				{
 					$manifestCache = json_decode($extension->manifest_cache);
-					if (version_compare($manifestCache->version, "3.5.0RC", "ge"))
+					if (version_compare($manifestCache->version, "3.5.0dev", "ge"))
 					{
 						$link = "index.php?option=com_jevents&task=plugin.jev_customfields.overview";
 						Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);

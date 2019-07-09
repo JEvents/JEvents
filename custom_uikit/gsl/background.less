@@ -1,0 +1,29 @@
+// import core background
+@import "../../src/less/components/background.less";
+
+// Variables
+// ========================================================================
+
+@background-warning-background:             @global-warning-background;
+@background-success-background:             @global-success-background;
+@background-danger-background:              @global-danger-background;
+@background-warning-color:                  contrast(@global-warning-background);
+
+/* ========================================================================
+   Component: Background
+ ========================================================================== */
+
+
+/* Color
+ ========================================================================== */
+
+.uk-background-warning {
+  background-color: @background-warning-background;
+  color: @background-warning-color;
+}
+.uk-background-success {
+  background-color: @background-success-background;
+}
+.uk-background-danger  {
+  background-color: @background-danger-background;
+}
