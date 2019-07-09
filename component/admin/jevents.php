@@ -235,6 +235,15 @@ else
 	return false;
 }
 
+if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+{
+	define ("GSLMSIE10" , 1);
+}
+else
+{
+	define ("GSLMSIE10" , 0);
+}
+
 // record what is running - used by the filters
 $registry = JevRegistry::getInstance("jevents");
 $registry->set("jevents.activeprocess", "administrator");

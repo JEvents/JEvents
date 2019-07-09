@@ -497,36 +497,28 @@ class JEventsHTML
 			    $countsplit = count($split);
 		    }
 
+		    $cfg                = JEVConfig::getInstance();
+    		$offset             = $cfg->get("com_starday", 1);
+
 		    for ($a = 0; $a < 7; $a++)
 		    {
+                $d = $a + $offset;
+                $d %= 7;
 			    $checked = '';
 			    for ($x = 0; $x < $countsplit; $x++)
 			    {
-				    if ($split[$x] == $a)
+				    if ($split[$x] == $d)
 				    {
 					    $checked = ' checked="checked"';
 				    }
 			    }
-			    // bootstrap version
-			    if (version_compare(JVERSION, '3.8.12', '>=')){
 			    $tosend .= ''
-				    . '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
-				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
-				    . '<label for="cb_wd' . $a . '" class="checkbox btn">'
-				    . $day_name[$a]
+				    . '<input type="checkbox" id="cb_wd' . $d . '" name="' . $name . '[]" value="'
+				    . $d . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
+				    . '<label for="cb_wd' . $d . '" class="checkbox btn">'
+				    . $day_name[$d]
 				    . '</label>' . "\n"
 			    ;
-			    }
-			    else
-			        {
-			    $tosend .= ''
-				    . '<label for="cb_wd' . $a . '" class="checkbox btn">'
-				    . '<input type="checkbox" id="cb_wd' . $a . '" name="' . $name . '[]" value="'
-				    . $a . '" ' . $args . $checked . ' onclick="updateRepeatWarning();" class="checkbox " />'
-				    . $day_name[$a]
-				    . '</label>' . "\n"
-			    ;
-			        }
 		    }
 		    echo $tosend;
 	    }

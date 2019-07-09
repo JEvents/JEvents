@@ -9,12 +9,11 @@
 defined('JPATH_BASE') or die;
 
 // Do not do this in Internet Explorer 10 or lower (Note that MSIE 11 changed the app name to Trident)
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+if (GSLMSIE10)
 {
 	return;
 }
 
-echo JLayoutHelper::render('jevents.translationcredits');
 echo JLayoutHelper::render('jevents.version');
 ?>
             </div>

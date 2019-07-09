@@ -26,22 +26,35 @@ class JEventsHelper
 	 */
 	public static function addSubmenu($vName = "")
 	{
-
+		if (!defined("GSLMSIE10"))
+		{
+			if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+			{
+				define ("GSLMSIE10" , 1);
+			}
+			else
+			{
+				define ("GSLMSIE10" , 0);
+			}
+		}
 		$input = Factory::getApplication()->input;
 
 		$task   = $input->getCmd("task", "cpanel.cpanel");
 		$option = $input->getCmd("option", "com_categories");
 
-		if ($option !== 'com_categories')
+		if ($option !== 'com_categories' && !GSLMSIE10)
 		{
 			return;
 		}
-		if ($option == 'com_categories')
+		if ($option == 'com_categories' )
 		{
-			$controller = JControllerLegacy::getInstance("Categories");
-			$view = $controller->getView("categories", 'html', 'categoriesView');
+			if (!GSLMSIE10)
+			{
+				$controller = JControllerLegacy::getInstance("Categories");
+				$view       = $controller->getView("categories", 'html', 'categoriesView');
 
-			$view->addTemplatePath(JPATH_ADMINISTRATOR. "/components/com_jevents/views/categories/tmpl/");
+				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/categories/tmpl/");
+			}
 
 			$doc = Factory::getDocument();
 

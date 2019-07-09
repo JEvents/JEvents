@@ -103,9 +103,28 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 			$this->setLayout($newlayout);
 		}
 
-		echo LayoutHelper::render('gslframework.header');
-		parent::display($tpl);
-		echo LayoutHelper::render('gslframework.footer');
+		// Do we need to fall back to old MSIE layouts ??
+		// Do not do this in Internet Explorer 10 or lower (Note that MSIE 11 changed the app name to Trident)
+		if (GSLMSIE10)
+		{
+			$layout     = $this->getLayout();
+			$filetofind = $this->_createFileName('template', array('name' => $layout . "-msie"));
+			if (JPath::find($this->_path['template'], $filetofind))
+			{
+				$this->setLayout($layout . "-msie");
+			}
+			parent::display($tpl);
+		}
+        else
+        {
+	        echo LayoutHelper::render('gslframework.header');
+	        ob_start();
+	        parent::display($tpl);
+	        $html = ob_get_clean();
+	        // Convert what we can of Bootstrap to uikit using regexp
+	        echo $html;
+	        echo LayoutHelper::render('gslframework.footer');
+        }
 
 	}
 

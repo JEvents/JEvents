@@ -9,7 +9,16 @@
 /* Put responsive.less at the bottom so it can override other values */
 
 #gslc.gsl-scope {
+  /* Overriding template.css styling when using native Joomla layouts */
+  div#jevents {
+    margin-left:5px;
+  }
 
+  /* Buttons in forms */
+  #jevents #adminForm label.gsl-button-small
+  {
+    padding-left:15px;
+  }
 }
 
 @import "responsive.less";

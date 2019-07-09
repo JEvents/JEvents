@@ -46,21 +46,6 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
 
         <div class="gsl-navbar gsl-background-secondary"  >
             <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary" gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: hover;cls: hide-label">
-                <?php
-                if (JEVHelper::isAdminUser())
-                {
-	                ?>
-                    <li <?php if ($view == "icals") { ?> class="gsl-active" <?php } ?> >
-                        <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icals.list"); ?>" class=""
-                        >
-                            <span data-gsl-icon="icon: thumbnails"
-                                  class="gsl-margin-small-right gsl-display-inline-block"></span>
-                            <span class="nav-label"><?php echo JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'); ?></span>
-                        </a>
-                    </li>
-	                <?php
-                }
-	            ?>
                 <li <?php if ($view == "icalevent") { ?> class="gsl-active" <?php } ?> >
                     <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list"); ?>" class=""
                        >
@@ -75,6 +60,21 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
                         <span class="nav-label"><?php echo JText::_('JEV_INSTAL_CATS'); ?></span>
                     </a>
                 </li>
+	            <?php
+	            if (JEVHelper::isAdminUser())
+	            {
+		            ?>
+                    <li <?php if ($view == "icals") { ?> class="gsl-active" <?php } ?> >
+                        <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icals.list"); ?>" class=""
+                        >
+                            <span data-gsl-icon="icon: thumbnails"
+                                  class="gsl-margin-small-right gsl-display-inline-block"></span>
+                            <span class="nav-label"><?php echo JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS'); ?></span>
+                        </a>
+                    </li>
+		            <?php
+	            }
+	            ?>
                 <?php
                 if (JEVHelper::isAdminUser())
                 {
@@ -92,11 +92,32 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
 	                }
                 }
                 ?>
+	            <?php
+	            if (JEVHelper::isAdminUser())
+	            {
+                    ?>
+                    <li <?php if ($task == "params.edit") { ?> class="gsl-active" <?php } ?> >
+                        <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=params.edit"); ?>" class=""
+                        >
+                            <span data-gsl-icon="icon: settings" class="gsl-margin-small-right"></span>
+                            <span class="nav-label"><?php echo JText::_('JEV_INSTAL_CONFIG'); ?></span>
+                        </a>
+                    </li>
+                    <?php
+	            }
+	            ?>
                 <li <?php if ($view == "defaults") { ?> class="gsl-active" <?php } ?> >
                     <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=defaults.list"); ?>" class=""
                     >
                         <span data-gsl-icon="icon: file-edit" class="gsl-margin-small-right"></span>
                         <span class="nav-label"><?php echo JText::_('JEV_LAYOUT_DEFAULTS'); ?></span>
+                    </a>
+                </li>
+                <li <?php if ($task == "cpanel.support") { ?> class="gsl-active" <?php } ?> >
+                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=cpanel.support"); ?>" class=""
+                    >
+                        <span data-gsl-icon="icon: file-text" class="gsl-margin-small-right"></span>
+                        <span class="nav-label"><?php echo JText::_('SUPPORT_INFO'); ?></span>
                     </a>
                 </li>
                 <li <?php if ($view == "customcss") { ?> class="gsl-active" <?php } ?> >
