@@ -64,6 +64,7 @@
 			<folder>controllers</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
+			<folder>layouts</folder>
 			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>tables</folder>

@@ -19,6 +19,38 @@
   {
     padding-left:15px;
   }
+
+  .adminlist.table-striped {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+      .row0 {
+        td {
+          background-color: transparent;
+        }
+      }
+      .row1 {
+        td {
+          background-color: #eee;
+        }
+      }
+      .tags li {
+        display: inline-block;
+        margin:0 2px 4px 0;
+      }
+  }
 }
+/* Overriding template.css styling when using native Joomla layouts for com_categories */
+body.com_categories {
+  #gslc.gsl-scope {
+    form#item-form {
+      margin-left: 5px;
+    }
+
+  }
+}
+
 
 @import "responsive.less";

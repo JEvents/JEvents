@@ -27,4 +27,4 @@ zip  -r --exclude=*.svn* --exclude=*.gitignore* ../mod_jevents_switchview.zip mo
 cd ../
 zip  -r --exclude=*.svn* --exclude=*.gitignore* "jevents35a2_$VERSION.zip" language install.php pkg_jevents.xml com_jevents.zip finder.zip search.zip gwejson.zip installer.zip actionlog_jevents.zip googl.zip jevtypeahead.zip jevmodal.zip jevents.zip  mod_jevents_cal.zip mod_jevents_custom.zip mod_jevents_filter.zip   mod_jevents_latest.zip mod_jevents_legend.zip mod_jevents_switchview.zip
 
-find . \! -name "createpackage.sh" \! -name "jevents35a2_$VERSION.zip" | xargs rm -rf
+find . \! -name "createpackage.sh" \! -name "jevents35a2_$VERSION.zip" \! -name "build.xml" \! -name "excludedfiles.build" | xargs rm -rf

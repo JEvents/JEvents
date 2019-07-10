@@ -517,6 +517,7 @@
         <copy file="${builddir}/installer.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/actionlog_jevents.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/googl.zip" todir="${builddir}/package/" />
+        <copy file="${builddir}/jevmodal.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/jevtypeahead.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/jevents.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/mod_jevents_cal.zip" todir="${builddir}/package/" />

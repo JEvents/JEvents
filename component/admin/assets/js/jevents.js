@@ -603,3 +603,27 @@ window.addEventListener('load', function() {
 	}, false);
 
 });
+
+// If loading from com_categories need to move the system messages
+document.addEventListener('DOMContentLoaded', function () {
+	let msgel = document.getElementById("system-message-container");
+	if (msgel)
+	{
+		let newmsgel = document.getElementById("ysts_system_messages");
+		newmsgel.innerHTML = msgel.innerHTML;
+		msgel.parentNode.removeChild(msgel);
+	}
+
+	let maincontainer = document.getElementById("j-main-container");
+	if (maincontainer) {
+		maincontainer.classList.remove('span10');
+		maincontainer.classList.add('span12');
+	}
+
+	let sidebar = document.getElementById("j-sidebar-container");
+	if (sidebar)
+	{
+		sidebar.parentNode.removeChild(sidebar);
+	}
+
+});

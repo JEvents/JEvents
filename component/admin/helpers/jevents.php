@@ -19,6 +19,32 @@ class JEventsHelper
 
 	public static $extention = 'com_jevents';
 
+	public static function validateSection($context, $form = null)
+	{
+		if ($context == "categories" && Factory::getApplication()->input->get('view') == "category"  && Factory::getApplication()->input->get('layout') == "edit")
+		{
+			if (!defined("GSLMSIE10"))
+			{
+				if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false || strpos($_SERVER['HTTP_USER_AGENT'], "Internet Explorer") !== false))
+				{
+					define ("GSLMSIE10" , 1);
+				}
+				else
+				{
+					define ("GSLMSIE10" , 0);
+				}
+			}
+			if (!GSLMSIE10)
+			{
+				$controller = JControllerLegacy::getInstance("Categories");
+				$view       = $controller->getView('category', 'html');
+
+				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/category/tmpl/");
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Configure the Linkbar.
 	 *

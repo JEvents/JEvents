@@ -13,6 +13,7 @@ defined('JPATH_BASE') or die('Direct Access to this location is not allowed.');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 jimport('joomla.application.component.controlleradmin');
 
@@ -42,7 +43,17 @@ class AdminPluginController extends JControllerAdmin
 		if (count($parts) == 3)
 		{
 			list($controller, $plugin, $task) = $parts;
-			$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+
+			if (!GSLMSIE10)
+			{
+				echo LayoutHelper::render('gslframework.header');
+				$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+				echo LayoutHelper::render('gslframework.footer');
+			}
+			else
+			{
+				$res = $app->triggerEvent('onJEventsPluginController', array($plugin, $task));
+			}
 		}
 	}
 }
