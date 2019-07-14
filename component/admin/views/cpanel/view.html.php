@@ -52,6 +52,65 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$this->setUpdateUrls();
 
 		$this->cleanupUpdateUrls();
+
+
+		$this->dataModel  = new JEventsDataModel("JEventsAdminDBModel");
+
+		$counts = $this->dataModel->queryModel->getEventCounts();
+		$this->totalEvents = $counts[0];
+		$this->pastEvents = $counts[2];
+		$this->futureEvents = $counts[1];
+
+		$count = $this->dataModel->queryModel->getUnpublishedEventCounts();
+		$this->unpublishedEvents = $count;
+
+		$counts = $this->dataModel->queryModel->getNewEventCounts();
+		$this->newEvents = $counts[1];
+		$this->newThisMonth = $counts[2];
+
+		$counts = $this->dataModel->queryModel->getUpcomingEventAttendees();
+		$this->upcomingAttendees = $counts[1];
+		$this->upcomingAttendeesThisMonth = $counts[2];
+
+		$data = $this->dataModel->queryModel->getEventCountsByCategory(8);
+		$this->eventsByCat = array();
+		$this->eventsByCatCounts = array();
+
+		foreach ($data as $datapoint)
+		{
+			$this->eventsByCat[] = $datapoint->title;
+			$this->eventsByCatCounts[] = $datapoint->count;
+			$params = @json_decode($datapoint->params);
+			if (isset($params->catcolour) && !empty($params->catcolour))
+			{
+				$this->eventsByCatColours[] = $params->catcolour;
+			}
+			else
+			{
+				// otherwise a random colour
+				$this->eventsByCatColours[] = '#'.str_pad(dechex(mt_rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+			}
+		}
+
+		$data = $this->dataModel->queryModel->getEventCountsByDay();
+
+		$this->eventCountsByDay = array(0,0,0,0,0,0,0);
+
+		foreach ($data as $datapoint)
+		{
+			$this->eventCountsByDay[$datapoint->weekday - 1] = $datapoint->count;
+		}
+
+		$data = $this->dataModel->queryModel->getEventCountsByWeek();
+
+		$this->eventCountByWeek = array();
+		$this->eventCountByWeekLabels = array();
+		foreach ($data as $datapoint)
+		{
+			$this->eventCountByWeek[] = $datapoint->count;
+			$this->eventCountByWeekLabels[] = $datapoint->weekstart;
+		}
+
 	}
 
 	protected function checkForAddons()

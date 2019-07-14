@@ -14,28 +14,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
-$version = JEventsVersion::getInstance();
 
 JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
-if (!empty($this->sidebar))
-{
-	?>
-	<div id="j-sidebar-container" class="span2">
-
-		<?php echo $this->sidebar; ?>
-
-		<?php
-		//Version Checking etc
-		?>
-		<div class="jev_version">
-			<?php echo JText::sprintf('JEV_CURRENT_VERSION', Joomla\String\StringHelper::substr($version->getShortVersion(), 1)); ?>
-		</div>
-	</div>
-	<?php
-}
-$mainspan = 10;
-$fullspan = 12;
 ?>
 
 <div id="jevents" >
@@ -44,65 +25,77 @@ $fullspan = 12;
         <div class="gsl-grid gsl-grid-divider gsl-grid-medium gsl-child-width-1-2 gsl-child-width-1-3@m gsl-child-width-1-4@l"
              gsl-grid>
             <div>
-            <span class="gsl-text-small">
-                    <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
-                    <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS");?>
-            </span>
-                <h1 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_yoursites&view=sites")?>">
-						123
-                    </a>
-                </h1>
-                <a href="<?php echo JRoute::_("index.php?option=com_yoursites&view=sites&filter[updatesrequired]=1")?>" class="gsl-text-small gsl-text-danger">
-                    <span class="gsl-text-danger" gsl-icon="icon: bolt"></span>
-					20
-                </a>
-            </div>
-            <div>
-            <span class="gsl-text-small">
-                    <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
-                    <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
-            </span>
-                <h1 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_yoursites&view=extensions")?>">
-						100
-                    </a>
-                </h1>
-                <a href="<?php echo JRoute::_("index.php?option=com_yoursites&view=extensions&filter[status]=updateavailable&filter[blockupgrade]=0")?>" class="gsl-text-small gsl-text-danger">
-                    <span class="gsl-text-danger" gsl-icon="icon: bolt"></span>
-					20
-                </a>
-            </div>
-            <div>
-            <span class="gsl-text-small">
-                    <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
-                    <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
+                        <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS");?>
                 </span>
-                <h1 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
-                    <a href="<?php echo JRoute::_("index.php?option=com_yoursites&view=backups")?>">
-						85
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo JText::sprintf("COM_JEVENTS_FUTURE_EVENTS", $this->futureEvents);?>
                     </a>
-                </h1>
-                <div class="gsl-text-small">
-                    <span class="gsl-text-danger" gsl-icon="icon: bolt"></span>
-					10
-                    <span class="gsl-text-danger" gsl-icon="icon: bolt"></span>
-					15
-                </div>
-
+                </h2>
+                <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                   class="gsl-text-small gsl-text-success gsl-display-block">
+                    <span class="gsl-text-success" gsl-icon="icon: history"></span>
+	                <?php echo JText::sprintf("COM_JEVENTS_PAST_EVENTS", $this->pastEvents);?>
+                </a>
             </div>
-            <div class="gsl-visible@l">
-            <span class="gsl-text-small">
-                   <span gsl-icon="icon:calendar" class="gsl-margin-small-right gsl-text-primary"></span>
-                   <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_NEW_THIS_WEEK");?>
-               </span>
-                <h1 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary">
-                    22
-                </h1>
-                <div class="gsl-text-small">
-                    <span class="gsl-text-danger" gsl-icon="icon: bolt"></span>
-					5
-                </div>
+            <div>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:calendar"
+                              class="gsl-margin-small-right gsl-text-danger"></span>
+                        <?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?>
+                </span>
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo $this->unpublishedEvents;?>
+                    </a>
+                </h2>
+            </div>
+            <div>
+                <span class="gsl-text-small">
+                        <span gsl-icon="icon:plus-circle" class="gsl-margin-small-right gsl-text-primary"></span>
+                        <?php echo JText::_("COM_JEVENTS_NEW_EVENTS");?>
+                </span>
+                <h2 class="gsl-heading-primary gsl-margin-remove gsl-text-primary">
+                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>">
+	                    <?php echo JText::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_Week", $this->newEvents);?>
+                    </a>
+                </h2>
+                <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                   class="gsl-text-small gsl-text-success gsl-display-block">
+                    <span class="gsl-text-success" gsl-icon="icon: plus-circle"></span>
+		            <?php echo JText::sprintf("COM_JEVENTS_NEW_EVENTS_THIS_MONTH", $this->newThisMonth);?>
+                </a>
+            </div>
+            <div>
+                <span class="gsl-text-small">
+                   <span gsl-icon="icon:users" class="gsl-margin-small-right gsl-text-primary"></span>
+                   <?php echo JText::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
+                </span>
+                <?php if ($this->newRegistrations >= 0) { ?>
+                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary">
+                    <a href="<?php echo JRoute::_("index.php?option=com_rsvppro&task=sessions.list")?>">
+                        <?php echo JText::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
+                    </a>
+                </h2>
+                    <a href="<?php echo JRoute::_("index.php?option=com_jevents&task=icalevent.list")?>"
+                       class="gsl-text-small gsl-text-success gsl-display-block">
+                        <span class="gsl-text-success" gsl-icon="icon: users"></span>
+		                <?php echo JText::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_MONTH", $this->upcomingAttendeesThisMonth);?>
+                    </a>
+                <?php }
+                else {
+                    ?>
+	                <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary hasYsPopover"
+                        data-yspoptitle="<?php echo JText::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
+                        data-yspopcontent="<?php echo JText::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
+                    ?>
+                        <?php echo $this->newRegistrations >= 0 ? $this->newRegistrations : JText::_("COM_JEVENTS_NOT_INSTALLED");?>
+                    </h2>
+                    <?php
+                }
+                ?>
             </div>
         </div>
         <hr>
@@ -196,11 +189,11 @@ $fullspan = 12;
             </div>
             <!-- /panel -->
             <!-- panel -->
-            <div class="gsl-width-1-2@l">
+            <div class="gsl-width-1-1 gsl-width-1-2@l">
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_UNPUBLISHED");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_NEW_EVENTS_CREATED_BY_DAY");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -212,11 +205,11 @@ $fullspan = 12;
             </div>
             <!-- /panel -->
             <!-- panel -->
-            <div class="gsl-width-1-1 gsl-width-1-2@l">
+            <div class="gsl-width-1-2@s gsl-width-1-2@l">
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_NEW_THIS_WEEK");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_UPCOMING_REGISTRATIONS_BY_EVENT");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
@@ -232,12 +225,12 @@ $fullspan = 12;
                 <div class="gsl-card gsl-card-default gsl-card-small gsl-card-hover">
                     <div class="gsl-card-header">
                         <div class="gsl-grid gsl-grid-small">
-                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_TOTAL_EVENTS_NEW_THIS_WEEK");?></h4></div>
+                            <div class="gsl-width-auto"><h4><?php echo JText::_("COM_JEVENTS_UPCOMING_EVENTS_BY_WEEK");?></h4></div>
                         </div>
                     </div>
                     <div class="gsl-card-body">
                         <div class="chart-container">
-                            <canvas id="chart5"></canvas>
+                            <canvas id="chart4"></canvas>
                         </div>
                     </div>
                 </div>
@@ -251,263 +244,135 @@ $fullspan = 12;
     <script type="text/javascript">
 		// Chart 1
 		// ========================================================================
-		var char1El = document.getElementById('chart1');
-		new Chart(char1El, {
-			type: 'bar',
+		new Chart(document.getElementById('chart1'), {
+			type: 'pie',
 			data: {
-				labels: ["<?php echo JText::_("COM_YOURSITES_DASHBOARD_TOTAL_SITES");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_UP_TO_DATE");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_UPDATE_AVAILABLE");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_IS_IP");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_IS_DOWN");?>"],
+				labels: ['<?php echo  implode("', '", $this->eventsByCat); ?>'],
 				datasets: [
 					{
-						label: "Joomla",
-						backgroundColor: "#39f",
-						data: [<?php echo implode(', ', $sitedata[1]);?>]
+						backgroundColor: ['<?php echo  implode("', '", $this->eventsByCatColours); ?>'],
+						data: [<?php echo  implode(", ", $this->eventsByCatCounts); ?>],
 					},
-					<?php
-					$params = JComponentHelper::getParams("com_yoursites");
-					if ($params->get("supportwp", 0))
-					{
-					?>
-					{
-						label: "WordPress/ClassicPress",
-						backgroundColor: "#895df6",
-						data: [<?php echo implode(', ', $sitedata[2]);?>]
-					}
-					,
-					{
-						label: "Other",
-						backgroundColor: "#3cba9f",
-						data: [<?php echo implode(', ', $sitedata[999]);?>]
-					}
-					<?php
-					}
-					?>
 				],
 			},
 			options: {
-				maintainAspectRatio: false,
 				responsiveAnimationDuration: 500,
 				legend: {
-					display: true
+					display: true,
+                    position: 'right'
 				},
 				animation: {
 					duration: 2000
 				},
 				title: {
-					display: true,
-					text: '<?php echo JText::_("COM_YOURSITES_DASHBOARD_SITES_SUMMARY_AND_STATUS");?>'
+					display: false,
 				},
 			}
 		});
+
 
 		// Chart 2
 		// ========================================================================
-		var char2El = document.getElementById('chart2');
-
-		new Chart(char2El, {
+		new Chart(document.getElementById('chart2'), {
 			type: 'bar',
 			data: {
-				labels: ["<?php echo JText::_("COM_YOURSITES_DASHBOARD_TOTAL_EXTENSIONS");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_UP_TO_DATE");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_UPDATE_AVAILABLE");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_UPDATES_BLOCKED");?>",
+				labels: ["<?php echo JText::_("JEV_MONDAY");?>",
+					"<?php echo JText::_("JEV_TUESDAY");?>",
+					"<?php echo JText::_("JEV_WEDNESDAY");?>",
+					"<?php echo JText::_("JEV_THURSDAY");?>",
+					"<?php echo JText::_("JEV_FRIDAY");?>",
+					"<?php echo JText::_("JEV_SATURDAY");?>",
+					"<?php echo JText::_("JEV_SUNDAY");?>",
 				],
 				datasets: [
 					{
-						label: "Joomla",
 						backgroundColor: "#39f",
-						data: [<?php echo implode(', ', $extensiondata[1]);?>]
+						data: [<?php echo implode(', ',$this->eventCountsByDay);?> ],
 					},
-					<?php
-					$params = JComponentHelper::getParams("com_yoursites");
-					if ($params->get("supportwp", 0))
-					{
-					?>
-					{
-						label: "WordPress/ClassicPress",
-						backgroundColor: "#895df6",
-						data: [<?php echo implode(', ', $extensiondata[2]);?>]
-					}
-					<?php
-					}
-					?>
 				],
 			},
 			options: {
 				maintainAspectRatio: false,
 				responsiveAnimationDuration: 500,
 				legend: {
-					display: true
+					display: false
 				},
 				animation: {
 					duration: 2000
 				},
 				title: {
-					display: true,
-					text: '<?php echo JText::_("COM_YOURSITES_DASHBOARD_EXTENSIONS_SUMMARY_AND_STATUS");?>'
+					display: false,
 				},
 			}
 		});
 
-
 		// Chart 3
 		// ========================================================================
-		var char3El = document.getElementById('chart3');
-
-		new Chart(char3El, {
+		new Chart(document.getElementById('chart3'), {
 			type: 'bar',
 			data: {
-				labels: ["<?php echo JText::_("COM_YOURSITES_DASHBOARD_COMPLETED_BACKUPS");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_FAILED_BACKUPS");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_BACKUPS_NO_INSTALLED");?>",
-				],
+				labels: ['<?php echo  implode("', '", $this->newAttendeeEvents); ?>'],
 				datasets: [
 					{
-						label: "Joomla",
 						backgroundColor: "#39f",
-						data: [<?php echo implode(', ', $backupsdata[1]);?>, <?php echo $akeebadata[1]; ?>]
+						data: [<?php echo  implode(", ", $this->newAttendeeCounts); ?>],
 					},
-					<?php
-					$params = JComponentHelper::getParams("com_yoursites");
-					if ($params->get("supportwp", 0))
-					{
-					?>
-					{
-						label: "WordPress/ClassicPress",
-						backgroundColor: "#895df6",
-						data: [<?php echo implode(', ', $backupsdata[2]);?>, <?php echo $akeebadata[2]; ?>]
-					}
-					<?php
-					}
-					?>
 				],
 			},
 			options: {
 				maintainAspectRatio: false,
 				responsiveAnimationDuration: 500,
 				legend: {
-					display: true
+					display: false
 				},
 				animation: {
 					duration: 2000
 				},
 				title: {
-					display: true,
-					text: '<?php echo JText::_("COM_YOURSITES_DASHBOARD_BACKUPS_SUMMARY_AND_STATUS");?>'
+					display: false,
 				},
 			}
 		});
 
 		// Chart 4
 		// ========================================================================
-		var char4El = document.getElementById('chart4');
-
-		if (char4El) {
-			new Chart(char4El, {
-				type: 'bar',
-				data: {
-					labels: ["Completed Backups", "Failed Backups", "Sites Not Installed"],
-					datasets: [
-						{
-							label: "Joomla",
-							backgroundColor: "#39f",
-							data: [<?php echo implode(', ', $backupsdata[1]);?>, <?php echo $akeebadata[1]; ?>]
-						},
-						<?php
-						$params = JComponentHelper::getParams("com_yoursites");
-						if ($params->get("supportwp", 0))
-						{
-						?>
-						{
-							label: "WordPress/ClassicPress",
-							backgroundColor: "#895df6",
-							data: [<?php echo implode(', ', $backupsdata[2]);?>, <?php echo $akeebadata[2]; ?>]
-						}
-						<?php
-						}
-						?>
-					],
-				},
-				options: {
-					maintainAspectRatio: false,
-					responsiveAnimationDuration: 500,
-					legend: {
-						display: true
-					},
-					animation: {
-						duration: 2000
-					},
-					title: {
-						display: true,
-						text: '<?php echo JText::_("COM_YOURSITES_DASHBOARD_TASKS_SUMMARY_AND_STATUS");?>'
-					},
-				}
-			});
-		}
-
-		// Chart 5
-		// ========================================================================
-		var char5El = document.getElementById('chart5');
-
-		new Chart(char5El, {
+		new Chart(document.getElementById('chart4'), {
 			type: 'bar',
 			data: {
-
-				labels: ["<?php echo JText::_("COM_YOURSITES_DASHBOARD_TOTAL_TASKS");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_NOT_STARTED");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_FAILED");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_RUNNING");?>",
-					"<?php echo JText::_("COM_YOURSITES_DASHBOARD_COMPLETED");?>",
-				],
-
+				labels: ['<?php echo  implode("', '", $this->eventCountByWeekLabels); ?>'],
 				datasets: [
 					{
-						label: "Joomla",
 						backgroundColor: "#39f",
-						data: [<?php echo implode(', ', $taskdata[1]);?>]
+						data: [<?php echo  implode(", ", $this->eventCountByWeek); ?>],
 					},
-					<?php
-					$params = JComponentHelper::getParams("com_yoursites");
-					if ($params->get("supportwp", 0))
-					{
-					?>
-					{
-						label: "WordPress/ClassicPress",
-						backgroundColor: "#895df6",
-						data: [<?php echo implode(', ', $taskdata[2]);?>]
-					},
-					{
-						label: "Other",
-						backgroundColor: "#3cba9f",
-						data: [<?php echo implode(', ', $taskdata[999]);?>]
-					}
-					<?php
-					}
-					?>
 				],
 			},
 			options: {
 				maintainAspectRatio: false,
 				responsiveAnimationDuration: 500,
 				legend: {
-					display: true
+					display: false
 				},
 				animation: {
 					duration: 2000
 				},
 				title: {
-					display: true,
-					text: '<?php echo JText::_("COM_YOURSITES_DASHBOARD_TASKS_SUMMARY_AND_STATUS");?>'
+					display: false,
 				},
+				scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "<?php echo JText::_("COM_JEVENTS_COUNT_BY_WEEK_COMMENCING"); ?>"
+						}
+					}]
+				}
 			}
 		});
 
     </script>
 
-    <form action="<?php echo JRoute::_('index.php?option=com_yoursites'); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_jevents'); ?>" method="post" name="adminForm" id="adminForm">
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="redirecturl" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>

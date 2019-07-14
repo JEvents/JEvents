@@ -1,11 +1,12 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
- *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    CVS: 1.7.4
+ * @package    com_yoursites
+ * @author     Geraint Edwards <yoursites@gwesystems.com>
+ * @copyright  2016-2019 GWE Systems Ltd
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('JPATH_BASE') or die;
 
 // Do not do this in Internet Explorer 10 or lower (Note that MSIE 11 changed the app name to Trident)
@@ -14,7 +15,7 @@ if (GSLMSIE10)
 	return;
 }
 
-echo JLayoutHelper::render('jevents.version');
+echo GslHelper::renderVersion();
 ?>
             </div>
 
@@ -49,7 +50,7 @@ echo JLayoutHelper::render('jevents.version');
     <div id="ysts_debug_messages" ></div>
 </div>
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
+	window.addEventListener('load', function () {
 		if (document.getElementById('system-debug'))
         {
 	        document.getElementById('ysts_debug_messages').appendChild(document.getElementById('system-debug'));

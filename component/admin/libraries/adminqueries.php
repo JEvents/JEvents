@@ -190,6 +190,303 @@ class JEventsAdminDBModel extends JEventsDBModel
 
 	}
 
+	// Used in Dashboard
+	function getEventCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$query  = "SELECT count(rpt.rp_id) as count, rpt.endrepeat > '$t_datenowSQL' as future, rpt.endrepeat < '$t_datenowSQL' as past"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY future, past";
+
+		$db->setQuery($query);
+
+		$rows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($rows as $row)
+		{
+			if ($row->future)
+			{
+				$data[1] = (int) $row->count;
+			}
+			if ($row->past)
+			{
+				$data[2] = (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getUnpublishedEventCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$query  = "SELECT count(rpt.rp_id) as count"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			// . "\n LEFT JOIN #__jevents_vevdetail as det ON det.evdet_id = rpt.eventdetail_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND rpt.endrepeat > '$t_datenowSQL'  "
+			. "\n AND ev.state = 0 ";
+
+		$db->setQuery($query);
+
+		$count = $db->loadResult();
+
+		return (int) $count;
+	}
+
+	// Used in Dashboard
+	function getNewEventCounts()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+
+		$lastweek             = new JEVDate('-7 days');
+		$lastweekSQL          = $lastweek->toSql();
+
+		$lastmonth             = new JEVDate('-1 month');
+		$lastmonthSQL         = $lastmonth->toSql();
+
+		$query  = "SELECT count(ev.ev_id) as count, ev.created > '$lastweekSQL' as week,  ev.created > '$lastmonthSQL' as month"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.created > '$thismonthSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY month, week";
+
+		$db->setQuery($query);
+
+		$rows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($rows as $row)
+		{
+			if ($row->week)
+			{
+				$data[1] += (int) $row->count;
+			}
+			if ($row->month)
+			{
+				$data[2] += (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getUpcomingEventAttendees()
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$thisweek             = new JEVDate('+7 days');
+		$thisweekSQL          = $thisweek->toSql();
+
+		$thismonth             = new JEVDate('1 month');
+		$thismonthSQL         = $thismonth->toSql();
+
+		// repeating events first
+		$query  = "SELECT sum(atdc.atdcount) as count, rpt.startrepeat <= '$thisweekSQL' as week,  rpt.startrepeat <= '$thismonthSQL' as month"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jev_attendance as atd ON atd.ev_id = ev.ev_id"
+			. "\n LEFT JOIN #__jev_attendeecount as atdc ON atd.id = atdc.at_id  AND atdc.rp_id = rpt.rp_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY month, week";
+
+		$db->setQuery($query);
+
+		$reprows = $db->loadObjectList();
+
+		// then non-repeating events
+		$query  = "SELECT sum(atdc.atdcount) as count, rpt.startrepeat <= '$thisweekSQL' as week,  rpt.startrepeat <= '$thismonthSQL' as month"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jev_attendance as atd ON atd.ev_id = ev.ev_id"
+			. "\n LEFT JOIN #__jev_attendeecount as atdc ON atd.id = atdc.at_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND atdc.rp_id = 0"
+			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n GROUP BY month, week";
+
+		$db->setQuery($query);
+
+		$nonreprows = $db->loadObjectList();
+
+		$data = array(0,0,0);
+		$total = 0;
+		foreach ($reprows as $row)
+		{
+			if ($row->week)
+			{
+				$data[1] += (int) $row->count;
+			}
+			if ($row->month)
+			{
+				$data[2] += (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		foreach ($nonreprows as $row)
+		{
+			if ($row->week)
+			{
+				$data[1] += (int) $row->count;
+			}
+			if ($row->month)
+			{
+				$data[2] += (int)  $row->count;
+			}
+			$total  += (int) $row->count;
+		}
+		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getEventCountsByCategory($numberOfCategories = 10)
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$catwhere = "AND ev.catid IN(" . $this->accessibleCategoryList() . ")";
+		$extrajoin = "\n LEFT JOIN #__categories AS catmapcat ON ev.catid = catmapcat.id";
+		$catfield = " ev.catid as catid, catmapcat.params, catmapcat.title";
+		$params   = ComponentHelper::getParams("com_jevents");
+		if ($params->get("multicategory", 0))
+		{
+			$extrajoin    = "\nLEFT JOIN #__jevents_catmap as catmap ON catmap.evid = rpt.eventid";
+			$extrajoin   .= "\nLEFT JOIN #__categories AS catmapcat ON catmap.catid = catmapcat.id";
+			$catwhere   = "\n AND catmap.catid IN(" . $this->accessibleCategoryList() . ")";
+			$catfield = " catmap.catid as catid , catmapcat.params, catmapcat.title";
+		}
+
+		$query  = "SELECT count(rpt.rp_id) as count, $catfield"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. $extrajoin
+			. "\n WHERE state = 1 "
+			. $catwhere
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND rpt.endrepeat > '$t_datenowSQL'"
+			. " \n GROUP BY catid"
+			. " \n ORDER BY count desc";
+
+		$db->setQuery($query, 0, $numberOfCategories);
+
+		$rows = $db->loadObjectList();
+
+		return $rows;
+
+	}
+
+	// Used in Dashboard
+	function getEventCountsByDay()
+	{
+		$db                   = Factory::getDbo();
+		$user                 = Factory::getUser();
+		$lastweek             = new JevDate("-7 days");
+		$lastweekSQL          = $lastweek->toSql();
+
+		$query  = "SELECT count(ev.ev_id) as count, DAYOFWEEK(ev.created) as weekday"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n WHERE state = 1 "
+			. "\n AND ev.catid IN(" . $this->accessibleCategoryList() . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND ev.created > '$lastweekSQL'"
+			. " \n GROUP BY weekday"
+			. " \n ORDER BY weekday asc";
+
+		$db->setQuery($query, 0, 10);
+
+		$rows = $db->loadObjectList();
+
+		return $rows;
+
+	}
+
+	// Used in Dashboard
+	function getEventCountsByWeek()
+	{
+		$db                   = Factory::getDbo();
+		$user                 = Factory::getUser();
+
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		$eightweeks           = new JevDate("+8 weeks");
+		$eightweeksSQL        = $eightweeks->toSql();
+
+
+		// See https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek
+		https://stackoverflow.com/questions/30364141/mysql-convert-yearweek-to-date
+		$query  = "SELECT count(rpt.rp_id) as count, YEARWEEK(rpt.startrepeat, 1) as evweeknum, YEARWEEK('$t_datenowSQL') as todayweek"
+		//$query  = "SELECT rpt.rp_id, WEEK(rpt.startrepeat, 1) as evweeknum, WEEK('$t_datenowSQL') as todayweek"
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n WHERE ev.catid IN(" . $this->accessibleCategoryList() . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND rpt.startrepeat > '$t_datenowSQL'  "
+			. "\n AND rpt.startrepeat <= '$eightweeksSQL'  "
+			. "\n AND ev.state = 1 "
+			. "\n GROUP BY evweeknum "
+			. "\n ORDER BY evweeknum ASC";
+
+
+		$db->setQuery($query, 0, 10);
+
+		$rows = $db->loadObjectList();
+
+		foreach ($rows as & $row)
+		{
+			$datetime = new DateTime();
+			$datetime->setISODate(substr($row->evweeknum, 0, 4),substr($row->evweeknum, 4, 2), 1);
+			$row->weekstart = $datetime->format("d/m/Y");
+		}
+		return $rows;
+
+	}
+
 	/**
 	 * get all the native JEvents Icals (i.e. not imported from URL or FILE)
 	 *

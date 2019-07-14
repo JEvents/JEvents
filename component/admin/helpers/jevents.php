@@ -79,20 +79,20 @@ class JEventsHelper
 				$controller = JControllerLegacy::getInstance("Categories");
 				$view       = $controller->getView("categories", 'html', 'categoriesView');
 
-				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/categories/tmpl/");
+				$view->addTemplatePath(JPATH_ADMINISTRATOR . "/components/com_jevents/views/com_categories/categories/tmpl/");
 			}
 
 			$doc = Factory::getDocument();
 
-			$hide_options = '#toolbar-options {'
+			$style = '#toolbar-options {'
 				. 'display:none;'
 				. '}';
 
-			$doc->addStyleDeclaration($hide_options);
+
 			// Category styling 
-			$style = <<<STYLE
+			$style .= <<<STYLE
 #categoryList td.center a {
-    border:none;
+   /* border:none;*/
 }
 STYLE;
 			Factory::getDbo()->setQuery("SELECT * FROM #__categories WHERE extension='com_jevents'");

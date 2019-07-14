@@ -23,6 +23,14 @@
 
 		<field name="color" type="jevcolor" default=""  layoutfield="COLOUR"   label="JEV_EVENT_COLOR" size="30" description="JEV_EVENT_COLOR_TIP" />
 
+		<field
+				name="tags"
+				type="tag"
+				label="JTAG"
+				description="JTAG_DESC"
+				multiple="true"
+		/>
+
 		<field name="contact_info" type="text" default=""  size="60" maxlength="120" layoutfield="CONTACT"  class="inputbox"
 		       label="JEV_EVENT_CONTACT" description="JEV_EVENT_CONTACT_TIP" />
 		<field name="extra_info" type="textarea" default=""  rows="5" cols="60" layoutfield="EXTRA"  class="text_area"  label="JEV_EVENT_EXTRA" description="JEV_EVENT_EXTRA_TIP" />

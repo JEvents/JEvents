@@ -56,7 +56,20 @@
         <delete file="${uikitdir}/dist/css/uikit.gsl.min.css" failonerror="false" />
 
         <!-- execute yarn scripts there -->
-        <exec command="yarn compile" dir="${uikitdir}" outputProperty="yarn.output" >
+        <!--
+        run compile help to see this
+        usage:
+
+        build.js [componentA, componentB, ...] [-d|debug|nominify|development]
+
+        examples:
+
+        build.js // builds all of uikit, including icons and does minification (implies 'all')
+        build.js uikit icons -d // builds all of uikit and the icons, skipping the minification
+        build.js core lightbox -d // builds uikit-core and the lightbox, skipping the minification
+
+        //-->
+        <exec command="yarn compile -d" dir="${uikitdir}" outputProperty="yarn.output" >
         </exec>
         <echo msg="${yarn.output}" />
         <exec command="yarn prefix -p gsl " dir="${uikitdir}"  outputProperty="yarn.output2" >

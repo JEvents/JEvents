@@ -19,6 +19,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\TagsHelper;
 
 class AdminIcaleventController extends JControllerAdmin
 {
@@ -580,6 +581,8 @@ class AdminIcaleventController extends JControllerAdmin
 
 				return false;
 			}
+
+
 		}
 		else
 		{
@@ -612,6 +615,78 @@ class AdminIcaleventController extends JControllerAdmin
 			$row->starttime($defaultstarttime);
 			$row->endtime($defaultendtime);
 		}
+
+		/*
+		 * Make sure content_type is registered!
+		 * This is to support Joomla tags - buts its complicated since we need to manually modify the ucm_content table because key data is spread across 3 tables
+		 * So its disabled for now
+        */
+		/*
+        $query = $db->getQuery(true);
+		$query->select('type_title')
+            ->from ("#__content_types")
+            ->where ('type_alias = "com_jevents.event"');
+		$db->setQuery($query);
+		if (!$db->loadResult())
+        {
+            $sql = <<< SQL
+		INSERT INTO #__content_types
+	(
+		type_title,
+		type_alias,
+		`table`,
+		rules,
+		field_mappings
+	)
+VALUES (
+	'JEvents Event',
+	'com_jevents.event',
+	'{"special":{"dbtable":"#__jevent_vevent","key":"ev_id","type":"Event","prefix":"JEventsTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}',
+	'',
+	'{
+	"common": {
+		"core_content_item_id": "ev_id",
+		"core_title": "(SELECT summary FROM #__jevents_vevdetail as det WHERE det.evdet_id = #__jevent_vevent.detail_id)",
+		"core_state": "(SELECT state FROM #__jevents_vevdetail as det WHERE det.evdet_id = #__jevent_vevent.detail_id)",
+		"core_alias": "null",
+		"core_created_time": "null",
+		"core_modified_time": "null",
+		"core_body": "null",
+		"core_hits": "null",
+		"core_publish_up": "null",
+		"core_publish_down": "null",
+		"core_access": "null",
+		"core_params": "null",
+		"core_featured": "null",
+		"core_metadata": "null",
+		"core_language": "null",
+		"core_images": "null",
+		"core_urls": "null",
+		"core_version": "null",
+		"core_ordering": "null",
+		"core_metakey": "null",
+		"core_metadesc": "null",
+		"core_catid": "null",
+		"core_xreference": "null",
+		"asset_id": "asset_id"
+	},
+	"special": {
+	}
+}' )
+SQL;
+	        $db->setQuery($sql);
+	        $db->execute();
+        }
+		*/
+
+		/*
+		// Load item tags
+		if (!empty($row->evdet_id()))
+		{
+			$row->tags = new TagsHelper;
+			$row->tags->getTagIds($row->evdet_id(), 'com_jevents.event');
+		}
+		*/
 
 		$glist = JEventsHTML::buildAccessSelect(intval($row->access()), 'class="inputbox" size="1"');
 
@@ -1176,6 +1251,15 @@ class AdminIcaleventController extends JControllerAdmin
 				$db->execute();
 				// TODO clear out old exception details
 			}
+
+			/*
+			$tagsHelper = new TagsHelper();
+			$tagsHelper->typeAlias = "com_jevents.event";
+            //$ucmId, TableInterface $table, $tags = array(), $replace = true
+			$tagged = $tagsHelper->tagItem($event->detail_id, $event->_detail, $array['tags'], true);
+
+			// I need to manually set the #__ucm_content #__ucm_base and table entries since they are joins and the UCM doesn't deal with it properlu
+			*/
 		}
 		else
 		{

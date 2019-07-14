@@ -79,6 +79,7 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_JURI_BASE",true);
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_LDJSON",true);?>", "LDJSON");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_ICAL_SAVE",true);?>", "ICALSAVE");
 defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE",true);?>", "ICALGOOGLE");
+//defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_JOOMLA_TAG",true);?>", "JOOMLATAGS");
 
 <?php
 // get list of enabled plugins

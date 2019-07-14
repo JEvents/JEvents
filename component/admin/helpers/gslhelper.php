@@ -1,0 +1,305 @@
+<?php
+/**
+ * @version    CVS: 1.7.4
+ * @package    com_yoursites
+ * @author     Geraint Edwards <yoursites@gwesystems.com>
+ * @copyright  2016-2019 GWE Systems Ltd
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
+
+class GslHelper
+{
+	public static function loadAssets()
+	{
+		$document = JFactory::getDocument();
+        // set container scope for code
+		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
+
+		JHtml::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => '1.7.4', 'relative' => false));
+		JHtml::stylesheet('administrator/components/com_jevents/assets/css/jevents.css', array('version' => '1.7.4', 'relative' => false));
+		JHtml::script('media/com_jevents/js/uikit.js', array('version' => '1.7.4', 'relative' => false));
+		JHtml::script('media/com_jevents/js/uikit-icons.js', array('version' => '1.7.4', 'relative' => false));
+		JHtml::script('administrator/components/com_jevents/assets/js/gslframework.js', array('version' => '1.7.4', 'relative' => false));
+		JHtml::script('administrator/components/com_jevents/assets/js/jevents.js', array('version' => '1.7.4', 'relative' => false));
+	}
+
+	public static function renderModal()
+	{
+		return;
+
+		// Progress Modal
+		$whendonemessage   = JText::_("COM_YOURSITES_CLOSE_PROGRESS_POPUP", true);
+		$progresstitle     = JText::_("COM_YOURSITES_PROGRESS_POPUP_TITLE", true);
+		$progressModalData = array(
+			'selector' => 'progressModal',
+			'params'   => array(
+				'title'    => $progresstitle,
+				'footer'   => "<strong>$whendonemessage </strong>",
+				'backdrop' => 'static'
+			),
+			'body'     => '<div class="gsl-grid gsl-padding-remove" style="padding:10px;" ><div id="pmcol1" class="gsl-width-1-2"></div><div  id="pmcol2" class="gsl-width-1-2"></div></div>',
+		);
+
+		echo LayoutHelper::render('jevents.modal.main', $progressModalData);
+	}
+
+	static public function renderVersion()
+	{
+		echo LayoutHelper::render('jevents.version');
+	}
+
+	static public function translate($string, $jssafe = true)
+	{
+		$string = "COM_JEVENTS_" . $string;
+
+		return JText::_($string, $jssafe);
+	}
+
+	static public
+	function isAdminUser($user = null)
+	{
+
+		if (is_null($user))
+		{
+			$user = Factory::getUser();
+		}
+		//$access = JAccess::check($user->id, "core.admin","com_jevents");
+		// Add a second check incase the getuser failed.
+		if (!$user)
+		{
+			return false;
+		}
+		$access = $user->authorise('core.admin', 'com_jevents');
+
+		return $access;
+	}
+
+	static public function supportLink()
+	{
+		return "https://www.jevents.net/discussions";
+	}
+
+	static public function documentationLink()
+	{
+		return "https://www.jevents.net/documentation";
+	}
+
+	static public function configLink()
+	{
+		return JUri::base() . 'index.php?option=com_jevents&task=params.edit';
+	}
+
+	static public function cpanelIconLink()
+	{
+		?>
+        <a href="<?php echo JRoute::_("index.php?option=com_jevents&view=cpanel"); ?>" class="">
+            <img src="<?php echo JUri::base(); ?>components/com_jevents/assets/images/logo.png"
+                 alt="JEvents Logo">
+            <span class="nav-label"><?php echo JText::_('JEVENTS_CORE_CPANEL'); ?></span>
+        </a>
+		<?php
+	}
+
+	static public function getLeftIconLinks()
+	{
+		$app   = Factory::getApplication();
+		$input = $app->input;
+		$task  = $input->getCmd('jevtask', '');
+		$option  = $input->getCmd('option', 'com_jevents');
+		list($view, $layout) = explode(".", $task);
+
+		$params = JComponentHelper::getParams("com_jevents");
+
+		$iconLinks = array();
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = $view == "icalevent";
+		$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=icalevent.list");
+		$iconLink->icon           = "calendar";
+		$iconLink->label          = JText::_('JEV_ADMIN_ICAL_EVENTS');
+		$iconLink->tooltip        = "";
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = $option == "com_categories";
+		$iconLink->link           = JRoute::_("index.php?option=com_categories&extension=com_jevents");
+		$iconLink->icon           = "album";
+		$iconLink->label          = JText::_('JEV_INSTAL_CATS');
+		$iconLink->tooltip        = "";
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		if (JEVHelper::isAdminUser())
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "icals";
+			$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=icals.list");
+			$iconLink->icon           = "thumbnails";
+			$iconLink->label          = JText::_('JEV_ADMIN_ICAL_SUBSCRIPTIONS');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+
+
+			if ($params->get("authorisedonly", 0))
+			{
+				$iconLink                 = new stdClass();
+				$iconLink->class          = "";
+				$iconLink->active         = $view == "user";
+				$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=user.list");
+				$iconLink->icon           = "users";
+				$iconLink->label          = JText::_('JEV_MANAGE_USERS');
+				$iconLink->tooltip        = "";
+				$iconLink->tooltip_detail = "";
+				$iconLinks[]              = $iconLink;
+			}
+		}
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = $view == "defaults";
+		$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=defaults.list");
+		$iconLink->icon           = "file-edit";
+		$iconLink->label          = JText::_('JEV_LAYOUT_DEFAULTS');
+		$iconLink->tooltip        = "";
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = $task == "cpanel.support";
+		$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=cpanel.support");
+		$iconLink->icon           = "file-text";
+		$iconLink->label          = JText::_('SUPPORT_INFO');
+		$iconLink->tooltip        = "";
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		$iconLink                 = new stdClass();
+		$iconLink->class          = "";
+		$iconLink->active         = $view == "customcss";
+		$iconLink->link           = JRoute::_("index.php?option=com_jevents&view=customcss");
+		$iconLink->icon           = "paint-bucket";
+		$iconLink->label          = JText::_('JEV_CUSTOM_CSS');
+		$iconLink->tooltip        = "";
+		$iconLink->tooltip_detail = "";
+		$iconLinks[]              = $iconLink;
+
+		// Links to addons
+
+		// Managed Locations
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevlocations' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		if ($is_enabled)
+		{
+			Factory::getLanguage()->load("com_jevlocations", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "jevlocations";
+			$iconLink->link           = JRoute::_("index.php?option=com_jevlocations");
+			$iconLink->icon           = "location";
+			$iconLink->label          = JText::_('COM_JEVLOCATIONS');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// JEvents Tags
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jeventstags' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		if ($is_enabled)
+		{
+			Factory::getLanguage()->load("com_jeventstags", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "jeventstags";
+			$iconLink->link           = JRoute::_("index.php?option=com_jeventstags");
+			$iconLink->icon           = "hashtag";
+			$iconLink->label          = JText::_('COM_JEVENTSTAGS');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// Managed People
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_jevpeople' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		if ($is_enabled)
+		{
+			Factory::getLanguage()->load("com_jevpeople", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "jevpeople";
+			$iconLink->link           = JRoute::_("index.php?option=com_jevpeople");
+			$iconLink->icon           = "user";
+			$iconLink->label          = JText::_('COM_JEVPEOPLE');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// RSVP Pro
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT enabled FROM #__extensions WHERE element = 'com_rsvppro' AND type='component' ");
+		$is_enabled = $db->loadResult();
+		if ($is_enabled)
+		{
+			Factory::getLanguage()->load("com_rsvppro", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "rsvppro";
+			$iconLink->link           = JRoute::_("index.php?option=com_rsvppro");
+			$iconLink->icon           = "cart";
+			$iconLink->label          = JText::_('COM_RSVPPRO');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
+		// Custom Fields
+		$db = Factory::getDbo();
+		$db->setQuery("SELECT * FROM #__extensions WHERE element = 'jevcustomfields' AND type='plugin' AND folder='jevents' ");
+		$extension = $db->loadObject();
+		// Stop if user is not authorised to manage JEvents
+		if ($extension && $extension->enabled && JEVHelper::isAdminUser())
+		{
+
+			Factory::getLanguage()->load("plg_jevents_jevcustomfields", JPATH_ADMINISTRATOR);
+
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "";
+			$iconLink->active         = $view == "rsvppro";
+			$iconLink->link           = JRoute::_("index.php?option=com_jevents&task=plugin.jev_customfields.overview");
+			$iconLink->icon           = "code";
+			$iconLink->label          = JText::_('JEV_CUSTOM_FIELDS');
+			$iconLink->tooltip        = "";
+			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+
+		return $iconLinks;
+
+	}
+
+	static public function returnToMainComponent()
+    {
+        return;
+    }
+
+}

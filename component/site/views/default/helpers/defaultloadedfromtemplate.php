@@ -7,6 +7,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $template_value = false, $runplugins = true)
 {
@@ -915,7 +916,21 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$replace[] = $event->getAccessName();
 				$blank[]   = "";
 				break;
-
+/*
+			case "{{JOOMLATAGS}}":
+				$search[] = "{{JOOMLATAGS}}";
+				if (!empty($event->tags->itemTags))
+				{
+					$replace[]        = LayoutHelper::render('joomla.content.tags', $event->tags->itemTags);
+				}
+				else
+				{
+					$replace[]        = "";
+				}
+				$replace[] = $event->getAccessName();
+				$blank[]   = "";
+				break;
+*/
 			case "{{JEVSTARTED}}":
 			case "{{JEVENDED}}":
 				// no need to repeat this for each of the matching 'case's

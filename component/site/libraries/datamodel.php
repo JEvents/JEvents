@@ -19,6 +19,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\TagsHelper;
 
 class JEventsDataModel
 {
@@ -956,6 +957,15 @@ class JEventsDataModel
 			$app->triggerEvent('onContentPrepare', array('com_jevents', &$row, &$params, 0));
 
 			$row->content($row->text);
+
+			// Load item tags
+			/*
+			if (!empty($row->ev_id()))
+			{
+				$row->tags = new TagsHelper;
+				$row->tags->getItemTags( 'com_jevents.event', $row->evdet_id());
+			}
+			*/
 
 			$data['row']  = $row;
 			$data['mask'] = $mask;

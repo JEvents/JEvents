@@ -637,7 +637,22 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					<?php
 				}
 
-				if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
+				/*
+                if ($cfg->get('joomlatags', 1))
+                {
+	                ?>
+                    <div class="row jev_joomlatags">
+                        <div class="span2">
+			                <?php echo $this->form->getLabel("tags"); ?>
+                        </div>
+                        <div class="span10">
+			                <?php echo $this->form->getInput("tags"); ?>
+                        </div>
+                    </div>
+	                <?php
+                }
+				*/
+                if (!$cfg->get('com_single_pane_edit', 0) && !$cfg->get('timebeforedescription', 0))
 				{
 					echo HTMLHelper::_('bootstrap.endPanel');
 					echo HTMLHelper::_('bootstrap.addPanel', "myEditTabs", "calendar");

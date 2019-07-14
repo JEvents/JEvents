@@ -93,7 +93,11 @@
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP</option>
 			<option value="1">JEV_USE_JEVENTS_BOOTSTRAP</option>
 			<option value="2">JEV_USE_JOOMLA_BOOTSTRAP</option>
-		</field>
+		</field>#
+		<!--
+		<field name="joomlatags" type="jevboolean" class="btn-group" default="1" menu="hide" label="COM_JEVENTS_USE_JOOMLA_TAGS"
+			   description="" difficulty="1"/>
+		//-->
 		<!--
 		<field name="bootstrapjs" type="jevlist"  default="1" label="JEV_LOAD_BOOTSTRAP_JS" description="JEV_LOAD_BOOTSTRAP_JS_DESC" difficulty="2" minjoomlaversion="3.0.0" >
 			<option value="0">JEV_DO_NOT_LOAD_BOOSTRAP_JS</option>
@@ -533,7 +537,7 @@
 		<field name="noeventdetailinurl" type="jevboolean" class="btn-group" default="0" menu="hide"
 		       label="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS" description="JEV_SUPPRESS_EVENTDETAIL_IN_SEF_LINKS_DESC"
 		       conditional="newsef" conditions="1"/>
-		<field name="com_blockRobots" type="jevlist" default="1" menu="hide" label="JEV_STOP_ROBOTS"
+		<field name="com_blockRobots" type="jevlist" default="0" menu="hide" label="JEV_STOP_ROBOTS"
 		       description="JEV_STOP_ROBOTS_TIP">
 			<option value="0">JEV_NO</option>
 			<option value="1">JEV_YES</option>
