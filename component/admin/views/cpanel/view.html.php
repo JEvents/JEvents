@@ -68,7 +68,7 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		$this->newEvents = $counts[1];
 		$this->newThisMonth = $counts[2];
 
-		$counts = $this->dataModel->queryModel->getUpcomingEventAttendees();
+		$counts = $this->dataModel->queryModel->getUpcomingEventAttendeesCounts();
 		$this->upcomingAttendees = $counts[1];
 		$this->upcomingAttendeesThisMonth = $counts[2];
 
@@ -100,6 +100,18 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		{
 			$this->eventCountsByDay[$datapoint->weekday - 1] = $datapoint->count;
 		}
+
+		$data = $this->dataModel->queryModel->getEventCountsByDay();
+
+		$this->eventCountsByDay = array(0,0,0,0,0,0,0);
+
+		foreach ($data as $datapoint)
+		{
+			$this->eventCountsByDay[$datapoint->weekday - 1] = $datapoint->count;
+		}
+
+
+		$this->attendeeCountsByEvent = $this->dataModel->queryModel->getUpcomingEventAttendees();
 
 		$data = $this->dataModel->queryModel->getEventCountsByWeek();
 

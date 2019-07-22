@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Plugin\PluginHelper;
+
 // Disable for now
 
 ?>
@@ -145,9 +147,9 @@ Joomla.submitbutton = function (pressbutton){
 }
 <?php
 // get list of enabled plugins
-$jevplugins = JPluginHelper::getPlugin("jevents");
+$jevplugins = PluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
-	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
+	if (PluginHelper::importPlugin("jevents", $jevplugin->name)){
 		// At present only some plugins support secondary tabs and special input formats
 		if (!in_array($jevplugin->name, array("jevcustomfields", "jevrsvppro", "jevpeople" , "agendaminutes", "jevfiles", "jevcck", "jevusers", "jevtags", "jevmetatags", "jevanonuser", "jevrsvp","jevgroupevent","jevtimelimit"))){
 			continue;

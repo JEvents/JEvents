@@ -10,6 +10,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Plugin\PluginHelper;
+
 ?>
 <label><?php echo JText::_("JEV_PLUGIN_INSTRUCTIONS",true);?></label>
 <select id="jevdefaults" onchange="defaultsEditorPlugin.insert('value','jevdefaults' )" ></select>
@@ -54,9 +57,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_AGE",true);?>", "
 
 <?php
 // get list of enabled plugins
-$jevplugins = JPluginHelper::getPlugin("jevents");
+$jevplugins = PluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
-	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
+	if (PluginHelper::importPlugin("jevents", $jevplugin->name)){
 		$classname = "plgJevents".ucfirst($jevplugin->name);
 		if (is_callable(array($classname,"fieldNameArray"))){
 			$lang = JFactory::getLanguage();

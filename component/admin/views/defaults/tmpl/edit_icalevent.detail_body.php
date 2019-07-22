@@ -10,6 +10,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Plugin\PluginHelper;
+
 $lang = JFactory::getLanguage();
 $lang->load("mod_jevents_detail", JPATH_SITE);
 ?>
@@ -83,9 +86,9 @@ defaultsEditorPlugin.node(optgroup , "<?php echo JText::_("JEV_FIELD_GOOGLE_SAVE
 
 <?php
 // get list of enabled plugins
-$jevplugins = JPluginHelper::getPlugin("jevents");
+$jevplugins = PluginHelper::getPlugin("jevents");
 foreach ($jevplugins as $jevplugin){
-	if (JPluginHelper::importPlugin("jevents", $jevplugin->name)){
+	if (PluginHelper::importPlugin("jevents", $jevplugin->name)){
 		$classname = "plgJevents".ucfirst($jevplugin->name);
 		if (is_callable(array($classname,"fieldNameArray"))){
 			$lang = JFactory::getLanguage();

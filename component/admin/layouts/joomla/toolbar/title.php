@@ -9,8 +9,9 @@
 
 defined('JPATH_BASE') or die;
 
+$titleclass = GSLMSIE10 ? "page-title" : "ysts-page-title";
 $icon = empty($displayData['icon']) ? 'generic' : preg_replace('#\.[^ .]*$#', '', $displayData['icon']);
 ?>
-<h1 class="ysts-page-title">
-    <?php echo $displayData['title']; ?>
+<h1 class="<?php echo $titleclass;?>">
+	<?php echo $displayData['title']; ?>
 </h1>

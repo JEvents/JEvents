@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 // load language constants
 
@@ -273,7 +274,7 @@ class JEventsAdminDBModel extends JEventsDBModel
 			. "\n FROM #__jevents_vevent as ev"
 			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
 			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
-			. "\n AND ev.created > '$thismonthSQL' "
+			. "\n AND ev.created > '$lastmonthSQL' "
 			. "\n AND ev.state = 1 "
 			. " \n GROUP BY month, week";
 
@@ -301,8 +302,12 @@ class JEventsAdminDBModel extends JEventsDBModel
 	}
 
 	// Used in Dashboard
-	function getUpcomingEventAttendees()
+	function getUpcomingEventAttendeesCounts()
 	{
+		if (! PluginHelper::isEnabled("jevents", "jevrsvppro"))
+		{
+			return array(0,0,0);
+		}
 		$db                   = Factory::getDbo();
 		$accessibleCategories = $this->accessibleCategoryList();
 		$user                 = Factory::getUser();
@@ -376,6 +381,71 @@ class JEventsAdminDBModel extends JEventsDBModel
 			$total  += (int) $row->count;
 		}
 		$data[0] = $total;
+		return $data;
+
+	}
+
+	// Used in Dashboard
+	function getUpcomingEventAttendees($max = 10)
+	{
+		$db                   = Factory::getDbo();
+		$accessibleCategories = $this->accessibleCategoryList();
+		$user                 = Factory::getUser();
+
+		$t_datenow            = JEVHelper::getNow();
+		$t_datenowSQL         = $t_datenow->toSql();
+
+		// repeating events first
+		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat "
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_vevdetail as det ON rpt.eventdetail_id = det.evdet_id"
+			. "\n LEFT JOIN #__jev_attendance as atd ON atd.ev_id = ev.ev_id"
+			. "\n INNER JOIN #__jev_attendeecount as atdc ON atd.id = atdc.at_id  AND atdc.rp_id = rpt.rp_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n ORDER BY startrepeat ASC";
+
+		$db->setQuery($query, 0, $max);
+
+		$reprows = $db->loadObjectList();
+
+		// then non-repeating events
+		$query  = "SELECT atdc.atdcount, det.summary as title, rpt.startrepeat "
+			. "\n FROM #__jevents_vevent as ev"
+			. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
+			. "\n LEFT JOIN #__jevents_vevdetail as det ON rpt.eventdetail_id = det.evdet_id"
+			. "\n LEFT JOIN #__jev_attendance as atd ON atd.ev_id = ev.ev_id"
+			. "\n INNER JOIN #__jev_attendeecount as atdc ON atd.id = atdc.at_id"
+			. "\n WHERE ev.catid IN(" . $accessibleCategories . ")"
+			. "\n AND ev.access  IN ( " . JEVHelper::getAid($user) . ") "
+			. "\n AND atdc.rp_id = 0"
+			. "\n AND rpt.startrepeat > '$t_datenowSQL' "
+			. "\n AND ev.state = 1 "
+			. " \n ORDER BY startrepeat ASC";
+
+		$db->setQuery($query, 0, $max);
+
+		$nonreprows = $db->loadObjectList();
+
+		$rows = array_merge($reprows, $nonreprows);
+		usort($rows, function($a, $b) {
+			return strcmp($a->startrepeat, $b->startrepeat);
+		});
+
+		// Just the first 10
+		$rows = array_slice($rows, 0, $max);
+
+		$data = array('start' => array(), 'title' => array(), 'count' => array());
+
+		foreach ($rows as $row)
+		{
+			$data['start'][] = $row->startrepeat;
+			$data['title'][] = $row->title; // . '\n' . $row->startrepeat;
+			$data['count'][] = $row->atdcount;
+		}
 		return $data;
 
 	}

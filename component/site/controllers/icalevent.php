@@ -171,6 +171,9 @@ class ICalEventController extends AdminIcaleventController
 		// attach data model component catids at this point so it will affect the choice of calendars too
 		$this->dataModel->setupComponentCatids();
 
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("editpopup", 0)) $input->set("tmpl", "component");
+
 		parent::edit();
 	}
 
@@ -189,6 +192,9 @@ class ICalEventController extends AdminIcaleventController
 
 		// attach data model component catids at this point so it will affect the choice of calendars too
 		$this->dataModel->setupComponentCatids();
+
+		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
+		if ($params->get("editpopup", 0)) $input->set("tmpl", "component");
 
 		parent::edit();
 	}

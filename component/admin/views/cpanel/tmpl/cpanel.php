@@ -10,12 +10,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $params  = ComponentHelper::getParams(JEV_COM_COMPONENT);
-
-JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 
 ?>
 
@@ -73,7 +71,7 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
                    <span gsl-icon="icon:users" class="gsl-margin-small-right gsl-text-primary"></span>
                    <?php echo JText::_("COM_JEVENTS_UPCOMING_REGISTRATIONS");?>
                 </span>
-                <?php if ($this->newRegistrations >= 0) { ?>
+                <?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
                 <h2 class="gsl-heading-primary gsl-margin-remove  gsl-text-primary">
                     <a href="<?php echo JRoute::_("index.php?option=com_rsvppro&task=sessions.list")?>">
                         <?php echo JText::sprintf("COM_JEVENTS_UPCOMING_REGISTRATIONS_THIS_WEEK", $this->upcomingAttendees);?>
@@ -91,7 +89,7 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
                         data-yspoptitle="<?php echo JText::_('COM_JEVENTS_REQUIRES_RSVPPRO'); ?>"
                         data-yspopcontent="<?php echo JText::_("COM_JEVENTS_REQUIRES_RSVPPRO_DETAIL"); ?>"
                     ?>
-                        <?php echo $this->newRegistrations >= 0 ? $this->newRegistrations : JText::_("COM_JEVENTS_NOT_INSTALLED");?>
+                        <?php echo JText::_("COM_JEVENTS_NOT_INSTALLED");?>
                     </h2>
                     <?php
                 }
@@ -308,16 +306,18 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
 
 		// Chart 3
 		// ========================================================================
+		<?php if (PluginHelper::isEnabled("jevents", "jevrsvppro")) { ?>
 		new Chart(document.getElementById('chart3'), {
 			type: 'bar',
 			data: {
-				labels: ['<?php echo  implode("', '", $this->newAttendeeEvents); ?>'],
+				labels: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['title']); ?>'],
 				datasets: [
 					{
 						backgroundColor: "#39f",
-						data: [<?php echo  implode(", ", $this->newAttendeeCounts); ?>],
+						data: [<?php echo  implode(", ", $this->attendeeCountsByEvent['count']); ?>],
 					},
 				],
+                startrepeat: ['<?php echo  implode("', '", $this->attendeeCountsByEvent['start']); ?>'],
 			},
 			options: {
 				maintainAspectRatio: false,
@@ -331,9 +331,27 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
 				title: {
 					display: false,
 				},
+				scales: {
+					yAxes: [{
+						display: true,
+						ticks: {
+							suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+							precision: 0
+						}
+					}]
+				},
+				tooltips: {
+					enabled: true,
+					mode: 'single',
+					callbacks: {
+						label: function(tooltipItems, data) {
+							return tooltipItems.yLabel + ' @ ' + data.startrepeat[tooltipItems.datasetIndex] ;
+						}
+					}
+				},
 			}
 		});
-
+		<?php } ?>
 		// Chart 4
 		// ========================================================================
 		new Chart(document.getElementById('chart4'), {
@@ -364,6 +382,13 @@ JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPON
 						scaleLabel: {
 							display: true,
 							labelString: "<?php echo JText::_("COM_JEVENTS_COUNT_BY_WEEK_COMMENCING"); ?>"
+						}
+					}],
+					yAxes: [{
+						display: true,
+						ticks: {
+							suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+							precision: 0
 						}
 					}]
 				}

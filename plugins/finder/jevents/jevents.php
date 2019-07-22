@@ -318,17 +318,24 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		// If the timelimit plugin has values set let's overrride the previous values.
 		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
 
+			$compparams = JComponentHelper::getParams("com_jevents");
+			$jtz        = $compparams->get("icaltimezonelive", "");
+			if ($jtz == "")
+			{
+				$jtz = null;
+			}
+
 			// Must change to correct timezone
 			if ($theevent->timelimits->startlimit !== '') {
 
-				$date   = new JevDate($theevent->timelimits->startlimit);
+				$date   = new JevDate($theevent->timelimits->startlimit, $jtz);
 				$sql    = $date->toMySQL();
 				$item->publish_start_date   = $sql;
 			}
 
 			if ($theevent->timelimits->endlimit) {
 
-				$date   = new JevDate($theevent->timelimits->endlimit);
+				$date   = new JevDate($theevent->timelimits->endlimit, $jtz);
 				$sql    = $date->toMySQL();
 				$item->publish_end_date     = $sql;
 			}
