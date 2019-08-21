@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_YOURSITES_SEARCH_FILTER"
+			description="COM_YOURSITES_SEARCH_FILTER_DESC"
+			hint="JSEARCH_FILTER"
+		/>
+
+		<field
+				name="coretype"
+				type="radio"
+				default=""
+				class="gsl-inline"
+				label="COM_YOURSITES_CORETYPE"
+				description="COM_YOURSITES_CORETYPE_DESC"
+
+		>
+			<option value="" onclick="this.form.submit()" class="allsoftware">COM_YOURSITES_ALL_SOFTWARE</option>
+			<option value="1" onclick="this.form.submit()" class="jonly">COM_YOURSITES_JOOMLA</option>
+			<option value="2" onclick="this.form.submit()" class="wponly">COM_YOURSITES_WP</option>
+			<option value="999" onclick="this.form.submit()" class="otheronly">COM_YOURSITES_OTHER_SOFTWARE</option>
+		</field>
+
+
+
+		<field
+			name="state"
+			type="status"
+			label="JPUBLISHED_FILTER"
+			description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+			onchange="this.form.submit();"
+			class="gsl-select"
+			default=""
+			>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+
+		<field name="owner"
+			   type="sql"
+			   query="SELECT '' AS `id`, 'COM_YOURSITES_SITES_OWNER_FILTER' AS `val` UNION SELECT `id`, `name` AS val FROM `#__users`"
+			   key_field="id"
+			   value_field="val"
+			   class="gsl-select"
+			   onchange="this.form.submit()"
+			   translate="true"
+		/>
+
+		<field name="coreversion"
+			   type="sql"
+			   header="COM_YOURSITES_SITES_COREVERSION_FILTER"
+			   sql_select="coreversion as id, coreversion as val"
+			   sql_from="#__ysts_sites"
+			   sql_group="coreversion"
+			   sql_order="coreversion ASC"
+			   sql_where="coreversion != '' AND state = 1"
+			   key_field="id"
+			   value_field="val"
+			   class="gsl-select"
+			   onchange="this.form.submit()"
+			   translate="true"
+		/>
+
+		<field name="pluginversion"
+			   type="sql"
+			   header="COM_YOURSITES_SITES_PLUGIN_VERSION_FILTER"
+			   sql_select="ex.currentversion as id, ex.currentversion as val"
+			   sql_from="#__ysts_extensions as ex"
+			   sql_group="ex.currentversion"
+			   sql_order="ex.currentversion ASC"
+			   sql_join="#__ysts_sites as st ON st.id = ex.site_id"
+			   sql_where="ex.type='package' AND ex.element='pkg_yoursitesclient' AND ex.currentversion != '' AND st.state IN (0,1)"
+			   key_field="id"
+			   value_field="val"
+			   class="gsl-select"
+			   onchange="this.form.submit()"
+			   translate="true"
+		/>
+
+		<field name="updatesrequired"
+			   type="list"
+			   class="gsl-select"
+			   default=""
+			   onchange="this.form.submit()"
+			   translate="true">
+			<option value="">COM_YOURSITES_UPDATES_REQUIRED_FILTER</option>
+			<option value="1">COM_YOURSITES_JOOMLA_UPDATE_REQUIRED</option>
+			<option value="2">COM_YOURSITES_CLIENT_PLUGIN_INSTALL_REQUIRED</option>
+			<option value="3">COM_YOURSITES_CLIENT_PLUGIN_UPDATE_REQUIRED</option>
+			<option value="4">COM_YOURSITES_ENHANCE_CLIENT_PLUGIN_SECURITY</option>
+			<option value="5">COM_YOURSITES_EXTENSIONS_UPDATES_REQUIRED_FILTER</option>
+			<option value="6">COM_YOURSITES_EXTENSIONS_UPDATES_REQUIRED_FILTER_MATCHING_SELECTED_EXTENSION</option>
+		</field>
+
+		<field name="isup"
+			   type="list"
+			   class="gsl-select"
+			   default=""
+			   onchange="this.form.submit()"
+			   translate="true">
+			<option value="">COM_YOURSITES_SITE_IS_UP_FILTER</option>
+			<option value="1">COM_YOURSITES_SITE_IS_ONLINE</option>
+			<option value="0">COM_YOURSITES_SITE_IS_INACCESIBLE</option>
+			<option value="2">COM_YOURSITES_SITE_IS_OFFLINE</option>
+			<option value="3">COM_YOURSITES_SITE_HAS_CSS_JS_IMG_NOT_LOADING</option>
+		</field>
+
+		<field name="phpversion"
+			   type="sql"
+			   header="COM_YOURSITES_SITES_PHP_VERSION_FILTER"
+			   sql_select="phpversion as id, phpversion as val"
+			   sql_from="#__ysts_sites"
+			   sql_group="phpversion"
+			   sql_order="phpversion ASC"
+			   sql_where="phpversion != '' "
+			   key_field="id"
+			   value_field="val"
+			   class="gsl-select"
+			   onchange="this.form.submit()"
+			   translate="true"
+
+		/>
+
+		<field name="extension_element"
+			   type="ystsextension"
+			   class="gsl-select"
+			   onchange="this.form.submit()"
+		/>
+
+		<field
+				name="tag"
+				type="tag"
+				label="JOPTION_FILTER_TAG"
+				description="JOPTION_FILTER_TAG_DESC"
+				multiple="true"
+				class="gsl-select "
+				custom="deny"
+				onchange="this.form.submit();"
+		>
+			<option value="" disabled="disabled">JOPTION_SELECT_TAG</option>
+		</field>
+
+	</fields>
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			class="gsl-select"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default=""
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.state ASC">JSTATUS_ASC</option>
+			<option value="a.state DESC">JSTATUS_DESC</option>
+			<option value="a.sitename ASC">COM_YOURSITES_SITES_SITENAME_ASC</option>
+			<option value="a.sitename DESC">COM_YOURSITES_SITES_SITENAME_DESC</option>
+			<option value="a.siteurl ASC">COM_YOURSITES_SITES_SITEURL_ASC</option>
+			<option value="a.siteurl DESC">COM_YOURSITES_SITES_SITEURL_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+			<option value="a.coreversion ASC">COM_YOURSITES_SITES_CORE_VERSION_ASC</option>
+			<option value="a.coreversion DESC">COM_YOURSITES_SITES_CORE_VERSION_DESC</option>
+			<option value="pluginversion ASC">COM_YOURSITES_SITES_PLUGIN_VERSION_ASC</option>
+			<option value="pluginversion DESC">COM_YOURSITES_SITES_PLUGIN_VERSION_DESC</option>
+			<option value="backupstart ASC">COM_YOURSITES_SITES_BACKUP_DATE_ASC</option>
+			<option value="backupstart DESC">COM_YOURSITES_SITES_BACKUP_DATE_DESC</option>
+			<option value="akeebaversion ASC">COM_YOURSITES_SITES_AKEEBA_VERSION_ASC</option>
+			<option value="akeebaversion DESC">COM_YOURSITES_SITES_AKEEBA_VERSION_DESC</option>
+			<option value="cfs.value ASC">COM_YOURSITES_SITES_CUSTOM_FIELD_SORT_ASC</option>
+			<option value="cfs.value DESC">COM_YOURSITES_SITES_CUSTOM_FIELD_SORT_DESC</option>
+			<option value="a.phpversion ASC">COM_YOURSITES_SITES_PHP_VERSION_ASC</option>
+			<option value="a.phpversion DESC">COM_YOURSITES_SITES_PHP_VERSION_DESC</option>
+			<option value="a.dbversion ASC">COM_YOURSITES_SITES_DB_VERSION_ASC</option>
+			<option value="a.dbversion DESC">COM_YOURSITES_SITES_DB_VERSION_DESC</option>
+			<option value="a.certinfo ASC">COM_YOURSITES_SITES_CERTIFICATE_EXPIRY_DATE_ASC</option>
+			<option value="a.certinfo DESC">COM_YOURSITES_SITES_CERTIFICATE_EXPIRY_DATE_DESC</option>
+			<option value="a.dbsize ASC">COM_YOURSITES_SITES_DB_SIZE_ASC</option>
+			<option value="a.dbsize DESC">COM_YOURSITES_SITES_DB_SIZE_DESC</option>
+			<option value="a.cachesize ASC">COM_YOURSITES_SITES_CACHE_SIZE_ASC</option>
+			<option value="a.cachesize DESC">COM_YOURSITES_SITES_CACHE_SIZE_DESC</option>
+			<option value="a.tmpsize ASC">COM_YOURSITES_SITES_TMP_FILE_SIZE_ASC</option>
+			<option value="a.tmpsize DESC">COM_YOURSITES_SITES_TMP_FILE_SIZE_DESC</option>
+		</field>
+
+		<field
+				name="sortcustomfield"
+				type="ystscustomfield"
+				class="gsl-select"
+				containerclass="sortcustomfield"
+				label="COM_YOURSITES_SORT_CUSTOM_FIELD"
+				description="COM_YOURSITES_SORT_CUSTOM_FIELD_DESC"
+				context="com_yoursites.site"
+				onchange="this.form.submit();"
+				textbased="1"
+				ignorenofields="1"
+				default=""
+				showon="fullordering:cfs.value ASC,cfs.value DESC"
+		/>
+
+		<field
+			name="limit"
+			type="limitbox"
+			class="gsl-select"
+			default="25"
+			label="COM_CONTENT_LIST_LIMIT"
+			description="COM_CONTENT_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

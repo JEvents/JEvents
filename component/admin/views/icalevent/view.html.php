@@ -144,6 +144,9 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 		$this->languages = $this->get('Languages');
 
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
 	}
 
 	public function edit($tpl = null)

@@ -62,57 +62,54 @@ $filtersActiveClass = $this->filtersHidden ? '' : ' js-stools-container-filters-
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="eventlist">
-	<?php if (!empty($this->sidebar)) : ?>
-		<div id="j-sidebar-container" class="span2">
-			<?php echo $this->sidebar; ?>
-		</div>
-	<?php endif; ?>
-
-	<div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
+    <div id="ysts-main-container">
+		<?php
+		// Search tools bar
+        // I need to create and initialise the filter form for this to work!
+		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+		?>
 		<!-- Filter Bar -->
 		<?php
 		// Load search tools
 		HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 		?>
-		<div class="js-stools clearfix">
-			<div class="clearfix">
-				<div class="js-stools-container-bar">
-					<label for="search" class="element-invisible">
-						<?php echo JText::_('JEV_SEARCH'); ?>
-					</label>
-					<div class="btn-wrapper input-append">
-						<input type="text" id="search" name="search" value="<?php echo htmlspecialchars($this->search); ?>"
-						       placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
-						       onChange="Joomla.submitform()" />
-						<button type="submit" class="btn hasTooltip" title="" aria-label="Search"
-						        data-original-title="Search">
-							<span class="icon-search" aria-hidden="true"></span>
-						</button>
-					</div>
-					<div class="btn-wrapper hidden-phone">
-						<button type="button" class="btn hasTooltip js-stools-btn-filter" title=""
-						        data-original-title="Filter the list items.">
-							<?php echo JText::_('JSEARCH_TOOLS'); ?> <span class="caret"></span>
-						</button>
-					</div>
-					<div class="btn-wrapper">
-						<button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
-						        data-original-title="Clear">
-							<?php echo JText::_('JCLEAR'); ?>
-						</button>
-					</div>
-				</div>
-				<div class="js-stools-container-list hidden-phone hidden-tablet">
-					<div class="hidden-select hidden-phone">
-						<div class="js-stools-field-list">
-							<?php echo $this->plist; ?>
-						</div>
-						<div class="js-stools-field-list">
-							<?php echo $this->pageNav->getLimitBox(); ?>
-						</div>
-					</div>
-				</div>
-			</div>
+		<div class="ysts_list_filters gsl-grid">
+            <div class="ysts-filterbar gsl-width-expand gsl-first-column">
+                <label for="search" class="element-invisible">
+                    <?php echo JText::_('JEV_SEARCH'); ?>
+                </label>
+                <div class="btn-wrapper input-append">
+                    <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($this->search); ?>"
+                           placeholder="<?php echo JText::_('JEV_SEARCH'); ?>" class="inputbox"
+                           onChange="Joomla.submitform()" />
+                    <button type="submit" class="btn hasTooltip" title="" aria-label="Search"
+                            data-original-title="Search">
+                        <span class="icon-search" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="btn-wrapper hidden-phone">
+                    <button type="button" class="btn hasTooltip js-stools-btn-filter" title=""
+                            data-original-title="Filter the list items.">
+                        <?php echo JText::_('JSEARCH_TOOLS'); ?> <span class="caret"></span>
+                    </button>
+                </div>
+                <div class="btn-wrapper">
+                    <button type="button" class="btn hasTooltip js-stools-btn-clear" title=""
+                            data-original-title="Clear">
+                        <?php echo JText::_('JCLEAR'); ?>
+                    </button>
+                </div>
+            </div>
+            <div class="js-stools-container-list hidden-phone hidden-tablet">
+                <div class="hidden-select hidden-phone">
+                    <div class="js-stools-field-list">
+                        <?php echo $this->plist; ?>
+                    </div>
+                    <div class="js-stools-field-list">
+                        <?php echo $this->pageNav->getLimitBox(); ?>
+                    </div>
+                </div>
+            </div>
 			<!-- Filters div -->
 			<div class="js-stools-container-filters hidden-phone clearfix <?php echo $filtersActiveClass; ?>">
 				<?php foreach ($this->filters AS $filter) { ?>
