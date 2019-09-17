@@ -326,16 +326,27 @@ class plgFinderJEvents extends FinderIndexerAdapter
 		
 		// If the timelimit plugin has values set let's overrride the previous values.
 		if (isset($theevent->timelimits) && !empty($theevent->timelimits)) {
-			// Must change to correct timezone
+			// Must change to correct timezone - GMT in finder tables
+			$compparams = JComponentHelper::getParams(JEV_COM_COMPONENT);
+			$jtz = $compparams->get("icaltimezonelive", "");
+
 			if ($theevent->timelimits->startlimit !== '') {
-				$date = new JevDate($theevent->timelimits->startlimit);
-				$sql = $date->toMySQL();
-				$item->publish_start_date   = $sql;
+				//$date = new JevDate($theevent->timelimits->startlimit);
+				//$sql = $date->toMySQL(true);
+
+				$date = new JDate($theevent->timelimits->startlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$gmtsql = $date->format('Y-m-d H:i:s');
+
+				$item->publish_start_date   = $gmtsql;
 			} 
 			if ($theevent->timelimits->endlimit) {
-				$date = new JevDate($theevent->timelimits->endlimit);
-				$sql = $date->toMySQL();
-				$item->publish_end_date     = $sql;
+				//$date = new JevDate($theevent->timelimits->endlimit, $jtz);
+				//$sql = $date->toMySQL();
+
+				$date = new JDate($theevent->timelimits->endlimit, (isset($theevent->_tzid) && !empty($theevent->_tzid)) ? $theevent->_tzid : $jtz);
+				$gmtsql = $date->format('Y-m-d H:i:s');
+
+				$item->publish_end_date     = $gmtsql;
 			}
 		}
 		
