@@ -144,7 +144,7 @@ class FlatModCalView extends DefaultModCalView {
 		}
 
 		$content = '
-<div id="flatcal_minical">
+<div id="flatcal_minical' . $this->_modid . '">
 	<table width="' . $width . '" cellspacing="1" cellpadding="0" border="0" align="center" class="flatcal_main_t">
 		<tr>
 			<td style="vertical-align: top;">';
