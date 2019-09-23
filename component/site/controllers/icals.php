@@ -241,7 +241,7 @@ class ICalsController extends AdminIcalsController
 					$icalEvents[$row->ev_id()] = $row;
 					
 					// Parse Content Plugins for Description
-                    			$row->_description = JHtml::_('content.prepare', $row->_description);
+                    			$row->_description = JHtml::_('content.prepare', $row->_content);
 				}
 			}
 			unset($rows);
