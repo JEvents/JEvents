@@ -240,9 +240,8 @@ class ICalsController extends AdminIcalsController
 					$dispatcher->trigger('onExportRow', array(&$row));
 					$icalEvents[$row->ev_id()] = $row;
 
-                    // Parse Content Plugins for Description
-                    $row->_description = JHtml::_('content.prepare', $row->_description);
-
+					// Parse Content Plugins for Description
+                    			$row->_description = JHtml::_('content.prepare', $row->_content);
 				}
 			}
 			unset($rows);
