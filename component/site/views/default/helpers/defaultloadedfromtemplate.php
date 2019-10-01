@@ -542,7 +542,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
-			case "{{CALENDAR}}":
+            case "{{ALLCATEGORIES_CAT_COLOURED}}":
+                $search[] = "{{ALLCATEGORIES_CAT_COLOURED}}";
+
+                if (!isset($allcat_catids))
+                {
+                    $db         = JFactory::getDbo();
+                    $arr_catids = array();
+                    $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+                    $db->setQuery($catsql);
+                    $allcat_catids = $db->loadObjectList('id');
+                }
+                $db = JFactory::getDbo();
+                $db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+                $allcat_eventcats = $db->loadColumn();
+
+                $allcats = array();
+                foreach ($allcat_eventcats as $catid)
+                {
+                    if (isset($allcat_catids[$catid]))
+                    {
+                        $params    = json_decode($allcat_catids[$catid]->params);
+                        $style = '';
+
+                        if(!empty($params->catcolour)) {
+                            $style = ' style="color:' . $params->catcolour . ';"';
+                        }
+                        $allcats[] = '<span ' . $style . '>' . $allcat_catids[$catid]->name . '</span>';
+                    }
+                }
+                $replace[] = implode(", ", $allcats);
+                $blank[]   = "";
+                break;
+
+            case "{{CALENDAR}}":
 				$search[]  = "{{CALENDAR}}";
 				$replace[] = $event->getCalendarName();
 				$blank[]   = "";
@@ -1293,6 +1326,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         $timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
                     }
                     $fieldval  = JText::_("JEV_DURATION_FORMAT");
+                    $shownsign = false;
 
                     // Whole days!
                     if (stripos($fieldval, "%wd") !== false)
