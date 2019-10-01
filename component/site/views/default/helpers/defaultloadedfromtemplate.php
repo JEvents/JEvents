@@ -1232,8 +1232,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						if ($timedelta > 3610)
 						{
-							//if more than 1 hour and 10 seconds over a day then round up the day output
-							//if more than 1 hour and 10 seconds over a day then round up the day output
+							// If more than 1 hour and 10 seconds over a day then round up the day output
 							++$days;
 						}
 
@@ -1246,7 +1245,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$timedelta -= $days * 60 * 60 * 24;
 						/*
 						  if ($timedelta>3610){
-						  //if more than 1 hour and 10 seconds over a day then round up the day output
+						  // If more than 1 hour and 10 seconds over a day then round up the day output
 						  $days +=1;
 						  }
 						 */
@@ -1294,44 +1293,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         $timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
                     }
                     $fieldval  = JText::_("JEV_DURATION_FORMAT");
-                    $shownsign = false;
-                    // whole days!
+
+                    // Whole days!
                     if (stripos($fieldval, "%wd") !== false)
                     {
                         $days      = intval($timedelta / (60 * 60 * 24));
                         $timedelta -= $days * 60 * 60 * 24;
 
-                        if ($timedelta > 3610)
+                        if ($row->noendtime() || $timedelta > 3610)
                         {
-                            //if more than 1 hour and 10 seconds over a day then round up the day output
+                            // If more than 1 hour and 10 seconds over a day then round up the day output
                             ++$days;
                         }
 
                         $fieldval  = str_ireplace("%d", $days, $fieldval);
-                        $shownsign = true;
                     }
                     if (stripos($fieldval, "%d") !== false)
                     {
                         $days      = intval($timedelta / (60 * 60 * 24));
                         $timedelta -= $days * 60 * 60 * 24;
 
-                          if ($timedelta>3610){
-                          //if more than 1 hour and 10 seconds over a day then round up the day output
+                          if ($row->noendtime() || $timedelta>3610){
+                          // If more than 1 hour and 10 seconds over a day then round up the day output
                           $days +=1;
                           }
 
                         $fieldval  = str_ireplace("%d", $days, $fieldval);
-                        $shownsign = true;
                     }
                     if (stripos($fieldval, "%h") !== false)
                     {
                         $fieldval  = str_ireplace("%h", 0, $fieldval);
-                        $shownsign = true;
                     }
                     if (stripos($fieldval, "%k") !== false)
                     {
                         $fieldval  = str_ireplace("%k", 0, $fieldval);
-                        $shownsign = true;
                     }
                     if (stripos($fieldval, "%m") !== false)
                     {
