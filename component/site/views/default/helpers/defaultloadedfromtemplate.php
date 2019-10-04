@@ -1320,20 +1320,22 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					// Round UP Search / Replace
                     $search[]  = "{{DURATION_ROUNDUP}}";
-                    $timedelta = $row->noendtime() ? 0 : $row->getUnixEndTime() - $row->getUnixStartTime();
+                    $timedelta = $row->getUnixEndTime() - $row->getUnixStartTime();
+
                     if ($row->alldayevent())
                     {
                         $timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
                     }
+
                     $fieldval  = JText::_("JEV_DURATION_FORMAT");
                     $shownsign = false;
 
                     // Whole days!
+                    $days      = intval($timedelta / (60 * 60 * 24));
+                    $timedelta -= $days * 60 * 60 * 24;
+
                     if (stripos($fieldval, "%wd") !== false)
                     {
-                        $days      = intval($timedelta / (60 * 60 * 24));
-                        $timedelta -= $days * 60 * 60 * 24;
-
                         if ($timedelta > 3610 || $row->noendtime())
                         {
                             // If more than 1 hour and 10 seconds over a day then round up the day output
@@ -1342,14 +1344,12 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
                         $fieldval  = str_ireplace("%d", $days, $fieldval);
                     }
+
                     if (stripos($fieldval, "%d") !== false)
                     {
-                        $days      = intval($timedelta / (60 * 60 * 24));
-                        $timedelta -= $days * 60 * 60 * 24;
-
                           if ($timedelta>3610 || $row->noendtime()){
-                          // If more than 1 hour and 10 seconds over a day then round up the day output
-                          $days +=1;
+                              // If more than 1 hour and 10 seconds over a day then round up the day output
+                              ++$days;
                           }
 
                         $fieldval  = str_ireplace("%d", $days, $fieldval);
