@@ -1334,7 +1334,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         $days      = intval($timedelta / (60 * 60 * 24));
                         $timedelta -= $days * 60 * 60 * 24;
 
-                        if ($row->noendtime() || $timedelta > 3610)
+                        if ($timedelta > 3610 || $row->noendtime())
                         {
                             // If more than 1 hour and 10 seconds over a day then round up the day output
                             ++$days;
@@ -1347,7 +1347,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
                         $days      = intval($timedelta / (60 * 60 * 24));
                         $timedelta -= $days * 60 * 60 * 24;
 
-                          if ($row->noendtime() || $timedelta>3610){
+                          if ($timedelta>3610 || $row->noendtime()){
                           // If more than 1 hour and 10 seconds over a day then round up the day output
                           $days +=1;
                           }
