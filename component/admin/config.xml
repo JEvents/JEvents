@@ -361,6 +361,16 @@
 		<!-- 
 		<field name="icaltimezone" type="text" default="" menu="hide" size="50" label="JEV_TIMEZONE" description="JEV_TIMEZONE DESC"/>
 		//-->
+
+		<field name="converturlstolinksonimport"
+			   type="jevboolean"
+			   class="btn-group"
+			   default="1"
+			   menu="hide"
+			   label="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT"
+			   description="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT_DESC"
+			   difficulty="3"/>
+
 		<field name="icalkey" type="text" default='SECRET_PHRASE'  menu="hide" size="50" label="JEV_ICAL_KEY" description="JEV_ICAL_KEY_DESC" difficulty="3"/>
 		<field name="showicalicon" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_SHOW_ICAL_ICON" description="JEV_SHOW_ICAL_ICON_DESC" difficulty="2"/>
 		<field name="disableicalexport" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_DISABLE_ICAL_EXPORT" description="JEV_DISABLE_ICAL_EXPORT_DESC" difficulty="2"/>
