@@ -161,6 +161,11 @@ class AdminCpanelController extends JControllerAdmin
 	{
 		$db     = Factory::getDbo();
 
+		// find JEvents parent menu item
+		$sql = 'select id from #__menu where client_id=1 and parent_id=1 and (title="com_jevents" OR title="COM_JEVENTS_MENU")';
+		$db->setQuery($sql);
+		$parent = $db->loadResult();
+
 		$extensions = array("frogs", "jevlocations", "jeventstags", "jevpeople", "rsvppro");
 		$toDisable = "";
 		foreach ($extensions as $extension)
@@ -175,7 +180,7 @@ class AdminCpanelController extends JControllerAdmin
 		$oldrows = $db->loadObjectList();
 
 		$sql = 'SELECT * FROM  #__menu 
-		where client_id=2 AND menutype = "main"  AND (' . $toDisable . ')';
+		where client_id=1 AND menutype = "disabled_jevents_menutiems"  AND (' . $toDisable . ')';
 		$db->setQuery($sql);
 		$disabledrows = $db->loadObjectList();
 
@@ -184,7 +189,7 @@ class AdminCpanelController extends JControllerAdmin
 		if (count($oldrows))
 		{
 			$sql = 'UPDATE  #__menu
-		set client_id = 2 
+		set menutype = "disabled_jevents_menutiems" 
 		where client_id = 1 AND menutype = "main"  and parent_id = 1 AND (' . $toDisable . ')';
 			$db->setQuery($sql);
 			$db->execute();
@@ -200,8 +205,8 @@ class AdminCpanelController extends JControllerAdmin
 			{
 				$rebuild = true;
 				$sql = 'UPDATE  #__menu
-		set client_id= 2 
-		where client_id=1 AND menutype = "main"  AND ' . ' link LIKE "%index.php?option=com_' . $extension . '%"';
+		set menutype = "disabled_jevents_menutiems" 
+		where client_id=1 AND menutype = "main"  AND parent_id = ' . $parent . ' AND ' . ' link LIKE "%index.php?option=com_' . $extension . '%"';
 				$db->setQuery($sql);
 				$db->execute();
 			}
@@ -213,8 +218,8 @@ class AdminCpanelController extends JControllerAdmin
 					{
 						$rebuild = true;
 						$sql = 'UPDATE  #__menu
-		set client_id = 1
-		where client_id =2 AND menutype = "main"  AND ' . ' link LIKE "%index.php?option=com_' . $extension . '%"';
+		set  menutype = "main"
+		where client_id = 1 AND menutype = "disabled_jevents_menutiems"  AND ' . ' link LIKE "%index.php?option=com_' . $extension . '%"';
 						$db->setQuery($sql);
 						$db->execute();
 					}
