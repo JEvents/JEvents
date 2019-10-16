@@ -170,7 +170,7 @@ class AdminCpanelController extends JControllerAdmin
 		}
 
 		$sql = 'SELECT * FROM  #__menu 
-		where client_id=1 AND menutype = "main"  and parent_id=1 AND (' . $toDisable . ')';
+		where client_id = 1 AND menutype = "main"  and parent_id = 1 AND (' . $toDisable . ')';
 		$db->setQuery($sql);
 		$oldrows = $db->loadObjectList();
 
@@ -181,11 +181,14 @@ class AdminCpanelController extends JControllerAdmin
 
 		// Disable the old menu items
 		// use client_id = 2  since published = 0 doesn't disable it!
-		$sql = 'UPDATE  #__menu
-		set client_id= 2 
-		where client_id=1 AND menutype = "main"  and parent_id = 1 AND (' . $toDisable . ')';
-		$db->setQuery($sql);
-		$db->execute();
+		if (count($oldrows))
+		{
+			$sql = 'UPDATE  #__menu
+		set client_id = 2 
+		where client_id = 1 AND menutype = "main"  and parent_id = 1 AND (' . $toDisable . ')';
+			$db->setQuery($sql);
+			$db->execute();
+		}
 
 		// Disable uninstalled extensions
 		$rebuild = false;
