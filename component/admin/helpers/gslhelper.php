@@ -17,7 +17,7 @@ class GslHelper
 	public static function loadAssets()
 	{
 		$document = JFactory::getDocument();
-        // set container scope for code
+		// set container scope for code
 		$document->addScriptDeclaration("gslUIkit.container = '.gsl-scope';");
 
 		JHtml::stylesheet('media/com_jevents/css/uikit.gsl.css', array('version' => '1.7.4', 'relative' => false));
@@ -214,6 +214,19 @@ class GslHelper
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
+		else
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "notinstalled";
+			$iconLink->active         = $view == "jevlocations";
+			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
+			$iconLink->icon           = "location";
+			$iconLink->label          = JText::_('COM_JEVENTS_LOCATIONS');
+			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
+			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
+			$iconLink->target         = "_blank";
+			$iconLinks[]              = $iconLink;
+		}
 
 		// JEvents Tags
 		$db = Factory::getDbo();
@@ -231,6 +244,19 @@ class GslHelper
 			$iconLink->label          = JText::_('COM_JEVENTSTAGS');
 			$iconLink->tooltip        = "";
 			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+		else
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "notinstalled";
+			$iconLink->active         = $view == "jeventstags";
+			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
+			$iconLink->icon           = "location";
+			$iconLink->label          = JText::_('COM_JEVENTS_TAGS');
+			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
+			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
+			$iconLink->target         = "_blank";
 			$iconLinks[]              = $iconLink;
 		}
 
@@ -252,6 +278,19 @@ class GslHelper
 			$iconLink->tooltip_detail = "";
 			$iconLinks[]              = $iconLink;
 		}
+		else
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "notinstalled";
+			$iconLink->active         = $view == "jevpeople";
+			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
+			$iconLink->icon           = "location";
+			$iconLink->label          = JText::_('COM_JEVENTS_PEOPLE');
+			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
+			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
+			$iconLink->target         = "_blank";
+			$iconLinks[]              = $iconLink;
+		}
 
 		// RSVP Pro
 		$db = Factory::getDbo();
@@ -269,6 +308,19 @@ class GslHelper
 			$iconLink->label          = JText::_('COM_RSVPPRO');
 			$iconLink->tooltip        = "";
 			$iconLink->tooltip_detail = "";
+			$iconLinks[]              = $iconLink;
+		}
+		else
+		{
+			$iconLink                 = new stdClass();
+			$iconLink->class          = "notinstalled";
+			$iconLink->active         = $view == "rsvppro";
+			$iconLink->link           = "https://www.jevents.net/join-club-jevents";
+			$iconLink->icon           = "location";
+			$iconLink->label          = JText::_('COM_JEVENTS_RSVPPRO');
+			$iconLink->tooltip        = JText::_("COM_JEVENTS_DISABLED_OPTION", true);
+			$iconLink->tooltip_detail = JText::_("COM_JEVENTS_DISABLED_OPTION_DESC", true);
+			$iconLink->target         = "_blank";
 			$iconLinks[]              = $iconLink;
 		}
 
@@ -298,8 +350,8 @@ class GslHelper
 	}
 
 	static public function returnToMainComponent()
-    {
-        return;
-    }
+	{
+		return;
+	}
 
 }

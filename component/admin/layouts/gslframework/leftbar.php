@@ -43,7 +43,7 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
 
 	                ?>
                     <li class="<?php echo $leftIconLink->class . ($leftIconLink->active ? " gsl-active" : ""); ?>" <?php echo $tooltip;?>>
-                        <a href="<?php echo $leftIconLink->link; ?>" >
+                        <a href="<?php echo $leftIconLink->link; ?>" target="<?php echo isset($leftIconLink->target) ? $leftIconLink->target : "_self"; ?>">
                             <span data-gsl-icon="icon: <?php echo $leftIconLink->icon; ?>" class="gsl-margin-small-right"></span>
                             <span class="nav-label"><?php echo $leftIconLink->label; ?></span>
                         </a>
