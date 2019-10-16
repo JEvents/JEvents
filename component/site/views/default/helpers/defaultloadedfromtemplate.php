@@ -2049,6 +2049,113 @@ function jevSpecialHandling($matches)
 		return $matches[0];
 }
 
+function jevStripDateFormatting($matches)
+{
+	if (count($matches) == 1 && StringHelper::strpos($matches[0], ";") > 0)
+	{
+		global $tempreplace, $tempevent, $tempsearch, $tempblank;
+		$parts = explode(";", $matches[0]);
+		if (count($parts) == 2)
+		{
+			$fmt = str_replace(array("}}", "}"), "", $parts[1]);
+			if (strpos($fmt, "#") !== false)
+			{
+				$fmtparts = explode("#", $fmt);
+				if ($tempreplace == $tempblank)
+				{
+					if (count($fmtparts) == 3)
+					{
+						$fmt = $fmtparts[2];
+					}
+					else
+						return "";
+				}
+				else if (count($fmtparts) >= 2)
+				{
+					$fmt = sprintf($fmtparts[1], $fmtparts[0]);
+				}
+			}
+			//return strftime($fmt, strtotime(strip_tags($tempreplace)));
+			if (!is_int($tempreplace))
+			{
+				$tempreplace = strtotime(strip_tags($tempreplace));
+			}
+			if (strpos($fmt, "%") === false)
+			{
+				return date($fmt, $tempreplace);
+			}
+
+			return JEV_CommonFunctions::jev_strftime($fmt, $tempreplace);
+		}
+		// TZ specified
+		else if (count($parts) == 3)
+		{
+			$fmt = $parts[1];
+
+			// Must get this each time otherwise modules can't set their own timezone
+			$compparams = ComponentHelper::getParams(JEV_COM_COMPONENT);
+			$jtz        = $compparams->get("icaltimezonelive", "");
+			if ($jtz != "")
+			{
+				$jtz = new DateTimeZone($jtz);
+			}
+			else
+			{
+				$jtz = new DateTimeZone(@date_default_timezone_get());
+			}
+			$outputtz = str_replace(array("}}", "}"), "", $parts[2]);
+
+			if (strpos($outputtz, "#") !== false)
+			{
+				$outputtzparts = explode("#", $outputtz);
+				$outputtz      = $outputtzparts[0];
+				if ($tempreplace == $tempblank)
+				{
+					if (count($outputtzparts) == 3)
+					{
+						$fmt = $outputtzparts[2];
+					}
+					else
+						return "";
+				}
+				else if (count($outputtzparts) >= 2)
+				{
+					$fmt = sprintf($outputtzparts[1], $fmt);
+				}
+			}
+
+
+			if (strtolower($outputtz) == "user" || strtolower($outputtz) == "usertz")
+			{
+				$user     = Factory::getUser();
+				$outputtz = $user->getParam("timezone", $compparams->get("icaltimezonelive", @date_default_timezone_get()));
+			}
+			$outputtz = new DateTimeZone($outputtz);
+
+			if (is_integer($tempreplace))
+			{
+				$tempreplace = JEV_CommonFunctions::jev_strftime("%Y-%m-%d %H:%M:%S", $tempreplace);
+			}
+			$indate  = new DateTime($tempreplace, $jtz);
+			$offset1 = $indate->getOffset();
+
+			// set the new timezone
+			$indate->setTimezone($outputtz);
+			$offset2 = $indate->getOffset();
+
+			$indate = $indate->getTimestamp() + $offset2 - $offset1;
+
+			return JEV_CommonFunctions::jev_strftime($fmt, intval($indate));
+		}
+		else
+		{
+			return $matches[0];
+		}
+	}
+	else if (count($matches) == 1)
+		return $matches[0];
+}
+
 function jevSpecialDateFormatting($matches)
 {
 

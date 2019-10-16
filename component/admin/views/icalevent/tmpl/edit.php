@@ -362,7 +362,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 										$extraTab['title'] = JText::_($extraTab['title']);
 									}
 									?>
-									<li><a data-toggle="tab"
+									<li <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>><a data-toggle="tab"
 									       href="#<?php echo $extraTab['paneid'] ?>"><?php echo $extraTab['title']; ?></a>
 									</li>
 									<?php
@@ -385,7 +385,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 					echo HTMLHelper::_('bootstrap.addPanel', 'myEditTabs', "common");
 				}
 				?>
-				<div class="row jevtitle">
+				<div class="row jevtitle" <?php JEventsHelper::showOnRel($this->form, 'title'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("title"); ?>
 					</div>
@@ -397,7 +397,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("priority"))
 				{
 					?>
-					<div class="row jevpriority">
+					<div class="row jevpriority" <?php JEventsHelper::showOnRel($this->form, 'priority'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("priority"); ?>
 						</div>
@@ -412,7 +412,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("creator"))
 				{
 					?>
-					<div class="row jevcreator">
+					<div class="row jevcreator" <?php JEventsHelper::showOnRel($this->form, 'creator'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("creator"); ?>
 						</div>
@@ -427,7 +427,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getLabel("ics_id"))
 				{
 					?>
-					<div class="row jevcalendar">
+					<div class="row jevcalendar" <?php JEventsHelper::showOnRel($this->form, 'ics_id'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("ics_id"); ?>
 						</div>
@@ -445,7 +445,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("lockevent"))
 				{
 					?>
-					<div class="row jevlockevent">
+					<div class="row jevlockevent" <?php JEventsHelper::showOnRel($this->form, 'lockevent'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("lockevent"); ?>
 						</div>
@@ -459,7 +459,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getLabel("catid"))
 				{
 					?>
-					<div class="row  jevcategory">
+					<div class="row  jevcategory" <?php JEventsHelper::showOnRel($this->form, 'catid'); ?>>
 						<?php
 						if ($this->form->getLabel("catid"))
 						{
@@ -482,7 +482,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 							if ($this->form->getLabel("primarycatid"))
 							{
 								?>
-								<div class="row  jevprimarycategory">
+								<div class="row  jevprimarycategory" <?php JEventsHelper::showOnRel($this->form, 'primarycatid'); ?>>
 									<?php
 									if ($this->form->getLabel("primarycatid"))
 									{
@@ -505,7 +505,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->repeatId === 0 && $this->form->getLabel("access"))
 				{
 					?>
-					<div class="row  jevaccess">
+					<div class="row  jevaccess" <?php JEventsHelper::showOnRel($this->form, 'access'); ?>>
 						<?php
 						if ($this->form->getLabel("access"))
 						{
@@ -532,7 +532,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				else if ($this->form->getLabel("state"))
 				{
 					?>
-					<div class="row jevpublished">
+					<div class="row jevpublished" <?php JEventsHelper::showOnRel($this->form, 'state'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("state"); ?>
 						</div>
@@ -551,7 +551,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				if ($this->form->getInput("color"))
 				{
 					?>
-					<div class="row jevcolour">
+					<div class="row jevcolour" <?php JEventsHelper::showOnRel($this->form, 'color'); ?>>
 						<div class="span2">
 							<?php echo $this->form->getLabel("color"); ?>
 						</div>
@@ -574,7 +574,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 				}
 				?>
 
-				<div class="row jev_description">
+				<div class="row jev_description" <?php JEventsHelper::showOnRel($this->form, 'jevcontent'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("jevcontent"); ?>
 					</div>
@@ -591,7 +591,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						?>
 					</div>
 				</div>
-				<div class="row jeveditlocation" id="jeveditlocation">
+				<div class="row jeveditlocation" id="jeveditlocation" <?php JEventsHelper::showOnRel($this->form, 'location'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("location"); ?>
 					</div>
@@ -599,7 +599,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						<?php echo $this->form->getInput("location"); ?>
 					</div>
 				</div>
-				<div class="row jev_contact">
+				<div class="row jev_contact" <?php JEventsHelper::showOnRel($this->form, 'contact_info'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("contact_info"); ?>
 					</div>
@@ -607,7 +607,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
 						<?php echo $this->form->getInput("contact_info"); ?>
 					</div>
 				</div>
-				<div class="row jev_extrainfo">
+				<div class="row jev_extrainfo" <?php JEventsHelper::showOnRel($this->form, 'extrainfo'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("extra_info"); ?>
 					</div>
@@ -641,7 +641,7 @@ $accesslevels = "jeval" . implode(" jeval", array_unique($accesslevels));
                 if ($cfg->get('joomlatags', 1))
                 {
 	                ?>
-                    <div class="row jev_joomlatags">
+                    <div class="row jev_joomlatags" <?php JEventsHelper::showOnRel($this->form, 'tags'); ?>>
                         <div class="span2">
 			                <?php echo $this->form->getLabel("tags"); ?>
                         </div>

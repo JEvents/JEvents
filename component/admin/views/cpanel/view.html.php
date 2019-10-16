@@ -36,10 +36,10 @@ class AdminCpanelViewCpanel extends JEventsAbstractView
 		jimport('joomla.html.pane');
 
 		$document = Factory::getDocument();
-		$document->setTitle(JText::_('JEVENTS_CORE_CPANEL'));
+		$document->setTitle(JText::_('JEVENTS_DASHBOARD'));
 
 		// Set toolbar items for the page
-		JToolbarHelper::title(JText::_('JEVENTS_CORE_CPANEL'), 'jevents');
+		JToolbarHelper::title(JText::_('JEVENTS_DASHBOARD'), 'jevents');
 
 		JEventsHelper::addSubmenu();
 

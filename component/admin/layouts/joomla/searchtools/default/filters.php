@@ -13,10 +13,11 @@ $data = $displayData;
 
 // Load the form filters
 $filters = $data['view']->filterForm->getGroup('filter');
+$customfilters =  $data['view']->filters;
 ?>
 <?php if ($filters) : ?>
 	<?php foreach ($filters as $fieldName => $field) : ?>
-		<?php if ($fieldName !== 'filter_search' && $fieldName != "filter_coretype") : ?>
+		<?php if ($fieldName !== 'filter_search') : ?>
 			<?php $dataShowOn = ''; ?>
 			<?php if ($field->showon) : ?>
 				<?php JHtml::_('jquery.framework'); ?>
@@ -24,7 +25,17 @@ $filters = $data['view']->filterForm->getGroup('filter');
 				<?php $dataShowOn = " data-showon='" . json_encode(JFormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . "'"; ?>
 			<?php endif; ?>
 			<div class="js-stools-field-filter"<?php echo $dataShowOn; ?>>
-				<?php echo $field->input; ?>
+				<?php
+                $customFilterName = str_replace('filter_', '', $fieldName);
+                if (isset($customfilters[$customFilterName]))
+                {
+	                echo $customfilters[$customFilterName];
+                }
+                else
+                {
+	                echo $field->input;
+                }
+                ?>
 			</div>
 		<?php endif; ?>
 	<?php endforeach; ?>

@@ -14,18 +14,6 @@
 		/>
 
 		<field
-				name="showpast"
-		/>
-
-		<field
-				name="icsfile"
-		/>
-
-		<field
-				name="created_by"
-		/>
-
-		<field
 				name="state"
 				type="status"
 				label="JPUBLISHED_FILTER"

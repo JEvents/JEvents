@@ -7,6 +7,7 @@ JLoader::register('JevRegistry', JPATH_SITE . "/components/com_jevents/libraries
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\FormHelper;
 
 /**
  * JEvents component helper.
@@ -278,4 +279,18 @@ STYLE;
 		return $previous;
 	}
 
+	static public function showOnRel($form, $fieldid)
+	{
+		$field = $form->getField($fieldid);
+		$rel = "";
+		if ($field && $field->showon)
+		{
+			JHtml::_('jquery.framework');
+			JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+
+			$rel           = ' data-showon=\'' .
+				json_encode(FormHelper::parseShowOnConditions($field->showon, $field->formControl, $field->group)) . '\'';
+		}
+		echo $rel;
+	}
 }

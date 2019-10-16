@@ -741,6 +741,12 @@ body, body.@{mycomponent}
 /* Search toolbar */
 .gsl-scope  #ysts-main-container .js-stools {
   margin: 0 3px;
+
+  /* Joomla search bar reveal sets this to inline-block! */
+  .js-stools-container-filters-visible {
+    display:flex;
+  }
+
 }
 
 @import "responsive.less";

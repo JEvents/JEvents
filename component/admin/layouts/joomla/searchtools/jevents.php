@@ -45,7 +45,7 @@ if (isset($data['view']->filterForm) && !empty($data['view']->filterForm))
 	$showFilterButton = isset($filters['filter_search']) && count($filters) === 1 ? false : true;
 
 	// Checks if it should show the be hidden
-	$hideActiveFilters = empty($data['view']->activeFilters) ;
+	$hideActiveFilters = empty($data['view']->activeFilters);
 
 	// Check if the no results message should appear.
 	if (isset($data['view']->total) && (int) $data['view']->total === 0)
@@ -83,30 +83,30 @@ JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options'])
 
 ?>
 <div class="js-stools">
-    <div class="ysts_list_filters" gsl-grid>
+<div class="ysts_list_filters" gsl-grid>
 		<?php if ($data['options']['showSelector']) : ?>
-            <div class="js-stools-container-selector">
-				<?php echo JLayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
-            </div>
+		<div class="js-stools-container-selector">
+			<?php echo JLayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
+		</div>
 		<?php endif; ?>
-        <div class="ysts-filterbar gsl-width-expand ">
+		<div class="ysts-filterbar gsl-width-expand ">
 			<?php echo $this->sublayout('bar', $data); ?>
-        </div>
-        <div class=" gsl-visible@m " gsl-grid>
+		</div>
+		<div class=" gsl-visible@m " gsl-grid>
 			<?php echo $this->sublayout('list', $data); ?>
-        </div>
+		</div>
     </div>
-    <!-- Filters div -->
+	<!-- Filters div -->
 	<?php if ($data['options']['filterButton'])
 	{
-		// Don't use expand if less than 3 filters
-		$filters = $data['view']->filterForm->getGroup('filter');
-		$expand = count($filters) > 2 ? "gsl-child-width-expand@l" : "";
-		?>
-        <div class="js-stools-container-filters gsl-child-width-1-4@s gsl-child-width-1-6@m <?php echo $filtersActiveClass . " " . $expand; ?>  " gsl-grid>
-			<?php echo $this->sublayout('filters', $data); ?>
-        </div>
-		<?php
+	    // Don't use expand if less than 3 filters
+        $filters = $data['view']->filterForm->getGroup('filter');
+        $expand = count($filters) > 2 ? "gsl-child-width-expand@l" : "";
+        ?>
+	<div class="js-stools-container-filters gsl-child-width-1-3@s gsl-child-width-1-4@m <?php echo $filtersActiveClass . " " . $expand; ?>  " gsl-grid>
+		<?php echo $this->sublayout('filters', $data); ?>
+	</div>
+	<?php
 	}
 	?>
 </div>

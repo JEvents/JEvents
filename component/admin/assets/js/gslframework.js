@@ -401,8 +401,10 @@ window.addEventListener('load', function () {
 		gslUIkit.tooltip(filter, options);
 
 		// in case replaced by chosen
-		if (document.querySelector('#' + filter.id + '_chzn ul')) {
-			gslUIkit.tooltip(document.querySelector('#' + filter.id + '_chzn ul'), options);
+		let filterid = filter.id;
+		filterid = filterid.replace('[', '').replace(']', '');
+		if (document.querySelector('#' + filterid + '_chzn ul')) {
+			gslUIkit.tooltip(document.querySelector('#' + filterid + '_chzn ul'), options);
 		}
 	}
 });

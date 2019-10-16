@@ -1,5 +1,18 @@
 // Import UIkit default theme (or uikit.less with only core styles)
-@import "../src/less/uikit.theme.less";
+// @import "../src/less/uikit.theme.less";
+
+//
+// Core
+//
+
+//@import "../src/less/components/_import.less";
+
+//
+// Theme
+//
+
+@import "../src/less/theme/_import.less";
+
 
 // Theme
 @import "gsl/_import.less";
@@ -11,50 +24,10 @@
 
 @global-medium-gutter:                          20px;
 
-@table-row-active-background:                   #FFF;
-@global-muted-background:                       #FFF;
+//@table-row-active-background:                   #FFF;
+//@global-muted-background:                       #FFF;
 
 @global-font-size:                              14px;
 @global-line-height:                            1.2;
 
-// Doesn't work - yarn chokes :(
-//:root {
-//  ~"--mycolor : red;"
-//};
-//@global-success-background:                     ~"var(--my-color)";
 
-@global-success-background:                     #46a546;
-
-@global-dark-inverse-color:                     #333;
-
-//
-// We can use this approach to offer customised colour schemes!
-// This gets around yarn choking on variables like above
-//
-/*
-//
-// Background Colours
-//
-@global-background:                             #123456;
-@global-muted-background:                       #234567;
-@global-primary-background:                     #34567a;
-@global-secondary-background:                   #4567ab;
-@global-success-background:                     #567abc;
-@global-warning-background:                     #67abcd;
-@global-danger-background:                      #7abcde;
-
-//
-// Colours
-//
-
-@global-color:                                  #666;
-@global-emphasis-color:                         #333;
-@global-muted-color:                            #999;
-
-@global-link-color:                             #1e87f0;
-@global-link-hover-color:                       #0f6ecd;
-
-@global-inverse-color:                          #fff;
-@global-dark-inverse-color:                     #333;
-
-*/

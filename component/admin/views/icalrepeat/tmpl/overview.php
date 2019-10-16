@@ -26,7 +26,6 @@ $selectorFieldName = isset($data['options']['selectorFieldName']) ? $data['optio
 $showSelector = true;
 // Set some basic options.
 $customOptions = array(
-	'filtersHidden'       => true,
 	'defaultLimit'        => 20,
 	'searchFieldSelector' => '#search',
 	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
@@ -78,7 +77,7 @@ $fullspan       = 12;
 								<?php echo $this->plist; ?>
 							</div>
 							<div class="js-stools-field-list">
-								<?php echo $this->pageNav->getLimitBox(); ?>
+								<?php echo $this->pagination->getLimitBox(); ?>
 							</div>
 						</div>
 					</div>
@@ -132,7 +131,7 @@ $fullspan       = 12;
 					$k = 1 - $k;
 				} ?>
 				<tr>
-					<th align="center" colspan="3" style="text-align:center;"><?php echo $this->pageNav->getListFooter(); ?></th>
+					<th align="center" colspan="3" style="text-align:center;"><?php echo $this->pagination->getListFooter(); ?></th>
 				</tr>
 			</table>
 			<input type="hidden" name="option" value="<?php echo JEV_COM_COMPONENT; ?>"/>

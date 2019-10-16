@@ -27,6 +27,9 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
         </div>
 
         <div class="gsl-navbar gsl-background-secondary"  >
+            <?php
+            ob_start();
+            ?>
             <ul class="left-nav gsl-navbar-nav gsl-list hide-label gsl-background-secondary" gsl-toggle="target:#left-col, #left-col .left-nav, .ysts-page-title; mode: hover;cls: hide-label">
                 <?php
                 foreach ($leftIconLinks as $leftIconLink)
@@ -51,6 +54,12 @@ JFactory::getDocument()->addScriptDeclaration('ys_popover(".hasYsPopover");');
                 GslHelper::returnToMainComponent();
                 ?>
             </ul>
+            <?php
+            $leftNav = ob_get_clean();
+            // Strip white spaces since they take up space in the inline-block version of the narrow view
+            $leftNav = preg_replace('/(\>)\s*(\<)/m', '$1$2', $leftNav);
+            echo $leftNav;
+            ?>
         </div>
     </nav>
 </aside>

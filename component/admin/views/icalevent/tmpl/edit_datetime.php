@@ -38,7 +38,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 			?>
 			<div style="margin:0px;clear:left;">
-				<div class="row jevtimezone">
+				<div class="row jevtimezone" <?php JEventsHelper::showOnRel($this->form, 'tzid'); ?>>
 					<div class="span2">
 						<?php echo $this->form->getLabel("tzid"); ?>
 					</div>
@@ -52,7 +52,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		?>
 
 		<div class=" allDayEvent">
-			<div class='alldayinput' style="margin:10px 20px 0px 0px ;display:inline-block;">
+			<div class='alldayinput' style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'allDayEvent'); ?>>
 				<div style="display:inline-block;">
 					<?php echo $this->form->getLabel("allDayEvent"); ?>
 				</div>
@@ -60,7 +60,7 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 					<?php echo $this->form->getInput("allDayEvent"); ?>
 				</div>
 			</div>
-			<div class='checkbox12h' style="margin:10px 0px 0px 0px ;display:inline-block;">
+			<div class='checkbox12h' style="margin:10px 0px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'view12Hour'); ?>>
 				<div style="display:inline-block;">
 					<?php echo $this->form->getLabel("view12Hour"); ?>
 				</div>
@@ -75,27 +75,27 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 			?>
 			<div style="margin:0px">
-				<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'publish_up'); ?>>
 					<?php echo $this->form->getLabel("publish_up"); ?>
 					<?php echo $this->form->getInput("publish_up"); ?>
 				</div>
 
-				<div class='jevstarttime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<div class='jevstarttime' style="margin:10px 0px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'start_time'); ?>>
 					<?php echo $this->form->getLabel("start_time"); ?>
 					<?php echo $this->form->getInput("start_time"); ?>
 				</div>
 
-				<div class='jevendtime' style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<div class='jevendtime' style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'end_time'); ?>>
 					<?php echo $this->form->getLabel("end_time"); ?>
 					<?php echo $this->form->getInput("end_time"); ?>
 				</div>
 
-				<div class='jevnoeendtime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<div class='jevnoeendtime' style="margin:10px 0px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'noendtime'); ?>>
 					<?php echo $this->form->getLabel("noendtime"); ?>
 					<?php echo $this->form->getInput("noendtime"); ?>
 				</div>
 
-				<div class="jevenddate" style="display:none">
+				<div class="jevenddate" style="display:none" <?php JEventsHelper::showOnRel($this->form, 'publish_down'); ?>>
 					<?php echo $this->form->getLabel("publish_down"); ?>
 					<?php echo $this->form->getInput("publish_down"); ?>
 				</div>
@@ -107,29 +107,29 @@ if ($params->get("disablerepeats", 0) && !JEVHelper::isEventEditor())
 		{
 			?>
 			<div style="margin:0px">
-				<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<div class="jevstartdate" style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'publish_up'); ?>>
 					<?php echo $this->form->getLabel("publish_up"); ?>
 					<?php echo $this->form->getInput("publish_up"); ?>
 				</div>
 
-				<div class='jevstarttime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<div class='jevstarttime' style="margin:10px 0px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'start_time'); ?>>
 					<?php echo $this->form->getLabel("start_time"); ?>
 					<?php echo $this->form->getInput("start_time"); ?>
 				</div>
 			</div>
 
 			<div style="margin:0px">
-				<div class="jevenddate" style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<div class="jevenddate" style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'publish_down'); ?>>
 					<?php echo $this->form->getLabel("publish_down"); ?>
 					<?php echo $this->form->getInput("publish_down"); ?>
 				</div>
 
-				<div class='jevendtime' style="margin:10px 20px 0px 0px ;display:inline-block;">
+				<div class='jevendtime' style="margin:10px 20px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'end_time'); ?>>
 					<?php echo $this->form->getLabel("end_time"); ?>
 					<?php echo $this->form->getInput("end_time"); ?>
 				</div>
 
-				<div class='jevnoeendtime' style="margin:10px 0px 0px 0px ;display:inline-block;">
+				<div class='jevnoeendtime' style="margin:10px 0px 0px 0px ;display:inline-block;" <?php JEventsHelper::showOnRel($this->form, 'noendtime'); ?>>
 					<div style="display:inline-block;">
 						<?php echo $this->form->getLabel("noendtime"); ?>
 					</div>

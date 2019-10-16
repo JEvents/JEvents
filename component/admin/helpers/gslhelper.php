@@ -100,7 +100,7 @@ class GslHelper
         <a href="<?php echo JRoute::_("index.php?option=com_jevents&view=cpanel"); ?>" class="">
             <img src="<?php echo JUri::base(); ?>components/com_jevents/assets/images/logo.png"
                  alt="JEvents Logo">
-            <span class="nav-label"><?php echo JText::_('JEVENTS_CORE_CPANEL'); ?></span>
+            <span class="nav-label"><?php echo JText::_('JEVENTS_DASHBOARD'); ?></span>
         </a>
 		<?php
 	}

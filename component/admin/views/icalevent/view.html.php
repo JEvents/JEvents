@@ -26,10 +26,15 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 
 	function overview($tpl = null)
 	{
-
 		$app    = Factory::getApplication();
-		// Get data from the model
-		//$model = $this->getModel();
+
+		$this->rows = $this->getModel()->getItems();
+		$total = $this->getModel()->getTotal();
+
+		jimport('joomla.html.pagination');
+		$limit      = intval($this->getModel()->getState("list.limit", $app->getCfg('list_limit', 10)));
+		$limitstart = intval($this->getModel()->getState("list.start", 0));
+		$this->pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		$document = Factory::getDocument();
 		$document->setTitle(JText::_('ICAL_EVENTS'));
@@ -42,20 +47,16 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 		JToolbarHelper::unpublishList('icalevent.unpublish');
 		JToolbarHelper::custom('icalevent.editcopy', 'copy.png', 'copy.png', 'JEV_ADMIN_COPYEDIT');
 
-		// Filters hidden by default
-		$this->filtersHidden = true;
 
 		// Get fields from request if they exist
-		$state      = (int) $app->getUserStateFromRequest("stateIcalEvents", 'state', 0);
-		$created_by = (int) $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', '');
-		$icsFile    = (int) $app->getUserStateFromRequest("icsFile", "icsFile", 0);
-		$category   = (int) $app->getUserStateFromRequest("catid", "catid", 0);
-		$tags       = $this->tagsFilter; // Already set in /controllers/icalevent.php so no point in gettingstate again
-
-		// Filters shown if any are active
-		if ($state || $created_by || $icsFile || $category || $tags) {
-			$this->filtersHidden = false;
+		$state      = (int) $this->getModel()->getState('filter.state', 0);
+		$created_by = $this->getModel()->getState('filter.created_by', '');
+		if ($created_by !== '')
+		{
+			$created_by = (int) $created_by;
 		}
+		$icsFile  = (int) $this->getModel()->getState('filter.icsFile', 0);
+		$showpast = (int) $this->getModel()->getState('filter.showpast', '');
 
 		if (!$state)
 		{
@@ -96,18 +97,28 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$icsfiles[] = $iscfile;
 		}
 
-		$this->filters = array(
-			HTMLHelper::_('select.genericlist', $icsfiles, 'icsFile', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
+		$this->filters = array('icsfile' =>
+			HTMLHelper::_('select.genericlist', $icsfiles, 'filter[icsFile]', 'class="gsl-select" onChange="Joomla.submitform();"', 'value', 'text', $icsFile)
 		);
 
-		$this->filters[] = $this->clist;
-		$options = array(
-			HTMLHelper::_('select.option', '', JText::_('JOPTION_SELECT_PUBLISHED')),
-			HTMLHelper::_('select.option', '1', JText::_('PUBLISHED')),
-			HTMLHelper::_('select.option', '2', JText::_('UNPUBLISHED')),
-			HTMLHelper::_('select.option', '-1', JText::_('JTRASH'))
-		);
-		$this->filters[] = HTMLHelper::_('select.genericlist', $options, 'state', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $state);
+		// get list of categories
+		$catid    = intval($this->getModel()->getState('filter.catid', 0));
+		$catidtop = $catid;
+		$showUnpublishedCategories = true;
+
+		$attribs = 'class="gsl-select" size="1" onchange="document.adminForm.submit();"';
+		$clist   = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "filter[catid]");
+		// if there is only one category then do not show the filter
+		if (strpos($clist, "<select") === false)
+		{
+			$clist = "";
+		}
+		$this->filters['catid'] = $clist;
+
+		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_NO'));
+		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_YES'));
+		$plist     = HTMLHelper::_('select.genericlist', $options, 'filter[showpast]', 'class="gsl-select" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
+		$this->filters['showpast'] = $plist;
 
 		$sql = "SELECT distinct u.id, u.name, u.username FROM #__jevents_vevent as jev LEFT JOIN #__users as u on u.id=jev.created_by ORDER BY u.name ";
 		$db->setQuery($sql);
@@ -126,7 +137,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ($user->username)");
 		}
 
-		$this->filters[] = HTMLHelper::_('select.genericlist', $userOptions, 'created_by', 'class="inputbox" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
+		$this->filters['created_by'] = HTMLHelper::_('select.genericlist', $userOptions, 'filter[created_by]', 'class="gsl-select" onChange="Joomla.submitform();"', 'value', 'text', $created_by);
 
 
 		// Load the tags filter
@@ -137,7 +148,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 			$earchBtn = '<button type="submit" class="btn hasTooltip" title="" aria-label="' . JText::_('JEV_SEARCH')  . '" data-original-title="' . JText::_('JEV_SEARCH')  . '">
 							<span class="icon-search" aria-hidden="true"></span>
 						</button>';
-			$this->filters[] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
+			$this->filters['tag'] = str_replace('<option value="0">Select Tag(s)</option>', '<option value="">' . JText::_("JEV_SELECT_TAG") . ' </option>', $tagFilterHtml) . $earchBtn ;
 		}
 
 
@@ -400,7 +411,7 @@ class AdminIcaleventViewIcalevent extends JEventsAbstractView
 				$userOptions[] = HTMLHelper::_('select.option', $user->id, $user->name . " ( " . $user->username . " )");
 			}
 			$creator = $this->row->created_by() > 0 ? $this->row->created_by() : (isset($jevuser) ? $jevuser->user_id : 0);
-			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="inputbox" size="1" ', 'value', 'text', $creator);
+			$userlist = HTMLHelper::_('select.genericlist', $userOptions, 'jev_creatorid', 'class="gsl-select" size="1" ', 'value', 'text', $creator);
 
 			$this->assignRef("users", $userlist);
 		}

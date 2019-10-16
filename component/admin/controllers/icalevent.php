@@ -10,8 +10,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controlleradmin');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -21,7 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\TagsHelper;
 
-class AdminIcaleventController extends JControllerAdmin
+class AdminIcaleventController extends Joomla\CMS\MVC\Controller\AdminController
 {
 
 	var $_debug = false;
@@ -61,403 +59,25 @@ class AdminIcaleventController extends JControllerAdmin
 	 */
 	function overview()
 	{
+		$app   = Factory::getApplication();
+		$db = Factory::getDbo();
 
 		// get the view
 		$this->view = $this->getView("icalevent", "html", "AdminIcaleventView");
 
 		$this->_checkValidCategories();
 
-		$showUnpublishedICS        = true;
-		$showUnpublishedCategories = true;
-
-		$app   = Factory::getApplication();
-		$input = $app->input;
-
-		$db = Factory::getDbo();
-
-		$icsFile = intval($app->getUserStateFromRequest("icsFile", "icsFile", 0));
-
-		$catid    = intval($app->getUserStateFromRequest("catidIcalEvents", 'catid', 0));
-		$catidtop = $catid;
-
-		$state = intval($app->getUserStateFromRequest("stateIcalEvents", 'state', 3));
-
-		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', $app->getCfg('list_limit', 10)));
-		$limitstart = intval($app->getUserStateFromRequest("view{" . JEV_COM_COMPONENT . "}limitstart", 'limitstart', 0));
-		$search     = $app->getUserStateFromRequest("search{" . JEV_COM_COMPONENT . "}", 'search', '');
-		$search     = $db->escape(trim(strtolower($search)));
-
-		$created_by = $app->getUserStateFromRequest("createdbyIcalEvents", 'created_by', "-1");
-
-		// Club Plugin checks
-		$tags = 0;
-		$tagsPlugin = PluginHelper::isEnabled('jevents', 'jevtags');
-
-		if ($tagsPlugin) {
-			$tagsArray  = $app->getUserStateFromRequest("taglkup_fvs", "taglkup_fvs", array());
-			$tags       = implode(',', $tagsArray);
-			$this->view->tagsFiltering = true;
-		}
-
-		// Is this a large dataset ?
-		$query = "SELECT count(rpt.rp_id) from #__jevents_repetition as rpt ";
-		$db->setQuery($query);
-		$totalrepeats        = $db->loadResult();
-		$this->_largeDataSet = 0;
-		$cfg                 = JEVConfig::getInstance();
-		if ($totalrepeats > $cfg->get('largeDataSetLimit', 100000))
-		{
-			$this->_largeDataSet = 1;
-		}
-		$cfg = JEVConfig::getInstance();
-		$cfg->set('largeDataSet', $this->_largeDataSet);
-
-		$where = array();
-		$join  = array();
-
-		if ($search)
-		{
-			$searchwhere   = array();
-			$searchwhere[] = "LOWER(detail.summary) LIKE '%$search%'";
-			$searchwhere[] = "LOWER(detail.location) LIKE '%$search%'";
-			jimport("joomla.filesystem.folder");
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/components/com_jevlocations") && ComponentHelper::getComponent("com_jevlocations", true)->enabled)
-			{
-				$join[]        = "\n #__jev_locations as loc ON loc.loc_id=detail.location";
-				$searchwhere[] = "LOWER(loc.title) LIKE '%$search%'";
-				$searchwhere[] = "LOWER(loc.city) LIKE '%$search%'";
-				$searchwhere[] = "LOWER(loc.postcode) LIKE '%$search%'";
-			}
-			$where[] = "(" . implode(" OR ", $searchwhere) . " )";
-		}
-
-		$user = Factory::getUser();
-
-		// keep this incase we use filters in category lists
-		$catwhere = "\n ev.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
-		$params   = ComponentHelper::getParams($input->getCmd("option"));
-		if ($params->get("multicategory", 0))
-		{
-			$join[]     = "\n #__jevents_catmap as catmap ON catmap.evid = ev.ev_id";
-			$join[]     = "\n #__categories AS catmapcat ON catmap.catid = catmapcat.id";
-			$where[]    = " catmapcat.access " . ' IN (' . JEVHelper::getAid($user) . ')';
-			$where[]    = " catmap.catid IN(" . $this->queryModel->accessibleCategoryList() . ")";
-			$needsgroup = true;
-			$catwhere   = " 1";
-		}
-		$where[] = $catwhere;
-
-		// category filter!
-		$db->setQuery("SELECT * FROM #__categories where id = " . intval($catid));
-		$filtercat = $db->loadObject();
-
-		$params         = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		$authorisedonly = $params->get("authorisedonly", 0);
-		$cats           = $user->getAuthorisedCategories('com_jevents', 'core.create');
-		if (isset($user->id) && !$user->authorise('core.create', 'com_jevents') && !$authorisedonly)
-		{
-			if (count($cats) > 0 && $catid < 1)
-			{
-				for ($i = 0; $i < count($cats); $i++)
-				{
-					if ($params->get("multicategory", 0))
-					{
-						$whereCats[$i] = "catmap.catid='$cats[$i]'";
-					}
-					else
-					{
-						$whereCats[$i] = "ev.catid='$cats[$i]'";
-					}
-				}
-				$where[] = '(' . implode(" OR ", $whereCats) . ')';
-			}
-			else if (count($cats) > 0 && $catid > 0 && in_array($catid, $cats))
-			{
-				if ($params->get("multicategory", 0))
-				{
-					if ($filtercat)
-					{
-						$where[] = "catmapcat.lft BETWEEN $filtercat->lft AND $filtercat->rgt";
-					}
-					else
-					{
-						$where[] = "catmap.catid='$catid'";
-					}
-				}
-				else
-				{
-					$where[] = "ev.catid='$catid'";
-				}
-			}
-			else
-			{
-				if ($params->get("multicategory", 0))
-				{
-					$where[] = "catmap.catid=''";
-				}
-				else
-				{
-					$where[] = "ev.catid=''";
-				}
-			}
-		}
-		else
-		{
-			if ($catid > 0)
-			{
-				if ($params->get("multicategory", 0))
-				{
-					if ($filtercat)
-					{
-						$where[] = "catmapcat.lft BETWEEN $filtercat->lft AND $filtercat->rgt";
-					}
-					else
-					{
-						$where[] = "catmap.catid='$catid'";
-					}
-				}
-				else
-				{
-					$where[] = "ev.catid='$catid'";
-				}
-			}
-		}
-
-		if ($created_by >= 0)
-		{
-			$cby = intval($created_by);
-			if ($cby >= 0 && $created_by != "")
-				$where[] = "ev.created_by=" . $db->Quote($cby);
-		}
-
-		if ($icsFile > 0)
-		{
-			$join[]  = " #__jevents_icsfile as icsf ON icsf.ics_id = ev.icsid";
-			$where[] = "\n icsf.ics_id = $icsFile";
-			if (!$showUnpublishedICS)
-			{
-				$where[] = "\n icsf.state=1";
-			}
-		}
-		else
-		{
-			if (!$showUnpublishedICS)
-			{
-				$join[]  = " #__jevents_icsfile as icsf ON icsf.ics_id = ev.icsid";
-				$where[] = "\n icsf.state=1";
-			}
-			else
-			{
-				$icsFrom = "";
-			}
-		}
-
-		$hidepast = intval($app->getUserStateFromRequest("hidepast", "hidepast", 1));
-		if ($hidepast)
-		{
-			$datenow = JevDate::getDate("-1 day");
-			if (!$this->_largeDataSet)
-			{
-				$where[] = "\n rpt.endrepeat>'" . $datenow->toSql() . "'";
-			}
-		}
-		if ($state == 1)
-		{
-			$where[] = "\n ev.state=1";
-		}
-		else if ($state == 2)
-		{
-			$where[] = "\n ev.state=0";
-		}
-		else if ($state == -1)
-		{
-			$where[] = "\n ev.state=-1";
-		}
-		else if ($state == 3)
-		{
-			$where[] = "\n (ev.state=1 OR ev.state=0)";
-		}
-
-		// if anon user plugin enabled then include this information
-		$anonfields = "";
-		$anonjoin = "";
-		if (PluginHelper::importPlugin("jevents", "jevanonuser"))
-		{
-
-			$anonfields = ", ac.name as anonname, ac.email as anonemail";
-			$anonjoin = "\n LEFT JOIN #__jev_anoncreator as ac on ac.ev_id = ev.ev_id";
-		}
-
-		// Allow tag filtering
-		$tagsFields = '';
-		$tagsJoin   = '';
-		$this->view->tagsFilter = false;
-
-		if ($tagsPlugin && $tags) {
-			$tagsFields = ", tg.tag_id, tg.title ";
-			$tagsJoin   = "\n LEFT JOIN #__jev_tageventsmap as tagmap ON tagmap.ev_id = ev.ev_id ";
-			$tagsJoin  .= "\n LEFT JOIN  #__jev_tags as tg ON tagmap.ev_id = ev.ev_id ";
-			if ($tags)
-			{
-				$where[] = "\n tagmap.tag_id IN (" . $tags . ")";
-				$this->view->tagsFilter = $tags;
-
-			} else {
-				$this->view->tagsFilter = false;
-			}
-		}
-
-
-		// get the total number of records
-		if ($this->_largeDataSet)
-		{
-			$query = "SELECT count(distinct ev.ev_id)"
-				. "\n FROM #__jevents_vevent AS ev "
-				. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
-				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				//. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
-				. $tagsJoin
-				. (count($join) ? "\n LEFT JOIN  " . implode(' LEFT JOIN ', $join) : '')
-				. (count($where) ? "\n WHERE " . implode(' AND ', $where) : '');
-		}
-		else
-		{
-			$query = "SELECT count(distinct rpt.eventid)"
-				. "\n FROM #__jevents_vevent AS ev "
-				. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
-				. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-				. "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id"
-				//. "\n LEFT JOIN #__groups AS g ON g.id = ev.access"
-				. $tagsJoin
-				. (count($join) ? "\n LEFT JOIN  " . implode(' LEFT JOIN ', $join) : '')
-				. (count($where) ? "\n WHERE " . implode(' AND ', $where) : '');
-		}
-		$db->setQuery($query);
-
-		$total = 0;
-
-		try
-		{
-			$total = $db->loadResult();
-		} catch (Exception $e) {
-			echo $e;
-		}
-
-		if ($limit > $total)
-		{
-			$limitstart = 0;
-		}
-
-		$orderdir = $app->getUserStateFromRequest("eventsorderdir", "filter_order_Dir", 'asc');
-		$order    = $app->getUserStateFromRequest("eventsorder", "filter_order", 'start');
-
-		if ($params->get("multicategory", 0))
-		{
-			$anonfields .= ", GROUP_CONCAT(DISTINCT catmap.catid SEPARATOR ',') as catids";
-		}
-
-		$dir = $orderdir == "asc" ? "asc" : "desc";
-
-		if ($order == 'start' || $order == 'starttime')
-		{
-			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.dtstart $dir" : "\n GROUP BY  ev.ev_id ORDER BY rpt.startrepeat $dir");
-		}
-		else if ($order == 'created')
-		{
-			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir" : "\n GROUP BY  ev.ev_id ORDER BY ev.created $dir");
-		}
-		else if ($order == 'modified')
-		{
-			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY modified $dir" : "\n GROUP BY  ev.ev_id ORDER BY modified $dir");
-		}
-		else
-		{
-			$order = ($this->_largeDataSet ? "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir" : "\n GROUP BY  ev.ev_id ORDER BY detail.summary $dir");
-		}
-
-		// only include repeat id since we need it if we call plugins on the resultant data
-		$query = "SELECT ev.* " .  ($this->_largeDataSet ? "" :", rpt.rp_id") . ", ev.state as evstate, detail.*, ev.created as created, max(detail.modified) as modified,  a.title as _groupname " . $anonfields . $tagsFields
-			. "\n , rr.rr_id, rr.freq,rr.rinterval"//,rr.until,rr.untilraw,rr.count,rr.bysecond,rr.byminute,rr.byhour,rr.byday,rr.bymonthday"
-			. ($this->_largeDataSet ? "" : "\n ,MAX(rpt.endrepeat) as endrepeat ,MIN(rpt.startrepeat) as startrepeat"
-				. "\n , YEAR(rpt.startrepeat) as yup, MONTH(rpt.startrepeat ) as mup, DAYOFMONTH(rpt.startrepeat ) as dup"
-				. "\n , YEAR(rpt.endrepeat  ) as ydn, MONTH(rpt.endrepeat   ) as mdn, DAYOFMONTH(rpt.endrepeat   ) as ddn"
-				. "\n , HOUR(rpt.startrepeat) as hup, MINUTE(rpt.startrepeat ) as minup, SECOND(rpt.startrepeat ) as sup"
-				. "\n , HOUR(rpt.endrepeat  ) as hdn, MINUTE(rpt.endrepeat   ) as mindn, SECOND(rpt.endrepeat   ) as sdn")
-			. "\n FROM #__jevents_vevent as ev "
-			. ($this->_largeDataSet ? "" : "\n LEFT JOIN #__jevents_repetition as rpt ON rpt.eventid = ev.ev_id")
-			. $anonjoin
-			. $tagsJoin
-			. "\n LEFT JOIN #__jevents_vevdetail as detail ON ev.detail_id=detail.evdet_id"
-			. "\n LEFT JOIN #__jevents_rrule as rr ON rr.eventid = ev.ev_id"
-			. "\n LEFT JOIN #__viewlevels AS a ON a.id = ev.access"
-			. ( count($join) ? "\n LEFT JOIN  " . implode(' LEFT JOIN ', $join) : '' )
-			. ( count($where) ? "\n WHERE " . implode(' AND ', $where) : '' )
-			. $order;
-
-		if ($limit > 0)
-		{
-			$query .= "\n LIMIT $limitstart, $limit";
-		}
-		$db->setQuery($query);
-
-		//echo $db->explain();
-		$rows = $db->loadObjectList();
-		//echo $db->getQuery()."<br/>";
-		foreach ($rows as $key => $val)
-		{
-			// set state variable to the event value not the event detail value
-			$rows[$key]->state      = $rows[$key]->evstate;
-			$groupname              = $rows[$key]->_groupname;
-			$rows[$key]             = new jIcalEventRepeat($rows[$key]);
-			$rows[$key]->_groupname = $groupname;
-		}
-		if ($this->_debug)
-		{
-			echo '[DEBUG]<br />';
-			echo 'query:';
-			echo '<pre>';
-			echo $query;
-			echo '-----------<br />';
-			echo 'option "' . JEV_COM_COMPONENT . '"<br />';
-			echo '</pre>';
-			//die( 'userbreak - mic ' );
-		}
-
-		// get list of categories
-		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
-		$clist   = JEventsHTML::buildCategorySelect($catid, $attribs, null, $showUnpublishedCategories, false, $catidtop, "catid");
-		// if there is only one category then do not show the filter
-		if (strpos($clist, "<select") === false)
-		{
-			$clist = "";
-		}
-		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_HIDE_PAST_EVENTS_NO'));
-		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_HIDE_PAST_EVENTS_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
-
-
-		$catData = JEV_CommonFunctions::getCategoryData();
-
-		jimport('joomla.html.pagination');
-		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
-
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
+			$model->queryModel = $this->queryModel;
+
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
 		}
 
 		// Set the layout
 		$this->view->setLayout('overview');
-
-		$this->view->rows = $rows;
-
-		$this->view->largeDataSet = $this->_largeDataSet;
-		$this->view->clist = $clist;
-		$this->view->plist = $plist;
-		$this->view->search = $search;
-		$this->view->pageNav = $pageNav;
 
 		$this->view->display();
 
@@ -516,7 +136,7 @@ class AdminIcaleventController extends JControllerAdmin
 		}
 
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
@@ -868,7 +488,7 @@ SQL;
 		}
 
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
 			// Push the model into the view (as default)
 			$this->view->setModel($model, true);
@@ -931,7 +551,7 @@ SQL;
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
 			$model->saveTranslation();
 		}
@@ -1001,7 +621,7 @@ SQL;
 		$cache->clean(JEV_COM_COMPONENT);
 
 		// Get/Create the model
-		if ($model = $this->getModel("icalevent", "icaleventsModel"))
+		if ($model = $this->getModel("icalevent", "jeventsModel"))
 		{
 			$model->deleteTranslation();
 		}
@@ -1903,8 +1523,8 @@ SQL;
 		$where[] = "\n ev.access " . ' IN (' . JEVHelper::getAid($user) . ')';
 		$where[] = "\n icsf.access " . ' IN (' . JEVHelper::getAid($user) . ')';
 
-		$hidepast = intval($app->getUserStateFromRequest("hidepast", "hidepast", 1));
-		if ($hidepast)
+		$showpast = intval($app->getUserStateFromRequest("showpast", "showpast", 0));
+		if (!$showpast)
 		{
 			$datenow = JevDate::getDate("-1 day");
 			if (!$this->_largeDataSet)
@@ -2053,14 +1673,14 @@ SQL;
 
 		$options[] = HTMLHelper::_('select.option', '0', JText::_('JEV_NO'));
 		$options[] = HTMLHelper::_('select.option', '1', JText::_('JEV_YES'));
-		$plist     = HTMLHelper::_('select.genericlist', $options, 'hidepast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $hidepast);
+		$plist     = HTMLHelper::_('select.genericlist', $options, 'showpast', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', $showpast);
 
 		$menulist = $this->targetMenu(0, "Itemid");
 
 		$catData = JEV_CommonFunctions::getCategoryData();
 
 		jimport('joomla.html.pagination');
-		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// Set the layout
 		$this->view->setLayout('select');
@@ -2072,7 +1692,7 @@ SQL;
 		$this->view->plist      = $plist;
 		$this->view->search     = $search;
 		$this->view->icsList    = $icslist;
-		$this->view->pageNav    = $pageNav;
+		$this->view->pagination    = $pagination;
 
 		$this->view->display();
 

@@ -40,13 +40,8 @@ class AdminIcalsViewIcals extends JEventsAbstractView
 		JToolbarHelper::deleteList(JText::_("COM_JEVENTS_MANAGE_CALENDARS_OVERVIEW_DELETE_WARNING", true), 'icals.delete');
 		JToolbarHelper::spacer();
 
-		
-
-		$params = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		//$section = $params->get("section",0);
-
-		HTMLHelper::_('behavior.tooltip');
-
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 
 	}

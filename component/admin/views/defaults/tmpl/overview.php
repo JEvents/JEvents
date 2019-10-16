@@ -18,17 +18,16 @@ $fullspan = 12;
 		<?php echo $this->sidebar; ?>
 	</div>
 <?php endif; ?>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="ysts-main-container">
         <div id="j-main-container" class="span<?php echo (!empty($this->sidebar)) ? $mainspan : $fullspan; ?>  ">
             <div id="jstools clearfix">
-                <div class="js-stools-container-bar">
+                <div class="js-stools-container-filters gsl-child-width-1-3@s gsl-child-width-1-5@m  " gsl-grid>
                     <?php
                     /*
                     if (count($this->languages) > 1)
                     { ?>
-                                            <select name="filter_language" class="inputbox" onchange="this.form.submit()">
+                                            <select name="filter_language" class="gsl-select" onchange="this.form.submit()">
                                                 <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
                                             <?php echo HTMLHelper::_('select.options', HTMLHelper::_('contentlanguage.existing', true, true), 'value', 'text', $this->language); ?>
                                             </select>
@@ -36,20 +35,26 @@ $fullspan = 12;
                     }
                      */
                     ?>
-                    <?php if ($this->catids)
+                    <div class="js-stools-field-filter gsl-first-column">
+                        <?php if ($this->catids)
                     { ?>
-                        <select name="filter_catid" class="inputbox" onchange="this.form.submit()">
+                        <select name="filter_catid" class="gsl-select" onchange="this.form.submit()">
                             <option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY'); ?></option>
                             <?php echo $this->catids; ?>
                         </select>
+                    </div>
+                    <div class="js-stools-field-filter">
                     <?php } ?>
-                    <select name="filter_layout_type" class="inputbox" onchange="this.form.submit()">
-                        <?php echo $this->addonoptions; ?>
-                    </select>
-                    <select name="filter_published" class="inputbox" onchange="this.form.submit()">
-                        <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-                        <?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array("trash" => 0, "archived" => 0, "all" => 0)), 'value', 'text', $this->filter_published, true); ?>
-                    </select>
+                        <select name="filter_layout_type" class="gsl-select" onchange="this.form.submit()">
+                            <?php echo $this->addonoptions; ?>
+                        </select>
+                    </div>
+                    <div class="js-stools-field-filter">
+                        <select name="filter_published" class="gsl-select" onchange="this.form.submit()">
+                            <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
+                            <?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array("trash" => 0, "archived" => 0, "all" => 0)), 'value', 'text', $this->filter_published, true); ?>
+                        </select>
+                    </div>
                 </div>
             </div>
 

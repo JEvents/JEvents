@@ -522,7 +522,18 @@
             </fileset>
         </copy>
         <xmlproperty file="${builddir}/package/pkg_jevents.xml" />
-	
+
+        <reflexive>
+            <fileset dir="${builddir}/package">
+                <include pattern="install.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="ADD_VERSION" replace="${extension.version}"   ignoreCase="false" multiline="false"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
         <copy file="${builddir}/com_jevents.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/finder.zip" todir="${builddir}/package/" />
         <copy file="${builddir}/search.zip" todir="${builddir}/package/" />

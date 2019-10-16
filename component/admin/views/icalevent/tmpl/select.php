@@ -174,7 +174,7 @@ $function = $input->getCmd('function', 'jSelectEvent');
 		</tbody>
 		<tfoot>
 		<tr>
-			<th align="center" colspan="10"><?php echo $this->pageNav->getListFooter(); ?></th>
+			<th align="center" colspan="10"><?php echo $this->pagination->getListFooter(); ?></th>
 		</tr>
 		</tfoot>
 	</table>

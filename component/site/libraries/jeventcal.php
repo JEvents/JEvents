@@ -1448,7 +1448,8 @@ class jEventCal
 				ob_start();
 				$name       = substr($field, 1);
 				$available  = false;
-				Factory::getApplication()->triggerEvent('onJeventsGetter', array(&$this, $name, &$available));
+				$app = Factory::getApplication();
+				@$app->triggerEvent('onJeventsGetter', array(&$this, $name, &$available));
 				$value = ob_get_clean();
 				if ($available)
 				{

@@ -1,0 +1,144 @@
+// import core background
+@import "../../src/less/components/variables.less";
+/*
+This won't work because uikit uses les functions like darken() on these colours!
+:root {
+  ~"--mycolor : red;"
+};
+@global-color:                     ~"var(--my-color)";
+*/
+
+@global-success-background:                     #46a546;
+@global-dark-inverse-color:                     #333;
+
+/*
+//
+// Colors
+//
+
+@global-color:                                  #012345;
+@global-emphasis-color:                         #234567;
+@global-muted-color:                            #34567a;
+
+@global-link-color:                             #4567ab;
+@global-link-hover-color:                       #567abc;
+
+@global-inverse-color:                          #67abcd;
+
+//
+// Backgrounds
+//
+
+@global-background:                             #7abcde;
+
+@global-muted-background:                       #abcdef;
+@global-primary-background:                     #f01234;
+@global-secondary-background:                   #f12345;
+
+@global-success-background:                     #f23456;
+@global-warning-background:                     #f34567;
+@global-danger-background:                      #f4567a;
+@global-border:                                 #f5e5e5;
+
+// Darken and Lighten
+@button-default-hover-background:               #f567ab;
+@button-default-active-background:              #f67abc;
+
+@button-primary-hover-background:               #f7abcd;
+@button-primary-active-background:              #fabcde;
+
+@button-secondary-hover-background:             #fbcdef;
+@button-secondary-active-background:            #e12345;
+
+@button-danger-hover-background:                #e23456;
+@button-danger-active-background:               #e34567;
+
+@form-radio-border:                             #e4567a;
+@form-range-thumb-border:                       #e567ab;
+@button-default-hover-border:                   #e67abc;
+@button-default-active-border:                  #e7abcd;
+
+@icon-link-active-color:                        #eabcde;
+
+@icon-button-hover-background:                  #ebcdef;
+@icon-button-active-background:                 #d12345;
+
+@inverse-icon-button-hover-background:          #d23456;
+@inverse-icon-button-active-background:         #d34567;
+
+
+@card-default-hover-background:                 #d4567a;
+@card-primary-hover-background:                 #d567ab;
+@card-secondary-hover-background:               #d67abc;
+
+@form-radio-background:                         #d7abcd;
+@form-range-track-background:                   #dabcde;
+@form-range-track-focus-background:             #dbcdef;
+
+@form-radio-checked-focus-background:           #c12345;
+
+@inverse-form-radio-background:                 #c23456;
+
+@inverse-form-radio-checked-focus-background:   #c23456;
+
+@modal-close-outside-color:                     #c34567;
+@alert-primary-background:                      #c4567a;
+@alert-success-background:                      #c567ab;
+@alert-warning-background:                      #c67abc;
+@alert-danger-background:                       #c7abcd;
+*/
+
+/* Raw Versions
+@button-default-hover-background:               darken(@button-default-background, 5%);
+@button-default-active-background:              darken(@button-default-background, 10%);
+@button-primary-hover-background:               darken(@button-primary-background, 5%);
+@button-primary-active-background:              darken(@button-primary-background, 10%);
+@button-secondary-hover-background:             darken(@button-secondary-background, 5%);
+@button-secondary-active-background:            darken(@button-secondary-background, 10%);
+@button-danger-hover-background:                darken(@button-danger-background, 5%);
+@button-danger-active-background:               darken(@button-danger-background, 10%);
+
+@form-radio-border:                             darken(@global-border, 10%);
+@form-range-thumb-border:                       darken(@global-border, 10%);
+@button-default-hover-border:                   darken(@global-border, 20%);
+@button-default-active-border:                  darken(@global-border, 30%);
+
+@icon-link-active-color:                        darken(@global-color, 5%);
+
+@icon-button-hover-background:                  darken(@icon-button-background, 5%);
+@icon-button-active-background:                 darken(@icon-button-background, 10%);
+
+@inverse-icon-button-hover-background:          darken(@inverse-icon-button-background, 5%);
+@inverse-icon-button-active-background:         darken(@inverse-icon-button-background, 10%);
+
+
+@card-default-hover-background:                 darken(@card-default-background, 5%);
+@card-primary-hover-background:                 darken(@card-primary-background, 5%);
+@card-secondary-hover-background:               darken(@card-secondary-background, 5%);
+
+@form-radio-background:                         darken(@global-muted-background, 5%);
+@form-range-track-background:                   darken(@global-muted-background, 5%);
+@form-range-track-focus-background:             darken(@global-muted-background, 15%);
+
+@form-radio-checked-focus-background:           darken(@global-primary-background, 10%);
+
+@inverse-form-radio-background:                 darken(@inverse-global-muted-background, 5%);
+
+@inverse-form-radio-checked-focus-background:   darken(@inverse-global-primary-background, 10%);
+
+@inverse-button-default-hover-background:       darken(@inverse-button-default-background, 5%);
+@inverse-button-default-active-background:      darken(@inverse-button-default-background, 10%);
+
+@inverse-button-primary-hover-background:       darken(@inverse-button-primary-background, 5%);
+@inverse-button-primary-active-background:      darken(@inverse-button-primary-background, 10%);
+
+@inverse-button-secondary-hover-background:     darken(@inverse-button-secondary-background, 5%);
+@inverse-button-secondary-active-background:    darken(@inverse-button-secondary-background, 10%);
+
+@modal-close-outside-color:                     lighten(@global-inverse-color, 20%);
+@alert-primary-background:                      lighten(tint(@global-primary-background, 40%), 20%);
+@alert-success-background:                      lighten(tint(@global-success-background, 40%), 25%);
+@alert-warning-background:                      lighten(tint(@global-warning-background, 45%), 15%);
+@alert-danger-background:                       lighten(tint(@global-danger-background, 40%), 20%);
+
+*/

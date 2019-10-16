@@ -32,7 +32,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		if ($app->isClient('administrator'))
 		{
-			JEVHelper::stylesheet('jev_cp.css', '/administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
+			JEVHelper::stylesheet('jev_cp.css', 'administrator/components/' . JEV_COM_COMPONENT . '/assets/css/');
 		}
 		JEVHelper::stylesheet('eventsadmin.css', 'components/' . JEV_COM_COMPONENT . '/assets/css/');
 
@@ -105,7 +105,7 @@ class JEventsAbstractView extends Joomla\CMS\MVC\View\HtmlView
 
 		// Do we need to fall back to old MSIE layouts ??
 		// Do not do this in Internet Explorer 10 or lower (Note that MSIE 11 changed the app name to Trident)
-		if (GSLMSIE10)
+		if (defined("GSLMSIE10") && GSLMSIE10)
 		{
 			$layout     = $this->getLayout();
 			$filetofind = $this->_createFileName('template', array('name' => $layout . "-msie"));

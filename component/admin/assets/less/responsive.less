@@ -75,6 +75,12 @@
 
     }
   }
+
+  /* Hide VM and CB Menu items */
+  nav.navbar #vm-menu.nav, nav.navbar #menu.nav:not(:first-child) {
+    display: none;
+  }
+
 }
 
 @media (max-width: 960px) {
@@ -119,6 +125,7 @@
         .left-nav {
           height: 50px;
           padding: 0px;
+          overflow: hidden;
 
           span.nav-label {
             display: none;

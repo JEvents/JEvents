@@ -11,14 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controllerform');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
-class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
+class AdminIcalsController extends Joomla\CMS\MVC\Controller\AdminController
 {
 
 	var $_debug = false;
@@ -53,116 +51,42 @@ class AdminIcalsController extends Joomla\CMS\MVC\Controller\FormController
 	 */
 	function overview()
 	{
-
 		// Get the view
 		$this->view = $this->getView("icals", "html");
 
 		$this->_checkValidCategories();
 
-		$option = JEV_COM_COMPONENT;
-		$db     = Factory::getDbo();
-
-		$app    = Factory::getApplication();
-		$input  = $app->input;
-
-		$catid      = intval($app->getUserStateFromRequest("catid{$option}", 'catid', 0));
-		$limit      = intval($app->getUserStateFromRequest("viewlistlimit", 'limit', $app->get('list_limit', 10)));
-		$limitstart = intval($app->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
-		$search     = $app->getUserStateFromRequest("search{$option}", 'search', '');
-		$search     = $db->escape(trim(strtolower($search)));
-		$where      = array();
-
-		// Trap cancelled edit and reset category ID.
-		$icsid = intval($input->getInt('icsid', -1));
-		if ($icsid > -1)
+		// Get/Create the model
+		if ($model = $this->getModel("ical", "jeventsModel"))
 		{
-			$catid = 0;
+			// Push the model into the view (as default)
+			$this->view->setModel($model, true);
+
+			$rows = $model->getItems();
+			$total = $model->getTotal();
+
 		}
-		if ($search)
+		else
 		{
-			$where[] = "LOWER(icsf.label) LIKE '%$search%'";
-		}
-		// Weird bug? catid is set somewhere as 1, can never be 1 as Joomla! has a category by default.
-		if ($catid > 1)
-		{
-			$where[] = "catid = $catid";
-		}
-		// get the total number of records
-		$query = "SELECT count(*)"
-			. "\n FROM #__jevents_icsfile AS icsf"
-			. (count($where) ? "\n WHERE " . implode(' AND ', $where) : '');
-		$db->setQuery($query);
-		$total = 0;
-
-		try
-		{
-			$total = $db->loadResult();
-		} catch (Exception $e) {
-			echo $e;
-		}
-
-
-		if ($limitstart > $total)
-		{
-			$limitstart = 0;
-		}
-
-
-		$query = "SELECT icsf.*, a.title as _groupname"
-			. "\n FROM #__jevents_icsfile as icsf "
-			. "\n LEFT JOIN #__viewlevels AS a ON a.id = icsf.access"
-			. (count($where) ? "\n WHERE " . implode(' AND ', $where) : '');
-
-		$query .= "\n ORDER BY icsf.isdefault DESC, icsf.label ASC";
-		if ($limit > 0)
-		{
-			$query .= "\n LIMIT $limitstart, $limit";
-		}
-
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-
-		$catData = JEV_CommonFunctions::getCategoryData();
-
-		for ($s = 0; $s < count($rows); $s++)
-		{
-			$row =& $rows[$s];
-			if (array_key_exists($row->catid, $catData))
-			{
-				$row->category = $catData[$row->catid]->name;
-			}
-			else
-			{
-				$row->category = "?";
-			}
-		}
-
-		if ($this->_debug)
-		{
-			echo '[DEBUG]<br />';
-			echo 'query:';
-			echo '<pre>';
-			echo $query;
-			echo '-----------<br />';
-			echo 'option "' . $option . '"<br />';
-			echo '</pre>';
-			//die( 'userbreak - mic ' );
+			$rows = array();
+			$total = 0;
 		}
 
 		// get list of categories
-		$attribs = 'class="inputbox" size="1" onchange="document.adminForm.submit();"';
-		$clist   = JEventsHTML::buildCategorySelect($catid, $attribs, null, true, false, 0, 'catid');
+		$attribs = 'class="gsl-select" size="1" onchange="document.adminForm.submit();"';
+		$clist   = JEventsHTML::buildCategorySelect($catid, $attribs, null, true, false, 0, 'filter[catid]');
+
+		$filters = array();
+		$filters['catid'] = $clist;
 
 		jimport('joomla.html.pagination');
-		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
-
+		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// Set the layout
 		$this->view->setLayout('overview');
 		$this->view->rows    = $rows;
-		$this->view->clist   = $clist;
-		$this->view->search  = $search;
-		$this->view->pageNav = $pageNav;
+		$this->view->pagination = $pagination;
+		$this->view->filters = $filters;
 
 		$this->view->display();
 	}

@@ -135,7 +135,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 
 		jimport('joomla.html.pagination');
-		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -144,7 +144,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$this->view->setLayout('overview');
 
 		$this->view->icalrows   = $icalrows;
-		$this->view->pageNav    = $pageNav;
+		$this->view->pagination = $pagination;
 		$this->view->evid       = $id;
 		$this->view->search     = $searchText;
 
@@ -791,7 +791,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 		$menulist = $this->targetMenu($input->getInt("Itemid"), "Itemid");
 
 		jimport('joomla.html.pagination');
-		$pageNav = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
+		$pagination = new \Joomla\CMS\Pagination\Pagination($total, $limitstart, $limit);
 
 		// get the view
 		$this->view = $this->getView("icalrepeat", "html");
@@ -801,7 +801,7 @@ class AdminIcalrepeatController extends Joomla\CMS\MVC\Controller\BaseController
 
 		$this->view->menulist   = $menulist;
 		$this->view->icalrows   = $icalrows;
-		$this->view->pageNav    = $pageNav;
+		$this->view->pagination = $pagination;
 		$this->view->evid       = $id;
 
 		$this->view->display();

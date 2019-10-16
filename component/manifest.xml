@@ -56,8 +56,12 @@
 	<administration>
 		<menu>COM_JEVENTS_MENU</menu>
 		<submenu>
-			<menu link="option=com_jevents&amp;task=icalevent.edit" view="icalevent"
-				  img="" alt="Mycomponent/Clientadverts">JEV_ADD_EVENT</menu>
+			<menu link="option=com_jevents&amp;task=icalevent.list" view="icalevent"  img="" alt="Manage Events">JEV_INSTAL_MANAGE</menu>
+			<menu link="option=com_jevents&amp;task=icalevent.edit" view="icalevent"  img="" alt="Add Event">JEV_ADD_EVENT</menu>
+			<menu link="option=com_categories&amp;extension=com_jevents"   img="" alt="Manage Categories">JEV_INSTAL_CATS</menu>
+			<menu link="option=com_jevents&amp;task=icals.list"  img="" alt="JEV_ADMIN_ICAL_SUBSCRIPTIONS">JEV_ADMIN_ICAL_SUBSCRIPTIONS</menu>
+			<menu link="option=com_jevents&amp;task=defaults.list"  img="" alt="JEV_LAYOUT_DEFAULTS">JEV_LAYOUT_DEFAULTS</menu>
+			<menu link="option=com_jevents&amp;task=params.edit"  img="" alt="COM_JEVENTS_CONFIG">COM_JEVENTS_CONFIG</menu>
 		</submenu>
 		<files folder="admin">
 			<folder>assets</folder>
