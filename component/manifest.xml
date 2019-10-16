@@ -61,7 +61,13 @@
 			<menu link="option=com_categories&amp;extension=com_jevents"   img="" alt="Manage Categories">JEV_INSTAL_CATS</menu>
 			<menu link="option=com_jevents&amp;task=icals.list"  img="" alt="JEV_ADMIN_ICAL_SUBSCRIPTIONS">JEV_ADMIN_ICAL_SUBSCRIPTIONS</menu>
 			<menu link="option=com_jevents&amp;task=defaults.list"  img="" alt="JEV_LAYOUT_DEFAULTS">JEV_LAYOUT_DEFAULTS</menu>
-			<menu link="option=com_jevents&amp;task=params.edit"  img="" alt="COM_JEVENTS_CONFIG">COM_JEVENTS_CONFIG</menu>
+			<menu link="option=com_jevents&amp;task=params.edit"  img="" alt="COM_JEVENTS_CONFIGURATION">COM_JEVENTS_CONFIGURATION</menu>
+
+			<menu link="option=com_jevlocations"  img="" alt="COM_JEVENTS_LOCATIONS">COM_JEVENTS_LOCATIONS</menu>
+			<menu link="option=com_jevpeople"  img="" alt="COM_JEVENTS_PEOPLE">COM_JEVENTS_PEOPLE</menu>
+			<menu link="option=com_rsvppro"  img="" alt="COM_JEVENTS_RSVPPRO">COM_JEVENTS_RSVPPRO</menu>
+			<menu link="option=com_jeventstags"  img="" alt="COM_JEVENTS_TAGS">COM_JEVENTS_TAGS</menu>
+
 		</submenu>
 		<files folder="admin">
 			<folder>assets</folder>

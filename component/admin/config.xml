@@ -111,8 +111,10 @@
 		<!--
 		<field name="showPanelNews" type="jevboolean" class="btn-group" default="1" label="JEV_News" description="CPANEL_NEWS_HELP" difficulty="2"/>
 		-->
+		<!--
 		<field name="mergemenus" type="jevboolean" class="btn-group" default="0" menu="hide" label="JEV_MERGE_MENUS"
 		       description="JEV_MERGE_MENUS_TIP" difficulty="2"/>
+		//-->
 
 		<field name="show_adminpanel" type="jevboolean" class="btn-group" default="1" menu="hide"
 		       label="JEV_SHOW_ADMIN_PANEL" description="JEV_SHOW_ADMIN_PANEL_DESC" difficulty="2"/>
