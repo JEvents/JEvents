@@ -93,7 +93,7 @@ class iCalImport
 				$this->rawData = curl_exec($ch);
 				curl_close ($ch);
 
-				// try file_get_contents as a backu
+				// try file_get_contents as a backup
 				    if ($this->rawData === false || $this->rawData == "") {
 					$this->rawData = @file_get_contents($file);
 				}
@@ -374,7 +374,10 @@ class iCalImport
 				}
 
 				// Special treatment of
-				if (JString::strpos($key,"EXDATE")===false){
+				if($key=="ATTACH") {
+					$this->cal[$parent][$this->eventCount][$key][] = $value;
+				}
+				elseif (JString::strpos($key,"EXDATE")===false){
 					$target =& $this->cal[$parent][$this->eventCount][$key];
 					$rawtarget =& $this->cal[$parent][$this->eventCount][$rawkey];
 				}
