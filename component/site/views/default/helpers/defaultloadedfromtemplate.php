@@ -1365,6 +1365,15 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 					}
 				}
 				break;
+			case "{{ISMULTIDAY}}" :
+				$search[]   = '{{ISMULTIDAY}}';
+				if($event->multiday() && isset($event->_length)) {
+                    $replace[]    = JText::_('JEV_IS_MULTIDAY_EVENT');
+                } else {
+				    $replace[] = '';
+                }
+				$blank[] = '';
+			    break;
 			case "{{LASTREPEAT}}":
 			case "{{LASTREPEATEND}}":
 				// no need to repeat this for each of the matching 'case's
