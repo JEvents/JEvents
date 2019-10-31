@@ -27,7 +27,7 @@ if ($jinput->getString("submit","") != "")
 			continue;
 		$cats[] = $cid;
 	}
-	if (!empty($cats) && count($cats) == 0)
+	if (is_array($cats) && count($cats) == 0)
 		$cats[] = 0;
 
 
@@ -37,7 +37,7 @@ if ($jinput->getString("submit","") != "")
 	$cats = implode(",", $cats);
 
 	$link = JURI::root() . "index.php?option=com_jevents&task=icals.export&format=ical";
-	if (!empty($cats) && count($cats) > 0)
+	if (is_array($cats) && count($cats) > 0)
 	{
 		$link .="&catids=" . $cats;
 	}
