@@ -542,7 +542,40 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 				$blank[]   = "";
 				break;
 
-			case "{{CALENDAR}}":
+            case "{{ALLCATEGORIES_CAT_COLOURED}}":
+                $search[] = "{{ALLCATEGORIES_CAT_COLOURED}}";
+
+                if (!isset($allcat_catids))
+                {
+                    $db         = JFactory::getDbo();
+                    $arr_catids = array();
+                    $catsql     = "SELECT cat.id, cat.title as name, cat.params FROM #__categories  as cat WHERE cat.extension='com_jevents' ";
+                    $db->setQuery($catsql);
+                    $allcat_catids = $db->loadObjectList('id');
+                }
+                $db = JFactory::getDbo();
+                $db->setQuery("Select catid from #__jevents_catmap  WHERE evid = " . $event->ev_id());
+                $allcat_eventcats = $db->loadColumn();
+
+                $allcats = array();
+                foreach ($allcat_eventcats as $catid)
+                {
+                    if (isset($allcat_catids[$catid]))
+                    {
+                        $params    = json_decode($allcat_catids[$catid]->params);
+                        $style = '';
+
+                        if(!empty($params->catcolour)) {
+                            $style = ' style="color:' . $params->catcolour . ';"';
+                        }
+                        $allcats[] = '<span ' . $style . '>' . $allcat_catids[$catid]->name . '</span>';
+                    }
+                }
+                $replace[] = implode(", ", $allcats);
+                $blank[]   = "";
+                break;
+
+            case "{{CALENDAR}}":
 				$search[]  = "{{CALENDAR}}";
 				$replace[] = $event->getCalendarName();
 				$blank[]   = "";
@@ -936,6 +969,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 			case "{{ISOSTART}}":
 			case "{{ISOEND}}":
 			case "{{DURATION}}":
+			case "{{DURATION_ROUNDUP}}":
 			case "{{COUNTDOWN}}":
 			case "{{PAST_OR_FUTURE}}":
 			case "{{MULTIENDDATE}}":
@@ -1231,7 +1265,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 						if ($timedelta > 3610)
 						{
-							//if more than 1 hour and 10 seconds over a day then round up the day output
+							// If more than 1 hour and 10 seconds over a day then round up the day output
 							++$days;
 						}
 
@@ -1244,7 +1278,7 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 						$timedelta -= $days * 60 * 60 * 24;
 						/*
 						  if ($timedelta>3610){
-						  //if more than 1 hour and 10 seconds over a day then round up the day output
+						  // If more than 1 hour and 10 seconds over a day then round up the day output
 						  $days +=1;
 						  }
 						 */
@@ -1283,6 +1317,58 @@ function DefaultLoadedFromTemplate($view, $template_name, $event, $mask, $templa
 
 					$replace[] = $fieldval;
 					$blank[]   = "";
+
+					// Round UP Search / Replace
+                    $search[]  = "{{DURATION_ROUNDUP}}";
+                    $timedelta = $row->getUnixEndTime() - $row->getUnixStartTime();
+
+                    if ($row->alldayevent())
+                    {
+                        $timedelta = $row->getUnixEndDate() - $row->getUnixStartDate() + 60 * 60 * 24;
+                    }
+
+                    $fieldval  = JText::_("JEV_DURATION_FORMAT");
+                    $shownsign = false;
+
+                    // Whole days!
+                    $days      = intval($timedelta / (60 * 60 * 24));
+                    $timedelta -= $days * 60 * 60 * 24;
+
+                    if (stripos($fieldval, "%wd") !== false)
+                    {
+                        if ($timedelta > 3610 || $row->noendtime())
+                        {
+                            // If more than 1 hour and 10 seconds over a day then round up the day output
+                            ++$days;
+                        }
+
+                        $fieldval  = str_ireplace("%d", $days, $fieldval);
+                    }
+
+                    if (stripos($fieldval, "%d") !== false)
+                    {
+                          if ($timedelta>3610 || $row->noendtime()){
+                              // If more than 1 hour and 10 seconds over a day then round up the day output
+                              ++$days;
+                          }
+
+                        $fieldval  = str_ireplace("%d", $days, $fieldval);
+                    }
+                    if (stripos($fieldval, "%h") !== false)
+                    {
+                        $fieldval  = str_ireplace("%h", 0, $fieldval);
+                    }
+                    if (stripos($fieldval, "%k") !== false)
+                    {
+                        $fieldval  = str_ireplace("%k", 0, $fieldval);
+                    }
+                    if (stripos($fieldval, "%m") !== false)
+                    {
+                        $fieldval = str_ireplace("%m", 0, $fieldval);
+                    }
+
+                    $replace[] = $fieldval;
+                    $blank[]   = "";
 				}
 				break;
 

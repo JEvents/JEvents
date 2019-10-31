@@ -299,7 +299,7 @@ class JEventsHTML
             {
                 for ($o = 0; $o < count($options); $o++)
                 {
-                    if ($options[$o]->value == $catid[$c])
+                    if (!empty($options[$o]->value) && $options[$o]->value == $catid[$c])
                     {
                         $options[ - (count($catid) - $c)] = $options[$o];
                         unset($options[$o]);
