@@ -598,10 +598,16 @@ WHERE cat.id is null
 			}
 		}
 
-		$params        = ComponentHelper::getParams(JEV_COM_COMPONENT);
-		$multicategory = $params->get("multicategory", 0);
-		if ($multicategory)
-		{
+		$params         = JComponentHelper::getParams(JEV_COM_COMPONENT);
+		$multicategory  = $params->get("multicategory",0);
+		if ($multicategory) {
+
+			// Start by removing orphans from the category mapping table itself
+			$sql = "DELETE FROM #__jevents_catmap 
+			WHERE evid NOT IN (SELECT ev_id FROM #__jevents_vevent)";
+			$db->setQuery($sql);
+			$db->execute();
+
 			// Do the bad category Ids first
 			$sql = "SELECT catmap.* FROM #__jevents_catmap as catmap 
 	LEFT JOIN #__categories as cat on cat.id=catmap.catid AND extension='com_jevents'

@@ -496,7 +496,17 @@
 		       label="JEV_ICAL_EXPORT_SOURCE_URL" description="JEV_ICAL_EXPORT_SOURCE_URL_DESC" difficulty="2"/>
 		<field name="default_itemid" type="jevmenu" default="" label='JEV_TARGET_MENU' description='JEV_TARGET_MENU_TIP'
 		       difficulty="2"/>
-	</fieldset>
+
+		<field name="converturlstolinksonimport"
+			   type="jevboolean"
+			   class="btn-group"
+			   default="1"
+			   menu="hide"
+			   label="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT"
+			   description="JEV_CONVERT_URLS_TO_LINKS_ON_IMPORT_DESC"
+			   difficulty="3"/>
+
+</fieldset>
 
 	<fieldset name="JEV_TAB_RSS" difficulty="2">
 		<field name="spacer_rss1" type="jevinfo" default="JEV_SETT_FOR_RSS" menu="hide" label="" description=""
