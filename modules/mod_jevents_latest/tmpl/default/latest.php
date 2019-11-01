@@ -910,7 +910,7 @@ SCRIPT;
 			'createdByUserName', 'createdByUserEmail', 'createdByUserEmailLink',
 			'eventDate', 'endDate', 'startDate', 'title', 'category', 'calendar',
 			'contact', 'addressInfo', 'location', 'extraInfo',
-			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase'
+			'countdown', 'categoryimage', 'duration', 'siteroot', 'sitebase', 'allCategoriesColoured'
 		);
 		$keywords_or = implode('|', $keywords);
 		$whsp = '[\t ]*'; // white space
@@ -1283,6 +1283,25 @@ SCRIPT;
 				$catobj = $dayEvent->getCategoryImage();
 				$content .= $catobj;
 				break;
+
+            case 'allCategoriesColoured' :
+                $catobj     = $dayEvent->getCategoryData();
+                $allcats    = array();
+                foreach ($catobj as $cat)
+                {
+                    $params    = json_decode($cat->params);
+                    $style = '';
+
+                    if(!empty($params->catcolour)) {
+                        $style = ' style="color:' . $params->catcolour . ';"';
+                    }
+
+                    $allcats[] = '<span ' . $style . '>' . $cat->name . '</span>';
+
+                }
+
+                $content .= implode(", ", $allcats);
+                break;
 
 			case 'calendar':
 				$catobj = $dayEvent->getCalendarName();
